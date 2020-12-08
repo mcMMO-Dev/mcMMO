@@ -87,12 +87,12 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
-        mcMMO.getUserManager().queryMcMMOPlayer(player).actualizeTeleportATS();
+        mcMMO.getUserManager().queryPlayer(player).actualizeTeleportATS();
     }
     /**
      * Handle PlayerDeathEvents at the lowest priority.
@@ -197,12 +197,12 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         mmoPlayer.checkGodMode();
         mmoPlayer.checkParty();
@@ -268,12 +268,12 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
-        FishingManager fishingManager = mcMMO.getUserManager().queryMcMMOPlayer(player).getFishingManager();
+        FishingManager fishingManager = mcMMO.getUserManager().queryPlayer(player).getFishingManager();
 
         switch (event.getState()) {
             case CAUGHT_FISH:
@@ -346,13 +346,13 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
         Entity caught = event.getCaught();
-        FishingManager fishingManager = mcMMO.getUserManager().queryMcMMOPlayer(player).getFishingManager();
+        FishingManager fishingManager = mcMMO.getUserManager().queryPlayer(player).getFishingManager();
 
         //Track the hook
         if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
@@ -441,12 +441,12 @@ public class PlayerListener implements Listener {
             }
 
             //Profile not loaded
-            if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+            if(mcMMO.getUserManager().queryPlayer(player) == null)
             {
                 return;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();
@@ -503,13 +503,13 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
         //No need for null checks here
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         //TODO: There's an issue with using Async saves on player quit
         //TODO: Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
         mcMMO.getUserManager().saveUserWithDelay(mmoPlayer.getPersistentPlayerData(), false, 20);
@@ -560,12 +560,12 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
-        mcMMO.getUserManager().queryMcMMOPlayer(player).actualizeRespawnATS();
+        mcMMO.getUserManager().queryPlayer(player).actualizeRespawnATS();
     }
 
     /**
@@ -607,12 +607,12 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         MiningManager miningManager = mmoPlayer.getMiningManager();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -641,7 +641,7 @@ public class PlayerListener implements Listener {
                             && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && mcMMO.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
-                                SalvageManager salvageManager = mcMMO.getUserManager().queryMcMMOPlayer(player).getSalvageManager();
+                                SalvageManager salvageManager = mcMMO.getUserManager().queryPlayer(player).getSalvageManager();
                                 event.setCancelled(true);
 
                                 // Make sure the player knows what he's doing when trying to salvage an enchanted item
@@ -723,12 +723,12 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
@@ -763,7 +763,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if (mmoPlayer == null) {
             mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");

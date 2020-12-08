@@ -17,7 +17,7 @@ public class PartyInviteCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
-            McMMOPlayer mcMMOTarget = mcMMO.getUserManager().getOfflinePlayer(targetName);
+            McMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayerName(targetName);
 
             if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                 return false;
@@ -25,13 +25,13 @@ public class PartyInviteCommand implements CommandExecutor {
 
             Player target = mcMMOTarget.getPlayer();
 
-            if (mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().queryPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
             Player player = (Player) sender;
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
             String playerName = player.getName();
 
             if (player.equals(target)) {

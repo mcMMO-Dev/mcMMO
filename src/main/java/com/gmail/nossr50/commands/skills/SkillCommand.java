@@ -59,7 +59,7 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer((Player) sender);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
 
         if(mmoPlayer == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));

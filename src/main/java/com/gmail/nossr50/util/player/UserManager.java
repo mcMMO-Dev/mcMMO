@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PersistentPlayerDataSaveTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -42,8 +43,28 @@ public final class UserManager {
         playerDataSet.add(mmoPlayer); //for sync saves on shutdown
     }
 
+    /**
+     * Cleanup player data
+     *
+     * @param mmoPlayer target player
+     */
     public void cleanupPlayer(@NotNull McMMOPlayer mmoPlayer) {
         playerDataSet.remove(mmoPlayer);
+    }
+
+    /**
+     * Gets the McMMOPlayer object for a player, this can be null if the player has not yet been loaded.
+     * @param player target player
+     * @return McMMOPlayer object for this player, null if Player has not been loaded
+     */
+    public @Nullable McMMOPlayer queryPlayer(@Nullable Player player) {
+        if(player == null)
+            return null;
+
+        if(player.hasMetadata(mcMMO.playerDataKey))
+            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        else
+            return null;
     }
 
     /**
@@ -52,10 +73,13 @@ public final class UserManager {
      * @param player The Player object
      */
     public void remove(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = queryMcMMOPlayer(player);
-        mmoPlayer.cleanup();
-        player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
+        McMMOPlayer mmoPlayer = queryPlayer(player);
 
+        if(mmoPlayer != null) {
+            mmoPlayer.cleanup();
+        }
+
+        player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
         playerDataSet.remove(mmoPlayer); //Clear sync save tracking
     }
 
@@ -75,81 +99,11 @@ public final class UserManager {
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (hasPlayerDataKey(player)) {
-                playerCollection.add(queryMcMMOPlayer(player));
+                playerCollection.add(queryPlayer(player));
             }
         }
 
         return playerCollection;
-    }
-
-    /**
-     * Get the McMMOPlayer of a player by name.
-     *
-     * @param playerName The name of the player whose McMMOPlayer to retrieve
-     * @return the player's McMMOPlayer object
-     */
-    public @Nullable McMMOPlayer queryMcMMOPlayer(@NotNull UUID playerUUID) {
-        return retrieveMcMMOPlayer(playerName, false);
-    }
-
-    /**
-     * Attempts to find a player in the database by name alone
-     * @param playerName target player name
-     * @return will return a valid McMMOPlayer if one is found, otherwise returns null
-     */
-    public @Nullable OfflinePlayer findPlayer(@NotNull String playerName) {
-
-    }
-
-    public @Nullable McMMOPlayer queryMcMMOPlayer(@NotNull OfflinePlayer offlinePlayer) {
-        return queryMcMMOPlayer(offlinePlayer.getUniqueId());
-    }
-
-    /**
-     * Used to grab a player by name alone
-     * @param playerName
-     * @return
-     */
-    @Deprecated
-    public @Nullable McMMOPlayer queryMcMMOPlayer(@NotNull String playerName) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
-
-        if(offlinePlayer != null) {
-            return retrieveMcMMOPlayer(offlinePlayer);
-        } else {
-            return null;
-        }
-    }
-
-    public @Nullable McMMOPlayer getOfflinePlayer(String playerName) {
-        return retrieveMcMMOPlayer(playerName, true);
-    }
-
-    /**
-     * Gets the McMMOPlayer object for a player, this can be null if the player has not yet been loaded.
-     * @param player target player
-     * @return McMMOPlayer object for this player, null if Player has not been loaded
-     */
-    public @Nullable McMMOPlayer queryMcMMOPlayer(@NotNull Player player) {
-        //Avoid Array Index out of bounds
-        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
-            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
-        else
-            return null;
-    }
-
-    private @Nullable McMMOPlayer retrieveMcMMOPlayer(@NotNull String playerName, boolean offlineValid) {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
-
-        if (player == null) {
-            if (!offlineValid) {
-                mcMMO.p.getLogger().warning("A valid mmoPlayer object could not be found for " + playerName + ".");
-            }
-
-            return null;
-        }
-
-        return queryMcMMOPlayer(player);
     }
 
     public boolean hasPlayerDataKey(Entity entity) {

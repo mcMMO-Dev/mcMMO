@@ -52,7 +52,7 @@ public class McrankCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
 
                 if (mmoPlayer != null) {
                     Player player = mmoPlayer.getPlayer();

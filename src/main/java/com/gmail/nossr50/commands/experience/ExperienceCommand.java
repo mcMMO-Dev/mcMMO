@@ -91,7 +91,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 int value = Integer.parseInt(args[2]);
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
 
                 // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mmoPlayer == null) {

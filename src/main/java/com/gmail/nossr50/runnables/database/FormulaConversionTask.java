@@ -26,7 +26,7 @@ public class FormulaConversionTask extends BukkitRunnable {
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
         for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
             PlayerProfile profile;
 
             // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.

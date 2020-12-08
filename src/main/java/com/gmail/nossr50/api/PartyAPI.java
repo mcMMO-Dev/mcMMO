@@ -26,7 +26,7 @@ public final class PartyAPI {
             return null;
         }
 
-        return mcMMO.getUserManager().queryMcMMOPlayer(player).getParty().getName();
+        return mcMMO.getUserManager().queryPlayer(player).getParty().getName();
     }
 
     /**
@@ -38,10 +38,10 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
             return false;
 
-        return mcMMO.getUserManager().queryMcMMOPlayer(player).inParty();
+        return mcMMO.getUserManager().queryPlayer(player).inParty();
     }
 
     /**
@@ -80,7 +80,7 @@ public final class PartyAPI {
     @Deprecated
     public static void addToParty(Player player, String partyName) {
         //Check if player profile is loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
             return;
 
         Party party = mcMMO.getPartyManager().getParty(partyName);
@@ -95,7 +95,7 @@ public final class PartyAPI {
             }
         }
 
-        mcMMO.getPartyManager().addToParty(mcMMO.getUserManager().queryMcMMOPlayer(player), party);
+        mcMMO.getPartyManager().addToParty(mcMMO.getUserManager().queryPlayer(player), party);
     }
 
     /**
@@ -120,7 +120,7 @@ public final class PartyAPI {
     //TODO: bypasslimit not used?
     public static void addToParty(Player player, String partyName, boolean bypassLimit) {
         //Check if player profile is loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
             return;
 
         Party party = mcMMO.getPartyManager().getParty(partyName);
@@ -129,7 +129,7 @@ public final class PartyAPI {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
         }
 
-        mcMMO.getPartyManager().addToParty(mcMMO.getUserManager().queryMcMMOPlayer(player), party);
+        mcMMO.getPartyManager().addToParty(mcMMO.getUserManager().queryPlayer(player), party);
     }
 
     /**
@@ -141,10 +141,10 @@ public final class PartyAPI {
      */
     public static void removeFromParty(Player player) {
         //Check if player profile is loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
             return;
 
-        mcMMO.getPartyManager().removeFromParty(mcMMO.getUserManager().queryMcMMOPlayer(player));
+        mcMMO.getPartyManager().removeFromParty(mcMMO.getUserManager().queryPlayer(player));
     }
 
     /**

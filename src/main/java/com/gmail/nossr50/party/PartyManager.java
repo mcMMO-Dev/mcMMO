@@ -139,19 +139,19 @@ public final class PartyManager {
      */
     public boolean inSameParty(Player firstPlayer, Player secondPlayer) {
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(firstPlayer) == null)
+        if(mcMMO.getUserManager().queryPlayer(firstPlayer) == null)
         {
             return false;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(secondPlayer) == null)
+        if(mcMMO.getUserManager().queryPlayer(secondPlayer) == null)
         {
             return false;
         }
 
-        Party firstParty = mcMMO.getUserManager().queryMcMMOPlayer(firstPlayer).getParty();
-        Party secondParty = mcMMO.getUserManager().queryMcMMOPlayer(secondPlayer).getParty();
+        Party firstParty = mcMMO.getUserManager().queryPlayer(firstPlayer).getParty();
+        Party secondParty = mcMMO.getUserManager().queryPlayer(secondPlayer).getParty();
 
         if (firstParty == null || secondParty == null) {
             return false;
@@ -305,12 +305,12 @@ public final class PartyManager {
      */
     public Party getParty(Player player) {
         //Profile not loaded
-        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return null;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         return mmoPlayer.getParty();
     }
@@ -372,12 +372,12 @@ public final class PartyManager {
         //TODO: Potential issues with unloaded profile?
         for (Player member : party.getPartyMembers()) {
             //Profile not loaded
-            if(mcMMO.getUserManager().queryMcMMOPlayer(member) == null)
+            if(mcMMO.getUserManager().queryPlayer(member) == null)
             {
                 continue;
             }
 
-            processPartyLeaving(mcMMO.getUserManager().queryMcMMOPlayer(member));
+            processPartyLeaving(mcMMO.getUserManager().queryPlayer(member));
         }
 
         // Disband the alliance between the disbanded party and it's ally

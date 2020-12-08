@@ -92,12 +92,12 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        if(player == null || mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+        if(player == null || mcMMO.getUserManager().queryPlayer(player) == null)
         {
             return PotionConfig.getInstance().getIngredients(1);
         }
 
-        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : mcMMO.getUserManager().queryMcMMOPlayer(player).getAlchemyManager().getTier());
+        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : mcMMO.getUserManager().queryPlayer(player).getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
@@ -148,7 +148,7 @@ public final class AlchemyPotionBrewer {
 
                 //TODO: hmm
                 if (mcMMO.getUserManager().hasPlayerDataKey(player)) {
-                    mcMMO.getUserManager().queryMcMMOPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
+                    mcMMO.getUserManager().queryPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }
             }
         }

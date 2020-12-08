@@ -215,10 +215,10 @@ public final class CommandUtils {
     }
 
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if(mcMMO.getUserManager().queryMcMMOPlayer(inspect) == null)
+        if(mcMMO.getUserManager().queryPlayer(inspect) == null)
             return;
 
-        PlayerProfile profile = mcMMO.getUserManager().queryMcMMOPlayer(inspect);
+        PlayerProfile profile = mcMMO.getUserManager().queryPlayer(inspect);
 
         List<String> displayData = new ArrayList<>();
         displayData.add(header);

@@ -16,12 +16,12 @@ public class PartyKickCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
-            if (mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().queryPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            Party playerParty = mcMMO.getUserManager().queryMcMMOPlayer((Player) sender).getParty();
+            Party playerParty = mcMMO.getUserManager().queryPlayer((Player) sender).getParty();
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
 
             if (!playerParty.hasMember(targetName)) {
@@ -39,7 +39,7 @@ public class PartyKickCommand implements CommandExecutor {
                     return true;
                 }
 
-                mcMMO.getPartyManager().processPartyLeaving(mcMMO.getUserManager().queryMcMMOPlayer(onlineTarget));
+                mcMMO.getPartyManager().processPartyLeaving(mcMMO.getUserManager().queryPlayer(onlineTarget));
                 onlineTarget.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
             }
 

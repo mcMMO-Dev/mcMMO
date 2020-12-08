@@ -2,10 +2,13 @@ package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.chat.SamePartyPredicate;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class Party {
@@ -66,6 +69,14 @@ public class Party {
     @Override
     public int hashCode() {
         return Objects.hash(samePartyPredicate, persistentPartyData, partyMemberManager, partyExperienceManager);
+    }
+
+    public @Nullable PartyMember getPartyMember(@NotNull Player player) {
+        return getPartyMember(player.getUniqueId());
+    }
+
+    public @Nullable PartyMember getPartyMember(@NotNull UUID playerUUID) {
+        return partyMemberManager.getPartyMember(playerUUID);
     }
 
     public @NotNull Predicate<CommandSender> getSamePartyPredicate() {

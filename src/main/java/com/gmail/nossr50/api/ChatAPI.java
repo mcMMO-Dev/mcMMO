@@ -20,7 +20,7 @@ public final class ChatAPI {
      */
     @Deprecated
     public static boolean isUsingPartyChat(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer != null)
             return mmoPlayer.getChatChannel() == ChatChannel.PARTY;
@@ -63,7 +63,7 @@ public final class ChatAPI {
      */
     @Deprecated
     public static boolean isUsingAdminChat(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer != null)
             return mmoPlayer.getChatChannel() == ChatChannel.ADMIN;
@@ -114,7 +114,7 @@ public final class ChatAPI {
      */
     @Deprecated
     public static void togglePartyChat(Player player) throws NullPointerException {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryMcMMOPlayer(player)), ChatChannel.PARTY);
+        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryPlayer(player)), ChatChannel.PARTY);
     }
 
     /**
@@ -145,7 +145,7 @@ public final class ChatAPI {
      */
     @Deprecated
     public static void toggleAdminChat(Player player) throws NullPointerException {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryMcMMOPlayer(player)), ChatChannel.ADMIN);
+        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryPlayer(player)), ChatChannel.ADMIN);
     }
 
     /**

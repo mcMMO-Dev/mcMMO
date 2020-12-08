@@ -21,13 +21,13 @@ public class PartyInfoCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
             case 1:
-                if(mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null)
+                if(mcMMO.getUserManager().queryPlayer((Player) sender) == null)
                 {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
                 Player player = (Player) sender;
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
                 Party party = mmoPlayer.getParty();
 
                 displayPartyHeader(player, party);

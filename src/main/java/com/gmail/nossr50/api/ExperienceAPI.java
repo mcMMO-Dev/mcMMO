@@ -1217,6 +1217,6 @@ public final class ExperienceAPI {
             throw new McMMOPlayerNotFoundException(player);
         }
 
-        return mcMMO.getUserManager().queryMcMMOPlayer(player);
+        return mcMMO.getUserManager().queryPlayer(player);
     }
 }

@@ -205,7 +205,7 @@ public class ScoreboardWrapper {
         if(mcMMO.getUserManager().getPlayer(playerName) == null)
             return;
 
-        PlayerProfile profile = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        PlayerProfile profile = mcMMO.getUserManager().queryPlayer(player);
 
         if (profile.getScoreboardTipsShown() >= Config.getInstance().getTipsAmount()) {
             return;
@@ -433,7 +433,7 @@ public class ScoreboardWrapper {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null)
             return;

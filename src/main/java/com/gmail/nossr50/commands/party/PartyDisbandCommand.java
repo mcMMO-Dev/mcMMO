@@ -15,12 +15,12 @@ public class PartyDisbandCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 1) {
-            if (mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().queryPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            Party playerParty = mcMMO.getUserManager().queryMcMMOPlayer((Player) sender).getParty();
+            Party playerParty = mcMMO.getUserManager().queryPlayer((Player) sender).getParty();
             String partyName = playerParty.getPartyName();
 
             for (PartyMember member : playerParty.getPartyMembers()) {

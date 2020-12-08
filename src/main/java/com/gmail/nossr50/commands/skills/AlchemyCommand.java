@@ -33,7 +33,7 @@ public class AlchemyCommand extends SkillCommand {
 
     protected String[] calculateAbilityDisplayValues(@NotNull Player player) {
         //TODO: Needed?
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         if(mmoPlayer == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));

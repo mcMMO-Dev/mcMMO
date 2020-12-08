@@ -38,14 +38,14 @@ public class SelfListener implements Listener {
             {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
-                RankUtils.executeSkillUnlockNotifications(plugin, mcMMO.getUserManager().queryMcMMOPlayer(player), event.getSkill(), previousLevelGained);
+                RankUtils.executeSkillUnlockNotifications(plugin, mcMMO.getUserManager().queryPlayer(player), event.getSkill(), previousLevelGained);
             }
 
         for(int i = 0; i < event.getLevelsGained(); i++)
         {
             int previousLevelGained = event.getSkillLevel() - i;
             //Send player skill unlock notifications
-            RankUtils.executeSkillUnlockNotifications(plugin, mcMMO.getUserManager().queryMcMMOPlayer(player), event.getSkill(), previousLevelGained);
+            RankUtils.executeSkillUnlockNotifications(plugin, mcMMO.getUserManager().queryPlayer(player), event.getSkill(), previousLevelGained);
         }
 
         //Reset the delay timer
@@ -81,7 +81,7 @@ public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
 
         if(mmoPlayer.isDebugMode()) {

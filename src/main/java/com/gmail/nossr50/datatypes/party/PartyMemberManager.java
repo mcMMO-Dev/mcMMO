@@ -1,20 +1,27 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.Misc;
+import com.neetgames.mcmmo.exceptions.InvalidPlayerException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class PartyMemberManager {
 
     private final @NotNull PersistentPartyData persistentPartyData;
+    private final @NotNull HashMap<UUID, PartyMember> partyMemberMap;
+    private @Nullable PartyMember partyLeaderRef;
     
     public PartyMemberManager(@NotNull PersistentPartyData persistentPartyData) {
         this.persistentPartyData = persistentPartyData;
+        this.partyMemberMap = new HashMap<>();
+        initPartyLeaderRef();
     }
 
     /**
@@ -22,9 +29,20 @@ public class PartyMemberManager {
      *
      * @return all party members
      */
-    public @NotNull Set<PartyMember> getPartyMembers() {
+    public @NotNull DirtySet<PartyMember> getPartyMembers() {
         return persistentPartyData.getPartyMembers();
     }
+
+    /**
+     * Grab a specific {@link PartyMember} by {@link UUID}
+     *
+     * @param playerUUID target UUID
+     * @return the party member if they exist, otherwise null
+     */
+    public @Nullable PartyMember getPartyMember(@NotNull UUID playerUUID) {
+        return partyMemberMap.get(playerUUID);
+    }
+
 
     /**
      * Add a {@link PartyMember} to this {@link Party} with a designated rank
@@ -36,7 +54,9 @@ public class PartyMemberManager {
     public void addPartyMember(@NotNull UUID playerUUID, @NotNull PartyMemberRank partyMemberRank) {
         //TODO: Prevent adding multiple leaders
         //TODO: Call event
-        persistentPartyData.getPartyMembers().add(new PartyMember(playerUUID, partyMemberRank));
+        PartyMember partyMember = new PartyMember(playerUUID, partyMemberRank);
+        persistentPartyData.getPartyMembers().add(partyMember);
+        partyMemberMap.put(playerUUID, partyMember);
     }
 
     /**
@@ -66,16 +86,49 @@ public class PartyMemberManager {
      *
      * @param playerUUID the UUID of the new party leader
      */
-    public void changeLeader(@NotNull UUID playerUUID) {
-        //TODO: implementation
+    public void changeLeader(@NotNull UUID playerUUID) throws RuntimeException {
+        if(hasMember(playerUUID)) {
+            //TODO: implementation
+                for(PartyMember partyMember : getPartyMembers()) {
+                    if (partyMember.getPartyMemberRank() == PartyMemberRank.LEADER) {
+                        partyMember.setPartyMemberRank(PartyMemberRank.MEMBER);
+                    }
+                }
+
+            partyLeaderRef = partyMemberMap.get(playerUUID);
+            partyLeaderRef.setPartyMemberRank(PartyMemberRank.LEADER);
+        } else {
+            throw new RuntimeException();
+        }
+    }
+
+    private void initPartyLeaderRef() {
+        for(PartyMember partyMember : getPartyMembers()) {
+            if(partyMember.getPartyMemberRank() == PartyMemberRank.LEADER) {
+                partyLeaderRef = partyMember;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Retrieves a party leader, if one doesn't exist a "random" player is forcibly promoted to leader
+     * Random being the first player in the set
+     *
+     * @return the party leader
+     */
+    public @NotNull PartyMember getPartyLeader() {
+        if(partyLeaderRef == null) {
+            //The first player in a party is now the leader
+            partyLeaderRef = (PartyMember) getPartyMembers().unwrapSet().toArray()[0];
+            partyLeaderRef.setPartyMemberRank(PartyMemberRank.LEADER);
+        }
+
+        return partyLeaderRef;
     }
 
     public boolean hasMember(@NotNull UUID playerUUID) {
-        for(PartyMember partyMember : persistentPartyData.getPartyMembers()) {
-            if(partyMember.getUniqueId().equals(playerUUID))
-                return true;
-        }
-        return false;
+        return partyMemberMap.containsKey(playerUUID);
     }
 
     public boolean hasMember(@NotNull Player player) {
@@ -110,7 +163,7 @@ public class PartyMemberManager {
      * @param mmoPlayer The player to check
      * @return the near party members
      */
-    public List<Player> getNearMembers(McMMOPlayer mmoPlayer) {
+    public @NotNull List<Player> getNearMembers(@NotNull McMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
         Party party = mmoPlayer.getParty();
 
@@ -129,9 +182,5 @@ public class PartyMemberManager {
         }
 
         return nearMembers;
-    }
-
-    public @NotNull PartyMember getPartyLeader() {
-        return persistentPartyData.getPartyLeader();
     }
 }

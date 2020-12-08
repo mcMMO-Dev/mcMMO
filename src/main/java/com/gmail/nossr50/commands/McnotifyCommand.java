@@ -21,7 +21,7 @@ public class McnotifyCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer((Player) sender);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
 
             //Not Loaded yet
             if (mmoPlayer == null)

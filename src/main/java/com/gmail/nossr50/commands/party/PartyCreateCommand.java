@@ -16,9 +16,9 @@ public class PartyCreateCommand implements CommandExecutor {
             case 2:
             case 3:
                 Player player = (Player) sender;
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
-                if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
+                if(mcMMO.getUserManager().queryPlayer(player) == null)
                 {
                     player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
