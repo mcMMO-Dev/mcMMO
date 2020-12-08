@@ -1,14 +1,15 @@
 package com.gmail.nossr50.datatypes.experience.context;
 
-import org.bukkit.entity.LivingEntity;
+import com.neetgames.jmal.LivingEntity;
+import com.neetgames.mcmmo.experience.context.CombatExperienceContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CombatContext implements ExperienceContext {
+public class CombatExperienceContextImpl implements CombatExperienceContext {
 
     private final @NotNull LivingEntity livingEntity;
 
-    public CombatContext(@NotNull LivingEntity livingEntity) {
+    public CombatExperienceContextImpl(@NotNull LivingEntity livingEntity) {
         this.livingEntity = livingEntity;
     }
 

@@ -9,6 +9,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 
@@ -111,7 +112,7 @@ public class PartyExperienceManager {
         return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getPartyMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
     }
 
-    public String getXpToLevelPercentage() {
+    public @NotNull String getXpToLevelPercentage() {
         DecimalFormat percent = new DecimalFormat("##0.00%");
         return percent.format(this.getXp() / getXpToLevel());
     }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.experience.context;
 
+import com.neetgames.mcmmo.experience.context.ExperienceContext;
 import org.jetbrains.annotations.Nullable;
 
 /**

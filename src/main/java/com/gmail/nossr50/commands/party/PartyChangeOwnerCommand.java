@@ -24,7 +24,13 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
             OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(targetName);
 
-            if (!playerParty.hasMember(target.getUniqueId())) {
+            if(playerParty == null) {
+                //TODO: Localize
+                sender.sendMessage("Party is null!");
+                return true;
+            }
+
+            if (!playerParty.getPartyMemberManager().hasMember(target.getUniqueId())) {
                 sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
                 return true;
             }
