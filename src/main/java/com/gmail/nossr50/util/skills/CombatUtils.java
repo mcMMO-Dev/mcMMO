@@ -102,22 +102,22 @@ public final class CombatUtils {
         //Add Stab Damage
         if(swordsManager.canUseStab())
         {
-            finalDamage+=(swordsManager.getStabDamage() * mmoPlayer.getAttackStrength());
+            finalDamage+=(swordsManager.getStabDamage());
         }
 
         if (swordsManager.canUseSerratedStrike()) {
             swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }
 
-        if(canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
+        if(canUseLimitBreak(mmoPlayer, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
         {
-            finalDamage+=(getLimitBreakDamage(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK) * mmoPlayer.getAttackStrength());
+            finalDamage+=(getLimitBreakDamage(mmoPlayer, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK));
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mmoPlayer, target, PrimarySkillType.SWORDS);
 
-        printFinalDamageDebug(player, event, mcMMOPlayer);
+        printFinalDamageDebug(player, event, mmoPlayer);
     }
 
     public static void processTridentCombat(LivingEntity target, Player player, EntityDamageByEntityEvent entityDamageByEntityEvent) {
@@ -190,18 +190,18 @@ public final class CombatUtils {
         }
 
         if (axesManager.canCriticalHit(target)) {
-            finalDamage+=(axesManager.criticalHit(target, finalDamage) * mmoPlayer.getAttackStrength());
+            finalDamage+=(axesManager.criticalHit(target, finalDamage));
         }
 
-        if(canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
+        if(canUseLimitBreak(mmoPlayer, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
         {
-            finalDamage+=(getLimitBreakDamage(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK) * mmoPlayer.getAttackStrength());
+            finalDamage+=(getLimitBreakDamage(mmoPlayer, target, SubSkillType.AXES_AXES_LIMIT_BREAK));
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mmoPlayer, target, PrimarySkillType.AXES);
 
-        printFinalDamageDebug(player, event, mcMMOPlayer);
+        printFinalDamageDebug(player, event, mmoPlayer);
     }
 
     private static void processUnarmedCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
@@ -226,20 +226,20 @@ public final class CombatUtils {
         }
 
         if (unarmedManager.canUseSteelArm()) {
-            finalDamage+=(unarmedManager.calculateSteelArmStyleDamage() * mmoPlayer.getAttackStrength());
+            finalDamage+=(unarmedManager.calculateSteelArmStyleDamage());
         }
 
         if (unarmedManager.canUseBerserk()) {
-            finalDamage+=(unarmedManager.berserkDamage(finalDamage) * mmoPlayer.getAttackStrength());
+            finalDamage+=(unarmedManager.berserkDamage(finalDamage));
         }
 
         if (unarmedManager.canDisarm(target)) {
             unarmedManager.disarmCheck((Player) target);
         }
 
-        if(canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
+        if(canUseLimitBreak(mmoPlayer, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
         {
-            finalDamage+=(getLimitBreakDamage(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK) * mmoPlayer.getAttackStrength());
+            finalDamage+=(getLimitBreakDamage(mmoPlayer, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK));
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -309,16 +309,16 @@ public final class CombatUtils {
             archeryManager.retrieveArrows(target, arrow);
         }
 
-        if(canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
+        if(canUseLimitBreak(mmoPlayer, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(mmoPlayer, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
 
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
-//        double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
+        double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
 
-//        if(arrow.hasMetadata(mcMMO.bowForceKey))
-//            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
+        if(arrow.hasMetadata(mcMMO.bowForceKey))
+            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
 
@@ -357,9 +357,9 @@ public final class CombatUtils {
             }
         }
 
-        if(canUseLimitBreak(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK))
+        if(canUseLimitBreak(mmoPlayer, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(mmoPlayer, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK);
         }
 
         double distanceMultiplier = crossbowManager.distanceXpBonusMultiplier(target, arrow);
@@ -558,7 +558,7 @@ public final class CombatUtils {
      * @param subSkillType the specific limit break skill for calculations
      * @return the RAW damage bonus from Limit Break which is applied before reductions
      */
-    public static int getLimitBreakDamage(@NotNull Player attacker, @NotNull LivingEntity defender, @NotNull SubSkillType subSkillType) {
+    public static int getLimitBreakDamage(@NotNull McMMOPlayer attacker, @NotNull LivingEntity defender, @NotNull SubSkillType subSkillType) {
         if(defender instanceof Player) {
             Player playerDefender = (Player) defender;
             return getLimitBreakDamageAgainstQuality(attacker, subSkillType, getArmorQualityLevel(playerDefender));
@@ -575,7 +575,7 @@ public final class CombatUtils {
      * @param armorQualityLevel Armor quality level
      * @return the RAW damage boost after its been mutated by armor quality
      */
-    public static int getLimitBreakDamageAgainstQuality(@NotNull Player attacker, @NotNull SubSkillType subSkillType, int armorQualityLevel) {
+    public static int getLimitBreakDamageAgainstQuality(@NotNull McMMOPlayer attacker, @NotNull SubSkillType subSkillType, int armorQualityLevel) {
         int rawDamageBoost = RankUtils.getRank(attacker, subSkillType);
 
         if(armorQualityLevel <= 4) {
@@ -616,14 +616,14 @@ public final class CombatUtils {
     }
 
     /**
-     * Checks if player has access to their weapons limit break
-     * @param player target entity
-     * @return true if the player has access to the limit break
+     * Checks if mmoPlayer has access to their weapons limit break
+     * @param mmoPlayer target entity
+     * @return true if the mmoPlayer has access to the limit break
      */
-    public static boolean canUseLimitBreak(@NotNull Player player, LivingEntity target, @NotNull SubSkillType subSkillType) {
+    public static boolean canUseLimitBreak(@NotNull McMMOPlayer mmoPlayer, LivingEntity target, @NotNull SubSkillType subSkillType) {
         if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
-            return RankUtils.hasUnlockedSubskill(player, subSkillType)
-                    && Permissions.isSubSkillEnabled(player, subSkillType);
+            return RankUtils.hasUnlockedSubskill(mmoPlayer, subSkillType)
+                    && Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType);
         } else {
             return false;
         }

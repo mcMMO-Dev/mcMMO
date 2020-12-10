@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.archery;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -64,14 +65,13 @@ public class Archery {
         }
     }
 
-    public static double getSkillShotBonusDamage(Player player, double oldDamage)
-    {
-        double damageBonusPercent = getDamageBonusPercent(player);
+    public static double getSkillShotBonusDamage(@NotNull McMMOPlayer mmoPlayer, double oldDamage) {
+        double damageBonusPercent = getDamageBonusPercent(mmoPlayer);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
         return Math.min(newDamage, (oldDamage + Archery.skillShotMaxBonusDamage));
     }
 
-    public static double getDamageBonusPercent(Player player) {
-        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * (AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D);
+    public static double getDamageBonusPercent(@NotNull McMMOPlayer mmoPlayer) {
+        return ((RankUtils.getRank(mmoPlayer, SubSkillType.ARCHERY_SKILL_SHOT)) * (AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D);
     }
 }

@@ -37,7 +37,7 @@ public class AcrobaticsCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
         canDodge = canUseSubskill(player, SubSkillType.ACROBATICS_DODGE);
         canRoll = canUseSubskill(player, SubSkillType.ACROBATICS_ROLL);
     }

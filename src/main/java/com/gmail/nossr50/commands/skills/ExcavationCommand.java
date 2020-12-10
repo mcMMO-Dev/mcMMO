@@ -37,7 +37,7 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
         canGigaDrill = Permissions.gigaDrillBreaker(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
         canTreasureHunt = canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }

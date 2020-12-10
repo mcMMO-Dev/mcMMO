@@ -82,7 +82,7 @@ public abstract class SkillCommand implements TabExecutor {
             permissionsCheck(mmoPlayer);
             dataCalculations(mmoPlayer, skillValue);
 
-            sendSkillCommandHeader(player, mmoPlayer, (int) skillValue);
+            sendSkillCommandHeader(mmoPlayer, (int) skillValue);
 
             //Make JSON text components
             List<Component> subskillTextComponents = getTextComponents(mmoPlayer);
@@ -108,7 +108,7 @@ public abstract class SkillCommand implements TabExecutor {
             //Link Header
             if (Config.getInstance().getUrlLinksEnabled()) {
                 player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
-                TextComponentFactory.sendPlayerUrlHeader(player);
+                TextComponentFactory.sendPlayerUrlHeader(mmoPlayer);
             }
 
 
@@ -135,13 +135,13 @@ public abstract class SkillCommand implements TabExecutor {
         mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
     }
 
-    private void sendSkillCommandHeader(Player player, McMMOPlayer mmoPlayer, int skillValue) {
+    private void sendSkillCommandHeader(@NotNull McMMOPlayer mmoPlayer, int skillValue) {
         ChatColor hd1 = ChatColor.DARK_AQUA;
         ChatColor c1 = ChatColor.GOLD;
         ChatColor c2 = ChatColor.RED;
 
 
-        player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
+        mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
         if(!skill.isChildSkill())
         {
@@ -150,10 +150,10 @@ public abstract class SkillCommand implements TabExecutor {
              */
 
             //XP GAIN METHOD
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
             //LEVEL
-            player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mmoPlayer.getExperienceManager().getSkillXpValue(skill), mmoPlayer.getExperienceManager().getXpToLevel(skill)));
+            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mmoPlayer.getExperienceManager().getSkillXpValue(skill), mmoPlayer.getExperienceManager().getXpToLevel(skill)));
 
         } else {
             /*
@@ -181,31 +181,11 @@ public abstract class SkillCommand implements TabExecutor {
             }
 
             //XP GAIN METHOD
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
+            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
-            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
-            //LEVEL
-            //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
+            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
 
         }
-        /*
-        if (!skill.isChildSkill()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mmoPlayer.getSkillXpLevel(skill), mmoPlayer.getXpToLevel(skill)));
-        } else {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
-            player.sendMessage(LocaleLoader.getString("Effects.Child", skillValue));
-
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
-            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
-
-            for (PrimarySkillType parent : parents) {
-                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mmoPlayer.getSkillLevel(parent), mmoPlayer.getSkillXpLevel(parent), mmoPlayer.getXpToLevel(parent)));
-            }
-        }
-        */
     }
 
     @Override

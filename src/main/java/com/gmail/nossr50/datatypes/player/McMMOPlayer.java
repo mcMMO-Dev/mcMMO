@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class McMMOPlayer extends PlayerProfile implements Identified, Permissible {
+public class McMMOPlayer extends PlayerProfile implements Identified {
     private final @NotNull Player player;
     private final @NotNull Identity identity;
     private @Nullable Party playerPartyRef;

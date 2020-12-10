@@ -138,7 +138,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double berserkDamage(double damage) {
-        damage = ((damage * Unarmed.berserkDamageModifier) * mmoPlayer.getAttackStrength()) - damage;
+        damage = ((damage * Unarmed.berserkDamageModifier)) - damage;
 
         return damage;
     }

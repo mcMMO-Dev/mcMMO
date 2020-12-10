@@ -42,7 +42,7 @@ public class TamingCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
         canBeastLore = canUseSubskill(player, SubSkillType.TAMING_BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
         canEnvironmentallyAware = canUseSubskill(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);

@@ -75,7 +75,7 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
         canCatalysis = canUseSubskill(player, SubSkillType.ALCHEMY_CATALYSIS);
         canConcoctions = canUseSubskill(player, SubSkillType.ALCHEMY_CONCOCTIONS);
     }

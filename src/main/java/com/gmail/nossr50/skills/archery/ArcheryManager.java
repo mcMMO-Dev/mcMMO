@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager(McMMOPlayer mmoPlayer) {
@@ -26,21 +27,21 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canDaze(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_DAZE))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.ARCHERY_DAZE))
             return false;
 
         return target instanceof Player && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_DAZE);
     }
 
     public boolean canSkillShot() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.ARCHERY_SKILL_SHOT))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
     }
 
     public boolean canRetrieveArrows() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_ARROW_RETRIEVAL))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.ARCHERY_ARROW_RETRIEVAL))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_ARROW_RETRIEVAL);
@@ -52,7 +53,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      * @param arrow The {@link Entity} who shot the arrow
      */
-    public double distanceXpBonusMultiplier(LivingEntity target, Entity arrow) {
+    public double distanceXpBonusMultiplier(@NotNull LivingEntity target, @NotNull Entity arrow) {
         //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
         if(!arrow.hasMetadata(mcMMO.arrowDistanceKey))
             return arrow.getLocation().distance(target.getLocation());
@@ -76,7 +77,7 @@ public class ArcheryManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} damaged by the arrow
      */
-    public void retrieveArrows(LivingEntity target, Projectile projectile) {
+    public void retrieveArrows(@NotNull LivingEntity target, @NotNull Projectile projectile) {
         if(projectile.hasMetadata(mcMMO.trackedArrow)) {
             Archery.incrementTrackerValue(target);
             projectile.removeMetadata(mcMMO.trackedArrow, mcMMO.p); //Only 1 entity per projectile
@@ -88,7 +89,7 @@ public class ArcheryManager extends SkillManager {
      *
      * @param defender The {@link Player} being affected by the ability
      */
-    public double daze(Player defender) {
+    public double daze(@NotNull Player defender) {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_DAZE, getPlayer())) {
             return 0;
         }
@@ -121,6 +122,6 @@ public class ArcheryManager extends SkillManager {
             return oldDamage;
         }
 
-        return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
+        return Archery.getSkillShotBonusDamage(mmoPlayer, oldDamage);
     }
 }

@@ -76,7 +76,7 @@ public class RepairCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
         canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
         canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
         canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);

@@ -44,19 +44,19 @@ public class AxesCommand extends SkillCommand {
 
         // AXE MASTERY
         if (canAxeMastery) {
-            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
+            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(mmoPlayer.getPlayer());
         }
         
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.AXES_CRITICAL_STRIKES);
+            String[] criticalHitStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.AXES_CRITICAL_STRIKES);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
         
         // SKULL SPLITTER
         if (canSkullSplitter) {
-            String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] skullSplitterStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
             skullSplitterLength = skullSplitterStrings[0];
             skullSplitterLengthEndurance = skullSplitterStrings[1];
         }
@@ -72,7 +72,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canImpact) {
@@ -97,19 +97,19 @@ public class AxesCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
+        if(canUseSubskill(mmoPlayer, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(mmoPlayer, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
         }
 
         return messages;
     }
 
     @Override
-    protected List<Component> getTextComponents(Player player) {
+    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.AXES);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.AXES);
 
         return textComponents;
     }

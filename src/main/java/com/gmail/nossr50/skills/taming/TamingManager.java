@@ -45,7 +45,7 @@ public class TamingManager extends SkillManager {
 
     private HashMap<CallOfTheWildType, List<TrackedTamingEntity>> playerSummonedEntities;
 
-    public TamingManager(McMMOPlayer mmoPlayer) {
+    public TamingManager(@NotNull McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.TAMING);
         init();
     }
@@ -100,44 +100,44 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseThickFur() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_THICK_FUR)
+        return RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_THICK_FUR)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_THICK_FUR);
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
+        return RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
     }
 
     public boolean canUseShockProof() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHOCK_PROOF)
+        return RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_SHOCK_PROOF)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_SHOCK_PROOF);
     }
 
     public boolean canUseHolyHound() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
+        return RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_HOLY_HOUND);
     }
 
     public boolean canUseFastFoodService() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_FAST_FOOD_SERVICE)
+        return RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_FAST_FOOD_SERVICE)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_FAST_FOOD_SERVICE);
     }
 
     public boolean canUseSharpenedClaws() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS)
+        return RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_SHARPENED_CLAWS)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS);
     }
 
     public boolean canUseGore() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_GORE))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_GORE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_GORE);
     }
 
     public boolean canUseBeastLore() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_BEAST_LORE))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_BEAST_LORE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_BEAST_LORE);
@@ -206,7 +206,7 @@ public class TamingManager extends SkillManager {
      * Summon an ocelot to your side.
      */
     public void summonOcelot() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_CALL_OF_THE_WILD))
             return;
 
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.OCELOT)) {
@@ -220,7 +220,7 @@ public class TamingManager extends SkillManager {
      * Summon a wolf to your side.
      */
     public void summonWolf() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_CALL_OF_THE_WILD))
             return;
 
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.WOLF)) {
@@ -234,7 +234,7 @@ public class TamingManager extends SkillManager {
      * Summon a horse to your side.
      */
     public void summonHorse() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_CALL_OF_THE_WILD))
             return;
 
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.HORSE)) {
@@ -249,7 +249,7 @@ public class TamingManager extends SkillManager {
      *
      * @param target The entity to examine
      */
-    public void beastLore(LivingEntity target) {
+    public void beastLore(@NotNull LivingEntity target) {
         Player player = getPlayer();
         Tameable beast = (Tameable) target;
 
@@ -273,7 +273,7 @@ public class TamingManager extends SkillManager {
         player.sendMessage(message);
     }
 
-    public void processEnvironmentallyAware(Wolf wolf, double damage) {
+    public void processEnvironmentallyAware(@NotNull Wolf wolf, double damage) {
         if (damage > wolf.getHealth()) {
             return;
         }
@@ -284,8 +284,8 @@ public class TamingManager extends SkillManager {
         NotificationManager.sendPlayerInformation(owner, NotificationType.SUBSKILL_MESSAGE, "Taming.Listener.Wolf");
     }
 
-    public void pummel(LivingEntity target, Wolf wolf) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
+    public void pummel(@NotNull LivingEntity target, @NotNull Wolf wolf) {
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.TAMING_PUMMEL))
             return;
 
         if(!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
@@ -414,7 +414,7 @@ public class TamingManager extends SkillManager {
         }
     }
 
-    private void spawnWolf(Location spawnLocation) {
+    private void spawnWolf(@NotNull Location spawnLocation) {
         LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, EntityType.WOLF);
 
         //This is used to prevent XP gains for damaging this entity
@@ -432,7 +432,7 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(EntityType.WOLF)));
     }
 
-    private void spawnCat(Location spawnLocation, EntityType entityType) {
+    private void spawnCat(@NotNull Location spawnLocation, @NotNull EntityType entityType) {
         LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, entityType);
 
         //This is used to prevent XP gains for damaging this entity
@@ -459,7 +459,7 @@ public class TamingManager extends SkillManager {
         ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
     }
 
-    private void spawnHorse(Location spawnLocation) {
+    private void spawnHorse(@NotNull Location spawnLocation) {
         LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, EntityType.HORSE);
         applyMetaDataToCOTWEntity(callOfWildEntity);
 
@@ -485,12 +485,12 @@ public class TamingManager extends SkillManager {
         ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
     }
 
-    private void setBaseCOTWEntityProperties(LivingEntity callOfWildEntity) {
+    private void setBaseCOTWEntityProperties(@NotNull LivingEntity callOfWildEntity) {
         ((Tameable) callOfWildEntity).setOwner(getPlayer());
         callOfWildEntity.setRemoveWhenFarAway(false);
     }
 
-    private void applyMetaDataToCOTWEntity(LivingEntity summonedEntity) {
+    private void applyMetaDataToCOTWEntity(@NotNull LivingEntity summonedEntity) {
         //This helps identify the entity as being summoned by COTW
         mcMMO.getCompatibilityManager().getPersistentDataLayer().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
     }
@@ -500,7 +500,7 @@ public class TamingManager extends SkillManager {
      * @param itemStack target ItemStack
      * @return true if it is used for any COTW
      */
-    public boolean isCOTWItem(ItemStack itemStack) {
+    public boolean isCOTWItem(@NotNull ItemStack itemStack) {
         return summoningItems.containsKey(itemStack.getType());
     }
 
@@ -513,7 +513,7 @@ public class TamingManager extends SkillManager {
     }
 
     //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private void addToTracker(LivingEntity livingEntity, CallOfTheWildType callOfTheWildType) {
+    private void addToTracker(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType) {
         TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity, callOfTheWildType, this);
 
         playerSummonedEntities.get(callOfTheWildType).add(trackedEntity);
@@ -525,7 +525,7 @@ public class TamingManager extends SkillManager {
     }
 
     //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    public void removeFromTracker(TrackedTamingEntity trackedEntity) {
+    public void removeFromTracker(@NotNull TrackedTamingEntity trackedEntity) {
         playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).remove(trackedEntity);
 
         NotificationManager.sendPlayerInformationChatOnly(getPlayer(), "Taming.Summon.COTW.TimeExpired", StringUtils.getPrettyEntityTypeString(trackedEntity.getLivingEntity().getType()));
@@ -543,7 +543,7 @@ public class TamingManager extends SkillManager {
     }
 
     //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private ArrayList<TrackedTamingEntity> getValidTrackedEntities(CallOfTheWildType callOfTheWildType) {
+    private @NotNull ArrayList<TrackedTamingEntity> getValidTrackedEntities(@NotNull CallOfTheWildType callOfTheWildType) {
         ArrayList<TrackedTamingEntity> validTrackedEntities = new ArrayList<>();
 
         for(TrackedTamingEntity trackedTamingEntity : getTrackedEntities(callOfTheWildType)) {
