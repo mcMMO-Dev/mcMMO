@@ -24,7 +24,7 @@ public class SalvageCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // TODO Auto-generated method stub
 
     }

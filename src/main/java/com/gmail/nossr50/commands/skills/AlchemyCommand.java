@@ -57,7 +57,7 @@ public class AlchemyCommand extends SkillCommand {
 
 
     @Override
-    protected void dataCalculations(McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // ALCHEMY_CATALYSIS
         if (canCatalysis) {
             String[] catalysisStrings = calculateAbilityDisplayValues(mmoPlayer.getPlayer());
@@ -81,7 +81,7 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canCatalysis) {
@@ -101,7 +101,7 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     @Override
-    protected List<Component> getTextComponents(Player player) {
+    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.ALCHEMY);
