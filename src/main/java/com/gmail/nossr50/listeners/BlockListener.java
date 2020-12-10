@@ -157,6 +157,7 @@ public class BlockListener implements Listener {
 
     /**
      * Monitor blocks formed by entities (snowmen)
+     * Does not seem to monitor stuff like a falling block creating a new block
      *
      * @param event The event to watch
      */
@@ -175,6 +176,9 @@ public class BlockListener implements Listener {
         }
     }
 
+    /*
+     * Does not monitor stuff like a falling block replacing a liquid
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFormEvent(BlockFormEvent event)
     {
@@ -182,12 +186,12 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if(ExperienceConfig.getInstance().preventStoneLavaFarming())
-        {
-            if(event.getNewState().getType() != Material.OBSIDIAN
-                    && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
-            {
-                mcMMO.getPlaceStore().setTrue(event.getNewState());
+        BlockState newState = event.getNewState();
+
+        if(ExperienceConfig.getInstance().preventStoneLavaFarming()) {
+            if(newState.getType() != Material.OBSIDIAN
+                    && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, newState.getBlockData())) {
+                mcMMO.getPlaceStore().setTrue(newState);
             }
         }
     }
@@ -243,17 +247,6 @@ public class BlockListener implements Listener {
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
             mcMMO.getPlaceStore().setTrue(blockState);
         }
-
-//        /* WORLD BLACKLIST CHECK */
-//        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
-//            return;
-//        }
-//
-//        Player player = event.getPlayer();
-//
-//        if (!UserManager.hasPlayerDataKey(player)) {
-//            return;
-//        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -264,11 +257,6 @@ public class BlockListener implements Listener {
             return;
 
         BlockState blockState = event.getBlock().getState();
-
-//        if (!BlockUtils.shouldBeWatched(blockState)) {
-//            return;
-//        }
-
         mcMMO.getPlaceStore().setFalse(blockState);
     }
 

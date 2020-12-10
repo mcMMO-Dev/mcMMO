@@ -92,7 +92,7 @@ public class FishingCommand extends SkillCommand {
         // MASTER ANGLER
         if (canMasterAngler) {
             maMinWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMinWaitReduction(RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER), false));
-            maMaxWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMaxWaitReduction(RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER), false));
+            maMaxWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMaxWaitReduction(RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER), false, 0));
         }
     }
 

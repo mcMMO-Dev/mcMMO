@@ -31,6 +31,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -147,7 +148,7 @@ public class TamingManager extends SkillManager {
      *
      * @param entity The LivingEntity to award XP for
      */
-    public void awardTamingXP(LivingEntity entity) {
+    public void awardTamingXP(@NotNull LivingEntity entity) {
         applyXpGain(ExperienceConfig.getInstance().getTamingXP(entity.getType()), XPGainReason.PVE);
     }
 
@@ -157,7 +158,7 @@ public class TamingManager extends SkillManager {
      * @param wolf The wolf using the ability
      * @param damage The damage being absorbed by the wolf
      */
-    public void fastFoodService(Wolf wolf, double damage) {
+    public void fastFoodService(@NotNull Wolf wolf, double damage) {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
@@ -177,20 +178,23 @@ public class TamingManager extends SkillManager {
      * @param target The LivingEntity to apply Gore on
      * @param damage The initial damage
      */
-    public double gore(LivingEntity target, double damage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
-            return 0;
+    public double gore(@NotNull LivingEntity target, double damage) {
+        if(BleedTimerTask.isBleedOperationAllowed()) {
+            if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
+                return 0;
+            }
+
+            BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
+
+            if (target instanceof Player) {
+                NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
+            }
+
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
+
+            damage = (damage * Taming.goreModifier) - damage;
         }
 
-        BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
-
-        if (target instanceof Player) {
-            NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
-        }
-
-        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
-
-        damage = (damage * Taming.goreModifier) - damage;
         return damage;
     }
 

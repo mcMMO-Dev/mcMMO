@@ -28,6 +28,8 @@ import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.PoweredMinecart;
 import org.bukkit.event.Event;
@@ -380,7 +382,21 @@ public class PlayerListener implements Listener {
         switch (event.getState()) {
             case FISHING:
                 if (fishingManager.canMasterAngler()) {
-                    fishingManager.masterAngler(event.getHook());
+                    int lureLevel = 0;
+                    ItemStack inHand = player.getInventory().getItemInMainHand();
+
+                    //Grab lure level
+                    if(inHand != null && inHand.getType().getKey().getKey().equalsIgnoreCase("fishing_rod")) {
+                        if(inHand.getItemMeta().hasEnchants()) {
+                            for(Enchantment enchantment : inHand.getItemMeta().getEnchants().keySet()) {
+                                if(enchantment.toString().toLowerCase().contains("lure")) {
+                                    lureLevel = inHand.getEnchantmentLevel(enchantment);
+                                }
+                            }
+                        }
+                    }
+
+                    fishingManager.masterAngler(event.getHook(), lureLevel);
                     fishingManager.setFishingTarget();
                 }
                 return;

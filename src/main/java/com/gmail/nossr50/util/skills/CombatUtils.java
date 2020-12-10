@@ -541,7 +541,7 @@ public final class CombatUtils {
      */
     public static void fixNames(@NotNull LivingEntity entity)
     {
-        List<MetadataValue> metadataValue = entity.getMetadata("mcMMO_oldName");
+        List<MetadataValue> metadataValue = entity.getMetadata(TransientMetadataTools.OLD_NAME_METAKEY);
 
         if(metadataValue.size() <= 0)
             return;
@@ -693,7 +693,7 @@ public final class CombatUtils {
         return processingNoInvulnDamage;
     }
 
-    public static void dealNoInvulnerabilityTickDamage(@NotNull LivingEntity target, double damage, Entity attacker) {
+    public static void dealNoInvulnerabilityTickDamage(@NotNull LivingEntity target, double damage, @Nullable Entity attacker) {
         if (target.isDead()) {
             return;
         }

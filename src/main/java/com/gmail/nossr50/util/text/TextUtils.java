@@ -6,6 +6,8 @@ import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
@@ -107,7 +109,7 @@ public class TextUtils {
         return LegacyComponentSerializer.legacySection().deserialize(rawString);
     }
 
-    public static @NotNull TextComponent colorizeText(String rawtext) {
+    public static @NotNull TextComponent colorizeText(@NotNull String rawtext) {
         if(customLegacySerializer == null) {
             customLegacySerializer = getSerializer();
         }
@@ -117,7 +119,20 @@ public class TextUtils {
 
     @NotNull
     private static LegacyComponentSerializer getSerializer() {
-        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character('&').hexCharacter('#').build();
+        return LegacyComponentSerializer.builder()
+                .hexColors()
+                .useUnusualXRepeatedCharacterHexFormat()
+                .character('&')
+                .hexCharacter('#')
+                .extractUrls(Style.style()
+                        .decorate(getURLStyle())
+                        .color(NamedTextColor.DARK_AQUA)
+                        .build())
+                .build();
+    }
+
+    public static @NotNull TextDecoration[] getURLStyle() {
+        return new TextDecoration[]{TextDecoration.UNDERLINED};
     }
 
     public static @NotNull String sanitizeForSerializer(@NotNull String string) {

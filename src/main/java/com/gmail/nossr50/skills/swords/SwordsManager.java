@@ -20,6 +20,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -59,26 +60,28 @@ public class SwordsManager extends SkillManager {
      *
      * @param target The defending entity
      */
-    public void ruptureCheck(LivingEntity target) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mmoPlayer.getAttackStrength())) {
+    public void ruptureCheck(@NotNull LivingEntity target) throws IllegalStateException {
+        if(BleedTimerTask.isBleedOperationAllowed()) {
+            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mmoPlayer.getAttackStrength())) {
 
-            if (target instanceof Player) {
-                Player defender = (Player) target;
+                if (target instanceof Player) {
+                    Player defender = (Player) target;
 
-                //Don't start or add to a bleed if they are blocking
-                if(defender.isBlocking())
-                    return;
+                    //Don't start or add to a bleed if they are blocking
+                    if(defender.isBlocking())
+                        return;
 
-                if (NotificationManager.doesPlayerUseNotifications(defender)) {
-                    if(!BleedTimerTask.isBleeding(defender))
-                        NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
+                    if (NotificationManager.doesPlayerUseNotifications(defender)) {
+                        if(!BleedTimerTask.isBleeding(defender))
+                            NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
+                    }
                 }
-            }
 
-            BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
+                BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
 
-            if (mmoPlayer.hasSkillChatNotifications()) {
-                NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+                if (mmoPlayer.hasSkillChatNotifications()) {
+                    NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+                }
             }
         }
     }

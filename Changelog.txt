@@ -91,6 +91,28 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+Version 2.1.160
+    Fixed another 9+ year old exploit
+    Silenced a harmless "error" related to Rupture/Bleed often produced when using mcMMO and crazy enchantments together
+
+Version 2.1.159
+    Fixed a memory leak involving renamed mobs
+    Updated Adventure library (used in our chat code)
+
+Version 2.1.158
+    Fixed a bug where Lure level 4 and above would break fishing with the new Master Angler
+    URLs in party/admin chat work again (use https:// in front to make links clickable)
+    Updated nl locale (thanks xl3ehindTim)
+    * Added Crossbow to string repairables (Thanks Momshroom)
+    * Added Shield to wood repairables, with oak planks as material (Thanks Momshroom)
+    * Added Elytra and Trident to Other repairables, using phantom membrane and prismarine crystals respectively. (Thanks Momshroom)
+
+    NOTES:
+    * You'll need to update repair.vanilla.yml yourself or delete the file and regenerate it (lazy easy way).
+    Links in party/admin chat might not be clickable without https:// added in front of the url
+    Added some stuff to Repair, a rework to Repair is coming in the future, this stuff will work for now as a placeholder.
+    Master Angler will emulate the effects of Lure if the level is higher than 3 instead of attempting to stack with it to avoid a vanilla Minecraft bug where fish are never caught
+
 Version 2.1.157
     Fixed a NPE that prevented mctop (Leaderboards) from working
 
