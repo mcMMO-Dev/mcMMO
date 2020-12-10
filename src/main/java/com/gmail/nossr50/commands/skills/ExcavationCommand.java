@@ -43,7 +43,7 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         ExcavationManager excavationManager = mmoPlayer.getExcavationManager();
@@ -67,7 +67,7 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.EXCAVATION);

@@ -67,7 +67,7 @@ public abstract class SkillCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            Player player = (Player) sender;
+            Player player = mmoPlayer.getPlayer();
 
             boolean isLucky = Permissions.lucky(player, skill);
             boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
@@ -79,7 +79,7 @@ public abstract class SkillCommand implements TabExecutor {
                     player.sendMessage("");
                 }
 
-            permissionsCheck(player);
+            permissionsCheck(mmoPlayer);
             dataCalculations(mmoPlayer, skillValue);
 
             sendSkillCommandHeader(player, mmoPlayer, (int) skillValue);
@@ -209,7 +209,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
             return ImmutableList.of("?");
         }
@@ -220,11 +220,11 @@ public abstract class SkillCommand implements TabExecutor {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
-    protected String[] getAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkill) {
+    protected @NotNull String[] getAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkill) {
         return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, mmoPlayer.getPlayer(), subSkill);
     }
 
-    protected String[] calculateLengthDisplayValues(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected @NotNull String[] calculateLengthDisplayValues(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         int maxLength = skill.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
@@ -248,12 +248,12 @@ public abstract class SkillCommand implements TabExecutor {
         return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
     }
 
-    protected String getStatMessage(SubSkillType subSkillType, String... vars)
+    protected @NotNull String getStatMessage(SubSkillType subSkillType, String... vars)
     {
         return getStatMessage(false, false, subSkillType, vars);
     }
 
-    protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars)
+    protected @NotNull String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars)
     {
         String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
         String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
@@ -277,13 +277,13 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected abstract void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue);
 
-    protected abstract void permissionsCheck(@NotNull Player player);
+    protected abstract void permissionsCheck(@NotNull McMMOPlayer mmoPlayer);
 
     //protected abstract List<String> effectsDisplay();
 
-    protected abstract List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky);
+    protected abstract @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky);
 
-    protected abstract List<Component> getTextComponents(@NotNull McMMOPlayer player);
+    protected abstract @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer player);
 
     /**
      * Checks if a player can use a skill

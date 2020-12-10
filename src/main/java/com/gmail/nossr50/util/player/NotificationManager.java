@@ -25,6 +25,7 @@ import org.bukkit.Server;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class NotificationManager {
     /**
@@ -34,9 +35,11 @@ public class NotificationManager {
      * @param notificationType notifications defined type
      * @param key the locale key for the notifications defined message
      */
-    public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
+    public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key)
     {
-        if(mcMMO.getUserManager().queryPlayer(player) == null || !mcMMO.getUserManager().queryPlayer(player).hasSkillChatNotifications())
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
 
         McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
@@ -48,40 +51,47 @@ public class NotificationManager {
     }
 
 
-    public static boolean doesPlayerUseNotifications(Player player)
+    public static boolean doesPlayerUseNotifications(@NotNull Player player)
     {
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null)
             return false;
         else
-            return mcMMO.getUserManager().queryPlayer(player).hasSkillChatNotifications();
+            return mmoPlayer.hasSkillChatNotifications();
     }
 
     /**
      * Sends players notifications from mcMMO
      * This does this by sending out an event so other plugins can cancel it
      * This event in particular is provided with a source player, and players near the source player are sent the information
+     *
      * @param targetPlayer the recipient player for this message
      * @param notificationType type of notification
      * @param key Locale Key for the string to use with this event
      * @param values values to be injected into the locale string
      */
-    public static void sendNearbyPlayersInformation(Player targetPlayer, NotificationType notificationType, String key, String... values)
+    public static void sendNearbyPlayersInformation(@NotNull Player targetPlayer, @NotNull NotificationType notificationType, @NotNull String key, String... values)
     {
         sendPlayerInformation(targetPlayer, notificationType, key, values);
     }
 
-    public static void sendPlayerInformationChatOnly(Player player, String key, String... values)
+    public static void sendPlayerInformationChatOnly(@NotNull Player player, @NotNull String key, String... values)
     {
-        if(mcMMO.getUserManager().queryPlayer(player) == null || !mcMMO.getUserManager().queryPlayer(player).hasSkillChatNotifications())
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
         player.sendMessage(preColoredString);
     }
 
-    public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values)
+    public static void sendPlayerInformationChatOnlyPrefixed(@NotNull Player player, @NotNull String key, String... values)
     {
-        if(mcMMO.getUserManager().queryPlayer(player) == null || !mcMMO.getUserManager().queryPlayer(player).hasSkillChatNotifications())
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -89,7 +99,7 @@ public class NotificationManager {
         player.sendMessage(prefixFormattedMessage);
     }
 
-    public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
+    public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key, String... values)
     {
         if(mcMMO.getUserManager().queryPlayer(player) == null || !mcMMO.getUserManager().queryPlayer(player).hasSkillChatNotifications())
             return;
@@ -102,7 +112,7 @@ public class NotificationManager {
         sendNotification(player, customEvent);
     }
 
-    private static void sendNotification(Player player, McMMOPlayerNotificationEvent customEvent) {
+    private static void sendNotification(@NotNull Player player, @NotNull McMMOPlayerNotificationEvent customEvent) {
         if (customEvent.isCancelled())
             return;
 
@@ -152,7 +162,7 @@ public class NotificationManager {
         sendNotification(mmoPlayer.getPlayer(), customEvent);
     }
 
-    public static void broadcastTitle(Server server, String title, String subtitle, int i1, int i2, int i3)
+    public static void broadcastTitle(@NotNull Server server, @NotNull String title, @NotNull String subtitle, int i1, int i2, int i3)
     {
         for(Player player : server.getOnlinePlayers())
         {
@@ -160,13 +170,13 @@ public class NotificationManager {
         }
     }
 
-    public static void sendPlayerUnlockNotification(McMMOPlayer mmoPlayer, SubSkillType subSkillType)
+    public static void sendPlayerUnlockNotification(@NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         if(!mmoPlayer.hasSkillChatNotifications())
             return;
 
         //CHAT MESSAGE
-        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
+        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer, subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
@@ -184,7 +194,7 @@ public class NotificationManager {
      * Admins are currently players with either Operator status or Admin Chat permission
      * @param msg message fetched from locale
      */
-    private static void sendAdminNotification(String msg) {
+    private static void sendAdminNotification(@NotNull String msg) {
         //If its not enabled exit
         if(!Config.getInstance().adminNotifications())
             return;
@@ -206,7 +216,7 @@ public class NotificationManager {
      * @param commandSender target command sender
      * @param msg message fetched from locale
      */
-    private static void sendAdminCommandConfirmation(CommandSender commandSender, String msg) {
+    private static void sendAdminCommandConfirmation(@NotNull CommandSender commandSender, @NotNull String msg) {
         commandSender.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Self", msg));
     }
 
@@ -215,7 +225,7 @@ public class NotificationManager {
      * @param commandSender the command user
      * @param sensitiveCommandType type of command issued
      */
-    public static void processSensitiveCommandNotification(CommandSender commandSender, SensitiveCommandType sensitiveCommandType, String... args) {
+    public static void processSensitiveCommandNotification(@NotNull CommandSender commandSender, @NotNull SensitiveCommandType sensitiveCommandType, String... args) {
         /*
          * Determine the 'identity' of the one who executed the command to pass as a parameters
          */
@@ -247,7 +257,7 @@ public class NotificationManager {
      * @param existingArray the existing array to be copied to the new array at position [0]+1 relative to their original index
      * @return the new array combining itemToAdd at the start and existing array elements following while retaining their order
      */
-    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
+    public static @NotNull String[] addItemToFirstPositionOfArray(@NotNull String itemToAdd, @NotNull String... existingArray) {
         String[] newArray = new String[existingArray.length + 1];
         newArray[0] = itemToAdd;
 

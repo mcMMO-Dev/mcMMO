@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -327,7 +328,7 @@ public class RandomChanceUtil
         return displayValues;
     }
 
-    public static String[] calculateAbilityDisplayValuesStatic(Player player, PrimarySkillType primarySkillType, double chance) {
+    public static String[] calculateAbilityDisplayValuesStatic(@NotNull McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, double chance) {
         RandomChanceStatic rcs = new RandomChanceStatic(chance, false);
         double successChance = getRandomChanceExecutionChance(rcs);
 
@@ -336,7 +337,7 @@ public class RandomChanceUtil
 
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(player, primarySkillType);
+        boolean isLucky = Permissions.lucky(mmoPlayer.getPlayer(), primarySkillType);
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
         displayValues[1] = isLucky ? percent.format(Math.min(successChance_lucky, 100.0D) / 100.0D) : null;

@@ -3,6 +3,9 @@ Version 2.2.000
     Parts of the API have been migrated to mcMMO-API
     (API) mcMMO makes use of jmal (Java Minecraft Abstraction Library) for some abstraction now
 
+    Codebase Stuff
+        Many places that passed type Player now passes type McMMOPlayer instead
+
     New Skill - Tridents
     New Skill - Crossbows
 
