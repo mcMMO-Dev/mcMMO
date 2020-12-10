@@ -1,3 +1,8 @@
+Version 2.1.161
+    Fixed a bug where a bunch of text from mcMMO was never being sent and or being sent as blank messages
+
+    NOTES:
+    Adventure (the chat library we use) had an update that required shading in another new module, but there were no errors thrown without running a jvm debug flag and testing it, which is why I missed it. I also missed it because I don't read update notes very closely
 Version 2.1.160
     Fixed another 9+ year old exploit
     Silenced a harmless "error" related to Rupture/Bleed often produced when using mcMMO and crazy enchantments together
