@@ -114,6 +114,7 @@ public final class AlchemyPotionBrewer {
         }
 
         List<AlchemyPotion> inputList = new ArrayList<>();
+        ItemStack[] outputList = new ItemStack[3];
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
@@ -128,7 +129,7 @@ public final class AlchemyPotionBrewer {
             inputList.add(input);
 
             if (output != null) {
-                inventory.setItem(i, output.toItemStack(item.getAmount()).clone());
+                outputList[i] = output.toItemStack(item.getAmount()).clone();
             }
         }
 
@@ -137,6 +138,12 @@ public final class AlchemyPotionBrewer {
 
         if (event.isCancelled() || inputList.isEmpty()) {
             return;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if(outputList[i] != null) {
+                inventory.setItem(i, outputList[i]);
+            }
         }
 
         removeIngredient(inventory, player);
