@@ -115,6 +115,7 @@
                             <include>net.kyori:adventure-text-serializer-legacy</include>
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
+                            <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>co.aikar:acf-bukkit</include>
                         </includes>
                     </artifactSet>
@@ -228,6 +229,11 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-common</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
