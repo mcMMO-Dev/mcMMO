@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -9,7 +10,7 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         if (canGore) {
-            String[] goreStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.TAMING_GORE);
+            String[] goreStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.TAMING_GORE);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }
@@ -43,15 +44,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
-        canBeastLore = canUseSubskill(player, SubSkillType.TAMING_BEAST_LORE);
-        canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = canUseSubskill(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
-        canFastFood = canUseSubskill(player, SubSkillType.TAMING_FAST_FOOD_SERVICE);
-        canGore = canUseSubskill(player, SubSkillType.TAMING_GORE);
-        canSharpenedClaws = canUseSubskill(player, SubSkillType.TAMING_SHARPENED_CLAWS);
-        canShockProof = canUseSubskill(player, SubSkillType.TAMING_SHOCK_PROOF);
-        canThickFur = canUseSubskill(player, SubSkillType.TAMING_THICK_FUR);
-        canHolyHound = canUseSubskill(player, SubSkillType.TAMING_HOLY_HOUND);
+        canBeastLore = canUseSubskill(mmoPlayer, SubSkillType.TAMING_BEAST_LORE);
+        canCallWild = Permissions.callOfTheWild(mmoPlayer.getPlayer(), EntityType.HORSE) || Permissions.callOfTheWild(mmoPlayer.getPlayer(), EntityType.WOLF) || Permissions.callOfTheWild(mmoPlayer.getPlayer(), EntityType.OCELOT);
+        canEnvironmentallyAware = canUseSubskill(mmoPlayer, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
+        canFastFood = canUseSubskill(mmoPlayer, SubSkillType.TAMING_FAST_FOOD_SERVICE);
+        canGore = canUseSubskill(mmoPlayer, SubSkillType.TAMING_GORE);
+        canSharpenedClaws = canUseSubskill(mmoPlayer, SubSkillType.TAMING_SHARPENED_CLAWS);
+        canShockProof = canUseSubskill(mmoPlayer, SubSkillType.TAMING_SHOCK_PROOF);
+        canThickFur = canUseSubskill(mmoPlayer, SubSkillType.TAMING_THICK_FUR);
+        canHolyHound = canUseSubskill(mmoPlayer, SubSkillType.TAMING_HOLY_HOUND);
     }
 
     @Override
@@ -95,7 +96,7 @@ public class TamingCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, this.skill);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, this.skill);
 
         return textComponents;
     }

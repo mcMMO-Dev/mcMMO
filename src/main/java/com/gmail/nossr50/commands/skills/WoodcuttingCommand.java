@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -8,7 +9,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,29 +36,29 @@ public class WoodcuttingCommand extends SkillCommand {
     protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            setDoubleDropClassicChanceStrings(player);
+            setDoubleDropClassicChanceStrings(mmoPlayer);
         }
         
         // TREE FELLER
         if (canTreeFell) {
-            String[] treeFellerStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] treeFellerStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
             treeFellerLength = treeFellerStrings[0];
             treeFellerLengthEndurance = treeFellerStrings[1];
         }
     }
 
-    private void setDoubleDropClassicChanceStrings(Player player) {
-        String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
+    private void setDoubleDropClassicChanceStrings(McMMOPlayer mmoPlayer) {
+        String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
 
     @Override
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
-        canTreeFell = RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(player);
-        canDoubleDrop = canUseSubskill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
-        canLeafBlow = canUseSubskill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
-        canKnockOnWood = canTreeFell && canUseSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
+        canTreeFell = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(mmoPlayer.getPlayer());
+        canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
+        canLeafBlow = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_LEAF_BLOWER);
+        canKnockOnWood = canTreeFell && canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
         /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);
         canBarkSurgeon = canUseSubskill(player, SubSkillType.WOODCUTTING_BARK_SURGEON);
         canNaturesBounty = canUseSubskill(player, SubSkillType.WOODCUTTING_NATURES_BOUNTY);*/
@@ -75,7 +76,7 @@ public class WoodcuttingCommand extends SkillCommand {
         if (canKnockOnWood) {
             String lootNote;
 
-            if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+            if(RankUtils.hasReachedRank(2, mmoPlayer, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                 lootNote = LocaleLoader.getString("Woodcutting.SubSkill.KnockOnWood.Loot.Rank2");
             } else {
                 lootNote = LocaleLoader.getString("Woodcutting.SubSkill.KnockOnWood.Loot.Normal");
@@ -100,7 +101,7 @@ public class WoodcuttingCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.WOODCUTTING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.WOODCUTTING);
 
         return textComponents;
     }

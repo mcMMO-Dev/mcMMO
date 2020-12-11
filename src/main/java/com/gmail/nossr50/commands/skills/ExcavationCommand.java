@@ -9,7 +9,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ExcavationCommand extends SkillCommand {
     protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // GIGA DRILL BREAKER
         if (canGigaDrill) {
-            String[] gigaDrillStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] gigaDrillStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
             gigaDrillBreakerLength = gigaDrillStrings[0];
             gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
         }
@@ -38,8 +37,8 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
-        canGigaDrill = Permissions.gigaDrillBreaker(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
-        canTreasureHunt = canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY);
+        canGigaDrill = Permissions.gigaDrillBreaker(mmoPlayer.getPlayer()) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
+        canTreasureHunt = canUseSubskill(mmoPlayer, SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 
     @Override

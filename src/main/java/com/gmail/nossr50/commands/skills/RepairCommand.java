@@ -16,7 +16,6 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.REPAIR_SUPER_REPAIR);
+            String[] superRepairStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -77,17 +76,17 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
-        canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
-        canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
-        canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);
-        canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
-        canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
-        canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);
-        canRepairStone = Permissions.repairMaterialType(player, MaterialType.STONE);
-        canRepairString = Permissions.repairMaterialType(player, MaterialType.STRING);
-        canRepairLeather = Permissions.repairMaterialType(player, MaterialType.LEATHER);
-        canRepairWood = Permissions.repairMaterialType(player, MaterialType.WOOD);
-        arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(player));
+        canSuperRepair = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
+        canMasterRepair = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_REPAIR_MASTERY);
+        canArcaneForge = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_ARCANE_FORGING);
+        canRepairDiamond = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.DIAMOND);
+        canRepairGold = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.GOLD);
+        canRepairIron = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.IRON);
+        canRepairStone = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.STONE);
+        canRepairString = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.STRING);
+        canRepairLeather = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.LEATHER);
+        canRepairWood = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.WOOD);
+        arcaneBypass = (Permissions.arcaneBypass(mmoPlayer.getPlayer()) || Permissions.hasRepairEnchantBypassPerk(mmoPlayer.getPlayer()));
     }
 
     @Override
@@ -95,7 +94,7 @@ public class RepairCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {
-            RepairManager repairManager = mcMMO.getUserManager().queryMcMMOPlayer(player).getRepairManager();
+            RepairManager repairManager = mmoPlayer.getRepairManager();
 
             messages.add(getStatMessage(false, true,
                     SubSkillType.REPAIR_ARCANE_FORGING,

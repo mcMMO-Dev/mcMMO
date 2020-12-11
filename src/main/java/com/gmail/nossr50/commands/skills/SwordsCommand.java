@@ -11,7 +11,6 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class SwordsCommand extends SkillCommand {
     protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_COUNTER_ATTACK);
+            String[] counterStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.SWORDS_COUNTER_ATTACK);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -47,14 +46,14 @@ public class SwordsCommand extends SkillCommand {
         if (canBleed) {
             bleedLength = mmoPlayer.getSwordsManager().getRuptureBleedTicks();
 
-            String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_RUPTURE);
+            String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
         
         // SERRATED STRIKES
         if (canSerratedStrike) {
-            String[] serratedStrikesStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] serratedStrikesStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
             serratedStrikesLength = serratedStrikesStrings[0];
             serratedStrikesLengthEndurance = serratedStrikesStrings[1];
         }
@@ -64,11 +63,11 @@ public class SwordsCommand extends SkillCommand {
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
         canBleed = canUseSubskill(mmoPlayer, SubSkillType.SWORDS_RUPTURE);
         canCounter = canUseSubskill(mmoPlayer, SubSkillType.SWORDS_COUNTER_ATTACK);
-        canSerratedStrike = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
+        canSerratedStrike = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(mmoPlayer.getPlayer());
     }
 
     @Override
-    protected List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         int ruptureTicks = mmoPlayer.getSwordsManager().getRuptureBleedTicks();
@@ -104,7 +103,7 @@ public class SwordsCommand extends SkillCommand {
 
         if(canUseSubskill(mmoPlayer, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK, 1000))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(mmoPlayer, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK, 1000))));
         }
 
         return messages;
@@ -114,7 +113,7 @@ public class SwordsCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.SWORDS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SWORDS);
 
         return textComponents;
     }

@@ -54,14 +54,14 @@ public class MiningCommand extends SkillCommand {
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
         
         // SUPER BREAKER
         if (canSuperBreaker) {
-            String[] superBreakerStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] superBreakerStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
             superBreakerLength = superBreakerStrings[0];
             superBreakerLengthEndurance = superBreakerStrings[1];
         }
@@ -69,11 +69,11 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
-        canBiggerBombs = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
-        canBlast = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
-        canDemoExpert = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
+        canBiggerBombs = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(mmoPlayer.getPlayer());
+        canBlast = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(mmoPlayer.getPlayer());
+        canDemoExpert = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(mmoPlayer.getPlayer());
         canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.MINING_DOUBLE_DROPS);
-        canSuperBreaker = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
+        canSuperBreaker = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(mmoPlayer.getPlayer());
     }
 
     @Override

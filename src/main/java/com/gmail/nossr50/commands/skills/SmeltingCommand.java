@@ -46,7 +46,7 @@ public class SmeltingCommand extends SkillCommand {
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -57,7 +57,7 @@ public class SmeltingCommand extends SkillCommand {
         canFuelEfficiency = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_FUEL_EFFICIENCY);
         canSecondSmelt = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
-        canUnderstandTheArt = Permissions.vanillaXpBoost(mmoPlayer.getPlayer(), skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
+        canUnderstandTheArt = Permissions.vanillaXpBoost(mmoPlayer.getPlayer(), skill) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 
     @Override

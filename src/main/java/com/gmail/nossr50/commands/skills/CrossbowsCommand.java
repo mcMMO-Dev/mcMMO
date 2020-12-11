@@ -1,11 +1,12 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.skills.crossbows.CrossbowManager;
-import com.gmail.nossr50.util.TextComponentFactory;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.util.text.TextComponentFactory;
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,9 @@ public class CrossbowsCommand extends SkillCommand {
     protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        CrossbowManager crossbowManager = mcMMO.getUserManager().getPlayer(player).getCrossbowManager();
+        CrossbowManager crossbowManager = mmoPlayer.getCrossbowManager();
 
-        if(canUseSubskill(player, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+        if(canUseSubskill(mmoPlayer, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             String additionalArrowCount = String.valueOf(crossbowManager.getSuperShotgunAdditionalArrowCount());
             messages.add(getStatMessage(SubSkillType.CROSSBOWS_SUPER_SHOTGUN, additionalArrowCount));
         }
@@ -40,10 +41,10 @@ public class CrossbowsCommand extends SkillCommand {
     }
 
     @Override
-    protected List<TextComponent> getTextComponents(Player player) {
-        List<TextComponent> textComponents = new ArrayList<>();
+    protected List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+        List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.CROSSBOWS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.CROSSBOWS);
 
         return textComponents;
     }

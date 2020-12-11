@@ -76,8 +76,8 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
-        canCatalysis = canUseSubskill(player, SubSkillType.ALCHEMY_CATALYSIS);
-        canConcoctions = canUseSubskill(player, SubSkillType.ALCHEMY_CONCOCTIONS);
+        canCatalysis = canUseSubskill(mmoPlayer, SubSkillType.ALCHEMY_CATALYSIS);
+        canConcoctions = canUseSubskill(mmoPlayer, SubSkillType.ALCHEMY_CONCOCTIONS);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class AlchemyCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.ALCHEMY);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ALCHEMY);
 
         return textComponents;
     }
