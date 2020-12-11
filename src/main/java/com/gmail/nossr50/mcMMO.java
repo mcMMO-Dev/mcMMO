@@ -57,6 +57,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -428,7 +429,7 @@ public class mcMMO extends JavaPlugin {
         return salvageableManager;
     }
 
-    public static DatabaseManager getDatabaseManager() {
+    public static @NotNull DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
 
@@ -666,7 +667,7 @@ public class mcMMO extends JavaPlugin {
         return spawnedProjectileTracker;
     }
 
-    public static UserManager getUserManager() {
+    public static @NotNull UserManager getUserManager() {
         return userManager;
     }
 

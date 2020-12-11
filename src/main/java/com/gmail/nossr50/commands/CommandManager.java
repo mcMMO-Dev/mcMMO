@@ -97,13 +97,13 @@ public class CommandManager {
     }
 
     public void validateLoadedData(@NotNull Player player) {
-        if(UserManager.getPlayer(player) == null) {
+        if(mcMMO.getUserManager().queryPlayer(player) == null) {
             throw new ConditionFailedException("Your mcMMO player data has not yet loaded!");
         }
     }
 
     public void validatePlayerParty(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer.getParty() == null) {
             throw new ConditionFailedException(LocaleLoader.getString("Commands.Party.None"));

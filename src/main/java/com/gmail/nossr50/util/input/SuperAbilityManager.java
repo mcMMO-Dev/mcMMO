@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -20,6 +21,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +37,11 @@ public class SuperAbilityManager {
     private boolean abilityActivationPermission = true;
 
     private final Map<AbilityToolType, Boolean> toolMode = new HashMap<>();
+    private final PersistentPlayerData persistentPlayerData;
 
-    public SuperAbilityManager(McMMOPlayer mmoPlayer) {
+    public SuperAbilityManager(@NotNull McMMOPlayer mmoPlayer, @NotNull PersistentPlayerData persistentPlayerData) {
         this.mmoPlayer = mmoPlayer;
+        this.persistentPlayerData = persistentPlayerData;
         this.player = mmoPlayer.getPlayer();
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
@@ -231,11 +235,15 @@ public class SuperAbilityManager {
     /**
      * Reset the mode of all abilities.
      */
-    public void resetSuperAbilities() {
+    public void disableSuperAbilities() {
         for (SuperAbilityType ability : SuperAbilityType.values()) {
             // Correctly disable and handle any special deactivate code
             new AbilityDisableTask(mmoPlayer, ability).run();
         }
+    }
+
+    public void resetCooldowns() {
+        this.persistentPlayerData.resetCooldowns();
     }
 
     /**

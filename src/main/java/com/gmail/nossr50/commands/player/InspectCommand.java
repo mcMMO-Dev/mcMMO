@@ -10,6 +10,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -25,17 +26,23 @@ public class InspectCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 1) {
             String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
 
-            // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-            if (mmoPlayer == null) {
-                PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName, false); // Temporary Profile
+            PlayerProfile playerProfile = mcMMO.getUserManager().queryPlayer(playerName);
+            Player targetPlayer = Bukkit.getPlayer(playerName);
 
-                if (!CommandUtils.isLoaded(sender, profile)) {
-                    return true;
-                }
+            if(playerProfile == null) {
+                //TODO: Localize
+                sender.sendMessage("Data was not found in the database for the given player name!");
+                return true;
+            }
 
-                if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+
+            if(targetPlayer == null) {
+                //Target is offline
+
+                if (Config.getInstance().getScoreboardsEnabled()
+                        && sender instanceof Player
+                        && Config.getInstance().getInspectUseBoard()) {
                     ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
                     if (!Config.getInstance().getInspectUseChat()) {
@@ -59,30 +66,29 @@ public class InspectCommand implements TabExecutor {
                 for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
-
             } else {
-                Player target = mmoPlayer.getPlayer();
 
-                if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
+                if (CommandUtils.hidden(sender, targetPlayer, Permissions.inspectHidden(sender))) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
                     return true;
-                } else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                } else if (CommandUtils.tooFar(sender, targetPlayer, Permissions.inspectFar(sender))) {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
-                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mmoPlayer);
+                if (Config.getInstance().getScoreboardsEnabled()
+                        && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, playerProfile);
 
                     if (!Config.getInstance().getInspectUseChat()) {
                         return true;
                     }
                 }
 
-                sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
-                CommandUtils.printGatheringSkills(target, sender);
-                CommandUtils.printCombatSkills(target, sender);
-                CommandUtils.printMiscSkills(target, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mmoPlayer.getPowerLevel()));
+                sender.sendMessage(LocaleLoader.getString("Inspect.Stats", targetPlayer.getName()));
+                CommandUtils.printGatheringSkills(targetPlayer, sender);
+                CommandUtils.printCombatSkills(targetPlayer, sender);
+                CommandUtils.printMiscSkills(targetPlayer, sender);
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", playerProfile.getExperienceManager().getPowerLevel()));
             }
 
             return true;

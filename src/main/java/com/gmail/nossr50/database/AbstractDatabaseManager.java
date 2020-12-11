@@ -1,9 +1,9 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.api.exceptions.ProfileRetrievalException;
 import com.gmail.nossr50.datatypes.player.PersistentPlayerDataBuilder;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
+import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

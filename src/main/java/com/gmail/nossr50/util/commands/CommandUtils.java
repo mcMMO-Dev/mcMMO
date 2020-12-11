@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,15 +119,6 @@ public final class CommandUtils {
         return hasPlayerDataKey;
     }
 
-    public static boolean isLoaded(CommandSender sender, PlayerProfile profile) {
-        if (profile.isLoaded()) {
-            return true;
-        }
-
-        sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
-        return false;
-    }
-
     public static boolean isInvalidInteger(CommandSender sender, String value) {
         if (StringUtils.isInt(value)) {
             return false;
@@ -204,11 +196,11 @@ public final class CommandUtils {
         printMiscSkills(player, player);
     }
 
-    public static String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
+    public static String displaySkill(@NotNull PlayerProfile profile, @NotNull PrimarySkillType skill) {
         if (skill.isChildSkill()) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
-        if (profile.getSkillLevel(skill) == Config.getInstance().getLevelCap(skill)){
+        if (profile.getExperienceManager().getSkillLevel(skill) == Config.getInstance().getLevelCap(skill)){
             return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), LocaleLoader.getString("Skills.MaxXP"));
         }
         return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));

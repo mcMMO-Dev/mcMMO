@@ -38,17 +38,12 @@ import net.kyori.adventure.identity.Identity;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class McMMOPlayer extends PlayerProfile implements Identified {
@@ -549,7 +544,7 @@ public class McMMOPlayer extends PlayerProfile implements Identified {
      * Etc...
      */
     public void cleanup() {
-        superAbilityManager.resetSuperAbilities();
+        superAbilityManager.disableSuperAbilities();
         getTamingManager().cleanupAllSummons();
     }
 

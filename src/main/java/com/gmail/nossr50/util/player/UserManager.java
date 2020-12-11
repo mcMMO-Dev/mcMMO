@@ -67,6 +67,10 @@ public final class UserManager {
             return null;
     }
 
+    public @Nullable PlayerProfile queryPlayer(@NotNull String playerName) {
+        return mcMMO.getDatabaseManager().queryPlayerByName(playerName);
+    }
+
     /**
      * Remove a user.
      *

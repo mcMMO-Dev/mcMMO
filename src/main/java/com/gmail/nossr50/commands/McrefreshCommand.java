@@ -4,30 +4,31 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class McrefreshCommand extends ToggleCommand {
     @Override
-    protected boolean hasOtherPermission(CommandSender sender) {
+    protected boolean hasOtherPermission(@NotNull CommandSender sender) {
         return Permissions.mcrefreshOthers(sender);
     }
 
     @Override
-    protected boolean hasSelfPermission(CommandSender sender) {
+    protected boolean hasSelfPermission(@NotNull CommandSender sender) {
         return Permissions.mcrefresh(sender);
     }
 
     @Override
-    protected void applyCommandAction(McMMOPlayer mmoPlayer) {
+    protected void applyCommandAction(@NotNull McMMOPlayer mmoPlayer) {
         mmoPlayer.setRecentlyHurtTimestamp(0);
-        mmoPlayer.resetCooldowns();
+        mmoPlayer.getSuperAbilityManager().resetCooldowns();
         mmoPlayer.getSuperAbilityManager().unprimeAllAbilityTools();
-        mmoPlayer.getSuperAbilityManager().resetSuperAbilities();
+        mmoPlayer.getSuperAbilityManager().disableSuperAbilities();
 
         mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
     }
 
     @Override
-    protected void sendSuccessMessage(CommandSender sender, String playerName) {
+    protected void sendSuccessMessage(@NotNull CommandSender sender, @NotNull String playerName) {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", playerName));
     }
 }

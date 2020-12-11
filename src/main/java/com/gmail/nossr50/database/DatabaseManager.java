@@ -1,13 +1,13 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.api.exceptions.ProfileRetrievalException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.neetgames.mcmmo.exceptions.InvalidSkillException;
+import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -96,6 +96,15 @@ public interface DatabaseManager {
      * @return The player's data, or null if not found
      */
     @Nullable PlayerProfile queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException;
+
+    /**
+     * Load player data (in the form of {@link PlayerProfile}) if player data exists
+     * Returns null if it doesn't
+     *
+     * @param playerName the current player name for this player
+     * @return The player's data, or null if not found
+     */
+    @Nullable PlayerProfile queryPlayerByName(@NotNull String playerName) throws ProfileRetrievalException;
 
     /**
      * This method queries the DB for player data for target player
