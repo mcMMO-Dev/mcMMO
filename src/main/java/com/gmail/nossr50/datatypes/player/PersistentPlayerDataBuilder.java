@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;

@@ -118,10 +118,15 @@
                             <include>co.aikar:acf-bukkit</include>
                             <include>com.neetgames:mcMMO-API</include>
                             <include>com.neetgames:jmal</include>
+                            <include>com.neetgames:NEET-lib</include>
                         </includes>
                     </artifactSet>
 <!--                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>-->
                     <relocations>
+                        <relocation>
+                            <pattern>com.neetgames.neetlib</pattern>
+                            <shadedPattern>com.gmail.nossr50.neetlib</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
                             <shadedPattern>com.gmail.nossr50.mcmmo.acf</shadedPattern> <!-- Replace this -->
@@ -209,6 +214,11 @@
             <groupId>com.neetgames</groupId>
             <artifactId>jmal</artifactId>
             <version>0.01.00-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.neetgames</groupId>
+            <artifactId>NEET-lib</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>

@@ -2,11 +2,11 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.MobHealthBarType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

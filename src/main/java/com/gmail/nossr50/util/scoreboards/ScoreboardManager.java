@@ -14,12 +14,14 @@ import com.gmail.nossr50.util.Misc;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.neetgames.mcmmo.player.MMOPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -326,7 +328,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
     }
 
-    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull PlayerProfile targetProfile) {
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -427,7 +429,7 @@ public class ScoreboardManager {
         }
     }
 
-    public static @Nullable ScoreboardWrapper getWrapper(Player player) {
+    public static @Nullable ScoreboardWrapper getWrapper(@NotNull Player player) {
         if(PLAYER_SCOREBOARDS.get(player.getName()) == null) {
             makeNewScoreboard(player);
         }
@@ -448,7 +450,7 @@ public class ScoreboardManager {
         }
 
         for (String playerName : dirtyPowerLevels) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(playerName);
+            MMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(playerName);
 
             if (mmoPlayer == null) {
                 continue;

@@ -1,15 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.api.exceptions.UnexpectedValueException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.MobHealthBarType;
-import com.gmail.nossr50.datatypes.dirtydata.DirtyData;
-import com.gmail.nossr50.datatypes.dirtydata.DirtyMap;
-import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
-import com.gmail.nossr50.datatypes.mutableprimitives.MutableInteger;
-import com.gmail.nossr50.datatypes.mutableprimitives.MutableLong;
-import com.gmail.nossr50.datatypes.mutableprimitives.MutableString;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.validation.NonNullRule;
@@ -17,14 +9,26 @@ import com.gmail.nossr50.datatypes.validation.PositiveIntegerRule;
 import com.gmail.nossr50.datatypes.validation.Validator;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.google.common.collect.ImmutableMap;
+import com.neetgames.mcmmo.MobHealthBarType;
+import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
+import com.neetgames.mcmmo.skill.Skill;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
+import com.neetgames.mcmmo.player.MMOPlayerData;
+import com.neetgames.mcmmo.skill.SuperSkill;
+import com.neetgames.neetlib.dirtydata.DirtyData;
+import com.neetgames.neetlib.dirtydata.DirtyMap;
+import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
+import com.neetgames.neetlib.mutableprimitives.MutableInteger;
+import com.neetgames.neetlib.mutableprimitives.MutableLong;
+import com.neetgames.neetlib.mutableprimitives.MutableString;
 import org.apache.commons.lang.NullArgumentException;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PersistentPlayerData {
+public class PersistentPlayerData implements MMOPlayerData {
 
     private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
 
@@ -43,7 +47,7 @@ public class PersistentPlayerData {
     private final @NotNull DirtyMap<PrimarySkillType, Float> skillExperienceValues;
     private final @NotNull DirtyMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull DirtyMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull DirtyMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap;
+    private final @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private final @NotNull DirtyData<MutableBoolean> partyChatSpying;
@@ -117,7 +121,7 @@ public class PersistentPlayerData {
                                 @NotNull EnumMap<PrimarySkillType, Float> skillExperienceValues,
                                 @NotNull EnumMap<SuperAbilityType, Integer> abilityDeactivationTimestamps,
                                 @NotNull EnumMap<UniqueDataType, Integer> uniquePlayerData,
-                                @NotNull EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap,
+                                @NotNull EnumMap<PrimarySkillType, SkillBossBarState> barStateMap,
                                 int scoreboardTipsShown,
                                 @NotNull MobHealthBarType mobHealthBarType,
                                 long lastLogin,
@@ -185,6 +189,16 @@ public class PersistentPlayerData {
      */
     public Integer getSkillLevel(PrimarySkillType primarySkillType) {
         return skillLevelValues.get(primarySkillType);
+    }
+
+    @Override
+    public void setSkillLevel(Skill skill, int i) {
+
+    }
+
+    @Override
+    public int getSkillLevel(Skill skill) {
+        return 0;
     }
 
     /**
@@ -296,7 +310,7 @@ public class PersistentPlayerData {
      * Set the time stamp for Chimaera Wing's last use for this player
      * @param DATS the new time stamp
      */
-    private void setChimaeraWingDATS(int DATS) {
+    public void setChimaeraWingDATS(int DATS) {
         uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, DATS);
     }
 
@@ -315,6 +329,16 @@ public class PersistentPlayerData {
      * @return associated value of this unique data
      */
     public long getUniqueData(@NotNull UniqueDataType uniqueDataType) { return uniquePlayerData.get(uniqueDataType); }
+
+    @Override
+    public long getAbilityDATS(@NotNull SuperSkill superSkill) {
+        return 0;
+    }
+
+    @Override
+    public void setAbilityDATS(@NotNull SuperSkill superSkill, long l) {
+
+    }
 
     /**
      * Get the current deactivation timestamp of an superAbilityType.
@@ -344,18 +368,18 @@ public class PersistentPlayerData {
     }
 
     /**
-     * Get the {@link Map} for the related {@link com.gmail.nossr50.util.experience.MMOExperienceBarManager.BarState}'s of this player
+     * Get the {@link Map} for the related {@link SkillBossBarState}'s of this player
      * @return the bar state map for this player
      */
-    public @NotNull Map<PrimarySkillType, MMOExperienceBarManager.BarState> getBarStateMap() {
+    public @NotNull Map<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
     /**
-     * Get the {@link DirtyMap} for the related {@link com.gmail.nossr50.util.experience.MMOExperienceBarManager.BarState}'s of this player
+     * Get the {@link DirtyMap} for the related {@link SkillBossBarState}'s of this player
      * @return the dirty bar state map for this player
      */
-    public @NotNull DirtyMap<PrimarySkillType, MMOExperienceBarManager.BarState> getDirtyBarStateMap() {
+    public @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> getDirtyBarStateMap() {
         return barStateMap;
     }
 

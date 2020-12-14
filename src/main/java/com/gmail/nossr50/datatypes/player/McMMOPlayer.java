@@ -33,6 +33,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
+import com.neetgames.jmal.core.player.OnlinePlayer;
+import com.neetgames.mcmmo.player.MMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Location;
@@ -46,7 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class McMMOPlayer extends PlayerProfile implements Identified {
+public class McMMOPlayer implements OnlineMMOPlayer, Identified {
     private final @NotNull Player player;
     private final @NotNull Identity identity;
     private @Nullable Party playerPartyRef;
@@ -599,5 +602,10 @@ public class McMMOPlayer extends PlayerProfile implements Identified {
      */
     public @Nullable Party getPlayerPartyRef() {
         return playerPartyRef;
+    }
+
+    @Override
+    public UUID getUUID() {
+        return ;
     }
 }

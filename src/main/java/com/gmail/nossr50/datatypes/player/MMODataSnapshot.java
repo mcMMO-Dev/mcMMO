@@ -1,10 +1,11 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.google.common.collect.ImmutableMap;
+import com.neetgames.mcmmo.MobHealthBarType;
+import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class MMODataSnapshot {
     private final @NotNull ImmutableMap<PrimarySkillType, Float> skillExperienceValues;
     private final @NotNull ImmutableMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull ImmutableMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull ImmutableMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap;
+    private final @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private final @NotNull Boolean partyChatSpying;
@@ -86,7 +87,7 @@ public class MMODataSnapshot {
         return uniquePlayerData;
     }
 
-    public @NotNull ImmutableMap<PrimarySkillType, MMOExperienceBarManager.BarState> getBarStateMap() {
+    public @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
@@ -98,23 +99,23 @@ public class MMODataSnapshot {
         return scoreboardTipsShown;
     }
 
-    public int getSkillLevel(PrimarySkillType primarySkillType) {
+    public int getSkillLevel(@NotNull PrimarySkillType primarySkillType) {
         return skillLevelValues.getOrDefault(primarySkillType, 0);
     }
 
-    public int getSkillXpLevel(PrimarySkillType primarySkillType) {
+    public int getSkillXpLevel(@NotNull PrimarySkillType primarySkillType) {
         return (skillExperienceValues.getOrDefault(primarySkillType, 0F)).intValue();
     }
 
-    public long getAbilityDATS(SuperAbilityType superAbilityType) {
+    public long getAbilityDATS(@NotNull SuperAbilityType superAbilityType) {
         return abilityDeactivationTimestamps.getOrDefault(superAbilityType, 0);
     }
 
-    public long getUniqueData(UniqueDataType uniqueDataType) {
+    public long getUniqueData(@NotNull UniqueDataType uniqueDataType) {
         return uniquePlayerData.getOrDefault(uniqueDataType, 0);
     }
 
-    public Boolean isLeaderBoardExcluded() {
+    public boolean isLeaderBoardExcluded() {
         return leaderBoardExclusion;
     }
 }

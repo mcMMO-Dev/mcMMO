@@ -1,16 +1,19 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.experience.ExperienceManager;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
+import com.neetgames.mcmmo.MobHealthBarType;
+import com.neetgames.mcmmo.player.MMOPlayerData;
+import com.neetgames.mcmmo.player.OfflineMMOPlayer;
+import com.neetgames.mcmmo.skill.Skill;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class PlayerProfile {
+public class PlayerProfile implements OfflineMMOPlayer {
 
     /* All of the persistent data for a player that gets saved and loaded from DB */
     private final @NotNull PersistentPlayerData persistentPlayerData; //All persistent data is kept here
@@ -57,14 +60,6 @@ public class PlayerProfile {
      */
     public @NotNull String getPlayerName() {
         return getPersistentPlayerData().getPlayerName();
-    }
-
-    /**
-     * Get the saved {@link UUID} for this profile
-     * @return the saved {@link UUID} for this profile
-     */
-    public @NotNull UUID getUniqueId() {
-        return getPersistentPlayerData().getPlayerUUID();
     }
 
     /**
@@ -153,5 +148,45 @@ public class PlayerProfile {
      */
     public boolean isLeaderBoardExcluded() {
         return persistentPlayerData.isLeaderBoardExcluded();
+    }
+
+
+    /**
+     * Get the saved {@link UUID} for this profile
+     * @return the saved {@link UUID} for this profile
+     */
+    @Override
+    public @NotNull UUID getUUID() {
+        return getPersistentPlayerData().getPlayerUUID();
+    }
+
+    @Override
+    public int getPowerLevel() {
+        return persistentPlayerData
+    }
+
+    @Override
+    public int getSkillLevel(@NotNull Skill skill) {
+        return 0;
+    }
+
+    @Override
+    public int getSkillExperience() {
+        return 0;
+    }
+
+    @Override
+    public int getExperienceToNextLevel() {
+        return 0;
+    }
+
+    @Override
+    public void savePlayerData() {
+
+    }
+
+    @Override
+    public @NotNull MMOPlayerData getMMOPlayerData() {
+        return null;
     }
 }
