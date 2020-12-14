@@ -1,3 +1,6 @@
+Version 2.1.162
+    Fixed a bug where Alchemy brew events were processed after setting brew results (thanks Wolf2323)
+
 Version 2.1.161
     Fixed a bug where a bunch of text from mcMMO was never being sent and or being sent as blank messages
 
