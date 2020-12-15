@@ -18,6 +18,8 @@ import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDat
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,30 +44,30 @@ public final class SkillUtils {
      */
     private SkillUtils() {}
 
-    public static void applyXpGain(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason) {
+    public static void applyXpGain(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason) {
         mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, XPGainSource.SELF);
     }
 
-    public static void applyXpGain(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public static void applyXpGain(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
         mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, xpGainSource);
     }
 
-    public static MMOExperienceBarManager.BarState asBarState(String str) {
-        for(MMOExperienceBarManager.BarState barState : MMOExperienceBarManager.BarState.values()) {
+    public static @NotNull SkillBossBarState asBarState(String str) {
+        for(SkillBossBarState barState : SkillBossBarState.values()) {
             if(barState.toString().equalsIgnoreCase(str)) {
                 return barState;
             }
         }
 
         mcMMO.p.getLogger().severe("Unable to read bar state for value " + str + " setting to default instead.");
-        return MMOExperienceBarManager.BarState.NORMAL;
+        return SkillBossBarState.NORMAL;
     }
 
     /*
      * Skill Stat Calculations
      */
 
-    public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
+    public static @NotNull String[] calculateLengthDisplayValues(@NotNull McMMOPlayer mmoPlayer, float skillValue, @NotNull PrimarySkillType skill) {
         int maxLength = skill.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
@@ -79,7 +81,7 @@ public final class SkillUtils {
             length = 2 + (int) (skillValue / abilityLengthVar);
         }
 
-        int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
+        int enduranceLength = PerksUtils.handleActivationPerks(mmoPlayer.getPlayer(), length, maxLength);
 
         if (maxLength != 0) {
             length = Math.min(length, maxLength);
@@ -92,10 +94,10 @@ public final class SkillUtils {
      * Others
      */
 
-    public static int handleFoodSkills(Player player, int eventFoodLevel, SubSkillType subSkillType) {
-        int curRank = RankUtils.getRank(player, subSkillType);
+    public static int handleFoodSkills(@NotNull McMMOPlayer mmoPlayer, int eventFoodLevel, @NotNull SubSkillType subSkillType) {
+        int curRank = RankUtils.getRank(mmoPlayer, subSkillType);
 
-        int currentFoodLevel = player.getFoodLevel();
+        int currentFoodLevel = mmoPlayer.getPlayer().getFoodLevel();
         int foodChange = eventFoodLevel - currentFoodLevel;
 
         foodChange+=curRank;
@@ -108,12 +110,12 @@ public final class SkillUtils {
      *
      * @param deactivatedTimeStamp Time of deactivation
      * @param cooldown The length of the cooldown
-     * @param player The Player to check for cooldown perks
+     * @param mmoPlayer The Player to check for cooldown perks
      *
      * @return the number of seconds remaining before the cooldown expires
      */
-    public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
-        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+    public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, @NotNull McMMOPlayer mmoPlayer) {
+        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(mmoPlayer.getPlayer(), cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -135,11 +137,11 @@ public final class SkillUtils {
      * @param skillName The name of the skill to check
      * @return true if this is a valid skill, false otherwise
      */
-    public static boolean isSkill(String skillName) {
+    public static boolean isSkill(@NotNull String skillName) {
         return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
-    public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
+    public static void sendSkillMessage(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key) {
         Location location = player.getLocation();
 
         for (Player otherPlayer : player.getWorld().getPlayers()) {
@@ -149,7 +151,7 @@ public final class SkillUtils {
         }
     }
 
-    public static void handleAbilitySpeedIncrease(Player player) {
+    public static void handleAbilitySpeedIncrease(@NotNull Player player) {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -245,7 +247,7 @@ public final class SkillUtils {
         }
     }
 
-    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
+    public static void handleDurabilityChange(@NotNull ItemStack itemStack, int durabilityModifier) {
         handleDurabilityChange(itemStack, durabilityModifier, 1.0);
     }
 
@@ -256,7 +258,7 @@ public final class SkillUtils {
      * @param durabilityModifier the amount to modify the durability by
      * @param maxDamageModifier the amount to adjust the max damage by
      */
-    public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+    public static void handleDurabilityChange(@NotNull ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
         if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
@@ -278,8 +280,7 @@ public final class SkillUtils {
         return false;
     }
 
-    @Nullable
-    public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
+    public static @Nullable Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
@@ -306,11 +307,16 @@ public final class SkillUtils {
         }
     }
 
-    public static int getRepairAndSalvageQuantities(ItemStack item) {
+    public static int getRepairAndSalvageQuantities(@NotNull ItemStack item) {
+        if(getRepairAndSalvageItem(item) == null) {
+            mcMMO.p.getLogger().severe("No value defined for item "+item.toString()+" in getRepairAndSalvageItem()");
+            throw new UnexpectedValueException();
+        }
+
         return getRepairAndSalvageQuantities(item.getType(), getRepairAndSalvageItem(item));
     }
 
-    public static int getRepairAndSalvageQuantities(Material itemMaterial, Material recipeMaterial) {
+    public static int getRepairAndSalvageQuantities(@NotNull Material itemMaterial, @NotNull Material recipeMaterial) {
         int quantity = 0;
 
         if(mcMMO.getMaterialMapStore().isNetheriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetheriteArmor(itemMaterial)) {

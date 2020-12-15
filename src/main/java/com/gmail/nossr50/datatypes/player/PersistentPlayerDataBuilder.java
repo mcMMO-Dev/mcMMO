@@ -4,6 +4,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
+import com.neetgames.mcmmo.MobHealthBarType;
+import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -30,7 +33,7 @@ public class PersistentPlayerDataBuilder {
     private @Nullable EnumMap<PrimarySkillType, Float> skillExperienceValues;
     private @Nullable EnumMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private @Nullable EnumMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private @Nullable EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap;
+    private @Nullable EnumMap<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private boolean partyChatSpying;
@@ -99,8 +102,8 @@ public class PersistentPlayerDataBuilder {
         return new PersistentPlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, mobHealthBarType, lastLogin, leaderBoardExemption);
     }
 
-    private void validateBarStateMapEntries(@NotNull EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> map) {
-        EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> barMapDefaults = MMOExperienceBarManager.generateDefaultBarStateMap();
+    private void validateBarStateMapEntries(@NotNull EnumMap<PrimarySkillType, SkillBossBarState> map) {
+        EnumMap<PrimarySkillType, SkillBossBarState> barMapDefaults = MMOExperienceBarManager.generateDefaultBarStateMap();
         
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             map.putIfAbsent(primarySkillType, barMapDefaults.get(primarySkillType));
@@ -223,11 +226,11 @@ public class PersistentPlayerDataBuilder {
         return this;
     }
 
-    public @Nullable EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> getBarStateMap() {
+    public @Nullable EnumMap<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
-    public @NotNull PersistentPlayerDataBuilder setBarStateMap(@NotNull EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap) {
+    public @NotNull PersistentPlayerDataBuilder setBarStateMap(@NotNull EnumMap<PrimarySkillType, SkillBossBarState> barStateMap) {
         this.barStateMap = barStateMap;
         return this;
     }

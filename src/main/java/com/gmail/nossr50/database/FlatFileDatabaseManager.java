@@ -15,7 +15,10 @@ import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableMap;
+import com.neetgames.mcmmo.MobHealthBarType;
+import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -321,7 +324,7 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         }
     }
 
-    private void writeUserToLine(MMODataSnapshot mmoDataSnapshot, String playerName, UUID uuid, StringBuilder writer) {
+    private void writeUserToLine(@NotNull MMODataSnapshot mmoDataSnapshot, @NotNull String playerName, @NotNull UUID uuid, @NotNull StringBuilder writer) {
         ImmutableMap<PrimarySkillType, Integer> primarySkillLevelMap = mmoDataSnapshot.getSkillLevelValues();
         ImmutableMap<PrimarySkillType, Float> primarySkillExperienceValueMap = mmoDataSnapshot.getSkillExperienceValues();
 
@@ -1267,7 +1270,7 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         EnumMap<PrimarySkillType, Float>     skillExperienceValueMap   = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);     // Skill & XP
         EnumMap<SuperAbilityType, Integer> skillAbilityDeactivationTimeStamp = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
         EnumMap<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
-        EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> xpBarStateMap = new EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState>(PrimarySkillType.class);
+        EnumMap<PrimarySkillType, SkillBossBarState> xpBarStateMap = new EnumMap<PrimarySkillType, SkillBossBarState>(PrimarySkillType.class);
 //        MobHealthBarType mobHealthbarType;
         int scoreboardTipsShown;
 

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.api.exceptions.ProfileRetrievalException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -12,10 +10,12 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.exceptions.InvalidSkillException;
+import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
@@ -1193,7 +1193,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         EnumMap<PrimarySkillType, Float> skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class); // Skill & XP
         EnumMap<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
         EnumMap<UniqueDataType, Integer> uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
-        EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState> xpBarStateMap = new EnumMap<PrimarySkillType, MMOExperienceBarManager.BarState>(PrimarySkillType.class);
+        EnumMap<PrimarySkillType, SkillBossBarState> xpBarStateMap = new EnumMap<PrimarySkillType, SkillBossBarState>(PrimarySkillType.class);
 
         MobHealthBarType mobHealthbarType;
         UUID uuid;

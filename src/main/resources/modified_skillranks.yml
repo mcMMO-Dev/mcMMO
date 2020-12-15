@@ -1,0 +1,329 @@
+# This file defines the rank level requirements for a subskill.
+# You cannot alter how many ranks a skill has, that is coded into mcMMO directly.
+# You can however, change when they unlock, if you make all ranks of a skill level 0 for example every player will have the most powerful version of that skill right away.
+# Retro Mode and Standard have separate config settings to make it easier for server owners to understand the difference between the two.
+# Retro Mode is setup to be an entirely cosmetic change, keeping the old 0-1000 feeling of mcMMO.
+# Retro Mode has 10x faster leveling and 10x higher skill requirements, if you do the math you can see its the same as Standard and only cosmetic!.
+###
+Alchemy:
+    Catalysis:
+        Rank_1: 0
+    Concoctions:
+        Rank_1: 0
+        Rank_2: 100
+        Rank_3: 200
+        Rank_4: 350
+        Rank_5: 500
+        Rank_6: 750
+        Rank_7: 900
+        Rank_8: 1000
+Archery:
+    ArcheryLimitBreak:
+        Rank_1: 100
+        Rank_2: 200
+        Rank_3: 300
+        Rank_4: 400
+        Rank_5: 500
+        Rank_6: 600
+        Rank_7: 700
+        Rank_8: 800
+        Rank_9: 900
+        Rank_10: 1000
+    ArrowRetrieval:
+        Rank_1: 1
+    SkillShot:
+        Rank_1: 1
+        Rank_2: 100
+        Rank_3: 150
+        Rank_4: 200
+        Rank_5: 250
+        Rank_6: 300
+        Rank_7: 350
+        Rank_8: 400
+        Rank_9: 450
+        Rank_10: 500
+        Rank_11: 550
+        Rank_12: 600
+        Rank_13: 650
+        Rank_14: 700
+        Rank_15: 750
+        Rank_16: 800
+        Rank_17: 850
+        Rank_18: 900
+        Rank_19: 950
+        Rank_20: 1000
+Acrobatics:
+    Dodge:
+        Rank_1: 1
+Axes:
+    AxesLimitBreak:
+        Rank_1: 100
+        Rank_2: 200
+        Rank_3: 300
+        Rank_4: 400
+        Rank_5: 500
+        Rank_6: 600
+        Rank_7: 700
+        Rank_8: 800
+        Rank_9: 900
+        Rank_10: 1000
+    SkullSplitter:
+        Rank_1: 50
+    CriticalStrikes:
+        Rank_1: 1
+    GreaterImpact:
+        Rank_1: 250
+    ArmorImpact:
+        Rank_1: 1
+        Rank_2: 100
+        Rank_3: 150
+        Rank_4: 200
+        Rank_5: 250
+        Rank_6: 300
+        Rank_7: 350
+        Rank_8: 400
+        Rank_9: 450
+        Rank_10: 500
+        Rank_11: 550
+        Rank_12: 600
+        Rank_13: 650
+        Rank_14: 700
+        Rank_15: 750
+        Rank_16: 800
+        Rank_17: 850
+        Rank_18: 900
+        Rank_19: 950
+        Rank_20: 1000
+    AxeMastery:
+        Rank_1: 50
+        Rank_2: 100
+        Rank_3: 150
+        Rank_4: 200
+Taming:
+    Rank_1: 1
+    Gore:
+        Rank_1: 150
+    CallOfTheWild:
+        Rank_1: 1
+    Pummel:
+        Rank_1: 200
+    FastFoodService:
+        Rank_1: 200
+    EnvironmentallyAware:
+        Rank_1: 100
+    ThickFur:
+        Rank_1: 250
+    HolyHound:
+        Rank_1: 350
+    ShockProof:
+        Rank_1: 500
+    SharpenedClaws:
+        Rank_1: 750
+Smelting:
+    FuelEfficiency:
+        Rank_1: 100
+        Rank_2: 500
+        Rank_3: 750
+    UnderstandingTheArt:
+        Rank_1: 100
+        Rank_2: 250
+        Rank_3: 350
+        Rank_4: 500
+        Rank_5: 650
+        Rank_6: 750
+        Rank_7: 850
+        Rank_8: 1000
+Salvage:
+    ScrapCollector:
+        Rank_1: 1
+        Rank_2: 100
+        Rank_3: 150
+        Rank_4: 200
+        Rank_5: 250
+        Rank_6: 300
+        Rank_7: 350
+        Rank_8: 400
+    ArcaneSalvage:
+        Rank_1: 100
+        Rank_2: 250
+        Rank_3: 350
+        Rank_4: 500
+        Rank_5: 650
+        Rank_6: 750
+        Rank_7: 850
+        Rank_8: 1000
+Mining:
+    DoubleDrops:
+        Rank_1: 1
+    SuperBreaker:
+        Rank_1: 50
+    # For now make sure rank 1 is the same as blast mining rank 1, it's a bit hacky, I'll fix it later
+    BiggerBombs:
+        Rank_1: 100
+    # For now make sure rank 1 is the same as blast mining rank 1, it's a bit hacky, I'll fix it later
+    DemolitionsExpertise:
+        Rank_1: 100
+    BlastMining:
+        Rank_1: 100
+        Rank_2: 250
+        Rank_3: 350
+        Rank_4: 500
+        Rank_5: 650
+        Rank_6: 750
+        Rank_7: 850
+        Rank_8: 1000
+Herbalism:
+    DoubleDrops:
+        Rank_1: 1
+    GreenTerra:
+        Rank_1: 50
+    GreenThumb:
+        Rank_1: 250
+        Rank_2: 500
+        Rank_3: 750
+        Rank_4: 1000
+    FarmersDiet:
+        Rank_1: 200
+        Rank_2: 400
+        Rank_3: 600
+        Rank_4: 800
+        Rank_5: 1000
+Fishing:
+    MagicHunter:
+        Rank_1: 200
+    Shake:
+        Rank_1: 150
+    MasterAngler:
+        Rank_1: 1
+        Rank_2: 200
+        Rank_3: 300
+        Rank_4: 400
+        Rank_5: 600
+        Rank_6: 700
+        Rank_7: 800
+        Rank_8: 900
+    IceFishing:
+        Rank_1: 50
+    FishermansDiet:
+        Rank_1: 200
+        Rank_2: 400
+        Rank_3: 600
+        Rank_4: 800
+        Rank_5: 1000
+    TreasureHunter:
+        Rank_1: 1
+        Rank_2: 250
+        Rank_3: 350
+        Rank_4: 500
+        Rank_5: 650
+        Rank_6: 750
+        Rank_7: 850
+        Rank_8: 1000
+Swords:
+    SwordsLimitBreak:
+        Rank_1: 100
+        Rank_2: 200
+        Rank_3: 300
+        Rank_4: 400
+        Rank_5: 500
+        Rank_6: 600
+        Rank_7: 700
+        Rank_8: 800
+        Rank_9: 900
+        Rank_10: 1000
+    Stab:
+        Rank_1: 750
+        Rank_2: 1000
+    CounterAttack:
+        Rank_1: 200
+    Rupture:
+        Rank_1: 1
+        Rank_2: 150
+        Rank_3: 750
+        Rank_4: 900
+    SerratedStrikes:
+        Rank_1: 50
+Unarmed:
+    UnarmedLimitBreak:
+        Rank_1: 100
+        Rank_2: 200
+        Rank_3: 300
+        Rank_4: 400
+        Rank_5: 500
+        Rank_6: 600
+        Rank_7: 700
+        Rank_8: 800
+        Rank_9: 900
+        Rank_10: 1000
+    Berserk:
+        Rank_1: 50
+    ArrowDeflect:
+        Rank_1: 200
+    Disarm:
+        Rank_1: 250
+    IronGrip:
+        Rank_1: 600
+    SteelArmStyle:
+        Rank_1: 1
+        Rank_2: 100
+        Rank_3: 150
+        Rank_4: 200
+        Rank_5: 250
+        Rank_6: 300
+        Rank_7: 350
+        Rank_8: 400
+        Rank_9: 450
+        Rank_10: 500
+        Rank_11: 550
+        Rank_12: 600
+        Rank_13: 650
+        Rank_14: 700
+        Rank_15: 750
+        Rank_16: 800
+        Rank_17: 850
+        Rank_18: 900
+        Rank_19: 950
+        Rank_20: 1000
+
+Woodcutting:
+    TreeFeller:
+        Rank_1: 50
+        Rank_2: 250
+        Rank_3: 500
+        Rank_4: 750
+        Rank_5: 1000
+    HarvestLumber:
+        Rank_1: 1
+    KnockOnWood:
+        Rank_1: 300
+        Rank_2: 600
+    LeafBlower:
+        Rank_1: 150
+        Rank_2: 350
+        Rank_3: 650
+Excavation:
+    GigaDrillBreaker:
+        Rank_1: 50
+    Archaeology:
+        Rank_1: 1
+        Rank_2: 250
+        Rank_3: 350
+        Rank_4: 500
+        Rank_5: 650
+        Rank_6: 750
+        Rank_7: 850
+        Rank_8: 1000
+Repair:
+    RepairMastery:
+        Rank_1: 1
+    SuperRepair:
+        Rank_1: 400
+    ArcaneForging:
+        Rank_1: 100
+        Rank_2: 250
+        Rank_3: 350
+        Rank_4: 500
+        Rank_5: 650
+        Rank_6: 750
+        Rank_7: 850
+        Rank_8: 1000
