@@ -1,3 +1,7 @@
+Version 2.1.163
+    Fixed the translate URL pointing to the wrong place (thanks chew)
+
+
 Version 2.1.162
     Fixed a bug where Alchemy brew events were processed after setting brew results (thanks Wolf2323)
 
