@@ -1,21 +1,19 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.validation.NonNullRule;
 import com.gmail.nossr50.datatypes.validation.PositiveIntegerRule;
 import com.gmail.nossr50.datatypes.validation.Validator;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
-import com.neetgames.mcmmo.skill.Skill;
-import com.neetgames.mcmmo.skill.SkillBossBarState;
+import com.neetgames.mcmmo.skill.*;
 import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.skill.SuperSkill;
 import com.neetgames.neetlib.dirtydata.DirtyData;
 import com.neetgames.neetlib.dirtydata.DirtyMap;
 import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
@@ -25,6 +23,7 @@ import com.neetgames.neetlib.mutableprimitives.MutableString;
 import org.apache.commons.lang.NullArgumentException;
 import org.jetbrains.annotations.NotNull;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,15 +38,12 @@ public class PersistentPlayerData implements MMOPlayerData {
     /* Records */
     private final DirtyData<MutableLong> lastLogin;
 
-    /* HUDs */
-    private final @NotNull DirtyData<MobHealthBarType> mobHealthBarType;
-
     /* Skill Data */
-    private final @NotNull DirtyMap<PrimarySkillType, Integer> skillLevelValues;
-    private final @NotNull DirtyMap<PrimarySkillType, Float> skillExperienceValues;
-    private final @NotNull DirtyMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private final @NotNull DirtyMap<SkillIdentity, Integer> skillLevelValues;
+    private final @NotNull DirtyMap<SkillIdentity, Float> skillExperienceValues;
+    private final @NotNull DirtyMap<SkillIdentity, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull DirtyMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> barStateMap;
+    private final @NotNull DirtyMap<SkillIdentity, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private final @NotNull DirtyData<MutableBoolean> partyChatSpying;
@@ -59,6 +55,7 @@ public class PersistentPlayerData implements MMOPlayerData {
     /**
      * Create new persistent player data for a player
      * Initialized with default values
+     *
      * @param playerUUID target player's UUID
      * @param playerName target player's name
      * @throws NullArgumentException thrown when never null arguments are null
@@ -71,16 +68,15 @@ public class PersistentPlayerData implements MMOPlayerData {
         this.playerUUID = playerUUID;
         this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
 
-        this.skillLevelValues = new DirtyMap<>(new EnumMap<>(PrimarySkillType.class), dirtyFlag);
-        this.skillExperienceValues = new DirtyMap<>(new EnumMap<>(PrimarySkillType.class), dirtyFlag);
-        this.abilityDeactivationTimestamps = new DirtyMap<>(new EnumMap<>(SuperAbilityType.class), dirtyFlag);
+        this.skillLevelValues = new DirtyMap<>(new HashMap<>(SkillIdentity.class), dirtyFlag);
+        this.skillExperienceValues = new DirtyMap<>(new HashMap<>(SkillIdentity.class), dirtyFlag);
+        this.abilityDeactivationTimestamps = new DirtyMap<>(new EnumMap<>(SkillIdentity.class), dirtyFlag);
         this.uniquePlayerData = new DirtyMap<>(new EnumMap<>(UniqueDataType.class), dirtyFlag);
-        this.mobHealthBarType = new DirtyData<>(Config.getInstance().getMobHealthbarDefault(), dirtyFlag);
 
         this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(0), dirtyFlag);
 
-        for(SuperAbilityType superAbilityType : SuperAbilityType.values()) {
-            abilityDeactivationTimestamps.put(superAbilityType, 0);
+        for(RootSkill rootSkill : mcMMO.p.getSkillRegister().getRootSkills()) {
+            abilityDeactivationTimestamps.put(rootSkill.getSkillIdentity(), 0);
         }
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
@@ -192,12 +188,12 @@ public class PersistentPlayerData implements MMOPlayerData {
     }
 
     @Override
-    public void setSkillLevel(Skill skill, int i) {
+    public void setSkillLevel(@NotNull RootSkill rootSkill, int i) {
 
     }
 
     @Override
-    public int getSkillLevel(Skill skill) {
+    public int getSkillLevel(@NotNull RootSkill rootSkill) {
         return 0;
     }
 

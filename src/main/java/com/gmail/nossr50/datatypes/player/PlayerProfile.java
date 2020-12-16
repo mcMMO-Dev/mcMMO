@@ -13,51 +13,42 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class PlayerProfile implements OfflineMMOPlayer {
-
-    /* All of the persistent data for a player that gets saved and loaded from DB */
-    private final @NotNull PersistentPlayerData persistentPlayerData; //All persistent data is kept here
-
-    /* Managers */
-    private final @NotNull ExperienceManager experienceManager;
-    private final @NotNull CooldownManager cooldownManager;
+public class PlayerProfile extends AbstractMMOPlayer {
 
     /**
-     * Create a new PlayerProfile for a {@link Player}
+     * Create a new {@link PlayerProfile} for a {@link Player} with default values
+     *
      * @param player target player
      */
     public PlayerProfile(@NotNull Player player) {
-        /* New Data */
-        this(player.getUniqueId(), player.getName());
+        super(player);
     }
 
     /**
-     * Create a new PlayerProfile for a {@link Player}
+     * Create a new {@link PlayerProfile} for a {@link Player} with default values
+     *
      * @param playerUUID target player's UUID
      * @param playerName target player's name
      */
     public PlayerProfile(@NotNull UUID playerUUID, @NotNull String playerName) {
-        /* New Data */
-        this.persistentPlayerData = new PersistentPlayerData(playerUUID, playerName);
-        this.experienceManager = new ExperienceManager(persistentPlayerData);
-        this.cooldownManager = new CooldownManager(persistentPlayerData);
+        super(playerUUID, playerName);
     }
 
     /**
-     * Create a PlayerProfile for {@link PersistentPlayerData}
+     * Initialize an {@link PlayerProfile} for {@link PersistentPlayerData}
      * This will be used for existing data
+     *
      * @param persistentPlayerData target persistent player data
      */
     public PlayerProfile(@NotNull PersistentPlayerData persistentPlayerData) {
-        this.persistentPlayerData = persistentPlayerData;
-        this.experienceManager = new ExperienceManager(persistentPlayerData);
-        this.cooldownManager = new CooldownManager(persistentPlayerData);
+        super(persistentPlayerData);
     }
 
     /**
      * Get the saved player name for this profile
      * @return the saved player name for this profile
      */
+    @Override
     public @NotNull String getPlayerName() {
         return getPersistentPlayerData().getPlayerName();
     }
@@ -162,7 +153,7 @@ public class PlayerProfile implements OfflineMMOPlayer {
 
     @Override
     public int getPowerLevel() {
-        return persistentPlayerData
+        return experienceManager.getPowerLevel();
     }
 
     @Override
@@ -171,8 +162,8 @@ public class PlayerProfile implements OfflineMMOPlayer {
     }
 
     @Override
-    public int getSkillExperience() {
-        return 0;
+    public int getSkillExperience(@NotNull Skill skill) {
+        return persistentPlayerData;
     }
 
     @Override
@@ -181,12 +172,12 @@ public class PlayerProfile implements OfflineMMOPlayer {
     }
 
     @Override
-    public void savePlayerData() {
-
+    public boolean isOnline() {
+        return false;
     }
 
     @Override
     public @NotNull MMOPlayerData getMMOPlayerData() {
-        return null;
+        return persistentPlayerData;
     }
 }

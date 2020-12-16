@@ -2,6 +2,8 @@ Version 2.2.000
     mcMMO-API is now the library used for mcMMO API
     Parts of the API have been migrated to mcMMO-API
     (API) mcMMO makes use of jmal (Java Minecraft Abstraction Library) for some abstraction now
+    (API) Added skill register
+    (API) Skill hierarchy is now defined by Skill in mcMMO-API, and mcMMO needs a skill to be registered to be aware of it
 
     Codebase Stuff
         Many places that passed type Player now passes type McMMOPlayer instead

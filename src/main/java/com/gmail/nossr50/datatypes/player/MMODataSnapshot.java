@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,8 +23,8 @@ public class MMODataSnapshot {
     private final @NotNull MobHealthBarType mobHealthBarType;
 
     /* Skill Data */
-    private final @NotNull ImmutableMap<PrimarySkillType, Integer> skillLevelValues;
-    private final @NotNull ImmutableMap<PrimarySkillType, Float> skillExperienceValues;
+    private final @NotNull ImmutableMap<RootSkill, Integer> skillLevelValues;
+    private final @NotNull ImmutableMap<RootSkill, Float> skillExperienceValues;
     private final @NotNull ImmutableMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull ImmutableMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
     private final @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> barStateMap;
@@ -36,7 +37,7 @@ public class MMODataSnapshot {
     private final @NotNull Integer scoreboardTipsShown;
 
 
-    public MMODataSnapshot(PersistentPlayerData persistentPlayerData) {
+    public MMODataSnapshot(@NotNull PersistentPlayerData persistentPlayerData) {
         playerName = persistentPlayerData.getPlayerName();
         playerUUID = persistentPlayerData.getPlayerUUID();
         lastLogin = persistentPlayerData.getLastLogin();
@@ -71,11 +72,11 @@ public class MMODataSnapshot {
         return mobHealthBarType;
     }
 
-    public @NotNull ImmutableMap<PrimarySkillType, Integer> getSkillLevelValues() {
+    public @NotNull ImmutableMap<RootSkill, Integer> getSkillLevelValues() {
         return skillLevelValues;
     }
 
-    public @NotNull ImmutableMap<PrimarySkillType, Float> getSkillExperienceValues() {
+    public @NotNull ImmutableMap<RootSkill, Float> getSkillExperienceValues() {
         return skillExperienceValues;
     }
 
@@ -87,7 +88,7 @@ public class MMODataSnapshot {
         return uniquePlayerData;
     }
 
-    public @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> getBarStateMap() {
+    public @NotNull ImmutableMap<RootSkill, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 

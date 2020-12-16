@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.util.Misc;
+import com.neetgames.mcmmo.UniqueDataType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class CooldownManager {
     }
 
     public void actualizeChimeraWingLastUse() {
-        playerProfile.setChimaeraWingDATS((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
+        playerDataRef.setChimaeraWingDATS((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
     }
 
     public @Nullable Location getTeleportCommenceLocation() {

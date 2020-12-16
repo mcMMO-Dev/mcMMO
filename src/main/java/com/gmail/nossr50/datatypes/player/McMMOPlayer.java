@@ -49,7 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class McMMOPlayer implements OnlineMMOPlayer, Identified {
+public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Identified {
     private final @NotNull Player player;
     private final @NotNull Identity identity;
     private @Nullable Party playerPartyRef;
@@ -605,7 +605,17 @@ public class McMMOPlayer implements OnlineMMOPlayer, Identified {
     }
 
     @Override
-    public UUID getUUID() {
-        return ;
+    public boolean inParty() {
+        return false;
+    }
+
+    @Override
+    public boolean isGodMode() {
+        return false;
+    }
+
+    @Override
+    public boolean isChatSpying() {
+        return false;
     }
 }

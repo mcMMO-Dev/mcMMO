@@ -6,10 +6,13 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.player.MMOPlayerData;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -18,9 +21,9 @@ import java.util.List;
  */
 public class ExperienceBarWrapper {
 
-    private final PrimarySkillType primarySkillType; //Primary Skill
-    private BossBar bossBar;
-    protected final PersistentPlayerData persistentPlayerData;
+    private final @NotNull PrimarySkillType primarySkillType; //Primary Skill
+    private @NotNull BossBar bossBar;
+    protected final @NotNull MMOPlayerData mmoPlayerData;
     private int lastLevelUpdated;
 
     /*
@@ -29,9 +32,8 @@ public class ExperienceBarWrapper {
     protected String niceSkillName;
     protected String title;
 
-    public ExperienceBarWrapper(PrimarySkillType primarySkillType, PersistentPlayerData persistentPlayerData)
-    {
-        this.persistentPlayerData = persistentPlayerData;
+    public ExperienceBarWrapper(@NotNull PrimarySkillType primarySkillType, @NotNull OnlineMMOPlayer mmoPlayer) {
+        this.mmoPlayerData = mmoPlayer.getMMOPlayerData();
         this.primarySkillType = primarySkillType;
         title = "";
         lastLevelUpdated = 0;
@@ -43,8 +45,7 @@ public class ExperienceBarWrapper {
         initBar();
     }
 
-    private void initBar()
-    {
+    private void initBar() {
         title = getTitleTemplate();
         createBossBar();
     }

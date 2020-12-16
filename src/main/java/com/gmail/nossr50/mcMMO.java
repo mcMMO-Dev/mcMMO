@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SkillRegisterImpl;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
@@ -48,6 +49,7 @@ import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.google.common.base.Charsets;
+import com.neetgames.mcmmo.api.SkillRegister;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -86,6 +88,7 @@ public class mcMMO extends JavaPlugin {
     private static TransientMetadataTools transientMetadataTools;
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
+    private static SkillRegister skillRegister;
 
     /* Adventure */
     private static BukkitAudiences audiences;
@@ -154,6 +157,9 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            //Skill Register
+            skillRegister = new SkillRegisterImpl();
+
             //Platform Manager
             platformManager = new PlatformManager();
 
@@ -181,7 +187,6 @@ public class mcMMO extends JavaPlugin {
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = Config.getInstance().getIsRetroMode();
-
 
             if(projectKorraEnabled) {
                 getLogger().info("ProjectKorra was detected, this can cause some issues with weakness potions and combat skills for mcMMO");
@@ -694,4 +699,6 @@ public class mcMMO extends JavaPlugin {
     public CommandManager getCommandManager() {
         return commandManager;
     }
+
+    public SkillRegister getSkillRegister() { return skillRegister; }
 }
