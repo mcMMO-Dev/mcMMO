@@ -567,6 +567,7 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(new InventoryListener(this), this);
         pluginManager.registerEvents(new SelfListener(this), this);
         pluginManager.registerEvents(new WorldListener(this), this);
+        pluginManager.registerEvents(new ChunkListener(), this);
 //        pluginManager.registerEvents(new CommandListener(this), this);
     }
 
