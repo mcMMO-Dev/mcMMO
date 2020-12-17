@@ -2,6 +2,7 @@ Version 2.1.163
     Fixed the translate URL pointing to the wrong place (thanks chew)
     Fixed a bug where FlatFile databases would always attempt a UUID conversion task every save operation (every 10 minutes) causing console spam
     mcMMO will no longer throw errors when incoming XP is below 0 (it will just silently cancel the operation)
+    COTW Summoned entities are now removed when the chunk they are in is unloaded (prevents some exploits)
 
     NOTES:
     I often test in SQL environments so I missed this bug, reminder to come bother me on discord if you find any annoying bugs!

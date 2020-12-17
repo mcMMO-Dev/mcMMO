@@ -570,6 +570,7 @@ public class TamingManager extends SkillManager {
 
                 //Remove from existence
                 if(livingEntity != null && livingEntity.isValid()) {
+                    mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
                     livingEntity.setHealth(0);
                     livingEntity.remove();
                 }
