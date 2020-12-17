@@ -115,6 +115,7 @@
                             <include>net.kyori:adventure-text-serializer-legacy</include>
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
+                            <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>co.aikar:acf-bukkit</include>
                             <include>com.neetgames:mcMMO-API</include>
                             <include>com.neetgames:jmal</include>
@@ -123,6 +124,10 @@
                     </artifactSet>
 <!--                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>-->
                     <relocations>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.kyori.adventure</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>com.neetgames.neetlib</pattern>
                             <shadedPattern>com.gmail.nossr50.neetlib</shadedPattern>
@@ -146,10 +151,6 @@
                         <relocation>
                             <pattern>org.apache.tomcat</pattern>
                             <shadedPattern>com.gmail.nossr50.mcmmo.database.tomcat</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>net.kyori.adventure</pattern>
-                            <shadedPattern>com.gmail.nossr50.mcmmo.kyori.adventure</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -229,17 +230,17 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.3.0-SNAPSHOT</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.2.0</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
-            <version>4.2.0-SNAPSHOT</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -255,6 +256,11 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-common</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>

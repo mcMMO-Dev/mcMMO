@@ -97,6 +97,24 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+Version 2.1.163
+    Fixed the translate URL pointing to the wrong place (thanks chew)
+    Fixed a bug where FlatFile databases would always attempt a UUID conversion task every save operation (every 10 minutes) causing console spam
+    mcMMO will no longer throw errors when incoming XP is below 0 (it will just silently cancel the operation)
+    COTW Summoned entities are now removed when the chunk they are in is unloaded (prevents some exploits)
+
+    NOTES:
+    I often test in SQL environments so I missed this bug, reminder to come bother me on discord if you find any annoying bugs!
+    Also work on T&C is going great lately, I feel great. Perhaps my depression is getting better!
+
+Version 2.1.162
+    Fixed a bug where Alchemy brew events were processed after setting brew results (thanks Wolf2323)
+
+Version 2.1.161
+    Fixed a bug where a bunch of text from mcMMO was never being sent and or being sent as blank messages
+
+    NOTES:
+    Adventure (the chat library we use) had an update that required shading in another new module, but there were no errors thrown without running a jvm debug flag and testing it, which is why I missed it. I also missed it because I don't read update notes very closely
 Version 2.1.160
     Fixed another 9+ year old exploit
     Silenced a harmless "error" related to Rupture/Bleed often produced when using mcMMO and crazy enchantments together

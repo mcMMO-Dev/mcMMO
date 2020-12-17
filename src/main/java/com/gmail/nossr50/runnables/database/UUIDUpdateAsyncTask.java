@@ -102,6 +102,7 @@ public class UUIDUpdateAsyncTask implements Runnable {
         if (position == userNames.size()) {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
             awaiter.countDown();
+            plugin.getLogger().info("UUID checks completed");
         } else
             this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * DELAY_PERIOD); // Schedule next batch
     }

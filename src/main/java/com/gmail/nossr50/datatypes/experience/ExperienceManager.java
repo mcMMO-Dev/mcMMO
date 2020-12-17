@@ -125,8 +125,6 @@ public class ExperienceManager {
      * @param xp Experience amount to process
      */
     public void beginXpGain(@NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
-        Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
-
         if (xp <= 0.0) {
             return;
         }
