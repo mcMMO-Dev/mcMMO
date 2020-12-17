@@ -5,6 +5,7 @@ Version 2.1.163
     COTW Summoned entities are now removed when the chunk they are in is unloaded (prevents some exploits)
 
     NOTES:
+    Seems I skipped releasing 2.1.162, not a big deal though as you should be using this version instead!
     I often test in SQL environments so I missed this bug, reminder to come bother me on discord if you find any annoying bugs!
     Also work on T&C is going great lately, I feel great. Perhaps my depression is getting better!
 
