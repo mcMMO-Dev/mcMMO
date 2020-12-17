@@ -545,9 +545,7 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to process
      */
     public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
-
-        if (xp <= 0.0) {
+        if(xp <= 0) {
             return;
         }
 

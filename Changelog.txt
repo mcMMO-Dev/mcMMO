@@ -1,6 +1,11 @@
 Version 2.1.163
     Fixed the translate URL pointing to the wrong place (thanks chew)
+    Fixed a bug where FlatFile databases would always attempt a UUID conversion task every save operation (every 10 minutes) causing console spam
+    mcMMO will no longer throw errors when incoming XP is below 0 (it will just silently cancel the operation)
 
+    NOTES:
+    I often test in SQL environments so I missed this bug, reminder to come bother me on discord if you find any annoying bugs!
+    Also work on T&C is going great lately, I feel great. Perhaps my depression is getting better!
 
 Version 2.1.162
     Fixed a bug where Alchemy brew events were processed after setting brew results (thanks Wolf2323)
