@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.CoreSkillConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.validation.NonNullRule;
@@ -68,9 +69,9 @@ public class PersistentPlayerData implements MMOPlayerData {
         this.playerUUID = playerUUID;
         this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
 
-        this.skillLevelValues = new DirtyMap<>(new HashMap<>(SkillIdentity.class), dirtyFlag);
-        this.skillExperienceValues = new DirtyMap<>(new HashMap<>(SkillIdentity.class), dirtyFlag);
-        this.abilityDeactivationTimestamps = new DirtyMap<>(new EnumMap<>(SkillIdentity.class), dirtyFlag);
+        this.skillLevelValues = new DirtyMap<>(new HashMap<>(), dirtyFlag);
+        this.skillExperienceValues = new DirtyMap<>(new HashMap<>(), dirtyFlag);
+        this.abilityDeactivationTimestamps = new DirtyMap<>(new HashMap<>(), dirtyFlag);
         this.uniquePlayerData = new DirtyMap<>(new EnumMap<>(UniqueDataType.class), dirtyFlag);
 
         this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(0), dirtyFlag);
@@ -79,9 +80,11 @@ public class PersistentPlayerData implements MMOPlayerData {
             abilityDeactivationTimestamps.put(rootSkill.getSkillIdentity(), 0);
         }
 
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            skillLevelValues.put(primarySkillType, AdvancedConfig.getInstance().getStartingLevel());
-            skillExperienceValues.put(primarySkillType, 0F);
+        //Core skills
+        //TODO: Don't store values for disabled skills
+        for(RootSkill rootSkill : CoreSkillConstants.getImmutableCoreRootSkillSet()) {
+            skillLevelValues.put(rootSkill.getSkillIdentity(), AdvancedConfig.getInstance().getStartingLevel());
+            skillExperienceValues.put(rootSkill.getSkillIdentity(), 0F);
         }
 
         //Unique Player Data
@@ -106,7 +109,6 @@ public class PersistentPlayerData implements MMOPlayerData {
      * @param uniquePlayerData target player's misc unique data
      * @param barStateMap target player's XP bar state settings
      * @param scoreboardTipsShown target player's scoreboard tip view count
-     * @param mobHealthBarType target player's mob health bar type
      * @param lastLogin target player's last login
      * @param leaderBoardExclusion target player's leaderboard exemption status
      */
@@ -119,7 +121,6 @@ public class PersistentPlayerData implements MMOPlayerData {
                                 @NotNull EnumMap<UniqueDataType, Integer> uniquePlayerData,
                                 @NotNull EnumMap<PrimarySkillType, SkillBossBarState> barStateMap,
                                 int scoreboardTipsShown,
-                                @NotNull MobHealthBarType mobHealthBarType,
                                 long lastLogin,
                                 boolean leaderBoardExclusion) throws Exception {
 
@@ -140,7 +141,6 @@ public class PersistentPlayerData implements MMOPlayerData {
         this.uniquePlayerData = new DirtyMap<>(uniquePlayerData, dirtyFlag);
 
         this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(scoreboardTipsShown), dirtyFlag);
-        this.mobHealthBarType = new DirtyData<>(mobHealthBarType, dirtyFlag);
 
         this.playerUUID = playerUUID;
         this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
@@ -174,8 +174,9 @@ public class PersistentPlayerData implements MMOPlayerData {
      * @param primarySkillType target Primary Skill
      * @param newSkillLevel the new value of the skill
      */
-    public void setSkillLevel(PrimarySkillType primarySkillType, int newSkillLevel) {
-        skillLevelValues.put(primarySkillType, newSkillLevel);
+    @Override
+    public void setSkillLevel(@NotNull SkillIdentity skillIdentity, int newSkillLevel) {
+        skillLevelValues.put(skillIdentity, newSkillLevel);
     }
 
     /**

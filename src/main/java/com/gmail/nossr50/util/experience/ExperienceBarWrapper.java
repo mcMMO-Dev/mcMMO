@@ -1,13 +1,11 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.text.StringUtils;
-import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.neetgames.mcmmo.skill.SkillIdentity;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -21,9 +19,9 @@ import java.util.List;
  */
 public class ExperienceBarWrapper {
 
-    private final @NotNull PrimarySkillType primarySkillType; //Primary Skill
+    private final @NotNull SkillIdentity skillIdentity; //Primary Skill
     private @NotNull BossBar bossBar;
-    protected final @NotNull MMOPlayerData mmoPlayerData;
+    protected final @NotNull OnlineMMOPlayer onlineMMOPlayer;
     private int lastLevelUpdated;
 
     /*
@@ -32,14 +30,14 @@ public class ExperienceBarWrapper {
     protected String niceSkillName;
     protected String title;
 
-    public ExperienceBarWrapper(@NotNull PrimarySkillType primarySkillType, @NotNull OnlineMMOPlayer mmoPlayer) {
-        this.mmoPlayerData = mmoPlayer.getMMOPlayerData();
-        this.primarySkillType = primarySkillType;
+    public ExperienceBarWrapper(@NotNull SkillIdentity skillIdentity, @NotNull OnlineMMOPlayer onlineMMOPlayer) {
+        this.onlineMMOPlayer = onlineMMOPlayer;
+        this.skillIdentity = skillIdentity;
         title = "";
         lastLevelUpdated = 0;
 
         //These vars are stored to help reduce operations involving strings
-        niceSkillName = StringUtils.getCapitalized(primarySkillType.toString());
+        niceSkillName = StringUtils.getCapitalized(skillIdentity.toString());
 
         //Create the bar
         initBar();
@@ -58,7 +56,7 @@ public class ExperienceBarWrapper {
     private String getTitleTemplate() {
         //If they are using extra details
 
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(persistentPlayerData, primarySkillType)) {
+        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(onlineMMOPlayer, skillIdentity)) {
                 return LocaleLoader.getString("XPBar.Template.EarlyGameBoost");
         } else if(ExperienceConfig.getInstance().getAddExtraDetails())
             return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
@@ -67,16 +65,16 @@ public class ExperienceBarWrapper {
     }
 
     private int getLevel() {
-        return persistentPlayerData.getSkillLevel(primarySkillType);
+        return onlineMMOPlayer.getSkillLevel(skillIdentity);
     }
     private int getCurrentXP() {
-        return mmoPlayer.getSkillXpLevel(primarySkillType);
+        return onlineMMOPlayer.getSkillExperience(skillIdentity);
     }
     private int getMaxXP() {
-        return mmoPlayer.getXpToLevel(primarySkillType);
+        return onlineMMOPlayer.getExperienceToNextLevel(skillIdentity);
     }
-    private int getPowerLevel() { return mmoPlayer.getPowerLevel(); }
-    private int getPercentageOfLevel() { return (int) (mmoPlayer.getProgressInCurrentSkillLevel(primarySkillType) * 100); }
+    private int getPowerLevel() { return onlineMMOPlayer.getPowerLevel(); }
+    private int getPercentageOfLevel() { return (int) (onlineMMOPlayer.getProgressInCurrentSkillLevel(skillIdentity) * 100); }
 
     public String getTitle() {
         return bossBar.getTitle();
@@ -113,10 +111,10 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Check player level
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, primarySkillType)) {
+        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, skillIdentity)) {
            setColor(BarColor.YELLOW);
         } else {
-            setColor(ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType));
+            setColor(ExperienceConfig.getInstance().getExperienceBarColor(skillIdentity));
         }
 
         //Every time progress updates we need to check for a title update
@@ -156,7 +154,7 @@ public class ExperienceBarWrapper {
 
     private void createBossBar()
     {
-        bossBar = mmoPlayer.getPlayer().getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType), ExperienceConfig.getInstance().getExperienceBarStyle(primarySkillType));
+        bossBar = mmoPlayer.getPlayer().getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(skillIdentity), ExperienceConfig.getInstance().getExperienceBarStyle(skillIdentity));
         bossBar.addPlayer(mmoPlayer.getPlayer());
     }
 }

@@ -492,7 +492,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXPToNextLevel(Player player, String skillType) {
-        return getPlayer(player).getExperienceManager().getXpToLevel(getNonChildSkillType(skillType));
+        return getPlayer(player).getExperienceManager().getExperienceToNextLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -510,7 +510,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static int getOfflineXPToNextLevel(String playerName, String skillType) {
-        return getOfflineProfile(playerName).getExperienceManager().getXpToLevel(getNonChildSkillType(skillType));
+        return getOfflineProfile(playerName).getExperienceManager().getExperienceToNextLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -527,7 +527,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getOfflineXPToNextLevel(UUID uuid, String skillType) {
-        return getOfflineProfile(uuid).getExperienceManager().getXpToLevel(getNonChildSkillType(skillType));
+        return getOfflineProfile(uuid).getExperienceManager().getExperienceToNextLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -547,7 +547,7 @@ public final class ExperienceAPI {
 
         PlayerProfile profile = getPlayer(player);
 
-        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpValue(skill);
+        return profile.getExperienceManager().getExperienceToNextLevel(skill) - profile.getExperienceManager().getSkillXpValue(skill);
     }
 
     /**
@@ -568,7 +568,7 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpValue(skill);
+        return profile.getExperienceManager().getExperienceToNextLevel(skill) - profile.getExperienceManager().getSkillXpValue(skill);
     }
 
     /**
@@ -588,7 +588,7 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(uuid);
 
-        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpLevelRaw(skill);
+        return profile.getExperienceManager().getExperienceToNextLevel(skill) - profile.getExperienceManager().getSkillXpLevelRaw(skill);
     }
 
     /**

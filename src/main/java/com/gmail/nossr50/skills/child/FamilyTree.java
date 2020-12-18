@@ -1,53 +1,44 @@
 package com.gmail.nossr50.skills.child;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.CoreSkillConstants;
+import com.neetgames.mcmmo.exceptions.UnknownSkillException;
+import com.neetgames.mcmmo.skill.SkillIdentity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class FamilyTree {
-    private static final HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<>();
 
-    public static Set<PrimarySkillType> getParents(PrimarySkillType childSkill) {
-        enforceChildSkill(childSkill);
+    /*
+     * Hacky crap, will remove later
+     */
 
-        // We do not check if we have the child skill in question, as not having it would mean we did something wrong, and an NPE is desired.
-        return tree.get(childSkill);
-    }
+    private static @Nullable Set<SkillIdentity> smeltingParents;
+    private static @Nullable Set<SkillIdentity> salvageParents;
 
-    protected static void registerParent(PrimarySkillType childSkill, PrimarySkillType parentSkill) {
-        enforceChildSkill(childSkill);
-        enforceNotChildSkill(parentSkill);
+    public static @NotNull Set<SkillIdentity> getParentSkills(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
+        if(CoreSkillConstants.isChildSkill(skillIdentity)) {
+            if(smeltingParents == null || salvageParents == null) {
+                smeltingParents = new HashSet<>();
+                salvageParents = new HashSet<>();
 
-        if (!tree.containsKey(childSkill)) {
-            tree.put(childSkill, EnumSet.noneOf(PrimarySkillType.class));
-        }
+                smeltingParents.add(CoreSkillConstants.MINING_ID);
+                smeltingParents.add(CoreSkillConstants.REPAIR_ID);
 
-        tree.get(childSkill).add(parentSkill);
-    }
+                salvageParents.add(CoreSkillConstants.FISHING_ID);
+                salvageParents.add(CoreSkillConstants.REPAIR_ID);
+            }
 
-    protected static void closeRegistration() {
-        for (PrimarySkillType childSkill : tree.keySet()) {
-            Set<PrimarySkillType> immutableSet = Collections.unmodifiableSet(tree.get(childSkill));
-            tree.put(childSkill, immutableSet);
-        }
-    }
+            if(skillIdentity.equals(CoreSkillConstants.SALVAGE_ID)) {
+                return salvageParents;
+            } else {
+                return smeltingParents;
+            }
 
-    protected static void clearRegistrations() {
-        tree.clear();
-    }
-
-    protected static void enforceChildSkill(PrimarySkillType skill) {
-        if (!skill.isChildSkill()) {
-            throw new IllegalArgumentException(skill.name() + " is not a child skill!");
-        }
-    }
-
-    protected static void enforceNotChildSkill(PrimarySkillType skill) {
-        if (skill.isChildSkill()) {
-            throw new IllegalArgumentException(skill.name() + " is a child skill!");
+        } else {
+            throw new UnknownSkillException();
         }
     }
 }

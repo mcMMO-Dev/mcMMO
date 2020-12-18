@@ -122,7 +122,7 @@ public class SelfListener implements Listener {
             //Give some bonus XP for low levels
             if(PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, primarySkillType))
             {
-                earlyGameBonusXP += (mmoPlayer.getExperienceManager().getXpToLevel(primarySkillType) * 0.05);
+                earlyGameBonusXP += (mmoPlayer.getExperienceManager().getExperienceToNextLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
             }
         }

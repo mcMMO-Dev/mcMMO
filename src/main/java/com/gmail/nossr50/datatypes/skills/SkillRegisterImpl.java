@@ -143,9 +143,9 @@ public class SkillRegisterImpl implements SkillRegister {
     }
 
     private void registerCoreSkills() {
-        for(CoreRootSkill coreRootSkill : CoreSkillConstants.getImmutableCoreRootSkillSet()) {
-            mcMMO.p.getLogger().info("Registering core skill: "+coreRootSkill.getSkillName());
-            registerSkill(coreRootSkill);
+        for(RootSkill rootSkill : CoreSkillConstants.getImmutableCoreRootSkillSet()) {
+            mcMMO.p.getLogger().info("Registering core skill: "+rootSkill.getSkillName());
+            registerSkill(rootSkill);
         }
     }
 

@@ -153,7 +153,7 @@ public abstract class SkillCommand implements TabExecutor {
             mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
             //LEVEL
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mmoPlayer.getExperienceManager().getSkillXpValue(skill), mmoPlayer.getExperienceManager().getXpToLevel(skill)));
+            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mmoPlayer.getExperienceManager().getSkillXpValue(skill), mmoPlayer.getExperienceManager().getExperienceToNextLevel(skill)));
 
         } else {
             /*

@@ -449,7 +449,7 @@ public class ScoreboardWrapper {
                     int currentXP = mmoPlayer.getExperienceManager().getSkillXpValue(targetSkill);
 
                     sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
-                    sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mmoPlayer.getExperienceManager().getXpToLevel(targetSkill) - currentXP);
+                    sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mmoPlayer.getExperienceManager().getExperienceToNextLevel(targetSkill) - currentXP);
                 }
                 else {
                     for (PrimarySkillType parentSkill : FamilyTree.getParents(targetSkill)) {

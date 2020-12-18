@@ -2,17 +2,18 @@ package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.CoreSkillConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.neetgames.mcmmo.skill.SkillBossBarSetting;
-import com.neetgames.mcmmo.skill.SkillBossBarState;
+import com.neetgames.mcmmo.skill.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,20 +25,20 @@ public class MMOExperienceBarManager {
 
     int delaySeconds = 3;
 
-    private @NotNull final Map<PrimarySkillType, SkillBossBarState> barStateMapRef;
+    private @NotNull final Map<SkillIdentity, SkillBossBarState> barStateMapRef;
 
-    private @NotNull final EnumMap<PrimarySkillType, ExperienceBarWrapper> experienceBars;
-    private @NotNull final EnumMap<PrimarySkillType, ExperienceBarHideTask> experienceBarHideTaskHashMap;
+    private @NotNull final HashMap<SkillIdentity, ExperienceBarWrapper> experienceBars;
+    private @NotNull final HashMap<SkillIdentity, ExperienceBarHideTask> experienceBarHideTaskHashMap;
 
 
-    public MMOExperienceBarManager(@NotNull McMMOPlayer mmoPlayer, @NotNull Map<PrimarySkillType, SkillBossBarState> barStateMapRef)
+    public MMOExperienceBarManager(@NotNull McMMOPlayer mmoPlayer, @NotNull Map<SkillIdentity, SkillBossBarState> barStateMapRef)
     {
         this.mmoPlayer = mmoPlayer;
         this.barStateMapRef = barStateMapRef;
 
         //Init maps
-        experienceBars = new EnumMap<>(PrimarySkillType.class);
-        experienceBarHideTaskHashMap = new EnumMap<>(PrimarySkillType.class);
+        experienceBars = new HashMap<>();
+        experienceBarHideTaskHashMap = new HashMap<>();
 
         init();
     }
@@ -47,8 +48,8 @@ public class MMOExperienceBarManager {
     }
 
     private void syncBarStates() {
-        for(Map.Entry<PrimarySkillType, SkillBossBarState> entry : barStateMapRef.entrySet()) {
-            PrimarySkillType key = entry.getKey();
+        for(Map.Entry<SkillIdentity, SkillBossBarState> entry : barStateMapRef.entrySet()) {
+            SkillIdentity key = entry.getKey();
             SkillBossBarState barState = entry.getValue();
 
             switch(barState) {
@@ -66,31 +67,31 @@ public class MMOExperienceBarManager {
         barStateMapRef.putAll(generateDefaultBarStateMap());
     }
 
-    public void updateExperienceBar(@NotNull PrimarySkillType primarySkillType, @NotNull Plugin plugin)
+    public void updateExperienceBar(@NotNull SkillIdentity skillIdentity, @NotNull Plugin plugin)
     {
-        if(isBarDisabled(primarySkillType))
+        if(isBarDisabled(skillIdentity))
             return;
 
         //Init Bar
-        if(experienceBars.get(primarySkillType) == null)
-            experienceBars.put(primarySkillType, new ExperienceBarWrapper(primarySkillType, mmoPlayer.getPersistentPlayerData()));
+        if(experienceBars.get(skillIdentity) == null)
+            experienceBars.put(skillIdentity, new ExperienceBarWrapper(skillIdentity, mmoPlayer.getPersistentPlayerData()));
 
         //Get Bar
-        ExperienceBarWrapper experienceBarWrapper = experienceBars.get(primarySkillType);
+        ExperienceBarWrapper experienceBarWrapper = experienceBars.get(skillIdentity);
 
         //Update Progress
-        experienceBarWrapper.setProgress(mmoPlayer.getExperienceManager().getProgressInCurrentSkillLevel(primarySkillType));
+        experienceBarWrapper.setProgress(mmoPlayer.getExperienceManager().getProgressInCurrentSkillLevel(skillIdentity));
 
         //Show Bar
         experienceBarWrapper.showExperienceBar();
 
         //Setup Hide Bar Task
-        if(experienceBarHideTaskHashMap.get(primarySkillType) != null)
+        if(experienceBarHideTaskHashMap.get(skillIdentity) != null)
         {
-            experienceBarHideTaskHashMap.get(primarySkillType).cancel();
+            experienceBarHideTaskHashMap.get(skillIdentity).cancel();
         }
 
-        scheduleHideTask(primarySkillType, plugin);
+        scheduleHideTask(skillIdentity, plugin);
     }
 
     private boolean isBarDisabled(PrimarySkillType primarySkillType) {
@@ -132,34 +133,34 @@ public class MMOExperienceBarManager {
         NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(), "Commands.XPBar.DisableAll");
     }
 
-    public void xpBarSettingToggle(@NotNull SkillBossBarSetting skillBossBarSetting, @Nullable PrimarySkillType skillType) {
+    public void xpBarSettingToggle(@NotNull SkillBossBarSetting skillBossBarSetting, @Nullable SkillIdentity skillIdentity) {
         switch(skillBossBarSetting) {
             case SHOW:
-                barStateMapRef.put(skillType, SkillBossBarState.ALWAYS_ON);
+                barStateMapRef.put(skillIdentity, SkillBossBarState.ALWAYS_ON);
 
                 //Remove lingering tasks
-                if(experienceBarHideTaskHashMap.containsKey(skillType)) {
-                    experienceBarHideTaskHashMap.get(skillType).cancel();
+                if(experienceBarHideTaskHashMap.containsKey(skillIdentity)) {
+                    experienceBarHideTaskHashMap.get(skillIdentity).cancel();
                 }
 
-                updateExperienceBar(skillType, mcMMO.p);
+                updateExperienceBar(skillIdentity, mcMMO.p);
                 break;
             case HIDE:
-                barStateMapRef.put(skillType, SkillBossBarState.DISABLED);
+                barStateMapRef.put(skillIdentity, SkillBossBarState.DISABLED);
 
                 //Remove lingering tasks
-                if(experienceBarHideTaskHashMap.containsKey(skillType)) {
-                    experienceBarHideTaskHashMap.get(skillType).cancel();
+                if(experienceBarHideTaskHashMap.containsKey(skillIdentity)) {
+                    experienceBarHideTaskHashMap.get(skillIdentity).cancel();
                 }
 
-                hideExperienceBar(skillType);
+                hideExperienceBar(skillIdentity);
                 break;
             case RESET:
                 resetBarSettings();
                 break;
         }
 
-        informPlayer(skillBossBarSetting, skillType);
+        informPlayer(skillBossBarSetting, skillIdentity);
     }
 
     private void resetBarSettings() {
@@ -175,24 +176,21 @@ public class MMOExperienceBarManager {
         }
     }
 
-    /*
-     * Utility Methods
-     */
-
-    public static @NotNull EnumMap<PrimarySkillType, SkillBossBarState> generateDefaultBarStateMap() {
-        EnumMap<PrimarySkillType, SkillBossBarState> barStateMap = new EnumMap<>(PrimarySkillType.class);
+    public static @NotNull HashMap<SkillIdentity, SkillBossBarState> generateDefaultBarStateMap() {
+        HashMap<SkillIdentity, SkillBossBarState> barStateMap = new HashMap<>();
 
         setBarStateDefaults(barStateMap);
 
         return barStateMap;
     }
 
-    public static void setBarStateDefaults(EnumMap<PrimarySkillType, SkillBossBarState> barStateHashMap) {
-        for(PrimarySkillType skillType : PrimarySkillType.values()) {
-            if(skillType.isChildSkill()) {
-                barStateHashMap.put(skillType, SkillBossBarState.DISABLED);
+    public static void setBarStateDefaults(HashMap<SkillIdentity, SkillBossBarState> barStateHashMap) {
+        for(RootSkill rootSkill : CoreSkillConstants.getImmutableCoreRootSkillSet()) {
+
+            if(CoreSkillConstants.isChildSkill(rootSkill.getSkillIdentity())) {
+                barStateHashMap.put(rootSkill.getSkillIdentity(), SkillBossBarState.DISABLED);
             } else {
-                barStateHashMap.put(skillType, SkillBossBarState.NORMAL);
+                barStateHashMap.put(rootSkill.getSkillIdentity(), SkillBossBarState.NORMAL);
             }
         }
     }

@@ -33,9 +33,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
-import com.neetgames.jmal.core.player.OnlinePlayer;
-import com.neetgames.mcmmo.player.MMOPlayer;
+import com.neetgames.mcmmo.exceptions.UnknownSkillException;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.neetgames.mcmmo.skill.SkillIdentity;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Location;
@@ -478,12 +478,12 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
     /**
      * Update the experience bars for this player
-     * @param primarySkillType target skill
+     * @param skillIdentity target skill
      * @param plugin your {@link Plugin}
      */
-    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
+    public void updateXPBar(@NotNull SkillIdentity skillIdentity, Plugin plugin) {
         //XP BAR UPDATES
-        experienceBarManager.updateExperienceBar(primarySkillType, plugin);
+        experienceBarManager.updateExperienceBar(skillIdentity, plugin);
     }
 
     /**
@@ -617,5 +617,25 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     @Override
     public boolean isChatSpying() {
         return false;
+    }
+
+    @Override
+    public double getProgressInCurrentSkillLevel(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
+        return experienceManager.getProgressInCurrentSkillLevel(skillIdentity);
+    }
+
+    @Override
+    public int getSkillLevel(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
+        return experienceManager.getSkillLevel(skillIdentity);
+    }
+
+    @Override
+    public int getSkillExperience(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
+        return experienceManager.getSkillXpValue(skillIdentity);
+    }
+
+    @Override
+    public int getExperienceToNextLevel(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
+        return experienceManager.getExperienceToNextLevel(skillIdentity);
     }
 }
