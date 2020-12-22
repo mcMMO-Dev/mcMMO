@@ -6,7 +6,12 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.api.SkillRegister;
+import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
+import com.neetgames.mcmmo.skill.SkillIdentity;
+import com.neetgames.mcmmo.skill.SuperSkill;
+import it.unimi.dsi.fastutil.Hash;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -14,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PersistentPlayerDataBuilder {
@@ -29,11 +36,11 @@ public class PersistentPlayerDataBuilder {
     private @Nullable MobHealthBarType mobHealthBarType;
 
     /* Skill Data */
-    private @Nullable EnumMap<PrimarySkillType, Integer> skillLevelValues;
-    private @Nullable EnumMap<PrimarySkillType, Float> skillExperienceValues;
-    private @Nullable EnumMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
-    private @Nullable EnumMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private @Nullable EnumMap<PrimarySkillType, SkillBossBarState> barStateMap;
+    private @Nullable Map<RootSkill, Integer> skillLevelValues;
+    private @Nullable Map<RootSkill, Float> skillExperienceValues;
+    private @Nullable Map<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private @Nullable Map<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private @Nullable Map<RootSkill, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private boolean partyChatSpying;
@@ -99,19 +106,19 @@ public class PersistentPlayerDataBuilder {
             throw new NullArgumentException("mobHealthBarType");
 
 
-        return new PersistentPlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, mobHealthBarType, lastLogin, leaderBoardExemption);
+        return new PersistentPlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
     }
 
-    private void validateBarStateMapEntries(@NotNull EnumMap<PrimarySkillType, SkillBossBarState> map) {
-        EnumMap<PrimarySkillType, SkillBossBarState> barMapDefaults = MMOExperienceBarManager.generateDefaultBarStateMap();
-        
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            map.putIfAbsent(primarySkillType, barMapDefaults.get(primarySkillType));
+    private void validateBarStateMapEntries(@NotNull Map<RootSkill, SkillBossBarState> map) {
+        Map<RootSkill, SkillBossBarState> barMapDefaults = MMOExperienceBarManager.generateDefaultBarStateMap();
+
+        for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
+            map.putIfAbsent(key, barMapDefaults.get(key));
         }
     }
 
-    private void validateExperienceValueMapEntries(@NotNull EnumMap<PrimarySkillType, Float> map) {
-        for(PrimarySkillType key : PrimarySkillType.values()) {
+    private void validateExperienceValueMapEntries(@NotNull Map<RootSkill, Float> map) {
+        for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
             map.putIfAbsent(key, 0F);
 
             if(map.get(key) < 0F) {
@@ -121,7 +128,7 @@ public class PersistentPlayerDataBuilder {
         }
     }
 
-    private void validateUniquePlayerDataMapEntries(@NotNull EnumMap<UniqueDataType, Integer> map) {
+    private void validateUniquePlayerDataMapEntries(@NotNull Map<UniqueDataType, Integer> map) {
         for(UniqueDataType key : UniqueDataType.values()) {
             map.putIfAbsent(key, 0);
 
@@ -132,8 +139,8 @@ public class PersistentPlayerDataBuilder {
         }
     }
 
-    private void validateAbilityCooldownMapEntries(@NotNull EnumMap<SuperAbilityType, Integer> map) {
-        for(SuperAbilityType key : SuperAbilityType.values()) {
+    private void validateAbilityCooldownMapEntries(@NotNull Map<SuperSkill, Integer> map) {
+        for(SuperSkill key : mcMMO.p.getSkillRegister().getSuperSkills()) {
             map.putIfAbsent(key, 0);
 
             if(map.get(key) < 0) {
@@ -143,8 +150,8 @@ public class PersistentPlayerDataBuilder {
         }
     }
 
-    private void validateSkillLevelMapEntries(@NotNull EnumMap<PrimarySkillType, Integer> map) {
-        for(PrimarySkillType key : PrimarySkillType.values()) {
+    private void validateSkillLevelMapEntries(@NotNull Map<RootSkill, Integer> map) {
+        for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
             map.putIfAbsent(key, 0);
 
             if(map.get(key) < 0) {
@@ -181,43 +188,34 @@ public class PersistentPlayerDataBuilder {
         return this;
     }
 
-    public @Nullable MobHealthBarType getMobHealthBarType() {
-        return mobHealthBarType;
-    }
-
-    public @NotNull PersistentPlayerDataBuilder setMobHealthBarType(@NotNull MobHealthBarType mobHealthBarType) {
-        this.mobHealthBarType = mobHealthBarType;
-        return this;
-    }
-
-    public @Nullable EnumMap<PrimarySkillType, Integer> getSkillLevelValues() {
+    public @Nullable Map<RootSkill, Integer> getSkillLevelValues() {
         return skillLevelValues;
     }
 
-    public @NotNull PersistentPlayerDataBuilder setSkillLevelValues(@NotNull EnumMap<PrimarySkillType, Integer> skillLevelValues) {
+    public @NotNull PersistentPlayerDataBuilder setSkillLevelValues(@NotNull HashMap<RootSkill, Integer> skillLevelValues) {
         this.skillLevelValues = skillLevelValues;
         return this;
     }
 
-    public @Nullable EnumMap<PrimarySkillType, Float> getSkillExperienceValues() {
+    public @Nullable Map<RootSkill, Float> getSkillExperienceValues() {
         return skillExperienceValues;
     }
 
-    public @NotNull PersistentPlayerDataBuilder setSkillExperienceValues(@NotNull EnumMap<PrimarySkillType, Float> skillExperienceValues) {
+    public @NotNull PersistentPlayerDataBuilder setSkillExperienceValues(@NotNull HashMap<RootSkill, Float> skillExperienceValues) {
         this.skillExperienceValues = skillExperienceValues;
         return this;
     }
 
-    public @Nullable EnumMap<SuperAbilityType, Integer> getAbilityDeactivationTimestamps() {
+    public @Nullable Map<SuperSkill, Integer> getAbilityDeactivationTimestamps() {
         return abilityDeactivationTimestamps;
     }
 
-    public @NotNull PersistentPlayerDataBuilder setAbilityDeactivationTimestamps(@NotNull EnumMap<SuperAbilityType, Integer> abilityDeactivationTimestamps) {
+    public @NotNull PersistentPlayerDataBuilder setAbilityDeactivationTimestamps(@NotNull HashMap<SuperSkill, Integer> abilityDeactivationTimestamps) {
         this.abilityDeactivationTimestamps = abilityDeactivationTimestamps;
         return this;
     }
 
-    public @Nullable EnumMap<UniqueDataType, Integer> getUniquePlayerData() {
+    public @Nullable Map<UniqueDataType, Integer> getUniquePlayerData() {
         return uniquePlayerData;
     }
 
@@ -226,11 +224,11 @@ public class PersistentPlayerDataBuilder {
         return this;
     }
 
-    public @Nullable EnumMap<PrimarySkillType, SkillBossBarState> getBarStateMap() {
+    public @Nullable Map<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
-    public @NotNull PersistentPlayerDataBuilder setBarStateMap(@NotNull EnumMap<PrimarySkillType, SkillBossBarState> barStateMap) {
+    public @NotNull PersistentPlayerDataBuilder setBarStateMap(@NotNull Map<RootSkill, SkillBossBarState> barStateMap) {
         this.barStateMap = barStateMap;
         return this;
     }
