@@ -7,7 +7,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
@@ -29,7 +29,7 @@ public final class ShareHandler {
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, @NotNull McMMOPlayer mmoPlayer, @NotNull Party party, @NotNull PrimarySkillType primarySkillType, @NotNull XPGainReason xpGainReason) {
+    public static boolean handleXpShare(float xp, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull Party party, @NotNull PrimarySkillType primarySkillType, @NotNull XPGainReason xpGainReason) {
 
         if (party.getPartyExperienceManager().getXpShareMode() != ShareMode.EQUAL) {
             return false;
@@ -48,7 +48,7 @@ public final class ShareHandler {
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player otherMember : nearMembers) {
-            McMMOPlayer partyMember = mcMMO.getUserManager().queryPlayer(otherMember);
+            OnlineMMOPlayer partyMember = mcMMO.getUserManager().queryPlayer(otherMember);
 
             //Profile not loaded
             if(partyMember == null) {
@@ -68,7 +68,7 @@ public final class ShareHandler {
      * @param mmoPlayer Player who picked up the item
      * @return True if the item has been shared
      */
-    public static boolean handleItemShare(Item drop, McMMOPlayer mmoPlayer) {
+    public static boolean handleItemShare(Item drop, OnlineMMOPlayer mmoPlayer) {
         ItemStack itemStack = drop.getItemStack();
         ItemShareType dropType = ItemShareType.getShareType(itemStack);
 
@@ -111,7 +111,7 @@ public final class ShareHandler {
                     int highestRoll = 0;
 
                     for (Player member : nearMembers) {
-                        McMMOPlayer mcMMOMember = mcMMO.getUserManager().getPlayer(member);
+                        OnlineMMOPlayer mcMMOMember = mcMMO.getUserManager().getPlayer(member);
 
                         //Profile not loaded
                         if(mcMMO.getUserManager().getPlayer(member) == null)
@@ -130,14 +130,14 @@ public final class ShareHandler {
                         highestRoll = diceRoll;
 
                         if (winningPlayer != null) {
-                            McMMOPlayer mcMMOWinning = mcMMO.getUserManager().getPlayer(winningPlayer);
+                            OnlineMMOPlayer mcMMOWinning = mcMMO.getUserManager().getPlayer(winningPlayer);
                             mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
                         }
 
                         winningPlayer = member;
                     }
 
-                    McMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(winningPlayer);
+                    OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(winningPlayer);
                     mcMMOTarget.setItemShareModifier(mcMMOTarget.getItemShareModifier() - itemWeight);
                     awardDrop(winningPlayer, newStack);
                 }

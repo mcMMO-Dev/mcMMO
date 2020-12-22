@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.party.teleport;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyMember;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -26,7 +26,7 @@ public class PtpAcceptAnyCommand implements CommandExecutor {
             return false;
 
         Player playerSender = (Player) sender;
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(playerSender);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(playerSender);
 
         if(mmoPlayer == null) {
             playerSender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));

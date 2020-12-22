@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
@@ -45,7 +45,7 @@ public class TamingManager extends SkillManager {
 
     private HashMap<CallOfTheWildType, List<TrackedTamingEntity>> playerSummonedEntities;
 
-    public TamingManager(@NotNull McMMOPlayer mmoPlayer) {
+    public TamingManager(@NotNull OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.TAMING);
         init();
     }

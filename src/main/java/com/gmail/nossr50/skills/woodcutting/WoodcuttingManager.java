@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -51,7 +51,7 @@ public class WoodcuttingManager extends SkillManager {
             new int[] { 2, -1}, new int[] { 2, 0}, new int[] { 2, 1},
     };
 
-    public WoodcuttingManager(McMMOPlayer mmoPlayer) {
+    public WoodcuttingManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.WOODCUTTING);
         treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
     }

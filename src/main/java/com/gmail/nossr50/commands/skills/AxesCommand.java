@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -35,7 +35,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
             impactDamage = mmoPlayer.getAxesManager().getImpactDurabilityDamage();
@@ -62,7 +62,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canSkullSplitter = Permissions.skullSplitter(mmoPlayer.getPlayer()) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.AXES_SKULL_SPLITTER);
         canCritical = canUseSubskill(mmoPlayer, SubSkillType.AXES_CRITICAL_STRIKES);
         canAxeMastery = canUseSubskill(mmoPlayer, SubSkillType.AXES_AXE_MASTERY);
@@ -71,7 +71,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canImpact) {
@@ -105,7 +105,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.AXES);

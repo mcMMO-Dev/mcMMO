@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -22,7 +22,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
-        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
         if (player != null && mmoPlayer != null) {
             this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
@@ -43,7 +43,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
-        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
         if (player != null && mmoPlayer != null) {
             this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
@@ -68,7 +68,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
 
-        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
         if (player != null && mmoPlayer != null) {
             this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
@@ -93,7 +93,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
 
-        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
         if (player != null && mmoPlayer != null) {
             this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {

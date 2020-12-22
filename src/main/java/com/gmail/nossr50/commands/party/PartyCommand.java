@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -75,7 +75,7 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if (args.length < 1) {
             if (!mcMMO.getPartyManager().mmoPlayer.inParty()) {

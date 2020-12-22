@@ -2,7 +2,7 @@ package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.util.Misc;
 import com.neetgames.mcmmo.exceptions.InvalidPlayerException;
 import org.bukkit.OfflinePlayer;
@@ -163,7 +163,7 @@ public class PartyMemberManager {
      * @param mmoPlayer The player to check
      * @return the near party members
      */
-    public @NotNull List<Player> getNearMembers(@NotNull McMMOPlayer mmoPlayer) {
+    public @NotNull List<Player> getNearMembers(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
         Party party = mmoPlayer.getParty();
 

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.crossbows;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class CrossbowManager extends SkillManager {
-    public CrossbowManager(McMMOPlayer mmoPlayer) {
+    public CrossbowManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.CROSSBOWS);
     }
     private static final int SPREAD_VALUE = 12;

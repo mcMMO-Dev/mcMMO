@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.subskills.interfaces;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
@@ -63,7 +63,7 @@ public interface SubSkill extends Skill {
      * @param componentBuilder target component builder
      * @param mmoPlayer owner of this skill
      */
-    void addStats(TextComponent.Builder componentBuilder, @NotNull McMMOPlayer mmoPlayer);
+    void addStats(TextComponent.Builder componentBuilder, @NotNull OnlineMMOPlayer mmoPlayer);
 
     /**
      * Whether or not this subskill is enabled

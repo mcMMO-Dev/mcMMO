@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -63,7 +63,7 @@ public class TextComponentFactory {
         return Component.text(text);
     }
 
-    public static void sendPlayerSubSkillWikiLink(McMMOPlayer mmoPlayer, String subskillformatted)
+    public static void sendPlayerSubSkillWikiLink(OnlineMMOPlayer mmoPlayer, String subskillformatted)
     {
         if(!Config.getInstance().getUrlLinksEnabled())
             return;
@@ -82,7 +82,7 @@ public class TextComponentFactory {
         mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(Identity.nil(), wikiLinkComponent, MessageType.SYSTEM);
     }
 
-    public static void sendPlayerUrlHeader(@NotNull McMMOPlayer mmoPlayer) {
+    public static void sendPlayerUrlHeader(@NotNull OnlineMMOPlayer mmoPlayer) {
         TextComponent prefix = Component.text(LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Prefix") + " ");
         /*prefix.setColor(ChatColor.DARK_AQUA);*/
         TextComponent suffix = Component.text(" "+LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Suffix"));
@@ -241,7 +241,7 @@ public class TextComponentFactory {
         return ClickEvent.openUrl(url);
     }
 
-    private static Component getSubSkillTextComponent(@NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
+    private static Component getSubSkillTextComponent(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         //Get skill name
         String skillName = subSkillType.getLocaleName();
@@ -259,7 +259,7 @@ public class TextComponentFactory {
         return textComponent.build();
     }
 
-    private static TextComponent getSubSkillTextComponent(@NotNull McMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
+    private static TextComponent getSubSkillTextComponent(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
     {
         //String key = abstractSubSkill.getConfigKeyName();
         String skillName = abstractSubSkill.getNiceName();
@@ -280,7 +280,7 @@ public class TextComponentFactory {
         return textComponent.build();
     }
 
-    private static TextComponent.Builder initNewSkillTextComponent(@NotNull McMMOPlayer mmoPlayer, @NotNull String skillName, @NotNull SubSkillType subSkillType, boolean skillUnlocked) {
+    private static TextComponent.Builder initNewSkillTextComponent(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String skillName, @NotNull SubSkillType subSkillType, boolean skillUnlocked) {
         TextComponent.Builder textComponent;
         if (skillUnlocked) {
             if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(mmoPlayer, subSkillType) && subSkillType.getNumRanks() > 1)
@@ -299,12 +299,12 @@ public class TextComponentFactory {
         return textComponent;
     }
 
-    private static Component getSubSkillHoverComponent(@NotNull McMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
+    private static Component getSubSkillHoverComponent(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
     {
         return getSubSkillHoverEventJSON(abstractSubSkill, mmoPlayer);
     }
 
-    private static Component getSubSkillHoverComponent(@NotNull McMMOPlayer mmoPlayer, SubSkillType subSkillType)
+    private static Component getSubSkillHoverComponent(@NotNull OnlineMMOPlayer mmoPlayer, SubSkillType subSkillType)
     {
         return getSubSkillHoverEventJSON(subSkillType, mmoPlayer);
     }
@@ -315,7 +315,7 @@ public class TextComponentFactory {
      * @param mmoPlayer the player who owns this subskill
      * @return the hover basecomponent object for this subskill
      */
-    private static Component getSubSkillHoverEventJSON(@NotNull AbstractSubSkill abstractSubSkill, @NotNull McMMOPlayer mmoPlayer)
+    private static Component getSubSkillHoverEventJSON(@NotNull AbstractSubSkill abstractSubSkill, @NotNull OnlineMMOPlayer mmoPlayer)
     {
         String skillName = abstractSubSkill.getNiceName();
 
@@ -363,7 +363,7 @@ public class TextComponentFactory {
         return componentBuilder.build();
     }
 
-    private static TextComponent.Builder setupSkillComponentNameStyle(@NotNull McMMOPlayer mmoPlayer, @NotNull String skillName, @NotNull SubSkillType subSkillType, boolean skillUnlocked) {
+    private static TextComponent.Builder setupSkillComponentNameStyle(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String skillName, @NotNull SubSkillType subSkillType, boolean skillUnlocked) {
         TextComponent.Builder componentBuilder;
         if (skillUnlocked) {
             if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(mmoPlayer, subSkillType) && subSkillType.getNumRanks() > 1)
@@ -417,7 +417,7 @@ public class TextComponentFactory {
     }
 
     @Deprecated
-    private static @NotNull Component getSubSkillHoverEventJSON(@NotNull SubSkillType subSkillType, @NotNull McMMOPlayer mmoPlayer)
+    private static @NotNull Component getSubSkillHoverEventJSON(@NotNull SubSkillType subSkillType, @NotNull OnlineMMOPlayer mmoPlayer)
     {
         String skillName = subSkillType.getLocaleName();
 
@@ -485,7 +485,7 @@ public class TextComponentFactory {
         componentBuilder.append(Component.newline());
     }
 
-    public static void getSubSkillTextComponents(@NotNull McMMOPlayer mmoPlayer, @NotNull List<Component> textComponents, @NotNull PrimarySkillType parentSkill) {
+    public static void getSubSkillTextComponents(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull List<Component> textComponents, @NotNull PrimarySkillType parentSkill) {
         for(SubSkillType subSkillType : SubSkillType.values())
         {
             if(subSkillType.getParentSkill() == parentSkill)
@@ -514,7 +514,7 @@ public class TextComponentFactory {
         }
     }
 
-    public static @NotNull TextComponent getSubSkillUnlockedNotificationComponents(@NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
+    public static @NotNull TextComponent getSubSkillUnlockedNotificationComponents(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         TextComponent.Builder unlockMessage = Component.text().content(LocaleLoader.getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(), RankUtils.getRank(mmoPlayer, subSkillType)));
         unlockMessage.hoverEvent(HoverEvent.showText(getSubSkillHoverComponent(mmoPlayer, subSkillType)));

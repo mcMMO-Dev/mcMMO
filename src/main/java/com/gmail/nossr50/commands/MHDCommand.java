@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.FlatFileDatabaseManager;
 import com.gmail.nossr50.database.SQLDatabaseManager;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -20,7 +20,7 @@ public class MHDCommand implements TabExecutor {
         if (mcMMO.getDatabaseManager() instanceof SQLDatabaseManager) {
             SQLDatabaseManager m = (SQLDatabaseManager) mcMMO.getDatabaseManager();
             m.resetMobHealthSettings();
-            for (McMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
+            for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
                 mmoPlayer.setMobHealthBarType(Config.getInstance().getMobHealthbarDefault());
             }
             sender.sendMessage("Mob health reset");
@@ -29,7 +29,7 @@ public class MHDCommand implements TabExecutor {
         if (mcMMO.getDatabaseManager() instanceof FlatFileDatabaseManager) {
             FlatFileDatabaseManager m = (FlatFileDatabaseManager) mcMMO.getDatabaseManager();
             m.resetMobHealthSettings();
-            for (McMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
+            for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
                 mmoPlayer.setMobHealthBarType(Config.getInstance().getMobHealthbarDefault());
             }
             sender.sendMessage("Mob health reset");

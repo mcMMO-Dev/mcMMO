@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -59,7 +59,7 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
 
         if(mmoPlayer == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -121,7 +121,7 @@ public abstract class SkillCommand implements TabExecutor {
         return skillGuideCommand.onCommand(sender, command, label, args);
     }
 
-    private void sendStatMessages(@NotNull McMMOPlayer mmoPlayer, boolean isLucky, boolean hasEndurance, float skillValue) {
+    private void sendStatMessages(@NotNull OnlineMMOPlayer mmoPlayer, boolean isLucky, boolean hasEndurance, float skillValue) {
         List<String> statsMessages = statsDisplay(mmoPlayer, skillValue, hasEndurance, isLucky);
 
         if (!statsMessages.isEmpty()) {
@@ -135,7 +135,7 @@ public abstract class SkillCommand implements TabExecutor {
         mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
     }
 
-    private void sendSkillCommandHeader(@NotNull McMMOPlayer mmoPlayer, int skillValue) {
+    private void sendSkillCommandHeader(@NotNull OnlineMMOPlayer mmoPlayer, int skillValue) {
         ChatColor hd1 = ChatColor.DARK_AQUA;
         ChatColor c1 = ChatColor.GOLD;
         ChatColor c2 = ChatColor.RED;
@@ -200,11 +200,11 @@ public abstract class SkillCommand implements TabExecutor {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
-    protected @NotNull String[] getAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkill) {
+    protected @NotNull String[] getAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkill) {
         return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, mmoPlayer.getPlayer(), subSkill);
     }
 
-    protected @NotNull String[] calculateLengthDisplayValues(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected @NotNull String[] calculateLengthDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         int maxLength = skill.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
@@ -255,15 +255,15 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    protected abstract void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue);
+    protected abstract void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue);
 
-    protected abstract void permissionsCheck(@NotNull McMMOPlayer mmoPlayer);
+    protected abstract void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer);
 
     //protected abstract List<String> effectsDisplay();
 
-    protected abstract @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky);
+    protected abstract @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky);
 
-    protected abstract @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer player);
+    protected abstract @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer player);
 
     /**
      * Checks if a player can use a skill
@@ -271,7 +271,7 @@ public abstract class SkillCommand implements TabExecutor {
      * @param subSkillType target subskill
      * @return true if the player has permission and has the skill unlocked
      */
-    protected boolean canUseSubskill(@NotNull McMMOPlayer mmoPlayer, SubSkillType subSkillType) {
+    protected boolean canUseSubskill(@NotNull OnlineMMOPlayer mmoPlayer, SubSkillType subSkillType) {
         return Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType) && RankUtils.hasUnlockedSubskill(mmoPlayer, subSkillType);
     }
 }

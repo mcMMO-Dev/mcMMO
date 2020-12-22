@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,7 @@ public class PlayerLevelUtils {
      * @param primarySkillType target skill
      * @return if the player would qualify for the XP boost if its enabled
      */
-    public static boolean qualifiesForEarlyGameBoost(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType) {
+    public static boolean qualifiesForEarlyGameBoost(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType) {
         return mmoPlayer.getSkillLevel(primarySkillType) < mcMMO.getPlayerLevelUtils().getEarlyGameCutoff(primarySkillType);
     }
 }

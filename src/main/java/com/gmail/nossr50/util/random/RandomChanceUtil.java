@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -328,7 +328,7 @@ public class RandomChanceUtil
         return displayValues;
     }
 
-    public static String[] calculateAbilityDisplayValuesStatic(@NotNull McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, double chance) {
+    public static String[] calculateAbilityDisplayValuesStatic(@NotNull OnlineMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, double chance) {
         RandomChanceStatic rcs = new RandomChanceStatic(chance, false);
         double successChance = getRandomChanceExecutionChance(rcs);
 

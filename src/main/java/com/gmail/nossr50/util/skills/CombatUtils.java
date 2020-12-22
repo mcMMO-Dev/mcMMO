@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.OldName;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -75,7 +75,7 @@ public final class CombatUtils {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -125,7 +125,7 @@ public final class CombatUtils {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -140,7 +140,7 @@ public final class CombatUtils {
     }
 
 
-    private static void printFinalDamageDebug(@NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull McMMOPlayer mcMMOPlayer, @Nullable String @Nullable ... extraInfoLines) {
+    private static void printFinalDamageDebug(@NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull OnlineMMOPlayer mcMMOPlayer, @Nullable String @Nullable ... extraInfoLines) {
         if(mcMMOPlayer.isDebugMode()) {
             player.sendMessage("Final Damage value after mcMMO modifiers: "+ event.getFinalDamage());
             if(extraInfoLines != null) {
@@ -161,7 +161,7 @@ public final class CombatUtils {
         double finalDamage = initialDamage;
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -212,7 +212,7 @@ public final class CombatUtils {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -253,7 +253,7 @@ public final class CombatUtils {
         double finalDamage = initialDamage;
 
         if(master != null && master.isOnline() && master.isValid()) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(master);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(master);
 
             //Make sure the profiles been loaded
             if(mmoPlayer == null) {
@@ -285,7 +285,7 @@ public final class CombatUtils {
     private static void processArcheryCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
         double initialDamage = event.getDamage();
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -334,7 +334,7 @@ public final class CombatUtils {
     private static void processCrossbowCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Projectile arrow) {
         double initialDamage = event.getDamage();
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -393,7 +393,7 @@ public final class CombatUtils {
                 return;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
             AcrobaticsManager acrobaticsManager = mmoPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
@@ -514,7 +514,7 @@ public final class CombatUtils {
                 }
 
                 if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
-                    McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                    OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
                     if(mmoPlayer == null) {
                         return;
@@ -558,7 +558,7 @@ public final class CombatUtils {
      * @param subSkillType the specific limit break skill for calculations
      * @return the RAW damage bonus from Limit Break which is applied before reductions
      */
-    public static int getLimitBreakDamage(@NotNull McMMOPlayer attacker, @NotNull LivingEntity defender, @NotNull SubSkillType subSkillType) {
+    public static int getLimitBreakDamage(@NotNull OnlineMMOPlayer attacker, @NotNull LivingEntity defender, @NotNull SubSkillType subSkillType) {
         if(defender instanceof Player) {
             Player playerDefender = (Player) defender;
             return getLimitBreakDamageAgainstQuality(attacker, subSkillType, getArmorQualityLevel(playerDefender));
@@ -575,7 +575,7 @@ public final class CombatUtils {
      * @param armorQualityLevel Armor quality level
      * @return the RAW damage boost after its been mutated by armor quality
      */
-    public static int getLimitBreakDamageAgainstQuality(@NotNull McMMOPlayer attacker, @NotNull SubSkillType subSkillType, int armorQualityLevel) {
+    public static int getLimitBreakDamageAgainstQuality(@NotNull OnlineMMOPlayer attacker, @NotNull SubSkillType subSkillType, int armorQualityLevel) {
         int rawDamageBoost = RankUtils.getRank(attacker, subSkillType);
 
         if(armorQualityLevel <= 4) {
@@ -620,7 +620,7 @@ public final class CombatUtils {
      * @param mmoPlayer target entity
      * @return true if the mmoPlayer has access to the limit break
      */
-    public static boolean canUseLimitBreak(@NotNull McMMOPlayer mmoPlayer, LivingEntity target, @NotNull SubSkillType subSkillType) {
+    public static boolean canUseLimitBreak(@NotNull OnlineMMOPlayer mmoPlayer, LivingEntity target, @NotNull SubSkillType subSkillType) {
         if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
             return RankUtils.hasUnlockedSubskill(mmoPlayer, subSkillType)
                     && Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType);
@@ -795,7 +795,7 @@ public final class CombatUtils {
      * @param target The defending entity
      * @param primarySkillType The skill being used
      */
-    public static void processCombatXP(@NotNull McMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+    public static void processCombatXP(@NotNull OnlineMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
         processCombatXP(mmoPlayer, target, primarySkillType, 1.0);
     }
 
@@ -807,7 +807,7 @@ public final class CombatUtils {
      * @param primarySkillType The skill being used
      * @param multiplier final XP result will be multiplied by this
      */
-    public static void processCombatXP(@NotNull McMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+    public static void processCombatXP(@NotNull OnlineMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
         double baseXP = 0;
         XPGainReason xpGainReason;
 

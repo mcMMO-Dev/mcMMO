@@ -7,7 +7,7 @@ import com.gmail.nossr50.chat.mailer.PartyChatMailer;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
@@ -45,7 +45,7 @@ public class ChatManager {
      * @param rawMessage the raw message from the player as it was typed
      * @param isAsync whether or not this is getting processed via async
      */
-    public void processPlayerMessage(@NotNull McMMOPlayer mmoPlayer, @NotNull String rawMessage, boolean isAsync) {
+    public void processPlayerMessage(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String rawMessage, boolean isAsync) {
         processPlayerMessage(mmoPlayer, mmoPlayer.getChatChannel(), rawMessage, isAsync);
     }
 
@@ -56,7 +56,7 @@ public class ChatManager {
      * @param args the raw command arguments from the player
      * @param chatChannel target channel
      */
-    public void processPlayerMessage(@NotNull McMMOPlayer mmoPlayer, @NotNull String[] args, @NotNull ChatChannel chatChannel) {
+    public void processPlayerMessage(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String[] args, @NotNull ChatChannel chatChannel) {
         String chatMessageWithoutCommand = buildChatMessage(args);
 
         //Commands are never async
@@ -71,7 +71,7 @@ public class ChatManager {
      * @param rawMessage raw chat message as it was typed
      * @param isAsync whether or not this is getting processed via async
      */
-    private void processPlayerMessage(@NotNull McMMOPlayer mmoPlayer, @NotNull ChatChannel chatChannel, @NotNull String rawMessage, boolean isAsync) {
+    private void processPlayerMessage(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull ChatChannel chatChannel, @NotNull String rawMessage, boolean isAsync) {
         switch (chatChannel) {
             case ADMIN:
                 adminChatMailer.processChatMessage(mmoPlayer.getPlayerAuthor(), rawMessage, isAsync, Permissions.colorChat(mmoPlayer.getPlayer()));
@@ -119,12 +119,12 @@ public class ChatManager {
     }
 
     /**
-     * Change the chat channel of a {@link McMMOPlayer}
+     * Change the chat channel of a {@link OnlineMMOPlayer}
      *  Targeting the channel a player is already in will remove that player from the chat channel
      * @param mmoPlayer target player
      * @param targetChatChannel target chat channel
      */
-    public void setOrToggleChatChannel(@NotNull McMMOPlayer mmoPlayer, @NotNull ChatChannel targetChatChannel) {
+    public void setOrToggleChatChannel(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull ChatChannel targetChatChannel) {
         if(targetChatChannel == mmoPlayer.getChatChannel()) {
             //Disabled message
             mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Chat.Channel.Off", StringUtils.getCapitalized(targetChatChannel.toString())));
@@ -159,7 +159,7 @@ public class ChatManager {
      * @param mmoPlayer target player
      * @return true if the player can send messages to that chat channel
      */
-    public boolean isMessageAllowed(@NotNull McMMOPlayer mmoPlayer) {
+    public boolean isMessageAllowed(@NotNull OnlineMMOPlayer mmoPlayer) {
         switch (mmoPlayer.getChatChannel()) {
             case ADMIN:
                 if(mmoPlayer.getPlayer().isOp() || Permissions.adminChat(mmoPlayer.getPlayer())) {

@@ -7,7 +7,7 @@ import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -103,7 +103,7 @@ public class CommandManager {
     }
 
     public void validatePlayerParty(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer.getParty() == null) {
             throw new ConditionFailedException(LocaleLoader.getString("Commands.Party.None"));

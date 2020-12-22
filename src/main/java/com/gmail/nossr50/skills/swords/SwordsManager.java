@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.swords;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 public class SwordsManager extends SkillManager {
-    public SwordsManager(McMMOPlayer mmoPlayer) {
+    public SwordsManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.SWORDS);
     }
 

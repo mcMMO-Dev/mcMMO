@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -30,7 +30,7 @@ public class ArcheryCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // ARCHERY_ARROW_RETRIEVAL
         if (canRetrieve) {
             String[] retrieveStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
@@ -52,14 +52,14 @@ public class ArcheryCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canSkillShot = canUseSubskill(mmoPlayer, SubSkillType.ARCHERY_SKILL_SHOT);
         canDaze = canUseSubskill(mmoPlayer, SubSkillType.ARCHERY_DAZE);
         canRetrieve = canUseSubskill(mmoPlayer, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canRetrieve) {
@@ -85,7 +85,7 @@ public class ArcheryCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ARCHERY);

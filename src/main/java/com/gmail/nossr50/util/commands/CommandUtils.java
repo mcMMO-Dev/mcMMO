@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -77,7 +77,7 @@ public final class CommandUtils {
      *
      * @return true if the player is online and a valid mmoPlayer object was found
      */
-    public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mmoPlayer) {
+    public static boolean checkPlayerExistence(CommandSender sender, String playerName, OnlineMMOPlayer mmoPlayer) {
         if (mmoPlayer != null) {
             if (CommandUtils.hidden(sender, mmoPlayer.getPlayer(), false)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Offline"));

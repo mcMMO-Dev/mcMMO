@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -23,7 +23,7 @@ public class XPBarCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer((Player) sender);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer((Player) sender);
             if(mmoPlayer == null) {
                 NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(), "Profile.PendingLoad");
                 return false;

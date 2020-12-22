@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -92,9 +92,9 @@ public final class EventUtils {
      * This little method is just to make the code more readable
      * 
      * @param entity target entity
-     * @return the associated McMMOPlayer for this entity
+     * @return the associated OnlineMMOPlayer for this entity
      */
-    public static McMMOPlayer getMcMMOPlayer(@NotNull Entity entity)
+    public static OnlineMMOPlayer getMcMMOPlayer(@NotNull Entity entity)
     {
         return mcMMO.getUserManager().queryPlayer((Player)entity);
     }
@@ -144,7 +144,7 @@ public final class EventUtils {
                 return true;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             if(mmoPlayer == null)
             {
@@ -273,7 +273,7 @@ public final class EventUtils {
     }
 
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(teleportingPlayer);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(teleportingPlayer);
 
         if(mmoPlayer == null)
             return;
@@ -386,7 +386,7 @@ public final class EventUtils {
             HashMap<String, Integer> levelChangedVictim = eventVictim.getLevelChanged();
             HashMap<String, Float> experienceChangedVictim = eventVictim.getExperienceChanged();
 
-            McMMOPlayer killerPlayer = mcMMO.getUserManager().queryPlayer(killer);
+            OnlineMMOPlayer killerPlayer = mcMMO.getUserManager().queryPlayer(killer);
 
             //Not loaded
             if(killerPlayer == null)

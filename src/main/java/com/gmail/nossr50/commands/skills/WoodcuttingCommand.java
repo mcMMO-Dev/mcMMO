@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -33,7 +33,7 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // DOUBLE DROPS
         if (canDoubleDrop) {
             setDoubleDropClassicChanceStrings(mmoPlayer);
@@ -47,14 +47,14 @@ public class WoodcuttingCommand extends SkillCommand {
         }
     }
 
-    private void setDoubleDropClassicChanceStrings(McMMOPlayer mmoPlayer) {
+    private void setDoubleDropClassicChanceStrings(OnlineMMOPlayer mmoPlayer) {
         String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
 
     @Override
-    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canTreeFell = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(mmoPlayer.getPlayer());
         canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
         canLeafBlow = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_LEAF_BLOWER);
@@ -65,7 +65,7 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canDoubleDrop) {
@@ -98,7 +98,7 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.WOODCUTTING);

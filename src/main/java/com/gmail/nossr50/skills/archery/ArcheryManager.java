@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 public class ArcheryManager extends SkillManager {
-    public ArcheryManager(McMMOPlayer mmoPlayer) {
+    public ArcheryManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.ARCHERY);
     }
 

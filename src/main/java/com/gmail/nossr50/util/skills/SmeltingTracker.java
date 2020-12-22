@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -21,7 +21,7 @@ public class SmeltingTracker {
 
     private void changeFurnaceOwnership(Furnace furnace, Player player) {
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         /*
             Debug output
@@ -37,7 +37,7 @@ public class SmeltingTracker {
         mcMMO.getCompatibilityManager().getPersistentDataLayer().setFurnaceOwner(furnace, player.getUniqueId());
     }
 
-    private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mmoPlayer) {
+    private void printOwnershipGainDebug(Furnace furnace, OnlineMMOPlayer mmoPlayer) {
         if(mmoPlayer != null) {
             if(mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Furnace ownership " +
@@ -52,7 +52,7 @@ public class SmeltingTracker {
         OfflinePlayer furnaceOwner = getFurnaceOwner(furnace);
 
         if(furnaceOwner != null && furnaceOwner.isOnline()) {
-            McMMOPlayer furnaceOwnerProfile = mcMMO.getUserManager().queryPlayer(furnaceOwner.getPlayer());
+            OnlineMMOPlayer furnaceOwnerProfile = mcMMO.getUserManager().queryPlayer(furnaceOwner.getPlayer());
 
             if(furnaceOwnerProfile != null) {
                 if(furnaceOwnerProfile.isDebugMode()) {

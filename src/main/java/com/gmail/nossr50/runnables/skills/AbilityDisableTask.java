@@ -3,7 +3,7 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
@@ -18,10 +18,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AbilityDisableTask extends BukkitRunnable {
-    private final McMMOPlayer mmoPlayer;
+    private final OnlineMMOPlayer mmoPlayer;
     private final SuperAbilityType ability;
 
-    public AbilityDisableTask(McMMOPlayer mmoPlayer, SuperAbilityType ability) {
+    public AbilityDisableTask(OnlineMMOPlayer mmoPlayer, SuperAbilityType ability) {
         this.mmoPlayer = mmoPlayer;
         this.ability = ability;
     }

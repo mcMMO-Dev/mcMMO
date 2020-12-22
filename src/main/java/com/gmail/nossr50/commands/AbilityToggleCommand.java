@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,7 @@ public class AbilityToggleCommand extends ToggleCommand {
     }
 
     @Override
-    protected void applyCommandAction(@NotNull McMMOPlayer mmoPlayer) {
+    protected void applyCommandAction(@NotNull OnlineMMOPlayer mmoPlayer) {
         mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Ability." + (mmoPlayer.getSuperAbilityManager().getAbilityActivationPermission() ? "Off" : "On")));
         mmoPlayer.getSuperAbilityManager().toggleAbilityActivationPermission();
     }

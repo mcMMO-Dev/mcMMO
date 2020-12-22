@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.RankConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -25,7 +25,7 @@ public class RankUtils {
      * @param primarySkillType target skill
      * @param newLevel the new level of this skill
      */
-    public static void executeSkillUnlockNotifications(@NotNull Plugin plugin, @NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int newLevel)
+    public static void executeSkillUnlockNotifications(@NotNull Plugin plugin, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int newLevel)
     {
         for(SubSkillType subSkillType : primarySkillType.getSkillAbilities())
         {
@@ -105,7 +105,7 @@ public class RankUtils {
      * @param subSkillType the target subskill
      * @return true if the player has at least one rank in the skill
      */
-    public static boolean hasUnlockedSubskill(@NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
+    public static boolean hasUnlockedSubskill(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         int curRank = getRank(mmoPlayer, subSkillType);
 
@@ -119,7 +119,7 @@ public class RankUtils {
      * @param abstractSubSkill the target subskill
      * @return true if the player has at least one rank in the skill
      */
-    public static boolean hasUnlockedSubskill(@NotNull McMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
+    public static boolean hasUnlockedSubskill(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
     {
         int curRank = getRank(mmoPlayer, abstractSubSkill);
 
@@ -134,7 +134,7 @@ public class RankUtils {
      * @param subSkillType the target subskill
      * @return true if the player is at least that rank in this subskill
      */
-    public static boolean hasReachedRank(int rank, @NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
+    public static boolean hasReachedRank(int rank, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         return getRank(mmoPlayer, subSkillType) >= rank;
     }
@@ -146,7 +146,7 @@ public class RankUtils {
      * @param abstractSubSkill the target subskill
      * @return true if the player is at least that rank in this subskill
      */
-    public static boolean hasReachedRank(int rank, @NotNull McMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
+    public static boolean hasReachedRank(int rank, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
     {
         return getRank(mmoPlayer, abstractSubSkill) >= rank;
     }
@@ -168,7 +168,7 @@ public class RankUtils {
      * @param subSkillType Target subskill
      * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
      */
-    public static int getRank(@NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
+    public static int getRank(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         String skillName = subSkillType.toString();
         int numRanks = subSkillType.getNumRanks();
@@ -212,7 +212,7 @@ public class RankUtils {
      * @param abstractSubSkill Target subskill
      * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
      */
-    public static int getRank(@NotNull McMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
+    public static int getRank(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull AbstractSubSkill abstractSubSkill)
     {
         String skillName = abstractSubSkill.getConfigKeyName();
         int numRanks = abstractSubSkill.getNumRanks();
@@ -365,7 +365,7 @@ public class RankUtils {
         return getRankUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
     }
 
-    public static boolean isPlayerMaxRankInSubSkill(@NotNull McMMOPlayer mmoPlayer, SubSkillType subSkillType) {
+    public static boolean isPlayerMaxRankInSubSkill(@NotNull OnlineMMOPlayer mmoPlayer, SubSkillType subSkillType) {
         int playerRank = getRank(mmoPlayer, subSkillType);
         int highestRank = getHighestRank(subSkillType);
 

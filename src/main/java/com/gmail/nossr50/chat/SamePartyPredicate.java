@@ -1,7 +1,7 @@
 package com.gmail.nossr50.chat;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -25,7 +25,7 @@ public class SamePartyPredicate<T extends CommandSender> implements Predicate<T>
         } else {
             if(t instanceof Player) {
                 Player player = (Player) t;
-                McMMOPlayer mcMMOPlayer = mcMMO.getUserManager().queryPlayer(player);
+                OnlineMMOPlayer mcMMOPlayer = mcMMO.getUserManager().queryPlayer(player);
                 if(mcMMOPlayer != null) {
                     return mcMMOPlayer.getParty() == party;
                 }

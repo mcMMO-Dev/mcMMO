@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -21,7 +21,7 @@ public class McnotifyCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
 
             //Not Loaded yet
             if (mmoPlayer == null)

@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -17,7 +17,7 @@ public class PartyInviteCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
-            McMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayerName(targetName);
+            OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayerName(targetName);
 
             if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                 return false;
@@ -31,7 +31,7 @@ public class PartyInviteCommand implements CommandExecutor {
             }
 
             Player player = (Player) sender;
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
             String playerName = player.getName();
 
             if (player.equals(target)) {

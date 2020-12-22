@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyMember;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -21,7 +21,7 @@ public class PartyRenameCommand implements CommandExecutor {
                 return true;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
             Party playerParty = mmoPlayer.getParty();
 
             String oldPartyName = playerParty.getPartyName();

@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
@@ -37,7 +37,7 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key)
     {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
@@ -53,7 +53,7 @@ public class NotificationManager {
 
     public static boolean doesPlayerUseNotifications(@NotNull Player player)
     {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null)
             return false;
@@ -78,7 +78,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnly(@NotNull Player player, @NotNull String key, String... values)
     {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
@@ -89,7 +89,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnlyPrefixed(@NotNull Player player, @NotNull String key, String... values)
     {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
@@ -149,7 +149,7 @@ public class NotificationManager {
      * @param skillName skill that leveled up
      * @param newLevel new level of that skill
      */
-    public static void sendPlayerLevelUpNotification(McMMOPlayer mmoPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
+    public static void sendPlayerLevelUpNotification(OnlineMMOPlayer mmoPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
     {
         if(!mmoPlayer.hasSkillChatNotifications())
             return;
@@ -170,7 +170,7 @@ public class NotificationManager {
         }
     }
 
-    public static void sendPlayerUnlockNotification(@NotNull McMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
+    public static void sendPlayerUnlockNotification(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkillType)
     {
         if(!mmoPlayer.hasSkillChatNotifications())
             return;

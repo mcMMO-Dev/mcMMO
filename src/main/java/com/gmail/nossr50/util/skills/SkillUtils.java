@@ -6,7 +6,7 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -44,11 +44,11 @@ public final class SkillUtils {
      */
     private SkillUtils() {}
 
-    public static void applyXpGain(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason) {
+    public static void applyXpGain(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason) {
         mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, XPGainSource.SELF);
     }
 
-    public static void applyXpGain(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
+    public static void applyXpGain(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
         mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, xpGainSource);
     }
 
@@ -67,7 +67,7 @@ public final class SkillUtils {
      * Skill Stat Calculations
      */
 
-    public static @NotNull String[] calculateLengthDisplayValues(@NotNull McMMOPlayer mmoPlayer, float skillValue, @NotNull PrimarySkillType skill) {
+    public static @NotNull String[] calculateLengthDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, @NotNull PrimarySkillType skill) {
         int maxLength = skill.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
@@ -94,7 +94,7 @@ public final class SkillUtils {
      * Others
      */
 
-    public static int handleFoodSkills(@NotNull McMMOPlayer mmoPlayer, int eventFoodLevel, @NotNull SubSkillType subSkillType) {
+    public static int handleFoodSkills(@NotNull OnlineMMOPlayer mmoPlayer, int eventFoodLevel, @NotNull SubSkillType subSkillType) {
         int curRank = RankUtils.getRank(mmoPlayer, subSkillType);
 
         int currentFoodLevel = mmoPlayer.getPlayer().getFoodLevel();
@@ -114,7 +114,7 @@ public final class SkillUtils {
      *
      * @return the number of seconds remaining before the cooldown expires
      */
-    public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, @NotNull McMMOPlayer mmoPlayer) {
+    public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, @NotNull OnlineMMOPlayer mmoPlayer) {
         return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(mmoPlayer.getPlayer(), cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
@@ -188,7 +188,7 @@ public final class SkillUtils {
                 }
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             //Not Loaded
             if(mmoPlayer == null)

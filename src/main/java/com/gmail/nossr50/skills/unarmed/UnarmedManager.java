@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.unarmed;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class UnarmedManager extends SkillManager {
 
-    public UnarmedManager(McMMOPlayer mmoPlayer) {
+    public UnarmedManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.UNARMED);
     }
 

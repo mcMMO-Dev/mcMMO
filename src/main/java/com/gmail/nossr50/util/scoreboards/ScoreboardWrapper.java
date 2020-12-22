@@ -2,7 +2,7 @@ package com.gmail.nossr50.util.scoreboards;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -62,7 +62,7 @@ public class ScoreboardWrapper {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
-            for (McMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
+            for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
                 powerObjective.getScore(mmoPlayer.getPlayerName()).setScore(mmoPlayer.getExperienceManager().getPowerLevel());
             }
         }
@@ -433,7 +433,7 @@ public class ScoreboardWrapper {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null)
             return;

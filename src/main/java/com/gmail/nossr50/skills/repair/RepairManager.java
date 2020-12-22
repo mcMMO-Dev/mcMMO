@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -37,7 +37,7 @@ public class RepairManager extends SkillManager {
     private boolean placedAnvil;
     private int     lastClick;
 
-    public RepairManager(McMMOPlayer mmoPlayer) {
+    public RepairManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.REPAIR);
     }
 

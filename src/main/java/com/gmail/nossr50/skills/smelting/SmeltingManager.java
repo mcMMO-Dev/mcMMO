@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.smelting;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.skills.SkillManager;
@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SmeltingManager extends SkillManager {
-    public SmeltingManager(McMMOPlayer mmoPlayer) {
+    public SmeltingManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.SMELTING);
     }
 

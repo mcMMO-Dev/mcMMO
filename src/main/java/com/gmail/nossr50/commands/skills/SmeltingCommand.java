@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -31,7 +31,7 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
             burnTimeModifier = String.valueOf(mmoPlayer.getSmeltingManager().getFuelEfficiencyMultiplier());
@@ -53,7 +53,7 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canFuelEfficiency = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_FUEL_EFFICIENCY);
         canSecondSmelt = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
@@ -61,7 +61,7 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         /*if (canFluxMine) {
@@ -88,7 +88,7 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SMELTING);

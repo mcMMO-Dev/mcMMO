@@ -1,6 +1,6 @@
 package com.gmail.nossr50.api;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -39,7 +39,7 @@ public final class AbilityAPI {
     }
 
     public static boolean isAnyAbilityEnabled(Player player) {
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         for (SuperAbilityType ability : SuperAbilityType.values()) {
             if (mmoPlayer.getSuperAbilityManager().getAbilityMode(ability)) {

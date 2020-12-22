@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -37,7 +37,7 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
             String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT);
@@ -73,7 +73,7 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canBerserk = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(mmoPlayer.getPlayer());
         canIronArm = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_STEEL_ARM_STYLE);
         canDeflect = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT);
@@ -83,7 +83,7 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canDeflect) {
@@ -123,7 +123,7 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.UNARMED);

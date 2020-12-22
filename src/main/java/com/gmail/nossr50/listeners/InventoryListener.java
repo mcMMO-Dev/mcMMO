@@ -2,7 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
@@ -111,7 +111,7 @@ public class InventoryListener implements Listener {
 
             if(offlinePlayer != null) {
 
-                McMMOPlayer offlineProfile = mcMMO.getUserManager().queryOfflineMcMMOPlayer(offlinePlayer);
+                OnlineMMOPlayer offlineProfile = mcMMO.getUserManager().queryOfflineMcMMOPlayer(offlinePlayer);
 
                 //Profile doesn't exist
                 if(offlineProfile != null) {

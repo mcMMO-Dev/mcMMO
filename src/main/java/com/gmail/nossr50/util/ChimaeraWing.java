@@ -2,7 +2,7 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ChimaeraWing {
-    private static McMMOPlayer mmoPlayer;
+    private static OnlineMMOPlayer mmoPlayer;
     private static Location location;
 
     private ChimaeraWing() {}

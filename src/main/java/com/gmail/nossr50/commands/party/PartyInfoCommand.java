@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
@@ -27,7 +27,7 @@ public class PartyInfoCommand implements CommandExecutor {
                     return true;
                 }
                 Player player = (Player) sender;
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
                 Party party = mmoPlayer.getParty();
 
                 displayPartyHeader(player, party);
@@ -101,7 +101,7 @@ public class PartyInfoCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Party.ShareMode") + expShareInfo);
     }
 
-    private void displayMemberInfo(Player player, McMMOPlayer mmoPlayer, Party party) {
+    private void displayMemberInfo(Player player, OnlineMMOPlayer mmoPlayer, Party party) {
         /*
          * Only show members of the party that this member can see
          */

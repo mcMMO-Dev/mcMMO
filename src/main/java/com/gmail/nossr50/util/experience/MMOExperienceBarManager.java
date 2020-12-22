@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.CoreSkillConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -21,7 +21,7 @@ import java.util.Map;
  * Each ExperienceBarManager only manages a single player
  */
 public class MMOExperienceBarManager {
-    private final McMMOPlayer mmoPlayer;
+    private final OnlineMMOPlayer mmoPlayer;
 
     int delaySeconds = 3;
 
@@ -31,7 +31,7 @@ public class MMOExperienceBarManager {
     private @NotNull final HashMap<SkillIdentity, ExperienceBarHideTask> experienceBarHideTaskHashMap;
 
 
-    public MMOExperienceBarManager(@NotNull McMMOPlayer mmoPlayer, @NotNull Map<SkillIdentity, SkillBossBarState> barStateMapRef)
+    public MMOExperienceBarManager(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull Map<SkillIdentity, SkillBossBarState> barStateMapRef)
     {
         this.mmoPlayer = mmoPlayer;
         this.barStateMapRef = barStateMapRef;

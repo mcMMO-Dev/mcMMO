@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
@@ -18,7 +18,7 @@ import java.util.List;
 public class AlchemyManager extends SkillManager {
     private final double LUCKY_MODIFIER = 4.0 / 3.0;
 
-    public AlchemyManager(McMMOPlayer mmoPlayer) {
+    public AlchemyManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.ALCHEMY);
     }
 

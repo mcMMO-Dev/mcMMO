@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
@@ -65,7 +65,7 @@ public class PtpCommand implements TabExecutor {
             return true;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if (!mmoPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
@@ -139,7 +139,7 @@ public class PtpCommand implements TabExecutor {
                 }
 
                 Player player = (Player) sender;
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
                 if (!mmoPlayer.inParty()) {
                     return ImmutableList.of();
@@ -159,7 +159,7 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
-        McMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(targetName);
+        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(targetName);
         Player target = mcMMOTarget.getPlayer();
 
 
@@ -196,7 +196,7 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        McMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(targetName);
+        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(targetName);
 
         if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
@@ -240,8 +240,8 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(teleportingPlayer);
-        McMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetPlayer);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(teleportingPlayer);
+        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetPlayer);
 
         long warmup = Config.getInstance().getPTPCommandWarmup();
 

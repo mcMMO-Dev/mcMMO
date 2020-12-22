@@ -6,7 +6,7 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -220,7 +220,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null)
             return;
@@ -300,7 +300,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Check if profile is loaded
         if(mmoPlayer == null) {
@@ -461,7 +461,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Profile not loaded
         if(mmoPlayer == null)
@@ -547,7 +547,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Profile not loaded
         if(mcMMO.getUserManager().queryPlayer(player) == null)
@@ -594,7 +594,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDamageCleanup(BlockDamageEvent event) {
         Player player = event.getPlayer();
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         //Profile not loaded
         if(mcMMO.getUserManager().queryPlayer(player) == null)
@@ -666,7 +666,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    private void cleanupAbilityTools(Player player, McMMOPlayer mmoPlayer, BlockState blockState, ItemStack heldItem) {
+    private void cleanupAbilityTools(Player player, OnlineMMOPlayer mmoPlayer, BlockState blockState, ItemStack heldItem) {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             if ((ItemUtils.isPickaxe(heldItem) && !mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
                 SkillUtils.removeAbilityBuff(heldItem);

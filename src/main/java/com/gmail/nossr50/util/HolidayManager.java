@@ -3,7 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.commands.skills.AprilCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -368,7 +368,7 @@ public final class HolidayManager {
         if(!Config.getInstance().isAprilFoolsAllowed())
             return;
 
-        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         if (mmoPlayer == null) return;
 
         int levelTotal = Misc.getRandom().nextInt(1 + mmoPlayer.getSkillLevel(PrimarySkillType.MINING)) + 1;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -33,7 +33,7 @@ public class AlchemyCommand extends SkillCommand {
 
     protected String[] calculateAbilityDisplayValues(@NotNull Player player) {
         //TODO: Needed?
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         if(mmoPlayer == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -43,7 +43,7 @@ public class AlchemyCommand extends SkillCommand {
         return calculateAbilityDisplayValues(mmoPlayer);
     }
 
-    protected String[] calculateAbilityDisplayValues(@NotNull McMMOPlayer mmoPlayer) {
+    protected String[] calculateAbilityDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer) {
         AlchemyManager alchemyManager = mmoPlayer.getAlchemyManager();
         String[] displayValues = new String[2];
 
@@ -57,7 +57,7 @@ public class AlchemyCommand extends SkillCommand {
 
 
     @Override
-    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // ALCHEMY_CATALYSIS
         if (canCatalysis) {
             String[] catalysisStrings = calculateAbilityDisplayValues(mmoPlayer.getPlayer());
@@ -75,13 +75,13 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canCatalysis = canUseSubskill(mmoPlayer, SubSkillType.ALCHEMY_CATALYSIS);
         canConcoctions = canUseSubskill(mmoPlayer, SubSkillType.ALCHEMY_CONCOCTIONS);
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canCatalysis) {
@@ -101,7 +101,7 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ALCHEMY);

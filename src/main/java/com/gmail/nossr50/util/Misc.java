@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
@@ -307,7 +307,7 @@ public final class Misc {
      * @param mmoPlayer target player
      * @return true if the player is the party leader
      */
-    public static boolean isPartyLeader(@NotNull McMMOPlayer mmoPlayer) {
+    public static boolean isPartyLeader(@NotNull OnlineMMOPlayer mmoPlayer) {
         return mmoPlayer.getParty().getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
     }
 

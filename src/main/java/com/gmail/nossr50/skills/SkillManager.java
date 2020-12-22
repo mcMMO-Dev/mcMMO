@@ -2,17 +2,17 @@ package com.gmail.nossr50.skills;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public abstract class SkillManager {
-    protected McMMOPlayer mmoPlayer;
+    protected OnlineMMOPlayer mmoPlayer;
     protected PrimarySkillType skill;
 
-    public SkillManager(McMMOPlayer mmoPlayer, PrimarySkillType skill) {
+    public SkillManager(OnlineMMOPlayer mmoPlayer, PrimarySkillType skill) {
         this.mmoPlayer = mmoPlayer;
         this.skill = skill;
     }

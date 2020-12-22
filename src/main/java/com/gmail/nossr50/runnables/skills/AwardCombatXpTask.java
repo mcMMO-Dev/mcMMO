@@ -2,20 +2,20 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AwardCombatXpTask extends BukkitRunnable {
-    private final McMMOPlayer mmoPlayer;
+    private final OnlineMMOPlayer mmoPlayer;
     private final double baseXp;
     private final PrimarySkillType primarySkillType;
     private final LivingEntity target;
     private final XPGainReason xpGainReason;
     private final double baseHealth;
 
-    public AwardCombatXpTask(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
+    public AwardCombatXpTask(OnlineMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
         this.mmoPlayer = mmoPlayer;
         this.primarySkillType = primarySkillType;
         this.baseXp = baseXp;

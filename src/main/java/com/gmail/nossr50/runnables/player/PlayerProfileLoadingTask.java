@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -43,7 +43,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         try {
             PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(player.getUniqueId());
-            new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(mcMMO.p);
+            new ApplySuccessfulProfile(new OnlineMMOPlayer(player, profile)).runTask(mcMMO.p);
             EventUtils.callPlayerProfileLoadEvent(player, profile);
             return;
 
@@ -70,9 +70,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
-        private final McMMOPlayer mmoPlayer;
+        private final OnlineMMOPlayer mmoPlayer;
 
-        private ApplySuccessfulProfile(McMMOPlayer mmoPlayer) {
+        private ApplySuccessfulProfile(OnlineMMOPlayer mmoPlayer) {
             this.mmoPlayer = mmoPlayer;
         }
 

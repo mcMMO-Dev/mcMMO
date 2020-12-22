@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -34,7 +34,7 @@ public class McstatsCommand implements TabExecutor {
                 return true;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {
                 ScoreboardManager.enablePlayerStatsScoreboard(player);

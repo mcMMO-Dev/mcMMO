@@ -83,7 +83,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     private final @NotNull AbilityActivationProcessor abilityActivationProcessor;
 
     /**
-     * Create a new {@link McMMOPlayer} with default values for a {@link Player}
+     * Create a new {@link OnlineMMOPlayer} with default values for a {@link Player}
      * @param player target player
      */
     public McMMOPlayer(@NotNull Player player) {

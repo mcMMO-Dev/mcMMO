@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
@@ -16,7 +16,7 @@ public class PartyCreateCommand implements CommandExecutor {
             case 2:
             case 3:
                 Player player = (Player) sender;
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
                 if(mcMMO.getUserManager().queryPlayer(player) == null)
                 {

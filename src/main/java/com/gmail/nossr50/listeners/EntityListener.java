@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.ProjectileOriginMeta;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
@@ -192,7 +192,7 @@ public class EntityListener implements Listener {
 
                 //Crossbow only
                 if (isCrossbow) {
-                    McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                    OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
                     //Process launch event
                     if (Permissions.skillEnabled(player, PrimarySkillType.CROSSBOWS)) {
@@ -409,7 +409,7 @@ public class EntityListener implements Listener {
                     }
 
                     //Deflect checks
-                    final McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(defendingPlayer);
+                    final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(defendingPlayer);
                     if (mmoPlayer != null) {
                         UnarmedManager unarmedManager = mmoPlayer.getUnarmedManager();
 
@@ -566,7 +566,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             //Profile not loaded
             if(mmoPlayer == null)

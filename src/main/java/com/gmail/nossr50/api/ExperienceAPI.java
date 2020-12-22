@@ -6,7 +6,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -47,7 +47,7 @@ public final class ExperienceAPI {
      * @deprecated Draft API
      */
     @Deprecated
-    public static void addCombatXP(McMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+    public static void addCombatXP(OnlineMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
         CombatUtils.processCombatXP(mmoPlayer, target, primarySkillType, multiplier);
     }
 
@@ -61,7 +61,7 @@ public final class ExperienceAPI {
      * @deprecated Draft API
      */
     @Deprecated
-    public static void addCombatXP(McMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+    public static void addCombatXP(OnlineMMOPlayer mmoPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
         CombatUtils.processCombatXP(mmoPlayer, target, primarySkillType);
     }
 
@@ -1064,7 +1064,7 @@ public final class ExperienceAPI {
      * @param blockStates the blocks to reward XP for
      * @param mmoPlayer the target player
      */
-    public static void addXpFromBlocks(ArrayList<BlockState> blockStates, McMMOPlayer mmoPlayer)
+    public static void addXpFromBlocks(ArrayList<BlockState> blockStates, OnlineMMOPlayer mmoPlayer)
     {
         for(BlockState bs : blockStates)
         {
@@ -1084,7 +1084,7 @@ public final class ExperienceAPI {
      * @param mmoPlayer the target player
      * @param skillType target primary skill
      */
-    public static void addXpFromBlocksBySkill(ArrayList<BlockState> blockStates, McMMOPlayer mmoPlayer, PrimarySkillType skillType)
+    public static void addXpFromBlocksBySkill(ArrayList<BlockState> blockStates, OnlineMMOPlayer mmoPlayer, PrimarySkillType skillType)
     {
         for(BlockState bs : blockStates)
         {
@@ -1100,7 +1100,7 @@ public final class ExperienceAPI {
      * @param blockState The target blockstate
      * @param mmoPlayer The target player
      */
-    public static void addXpFromBlock(BlockState blockState, McMMOPlayer mmoPlayer)
+    public static void addXpFromBlock(BlockState blockState, OnlineMMOPlayer mmoPlayer)
     {
         for(PrimarySkillType skillType : PrimarySkillType.values())
         {
@@ -1117,7 +1117,7 @@ public final class ExperienceAPI {
      * @param mmoPlayer The target player
      * @param skillType target primary skill
      */
-    public static void addXpFromBlockBySkill(BlockState blockState, McMMOPlayer mmoPlayer, PrimarySkillType skillType)
+    public static void addXpFromBlockBySkill(BlockState blockState, OnlineMMOPlayer mmoPlayer, PrimarySkillType skillType)
     {
         if(ExperienceConfig.getInstance().getXp(skillType, blockState.getType()) > 0)
         {
@@ -1208,11 +1208,11 @@ public final class ExperienceAPI {
     /**
      * @deprecated Use UserManager::getPlayer(Player player) instead
      * @param player target player
-     * @return McMMOPlayer for that player if the profile is loaded, otherwise null
+     * @return OnlineMMOPlayer for that player if the profile is loaded, otherwise null
      * @throws McMMOPlayerNotFoundException
      */
     @Deprecated
-    private static McMMOPlayer getPlayer(Player player) throws McMMOPlayerNotFoundException {
+    private static OnlineMMOPlayer getPlayer(Player player) throws McMMOPlayerNotFoundException {
         if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
             throw new McMMOPlayerNotFoundException(player);
         }

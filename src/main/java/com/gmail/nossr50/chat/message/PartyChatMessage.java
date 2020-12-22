@@ -3,7 +3,7 @@ package com.gmail.nossr50.chat.message;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
@@ -61,7 +61,7 @@ public class PartyChatMessage extends AbstractChatMessage {
      */
     private void messagePartyChatSpies(@NotNull TextComponent spyMessage) {
         //Find the people with permissions
-        for(McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
+        for(OnlineMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
             Player player = mcMMOPlayer.getPlayer();
 
             //Check for toggled players

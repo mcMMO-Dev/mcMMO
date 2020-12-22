@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -35,7 +35,7 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
 
                 if(mmoPlayer != null) {
                     applyCommandAction(mmoPlayer);
@@ -53,7 +53,7 @@ public abstract class ToggleCommand implements TabExecutor {
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
                 Player otherPlayer = Bukkit.getPlayer(playerName);
-                McMMOPlayer mmoOther = mcMMO.getUserManager().queryPlayer(otherPlayer);
+                OnlineMMOPlayer mmoOther = mcMMO.getUserManager().queryPlayer(otherPlayer);
 
                 if (!CommandUtils.checkPlayerExistence(sender, playerName, mmoOther)) {
                     return true;
@@ -83,6 +83,6 @@ public abstract class ToggleCommand implements TabExecutor {
 
     protected abstract boolean hasOtherPermission(@NotNull CommandSender sender);
     protected abstract boolean hasSelfPermission(@NotNull CommandSender sender);
-    protected abstract void applyCommandAction(@NotNull McMMOPlayer mmoPlayer);
+    protected abstract void applyCommandAction(@NotNull OnlineMMOPlayer mmoPlayer);
     protected abstract void sendSuccessMessage(@NotNull CommandSender sender, @NotNull String playerName);
 }

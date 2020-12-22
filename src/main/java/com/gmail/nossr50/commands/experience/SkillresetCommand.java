@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.experience;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -73,7 +73,7 @@ public class SkillresetCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
 
                 // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mmoPlayer == null) {

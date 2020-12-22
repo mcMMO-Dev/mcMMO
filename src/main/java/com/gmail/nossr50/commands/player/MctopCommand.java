@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -84,7 +84,7 @@ public class MctopCommand implements TabExecutor {
                 return;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
             long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
             if (mmoPlayer.getDatabaseCommandATS() + cooldownMillis > System.currentTimeMillis()) {

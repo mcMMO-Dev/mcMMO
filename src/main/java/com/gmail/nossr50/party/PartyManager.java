@@ -8,7 +8,7 @@ import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyMember;
 import com.gmail.nossr50.datatypes.party.ShareMode;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
@@ -113,7 +113,7 @@ public final class PartyManager {
      * @param newPartyName The name of the party being joined
      * @return true if the party was joined successfully, false otherwise
      */
-    public boolean changeOrJoinParty(@NotNull McMMOPlayer mmoPlayer, @NotNull String newPartyName) {
+    public boolean changeOrJoinParty(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String newPartyName) {
         Player player = mmoPlayer.getPlayer();
 
         if (inParty(mmoPlayer)) {
@@ -166,7 +166,7 @@ public final class PartyManager {
      * @param mmoPlayer The player to check
      * @return the near party members
      */
-    public List<Player> getNearMembers(McMMOPlayer mmoPlayer) {
+    public List<Player> getNearMembers(OnlineMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
         Party party = mmoPlayer.getParty();
 
@@ -184,7 +184,7 @@ public final class PartyManager {
         return nearMembers;
     }
 
-    public List<Player> getNearVisibleMembers(@NotNull McMMOPlayer mmoPlayer) {
+    public List<Player> getNearVisibleMembers(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
         Party party = mmoPlayer.getParty();
 
@@ -310,7 +310,7 @@ public final class PartyManager {
             return null;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         return mmoPlayer.getParty();
     }
@@ -358,7 +358,7 @@ public final class PartyManager {
      *
      * @param mmoPlayer The player to remove
      */
-    public void removeFromParty(McMMOPlayer mmoPlayer) {
+    public void removeFromParty(OnlineMMOPlayer mmoPlayer) {
         removeFromParty(mmoPlayer.getPlayer(), mmoPlayer.getParty());
         processPartyLeaving(mmoPlayer);
     }
@@ -395,7 +395,7 @@ public final class PartyManager {
      * @param partyName The party to add the player to
      * @param password The password for this party, null if there was no password
      */
-    public void createParty(McMMOPlayer mmoPlayer, String partyName, String password) {
+    public void createParty(OnlineMMOPlayer mmoPlayer, String partyName, String password) {
         Player player = mmoPlayer.getPlayer();
 
         Party party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName.replace(".", ""), password);
@@ -446,7 +446,7 @@ public final class PartyManager {
      *
      * @param mmoPlayer The player to add to the party
      */
-    public void joinInvitedParty(McMMOPlayer mmoPlayer) {
+    public void joinInvitedParty(OnlineMMOPlayer mmoPlayer) {
         Party invite = mmoPlayer.getPartyInvite();
 
         // Check if the party still exists, it might have been disbanded
@@ -474,7 +474,7 @@ public final class PartyManager {
      *
      * @param mmoPlayer The player who accepts the alliance invite
      */
-    public void acceptAllianceInvite(McMMOPlayer mmoPlayer) {
+    public void acceptAllianceInvite(OnlineMMOPlayer mmoPlayer) {
         Party invite = mmoPlayer.getPartyAllianceInvite();
         Player player = mmoPlayer.getPlayer();
 
@@ -535,7 +535,7 @@ public final class PartyManager {
      * @param mmoPlayer The player to add to the party
      * @param party The party
      */
-    public void addToParty(McMMOPlayer mmoPlayer, Party party) {
+    public void addToParty(OnlineMMOPlayer mmoPlayer, Party party) {
         Player player = mmoPlayer.getPlayer();
         String playerName = player.getName();
 
@@ -588,7 +588,7 @@ public final class PartyManager {
      *
      * @return true if the player can invite
      */
-    public boolean canInvite(McMMOPlayer mmoPlayer) {
+    public boolean canInvite(OnlineMMOPlayer mmoPlayer) {
         Party party = mmoPlayer.getParty();
 
         return !party.isLocked() || party.getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
@@ -813,7 +813,7 @@ public final class PartyManager {
      *
      * @param mmoPlayer The player to remove party data from.
      */
-    public void processPartyLeaving(@NotNull McMMOPlayer mmoPlayer) {
+    public void processPartyLeaving(@NotNull OnlineMMOPlayer mmoPlayer) {
         mmoPlayer.removeParty();
         mmoPlayer.setChatMode(ChatChannel.NONE);
         mmoPlayer.setItemShareModifier(10);

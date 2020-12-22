@@ -9,7 +9,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -47,7 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class HerbalismManager extends SkillManager {
-    public HerbalismManager(McMMOPlayer mmoPlayer) {
+    public HerbalismManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.HERBALISM);
     }
 

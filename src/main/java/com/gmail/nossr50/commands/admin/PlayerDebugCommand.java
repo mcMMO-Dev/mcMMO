@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.admin;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -15,7 +15,7 @@ public class PlayerDebugCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(sender instanceof Player) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
 
             if(mmoPlayer == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));

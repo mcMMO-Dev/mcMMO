@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -36,7 +36,7 @@ public class MmoInfoCommand implements TabExecutor {
                 return false;
 
             Player player = (Player) commandSender;
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             if(mmoPlayer == null) {
                 player.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
@@ -78,7 +78,7 @@ public class MmoInfoCommand implements TabExecutor {
         return ImmutableList.of();
     }
 
-    private void displayInfo(@NotNull McMMOPlayer mmoPlayer, String subSkillName)
+    private void displayInfo(@NotNull OnlineMMOPlayer mmoPlayer, String subSkillName)
     {
         //Check to see if the skill exists in the new system
         AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName(subSkillName);

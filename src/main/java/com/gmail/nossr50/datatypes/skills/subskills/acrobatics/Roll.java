@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -65,7 +65,7 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
 
         if (entityDamageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) {//Grab the player
-            McMMOPlayer mmoPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
+            OnlineMMOPlayer mmoPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
 
             if (mmoPlayer == null)
                 return false;
@@ -119,7 +119,7 @@ public class Roll extends AcrobaticsSubSkill {
         String rollChance, rollChanceLucky, gracefulRollChance, gracefulRollChanceLucky;
 
         /* Values related to the player */
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         float skillValue = mmoPlayer.getExperienceManager().getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
@@ -186,7 +186,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private double rollCheck(Player player, McMMOPlayer mmoPlayer, double damage) {
+    private double rollCheck(Player player, OnlineMMOPlayer mmoPlayer, double damage) {
 
         int skillLevel = mmoPlayer.getExperienceManager().getSkillLevel(getPrimarySkill());
 
@@ -221,7 +221,7 @@ public class Roll extends AcrobaticsSubSkill {
         return damage;
     }
 
-    private int getActivationChance(McMMOPlayer mmoPlayer) {
+    private int getActivationChance(OnlineMMOPlayer mmoPlayer) {
         return PerksUtils.handleLuckyPerks(mmoPlayer.getPlayer(), getPrimarySkill());
     }
 
@@ -231,7 +231,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private double gracefulRollCheck(Player player, McMMOPlayer mmoPlayer, double damage, int skillLevel) {
+    private double gracefulRollCheck(Player player, OnlineMMOPlayer mmoPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
 
         RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
@@ -269,7 +269,7 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if (ItemUtils.hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mmoPlayer.isDebugMode()) {

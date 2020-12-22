@@ -1,6 +1,6 @@
 //package com.gmail.nossr50.listeners;
 //
-//import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+//import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 //import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 //import com.gmail.nossr50.mcMMO;
 //import com.gmail.nossr50.util.player.UserManager;
@@ -26,7 +26,7 @@
 //
 //        SkillUtils.removeAbilityBoostsFromInventory(player);
 //
-//        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+//        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 //
 //        if(mmoPlayer == null)
 //            return;

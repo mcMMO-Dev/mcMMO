@@ -3,7 +3,7 @@ package com.gmail.nossr50.datatypes.experience;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
 import com.gmail.nossr50.datatypes.skills.CoreSkillConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -30,9 +30,9 @@ public class ExperienceManager {
     private boolean isUsingUnarmed = false;
 
     private final @NotNull PersistentPlayerData persistentPlayerDataRef;
-    private @Nullable McMMOPlayer mmoPlayer;
+    private @Nullable OnlineMMOPlayer mmoPlayer;
 
-    public ExperienceManager(@NotNull McMMOPlayer mmoPlayer) {
+    public ExperienceManager(@NotNull OnlineMMOPlayer mmoPlayer) {
         this.mmoPlayer = mmoPlayer;
         this.persistentPlayerDataRef = mmoPlayer.getPersistentPlayerData();
     }

@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.excavation;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class ExcavationManager extends SkillManager {
-    public ExcavationManager(McMMOPlayer mmoPlayer) {
+    public ExcavationManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.EXCAVATION);
     }
 

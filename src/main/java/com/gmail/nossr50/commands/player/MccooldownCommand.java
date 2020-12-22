@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -42,7 +42,7 @@ public class MccooldownCommand implements TabExecutor {
                 return true;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
             player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
             player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));

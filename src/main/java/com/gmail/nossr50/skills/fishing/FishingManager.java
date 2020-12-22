@@ -7,7 +7,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
@@ -62,7 +62,7 @@ public class FishingManager extends SkillManager {
     private Location hookLocation;
     private int fishCaughtCounter = 1;
 
-    public FishingManager(McMMOPlayer mmoPlayer) {
+    public FishingManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.FISHING);
     }
 

@@ -1,16 +1,16 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ExperienceBarHideTask extends BukkitRunnable {
-    public final McMMOPlayer mmoPlayer;
+    public final OnlineMMOPlayer mmoPlayer;
     public final PrimarySkillType primarySkillType;
     public final MMOExperienceBarManager MMOExperienceBarManagerRef;
 
-    public ExperienceBarHideTask(MMOExperienceBarManager MMOExperienceBarManagerRef, McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType)
+    public ExperienceBarHideTask(MMOExperienceBarManager MMOExperienceBarManagerRef, OnlineMMOPlayer mmoPlayer, PrimarySkillType primarySkillType)
     {
         this.MMOExperienceBarManagerRef = MMOExperienceBarManagerRef;
         this.mmoPlayer = mmoPlayer;

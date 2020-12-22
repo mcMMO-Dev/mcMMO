@@ -3,7 +3,7 @@ package com.gmail.nossr50.util.input;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class SuperAbilityManager {
 
-    private final McMMOPlayer mmoPlayer;
+    private final OnlineMMOPlayer mmoPlayer;
     private final Player player;
 
     private final Map<SuperAbilityType, Boolean> superAbilityState = new HashMap<>();
@@ -39,7 +39,7 @@ public class SuperAbilityManager {
     private final Map<AbilityToolType, Boolean> toolMode = new HashMap<>();
     private final PersistentPlayerData persistentPlayerData;
 
-    public SuperAbilityManager(@NotNull McMMOPlayer mmoPlayer, @NotNull PersistentPlayerData persistentPlayerData) {
+    public SuperAbilityManager(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PersistentPlayerData persistentPlayerData) {
         this.mmoPlayer = mmoPlayer;
         this.persistentPlayerData = persistentPlayerData;
         this.player = mmoPlayer.getPlayer();

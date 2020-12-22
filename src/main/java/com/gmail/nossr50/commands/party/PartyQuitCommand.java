@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import org.bukkit.command.Command;
@@ -21,7 +21,7 @@ public class PartyQuitCommand implements CommandExecutor {
                 return true;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
             Party playerParty = mmoPlayer.getParty();
 
             if (!mcMMO.getPartyManager().handlePartyChangeEvent(player, playerParty.getPartyName(), null, EventReason.LEFT_PARTY)) {

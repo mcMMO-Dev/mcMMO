@@ -3,7 +3,7 @@ package com.gmail.nossr50.runnables.database;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -26,7 +26,7 @@ public class FormulaConversionTask extends BukkitRunnable {
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
         for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
             PlayerProfile profile;
 
             // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.

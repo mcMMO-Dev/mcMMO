@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
@@ -52,7 +52,7 @@ public class McrankCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
 
                 if (mmoPlayer != null) {
                     Player player = mmoPlayer.getPlayer();
@@ -82,7 +82,7 @@ public class McrankCommand implements TabExecutor {
 
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
 
             if(mmoPlayer == null)
             {
@@ -113,7 +113,7 @@ public class McrankCommand implements TabExecutor {
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 
-    private long getCDSeconds(McMMOPlayer mmoPlayer, long cooldownMillis) {
+    private long getCDSeconds(OnlineMMOPlayer mmoPlayer, long cooldownMillis) {
         return ((mmoPlayer.getDatabaseCommandATS() + cooldownMillis) - System.currentTimeMillis());
     }
 }
