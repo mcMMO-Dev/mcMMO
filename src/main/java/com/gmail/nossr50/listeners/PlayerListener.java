@@ -276,12 +276,13 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
-        {
+        McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null) {
             return;
         }
 
-        FishingManager fishingManager = mcMMO.getUserManager().queryPlayer(player).getFishingManager();
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         switch (event.getState()) {
             case CAUGHT_FISH:
@@ -525,16 +526,15 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
-        {
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null) {
             return;
         }
 
-        //No need for null checks here
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
         //TODO: There's an issue with using Async saves on player quit
         //TODO: Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
-        mcMMO.getUserManager().saveUserWithDelay(mmoPlayer.getPersistentPlayerData(), false, 20);
+        mcMMO.getUserManager().saveUserWithDelay(mmoPlayer.getMMOPlayerData(), false, 20);
 
         mcMMO.getUserManager().cleanupPlayer(mmoPlayer); //Handles cleaning up the player when their profile is no longer needed
     }
