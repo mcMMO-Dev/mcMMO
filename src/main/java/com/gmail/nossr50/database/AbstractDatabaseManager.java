@@ -1,6 +1,6 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.datatypes.player.PersistentPlayerDataBuilder;
+import com.gmail.nossr50.datatypes.player.MMODataBuilder;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
@@ -25,9 +25,9 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
             //TODO: have this use the PersistentPlayerData object created below to initialize defaults
             insertNewUser(player.getName(), player.getUniqueId());
             //Construct player data object
-            PersistentPlayerDataBuilder persistentPlayerDataBuilder = new PersistentPlayerDataBuilder();
+            MMODataBuilder MMODataBuilder = new MMODataBuilder();
             //Return player profile
-            return new PlayerProfile(persistentPlayerDataBuilder.buildNewPlayerData(player.getUniqueId(), player.getName()));
+            return new PlayerProfile(MMODataBuilder.buildNewPlayerData(player.getUniqueId(), player.getName()));
         } catch (Exception e) {
             e.printStackTrace();
         }

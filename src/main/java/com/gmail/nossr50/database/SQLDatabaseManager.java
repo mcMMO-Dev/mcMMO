@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.*;
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
@@ -258,17 +259,17 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
                     + ", fishing = ?, alchemy = ?, tridents = ?, crossbows = ?, total = ? WHERE user_id = ?");
             statement.setInt(1, dataSnapshot.getSkillLevel(PrimarySkillType.TAMING));
             statement.setInt(2, dataSnapshot.getSkillLevel(PrimarySkillType.MINING));
-            statement.setInt(3, dataSnapshot.getSkillLevel(PrimarySkillType.REPAIR));
-            statement.setInt(4, dataSnapshot.getSkillLevel(PrimarySkillType.WOODCUTTING));
-            statement.setInt(5, dataSnapshot.getSkillLevel(PrimarySkillType.UNARMED));
+            statement.setInt(3, dataSnapshot.getSkillLevel(CoreSkills.REPAIR_CS));
+            statement.setInt(4, dataSnapshot.getSkillLevel(CoreSkills.WOODCUTTING_CS));
+            statement.setInt(5, dataSnapshot.getSkillLevel(CoreSkills.UNARMED_CS));
             statement.setInt(6, dataSnapshot.getSkillLevel(PrimarySkillType.HERBALISM));
             statement.setInt(7, dataSnapshot.getSkillLevel(PrimarySkillType.EXCAVATION));
             statement.setInt(8, dataSnapshot.getSkillLevel(PrimarySkillType.ARCHERY));
             statement.setInt(9, dataSnapshot.getSkillLevel(PrimarySkillType.SWORDS));
-            statement.setInt(10, dataSnapshot.getSkillLevel(PrimarySkillType.AXES));
-            statement.setInt(11, dataSnapshot.getSkillLevel(PrimarySkillType.ACROBATICS));
+            statement.setInt(10, dataSnapshot.getSkillLevel(CoreSkills.AXES_CS));
+            statement.setInt(11, dataSnapshot.getSkillLevel(CoreSkills.ACROBATICS_CS));
             statement.setInt(12, dataSnapshot.getSkillLevel(PrimarySkillType.FISHING));
-            statement.setInt(13, dataSnapshot.getSkillLevel(PrimarySkillType.ALCHEMY));
+            statement.setInt(13, dataSnapshot.getSkillLevel(CoreSkills.ALCHEMY_CS));
             statement.setInt(14, dataSnapshot.getSkillLevel(PrimarySkillType.TRIDENTS));
             statement.setInt(15, dataSnapshot.getSkillLevel(PrimarySkillType.CROSSBOWS));
             int total = 0;
@@ -290,17 +291,17 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
                     + ", fishing = ?, alchemy = ?, tridents = ?, crossbows = ?, WHERE user_id = ?");
             statement.setInt(1, dataSnapshot.getSkillXpLevel(PrimarySkillType.TAMING));
             statement.setInt(2, dataSnapshot.getSkillXpLevel(PrimarySkillType.MINING));
-            statement.setInt(3, dataSnapshot.getSkillXpLevel(PrimarySkillType.REPAIR));
-            statement.setInt(4, dataSnapshot.getSkillXpLevel(PrimarySkillType.WOODCUTTING));
-            statement.setInt(5, dataSnapshot.getSkillXpLevel(PrimarySkillType.UNARMED));
+            statement.setInt(3, dataSnapshot.getSkillXpLevel(CoreSkills.REPAIR_CS));
+            statement.setInt(4, dataSnapshot.getSkillXpLevel(CoreSkills.WOODCUTTING_CS));
+            statement.setInt(5, dataSnapshot.getSkillXpLevel(CoreSkills.UNARMED_CS));
             statement.setInt(6, dataSnapshot.getSkillXpLevel(PrimarySkillType.HERBALISM));
             statement.setInt(7, dataSnapshot.getSkillXpLevel(PrimarySkillType.EXCAVATION));
             statement.setInt(8, dataSnapshot.getSkillXpLevel(PrimarySkillType.ARCHERY));
             statement.setInt(9, dataSnapshot.getSkillXpLevel(PrimarySkillType.SWORDS));
-            statement.setInt(10, dataSnapshot.getSkillXpLevel(PrimarySkillType.AXES));
-            statement.setInt(11, dataSnapshot.getSkillXpLevel(PrimarySkillType.ACROBATICS));
+            statement.setInt(10, dataSnapshot.getSkillXpLevel(CoreSkills.AXES_CS));
+            statement.setInt(11, dataSnapshot.getSkillXpLevel(CoreSkills.ACROBATICS_CS));
             statement.setInt(12, dataSnapshot.getSkillXpLevel(PrimarySkillType.FISHING));
-            statement.setInt(13, dataSnapshot.getSkillXpLevel(PrimarySkillType.ALCHEMY));
+            statement.setInt(13, dataSnapshot.getSkillXpLevel(CoreSkills.ALCHEMY_CS));
             statement.setInt(14, dataSnapshot.getSkillXpLevel(PrimarySkillType.TRIDENTS));
             statement.setInt(15, dataSnapshot.getSkillXpLevel(PrimarySkillType.CROSSBOWS));
             statement.setInt(16, id);
@@ -355,17 +356,17 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
                     + ", view_fishing = ?, view_alchemy = ?, view_salvage = ?, view_smelting = ?, view_tridents = ?, view_crossbows = ? WHERE user_id = ?");
             statement.setString(1, dataSnapshot.getBarStateMap().get(PrimarySkillType.TAMING).toString());
             statement.setString(2, dataSnapshot.getBarStateMap().get(PrimarySkillType.MINING).toString());
-            statement.setString(3, dataSnapshot.getBarStateMap().get(PrimarySkillType.REPAIR).toString());
-            statement.setString(4, dataSnapshot.getBarStateMap().get(PrimarySkillType.WOODCUTTING).toString());
-            statement.setString(5, dataSnapshot.getBarStateMap().get(PrimarySkillType.UNARMED).toString());
+            statement.setString(3, dataSnapshot.getBarStateMap().get(CoreSkills.REPAIR_CS).toString());
+            statement.setString(4, dataSnapshot.getBarStateMap().get(CoreSkills.WOODCUTTING_CS).toString());
+            statement.setString(5, dataSnapshot.getBarStateMap().get(CoreSkills.UNARMED_CS).toString());
             statement.setString(6, dataSnapshot.getBarStateMap().get(PrimarySkillType.HERBALISM).toString());
             statement.setString(7, dataSnapshot.getBarStateMap().get(PrimarySkillType.EXCAVATION).toString());
             statement.setString(8, dataSnapshot.getBarStateMap().get(PrimarySkillType.ARCHERY).toString());
             statement.setString(9, dataSnapshot.getBarStateMap().get(PrimarySkillType.SWORDS).toString());
-            statement.setString(10, dataSnapshot.getBarStateMap().get(PrimarySkillType.AXES).toString());
-            statement.setString(11, dataSnapshot.getBarStateMap().get(PrimarySkillType.ACROBATICS).toString());
+            statement.setString(10, dataSnapshot.getBarStateMap().get(CoreSkills.AXES_CS).toString());
+            statement.setString(11, dataSnapshot.getBarStateMap().get(CoreSkills.ACROBATICS_CS).toString());
             statement.setString(12, dataSnapshot.getBarStateMap().get(PrimarySkillType.FISHING).toString());
-            statement.setString(13, dataSnapshot.getBarStateMap().get(PrimarySkillType.ALCHEMY).toString());
+            statement.setString(13, dataSnapshot.getBarStateMap().get(CoreSkills.ALCHEMY_CS).toString());
             statement.setString(14, dataSnapshot.getBarStateMap().get(PrimarySkillType.SALVAGE).toString());
             statement.setString(15, dataSnapshot.getBarStateMap().get(PrimarySkillType.SMELTING).toString());
             statement.setString(16, dataSnapshot.getBarStateMap().get(PrimarySkillType.TRIDENTS).toString());
@@ -1188,7 +1189,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
     }
 
     private @Nullable PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        PersistentPlayerDataBuilder persistentPlayerDataBuilder = new PersistentPlayerDataBuilder();
+        MMODataBuilder MMODataBuilder = new MMODataBuilder();
         EnumMap<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class); // Skill & Level
         EnumMap<PrimarySkillType, Float> skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class); // Skill & XP
         EnumMap<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
@@ -1210,33 +1211,33 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
 
         skills.put(PrimarySkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
         skills.put(PrimarySkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
-        skills.put(PrimarySkillType.REPAIR, result.getInt(OFFSET_SKILLS + 3));
-        skills.put(PrimarySkillType.WOODCUTTING, result.getInt(OFFSET_SKILLS + 4));
-        skills.put(PrimarySkillType.UNARMED, result.getInt(OFFSET_SKILLS + 5));
+        skills.put(CoreSkills.REPAIR_CS, result.getInt(OFFSET_SKILLS + 3));
+        skills.put(CoreSkills.WOODCUTTING_CS, result.getInt(OFFSET_SKILLS + 4));
+        skills.put(CoreSkills.UNARMED_CS, result.getInt(OFFSET_SKILLS + 5));
         skills.put(PrimarySkillType.HERBALISM, result.getInt(OFFSET_SKILLS + 6));
         skills.put(PrimarySkillType.EXCAVATION, result.getInt(OFFSET_SKILLS + 7));
         skills.put(PrimarySkillType.ARCHERY, result.getInt(OFFSET_SKILLS + 8));
         skills.put(PrimarySkillType.SWORDS, result.getInt(OFFSET_SKILLS + 9));
-        skills.put(PrimarySkillType.AXES, result.getInt(OFFSET_SKILLS + 10));
-        skills.put(PrimarySkillType.ACROBATICS, result.getInt(OFFSET_SKILLS + 11));
+        skills.put(CoreSkills.AXES_CS, result.getInt(OFFSET_SKILLS + 10));
+        skills.put(CoreSkills.ACROBATICS_CS, result.getInt(OFFSET_SKILLS + 11));
         skills.put(PrimarySkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
-        skills.put(PrimarySkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
+        skills.put(CoreSkills.ALCHEMY_CS, result.getInt(OFFSET_SKILLS + 13));
         skills.put(PrimarySkillType.TRIDENTS, result.getInt(OFFSET_SKILLS + 14));
         skills.put(PrimarySkillType.CROSSBOWS, result.getInt(OFFSET_SKILLS + 15));
 
         skillsXp.put(PrimarySkillType.TAMING, result.getFloat(OFFSET_EXPERIENCE + 1));
         skillsXp.put(PrimarySkillType.MINING, result.getFloat(OFFSET_EXPERIENCE + 2));
-        skillsXp.put(PrimarySkillType.REPAIR, result.getFloat(OFFSET_EXPERIENCE + 3));
-        skillsXp.put(PrimarySkillType.WOODCUTTING, result.getFloat(OFFSET_EXPERIENCE + 4));
-        skillsXp.put(PrimarySkillType.UNARMED, result.getFloat(OFFSET_EXPERIENCE + 5));
+        skillsXp.put(CoreSkills.REPAIR_CS, result.getFloat(OFFSET_EXPERIENCE + 3));
+        skillsXp.put(CoreSkills.WOODCUTTING_CS, result.getFloat(OFFSET_EXPERIENCE + 4));
+        skillsXp.put(CoreSkills.UNARMED_CS, result.getFloat(OFFSET_EXPERIENCE + 5));
         skillsXp.put(PrimarySkillType.HERBALISM, result.getFloat(OFFSET_EXPERIENCE + 6));
         skillsXp.put(PrimarySkillType.EXCAVATION, result.getFloat(OFFSET_EXPERIENCE + 7));
         skillsXp.put(PrimarySkillType.ARCHERY, result.getFloat(OFFSET_EXPERIENCE + 8));
         skillsXp.put(PrimarySkillType.SWORDS, result.getFloat(OFFSET_EXPERIENCE + 9));
-        skillsXp.put(PrimarySkillType.AXES, result.getFloat(OFFSET_EXPERIENCE + 10));
-        skillsXp.put(PrimarySkillType.ACROBATICS, result.getFloat(OFFSET_EXPERIENCE + 11));
+        skillsXp.put(CoreSkills.AXES_CS, result.getFloat(OFFSET_EXPERIENCE + 10));
+        skillsXp.put(CoreSkills.ACROBATICS_CS, result.getFloat(OFFSET_EXPERIENCE + 11));
         skillsXp.put(PrimarySkillType.FISHING, result.getFloat(OFFSET_EXPERIENCE + 12));
-        skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_EXPERIENCE + 13));
+        skillsXp.put(CoreSkills.ALCHEMY_CS, result.getFloat(OFFSET_EXPERIENCE + 13));
         skillsXp.put(PrimarySkillType.TRIDENTS, result.getFloat(OFFSET_EXPERIENCE + 14));
         skillsXp.put(PrimarySkillType.CROSSBOWS, result.getFloat(OFFSET_EXPERIENCE + 15));
 
@@ -1283,17 +1284,17 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         //XPBAR
         xpBarStateMap.put(PrimarySkillType.TAMING, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 1)));
         xpBarStateMap.put(PrimarySkillType.MINING, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 2)));
-        xpBarStateMap.put(PrimarySkillType.REPAIR, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 3)));
-        xpBarStateMap.put(PrimarySkillType.WOODCUTTING, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 4)));
-        xpBarStateMap.put(PrimarySkillType.UNARMED, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 5)));
+        xpBarStateMap.put(CoreSkills.REPAIR_CS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 3)));
+        xpBarStateMap.put(CoreSkills.WOODCUTTING_CS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 4)));
+        xpBarStateMap.put(CoreSkills.UNARMED_CS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 5)));
         xpBarStateMap.put(PrimarySkillType.HERBALISM, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 6)));
         xpBarStateMap.put(PrimarySkillType.EXCAVATION, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 7)));
         xpBarStateMap.put(PrimarySkillType.ARCHERY, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 8)));
         xpBarStateMap.put(PrimarySkillType.SWORDS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 9)));
-        xpBarStateMap.put(PrimarySkillType.AXES, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 10)));
-        xpBarStateMap.put(PrimarySkillType.ACROBATICS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 11)));
+        xpBarStateMap.put(CoreSkills.AXES_CS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 10)));
+        xpBarStateMap.put(CoreSkills.ACROBATICS_CS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 11)));
         xpBarStateMap.put(PrimarySkillType.FISHING, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 12)));
-        xpBarStateMap.put(PrimarySkillType.ALCHEMY, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 13)));
+        xpBarStateMap.put(CoreSkills.ALCHEMY_CS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 13)));
         xpBarStateMap.put(PrimarySkillType.SALVAGE, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 14)));
         xpBarStateMap.put(PrimarySkillType.SMELTING, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 15)));
         xpBarStateMap.put(PrimarySkillType.TRIDENTS, SkillUtils.asBarState(result.getString(OFFSET_XPBAR + 16)));
@@ -1304,7 +1305,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         boolean rankLess = result.getBoolean(OFFSET_TOGGLE+2);
 
         //Build
-        persistentPlayerDataBuilder.setSkillLevelValues(skills)
+        MMODataBuilder.setSkillLevelValues(skills)
                 .setSkillExperienceValues(skillsXp)
                 .setAbilityDeactivationTimestamps(skillsDATS)
                 .setUniquePlayerData(uniqueData)
@@ -1320,7 +1321,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         PersistentPlayerData persistentPlayerData;
 
         try {
-            persistentPlayerData = persistentPlayerDataBuilder.build();
+            persistentPlayerData = MMODataBuilder.build();
             return new PlayerProfile(persistentPlayerData);
         } catch (Exception e) {
             e.printStackTrace();

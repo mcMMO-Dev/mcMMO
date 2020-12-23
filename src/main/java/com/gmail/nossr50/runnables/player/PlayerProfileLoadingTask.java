@@ -2,11 +2,7 @@ package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
-import com.gmail.nossr50.datatypes.player.PersistentPlayerDataBuilder;
 import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
