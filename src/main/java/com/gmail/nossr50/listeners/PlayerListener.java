@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -89,12 +90,13 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
-        {
+        McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(player);
+
+        if(mmoPlayer == null) {
             return;
         }
 
-        mcMMO.getUserManager().queryPlayer(player).actualizeTeleportATS();
+        mmoPlayer.actualizeTeleportATS();
     }
     /**
      * Handle PlayerDeathEvents at the lowest priority.
@@ -206,8 +208,12 @@ public class PlayerListener implements Listener {
 
         OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
-        mmoPlayer.checkGodMode();
-        mmoPlayer.checkParty();
+        if(mmoPlayer == null) {
+            return;
+        }
+
+        mmoPlayer.validateGodMode();
+        mmoPlayer.validateParty();
     }
 
     /**

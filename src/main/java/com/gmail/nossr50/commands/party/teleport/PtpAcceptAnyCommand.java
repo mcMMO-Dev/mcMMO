@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyMember;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;

@@ -1,8 +1,8 @@
 package com.gmail.nossr50.chat;
 
-import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.mcMMO;
+import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;

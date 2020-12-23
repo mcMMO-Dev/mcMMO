@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ExperienceBarManager handles displaying and updating mcMMO experience bars for players
- * Each ExperienceBarManager only manages a single player
+ * {@link MMOExperienceBarManager} handles displaying and updating mcMMO experience bars for players
+ * Each {@link MMOExperienceBarManager} only manages a single player
  */
 public class MMOExperienceBarManager {
     private final McMMOPlayer mmoPlayer;

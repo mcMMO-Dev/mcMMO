@@ -2,8 +2,7 @@ package com.gmail.nossr50.datatypes.experience;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.neetgames.mcmmo.experience.ExperienceHandler;
@@ -11,9 +10,7 @@ import com.neetgames.mcmmo.experience.XPGainReason;
 import com.neetgames.mcmmo.experience.XPGainSource;
 import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.CoreSkills;
-import com.gmail.nossr50.datatypes.skills.RootSkill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -27,7 +24,6 @@ import com.neetgames.mcmmo.exceptions.UnknownSkillException;
 import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -322,7 +318,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
         if(hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
         } else if(hasReachedLevelCap(rootSkill)) {
-            NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(rootSkill)), rootSkill.getName());
+            NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(rootSkill)), rootSkill.getSkillName());
         }
 
         //Updates from Party sources

@@ -7,7 +7,7 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;

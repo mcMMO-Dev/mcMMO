@@ -4,7 +4,7 @@ import com.gmail.nossr50.chat.author.PlayerAuthor;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -33,17 +33,14 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
-import com.neetgames.mcmmo.exceptions.UnknownSkillException;
 import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.neetgames.mcmmo.skill.RootSkill;
-import com.neetgames.mcmmo.skill.SkillIdentity;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,6 +53,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     private final @NotNull Player player;
     private final @NotNull Identity identity;
     private @Nullable Party playerPartyRef;
+
 
     //Used in our chat systems for chat messages
     private final @NotNull PlayerAuthor playerAuthor;
@@ -482,16 +480,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     }
 
     /**
-     * Update the experience bars for this player
-     * @param skillIdentity target skill
-     * @param plugin your {@link Plugin}
-     */
-    public void updateXPBar(@NotNull SkillIdentity skillIdentity, Plugin plugin) {
-        //XP BAR UPDATES
-        experienceBarManager.updateExperienceBar(skillIdentity, plugin);
-    }
-
-    /**
      * Checks whether or not a player can still be in god mode when transitioning between worlds
      */
     public void checkGodMode() {
@@ -499,13 +487,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
             || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
             toggleGodMode();
             player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
-        }
-    }
-
-    public void checkParty() {
-        if (inParty() && !Permissions.party(player)) {
-            removeParty();
-            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
         }
     }
 
@@ -646,5 +627,17 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     @Override
     public void updateXPBar(@NotNull RootSkill rootSkill) {
         experienceBarManager.updateExperienceBar(rootSkill, mcMMO.p);
+    }
+
+    @Override
+    public void validateGodMode() {
+        if(!Permissions.mcgod(player)) {
+            godMode = false;
+        }
+    }
+
+    @Override
+    public @Nullable Party getParty() {
+        return playerPartyRef;
     }
 }

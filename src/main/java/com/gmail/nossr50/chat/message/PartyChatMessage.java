@@ -2,7 +2,7 @@ package com.gmail.nossr50.chat.message;
 
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;

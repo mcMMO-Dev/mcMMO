@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,23 +16,14 @@ public class FormulaManager {
     private static final File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
     // Experience needed to reach a level, cached values to improve conversion speed
-    private Map<Integer, Integer> experienceNeededRetroLinear;
-    private Map<Integer, Integer> experienceNeededStandardLinear;
-    private Map<Integer, Integer> experienceNeededRetroExponential;
-    private Map<Integer, Integer> experienceNeededStandardExponential;
+    private @NotNull Map<Integer, Integer> experienceNeededRetroLinear;
+    private @NotNull Map<Integer, Integer> experienceNeededStandardLinear;
+    private @NotNull Map<Integer, Integer> experienceNeededRetroExponential;
+    private @NotNull Map<Integer, Integer> experienceNeededStandardExponential;
 
     private FormulaType previousFormula;
 
     public FormulaManager() {
-        /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        initExperienceNeededMaps();
-        loadFormula();
-    }
-
-    /**
-     * Initialize maps used for XP to next level
-     */
-    private void initExperienceNeededMaps() {
         experienceNeededRetroLinear = new HashMap<>();
         experienceNeededRetroExponential = new HashMap<>();
         experienceNeededStandardLinear = new HashMap<>();

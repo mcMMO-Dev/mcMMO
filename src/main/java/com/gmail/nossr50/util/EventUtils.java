@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;

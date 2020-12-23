@@ -1,11 +1,10 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.datatypes.dirtydata.DirtyData;
-import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
-import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
-import com.gmail.nossr50.datatypes.mutableprimitives.MutableString;
+import com.neetgames.neetlib.dirtydata.DirtyData;
+import com.neetgames.neetlib.dirtydata.DirtySet;
+import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
+import com.neetgames.neetlib.mutableprimitives.MutableString;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,8 +16,7 @@ public class PersistentPartyData {
     private final @NotNull DirtyData<MutableString> partyName;
     private final @NotNull DirtySet<PartyMember> partyMembers; //TODO: Add cache for subsets
 
-    public PersistentPartyData(@NotNull String partyName,
-                               @NotNull Set<PartyMember> partyMembers) throws RuntimeException {
+    public PersistentPartyData(@NotNull String partyName, @NotNull Set<PartyMember> partyMembers) throws RuntimeException {
         dirtyFlag = new MutableBoolean(false);
         this.partyName = new DirtyData<>(new MutableString(partyName), dirtyFlag);
         this.partyMembers = new DirtySet<>(new HashSet<>(partyMembers), dirtyFlag);
@@ -28,7 +26,7 @@ public class PersistentPartyData {
         return partyName.getData().getImmutableCopy();
     }
 
-    public @NotNull DirtySet<PartyMember> getPartyMembers() {
+    public @NotNull Set<PartyMember> getPartyMembers() {
         return partyMembers;
     }
 

@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.neetgames.mcmmo.MobHealthBarType;
+import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -551,9 +552,15 @@ public class Config extends AutoUpdateConfigLoader {
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
-    public int getLevelCap(@NotNull SkillIdentity skillIdentity) {
+    public int getLevelCap(@NotNull RootSkill rootSkill) {
 
-        int cap = config.getInt("Skills." + StringUtils.getCapitalized(skillIdentity.getSkillName()) + ".Level_Cap", 0);
+        int cap = config.getInt("Skills." + StringUtils.getCapitalized(rootSkill.getSkillName()) + ".Level_Cap", 0);
+        return (cap <= 0) ? Integer.MAX_VALUE : cap;
+    }
+
+    public int getLevelCap(@NotNull PrimarySkillType primarySkillType) {
+
+        int cap = config.getInt("Skills." + StringUtils.getCapitalized(primarySkillType.toString()) + ".Level_Cap", 0);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 

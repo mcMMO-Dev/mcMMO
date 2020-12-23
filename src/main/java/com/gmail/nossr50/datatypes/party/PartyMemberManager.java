@@ -1,10 +1,9 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
+import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.util.Misc;
-import com.neetgames.mcmmo.exceptions.InvalidPlayerException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +28,7 @@ public class PartyMemberManager {
      *
      * @return all party members
      */
-    public @NotNull DirtySet<PartyMember> getPartyMembers() {
+    public @NotNull Set<PartyMember> getPartyMembers() {
         return persistentPartyData.getPartyMembers();
     }
 

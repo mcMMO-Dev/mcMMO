@@ -6,7 +6,7 @@ import com.gmail.nossr50.chat.mailer.AdminChatMailer;
 import com.gmail.nossr50.chat.mailer.PartyChatMailer;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;

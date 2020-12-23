@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyMember;
 import org.bukkit.Bukkit;

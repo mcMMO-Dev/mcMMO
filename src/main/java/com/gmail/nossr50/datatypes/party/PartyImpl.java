@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.chat.SamePartyPredicate;
+import com.neetgames.mcmmo.party.Party;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -11,13 +12,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class Party {
+public class PartyImpl implements Party {
     private final @NotNull Predicate<CommandSender> samePartyPredicate;
     private final @NotNull PersistentPartyData persistentPartyData;
     private final @NotNull PartyMemberManager partyMemberManager;
     private final @NotNull PartyExperienceManager partyExperienceManager;
 
-    public Party(@NotNull PersistentPartyData persistentPartyData) {
+    public PartyImpl(@NotNull PersistentPartyData persistentPartyData) {
         this.persistentPartyData = persistentPartyData;
 
         //Initialize Managers
@@ -59,7 +60,7 @@ public class Party {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Party party = (Party) o;
+        PartyImpl party = (PartyImpl) o;
         return samePartyPredicate.equals(party.samePartyPredicate)
                 && persistentPartyData.equals(party.persistentPartyData)
                 && partyMemberManager.equals(party.partyMemberManager)

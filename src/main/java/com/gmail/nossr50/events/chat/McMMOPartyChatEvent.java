@@ -1,7 +1,7 @@
 package com.gmail.nossr50.events.chat;
 
 import com.gmail.nossr50.chat.message.PartyChatMessage;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 

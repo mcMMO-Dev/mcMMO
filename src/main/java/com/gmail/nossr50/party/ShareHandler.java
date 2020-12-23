@@ -3,7 +3,7 @@ package com.gmail.nossr50.party;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
