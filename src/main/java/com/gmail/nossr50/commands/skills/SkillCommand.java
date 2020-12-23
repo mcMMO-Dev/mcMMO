@@ -3,13 +3,11 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.CoreSkills;
-import com.gmail.nossr50.util.Misc;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -21,6 +19,7 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.neetgames.mcmmo.skill.RootSkill;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
@@ -39,7 +38,7 @@ import java.util.Set;
 
 public abstract class SkillCommand implements TabExecutor {
     protected @NotNull RootSkill rootSkill;
-    protected @NotNull PrimarySkillType primarySkillType;
+    protected @NotNull RootSkill rootSkill;
     private final String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
@@ -47,7 +46,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     private final CommandExecutor skillGuideCommand;
 
-    public SkillCommand(@NotNull PrimarySkillType primarySkillType) {
+    public SkillCommand(@NotNull RootSkill rootSkill) {
         this.rootSkill = CoreSkills.getSkill(primarySkillType);
         this.primarySkillType = primarySkillType;
         skillName = rootSkill.getSkillName();

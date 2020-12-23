@@ -7,9 +7,9 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("ac|a|adminchat|achat") //Kept for historical reasons

@@ -1,8 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 

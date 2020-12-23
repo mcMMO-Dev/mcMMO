@@ -17,7 +17,8 @@ public class PtpToggleCommand implements CommandExecutor {
             return true;
         }
 
-        PartyTeleportRecord ptpRecord = mcMMO.getUserManager().getPlayer(sender.getName()).getPartyTeleportRecord();
+        PartyTeleportRecord ptpRecord = mcMMO.getUserManager().queryPlayer(player)
+.getPartyTeleportRecord();
 
         if (ptpRecord.isEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));

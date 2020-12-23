@@ -7,16 +7,18 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class MctopCommandAsyncTask extends BukkitRunnable {
-    private final CommandSender sender;
-    private final RootSkill rootSkill;
+    private final @NotNull CommandSender sender;
+    private final @Nullable RootSkill rootSkill;
     private final int page;
     private final boolean useBoard, useChat;
 
-    public MctopCommandAsyncTask(int page, RootSkill rootSkill, CommandSender sender, boolean useBoard, boolean useChat) {
+    public MctopCommandAsyncTask(int page, @Nullable RootSkill rootSkill, @NotNull CommandSender sender, boolean useBoard, boolean useChat) {
         Validate.isTrue(useBoard || useChat, "Attempted to start a rank retrieval with both board and chat off");
         Validate.notNull(sender, "Attempted to start a rank retrieval with no recipient");
 

@@ -1,9 +1,14 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableSet;
 import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -117,7 +122,7 @@ public class CoreSkills {
      *
      * @return a set of all root skills built into mcMMO
      */
-    public static @NotNull Set<RootSkill> getImmutableCoreRootSkillSet() {
+    public static @NotNull Set<RootSkill> getCoreSkills() {
         return CORE_ROOT_SKILLS;
     }
 
@@ -162,7 +167,7 @@ public class CoreSkills {
 
     @Deprecated
     private static @NotNull Set<RootSkill> generateNonChildSkillSet() {
-        return getImmutableCoreRootSkillSet().stream().filter((x) -> !isChildSkill(x)).collect(Collectors.toSet());
+        return getCoreSkills().stream().filter((x) -> !isChildSkill(x)).collect(Collectors.toSet());
     }
 
     public static @NotNull Set<RootSkill> getNonChildSkills() {

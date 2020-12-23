@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -75,7 +75,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                PrimarySkillType skill = PrimarySkillType.getSkill(args[0]);
+                RootSkill rootSkill = PrimarySkillType.getSkill(args[0]);
 
                 if (!CommandUtils.isChildSkill(sender, skill)) {
                     return true;
@@ -122,8 +122,8 @@ public abstract class HardcoreModeCommand implements TabExecutor {
 
     protected abstract boolean checkTogglePermissions(CommandSender sender);
     protected abstract boolean checkModifyPermissions(CommandSender sender);
-    protected abstract boolean checkEnabled(PrimarySkillType skill);
-    protected abstract void enable(PrimarySkillType skill);
-    protected abstract void disable(PrimarySkillType skill);
+    protected abstract boolean checkEnabled(RootSkill rootSkill);
+    protected abstract void enable(RootSkill rootSkill);
+    protected abstract void disable(RootSkill rootSkill);
     protected abstract void modify(CommandSender sender, double newPercentage);
 }

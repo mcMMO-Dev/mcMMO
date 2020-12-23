@@ -394,7 +394,7 @@ public class ScoreboardManager {
         }
     }
 
-    public static void showTopScoreboard(Player player, PrimarySkillType skill, int pageNumber, List<PlayerStat> stats) {
+    public static void showTopScoreboard(@NotNull Player player, @NotNull PrimarySkillType skill, int pageNumber, @NotNull List<PlayerStat> stats) {
 
         ScoreboardWrapper wrapper = getWrapper(player);
 

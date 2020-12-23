@@ -1,16 +1,15 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.Misc;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

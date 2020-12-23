@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

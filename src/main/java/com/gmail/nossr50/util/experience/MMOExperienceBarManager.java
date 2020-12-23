@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.Misc;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
@@ -183,7 +182,7 @@ public class MMOExperienceBarManager {
     }
 
     public static void setBarStateDefaults(@NotNull Map<RootSkill, SkillBossBarState> barStateHashMap) {
-        for(RootSkill rootSkill : CoreSkills.getImmutableCoreRootSkillSet()) {
+        for(RootSkill rootSkill : CoreSkills.getCoreSkills()) {
 
             if(CoreSkills.isChildSkill(rootSkill)) {
                 barStateHashMap.put(rootSkill, SkillBossBarState.DISABLED);

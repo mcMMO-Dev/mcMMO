@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.config.Config;
-import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.party.Party;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

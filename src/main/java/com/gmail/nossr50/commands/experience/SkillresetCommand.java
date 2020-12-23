@@ -1,14 +1,14 @@
 package com.gmail.nossr50.commands.experience;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class SkillresetCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        PrimarySkillType skill;
+        RootSkill rootSkill;
         switch (args.length) {
             case 1:
                 if (CommandUtils.noConsoleUsage(sender)) {
@@ -51,7 +51,8 @@ public class SkillresetCommand implements TabExecutor {
                     skill = PrimarySkillType.getSkill(args[0]);
                 }
 
-                editValues((Player) sender, mcMMO.getUserManager().getPlayer(sender.getName()), skill);
+                editValues((Player) sender, mcMMO.getUserManager().queryPlayer(player)
+, skill);
                 return true;
 
             case 2:
@@ -114,7 +115,7 @@ public class SkillresetCommand implements TabExecutor {
         }
     }
 
-    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill) {
+    protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill) {
         int levelsRemoved = profile.getSkillLevel(skill);
         float xpRemoved = profile.getSkillXpLevelRaw(skill);
 
@@ -140,7 +141,7 @@ public class SkillresetCommand implements TabExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
     }
 
-    protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
+    protected void handlePlayerMessageSkill(Player player, RootSkill rootSkill) {
         player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
     }
 
@@ -148,7 +149,7 @@ public class SkillresetCommand implements TabExecutor {
         return skillName.equalsIgnoreCase("all") || !CommandUtils.isInvalidSkill(sender, skillName);
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, RootSkill rootSkill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
@@ -157,9 +158,9 @@ public class SkillresetCommand implements TabExecutor {
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill) {
+    protected void editValues(Player player, PlayerProfile profile, RootSkill rootSkill) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (RootSkill rootSkill : PrimarySkillType.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType);
             }
 

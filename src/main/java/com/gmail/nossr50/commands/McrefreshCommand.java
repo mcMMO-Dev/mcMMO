@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

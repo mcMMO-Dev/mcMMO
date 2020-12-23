@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -82,7 +82,7 @@ public class McrankCommand implements TabExecutor {
 
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             if(mmoPlayer == null)
             {

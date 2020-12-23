@@ -1,6 +1,8 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.neetgames.mcmmo.api.SkillRegister;
 import com.neetgames.mcmmo.skill.*;
 import org.jetbrains.annotations.NotNull;
@@ -143,7 +145,7 @@ public class SkillRegisterImpl implements SkillRegister {
     }
 
     private void registerCoreSkills() {
-        for(RootSkill rootSkill : CoreSkills.getImmutableCoreRootSkillSet()) {
+        for(RootSkill rootSkill : CoreSkills.getCoreSkills()) {
             mcMMO.p.getLogger().info("Registering core skill: "+rootSkill.getSkillName());
             registerSkill(rootSkill);
         }
@@ -152,5 +154,30 @@ public class SkillRegisterImpl implements SkillRegister {
     @Override
     public @NotNull Set<RootSkill> getCoreRootSkills() {
         return coreRootSkills;
+    }
+
+    /**
+     * Used to match skill by a "skill name"
+     * This is NOT case sensitive
+     *
+     * Will match against any registered root skill if one of the following is true
+     * 1) The skills localized name is equal to the provided {@link String skillName}
+     * 2) The provided {@link String skillName} matches a root skill's fully qualified name
+     * 3) The provided {@link String skillName} matches the name of the default name of the skill (the en_US not localized name, this name is never overridden by locale)
+     *
+     * @param skillName skill name or skill identity
+     * @return The matching {@link RootSkill} if it exists
+     * @see SkillIdentity#getFullyQualifiedName()
+     */
+    public @Nullable RootSkill matchRootSkill(@NotNull String skillName) {
+        for (RootSkill rootSkill : rootSkills) {
+            if (rootSkill.getSkillIdentity().getFullyQualifiedName().equalsIgnoreCase(skillName)
+                    || skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(rootSkill.getSkillName()) + ".SkillName"))
+                    || rootSkill.getSkillName().equalsIgnoreCase(skillName)) {
+                return rootSkill;
+            }
+        }
+
+        return null;
     }
 }

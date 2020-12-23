@@ -7,12 +7,12 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.party.Party;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

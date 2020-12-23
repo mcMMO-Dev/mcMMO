@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
@@ -10,6 +8,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

@@ -30,6 +30,7 @@ import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -179,7 +180,8 @@ public enum PrimarySkillType {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
     }
 
-    public static PrimarySkillType getSkill(String skillName) {
+    @Deprecated
+    public static @Nullable PrimarySkillType getSkill(String skillName) {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {

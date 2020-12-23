@@ -1,12 +1,13 @@
 package com.gmail.nossr50.commands.experience;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.MMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.UUID;
 public abstract class ExperienceCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        PrimarySkillType skill;
+        RootSkill rootSkill;
 
         if(args.length < 2) {
             return false;
@@ -56,14 +58,15 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 //Profile not loaded
-                if(mcMMO.getUserManager().getPlayer(sender.getName()) == null)
-                {
+                Player player = (Player) sender;
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                if(mmoPlayer == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
 
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]), isSilent(args));
+                editValues(mmoPlayer, skill, Integer.parseInt(args[1]), isSilent(args));
                 return true;
             } else if((args.length == 3 && !isSilent(args))
                     || (args.length == 4 && isSilent(args))) {
@@ -145,15 +148,15 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
-    protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value);
+    protected abstract void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill, int value);
     protected abstract void handlePlayerMessageAll(Player player, int value, boolean isSilent);
-    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent);
+    protected abstract void handlePlayerMessageSkill(Player player, int value, RootSkill rootSkill, boolean isSilent);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
         return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, RootSkill rootSkill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
@@ -162,10 +165,10 @@ public abstract class ExperienceCommand implements TabExecutor {
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value, boolean isSilent) {
-        if (skill == null) {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-                handleCommand(player, profile, primarySkillType, value);
+    protected void editValues(@NotNull MMOPlayer mmoPlayer, @Nullable RootSkill rootSkill, int value, boolean isSilent) {
+        if (primarySkillType == null) {
+            for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
+                handleCommand(player, profile, type, value);
             }
 
             if (player != null) {
@@ -173,10 +176,10 @@ public abstract class ExperienceCommand implements TabExecutor {
             }
         }
         else {
-            handleCommand(player, profile, skill, value);
+            handleCommand(player, profile, primarySkillType, value);
 
             if (player != null) {
-                handlePlayerMessageSkill(player, value, skill, isSilent);
+                handlePlayerMessageSkill(player, value, primarySkillType, isSilent);
             }
         }
     }

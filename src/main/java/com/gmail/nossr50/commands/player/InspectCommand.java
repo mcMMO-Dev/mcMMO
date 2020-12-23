@@ -1,15 +1,14 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -53,17 +52,17 @@ public class InspectCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
+                for (RootSkill rootSkill : PrimarySkillType.GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
+                for (RootSkill rootSkill : PrimarySkillType.COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
+                for (RootSkill rootSkill : PrimarySkillType.MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
             } else {

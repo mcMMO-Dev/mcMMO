@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.admin;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

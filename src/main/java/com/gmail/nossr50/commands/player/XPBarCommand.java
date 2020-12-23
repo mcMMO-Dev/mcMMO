@@ -1,12 +1,10 @@
 package com.gmail.nossr50.commands.player;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
