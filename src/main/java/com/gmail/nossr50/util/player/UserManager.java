@@ -116,8 +116,8 @@ public final class UserManager {
         return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
     }
 
-    public @NotNull MMODataSnapshot createPlayerDataSnapshot(@NotNull MMODataSnapshot mmoDataSnapshot) {
-        return new MMODataSnapshot(mmoDataSnapshot);
+    public @NotNull MMODataSnapshot createPlayerDataSnapshot(@NotNull MMOPlayerData mmoPlayerData) {
+        return new MMODataSnapshot(mmoPlayerData);
     }
 
     public void saveUserImmediately(@NotNull MMOPlayerData mmoPlayerData, boolean useSync) {

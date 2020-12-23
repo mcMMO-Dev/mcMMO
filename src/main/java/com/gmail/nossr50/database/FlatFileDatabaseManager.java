@@ -35,7 +35,7 @@ import java.util.*;
 
 public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
     public static final String FLATFILE_SPLIT_CHARACTER_REGEX = ":";
-    private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
+    private final HashMap<RootSkill, List<PlayerStat>> playerStatHash = new HashMap<>();
     private final List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
 
@@ -200,7 +200,7 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         mcMMO.p.getLogger().info("Purged " + removedPlayers + " users from the database.");
     }
 
-    public boolean removeUser(String playerName, @Nullable UUID uuid) {
+    public boolean removeUser(@NotNull String playerName, @Nullable UUID uuid) {
         //NOTE: UUID is unused for FlatFile for this interface implementation
         boolean worked = false;
 
@@ -342,23 +342,23 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         writer.append(primarySkillExperienceValueMap.get(CoreSkills.WOODCUTTING_CS)).append(":");
         writer.append(primarySkillLevelMap.get(CoreSkills.REPAIR_CS)).append(":");
         writer.append(primarySkillLevelMap.get(CoreSkills.UNARMED_CS)).append(":");
-        writer.append(primarySkillLevelMap.get(PrimarySkillType.HERBALISM)).append(":");
-        writer.append(primarySkillLevelMap.get(PrimarySkillType.EXCAVATION)).append(":");
+        writer.append(primarySkillLevelMap.get(CoreSkills.HERBALISM_CS)).append(":");
+        writer.append(primarySkillLevelMap.get(CoreSkills.EXCAVATION_CS)).append(":");
         writer.append(primarySkillLevelMap.get(CoreSkills.ARCHERY_CS)).append(":");
-        writer.append(primarySkillLevelMap.get(PrimarySkillType.SWORDS)).append(":");
+        writer.append(primarySkillLevelMap.get(CoreSkills.SWORDS_CS)).append(":");
         writer.append(primarySkillLevelMap.get(CoreSkills.AXES_CS)).append(":");
         writer.append(primarySkillLevelMap.get(CoreSkills.ACROBATICS_CS)).append(":");
         writer.append(primarySkillExperienceValueMap.get(CoreSkills.REPAIR_CS)).append(":");
         writer.append(primarySkillExperienceValueMap.get(CoreSkills.UNARMED_CS)).append(":");
-        writer.append(primarySkillExperienceValueMap.get(PrimarySkillType.HERBALISM)).append(":");
-        writer.append(primarySkillExperienceValueMap.get(PrimarySkillType.EXCAVATION)).append(":");
+        writer.append(primarySkillExperienceValueMap.get(CoreSkills.HERBALISM_CS)).append(":");
+        writer.append(primarySkillExperienceValueMap.get(CoreSkills.EXCAVATION_CS)).append(":");
         writer.append(primarySkillExperienceValueMap.get(CoreSkills.ARCHERY_CS)).append(":");
-        writer.append(primarySkillExperienceValueMap.get(PrimarySkillType.SWORDS)).append(":");
+        writer.append(primarySkillExperienceValueMap.get(CoreSkills.SWORDS_CS)).append(":");
         writer.append(primarySkillExperienceValueMap.get(CoreSkills.AXES_CS)).append(":");
         writer.append(primarySkillExperienceValueMap.get(CoreSkills.ACROBATICS_CS)).append(":");
         writer.append(":");
-        writer.append(primarySkillLevelMap.get(PrimarySkillType.TAMING)).append(":");
-        writer.append(primarySkillExperienceValueMap.get(PrimarySkillType.TAMING)).append(":");
+        writer.append(primarySkillLevelMap.get(CoreSkills.TAMING_CS)).append(":");
+        writer.append(primarySkillExperienceValueMap.get(CoreSkills.TAMING_CS)).append(":");
         writer.append((int) mmoDataSnapshot.getAbilityDATS(SuperAbilityType.BERSERK)).append(":");
         writer.append((int) mmoDataSnapshot.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER)).append(":");
         writer.append((int) mmoDataSnapshot.getAbilityDATS(SuperAbilityType.TREE_FELLER)).append(":");
@@ -405,29 +405,29 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
             public static int BARSTATE_CROSSBOWS = 64;
          */
 
-        writer.append(primarySkillLevelMap.get(PrimarySkillType.TRIDENTS)).append(":");
-        writer.append(primarySkillExperienceValueMap.get(PrimarySkillType.TRIDENTS)).append(":");
-        writer.append(primarySkillLevelMap.get(PrimarySkillType.CROSSBOWS)).append(":");
-        writer.append(primarySkillExperienceValueMap.get(PrimarySkillType.CROSSBOWS)).append(":");
+        writer.append(primarySkillLevelMap.get(CoreSkills.TRIDENTS_CS)).append(":");
+        writer.append(primarySkillExperienceValueMap.get(CoreSkills.TRIDENTS_CS)).append(":");
+        writer.append(primarySkillLevelMap.get(CoreSkills.CROSSBOWS_CS)).append(":");
+        writer.append(primarySkillExperienceValueMap.get(CoreSkills.CROSSBOWS_CS)).append(":");
 
         //XPBar States
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.ACROBATICS_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.ALCHEMY_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.ARCHERY_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.AXES_CS).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.EXCAVATION).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.EXCAVATION_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.FISHING_CS).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.HERBALISM).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.HERBALISM_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.MINING_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.REPAIR_CS).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.SALVAGE).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.SMELTING).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.SWORDS).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.TAMING).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.SALVAGE_CS).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.SMELTING_CS).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.SWORDS_CS).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.TAMING_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.UNARMED_CS).toString()).append(":");
         writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.WOODCUTTING_CS).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.TRIDENTS).toString()).append(":");
-        writer.append(mmoDataSnapshot.getBarStateMap().get(PrimarySkillType.CROSSBOWS).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.TRIDENTS_CS).toString()).append(":");
+        writer.append(mmoDataSnapshot.getBarStateMap().get(CoreSkills.CROSSBOWS_CS).toString()).append(":");
 
         writer.append(0).append(":"); //archery super 1 cd
         writer.append(0).append(":"); //xbow super 1 cd
@@ -438,7 +438,8 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         writer.append("\r\n");
     }
 
-    public @NotNull List<PlayerStat> readLeaderboard(@NotNull PrimarySkillType skill, int pageNumber, int statsPerPage) {
+    @Override
+    public @NotNull List<PlayerStat> readLeaderboard(@NotNull RootSkill skill, int pageNumber, int statsPerPage) {
         updateLeaderboards();
         List<PlayerStat> statsList = skill == null ? powerLevels : playerStatHash.get(skill);
         int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
@@ -446,13 +447,17 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
     }
 
-    public @NotNull Map<PrimarySkillType, Integer> readRank(@NotNull String playerName) {
+    @Override
+    public @NotNull Map<RootSkill, Integer> readRank(@NotNull String playerName) {
         updateLeaderboards();
 
-        Map<PrimarySkillType, Integer> skills = new HashMap<>();
+        Map<RootSkill, Integer> skills = new HashMap<>();
 
-        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-            skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
+        for (RootSkill rootSkill : CoreSkills.getImmutableCoreRootSkillSet()) {
+            if(CoreSkills.isChildSkill(rootSkill))
+                continue;
+
+            skills.put(rootSkill, getPlayerRank(playerName, playerStatHash.get(rootSkill)));
         }
 
         skills.put(null, getPlayerRank(playerName, powerLevels));
@@ -460,6 +465,7 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         return skills;
     }
 
+    @Override
     public void insertNewUser(@NotNull String playerName, @NotNull UUID uuid) {
         BufferedWriter out = null;
         synchronized (fileWritingLock) {
@@ -700,12 +706,11 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
                     String[] stringDataSplit = line.split(":");
 
                     try {
-                        PlayerProfile playerProfile = loadFromLine(stringDataSplit);
-                        if(playerProfile == null)
+                        MMOPlayerData mmoPlayerData = loadFromLine(stringDataSplit);
+                        if(mmoPlayerData == null)
                             continue;
 
-                        PersistentPlayerData persistentPlayerData = playerProfile.getPersistentPlayerData();
-                        destination.saveUser(mcMMO.getUserManager().createPlayerDataSnapshot(persistentPlayerData));
+                        destination.saveUser(mcMMO.getUserManager().createPlayerDataSnapshot(mmoPlayerData));
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -804,23 +809,23 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
                     playerName = data[FlatFileMappings.USERNAME];
                     int powerLevel = 0;
 
-                    Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(data);
+                    Map<RootSkill, Integer> skills = getSkillMapFromLine(data);
 
                     powerLevel += putStat(acrobatics, playerName, skills.get(CoreSkills.ACROBATICS_CS));
                     powerLevel += putStat(alchemy, playerName, skills.get(CoreSkills.ALCHEMY_CS));
                     powerLevel += putStat(archery, playerName, skills.get(CoreSkills.ARCHERY_CS));
                     powerLevel += putStat(axes, playerName, skills.get(CoreSkills.AXES_CS));
-                    powerLevel += putStat(excavation, playerName, skills.get(PrimarySkillType.EXCAVATION));
+                    powerLevel += putStat(excavation, playerName, skills.get(CoreSkills.EXCAVATION_CS));
                     powerLevel += putStat(fishing, playerName, skills.get(CoreSkills.FISHING_CS));
-                    powerLevel += putStat(herbalism, playerName, skills.get(PrimarySkillType.HERBALISM));
+                    powerLevel += putStat(herbalism, playerName, skills.get(CoreSkills.HERBALISM_CS));
                     powerLevel += putStat(mining, playerName, skills.get(CoreSkills.MINING_CS));
                     powerLevel += putStat(repair, playerName, skills.get(CoreSkills.REPAIR_CS));
-                    powerLevel += putStat(swords, playerName, skills.get(PrimarySkillType.SWORDS));
-                    powerLevel += putStat(taming, playerName, skills.get(PrimarySkillType.TAMING));
+                    powerLevel += putStat(swords, playerName, skills.get(CoreSkills.SWORDS_CS));
+                    powerLevel += putStat(taming, playerName, skills.get(CoreSkills.TAMING_CS));
                     powerLevel += putStat(unarmed, playerName, skills.get(CoreSkills.UNARMED_CS));
                     powerLevel += putStat(woodcutting, playerName, skills.get(CoreSkills.WOODCUTTING_CS));
-                    powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.CROSSBOWS));
-                    powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.TRIDENTS));
+                    powerLevel += putStat(woodcutting, playerName, skills.get(CoreSkills.CROSSBOWS_CS));
+                    powerLevel += putStat(woodcutting, playerName, skills.get(CoreSkills.TRIDENTS_CS));
 
                     putStat(powerLevels, playerName, powerLevel);
                 }
@@ -861,13 +866,13 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         playerStatHash.put(CoreSkills.WOODCUTTING_CS, woodcutting);
         playerStatHash.put(CoreSkills.REPAIR_CS, repair);
         playerStatHash.put(CoreSkills.UNARMED_CS, unarmed);
-        playerStatHash.put(PrimarySkillType.HERBALISM, herbalism);
-        playerStatHash.put(PrimarySkillType.EXCAVATION, excavation);
+        playerStatHash.put(CoreSkills.HERBALISM_CS, herbalism);
+        playerStatHash.put(CoreSkills.EXCAVATION_CS, excavation);
         playerStatHash.put(CoreSkills.ARCHERY_CS, archery);
-        playerStatHash.put(PrimarySkillType.SWORDS, swords);
+        playerStatHash.put(CoreSkills.SWORDS_CS, swords);
         playerStatHash.put(CoreSkills.AXES_CS, axes);
         playerStatHash.put(CoreSkills.ACROBATICS_CS, acrobatics);
-        playerStatHash.put(PrimarySkillType.TAMING, taming);
+        playerStatHash.put(CoreSkills.TAMING_CS, taming);
         playerStatHash.put(CoreSkills.FISHING_CS, fishing);
         playerStatHash.put(CoreSkills.ALCHEMY_CS, alchemy);
     }
@@ -1102,14 +1107,17 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
 
                         //TODO: If new skills are added this needs to be rewritten
                         if (Config.getInstance().getTruncateSkills()) {
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                                int index = getSkillIndex(skill);
+                            for (RootSkill rootSkill : CoreSkills.getImmutableCoreRootSkillSet()) {
+                                if(CoreSkills.isChildSkill(rootSkill))
+                                    continue;
+
+                                int index = getSkillIndex(rootSkill);
                                 if (index >= stringDataArray.length) {
                                     continue;
                                 }
-                                int cap = Config.getInstance().getLevelCap(skill);
+                                int cap = Config.getInstance().getLevelCap(rootSkill);
                                 if (Integer.parseInt(stringDataArray[index]) > cap) {
-                                    mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + stringDataArray[FlatFileMappings.USERNAME]);
+                                    mcMMO.p.getLogger().warning("Truncating " + rootSkill.getSkillName() + " to configured max level for player " + stringDataArray[FlatFileMappings.USERNAME]);
                                     stringDataArray[index] = cap + "";
                                     updated = true;
                                 }
@@ -1167,10 +1175,10 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
                         updated |= oldVersion != null;
 
                         if (Config.getInstance().getTruncateSkills()) {
-                            Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(stringDataArray);
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                                int cap = Config.getInstance().getLevelCap(skill);
-                                if (skills.get(skill) > cap) {
+                            Map<RootSkill, Integer> skillsMap = getSkillMapFromLine(stringDataArray);
+                            for (RootSkill rootSkill : CoreSkills.getNonChildSkills()) {
+                                int cap = Config.getInstance().getLevelCap(rootSkill);
+                                if (skillsMap.get(rootSkill) > cap) {
                                     updated = true;
                                 }
                             }
@@ -1272,29 +1280,28 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
     private @Nullable MMOPlayerData loadFromLine(@NotNull String[] dataStrSplit) {
         MMODataBuilder playerDataBuilder = new MMODataBuilder();
 
-        HashMap<RootSkill, Integer>   skillLevelMap     = getSkillMapFromLine(dataStrSplit);      // Skill levels
-        HashMap<RootSkill, Float>     skillExperienceValueMap   = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);     // Skill & XP
-        HashMap<SuperSkill, Integer> skillAbilityDeactivationTimeStamp = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
-        EnumMap<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
-        HashMap<RootSkill, SkillBossBarState> xpBarStateMap = new EnumMap<PrimarySkillType, SkillBossBarState>(PrimarySkillType.class);
-//        MobHealthBarType mobHealthbarType;
+        Map<RootSkill, Integer> skillLevelMap = getSkillMapFromLine(dataStrSplit);      // Skill levels
+        Map<RootSkill, Float> skillExperienceValueMap   = new HashMap<>();     // Skill & XP
+        Map<SuperSkill, Integer> skillAbilityDeactivationTimeStamp = new HashMap<>(); // Ability & Cooldown
+        Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
+        Map<RootSkill, SkillBossBarState> xpBarStateMap = new HashMap<>();
         int scoreboardTipsShown;
 
-        skillExperienceValueMap.put(PrimarySkillType.TAMING, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_TAMING]));
+        skillExperienceValueMap.put(CoreSkills.TAMING_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_TAMING]));
         skillExperienceValueMap.put(CoreSkills.MINING_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_MINING]));
         skillExperienceValueMap.put(CoreSkills.REPAIR_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_REPAIR]));
         skillExperienceValueMap.put(CoreSkills.WOODCUTTING_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_WOODCUTTING]));
         skillExperienceValueMap.put(CoreSkills.UNARMED_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_UNARMED]));
-        skillExperienceValueMap.put(PrimarySkillType.HERBALISM, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_HERBALISM]));
-        skillExperienceValueMap.put(PrimarySkillType.EXCAVATION, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_EXCAVATION]));
+        skillExperienceValueMap.put(CoreSkills.HERBALISM_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_HERBALISM]));
+        skillExperienceValueMap.put(CoreSkills.EXCAVATION_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_EXCAVATION]));
         skillExperienceValueMap.put(CoreSkills.ARCHERY_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_ARCHERY]));
-        skillExperienceValueMap.put(PrimarySkillType.SWORDS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_SWORDS]));
+        skillExperienceValueMap.put(CoreSkills.SWORDS_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_SWORDS]));
         skillExperienceValueMap.put(CoreSkills.AXES_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_AXES]));
         skillExperienceValueMap.put(CoreSkills.ACROBATICS_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_ACROBATICS]));
         skillExperienceValueMap.put(CoreSkills.FISHING_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_FISHING]));
         skillExperienceValueMap.put(CoreSkills.ALCHEMY_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_ALCHEMY]));
-        skillExperienceValueMap.put(PrimarySkillType.TRIDENTS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_TRIDENTS]));
-        skillExperienceValueMap.put(PrimarySkillType.CROSSBOWS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_CROSSBOWS]));
+        skillExperienceValueMap.put(CoreSkills.TRIDENTS_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_TRIDENTS]));
+        skillExperienceValueMap.put(CoreSkills.CROSSBOWS_CS, (float) Integer.parseInt(dataStrSplit[FlatFileMappings.EXP_CROSSBOWS]));
 
         //Set Skill XP
 
@@ -1353,19 +1360,19 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
             xpBarStateMap.put(CoreSkills.ALCHEMY_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_ALCHEMY]));
             xpBarStateMap.put(CoreSkills.ARCHERY_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_ARCHERY]));
             xpBarStateMap.put(CoreSkills.AXES_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_AXES]));
-            xpBarStateMap.put(PrimarySkillType.EXCAVATION, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_EXCAVATION]));
+            xpBarStateMap.put(CoreSkills.EXCAVATION_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_EXCAVATION]));
             xpBarStateMap.put(CoreSkills.FISHING_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_FISHING]));
-            xpBarStateMap.put(PrimarySkillType.HERBALISM, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_HERBALISM]));
+            xpBarStateMap.put(CoreSkills.HERBALISM_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_HERBALISM]));
             xpBarStateMap.put(CoreSkills.MINING_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_MINING]));
             xpBarStateMap.put(CoreSkills.REPAIR_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_REPAIR]));
-            xpBarStateMap.put(PrimarySkillType.SALVAGE, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_SALVAGE]));
-            xpBarStateMap.put(PrimarySkillType.SMELTING, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_SMELTING]));
-            xpBarStateMap.put(PrimarySkillType.SWORDS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_SWORDS]));
-            xpBarStateMap.put(PrimarySkillType.TAMING, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_TAMING]));
+            xpBarStateMap.put(CoreSkills.SALVAGE_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_SALVAGE]));
+            xpBarStateMap.put(CoreSkills.SMELTING_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_SMELTING]));
+            xpBarStateMap.put(CoreSkills.SWORDS_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_SWORDS]));
+            xpBarStateMap.put(CoreSkills.TAMING_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_TAMING]));
             xpBarStateMap.put(CoreSkills.UNARMED_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_UNARMED]));
             xpBarStateMap.put(CoreSkills.WOODCUTTING_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_WOODCUTTING]));
-            xpBarStateMap.put(PrimarySkillType.TRIDENTS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_TRIDENTS]));
-            xpBarStateMap.put(PrimarySkillType.CROSSBOWS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_CROSSBOWS]));
+            xpBarStateMap.put(CoreSkills.TRIDENTS_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_TRIDENTS]));
+            xpBarStateMap.put(CoreSkills.CROSSBOWS_CS, SkillUtils.asBarState(dataStrSplit[FlatFileMappings.BARSTATE_CROSSBOWS]));
 
         } catch (Exception e) {
             xpBarStateMap = MMOExperienceBarManager.generateDefaultBarStateMap();
@@ -1407,7 +1414,7 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         skillLevelsMap.put(CoreSkills.SWORDS_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_SWORDS]));
         skillLevelsMap.put(CoreSkills.AXES_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_AXES]));
         skillLevelsMap.put(CoreSkills.ACROBATICS_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_ACROBATICS]));
-        skillLevelsMap.put(CoreSkills.FISHING_CS_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_FISHING]));
+        skillLevelsMap.put(CoreSkills.FISHING_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_FISHING]));
         skillLevelsMap.put(CoreSkills.ALCHEMY_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_ALCHEMY]));
         skillLevelsMap.put(CoreSkills.TRIDENTS_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_TRIDENTS]));
         skillLevelsMap.put(CoreSkills.CROSSBOWS_CS, Integer.valueOf(stringDataArray[FlatFileMappings.SKILLS_CROSSBOWS]));
@@ -1419,7 +1426,9 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
         return DatabaseType.FLATFILE;
     }
 
-    private int getSkillIndex(PrimarySkillType primarySkillType) {
+    private int getSkillIndex(@NotNull RootSkill rootSkill) {
+        PrimarySkillType primarySkillType = CoreSkills.getSkill(rootSkill);
+
         switch (primarySkillType) {
             case ACROBATICS:
                 return FlatFileMappings.SKILLS_ACROBATICS;

@@ -5,8 +5,10 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
+import com.neetgames.mcmmo.skill.SuperSkill;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -17,43 +19,38 @@ public class MMODataSnapshot {
     private final @NotNull UUID playerUUID;
 
     /* Records */
-    private final @NotNull Long lastLogin;
-
-    /* HUDs */
-    private final @NotNull MobHealthBarType mobHealthBarType;
+    private final long lastLogin;
 
     /* Skill Data */
     private final @NotNull ImmutableMap<RootSkill, Integer> skillLevelValues;
     private final @NotNull ImmutableMap<RootSkill, Float> skillExperienceValues;
-    private final @NotNull ImmutableMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private final @NotNull ImmutableMap<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull ImmutableMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> barStateMap;
+    private final @NotNull ImmutableMap<RootSkill, SkillBossBarState> barStateMap;
 
     /* Special Flags */
-    private final @NotNull Boolean partyChatSpying;
-    private final @NotNull Boolean leaderBoardExclusion;
+    private final boolean partyChatSpying;
+    private final boolean leaderBoardExclusion;
 
     /* Scoreboards */
-    private final @NotNull Integer scoreboardTipsShown;
+    private final int scoreboardTipsShown;
 
 
-    public MMODataSnapshot(@NotNull PersistentPlayerData persistentPlayerData) {
-        playerName = persistentPlayerData.getPlayerName();
-        playerUUID = persistentPlayerData.getPlayerUUID();
-        lastLogin = persistentPlayerData.getLastLogin();
+    public MMODataSnapshot(@NotNull MMOPlayerData mmoPlayerData) {
+        playerName = mmoPlayerData.getPlayerName();
+        playerUUID = mmoPlayerData.getPlayerUUID();
+        lastLogin = mmoPlayerData.getLastLogin();
 
-        mobHealthBarType = persistentPlayerData.getMobHealthBarType();
+        skillLevelValues = ImmutableMap.copyOf(mmoPlayerData.getSkillLevelsMap());
+        skillExperienceValues = ImmutableMap.copyOf(mmoPlayerData.getSkillsExperienceMap());
+        abilityDeactivationTimestamps = ImmutableMap.copyOf(mmoPlayerData.getAbilityDeactivationTimestamps());
+        uniquePlayerData = ImmutableMap.copyOf(mmoPlayerData.getUniquePlayerData());
+        barStateMap = ImmutableMap.copyOf(mmoPlayerData.getBarStateMap());
 
-        skillLevelValues = ImmutableMap.copyOf(persistentPlayerData.getSkillLevelsMap());
-        skillExperienceValues = ImmutableMap.copyOf(persistentPlayerData.getSkillsExperienceMap());
-        abilityDeactivationTimestamps = ImmutableMap.copyOf(persistentPlayerData.getAbilityDeactivationTimestamps());
-        uniquePlayerData = ImmutableMap.copyOf(persistentPlayerData.getUniquePlayerData());
-        barStateMap = ImmutableMap.copyOf(persistentPlayerData.getBarStateMap());
+        partyChatSpying = mmoPlayerData.isPartyChatSpying();
+        leaderBoardExclusion = mmoPlayerData.isLeaderBoardExcluded();
 
-        partyChatSpying = persistentPlayerData.isPartyChatSpying();
-        leaderBoardExclusion = persistentPlayerData.isLeaderBoardExcluded();
-
-        scoreboardTipsShown = persistentPlayerData.getScoreboardTipsShown();
+        scoreboardTipsShown = mmoPlayerData.getScoreboardTipsShown();
     }
 
     public @NotNull String getPlayerName() {
@@ -68,9 +65,6 @@ public class MMODataSnapshot {
         return lastLogin;
     }
 
-    public @NotNull MobHealthBarType getMobHealthBarType() {
-        return mobHealthBarType;
-    }
 
     public @NotNull ImmutableMap<RootSkill, Integer> getSkillLevelValues() {
         return skillLevelValues;
@@ -80,7 +74,7 @@ public class MMODataSnapshot {
         return skillExperienceValues;
     }
 
-    public @NotNull ImmutableMap<SuperAbilityType, Integer> getAbilityDeactivationTimestamps() {
+    public @NotNull ImmutableMap<SuperSkill, Integer> getAbilityDeactivationTimestamps() {
         return abilityDeactivationTimestamps;
     }
 
@@ -100,15 +94,15 @@ public class MMODataSnapshot {
         return scoreboardTipsShown;
     }
 
-    public int getSkillLevel(@NotNull PrimarySkillType primarySkillType) {
-        return skillLevelValues.getOrDefault(primarySkillType, 0);
+    public int getSkillLevel(@NotNull RootSkill rootSkill) {
+        return skillLevelValues.getOrDefault(rootSkill, 0);
     }
 
-    public int getSkillXpLevel(@NotNull PrimarySkillType primarySkillType) {
-        return (skillExperienceValues.getOrDefault(primarySkillType, 0F)).intValue();
+    public int getSkillXpLevel(@NotNull RootSkill rootSkill) {
+        return (skillExperienceValues.getOrDefault(rootSkill, 0F)).intValue();
     }
 
-    public long getAbilityDATS(@NotNull SuperAbilityType superAbilityType) {
+    public long getAbilityDATS(@NotNull SuperSkill superAbilityType) {
         return abilityDeactivationTimestamps.getOrDefault(superAbilityType, 0);
     }
 

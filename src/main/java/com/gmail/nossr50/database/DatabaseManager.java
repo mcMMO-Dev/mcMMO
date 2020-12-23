@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.neetgames.mcmmo.exceptions.InvalidSkillException;
 import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
 import com.neetgames.mcmmo.player.MMOPlayerData;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -61,12 +62,12 @@ public interface DatabaseManager {
     * Retrieve leaderboard info.
      * Will never be null but it may be empty
     *
-    * @param skill The skill to retrieve info on
+    * @param rootSkill The skill to retrieve info on
     * @param pageNumber Which page in the leaderboards to retrieve
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
     */
-    @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException;
+    @NotNull List<PlayerStat> readLeaderboard(@NotNull RootSkill rootSkill, int pageNumber, int statsPerPage) throws InvalidSkillException;
 
     /**
      * Retrieve rank info into a HashMap from PrimarySkillType to the rank.
@@ -77,7 +78,7 @@ public interface DatabaseManager {
      * @param playerName The name of the user to retrieve the rankings for
      * @return the requested rank information
      */
-    @NotNull Map<PrimarySkillType, Integer> readRank(@NotNull String playerName);
+    @NotNull Map<RootSkill, Integer> readRank(@NotNull String playerName);
 
     /**
      * Add a new user to the database.

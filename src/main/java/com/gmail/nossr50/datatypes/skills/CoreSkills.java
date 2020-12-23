@@ -1,30 +1,30 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.google.common.collect.ImmutableSet;
-import com.neetgames.mcmmo.exceptions.InvalidSkillException;
 import com.neetgames.mcmmo.skill.RootSkill;
-import com.neetgames.mcmmo.skill.Skill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CoreSkills {
 
-    private static final @NotNull ImmutableSet<RootSkill> CORE_ROOT_SKILLS_IMMUTABLE_SET;
+    private static final @NotNull ImmutableSet<RootSkill> CORE_ROOT_SKILLS;
     private static final @NotNull ImmutableSet<RootSkill> CORE_CHILD_SKILLS;
+    private static final @NotNull ImmutableSet<RootSkill> CORE_NON_CHILD_SKILLS;
 
     public static final @NotNull CoreRootSkill ACROBATICS_CS, ALCHEMY_CS, ARCHERY_CS, AXES_CS, EXCAVATION_CS,
-            FISHING_CS, HERBALISM_CS, MINING_CS, REPAIR_CS, SALVAGE_CS, SMELTING_CS, SWORDS_CS, TAMING_CS, UNARMED_CS,
-            WOODCUTTING_CS, TRIDENTS_CS, CROSSBOWS_CS;
+    FISHING_CS, HERBALISM_CS, MINING_CS, REPAIR_CS, SALVAGE_CS, SMELTING_CS, SWORDS_CS, TAMING_CS, UNARMED_CS,
+    WOODCUTTING_CS, TRIDENTS_CS, CROSSBOWS_CS;
 
     public static final @NotNull SkillIdentity ACROBATICS_ID, ALCHEMY_ID, ARCHERY_ID, AXES_ID, EXCAVATION_ID,
-            FISHING_ID, HERBALISM_ID, MINING_ID, REPAIR_ID, SALVAGE_ID, SMELTING_ID, SWORDS_ID, TAMING_ID, UNARMED_ID,
-            WOODCUTTING_ID, TRIDENTS_ID, CROSSBOWS_ID;
+    FISHING_ID, HERBALISM_ID, MINING_ID, REPAIR_ID, SALVAGE_ID, SMELTING_ID, SWORDS_ID, TAMING_ID, UNARMED_ID,
+    WOODCUTTING_ID, TRIDENTS_ID, CROSSBOWS_ID;
+
 
     private static @NotNull
     final HackySkillMappings hackySkillMappings = new HackySkillMappings();
@@ -106,8 +106,9 @@ public class CoreSkills {
         rootSkillSet.add(TRIDENTS_CS);
         rootSkillSet.add(CROSSBOWS_CS);
 
-        CORE_ROOT_SKILLS_IMMUTABLE_SET = ImmutableSet.copyOf(rootSkillSet);
+        CORE_ROOT_SKILLS = ImmutableSet.copyOf(rootSkillSet);
         CORE_CHILD_SKILLS = ImmutableSet.copyOf(childSkillSet);
+        CORE_NON_CHILD_SKILLS = ImmutableSet.copyOf(generateNonChildSkillSet());
     }
 
     /**
@@ -117,7 +118,7 @@ public class CoreSkills {
      * @return a set of all root skills built into mcMMO
      */
     public static @NotNull Set<RootSkill> getImmutableCoreRootSkillSet() {
-        return CORE_ROOT_SKILLS_IMMUTABLE_SET;
+        return CORE_ROOT_SKILLS;
     }
 
     /**
@@ -157,6 +158,15 @@ public class CoreSkills {
         }
 
         return hackySkillMappings.rootToPrimaryMap.get(rootSkill);
+    }
+
+    @Deprecated
+    private static @NotNull Set<RootSkill> generateNonChildSkillSet() {
+        return getImmutableCoreRootSkillSet().stream().filter((x) -> !isChildSkill(x)).collect(Collectors.toSet());
+    }
+
+    public static @NotNull Set<RootSkill> getNonChildSkills() {
+        return CORE_NON_CHILD_SKILLS;
     }
 
     protected static class HackySkillMappings {

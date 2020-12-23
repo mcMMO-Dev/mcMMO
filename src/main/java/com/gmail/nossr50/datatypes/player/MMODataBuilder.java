@@ -29,9 +29,6 @@ public class MMODataBuilder {
     /* Records */
     private long lastLogin;
 
-    /* HUDs */
-    private @Nullable MobHealthBarType mobHealthBarType;
-
     /* Skill Data */
     private @Nullable Map<RootSkill, Integer> skillLevelValues;
     private @Nullable Map<RootSkill, Float> skillExperienceValues;
@@ -98,10 +95,6 @@ public class MMODataBuilder {
             throw new NullArgumentException("barStateMap");
 
         validateBarStateMapEntries(barStateMap);
-
-        if(mobHealthBarType == null)
-            throw new NullArgumentException("mobHealthBarType");
-
 
         return new PersistentPlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
     }
@@ -189,7 +182,7 @@ public class MMODataBuilder {
         return skillLevelValues;
     }
 
-    public @NotNull MMODataBuilder setSkillLevelValues(@NotNull HashMap<RootSkill, Integer> skillLevelValues) {
+    public @NotNull MMODataBuilder setSkillLevelValues(@NotNull Map<RootSkill, Integer> skillLevelValues) {
         this.skillLevelValues = skillLevelValues;
         return this;
     }
@@ -198,7 +191,7 @@ public class MMODataBuilder {
         return skillExperienceValues;
     }
 
-    public @NotNull MMODataBuilder setSkillExperienceValues(@NotNull HashMap<RootSkill, Float> skillExperienceValues) {
+    public @NotNull MMODataBuilder setSkillExperienceValues(@NotNull Map<RootSkill, Float> skillExperienceValues) {
         this.skillExperienceValues = skillExperienceValues;
         return this;
     }
@@ -207,7 +200,7 @@ public class MMODataBuilder {
         return abilityDeactivationTimestamps;
     }
 
-    public @NotNull MMODataBuilder setAbilityDeactivationTimestamps(@NotNull HashMap<SuperSkill, Integer> abilityDeactivationTimestamps) {
+    public @NotNull MMODataBuilder setAbilityDeactivationTimestamps(@NotNull Map<SuperSkill, Integer> abilityDeactivationTimestamps) {
         this.abilityDeactivationTimestamps = abilityDeactivationTimestamps;
         return this;
     }
@@ -216,12 +209,12 @@ public class MMODataBuilder {
         return uniquePlayerData;
     }
 
-    public @NotNull MMODataBuilder setUniquePlayerData(@NotNull EnumMap<UniqueDataType, Integer> uniquePlayerData) {
+    public @NotNull MMODataBuilder setUniquePlayerData(@NotNull Map<UniqueDataType, Integer> uniquePlayerData) {
         this.uniquePlayerData = uniquePlayerData;
         return this;
     }
 
-    public @Nullable Map<PrimarySkillType, SkillBossBarState> getBarStateMap() {
+    public @Nullable Map<RootSkill, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
