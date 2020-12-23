@@ -31,7 +31,7 @@ public class AbilityActivationProcessor {
 
     public AbilityActivationProcessor(OnlineMMOPlayer mmoPlayer) {
         this.mmoPlayer = mmoPlayer;
-        this.player = mmoPlayer.getPlayer();
+        this.player = Misc.adaptPlayer(mmoPlayer);
     }
 
     /**
@@ -98,7 +98,7 @@ public class AbilityActivationProcessor {
         }
 
         /* GREEN THUMB CHECK */
-        HerbalismManager herbalismManager = mmoPlayer.getHerbalismManager();
+        HerbalismManager herbalismManager = ((McMMOPlayer) (mmoPlayer)).getHerbalismManager();
 
         if (getHeldItem().getType() == Material.BONE_MEAL) {
             switch (blockState.getType()) {
@@ -157,7 +157,7 @@ public class AbilityActivationProcessor {
         //TODO: This is strange, why is this needed?
         //TODO: This is strange, why is this needed?
         /* BLAST MINING CHECK */
-        MiningManager miningManager = mmoPlayer.getMiningManager();
+        MiningManager miningManager = ((McMMOPlayer) (mmoPlayer)).getMiningManager();
         if (miningManager.canDetonate()) {
             miningManager.remoteDetonation();
         }
@@ -178,7 +178,7 @@ public class AbilityActivationProcessor {
 
         /* CALL OF THE WILD CHECKS */
         Material type = getHeldItem().getType();
-        TamingManager tamingManager = mmoPlayer.getTamingManager();
+        TamingManager tamingManager = ((McMMOPlayer) (mmoPlayer)).getTamingManager();
 
         if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry())) {
             tamingManager.summonWolf();

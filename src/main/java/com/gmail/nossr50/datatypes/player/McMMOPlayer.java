@@ -34,7 +34,9 @@ import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
 import com.neetgames.mcmmo.exceptions.UnknownSkillException;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
@@ -49,6 +51,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+//TODO: Update javadocs
 public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Identified {
     private final @NotNull Player player;
     private final @NotNull Identity identity;
@@ -91,15 +94,16 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
          * New
          * Player
          */
-        super(player);
+        super(new PersistentPlayerData(player.getUniqueId(), player.getName()));
+
         UUID uuid = player.getUniqueId();
         identity = Identity.identity(uuid);
 
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
-        experienceBarManager = new MMOExperienceBarManager(this, getPersistentPlayerData().getDirtyBarStateMap());
+        experienceBarManager = new MMOExperienceBarManager(this, mmoPlayerData.getBarStateMap());
 
-        superAbilityManager = new SuperAbilityManager(this);
+        superAbilityManager = new SuperAbilityManager(this, mmoPlayerData);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
@@ -114,7 +118,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
         assignParty();
 
-
         //Update last login
         updateLastLogin();
     }
@@ -122,18 +125,17 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     /**
      * Create a new instance based on existing player data
      * @param player target player
-     * @param persistentPlayerData existing player data
+     * @param mmoPlayerData existing player data
      */
-    public McMMOPlayer(@NotNull Player player, @NotNull PersistentPlayerData persistentPlayerData) {
+    public McMMOPlayer(@NotNull Player player, @NotNull MMOPlayerData mmoPlayerData) {
         /*
          * Existing
          * Player
          */
-        super(persistentPlayerData);
-        UUID uuid = player.getUniqueId();
-        identity = Identity.identity(uuid);
-        playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
+        super(mmoPlayerData);
         this.player = player;
+        identity = Identity.identity(player.getUniqueId());
+        playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
 
         /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
@@ -150,9 +152,9 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
         }
 
-        superAbilityManager = new SuperAbilityManager(this);
+        superAbilityManager = new SuperAbilityManager(this, mmoPlayerData);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
-        experienceBarManager = new MMOExperienceBarManager(this, persistentPlayerData.getBarStateMap());
+        experienceBarManager = new MMOExperienceBarManager(this, this.mmoPlayerData.getBarStateMap());
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
 
@@ -172,7 +174,10 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
     private void assignParty() {
         if(mcMMO.getPartyManager() != null) {
+            Party queryParty = mcMMO.getPartyManager().queryParty(player.getUniqueId());
 
+            if(queryParty != null)
+                this.playerPartyRef = queryParty;
         }
     }
 
@@ -180,7 +185,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
      * Update the last login to the current system time
      */
     private void updateLastLogin() {
-        getPersistentPlayerData().setLastLogin(System.currentTimeMillis());
+        mmoPlayerData.setLastLogin(System.currentTimeMillis());
     }
 
     public @NotNull String getPlayerName() {
@@ -555,15 +560,16 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
      * Whether or not this player is currently spying on all party chat
      * @return true if this player is currently spying
      */
-    public boolean isPartyChatSpying() {
-        return getPersistentPlayerData().isPartyChatSpying();
+    @Override
+    public boolean isChatSpying() {
+        return mmoPlayerData.isPartyChatSpying();
     }
 
     /**
      * Toggle this player's party chat spying flag
      */
     public void togglePartyChatSpying() {
-        getPersistentPlayerData().togglePartyChatSpying();
+        mmoPlayerData.togglePartyChatSpying();
     }
 
     /**
@@ -606,36 +612,39 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
     @Override
     public boolean inParty() {
-        return false;
+        return playerPartyRef == null;
     }
 
     @Override
     public boolean isGodMode() {
-        return false;
+        return godMode;
+    }
+
+    @Nullable
+    public Location getTeleportCommenceLocation() {
+        return teleportCommence;
+    }
+
+    public void setTeleportCommenceLocation(@Nullable Location location) {
+        teleportCommence = location;
+    }
+
+    public void actualizeTeleportCommenceLocation() {
+        teleportCommence = getPlayer().getLocation();
     }
 
     @Override
-    public boolean isChatSpying() {
-        return false;
+    public void sendMessage(@NotNull String s) {
+        player.sendMessage(s);
     }
 
     @Override
-    public double getProgressInCurrentSkillLevel(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
-        return experienceManager.getProgressInCurrentSkillLevel(skillIdentity);
+    public @NotNull Object getServerAPIPlayerImpl() {
+        return player;
     }
 
     @Override
-    public int getSkillLevel(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
-        return experienceManager.getSkillLevel(skillIdentity);
-    }
-
-    @Override
-    public int getSkillExperience(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
-        return experienceManager.getSkillXpValue(skillIdentity);
-    }
-
-    @Override
-    public int getExperienceToNextLevel(@NotNull SkillIdentity skillIdentity) throws UnknownSkillException {
-        return experienceManager.getExperienceToNextLevel(skillIdentity);
+    public void updateXPBar(@NotNull RootSkill rootSkill) {
+        experienceBarManager.updateExperienceBar(rootSkill, mcMMO.p);
     }
 }

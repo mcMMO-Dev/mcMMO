@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -13,6 +14,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -328,6 +330,21 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean getAddExtraDetails() { return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);}
     public boolean isExperienceBarsEnabled() { return config.getBoolean("Experience_Bars.Enable", true); }
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Enable", true);}
+    public boolean isExperienceBarEnabled(@NotNull RootSkill rootSkill) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getSkillName())+".Enable", true);}
+
+    public BarColor getExperienceBarColor(@NotNull RootSkill rootSkill)
+    {
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getSkillName())+".Color");
+
+        for(BarColor barColor : BarColor.values())
+        {
+            if(barColor.toString().equalsIgnoreCase(colorValueFromConfig))
+                return barColor;
+        }
+
+        //In case the value is invalid
+        return BarColor.WHITE;
+    }
 
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType)
     {
@@ -343,9 +360,21 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         return BarColor.WHITE;
     }
 
-    public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType)
-    {
+    public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType) {
         String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".BarStyle");
+
+        for(BarStyle barStyle : BarStyle.values())
+        {
+            if(barStyle.toString().equalsIgnoreCase(colorValueFromConfig))
+                return barStyle;
+        }
+
+        //In case the value is invalid
+        return BarStyle.SOLID;
+    }
+
+    public BarStyle getExperienceBarStyle(@NotNull RootSkill rootSkill) {
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getSkillName())+".BarStyle");
 
         for(BarStyle barStyle : BarStyle.values())
         {

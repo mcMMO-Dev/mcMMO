@@ -3,8 +3,6 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -15,7 +13,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
-import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
@@ -45,11 +42,11 @@ public final class SkillUtils {
     private SkillUtils() {}
 
     public static void applyXpGain(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason) {
-        mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, XPGainSource.SELF);
+        mmoPlayer.getExperienceHandler().beginXpGain(Misc.adaptPlayer(mmoPlayer), primarySkillType, xp, xpGainReason, XPGainSource.SELF);
     }
 
     public static void applyXpGain(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
-        mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, xpGainSource);
+        mmoPlayer.getExperienceHandler().beginXpGain(Misc.adaptPlayer(mmoPlayer), primarySkillType, xp, xpGainReason, xpGainSource);
     }
 
     public static @NotNull SkillBossBarState asBarState(String str) {
@@ -81,7 +78,7 @@ public final class SkillUtils {
             length = 2 + (int) (skillValue / abilityLengthVar);
         }
 
-        int enduranceLength = PerksUtils.handleActivationPerks(mmoPlayer.getPlayer(), length, maxLength);
+        int enduranceLength = PerksUtils.handleActivationPerks(Misc.adaptPlayer(mmoPlayer), length, maxLength);
 
         if (maxLength != 0) {
             length = Math.min(length, maxLength);
@@ -97,7 +94,7 @@ public final class SkillUtils {
     public static int handleFoodSkills(@NotNull OnlineMMOPlayer mmoPlayer, int eventFoodLevel, @NotNull SubSkillType subSkillType) {
         int curRank = RankUtils.getRank(mmoPlayer, subSkillType);
 
-        int currentFoodLevel = mmoPlayer.getPlayer().getFoodLevel();
+        int currentFoodLevel = Misc.adaptPlayer(mmoPlayer).getFoodLevel();
         int foodChange = eventFoodLevel - currentFoodLevel;
 
         foodChange+=curRank;
@@ -115,7 +112,7 @@ public final class SkillUtils {
      * @return the number of seconds remaining before the cooldown expires
      */
     public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, @NotNull OnlineMMOPlayer mmoPlayer) {
-        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(mmoPlayer.getPlayer(), cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(Misc.adaptPlayer(mmoPlayer), cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -203,10 +200,10 @@ public final class SkillUtils {
 
             if(abilityLengthCap > 0)
             {
-                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mmoPlayer.getExperienceManager().getSkillLevel(skill) / abilityLengthVar)),
+                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mmoPlayer.getExperienceHandler().getSkillLevel(skill) / abilityLengthVar)),
                         skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             } else {
-                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mmoPlayer.getExperienceManager().getSkillLevel(skill)) / abilityLengthVar),
+                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mmoPlayer.getExperienceHandler().getSkillLevel(skill)) / abilityLengthVar),
                         skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             }
 

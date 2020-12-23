@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -120,7 +119,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         /* Values related to the player */
         OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-        float skillValue = mmoPlayer.getExperienceManager().getSkillLevel(getPrimarySkill());
+        float skillValue = mmoPlayer.getExperienceHandler().getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
         String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
@@ -188,7 +187,7 @@ public class Roll extends AcrobaticsSubSkill {
      */
     private double rollCheck(Player player, OnlineMMOPlayer mmoPlayer, double damage) {
 
-        int skillLevel = mmoPlayer.getExperienceManager().getSkillLevel(getPrimarySkill());
+        int skillLevel = mmoPlayer.getExperienceHandler().getSkillLevel(getPrimarySkill());
 
         if (player.isSneaking()) {
             return gracefulRollCheck(player, mmoPlayer, damage, skillLevel);
@@ -203,7 +202,7 @@ public class Roll extends AcrobaticsSubSkill {
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
 
             //if (!SkillUtils.cooldownExpired((long) mmoPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(player) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!isExploiting(player) && ((McMMOPlayer) (mmoPlayer)).getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
             //}
 
@@ -212,7 +211,7 @@ public class Roll extends AcrobaticsSubSkill {
         }
         else if (!isFatal(player, damage)) {
             //if (!SkillUtils.cooldownExpired((long) mmoPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(player) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!isExploiting(player) && ((McMMOPlayer) (mmoPlayer)).getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
             //}
         }
@@ -222,7 +221,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private int getActivationChance(OnlineMMOPlayer mmoPlayer) {
-        return PerksUtils.handleLuckyPerks(mmoPlayer.getPlayer(), getPrimarySkill());
+        return PerksUtils.handleLuckyPerks(Misc.adaptPlayer(mmoPlayer), getPrimarySkill());
     }
 
     /**
@@ -242,14 +241,14 @@ public class Roll extends AcrobaticsSubSkill {
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
-            if(!isExploiting(player) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!isExploiting(player) && ((McMMOPlayer) (mmoPlayer)).getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
             addFallLocation(player);
             return modifiedDamage;
         }
         else if (!isFatal(player, damage)) {
-            if(!isExploiting(player) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!isExploiting(player) && ((McMMOPlayer) (mmoPlayer)).getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
             
             addFallLocation(player);
@@ -273,7 +272,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         if (ItemUtils.hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mmoPlayer.isDebugMode()) {
-                mmoPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
             }
             return true;
         }
@@ -281,7 +280,7 @@ public class Roll extends AcrobaticsSubSkill {
         if(mcMMO.getUserManager().queryPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
         {
             if(mmoPlayer.isDebugMode()) {
-                mmoPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Acrobatics XP Prevented: Fallen in location before");
             }
 
             return true;

@@ -35,7 +35,7 @@ public class SkillUnlockNotificationTask extends BukkitRunnable {
      */
     @Override
     public void run() {
-        //mmoPlayer.getPlayer().sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
+        //Misc.adaptPlayer(mmoPlayer).sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
         NotificationManager.sendPlayerUnlockNotification(mmoPlayer, subSkillType);
     }
 }

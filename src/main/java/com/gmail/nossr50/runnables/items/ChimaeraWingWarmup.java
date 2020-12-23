@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ChimaeraWing;
@@ -13,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChimaeraWingWarmup extends BukkitRunnable {
-    private final OnlineMMOPlayer mmoPlayer;
+    private final McMMOPlayer mmoPlayer;
 
-    public ChimaeraWingWarmup(OnlineMMOPlayer mmoPlayer) {
+    public ChimaeraWingWarmup(McMMOPlayer mmoPlayer) {
         this.mmoPlayer = mmoPlayer;
     }
 

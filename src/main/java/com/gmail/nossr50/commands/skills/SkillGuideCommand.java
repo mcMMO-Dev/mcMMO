@@ -1,8 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,13 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//TODO: Switch to root skill based
 public class SkillGuideCommand implements CommandExecutor {
     private final String header;
+    private final PrimarySkillType skill;
     private final ArrayList<String> guide;
 
     private final String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
-    public SkillGuideCommand(PrimarySkillType skill) {
+    public SkillGuideCommand(@NotNull RootSkill rootSkill) {
+        skill = CoreSkills.getSkill(rootSkill);
         header = LocaleLoader.getString("Guides.Header", skill.getName());
         guide = getGuide(skill);
     }

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.experience;
 
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -91,7 +90,7 @@ public class SkillresetCommand implements TabExecutor {
                     editValues(null, profile, skill);
                 }
                 else {
-                    editValues(mmoPlayer.getPlayer(), mmoPlayer, skill);
+                    editValues(Misc.adaptPlayer(mmoPlayer), mmoPlayer, skill);
                 }
 
                 handleSenderMessage(sender, playerName, skill);

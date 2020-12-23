@@ -45,7 +45,7 @@ public class ExcavationCommand extends SkillCommand {
     protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        ExcavationManager excavationManager = mmoPlayer.getExcavationManager();
+        ExcavationManager excavationManager = ((McMMOPlayer) (mmoPlayer)).getExcavationManager();
 
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)

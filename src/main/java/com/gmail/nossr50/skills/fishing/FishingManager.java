@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -292,38 +291,38 @@ public class FishingManager extends SkillManager {
             }
 
             if(mmoPlayer.isDebugMode()) {
-                mmoPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Master Angler Debug");
+                Misc.adaptPlayer(mmoPlayer).sendMessage(ChatColor.GOLD + "Master Angler Debug");
 
                 if(badValuesFix) {
-                    mmoPlayer.getPlayer().sendMessage(ChatColor.RED + "Bad values were applied and corrected, check your configs, max wait should never be lower than min wait.");
+                    Misc.adaptPlayer(mmoPlayer).sendMessage(ChatColor.RED + "Bad values were applied and corrected, check your configs, max wait should never be lower than min wait.");
                 }
 
-                mmoPlayer.getPlayer().sendMessage("ALLOW STACK WITH LURE: " + masterAnglerCompatibilityLayer.getApplyLure(fishHook));
-                mmoPlayer.getPlayer().sendMessage("MIN TICK REDUCTION: " + minWaitReduction);
-                mmoPlayer.getPlayer().sendMessage("MAX TICK REDUCTION: " + maxWaitReduction);
-                mmoPlayer.getPlayer().sendMessage("BOAT BONUS: " + boatBonus);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("ALLOW STACK WITH LURE: " + masterAnglerCompatibilityLayer.getApplyLure(fishHook));
+                Misc.adaptPlayer(mmoPlayer).sendMessage("MIN TICK REDUCTION: " + minWaitReduction);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("MAX TICK REDUCTION: " + maxWaitReduction);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("BOAT BONUS: " + boatBonus);
 
                 if(boatBonus) {
-                    mmoPlayer.getPlayer().sendMessage("BOAT MAX TICK REDUCTION: " + maxWaitReduction);
-                    mmoPlayer.getPlayer().sendMessage("BOAT MIN TICK REDUCTION: " + maxWaitReduction);
+                    Misc.adaptPlayer(mmoPlayer).sendMessage("BOAT MAX TICK REDUCTION: " + maxWaitReduction);
+                    Misc.adaptPlayer(mmoPlayer).sendMessage("BOAT MIN TICK REDUCTION: " + maxWaitReduction);
                 }
 
-                mmoPlayer.getPlayer().sendMessage("");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("");
 
-                mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "BEFORE MASTER ANGLER WAS APPLIED");
-                mmoPlayer.getPlayer().sendMessage("Original Max Wait Ticks: " + maxWaitTicks);
-                mmoPlayer.getPlayer().sendMessage("Original Min Wait Ticks: " + minWaitTicks);
-                mmoPlayer.getPlayer().sendMessage("");
+                Misc.adaptPlayer(mmoPlayer).sendMessage(ChatColor.DARK_AQUA + "BEFORE MASTER ANGLER WAS APPLIED");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Original Max Wait Ticks: " + maxWaitTicks);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Original Min Wait Ticks: " + minWaitTicks);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("");
 
-                mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "AFTER MASTER ANGLER WAS APPLIED");
-                mmoPlayer.getPlayer().sendMessage("Current Max Wait Ticks: " + reducedMaxWaitTime);
-                mmoPlayer.getPlayer().sendMessage("Current Min Wait Ticks: " + reducedMinWaitTime);
+                Misc.adaptPlayer(mmoPlayer).sendMessage(ChatColor.DARK_AQUA + "AFTER MASTER ANGLER WAS APPLIED");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Current Max Wait Ticks: " + reducedMaxWaitTime);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Current Min Wait Ticks: " + reducedMinWaitTime);
 
-                mmoPlayer.getPlayer().sendMessage("");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("");
 
-                mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Caps / Limits (edit in advanced.yml)");
-                mmoPlayer.getPlayer().sendMessage("Lowest possible max wait ticks " + bonusCapMax);
-                mmoPlayer.getPlayer().sendMessage("Lowest possible min wait ticks " + bonusCapMin);
+                Misc.adaptPlayer(mmoPlayer).sendMessage(ChatColor.DARK_AQUA + "Caps / Limits (edit in advanced.yml)");
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Lowest possible max wait ticks " + bonusCapMax);
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Lowest possible min wait ticks " + bonusCapMin);
             }
 
             masterAnglerCompatibilityLayer.setMaxWaitTime(fishHook, reducedMaxWaitTime);
@@ -337,7 +336,7 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean isInBoat() {
-        return mmoPlayer.getPlayer().isInsideVehicle() && mmoPlayer.getPlayer().getVehicle() instanceof Boat;
+        return Misc.adaptPlayer(mmoPlayer).isInsideVehicle() && Misc.adaptPlayer(mmoPlayer).getVehicle() instanceof Boat;
     }
 
     public int getMasterAnglerTickMaxWaitReduction(int masterAnglerRank, boolean boatBonus, int emulatedLureBonus) {

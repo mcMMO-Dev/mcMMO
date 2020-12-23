@@ -55,7 +55,7 @@ public class McrankCommand implements TabExecutor {
                 OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
 
                 if (mmoPlayer != null) {
-                    Player player = mmoPlayer.getPlayer();
+                    Player player = Misc.adaptPlayer(mmoPlayer);
                     playerName = player.getName();
 
                     if (CommandUtils.tooFar(sender, player, Permissions.mcrankFar(sender))) {

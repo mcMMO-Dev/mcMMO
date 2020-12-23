@@ -30,7 +30,7 @@ public class CrossbowsCommand extends SkillCommand {
     protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        CrossbowManager crossbowManager = mmoPlayer.getCrossbowManager();
+        CrossbowManager crossbowManager = ((McMMOPlayer) (mmoPlayer)).getCrossbowManager();
 
         if(canUseSubskill(mmoPlayer, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             String additionalArrowCount = String.valueOf(crossbowManager.getSuperShotgunAdditionalArrowCount());
@@ -41,7 +41,7 @@ public class CrossbowsCommand extends SkillCommand {
     }
 
     @Override
-    protected List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.CROSSBOWS);

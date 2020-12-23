@@ -5,6 +5,7 @@ import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -196,7 +197,7 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(targetName);
+        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetName);
 
         if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
@@ -228,28 +229,29 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
-        if(mcMMO.getUserManager().queryPlayer(targetPlayer) == null)
-        {
+        if(mcMMO.getUserManager().queryPlayer(targetPlayer) == null) {
             targetPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
 
-        if(mcMMO.getUserManager().queryPlayer(teleportingPlayer) == null)
-        {
+        if(mcMMO.getUserManager().queryPlayer(teleportingPlayer) == null) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(teleportingPlayer);
-        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetPlayer);
+        McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(teleportingPlayer);
+        McMMOPlayer mmoTargetPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(targetPlayer);
+
+        if(mmoPlayer == null || mmoTargetPlayer == null)
+            return;
 
         long warmup = Config.getInstance().getPTPCommandWarmup();
 
-        mmoPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
+        mmoPlayer.actualizeTeleportCommenceLocation();
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
-            new TeleportationWarmup(mmoPlayer, mcMMOTarget).runTaskLater(mcMMO.p, 20 * warmup);
+            new TeleportationWarmup(mmoPlayer, mmoTargetPlayer).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {
             EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);

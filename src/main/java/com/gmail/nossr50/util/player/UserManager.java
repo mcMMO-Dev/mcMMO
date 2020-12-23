@@ -2,6 +2,8 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -37,7 +39,7 @@ public final class UserManager {
      *
      * @param mmoPlayer the player profile to start tracking
      */
-    public void track(@NotNull OnlineMMOPlayer mmoPlayer) {
+    public void track(@NotNull McMMOPlayer mmoPlayer) {
         mmoPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mmoPlayer));
 
         playerDataSet.add(mmoPlayer); //for sync saves on shutdown
@@ -67,7 +69,7 @@ public final class UserManager {
             return null;
     }
 
-    public @Nullable PlayerProfile queryPlayer(@NotNull String playerName) {
+    public @Nullable PlayerProfile queryOfflinePlayer(@NotNull String playerName) {
         return mcMMO.getDatabaseManager().queryPlayerByName(playerName);
     }
 
@@ -77,7 +79,7 @@ public final class UserManager {
      * @param player The Player object
      */
     public void remove(@NotNull Player player) {
-        OnlineMMOPlayer mmoPlayer = queryPlayer(player);
+        McMMOPlayer mmoPlayer = (McMMOPlayer) queryPlayer(player);
 
         if(mmoPlayer != null) {
             mmoPlayer.cleanup();
@@ -114,22 +116,22 @@ public final class UserManager {
         return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
     }
 
-    public @NotNull MMODataSnapshot createPlayerDataSnapshot(@NotNull PersistentPlayerData persistentPlayerData) {
-        return new MMODataSnapshot(persistentPlayerData);
+    public @NotNull MMODataSnapshot createPlayerDataSnapshot(@NotNull MMODataSnapshot mmoDataSnapshot) {
+        return new MMODataSnapshot(mmoDataSnapshot);
     }
 
-    public void saveUserImmediately(@NotNull PersistentPlayerData persistentPlayerData, boolean useSync) {
+    public void saveUserImmediately(@NotNull MMOPlayerData mmoPlayerData, boolean useSync) {
         if(useSync)
-            scheduleSyncSave(createPlayerDataSnapshot(persistentPlayerData)); //Execute sync saves immediately
+            scheduleSyncSave(createPlayerDataSnapshot(mmoPlayerData)); //Execute sync saves immediately
         else
-            scheduleAsyncSaveDelay(createPlayerDataSnapshot(persistentPlayerData), 0);
+            scheduleAsyncSaveDelay(createPlayerDataSnapshot(mmoPlayerData), 0);
     }
 
-    public void saveUserWithDelay(@NotNull PersistentPlayerData persistentPlayerData, boolean useSync, int delayTicks) {
+    public void saveUserWithDelay(@NotNull MMOPlayerData mmoPlayerData, boolean useSync, int delayTicks) {
         if(useSync)
-            scheduleSyncSaveDelay(createPlayerDataSnapshot(persistentPlayerData), delayTicks); //Execute sync saves immediately
+            scheduleSyncSaveDelay(createPlayerDataSnapshot(mmoPlayerData), delayTicks); //Execute sync saves immediately
         else
-            scheduleAsyncSaveDelay(createPlayerDataSnapshot(persistentPlayerData), delayTicks);
+            scheduleAsyncSaveDelay(createPlayerDataSnapshot(mmoPlayerData), delayTicks);
     }
 
     /**
@@ -144,7 +146,7 @@ public final class UserManager {
             try
             {
                 mcMMO.p.getLogger().info("Saving data for player: "+onlinePlayer.getPlayerName());
-                saveUserImmediately(onlinePlayer.getPersistentPlayerData(), true);
+                saveUserImmediately(onlinePlayer.getMMOPlayerData(), true);
             }
             catch (Exception e)
             {
@@ -161,7 +163,7 @@ public final class UserManager {
      *
      * @param syncSave if true, data is saved synchronously
      */
-    public void logout(@NotNull OnlineMMOPlayer mmoPlayer, boolean syncSave) {
+    public void logout(@NotNull McMMOPlayer mmoPlayer, boolean syncSave) {
         BleedTimerTask.bleedOut(mmoPlayer.getPlayer());
 
         //TODO: There is a possibility that async saves don't execute in time if the server is told to shutdown
@@ -178,7 +180,7 @@ public final class UserManager {
             ScoreboardManager.teardownPlayer(mmoPlayer.getPlayer());
 
         //Remove user from cache (SQL)
-        mcMMO.getDatabaseManager().removeCache(mmoPlayer.getUniqueId());
+        mcMMO.getDatabaseManager().removeCache(mmoPlayer.getUUID());
     }
 
 

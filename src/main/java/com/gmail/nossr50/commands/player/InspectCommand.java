@@ -88,7 +88,7 @@ public class InspectCommand implements TabExecutor {
                 CommandUtils.printGatheringSkills(targetPlayer, sender);
                 CommandUtils.printCombatSkills(targetPlayer, sender);
                 CommandUtils.printMiscSkills(targetPlayer, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", playerProfile.getExperienceManager().getPowerLevel()));
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", playerProfile.getExperienceHandler().getPowerLevel()));
             }
 
             return true;

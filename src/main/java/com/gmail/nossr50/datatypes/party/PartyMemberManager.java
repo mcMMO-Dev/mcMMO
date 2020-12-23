@@ -168,7 +168,7 @@ public class PartyMemberManager {
         Party party = mmoPlayer.getParty();
 
         if (party != null) {
-            Player player = mmoPlayer.getPlayer();
+            Player player = Misc.adaptPlayer(mmoPlayer);
             double range = Config.getInstance().getPartyShareRange();
 
             for (PartyMember partyMember : party.getPartyMembers()) {

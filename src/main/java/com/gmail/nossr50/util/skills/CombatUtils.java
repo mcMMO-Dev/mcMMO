@@ -2,7 +2,6 @@ package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
@@ -82,7 +81,7 @@ public final class CombatUtils {
             return;
         }
 
-        SwordsManager swordsManager = mmoPlayer.getSwordsManager();
+        SwordsManager swordsManager = ((McMMOPlayer) (mmoPlayer)).getSwordsManager();
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
@@ -132,7 +131,7 @@ public final class CombatUtils {
             return;
         }
 
-        TridentManager tridentManager = mmoPlayer.getTridentManager();
+        TridentManager tridentManager = ((McMMOPlayer) (mmoPlayer)).getTridentManager();
 //        double initialDamage = entityDamageByEntityEvent.getDamage();
 //        double finalDamage = initialDamage;
 
@@ -168,7 +167,7 @@ public final class CombatUtils {
             return;
         }
 
-        AxesManager axesManager = mmoPlayer.getAxesManager();
+        AxesManager axesManager = ((McMMOPlayer) (mmoPlayer)).getArcheryManager();
 
         if (axesManager.canActivateAbility()) {
             mmoPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.AXES);
@@ -219,7 +218,7 @@ public final class CombatUtils {
             return;
         }
 
-        UnarmedManager unarmedManager = mmoPlayer.getUnarmedManager();
+        UnarmedManager unarmedManager = ((McMMOPlayer) (mmoPlayer)).getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
             mmoPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.UNARMED);
@@ -260,7 +259,7 @@ public final class CombatUtils {
                 return;
             }
 
-            TamingManager tamingManager = mmoPlayer.getTamingManager();
+            TamingManager tamingManager = ((McMMOPlayer) (mmoPlayer)).getTamingManager();
 
             if (tamingManager.canUseFastFoodService()) {
                 tamingManager.fastFoodService(wolf, event.getDamage());
@@ -292,7 +291,7 @@ public final class CombatUtils {
             return;
         }
 
-        ArcheryManager archeryManager = mmoPlayer.getArcheryManager();
+        ArcheryManager archeryManager = ((McMMOPlayer) (mmoPlayer)).getArcheryManager();
         
         double finalDamage = event.getDamage();
 
@@ -341,7 +340,7 @@ public final class CombatUtils {
             return;
         }
 
-        CrossbowManager crossbowManager = mmoPlayer.getCrossbowManager();
+        CrossbowManager crossbowManager = ((McMMOPlayer) (mmoPlayer)).getCrossbowManager();
 
         double finalDamage = event.getDamage();
 
@@ -394,7 +393,7 @@ public final class CombatUtils {
             }
 
             OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-            AcrobaticsManager acrobaticsManager = mmoPlayer.getAcrobaticsManager();
+            AcrobaticsManager acrobaticsManager = ((McMMOPlayer) (mmoPlayer)).getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
                 event.setDamage(acrobaticsManager.dodgeCheck(painSourceRoot, event.getDamage()));
@@ -405,7 +404,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                SwordsManager swordsManager = mmoPlayer.getSwordsManager();
+                SwordsManager swordsManager = ((McMMOPlayer) (mmoPlayer)).getSwordsManager();
 
                 if (swordsManager.canUseCounterAttack(painSource)) {
                     swordsManager.counterAttackChecks((LivingEntity) painSource, event.getDamage());
@@ -520,7 +519,7 @@ public final class CombatUtils {
                         return;
                     }
 
-                    TamingManager tamingManager = mmoPlayer.getTamingManager();
+                    TamingManager tamingManager = ((McMMOPlayer) (mmoPlayer)).getTamingManager();
                     tamingManager.attackTarget(target);
                 }
             }
@@ -623,7 +622,7 @@ public final class CombatUtils {
     public static boolean canUseLimitBreak(@NotNull OnlineMMOPlayer mmoPlayer, LivingEntity target, @NotNull SubSkillType subSkillType) {
         if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
             return RankUtils.hasUnlockedSubskill(mmoPlayer, subSkillType)
-                    && Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType);
+                    && Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), subSkillType);
         } else {
             return false;
         }
@@ -812,7 +811,7 @@ public final class CombatUtils {
         XPGainReason xpGainReason;
 
         if (target instanceof Player) {
-            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled() || mcMMO.getPartyManager().inSameParty(mmoPlayer.getPlayer(), (Player) target)) {
+            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled() || mcMMO.getPartyManager().inSameParty(Misc.adaptPlayer(mmoPlayer), (Player) target)) {
                 return;
             }
 

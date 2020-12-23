@@ -54,7 +54,7 @@ public final class PartyManager {
      */
     public @Nullable Party queryParty(@NotNull UUID playerUUID) {
         for(Party party : parties.values()) {
-            if(party.hasMember(playerUUID)) {
+            if(party.getPartyMemberManager().hasMember(playerUUID)) {
                 return party;
             }
         }
@@ -114,7 +114,7 @@ public final class PartyManager {
      * @return true if the party was joined successfully, false otherwise
      */
     public boolean changeOrJoinParty(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String newPartyName) {
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
 
         if (inParty(mmoPlayer)) {
             Party oldParty = mmoPlayer.getParty();
@@ -171,7 +171,7 @@ public final class PartyManager {
         Party party = mmoPlayer.getParty();
 
         if (party != null) {
-            Player player = mmoPlayer.getPlayer();
+            Player player = Misc.adaptPlayer(mmoPlayer);
             double range = Config.getInstance().getPartyShareRange();
 
             for (PartyMember member : party.getPartyMembers()) {
@@ -189,7 +189,7 @@ public final class PartyManager {
         Party party = mmoPlayer.getParty();
 
         if (party != null) {
-            Player player = mmoPlayer.getPlayer();
+            Player player = Misc.adaptPlayer(mmoPlayer);
             double range = Config.getInstance().getPartyShareRange();
 
             for (Player member : party.getVisibleMembers(player)) {
@@ -359,7 +359,7 @@ public final class PartyManager {
      * @param mmoPlayer The player to remove
      */
     public void removeFromParty(OnlineMMOPlayer mmoPlayer) {
-        removeFromParty(mmoPlayer.getPlayer(), mmoPlayer.getParty());
+        removeFromParty(Misc.adaptPlayer(mmoPlayer), mmoPlayer.getParty());
         processPartyLeaving(mmoPlayer);
     }
 
@@ -396,7 +396,7 @@ public final class PartyManager {
      * @param password The password for this party, null if there was no password
      */
     public void createParty(OnlineMMOPlayer mmoPlayer, String partyName, String password) {
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
 
         Party party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName.replace(".", ""), password);
 
@@ -451,7 +451,7 @@ public final class PartyManager {
 
         // Check if the party still exists, it might have been disbanded
         if (!parties.contains(invite)) {
-            NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Party.Disband");
+            NotificationManager.sendPlayerInformation(Misc.adaptPlayer(mmoPlayer), NotificationType.PARTY_MESSAGE, "Party.Disband");
             return;
         }
 
@@ -460,11 +460,11 @@ public final class PartyManager {
          */
         if(Config.getInstance().getPartyMaxSize() > 0 && invite.getMembers().size() >= Config.getInstance().getPartyMaxSize())
         {
-            NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept", invite.getPartyName(), String.valueOf(Config.getInstance().getPartyMaxSize()));
+            NotificationManager.sendPlayerInformation(Misc.adaptPlayer(mmoPlayer), NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept", invite.getPartyName(), String.valueOf(Config.getInstance().getPartyMaxSize()));
             return;
         }
 
-        NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.Invite.Accepted", invite.getPartyName());
+        NotificationManager.sendPlayerInformation(Misc.adaptPlayer(mmoPlayer), NotificationType.PARTY_MESSAGE, "Commands.Party.Invite.Accepted", invite.getPartyName());
         mmoPlayer.removePartyInvite();
         addToParty(mmoPlayer, invite);
     }
@@ -476,7 +476,7 @@ public final class PartyManager {
      */
     public void acceptAllianceInvite(OnlineMMOPlayer mmoPlayer) {
         Party invite = mmoPlayer.getPartyAllianceInvite();
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
 
         // Check if the party still exists, it might have been disbanded
         if (!parties.contains(invite)) {
@@ -536,7 +536,7 @@ public final class PartyManager {
      * @param party The party
      */
     public void addToParty(OnlineMMOPlayer mmoPlayer, Party party) {
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
         String playerName = player.getName();
 
         informPartyMembersJoin(party, playerName);
@@ -591,7 +591,7 @@ public final class PartyManager {
     public boolean canInvite(OnlineMMOPlayer mmoPlayer) {
         Party party = mmoPlayer.getParty();
 
-        return !party.isLocked() || party.getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
+        return !party.isLocked() || party.getLeader().getUniqueId().equals(mmoPlayer.getUUID());
     }
 
     /**

@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -112,7 +113,7 @@ public final class ChimaeraWing {
 
         if (warmup > 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
-            new ChimaeraWingWarmup(mmoPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+            new ChimaeraWingWarmup((McMMOPlayer) mmoPlayer).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {
             chimaeraExecuteTeleport();
@@ -120,7 +121,7 @@ public final class ChimaeraWing {
     }
 
     public static void chimaeraExecuteTeleport() {
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
 
         if (Config.getInstance().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());

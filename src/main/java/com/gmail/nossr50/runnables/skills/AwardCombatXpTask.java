@@ -1,7 +1,5 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.LivingEntity;

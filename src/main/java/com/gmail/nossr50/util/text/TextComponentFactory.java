@@ -495,7 +495,7 @@ public class TextComponentFactory {
                 if(subSkillType == SubSkillType.FISHING_MASTER_ANGLER && mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() == null)
                     continue;
 
-                if(Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType))
+                if(Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), subSkillType))
                 {
                     if(!InteractionManager.hasSubSkill(subSkillType))
                         textComponents.add(TextComponentFactory.getSubSkillTextComponent(mmoPlayer, subSkillType));
@@ -508,7 +508,7 @@ public class TextComponentFactory {
         {
             if(abstractSubSkill.getPrimarySkill() == parentSkill)
             {
-                if(Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), abstractSubSkill))
+                if(Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), abstractSubSkill))
                     textComponents.add(TextComponentFactory.getSubSkillTextComponent(mmoPlayer, abstractSubSkill));
             }
         }

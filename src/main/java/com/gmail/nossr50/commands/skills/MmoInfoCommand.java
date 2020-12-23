@@ -91,10 +91,10 @@ public class MmoInfoCommand implements TabExecutor {
             /*
              * Skill is only in the old system
              */
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.MmoInfo.OldSkill"));
+            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
+            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
+            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
+            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.MmoInfo.OldSkill"));
         }
 
         for(SubSkillType subSkillType : SubSkillType.values())

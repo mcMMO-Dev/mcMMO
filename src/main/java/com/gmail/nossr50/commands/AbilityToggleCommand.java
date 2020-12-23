@@ -19,7 +19,7 @@ public class AbilityToggleCommand extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(@NotNull OnlineMMOPlayer mmoPlayer) {
-        mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Ability." + (mmoPlayer.getSuperAbilityManager().getAbilityActivationPermission() ? "Off" : "On")));
+        Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.Ability." + (mmoPlayer.getSuperAbilityManager().getAbilityActivationPermission() ? "Off" : "On")));
         mmoPlayer.getSuperAbilityManager().toggleAbilityActivationPermission();
     }
 

@@ -34,7 +34,7 @@ public class SmeltingCommand extends SkillCommand {
     protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
-            burnTimeModifier = String.valueOf(mmoPlayer.getSmeltingManager().getFuelEfficiencyMultiplier());
+            burnTimeModifier = String.valueOf(((McMMOPlayer) (mmoPlayer)).getSmeltingManager().getFuelEfficiencyMultiplier());
         }
 
         // FLUX MINING
@@ -57,7 +57,7 @@ public class SmeltingCommand extends SkillCommand {
         canFuelEfficiency = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_FUEL_EFFICIENCY);
         canSecondSmelt = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
-        canUnderstandTheArt = Permissions.vanillaXpBoost(mmoPlayer.getPlayer(), skill) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
+        canUnderstandTheArt = Permissions.vanillaXpBoost(Misc.adaptPlayer(mmoPlayer), rootSkill) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canUnderstandTheArt) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_UNDERSTANDING_THE_ART,
-                    String.valueOf(mmoPlayer.getSmeltingManager().getVanillaXpMultiplier())));
+                    String.valueOf(((McMMOPlayer) (mmoPlayer)).getSmeltingManager().getVanillaXpMultiplier())));
         }
 
         return messages;

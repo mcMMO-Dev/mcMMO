@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.neetgames.mcmmo.exceptions.InvalidSkillException;
 import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -85,7 +86,7 @@ public interface DatabaseManager {
      */
     void insertNewUser(@NotNull String playerName, @NotNull UUID uuid) throws Exception;
 
-    @Nullable PlayerProfile queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException;
+    @Nullable MMOPlayerData queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException;
 
     /**
      * Load player data (in the form of {@link PlayerProfile}) if player data exists
@@ -95,7 +96,7 @@ public interface DatabaseManager {
      * @param playerName the current player name for this player
      * @return The player's data, or null if not found
      */
-    @Nullable PlayerProfile queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException;
+    @Nullable MMOPlayerData queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException;
 
     /**
      * Load player data (in the form of {@link PlayerProfile}) if player data exists
@@ -104,7 +105,7 @@ public interface DatabaseManager {
      * @param playerName the current player name for this player
      * @return The player's data, or null if not found
      */
-    @Nullable PlayerProfile queryPlayerByName(@NotNull String playerName) throws ProfileRetrievalException;
+    @Nullable MMOPlayerData queryPlayerByName(@NotNull String playerName) throws ProfileRetrievalException;
 
     /**
      * This method queries the DB for player data for target player
@@ -117,7 +118,7 @@ public interface DatabaseManager {
      * @param player target player
      * @return {@link PlayerProfile} for the target player
      */
-    @Nullable PlayerProfile initPlayerProfile(@NotNull Player player) throws Exception;
+    @Nullable MMOPlayerData initPlayerProfile(@NotNull Player player) throws Exception;
 
     /**
      * Get all users currently stored in the database.

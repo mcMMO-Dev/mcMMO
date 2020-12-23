@@ -63,7 +63,7 @@ public class ScoreboardWrapper {
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
             for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
-                powerObjective.getScore(mmoPlayer.getPlayerName()).setScore(mmoPlayer.getExperienceManager().getPowerLevel());
+                powerObjective.getScore(mmoPlayer.getPlayerName()).setScore(mmoPlayer.getExperienceHandler().getPowerLevel());
             }
         }
     }
@@ -446,18 +446,18 @@ public class ScoreboardWrapper {
                 Validate.notNull(targetSkill);
 
                 if (!targetSkill.isChildSkill()) {
-                    int currentXP = mmoPlayer.getExperienceManager().getSkillXpValue(targetSkill);
+                    int currentXP = mmoPlayer.getExperienceHandler().getSkillXpValue(targetSkill);
 
                     sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
-                    sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mmoPlayer.getExperienceManager().getExperienceToNextLevel(targetSkill) - currentXP);
+                    sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mmoPlayer.getExperienceHandler().getExperienceToNextLevel(targetSkill) - currentXP);
                 }
                 else {
                     for (PrimarySkillType parentSkill : FamilyTree.getParents(targetSkill)) {
-                        sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mmoPlayer.getExperienceManager().getSkillLevel(parentSkill));
+                        sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mmoPlayer.getExperienceHandler().getSkillLevel(parentSkill));
                     }
                 }
 
-                sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mmoPlayer.getExperienceManager().getSkillLevel(targetSkill));
+                sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mmoPlayer.getExperienceHandler().getSkillLevel(targetSkill));
 
                 if (targetSkill.getSuperAbilityType() != null) {
                     boolean stopUpdating;
@@ -531,7 +531,7 @@ public class ScoreboardWrapper {
                 // Calculate power level here
                 int powerLevel = 0;
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
-                    int level = newProfile.getExperienceManager().getSkillLevel(skill);
+                    int level = newProfile.getExperienceHandler().getSkillLevel(skill);
 
                     powerLevel += level;
 

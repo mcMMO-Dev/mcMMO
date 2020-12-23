@@ -5,8 +5,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.BlockSnapshot;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
@@ -388,7 +386,7 @@ public class HerbalismManager extends SkillManager {
         }
 
         if(mmoPlayer.isDebugMode()) {
-            mmoPlayer.getPlayer().sendMessage("Plants processed: "+brokenPlants.size());
+            Misc.adaptPlayer(mmoPlayer).sendMessage("Plants processed: "+brokenPlants.size());
         }
 
         //Reward XP
@@ -439,8 +437,8 @@ public class HerbalismManager extends SkillManager {
         }
 
         if(mmoPlayer.isDebugMode()) {
-            mmoPlayer.getPlayer().sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
-            mmoPlayer.getPlayer().sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
+            Misc.adaptPlayer(mmoPlayer).sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
+            Misc.adaptPlayer(mmoPlayer).sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
         }
 
         //Reward XP

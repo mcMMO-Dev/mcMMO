@@ -4,8 +4,9 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.util.Misc;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -15,6 +16,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.McMMOMessageType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
+import com.neetgames.mcmmo.skill.RootSkill;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
@@ -71,16 +73,15 @@ public class NotificationManager {
      * @param key Locale Key for the string to use with this event
      * @param values values to be injected into the locale string
      */
-    public static void sendNearbyPlayersInformation(@NotNull Player targetPlayer, @NotNull NotificationType notificationType, @NotNull String key, String... values)
-    {
+    public static void sendNearbyPlayersInformation(@NotNull Player targetPlayer, @NotNull NotificationType notificationType, @NotNull String key, String... values) {
         sendPlayerInformation(targetPlayer, notificationType, key, values);
     }
 
-    public static void sendPlayerInformationChatOnly(@NotNull Player player, @NotNull String key, String... values)
-    {
+    public static void sendPlayerInformationChatOnly(@NotNull Player player, @NotNull String key, String... values) {
         OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
-        if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
+        //Don't send chat notifications if they are disabled
+        if(mmoPlayer != null && !mmoPlayer.hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -91,7 +92,8 @@ public class NotificationManager {
     {
         OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
-        if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
+        //Don't send chat notifications if they are disabled
+        if(mmoPlayer != null && !mmoPlayer.hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -99,9 +101,11 @@ public class NotificationManager {
         player.sendMessage(prefixFormattedMessage);
     }
 
-    public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key, String... values)
-    {
-        if(mcMMO.getUserManager().queryPlayer(player) == null || !mcMMO.getUserManager().queryPlayer(player).hasSkillChatNotifications())
+    public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key, String... values) {
+        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
+        //Don't send chat notifications if they are disabled
+        if(mmoPlayer != null && !mmoPlayer.hasSkillChatNotifications())
             return;
 
         McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
@@ -133,7 +137,7 @@ public class NotificationManager {
         }
     }
 
-    private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, McMMOMessageType destination, Component message) {
+    private static @NotNull McMMOPlayerNotificationEvent checkNotificationEvent(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull McMMOMessageType destination, @NotNull Component message) {
         //Init event
         McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
                 notificationType, message, destination, AdvancedConfig.getInstance().doesNotificationSendCopyToChat(notificationType));
@@ -146,20 +150,20 @@ public class NotificationManager {
     /**
      * Handles sending level up notifications to a mmoPlayer
      * @param mmoPlayer target mmoPlayer
-     * @param skillName skill that leveled up
+     * @param rootSkill skill that leveled up
      * @param newLevel new level of that skill
      */
-    public static void sendPlayerLevelUpNotification(OnlineMMOPlayer mmoPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
+    public static void sendPlayerLevelUpNotification(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull RootSkill rootSkill, int levelsGained, int newLevel)
     {
         if(!mmoPlayer.hasSkillChatNotifications())
             return;
 
         McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
-        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mmoPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
+        Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(CoreSkills.getSkill(rootSkill), levelsGained, newLevel);
+        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(Misc.adaptPlayer(mmoPlayer), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
-        sendNotification(mmoPlayer.getPlayer(), customEvent);
+        sendNotification(Misc.adaptPlayer(mmoPlayer), customEvent);
     }
 
     public static void broadcastTitle(@NotNull Server server, @NotNull String title, @NotNull String subtitle, int i1, int i2, int i3)
@@ -176,16 +180,16 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer, subSkillType));
+        mcMMO.getAudiences().player(Misc.adaptPlayer(mmoPlayer)).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer, subSkillType));
 
         //Unlock Sound Effect
-        SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
+        SoundManager.sendCategorizedSound(Misc.adaptPlayer(mmoPlayer), Misc.adaptPlayer(mmoPlayer).getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
 
         //ACTION BAR MESSAGE
         /*if(AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
-            mmoPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
+            Misc.adaptPlayer(mmoPlayer).spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
                     subSkillType.getLocaleName(),
-                    String.valueOf(RankUtils.getRank(mmoPlayer.getPlayer(),
+                    String.valueOf(RankUtils.getRank(Misc.adaptPlayer(mmoPlayer),
                             subSkillType)))));*/
     }
 

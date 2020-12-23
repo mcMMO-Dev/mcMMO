@@ -3,8 +3,8 @@ package com.gmail.nossr50.util.input;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class SuperAbilityManager {
 
-    private final OnlineMMOPlayer mmoPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final Player player;
 
     private final Map<SuperAbilityType, Boolean> superAbilityState = new HashMap<>();
@@ -37,12 +37,12 @@ public class SuperAbilityManager {
     private boolean abilityActivationPermission = true;
 
     private final Map<AbilityToolType, Boolean> toolMode = new HashMap<>();
-    private final PersistentPlayerData persistentPlayerData;
+    private final MMOPlayerData mmoPlayerData;
 
-    public SuperAbilityManager(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull PersistentPlayerData persistentPlayerData) {
+    public SuperAbilityManager(@NotNull McMMOPlayer mmoPlayer, @NotNull MMOPlayerData mmoPlayerData) {
         this.mmoPlayer = mmoPlayer;
-        this.persistentPlayerData = persistentPlayerData;
-        this.player = mmoPlayer.getPlayer();
+        this.mmoPlayerData = mmoPlayerData;
+        this.player = Misc.adaptPlayer(mmoPlayer);
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             superAbilityState.put(superAbilityType, false);
@@ -55,7 +55,7 @@ public class SuperAbilityManager {
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
 
         if (!skill.getPermissions(player)) {
             return;
@@ -243,7 +243,7 @@ public class SuperAbilityManager {
     }
 
     public void resetCooldowns() {
-        this.persistentPlayerData.resetCooldowns();
+        this.mmoPlayerData.resetCooldowns();
     }
 
     /**
@@ -336,7 +336,7 @@ public class SuperAbilityManager {
      */
     public int calculateTimeRemaining(SuperAbilityType superAbilityType) {
         long deactivatedTimestamp = mmoPlayer.getAbilityDATS(superAbilityType) * Misc.TIME_CONVERSION_FACTOR;
-        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(mmoPlayer.getPlayer(), superAbilityType.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(Misc.adaptPlayer(mmoPlayer), superAbilityType.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
 }

@@ -17,13 +17,13 @@ public class AbilityCooldownTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!mmoPlayer.getPlayer().isOnline() || mmoPlayer.getSuperAbilityManager().getAbilityInformed(ability)) {
+        if (!Misc.adaptPlayer(mmoPlayer).isOnline() || mmoPlayer.getSuperAbilityManager().getAbilityInformed(ability)) {
             return;
         }
 
         mmoPlayer.getSuperAbilityManager().setAbilityInformed(ability, true);
 
-        NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
-        //mmoPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());
+        NotificationManager.sendPlayerInformation(Misc.adaptPlayer(mmoPlayer), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
+        //Misc.adaptPlayer(mmoPlayer).sendMessage(ability.getAbilityRefresh());
     }
 }

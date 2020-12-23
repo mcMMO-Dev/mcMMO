@@ -40,7 +40,7 @@ public abstract class ToggleCommand implements TabExecutor {
                 if(mmoPlayer != null) {
                     applyCommandAction(mmoPlayer);
                 } else {
-                    mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
+                    Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
                 }
 
                 return true;

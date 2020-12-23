@@ -197,7 +197,7 @@ public class EntityListener implements Listener {
                     //Process launch event
                     if (Permissions.skillEnabled(player, PrimarySkillType.CROSSBOWS)) {
                         if (mmoPlayer != null) {
-                            mmoPlayer.getCrossbowManager().processProjectileLaunchEvent(event);
+                            ((McMMOPlayer) (mmoPlayer)).getCrossbowManager().processProjectileLaunchEvent(event);
                         }
                     }
 
@@ -411,7 +411,7 @@ public class EntityListener implements Listener {
                     //Deflect checks
                     final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(defendingPlayer);
                     if (mmoPlayer != null) {
-                        UnarmedManager unarmedManager = mmoPlayer.getUnarmedManager();
+                        UnarmedManager unarmedManager = ((McMMOPlayer) (mmoPlayer)).getUnarmedManager();
 
                         if (unarmedManager.canDeflect()) {
                             if (projectile instanceof Arrow && unarmedManager.deflectCheck()) {

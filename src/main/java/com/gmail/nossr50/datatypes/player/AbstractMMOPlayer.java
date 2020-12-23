@@ -1,7 +1,10 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.datatypes.experience.ExperienceManager;
+import com.gmail.nossr50.datatypes.experience.OfflineExperienceProcessor;
+import com.gmail.nossr50.datatypes.experience.OnlineExperienceProcessor;
+import com.neetgames.mcmmo.experience.ExperienceHandler;
 import com.neetgames.mcmmo.player.MMOPlayer;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,44 +12,32 @@ import java.util.UUID;
 
 public abstract class AbstractMMOPlayer implements MMOPlayer {
     /* All of the persistent data for a player that gets saved and loaded from DB */
-    protected final @NotNull PersistentPlayerData persistentPlayerData; //All persistent data is kept here
+    protected final @NotNull MMOPlayerData mmoPlayerData; //All persistent data is kept here
 
     /* Managers */
-    protected final @NotNull ExperienceManager experienceManager;
+    protected final @NotNull ExperienceHandler experienceHandler;
     protected final @NotNull CooldownManager cooldownManager;
 
     /**
-     * Create a new AbstractMMOPlayer for a {@link Player} with default values
-     *
-     * @param player target player
-     */
-    public AbstractMMOPlayer(@NotNull Player player) {
-        /* New Data */
-        this(player.getUniqueId(), player.getName());
-    }
-
-    /**
-     * Create a new AbstractMMOPlayer for a {@link Player} with default values
-     *
-     * @param playerUUID target player's UUID
-     * @param playerName target player's name
-     */
-    public AbstractMMOPlayer(@NotNull UUID playerUUID, @NotNull String playerName) {
-        /* New Data */
-        this.persistentPlayerData = new PersistentPlayerData(playerUUID, playerName);
-        this.experienceManager = new ExperienceManager(persistentPlayerData);
-        this.cooldownManager = new CooldownManager(persistentPlayerData);
-    }
-
-    /**
-     * Initialize an AbstractMMOPlayer for {@link PersistentPlayerData}
+     * Init for online players
      * This will be used for existing data
      *
-     * @param persistentPlayerData target persistent player data
+     * @param mmoPlayerData player data
      */
-    public AbstractMMOPlayer(@NotNull PersistentPlayerData persistentPlayerData) {
-        this.persistentPlayerData = persistentPlayerData;
-        this.experienceManager = new ExperienceManager(persistentPlayerData);
-        this.cooldownManager = new CooldownManager(persistentPlayerData);
+    public AbstractMMOPlayer(@NotNull Player player, @NotNull MMOPlayerData mmoPlayerData) {
+        this.mmoPlayerData = mmoPlayerData;
+        this.experienceHandler = new OnlineExperienceProcessor(mmoPlayerData);
+        this.cooldownManager = new CooldownManager(mmoPlayerData);
+    }
+
+    /**
+     * Init for offline players
+     *
+     * @param mmoPlayerData player data
+     */
+    public AbstractMMOPlayer(@NotNull MMOPlayerData mmoPlayerData) {
+        this.mmoPlayerData = mmoPlayerData;
+        this.experienceHandler = new OfflineExperienceProcessor(mmoPlayerData);
+        this.cooldownManager = new CooldownManager(mmoPlayerData);
     }
 }

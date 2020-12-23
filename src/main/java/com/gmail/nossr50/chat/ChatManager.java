@@ -127,11 +127,11 @@ public class ChatManager {
     public void setOrToggleChatChannel(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull ChatChannel targetChatChannel) {
         if(targetChatChannel == mmoPlayer.getChatChannel()) {
             //Disabled message
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Chat.Channel.Off", StringUtils.getCapitalized(targetChatChannel.toString())));
+            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Chat.Channel.Off", StringUtils.getCapitalized(targetChatChannel.toString())));
             mmoPlayer.setChatMode(ChatChannel.NONE);
         } else {
             mmoPlayer.setChatMode(targetChatChannel);
-            mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Chat.Channel.On", StringUtils.getCapitalized(targetChatChannel.toString())));
+            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Chat.Channel.On", StringUtils.getCapitalized(targetChatChannel.toString())));
         }
     }
 
@@ -162,7 +162,7 @@ public class ChatManager {
     public boolean isMessageAllowed(@NotNull OnlineMMOPlayer mmoPlayer) {
         switch (mmoPlayer.getChatChannel()) {
             case ADMIN:
-                if(mmoPlayer.getPlayer().isOp() || Permissions.adminChat(mmoPlayer.getPlayer())) {
+                if(Misc.adaptPlayer(mmoPlayer).isOp() || Permissions.adminChat(mmoPlayer.getPlayer())) {
                     return true;
                 }
                 break;

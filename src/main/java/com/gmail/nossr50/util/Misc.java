@@ -308,7 +308,7 @@ public final class Misc {
      * @return true if the player is the party leader
      */
     public static boolean isPartyLeader(@NotNull OnlineMMOPlayer mmoPlayer) {
-        return mmoPlayer.getParty().getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
+        return mcMMO.getPartyManager().queryParty(mmoPlayer.getUUID()).getPartyMemberManager().getPartyLeader().getUniqueId().equals(mmoPlayer.getUUID());
     }
 
 //    public static void spawnExperienceOrb(@NotNull Location location, int orbAmount, int experienceValue) {
@@ -323,6 +323,10 @@ public final class Misc {
 
         ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
         experienceOrb.setExperience(experienceValue);
+    }
+
+    public static @NotNull Player adaptPlayer(@NotNull OnlineMMOPlayer onlineMMOPlayer) {
+        return (Player) onlineMMOPlayer.getServerAPIPlayerImpl();
     }
 
     private static class SpawnOrbTask extends BukkitRunnable {

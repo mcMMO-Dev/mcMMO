@@ -40,7 +40,7 @@ public class SmeltingTracker {
     private void printOwnershipGainDebug(Furnace furnace, OnlineMMOPlayer mmoPlayer) {
         if(mmoPlayer != null) {
             if(mmoPlayer.isDebugMode()) {
-                mmoPlayer.getPlayer().sendMessage("Furnace ownership " +
+                Misc.adaptPlayer(mmoPlayer).sendMessage("Furnace ownership " +
                         ChatColor.GREEN +"gained " + ChatColor.RESET +
                         "at location: " + furnace.getLocation().toString());
             }

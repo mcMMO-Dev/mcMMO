@@ -20,7 +20,7 @@ public class McChatSpy extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(@NotNull OnlineMMOPlayer mmoPlayer) {
-        mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.AdminChatSpy." + (mmoPlayer.isPartyChatSpying() ? "Disabled" : "Enabled")));
+        Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.AdminChatSpy." + (mmoPlayer.isPartyChatSpying() ? "Disabled" : "Enabled")));
         mmoPlayer.togglePartyChatSpying();
     }
 

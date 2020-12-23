@@ -38,7 +38,7 @@ public class RankUtils {
                 continue;
 
             //Don't send notifications if the player lacks the permission node
-            if(!Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType))
+            if(!Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), subSkillType))
                 continue;
 
             //The players level is the exact level requirement for this skill
@@ -159,7 +159,7 @@ public class RankUtils {
 //     */
 //    public static int getRank(Player player, SubSkillType subSkillType)
 //    {
-//        return getRank(mmoPlayer.getPlayer(), subSkillType);
+//        return getRank(Misc.adaptPlayer(mmoPlayer), subSkillType);
 //    }
 
     /**
@@ -186,7 +186,7 @@ public class RankUtils {
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
         //Skill level of parent skill
-        int currentSkillLevel = mmoPlayer.getExperienceManager().getSkillLevel(subSkillType.getParentSkill());
+        int currentSkillLevel = mmoPlayer.getExperienceHandler().getSkillLevel(subSkillType.getParentSkill());
 
         for(int i = 0; i < numRanks; i++)
         {
@@ -230,7 +230,7 @@ public class RankUtils {
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
         //Skill level of parent skill
-        int currentSkillLevel = mmoPlayer.getExperienceManager().getSkillLevel(abstractSubSkill.getPrimarySkill());
+        int currentSkillLevel = mmoPlayer.getExperienceHandler().getSkillLevel(abstractSubSkill.getPrimarySkill());
 
         for(int i = 0; i < numRanks; i++)
         {

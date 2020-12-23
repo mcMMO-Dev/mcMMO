@@ -1,8 +1,6 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -224,7 +222,7 @@ public final class EventUtils {
         if (isCancelled) {
             PlayerProfile profile = mcMMO.getUserManager().queryPlayer(player);
 
-            profile.getExperienceManager().setSkillLevel(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
+            profile.getExperienceHandler().setSkillLevel(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
         }
 

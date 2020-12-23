@@ -25,7 +25,7 @@ public class ToolLowerTask extends BukkitRunnable {
         mmoPlayer.getSuperAbilityManager().setAbilityToolPrime(tool, false);
 
         if (Config.getInstance().getAbilityMessagesEnabled()) {
-            NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.TOOL, tool.getLowerToolLocaleKey());
+            NotificationManager.sendPlayerInformation(Misc.adaptPlayer(mmoPlayer), NotificationType.TOOL, tool.getLowerToolLocaleKey());
         }
     }
 }

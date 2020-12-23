@@ -41,8 +41,8 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int playerSkillLevel = playerProfile.getExperienceManager().getSkillLevel(primarySkillType);
-            int playerSkillXpLevel = playerProfile.getExperienceManager().getSkillXpValue(primarySkillType);
+            int playerSkillLevel = playerProfile.getExperienceHandler().getSkillLevel(primarySkillType);
+            int playerSkillXpLevel = playerProfile.getExperienceHandler().getSkillXpValue(primarySkillType);
 
             if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
@@ -93,8 +93,8 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int killerSkillLevel = killerProfile.getExperienceManager().getSkillLevel(primarySkillType);
-            int victimSkillLevel = victimProfile.getExperienceManager().getSkillLevel(primarySkillType);
+            int killerSkillLevel = killerProfile.getExperienceHandler().getSkillLevel(primarySkillType);
+            int victimSkillLevel = victimProfile.getExperienceHandler().getSkillLevel(primarySkillType);
 
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
@@ -102,7 +102,7 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int victimSkillXpLevel = victimProfile.getExperienceManager().getSkillXpValue(primarySkillType);
+            int victimSkillXpLevel = victimProfile.getExperienceHandler().getSkillXpValue(primarySkillType);
 
             double statsStolen = victimSkillLevel * (vampirismStatLeechPercentage * 0.01D);
             int levelsStolen = (int) statsStolen;

@@ -1,8 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.CoreSkillConstants;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.validation.NonNullRule;
 import com.gmail.nossr50.datatypes.validation.PositiveIntegerRule;
 import com.gmail.nossr50.datatypes.validation.Validator;
@@ -80,7 +79,7 @@ public class PersistentPlayerData implements MMOPlayerData {
 
         //Core skills
         //TODO: Don't store values for disabled skills
-        for(RootSkill rootSkill : CoreSkillConstants.getImmutableCoreRootSkillSet()) {
+        for(RootSkill rootSkill : CoreSkills.getImmutableCoreRootSkillSet()) {
             skillLevelValues.put(rootSkill, AdvancedConfig.getInstance().getStartingLevel());
             skillExperienceValues.put(rootSkill, 0F);
         }

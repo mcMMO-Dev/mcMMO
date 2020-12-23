@@ -56,7 +56,7 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canTreeFell = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(mmoPlayer.getPlayer());
-        canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
+        canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !rootSkill.getDoubleDropsDisabled() && RankUtils.getRank(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
         canLeafBlow = canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_LEAF_BLOWER);
         canKnockOnWood = canTreeFell && canUseSubskill(mmoPlayer, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
         /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);

@@ -23,7 +23,7 @@ public class PlayerDebugCommand implements CommandExecutor {
             }
 
             mmoPlayer.toggleDebugMode(); //Toggle debug mode
-            NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(), "Commands.Mmodebug.Toggle", String.valueOf(mmoPlayer.isDebugMode()));
+            NotificationManager.sendPlayerInformationChatOnlyPrefixed(Misc.adaptPlayer(mmoPlayer), "Commands.Mmodebug.Toggle", String.valueOf(mmoPlayer.isDebugMode()));
             return true;
         } else {
             return false;

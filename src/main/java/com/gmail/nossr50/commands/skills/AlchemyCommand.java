@@ -1,5 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.util.Misc;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -44,10 +46,10 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     protected String[] calculateAbilityDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer) {
-        AlchemyManager alchemyManager = mmoPlayer.getAlchemyManager();
+        AlchemyManager alchemyManager = ((McMMOPlayer) (mmoPlayer)).getAlchemyManager();
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(mmoPlayer.getPlayer(), PrimarySkillType.ALCHEMY);
+        boolean isLucky = Permissions.lucky(Misc.adaptPlayer(mmoPlayer), PrimarySkillType.ALCHEMY);
 
         displayValues[0] = decimal.format(alchemyManager.calculateBrewSpeed(false)) + "x";
         displayValues[1] = isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;

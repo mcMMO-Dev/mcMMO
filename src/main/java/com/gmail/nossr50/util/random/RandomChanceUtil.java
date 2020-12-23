@@ -337,7 +337,7 @@ public class RandomChanceUtil
 
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(mmoPlayer.getPlayer(), primarySkillType);
+        boolean isLucky = Permissions.lucky(Misc.adaptPlayer(mmoPlayer), primarySkillType);
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
         displayValues[1] = isLucky ? percent.format(Math.min(successChance_lucky, 100.0D) / 100.0D) : null;

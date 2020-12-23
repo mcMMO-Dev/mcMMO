@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills;
 
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Entity;
@@ -18,11 +16,11 @@ public abstract class SkillManager {
     }
 
     public Player getPlayer() {
-        return mmoPlayer.getPlayer();
+        return Misc.adaptPlayer(mmoPlayer);
     }
 
     public int getSkillLevel() {
-        return mmoPlayer.getExperienceManager().getSkillLevel(skill);
+        return mmoPlayer.getExperienceHandler().getSkillLevel(skill);
     }
 
     /**

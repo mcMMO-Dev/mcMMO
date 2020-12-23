@@ -52,8 +52,8 @@ public class CrossbowManager extends SkillManager {
      */
     public void processProjectileLaunchEvent(ProjectileLaunchEvent projectileLaunchEvent) {
         //Testing
-        if(Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
-            if(RankUtils.hasUnlockedSubskill(mmoPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+        if(Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+            if(RankUtils.hasUnlockedSubskill(Misc.adaptPlayer(mmoPlayer), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
                 superShotgunProcessing(projectileLaunchEvent);
             }
         }
@@ -79,7 +79,7 @@ public class CrossbowManager extends SkillManager {
     }
 
     public int getSuperShotgunAdditionalArrowCount() {
-        switch(RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+        switch(RankUtils.getRank(Misc.adaptPlayer(mmoPlayer), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             case 1:
                 return 9;
             case 2:

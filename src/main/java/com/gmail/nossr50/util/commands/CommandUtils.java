@@ -79,7 +79,7 @@ public final class CommandUtils {
      */
     public static boolean checkPlayerExistence(CommandSender sender, String playerName, OnlineMMOPlayer mmoPlayer) {
         if (mmoPlayer != null) {
-            if (CommandUtils.hidden(sender, mmoPlayer.getPlayer(), false)) {
+            if (CommandUtils.hidden(sender, Misc.adaptPlayer(mmoPlayer), false)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
                 return false;
             }
@@ -200,7 +200,7 @@ public final class CommandUtils {
         if (skill.isChildSkill()) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
-        if (profile.getExperienceManager().getSkillLevel(skill) == Config.getInstance().getLevelCap(skill)){
+        if (profile.getExperienceHandler().getSkillLevel(skill) == Config.getInstance().getLevelCap(skill)){
             return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), LocaleLoader.getString("Skills.MaxXP"));
         }
         return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));

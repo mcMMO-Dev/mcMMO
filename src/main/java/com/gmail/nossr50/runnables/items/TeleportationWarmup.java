@@ -1,6 +1,8 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
@@ -13,20 +15,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportationWarmup extends BukkitRunnable {
-    private final OnlineMMOPlayer mmoPlayer;
-    private final OnlineMMOPlayer mcMMOTarget;
+    private final McMMOPlayer mmoPlayer;
+    private final McMMOPlayer mcMMOTarget;
 
-    public TeleportationWarmup(OnlineMMOPlayer mmoPlayer, OnlineMMOPlayer mcMMOTarget) {
+    public TeleportationWarmup(McMMOPlayer mmoPlayer, McMMOPlayer mcMMOTarget) {
         this.mmoPlayer = mmoPlayer;
         this.mcMMOTarget = mcMMOTarget;
     }
 
     @Override
     public void run() {
-        Player teleportingPlayer = mmoPlayer.getPlayer();
+        Player teleportingPlayer = Misc.adaptPlayer(mmoPlayer);
         Player targetPlayer = mcMMOTarget.getPlayer();
         Location previousLocation = mmoPlayer.getTeleportCommenceLocation();
-        Location newLocation = mmoPlayer.getPlayer().getLocation();
+        Location newLocation = Misc.adaptPlayer(mmoPlayer).getLocation();
         long recentlyHurt = mmoPlayer.getRecentlyHurtTimestamp();
 
         mmoPlayer.setTeleportCommenceLocation(null);

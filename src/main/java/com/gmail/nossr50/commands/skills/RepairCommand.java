@@ -79,13 +79,13 @@ public class RepairCommand extends SkillCommand {
         canSuperRepair = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
         canMasterRepair = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_REPAIR_MASTERY);
         canArcaneForge = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_ARCANE_FORGING);
-        canRepairDiamond = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.DIAMOND);
-        canRepairGold = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.GOLD);
-        canRepairIron = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.IRON);
-        canRepairStone = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.STONE);
-        canRepairString = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.STRING);
-        canRepairLeather = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.LEATHER);
-        canRepairWood = Permissions.repairMaterialType(mmoPlayer.getPlayer(), MaterialType.WOOD);
+        canRepairDiamond = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.DIAMOND);
+        canRepairGold = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.GOLD);
+        canRepairIron = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.IRON);
+        canRepairStone = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.STONE);
+        canRepairString = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.STRING);
+        canRepairLeather = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.LEATHER);
+        canRepairWood = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.WOOD);
         arcaneBypass = (Permissions.arcaneBypass(mmoPlayer.getPlayer()) || Permissions.hasRepairEnchantBypassPerk(mmoPlayer.getPlayer()));
     }
 
@@ -94,7 +94,7 @@ public class RepairCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {
-            RepairManager repairManager = mmoPlayer.getRepairManager();
+            RepairManager repairManager = ((McMMOPlayer) (mmoPlayer)).getRepairManager();
 
             messages.add(getStatMessage(false, true,
                     SubSkillType.REPAIR_ARCANE_FORGING,

@@ -61,7 +61,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = mmoPlayer.getUnarmedManager().getSteelArmStyleDamage();
+            ironArmBonus = ((McMMOPlayer) (mmoPlayer)).getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP

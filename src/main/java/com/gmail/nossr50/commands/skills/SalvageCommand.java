@@ -37,7 +37,7 @@ public class SalvageCommand extends SkillCommand {
     @Override
     protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
-        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
+        SalvageManager salvageManager = ((McMMOPlayer) (mmoPlayer)).getSalvageManager();
 
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,

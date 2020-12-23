@@ -629,7 +629,7 @@ public class PlayerListener implements Listener {
         }
 
         OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-        MiningManager miningManager = mmoPlayer.getMiningManager();
+        MiningManager miningManager = ((McMMOPlayer) (mmoPlayer)).getMiningManager();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
@@ -642,7 +642,7 @@ public class PlayerListener implements Listener {
                             && PrimarySkillType.REPAIR.getPermissions(player)
                             && mcMMO.getRepairableManager().isRepairable(heldItem)
                             && heldItem.getAmount() <= 1) {
-                        RepairManager repairManager = mmoPlayer.getRepairManager();
+                        RepairManager repairManager = ((McMMOPlayer) (mmoPlayer)).getRepairManager();
                         event.setCancelled(true);
 
                         // Make sure the player knows what he's doing when trying to repair an enchanted item
@@ -687,7 +687,7 @@ public class PlayerListener implements Listener {
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
-                        RepairManager repairManager = mmoPlayer.getRepairManager();
+                        RepairManager repairManager = ((McMMOPlayer) (mmoPlayer)).getRepairManager();
 
                         // Cancel repairing an enchanted item
                         if (repairManager.checkConfirmation(false)) {
@@ -697,7 +697,7 @@ public class PlayerListener implements Listener {
                     }
                     /* SALVAGE CHECKS */
                     else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
-                        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
+                        SalvageManager salvageManager = ((McMMOPlayer) (mmoPlayer)).getSalvageManager();
 
                         // Cancel salvaging an enchanted item
                         if (salvageManager.checkConfirmation(false)) {
@@ -759,7 +759,7 @@ public class PlayerListener implements Listener {
                     player.setVelocity(player.getEyeLocation().getDirection().multiply(10));
                 }
 
-                mmoPlayer.getFishingManager().setFishingRodCastTimestamp();
+                ((McMMOPlayer) (mmoPlayer)).getFishingManager().setFishingRodCastTimestamp();
             }
         }
 

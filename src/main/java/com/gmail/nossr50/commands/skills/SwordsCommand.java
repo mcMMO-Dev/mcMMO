@@ -44,7 +44,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_RUPTURE
         if (canBleed) {
-            bleedLength = mmoPlayer.getSwordsManager().getRuptureBleedTicks();
+            bleedLength = ((McMMOPlayer) (mmoPlayer)).getSwordsManager().getRuptureBleedTicks();
 
             String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
@@ -70,7 +70,7 @@ public class SwordsCommand extends SkillCommand {
     protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        int ruptureTicks = mmoPlayer.getSwordsManager().getRuptureBleedTicks();
+        int ruptureTicks = ((McMMOPlayer) (mmoPlayer)).getSwordsManager().getRuptureBleedTicks();
         double ruptureDamagePlayers =  RankUtils.getRank(mmoPlayer, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
         double ruptureDamageMobs =  RankUtils.getRank(mmoPlayer, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
 
@@ -98,7 +98,7 @@ public class SwordsCommand extends SkillCommand {
         if(canUseSubskill(mmoPlayer, SubSkillType.SWORDS_STAB))
         {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
-                    String.valueOf(mmoPlayer.getSwordsManager().getStabDamage())));
+                    String.valueOf(((McMMOPlayer) (mmoPlayer)).getSwordsManager().getStabDamage())));
         }
 
         if(canUseSubskill(mmoPlayer, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {

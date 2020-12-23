@@ -45,7 +45,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
         canBeastLore = canUseSubskill(mmoPlayer, SubSkillType.TAMING_BEAST_LORE);
-        canCallWild = Permissions.callOfTheWild(mmoPlayer.getPlayer(), EntityType.HORSE) || Permissions.callOfTheWild(mmoPlayer.getPlayer(), EntityType.WOLF) || Permissions.callOfTheWild(mmoPlayer.getPlayer(), EntityType.OCELOT);
+        canCallWild = Permissions.callOfTheWild(Misc.adaptPlayer(mmoPlayer), EntityType.HORSE) || Permissions.callOfTheWild(Misc.adaptPlayer(mmoPlayer), EntityType.WOLF) || Permissions.callOfTheWild(Misc.adaptPlayer(mmoPlayer), EntityType.OCELOT);
         canEnvironmentallyAware = canUseSubskill(mmoPlayer, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
         canFastFood = canUseSubskill(mmoPlayer, SubSkillType.TAMING_FAST_FOOD_SERVICE);
         canGore = canUseSubskill(mmoPlayer, SubSkillType.TAMING_GORE);
@@ -96,7 +96,7 @@ public class TamingCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, this.skill);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, this.rootSkill);
 
         return textComponents;
     }

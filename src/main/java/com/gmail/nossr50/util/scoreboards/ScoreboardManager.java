@@ -456,7 +456,7 @@ public class ScoreboardManager {
                 continue;
             }
 
-            Player player = mmoPlayer.getPlayer();
+            Player player = Misc.adaptPlayer(mmoPlayer);
             int power = mmoPlayer.getPowerLevel();
 
             mainObjective.getScore(playerName).setScore(power);

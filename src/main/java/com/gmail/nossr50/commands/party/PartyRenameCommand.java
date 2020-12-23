@@ -33,7 +33,7 @@ public class PartyRenameCommand implements CommandExecutor {
                 return true;
             }
 
-            Player player = mmoPlayer.getPlayer();
+            Player player = Misc.adaptPlayer(mmoPlayer);
 
             // Check to see if the party exists, and if it does cancel renaming the party
             if (mcMMO.getPartyManager().isParty(newPartyName)) {

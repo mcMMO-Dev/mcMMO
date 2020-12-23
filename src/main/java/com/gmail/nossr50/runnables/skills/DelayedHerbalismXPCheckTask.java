@@ -18,6 +18,6 @@ public class DelayedHerbalismXPCheckTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        mmoPlayer.getHerbalismManager().awardXPForBlockSnapshots(chorusBlocks);
+        ((McMMOPlayer) (mmoPlayer)).getHerbalismManager().awardXPForBlockSnapshots(chorusBlocks);
     }
 }

@@ -42,7 +42,7 @@ public class MiningCommand extends SkillCommand {
     protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
         // BLAST MINING
         if (canBlast || canDemoExpert || canBiggerBombs) {
-            MiningManager miningManager = mmoPlayer.getMiningManager();
+            MiningManager miningManager = ((McMMOPlayer) (mmoPlayer)).getMiningManager();
 
             blastMiningRank = miningManager.getBlastMiningTier();
             bonusTNTDrops = miningManager.getDropMultiplier();

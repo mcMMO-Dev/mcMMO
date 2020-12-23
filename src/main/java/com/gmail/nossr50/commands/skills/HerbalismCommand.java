@@ -92,19 +92,19 @@ public class HerbalismCommand extends SkillCommand {
         hasHylianLuck = canUseSubskill(mmoPlayer, SubSkillType.HERBALISM_HYLIAN_LUCK);
         canGreenTerra = Permissions.greenTerra(mmoPlayer.getPlayer());
         canGreenThumbPlants = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.HERBALISM_GREEN_THUMB)
-                && (Permissions.greenThumbPlant(mmoPlayer.getPlayer(), Material.WHEAT)
-                || Permissions.greenThumbPlant(mmoPlayer.getPlayer(), Material.CARROT)
-                || Permissions.greenThumbPlant(mmoPlayer.getPlayer(), Material.POTATO)
-                || Permissions.greenThumbPlant(mmoPlayer.getPlayer(), Material.BEETROOT)
-                || Permissions.greenThumbPlant(mmoPlayer.getPlayer(), Material.NETHER_WART)
-                || Permissions.greenThumbPlant(mmoPlayer.getPlayer(), Material.COCOA));
+                && (Permissions.greenThumbPlant(Misc.adaptPlayer(mmoPlayer), Material.WHEAT)
+                || Permissions.greenThumbPlant(Misc.adaptPlayer(mmoPlayer), Material.CARROT)
+                || Permissions.greenThumbPlant(Misc.adaptPlayer(mmoPlayer), Material.POTATO)
+                || Permissions.greenThumbPlant(Misc.adaptPlayer(mmoPlayer), Material.BEETROOT)
+                || Permissions.greenThumbPlant(Misc.adaptPlayer(mmoPlayer), Material.NETHER_WART)
+                || Permissions.greenThumbPlant(Misc.adaptPlayer(mmoPlayer), Material.COCOA));
         canGreenThumbBlocks = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.HERBALISM_GREEN_THUMB)
-                && (Permissions.greenThumbBlock(mmoPlayer.getPlayer(), Material.DIRT)
-                || Permissions.greenThumbBlock(mmoPlayer.getPlayer(), Material.COBBLESTONE)
-                || Permissions.greenThumbBlock(mmoPlayer.getPlayer(), Material.COBBLESTONE_WALL)
-                || Permissions.greenThumbBlock(mmoPlayer.getPlayer(), Material.STONE_BRICKS));
+                && (Permissions.greenThumbBlock(Misc.adaptPlayer(mmoPlayer), Material.DIRT)
+                || Permissions.greenThumbBlock(Misc.adaptPlayer(mmoPlayer), Material.COBBLESTONE)
+                || Permissions.greenThumbBlock(Misc.adaptPlayer(mmoPlayer), Material.COBBLESTONE_WALL)
+                || Permissions.greenThumbBlock(Misc.adaptPlayer(mmoPlayer), Material.STONE_BRICKS));
         canFarmersDiet = canUseSubskill(mmoPlayer, SubSkillType.HERBALISM_FARMERS_DIET);
-        canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.HERBALISM_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
+        canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.HERBALISM_DOUBLE_DROPS) && !rootSkill.getDoubleDropsDisabled();
         canShroomThumb = canUseSubskill(mmoPlayer, SubSkillType.HERBALISM_SHROOM_THUMB);
     }
 

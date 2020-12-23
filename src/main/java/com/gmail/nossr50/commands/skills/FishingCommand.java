@@ -48,7 +48,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
-        FishingManager fishingManager = mmoPlayer.getFishingManager();
+        FishingManager fishingManager = ((McMMOPlayer) (mmoPlayer)).getFishingManager();
 
         // TREASURE HUNTER
         if (canTreasureHunt) {

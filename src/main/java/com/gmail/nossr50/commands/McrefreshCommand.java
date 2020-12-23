@@ -24,7 +24,7 @@ public class McrefreshCommand extends ToggleCommand {
         mmoPlayer.getSuperAbilityManager().unprimeAllAbilityTools();
         mmoPlayer.getSuperAbilityManager().disableSuperAbilities();
 
-        mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
+        Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
     }
 
     @Override

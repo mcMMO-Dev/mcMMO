@@ -32,7 +32,7 @@ public class AbilityDisableTask extends BukkitRunnable {
             return;
         }
 
-        Player player = mmoPlayer.getPlayer();
+        Player player = Misc.adaptPlayer(mmoPlayer);
 
         switch (ability) {
             case SUPER_BREAKER:

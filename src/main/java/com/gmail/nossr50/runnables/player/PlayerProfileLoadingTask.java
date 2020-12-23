@@ -1,6 +1,10 @@
 package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
+import com.gmail.nossr50.datatypes.player.PersistentPlayerDataBuilder;
+import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -42,8 +46,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         }
 
         try {
-            PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(player.getUniqueId());
-            new ApplySuccessfulProfile(new OnlineMMOPlayer(player, profile)).runTask(mcMMO.p);
+            MMOPlayerData mmoPlayerData = mcMMO.getDatabaseManager().queryPlayerDataByPlayer(player);
+            McMMOPlayer mmoPlayer = new McMMOPlayer(player, player.getUniqueId(), player.getName());
+            new ApplySuccessfulProfile(new McMMOPlayer(player, )).runTask(mcMMO.p);
             EventUtils.callPlayerProfileLoadEvent(player, profile);
             return;
 
@@ -70,9 +75,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
-        private final OnlineMMOPlayer mmoPlayer;
+        private final McMMOPlayer mmoPlayer;
 
-        private ApplySuccessfulProfile(OnlineMMOPlayer mmoPlayer) {
+        private ApplySuccessfulProfile(McMMOPlayer mmoPlayer) {
             this.mmoPlayer = mmoPlayer;
         }
 
