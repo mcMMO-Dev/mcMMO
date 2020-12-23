@@ -77,7 +77,7 @@ public abstract class SkillCommand implements TabExecutor {
             boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
             float skillValue = mmoPlayer.getExperienceHandler().getSkillLevel(rootSkill);
 
-            //Send the players a few blank lines to make finding the top of the skill command easier
+            //Send the players a few blank lines to make finding the top of the rootSkillcommand easier
             if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
                 for (int i = 0; i < 2; i++) {
                     player.sendMessage("");
@@ -205,11 +205,11 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected @NotNull String[] getAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkill) {
-        return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, Misc.adaptPlayer(mmoPlayer), subSkill);
+        return RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType, Misc.adaptPlayer(mmoPlayer), subSkill);
     }
 
     protected @NotNull String[] calculateLengthDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
-        int maxLength = primarySkillType.getSuperAbilityType().getMaxLength();
+        int maxLength = CoreSkills.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
 
@@ -217,7 +217,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         if(abilityLengthCap <= 0)
         {
-            length = 2 + (int) (skillValue / abilityLengthVar);
+            length = 2 + (int) (rootSkillValue / abilityLengthVar);
         }
         else {
             length = 2 + (int) (Math.min(abilityLengthCap, skillValue) / abilityLengthVar);
@@ -273,7 +273,7 @@ public abstract class SkillCommand implements TabExecutor {
      * Checks if a player can use a skill
      * @param mmoPlayer target player
      * @param subSkillType target subskill
-     * @return true if the player has permission and has the skill unlocked
+     * @return true if the player has permission and has the rootSkillunlocked
      */
     protected boolean canUseSubskill(@NotNull OnlineMMOPlayer mmoPlayer, SubSkillType subSkillType) {
         return Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), subSkillType) && RankUtils.hasUnlockedSubskill(mmoPlayer, subSkillType);

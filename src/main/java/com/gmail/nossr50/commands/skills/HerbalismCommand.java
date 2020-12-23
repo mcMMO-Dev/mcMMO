@@ -1,7 +1,9 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -37,7 +39,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canShroomThumb;
 
     public HerbalismCommand() {
-        super(PrimarySkillType.HERBALISM);
+        super(CoreSkills.HERBALISM);
     }
 
     @Override
@@ -154,7 +156,7 @@ public class HerbalismCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.HERBALISM);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.HERBALISM);
 
         return textComponents;
     }

@@ -25,10 +25,10 @@ public class AddxpCommand extends ExperienceCommand {
             if(mcMMO.getUserManager().getPlayer(player) == null)
                 return;
 
-            mcMMO.getUserManager().getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
+            mcMMO.getUserManager().getPlayer(player).applyXpGain(rootSkill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
         }
         else {
-            profile.addXp(skill, value);
+            profile.addXp(rootSkill, value);
             profile.scheduleAsyncSave();
         }
     }
@@ -46,6 +46,6 @@ public class AddxpCommand extends ExperienceCommand {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, rootSkill.getName()));
     }
 }

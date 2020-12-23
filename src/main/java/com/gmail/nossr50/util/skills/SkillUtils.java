@@ -135,7 +135,7 @@ public final class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(@NotNull String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? mcMMO.p.getSkillRegister().getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key) {

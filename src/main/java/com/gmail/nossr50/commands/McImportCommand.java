@@ -150,7 +150,7 @@ public class McImportCommand implements CommandExecutor {
                     return;
                 }
 
-                // Write the file, go through each skill and write all the materials
+                // Write the file, go through each rootSkilland write all the materials
                 for (String configSection : configSections.keySet()) {
                     if (configSection.equals("UNIDENTIFIED")) {
                         writer.append("# This isn't a valid config section and all materials in this category need to be").append("\r\n");
@@ -211,19 +211,19 @@ public class McImportCommand implements CommandExecutor {
                 skillName = "Excavation";
             }
 
-            if (!configSections.containsKey(skillName)) {
-                configSections.put(skillName, new ArrayList<>());
+            if (!configSections.containsKey(rootSkillName)) {
+                configSections.put(rootSkillName, new ArrayList<>());
             }
 
-            ArrayList<String> skillContents = configSections.get(skillName);
+            ArrayList<String> skillContents = configSections.get(rootSkillName);
             skillContents.add("    " + materialName + "|0:");
             skillContents.add("    " + "    " + "XP_Gain: 99");
             skillContents.add("    " + "    " + "Double_Drops_Enabled: true");
 
-            if (skillName.equals("Mining")) {
+            if (rootSkillName.equals("Mining")) {
                 skillContents.add("    " + "    " + "Smelting_XP_Gain: 9");
             }
-            else if (skillName.equals("Woodcutting")) {
+            else if (rootSkillName.equals("Woodcutting")) {
                 skillContents.add("    " + "    " + "Is_Log: " + materialName.contains("LOG"));
             }
         }

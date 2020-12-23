@@ -32,23 +32,23 @@ public class XPBarCommand implements TabExecutor {
             } else if(args.length < 2) {
               String option = args[0];
 
-              if(option.equalsIgnoreCase(SkillBossBarSetting.RESET.toString())) {
-                  mmoPlayer.getExperienceBarManager().xpBarSettingToggle(SkillBossBarSetting.RESET, null);
+              if(option.equalsIgnoreCase(rootSkillBossBarSetting.RESET.toString())) {
+                  mmoPlayer.getExperienceBarManager().xpBarSettingToggle(rootSkillBossBarSetting.RESET, null);
                   return true;
-              } else if(option.equalsIgnoreCase(SkillBossBarSetting.DISABLE.toString())) {
+              } else if(option.equalsIgnoreCase(rootSkillBossBarSetting.DISABLE.toString())) {
                   mmoPlayer.getExperienceBarManager().disableAllBars();
                   return true;
               } else {
                   return false;
               }
 
-              //Per skill Settings path
+              //Per rootSkillSettings path
             } else if (args.length == 2) {
                 String skillName = args[1];
 
-                if(SkillUtils.isSkill(skillName)) {
+                if(rootSkillUtils.isSkill(rootSkillName)) {
 
-                    PrimarySkillType targetSkill = PrimarySkillType.getSkill(skillName);
+                    PrimarySkillType targetSkill = mcMMO.p.getSkillRegister().getSkill(rootSkillName);
 
                     //Target setting
                     String option = args[0].toLowerCase();
@@ -93,13 +93,13 @@ public class XPBarCommand implements TabExecutor {
             case 1:
                 List<String> options = new ArrayList<>();
 
-                for(SkillBossBarSetting settingTarget : SkillBossBarSetting.values()) {
+                for(rootSkillBossBarSetting settingTarget : SkillBossBarSetting.values()) {
                     options.add(StringUtils.getCapitalized(settingTarget.toString()));
                 }
 
-                return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(SkillBossBarSetting.values().length));
+                return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(rootSkillBossBarSetting.values().length));
             case 2:
-                if(!args[0].equalsIgnoreCase(SkillBossBarSetting.RESET.toString()))
+                if(!args[0].equalsIgnoreCase(rootSkillBossBarSetting.RESET.toString()))
                     return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();

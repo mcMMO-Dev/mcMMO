@@ -25,7 +25,7 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canRetrieve;
 
     public ArcheryCommand() {
-        super(PrimarySkillType.ARCHERY);
+        super(CoreSkills.ARCHERY);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ArcheryCommand extends SkillCommand {
             dazeChanceLucky = dazeStrings[1];
         }
         
-        // SKILL SHOT
+        // rootSkillSHOT
         if (canSkillShot) {
             skillShotBonus = percent.format(Archery.getDamageBonusPercent(mmoPlayer));
         }
@@ -87,7 +87,7 @@ public class ArcheryCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ARCHERY);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.ARCHERY);
 
         return textComponents;
     }

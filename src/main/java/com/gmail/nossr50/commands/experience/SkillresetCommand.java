@@ -45,10 +45,10 @@ public class SkillresetCommand implements TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("all")) {
-                    skill = null;
+                    rootSkill = null;
                 }
                 else {
-                    skill = PrimarySkillType.getSkill(args[0]);
+                    rootSkill = mcMMO.p.getSkillRegister().getSkill(args[0]);
                 }
 
                 editValues((Player) sender, mcMMO.getUserManager().queryPlayer(player)
@@ -66,14 +66,14 @@ public class SkillresetCommand implements TabExecutor {
                 }
 
                 if (args[1].equalsIgnoreCase("all")) {
-                    skill = null;
+                    rootSkill = null;
                 }
                 else {
-                    skill = PrimarySkillType.getSkill(args[1]);
+                    rootSkill = mcMMO.p.getSkillRegister().getSkill(args[1]);
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(playerName);
 
                 // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mmoPlayer == null) {
@@ -116,17 +116,17 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill) {
-        int levelsRemoved = profile.getSkillLevel(skill);
-        float xpRemoved = profile.getSkillXpLevelRaw(skill);
+        int levelsRemoved = profile.getSkillLevel(rootSkill);
+        float xpRemoved = profile.getSkillXpLevelRaw(rootSkill);
 
-        profile.modifySkill(skill, 0);
+        profile.modifySkill(rootSkill, 0);
 
         if (player == null) {
             profile.scheduleAsyncSave();
             return;
         }
 
-        EventUtils.tryLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false, XPGainReason.COMMAND);
+        EventUtils.tryLevelChangeEvent(player, rootSkill, levelsRemoved, xpRemoved, false, XPGainReason.COMMAND);
     }
 
     protected boolean permissionsCheckSelf(CommandSender sender) {
@@ -142,7 +142,7 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageSkill(Player player, RootSkill rootSkill) {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", rootSkill.getName()));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
@@ -150,16 +150,16 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected static void handleSenderMessage(CommandSender sender, String playerName, RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", rootSkill.getName(), playerName));
         }
     }
 
     protected void editValues(Player player, PlayerProfile profile, RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             for (RootSkill rootSkill : PrimarySkillType.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType);
             }

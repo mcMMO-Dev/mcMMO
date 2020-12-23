@@ -20,7 +20,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
 
     @Override
     protected boolean checkEnabled(RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             for (RootSkill rootSkill : PrimarySkillType.values()) {
                 if (!primarySkillType.getHardcoreStatLossEnabled()) {
                     return false;
@@ -30,7 +30,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
             return true;
         }
 
-        return skill.getHardcoreStatLossEnabled();
+        return rootSkill.getHardcoreStatLossEnabled();
     }
 
     @Override
@@ -50,15 +50,15 @@ public class HardcoreCommand extends HardcoreModeCommand {
     }
 
     private void toggle(boolean enable, RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             for (RootSkill rootSkill : PrimarySkillType.NON_CHILD_SKILLS) {
                 primarySkillType.setHardcoreStatLossEnabled(enable);
             }
         }
         else {
-            skill.setHardcoreStatLossEnabled(enable);
+            rootSkill.setHardcoreStatLossEnabled(enable);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (skill == null ? "all skills" : skill.getName())));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (rootSkill == null ? "all skills" : rootSkill.getName())));
     }
 }

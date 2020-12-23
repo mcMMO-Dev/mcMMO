@@ -27,7 +27,7 @@ public class RankUtils {
      */
     public static void executeSkillUnlockNotifications(@NotNull Plugin plugin, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int newLevel)
     {
-        for(SubSkillType subSkillType : primarySkillType.getSkillAbilities())
+        for(SubSkillType subSkillType : mcMMO.p.getSkillRegister().getSkillAbilities())
         {
             int playerRankInSkill = getRank(mmoPlayer, subSkillType);
 

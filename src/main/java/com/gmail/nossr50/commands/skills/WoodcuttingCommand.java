@@ -28,7 +28,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canNaturesBounty;
 
     public WoodcuttingCommand() {
-        super(PrimarySkillType.WOODCUTTING);
+        super(CoreSkills.WOODCUTTING);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class WoodcuttingCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.WOODCUTTING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.WOODCUTTING);
 
         return textComponents;
     }

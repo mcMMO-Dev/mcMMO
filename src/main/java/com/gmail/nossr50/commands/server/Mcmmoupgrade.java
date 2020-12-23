@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This command facilitates switching the skill system scale between classic and modern scale
+ * This command facilitates switching the rootSkillsystem scale between classic and modern scale
  */
 public class Mcmmoupgrade implements CommandExecutor {
     @Override

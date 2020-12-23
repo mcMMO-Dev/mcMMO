@@ -21,15 +21,15 @@ public class AddlevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill, int value) {
-        float xpRemoved = profile.getSkillXpLevelRaw(skill);
-        profile.addLevels(skill, value);
+        float xpRemoved = profile.getSkillXpLevelRaw(rootSkill);
+        profile.addLevels(rootSkill, value);
 
         if (player == null) {
             profile.scheduleAsyncSave();
             return;
         }
 
-        EventUtils.tryLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
+        EventUtils.tryLevelChangeEvent(player, rootSkill, value, xpRemoved, true, XPGainReason.COMMAND);
     }
 
     @Override
@@ -45,6 +45,6 @@ public class AddlevelsCommand extends ExperienceCommand {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, rootSkill.getName()));
     }
 }

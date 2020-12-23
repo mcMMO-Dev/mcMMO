@@ -1,9 +1,11 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -23,7 +25,7 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canRoll;
 
     public AcrobaticsCommand() {
-        super(PrimarySkillType.ACROBATICS);
+        super(CoreSkills.ACROBATICS);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class AcrobaticsCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ACROBATICS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.ACROBATICS);
 
         return textComponents;
     }

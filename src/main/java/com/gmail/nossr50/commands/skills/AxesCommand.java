@@ -30,7 +30,7 @@ public class AxesCommand extends SkillCommand {
     private boolean canGreaterImpact;
 
     public AxesCommand() {
-        super(PrimarySkillType.AXES);
+        super(CoreSkills.AXES);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class AxesCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.AXES);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.AXES);
 
         return textComponents;
     }

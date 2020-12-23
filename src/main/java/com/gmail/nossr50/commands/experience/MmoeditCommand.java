@@ -21,10 +21,10 @@ public class MmoeditCommand extends ExperienceCommand {
 
     @Override
     protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill, int value) {
-        int skillLevel = profile.getSkillLevel(skill);
-        float xpRemoved = profile.getSkillXpLevelRaw(skill);
+        int skillLevel = profile.getSkillLevel(rootSkill);
+        float xpRemoved = profile.getSkillXpLevelRaw(rootSkill);
 
-        profile.modifySkill(skill, value);
+        profile.modifySkill(rootSkill, value);
 
         if (player == null) {
             profile.scheduleAsyncSave();
@@ -35,7 +35,7 @@ public class MmoeditCommand extends ExperienceCommand {
             return;
         }
 
-        EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+        EventUtils.tryLevelEditEvent(player, rootSkill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
     }
 
     @Override
@@ -51,6 +51,6 @@ public class MmoeditCommand extends ExperienceCommand {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skill.getName(), value));
+        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", rootSkill.getName(), value));
     }
 }

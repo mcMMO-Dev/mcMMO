@@ -60,6 +60,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -642,7 +643,7 @@ public class mcMMO extends JavaPlugin {
         }
     }
 
-    public InputStreamReader getResourceAsReader(String fileName) {
+    public @Nullable InputStreamReader getResourceAsReader(String fileName) {
         InputStream in = getResource(fileName);
         return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
     }
@@ -657,19 +658,19 @@ public class mcMMO extends JavaPlugin {
         return isRetroModeEnabled;
     }
 
-    public static WorldBlacklist getWorldBlacklist() {
+    public static @NotNull WorldBlacklist getWorldBlacklist() {
         return worldBlacklist;
     }
 
-    public static PlatformManager getPlatformManager() {
+    public static @NotNull PlatformManager getPlatformManager() {
         return platformManager;
     }
 
-    public static SmeltingTracker getSmeltingTracker() {
+    public static @NotNull SmeltingTracker getSmeltingTracker() {
         return smeltingTracker;
     }
 
-    public static SpawnedProjectileTracker getSpawnedProjectileTracker() {
+    public static @NotNull SpawnedProjectileTracker getSpawnedProjectileTracker() {
         return spawnedProjectileTracker;
     }
 
@@ -677,11 +678,11 @@ public class mcMMO extends JavaPlugin {
         return userManager;
     }
 
-    public static PartyManager getPartyManager() {
+    public static @NotNull PartyManager getPartyManager() {
         return partyManager;
     }
 
-    public static BukkitAudiences getAudiences() {
+    public static @NotNull BukkitAudiences getAudiences() {
         return audiences;
     }
 
@@ -689,17 +690,17 @@ public class mcMMO extends JavaPlugin {
         return projectKorraEnabled;
     }
 
-    public static TransientMetadataTools getTransientMetadataTools() {
+    public static @NotNull TransientMetadataTools getTransientMetadataTools() {
         return transientMetadataTools;
     }
 
-    public ChatManager getChatManager() {
+    public @NotNull ChatManager getChatManager() {
         return chatManager;
     }
 
-    public CommandManager getCommandManager() {
+    public @NotNull CommandManager getCommandManager() {
         return commandManager;
     }
 
-    public SkillRegister getSkillRegister() { return skillRegister; }
+    public @NotNull SkillRegister getSkillRegister() { return skillRegister; }
 }

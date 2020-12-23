@@ -1,14 +1,9 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableSet;
 import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,9 +17,9 @@ public class CoreSkills {
     private static final @NotNull ImmutableSet<RootSkill> CORE_CHILD_SKILLS;
     private static final @NotNull ImmutableSet<RootSkill> CORE_NON_CHILD_SKILLS;
 
-    public static final @NotNull CoreRootSkill ACROBATICS_CS, ALCHEMY_CS, ARCHERY_CS, AXES_CS, EXCAVATION_CS,
-    FISHING_CS, HERBALISM_CS, MINING_CS, REPAIR_CS, SALVAGE_CS, SMELTING_CS, SWORDS_CS, TAMING_CS, UNARMED_CS,
-    WOODCUTTING_CS, TRIDENTS_CS, CROSSBOWS_CS;
+    public static final @NotNull CoreRootSkill ACROBATICS, ALCHEMY, ARCHERY, AXES, EXCAVATION,
+            FISHING, HERBALISM, MINING, REPAIR, SALVAGE, SMELTING, SWORDS, TAMING, UNARMED,
+            WOODCUTTING, TRIDENTS, CROSSBOWS;
 
     public static final @NotNull SkillIdentity ACROBATICS_ID, ALCHEMY_ID, ARCHERY_ID, AXES_ID, EXCAVATION_ID,
     FISHING_ID, HERBALISM_ID, MINING_ID, REPAIR_ID, SALVAGE_ID, SMELTING_ID, SWORDS_ID, TAMING_ID, UNARMED_ID,
@@ -38,78 +33,78 @@ public class CoreSkills {
         HashSet<CoreRootSkill> rootSkillSet = new HashSet<>();
         HashSet<CoreRootSkill> childSkillSet = new HashSet<>();
 
-        ACROBATICS_CS = new CoreRootSkill("acrobatics");
-        ACROBATICS_ID = ACROBATICS_CS.getSkillIdentity();
+        ACROBATICS = new CoreRootSkill("acrobatics");
+        ACROBATICS_ID = ACROBATICS.getSkillIdentity();
 
-        ALCHEMY_CS = new CoreRootSkill("alchemy");
-        ALCHEMY_ID = ALCHEMY_CS.getSkillIdentity();
+        ALCHEMY = new CoreRootSkill("alchemy");
+        ALCHEMY_ID = ALCHEMY.getSkillIdentity();
 
-        ARCHERY_CS = new CoreRootSkill("archery");
-        ARCHERY_ID = ARCHERY_CS.getSkillIdentity();
+        ARCHERY = new CoreRootSkill("archery");
+        ARCHERY_ID = ARCHERY.getSkillIdentity();
 
-        AXES_CS = new CoreRootSkill("axes");
-        AXES_ID = AXES_CS.getSkillIdentity();
+        AXES = new CoreRootSkill("axes");
+        AXES_ID = AXES.getSkillIdentity();
 
-        EXCAVATION_CS = new CoreRootSkill("excavation");
-        EXCAVATION_ID = EXCAVATION_CS.getSkillIdentity();
+        EXCAVATION = new CoreRootSkill("excavation");
+        EXCAVATION_ID = EXCAVATION.getSkillIdentity();
 
-        FISHING_CS = new CoreRootSkill("fishing");
-        FISHING_ID = FISHING_CS.getSkillIdentity();
+        FISHING = new CoreRootSkill("fishing");
+        FISHING_ID = FISHING.getSkillIdentity();
 
-        HERBALISM_CS = new CoreRootSkill("herbalism");
-        HERBALISM_ID = HERBALISM_CS.getSkillIdentity();
+        HERBALISM = new CoreRootSkill("herbalism");
+        HERBALISM_ID = HERBALISM.getSkillIdentity();
 
-        MINING_CS = new CoreRootSkill("mining");
-        MINING_ID = MINING_CS.getSkillIdentity();
+        MINING = new CoreRootSkill("mining");
+        MINING_ID = MINING.getSkillIdentity();
 
-        REPAIR_CS = new CoreRootSkill("repair");
-        REPAIR_ID = REPAIR_CS.getSkillIdentity();
+        REPAIR = new CoreRootSkill("repair");
+        REPAIR_ID = REPAIR.getSkillIdentity();
 
-        SALVAGE_CS = new CoreRootSkill("salvage");
-        SALVAGE_ID = SALVAGE_CS.getSkillIdentity();
+        SALVAGE = new CoreRootSkill("salvage");
+        SALVAGE_ID = SALVAGE.getSkillIdentity();
 
-        SMELTING_CS = new CoreRootSkill("smelting");
-        SMELTING_ID = SMELTING_CS.getSkillIdentity();
+        SMELTING = new CoreRootSkill("smelting");
+        SMELTING_ID = SMELTING.getSkillIdentity();
 
-        SWORDS_CS = new CoreRootSkill("swords");
-        SWORDS_ID = SWORDS_CS.getSkillIdentity();
+        SWORDS = new CoreRootSkill("swords");
+        SWORDS_ID = SWORDS.getSkillIdentity();
 
-        TAMING_CS = new CoreRootSkill("taming");
-        TAMING_ID = TAMING_CS.getSkillIdentity();
+        TAMING = new CoreRootSkill("taming");
+        TAMING_ID = TAMING.getSkillIdentity();
 
-        UNARMED_CS = new CoreRootSkill("unarmed");
-        UNARMED_ID = UNARMED_CS.getSkillIdentity();
+        UNARMED = new CoreRootSkill("unarmed");
+        UNARMED_ID = UNARMED.getSkillIdentity();
 
-        WOODCUTTING_CS = new CoreRootSkill("woodcutting");
-        WOODCUTTING_ID = WOODCUTTING_CS.getSkillIdentity();
+        WOODCUTTING = new CoreRootSkill("woodcutting");
+        WOODCUTTING_ID = WOODCUTTING.getSkillIdentity();
 
-        TRIDENTS_CS = new CoreRootSkill("tridents");
-        TRIDENTS_ID = TRIDENTS_CS.getSkillIdentity();
+        TRIDENTS = new CoreRootSkill("tridents");
+        TRIDENTS_ID = TRIDENTS.getSkillIdentity();
 
-        CROSSBOWS_CS = new CoreRootSkill("crossbows");
-        CROSSBOWS_ID = CROSSBOWS_CS.getSkillIdentity();
+        CROSSBOWS = new CoreRootSkill("crossbows");
+        CROSSBOWS_ID = CROSSBOWS.getSkillIdentity();
         
         //Child skills (soon to be removed)
-        childSkillSet.add(SMELTING_CS);
-        childSkillSet.add(SALVAGE_CS);
+        childSkillSet.add(SMELTING);
+        childSkillSet.add(SALVAGE);
 
-        rootSkillSet.add(ACROBATICS_CS);
-        rootSkillSet.add(ALCHEMY_CS);
-        rootSkillSet.add(ARCHERY_CS);
-        rootSkillSet.add(AXES_CS);
-        rootSkillSet.add(EXCAVATION_CS);
-        rootSkillSet.add(FISHING_CS);
-        rootSkillSet.add(HERBALISM_CS);
-        rootSkillSet.add(MINING_CS);
-        rootSkillSet.add(REPAIR_CS);
-        rootSkillSet.add(SALVAGE_CS);
-        rootSkillSet.add(SMELTING_CS);
-        rootSkillSet.add(SWORDS_CS);
-        rootSkillSet.add(TAMING_CS);
-        rootSkillSet.add(UNARMED_CS);
-        rootSkillSet.add(WOODCUTTING_CS);
-        rootSkillSet.add(TRIDENTS_CS);
-        rootSkillSet.add(CROSSBOWS_CS);
+        rootSkillSet.add(ACROBATICS);
+        rootSkillSet.add(ALCHEMY);
+        rootSkillSet.add(ARCHERY);
+        rootSkillSet.add(AXES);
+        rootSkillSet.add(EXCAVATION);
+        rootSkillSet.add(FISHING);
+        rootSkillSet.add(HERBALISM);
+        rootSkillSet.add(MINING);
+        rootSkillSet.add(REPAIR);
+        rootSkillSet.add(SALVAGE);
+        rootSkillSet.add(SMELTING);
+        rootSkillSet.add(SWORDS);
+        rootSkillSet.add(TAMING);
+        rootSkillSet.add(UNARMED);
+        rootSkillSet.add(WOODCUTTING);
+        rootSkillSet.add(TRIDENTS);
+        rootSkillSet.add(CROSSBOWS);
 
         CORE_ROOT_SKILLS = ImmutableSet.copyOf(rootSkillSet);
         CORE_CHILD_SKILLS = ImmutableSet.copyOf(childSkillSet);
@@ -182,56 +177,56 @@ public class CoreSkills {
         protected void initMappings() {
             //TODO: add tests
             //Can't init these from the get go as PrimarySkillType does some stuff and it would be race condition hell
-            primaryToRootMap.put(PrimarySkillType.ACROBATICS, ACROBATICS_CS);
-            rootToPrimaryMap.put(ACROBATICS_CS, PrimarySkillType.ACROBATICS);
+            primaryToRootMap.put(PrimarySkillType.ACROBATICS, ACROBATICS);
+            rootToPrimaryMap.put(ACROBATICS, PrimarySkillType.ACROBATICS);
 
-            primaryToRootMap.put(PrimarySkillType.ALCHEMY, ALCHEMY_CS);
-            rootToPrimaryMap.put(ALCHEMY_CS, PrimarySkillType.ALCHEMY);
+            primaryToRootMap.put(PrimarySkillType.ALCHEMY, ALCHEMY);
+            rootToPrimaryMap.put(ALCHEMY, PrimarySkillType.ALCHEMY);
 
-            primaryToRootMap.put(PrimarySkillType.ARCHERY, ARCHERY_CS);
-            rootToPrimaryMap.put(ARCHERY_CS, PrimarySkillType.ARCHERY);
+            primaryToRootMap.put(PrimarySkillType.ARCHERY, ARCHERY);
+            rootToPrimaryMap.put(ARCHERY, PrimarySkillType.ARCHERY);
 
-            primaryToRootMap.put(PrimarySkillType.AXES, AXES_CS);
-            rootToPrimaryMap.put(AXES_CS, PrimarySkillType.AXES);
+            primaryToRootMap.put(PrimarySkillType.AXES, AXES);
+            rootToPrimaryMap.put(AXES, PrimarySkillType.AXES);
 
-            primaryToRootMap.put(PrimarySkillType.EXCAVATION, EXCAVATION_CS);
-            rootToPrimaryMap.put(EXCAVATION_CS, PrimarySkillType.EXCAVATION);
+            primaryToRootMap.put(PrimarySkillType.EXCAVATION, EXCAVATION);
+            rootToPrimaryMap.put(EXCAVATION, PrimarySkillType.EXCAVATION);
 
-            primaryToRootMap.put(PrimarySkillType.FISHING, FISHING_CS);
-            rootToPrimaryMap.put(FISHING_CS, PrimarySkillType.FISHING);
+            primaryToRootMap.put(PrimarySkillType.FISHING, FISHING);
+            rootToPrimaryMap.put(FISHING, PrimarySkillType.FISHING);
 
-            primaryToRootMap.put(PrimarySkillType.HERBALISM, HERBALISM_CS);
-            rootToPrimaryMap.put(HERBALISM_CS, PrimarySkillType.HERBALISM);
+            primaryToRootMap.put(PrimarySkillType.HERBALISM, HERBALISM);
+            rootToPrimaryMap.put(HERBALISM, PrimarySkillType.HERBALISM);
 
-            primaryToRootMap.put(PrimarySkillType.MINING, MINING_CS);
-            rootToPrimaryMap.put(MINING_CS, PrimarySkillType.MINING);
+            primaryToRootMap.put(PrimarySkillType.MINING, MINING);
+            rootToPrimaryMap.put(MINING, PrimarySkillType.MINING);
 
-            primaryToRootMap.put(PrimarySkillType.REPAIR, REPAIR_CS);
-            rootToPrimaryMap.put(REPAIR_CS, PrimarySkillType.REPAIR);
+            primaryToRootMap.put(PrimarySkillType.REPAIR, REPAIR);
+            rootToPrimaryMap.put(REPAIR, PrimarySkillType.REPAIR);
 
-            primaryToRootMap.put(PrimarySkillType.SALVAGE, SALVAGE_CS);
-            rootToPrimaryMap.put(SALVAGE_CS, PrimarySkillType.SALVAGE);
+            primaryToRootMap.put(PrimarySkillType.SALVAGE, SALVAGE);
+            rootToPrimaryMap.put(SALVAGE, PrimarySkillType.SALVAGE);
 
-            primaryToRootMap.put(PrimarySkillType.SMELTING, SMELTING_CS);
-            rootToPrimaryMap.put(SMELTING_CS, PrimarySkillType.SMELTING);
+            primaryToRootMap.put(PrimarySkillType.SMELTING, SMELTING);
+            rootToPrimaryMap.put(SMELTING, PrimarySkillType.SMELTING);
 
-            primaryToRootMap.put(PrimarySkillType.SWORDS, SWORDS_CS);
-            rootToPrimaryMap.put(SWORDS_CS, PrimarySkillType.SWORDS);
+            primaryToRootMap.put(PrimarySkillType.SWORDS, SWORDS);
+            rootToPrimaryMap.put(SWORDS, PrimarySkillType.SWORDS);
 
-            primaryToRootMap.put(PrimarySkillType.TAMING, TAMING_CS);
-            rootToPrimaryMap.put(TAMING_CS, PrimarySkillType.TAMING);
+            primaryToRootMap.put(PrimarySkillType.TAMING, TAMING);
+            rootToPrimaryMap.put(TAMING, PrimarySkillType.TAMING);
 
-            primaryToRootMap.put(PrimarySkillType.UNARMED, UNARMED_CS);
-            rootToPrimaryMap.put(UNARMED_CS, PrimarySkillType.UNARMED);
+            primaryToRootMap.put(PrimarySkillType.UNARMED, UNARMED);
+            rootToPrimaryMap.put(UNARMED, PrimarySkillType.UNARMED);
 
-            primaryToRootMap.put(PrimarySkillType.WOODCUTTING, WOODCUTTING_CS);
-            rootToPrimaryMap.put(WOODCUTTING_CS, PrimarySkillType.WOODCUTTING);
+            primaryToRootMap.put(PrimarySkillType.WOODCUTTING, WOODCUTTING);
+            rootToPrimaryMap.put(WOODCUTTING, PrimarySkillType.WOODCUTTING);
 
-            primaryToRootMap.put(PrimarySkillType.TRIDENTS, TRIDENTS_CS);
-            rootToPrimaryMap.put(TRIDENTS_CS, PrimarySkillType.TRIDENTS);
+            primaryToRootMap.put(PrimarySkillType.TRIDENTS, TRIDENTS);
+            rootToPrimaryMap.put(TRIDENTS, PrimarySkillType.TRIDENTS);
 
-            primaryToRootMap.put(PrimarySkillType.CROSSBOWS, CROSSBOWS_CS);
-            rootToPrimaryMap.put(CROSSBOWS_CS, PrimarySkillType.CROSSBOWS);
+            primaryToRootMap.put(PrimarySkillType.CROSSBOWS, CROSSBOWS);
+            rootToPrimaryMap.put(CROSSBOWS, PrimarySkillType.CROSSBOWS);
 
             init = true;
         }

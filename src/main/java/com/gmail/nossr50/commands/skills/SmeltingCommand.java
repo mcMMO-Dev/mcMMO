@@ -26,7 +26,7 @@ public class SmeltingCommand extends SkillCommand {
     private boolean canUnderstandTheArt;
 
     public SmeltingCommand() {
-        super(PrimarySkillType.SMELTING);
+        super(CoreSkills.SMELTING);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SmeltingCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SMELTING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.SMELTING);
 
         return textComponents;
     }

@@ -31,7 +31,7 @@
 //     * @return true if this is a valid mcMMO skill
 //     */
 //    public static boolean isValidSkillType(String skillType) {
-//        return PrimarySkillType.getSkill(skillType) != null;
+//        return mcMMO.p.getSkillRegister().getSkill(skillType) != null;
 //    }
 //
 //    /**
@@ -74,7 +74,7 @@
 //     * @return true if this is a valid, non-child mcMMO skill
 //     */
 //    public static boolean isNonChildSkill(String skillType) {
-//        PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
+//        PrimarySkillType skill = mcMMO.p.getSkillRegister().getSkill(skillType);
 //
 //        return skill != null && !skill.isChildSkill();
 //    }
@@ -1164,7 +1164,7 @@
 //    }
 //
 //    private static PrimarySkillType getSkillType(String skillType) throws InvalidSkillException {
-//        PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
+//        PrimarySkillType skill = mcMMO.p.getSkillRegister().getSkill(skillType);
 //
 //        if (skill == null) {
 //            throw new InvalidSkillException();

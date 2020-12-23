@@ -20,7 +20,7 @@ public class VampirismCommand extends HardcoreModeCommand {
 
     @Override
     protected boolean checkEnabled(RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             for (RootSkill rootSkill : PrimarySkillType.values()) {
                 if (!primarySkillType.getHardcoreVampirismEnabled()) {
                     return false;
@@ -30,7 +30,7 @@ public class VampirismCommand extends HardcoreModeCommand {
             return true;
         }
 
-        return skill.getHardcoreVampirismEnabled();
+        return rootSkill.getHardcoreVampirismEnabled();
     }
 
     @Override
@@ -50,15 +50,15 @@ public class VampirismCommand extends HardcoreModeCommand {
     }
 
     private void toggle(boolean enable, RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             for (RootSkill rootSkill : PrimarySkillType.NON_CHILD_SKILLS) {
                 primarySkillType.setHardcoreVampirismEnabled(enable);
             }
         }
         else {
-            skill.setHardcoreVampirismEnabled(enable);
+            rootSkill.setHardcoreVampirismEnabled(enable);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), (skill == null ? "all skills" : skill)));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), (rootSkill == null ? "all skills" : skill)));
     }
 }

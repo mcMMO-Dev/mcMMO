@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.experience;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 import com.neetgames.mcmmo.player.MMOPlayer;
@@ -45,14 +46,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.getSkill(args[0]);
+                rootSkill = mcMMO.p.getSkillRegister().getSkill(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
-                    skill = null;
+                    rootSkill = null;
                 }
 
-                if (skill != null && skill.isChildSkill())
-                {
+                if (rootSkill != null && rootSkill.isChildSkill()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
@@ -66,7 +66,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
 
-                editValues(mmoPlayer, skill, Integer.parseInt(args[1]), isSilent(args));
+                editValues(mmoPlayer, rootSkill, Integer.parseInt(args[1]), isSilent(args));
                 return true;
             } else if((args.length == 3 && !isSilent(args))
                     || (args.length == 4 && isSilent(args))) {
@@ -79,13 +79,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.getSkill(args[1]);
+                rootSkill = mcMMO.p.getSkillRegister().getSkill(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
-                    skill = null;
+                    rootSkill = null;
                 }
 
-                if (skill != null && skill.isChildSkill())
+                if (rootSkill != null && rootSkill.isChildSkill())
                 {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
@@ -94,7 +94,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 int value = Integer.parseInt(args[2]);
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
+                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(playerName);
 
                 // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mmoPlayer == null) {
@@ -109,10 +109,10 @@ public abstract class ExperienceCommand implements TabExecutor {
                         return true;
                     }
 
-                    editValues(null, profile, skill, value, isSilent(args));
+                    editValues(null, profile, rootSkill, value, isSilent(args));
                 }
                 else {
-                    editValues(Misc.adaptPlayer(mmoPlayer), mcMMOPlayer.getProfile(), skill, value, isSilent(args));
+                    editValues(Misc.adaptPlayer(mmoPlayer), mcMMOPlayer.getProfile(), rootSkill, value, isSilent(args));
                 }
 
                 handleSenderMessage(sender, playerName, skill);
@@ -157,11 +157,11 @@ public abstract class ExperienceCommand implements TabExecutor {
     }
 
     protected static void handleSenderMessage(CommandSender sender, String playerName, RootSkill rootSkill) {
-        if (skill == null) {
+        if (rootSkill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", rootSkill.getName(), playerName));
         }
     }
 

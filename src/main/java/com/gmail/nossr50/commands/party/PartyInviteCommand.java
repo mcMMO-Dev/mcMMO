@@ -17,7 +17,7 @@ public class PartyInviteCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
-            OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayerName(targetName);
+            OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetName);
 
             if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                 return false;

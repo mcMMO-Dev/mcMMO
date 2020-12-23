@@ -75,7 +75,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                RootSkill rootSkill = PrimarySkillType.getSkill(args[0]);
+                RootSkill rootSkill = mcMMO.p.getSkillRegister().getSkill(args[0]);
 
                 if (!CommandUtils.isChildSkill(sender, skill)) {
                     return true;
@@ -87,7 +87,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    enable(skill);
+                    enable(rootSkill);
                     return true;
                 }
 
@@ -97,7 +97,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    enable(skill);
+                    enable(rootSkill);
                     return true;
                 }
 

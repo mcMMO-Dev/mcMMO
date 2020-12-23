@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO: Switch to root skill based
+//TODO: Switch to root rootSkillbased
 public class SkillGuideCommand implements CommandExecutor {
     private final String header;
     private final RootSkill rootSkill;
@@ -21,9 +21,9 @@ public class SkillGuideCommand implements CommandExecutor {
     private final String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
     public SkillGuideCommand(@NotNull RootSkill rootSkill) {
-        skill = CoreSkills.getSkill(rootSkill);
-        header = LocaleLoader.getString("Guides.Header", skill.getName());
-        guide = getGuide(skill);
+        rootSkill = CoreSkills.getSkill(rootSkill);
+        header = LocaleLoader.getString("Guides.Header", rootSkill.getName());
+        guide = getGuide(rootSkill);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class SkillGuideCommand implements CommandExecutor {
         ArrayList<String> guide = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");
+            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(rootSkill.toString()) + ".Section." + i).split("\n");
 
             if (section[0].startsWith("!")) {
                 break;

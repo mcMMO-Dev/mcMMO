@@ -43,7 +43,7 @@ public class RepairCommand extends SkillCommand {
     private int stoneLevel;
 
     public RepairCommand() {
-        super(PrimarySkillType.REPAIR);
+        super(CoreSkills.REPAIR);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class RepairCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.REPAIR);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.REPAIR);
 
         return textComponents;
     }

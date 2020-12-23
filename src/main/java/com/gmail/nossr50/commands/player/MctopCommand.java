@@ -125,7 +125,7 @@ public class MctopCommand implements TabExecutor {
             return null;
         }
 
-        RootSkill rootSkill = PrimarySkillType.getSkill(skillName);
+        RootSkill rootSkill = mcMMO.p.getSkillRegister().getSkill(rootSkillName);
 
         if (CommandUtils.isChildSkill(sender, skill)) {
             return null;

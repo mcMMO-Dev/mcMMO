@@ -4,6 +4,8 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.util.Misc;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -13,6 +15,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.neetgames.mcmmo.skill.RootSkill;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
@@ -483,6 +486,10 @@ public class TextComponentFactory {
         }
 
         componentBuilder.append(Component.newline());
+    }
+
+    public static void getSubSkillTextComponents(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull List<Component> textComponents, @NotNull RootSkill rootSkill) {
+        return getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.getSkill(rootSkill));
     }
 
     public static void getSubSkillTextComponents(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull List<Component> textComponents, @NotNull PrimarySkillType parentSkill) {

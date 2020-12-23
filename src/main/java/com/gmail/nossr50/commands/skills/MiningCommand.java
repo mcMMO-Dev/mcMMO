@@ -34,7 +34,7 @@ public class MiningCommand extends SkillCommand {
     private boolean canDemoExpert;
 
     public MiningCommand() {
-        super(PrimarySkillType.MINING);
+        super(CoreSkills.MINING);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class MiningCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.MINING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.MINING);
 
         return textComponents;
     }

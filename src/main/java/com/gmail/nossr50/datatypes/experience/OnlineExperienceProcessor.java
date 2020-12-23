@@ -301,7 +301,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
             return;
         }
 
-        setUsingUnarmed(rootSkill == CoreSkills.UNARMED_CS);
+        setUsingUnarmed(rootSkill == CoreSkills.UNARMED);
         updateLevelStats(rootSkill, xpGainReason, xpGainSource);
     }
 

@@ -32,7 +32,7 @@ public class AprilCommand implements TabExecutor {
 
         if (args.length == 0) {
             Player player = (Player) sender;
-            FakeSkillType fakeSkillType = FakeSkillType.getByName(skillName);
+            FakeSkillType fakeSkillType = FakeSkillType.getByName(rootSkillName);
 
             float skillValue = Misc.getRandom().nextInt(99);
 

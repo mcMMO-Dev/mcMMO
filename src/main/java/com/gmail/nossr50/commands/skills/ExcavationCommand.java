@@ -1,5 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
@@ -21,7 +23,7 @@ public class ExcavationCommand extends SkillCommand {
     private boolean canTreasureHunt;
 
     public ExcavationCommand() {
-        super(PrimarySkillType.EXCAVATION);
+        super(CoreSkills.EXCAVATION);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class ExcavationCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.EXCAVATION);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.EXCAVATION);
 
         return textComponents;
     }
