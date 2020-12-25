@@ -50,10 +50,9 @@ public class CoreSkills {
     public static final @NotNull SuperSkill SKULL_SPLITTER, GIGA_DRILL_BREAKER, GREEN_TERRA, SUPER_BREAKER,
             BLAST_MINING, SERRATED_STRIKES, CALL_OF_THE_WILD, BERSERK, TREE_FELLER, TRIDENTS_SUPER, SUPER_SHOT_GUN;
 
-    public static final CoreSkill ROLL;
+    public static final @NotNull CoreSkill ROLL;
 
-    private static @NotNull
-    final HackySkillMappings hackySkillMappings = new HackySkillMappings();
+    private static final @NotNull HackySkillMappings hackySkillMappings = new HackySkillMappings();
 
     static {
         HashSet<CoreRootSkill> rootSkillSet = new HashSet<>();
@@ -139,10 +138,6 @@ public class CoreSkills {
         CORE_NON_CHILD_SKILLS = ImmutableSet.copyOf(generateNonChildSkillSet());
         CORE_SUB_SKILLS = ImmutableSet.copyOf(subSkillSet);
         CORE_SUPER_SKILLS = ImmutableSet.copyOf(superSkillSet);
-
-        /*
-         * Define managers
-         */
     }
 
     /**
@@ -162,7 +157,17 @@ public class CoreSkills {
      * @return a set of all root skills built into mcMMO
      */
     public static @NotNull Set<CoreSkill> getCoreSkills() {
-        return CORE;
+        return CORE_SUB_SKILLS;
+    }
+
+    /**
+     * Returns a set of built in skills for mcMMO
+     * No guarantees for whether or not the skills are registered or active or inactive
+     *
+     * @return a set of all root skills built into mcMMO
+     */
+    public static @NotNull Set<SuperSkill> getCoreSkills() {
+        return CORE_SUPER_SKILLS;
     }
 
     /**
