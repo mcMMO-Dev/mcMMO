@@ -14,10 +14,10 @@ import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.crossbows.CrossbowManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.tridents.TridentManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
@@ -131,7 +131,7 @@ public final class CombatUtils {
             return;
         }
 
-        TridentManager tridentManager = ((McMMOPlayer) (mmoPlayer)).getTridentManager();
+        TridentsManager tridentsManager = ((McMMOPlayer) (mmoPlayer)).getTridentManager();
 //        double initialDamage = entityDamageByEntityEvent.getDamage();
 //        double finalDamage = initialDamage;
 
@@ -340,7 +340,7 @@ public final class CombatUtils {
             return;
         }
 
-        CrossbowManager crossbowManager = ((McMMOPlayer) (mmoPlayer)).getCrossbowManager();
+        CrossbowsManager crossbowsManager = ((McMMOPlayer) (mmoPlayer)).getCrossbowManager();
 
         double finalDamage = event.getDamage();
 
@@ -361,7 +361,7 @@ public final class CombatUtils {
             finalDamage+=getLimitBreakDamage(mmoPlayer, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK);
         }
 
-        double distanceMultiplier = crossbowManager.distanceXpBonusMultiplier(target, arrow);
+        double distanceMultiplier = crossbowsManager.distanceXpBonusMultiplier(target, arrow);
         applyScaledModifiers(initialDamage, finalDamage, event);
 
 

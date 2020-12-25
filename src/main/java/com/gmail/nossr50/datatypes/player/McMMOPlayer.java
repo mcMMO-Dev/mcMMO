@@ -4,6 +4,8 @@ import com.gmail.nossr50.chat.author.PlayerAuthor;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
+import com.gmail.nossr50.datatypes.skills.CoreRootSkill;
+import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -15,7 +17,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.crossbows.CrossbowManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -25,7 +27,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.tridents.TridentManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Misc;
@@ -54,10 +56,9 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     private final @NotNull Identity identity;
     private @Nullable Party playerPartyRef;
 
-
     //Used in our chat systems for chat messages
     private final @NotNull PlayerAuthor playerAuthor;
-    private final @NotNull Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
+    private final @NotNull Map<RootSkill, SkillManager> skillManagers = new HashMap<>();
     private final @NotNull MMOExperienceBarManager experienceBarManager;
 
     private @Nullable PartyTeleportRecord ptpRecord;
@@ -141,8 +142,8 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
          * If in the future someone wants to remove this, don't forget to also remove what is in the PrimarySkillType enum. - bm01
          */
         try {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-                skillManagers.put(primarySkillType, primarySkillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
+            for (CoreRootSkill coreRootSkill : CoreSkills.getCoreRootSkills()) {
+                skillManagers.put(coreRootSkill, coreRootSkill.getSkillManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }
         catch (Exception e) {
@@ -311,19 +312,19 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     }
 
     /**
-     * Grab the {@link TridentManager} for this player
+     * Grab the {@link TridentsManager} for this player
      * @return this player's trident manager
      */
-    public @NotNull TridentManager getTridentManager() {
-        return (TridentManager) skillManagers.get(PrimarySkillType.TRIDENTS);
+    public @NotNull TridentsManager getTridentManager() {
+        return (TridentsManager) skillManagers.get(PrimarySkillType.TRIDENTS);
     }
 
     /**
-     * Grab the {@link CrossbowManager} for this player
+     * Grab the {@link CrossbowsManager} for this player
      * @return this player's crossbow manager
      */
-    public @NotNull CrossbowManager getCrossbowManager() {
-        return (CrossbowManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
+    public @NotNull CrossbowsManager getCrossbowManager() {
+        return (CrossbowsManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
     }
 
     /**

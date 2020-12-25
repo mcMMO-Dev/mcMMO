@@ -25,7 +25,8 @@ public class SkillRegisterImpl implements SkillRegister {
     private final @NotNull Set<SuperSkill> superSkills;
     private final @NotNull Set<RankedSkill> rankedSkills;
     private final @NotNull Set<RootSkill> rootSkills; //Can include not-official root skills
-    private final @NotNull Set<RootSkill> coreRootSkills; //Only includes official root skills
+    private final @NotNull Set<CoreRootSkill> coreRootSkills; //Only includes official root skills
+    private final @NotNull Set<CoreSkill> coreSkills; //Only includes official core skills
 
     public SkillRegisterImpl() {
         skillNameMap = new HashMap<>();
@@ -34,9 +35,19 @@ public class SkillRegisterImpl implements SkillRegister {
         superSkills = new HashSet<>();
         rankedSkills = new HashSet<>();
         coreRootSkills = new HashSet<>();
+        coreSkills = new HashSet<>();
 
         //TODO: allow config to turn off certain core skills
         registerCoreSkills();
+    }
+
+    private void registerCoreSkills() {
+        for(CoreRootSkill coreRootSkill : CoreSkills.getCoreRootSkills()) {
+            mcMMO.p.getLogger().info("Registering core skill: " + coreRootSkill.getRawSkillName());
+            registerSkill(coreRootSkill);
+        }
+
+        for(CoreSkill coreSkill : CoreSkills.)
     }
 
     @Override
@@ -96,12 +107,24 @@ public class SkillRegisterImpl implements SkillRegister {
     }
 
     private void removeCollectionCache(@NotNull Skill skill) {
-        //Add to collections for cached lookups
+        //Remove from register cache(s)
+        if(skill instanceof CoreRootSkill) {
+            coreRootSkills.remove(skill);
+        }
+
+        if(skill instanceof CoreSkill) {
+            coreSkills.remove(skill);
+        }
+
         if(skill instanceof RootSkill) {
             rootSkills.remove(skill);
-        } else if (skill instanceof SuperSkill) {
+        }
+
+        if (skill instanceof SuperSkill) {
             superSkills.remove(skill);
-        } else if(skill instanceof RankedSkill) {
+        }
+
+        if(skill instanceof RankedSkill) {
             rankedSkills.remove( skill);
         }
     }
@@ -117,15 +140,23 @@ public class SkillRegisterImpl implements SkillRegister {
 
     private void addCollectionCache(@NotNull Skill skill) {
         //Add to various collections for cached lookups
+        if(skill instanceof CoreSkill) {
+            coreSkills.add((CoreSkill) skill);
+        }
+
         if(skill instanceof CoreRootSkill) {
             coreRootSkills.add((CoreRootSkill) skill);
         }
 
         if(skill instanceof RootSkill) {
             rootSkills.add((RootSkill) skill);
-        } else if (skill instanceof SuperSkill) {
+        }
+
+        if (skill instanceof SuperSkill) {
             superSkills.add((SuperSkill) skill);
-        } else if(skill instanceof RankedSkill) {
+        }
+
+        if(skill instanceof RankedSkill) {
             rankedSkills.add((RankedSkill) skill);
         }
     }
@@ -144,15 +175,8 @@ public class SkillRegisterImpl implements SkillRegister {
         postRemovalSkillRegisterProcessing(skill);
     }
 
-    private void registerCoreSkills() {
-        for(RootSkill rootSkill : CoreSkills.getCoreSkills()) {
-            mcMMO.p.getLogger().info("Registering core skill: "+rootSkill.getSkillName());
-            registerSkill(rootSkill);
-        }
-    }
-
     @Override
-    public @NotNull Set<RootSkill> getCoreRootSkills() {
+    public @NotNull Set<CoreRootSkill> getCoreRootSkills() {
         return coreRootSkills;
     }
 
@@ -172,8 +196,8 @@ public class SkillRegisterImpl implements SkillRegister {
     public @Nullable RootSkill matchRootSkill(@NotNull String skillName) {
         for (RootSkill rootSkill : rootSkills) {
             if (rootSkill.getSkillIdentity().getFullyQualifiedName().equalsIgnoreCase(skillName)
-                    || skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(rootSkill.getSkillName()) + ".SkillName"))
-                    || rootSkill.getSkillName().equalsIgnoreCase(skillName)) {
+                    || skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(rootSkill.getRawSkillName()) + ".SkillName"))
+                    || rootSkill.getRawSkillName().equalsIgnoreCase(skillName)) {
                 return rootSkill;
             }
         }

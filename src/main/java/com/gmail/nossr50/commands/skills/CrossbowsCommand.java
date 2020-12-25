@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.skills.crossbows.CrossbowManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
@@ -29,10 +29,10 @@ public class CrossbowsCommand extends SkillCommand {
     protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        CrossbowManager crossbowManager = ((McMMOPlayer) (mmoPlayer)).getCrossbowManager();
+        CrossbowsManager crossbowsManager = ((McMMOPlayer) (mmoPlayer)).getCrossbowManager();
 
         if(canUseSubskill(mmoPlayer, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
-            String additionalArrowCount = String.valueOf(crossbowManager.getSuperShotgunAdditionalArrowCount());
+            String additionalArrowCount = String.valueOf(crossbowsManager.getSuperShotgunAdditionalArrowCount());
             messages.add(getStatMessage(SubSkillType.CROSSBOWS_SUPER_SHOTGUN, additionalArrowCount));
         }
 

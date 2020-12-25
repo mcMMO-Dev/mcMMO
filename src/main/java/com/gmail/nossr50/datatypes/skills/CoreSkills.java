@@ -1,8 +1,26 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
+import com.gmail.nossr50.skills.alchemy.AlchemyManager;
+import com.gmail.nossr50.skills.archery.ArcheryManager;
+import com.gmail.nossr50.skills.axes.AxesManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
+import com.gmail.nossr50.skills.excavation.ExcavationManager;
+import com.gmail.nossr50.skills.fishing.FishingManager;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
+import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.RepairManager;
+import com.gmail.nossr50.skills.salvage.SalvageManager;
+import com.gmail.nossr50.skills.smelting.SmeltingManager;
+import com.gmail.nossr50.skills.swords.SwordsManager;
+import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
+import com.gmail.nossr50.skills.unarmed.UnarmedManager;
+import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.google.common.collect.ImmutableSet;
 import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
+import com.neetgames.mcmmo.skill.SuperSkill;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -13,18 +31,26 @@ import java.util.stream.Collectors;
 
 public class CoreSkills {
 
-    private static final @NotNull ImmutableSet<RootSkill> CORE_ROOT_SKILLS;
-    private static final @NotNull ImmutableSet<RootSkill> CORE_CHILD_SKILLS;
-    private static final @NotNull ImmutableSet<RootSkill> CORE_NON_CHILD_SKILLS;
+    private static final @NotNull ImmutableSet<CoreRootSkill> CORE_ROOT_SKILLS;
+    private static final @NotNull ImmutableSet<CoreRootSkill> CORE_CHILD_SKILLS; //Could make this a marker interface
+    private static final @NotNull ImmutableSet<CoreRootSkill> CORE_NON_CHILD_SKILLS;
+    private static final @NotNull ImmutableSet<CoreSkill> CORE_SUB_SKILLS;
+    private static final @NotNull ImmutableSet<SuperSkill> CORE_SUPER_SKILLS;
 
+    //TODO: Use annotations instead
     public static final @NotNull CoreRootSkill ACROBATICS, ALCHEMY, ARCHERY, AXES, EXCAVATION,
             FISHING, HERBALISM, MINING, REPAIR, SALVAGE, SMELTING, SWORDS, TAMING, UNARMED,
             WOODCUTTING, TRIDENTS, CROSSBOWS;
 
+    //TODO: Needed?
     public static final @NotNull SkillIdentity ACROBATICS_ID, ALCHEMY_ID, ARCHERY_ID, AXES_ID, EXCAVATION_ID,
     FISHING_ID, HERBALISM_ID, MINING_ID, REPAIR_ID, SALVAGE_ID, SMELTING_ID, SWORDS_ID, TAMING_ID, UNARMED_ID,
     WOODCUTTING_ID, TRIDENTS_ID, CROSSBOWS_ID;
 
+    public static final @NotNull SuperSkill SKULL_SPLITTER, GIGA_DRILL_BREAKER, GREEN_TERRA, SUPER_BREAKER,
+            BLAST_MINING, SERRATED_STRIKES, CALL_OF_THE_WILD, BERSERK, TREE_FELLER, TRIDENTS_SUPER, SUPER_SHOT_GUN;
+
+    public static final CoreSkill ROLL;
 
     private static @NotNull
     final HackySkillMappings hackySkillMappings = new HackySkillMappings();
@@ -32,56 +58,58 @@ public class CoreSkills {
     static {
         HashSet<CoreRootSkill> rootSkillSet = new HashSet<>();
         HashSet<CoreRootSkill> childSkillSet = new HashSet<>();
+        HashSet<CoreSkill> subSkillSet = new HashSet<>();
+        HashSet<SuperSkill> superSkillSet = new HashSet<>();
 
-        ACROBATICS = new CoreRootSkill("acrobatics");
+        ACROBATICS = new CoreRootSkill("acrobatics", AcrobaticsManager.class);
         ACROBATICS_ID = ACROBATICS.getSkillIdentity();
 
-        ALCHEMY = new CoreRootSkill("alchemy");
+        ALCHEMY = new CoreRootSkill("alchemy", AlchemyManager.class);
         ALCHEMY_ID = ALCHEMY.getSkillIdentity();
 
-        ARCHERY = new CoreRootSkill("archery");
+        ARCHERY = new CoreRootSkill("archery", ArcheryManager.class);
         ARCHERY_ID = ARCHERY.getSkillIdentity();
 
-        AXES = new CoreRootSkill("axes");
+        AXES = new CoreRootSkill("axes", AxesManager.class);
         AXES_ID = AXES.getSkillIdentity();
 
-        EXCAVATION = new CoreRootSkill("excavation");
+        EXCAVATION = new CoreRootSkill("excavation", ExcavationManager.class);
         EXCAVATION_ID = EXCAVATION.getSkillIdentity();
 
-        FISHING = new CoreRootSkill("fishing");
+        FISHING = new CoreRootSkill("fishing", FishingManager.class);
         FISHING_ID = FISHING.getSkillIdentity();
 
-        HERBALISM = new CoreRootSkill("herbalism");
+        HERBALISM = new CoreRootSkill("herbalism", HerbalismManager.class);
         HERBALISM_ID = HERBALISM.getSkillIdentity();
 
-        MINING = new CoreRootSkill("mining");
+        MINING = new CoreRootSkill("mining", MiningManager.class);
         MINING_ID = MINING.getSkillIdentity();
 
-        REPAIR = new CoreRootSkill("repair");
+        REPAIR = new CoreRootSkill("repair", RepairManager.class);
         REPAIR_ID = REPAIR.getSkillIdentity();
 
-        SALVAGE = new CoreRootSkill("salvage");
+        SALVAGE = new CoreRootSkill("salvage", SalvageManager.class);
         SALVAGE_ID = SALVAGE.getSkillIdentity();
 
-        SMELTING = new CoreRootSkill("smelting");
+        SMELTING = new CoreRootSkill("smelting", SmeltingManager.class);
         SMELTING_ID = SMELTING.getSkillIdentity();
 
-        SWORDS = new CoreRootSkill("swords");
+        SWORDS = new CoreRootSkill("swords", SwordsManager.class);
         SWORDS_ID = SWORDS.getSkillIdentity();
 
-        TAMING = new CoreRootSkill("taming");
+        TAMING = new CoreRootSkill("taming", TamingManager.class);
         TAMING_ID = TAMING.getSkillIdentity();
 
-        UNARMED = new CoreRootSkill("unarmed");
+        UNARMED = new CoreRootSkill("unarmed", UnarmedManager.class);
         UNARMED_ID = UNARMED.getSkillIdentity();
 
-        WOODCUTTING = new CoreRootSkill("woodcutting");
+        WOODCUTTING = new CoreRootSkill("woodcutting", WoodcuttingManager.class);
         WOODCUTTING_ID = WOODCUTTING.getSkillIdentity();
 
-        TRIDENTS = new CoreRootSkill("tridents");
+        TRIDENTS = new CoreRootSkill("tridents", TridentsManager.class);
         TRIDENTS_ID = TRIDENTS.getSkillIdentity();
 
-        CROSSBOWS = new CoreRootSkill("crossbows");
+        CROSSBOWS = new CoreRootSkill("crossbows", CrossbowsManager.class);
         CROSSBOWS_ID = CROSSBOWS.getSkillIdentity();
         
         //Child skills (soon to be removed)
@@ -109,6 +137,22 @@ public class CoreSkills {
         CORE_ROOT_SKILLS = ImmutableSet.copyOf(rootSkillSet);
         CORE_CHILD_SKILLS = ImmutableSet.copyOf(childSkillSet);
         CORE_NON_CHILD_SKILLS = ImmutableSet.copyOf(generateNonChildSkillSet());
+        CORE_SUB_SKILLS = ImmutableSet.copyOf(subSkillSet);
+        CORE_SUPER_SKILLS = ImmutableSet.copyOf(superSkillSet);
+
+        /*
+         * Define managers
+         */
+    }
+
+    /**
+     * Returns a set of built in {@link RootSkill}s for mcMMO
+     * No guarantees for whether or not the skills are registered or active or inactive
+     *
+     * @return a set of all root skills built into mcMMO
+     */
+    public static @NotNull Set<CoreRootSkill> getCoreRootSkills() {
+        return CORE_ROOT_SKILLS;
     }
 
     /**
@@ -117,8 +161,8 @@ public class CoreSkills {
      *
      * @return a set of all root skills built into mcMMO
      */
-    public static @NotNull Set<RootSkill> getCoreSkills() {
-        return CORE_ROOT_SKILLS;
+    public static @NotNull Set<CoreSkill> getCoreSkills() {
+        return CORE;
     }
 
     /**
@@ -129,7 +173,7 @@ public class CoreSkills {
      * @deprecated child skills will be removed in an upcoming update
      */
     @Deprecated
-    public static @NotNull Set<RootSkill> getChildSkills() {
+    public static @NotNull Set<CoreRootSkill> getChildSkills() {
         return CORE_CHILD_SKILLS;
     }
 
@@ -161,17 +205,17 @@ public class CoreSkills {
     }
 
     @Deprecated
-    private static @NotNull Set<RootSkill> generateNonChildSkillSet() {
-        return getCoreSkills().stream().filter((x) -> !isChildSkill(x)).collect(Collectors.toSet());
+    private static @NotNull Set<CoreRootSkill> generateNonChildSkillSet() {
+        return getCoreRootSkills().stream().filter((x) -> !isChildSkill(x)).collect(Collectors.toSet());
     }
 
-    public static @NotNull Set<RootSkill> getNonChildSkills() {
+    public static @NotNull Set<CoreRootSkill> getNonChildSkills() {
         return CORE_NON_CHILD_SKILLS;
     }
 
     protected static class HackySkillMappings {
-        @NotNull Map<PrimarySkillType, RootSkill> primaryToRootMap = new HashMap<>();
-        @NotNull Map<RootSkill, PrimarySkillType> rootToPrimaryMap = new HashMap<>();
+        @NotNull Map<PrimarySkillType, CoreRootSkill> primaryToRootMap = new HashMap<>();
+        @NotNull Map<CoreRootSkill, PrimarySkillType> rootToPrimaryMap = new HashMap<>();
         boolean init = false;
 
         protected void initMappings() {

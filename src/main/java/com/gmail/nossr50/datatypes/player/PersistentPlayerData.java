@@ -79,7 +79,7 @@ public class PersistentPlayerData implements MMOPlayerData {
 
         //Core skills
         //TODO: Don't store values for disabled skills
-        for(RootSkill rootSkill : CoreSkills.getCoreSkills()) {
+        for(RootSkill rootSkill : CoreSkills.getCoreRootSkills()) {
             skillLevelValues.put(rootSkill, AdvancedConfig.getInstance().getStartingLevel());
             skillExperienceValues.put(rootSkill, 0F);
         }

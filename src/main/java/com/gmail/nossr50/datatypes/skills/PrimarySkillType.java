@@ -9,7 +9,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.crossbows.CrossbowManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -19,7 +19,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.tridents.TridentManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
@@ -67,8 +67,8 @@ public enum PrimarySkillType {
             ImmutableList.of(SubSkillType.UNARMED_BERSERK, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, SubSkillType.UNARMED_BLOCK_CRACKER, SubSkillType.UNARMED_ARROW_DEFLECT, SubSkillType.UNARMED_DISARM, SubSkillType.UNARMED_STEEL_ARM_STYLE, SubSkillType.UNARMED_IRON_GRIP)),
     WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbilityType.TREE_FELLER,
             ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)),
-    TRIDENTS(TridentManager.class, Color.TEAL, ImmutableList.of(SubSkillType.TRIDENTS_MULTI_TASKING, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)),
-    CROSSBOWS(CrossbowManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.CROSSBOWS_SUPER_SHOTGUN, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK));
+    TRIDENTS(TridentsManager.class, Color.TEAL, ImmutableList.of(SubSkillType.TRIDENTS_MULTI_TASKING, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)),
+    CROSSBOWS(CrossbowsManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.CROSSBOWS_SUPER_SHOTGUN, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK));
 
     private final Class<? extends SkillManager> managerClass;
     private final Color skillColor;

@@ -18,8 +18,8 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-public class CrossbowManager extends SkillManager {
-    public CrossbowManager(OnlineMMOPlayer mmoPlayer) {
+public class CrossbowsManager extends SkillManager {
+    public CrossbowsManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.CROSSBOWS);
     }
     private static final int SPREAD_VALUE = 12;

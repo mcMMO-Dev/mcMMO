@@ -182,7 +182,7 @@ public class MMOExperienceBarManager {
     }
 
     public static void setBarStateDefaults(@NotNull Map<RootSkill, SkillBossBarState> barStateHashMap) {
-        for(RootSkill rootSkill : CoreSkills.getCoreSkills()) {
+        for(RootSkill rootSkill : CoreSkills.getCoreRootSkills()) {
 
             if(CoreSkills.isChildSkill(rootSkill)) {
                 barStateHashMap.put(rootSkill, SkillBossBarState.DISABLED);
