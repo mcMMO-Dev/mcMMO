@@ -1,3 +1,11 @@
+Version 2.1.164
+    New exploit fix setting, when disabled it will allow combat interactions with "NPC" entities from plugins like Citizens
+    ExploitFix.PreventPluginNPCInteraction Added to experience.yml
+
+    NOTES:
+    Historically mcMMO has checked an entity for being a NPC (not a Villager) and backed out of any interaction, this was originally done because of NPCs that were meant to be invincible/etc and not give XP
+    However nowadays what an NPC is used for is pretty loose, mcMMO only has definitions for some NPCs (such as from Citizens) it doesn't know about most NPCs in most plugins unless they identify themselves in a similar way to the predefined parameters
+
 Version 2.1.163
     Fixed the translate URL pointing to the wrong place (thanks chew)
     Fixed a bug where FlatFile databases would always attempt a UUID conversion task every save operation (every 10 minutes) causing console spam

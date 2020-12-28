@@ -312,7 +312,8 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (Misc.isNPCEntityExcludingVillagers(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
+
+        if ((ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(defender)) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
 
@@ -322,7 +323,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (Misc.isNPCEntityExcludingVillagers(attacker)) {
+        if (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(attacker)) {
             return;
         }
 
@@ -502,7 +503,7 @@ public class EntityListener implements Listener {
         }
         */
 
-        if (Misc.isNPCEntityExcludingVillagers(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
+        if ((ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(entity)) || !entity.isValid() || !(entity instanceof LivingEntity)) {
             return;
         }
 
@@ -649,7 +650,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntityExcludingVillagers(entity)) {
+        if (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(entity)) {
             return;
         }
 
@@ -957,7 +958,7 @@ public class EntityListener implements Listener {
         LivingEntity livingEntity = event.getEntity();
 
         if (!UserManager.hasPlayerDataKey(player)
-                || Misc.isNPCEntityExcludingVillagers(livingEntity)
+                || (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(livingEntity))
                 || persistentDataLayer.hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
                 || persistentDataLayer.hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
             return;
