@@ -3,8 +3,10 @@ Version 2.1.164
     ExploitFix.PreventPluginNPCInteraction Added to experience.yml
 
     NOTES:
-    Historically mcMMO has checked an entity for being a NPC (not a Villager) and backed out of any interaction, this was originally done because of NPCs that were meant to be invincible/etc and not give XP
-    However nowadays what an NPC is used for is pretty loose, mcMMO only has definitions for some NPCs (such as from Citizens) it doesn't know about most NPCs in most plugins unless they identify themselves in a similar way to the predefined parameters
+    When talking about NPCs in the below notes, I am referring to "Fake" Players used in plugins such as Citizens, not Villagers from Vanilla Minecraft or anything labeled NPC in another plugin which does not constitute a "Fake Player"
+    Historically mcMMO has checked an entity for being a Fake-Player-NPC and backed out of any interaction, this was originally done because of Fake-Player-NPCs that were meant to be invincible/etc and not give XP
+    However nowadays what a Fake-Player-NPC is used for is pretty loose, mcMMO only has definitions for some NPCs (such as from Citizens) it doesn't know about most Fake-Player-NPCs in most plugins unless they identify themselves in a similar way to the predefined parameters
+    Leave this new exploit fix setting on true unless you understand the implications
 
 Version 2.1.163
     Fixed the translate URL pointing to the wrong place (thanks chew)
