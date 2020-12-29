@@ -58,12 +58,6 @@ public class TreasureConfig extends ConfigLoader {
 
         loadTreasures("Excavation");
         loadTreasures("Hylian_Luck");
-
-        for (EntityType entity : EntityType.values()) {
-            if (entity.isAlive()) {
-                loadTreasures("Shake." + entity.toString());
-            }
-        }
     }
 
     private void loadTreasures(String type) {

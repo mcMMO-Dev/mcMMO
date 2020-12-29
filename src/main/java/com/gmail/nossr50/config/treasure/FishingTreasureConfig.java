@@ -15,7 +15,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -200,7 +199,7 @@ public class FishingTreasureConfig extends ConfigLoader {
             if (materialName.contains("POTION")) {
                 Material mat = Material.matchMaterial(materialName);
                 if (mat == null) {
-                    reason.add("Potion format for Treasures.yml has changed");
+                    reason.add("Potion format for " + FILENAME + " has changed");
                 } else {
                     item = new ItemStack(mat, amount, data);
                     PotionMeta itemMeta = (PotionMeta) item.getItemMeta();

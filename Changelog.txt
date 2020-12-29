@@ -16,6 +16,7 @@ Version 2.1.164
 
     NOTES:
     Before reading, Fishing/Excavation are getting a complete loot table rewrite in the future, everything changed in this patch is meant as a temporary quality of life fix until the bigger better change in the future.
+    There's no real reason to allow for vanilla treasures anymore, so if you were using the vanilla treasure override I suggest turning it off.
     You can't add Enchanted_Book to any treasures outside of Fishing's treasure drops right now, I'll fix it in an upcoming patch. Well you can add it, but it won't work.
     The rarity formerly known as 'Records' was odd to me, if you got the best possible drop it was always going to be a Music Record drop (using the default mcMMO treasure list), and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
     As a response to this, I've renamed Records as Mythic, I've moved the records into varying tiers, you'll start getting them much earlier now. I've also added Netherite and Enchanted Books to the Mythic tier.
