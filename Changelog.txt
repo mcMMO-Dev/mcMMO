@@ -13,6 +13,7 @@ Version 2.1.164
     The rarity known as 'Records' was odd to me, if you got the best possible drop it was always going to be a Music Record drop (using the default mcMMO treasure list), and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
     As a response to this, I've renamed Records as Mythic, I've moved the records into varying tiers, you'll start getting them much earlier now. I've also added Netherite and Enchanted Books to the Mythic tier.
     Enchanted Books have been added to Fishing loot, this is a basic hacky work around until the config update comes. Enchanted books can have any legal enchant.
+    Also the Enchantment chance to be applied to the book is completely equal across all enchantments, it does not follow the same logic as applying enchantments to fished up gear.
 
     Here is an example of using the whitelist or blacklist for an Enchanted_Book entry in fishing_treasures.yml
     https://gist.github.com/nossr50/4e15b8ba6915b5a5f516eccfba2d7169
