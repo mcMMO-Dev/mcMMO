@@ -1,4 +1,5 @@
 Version 2.1.164
+    mcMMO will now let players use vanilla blocks that have interactions (such as the vanilla Anvil) which are assigned as either Repair or Salvage blocks if a player is sneaking (see notes)
     The Rarity known as Records has been renamed to Mythic
     Fishing treasures have been moved from treasures.yml -> fishing_treasures.yml, you'll have to copy over your changes and be aware that Records rarity is now Mythic
     Mythic rarity (formerly known as Records) now allows for Enchantments to be applied to drops (See Notes)
@@ -10,6 +11,7 @@ Version 2.1.164
     You can now define a whitelist of enchants or a blacklist of enchants for an Enchanted_Book entries in fishing_treasures.yml, see notes for an example
 
     NOTES:
+    If you only ran mcMMO on your server you'd have no way to use Enchanted Books if you set the repair anvil to the vanilla anvil, so now you can sneak to open up its menu.
     The rarity known as 'Records' was odd to me, if you got the best possible drop it was always going to be a Music Record drop (using the default mcMMO treasure list), and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
     As a response to this, I've renamed Records as Mythic, I've moved the records into varying tiers, you'll start getting them much earlier now. I've also added Netherite and Enchanted Books to the Mythic tier.
     Enchanted Books have been added to Fishing loot, this is a basic hacky work around until the config update comes. Enchanted books can have any legal enchant.

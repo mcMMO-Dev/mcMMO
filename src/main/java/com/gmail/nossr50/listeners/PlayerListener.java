@@ -616,8 +616,8 @@ public class PlayerListener implements Listener {
         if(clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
             event.setUseItemInHand(Event.Result.ALLOW);
 
-            if(mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
-                    event.setUseInteractedBlock(Event.Result.DENY);
+            if(!event.getPlayer().isSneaking() && mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
+                event.setUseInteractedBlock(Event.Result.DENY);
             }
         }
 
