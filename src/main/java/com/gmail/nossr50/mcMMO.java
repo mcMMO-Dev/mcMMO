@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.mods.ToolConfigManager;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
 import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
+import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -517,6 +518,7 @@ public class mcMMO extends JavaPlugin {
     private void loadConfigFiles() {
         // Force the loading of config files
         TreasureConfig.getInstance();
+        FishingTreasureConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
         PotionConfig.getInstance();

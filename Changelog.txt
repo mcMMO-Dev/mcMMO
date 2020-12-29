@@ -1,12 +1,26 @@
 Version 2.1.164
-    New exploit fix setting, when disabled it will allow combat interactions with "NPC" entities from plugins like Citizens
+    The Rarity known as Records has been renamed to Mythic
+    Fishing treasures have been moved from treasures.yml -> fishing_treasures.yml, you'll have to copy over your changes and be aware that Records rarity is now Mythic
+    Mythic rarity (formerly known as Records) now allows for Enchantments to be applied to drops (See Notes)
+    Added all Netherite gear to the Mythic tier in fishing_treasures.yml
+    Added Enchanted Books to fishing loot tables
+    New exploit fix setting 'PreventPluginNPCInteraction' which defaults to true, when disabled it will allow combat interactions with "NPC" entities from plugins like Citizens
     ExploitFix.PreventPluginNPCInteraction Added to experience.yml
+    Modified locale string 'Fishing.SubSkill.TreasureHunter.Stat.Extra' in existing locale files
+    You can now define a whitelist of enchants or a blacklist of enchants for an Enchanted_Book entry in fishing_treasures.yml, see notes for an example
 
     NOTES:
+    The rarity known as Records was odd to me, if you got the best possible drop it was always going to be a Records drop, and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
+    As a response to this, I've renamed Records as Mythic, I've moved the records into varying tiers, you'll start getting them much earlier now. I've also added Netherite and Enchanted Books to the Mythic tier.
+    Enchanted Books have been added to Fishing loot, this is a basic hacky work around until the config update comes. Enchanted books can have any legal enchant.
     When talking about NPCs in the below notes, I am referring to "Fake" Players used in plugins such as Citizens, not Villagers from Vanilla Minecraft or anything labeled NPC in another plugin which does not constitute a "Fake Player"
     Historically mcMMO has checked an entity for being a Fake-Player-NPC and backed out of any interaction, this was originally done because of Fake-Player-NPCs that were meant to be invincible/etc and not give XP
     However nowadays what a Fake-Player-NPC is used for is pretty loose, mcMMO only has definitions for some NPCs (such as from Citizens) it doesn't know about most Fake-Player-NPCs in most plugins unless they identify themselves in a similar way to the predefined parameters
     Leave this new exploit fix setting on true unless you understand the implications
+    Here is an example of using the whitelist or blacklist for an Enchanted_Book entry in fishing_treasures.yml
+    https://gist.github.com/nossr50/4e15b8ba6915b5a5f516eccfba2d7169
+    If you can't load this image, at the address of your treasure for example, at Fishing.Enchanted_Book.Enchantments_Blacklist: you define a list (which must follow yaml spec, google yaml linter) of enchants to disallow, likewise at Fishing.Enchanted_Book.Enchantments_Whitelist you can setup a whitelist, if neither is defined then the book can spawn with all possible enchants, if both are defined the whitelist is used instead of the blacklist
+
 
 Version 2.1.163
     Fixed the translate URL pointing to the wrong place (thanks chew)

@@ -29,7 +29,7 @@ public class FishingCommand extends SkillCommand {
     private String rareTreasure;
     private String epicTreasure;
     private String legendaryTreasure;
-    private String recordTreasure;
+    private String mythicTreasure;
 
     private String magicChance;
 
@@ -60,13 +60,13 @@ public class FishingCommand extends SkillCommand {
             rareTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);
             epicTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.EPIC) / 100.0);
             legendaryTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.LEGENDARY) / 100.0);
-            recordTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RECORD) / 100.0);
+            mythicTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.MYTHIC) / 100.0);
 
             // Magic hunter drop rates
             double totalEnchantChance = 0;
 
             for (Rarity rarity : Rarity.values()) {
-                if (rarity != Rarity.RECORD) {
+                if (rarity != Rarity.MYTHIC) {
                     totalEnchantChance += TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
                 }
             }
@@ -145,7 +145,7 @@ public class FishingCommand extends SkillCommand {
                     String.valueOf(rareTreasure),
                     String.valueOf(epicTreasure),
                     String.valueOf(legendaryTreasure),
-                    String.valueOf(recordTreasure)));
+                    String.valueOf(mythicTreasure)));
         }
 
         return messages;
