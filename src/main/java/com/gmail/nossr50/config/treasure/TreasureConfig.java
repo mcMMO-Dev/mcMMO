@@ -3,7 +3,6 @@ package com.gmail.nossr50.config.treasure;
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
-import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -233,13 +232,5 @@ public class TreasureConfig extends ConfigLoader {
         if (!hylianMap.containsKey(dropper))
             hylianMap.put(dropper, new ArrayList<>());
         hylianMap.get(dropper).add(treasure);
-    }
-
-    public double getItemDropRate(int tier, Rarity rarity) {
-        return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
-    }
-
-    public double getEnchantmentDropRate(int tier, Rarity rarity) {
-        return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 }

@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
-import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -609,7 +608,7 @@ public class FishingManager extends SkillManager {
         FishingTreasure treasure = null;
 
         for (Rarity rarity : Rarity.values()) {
-            double dropRate = TreasureConfig.getInstance().getItemDropRate(getLootTier(), rarity);
+            double dropRate = FishingTreasureConfig.getInstance().getItemDropRate(getLootTier(), rarity);
 
             if (diceRoll <= dropRate) {
 
@@ -660,7 +659,7 @@ public class FishingManager extends SkillManager {
 
         for (Rarity rarity : Rarity.values()) {
 
-            double dropRate = TreasureConfig.getInstance().getEnchantmentDropRate(getLootTier(), rarity);
+            double dropRate = FishingTreasureConfig.getInstance().getEnchantmentDropRate(getLootTier(), rarity);
 
             if (diceRoll <= dropRate) {
                 // Make sure enchanted books always get some kind of enchantment.  --hoorigan
