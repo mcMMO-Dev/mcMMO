@@ -46,23 +46,6 @@ public class TreasureConfig extends ConfigLoader {
     protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<>();
-        for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {
-            double totalItemDropRate = 0;
-
-            for (Rarity rarity : Rarity.values()) {
-                double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity.toString());
-
-                if (itemDropRate < 0.0 || itemDropRate > 100.0) {
-                    reason.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
-                }
-
-                totalItemDropRate += itemDropRate;
-            }
-
-            if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
-                reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
-        }
 
         return noErrorsInConfig(reason);
     }
@@ -74,7 +57,6 @@ public class TreasureConfig extends ConfigLoader {
             return;
         }
 
-        loadTreasures("Fishing");
         loadTreasures("Excavation");
         loadTreasures("Hylian_Luck");
 
@@ -251,22 +233,6 @@ public class TreasureConfig extends ConfigLoader {
         if (!hylianMap.containsKey(dropper))
             hylianMap.put(dropper, new ArrayList<>());
         hylianMap.get(dropper).add(treasure);
-    }
-
-    public boolean getInventoryStealEnabled() {
-        return config.contains("Shake.PLAYER.INVENTORY");
-    }
-
-    public boolean getInventoryStealStacks() {
-        return config.getBoolean("Shake.PLAYER.INVENTORY.Whole_Stacks");
-    }
-
-    public double getInventoryStealDropChance() {
-        return config.getDouble("Shake.PLAYER.INVENTORY.Drop_Chance");
-    }
-
-    public int getInventoryStealDropLevel() {
-        return config.getInt("Shake.PLAYER.INVENTORY.Drop_Level");
     }
 
     public double getItemDropRate(int tier, Rarity rarity) {

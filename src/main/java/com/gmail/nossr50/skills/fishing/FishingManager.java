@@ -531,7 +531,7 @@ public class FishingManager extends SkillManager {
                             break;
 
                         case BEDROCK:
-                            if (TreasureConfig.getInstance().getInventoryStealEnabled()) {
+                            if (FishingTreasureConfig.getInstance().getInventoryStealEnabled()) {
                                 PlayerInventory inventory = targetPlayer.getInventory();
                                 int length = inventory.getContents().length;
                                 int slot = Misc.getRandom().nextInt(length);
@@ -541,7 +541,7 @@ public class FishingManager extends SkillManager {
                                     break;
                                 }
 
-                                if (TreasureConfig.getInstance().getInventoryStealStacks()) {
+                                if (FishingTreasureConfig.getInstance().getInventoryStealStacks()) {
                                     inventory.setItem(slot, null);
                                 }
                                 else {
