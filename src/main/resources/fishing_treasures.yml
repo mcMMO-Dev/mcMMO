@@ -296,7 +296,6 @@ Fishing:
 ###
 Item_Drop_Rates:
     Tier_1:
-        TRAP: 7.68
         COMMON: 7.50
         UNCOMMON: 1.25
         RARE: 0.25
@@ -304,7 +303,6 @@ Item_Drop_Rates:
         LEGENDARY: 0.01
         MYTHIC: 0.01
     Tier_2:
-        TRAP: 2.50
         COMMON: 6.50
         UNCOMMON: 1.75
         RARE: 0.75
@@ -312,7 +310,6 @@ Item_Drop_Rates:
         LEGENDARY: 0.05
         MYTHIC: 0.01
     Tier_3:
-        TRAP: 1.50
         COMMON: 3.50
         UNCOMMON: 2.75
         RARE: 1.25
@@ -320,7 +317,6 @@ Item_Drop_Rates:
         LEGENDARY: 0.10
         MYTHIC: 0.01
     Tier_4:
-        TRAP: 1.00
         COMMON: 2.00
         UNCOMMON: 3.50
         RARE: 2.25
@@ -328,7 +324,6 @@ Item_Drop_Rates:
         LEGENDARY: 1.00
         MYTHIC: 0.01
     Tier_5:
-        TRAP: 0.25
         COMMON: 1.50
         UNCOMMON: 3.75
         RARE: 2.50
@@ -336,7 +331,6 @@ Item_Drop_Rates:
         LEGENDARY: 1.00
         MYTHIC: 0.01
     Tier_6:
-        TRAP: 0.10
         COMMON: 1.00
         UNCOMMON: 3.25
         RARE: 3.75
@@ -344,7 +338,6 @@ Item_Drop_Rates:
         LEGENDARY: 1.50
         MYTHIC: 0.05
     Tier_7:
-        TRAP: 0.05
         COMMON: 0.25
         UNCOMMON: 2.75
         RARE: 4.00
@@ -352,7 +345,6 @@ Item_Drop_Rates:
         LEGENDARY: 2.50
         MYTHIC: 0.10
     Tier_8:
-        TRAP: 0.01
         COMMON: 0.10
         UNCOMMON: 1.50
         RARE: 6.00
@@ -418,6 +410,28 @@ Enchantments_Rarity:
         POWER: 4
         FLAME: 1
     LEGENDARY:
+        EFFICIENCY: 5
+        UNBREAKING: 3
+        FORTUNE: 3
+        PROTECTION: 4
+        FIRE_PROTECTION: 4
+        FEATHER_FALLING: 4
+        BLAST_PROTECTION: 4
+        PROJECTILE_PROTECTION: 4
+        RESPIRATION: 3
+        AQUA_AFFINITY: 1
+        THORNS: 3
+        SHARPNESS: 5
+        SMITE: 5
+        BANE_OF_ARTHROPODS: 5
+        KNOCKBACK: 2
+        FIRE_ASPECT: 2
+        LOOTING: 3
+        SILK_TOUCH: 1
+        POWER: 5
+        PUNCH: 2
+        INFINITY: 1
+    MYTHIC:
         EFFICIENCY: 5
         UNBREAKING: 3
         FORTUNE: 3
