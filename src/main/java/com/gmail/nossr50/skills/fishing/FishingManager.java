@@ -478,7 +478,7 @@ public class FishingManager extends SkillManager {
         Collections.shuffle(enchantmentWrappers, Misc.getRandom());
 
         int randomIndex = Misc.getRandom().nextInt(enchantmentWrappers.size());
-        return  enchantmentWrappers.get(randomIndex+1);
+        return enchantmentWrappers.get(randomIndex);
     }
 
     /**
