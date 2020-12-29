@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -94,7 +95,7 @@ public class FishingTreasureConfig extends ConfigLoader {
         }
     }
 
-    private void loadTreasures(String type) {
+    private void loadTreasures(@NotNull String type) {
         boolean isFishing = type.equals("Fishing");
         boolean isShake = type.contains("Shake");
 
@@ -125,9 +126,7 @@ public class FishingTreasureConfig extends ConfigLoader {
 
             if (materialName.contains("INVENTORY")) {
                 // Use magic material BEDROCK to know that we're grabbing something from the inventory and not a normal treasure
-                if (!shakeMap.containsKey(EntityType.PLAYER))
-                    shakeMap.put(EntityType.PLAYER, new ArrayList<>());
-                shakeMap.get(EntityType.PLAYER).add(new ShakeTreasure(new ItemStack(Material.BEDROCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
+                addShakeTreasure(new ShakeTreasure(new ItemStack(Material.BEDROCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()), EntityType.PLAYER);
                 continue;
             } else {
                 material = Material.matchMaterial(materialName);
@@ -145,7 +144,7 @@ public class FishingTreasureConfig extends ConfigLoader {
                 amount = 1;
             }
 
-            if (material != null && material.isBlock() && (data > 127 || data < -128)) {
+            if (material.isBlock() && (data > 127 || data < -128)) {
                 reason.add("Data of " + treasureName + " is invalid! " + data);
             }
 
@@ -175,10 +174,14 @@ public class FishingTreasureConfig extends ConfigLoader {
             Rarity rarity = null;
 
             if (isFishing) {
-                rarity = Rarity.getRarity(config.getString(type + "." + treasureName + ".Rarity"));
+                String rarityStr = config.getString(type + "." + treasureName + ".Rarity");
 
-                if (rarity == null) {
-                    reason.add("Invalid Rarity for item: " + treasureName);
+                if(rarityStr != null) {
+                    rarity = Rarity.getRarity(rarityStr);
+                } else {
+                    mcMMO.p.getLogger().severe("Please edit your config and add a Rarity definition for - " + treasureName);
+                    mcMMO.p.getLogger().severe("Skipping this treasure until rarity is defined - " + treasureName);
+                    continue;
                 }
             }
 
@@ -201,6 +204,11 @@ public class FishingTreasureConfig extends ConfigLoader {
                 } else {
                     item = new ItemStack(mat, amount, data);
                     PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
+
+                    if(itemMeta == null) {
+                        mcMMO.p.getLogger().severe("Item meta when adding potion to fishing treasure was null, contact the mcMMO devs!");
+                        continue;
+                    }
 
                     PotionType potionType = null;
                     try {
@@ -225,65 +233,72 @@ public class FishingTreasureConfig extends ConfigLoader {
                     }
                     item.setItemMeta(itemMeta);
                 }
-            } else if (material != null) {
-                if(material == Material.ENCHANTED_BOOK) {
-                    //If any whitelisted enchants exist we use whitelist-based matching
-                    item = new ItemStack(material, 1);
-                    ItemMeta itemMeta = item.getItemMeta();
+            } else if(material == Material.ENCHANTED_BOOK) {
+                //If any whitelisted enchants exist we use whitelist-based matching
+                item = new ItemStack(material, 1);
+                ItemMeta itemMeta = item.getItemMeta();
 
-                    List<String> allowedEnchantsList = config.getStringList(type + "." + treasureName + ".Enchantments_Whitelist");
-                    List<String> disallowedEnchantsList = config.getStringList(type + "." + treasureName + ".Enchantments_Blacklist");
+                List<String> allowedEnchantsList = config.getStringList(type + "." + treasureName + ".Enchantments_Whitelist");
+                List<String> disallowedEnchantsList = config.getStringList(type + "." + treasureName + ".Enchantments_Blacklist");
 
-                    Set<Enchantment> blackListedEnchants = new HashSet<>();
-                    Set<Enchantment> whiteListedEnchants = new HashSet<>();
+                Set<Enchantment> blackListedEnchants = new HashSet<>();
+                Set<Enchantment> whiteListedEnchants = new HashSet<>();
 
-                    matchAndFillSet(disallowedEnchantsList, blackListedEnchants);
-                    matchAndFillSet(allowedEnchantsList, whiteListedEnchants);
+                matchAndFillSet(disallowedEnchantsList, blackListedEnchants);
+                matchAndFillSet(allowedEnchantsList, whiteListedEnchants);
 
-                    if (customName != null && itemMeta != null) {
-                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
-                        item.setItemMeta(itemMeta);
-                    }
-
-                    FishingTreasureBook fishingTreasureBook = new FishingTreasureBook(item, xp, blackListedEnchants, whiteListedEnchants);
-                    //TODO: Add book support for shake
-                    continue; //The code in this whole file is a disaster, ignore this hacky solution :P
-                } else {
-                    item = new ItemStack(material, amount, data);
-
-                    if (customName != null) {
-                        ItemMeta itemMeta = item.getItemMeta();
-                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
-                        item.setItemMeta(itemMeta);
-                    }
-
-                    if (config.contains(type + "." + treasureName + ".Lore")) {
-                        ItemMeta itemMeta = item.getItemMeta();
-                        List<String> lore = new ArrayList<>();
-                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
-                            lore.add(ChatColor.translateAlternateColorCodes('&', s));
-                        }
-                        itemMeta.setLore(lore);
-                        item.setItemMeta(itemMeta);
-                    }
+                if (customName != null && itemMeta != null) {
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
+                    item.setItemMeta(itemMeta);
                 }
 
+                FishingTreasureBook fishingTreasureBook = new FishingTreasureBook(item, xp, blackListedEnchants, whiteListedEnchants);
+                addFishingTreasure(rarity, fishingTreasureBook);
+                //TODO: Add book support for shake
+                continue; //The code in this whole file is a disaster, ignore this hacky solution :P
+            } else {
+                item = new ItemStack(material, amount, data);
+
+                if (customName != null) {
+                    ItemMeta itemMeta = item.getItemMeta();
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
+                    item.setItemMeta(itemMeta);
+                }
+
+                if (config.contains(type + "." + treasureName + ".Lore")) {
+                    ItemMeta itemMeta = item.getItemMeta();
+                    List<String> lore = new ArrayList<>();
+                    for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
+                        lore.add(ChatColor.translateAlternateColorCodes('&', s));
+                    }
+                    itemMeta.setLore(lore);
+                    item.setItemMeta(itemMeta);
+                }
             }
+
 
 
             if (noErrorsInConfig(reason)) {
                 if (isFishing) {
-                    fishingRewards.get(rarity).add(new FishingTreasure(item, xp));
+                    addFishingTreasure(rarity, new FishingTreasure(item, xp));
                 } else if (isShake) {
                     ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
 
                     EntityType entityType = EntityType.valueOf(type.substring(6));
-                    if (!shakeMap.containsKey(entityType))
-                        shakeMap.put(entityType, new ArrayList<>());
-                    shakeMap.get(entityType).add(shakeTreasure);
+                    addShakeTreasure(shakeTreasure, entityType);
                 }
             }
         }
+    }
+
+    private void addShakeTreasure(@NotNull ShakeTreasure shakeTreasure, @NotNull EntityType entityType) {
+        if (!shakeMap.containsKey(entityType))
+            shakeMap.put(entityType, new ArrayList<>());
+        shakeMap.get(entityType).add(shakeTreasure);
+    }
+
+    private void addFishingTreasure(@NotNull Rarity rarity, @NotNull FishingTreasure fishingTreasure) {
+        fishingRewards.get(rarity).add(fishingTreasure);
     }
 
     private boolean hasCustomName(@NotNull String type, @NotNull String treasureName) {
@@ -296,7 +311,7 @@ public class FishingTreasureConfig extends ConfigLoader {
      * @param enchantListStr the users string list of enchantments
      * @param permissiveList the permissive list of enchantments
      */
-    private void matchAndFillSet(List<String> enchantListStr, Set<Enchantment> permissiveList) {
+    private void matchAndFillSet(@NotNull List<String> enchantListStr, @NotNull Set<Enchantment> permissiveList) {
         if(enchantListStr.isEmpty()) {
             return;
         }
@@ -359,11 +374,11 @@ public class FishingTreasureConfig extends ConfigLoader {
         return config.getInt("Shake.PLAYER.INVENTORY.Drop_Level");
     }
 
-    public double getItemDropRate(int tier, Rarity rarity) {
+    public double getItemDropRate(int tier, @NotNull Rarity rarity) {
         return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 
-    public double getEnchantmentDropRate(int tier, Rarity rarity) {
+    public double getEnchantmentDropRate(int tier, @NotNull Rarity rarity) {
         return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 }

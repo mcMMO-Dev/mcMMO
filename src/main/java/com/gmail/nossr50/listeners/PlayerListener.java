@@ -419,7 +419,7 @@ public class PlayerListener implements Listener {
                         }
                     }
 
-                    fishingManager.handleFishing((Item) caught);
+                    fishingManager.processFishing((Item) caught);
                     fishingManager.setFishingTarget();
                 }
                 return;

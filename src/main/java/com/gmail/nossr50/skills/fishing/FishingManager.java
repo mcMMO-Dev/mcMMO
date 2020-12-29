@@ -380,7 +380,7 @@ public class FishingManager extends SkillManager {
      *
      * @param fishingCatch The {@link Item} initially caught
      */
-    public void handleFishing(@NotNull Item fishingCatch) {
+    public void processFishing(@NotNull Item fishingCatch) {
         this.fishingCatch = fishingCatch;
         int fishXp = ExperienceConfig.getInstance().getXp(PrimarySkillType.FISHING, fishingCatch.getItemStack().getType());
         int treasureXp = 0;
