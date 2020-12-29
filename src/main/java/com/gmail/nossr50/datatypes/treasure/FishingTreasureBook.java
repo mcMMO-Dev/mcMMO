@@ -60,7 +60,7 @@ public class FishingTreasureBook extends FishingTreasure {
             int enchantLevel = i+1;
             EnchantmentWrapper enchantmentWrapper = new EnchantmentWrapper(enchantment, enchantLevel);
             legalEnchantments.add(enchantmentWrapper);
-            mcMMO.p.getLogger().info("Fishing treasure book enchantment added: " + enchantmentWrapper);
+//            mcMMO.p.getLogger().info("Fishing treasure book enchantment added: " + enchantmentWrapper);
         }
     }
 
