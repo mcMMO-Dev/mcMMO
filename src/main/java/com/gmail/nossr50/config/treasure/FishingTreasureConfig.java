@@ -137,7 +137,8 @@ public class FishingTreasureConfig extends ConfigLoader {
             short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
 
             if (material == null) {
-                reason.add("Invalid material: " + materialName);
+                reason.add("Cannot find matching item type in this version of MC, skipping - " + materialName);
+                continue;
             }
 
             if (amount <= 0) {
