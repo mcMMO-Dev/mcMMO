@@ -1,31 +1,38 @@
 Version 2.1.164
     mcMMO will now let players use vanilla blocks that have interactions (such as the vanilla Anvil) which are assigned as either Repair or Salvage blocks if a player is sneaking (see notes)
     The Rarity known as Records has been renamed to Mythic
-    Fishing treasures have been moved from treasures.yml -> fishing_treasures.yml, you'll have to copy over your changes and be aware that Records rarity is now Mythic
+    Fishing treasures have been moved from treasures.yml -> fishing_treasures.yml, copy over any custom entries you had from treasures.yml carefully as the config file has changed and you can't just copy paste your old entries without making a few edits
+    Added Enchanted Books to fishing_treasures.yml as Legendary rarity (can drop with any legal enchantment - see notes)
+    Added all Netherite gear to the Mythic rarity in fishing_treasures.yml
+    Added Name Tag to fishing_treasures.yml as Rare rarity
+    Added Netherite Scrap to fishing_treasures.yml as Legendary rarity
+    Added Nautilus Shell to fishing_treasures.yml as Legendary rarity
+    Music Disc rarity in fishing_tresures.yml has been broken up across tiers, they will be more common now.
     Mythic rarity (formerly known as Records) now allows for Enchantments to be applied to drops (See Notes)
-    Added all Netherite gear to the Mythic tier in fishing_treasures.yml
-    Added Enchanted Books to fishing_treasures.yml as Mythic rarity (can drop with any legal enchantment - see notes)
     New exploit fix setting 'PreventPluginNPCInteraction' which defaults to true, when disabled it will allow combat interactions with "NPC" entities from plugins like Citizens
     ExploitFix.PreventPluginNPCInteraction Added to experience.yml
     Modified locale string 'Fishing.SubSkill.TreasureHunter.Stat.Extra' in existing locale files
     You can now define a whitelist of enchants or a blacklist of enchants for an Enchanted_Book entries in fishing_treasures.yml, see notes for an example
 
     NOTES:
-    If you only ran mcMMO on your server you'd have no way to use Enchanted Books if you set the repair anvil to the vanilla anvil, so now you can sneak to open up its menu. By the way, mcMMO has the vanilla anvil as repair's default anvil (instead of iron block which it had been historically).
-    The rarity known as 'Records' was odd to me, if you got the best possible drop it was always going to be a Music Record drop (using the default mcMMO treasure list), and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
+    Before reading, Fishing/Excavation are getting a complete loot table rewrite in the future, everything changed in this patch is meant as a temporary quality of life fix until the bigger better change in the future.
+    You can't add Enchanted_Book to any treasures outside of Fishing's treasure drops right now, I'll fix it in an upcoming patch. Well you can add it, but it won't work.
+    The rarity formerly known as 'Records' was odd to me, if you got the best possible drop it was always going to be a Music Record drop (using the default mcMMO treasure list), and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
     As a response to this, I've renamed Records as Mythic, I've moved the records into varying tiers, you'll start getting them much earlier now. I've also added Netherite and Enchanted Books to the Mythic tier.
-    Enchanted Books have been added to Fishing loot, this is a basic hacky work around until the config update comes. Enchanted books can have any legal enchant.
+    Enchanted Books have been added to Fishing loot, this is a basic hacky work around until the config update comes. Enchanted books can have any legal enchant and you can specify which Enchants a book can spawn with.
     Also the Enchantment chance to be applied to the book is completely equal across all enchantments, it does not follow the same logic as applying enchantments to fished up gear.
 
     Here is an example of using the whitelist or blacklist for an Enchanted_Book entry in fishing_treasures.yml
     https://gist.github.com/nossr50/4e15b8ba6915b5a5f516eccfba2d7169
     If you can't load this image, at the address of your treasure for example, at Fishing.Enchanted_Book.Enchantments_Blacklist: you define a list (which must follow yaml spec, google yaml linter) of enchants to disallow, likewise at Fishing.Enchanted_Book.Enchantments_Whitelist you can setup a whitelist, if neither is defined then the book can spawn with all possible enchants, if both are defined the whitelist is used instead of the blacklist
+    Take care when moving any fishing entries you may have defined in treasures.yml over to fishing_treasures.yml, the config file has had a few things changed (as noted in these notes).
 
     When talking about NPCs in the below notes, I am referring to "Fake" Players used in plugins such as Citizens, not Villagers from Vanilla Minecraft or anything labeled NPC in another plugin which does not constitute a "Fake Player"
     Historically mcMMO has checked an entity for being a Fake-Player-NPC and backed out of any interaction, this was originally done because of Fake-Player-NPCs that were meant to be invincible/etc and not give XP
     However nowadays what a Fake-Player-NPC is used for is pretty loose, mcMMO only has definitions for some NPCs (such as from Citizens) it doesn't know about most Fake-Player-NPCs in most plugins unless they identify themselves in a similar way to the predefined parameters
     Leave this new exploit fix setting on true unless you understand the implications
 
+    If you only ran mcMMO on your server you'd have no way to use Enchanted Books if you set the repair anvil to the vanilla anvil, so now you can sneak to open up its menu. By the way, mcMMO has the vanilla anvil as repair's default anvil (instead of iron block which it had been historically).
 Version 2.1.163
     Fixed the translate URL pointing to the wrong place (thanks chew)
     Fixed a bug where FlatFile databases would always attempt a UUID conversion task every save operation (every 10 minutes) causing console spam

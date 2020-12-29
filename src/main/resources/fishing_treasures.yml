@@ -139,6 +139,10 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: RARE
+    NAME_TAG:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
     IRON_BOOTS:
         Amount: 1
         XP: 200
@@ -163,6 +167,10 @@ Fishing:
         Amount: 5
         XP: 200
         Rarity: EPIC
+    NAUTILUS_SHELL:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
     DIAMOND_SWORD:
         Amount: 1
         XP: 200
@@ -282,15 +290,16 @@ Fishing:
     ENCHANTED_BOOK:
         Amount: 1
         XP: 400
-        Rarity: MYTHIC
+        Rarity: LEGENDARY
 # Uncomment the below 3 lines to use the Whitelist, Alternatively rename it Enchantments_Blacklist to use the blacklist
+# NOTE: Enchantments_Whitelist and Enchantments_Blacklist only do anything for Enchanted_Books at the moment, you can't use it with any other treasure definition
 #        Enchantments_Whitelist:
 #            - Fortune
 #            - Protection
     NETHERITE_SCRAP:
         Amount: 1
         XP: 400
-        Rarity: MYTHIC
+        Rarity: LEGENDARY
 #
 #	Fishing drop rates
 ###
