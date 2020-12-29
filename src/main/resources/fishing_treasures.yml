@@ -283,9 +283,10 @@ Fishing:
         Amount: 1
         XP: 400
         Rarity: MYTHIC
-        Enchantments_Whitelist:
-            - Fortune
-            - Protection
+# Uncomment the below 3 lines to use the Whitelist, Alternatively rename it Enchantments_Blacklist to use the blacklist
+#        Enchantments_Whitelist:
+#            - Fortune
+#            - Protection
     NETHERITE_SCRAP:
         Amount: 1
         XP: 400
