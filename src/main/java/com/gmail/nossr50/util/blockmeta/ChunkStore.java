@@ -1,13 +1,13 @@
-package com.gmail.nossr50.util.blockmeta.chunkmeta;
+package com.gmail.nossr50.util.blockmeta;
 
-import com.gmail.nossr50.util.blockmeta.ChunkletStore;
+import org.bukkit.World;
 
-import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * A ChunkStore should be responsible for a 16x16xWorldHeight area of data
  */
-public interface ChunkStore extends Serializable {
+public interface ChunkStore {
     /**
      * Checks the chunk's save state
      *
@@ -35,6 +35,8 @@ public interface ChunkStore extends Serializable {
      * @return the chunk's z coordinate.
      */
     int getChunkZ();
+
+    UUID getWorldId();
 
     /**
      * Checks the value at the given coordinates
@@ -65,14 +67,17 @@ public interface ChunkStore extends Serializable {
     void setFalse(int x, int y, int z);
 
     /**
+     * Set the value at the given coordinates
+     *
+     * @param x x coordinate in current chunklet
+     * @param y y coordinate in current chunklet
+     * @param z z coordinate in current chunklet
+     * @param value value to set
+     */
+    void set(int x, int y, int z, boolean value);
+
+    /**
      * @return true if all values in the chunklet are false, false if otherwise
      */
     boolean isEmpty();
-
-    /**
-     * Set all values in this ChunkletStore to the values from another provided ChunkletStore
-     *
-     * @param otherStore Another ChunkletStore that this one should copy all data from
-     */
-    void copyFrom(ChunkletStore otherStore);
 }
