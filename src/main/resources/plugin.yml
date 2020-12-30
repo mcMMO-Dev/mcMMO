@@ -19,6 +19,9 @@ load: POSTWORLD
 api-version: 1.13
 
 commands:
+#    mmodroptreasures:
+#        description: An admin command used to spawn treasure drops
+#        permission: mcmmo.commands.droptreasures
     mmoxpbar:
         aliases: xpbarsettings
         description: Change XP bar settings

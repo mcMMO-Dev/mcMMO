@@ -43,28 +43,6 @@ public class WorldListener implements Listener {
     }
 
     /**
-     * Monitor WorldInit events.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onWorldInit(WorldInitEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
-            return;
-
-        World world = event.getWorld();
-
-        if (!new File(world.getWorldFolder(), "mcmmo_data").exists() || plugin == null) {
-            return;
-        }
-
-        plugin.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
-
-        //new BlockStoreConversionMain(world).run();
-    }
-
-    /**
      * Monitor WorldUnload events.
      *
      * @param event The event to watch

@@ -383,8 +383,10 @@ public final class CombatUtils {
         EntityType entityType = painSource.getType();
 
         if (target instanceof Player) {
-            if (Misc.isNPCEntityExcludingVillagers(target)) {
-                return;
+            if(ExperienceConfig.getInstance().isNPCInteractionPrevented()) {
+                if (Misc.isNPCEntityExcludingVillagers(target)) {
+                    return;
+                }
             }
 
             Player player = (Player) target;
@@ -755,7 +757,7 @@ public final class CombatUtils {
                 break;
             }
 
-            if (Misc.isNPCEntityExcludingVillagers(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+            if ((ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(entity)) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
 

@@ -149,6 +149,15 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McgodCommand());
     }
 
+//    private static void registerDropTreasureCommand() {
+//        PluginCommand command = mcMMO.p.getCommand("mmodroptreasures");
+//        command.setDescription(LocaleLoader.getString("Commands.Description.droptreasures"));
+//        command.setPermission("mcmmo.commands.droptreasures");
+//        command.setPermissionMessage(permissionsMessage);
+//        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcgod"));
+//        command.setExecutor(new DropTreasureCommand());
+//    }
+
     private static void registerMmoInfoCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoinfo");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoinfo"));
