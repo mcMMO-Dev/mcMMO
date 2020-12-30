@@ -15,7 +15,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.mock;
 
 /**
- * Could be alot better.  But some tests are better than none!  Tests the major things, still kinda unit-testy.  Verifies that the serialization isn't completely broken.
+ * Could be a lot better.  But some tests are better than none!  Tests the major things, still kinda unit-testy.  Verifies that the serialization isn't completely broken.
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Bukkit.class)
