@@ -4,6 +4,8 @@ Version 2.1.165
 
     NOTES:
     t00thpick1 has taken time to rewrite our block meta tracking system to be more efficient, easier to maintain, and support upcoming features such as world height changes
+    This new system is compatible with the old one, it will convert old files to the new format as needed.
+    This update shouldn't break anything as the API is the same
 
 Version 2.1.164
     mcMMO will now let players use vanilla blocks that have interactions (such as the vanilla Anvil) which are assigned as either Repair or Salvage blocks if a player is sneaking (see notes)
