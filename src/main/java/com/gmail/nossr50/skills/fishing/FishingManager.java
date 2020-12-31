@@ -449,11 +449,11 @@ public class FishingManager extends SkillManager {
         }
 
         if(fishingSucceeds) {
-            fishingCatch.setItemStack(treasureDrop);
-
             if (Config.getInstance().getFishingExtraFish()) {
                 Misc.spawnItem(player.getEyeLocation(), fishingCatch.getItemStack(), ItemSpawnReason.FISHING_EXTRA_FISH);
             }
+
+            fishingCatch.setItemStack(treasureDrop);
         }
 
         applyXpGain(fishXp + treasureXp, XPGainReason.PVE);
