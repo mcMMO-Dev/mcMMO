@@ -447,6 +447,10 @@ public class PlayerListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
+        if(Misc.isNPCEntityExcludingVillagers(event.getEntity())) {
+            return;
+        }
+
         if(event.getEntity() instanceof Player)
         {
             Player player = (Player) event.getEntity();
@@ -463,12 +467,10 @@ public class PlayerListener implements Listener {
             }
 
             //Profile not loaded
-            if(UserManager.getPlayer(player) == null)
-            {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            if(mcMMOPlayer == null) {
                 return;
             }
-
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();

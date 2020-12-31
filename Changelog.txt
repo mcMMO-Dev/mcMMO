@@ -7,6 +7,7 @@ Version 2.1.165
     mcMMO will now be compatible with changes to world height (1.17 compatibility)
     Added missing cooldown locale message 'Commands.Database.Cooldown'
     Added new locale message 'Taming.Summon.COTW.Removed'
+    mcMMO will ignore PlayerPickupItem events from "Fake-Player" NPCs if it recognizes them as such, this will prevent some issues
 
     NOTES:
     Books dropped before this fix will not be usable and should just be chucked in lava, the broken books have blue names, the working books have yellow names.
