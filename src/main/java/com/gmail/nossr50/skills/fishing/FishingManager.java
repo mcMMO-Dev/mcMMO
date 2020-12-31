@@ -37,6 +37,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BoundingBox;
@@ -466,11 +467,13 @@ public class FishingManager extends SkillManager {
         EnchantmentWrapper enchantmentWrapper = getRandomEnchantment(fishingTreasureBook.getLegalEnchantments());
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(itemMeta == null)
+        if(itemMeta == null) {
             return itemStack;
+        }
 
-        itemMeta.addEnchant(enchantmentWrapper.getEnchantment(), enchantmentWrapper.getEnchantmentLevel(), ExperienceConfig.getInstance().allowUnsafeEnchantments());
-        itemStack.setItemMeta(itemMeta);
+        EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+        enchantmentStorageMeta.addStoredEnchant(enchantmentWrapper.getEnchantment(), enchantmentWrapper.getEnchantmentLevel(), ExperienceConfig.getInstance().allowUnsafeEnchantments());
+        itemStack.setItemMeta(enchantmentStorageMeta);
         return itemStack;
     }
 

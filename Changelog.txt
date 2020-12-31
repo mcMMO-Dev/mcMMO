@@ -1,9 +1,11 @@
 Version 2.1.165
+    Fixed a bug where Enchanted Books dropped by mcMMO (in Fishing) did not function correctly
     The mcMMO system which tracks player placed blocks has had some major rewrites (thanks t00thpick1)
     mcMMO will now be compatible with changes to world height (1.17 compatibility)
     Added missing cooldown locale message 'Commands.Database.Cooldown'
 
     NOTES:
+    Books dropped before this fix will not be usable and should just be chucked in lava, the broken books have blue names, the working books have yellow names.
     t00thpick1 has taken time to rewrite our block meta tracking system to be more efficient, easier to maintain, and support upcoming features such as world height changes
     This new system is compatible with the old one, it will convert old files to the new format as needed.
     This update shouldn't break anything as the API is the same
