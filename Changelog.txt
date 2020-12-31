@@ -1,8 +1,12 @@
 Version 2.1.165
     Fixed a bug where Enchanted Books dropped by mcMMO (in Fishing) did not function correctly
     The mcMMO system which tracks player placed blocks has had some major rewrites (thanks t00thpick1)
+    Optimized our ChunkUnloadEvent, this should improve timings in this area
+    How mcMMO tracks COTW entities has been rewritten
+    When COTW summons are killed players are now informed (from anything other than the time expiring).
     mcMMO will now be compatible with changes to world height (1.17 compatibility)
     Added missing cooldown locale message 'Commands.Database.Cooldown'
+    Added new locale message 'Taming.Summon.COTW.Removed'
 
     NOTES:
     Books dropped before this fix will not be usable and should just be chucked in lava, the broken books have blue names, the working books have yellow names.

@@ -644,11 +644,13 @@ public class EntityListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
-            return;
-
         LivingEntity entity = event.getEntity();
+        mcMMO.getTransientEntityTracker().removeSummon(entity, null, false);
+
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
+            return;
+        }
 
         if (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(entity)) {
             return;

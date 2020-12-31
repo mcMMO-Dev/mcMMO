@@ -2,7 +2,10 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
+import com.gmail.nossr50.datatypes.treasure.FishingTreasureBook;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
@@ -12,9 +15,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 public final class ItemUtils {
@@ -537,5 +542,27 @@ public final class ItemUtils {
 
     public static boolean canBeSuperAbilityDigBoosted(@NotNull ItemStack itemStack) {
         return isShovel(itemStack) || isPickaxe(itemStack);
+    }
+
+    public static @NotNull ItemStack createEnchantBook(@NotNull FishingTreasureBook fishingTreasureBook) {
+        ItemStack itemStack = fishingTreasureBook.getDrop().clone();
+        EnchantmentWrapper enchantmentWrapper = getRandomEnchantment(fishingTreasureBook.getLegalEnchantments());
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null) {
+            return itemStack;
+        }
+
+        EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
+        enchantmentStorageMeta.addStoredEnchant(enchantmentWrapper.getEnchantment(), enchantmentWrapper.getEnchantmentLevel(), ExperienceConfig.getInstance().allowUnsafeEnchantments());
+        itemStack.setItemMeta(enchantmentStorageMeta);
+        return itemStack;
+    }
+
+    public static @NotNull EnchantmentWrapper getRandomEnchantment(@NotNull List<EnchantmentWrapper> enchantmentWrappers) {
+        Collections.shuffle(enchantmentWrappers, Misc.getRandom());
+
+        int randomIndex = Misc.getRandom().nextInt(enchantmentWrappers.size());
+        return enchantmentWrappers.get(randomIndex);
     }
 }

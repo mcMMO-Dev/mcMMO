@@ -87,6 +87,7 @@ public class mcMMO extends JavaPlugin {
     private static TransientMetadataTools transientMetadataTools;
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
+    private static TransientEntityTracker transientEntityTracker;
 
     /* Adventure */
     private static BukkitAudiences audiences;
@@ -289,6 +290,8 @@ public class mcMMO extends JavaPlugin {
         chatManager = new ChatManager(this);
 
         commandManager = new CommandManager(this);
+
+        transientEntityTracker = new TransientEntityTracker();
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -719,5 +722,9 @@ public class mcMMO extends JavaPlugin {
 
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public static TransientEntityTracker getTransientEntityTracker() {
+        return transientEntityTracker;
     }
 }

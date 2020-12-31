@@ -37,8 +37,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
@@ -397,7 +395,7 @@ public class FishingManager extends SkillManager {
 
         if (treasure != null) {
             if(treasure instanceof FishingTreasureBook) {
-                treasureDrop = createEnchantBook((FishingTreasureBook) treasure);
+                treasureDrop = ItemUtils.createEnchantBook((FishingTreasureBook) treasure);
             } else {
                 treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
 
@@ -459,29 +457,6 @@ public class FishingManager extends SkillManager {
         }
 
         applyXpGain(fishXp + treasureXp, XPGainReason.PVE);
-    }
-
-
-    private @NotNull ItemStack createEnchantBook(@NotNull FishingTreasureBook fishingTreasureBook) {
-        ItemStack itemStack = fishingTreasureBook.getDrop().clone();
-        EnchantmentWrapper enchantmentWrapper = getRandomEnchantment(fishingTreasureBook.getLegalEnchantments());
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
-        if(itemMeta == null) {
-            return itemStack;
-        }
-
-        EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
-        enchantmentStorageMeta.addStoredEnchant(enchantmentWrapper.getEnchantment(), enchantmentWrapper.getEnchantmentLevel(), ExperienceConfig.getInstance().allowUnsafeEnchantments());
-        itemStack.setItemMeta(enchantmentStorageMeta);
-        return itemStack;
-    }
-
-    private @NotNull EnchantmentWrapper getRandomEnchantment(@NotNull List<EnchantmentWrapper> enchantmentWrappers) {
-        Collections.shuffle(enchantmentWrappers, Misc.getRandom());
-
-        int randomIndex = Misc.getRandom().nextInt(enchantmentWrappers.size());
-        return enchantmentWrappers.get(randomIndex);
     }
 
     /**
