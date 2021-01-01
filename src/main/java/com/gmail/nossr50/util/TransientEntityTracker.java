@@ -6,6 +6,7 @@ import com.gmail.nossr50.skills.taming.TrackedTamingEntity;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -215,13 +216,17 @@ public class TransientEntityTracker {
         for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
             HashSet<TrackedTamingEntity> trackedEntities = getTrackedEntities(playerUUID, callOfTheWildType);
 
-            if(trackedEntities == null)
+            if(trackedEntities == null) {
                 continue;
+            }
 
-            for(TrackedTamingEntity trackedTamingEntity : trackedEntities) {
+            ImmutableSet<TrackedTamingEntity> immutableSet = ImmutableSet.copyOf(trackedEntities);
+
+            for(TrackedTamingEntity trackedTamingEntity : immutableSet) {
                 //Remove from existence
                 removeSummon(trackedTamingEntity.getLivingEntity(), player, false);
             }
+
         }
     }
 }
