@@ -7,7 +7,7 @@ Version 2.1.165
     mcMMO will now be compatible with changes to world height (1.17 compatibility)
     mcMMO will ignore EntityPickupItemEvents from "Fake-Player" NPCs if it recognizes them as such, this will prevent some compatibility issues with some plugins
     SuperBreaker will now always activate if the target blocks fastest tool is a Pickaxe (used to require the block giving XP or being considered an ore)
-    Master Angler mentions that it works better in its hover tip
+    Master Angler mentions that it works better with a boat in its hover tip
     Added missing cooldown locale message 'Commands.Database.Cooldown'
     Added new locale message 'Taming.Summon.COTW.Removed'
     Updated locale entry 'Fishing.SubSkill.MasterAngler.Description'
