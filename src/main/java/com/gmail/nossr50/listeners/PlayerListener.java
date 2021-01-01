@@ -526,16 +526,15 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if(mcMMOPlayer == null) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        //There's an issue with using Async saves on player quit
-        //Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
-        mcMMOPlayer.logout(true);
+        //Use a sync save if the server is shutting down to avoid race conditions
+        mcMMOPlayer.logout(mcMMO.isServerShutdownExecuted());
     }
 
     /**

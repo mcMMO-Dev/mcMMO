@@ -52,7 +52,7 @@ public class TamingManager extends SkillManager {
         lastSummonTimeStamp = 0L;
 
         //Init per-player tracking of summoned entities
-        mcMMO.getTransientEntityTracker().initPlayer(mmoPlayer.getPlayer().getUniqueId());
+        mcMMO.getTransientEntityTracker().initPlayer(mmoPlayer.getPlayer());
 
         //Hacky stuff used as a band-aid
         initStaticCaches();

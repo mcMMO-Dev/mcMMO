@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class TransientEntityTracker {
+    //These two are updated in step with each other
     private final @NotNull HashMap<UUID, HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>> perPlayerTransientEntityMap;
     private final @NotNull HashSet<LivingEntity> chunkLookupCache;
 
@@ -27,30 +28,74 @@ public class TransientEntityTracker {
         chunkLookupCache = new HashSet<>();
     }
 
-    public void initPlayer(@NotNull UUID playerUUID) {
-        if (!isPlayerRegistered(playerUUID)) {
-            registerPlayer(playerUUID);
+    public synchronized @NotNull HashSet<LivingEntity> getChunkLookupCache() {
+        return chunkLookupCache;
+    }
+
+    public synchronized @NotNull HashMap<UUID, HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>> getPerPlayerTransientEntityMap() {
+        return perPlayerTransientEntityMap;
+    }
+
+    public synchronized void initPlayer(@NotNull Player player) {
+        if (!isPlayerRegistered(player.getUniqueId())) {
+            registerPlayer(player.getUniqueId());
         }
     }
 
-    public void cleanupPlayer(@NotNull UUID playerUUID) {
-        cleanupAllSummons(null, playerUUID);
+    /**
+     * Removes a player from the tracker
+     *
+     * @param playerUUID target player
+     */
+    public synchronized void cleanupPlayer(@NotNull UUID playerUUID) {
+        cleanPlayer(null, playerUUID);
     }
 
-    public void cleanupPlayer(@NotNull Player player) {
-        //First remove all entities related to this player
+    /**
+     * Removes a player from the tracker
+     *
+     * @param player target player
+     */
+    public synchronized void cleanupPlayer(@NotNull Player player) {
+        cleanPlayer(player, player.getUniqueId());
+    }
+
+    /**
+     * Removes a player from the tracker
+     *
+     * @param player target player
+     * @param playerUUID target player UUID
+     */
+    private void cleanPlayer(@Nullable Player player, @NotNull UUID playerUUID) {
         cleanupAllSummons(player, player.getUniqueId());
+        removePlayerFromMap(playerUUID);
     }
 
-    private boolean isPlayerRegistered(@NotNull UUID playerUUID) {
-        return perPlayerTransientEntityMap.get(playerUUID) != null;
+    private void removePlayerFromMap(@NotNull UUID playerUUID) {
+        getPerPlayerTransientEntityMap().remove(playerUUID);
     }
 
-    private void registerPlayer(@NotNull UUID playerUUID) {
-        perPlayerTransientEntityMap.put(playerUUID, new HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>());
+    /**
+     * Checks if a player has already been registered
+     * Being registered constitutes having necessary values initialized in our per-player map
+     *
+     * @param playerUUID target player
+     * @return true if the player is registered
+     */
+    private synchronized boolean isPlayerRegistered(@NotNull UUID playerUUID) {
+        return getPerPlayerTransientEntityMap().get(playerUUID) != null;
+    }
+
+    /**
+     * Register a player to our tracker, which initializes the necessary values in our per-player map
+     *
+     * @param playerUUID player to register
+     */
+    private synchronized void registerPlayer(@NotNull UUID playerUUID) {
+        getPerPlayerTransientEntityMap().put(playerUUID, new HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>());
 
         for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-            perPlayerTransientEntityMap.get(playerUUID).put(callOfTheWildType, new HashSet<>());
+            getPerPlayerTransientEntityMap().get(playerUUID).put(callOfTheWildType, new HashSet<>());
         }
     }
 
@@ -60,16 +105,18 @@ public class TransientEntityTracker {
      * @param playerUUID the target uuid of the player
      * @return the tracked entities map for the player, null if the player isn't registered
      */
-    public @Nullable HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>> getPlayerTrackedEntityMap(@NotNull UUID playerUUID) {
-        return perPlayerTransientEntityMap.get(playerUUID);
+    public synchronized @Nullable HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>> getPlayerTrackedEntityMap(@NotNull UUID playerUUID) {
+        return getPerPlayerTransientEntityMap().get(playerUUID);
     }
 
-    public void registerEntity(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
-        if(!isPlayerRegistered(playerUUID)) {
-            mcMMO.p.getLogger().severe("Attempting to register entity to a player which hasn't been initialized!");
-            initPlayer(playerUUID);
-        }
-
+    /**
+     * Registers an entity to a player
+     * This includes registration to our per-player map and our chunk lookup cache
+     *
+     * @param playerUUID target player's UUID
+     * @param trackedTamingEntity target entity
+     */
+    public synchronized void registerEntity(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
         //Add to map entry
         getTrackedEntities(playerUUID, trackedTamingEntity.getCallOfTheWildType()).add(trackedTamingEntity);
 
@@ -85,7 +132,7 @@ public class TransientEntityTracker {
      * @param callOfTheWildType target type
      * @return the set of tracked entities for the player, null if the player isn't registered, the set can be empty
      */
-    private @Nullable HashSet<TrackedTamingEntity> getTrackedEntities(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
+    private synchronized @Nullable HashSet<TrackedTamingEntity> getTrackedEntities(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
         HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>> playerEntityMap = getPlayerTrackedEntityMap(playerUUID);
 
         if(playerEntityMap == null)
@@ -94,21 +141,45 @@ public class TransientEntityTracker {
         return playerEntityMap.get(callOfTheWildType);
     }
 
-    private void addToChunkLookupCache(@NotNull TrackedTamingEntity trackedTamingEntity) {
-        chunkLookupCache.add(trackedTamingEntity.getLivingEntity());
+    /**
+     * Adds an entity to our chunk lookup cache
+     *
+     * @param trackedTamingEntity target tracked taming entity
+     */
+    private synchronized void addToChunkLookupCache(@NotNull TrackedTamingEntity trackedTamingEntity) {
+        getChunkLookupCache().add(trackedTamingEntity.getLivingEntity());
     }
 
-    public void unregisterEntity(@NotNull LivingEntity livingEntity) {
+    /**
+     * Removes an entity from our tracker
+     * This includes removal from our per-player map and our chunk lookup cache
+     *
+     * @param livingEntity target entity
+     */
+    private void unregisterEntity(@NotNull LivingEntity livingEntity) {
         chunkLookupCacheCleanup(livingEntity);
         perPlayerTransientMapCleanup(livingEntity);
     }
 
+    /**
+     * Removes an entity from our chunk lookup cache
+     *
+     * @param livingEntity target entity
+     */
     private void chunkLookupCacheCleanup(@NotNull LivingEntity livingEntity) {
-        chunkLookupCache.remove(livingEntity);
+        getChunkLookupCache().remove(livingEntity);
     }
 
+    /**
+     * Clean a living entity from our tracker
+     * Iterates over all players and their registered entities
+     * Doesn't do any kind of failure checking, if it doesn't find any player with a registered entity nothing bad happens or is reported
+     * However it should never happen like that, so maybe we could consider adding some failure to execute checking in the future
+     *
+     * @param livingEntity
+     */
     private void perPlayerTransientMapCleanup(@NotNull LivingEntity livingEntity) {
-        for(UUID uuid : perPlayerTransientEntityMap.keySet()) {
+        for(UUID uuid : getPerPlayerTransientEntityMap().keySet()) {
             for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
 
                 HashSet<TrackedTamingEntity> trackedEntities = getTrackedEntities(uuid, callOfTheWildType);
@@ -127,10 +198,16 @@ public class TransientEntityTracker {
         }
     }
 
-    public @NotNull List<LivingEntity> getAllTransientEntitiesInChunk(@NotNull Chunk chunk) {
+    /**
+     * Get all transient entities that exist in a specific chunk
+     *
+     * @param chunk the chunk to match
+     * @return a list of transient entities that are located in the provided chunk
+     */
+    public synchronized @NotNull List<LivingEntity> getAllTransientEntitiesInChunk(@NotNull Chunk chunk) {
         ArrayList<LivingEntity> matchingEntities = new ArrayList<>();
 
-        for(LivingEntity livingEntity : chunkLookupCache) {
+        for(LivingEntity livingEntity : getChunkLookupCache()) {
             if(livingEntity.getLocation().getChunk().equals(chunk)) {
                 matchingEntities.add(livingEntity);
             }
@@ -139,17 +216,14 @@ public class TransientEntityTracker {
         return matchingEntities;
     }
 
-    /*
-     * Gross code below
-     */
-
     /**
      * Get the amount of a summon currently active for a player
+     *
      * @param playerUUID target player
      * @param callOfTheWildType summon type
      * @return the amount of summons currently active for player of target type
      */
-    public int getAmountCurrentlySummoned(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
+    public synchronized int getAmountCurrentlySummoned(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
         HashSet<TrackedTamingEntity> trackedEntities = getTrackedEntities(playerUUID, callOfTheWildType);
 
         if(trackedEntities == null)
@@ -165,7 +239,7 @@ public class TransientEntityTracker {
      * @param livingEntity entity to remove
      * @param player associated player
      */
-    public void removeSummon(@NotNull LivingEntity livingEntity, @Nullable Player player, boolean timeExpired) {
+    public synchronized void removeSummon(@NotNull LivingEntity livingEntity, @Nullable Player player, boolean timeExpired) {
         //Kill the summon & remove it
         if(livingEntity.isValid()) {
             livingEntity.setHealth(0); //Should trigger entity death events

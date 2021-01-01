@@ -1,8 +1,14 @@
 Version 2.1.166
+    Fixed a small memory leak in the new COTW tracker
+    Potentially fixed a ConcurrentModificationException involving the TransientEntityTracker (report this error if you encounter it)
     Music discs removed from the default fishing_treasures.yml
+    Optimized how mcMMO saves player data (should improve timings on servers with bad disk speeds and or bad connectivity to their SQL server instance)
 
     NOTES:
-    No one likes fishing up music discs
+    No one likes fishing up music discs, if you want this change it is recommended you delete fishing_treasures.yml and let it regenerate
+    If any of you encounter a ConcurrentModificationException error that mentions TransientEntityTracker in its stack trace after this update let me know, I have another fix in mind for this if this update didn't fix it.
+    (You won't have this file if you haven't updated in a while, if so you don't need to do anything)
+
 Version 2.1.165
     Fixed a bug where Enchanted Books dropped by mcMMO (in Fishing) did not function correctly
     The mcMMO system which tracks player placed blocks has had some major rewrites (thanks t00thpick1)
