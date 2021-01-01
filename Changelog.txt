@@ -1,3 +1,8 @@
+Version 2.1.166
+    Music discs removed from the default fishing_treasures.yml
+
+    NOTES:
+    No one likes fishing up music discs
 Version 2.1.165
     Fixed a bug where Enchanted Books dropped by mcMMO (in Fishing) did not function correctly
     The mcMMO system which tracks player placed blocks has had some major rewrites (thanks t00thpick1)

@@ -207,50 +207,6 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
-    MUSIC_DISC_BLOCKS:
-        Amount: 1
-        XP: 200
-        Rarity: UNCOMMON
-    MUSIC_DISC_CHIRP:
-        Amount: 1
-        XP: 200
-        Rarity: UNCOMMON
-    MUSIC_DISC_FAR:
-        Amount: 1
-        XP: 200
-        Rarity: RARE
-    MUSIC_DISC_MALL:
-        Amount: 1
-        XP: 200
-        Rarity: RARE
-    MUSIC_DISC_MELLOHI:
-        Amount: 1
-        XP: 200
-        Rarity: RARE
-    MUSIC_DISC_STAL:
-        Amount: 1
-        XP: 200
-        Rarity: EPIC
-    MUSIC_DISC_STRAD:
-        Amount: 1
-        XP: 200
-        Rarity: EPIC
-    MUSIC_DISC_WARD:
-        Amount: 1
-        XP: 200
-        Rarity: EPIC
-    MUSIC_DISC_11:
-        Amount: 1
-        XP: 200
-        Rarity: LEGENDARY
-    MUSIC_DISC_WAIT:
-        Amount: 1
-        XP: 200
-        Rarity: LEGENDARY
-    MUSIC_DISC_13:
-        Amount: 1
-        XP: 200
-        Rarity: MYTHIC
     NETHERITE_SWORD:
         Amount: 1
         XP: 200
