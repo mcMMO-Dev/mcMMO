@@ -109,8 +109,8 @@ public class MaterialMapStore {
         fillVanillaMaterialRegisters();
     }
 
-    private void fillVanillaMaterialRegisters()
-    {
+    private void fillVanillaMaterialRegisters() {
+        //The order matters
         fillAbilityBlackList();
         fillToolBlackList();
         fillMossyWhiteList();
@@ -125,6 +125,7 @@ public class MaterialMapStore {
         fillTools();
         fillEnchantables();
         fillOres();
+        fillIntendedTools();
 
         fillTierMap();
     }
