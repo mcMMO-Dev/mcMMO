@@ -213,6 +213,185 @@ public class MaterialMapStore {
     private void fillIntendedTools() {
         intendedToolPickAxe.addAll(ores);
 
+        intendedToolPickAxe.add("ice");
+        intendedToolPickAxe.add("packed_ice");
+        intendedToolPickAxe.add("blue_ice");
+        intendedToolPickAxe.add("frosted_ice");
+        intendedToolPickAxe.add("anvil");
+        intendedToolPickAxe.add("bell");
+        intendedToolPickAxe.add("block_of_redstone");
+        intendedToolPickAxe.add("brewing_stand");
+        intendedToolPickAxe.add("cauldron");
+        intendedToolPickAxe.add("chain");
+        intendedToolPickAxe.add("hopper");
+        intendedToolPickAxe.add("iron_bars");
+        intendedToolPickAxe.add("iron_door");
+        intendedToolPickAxe.add("iron_trapdoor");
+        intendedToolPickAxe.add("lantern");
+        intendedToolPickAxe.add("weighted_pressure_plates");
+        intendedToolPickAxe.add("block_of_iron");
+        intendedToolPickAxe.add("copper_blocks");
+        intendedToolPickAxe.add("cut_copper");
+        intendedToolPickAxe.add("cut_copper_slab");
+        intendedToolPickAxe.add("cut_copper_stairs");
+        intendedToolPickAxe.add("lapis_lazuli_block");
+        intendedToolPickAxe.add("lightning_rod");
+        intendedToolPickAxe.add("block_of_diamond");
+        intendedToolPickAxe.add("block_of_emerald");
+        intendedToolPickAxe.add("block_of_gold");
+        intendedToolPickAxe.add("block_of_netherite");
+        intendedToolPickAxe.add("piston");
+        intendedToolPickAxe.add("sticky_piston");
+        intendedToolPickAxe.add("conduit");
+        intendedToolPickAxe.add("shulker_box");
+        intendedToolPickAxe.add("element_constructor"); //be & ee
+        intendedToolPickAxe.add("compound_creator"); //be & ee
+        intendedToolPickAxe.add("material_reducer"); //be & ee
+        intendedToolPickAxe.add("activator_rail");
+        intendedToolPickAxe.add("detector_rail");
+        intendedToolPickAxe.add("powered_rail");
+        intendedToolPickAxe.add("rail");
+        intendedToolPickAxe.add("andesite");
+        intendedToolPickAxe.add("basalt");
+        intendedToolPickAxe.add("blackstone");
+        intendedToolPickAxe.add("blast_furnace");
+        intendedToolPickAxe.add("block_of_coal");
+        intendedToolPickAxe.add("block_of_quartz");
+        intendedToolPickAxe.add("bricks");
+        intendedToolPickAxe.add("cobblestone");
+        intendedToolPickAxe.add("cobblestone_wall");
+        intendedToolPickAxe.add("concrete");
+        intendedToolPickAxe.add("dark_prismarine");
+        intendedToolPickAxe.add("diorite");
+        intendedToolPickAxe.add("dispenser");
+        intendedToolPickAxe.add("dripstone_block");
+        intendedToolPickAxe.add("dropper");
+        intendedToolPickAxe.add("enchantment_table");
+        intendedToolPickAxe.add("end_stone");
+        intendedToolPickAxe.add("ender_chest");
+        intendedToolPickAxe.add("furnace");
+        intendedToolPickAxe.add("glazed_terracotta");
+        intendedToolPickAxe.add("granite");
+        intendedToolPickAxe.add("grindstone");
+        intendedToolPickAxe.add("heat_block"); //be & ee
+        intendedToolPickAxe.add("lodestone");
+        intendedToolPickAxe.add("mossy_cobblestone");
+        intendedToolPickAxe.add("nether_bricks");
+        intendedToolPickAxe.add("nether_brick_fence");
+        intendedToolPickAxe.add("nether_gold_ore");
+        intendedToolPickAxe.add("nether_quartz_ore");
+        intendedToolPickAxe.add("netherrack");
+        intendedToolPickAxe.add("observer");
+        intendedToolPickAxe.add("prismarine");
+        intendedToolPickAxe.add("prismarine_bricks");
+        intendedToolPickAxe.add("pointed_dripstone");
+        intendedToolPickAxe.add("polished_andesite");
+        intendedToolPickAxe.add("polished_blackstone");
+        intendedToolPickAxe.add("polished_blackstone_bricks");
+        intendedToolPickAxe.add("polished_diorite");
+        intendedToolPickAxe.add("polished_granite");
+        intendedToolPickAxe.add("red_sandstone");
+        intendedToolPickAxe.add("sandstone");
+        intendedToolPickAxe.add("smoker");
+        intendedToolPickAxe.add("spawner");
+        intendedToolPickAxe.add("stonecutter");
+//        intendedToolPickAxe.add("slabs");
+        intendedToolPickAxe.add("colored_terracotta");
+//        intendedToolPickAxe.add("stairs");
+        intendedToolPickAxe.add("smooth_stone");
+        intendedToolPickAxe.add("stone");
+        intendedToolPickAxe.add("stone_bricks");
+        intendedToolPickAxe.add("stone_button");
+        intendedToolPickAxe.add("stone_pressure_plate");
+        intendedToolPickAxe.add("terracotta");
+        intendedToolPickAxe.add("amethyst_bud");
+        intendedToolPickAxe.add("amethyst_cluster");
+        intendedToolPickAxe.add("block_of_amethyst");
+        intendedToolPickAxe.add("budding_amethyst");
+        intendedToolPickAxe.add("ancient_debris");
+        intendedToolPickAxe.add("crying_obsidian");
+        intendedToolPickAxe.add("glowing_obsidian"); //be
+        intendedToolPickAxe.add("obsidian");
+        intendedToolPickAxe.add("respawn_anchor");
+
+        //slabs
+        intendedToolPickAxe.add("petrified_oak_slab");
+        intendedToolPickAxe.add("stone_slab");
+        intendedToolPickAxe.add("smooth_stone_slab");
+        intendedToolPickAxe.add("cobblestone_slab");
+        intendedToolPickAxe.add("mossy_cobblestone_slab");
+        intendedToolPickAxe.add("stone_brick_slab");
+        intendedToolPickAxe.add("mossy_stone_brick_slab");
+        intendedToolPickAxe.add("andesite_slab");
+        intendedToolPickAxe.add("polished_andesite_slab");
+        intendedToolPickAxe.add("diorite_slab");
+        intendedToolPickAxe.add("polished_diorite_slab");
+        intendedToolPickAxe.add("granite_slab");
+        intendedToolPickAxe.add("polished_granite_slab");
+        intendedToolPickAxe.add("sandstone_slab");
+        intendedToolPickAxe.add("cut_sandstone_slab");
+        intendedToolPickAxe.add("smooth_sandstone_slab");
+        intendedToolPickAxe.add("red_sandstone_slab");
+        intendedToolPickAxe.add("cut_red_sandstone_slab");
+        intendedToolPickAxe.add("smooth_red_sandstone_slab");
+        intendedToolPickAxe.add("brick_slab");
+        intendedToolPickAxe.add("prismarine_brick_slab");
+        intendedToolPickAxe.add("dark_prismarine_slab");
+        intendedToolPickAxe.add("nether_brick_slab");
+        intendedToolPickAxe.add("red_netherbrick_slab");
+        intendedToolPickAxe.add("quartz_slab");
+        intendedToolPickAxe.add("smooth_quartz_slab");
+        intendedToolPickAxe.add("purpur_slab");
+        intendedToolPickAxe.add("end_stone_brick_slab");
+        intendedToolPickAxe.add("blackstone_slab");
+        intendedToolPickAxe.add("polished_blackstone_slab");
+        intendedToolPickAxe.add("polished_blackstone_brick_slab");
+        intendedToolPickAxe.add("lightly_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("semi_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_semi_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("weathered_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_slab");
+
+        //stairs (not all of these exist, just copied the above list and replaced slab with stairs)
+        intendedToolPickAxe.add("petrified_oak_stairs");
+        intendedToolPickAxe.add("stone_stairs");
+        intendedToolPickAxe.add("smooth_stone_stairs");
+        intendedToolPickAxe.add("cobblestone_stairs");
+        intendedToolPickAxe.add("mossy_cobblestone_stairs");
+        intendedToolPickAxe.add("stone_brick_stairs");
+        intendedToolPickAxe.add("mossy_stone_brick_stairs");
+        intendedToolPickAxe.add("andesite_stairs");
+        intendedToolPickAxe.add("polished_andesite_stairs");
+        intendedToolPickAxe.add("diorite_stairs");
+        intendedToolPickAxe.add("polished_diorite_stairs");
+        intendedToolPickAxe.add("granite_stairs");
+        intendedToolPickAxe.add("polished_granite_stairs");
+        intendedToolPickAxe.add("sandstone_stairs");
+        intendedToolPickAxe.add("cut_sandstone_stairs");
+        intendedToolPickAxe.add("smooth_sandstone_stairs");
+        intendedToolPickAxe.add("red_sandstone_stairs");
+        intendedToolPickAxe.add("cut_red_sandstone_stairs");
+        intendedToolPickAxe.add("smooth_red_sandstone_stairs");
+        intendedToolPickAxe.add("brick_stairs");
+        intendedToolPickAxe.add("prismarine_brick_stairs");
+        intendedToolPickAxe.add("dark_prismarine_stairs");
+        intendedToolPickAxe.add("nether_brick_stairs");
+        intendedToolPickAxe.add("red_netherbrick_stairs");
+        intendedToolPickAxe.add("quartz_stairs");
+        intendedToolPickAxe.add("smooth_quartz_stairs");
+        intendedToolPickAxe.add("purpur_stairs");
+        intendedToolPickAxe.add("end_stone_brick_stairs");
+        intendedToolPickAxe.add("blackstone_stairs");
+        intendedToolPickAxe.add("polished_blackstone_stairs");
+        intendedToolPickAxe.add("polished_blackstone_brick_stairs");
+        intendedToolPickAxe.add("lightly_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("semi_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_semi_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_stairs");
+
     }
 
     private void fillArmors() {
@@ -1070,6 +1249,14 @@ public class MaterialMapStore {
         toolBlackList.add("stonecutter");
         toolBlackList.add("lodestone");
         toolBlackList.add("respawn_anchor");
+    }
+
+    public boolean isIntendedToolPickaxe(Material material) {
+        return intendedToolPickAxe.contains(material.getKey().getKey());
+    }
+
+    public boolean isIntendedToolPickaxe(String string) {
+        return intendedToolPickAxe.contains(string);
     }
 
     public @NotNull HashSet<String> getNetheriteArmor() {

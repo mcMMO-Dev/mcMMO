@@ -8,6 +8,7 @@ Version 2.1.165
     Added missing cooldown locale message 'Commands.Database.Cooldown'
     Added new locale message 'Taming.Summon.COTW.Removed'
     mcMMO will ignore EntityPickupItemEvents from "Fake-Player" NPCs if it recognizes them as such, this will prevent some compatibility issues with some plugins
+    SuperBreaker will now always activate if the target blocks fastest tool is a Pickaxe (used to require the block giving XP or being considered an ore)
 
     NOTES:
     Books dropped before this fix will not be usable and should just be chucked in lava, the broken books have blue names, the working books have yellow names.
