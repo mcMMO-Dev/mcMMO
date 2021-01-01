@@ -6,8 +6,8 @@ Version 2.1.166
 
     NOTES:
     No one likes fishing up music discs, if you want this change it is recommended you delete fishing_treasures.yml and let it regenerate
-    If any of you encounter a ConcurrentModificationException error that mentions TransientEntityTracker in its stack trace after this update let me know, I have another fix in mind for this if this update didn't fix it.
     (You won't have this file if you haven't updated in a while, if so you don't need to do anything)
+    If any of you encounter a ConcurrentModificationException error that mentions TransientEntityTracker in its stack trace after this update let me know, I have another fix in mind for this if this update didn't fix it.
 
 Version 2.1.165
     Fixed a bug where Enchanted Books dropped by mcMMO (in Fishing) did not function correctly
