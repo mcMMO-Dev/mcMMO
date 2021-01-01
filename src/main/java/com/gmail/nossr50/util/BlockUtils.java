@@ -140,7 +140,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Super Breaker, false
      * otherwise
      */
-    public static Boolean affectedBySuperBreaker(BlockState blockState) {
+    public static boolean affectedBySuperBreaker(BlockState blockState) {
         if(mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
             return true;
 
