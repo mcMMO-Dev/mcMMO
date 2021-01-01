@@ -41,7 +41,7 @@ public class TamingManager extends SkillManager {
     private static HashMap<CallOfTheWildType, TamingSummon> cotwSummonDataProperties;
     private long lastSummonTimeStamp;
 
-    public TamingManager(McMMOPlayer mcMMOPlayer) {
+    public TamingManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.TAMING);
         init();
     }

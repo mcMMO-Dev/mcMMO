@@ -46,6 +46,8 @@ public class TransientEntityTracker {
     }
 
     private void registerPlayer(@NotNull UUID playerUUID) {
+        perPlayerTransientEntityMap.put(playerUUID, new HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>());
+
         for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
             perPlayerTransientEntityMap.get(playerUUID).put(callOfTheWildType, new HashSet<>());
         }

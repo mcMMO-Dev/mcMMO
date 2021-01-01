@@ -54,6 +54,8 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> enchantables;
 
     private final @NotNull HashSet<String> ores;
+    private final @NotNull HashSet<String> intendedToolPickAxe;
+    private final @NotNull HashSet<String> intendedToolShovel;
 
     private final @NotNull HashMap<String, Integer> tierValue;
 
@@ -99,6 +101,8 @@ public class MaterialMapStore {
         enchantables = new HashSet<>();
 
         ores = new HashSet<>();
+        intendedToolPickAxe = new HashSet<>();
+        intendedToolShovel = new HashSet<>();
 
         tierValue = new HashMap<>();
 
@@ -204,6 +208,11 @@ public class MaterialMapStore {
         ores.add("ancient_debris");
         ores.add("nether_gold_ore");
         ores.add("gilded_blackstone");
+    }
+
+    private void fillIntendedTools() {
+        intendedToolPickAxe.addAll(ores);
+
     }
 
     private void fillArmors() {
