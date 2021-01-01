@@ -5,16 +5,20 @@ Version 2.1.165
     How mcMMO tracks COTW entities has been rewritten
     When COTW summons are killed players are now informed (from anything other than the time expiring).
     mcMMO will now be compatible with changes to world height (1.17 compatibility)
-    Added missing cooldown locale message 'Commands.Database.Cooldown'
-    Added new locale message 'Taming.Summon.COTW.Removed'
     mcMMO will ignore EntityPickupItemEvents from "Fake-Player" NPCs if it recognizes them as such, this will prevent some compatibility issues with some plugins
     SuperBreaker will now always activate if the target blocks fastest tool is a Pickaxe (used to require the block giving XP or being considered an ore)
+    Master Angler mentions that it works better in its hover tip
+    Added missing cooldown locale message 'Commands.Database.Cooldown'
+    Added new locale message 'Taming.Summon.COTW.Removed'
+    Updated locale entry 'Fishing.SubSkill.MasterAngler.Description'
 
     NOTES:
     Books dropped before this fix will not be usable and should just be chucked in lava, the broken books have blue names, the working books have yellow names.
     t00thpick1 has taken time to rewrite our block meta tracking system to be more efficient, easier to maintain, and support upcoming features such as world height changes
-    This new system is compatible with the old one, it will convert old files to the new format as needed.
-    This update shouldn't break anything as the API is the same
+    This new system is compatible with the old one, it will convert old files to the new format as needed. You won't even know it is doing anything.
+    This update shouldn't break anything as the API is the same.
+
+    Alright back to work on T&C unless some major bugs come out of this...
 
 Version 2.1.164
     mcMMO will now let players use vanilla blocks that have interactions (such as the vanilla Anvil) which are assigned as either Repair or Salvage blocks if a player is sneaking (see notes)
