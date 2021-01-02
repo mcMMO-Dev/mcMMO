@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -36,7 +36,7 @@ public interface ChunkStore {
      */
     int getChunkZ();
 
-    UUID getWorldId();
+    @NotNull UUID getWorldId();
 
     /**
      * Checks the value at the given coordinates

@@ -253,12 +253,18 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockGrow(BlockGrowEvent event)
     {
+        Block block = event.getBlock();
+        World world = block.getWorld();
+
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(world))
             return;
 
-        BlockState blockState = event.getBlock().getState();
-        mcMMO.getPlaceStore().setFalse(blockState);
+        // Minecraft is dumb, the events still throw when a plant "grows" higher than the max block height.  Even though no new block is created
+        if (block.getY() >= world.getMaxHeight())
+            return;
+
+        mcMMO.getPlaceStore().setFalse(block);
     }
 
     /**
