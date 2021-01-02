@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -162,7 +163,7 @@ public class ChunkStoreTest {
         void run();
     }
 
-    private void assertThrows(Delegate delegate, Class<?> clazz) {
+    private void assertThrows(@NotNull Delegate delegate, @NotNull Class<?> clazz) {
         try {
             delegate.run();
             Assert.fail(); // We didn't throw
@@ -183,7 +184,7 @@ public class ChunkStoreTest {
                     Assert.assertTrue(expected.isTrue(x, y, z) == actual.isTrue(x, y, z));
     }
 
-    private static void recursiveDelete(File directoryToBeDeleted) {
+    private static void recursiveDelete(@NotNull File directoryToBeDeleted) {
         if (directoryToBeDeleted.isDirectory()) {
             for (File file : directoryToBeDeleted.listFiles()) {
                 recursiveDelete(file);
@@ -192,7 +193,7 @@ public class ChunkStoreTest {
         directoryToBeDeleted.delete();
     }
 
-    private static byte[] serializeChunkstore(ChunkStore chunkStore) throws IOException {
+    private static byte[] serializeChunkstore(@NotNull ChunkStore chunkStore) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         if (chunkStore instanceof BitSetChunkStore)
             BitSetChunkStore.Serialization.writeChunkStore(new DataOutputStream(byteArrayOutputStream), chunkStore);
@@ -201,18 +202,17 @@ public class ChunkStoreTest {
         return byteArrayOutputStream.toByteArray();
     }
 
-
     public static class LegacyChunkStore implements ChunkStore, Serializable {
         private static final long serialVersionUID = -1L;
         transient private boolean dirty = false;
         public boolean[][][] store;
         private static final int CURRENT_VERSION = 7;
         private static final int MAGIC_NUMBER = 0xEA5EDEBB;
-        private int cx;
-        private int cz;
-        private UUID worldUid;
+        private final int cx;
+        private final int cz;
+        private final @NotNull UUID worldUid;
 
-        public LegacyChunkStore(World world, int cx, int cz) {
+        public LegacyChunkStore(@NotNull World world, int cx, int cz) {
             this.cx = cx;
             this.cz = cz;
             this.worldUid = world.getUID();
@@ -287,7 +287,7 @@ public class ChunkStoreTest {
             return true;
         }
 
-        private void writeObject(ObjectOutputStream out) throws IOException {
+        private void writeObject(@NotNull ObjectOutputStream out) throws IOException {
             out.writeInt(MAGIC_NUMBER);
             out.writeInt(CURRENT_VERSION);
 
@@ -300,18 +300,18 @@ public class ChunkStoreTest {
             dirty = false;
         }
 
-        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        private void readObject(@NotNull ObjectInputStream in) throws IOException, ClassNotFoundException {
             throw new UnsupportedOperationException();
         }
     }
 
     private static class UnitTestObjectOutputStream extends ObjectOutputStream {
-        public UnitTestObjectOutputStream(OutputStream outputStream) throws IOException {
+        public UnitTestObjectOutputStream(@NotNull OutputStream outputStream) throws IOException {
             super(outputStream);
         }
 
         @Override
-        public void writeUTF(String str) throws IOException {
+        public void writeUTF(@NotNull String str) throws IOException {
             // Pretend to be the old class
             if (str.equals(LegacyChunkStore.class.getName()))
                 str = "com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore";
