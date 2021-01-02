@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.blockmeta;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.BitSet;
@@ -15,9 +16,9 @@ public class BitSetChunkStore implements ChunkStore {
     private final int cx;
     private final int cz;
     private final int worldHeight;
-    private final UUID worldUid;
+    private final @NotNull UUID worldUid;
     // Bitset store conforms to a "bottom-up" bit ordering consisting of a stack of {worldHeight} Y planes, each Y plane consists of 16 Z rows of 16 X bits.
-    private final BitSet store;
+    private final @NotNull BitSet store;
 
     private transient boolean dirty = false;
 
@@ -94,7 +95,7 @@ public class BitSetChunkStore implements ChunkStore {
         return (z * 16 + x) + (256 * y);
     }
 
-    private static int getWorldHeight(UUID worldUid, int storedWorldHeight)
+    private static int getWorldHeight(@NotNull UUID worldUid, int storedWorldHeight)
     {
         World world = Bukkit.getWorld(worldUid);
 
@@ -105,7 +106,7 @@ public class BitSetChunkStore implements ChunkStore {
         return world.getMaxHeight();
     }
 
-    private void serialize(DataOutputStream out) throws IOException {
+    private void serialize(@NotNull DataOutputStream out) throws IOException {
         out.writeInt(MAGIC_NUMBER);
         out.writeInt(CURRENT_VERSION);
 
@@ -123,7 +124,7 @@ public class BitSetChunkStore implements ChunkStore {
         dirty = false;
     }
 
-    private static BitSetChunkStore deserialize(@NotNull DataInputStream in) throws IOException {
+    private static @NotNull BitSetChunkStore deserialize(@NotNull DataInputStream in) throws IOException {
         int magic = in.readInt();
         // Can be used to determine the format of the file
         int fileVersionNumber = in.readInt();
@@ -187,7 +188,7 @@ public class BitSetChunkStore implements ChunkStore {
             throw new IOException("Bad Data Format");
         }
 
-        public static void writeChunkStore(DataOutputStream outputStream, ChunkStore chunkStore) throws IOException {
+        public static void writeChunkStore(@NotNull DataOutputStream outputStream, @NotNull ChunkStore chunkStore) throws IOException {
             if (!(chunkStore instanceof BitSetChunkStore))
                 throw new InvalidClassException("ChunkStore must be instance of BitSetChunkStore");
             outputStream.writeShort(STREAM_MAGIC);
@@ -209,12 +210,12 @@ public class BitSetChunkStore implements ChunkStore {
                 private LegacyChunkStoreDeserializer() {}
 
                 @Deprecated
-                private void writeObject(ObjectOutputStream out) throws IOException {
+                private void writeObject(@NotNull ObjectOutputStream out) throws IOException {
                     throw new UnsupportedOperationException("You goofed.");
                 }
 
                 @Deprecated
-                private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+                private void readObject(@NotNull ObjectInputStream in) throws IOException, ClassNotFoundException {
                     in.readInt(); // Magic number
                     in.readInt(); // Format version
                     long lsb = in.readLong();
@@ -228,7 +229,7 @@ public class BitSetChunkStore implements ChunkStore {
                     worldHeight = store[0][0].length;
                 }
 
-                public BitSetChunkStore convert()
+                public @NotNull BitSetChunkStore convert()
                 {
                     int currentWorldHeight = getWorldHeight(worldUid, worldHeight);
 
@@ -249,20 +250,20 @@ public class BitSetChunkStore implements ChunkStore {
             }
 
 
-            public LegacyDeserializationInputStream(InputStream in) throws IOException {
+            public LegacyDeserializationInputStream(@NotNull InputStream in) throws IOException {
                 super(in);
                 enableResolveObject(true);
             }
 
             @Override
-            protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
+            protected @NotNull ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
                 ObjectStreamClass read = super.readClassDescriptor();
                 if (read.getName().contentEquals("com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore"))
                     return ObjectStreamClass.lookup(LegacyChunkStoreDeserializer.class);
                 return read;
             }
 
-            public ChunkStore readLegacyChunkStore(){
+            public @Nullable ChunkStore readLegacyChunkStore(){
                 try {
                     LegacyChunkStoreDeserializer deserializer = (LegacyChunkStoreDeserializer)readObject();
                     return deserializer.convert();

@@ -65,7 +65,7 @@ public class HashChunkManager implements ChunkManager {
         }
     }
 
-    private synchronized @Nullable McMMOSimpleRegionFile getSimpleRegionFile(World world, int cx, int cz, boolean createIfAbsent) {
+    private synchronized @Nullable McMMOSimpleRegionFile getSimpleRegionFile(@NotNull World world, int cx, int cz, boolean createIfAbsent) {
         CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
 
         return regionMap.computeIfAbsent(regionKey, k -> {
@@ -80,7 +80,7 @@ public class HashChunkManager implements ChunkManager {
         });
     }
 
-    private @Nullable ChunkStore loadChunk(int cx, int cz, World world) {
+    private @Nullable ChunkStore loadChunk(int cx, int cz, @NotNull World world) {
         try {
             return readChunkStore(world, cx, cz);
         }
