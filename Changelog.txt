@@ -1,3 +1,8 @@
+Version 2.1.167
+      Add McMMOPlayerPreXpGainEvent event for plugins to modify given exp
+      Add SkillActivationPerkEvent
+
+
 Version 2.1.166
     Fixed a small memory leak in the new COTW tracker
     Potentially fixed a ConcurrentModificationException involving the TransientEntityTracker (report this error if you encounter it)
