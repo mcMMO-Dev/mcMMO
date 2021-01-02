@@ -345,7 +345,6 @@ public class mcMMO extends JavaPlugin {
 
             formulaManager.saveFormula();
             holidayManager.saveAnniversaryFiles();
-            placeStore.cleanUp();       // Cleanup empty metadata stores
             placeStore.closeAll();
         }
 

@@ -2,6 +2,7 @@ import com.gmail.nossr50.util.blockmeta.*;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -141,9 +142,20 @@ public class ChunkStoreTest {
     @Test
     public void testRegressionChunkMirrorBug() {
         ChunkManager chunkManager = new HashChunkManager();
-        chunkManager.setTrue(15,0,15, mockWorld);
-        chunkManager.setFalse(-15, 0, -15, mockWorld);
-        Assert.assertTrue(chunkManager.isTrue(15, 0, 15, mockWorld));
+        Block mockBlockA = mock(Block.class);
+        Mockito.when(mockBlockA.getX()).thenReturn(15);
+        Mockito.when(mockBlockA.getZ()).thenReturn(15);
+        Mockito.when(mockBlockA.getY()).thenReturn(0);
+        Mockito.when(mockBlockA.getWorld()).thenReturn(mockWorld);
+        Block mockBlockB = mock(Block.class);
+        Mockito.when(mockBlockB.getX()).thenReturn(-15);
+        Mockito.when(mockBlockB.getZ()).thenReturn(-15);
+        Mockito.when(mockBlockB.getY()).thenReturn(0);
+        Mockito.when(mockBlockB.getWorld()).thenReturn(mockWorld);
+
+        chunkManager.setTrue(mockBlockA);
+        chunkManager.setFalse(mockBlockB);
+        Assert.assertTrue(chunkManager.isTrue(mockBlockA));
     }
 
     private interface Delegate {
