@@ -6,7 +6,6 @@ Version 2.1.167
     NOTE:
     This bug was introduced in 2.1.165, update immediately if you are on 2.1.165 or 2.1.166
 
-
 Version 2.1.166
     Fixed a small memory leak in the new COTW tracker
     Potentially fixed a ConcurrentModificationException involving the TransientEntityTracker (report this error if you encounter it)
