@@ -645,7 +645,10 @@ public class EntityListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
-        mcMMO.getTransientEntityTracker().removeSummon(entity, null, false);
+
+        if(mcMMO.getTransientEntityTracker().isTransientSummon(entity)) {
+            mcMMO.getTransientEntityTracker().removeSummon(entity, null, false);
+        }
 
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {

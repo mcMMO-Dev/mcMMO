@@ -1,6 +1,10 @@
 Version 2.1.167
-      Add McMMOPlayerPreXpGainEvent event for plugins to modify given exp
-      Add SkillActivationPerkEvent
+    Fixed a serious dupe bug
+    Add McMMOPlayerPreXpGainEvent event for plugins to modify given exp (thanks electronicboy)
+    Add SkillActivationPerkEvent (thanks electronicboy)
+
+    NOTE:
+    This bug was introduced in 2.1.165, update immediately if you are on 2.1.165 or 2.1.166
 
 
 Version 2.1.166

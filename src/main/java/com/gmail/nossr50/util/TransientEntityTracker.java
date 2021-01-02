@@ -125,6 +125,16 @@ public class TransientEntityTracker {
     }
 
     /**
+     * Checks if a living entity is a summon
+     *
+     * @param livingEntity target livinig entity
+     * @return true if target living entity is a summon
+     */
+    public synchronized boolean isTransientSummon(@NotNull LivingEntity livingEntity) {
+        return getChunkLookupCache().contains(livingEntity);
+    }
+
+    /**
      * Get the tracked taming entities for a player
      * If the player isn't registered this will return null
      *
