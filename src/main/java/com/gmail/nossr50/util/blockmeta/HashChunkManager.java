@@ -38,9 +38,9 @@ public class HashChunkManager implements ChunkManager {
             rf.close();
         regionMap.clear();
     }
-
+    
     private synchronized @Nullable ChunkStore readChunkStore(@NotNull World world, int cx, int cz) throws IOException {
-        McMMOSimpleRegionFile rf = getSimpleRegionFile(world, cx, cz, false);
+        McMMOSimpleRegionFile rf = getReadableSimpleRegionFile(world, cx, cz);
         if (rf == null)
             return null; // If there is no region file, there can't be a chunk
         try (DataInputStream in = rf.getInputStream(cx, cz)) { // Get input stream for chunk
@@ -54,7 +54,7 @@ public class HashChunkManager implements ChunkManager {
         if (!data.isDirty())
             return; // Don't save unchanged data
         try {
-            McMMOSimpleRegionFile rf = getSimpleRegionFile(world, data.getChunkX(), data.getChunkZ(), true);
+            McMMOSimpleRegionFile rf = getWriteableSimpleRegionFile(world, data.getChunkX(), data.getChunkZ());
             try (DataOutputStream out = rf.getOutputStream(data.getChunkX(), data.getChunkZ())) {
                 BitSetChunkStore.Serialization.writeChunkStore(out, data);
             }
@@ -65,19 +65,31 @@ public class HashChunkManager implements ChunkManager {
         }
     }
 
-    private synchronized @Nullable McMMOSimpleRegionFile getSimpleRegionFile(@NotNull World world, int cx, int cz, boolean createIfAbsent) {
+    private synchronized @NotNull McMMOSimpleRegionFile getWriteableSimpleRegionFile(@NotNull World world, int cx, int cz) {
         CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
 
         return regionMap.computeIfAbsent(regionKey, k -> {
-            File worldRegionsDirectory = new File(world.getWorldFolder(), "mcmmo_regions");
-            if (!createIfAbsent && !worldRegionsDirectory.isDirectory())
-                return null; // Don't create the directory on read-only operations
-            worldRegionsDirectory.mkdirs(); // Ensure directory exists
-            File regionFile = new File(worldRegionsDirectory, "mcmmo_" + regionKey.x + "_" + regionKey.z + "_.mcm");
-            if (!createIfAbsent && !regionFile.exists())
+            File regionFile = getRegionFile(world, regionKey);
+            regionFile.getParentFile().mkdirs();
+            return new McMMOSimpleRegionFile(regionFile, regionKey.x, regionKey.z);
+        });
+    }
+
+    private synchronized @Nullable McMMOSimpleRegionFile getReadableSimpleRegionFile(@NotNull World world, int cx, int cz) {
+        CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
+
+        return regionMap.computeIfAbsent(regionKey, k -> {
+            File regionFile = getRegionFile(world, regionKey);
+            if (!regionFile.exists())
                 return null; // Don't create the file on read-only operations
             return new McMMOSimpleRegionFile(regionFile, regionKey.x, regionKey.z);
         });
+    }
+
+    private @NotNull File getRegionFile(@NotNull World world, @NotNull CoordinateKey regionKey) {
+        if (world.getUID() != regionKey.worldID)
+            throw new IllegalArgumentException();
+        return new File(new File(world.getWorldFolder(), "mcmmo_regions"), "mcmmo_" + regionKey.x + "_" + regionKey.z + "_.mcm");
     }
 
     private @Nullable ChunkStore loadChunk(int cx, int cz, @NotNull World world) {
