@@ -161,7 +161,7 @@ public class BitSetChunkStore implements ChunkStore {
 
         public static final short STREAM_MAGIC = (short)0xACDC; // Rock on
 
-        public static @NotNull ChunkStore readChunkStore(DataInputStream inputStream) throws IOException {
+        public static @Nullable ChunkStore readChunkStore(DataInputStream inputStream) throws IOException {
             if (inputStream.markSupported())
                 inputStream.mark(2);
             short magicNumber = inputStream.readShort();
