@@ -2,6 +2,8 @@ package com.gmail.nossr50.util.blockmeta;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.BitSet;
@@ -19,7 +21,7 @@ public class BitSetChunkStore implements ChunkStore, Serializable {
     private int worldHeight;
     private UUID worldUid;
 
-    public BitSetChunkStore(World world, int cx, int cz) {
+    public BitSetChunkStore(@NotNull World world, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
         this.worldUid = world.getUID();
@@ -50,7 +52,7 @@ public class BitSetChunkStore implements ChunkStore, Serializable {
     }
 
     @Override
-    public UUID getWorldId() {
+    public @NotNull UUID getWorldId() {
         return worldUid;
     }
 
@@ -153,7 +155,7 @@ public class BitSetChunkStore implements ChunkStore, Serializable {
         dirty = false;
     }
 
-    private static BitSetChunkStore deserialize(DataInputStream in) throws IOException {
+    private static BitSetChunkStore deserialize(@NotNull DataInputStream in) throws IOException {
         int magic = in.readInt();
         // Can be used to determine the format of the file
         int fileVersionNumber = in.readInt();
@@ -182,7 +184,7 @@ public class BitSetChunkStore implements ChunkStore, Serializable {
 
         public static final short STREAM_MAGIC = (short)0xACDC;
 
-        public static ChunkStore readChunkStore(DataInputStream inputStream) throws IOException {
+        public static @NotNull ChunkStore readChunkStore(DataInputStream inputStream) throws IOException {
             if (inputStream.markSupported())
                 inputStream.mark(2);
             short magicNumber = inputStream.readShort();

@@ -19,6 +19,9 @@
  */
 package com.gmail.nossr50.util.blockmeta;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.util.BitSet;
 import java.util.zip.DeflaterOutputStream;
@@ -54,7 +57,7 @@ public class McMMOSimpleRegionFile {
     private final int segmentMask;
 
     // File location
-    private final File parent;
+    private final @NotNull File parent;
     // File access
     private final RandomAccessFile file;
 
@@ -62,7 +65,7 @@ public class McMMOSimpleRegionFile {
     private final int rx;
     private final int rz;
 
-    public McMMOSimpleRegionFile(File f, int rx, int rz) {
+    public McMMOSimpleRegionFile(@NotNull File f, int rx, int rz) {
         this.rx = rx;
         this.rz = rz;
         this.parent = f;
@@ -104,7 +107,7 @@ public class McMMOSimpleRegionFile {
         }
     }
 
-    public synchronized DataOutputStream getOutputStream(int x, int z) {
+    public synchronized @NotNull DataOutputStream getOutputStream(int x, int z) {
         int index = getChunkIndex(x, z); // Get chunk index
         return new DataOutputStream(new DeflaterOutputStream(new McMMOSimpleChunkBuffer(this, index)));
     }
@@ -144,7 +147,7 @@ public class McMMOSimpleRegionFile {
         file.writeInt(chunkNumBytes[index]);
     }
 
-    public synchronized DataInputStream getInputStream(int x, int z) throws IOException {
+    public synchronized @Nullable DataInputStream getInputStream(int x, int z) throws IOException {
         int index = getChunkIndex(x, z); // Get chunk index
         int byteLength = chunkNumBytes[index]; // Get byte length of data
 

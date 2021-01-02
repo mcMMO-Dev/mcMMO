@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.blockmeta;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public interface ChunkManager {
     void closeAll();
@@ -14,7 +15,7 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is to be saved
      * @param world World that the Chunk is in
      */
-    void saveChunk(int cx, int cz, World world);
+    void saveChunk(int cx, int cz, @Nullable World world);
 
     /**
      * Informs the ChunkletManager a chunk is unloaded
@@ -23,7 +24,7 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is unloaded
      * @param world World that the chunk was unloaded in
      */
-    void chunkUnloaded(int cx, int cz, World world);
+    void chunkUnloaded(int cx, int cz, @Nullable World world);
 
     /**
      * Save all ChunkletStores related to the given world
@@ -53,7 +54,7 @@ public interface ChunkManager {
      * @param world World to check in
      * @return true if the given location is set to true, false if otherwise
      */
-    boolean isTrue(int x, int y, int z, World world);
+    boolean isTrue(int x, int y, int z, @Nullable World world);
 
     /**
      * Check to see if a given block location is set to true
@@ -61,7 +62,7 @@ public interface ChunkManager {
      * @param block Block location to check
      * @return true if the given block location is set to true, false if otherwise
      */
-    boolean isTrue(Block block);
+    boolean isTrue(@Nullable Block block);
 
     /**
      * Check to see if a given BlockState location is set to true
@@ -69,7 +70,7 @@ public interface ChunkManager {
      * @param blockState BlockState to check
      * @return true if the given BlockState location is set to true, false if otherwise
      */
-    boolean isTrue(BlockState blockState);
+    boolean isTrue(@Nullable BlockState blockState);
 
     /**
      * Set a given location to true, should create stores as necessary if the location does not exist
@@ -79,21 +80,21 @@ public interface ChunkManager {
      * @param z Z coordinate to set
      * @param world World to set in
      */
-    void setTrue(int x, int y, int z, World world);
+    void setTrue(int x, int y, int z, @Nullable World world);
 
     /**
      * Set a given block location to true, should create stores as necessary if the location does not exist
      *
      * @param block Block location to set
      */
-    void setTrue(Block block);
+    void setTrue(@Nullable Block block);
 
     /**
      * Set a given BlockState location to true, should create stores as necessary if the location does not exist
      *
      * @param blockState BlockState location to set
      */
-    void setTrue(BlockState blockState);
+    void setTrue(@Nullable BlockState blockState);
 
     /**
      * Set a given location to false, should not create stores if one does not exist for the given location
@@ -103,21 +104,21 @@ public interface ChunkManager {
      * @param z Z coordinate to set
      * @param world World to set in
      */
-    void setFalse(int x, int y, int z, World world);
+    void setFalse(int x, int y, int z, @Nullable World world);
 
     /**
      * Set a given block location to false, should not create stores if one does not exist for the given location
      *
      * @param block Block location to set
      */
-    void setFalse(Block block);
+    void setFalse(@Nullable Block block);
 
     /**
      * Set a given BlockState location to false, should not create stores if one does not exist for the given location
      *
      * @param blockState BlockState location to set
      */
-    void setFalse(BlockState blockState);
+    void setFalse(@Nullable BlockState blockState);
 
     /**
      * Delete any ChunkletStores that are empty

@@ -2,6 +2,7 @@ import com.gmail.nossr50.util.blockmeta.*;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -227,7 +228,7 @@ public class ChunkStoreTest {
         }
 
         @Override
-        public UUID getWorldId() {
+        public @NotNull UUID getWorldId() {
             return worldUid;
         }
 

@@ -5,14 +5,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
 
 public class HashChunkManager implements ChunkManager {
-    private final HashMap<CoordinateKey, McMMOSimpleRegionFile> regionMap = new HashMap<>(); // Tracks active regions
-    private final HashMap<CoordinateKey, HashSet<CoordinateKey>> chunkUsageMap = new HashMap<>(); // Tracks active chunks by region
-    private final HashMap<CoordinateKey, ChunkStore> chunkMap = new HashMap<>(); // Tracks active chunks
+    private final @NotNull HashMap<CoordinateKey, McMMOSimpleRegionFile> regionMap = new HashMap<>(); // Tracks active regions
+    private final @NotNull HashMap<CoordinateKey, HashSet<CoordinateKey>> chunkUsageMap = new HashMap<>(); // Tracks active chunks by region
+    private final @NotNull HashMap<CoordinateKey, ChunkStore> chunkMap = new HashMap<>(); // Tracks active chunks
 
     @Override
     public synchronized void closeAll() {
@@ -32,7 +34,7 @@ public class HashChunkManager implements ChunkManager {
         regionMap.clear();
     }
 
-    private synchronized ChunkStore readChunkStore(World world, int cx, int cz) throws IOException {
+    private synchronized @Nullable ChunkStore readChunkStore(@NotNull World world, int cx, int cz) throws IOException {
         McMMOSimpleRegionFile rf = getSimpleRegionFile(world, cx, cz, false);
         if (rf == null)
             return null; // If there is no region file, there can't be a chunk
@@ -43,7 +45,7 @@ public class HashChunkManager implements ChunkManager {
         }
     }
 
-    private synchronized void writeChunkStore(World world, ChunkStore data) {
+    private synchronized void writeChunkStore(@NotNull World world, @NotNull ChunkStore data) {
         if (!data.isDirty())
             return; // Don't save unchanged data
         try {
@@ -58,7 +60,7 @@ public class HashChunkManager implements ChunkManager {
         }
     }
 
-    private synchronized McMMOSimpleRegionFile getSimpleRegionFile(World world, int cx, int cz, boolean createIfAbsent) {
+    private synchronized @Nullable McMMOSimpleRegionFile getSimpleRegionFile(World world, int cx, int cz, boolean createIfAbsent) {
         CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
 
         return regionMap.computeIfAbsent(regionKey, k -> {
@@ -73,7 +75,7 @@ public class HashChunkManager implements ChunkManager {
         });
     }
 
-    private ChunkStore loadChunk(int cx, int cz, World world) {
+    private @Nullable ChunkStore loadChunk(int cx, int cz, World world) {
         try {
             return readChunkStore(world, cx, cz);
         }
@@ -82,7 +84,7 @@ public class HashChunkManager implements ChunkManager {
         return null;
     }
 
-    private void unloadChunk(int cx, int cz, World world) {
+    private void unloadChunk(int cx, int cz, @NotNull World world) {
         CoordinateKey chunkKey = toChunkKey(world.getUID(), cx, cz);
         ChunkStore chunkStore = chunkMap.remove(chunkKey); // Remove from chunk map
         if (chunkStore == null)
@@ -102,7 +104,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void saveChunk(int cx, int cz, World world) {
+    public synchronized void saveChunk(int cx, int cz, @Nullable World world) {
         if (world == null)
             return;
 
@@ -120,7 +122,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void chunkUnloaded(int cx, int cz, World world) {
+    public synchronized void chunkUnloaded(int cx, int cz, @Nullable World world) {
         if (world == null)
             return;
 
@@ -128,7 +130,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void saveWorld(World world) {
+    public synchronized void saveWorld(@Nullable World world) {
         if (world == null)
             return;
 
@@ -148,7 +150,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void unloadWorld(World world) {
+    public synchronized void unloadWorld(@Nullable World world) {
         if (world == null)
             return;
 
@@ -185,7 +187,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(int x, int y, int z, World world) {
+    public synchronized boolean isTrue(int x, int y, int z, @Nullable World world) {
         if (world == null)
             return false;
 
@@ -214,7 +216,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(Block block) {
+    public synchronized boolean isTrue(@Nullable Block block) {
         if (block == null)
             return false;
 
@@ -222,7 +224,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(BlockState blockState) {
+    public synchronized boolean isTrue(@Nullable BlockState blockState) {
         if (blockState == null)
             return false;
 
@@ -230,12 +232,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setTrue(int x, int y, int z, World world) {
+    public synchronized void setTrue(int x, int y, int z, @Nullable World world) {
         set(x, y, z, world, true);
     }
 
     @Override
-    public synchronized void setTrue(Block block) {
+    public synchronized void setTrue(@Nullable Block block) {
         if (block == null)
             return;
 
@@ -243,7 +245,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setTrue(BlockState blockState) {
+    public synchronized void setTrue(@Nullable BlockState blockState) {
         if (blockState == null)
             return;
 
@@ -251,12 +253,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setFalse(int x, int y, int z, World world) {
+    public synchronized void setFalse(int x, int y, int z, @Nullable World world) {
         set(x, y, z, world, false);
     }
 
     @Override
-    public synchronized void setFalse(Block block) {
+    public synchronized void setFalse(@Nullable Block block) {
         if (block == null)
             return;
 
@@ -264,14 +266,14 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setFalse(BlockState blockState) {
+    public synchronized void setFalse(@Nullable BlockState blockState) {
         if (blockState == null)
             return;
 
         setFalse(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
     }
 
-    public synchronized  void set(int x, int y, int z, World world, boolean value){
+    public synchronized void set(int x, int y, int z, @Nullable World world, boolean value){
         if (world == null)
             return;
 
@@ -307,15 +309,15 @@ public class HashChunkManager implements ChunkManager {
         cStore.set(ix, y, iz, value);
     }
 
-    private CoordinateKey blockCoordinateToChunkKey(UUID worldUid, int x, int y, int z) {
+    private CoordinateKey blockCoordinateToChunkKey(@NotNull UUID worldUid, int x, int y, int z) {
         return toChunkKey(worldUid, x >> 4, z >> 4);
     }
 
-    private CoordinateKey toChunkKey(UUID worldUid, int cx, int cz){
+    private CoordinateKey toChunkKey(@NotNull UUID worldUid, int cx, int cz){
         return new CoordinateKey(worldUid, cx, cz);
     }
 
-    private CoordinateKey toRegionKey(UUID worldUid, int cx, int cz) {
+    private CoordinateKey toRegionKey(@NotNull UUID worldUid, int cx, int cz) {
         // Compute region index (32x32 chunk regions)
         int rx = cx >> 5;
         int rz = cz >> 5;
@@ -323,11 +325,11 @@ public class HashChunkManager implements ChunkManager {
     }
 
     private static final class CoordinateKey {
-        public final UUID worldID;
+        public final @NotNull UUID worldID;
         public final int x;
         public final int z;
 
-        private CoordinateKey(UUID worldID, int x, int z) {
+        private CoordinateKey(@NotNull UUID worldID, int x, int z) {
             this.worldID = worldID;
             this.x = x;
             this.z = z;
