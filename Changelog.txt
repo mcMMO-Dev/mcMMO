@@ -1,3 +1,7 @@
+Version 2.1.168
+    Fixed an IndexOutOfBoundsException error when trying to access UserBlockTracker from an invalid range (thanks t00thpick1)
+    (API) UserBlockTracker is now the interface by which our block-tracker will be known (thanks t00thpick1)
+
 Version 2.1.167
     Fixed a serious dupe bug
     Add McMMOPlayerPreXpGainEvent event for plugins to modify given exp (thanks electronicboy)
