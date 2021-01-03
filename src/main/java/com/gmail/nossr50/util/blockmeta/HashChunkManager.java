@@ -240,15 +240,15 @@ public class HashChunkManager implements ChunkManager {
         cStore.set(ix, y, iz, value);
     }
 
-    private CoordinateKey blockCoordinateToChunkKey(@NotNull UUID worldUid, int x, int y, int z) {
+    private @NotNull CoordinateKey blockCoordinateToChunkKey(@NotNull UUID worldUid, int x, int y, int z) {
         return toChunkKey(worldUid, x >> 4, z >> 4);
     }
 
-    private CoordinateKey toChunkKey(@NotNull UUID worldUid, int cx, int cz){
+    private @NotNull CoordinateKey toChunkKey(@NotNull UUID worldUid, int cx, int cz){
         return new CoordinateKey(worldUid, cx, cz);
     }
 
-    private CoordinateKey toRegionKey(@NotNull UUID worldUid, int cx, int cz) {
+    private @NotNull CoordinateKey toRegionKey(@NotNull UUID worldUid, int cx, int cz) {
         // Compute region index (32x32 chunk regions)
         int rx = cx >> 5;
         int rz = cz >> 5;
