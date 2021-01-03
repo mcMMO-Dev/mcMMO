@@ -448,6 +448,10 @@ public class PlayerListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
+        if(Misc.isNPCEntityExcludingVillagers(event.getEntity())) {
+            return;
+        }
+
         if(event.getEntity() instanceof Player)
         {
             Player player = (Player) event.getEntity();
@@ -463,13 +467,12 @@ public class PlayerListener implements Listener {
                 return;
             }
 
+            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+
             //Profile not loaded
-            if(mcMMO.getUserManager().queryPlayer(player) == null)
-            {
+            if(mmoPlayer == null) {
                 return;
             }
-
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();
@@ -525,18 +528,32 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
 
         if(mmoPlayer == null) {
             return;
         }
 
-        //TODO: There's an issue with using Async saves on player quit
-        //TODO: Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
-        mcMMO.getUserManager().saveUserWithDelay(mmoPlayer.getMMOPlayerData(), false, 20);
-
-        mcMMO.getUserManager().cleanupPlayer(mmoPlayer); //Handles cleaning up the player when their profile is no longer needed
+        mcMMO.getUserManager().saveUserImmediately(mmoPlayer, mcMMO.isServerShutdownExecuted());
+        //Use a sync save if the server is shutting down to avoid race conditions
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        //TODO: Make sure this cleans up
+        mmoPlayer.logout(mcMMO.isServerShutdownExecuted());
     }
 
     /**

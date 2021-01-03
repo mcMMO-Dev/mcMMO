@@ -182,11 +182,14 @@ public final class BlockUtils {
      * @return true if the block should affected by Super Breaker, false
      * otherwise
      */
-    public static Boolean affectedBySuperBreaker(BlockState blockState) {
+    public static boolean affectedBySuperBreaker(BlockState blockState) {
+        if(mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
+            return true;
+
         if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, blockState.getBlockData()))
             return true;
 
-        return isOre(blockState) || mcMMO.getModManager().isCustomMiningBlock(blockState);
+        return mcMMO.getModManager().isCustomMiningBlock(blockState);
     }
 
     /**

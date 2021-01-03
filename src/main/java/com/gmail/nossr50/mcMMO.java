@@ -91,6 +91,8 @@ public class mcMMO extends JavaPlugin {
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
     private static SkillRegister skillRegister;
+    private static TransientEntityTracker transientEntityTracker;
+    private static boolean serverShutdownExecuted = false;
 
     /* Adventure */
     private static BukkitAudiences audiences;
@@ -299,6 +301,9 @@ public class mcMMO extends JavaPlugin {
         chatManager = new ChatManager(this);
 
         commandManager = new CommandManager(this);
+
+        transientEntityTracker = new TransientEntityTracker();
+        setServerShutdown(false); //Reset flag, used to make decisions about async saves
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -334,6 +339,10 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        setServerShutdown(true);
+        //TODO: Write code to catch unfinished async save tasks, for now we just hope they finish in time, which they should in most cases
+        mcMMO.p.getLogger().info("Server shutdown has been executed, saving and cleaning up data...");
+
         try {
             userManager.saveAllSync();      // Make sure to save player information if the server shuts down
             userManager.clearAll();
@@ -346,16 +355,10 @@ public class mcMMO extends JavaPlugin {
 
             formulaManager.saveFormula();
             holidayManager.saveAnniversaryFiles();
-            placeStore.cleanUp();       // Cleanup empty metadata stores
             placeStore.closeAll();
         }
 
         catch (Exception e) { e.printStackTrace(); }
-
-        debug("Canceling all tasks...");
-        getServer().getScheduler().cancelTasks(this); // This removes our tasks
-        debug("Unregister all events...");
-        HandlerList.unregisterAll(this); // Cancel event registrations
 
         if (Config.getInstance().getBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
@@ -375,6 +378,11 @@ public class mcMMO extends JavaPlugin {
                 }
             }
         }
+
+        debug("Canceling all tasks...");
+        getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        debug("Unregister all events...");
+        HandlerList.unregisterAll(this); // Cancel event registrations
 
         databaseManager.onDisable();
         debug("Was disabled."); // How informative!
@@ -703,6 +711,19 @@ public class mcMMO extends JavaPlugin {
     public @NotNull CommandManager getCommandManager() {
         return commandManager;
     }
+
+    public static TransientEntityTracker getTransientEntityTracker() {
+        return transientEntityTracker;
+    }
+
+    public static synchronized boolean isServerShutdownExecuted() {
+        return serverShutdownExecuted;
+    }
+
+    private static synchronized void setServerShutdown(boolean bool) {
+        serverShutdownExecuted = bool;
+    }
+
 
     public @NotNull SkillRegister getSkillRegister() { return skillRegister; }
 }

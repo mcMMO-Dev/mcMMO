@@ -32,17 +32,13 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TamingManager extends SkillManager {
     //TODO: Temporary static cache, will be changed in 2.2
     private static HashMap<Material, CallOfTheWildType> summoningItems;
     private static HashMap<CallOfTheWildType, TamingSummon> cotwSummonDataProperties;
     private long lastSummonTimeStamp;
-
-    private HashMap<CallOfTheWildType, List<TrackedTamingEntity>> playerSummonedEntities;
 
     public TamingManager(@NotNull OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.TAMING);
@@ -55,18 +51,10 @@ public class TamingManager extends SkillManager {
         lastSummonTimeStamp = 0L;
 
         //Init per-player tracking of summoned entities
-        initPerPlayerSummonTracking();
+        mcMMO.getTransientEntityTracker().initPlayer(mmoPlayer.getPlayer());
 
         //Hacky stuff used as a band-aid
         initStaticCaches();
-    }
-
-    private void initPerPlayerSummonTracking() {
-        playerSummonedEntities = new HashMap<>();
-
-        for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-            playerSummonedEntities.put(callOfTheWildType, new ArrayList<>());
-        }
     }
 
     private void initStaticCaches() {
@@ -503,58 +491,12 @@ public class TamingManager extends SkillManager {
         return summoningItems.containsKey(itemStack.getType());
     }
 
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private int getAmountCurrentlySummoned(CallOfTheWildType callOfTheWildType) {
-        //The tracker is unreliable so validate its contents first
-        recalibrateTracker();
-
-        return playerSummonedEntities.get(callOfTheWildType).size();
+    private int getAmountCurrentlySummoned(@NotNull CallOfTheWildType callOfTheWildType) {
+        return mcMMO.getTransientEntityTracker().getAmountCurrentlySummoned(getPlayer().getUniqueId(), callOfTheWildType);
     }
 
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
     private void addToTracker(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType) {
-        TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity, callOfTheWildType, this);
-
-        playerSummonedEntities.get(callOfTheWildType).add(trackedEntity);
-    }
-
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    public List<TrackedTamingEntity> getTrackedEntities(CallOfTheWildType callOfTheWildType) {
-        return playerSummonedEntities.get(callOfTheWildType);
-    }
-
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    public void removeFromTracker(@NotNull TrackedTamingEntity trackedEntity) {
-        playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).remove(trackedEntity);
-
-        NotificationManager.sendPlayerInformationChatOnly(getPlayer(), "Taming.Summon.COTW.TimeExpired", StringUtils.getPrettyEntityTypeString(trackedEntity.getLivingEntity().getType()));
-    }
-
-    /**
-     * Builds a new tracked list by determining which tracked things are still valid
-     */
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private void recalibrateTracker() {
-        for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-            ArrayList<TrackedTamingEntity> validEntities = getValidTrackedEntities(callOfTheWildType);
-            playerSummonedEntities.put(callOfTheWildType, validEntities); //Replace the old list with the new list
-        }
-    }
-
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private @NotNull ArrayList<TrackedTamingEntity> getValidTrackedEntities(@NotNull CallOfTheWildType callOfTheWildType) {
-        ArrayList<TrackedTamingEntity> validTrackedEntities = new ArrayList<>();
-
-        for(TrackedTamingEntity trackedTamingEntity : getTrackedEntities(callOfTheWildType)) {
-            LivingEntity livingEntity = trackedTamingEntity.getLivingEntity();
-
-            //Remove from existence
-            if(livingEntity != null && livingEntity.isValid()) {
-                validTrackedEntities.add(trackedTamingEntity);
-            }
-        }
-
-        return validTrackedEntities;
+        mcMMO.getTransientEntityTracker().registerEntity(getPlayer().getUniqueId(), new TrackedTamingEntity(livingEntity, callOfTheWildType, getPlayer()));
     }
 
     /**
@@ -563,20 +505,6 @@ public class TamingManager extends SkillManager {
      */
     //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
     public void cleanupAllSummons() {
-        for(List<TrackedTamingEntity> trackedTamingEntities : playerSummonedEntities.values()) {
-            for(TrackedTamingEntity trackedTamingEntity : trackedTamingEntities) {
-                LivingEntity livingEntity = trackedTamingEntity.getLivingEntity();
-
-                //Remove from existence
-                if(livingEntity != null && livingEntity.isValid()) {
-                    mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
-                    livingEntity.setHealth(0);
-                    livingEntity.remove();
-                }
-            }
-
-            //Clear the list
-            trackedTamingEntities.clear();
-        }
+        mcMMO.getTransientEntityTracker().cleanupPlayer(getPlayer());
     }
 }

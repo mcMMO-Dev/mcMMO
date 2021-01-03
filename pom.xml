@@ -125,6 +125,10 @@
 <!--                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>-->
                     <relocations>
                         <relocation>
+                            <pattern>net.kyori.examination</pattern>
+                            <shadedPattern>com.gmail.nossr50.kyori.examination</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>net.kyori.adventure</pattern>
                             <shadedPattern>com.gmail.nossr50.mcmmo.kyori.adventure</shadedPattern>
                         </relocation>

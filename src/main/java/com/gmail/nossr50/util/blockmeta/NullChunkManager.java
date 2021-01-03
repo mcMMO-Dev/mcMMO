@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.blockmeta;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class NullChunkManager implements ChunkManager {
 
@@ -10,53 +11,30 @@ public class NullChunkManager implements ChunkManager {
     public void closeAll() {}
 
     @Override
-    public void saveChunk(int cx, int cz, World world) {}
+    public void chunkUnloaded(int cx, int cz, @NotNull World world) {}
 
     @Override
-    public void chunkUnloaded(int cx, int cz, World world) {}
+    public void unloadWorld(@NotNull World world) {}
 
     @Override
-    public void saveWorld(World world) {}
-
-    @Override
-    public void unloadWorld(World world) {}
-
-    @Override
-    public void saveAll() {}
-
-    @Override
-    public boolean isTrue(int x, int y, int z, World world) {
+    public boolean isTrue(@NotNull Block block) {
         return false;
     }
 
     @Override
-    public boolean isTrue(Block block) {
+    public boolean isTrue(@NotNull BlockState blockState) {
         return false;
     }
 
     @Override
-    public boolean isTrue(BlockState blockState) {
-        return false;
-    }
+    public void setTrue(@NotNull Block block) {}
 
     @Override
-    public void setTrue(int x, int y, int z, World world) {}
+    public void setTrue(@NotNull BlockState blockState) {}
 
     @Override
-    public void setTrue(Block block) {}
+    public void setFalse(@NotNull Block block) {}
 
     @Override
-    public void setTrue(BlockState blockState) {}
-
-    @Override
-    public void setFalse(int x, int y, int z, World world) {}
-
-    @Override
-    public void setFalse(Block block) {}
-
-    @Override
-    public void setFalse(BlockState blockState) {}
-
-    @Override
-    public void cleanUp() {}
+    public void setFalse(@NotNull BlockState blockState) {}
 }
