@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.random;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
 import com.gmail.nossr50.util.EventUtils;
@@ -20,6 +19,7 @@ public class RandomChanceUtil {
     public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%");
     //public static final DecimalFormat decimal = new DecimalFormat("##0.00");
     public static final double LINEAR_CURVE_VAR = 100.0D;
+    public static final double LUCKY_MODIFIER = 1.333D;
 
     /**
      * This method is the final step in determining if a Sub-Skill / Secondary Skill in mcMMO successfully activates either from chance or otherwise
@@ -142,7 +142,7 @@ public class RandomChanceUtil {
         return chanceOfSuccess;
     }*/
 
-    private static double calculateChanceOfSuccess(@NotNull RandomChanceSkill randomChance) {
+    public static double calculateChanceOfSuccess(@NotNull RandomChanceSkill randomChance) {
         double skillLevel = randomChance.getSkillLevel();
         double maximumProbability = randomChance.getProbabilityCap();
         double maximumBonusLevel = randomChance.getMaximumBonusLevelCap();
@@ -163,7 +163,7 @@ public class RandomChanceUtil {
         return chanceOfSuccess;
     }
 
-    private static double calculateChanceOfSuccess(@NotNull RandomChanceSkillStatic randomChance) {
+    public static double calculateChanceOfSuccess(@NotNull RandomChanceSkillStatic randomChance) {
         double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), 100, 100);
 
         //Add Luck
@@ -304,15 +304,23 @@ public class RandomChanceUtil {
 
     public static double addLuck(@NotNull Player player, @NotNull PrimarySkillType primarySkillType, double chance) {
         if (Permissions.lucky(player, primarySkillType))
-            return chance * 1.333D;
+            return chance * LUCKY_MODIFIER;
         else
             return chance;
     }
 
     public static double addLuck(boolean isLucky, double chance) {
         if (isLucky)
-            return chance * 1.333D;
+            return chance * LUCKY_MODIFIER;
         else
             return chance;
+    }
+
+    public static double getMaximumProbability(@NotNull SubSkillType subSkillType) {
+        return AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
+    }
+
+    public static double getMaxBonusLevelCap(@NotNull SubSkillType subSkillType) {
+        return AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
     }
 }

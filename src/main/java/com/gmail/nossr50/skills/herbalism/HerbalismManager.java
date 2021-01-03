@@ -740,7 +740,6 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-
         if (!playerInventory.containsAtLeast(seedStack, 1)) {
             return false;
         }

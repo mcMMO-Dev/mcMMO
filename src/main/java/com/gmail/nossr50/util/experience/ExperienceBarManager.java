@@ -149,7 +149,7 @@ public class ExperienceBarManager {
     private void informPlayer(@NotNull ExperienceBarManager.@NotNull XPBarSettingTarget settingTarget, @Nullable PrimarySkillType skillType) {
         //Inform player of setting change
         if(settingTarget != XPBarSettingTarget.RESET) {
-            NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.XPBar.SettingChanged", skillType.getName(), settingTarget.toString());
+            NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.XPBar.SettingChanged", skillType.getLocalizedName(), settingTarget.toString());
         } else {
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.XPBar.Reset");
         }

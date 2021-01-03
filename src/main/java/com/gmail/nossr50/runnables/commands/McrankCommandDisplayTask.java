@@ -53,7 +53,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 //            }
 
             rank = skills.get(skill);
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getLocalizedName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
         }
 
         rank = skills.get(null);

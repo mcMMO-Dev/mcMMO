@@ -45,7 +45,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(PrimarySkillType skill) {
         this.skill = skill;
-        skillName = skill.getName();
+        skillName = skill.getLocalizedName();
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -173,10 +173,10 @@ public abstract class SkillCommand implements TabExecutor {
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getLocalizedName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY).append(", ");
                 } else {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getLocalizedName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 

@@ -937,7 +937,7 @@ public class PlayerListener implements Listener {
             // Do these ACTUALLY have to be lower case to work properly?
             for (PrimarySkillType skill : PrimarySkillType.values()) {
                 String skillName = skill.toString().toLowerCase(Locale.ENGLISH);
-                String localizedName = skill.getName().toLowerCase(Locale.ENGLISH);
+                String localizedName = skill.getLocalizedName().toLowerCase(Locale.ENGLISH);
 
                 if (lowerCaseCommand.equals(localizedName)) {
                     event.setMessage(message.replace(command, skillName));

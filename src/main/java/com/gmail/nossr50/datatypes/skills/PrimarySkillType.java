@@ -234,8 +234,12 @@ public enum PrimarySkillType {
         return null;
     }
 
-    public String getName() {
+    public String getLocalizedName() {
         return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
+    }
+
+    public String getName() {
+        return StringUtils.getCapitalized(StringUtils.getCapitalized(this.toString()));
     }
 
     public boolean getPermissions(Player player) {

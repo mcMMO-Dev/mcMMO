@@ -143,7 +143,7 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getLocalizedName()));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
@@ -155,7 +155,7 @@ public class SkillresetCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedName(), playerName));
         }
     }
 

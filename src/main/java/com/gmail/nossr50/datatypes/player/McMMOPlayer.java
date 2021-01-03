@@ -57,7 +57,6 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -193,7 +192,7 @@ public class McMMOPlayer implements Identified {
         if(hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getName());
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getLocalizedName());
         }
 
         //Updates from Party sources
@@ -828,7 +827,7 @@ public class McMMOPlayer implements Identified {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getAbility()) - getSkillLevel(skill);
 
             //Inform the player they are not yet skilled enough
-            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
+            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getLocalizedName());
             return;
         }
 
@@ -984,7 +983,7 @@ public class McMMOPlayer implements Identified {
         String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
 
         NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",
-                primarySkillType.getName(),
+                primarySkillType.getLocalizedName(),
                 allCDStr);
     }
 
