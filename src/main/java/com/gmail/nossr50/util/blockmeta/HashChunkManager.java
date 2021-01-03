@@ -38,7 +38,7 @@ public class HashChunkManager implements ChunkManager {
             rf.close();
         regionMap.clear();
     }
-    
+
     private synchronized @Nullable ChunkStore readChunkStore(@NotNull World world, int cx, int cz) throws IOException {
         McMMOSimpleRegionFile rf = getReadableSimpleRegionFile(world, cx, cz);
         if (rf == null)
