@@ -7,18 +7,19 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class RandomChanceSkill implements RandomChanceExecution {
 
-    protected final PrimarySkillType primarySkillType;
-    protected final SubSkillType subSkillType;
+    protected final @NotNull PrimarySkillType primarySkillType;
+    protected final @NotNull SubSkillType subSkillType;
     protected final double probabilityCap;
     protected final boolean isLucky;
     protected int skillLevel;
     protected double resultModifier;
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType, double resultModifier)
-    {
+    public RandomChanceSkill(@Nullable Player player, @NotNull SubSkillType subSkillType, double resultModifier) {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
@@ -30,7 +31,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = 0;
         }
 
-        if(player != null)
+        if (player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
@@ -38,8 +39,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.resultModifier = resultModifier;
     }
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType)
-    {
+    public RandomChanceSkill(@Nullable Player player, @NotNull SubSkillType subSkillType) {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
@@ -51,7 +51,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = 0;
         }
 
-        if(player != null)
+        if (player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
@@ -59,9 +59,8 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.resultModifier = 1.0D;
     }
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap)
-    {
-        if(hasCap)
+    public RandomChanceSkill(@Nullable Player player, @NotNull SubSkillType subSkillType, boolean hasCap) {
+        if (hasCap)
             this.probabilityCap = AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
         else
             this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
@@ -76,7 +75,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = 0;
         }
 
-        if(player != null)
+        if (player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
@@ -84,9 +83,8 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.resultModifier = 1.0D;
     }
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap, double resultModifier)
-    {
-        if(hasCap)
+    public RandomChanceSkill(@Nullable Player player, @NotNull SubSkillType subSkillType, boolean hasCap, double resultModifier) {
+        if (hasCap)
             this.probabilityCap = AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
         else
             this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
@@ -101,7 +99,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = 0;
         }
 
-        if(player != null)
+        if (player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
@@ -111,23 +109,25 @@ public class RandomChanceSkill implements RandomChanceExecution {
 
     /**
      * The subskill corresponding to this RandomChanceSkill
+     *
      * @return this subskill
      */
-    public SubSkillType getSubSkill() {
+    public @NotNull SubSkillType getSubSkill() {
         return subSkillType;
     }
 
     /**
      * Gets the skill level of the player who owns this RandomChanceSkill
+     *
      * @return the current skill level relating to this RandomChanceSkill
      */
-    public int getSkillLevel()
-    {
+    public int getSkillLevel() {
         return skillLevel;
     }
 
     /**
      * Modify the skill level used for this skill's RNG calculations
+     *
      * @param newSkillLevel new skill level
      */
     public void setSkillLevel(int newSkillLevel) {
