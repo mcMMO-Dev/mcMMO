@@ -62,7 +62,7 @@ public class SwordsManager extends SkillManager {
      */
     public void ruptureCheck(@NotNull LivingEntity target) throws IllegalStateException {
         if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mmoPlayer.getAttackStrength())) {
+            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
 
                 if (target instanceof Player) {
                     Player defender = (Player) target;
@@ -98,7 +98,7 @@ public class SwordsManager extends SkillManager {
         return 0;
     }
 
-    public int getToolTier(ItemStack itemStack)
+    public int getToolTier(@NotNull ItemStack itemStack)
     {
         if(ItemUtils.isNetheriteTool(itemStack))
             return 5;
@@ -128,7 +128,7 @@ public class SwordsManager extends SkillManager {
      * @param attacker The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void counterAttackChecks(LivingEntity attacker, double damage) {
+    public void counterAttackChecks(@NotNull LivingEntity attacker, double damage) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
@@ -146,7 +146,7 @@ public class SwordsManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
+    public void serratedStrikes(@NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
     }
 }

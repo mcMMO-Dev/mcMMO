@@ -49,7 +49,7 @@ public abstract class SkillCommand implements TabExecutor {
     public SkillCommand(@NotNull RootSkill rootSkill) {
         this.rootSkill = CoreSkills.getSkill(primarySkillType);
         this.primarySkillType = primarySkillType;
-        skillName = rootSkill.getSkillName();
+        skillName = rootSkill.getLocalizedName();
         skillGuideCommand = new SkillGuideCommand(rootSkill);
     }
 
@@ -177,10 +177,10 @@ public abstract class SkillCommand implements TabExecutor {
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getSkillName(), mmoPlayer.getExperienceHandler().getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getLocalizedName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY).append(", ");
                 } else {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getSkillName(), mmoPlayer.getExperienceHandler().getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getLocalizedName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 

@@ -161,7 +161,7 @@ public abstract class ExperienceCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", rootSkill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", rootSkill.getLocalizedName(), playerName));
         }
     }
 

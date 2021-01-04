@@ -1,10 +1,11 @@
-import com.gmail.nossr50.util.blockmeta.*;
+package com.gmail.nossr50.util.blockmeta;
+
+import com.gmail.nossr50.TestUtil;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -31,7 +32,7 @@ public class ChunkStoreTest {
 
     @AfterClass
     public static void tearDownClass() {
-        recursiveDelete(tempDir);
+        TestUtil.recursiveDelete(tempDir);
     }
 
     private World mockWorld;
@@ -182,15 +183,6 @@ public class ChunkStoreTest {
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++)
                     Assert.assertTrue(expected.isTrue(x, y, z) == actual.isTrue(x, y, z));
-    }
-
-    private static void recursiveDelete(@NotNull File directoryToBeDeleted) {
-        if (directoryToBeDeleted.isDirectory()) {
-            for (File file : directoryToBeDeleted.listFiles()) {
-                recursiveDelete(file);
-            }
-        }
-        directoryToBeDeleted.delete();
     }
 
     private static byte[] serializeChunkstore(@NotNull ChunkStore chunkStore) throws IOException {

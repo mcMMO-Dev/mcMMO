@@ -3,17 +3,13 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-
-import java.io.File;
 
 public class WorldListener implements Listener {
     private final mcMMO plugin;

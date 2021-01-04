@@ -45,6 +45,6 @@ public class AddlevelsCommand extends ExperienceCommand {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, rootSkill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, rootSkill.getLocalizedName()));
     }
 }

@@ -1,7 +1,8 @@
 package com.gmail.nossr50.skills.acrobatics;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.LimitedSizeList;
+import com.gmail.nossr50.datatypes.BlockLocationHistory;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -27,13 +28,13 @@ public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(OnlineMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.ACROBATICS);
-        fallLocationMap = new LimitedSizeList(50);
+        fallLocationMap = new BlockLocationHistory(50);
     }
 
     private long rollXPCooldown = 0;
     private final long rollXPInterval = (1000 * 3); //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
-    private final LimitedSizeList fallLocationMap;
+    private final BlockLocationHistory fallLocationMap;
 
     public boolean hasFallenInLocationBefore(Location location)
     {
