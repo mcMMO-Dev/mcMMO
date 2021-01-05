@@ -1,3 +1,6 @@
+Version 2.1.170
+    Reverted a change that broke compatibility with the mcMMO papi ecloud thingy
+
 Version 2.1.169
     Fixed a few memory leaks involving arrows
     Fixed mcMMO inappropriately assigning metadata to projectiles not fired from players

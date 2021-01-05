@@ -192,7 +192,7 @@ public class McMMOPlayer implements Identified {
         if(hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getLocalizedName());
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getName());
         }
 
         //Updates from Party sources
@@ -827,7 +827,7 @@ public class McMMOPlayer implements Identified {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getAbility()) - getSkillLevel(skill);
 
             //Inform the player they are not yet skilled enough
-            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getLocalizedName());
+            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
             return;
         }
 
@@ -983,7 +983,7 @@ public class McMMOPlayer implements Identified {
         String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
 
         NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",
-                primarySkillType.getLocalizedName(),
+                primarySkillType.getName(),
                 allCDStr);
     }
 
