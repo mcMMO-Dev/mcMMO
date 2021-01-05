@@ -95,11 +95,11 @@ public enum PrimarySkillType {
                 nonChildSkills.add(skill);
             }
 
-            for(SubSkillType subSkillType : skill.subSkillTypes)
-            {
+            for(SubSkillType subSkillType : skill.subSkillTypes) {
                 subSkillNames.add(subSkillType.getNiceNameNoSpaces(subSkillType));
             }
-            names.add(skill.getName());
+
+            names.add(skill.getLocalizedName());
         }
 
         Collections.sort(names);
@@ -238,9 +238,9 @@ public enum PrimarySkillType {
         return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
 
-    public String getName() {
-        return StringUtils.getCapitalized(StringUtils.getCapitalized(this.toString()));
-    }
+//    public String getName() {
+//        return StringUtils.getCapitalized(StringUtils.getCapitalized(this.toString()));
+//    }
 
     public boolean getPermissions(Player player) {
         return Permissions.skillEnabled(player, this);
