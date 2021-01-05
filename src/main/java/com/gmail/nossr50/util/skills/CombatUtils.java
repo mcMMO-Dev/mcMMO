@@ -25,16 +25,19 @@ import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -269,6 +272,7 @@ public final class CombatUtils {
 
         //Make sure the profiles been loaded
         if(mcMMOPlayer == null) {
+            cleanupArrowMetadata(arrow);
             return;
         }
 
@@ -309,6 +313,8 @@ public final class CombatUtils {
                 "Force Multiplier: "+forceMultiplier,
                 "Initial Damage: "+initialDamage,
                 "Final Damage: "+finalDamage);
+        //Clean data
+        cleanupArrowMetadata(arrow);
     }
 
     /**
@@ -428,6 +434,9 @@ public final class CombatUtils {
 
                 if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
+                } else {
+                    //Cleanup Arrow
+                    cleanupArrowMetadata(arrow);
                 }
 
                 if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
@@ -1058,5 +1067,33 @@ public final class CombatUtils {
             double normalSpeed = attributeInstance.getBaseValue();
             attributeInstance.setBaseValue(normalSpeed * multiplier);
         }
+    }
+
+    /**
+     * Clean up metadata from a projectile
+     *
+     * @param entity projectile
+     */
+    public static void cleanupArrowMetadata(@NotNull Projectile entity) {
+        if(entity.hasMetadata(mcMMO.infiniteArrowKey)) {
+            entity.removeMetadata(mcMMO.infiniteArrowKey, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(mcMMO.bowForceKey)) {
+            entity.removeMetadata(mcMMO.bowForceKey, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(mcMMO.arrowDistanceKey)) {
+            entity.removeMetadata(mcMMO.arrowDistanceKey, mcMMO.p);
+        }
+    }
+
+    /**
+     * Clean up metadata from a projectile after a minute has passed
+     *
+     * @param entity the projectile
+     */
+    public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
+        Bukkit.getServer().getScheduler().runTaskLater(mcMMO.p, () -> { cleanupArrowMetadata(entity);}, 20*60);
     }
 }
