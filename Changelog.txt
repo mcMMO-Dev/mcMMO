@@ -1,6 +1,7 @@
 Version 2.1.169
     Fixed a few memory leaks involving arrows
     Fixed mcMMO inappropriately assigning metadata to projectiles not fired from players
+    Fix mctop not working if locale was set to something other than en_US
 
 Version 2.1.168
     Fixed an IndexOutOfBoundsException error when trying to access UserBlockTracker from an invalid range (thanks t00thpick1)
