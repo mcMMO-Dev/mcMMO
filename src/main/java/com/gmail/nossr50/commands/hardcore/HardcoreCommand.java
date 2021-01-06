@@ -59,6 +59,6 @@ public class HardcoreCommand extends HardcoreModeCommand {
             rootSkill.setHardcoreStatLossEnabled(enable);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (rootSkill == null ? "all skills" : rootSkill.getLocalizedName())));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (rootSkill == null ? "all skills" : rootSkill.getName())));
     }
 }

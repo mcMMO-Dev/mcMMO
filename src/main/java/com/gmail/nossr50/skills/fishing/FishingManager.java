@@ -265,7 +265,7 @@ public class FishingManager extends SkillManager {
             int convertedLureBonus = 0;
 
             //This avoids a Minecraft bug where lure levels above 3 break fishing
-            if(lureLevel > 3) {
+            if(lureLevel > 0) {
                 masterAnglerCompatibilityLayer.setApplyLure(fishHook, false);
                 convertedLureBonus = lureLevel * 100;
             }

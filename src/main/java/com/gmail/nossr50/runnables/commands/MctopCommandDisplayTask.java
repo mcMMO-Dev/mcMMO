@@ -63,10 +63,10 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         }
         else {
             if(sender instanceof Player) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getLocalizedName()));
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
             }
             else {
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getLocalizedName())));
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName())));
             }
         }
 

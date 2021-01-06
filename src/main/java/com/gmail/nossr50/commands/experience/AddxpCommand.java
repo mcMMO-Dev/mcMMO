@@ -46,6 +46,6 @@ public class AddxpCommand extends ExperienceCommand {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, rootSkill.getLocalizedName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, rootSkill.getName()));
     }
 }

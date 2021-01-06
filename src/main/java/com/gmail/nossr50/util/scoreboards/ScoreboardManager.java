@@ -94,7 +94,7 @@ public class ScoreboardManager {
             int i = 0;
             for (PrimarySkillType type : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getLocalizedName(), false));
+                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
 
                 if (type.getSuperAbilityType() != null) {
                     abilityLabelBuilder.put(type.getSuperAbilityType(), getShortenedName(colors.get(i) + type.getSuperAbilityType().getLocalizedName()));
@@ -116,7 +116,7 @@ public class ScoreboardManager {
         else {
             for (PrimarySkillType type : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getLocalizedName()));
+                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
 
                 if (type.getSuperAbilityType() != null) {
                     abilityLabelBuilder.put(type.getSuperAbilityType(), formatAbility(type.getSuperAbilityType().getLocalizedName()));

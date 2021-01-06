@@ -124,24 +124,26 @@ public class EntityListener implements Listener {
                 if(!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
+
+            Entity projectile = event.getProjectile();
+
+            //Should be noted that there are API changes regarding Arrow from 1.13.2 to current versions of the game
+            if (!(projectile instanceof Arrow)) {
+                return;
+            }
+
+            ItemStack bow = event.getBow();
+
+            if (bow != null
+                    && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+                projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
+            }
+
+            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+            projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+            //Cleanup metadata in 1 minute in case normal collection falls through
+            CombatUtils.cleanupArrowMetadata((Projectile) projectile);
         }
-
-        Entity projectile = event.getProjectile();
-
-        //Should be noted that there are API changes regarding Arrow from 1.13.2 to current versions of the game
-        if (!(projectile instanceof Arrow)) {
-            return;
-        }
-
-        ItemStack bow = event.getBow();
-
-        if (bow != null
-                && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
-            projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
-        }
-
-        projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
-        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -169,6 +171,8 @@ public class EntityListener implements Listener {
             EntityType entityType = projectile.getType();
 
             if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
+                CombatUtils.delayArrowMetaCleanup(projectile); //Cleans up metadata 1 minute from now in case other collection methods fall through
+
                 if (!projectile.hasMetadata(mcMMO.bowForceKey))
                     projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, 1.0));
 
@@ -243,7 +247,6 @@ public class EntityListener implements Listener {
         Block block = event.getBlock();
         Entity entity = event.getEntity();
         Material notYetReplacedType = block.getState().getType(); //because its from getState() this is the block that hasn't been changed yet, which is likely air/lava/water etc
-
 
         // When the event is fired for the falling block that changes back to a
         // normal block
@@ -463,13 +466,14 @@ public class EntityListener implements Listener {
             LivingEntity livingEntity = (LivingEntity) entityDamageEvent.getEntity();
 
             if(entityDamageEvent.getFinalDamage() >= livingEntity.getHealth()) {
-
-                /*
-                 * This sets entity names back to whatever they are supposed to be
-                 */
+                //This sets entity names back to whatever they are supposed to be
                 CombatUtils.fixNames(livingEntity);
-                }
             }
+        }
+
+        if(entityDamageEvent.getDamager() instanceof Projectile) {
+            CombatUtils.cleanupArrowMetadata((Projectile) entityDamageEvent.getDamager());
+        }
     }
 
     public boolean checkParties(Cancellable event, Player defendingPlayer, Player attackingPlayer) {

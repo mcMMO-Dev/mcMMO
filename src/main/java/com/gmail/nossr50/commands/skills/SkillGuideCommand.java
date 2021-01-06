@@ -22,7 +22,7 @@ public class SkillGuideCommand implements CommandExecutor {
 
     public SkillGuideCommand(@NotNull RootSkill rootSkill) {
         this.rootSkill = rootSkill;
-        header = LocaleLoader.getString("Guides.Header", rootSkill.getLocalizedName());
+        header = LocaleLoader.getString("Guides.Header", rootSkill.getName());
         guide = getGuide(rootSkill);
     }
 
