@@ -1,3 +1,5 @@
+Version 2.1.171
+    Axes can now replant cocoa plants (thanks Lyther)
 Version 2.1.170
     Reverted a change that broke compatibility with the mcMMO papi ecloud thingy
 
