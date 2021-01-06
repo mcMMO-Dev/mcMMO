@@ -16,6 +16,7 @@ import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -141,7 +142,9 @@ public final class Permissions {
      * SKILLS
      */
 
+    @Deprecated
     public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH)); }
+    public static boolean skillEnabled(@NotNull Permissible permissible, @NotNull RootSkill rootSkill) {return permissible.hasPermission("mcmmo.skills." + rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH)); }
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase(Locale.ENGLISH) + ".vanillaxpboost"); }
     public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) { return permissible.hasPermission(subSkillType.getPermissionNodeAddress()); }
     public static boolean isSubSkillEnabled(Permissible permissible, AbstractSubSkill abstractSubSkill) { return permissible.hasPermission(abstractSubSkill.getPermissionNode()); }

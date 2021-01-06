@@ -22,6 +22,7 @@ import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillIdentity;
 import com.neetgames.mcmmo.skill.SuperSkill;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,8 +32,9 @@ import java.util.stream.Collectors;
 
 public class CoreSkills {
 
+    //TODO: Should these be immutable?
     private static final @NotNull ImmutableSet<CoreRootSkill> CORE_ROOT_SKILLS;
-    private static final @NotNull ImmutableSet<CoreRootSkill> CORE_CHILD_SKILLS; //Could make this a marker interface
+    private static final @NotNull ImmutableSet<CoreRootSkill> CORE_CHILD_SKILLS;
     private static final @NotNull ImmutableSet<CoreRootSkill> CORE_NON_CHILD_SKILLS;
     private static final @NotNull ImmutableSet<CoreSkill> CORE_SUB_SKILLS;
     private static final @NotNull ImmutableSet<SuperSkill> CORE_SUPER_SKILLS;
@@ -47,10 +49,60 @@ public class CoreSkills {
     FISHING_ID, HERBALISM_ID, MINING_ID, REPAIR_ID, SALVAGE_ID, SMELTING_ID, SWORDS_ID, TAMING_ID, UNARMED_ID,
     WOODCUTTING_ID, TRIDENTS_ID, CROSSBOWS_ID;
 
-    public static final @NotNull SuperSkill SKULL_SPLITTER, GIGA_DRILL_BREAKER, GREEN_TERRA, SUPER_BREAKER,
-            BLAST_MINING, SERRATED_STRIKES, CALL_OF_THE_WILD, BERSERK, TREE_FELLER, TRIDENTS_SUPER, SUPER_SHOT_GUN;
+//    public static final @NotNull SuperSkill SKULL_SPLITTER, GIGA_DRILL_BREAKER, GREEN_TERRA, SUPER_BREAKER,
+//            BLAST_MINING, SERRATED_STRIKES, CALL_OF_THE_WILD, BERSERK, TREE_FELLER, TRIDENTS_SUPER, SUPER_SHOT_GUN;
 
-    public static final @NotNull CoreSkill ROLL;
+//    public static @NotNull CoreSkill
+//            /* Acrobatics */
+//            DODGE, ROLL,
+//
+//            /* Alchemy */
+//            CATALYSIS, CONCOCTIONS,
+//
+//            /* Archery */
+//            ARROW_RETRIEVAL, DAZE, SKILLSHOT, LIMIT_BREAK_ARCHERY,
+//
+//            /* Axes */
+//            ARMOR_IMPACT, AXE_MASTERY, LIMIT_BREAK_AXES, CRITICAL_STRIKES, GREATER_IMPACT, SKULL_SPLITTER,
+//
+//            /* Excavation */
+//            ARCHAEOLOGY, GIGA_DRILL_BREAKER,
+//
+//            /* Fishing */
+//            FISHERMANS_DIET, ICE_FISHING, MAGIC_HUNTER, MASTER_ANGLER, TREASURE_HUNTER, SHAKE,
+//
+//            /* Herbalism */
+//            DOUBLE_DROPS_HERBALISM, FARMERS_DIET, GREEN_TERRA, GREEN_THUMB, HYLIAN_LUCK, SHROOM_THUMB,
+//
+//            /* Mining */
+//            BIGGER_BOMBS, BLAST_MINING, DEMOLITIONS_EXPERTISE, DOUBLE_DROPS, SUPER_BREAKER,
+//
+//            /* Repair */
+//            ARCANE_FORGING, REPAIR_MASTERY, SUPER_REPAIR,
+//
+//            /* Salvage */
+//            SCRAP_COLLECTOR, ARCANE_SALVAGE,
+//
+//            /* Smelting */
+//            FUEL_EFFICIENCY, SECOND_SMELT, UNDERSTANDING_THE_ART,
+//
+//            /* Swords */
+//            COUNTER_ATTACK, RUPTURE, SERRATED_STRIKES, STAB, LIMIT_BREAK_SWORDS,
+//
+//            /* Taming */
+//            BEAST_LORE, CALL_OF_THE_WILD, ENVIRONMENTALLY_AWARE, FAST_FOOD_SERVICE, GORE, HOLY_HOUND, PUMMEL, SHARPENED_CLAWS, SHOCK_PROOF, THICK_FUR,
+//
+//            /* Archery */
+//            ARROW_DEFLECT, BERSERK, BLOCK_CRACKER, DISARM, STEEL_ARM_STYLE, IRON_GRIP, LIMIT_BREAK_UNARMED,
+//
+//            /* Woodcutting */
+//            KNOCK_ON_WOOD, HARVEST_LUMBER, LEAF_BLOWER, TREE_FELLER,
+//
+//            /* Tridents */
+//            MULTI_TASKING, LIMIT_BREAK_TRIDENTS,
+//
+//            /* Crossbows */
+//            SUPER_SHOTGUN, LIMIT_BREAK_CROSSBOWS;
 
     private static final @NotNull HackySkillMappings hackySkillMappings = new HackySkillMappings();
 
@@ -138,35 +190,41 @@ public class CoreSkills {
         CORE_NON_CHILD_SKILLS = ImmutableSet.copyOf(generateNonChildSkillSet());
         CORE_SUB_SKILLS = ImmutableSet.copyOf(subSkillSet);
         CORE_SUPER_SKILLS = ImmutableSet.copyOf(superSkillSet);
+
+        /*
+         * Init core skills
+         */
+
+
     }
 
     /**
      * Returns a set of built in {@link RootSkill}s for mcMMO
      * No guarantees for whether or not the skills are registered or active or inactive
      *
-     * @return a set of all root skills built into mcMMO
+     * @return a set of all {@link RootSkill} built into mcMMO
      */
     public static @NotNull Set<CoreRootSkill> getCoreRootSkills() {
         return CORE_ROOT_SKILLS;
     }
 
     /**
-     * Returns a set of built in skills for mcMMO
+     * Returns a set of built in {@link CoreSkill}s for mcMMO
      * No guarantees for whether or not the skills are registered or active or inactive
      *
-     * @return a set of all root skills built into mcMMO
+     * @return a set of all {@link CoreSkill} built into mcMMO
      */
     public static @NotNull Set<CoreSkill> getCoreSkills() {
         return CORE_SUB_SKILLS;
     }
 
     /**
-     * Returns a set of built in skills for mcMMO
+     * Returns a set of built in {@link SuperSkill}s for mcMMO
      * No guarantees for whether or not the skills are registered or active or inactive
      *
-     * @return a set of all root skills built into mcMMO
+     * @return a set of all {@link SuperSkill} built into mcMMO
      */
-    public static @NotNull Set<SuperSkill> getCoreSkills() {
+    public static @NotNull Set<SuperSkill> getCoreSuperSkills() {
         return CORE_SUPER_SKILLS;
     }
 

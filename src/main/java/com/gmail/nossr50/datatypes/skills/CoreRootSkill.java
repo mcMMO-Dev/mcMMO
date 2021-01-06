@@ -6,6 +6,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.neetgames.mcmmo.player.MMOPlayer;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.neetgames.mcmmo.skill.AbstractRootSkill;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -47,8 +48,8 @@ public class CoreRootSkill extends AbstractRootSkill {
     }
 
     @Override
-    public boolean isRootSkillPermitted(@NotNull MMOPlayer mmoPlayer) {
-        return Permissions.skillEnabled(mmoPlayer, this);
+    public boolean isRootSkillPermitted(@NotNull OnlineMMOPlayer mmoPlayer) {
+        return Permissions.skillEnabled((Player) mmoPlayer.getServerAPIPlayerImpl(), this);
     }
 
     @Override
