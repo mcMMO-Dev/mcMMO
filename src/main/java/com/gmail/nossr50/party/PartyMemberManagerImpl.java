@@ -1,7 +1,11 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.Config;
 import com.neetgames.mcmmo.party.Party;
+import com.neetgames.mcmmo.party.PartyMember;
+import com.neetgames.mcmmo.party.PartyMemberManager;
+import com.neetgames.mcmmo.party.PartyMemberRank;
+import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.OfflinePlayer;
@@ -11,13 +15,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class PartyMemberManager {
+public class PartyMemberManagerImpl implements PartyMemberManager {
 
     private final @NotNull PersistentPartyData persistentPartyData;
     private final @NotNull HashMap<UUID, PartyMember> partyMemberMap;
     private @Nullable PartyMember partyLeaderRef;
     
-    public PartyMemberManager(@NotNull PersistentPartyData persistentPartyData) {
+    public PartyMemberManagerImpl(@NotNull PersistentPartyData persistentPartyData) {
         this.persistentPartyData = persistentPartyData;
         this.partyMemberMap = new HashMap<>();
         initPartyLeaderRef();
@@ -28,6 +32,7 @@ public class PartyMemberManager {
      *
      * @return all party members
      */
+    @Override
     public @NotNull Set<PartyMember> getPartyMembers() {
         return persistentPartyData.getPartyMembers();
     }
@@ -38,6 +43,7 @@ public class PartyMemberManager {
      * @param playerUUID target UUID
      * @return the party member if they exist, otherwise null
      */
+    @Override
     public @Nullable PartyMember getPartyMember(@NotNull UUID playerUUID) {
         return partyMemberMap.get(playerUUID);
     }
@@ -50,10 +56,11 @@ public class PartyMemberManager {
      * @param playerUUID target player's uuid
      * @param partyMemberRank target rank
      */
+    @Override
     public void addPartyMember(@NotNull UUID playerUUID, @NotNull PartyMemberRank partyMemberRank) {
         //TODO: Prevent adding multiple leaders
         //TODO: Call event
-        PartyMember partyMember = new PartyMember(playerUUID, partyMemberRank);
+        PartyMember partyMember = new PartyMemberImpl(playerUUID, partyMemberRank);
         persistentPartyData.getPartyMembers().add(partyMember);
         partyMemberMap.put(playerUUID, partyMember);
     }
@@ -62,10 +69,10 @@ public class PartyMemberManager {
      * Get party members that are "Visible" to a target {@link Player}
      *
      * @param player target {@link Player}
-     * @return returns a {@link HashSet<PartyMember>} which are visible to the player
+     * @return returns a {@link HashSet< PartyMember >} which are visible to the player
      */
-    public @NotNull HashSet<PartyMember> getVisibleMembers(@NotNull Player player)
-    {
+    @Override
+    public @NotNull HashSet<PartyMember> getVisibleMembers(@NotNull OnlineMMOPlayer onlineMMOPlayer) {
         HashSet<PartyMember> visibleMembers = new HashSet<>();
 
         for(PartyMember partyMember : persistentPartyData.getPartyMembers())
@@ -116,6 +123,7 @@ public class PartyMemberManager {
      *
      * @return the party leader
      */
+    @Override
     public @NotNull PartyMember getPartyLeader() {
         if(partyLeaderRef == null) {
             //The first player in a party is now the leader
@@ -126,8 +134,14 @@ public class PartyMemberManager {
         return partyLeaderRef;
     }
 
+    @Override
     public boolean hasMember(@NotNull UUID playerUUID) {
         return partyMemberMap.containsKey(playerUUID);
+    }
+
+    @Override
+    public boolean hasMember(@NotNull MMOPlayer mmoPlayer) {
+        return false;
     }
 
     public boolean hasMember(@NotNull Player player) {
@@ -162,7 +176,7 @@ public class PartyMemberManager {
      * @param mmoPlayer The player to check
      * @return the near party members
      */
-    public @NotNull List<Player> getNearMembers(@NotNull OnlineMMOPlayer mmoPlayer) {
+    public @NotNull List<OnlineMMOPlayer> getNearMembers(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
         Party party = mmoPlayer.getParty();
 

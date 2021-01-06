@@ -19,6 +19,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import com.neetgames.mcmmo.player.SuperSkillManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SuperAbilityManager {
+public class SuperSkillManagerImpl implements SuperSkillManager {
 
     private final McMMOPlayer mmoPlayer;
     private final Player player;
@@ -39,7 +40,7 @@ public class SuperAbilityManager {
     private final Map<AbilityToolType, Boolean> toolMode = new HashMap<>();
     private final MMOPlayerData mmoPlayerData;
 
-    public SuperAbilityManager(@NotNull McMMOPlayer mmoPlayer, @NotNull MMOPlayerData mmoPlayerData) {
+    public SuperSkillManagerImpl(@NotNull McMMOPlayer mmoPlayer, @NotNull MMOPlayerData mmoPlayerData) {
         this.mmoPlayer = mmoPlayer;
         this.mmoPlayerData = mmoPlayerData;
         this.player = Misc.adaptPlayer(mmoPlayer);

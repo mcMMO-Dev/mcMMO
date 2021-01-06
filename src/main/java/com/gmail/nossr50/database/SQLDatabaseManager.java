@@ -418,7 +418,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         }
 
 
-        String query = rootSkill == null ? ALL_QUERY_VERSION : rootSkill.getSkillName().toLowerCase(Locale.ENGLISH);
+        String query = rootSkill == null ? ALL_QUERY_VERSION : rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH);
         ResultSet resultSet = null;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -464,7 +464,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         try {
             connection = getConnection(PoolIdentifier.MISC);
             for (RootSkill rootSkill : CoreSkills.getNonChildSkills()) {
-                String skillName = rootSkill.getSkillName().toLowerCase(Locale.ENGLISH);
+                String skillName = rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH);
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
@@ -1025,8 +1025,8 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
                     int cap = Config.getInstance().getLevelCap(rootSkill);
                     if (cap != Integer.MAX_VALUE) {
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `"
-                                + rootSkill.getSkillName().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `"
-                                + rootSkill.getSkillName().toLowerCase(Locale.ENGLISH) + "` > " + cap);
+                                + rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `"
+                                + rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH) + "` > " + cap);
                         statement.executeUpdate();
                         tryClose(statement);
                     }
@@ -1455,7 +1455,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
                 for (RootSkill rootSkill : CoreSkills.getNonChildSkills()) {
-                    String skill_name = rootSkill.getSkillName().toLowerCase(Locale.ENGLISH);
+                    String skill_name = rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH);
 
                     try {
                         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");

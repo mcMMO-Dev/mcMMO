@@ -167,7 +167,7 @@ public class MMOExperienceBarManager {
     private void informPlayer(@NotNull SkillBossBarSetting settingTarget, @NotNull RootSkill rootSkill) {
         //Inform player of setting change
         if(settingTarget != SkillBossBarSetting.RESET) {
-            NotificationManager.sendPlayerInformationChatOnlyPrefixed(Misc.adaptPlayer(mmoPlayer), "Commands.XPBar.SettingChanged", rootSkill.getSkillName(), settingTarget.toString());
+            NotificationManager.sendPlayerInformationChatOnlyPrefixed(Misc.adaptPlayer(mmoPlayer), "Commands.XPBar.SettingChanged", rootSkill.getRawSkillName(), settingTarget.toString());
         } else {
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(Misc.adaptPlayer(mmoPlayer), "Commands.XPBar.Reset");
         }

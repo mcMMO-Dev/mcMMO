@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.commands.party.PartySubCommandType;
 import com.gmail.nossr50.config.Config;

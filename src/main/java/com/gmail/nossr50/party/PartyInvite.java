@@ -1,5 +1,6 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
+import com.neetgames.mcmmo.party.Party;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;

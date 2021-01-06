@@ -117,7 +117,7 @@ public final class Permissions {
     public static boolean hasSalvageEnchantBypassPerk(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.bypass.salvageenchant"); }
 
     public static boolean lucky(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.perks.lucky." + skill.toString().toLowerCase(Locale.ENGLISH)); }
-    public static boolean lucky(Permissible permissible, RootSkill rootSkill) { return permissible.hasPermission("mcmmo.perks.lucky." + rootSkill.getSkillName().toLowerCase(Locale.ENGLISH)); }
+    public static boolean lucky(Permissible permissible, RootSkill rootSkill) { return permissible.hasPermission("mcmmo.perks.lucky." + rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH)); }
 
     /* XP PERKS */
     public static boolean quadrupleXp(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.quadruple." + skill.toString().toLowerCase(Locale.ENGLISH)); }

@@ -331,11 +331,11 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean getAddExtraDetails() { return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);}
     public boolean isExperienceBarsEnabled() { return config.getBoolean("Experience_Bars.Enable", true); }
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Enable", true);}
-    public boolean isExperienceBarEnabled(@NotNull RootSkill rootSkill) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getSkillName())+".Enable", true);}
+    public boolean isExperienceBarEnabled(@NotNull RootSkill rootSkill) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getRawSkillName())+".Enable", true);}
 
     public BarColor getExperienceBarColor(@NotNull RootSkill rootSkill)
     {
-        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getSkillName())+".Color");
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getRawSkillName())+".Color");
 
         for(BarColor barColor : BarColor.values())
         {
@@ -375,7 +375,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     }
 
     public BarStyle getExperienceBarStyle(@NotNull RootSkill rootSkill) {
-        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getSkillName())+".BarStyle");
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getRawSkillName())+".BarStyle");
 
         for(BarStyle barStyle : BarStyle.values())
         {

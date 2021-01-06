@@ -1,5 +1,7 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
+import com.google.common.base.Objects;
+import com.neetgames.mcmmo.party.PartyMember;
 import com.neetgames.neetlib.dirtydata.DirtyData;
 import com.neetgames.neetlib.dirtydata.DirtySet;
 import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
@@ -7,7 +9,6 @@ import com.neetgames.neetlib.mutableprimitives.MutableString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class PersistentPartyData {
@@ -35,15 +36,23 @@ public class PersistentPartyData {
     }
 
     @Override
+    public String toString() {
+        return "PersistentPartyData{" +
+                "partyName=" + partyName +
+                ", partyMembers=" + partyMembers +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersistentPartyData that = (PersistentPartyData) o;
-        return dirtyFlag.equals(that.dirtyFlag) && partyName.equals(that.partyName) && partyMembers.equals(that.partyMembers);
+        return Objects.equal(partyName, that.partyName) && Objects.equal(partyMembers, that.partyMembers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dirtyFlag, partyName, partyMembers);
+        return Objects.hashCode(partyName, partyMembers);
     }
 }

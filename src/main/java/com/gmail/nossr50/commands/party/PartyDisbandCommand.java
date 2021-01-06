@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.datatypes.party.PartyMember;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;

@@ -2,8 +2,8 @@ package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
+import com.gmail.nossr50.party.PartyFeature;
+import com.gmail.nossr50.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;

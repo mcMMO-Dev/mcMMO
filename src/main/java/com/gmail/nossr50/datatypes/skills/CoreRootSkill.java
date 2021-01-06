@@ -54,6 +54,6 @@ public class CoreRootSkill extends AbstractRootSkill {
 
     @Override
     public boolean isOffensiveActionAllowed(@NotNull Object victim) {
-        return (victim instanceof Player || (victim instanceof Tameable && ((Tameable) victim).isTamed())) ? isPVPPermitted() : isPVEPermitted();;
+        return (victim instanceof Player || (victim instanceof Tameable && ((Tameable) victim).isTamed())) ? isPVPPermitted() : isPVEPermitted();
     }
 }

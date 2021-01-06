@@ -1,8 +1,10 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.util.skills.PerksUtils;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SuperSkill;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +24,6 @@ public class SuperCoreSkill extends CoreSkill implements SuperSkill {
 
     @Override
     public int getCooldown(@NotNull OnlineMMOPlayer onlineMMOPlayer) {
-        //TODO: Move implementation
+        return PerksUtils.handleCooldownPerks((Player) onlineMMOPlayer.getServerAPIPlayerImpl(), defaultCooldown);
     }
 }

@@ -8,7 +8,7 @@ import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.party.PartyManagerImpl;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.neetgames.mcmmo.party.Party;
@@ -76,7 +76,7 @@ public class PartyChatCommand extends BaseCommand {
             mcMMO.p.getLogger().severe("You need to specify a party name and then write a message afterwards.");
         } else {
             //Grab party
-            Party targetParty = PartyManager.getParty(args[0]);
+            Party targetParty = PartyManagerImpl.getParty(args[0]);
 
             if(targetParty != null) {
                 pluginRef.getChatManager().processConsoleMessage(StringUtils.buildStringAfterNthElement(args, 1), targetParty);

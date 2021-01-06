@@ -7,9 +7,8 @@ import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.skills.CoreRootSkill;
 import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.neetgames.mcmmo.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
+import com.gmail.nossr50.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -34,9 +33,10 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
-import com.gmail.nossr50.util.input.SuperAbilityManager;
+import com.gmail.nossr50.util.input.SuperSkillManagerImpl;
 import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.neetgames.mcmmo.player.SuperSkillManager;
 import com.neetgames.mcmmo.skill.RootSkill;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
@@ -81,7 +81,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     private @Nullable Location teleportCommence;
 
     private final @NotNull FixedMetadataValue playerMetadata;
-    private final @NotNull SuperAbilityManager superAbilityManager;
+    private final @NotNull SuperSkillManagerImpl superSkillManagerImpl;
     private final @NotNull AbilityActivationProcessor abilityActivationProcessor;
 
     /**
@@ -102,7 +102,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
         playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
         experienceBarManager = new MMOExperienceBarManager(this, mmoPlayerData.getBarStateMap());
 
-        superAbilityManager = new SuperAbilityManager(this, mmoPlayerData);
+        superSkillManagerImpl = new SuperSkillManagerImpl(this, mmoPlayerData);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
@@ -151,7 +151,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
         }
 
-        superAbilityManager = new SuperAbilityManager(this, mmoPlayerData);
+        superSkillManagerImpl = new SuperSkillManagerImpl(this, mmoPlayerData);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
         experienceBarManager = new MMOExperienceBarManager(this, this.mmoPlayerData.getBarStateMap());
 
@@ -335,10 +335,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
         return (WoodcuttingManager) skillManagers.get(PrimarySkillType.WOODCUTTING);
     }
 
-    /*
-     * Recently Hurt
-     */
-
     /**
      * The timestamp of the last time this player was hurt
      * @return the timestamp of the most recent player damage
@@ -361,10 +357,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     public void actualizeRecentlyHurtTimestamp() {
         recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
-
-    /*
-     * Exploit Prevention
-     */
 
     /**
      * Get the activation time stamp for this player's last respawn
@@ -411,10 +403,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
         databaseATS = System.currentTimeMillis();
     }
 
-    /*
-     * God Mode
-     */
-
     /**
      * Whether or not this player is in god mode
      * @return true if this player is in god mode
@@ -430,10 +418,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
         godMode = !godMode;
     }
 
-    /*
-     * Debug Mode Flags
-     */
-
     /**
      * Whether or not this player is using debug mode
      * @return true if this player is in debug mode
@@ -448,10 +432,6 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     public void toggleDebugMode() {
         debugMode = !debugMode;
     }
-
-    /*
-     * Skill notifications
-     */
 
     /**
      * Whether or not this player receives specific skill notifications in chat
@@ -492,30 +472,11 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     }
 
     /**
-     * Calculate the time remaining until the superAbilityType's cooldown expires.
-     *
-     * @param superAbilityType the super ability cooldown to check
-     *
-     * @return the number of seconds remaining before the cooldown expires
-     */
-    public int getCooldownSeconds(SuperAbilityType superAbilityType) {
-        return superAbilityManager.calculateTimeRemaining(superAbilityType);
-    }
-
-    /**
      * This is sort of a hack, used for thread safety
      * @return this player's {@link FixedMetadataValue}
      */
     public @NotNull FixedMetadataValue getPlayerMetadata() {
         return playerMetadata;
-    }
-
-    /**
-     * Grab this players {@link SuperAbilityManager}
-     * @return this player's super ability manager
-     */
-    public @NotNull SuperAbilityManager getSuperAbilityManager() {
-        return superAbilityManager;
     }
 
     /**
@@ -534,7 +495,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
      * Etc...
      */
     public void cleanup() {
-        superAbilityManager.disableSuperAbilities();
+        superSkillManagerImpl.disableSuperAbilities();
         getTamingManager().cleanupAllSummons();
     }
 
@@ -641,4 +602,10 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     public @Nullable Party getParty() {
         return playerPartyRef;
     }
+
+    @Override
+    public @NotNull SuperSkillManager getSuperSkillManager() {
+        return superSkillManagerImpl;
+    }
+
 }

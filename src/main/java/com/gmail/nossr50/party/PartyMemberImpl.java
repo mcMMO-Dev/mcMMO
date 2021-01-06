@@ -1,5 +1,6 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
+import com.neetgames.mcmmo.party.PartyMemberRank;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class PartyMember {
+public class PartyMemberImpl {
     private String playerName;
     private final @NotNull UUID playerUUID;
     private @Nullable OfflinePlayer offlinePlayer;
@@ -15,7 +16,7 @@ public class PartyMember {
     private @Nullable PartyTeleportRecord partyTeleportRecord;
     private int itemShareModifier;
 
-    public PartyMember(@NotNull UUID playerUUID, @NotNull PartyMemberRank partyMemberRank) {
+    public PartyMemberImpl(@NotNull UUID playerUUID, @NotNull PartyMemberRank partyMemberRank) {
         this.playerUUID = playerUUID;
         this.partyMemberRank = partyMemberRank;
     }

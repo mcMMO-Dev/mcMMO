@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
+import com.gmail.nossr50.party.PartyFeature;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.party.Party;

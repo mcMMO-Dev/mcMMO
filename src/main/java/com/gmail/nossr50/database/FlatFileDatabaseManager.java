@@ -1117,7 +1117,7 @@ public final class FlatFileDatabaseManager extends AbstractDatabaseManager {
                                 }
                                 int cap = Config.getInstance().getLevelCap(rootSkill);
                                 if (Integer.parseInt(stringDataArray[index]) > cap) {
-                                    mcMMO.p.getLogger().warning("Truncating " + rootSkill.getSkillName() + " to configured max level for player " + stringDataArray[FlatFileMappings.USERNAME]);
+                                    mcMMO.p.getLogger().warning("Truncating " + rootSkill.getRawSkillName() + " to configured max level for player " + stringDataArray[FlatFileMappings.USERNAME]);
                                     stringDataArray[index] = cap + "";
                                     updated = true;
                                 }

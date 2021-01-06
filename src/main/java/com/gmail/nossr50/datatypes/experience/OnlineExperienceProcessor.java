@@ -318,7 +318,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
         if(hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
         } else if(hasReachedLevelCap(rootSkill)) {
-            NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(rootSkill)), rootSkill.getSkillName());
+            NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(rootSkill)), rootSkill.getRawSkillName());
         }
 
         //Updates from Party sources

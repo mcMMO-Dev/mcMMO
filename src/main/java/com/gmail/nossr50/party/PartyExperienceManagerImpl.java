@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -8,29 +8,33 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import com.neetgames.mcmmo.party.Party;
+import com.neetgames.mcmmo.party.PartyExperience;
+import com.neetgames.mcmmo.party.PartyExperienceShareMode;
+import com.neetgames.mcmmo.party.PartyMemberManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 
-public class PartyExperienceManager {
+public class PartyExperienceManagerImpl implements PartyExperience {
 
     private int partyLevel;
     private float partyExperience;
     private final @NotNull Party partyRef;
     private final @NotNull PartyMemberManager partyMemberManagerRef;
-    private @NotNull ShareMode xpShareMode = ShareMode.NONE;
+    private @NotNull PartyExperienceShareMode xpShareMode = PartyExperienceShareMode.NONE;
 
-    public PartyExperienceManager(@NotNull PartyMemberManager partyMemberManager, @NotNull Party party) {
+    public PartyExperienceManagerImpl(@NotNull PartyMemberManager partyMemberManagerRef, @NotNull Party party) {
         this.partyRef = party;
-        this.partyMemberManagerRef = partyMemberManager;
+        this.partyMemberManagerRef = partyMemberManagerRef;
     }
 
-    public void setXpShareMode(@NotNull ShareMode xpShareMode) {
-        this.xpShareMode = xpShareMode;
+    public void setXpShareMode(@NotNull PartyExperienceShareMode partyExperienceShareMode) {
+        this.xpShareMode = partyExperienceShareMode;
     }
 
-    public @NotNull ShareMode getXpShareMode() {
+    public @NotNull PartyExperienceShareMode getXpShareMode() {
         return xpShareMode;
     }
 
@@ -123,9 +127,5 @@ public class PartyExperienceManager {
     public @NotNull String getXpToLevelPercentage() {
         DecimalFormat percent = new DecimalFormat("##0.00%");
         return percent.format(this.getXp() / getXpToLevel());
-    }
-
-    public @NotNull Party getParty() {
-        return partyRef;
     }
 }

@@ -1,7 +1,10 @@
-package com.gmail.nossr50.datatypes.party;
+package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.chat.SamePartyPredicate;
 import com.neetgames.mcmmo.party.Party;
+import com.neetgames.mcmmo.party.PartyExperience;
+import com.neetgames.mcmmo.party.PartyMember;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,32 +18,37 @@ import java.util.function.Predicate;
 public class PartyImpl implements Party {
     private final @NotNull Predicate<CommandSender> samePartyPredicate;
     private final @NotNull PersistentPartyData persistentPartyData;
-    private final @NotNull PartyMemberManager partyMemberManager;
-    private final @NotNull PartyExperienceManager partyExperienceManager;
+    private final @NotNull PartyMemberManagerImpl partyMemberManagerImpl;
+    private final @NotNull PartyExperience partyExperienceManager;
 
     public PartyImpl(@NotNull PersistentPartyData persistentPartyData) {
         this.persistentPartyData = persistentPartyData;
 
         //Initialize Managers
-        partyMemberManager = new PartyMemberManager(persistentPartyData);
-        partyExperienceManager = new PartyExperienceManager(partyMemberManager, this);
+        partyMemberManagerImpl = new PartyMemberManagerImpl(persistentPartyData);
+        partyExperienceManager = new PartyExperienceManagerImpl(partyMemberManagerImpl, this);
         samePartyPredicate = new SamePartyPredicate<>(this);
     }
 
-    public @NotNull PartyMemberManager getPartyMemberManager() {
-        return partyMemberManager;
+    public @NotNull PartyMemberManagerImpl getPartyMemberManager() {
+        return partyMemberManagerImpl;
     }
 
-    public @NotNull PartyExperienceManager getPartyExperienceManager() {
+    public @NotNull PartyExperience getPartyExperienceManager() {
         return partyExperienceManager;
     }
 
     public @NotNull Set<PartyMember> getPartyMembers() {
-        return partyMemberManager.getPartyMembers();
+        return partyMemberManagerImpl.getPartyMembers();
     }
 
     public @NotNull String getPartyName() {
         return persistentPartyData.getPartyName();
+    }
+
+    @Override
+    public @Nullable PartyMember getPartyMember(@NotNull OnlineMMOPlayer onlineMMOPlayer) {
+        return getPartyMemberManager().getPartyMember(onlineMMOPlayer.getUUID());
     }
 
     private void buildChatMessage(@NotNull StringBuilder stringBuilder, String @NotNull [] names) {
@@ -63,13 +71,13 @@ public class PartyImpl implements Party {
         PartyImpl party = (PartyImpl) o;
         return samePartyPredicate.equals(party.samePartyPredicate)
                 && persistentPartyData.equals(party.persistentPartyData)
-                && partyMemberManager.equals(party.partyMemberManager)
+                && partyMemberManagerImpl.equals(party.partyMemberManagerImpl)
                 && partyExperienceManager.equals(party.partyExperienceManager);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(samePartyPredicate, persistentPartyData, partyMemberManager, partyExperienceManager);
+        return Objects.hash(samePartyPredicate, persistentPartyData, partyMemberManagerImpl, partyExperienceManager);
     }
 
     public @Nullable PartyMember getPartyMember(@NotNull Player player) {
@@ -77,7 +85,7 @@ public class PartyImpl implements Party {
     }
 
     public @Nullable PartyMember getPartyMember(@NotNull UUID playerUUID) {
-        return partyMemberManager.getPartyMember(playerUUID);
+        return partyMemberManagerImpl.getPartyMember(playerUUID);
     }
 
     public @NotNull Predicate<CommandSender> getSamePartyPredicate() {
