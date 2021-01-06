@@ -687,7 +687,8 @@ public class HerbalismManager extends SkillManager {
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
     private boolean processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
-        if(!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
+        if (!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
+        && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
             return false;
         }
 
@@ -735,6 +736,11 @@ public class HerbalismManager extends SkillManager {
         }
 
         ItemStack seedStack = new ItemStack(seed);
+
+        if (ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
+        && blockState.getType() != Material.COCOA) {
+            return false;
+        }
 
         if (!greenTerra && !RandomChanceUtil.checkRandomChanceExecutionSuccess(player, SubSkillType.HERBALISM_GREEN_THUMB, true)) {
             return false;
