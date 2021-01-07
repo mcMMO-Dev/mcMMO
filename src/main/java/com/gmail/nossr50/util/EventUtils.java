@@ -32,6 +32,7 @@ import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import org.bukkit.block.Block;
@@ -232,6 +233,24 @@ public final class EventUtils {
         return isCancelled;
     }
 
+    public static boolean tryLevelChangeEvent(@NotNull McMMOPlayer mmoPlayer, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
+        McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(mmoPlayer.getPlayer(), skill, levelsChanged, xpGainReason) : new McMMOPlayerLevelDownEvent(mmoPlayer.getPlayer(), skill, levelsChanged, xpGainReason);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        boolean isCancelled = event.isCancelled();
+
+        if (isCancelled) {
+            mmoPlayer.modifySkill(skill, mmoPlayer.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
+            mmoPlayer.addXp(skill, xpRemoved);
+        } else {
+            if (isLevelUp) {
+                NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill, mmoPlayer.getSkillLevel(skill));
+            }
+        }
+
+        return isCancelled;
+    }
+
     public static boolean tryLevelEditEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
@@ -243,6 +262,24 @@ public final class EventUtils {
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
+        }
+
+        return isCancelled;
+    }
+
+    public static boolean tryLevelEditEvent(@NotNull McMMOPlayer mmoPlayer, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
+        McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(mmoPlayer.getPlayer(), skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(mmoPlayer.getPlayer(), skill, levelsChanged, xpGainReason);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        boolean isCancelled = event.isCancelled();
+
+        if (isCancelled) {
+            mmoPlayer.modifySkill(skill, mmoPlayer.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
+            mmoPlayer.addXp(skill, xpRemoved);
+        } else {
+            if (isLevelUp) {
+                NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill, mmoPlayer.getSkillLevel(skill));
+            }
         }
 
         return isCancelled;

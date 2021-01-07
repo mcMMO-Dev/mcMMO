@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.LevelUpBroadcastPredicate;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -19,14 +20,23 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
 
 public class NotificationManager {
+
+    public static final String HEX_BEIGE_COLOR = "#c2a66e";
+    public static final String HEX_LIME_GREEN_COLOR = "#8ec26e";
+
     /**
      * Sends players notifications from mcMMO
      * Does so by sending out an event so other plugins can cancel it
@@ -254,6 +264,39 @@ public class NotificationManager {
         System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
 
         return newArray;
+    }
+
+    public static void processLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int level) {
+        if(level <= 0)
+            return;
+
+        //Check if broadcasting is enabled
+        if(Config.getInstance().shouldLevelUpBroadcasts()) {
+            int levelInterval = Config.getInstance().getLevelUpBroadcastInterval();
+            int remainder = level % levelInterval;
+
+            if(remainder == 0) {
+                //Grab appropriate audience
+                Audience audience = mcMMO.getAudiences().filter(getLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
+                //TODO: Make prettier+
+                HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
+                        .append(Component.newline())
+                        .append(Component.text(LocalDate.now().toString()))
+                        .append(Component.newline())
+                        .append(Component.text(primarySkillType.getName()+" reached level "+level)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .asHoverEvent();
+
+                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.toString());
+                Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
+
+                audience.sendMessage(Identity.nil(), message);
+            }
+        }
+    }
+
+    //TODO: Could cache
+    public static @NotNull LevelUpBroadcastPredicate<CommandSender> getLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
+        return new LevelUpBroadcastPredicate<>(levelUpPlayer);
     }
 
 }

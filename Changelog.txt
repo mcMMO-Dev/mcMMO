@@ -1,5 +1,9 @@
 Version 2.1.171
     Axes can now replant cocoa plants (thanks Lyther)
+    Players who level up at certain milestones have their level ups broadcast to the server (very configurable and optional, see notes)
+    Added Level_Up_Chat_Broadcasts settings to config.yml under General
+    New locale string 'Broadcasts.LevelUpMilestone'
+
 Version 2.1.170
     Reverted a change that broke compatibility with the mcMMO papi ecloud thingy
 

@@ -652,7 +652,7 @@ public class McMMOPlayer implements Identified {
             levelsGained++;
         }
 
-        if (EventUtils.tryLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
+        if (EventUtils.tryLevelChangeEvent(this, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
             return;
         }
 

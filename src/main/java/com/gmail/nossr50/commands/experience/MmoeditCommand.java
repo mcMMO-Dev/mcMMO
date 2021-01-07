@@ -1,11 +1,13 @@
 package com.gmail.nossr50.commands.experience;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -36,7 +38,14 @@ public class MmoeditCommand extends ExperienceCommand {
             return;
         }
 
-        EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+        if(mmoPlayer != null) {
+            EventUtils.tryLevelEditEvent(mmoPlayer, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+        } else {
+            EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+        }
+
     }
 
     @Override
