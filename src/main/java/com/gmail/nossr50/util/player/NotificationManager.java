@@ -286,7 +286,7 @@ public class NotificationManager {
                         .append(Component.text(primarySkillType.getName()+" reached level "+level)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
                         .asHoverEvent();
 
-                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.toString());
+                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.getName());
                 Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
 
                 audience.sendMessage(Identity.nil(), message);

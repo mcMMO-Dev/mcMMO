@@ -1,5 +1,6 @@
 Version 2.1.171
     Fixed a bug where arrows shot by infinite bow enchant would duplicate
+    Fixed a bug where Archery XP would calculate incorrectly
     Axes can now replant cocoa plants (thanks Lyther)
     Players who level up at certain milestones have their level ups broadcast to the server (very configurable and optional, see notes)
     Added Level_Up_Chat_Broadcasts settings to config.yml under General
