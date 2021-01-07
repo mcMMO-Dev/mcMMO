@@ -3,8 +3,23 @@ Version 2.1.171
     Fixed a bug where Archery XP would calculate incorrectly
     Axes can now replant cocoa plants (thanks Lyther)
     Players who level up at certain milestones have their level ups broadcast to the server (very configurable and optional, see notes)
-    Added Level_Up_Chat_Broadcasts settings to config.yml under General
     New locale string 'Broadcasts.LevelUpMilestone'
+    Added 'General.Level_Up_Chat_Broadcasts.Enabled' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Milestone_Interval' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Send_To_Console' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Party_Members' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Same_World' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restrict_Distance' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restricted_Radius' to config.yml
+
+    NOTES:
+    The new broadcast system is very configurable, you could set the milestone interval to 1 if you want players to always be informed when someone levels up
+    With default settings, messages are broadcast to all players on all worlds and to the server console when a player hits a level up that is a 100 interval, for example level 100, 300, 600, 2200 would all qualify
+    You can change the settings to specify who receives these messages or turn the whole system off
+    The message is customizable via locale: https://mcmmo.org/wiki/Locale
+    There are comments in config.yml above each setting (as long as YAML doesn't move comments around chaotically...) that explain each setting
+    In case your comments are missing, here's what they look like by default: https://gist.github.com/nossr50/baf656477c75663e9e2f9284acee8d67
+
 
 Version 2.1.170
     Reverted a change that broke compatibility with the mcMMO papi ecloud thingy
