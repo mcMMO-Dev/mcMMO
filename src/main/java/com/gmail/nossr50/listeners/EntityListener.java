@@ -141,7 +141,7 @@ public class EntityListener implements Listener {
             projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
             projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
             //Cleanup metadata in 1 minute in case normal collection falls through
-            CombatUtils.cleanupArrowMetadata((Projectile) projectile);
+            CombatUtils.delayArrowMetaCleanup((Projectile) projectile);
         }
     }
 
