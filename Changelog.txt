@@ -1,3 +1,7 @@
+Version 2.1.172
+    Updated german locale (thanks TheBusyBiscuit)
+    Changed Fists to not be capitalized (en_US) when lowering/readying berserk
+
 Version 2.1.171
     Fixed a bug where arrows shot by infinite bow enchant would duplicate
     Fixed a bug where Archery XP would calculate incorrectly
