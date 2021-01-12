@@ -151,7 +151,7 @@
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstat</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -247,7 +247,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.4</version>
+            <version>1.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
