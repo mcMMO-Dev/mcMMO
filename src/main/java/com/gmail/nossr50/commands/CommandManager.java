@@ -98,7 +98,7 @@ public class CommandManager {
 
     public void validateLoadedData(@NotNull Player player) {
         if(UserManager.getPlayer(player) == null) {
-            throw new ConditionFailedException("Your mcMMO player data has not yet loaded!");
+            throw new ConditionFailedException(LocaleLoader.getString("Profile.PendingLoad"));
         }
     }
 
