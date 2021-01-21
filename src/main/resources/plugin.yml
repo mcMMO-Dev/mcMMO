@@ -195,6 +195,7 @@ permissions:
             mcmmo.motd: true
             mcmmo.skills.all: true
             mcmmo.chat.colors: true
+            mcmmo.broadcast.levelup: true
     mcmmo.defaultsop:
         default: op
         description: mcmmo permissions that default to op
@@ -219,6 +220,8 @@ permissions:
             mcmmo.defaultsop: true
             mcmmo.party.all: true
             mcmmo.perks.all: true
+    mcmmo.broadcast.levelup:
+        description: when the player reaches certain level milestones their achievement will be broadcast in chat to other plays
     mcmmo.ability.*:
         default: false
         description: Implies all mcmmo.ability permissions.

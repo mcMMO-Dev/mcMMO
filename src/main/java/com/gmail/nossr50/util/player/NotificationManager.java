@@ -272,13 +272,18 @@ public class NotificationManager {
 
         //Check if broadcasting is enabled
         if(Config.getInstance().shouldLevelUpBroadcasts()) {
+            //Permission check
+            if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
+                return;
+            }
+
             int levelInterval = Config.getInstance().getLevelUpBroadcastInterval();
             int remainder = level % levelInterval;
 
             if(remainder == 0) {
                 //Grab appropriate audience
                 Audience audience = mcMMO.getAudiences().filter(getLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
-                //TODO: Make prettier+
+                //TODO: Make prettier
                 HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
                         .append(Component.newline())
                         .append(Component.text(LocalDate.now().toString()))
