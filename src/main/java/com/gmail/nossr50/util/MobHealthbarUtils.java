@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;

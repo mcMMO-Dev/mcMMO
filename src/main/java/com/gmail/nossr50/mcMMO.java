@@ -257,9 +257,9 @@ public class mcMMO extends JavaPlugin {
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
                 if(Config.getInstance().getIsRetroMode())
-                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
-                else
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
+                else
+                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
             }
         }
         catch (Throwable t) {
