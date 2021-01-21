@@ -253,7 +253,7 @@ public class mcMMO extends JavaPlugin {
             Metrics metrics;
 
             if(Config.getInstance().getIsMetricsEnabled()) {
-                metrics = new Metrics(this);
+                metrics = new Metrics(this, 3894);
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
                 if(Config.getInstance().getIsRetroMode())
