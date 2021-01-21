@@ -267,6 +267,8 @@ public class NotificationManager {
         return newArray;
     }
 
+    //TODO: Remove the code duplication, am lazy atm
+    //TODO: Fix broadcasts being skipped for situations where a player skips over the milestone like with the addlevels command
     public static void processLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int level) {
         if(level <= 0)
             return;
@@ -295,12 +297,13 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.getName());
                 Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
 
-                audience.sendMessage(Identity.nil(), message);
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> {audience.sendMessage(Identity.nil(), message);}, 0);
             }
         }
     }
 
     //TODO: Remove the code duplication, am lazy atm
+    //TODO: Fix broadcasts being skipped for situations where a player skips over the milestone like with the addlevels command
     public static void processPowerLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, int powerLevel) {
         if(powerLevel <= 0)
             return;
@@ -329,7 +332,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
                 Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
 
-                audience.sendMessage(Identity.nil(), message);
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> {audience.sendMessage(Identity.nil(), message);}, 0);
             }
         }
     }
