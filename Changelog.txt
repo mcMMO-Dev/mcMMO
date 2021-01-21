@@ -2,6 +2,9 @@ Version 2.1.172
     Updated german locale (thanks TheBusyBiscuit)
     Changed Fists to not be capitalized (en_US) when lowering/readying berserk
     SkillActivationPerkEvent can now be called in async threads (thanks electronicboy)
+    You can now disable the XP orbs from being dropped when Knock On Wood triggers during Tree Feller
+    Added 'Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops' to advanced.yml
+    Removed a few never implemented settings from Skills.Woodcutting.TreeFeller in advanced.yml
 
 Version 2.1.171
     Fixed a bug where arrows shot by infinite bow enchant would duplicate

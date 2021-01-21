@@ -582,26 +582,9 @@ Skills:
     ###
     Woodcutting:
         TreeFeller:
-            # If set to true then tree feller will not use the new system and will use its old behaviour
-            Classic: false
-            # This is the time in seconds to build a new charge of Tree Feller
-            ChargeRate: 600
-            Rank_Levels:
-                Rank_1:
-                    TreeSizeMax: 100
-                    Charges: 1
-                Rank_2:
-                    TreeSizeMax: 200
-                    Charges: 1
-                Rank_3:
-                    TreeSizeMax: 200
-                    Charges: 2
-                Rank_4:
-                    TreeSizeMax: 200
-                    Charges: 3
-                Rank_5:
-                    TreeSizeMax: 500
-                    Charges: 3
+            Knock_On_Wood:
+                Add_XP_Orbs_To_Drops: true
+
         # Double Drops
         HarvestLumber:
             # ChanceMax & MaxBonusLevel are only used for Classic, I'll make that more clear in the future.

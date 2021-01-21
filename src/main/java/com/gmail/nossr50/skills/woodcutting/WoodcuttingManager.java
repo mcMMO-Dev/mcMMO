@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -306,9 +307,11 @@ public class WoodcuttingManager extends SkillManager {
                     Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                        if(RandomChanceUtil.rollDice(75, 100)) {
-                            int randOrbCount = Math.max(1, Misc.getRandom().nextInt(20));
-                            Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
+                        if(AdvancedConfig.getInstance().isKnockOnWoodXPOrbEnabled()) {
+                            if(RandomChanceUtil.rollDice(75, 100)) {
+                                int randOrbCount = Math.max(1, Misc.getRandom().nextInt(20));
+                                Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
+                            }
                         }
                     }
 
