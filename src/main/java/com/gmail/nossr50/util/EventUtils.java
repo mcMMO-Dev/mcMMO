@@ -245,6 +245,8 @@ public final class EventUtils {
         } else {
             if (isLevelUp) {
                 NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill, mmoPlayer.getSkillLevel(skill));
+                NotificationManager.processPowerLevelUpBroadcasting(mmoPlayer, mmoPlayer.getPowerLevel());
+
             }
         }
 
@@ -279,6 +281,7 @@ public final class EventUtils {
         } else {
             if (isLevelUp) {
                 NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill, mmoPlayer.getSkillLevel(skill));
+                NotificationManager.processPowerLevelUpBroadcasting(mmoPlayer, mmoPlayer.getPowerLevel());
             }
         }
 

@@ -589,4 +589,12 @@ public class Config extends AutoUpdateConfigLoader {
     public int getLevelUpBroadcastRadius() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restricted_Radius", 100); }
     public int getLevelUpBroadcastInterval() { return config.getInt("General.Level_Up_Chat_Broadcasts.Milestone_Interval", 100); }
 
+    public boolean shouldPowerLevelUpBroadcasts() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Enabled", true); }
+    public boolean shouldPowerLevelUpBroadcastToConsole() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Send_To_Console", true); }
+    public boolean isPowerLevelUpBroadcastsPartyMembersOnly() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Party_Members", false); }
+    public boolean isPowerLevelUpBroadcastsSameWorldOnly() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Same_World", false); }
+    public boolean shouldPowerLevelUpBroadcastsRestrictDistance() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restrict_Distance", false); }
+    public int getPowerLevelUpBroadcastRadius() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restricted_Radius", 100); }
+    public int getPowerLevelUpBroadcastInterval() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval", 100); }
+
 }

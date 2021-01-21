@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.player;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.LevelUpBroadcastPredicate;
+import com.gmail.nossr50.datatypes.PowerLevelUpBroadcastPredicate;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -299,9 +300,47 @@ public class NotificationManager {
         }
     }
 
+    //TODO: Remove the code duplication, am lazy atm
+    public static void processPowerLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, int powerLevel) {
+        if(powerLevel <= 0)
+            return;
+
+        //Check if broadcasting is enabled
+        if(Config.getInstance().shouldPowerLevelUpBroadcasts()) {
+            //Permission check
+            if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
+                return;
+            }
+
+            int levelInterval = Config.getInstance().getPowerLevelUpBroadcastInterval();
+            int remainder = powerLevel % levelInterval;
+
+            if(remainder == 0) {
+                //Grab appropriate audience
+                Audience audience = mcMMO.getAudiences().filter(getPowerLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
+                //TODO: Make prettier
+                HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
+                        .append(Component.newline())
+                        .append(Component.text(LocalDate.now().toString()))
+                        .append(Component.newline())
+                        .append(Component.text("Power level has reached "+powerLevel)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .asHoverEvent();
+
+                String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
+                Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
+
+                audience.sendMessage(Identity.nil(), message);
+            }
+        }
+    }
+
     //TODO: Could cache
     public static @NotNull LevelUpBroadcastPredicate<CommandSender> getLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
         return new LevelUpBroadcastPredicate<>(levelUpPlayer);
+    }
+
+    public static @NotNull PowerLevelUpBroadcastPredicate<CommandSender> getPowerLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
+        return new PowerLevelUpBroadcastPredicate<>(levelUpPlayer);
     }
 
 }
