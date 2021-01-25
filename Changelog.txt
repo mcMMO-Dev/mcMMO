@@ -1,4 +1,5 @@
 Version 2.1.173
+    The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
     mcMMO no longer damages fishing rods or drains a player's hunger when fishing
     Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
     Updated ja_JP locale (thanks ViaSnake)

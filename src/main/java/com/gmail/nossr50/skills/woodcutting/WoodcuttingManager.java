@@ -308,8 +308,8 @@ public class WoodcuttingManager extends SkillManager {
 
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(AdvancedConfig.getInstance().isKnockOnWoodXPOrbEnabled()) {
-                            if(RandomChanceUtil.rollDice(75, 100)) {
-                                int randOrbCount = Math.max(1, Misc.getRandom().nextInt(20));
+                            if(RandomChanceUtil.rollDice(10, 100)) {
+                                int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }
                         }
