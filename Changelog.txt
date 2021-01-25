@@ -1,3 +1,8 @@
+Version 2.1.173
+    Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
+    Updated ja_JP locale (thanks ViaSnake)
+    Fixed a bug where scoreboards were torn down inappropriately when moving to or from blacklisted worlds (thanks steve4744)
+
 Version 2.1.172
     Updated german locale (thanks TheBusyBiscuit)
     Added 'mcmmo.broadcast.levelup' permission node, if a player lacks this node they will not have their level up milestones broadcast to chat, this is a default permission node
