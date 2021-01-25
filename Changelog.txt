@@ -1,4 +1,5 @@
 Version 2.1.173
+    mcMMO no longer damages fishing rods or drains a player's hunger when fishing
     Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
     Updated ja_JP locale (thanks ViaSnake)
     Fixed a bug where scoreboards were torn down inappropriately when moving to or from blacklisted worlds (thanks steve4744)
