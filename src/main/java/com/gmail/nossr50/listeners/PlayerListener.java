@@ -72,10 +72,12 @@ public class PlayerListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
             //Remove scoreboards
-            ScoreboardManager.teardownPlayer(event.getPlayer());
+            if(Config.getInstance().getScoreboardsEnabled()) {
+                ScoreboardManager.teardownPlayer(event.getPlayer());
+            }
             return;
-        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld())) {
-            //This only fires if they are traveling to a non-blacklisted world from a blacklisted world
+        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld()) && Config.getInstance().getScoreboardsEnabled()) {
+            //This only fires if they are travelling to a non-blacklisted world from a blacklisted world
 
             //Setup scoreboards
             ScoreboardManager.setupPlayer(event.getPlayer());
