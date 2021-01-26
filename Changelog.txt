@@ -1,3 +1,7 @@
+Version 2.1.174
+    Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
+    Updated hu_HU locale (thanks andris155)
+
 Version 2.1.173
     The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
     mcMMO no longer damages fishing rods or drains a player's hunger when fishing
