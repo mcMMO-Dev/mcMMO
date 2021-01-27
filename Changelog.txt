@@ -1,13 +1,14 @@
 Version 2.1.174
     Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
     Updated hu_HU locale (thanks andris155)
+
 Version 2.1.173
     The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
     mcMMO no longer damages fishing rods or drains a player's hunger when fishing
     Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
     Updated ja_JP locale (thanks ViaSnake)
     Fixed a bug where scoreboards were torn down inappropriately when moving to or from blacklisted worlds (thanks steve4744)
-    Updated kyori's adventure library to 4.4.0 (used by mcMMO to handle text components)
+    Updated Kyori's adventure library to 4.4.0 (used by mcMMO to handle text components)
 
 Version 2.1.172
     Updated german locale (thanks TheBusyBiscuit)

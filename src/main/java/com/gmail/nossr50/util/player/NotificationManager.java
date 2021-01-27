@@ -297,7 +297,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.getName());
                 Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
 
-                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> {audience.sendMessage(Identity.nil(), message);}, 0);
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
             }
         }
     }
@@ -332,7 +332,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
                 Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
 
-                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> {audience.sendMessage(Identity.nil(), message);}, 0);
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
             }
         }
     }
