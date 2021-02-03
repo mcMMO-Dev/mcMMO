@@ -10,6 +10,7 @@ Version 2.1.174
 
     NOTE: A lot of sub-skills without random chance elements are missing events, this will be cleaned up in the near future. If you need something specific added sooner than that, post a GitHub issue for it and I'll patch it in.
     I'm likely to separate Green Thumb into two distinct skills in an upcoming patch
+    Only Green Thumb/Shroom Thumb trigger the new SubSkillBlockEvent for now
 
 Version 2.1.173
     The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
