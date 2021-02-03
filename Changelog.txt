@@ -1,6 +1,8 @@
 Version 2.1.174
     Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
     Updated hu_HU locale (thanks andris155)
+    Updated ru locale (thanks imDaniX)
+    Updated fr locale (thanks Elikill58)
 
 Version 2.1.173
     The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
