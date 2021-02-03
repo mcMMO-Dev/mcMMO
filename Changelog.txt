@@ -1,3 +1,5 @@
+Version 2.1.175
+
 Version 2.1.174
     Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
     Updated hu_HU locale (thanks andris155)
