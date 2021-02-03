@@ -817,19 +817,24 @@ public class PlayerListener implements Listener {
 
                 FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat        
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
-                    player.updateInventory();
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
+                    //call event for Green Thumb Block
+                    if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, block).isCancelled()) {
+                        Bukkit.getPluginManager().callEvent(fakeSwing);
+                        player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
+                        player.updateInventory();
+                        if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                            blockState.update(true);
+                        }
                     }
                 }
                 /* SHROOM THUMB CHECK */
                 else if (herbalismManager.canUseShroomThumb(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    event.setCancelled(true);
-                    if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
+                    if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_SHROOM_THUMB, block).isCancelled()) {
+                        Bukkit.getPluginManager().callEvent(fakeSwing);
+                        event.setCancelled(true);
+                        if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                            blockState.update(true);
+                        }
                     }
                 }
                 break;
