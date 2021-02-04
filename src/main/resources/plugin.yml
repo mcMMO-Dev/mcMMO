@@ -149,6 +149,10 @@ commands:
     salvage:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.salvage
+    mmopower:
+        description: Shows skill mastery and power level info
+        permission: mcmmo.commands.mmopower
+        aliases: [mmopowerlevel, powerlevel]
     adminchat:
         aliases: [ac, a]
         description: Toggle Admin chat or send admin chat messages
@@ -825,6 +829,7 @@ permissions:
             mcmmo.commands.taming: true
             mcmmo.commands.unarmed: true
             mcmmo.commands.woodcutting: true
+            mcmmo.commands.mmopower: true
     mcmmo.commands.defaultsop:
         description: Implies all default op mcmmo.commands permissions.
         children:

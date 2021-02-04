@@ -11,16 +11,19 @@ public enum SubSkillType {
     /* ACROBATICS */
     ACROBATICS_DODGE(1),
     ACROBATICS_ROLL,
+    ACROBATICS_MASTERY(1),
 
     /* ALCHEMY */
     ALCHEMY_CATALYSIS(1),
     ALCHEMY_CONCOCTIONS(8),
+    ALCHEMY_MASTERY(1),
 
     /* ARCHERY */
     ARCHERY_ARROW_RETRIEVAL(1),
     ARCHERY_DAZE,
     ARCHERY_SKILL_SHOT(20),
     ARCHERY_ARCHERY_LIMIT_BREAK(10),
+    ARCHERY_MASTERY(1),
 
     /* Axes */
     AXES_ARMOR_IMPACT(20),
@@ -29,10 +32,12 @@ public enum SubSkillType {
     AXES_CRITICAL_STRIKES(1),
     AXES_GREATER_IMPACT(1),
     AXES_SKULL_SPLITTER(1),
+    AXES_MASTERY(1),
 
     /* Excavation */
     EXCAVATION_ARCHAEOLOGY(8),
     EXCAVATION_GIGA_DRILL_BREAKER(1),
+    EXCAVATION_MASTERY(1),
 
     /* Fishing */
     FISHING_FISHERMANS_DIET(5),
@@ -41,6 +46,7 @@ public enum SubSkillType {
     FISHING_MASTER_ANGLER(8),
     FISHING_TREASURE_HUNTER(8),
     FISHING_SHAKE(1),
+    FISHING_MASTERY(1),
 
     /* Herbalism */
     HERBALISM_DOUBLE_DROPS(1),
@@ -49,6 +55,7 @@ public enum SubSkillType {
     HERBALISM_GREEN_THUMB(4),
     HERBALISM_HYLIAN_LUCK,
     HERBALISM_SHROOM_THUMB,
+    HERBALISM_MASTERY(1),
 
     /* Mining */
     MINING_BIGGER_BOMBS(1),
@@ -56,11 +63,13 @@ public enum SubSkillType {
     MINING_DEMOLITIONS_EXPERTISE(1),
     MINING_DOUBLE_DROPS(1),
     MINING_SUPER_BREAKER(1),
+    MINING_MASTERY(1),
 
     /* Repair */
     REPAIR_ARCANE_FORGING(8),
     REPAIR_REPAIR_MASTERY(1),
     REPAIR_SUPER_REPAIR(1),
+    REPAIR_MASTERY(1),
 
     /* Salvage */
     SALVAGE_SCRAP_COLLECTOR(8),
@@ -77,6 +86,7 @@ public enum SubSkillType {
     SWORDS_SERRATED_STRIKES(1),
     SWORDS_STAB(2),
     SWORDS_SWORDS_LIMIT_BREAK(10),
+    SWORDS_MASTERY(1),
 
     /* Taming */
     TAMING_BEAST_LORE(1),
@@ -89,6 +99,7 @@ public enum SubSkillType {
     TAMING_SHARPENED_CLAWS(1),
     TAMING_SHOCK_PROOF(1),
     TAMING_THICK_FUR(1),
+    TAMING_MASTERY(1),
 
     /* Unarmed */
     UNARMED_ARROW_DEFLECT(1),
@@ -98,6 +109,7 @@ public enum SubSkillType {
     UNARMED_STEEL_ARM_STYLE(20),
     UNARMED_IRON_GRIP(1),
     UNARMED_UNARMED_LIMIT_BREAK(10),
+    UNARMED_MASTERY(1),
 
     /* Woodcutting */
 /*    WOODCUTTING_BARK_SURGEON(3),*/
@@ -106,7 +118,10 @@ public enum SubSkillType {
     WOODCUTTING_LEAF_BLOWER(1),
 /*    WOODCUTTING_NATURES_BOUNTY(3),
     WOODCUTTING_SPLINTER(3),*/
-    WOODCUTTING_TREE_FELLER(1);
+    WOODCUTTING_TREE_FELLER(1),
+    WOODCUTTING_MASTERY(1),
+
+    POWER_LEVEL_MASTERY(1);
 
     private final int numRanks;
     //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.

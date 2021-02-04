@@ -597,4 +597,5 @@ public class Config extends AutoUpdateConfigLoader {
     public int getPowerLevelUpBroadcastRadius() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restricted_Radius", 100); }
     public int getPowerLevelUpBroadcastInterval() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval", 100); }
 
+    public boolean isMasterySystemEnabled() { return config.getBoolean( "General.PowerLevel.Skill_Mastery.Enabled"); }
 }

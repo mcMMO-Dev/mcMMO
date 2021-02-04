@@ -49,6 +49,9 @@ General:
     RetroMode:
         Enabled: true
     Locale: en_US
+    PowerLevel:
+        Skill_Mastery:
+            Enabled: true
     AprilFoolsEvent: true
     MOTD_Enabled: true
     EventBroadcasts: true
