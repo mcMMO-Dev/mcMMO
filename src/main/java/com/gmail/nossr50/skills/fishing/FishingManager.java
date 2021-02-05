@@ -25,8 +25,6 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -72,36 +70,36 @@ public class FishingManager extends SkillManager {
         return mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public void setFishingRodCastTimestamp()
-    {
-        long currentTime = System.currentTimeMillis();
-        //Only track spam casting if the fishing hook is fresh
-        if(currentTime > fishHookSpawnTimestamp + 1000)
-            return;
-
-        if(currentTime < fishingRodCastTimestamp + FISHING_ROD_CAST_CD_MILLISECONDS)
-        {
-            ItemStack fishingRod = getPlayer().getInventory().getItemInMainHand();
-
-            //Ensure correct hand item is damaged
-            if(fishingRod.getType() != Material.FISHING_ROD) {
-                fishingRod = getPlayer().getInventory().getItemInOffHand();
-            }
-
-            getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
-            fishingRod.setDurability((short) (fishingRod.getDurability() + 5));
-            getPlayer().updateInventory();
-
-            if(lastWarnedExhaust + (1000) < currentTime)
-            {
-                getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
-                lastWarnedExhaust = currentTime;
-                SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
-            }
-        }
-
-        fishingRodCastTimestamp = System.currentTimeMillis();
-    }
+//    public void setFishingRodCastTimestamp()
+//    {
+//        long currentTime = System.currentTimeMillis();
+//        //Only track spam casting if the fishing hook is fresh
+//        if(currentTime > fishHookSpawnTimestamp + 1000)
+//            return;
+//
+//        if(currentTime < fishingRodCastTimestamp + FISHING_ROD_CAST_CD_MILLISECONDS)
+//        {
+//            ItemStack fishingRod = getPlayer().getInventory().getItemInMainHand();
+//
+//            //Ensure correct hand item is damaged
+//            if(fishingRod.getType() != Material.FISHING_ROD) {
+//                fishingRod = getPlayer().getInventory().getItemInOffHand();
+//            }
+//
+//            getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
+//            fishingRod.setDurability((short) (fishingRod.getDurability() + 5));
+//            getPlayer().updateInventory();
+//
+//            if(lastWarnedExhaust + (1000) < currentTime)
+//            {
+//                getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
+//                lastWarnedExhaust = currentTime;
+//                SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
+//            }
+//        }
+//
+//        fishingRodCastTimestamp = System.currentTimeMillis();
+//    }
 
     public void setFishHookReference(FishHook fishHook)
     {

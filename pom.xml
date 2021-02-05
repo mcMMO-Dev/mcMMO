@@ -110,6 +110,7 @@
                             <include>net.kyori:adventure-platform-viaversion</include>
                             <include>net.kyori:adventure-platform-facet</include>
                             <include>net.kyori:adventure-nbt</include>
+                            <include>net.kyori:adventure-key</include>
                             <include>net.kyori:examination-api</include>
                             <include>net.kyori:examination-string</include>
                             <include>net.kyori:adventure-text-serializer-legacy</include>
@@ -158,7 +159,7 @@
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstat</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -234,17 +235,27 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.3.0</version>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.3.0</version>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
-            <version>4.3.0</version>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-key</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -262,11 +273,6 @@
             <version>4.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
-            <version>4.3.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
             <version>1.9.4</version>
@@ -274,7 +280,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.4</version>
+            <version>1.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -2,6 +2,8 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.LevelUpBroadcastPredicate;
+import com.gmail.nossr50.datatypes.PowerLevelUpBroadcastPredicate;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.skills.CoreSkills;
@@ -21,6 +23,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -29,7 +33,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+
 public class NotificationManager {
+
+    public static final String HEX_BEIGE_COLOR = "#c2a66e";
+    public static final String HEX_LIME_GREEN_COLOR = "#8ec26e";
+
     /**
      * Sends players notifications from mcMMO
      * Does so by sending out an event so other plugins can cancel it
@@ -268,6 +278,85 @@ public class NotificationManager {
         System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
 
         return newArray;
+    }
+
+    //TODO: Remove the code duplication, am lazy atm
+    //TODO: Fix broadcasts being skipped for situations where a player skips over the milestone like with the addlevels command
+    public static void processLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int level) {
+        if(level <= 0)
+            return;
+
+        //Check if broadcasting is enabled
+        if(Config.getInstance().shouldLevelUpBroadcasts()) {
+            //Permission check
+            if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
+                return;
+            }
+
+            int levelInterval = Config.getInstance().getLevelUpBroadcastInterval();
+            int remainder = level % levelInterval;
+
+            if(remainder == 0) {
+                //Grab appropriate audience
+                Audience audience = mcMMO.getAudiences().filter(getLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
+                //TODO: Make prettier
+                HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
+                        .append(Component.newline())
+                        .append(Component.text(LocalDate.now().toString()))
+                        .append(Component.newline())
+                        .append(Component.text(primarySkillType.getName()+" reached level "+level)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .asHoverEvent();
+
+                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.getName());
+                Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
+
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
+            }
+        }
+    }
+
+    //TODO: Remove the code duplication, am lazy atm
+    //TODO: Fix broadcasts being skipped for situations where a player skips over the milestone like with the addlevels command
+    public static void processPowerLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, int powerLevel) {
+        if(powerLevel <= 0)
+            return;
+
+        //Check if broadcasting is enabled
+        if(Config.getInstance().shouldPowerLevelUpBroadcasts()) {
+            //Permission check
+            if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
+                return;
+            }
+
+            int levelInterval = Config.getInstance().getPowerLevelUpBroadcastInterval();
+            int remainder = powerLevel % levelInterval;
+
+            if(remainder == 0) {
+                //Grab appropriate audience
+                Audience audience = mcMMO.getAudiences().filter(getPowerLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
+                //TODO: Make prettier
+                HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
+                        .append(Component.newline())
+                        .append(Component.text(LocalDate.now().toString()))
+                        .append(Component.newline())
+                        .append(Component.text("Power level has reached "+powerLevel)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .asHoverEvent();
+
+                String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
+                Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
+
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
+            }
+        }
+    }
+
+    //TODO: Could cache
+    public static @NotNull LevelUpBroadcastPredicate<CommandSender> getLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
+        return new LevelUpBroadcastPredicate<>(levelUpPlayer);
+    }
+
+    public static @NotNull PowerLevelUpBroadcastPredicate<CommandSender> getPowerLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
+        return new PowerLevelUpBroadcastPredicate<>(levelUpPlayer);
     }
 
 }

@@ -752,11 +752,16 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        playerInventory.removeItem(seedStack);
-        player.updateInventory(); // Needed until replacement available
-        //Play sound
-        SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
-        return true;
+        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
+            return false;
+        } else {
+            playerInventory.removeItem(seedStack);
+            player.updateInventory(); // Needed until replacement available
+            //Play sound
+            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
+            return true;
+        }
+
 //        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
 

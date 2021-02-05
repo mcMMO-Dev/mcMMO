@@ -1,4 +1,7 @@
 Version 2.2.000
+    //TODO: Add level up milestone processing hooks
+    //TODO: Verify fishing durability change is removed
+
     Removed the mcimport command as its useless (was for mod configs)
     mcMMO-API is now the library used for mcMMO API
     Parts of the API have been migrated to mcMMO-API
@@ -100,8 +103,79 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+Version 2.1.175
+
+Version 2.1.174
+    Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
+    Updated hu_HU locale (thanks andris155)
+    Updated ru locale (thanks imDaniX)
+    Updated fr locale (thanks Elikill58)
+    (API) Added SubSkillBlockEvent for some SubSkill events that have a block (eg: Green Thumb Block events)
+    (API) Green Thumb (Block) now fires a SubSkillBlockEvent which is cancellable
+    (API) Green Thumb (Plant) now fires SubSkillBlockEvent which is cancellable
+    (API) Shroom Thumb now fires a SubSkillBlockEvent which is cancellable
+
+    NOTE: A lot of sub-skills without random chance elements are missing events, this will be cleaned up in the near future. If you need something specific added sooner than that, post a GitHub issue for it and I'll patch it in.
+    I'm likely to separate Green Thumb into two distinct skills in an upcoming patch
+    Only Green Thumb/Shroom Thumb trigger the new SubSkillBlockEvent for now
+
+Version 2.1.173
+    The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
+    mcMMO no longer damages fishing rods or drains a player's hunger when fishing
+    Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
+    Updated ja_JP locale (thanks ViaSnake)
+    Fixed a bug where scoreboards were torn down inappropriately when moving to or from blacklisted worlds (thanks steve4744)
+    Updated Kyori's adventure library to 4.4.0 (used by mcMMO to handle text components)
+
+Version 2.1.172
+    Updated german locale (thanks TheBusyBiscuit)
+    Added 'mcmmo.broadcast.levelup' permission node, if a player lacks this node they will not have their level up milestones broadcast to chat, this is a default permission node
+    Power Levels are now included in level up broadcasts and they have their own settings (mirroring the existing settings for skill broadcasts)
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Enabled' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Send_To_Console' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Party_Members' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Same_World' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restrict_Distance' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restricted_Radius' to config.yml
+    Added 'Broadcasts.PowerLevelUpMilestone' to locale
+    You can now disable the XP orbs from being dropped when Knock On Wood triggers during Tree Feller
+    Added 'Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops' to advanced.yml
+    Changed Fists to not be capitalized (en_US) when lowering/readying berserk
+    SkillActivationPerkEvent can now be called in async threads (thanks electronicboy)
+    Removed a few never implemented settings from Skills.Woodcutting.TreeFeller in advanced.yml
+    Updated bStats (thanks TheBusyBiscuit)
+    Fixed some incorrect reporting to bStats (I'm so dyslexic...)
+
+    NOTES:
+    The new 'mcmmo.broadcast.levelup' node is a default node included under the 'mcmmo.defaults' node umbrella, you shouldn't have to give this to your players unless they don't have access to 'mcmmo.defaults'
+    If you don't have a permission plugin you don't need to worry, players will have this node by default in that case
+    There are situations where level up broadcasts will be skipped, for example if you go from level 0 -> 101 via addlevels or mmmoedit, and your broadcast interval is 100, it will be skipped as 101 falls out of this interval, this kind of skip only applies to command based leveling. Players gaining levels naturally should never have their broadcasts skipped. I'll fix this particular interaction in the future so that command based leveling never skips over milestone broadcasts, but for now it does.
+
 Version 2.1.171
+    Fixed a bug where arrows shot by infinite bow enchant would duplicate
+    Fixed a bug where Archery XP would calculate incorrectly
     Axes can now replant cocoa plants (thanks Lyther)
+    Players who level up at certain milestones have their level ups broadcast to the server (very configurable and optional, see notes)
+    New locale string 'Broadcasts.LevelUpMilestone'
+    Added 'General.Level_Up_Chat_Broadcasts.Enabled' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Milestone_Interval' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Send_To_Console' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Party_Members' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Same_World' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restrict_Distance' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restricted_Radius' to config.yml
+
+    NOTES:
+    The new broadcast system is very configurable, you could set the milestone interval to 1 if you want players to always be informed when someone levels up
+    With default settings, messages are broadcast to all players on all worlds and to the server console when a player hits a level up that is a 100 interval, for example level 100, 300, 600, 2200 would all qualify
+    You can change the settings to specify who receives these messages or turn the whole system off
+    The message is customizable via locale: https://mcmmo.org/wiki/Locale
+    There are comments in config.yml above each setting (as long as YAML doesn't move comments around chaotically...) that explain each setting
+    In case your comments are missing, here's what they look like by default: https://gist.github.com/nossr50/baf656477c75663e9e2f9284acee8d67
+
+
 Version 2.1.170
     Reverted a change that broke compatibility with the mcMMO papi ecloud thingy
 
