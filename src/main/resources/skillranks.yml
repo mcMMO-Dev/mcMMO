@@ -6,6 +6,11 @@
 # Retro Mode has 10x faster leveling and 10x higher skill requirements, if you do the math you can see its the same as Standard and only cosmetic!.
 ###
 Alchemy:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     Catalysis:
         Standard:
             Rank_1: 0
@@ -31,6 +36,11 @@ Alchemy:
             Rank_7: 900
             Rank_8: 1000
 Archery:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     ArcheryLimitBreak:
         Standard:
             Rank_1: 10
@@ -103,12 +113,22 @@ Archery:
             Rank_19: 950
             Rank_20: 1000
 Acrobatics:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     Dodge:
         Standard:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
 Axes:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     AxesLimitBreak:
         Standard:
             Rank_1: 10
@@ -202,6 +222,11 @@ Axes:
             Rank_3: 150
             Rank_4: 200
 Taming:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     BeastLore:
         Standard:
             Rank_1: 1
@@ -253,6 +278,11 @@ Taming:
         RetroMode:
             Rank_1: 750
 Smelting:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     FuelEfficiency:
         Standard:
             Rank_1: 10
@@ -282,6 +312,11 @@ Smelting:
             Rank_7: 850
             Rank_8: 1000
 Salvage:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     ScrapCollector:
         Standard:
             Rank_1: 1
@@ -321,6 +356,11 @@ Salvage:
             Rank_7: 850
             Rank_8: 1000
 Mining:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     DoubleDrops:
         Standard:
             Rank_1: 1
@@ -363,6 +403,11 @@ Mining:
             Rank_7: 850
             Rank_8: 1000
 Herbalism:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     DoubleDrops:
         Standard:
             Rank_1: 1
@@ -398,6 +443,11 @@ Herbalism:
             Rank_4: 800
             Rank_5: 1000
 Fishing:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     MagicHunter:
         Standard:
             Rank_1: 20
@@ -465,6 +515,11 @@ Fishing:
             Rank_7: 850
             Rank_8: 1000
 Swords:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     SwordsLimitBreak:
         Standard:
             Rank_1: 10
@@ -517,6 +572,11 @@ Swords:
         RetroMode:
             Rank_1: 50
 Unarmed:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     UnarmedLimitBreak:
         Standard:
             Rank_1: 10
@@ -605,6 +665,11 @@ Unarmed:
             Rank_20: 1000
 
 Woodcutting:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     TreeFeller:
         Standard:
             Rank_1: 5
@@ -640,6 +705,11 @@ Woodcutting:
             Rank_2: 350
             Rank_3: 650
 Excavation:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     GigaDrillBreaker:
         Standard:
             Rank_1: 5
@@ -665,6 +735,11 @@ Excavation:
             Rank_7: 850
             Rank_8: 1000
 Repair:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     RepairMastery:
         Standard:
             Rank_1: 1
