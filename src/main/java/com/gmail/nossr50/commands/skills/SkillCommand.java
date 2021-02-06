@@ -74,10 +74,11 @@ public abstract class SkillCommand implements TabExecutor {
             float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
             //Send the players a few blank lines to make finding the top of the skill command easier
-            if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
+            if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines()) {
                 for (int i = 0; i < 2; i++) {
                     player.sendMessage("");
                 }
+            }
 
             permissionsCheck(player);
             dataCalculations(player, skillValue);
@@ -136,10 +137,9 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
-        ChatColor hd1 = ChatColor.DARK_AQUA;
-        ChatColor c1 = ChatColor.GOLD;
-        ChatColor c2 = ChatColor.RED;
-
+//        ChatColor hd1 = ChatColor.DARK_AQUA;
+//        ChatColor c1 = ChatColor.GOLD;
+//        ChatColor c2 = ChatColor.RED;
 
         player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 

@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
@@ -23,13 +24,22 @@ public class PowerLevelCommand extends BaseCommand {
     }
 
     @Default
-    @Conditions(CommandManager.ADMIN_CONDITION)
+    @Conditions(CommandManager.POWER_LEVEL_CONDITION)
     public void processCommand(String[] args) {
         BukkitCommandIssuer bukkitCommandIssuer = (BukkitCommandIssuer) getCurrentCommandIssuer();
         Player player = bukkitCommandIssuer.getPlayer();
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player); //Should never be null at this point because its caught in an ACF validation
+        int powerLevel = mmoPlayer.getPowerLevel();
 
         //TODO: impl
-        mmoPlayer.getPlayer().sendMessage("Your power level is: "+mmoPlayer.getPowerLevel()); //This is not gonna stay, just to show that the command executes in debug
+        mmoPlayer.getPlayer().sendMessage("Your power level is: "+powerLevel); //This is not gonna stay, just to show that the command executes in debug
+
+        //Send the players a few blank lines to make finding the top of the skill command easier
+        if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines()) {
+            for (int i = 0; i < 2; i++) {
+                player.sendMessage("");
+            }
+        }
+
     }
 }
