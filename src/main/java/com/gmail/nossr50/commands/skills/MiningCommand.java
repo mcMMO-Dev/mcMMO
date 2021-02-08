@@ -55,8 +55,8 @@ public class MiningCommand extends SkillCommand {
         }
 
         // Mastery TRIPLE DROPS
-        if (Permissions.canUseSubSkill(player, SubSkillType.MINING_MASTERY)) {
-            String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_MASTERY);
+        if (Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE)) {
+            String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_MOTHER_LODE);
             masteryTripleDropChance = masteryTripleDropStrings[0];
             masteryTripleDropChanceLucky = masteryTripleDropStrings[1];
         }
@@ -105,8 +105,8 @@ public class MiningCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.MINING_MASTERY)) {
-            messages.add(getStatMessage(SubSkillType.MINING_MASTERY, masteryTripleDropChance)
+        if(Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE)) {
+            messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, masteryTripleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", masteryTripleDropChanceLucky) : ""));
         }
         

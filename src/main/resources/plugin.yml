@@ -482,7 +482,7 @@ permissions:
             mcmmo.ability.mining.blastmining.all: true
             mcmmo.ability.mining.doubledrops: true
             mcmmo.ability.mining.superbreaker: true
-            mcmmo.ability.mining.mastery: true
+            mcmmo.ability.mining.motherlode: true
     mcmmo.ability.mining.blastmining.*:
         default: false
         description: Allows access to all Blast Mining abilities
@@ -500,8 +500,8 @@ permissions:
         description: Allows access to the Demolitions Expertise ability
     mcmmo.ability.mining.blastmining.detonate:
         description: Allows for remote TNT detonation
-    mcmmo.ability.mining.mastery:
-        description: Allows access to end game progression for Mining
+    mcmmo.ability.mining.motherlode:
+        description: Allows access to mother lode subskill
     mcmmo.ability.mining.doubledrops:
         description: Allows double drop chance when mining
     mcmmo.ability.mining.superbreaker:

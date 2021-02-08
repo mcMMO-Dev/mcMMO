@@ -356,7 +356,7 @@ Salvage:
             Rank_7: 850
             Rank_8: 1000
 Mining:
-    Mastery:
+    MotherLode:
         Standard:
             Rank_1: 100
         RetroMode:

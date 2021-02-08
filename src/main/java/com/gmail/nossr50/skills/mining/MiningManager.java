@@ -69,8 +69,8 @@ public class MiningManager extends SkillManager {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
     }
 
-    public boolean canMiningMastery() {
-        return Permissions.canUseSubSkill(getPlayer(), SubSkillType.MINING_MASTERY);
+    public boolean canMotherLode() {
+        return Permissions.canUseSubSkill(getPlayer(), SubSkillType.MINING_MOTHER_LODE);
     }
 
 
@@ -101,7 +101,7 @@ public class MiningManager extends SkillManager {
             return;
 
         //Mining mastery allows for a chance of triple drops
-        if(canMiningMastery()) {
+        if(canMotherLode()) {
             //Triple Drops failed so do a normal double drops check
             if(!processTripleDrops(blockState)) {
                 processDoubleDrops(blockState);
@@ -114,7 +114,7 @@ public class MiningManager extends SkillManager {
 
     private boolean processTripleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_MASTERY, true)) {
+        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_MOTHER_LODE, true)) {
             BlockUtils.markDropsAsBonus(blockState, 2);
             return true;
         } else {

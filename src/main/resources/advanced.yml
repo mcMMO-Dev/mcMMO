@@ -281,7 +281,7 @@ Skills:
     #  Settings for Mining
     ###
     Mining:
-        Mastery:
+        MotherLode:
             MaxBonusLevel:
                 Standard: 1000
                 RetroMode: 10000

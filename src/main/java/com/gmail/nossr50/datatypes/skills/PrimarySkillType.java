@@ -49,7 +49,7 @@ public enum PrimarySkillType {
     HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbilityType.GREEN_TERRA, ToolType.HOE,
             ImmutableList.of(SubSkillType.HERBALISM_MASTERY, SubSkillType.HERBALISM_GREEN_TERRA, SubSkillType.HERBALISM_FARMERS_DIET, SubSkillType.HERBALISM_GREEN_THUMB, SubSkillType.HERBALISM_DOUBLE_DROPS, SubSkillType.HERBALISM_HYLIAN_LUCK, SubSkillType.HERBALISM_SHROOM_THUMB)),
     MINING(MiningManager.class, Color.GRAY, SuperAbilityType.SUPER_BREAKER, ToolType.PICKAXE,
-            ImmutableList.of(SubSkillType.MINING_MASTERY, SubSkillType.MINING_SUPER_BREAKER, SubSkillType.MINING_DEMOLITIONS_EXPERTISE, SubSkillType.MINING_BIGGER_BOMBS, SubSkillType.MINING_BLAST_MINING, SubSkillType.MINING_DOUBLE_DROPS)),
+            ImmutableList.of(SubSkillType.MINING_MOTHER_LODE, SubSkillType.MINING_SUPER_BREAKER, SubSkillType.MINING_DEMOLITIONS_EXPERTISE, SubSkillType.MINING_BIGGER_BOMBS, SubSkillType.MINING_BLAST_MINING, SubSkillType.MINING_DOUBLE_DROPS)),
     REPAIR(RepairManager.class, Color.SILVER,
             ImmutableList.of(SubSkillType.REPAIR_MASTERY, SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
     SALVAGE(SalvageManager.class, Color.ORANGE,
