@@ -119,7 +119,7 @@ public enum SubSkillType {
 /*    WOODCUTTING_NATURES_BOUNTY(3),
     WOODCUTTING_SPLINTER(3),*/
     WOODCUTTING_TREE_FELLER(1),
-    WOODCUTTING_MASTERY(1);
+    WOODCUTTING_CLEAN_CUTS(1);
 
     private final int numRanks;
     //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.

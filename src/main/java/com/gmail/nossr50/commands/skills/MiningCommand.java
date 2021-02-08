@@ -18,8 +18,8 @@ import java.util.List;
 public class MiningCommand extends SkillCommand {
     private String doubleDropChance;
     private String doubleDropChanceLucky;
-    private String masteryTripleDropChance;
-    private String masteryTripleDropChanceLucky;
+    private String tripleDropChance;
+    private String tripleDropChanceLucky;
     private String superBreakerLength;
     private String superBreakerLengthEndurance;
 
@@ -32,6 +32,7 @@ public class MiningCommand extends SkillCommand {
 
     private boolean canSuperBreaker;
     private boolean canDoubleDrop;
+    private boolean canTripleDrop;
     private boolean canBlast;
     private boolean canBiggerBombs;
     private boolean canDemoExpert;
@@ -55,10 +56,10 @@ public class MiningCommand extends SkillCommand {
         }
 
         // Mastery TRIPLE DROPS
-        if (Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE)) {
+        if (canTripleDrop) {
             String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_MOTHER_LODE);
-            masteryTripleDropChance = masteryTripleDropStrings[0];
-            masteryTripleDropChanceLucky = masteryTripleDropStrings[1];
+            tripleDropChance = masteryTripleDropStrings[0];
+            tripleDropChanceLucky = masteryTripleDropStrings[1];
         }
 
         
@@ -83,6 +84,7 @@ public class MiningCommand extends SkillCommand {
         canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
         canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_DOUBLE_DROPS);
+        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE);
         canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
@@ -105,16 +107,17 @@ public class MiningCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE)) {
-            messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, masteryTripleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", masteryTripleDropChanceLucky) : ""));
-        }
-        
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.MINING_DOUBLE_DROPS, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
+
+        if(canTripleDrop) {
+            messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, tripleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
+        }
+
 
         if (canSuperBreaker) {
             messages.add(getStatMessage(SubSkillType.MINING_SUPER_BREAKER, superBreakerLength)

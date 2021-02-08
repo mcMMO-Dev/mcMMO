@@ -112,13 +112,6 @@ public class RandomChanceUtil {
         return rollDice(chanceOfSuccess, 100);
     }
 
-
-    /*public static double getRandomChanceExecutionChance(RandomChanceSkill randomChance)
-    {
-        double chanceOfSuccess = calculateChanceOfSuccess(randomChance);
-        return chanceOfSuccess;
-    }*/
-
     /**
      * Gets the Static Chance for something to activate
      *
@@ -140,11 +133,6 @@ public class RandomChanceUtil {
 
         return chanceOfSuccess;
     }
-
-    /*private static double calculateChanceOfSuccess(RandomChanceStatic randomChance) {
-        double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap());
-        return chanceOfSuccess;
-    }*/
 
     public static double calculateChanceOfSuccess(@NotNull RandomChanceSkill randomChance) {
         double skillLevel = randomChance.getSkillLevel();

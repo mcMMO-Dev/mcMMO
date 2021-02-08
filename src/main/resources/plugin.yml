@@ -768,8 +768,8 @@ permissions:
             mcmmo.ability.woodcutting.knockonwood: true
             mcmmo.ability.woodcutting.leafblower: true
             mcmmo.ability.woodcutting.treefeller: true
-            mcmmo.ability.woodcutting.mastery: true
-    mcmmo.ability.woodcutting.mastery:
+            mcmmo.ability.woodcutting.cleancuts: true
+    mcmmo.ability.woodcutting.cleancuts:
         description: Allows access to end game progression for Woodcutting
     mcmmo.ability.woodcutting.knockonwood:
         description: Allows access to Knock on Wood subskill

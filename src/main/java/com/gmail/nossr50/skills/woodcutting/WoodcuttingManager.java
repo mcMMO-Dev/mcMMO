@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+//TODO: Seems to not be using the item drop event for bonus drops, may want to change that.. or may not be able to be changed?
 public class WoodcuttingManager extends SkillManager {
     private boolean treeFellerReachedThreshold = false;
     private static int treeFellerThreshold; //TODO: Shared setting, will be removed in 2.2
@@ -68,21 +69,40 @@ public class WoodcuttingManager extends SkillManager {
                 && ItemUtils.isAxe(heldItem);
     }
 
-    private boolean checkHarvestLumberActivation(@NotNull Material material) {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer())
-                && Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
+    private boolean checkHarvestLumberActivation() {
+        return RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
+    }
+
+    private boolean checkCleanCutsActivation() {
+        return RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer());
     }
 
     /**
-     * Begins Woodcutting
+     * Processes bonus drops for a block
      *
      * @param blockState Block being broken
      */
-    public void processHarvestLumber(@NotNull BlockState blockState) {
-        if (checkHarvestLumberActivation(blockState.getType())) {
-            spawnHarvestLumberBonusDrops(blockState);
+    public void processBonusDropCheck(@NotNull BlockState blockState) {
+        //TODO: Why isn't this using the item drop event? Potentially because of Tree Feller? This should be adjusted either way.
+        if(Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
+            //Mastery enabled for player
+            if(Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
+                if(checkCleanCutsActivation()) {
+                    //Triple drops
+                    spawnHarvestLumberBonusDrops(blockState);
+                    spawnHarvestLumberBonusDrops(blockState);
+                } else {
+                    //Harvest Lumber Check
+                    if(checkHarvestLumberActivation()) {
+                        spawnHarvestLumberBonusDrops(blockState);
+                    }
+                }
+            //No Mastery (no Clean Cuts)
+            } else if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
+                if(checkHarvestLumberActivation()) {
+                    spawnHarvestLumberBonusDrops(blockState);
+                }
+            }
         }
     }
 
@@ -299,7 +319,7 @@ public class WoodcuttingManager extends SkillManager {
                 Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
-                processHarvestLumber(blockState);
+                processBonusDropCheck(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
                 //Drop displaced non-woodcutting XP blocks
 

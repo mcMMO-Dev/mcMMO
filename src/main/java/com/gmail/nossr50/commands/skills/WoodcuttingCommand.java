@@ -17,15 +17,18 @@ public class WoodcuttingCommand extends SkillCommand {
     private String treeFellerLength;
     private String treeFellerLengthEndurance;
     private String doubleDropChance;
+    private String tripleDropChance;
     private String doubleDropChanceLucky;
+    private String tripleDropChanceLucky;
 
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
+    private boolean canTripleDrop;
     private boolean canKnockOnWood;
-    private boolean canSplinter;
-    private boolean canBarkSurgeon;
-    private boolean canNaturesBounty;
+//    private boolean canSplinter;
+//    private boolean canBarkSurgeon;
+//    private boolean canNaturesBounty;
 
     public WoodcuttingCommand() {
         super(PrimarySkillType.WOODCUTTING);
@@ -36,6 +39,13 @@ public class WoodcuttingCommand extends SkillCommand {
         // DOUBLE DROPS
         if (canDoubleDrop) {
             setDoubleDropClassicChanceStrings(player);
+        }
+
+        //Clean Cuts
+        if(canTripleDrop) {
+            String[] tripleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
+            tripleDropChance = tripleDropStrings[0];
+            tripleDropChanceLucky = tripleDropStrings[1];
         }
         
         // TREE FELLER
@@ -55,7 +65,8 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
+        canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled();
+        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_CLEAN_CUTS) && !skill.getDoubleDropsDisabled();
         canLeafBlow = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
         canKnockOnWood = canTreeFell && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
         /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);
@@ -71,6 +82,12 @@ public class WoodcuttingCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
+
+        if(canTripleDrop) {
+            messages.add(getStatMessage(SubSkillType.WOODCUTTING_CLEAN_CUTS, tripleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
+        }
+
 
         if (canKnockOnWood) {
             String lootNote;
