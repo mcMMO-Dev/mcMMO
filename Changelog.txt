@@ -2,6 +2,23 @@ Version 2.1.175
     Added a new mastery sub-skill to each skill (see notes)
     Added /mmopower command (aliases /mmopowerlevel /powerlevel)
     Added 'mcmmo.commands.mmopower' permission node
+    Added 'mcmmo.ability.acrobatics.mastery' permission node
+    Added 'mcmmo.ability.alchemy.mastery' permission node
+    Added 'mcmmo.ability.archery.mastery' permission node
+    Added 'mcmmo.ability.axes.mastery' permission node
+    Added 'mcmmo.ability.excavation.mastery' permission node
+    Added 'mcmmo.ability.fishing.mastery' permission node
+    Added 'mcmmo.ability.herbalism.mastery' permission node
+    Added 'mcmmo.ability.mining.mastery' permission node
+    Added 'mcmmo.ability.repair.mastery' permission node
+    Added 'mcmmo.ability.salvage.mastery' permission node
+    Added 'mcmmo.ability.smelting.mastery' permission node
+    Added 'mcmmo.ability.salvage.mastery' permission node
+    Added 'mcmmo.ability.swords.mastery' permission node
+    Added 'mcmmo.ability.taming.mastery' permission node
+    Added 'mcmmo.ability.unarmed.mastery' permission node
+    Added 'mcmmo.ability.woodcutting.mastery' permission node
+
     Added 'General.PowerLevel.Skill_Mastery.Enabled' to config.yml which is used to enable or disable the mastery skills (will also disable the new power level command)
 
     NOTES:

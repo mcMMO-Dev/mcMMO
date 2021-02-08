@@ -260,6 +260,9 @@ permissions:
         children:
             mcmmo.ability.acrobatics.dodge: true
             mcmmo.ability.acrobatics.roll: true
+            mcmmo.ability.acrobatics.mastery: true
+    mcmmo.ability.acrobatics.mastery:
+        description: Allows access to end game progression for Acrobatics
     mcmmo.ability.acrobatics.dodge:
         description: Allows access to the Dodge ability
     mcmmo.ability.acrobatics.roll:
@@ -274,6 +277,9 @@ permissions:
         children:
             mcmmo.ability.alchemy.catalysis: true
             mcmmo.ability.alchemy.concoctions: true
+            mcmmo.ability.alchemy.mastery: true
+    mcmmo.ability.alchemy.mastery:
+        description: Allows access to end game progression for Alchemy
     mcmmo.ability.alchemy.catalysis:
         description: Allows access to the Catalysis ability
     mcmmo.ability.alchemy.concoctions:
@@ -290,6 +296,9 @@ permissions:
             mcmmo.ability.archery.daze: true
             mcmmo.ability.archery.arrowretrieval: true
             mcmmo.ability.archery.archerylimitbreak: true
+            mcmmo.ability.archery.mastery: true
+    mcmmo.ability.archery.mastery:
+        description: Allows access to end game progression for Archery
     mcmmo.ability.archery.archerylimitbreak:
         description: Adds damage to bows and crossbows
     mcmmo.ability.archery.skillshot:
@@ -312,6 +321,9 @@ permissions:
             mcmmo.ability.axes.armorimpact: true
             mcmmo.ability.axes.skullsplitter: true
             mcmmo.ability.axes.axeslimitbreak: true
+            mcmmo.ability.axes.mastery: true
+    mcmmo.ability.axes.mastery:
+        description: Allows access to end game progression for Axes
     mcmmo.ability.axes.axeslimitbreak:
         description: Adds damage to axes
     mcmmo.ability.axes.axemastery:
@@ -334,6 +346,9 @@ permissions:
         children:
             mcmmo.ability.excavation.gigadrillbreaker: true
             mcmmo.ability.excavation.archaeology: true
+            mcmmo.ability.excavation.mastery: true
+    mcmmo.ability.excavation.mastery:
+        description: Allows access to end game progression for Excavation
     mcmmo.ability.excavation.gigadrillbreaker:
         description: Allows access to the Giga Drill Breaker ability
     mcmmo.ability.excavation.archaeology:
@@ -353,6 +368,9 @@ permissions:
             mcmmo.ability.fishing.shake: true
             mcmmo.ability.fishing.treasurehunter: true
             mcmmo.ability.fishing.vanillaxpboost: true
+            mcmmo.ability.fishing.mastery: true
+    mcmmo.ability.fishing.mastery:
+        description: Allows access to end game progression for Fishing
     mcmmo.ability.fishing.fishermansdiet:
         description: Allows access to the Fishermans's Diet ability
     mcmmo.ability.fishing.icefishing:
@@ -381,6 +399,9 @@ permissions:
             mcmmo.ability.herbalism.greenthumb.all: true
             mcmmo.ability.herbalism.hylianluck: true
             mcmmo.ability.herbalism.shroomthumb: true
+            mcmmo.ability.herbalism.mastery: true
+    mcmmo.ability.herbalism.mastery:
+        description: Allows access to end game progression for Herbalism
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
     mcmmo.ability.herbalism.farmersdiet:
@@ -461,6 +482,7 @@ permissions:
             mcmmo.ability.mining.blastmining.all: true
             mcmmo.ability.mining.doubledrops: true
             mcmmo.ability.mining.superbreaker: true
+            mcmmo.ability.mining.mastery: true
     mcmmo.ability.mining.blastmining.*:
         default: false
         description: Allows access to all Blast Mining abilities
@@ -478,6 +500,8 @@ permissions:
         description: Allows access to the Demolitions Expertise ability
     mcmmo.ability.mining.blastmining.detonate:
         description: Allows for remote TNT detonation
+    mcmmo.ability.mining.mastery:
+        description: Allows access to end game progression for Mining
     mcmmo.ability.mining.doubledrops:
         description: Allows double drop chance when mining
     mcmmo.ability.mining.superbreaker:
@@ -506,6 +530,9 @@ permissions:
             mcmmo.ability.repair.stringrepair: true
             mcmmo.ability.repair.toolrepair: true
             mcmmo.ability.repair.woodrepair: true
+            mcmmo.ability.repair.mastery: true
+    mcmmo.ability.repair.mastery:
+        description: Allows access to end game progression for Repair
     mcmmo.ability.repair.arcaneforging:
         description: Allows access to the Arcane Forging ability
     mcmmo.ability.repair.armorrepair:
@@ -558,6 +585,9 @@ permissions:
             mcmmo.ability.salvage.stringsalvage: true
             mcmmo.ability.salvage.toolsalvage: true
             mcmmo.ability.salvage.woodsalvage: true
+            mcmmo.ability.salvage.mastery: true
+    mcmmo.ability.salvage.mastery:
+        description: Allows access to end game progression for Salvage
     mcmmo.ability.salvage.scrapcollector:
         description: Allows access to the Scrap Collector ability
     mcmmo.ability.salvage.arcanesalvage:
@@ -598,6 +628,9 @@ permissions:
             mcmmo.ability.smelting.fluxmining: true
             mcmmo.ability.smelting.fuelefficiency: true
             mcmmo.ability.smelting.vanillaxpboost: true
+            mcmmo.ability.smelting.mastery: true
+    mcmmo.ability.smelting.mastery:
+        description: Allows access to end game progression for Smelting
     mcmmo.ability.smelting.fluxmining:
         description: Allows access to the Flux Mining ability
     mcmmo.ability.smelting.fuelefficiency:
@@ -619,6 +652,9 @@ permissions:
             mcmmo.ability.swords.counterattack: true
             mcmmo.ability.swords.serratedstrikes: true
             mcmmo.ability.swords.swordslimitbreak: true
+            mcmmo.ability.swords.mastery: true
+    mcmmo.ability.swords.mastery:
+        description: Allows access to end game progression for Swords
     mcmmo.ability.swords.stab:
         description: Adds damage to swords
     mcmmo.ability.swords.swordslimitbreak:
@@ -647,6 +683,9 @@ permissions:
             mcmmo.ability.taming.shockproof: true
             mcmmo.ability.taming.thickfur: true
             mcmmo.ability.taming.pummel: true
+            mcmmo.ability.taming.mastery: true
+    mcmmo.ability.taming.mastery:
+        description: Allows access to end game progression for Taming
     mcmmo.ability.taming.beastlore:
         description: Allows access to the Beast Lore ability
     mcmmo.ability.taming.callofthewild.*:
@@ -697,6 +736,9 @@ permissions:
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
             mcmmo.ability.unarmed.unarmedlimitbreak: true
+            mcmmo.ability.unarmed.mastery: true
+    mcmmo.ability.unarmed.mastery:
+        description: Allows access to end game progression for Unarmed
     mcmmo.ability.unarmed.unarmedlimitbreak:
         description: Adds damage to unarmed attacks
     mcmmo.ability.unarmed.berserk:
@@ -726,6 +768,9 @@ permissions:
             mcmmo.ability.woodcutting.knockonwood: true
             mcmmo.ability.woodcutting.leafblower: true
             mcmmo.ability.woodcutting.treefeller: true
+            mcmmo.ability.woodcutting.mastery: true
+    mcmmo.ability.woodcutting.mastery:
+        description: Allows access to end game progression for Woodcutting
     mcmmo.ability.woodcutting.knockonwood:
         description: Allows access to Knock on Wood subskill
     mcmmo.ability.woodcutting.splinter:
