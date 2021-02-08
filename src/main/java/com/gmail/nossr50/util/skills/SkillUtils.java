@@ -239,7 +239,7 @@ public final class SkillUtils {
     }
 
     /**
-     * Modify the durability of an ItemStack.
+     * Modify the durability of an ItemStack, using Tools specific formula for unbreaking enchant damage reduction
      *
      * @param itemStack The ItemStack which durability should be modified
      * @param durabilityModifier the amount to modify the durability by
@@ -253,6 +253,36 @@ public final class SkillUtils {
         Material type = itemStack.getType();
         short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
         durabilityModifier = (int) Math.min(durabilityModifier / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1), maxDurability * maxDamageModifier);
+
+        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
+    }
+
+    private static boolean isLocalizedSkill(String skillName) {
+        for (PrimarySkillType skill : PrimarySkillType.values()) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    
+    /**
+     * Modify the durability of an ItemStack, using Armor specific formula for unbreaking enchant damage reduction
+     *
+     * @param itemStack The ItemStack which durability should be modified
+     * @param durabilityModifier the amount to modify the durability by
+     * @param maxDamageModifier the amount to adjust the max damage by
+     */
+    public static void handleArmorDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+        if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
+            return;
+        }
+
+        Material type = itemStack.getType();
+        short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4/ (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1)), maxDurability * maxDamageModifier);
 
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
     }
