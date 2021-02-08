@@ -20,9 +20,9 @@ Version 2.1.175
     Added 'mcmmo.ability.taming.mastery' permission node
     Added 'mcmmo.ability.unarmed.mastery' permission node
     Added 'mcmmo.ability.woodcutting.mastery' permission node
-    Added 'Mining.SubSkill.Mastery.Name' to locale
-    Added 'Mining.SubSkill.Mastery.Stat' to locale
-    Added 'Mining.SubSkill.Mastery.Description' to locale
+    Added 'Mining.SubSkill.MotherLode.Name' to locale
+    Added 'Mining.SubSkill.MotherLode.Stat' to locale
+    Added 'Mining.SubSkill.MotherLode.Description' to locale
     Added 'Woodcutting.SubSkill.Mastery.Name' to locale
     Added 'Woodcutting.SubSkill.Mastery.Stat' to locale
     Added 'Woodcutting.SubSkill.Mastery.Description' to locale
