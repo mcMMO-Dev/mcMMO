@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.FishingManager;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -98,12 +99,12 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreasureHunt = canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canShake = canUseSubskill(player, SubSkillType.FISHING_SHAKE);
-        canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
-        canMasterAngler = mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
-        canIceFish = canUseSubskill(player, SubSkillType.FISHING_ICE_FISHING);
+        canTreasureHunt = Permissions.canUseSubSkill(player, SubSkillType.FISHING_TREASURE_HUNTER);
+        canMagicHunt = Permissions.canUseSubSkill(player, SubSkillType.FISHING_MAGIC_HUNTER) && Permissions.canUseSubSkill(player, SubSkillType.FISHING_TREASURE_HUNTER);
+        canShake = Permissions.canUseSubSkill(player, SubSkillType.FISHING_SHAKE);
+        canFishermansDiet = Permissions.canUseSubSkill(player, SubSkillType.FISHING_FISHERMANS_DIET);
+        canMasterAngler = mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && Permissions.canUseSubSkill(player, SubSkillType.FISHING_MASTER_ANGLER);
+        canIceFish = Permissions.canUseSubSkill(player, SubSkillType.FISHING_ICE_FISHING);
     }
 
     @Override

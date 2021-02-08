@@ -18,6 +18,8 @@ import java.util.List;
 public class MiningCommand extends SkillCommand {
     private String doubleDropChance;
     private String doubleDropChanceLucky;
+    private String masteryTripleDropChance;
+    private String masteryTripleDropChanceLucky;
     private String superBreakerLength;
     private String superBreakerLengthEndurance;
 
@@ -51,6 +53,14 @@ public class MiningCommand extends SkillCommand {
             blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
             blastRadiusIncrease = miningManager.getBlastRadiusModifier();
         }
+
+        // Mastery TRIPLE DROPS
+        if (Permissions.canUseSubSkill(player, SubSkillType.MINING_MASTERY)) {
+            String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_MASTERY);
+            masteryTripleDropChance = masteryTripleDropStrings[0];
+            masteryTripleDropChanceLucky = masteryTripleDropStrings[1];
+        }
+
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
@@ -72,7 +82,7 @@ public class MiningCommand extends SkillCommand {
         canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
         canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
         canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
-        canDoubleDrop = canUseSubskill(player, SubSkillType.MINING_DOUBLE_DROPS);
+        canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_DOUBLE_DROPS);
         canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
@@ -93,6 +103,11 @@ public class MiningCommand extends SkillCommand {
          if (canDemoExpert) {
             messages.add(getStatMessage(SubSkillType.MINING_DEMOLITIONS_EXPERTISE, blastDamageDecrease));
             //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
+        }
+
+        if(Permissions.canUseSubSkill(player, SubSkillType.MINING_MASTERY)) {
+            messages.add(getStatMessage(SubSkillType.MINING_MASTERY, masteryTripleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", masteryTripleDropChanceLucky) : ""));
         }
         
         if (canDoubleDrop) {

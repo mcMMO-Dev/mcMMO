@@ -16,6 +16,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
@@ -30,7 +31,7 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param triple     marks the block to give triple drops
      */
-    public static void markDropsAsBonus(BlockState blockState, boolean triple) {
+    public static void markDropsAsBonus(@NotNull BlockState blockState, boolean triple) {
         if (triple)
             blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
         else
@@ -42,7 +43,7 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param amount amount of extra items to drop
      */
-    public static void markDropsAsBonus(BlockState blockState, int amount) {
+    public static void markDropsAsBonus(@NotNull BlockState blockState, int amount) {
             blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, mcMMO.p));
     }
 

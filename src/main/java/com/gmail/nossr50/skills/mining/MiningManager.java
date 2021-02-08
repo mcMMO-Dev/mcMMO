@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,11 @@ public class MiningManager extends SkillManager {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
     }
 
+    public boolean canMiningMastery() {
+        return Permissions.canUseSubSkill(getPlayer(), SubSkillType.MINING_MASTERY);
+    }
+
+
     /**
      * Process double drops & XP gain for Mining.
      *
@@ -94,6 +100,29 @@ public class MiningManager extends SkillManager {
         if(silkTouch && !AdvancedConfig.getInstance().getDoubleDropSilkTouchEnabled())
             return;
 
+        //Mining mastery allows for a chance of triple drops
+        if(canMiningMastery()) {
+            //Triple Drops failed so do a normal double drops check
+            if(!processTripleDrops(blockState)) {
+                processDoubleDrops(blockState);
+            }
+        } else {
+            //If the user has no mastery, proceed with normal double drop routine
+            processDoubleDrops(blockState);
+        }
+    }
+
+    private boolean processTripleDrops(@NotNull BlockState blockState) {
+        //TODO: Make this readable
+        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_MASTERY, true)) {
+            BlockUtils.markDropsAsBonus(blockState, 2);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void processDoubleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
             boolean useTriple = mmoPlayer.getAbilityMode(skill.getAbility()) && AdvancedConfig.getInstance().getAllowMiningTripleDrops();

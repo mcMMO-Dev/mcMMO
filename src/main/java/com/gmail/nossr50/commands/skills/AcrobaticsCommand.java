@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -38,8 +39,8 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canDodge = canUseSubskill(player, SubSkillType.ACROBATICS_DODGE);
-        canRoll = canUseSubskill(player, SubSkillType.ACROBATICS_ROLL);
+        canDodge = Permissions.canUseSubSkill(player, SubSkillType.ACROBATICS_DODGE);
+        canRoll = Permissions.canUseSubSkill(player, SubSkillType.ACROBATICS_ROLL);
     }
 
     @Override

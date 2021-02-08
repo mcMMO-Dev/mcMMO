@@ -1,5 +1,7 @@
 Version 2.1.175
-    Added a new mastery sub-skill to each skill (see notes)
+    Added a set of "mastery" subskills meant for end game progression
+    Added the mastery subskill 'Mother Lode' to Mining
+    Added the mastery subskill 'Clean Cuts' to Woodcutting
     Added /mmopower command (aliases /mmopowerlevel /powerlevel)
     Added 'mcmmo.commands.mmopower' permission node
     Added 'mcmmo.ability.acrobatics.mastery' permission node
@@ -18,14 +20,28 @@ Version 2.1.175
     Added 'mcmmo.ability.taming.mastery' permission node
     Added 'mcmmo.ability.unarmed.mastery' permission node
     Added 'mcmmo.ability.woodcutting.mastery' permission node
+    Added 'Mining.SubSkill.Mastery.Name' to locale
+    Added 'Mining.SubSkill.Mastery.Stat' to locale
+    Added 'Mining.SubSkill.Mastery.Description' to locale
+    Added 'Woodcutting.SubSkill.Mastery.Name' to locale
+    Added 'Woodcutting.SubSkill.Mastery.Stat' to locale
+    Added 'Woodcutting.SubSkill.Mastery.Description' to locale
 
     Added 'General.PowerLevel.Skill_Mastery.Enabled' to config.yml which is used to enable or disable the mastery skills (will also disable the new power level command)
 
     NOTES:
+    The goal of this update is to provide a small benefit to each skill and a reason to grind past the "maximum", ideally for a long while.
     Most skills have a mastery sub-skill, this mastery subskill provides a small benefit that scales to level 10,000 (or 1,000 for standard) and does not have ranks (other than the initial rank to unlock it)
     Mastery skills unlock at level 1000 for RetroMode (the default setting), and 100 for Standard, you can edit this via skillranks.yml
     Mastery skills are meant to provide an "end-game" to skills, a reason to continue leveling a skill past its "max".
     This system is brand new, it is entirely possible I will completely change, remove, or add more mastery skills in the future.
+
+    The section below assumes RetroMode, if you are using Standard mode (1-100) just divide level examples by 10.
+
+    Mastery Skills
+    Mining (Mastery Triple Drops): With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops while mining (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
+    This skill respects double drop settings from the config files.
+    Double Drops only occur if the Triple Drops fail, these two skills do not stack.
 
     New Power Level Command
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.

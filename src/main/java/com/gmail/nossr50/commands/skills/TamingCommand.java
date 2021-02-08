@@ -43,15 +43,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBeastLore = canUseSubskill(player, SubSkillType.TAMING_BEAST_LORE);
+        canBeastLore = Permissions.canUseSubSkill(player, SubSkillType.TAMING_BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = canUseSubskill(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
-        canFastFood = canUseSubskill(player, SubSkillType.TAMING_FAST_FOOD_SERVICE);
-        canGore = canUseSubskill(player, SubSkillType.TAMING_GORE);
-        canSharpenedClaws = canUseSubskill(player, SubSkillType.TAMING_SHARPENED_CLAWS);
-        canShockProof = canUseSubskill(player, SubSkillType.TAMING_SHOCK_PROOF);
-        canThickFur = canUseSubskill(player, SubSkillType.TAMING_THICK_FUR);
-        canHolyHound = canUseSubskill(player, SubSkillType.TAMING_HOLY_HOUND);
+        canEnvironmentallyAware = Permissions.canUseSubSkill(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
+        canFastFood = Permissions.canUseSubSkill(player, SubSkillType.TAMING_FAST_FOOD_SERVICE);
+        canGore = Permissions.canUseSubSkill(player, SubSkillType.TAMING_GORE);
+        canSharpenedClaws = Permissions.canUseSubSkill(player, SubSkillType.TAMING_SHARPENED_CLAWS);
+        canShockProof = Permissions.canUseSubSkill(player, SubSkillType.TAMING_SHOCK_PROOF);
+        canThickFur = Permissions.canUseSubSkill(player, SubSkillType.TAMING_THICK_FUR);
+        canHolyHound = Permissions.canUseSubSkill(player, SubSkillType.TAMING_HOLY_HOUND);
     }
 
     @Override

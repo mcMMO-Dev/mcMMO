@@ -76,9 +76,9 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
-        canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
-        canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);
+        canSuperRepair = Permissions.canUseSubSkill(player, SubSkillType.REPAIR_SUPER_REPAIR);
+        canMasterRepair = Permissions.canUseSubSkill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
+        canArcaneForge = Permissions.canUseSubSkill(player, SubSkillType.REPAIR_ARCANE_FORGING);
         canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
         canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
         canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);

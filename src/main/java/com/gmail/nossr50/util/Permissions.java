@@ -7,14 +7,17 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -233,5 +236,16 @@ public final class Permissions {
         Permission permission = new Permission(permissionName);
         permission.setDefault(permissionDefault);
         pluginManager.addPermission(permission);
+    }
+
+    /**
+     * Checks if a player can use a skill
+     *
+     * @param player target player
+     * @param subSkillType target subskill
+     * @return true if the player has permission and has the skill unlocked
+     */
+    public static boolean canUseSubSkill(@NotNull Player player, @NotNull SubSkillType subSkillType) {
+        return isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

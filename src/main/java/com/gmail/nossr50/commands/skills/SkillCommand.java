@@ -14,7 +14,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -285,14 +284,4 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected abstract List<Component> getTextComponents(Player player);
 
-    /**
-     * Checks if a player can use a skill
-     * @param player target player
-     * @param subSkillType target subskill
-     * @return true if the player has permission and has the skill unlocked
-     */
-    protected boolean canUseSubskill(Player player, SubSkillType subSkillType)
-    {
-        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
-    }
 }

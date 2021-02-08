@@ -281,6 +281,11 @@ Skills:
     #  Settings for Mining
     ###
     Mining:
+        Mastery:
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
+            ChanceMax: 10.0
         SuperBreaker:
             AllowTripleDrops: true
         DoubleDrops:

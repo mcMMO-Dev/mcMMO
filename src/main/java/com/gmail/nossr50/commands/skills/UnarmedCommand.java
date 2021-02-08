@@ -75,10 +75,10 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
-        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
-        canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
-        canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
-        canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);
+        canIronArm = Permissions.canUseSubSkill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
+        canDeflect = Permissions.canUseSubSkill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
+        canDisarm = Permissions.canUseSubSkill(player, SubSkillType.UNARMED_DISARM);
+        canIronGrip = Permissions.canUseSubSkill(player, SubSkillType.UNARMED_IRON_GRIP);
         // TODO: Apparently we forgot about block cracker?
     }
 
@@ -114,7 +114,7 @@ public class UnarmedCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
+        if(Permissions.canUseSubSkill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.UNARMED_UNARMED_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, 1000))));
         }

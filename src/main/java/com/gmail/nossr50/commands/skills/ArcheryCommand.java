@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.archery.Archery;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -52,9 +53,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = canUseSubskill(player, SubSkillType.ARCHERY_SKILL_SHOT);
-        canDaze = canUseSubskill(player, SubSkillType.ARCHERY_DAZE);
-        canRetrieve = canUseSubskill(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
+        canSkillShot = Permissions.canUseSubSkill(player, SubSkillType.ARCHERY_SKILL_SHOT);
+        canDaze = Permissions.canUseSubSkill(player, SubSkillType.ARCHERY_DAZE);
+        canRetrieve = Permissions.canUseSubSkill(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class ArcheryCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }
 
-        if(canUseSubskill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
+        if(Permissions.canUseSubSkill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK,
                 String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK, 1000))));
         }
