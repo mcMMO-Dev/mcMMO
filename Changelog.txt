@@ -1,4 +1,5 @@
 Version 2.1.175
+    Added a setting to chat.yml to toggle sending party or admin chat messages to console
     Added a set of "mastery" subskills meant for end game progression
     Added the mastery subskill 'Mother Lode' to Mining
     Added the mastery subskill 'Clean Cuts' to Woodcutting
