@@ -246,7 +246,7 @@ public final class SkillUtils {
      * @param maxDamageModifier the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
+        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
 
@@ -276,7 +276,7 @@ public final class SkillUtils {
      * @param maxDamageModifier the amount to adjust the max damage by
      */
     public static void handleArmorDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
+        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
 
@@ -285,16 +285,6 @@ public final class SkillUtils {
         durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4/ (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1)), maxDurability * maxDamageModifier);
 
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
-    }
-
-    private static boolean isLocalizedSkill(String skillName) {
-        for (PrimarySkillType skill : PrimarySkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Nullable
