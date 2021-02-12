@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.blockmeta;
 
 import com.gmail.nossr50.TestUtil;
+import com.gmail.nossr50.util.Misc;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.mock;
  * Could be a lot better.  But some tests are better than none!  Tests the major things, still kinda unit-testy.  Verifies that the serialization isn't completely broken.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Bukkit.class)
+@PrepareForTest({ Bukkit.class, Misc.class })
 public class ChunkStoreTest {
     private static File tempDir;
     @BeforeClass
@@ -74,6 +75,34 @@ public class ChunkStoreTest {
         byte[] serializedBytes = serializeChunkstore(original);
         ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
         assertEqual(original, deserialized);
+    }
+
+    @Test
+    public void testNegativeWorldMin() throws IOException {
+        PowerMockito.mockStatic(Misc.class);
+        Mockito.when(Misc.getWorldMinCompat(mockWorld)).thenReturn(-64);
+
+        BitSetChunkStore original = new BitSetChunkStore(mockWorld, 1, 2);
+        original.setTrue(14, -32, 12);
+        original.setTrue(14, -64, 12);
+        original.setTrue(13, -63, 12);
+        byte[] serializedBytes = serializeChunkstore(original);
+        ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
+        assertEqual(original, deserialized);
+    }
+
+    @Test
+    public void testNegativeWorldMinUpgrade() throws IOException {
+        BitSetChunkStore original = new BitSetChunkStore(mockWorld, 1, 2);
+        original.setTrue(14, 1, 12);
+        original.setTrue(14, 2, 12);
+        original.setTrue(13, 3, 12);
+        byte[] serializedBytes = serializeChunkstore(original);
+
+        PowerMockito.mockStatic(Misc.class);
+        Mockito.when(Misc.getWorldMinCompat(mockWorld)).thenReturn(-64);
+        ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
+        assertEqualIgnoreMinMax(original, deserialized);
     }
 
     @Test
@@ -176,13 +205,24 @@ public class ChunkStoreTest {
 
     private void assertEqual(ChunkStore expected, ChunkStore actual)
     {
+        Assert.assertEquals(expected.getChunkMin(), actual.getChunkMin());
+        Assert.assertEquals(expected.getChunkMax(), actual.getChunkMax());
+        assertEqualIgnoreMinMax(expected, actual);
+    }
+
+    private void assertEqualIgnoreMinMax(ChunkStore expected, ChunkStore actual)
+    {
         Assert.assertEquals(expected.getChunkX(), actual.getChunkX());
         Assert.assertEquals(expected.getChunkZ(), actual.getChunkZ());
         Assert.assertEquals(expected.getWorldId(), actual.getWorldId());
-        for (int y = 0; y < 256; y++)
+        for (int y = Math.min(actual.getChunkMin(), expected.getChunkMin()); y < Math.max(actual.getChunkMax(), expected.getChunkMax()); y++)
+        {
+            if (expected.getChunkMin() > y || actual.getChunkMin() > y || expected.getChunkMax() <= y || actual.getChunkMax() <= y)
+                continue; // Ignore
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++)
                     Assert.assertTrue(expected.isTrue(x, y, z) == actual.isTrue(x, y, z));
+        }
     }
 
     private static byte[] serializeChunkstore(@NotNull ChunkStore chunkStore) throws IOException {
@@ -229,6 +269,16 @@ public class ChunkStoreTest {
         @Override
         public int getChunkZ() {
             return cz;
+        }
+
+        @Override
+        public int getChunkMin() {
+            return 0;
+        }
+
+        @Override
+        public int getChunkMax() {
+            return store[0][0].length;
         }
 
         @Override
