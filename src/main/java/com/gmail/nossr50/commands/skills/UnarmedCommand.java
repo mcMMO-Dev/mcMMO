@@ -7,7 +7,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -40,7 +39,7 @@ public class UnarmedCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);
+            String[] deflectStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.UNARMED_ARROW_DEFLECT);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -54,7 +53,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // UNARMED_DISARM
         if (canDisarm) {
-            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_DISARM);
+            String[] disarmStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.UNARMED_DISARM);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
@@ -66,7 +65,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_IRON_GRIP);
+            String[] ironGripStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.UNARMED_IRON_GRIP);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }

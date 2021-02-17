@@ -18,11 +18,10 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -147,7 +146,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(@NotNull Wolf wolf, double damage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
 
@@ -168,7 +167,7 @@ public class TamingManager extends SkillManager {
      */
     public double gore(@NotNull LivingEntity target, double damage) {
         if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
+            if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.TAMING_GORE, getPlayer())) {
                 return 0;
             }
 
@@ -276,7 +275,7 @@ public class TamingManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if(!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
+        if(!RandomChanceUtil.processProbabilityResults(new SkillProbabilityWrapperStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);

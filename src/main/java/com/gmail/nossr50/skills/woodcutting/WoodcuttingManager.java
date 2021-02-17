@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -70,11 +69,11 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     private boolean checkHarvestLumberActivation() {
-        return RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
+        return SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
     }
 
     private boolean checkCleanCutsActivation() {
-        return RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer());
+        return SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer());
     }
 
     /**
@@ -328,7 +327,7 @@ public class WoodcuttingManager extends SkillManager {
 
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(AdvancedConfig.getInstance().isKnockOnWoodXPOrbEnabled()) {
-                            if(RandomChanceUtil.rollDice(10, 100)) {
+                            if(RandomChanceUtil.rollDiceSimple(10, 100)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }

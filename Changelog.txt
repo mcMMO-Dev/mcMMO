@@ -27,6 +27,7 @@ Version 2.1.175
     Added 'Woodcutting.SubSkill.CleanCuts.Name' to locale
     Added 'Woodcutting.SubSkill.CleanCuts.Stat' to locale
     Added 'Woodcutting.SubSkill.CleanCuts.Description' to locale
+    (Codebase) Major refactoring for how random chance was handled in the code
 
     Added 'General.PowerLevel.Skill_Mastery.Enabled' to config.yml which is used to enable or disable the mastery skills (will also disable the new power level command)
 

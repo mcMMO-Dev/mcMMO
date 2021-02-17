@@ -14,11 +14,10 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.SkillProbabilityType;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -125,14 +124,14 @@ public class Roll extends AcrobaticsSubSkill {
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
-        String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
+        String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.ACROBATICS_ROLL);
         rollChance = rollStrings[0];
         rollChanceLucky = rollStrings[1];
 
         /*
          * Graceful is double the odds of a normal roll
          */
-        String[] gracefulRollStrings = RandomChanceUtil.calculateAbilityDisplayValuesCustom(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL, 2.0D);
+        String[] gracefulRollStrings = RandomChanceUtil.calculateAbilityDisplayValuesCustom(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.ACROBATICS_ROLL, 2.0D);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
 
@@ -199,7 +198,7 @@ public class Roll extends AcrobaticsSubSkill {
         double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
-                && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
+                && SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ACROBATICS_ROLL, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS);
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
@@ -236,11 +235,11 @@ public class Roll extends AcrobaticsSubSkill {
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
 
-        RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
-        rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
+        SkillProbabilityWrapper rcs = new SkillProbabilityWrapper(player, subSkillType);
+        rcs.setxPos(rcs.getxPos() * 2); //Double the effective odds
 
         if (!isFatal(player, modifiedDamage)
-                && RandomChanceUtil.checkRandomChanceExecutionSuccess(rcs))
+                && RandomChanceUtil.processProbabilityResults(rcs))
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
@@ -373,17 +372,17 @@ public class Roll extends AcrobaticsSubSkill {
         double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
 
         //Chance to roll at half max skill
-        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+        SkillProbabilityWrapper rollHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
         int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
-        rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
+        rollHalfMaxSkill.setxPos(halfMaxSkillValue);
 
         //Chance to graceful roll at full skill
-        RandomChanceSkill rollGraceHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
-        rollGraceHalfMaxSkill.setSkillLevel(halfMaxSkillValue * 2); //Double the effective odds
+        SkillProbabilityWrapper rollGraceHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
+        rollGraceHalfMaxSkill.setxPos(halfMaxSkillValue * 2); //Double the effective odds
 
         //Chance to roll per level
-        RandomChanceSkill rollOneSkillLevel = new RandomChanceSkill(null, subSkillType);
-        rollGraceHalfMaxSkill.setSkillLevel(1); //Level 1 skill
+        SkillProbabilityWrapper rollOneSkillLevel = new SkillProbabilityWrapper(null, subSkillType);
+        rollGraceHalfMaxSkill.setxPos(1); //Level 1 skill
 
         //Chance Stat Calculations
         rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
@@ -408,10 +407,10 @@ public class Roll extends AcrobaticsSubSkill {
     {
         double playerChanceRoll, playerChanceGrace;
 
-        RandomChanceSkill roll          = new RandomChanceSkill(player, getSubSkillType());
-        RandomChanceSkill graceful      = new RandomChanceSkill(player, getSubSkillType());
+        SkillProbabilityWrapper roll          = new SkillProbabilityWrapper(player, getSubSkillType());
+        SkillProbabilityWrapper graceful      = new SkillProbabilityWrapper(player, getSubSkillType());
 
-        graceful.setSkillLevel(graceful.getSkillLevel() * 2); //Double odds
+        graceful.setxPos(graceful.getxPos() * 2); //Double odds
 
         //Calculate
         playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);

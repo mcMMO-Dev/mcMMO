@@ -41,7 +41,7 @@ public class ExcavationManager extends SkillManager {
 
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
-                            && RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
+                            && SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), treasure.getDropProbability())) {
 
                         //Spawn Vanilla XP orbs if a dice roll succeeds
                         if(RandomChanceUtil.rollDice(getArchaelogyExperienceOrbChance(), 100)) {

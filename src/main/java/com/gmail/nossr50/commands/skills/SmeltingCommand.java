@@ -6,7 +6,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -39,14 +38,14 @@ public class SmeltingCommand extends SkillCommand {
 
         // FLUX MINING
         /*if (canFluxMine) {
-            String[] fluxMiningStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_FLUX_MINING);
+            String[] fluxMiningStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SMELTING_FLUX_MINING);
             str_fluxMiningChance = fluxMiningStrings[0];
             str_fluxMiningChanceLucky = fluxMiningStrings[1];
         }*/
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }

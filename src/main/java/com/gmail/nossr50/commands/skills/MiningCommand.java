@@ -7,7 +7,6 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -32,7 +31,7 @@ public class MiningCommand extends SkillCommand {
 
     private boolean canSuperBreaker;
     private boolean canDoubleDrop;
-    private boolean canTripleDrop;
+    private boolean canMotherLode;
     private boolean canBlast;
     private boolean canBiggerBombs;
     private boolean canDemoExpert;
@@ -56,16 +55,15 @@ public class MiningCommand extends SkillCommand {
         }
 
         // Mastery TRIPLE DROPS
-        if (canTripleDrop) {
-            String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_MOTHER_LODE);
+        if (canMotherLode) {
+            String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.MINING_MOTHER_LODE);
             tripleDropChance = masteryTripleDropStrings[0];
             tripleDropChanceLucky = masteryTripleDropStrings[1];
         }
-
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -84,7 +82,7 @@ public class MiningCommand extends SkillCommand {
         canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
         canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_DOUBLE_DROPS);
-        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE);
+        canMotherLode = Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE);
         canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
@@ -113,7 +111,7 @@ public class MiningCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
-        if(canTripleDrop) {
+        if(canMotherLode) {
             messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, tripleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
         }

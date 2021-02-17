@@ -8,7 +8,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -37,7 +36,7 @@ public class SwordsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_COUNTER_ATTACK);
+            String[] counterStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SWORDS_COUNTER_ATTACK);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -46,7 +45,7 @@ public class SwordsCommand extends SkillCommand {
         if (canBleed) {
             bleedLength = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
 
-            String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_RUPTURE);
+            String[] bleedStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }

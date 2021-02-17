@@ -9,9 +9,9 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -88,7 +88,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_DAZE, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ARCHERY_DAZE, getPlayer())) {
             return 0;
         }
 
@@ -116,7 +116,7 @@ public class ArcheryManager extends SkillManager {
      * @param oldDamage The raw damage value of this arrow before we modify it
      */
     public double skillShot(double oldDamage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.ARCHERY_SKILL_SHOT, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.ARCHERY_SKILL_SHOT, getPlayer())) {
             return oldDamage;
         }
 

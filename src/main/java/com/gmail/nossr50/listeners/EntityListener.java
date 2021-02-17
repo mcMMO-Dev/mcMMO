@@ -25,9 +25,8 @@ import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDat
 import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
@@ -180,7 +179,7 @@ public class EntityListener implements Listener {
                     }
                 }
 
-                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
                     projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
                 }
             }

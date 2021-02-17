@@ -219,7 +219,7 @@ public abstract class SkillCommand implements TabExecutor {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
-    protected String[] getAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkill) {
+    protected static String[] getAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkill) {
         return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, player, subSkill);
     }
 
