@@ -11,8 +11,10 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.SkillProbabilityType;
-import com.gmail.nossr50.util.skills.*;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
@@ -69,11 +71,11 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
-            return 0;
+        if (SkillUtils.isNonRNGSkillActivationSuccessful(SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
+            return Axes.getAxeMasteryBonusDamage(getPlayer());
         }
 
-        return Axes.getAxeMasteryBonusDamage(getPlayer());
+        return 0;
     }
 
     /**

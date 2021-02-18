@@ -13,9 +13,7 @@ public class ProbabilityImpl implements Probability {
      * @param staticProbability the value to assign to this probability
      */
     public ProbabilityImpl(double staticProbability) throws ValueOutOfBoundsException {
-        if(staticProbability > 1) {
-            throw new ValueOutOfBoundsException("Value should never be above 1 for Probability! This suggests a coding mistake, contact the devs!");
-        } else if (staticProbability < 0) {
+        if (staticProbability < 0) {
             throw new ValueOutOfBoundsException("Value should never be negative for Probability! This suggests a coding mistake, contact the devs!");
         }
 

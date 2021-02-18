@@ -10,7 +10,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -116,10 +115,10 @@ public class ArcheryManager extends SkillManager {
      * @param oldDamage The raw damage value of this arrow before we modify it
      */
     public double skillShot(double oldDamage) {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.ARCHERY_SKILL_SHOT, getPlayer())) {
+        if (SkillUtils.isNonRNGSkillActivationSuccessful(SubSkillType.ARCHERY_SKILL_SHOT, getPlayer())) {
+            return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
+        } else {
             return oldDamage;
         }
-
-        return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
     }
 }

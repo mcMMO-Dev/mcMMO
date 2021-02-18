@@ -28,6 +28,8 @@ import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -215,7 +217,7 @@ public enum PrimarySkillType {
         }
     }
 
-    public static PrimarySkillType bySecondaryAbility(SubSkillType subSkillType) {
+    public static @Nullable PrimarySkillType bySecondaryAbility(@NotNull SubSkillType subSkillType) {
         for (PrimarySkillType type : values()) {
             if (type.getSkillAbilities().contains(subSkillType)) {
                 return type;

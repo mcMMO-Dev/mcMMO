@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
@@ -190,8 +189,7 @@ public final class EventUtils {
      * @param subSkillType target subskill
      * @return the event after it has been fired
      */
-    @Deprecated
-    public static @NotNull SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType) {
+    public static @NotNull SubSkillEvent callSubSkillEvent(@NotNull Player player, @NotNull SubSkillType subSkillType) {
         SubSkillEvent event = new SubSkillEvent(player, subSkillType);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -208,19 +206,6 @@ public final class EventUtils {
     @Deprecated
     public static @NotNull SubSkillBlockEvent callSubSkillBlockEvent(@NotNull Player player, @NotNull SubSkillType subSkillType, @NotNull Block block) {
         SubSkillBlockEvent event = new SubSkillBlockEvent(player, subSkillType, block);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        return event;
-    }
-
-    /**
-     * Calls a new SubSkillEvent for this SubSkill and then returns it
-     * @param player target player
-     * @param abstractSubSkill target subskill
-     * @return the event after it has been fired
-     */
-    public static SubSkillEvent callSubSkillEvent(Player player, AbstractSubSkill abstractSubSkill) {
-        SubSkillEvent event = new SubSkillEvent(player, abstractSubSkill);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;

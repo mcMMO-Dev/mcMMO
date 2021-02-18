@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -72,7 +71,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean blockCrackerCheck(@NotNull BlockState blockState) {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_BLOCK_CRACKER, getPlayer())) {
+        if (!SkillUtils.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER, getPlayer())) {
             return false;
         }
 
@@ -149,11 +148,11 @@ public class UnarmedManager extends SkillManager {
      * Handle the effects of the Iron Arm ability
      */
     public double calculateSteelArmStyleDamage() {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_STEEL_ARM_STYLE, getPlayer())) {
-            return 0;
+        if (SkillUtils.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_STEEL_ARM_STYLE, getPlayer())) {
+            return getSteelArmStyleDamage();
         }
 
-        return getSteelArmStyleDamage();
+        return 0;
     }
 
     public double getSteelArmStyleDamage() {

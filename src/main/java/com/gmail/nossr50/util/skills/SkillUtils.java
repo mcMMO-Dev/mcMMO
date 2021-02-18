@@ -10,8 +10,10 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -348,16 +350,34 @@ public final class SkillUtils {
      *
      * 3) Creates a {@link Probability} and pipes it to {@link RandomChanceUtil} which processes the result and returns it
      *
+     * This also calls a {@link SubSkillEvent} which can be cancelled, if it is cancelled this will return false
+     * The outcome of the probability can also be modified by this event that is called
+     *
      * @param subSkillType target subskill
      * @param player target player, can be null (null players are given odds equivalent to a player with no levels or luck)
      * @return true if the Skill RNG succeeds, false if it fails
      */
-    public static boolean isSkillRNGSuccessful(@NotNull SubSkillType subSkillType, @Nullable Player player) {
+    public static boolean isSkillRNGSuccessful(@NotNull SubSkillType subSkillType, @NotNull Player player) {
         try {
             //Process probability
             Probability probability = getSubSkillProbability(subSkillType, player);
-            //Player can be null
-            boolean isLucky = player != null && Permissions.lucky(player, subSkillType.getParentSkill());
+
+            //Send out event
+            SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(player, subSkillType);
+
+            if(subSkillEvent.isCancelled()) {
+                return false; //Event got cancelled so this doesn't succeed
+            }
+
+            //Result modifier
+            double resultModifier = subSkillEvent.getResultModifier();
+
+            //Mutate probability
+            if(resultModifier != 1.0D)
+                probability = ProbabilityFactory.ofPercentageValue(probability.getValue() * resultModifier);
+
+            //Luck
+            boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
 
             if(isLucky) {
                 return RandomChanceUtil.processProbability(probability, RandomChanceUtil.LUCKY_MODIFIER);
@@ -405,6 +425,16 @@ public final class SkillUtils {
         } else {
             return RandomChanceUtil.processProbability(probability);
         }
+    }
+
+    /**
+     * Skills activate without RNG, this allows other plugins to prevent that activation
+     * @param subSkillType target subskill
+     * @param player target player
+     * @return true if the skill succeeds (wasn't cancelled by any other plugin)
+     */
+    public static boolean isNonRNGSkillActivationSuccessful(@NotNull SubSkillType subSkillType, @NotNull Player player) {
+        return !EventUtils.callSubSkillEvent(player, subSkillType).isCancelled();
     }
 
     /**

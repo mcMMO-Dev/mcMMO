@@ -1,46 +1,34 @@
 package com.gmail.nossr50.events.skills.secondaryabilities;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.jetbrains.annotations.NotNull;
 
 public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private SubSkillType subSkillType;
+    private final @NotNull SubSkillType subSkillType;
     private boolean cancelled = false;
     private double resultModifier = 1.0D;
 
     /**
-     * Only skills using the old system will fire this event
      * @param player target player
      * @param subSkillType target subskill
-     * @Deprecated Skills will be using a new system stemming from the AbstractSubSkill class so make sure you check for both events, this event will be removed eventually.
      */
-    @Deprecated
-    public SubSkillEvent(Player player, SubSkillType subSkillType) {
-        super(player, PrimarySkillType.bySecondaryAbility(subSkillType));
+    public SubSkillEvent(@NotNull Player player, @NotNull SubSkillType subSkillType) {
+        super(player, subSkillType.getParentSkill());
         this.subSkillType = subSkillType;
     }
 
     /**
-     * Only skills using the old system will fire this event
      * @param player target player
      * @param subSkillType target subskill
-     * @param resultModifier a value multiplied against the final result of the dice roll, typically between 0-1.0
-     * @Deprecated Skills will be using a new system stemming from the AbstractSubSkill class so make sure you check for both events, this event will be removed eventually.
+     * @param resultModifier a value multiplied against the probability (1.5 would increase probability by 50%)
      */
-    @Deprecated
-    public SubSkillEvent(Player player, SubSkillType subSkillType, double resultModifier) {
-        super(player, PrimarySkillType.bySecondaryAbility(subSkillType));
+    public SubSkillEvent(@NotNull Player player, @NotNull SubSkillType subSkillType, double resultModifier) {
+        super(player, subSkillType.getParentSkill());
         this.subSkillType = subSkillType;
         this.resultModifier = resultModifier;
-    }
-
-    public SubSkillEvent(Player player, AbstractSubSkill abstractSubSkill)
-    {
-        super(player, abstractSubSkill.getPrimarySkill());
     }
 
     public double getResultModifier() {
@@ -55,7 +43,7 @@ public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable 
      * Gets the SubSkillType involved in the event
      * @return the SubSkillType
      */
-    public SubSkillType getSubSkillType() {
+    public @NotNull SubSkillType getSubSkillType() {
         return subSkillType;
     }
 
