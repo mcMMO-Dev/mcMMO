@@ -38,6 +38,14 @@ jobs:
         java-package: jdk
         java-version: 1.8
 
+    # 3. Setup local Maven package cache to speed up building
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
     # 3. Build via Maven 
     - name: Build via Maven
-      run: mvn clean verify -B --file pom.xml
+      run: mvn verify -B --file pom.xml
