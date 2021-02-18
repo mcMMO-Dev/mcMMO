@@ -46,6 +46,6 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
-    # 3. Build via Maven 
+    # 4. Build via Maven 
     - name: Build via Maven
       run: mvn verify -B --file pom.xml
