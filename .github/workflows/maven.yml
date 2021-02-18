@@ -6,10 +6,13 @@ name: Compile and test
 on:
   # We run our tests whenever the pom or a source file was touched.
   # There is no need to run Maven when only the changelog was touched.
+  # We may also want to re-run this workflow when the workflow file itself
+  # was updated too.
   push:
     paths:
     - 'src/**'
     - 'pom.xml'
+    - '.github/workflows/maven.yml'
 
   # Whenever someone submits a new pull request which modified the pom or a source file,
   # we want to ensure it compiles successfully and that all tests will pass.
