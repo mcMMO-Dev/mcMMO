@@ -88,7 +88,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ARCHERY_DAZE, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.ARCHERY_DAZE, getPlayer())) {
             return 0;
         }
 

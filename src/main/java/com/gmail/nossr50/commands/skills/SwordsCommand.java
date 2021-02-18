@@ -36,7 +36,7 @@ public class SwordsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SWORDS_COUNTER_ATTACK);
+            String[] counterStrings = getAbilityDisplayValues(player, SubSkillType.SWORDS_COUNTER_ATTACK);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -45,7 +45,7 @@ public class SwordsCommand extends SkillCommand {
         if (canBleed) {
             bleedLength = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
 
-            String[] bleedStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SWORDS_RUPTURE);
+            String[] bleedStrings = getAbilityDisplayValues(player, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }

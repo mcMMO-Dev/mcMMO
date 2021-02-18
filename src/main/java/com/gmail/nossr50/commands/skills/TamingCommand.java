@@ -34,7 +34,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue) {
         if (canGore) {
-            String[] goreStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.TAMING_GORE);
+            String[] goreStrings = getAbilityDisplayValues(player, SubSkillType.TAMING_GORE);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }

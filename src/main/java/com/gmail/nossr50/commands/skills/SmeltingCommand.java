@@ -38,14 +38,14 @@ public class SmeltingCommand extends SkillCommand {
 
         // FLUX MINING
         /*if (canFluxMine) {
-            String[] fluxMiningStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SMELTING_FLUX_MINING);
+            String[] fluxMiningStrings = getAbilityDisplayValues(player, SubSkillType.SMELTING_FLUX_MINING);
             str_fluxMiningChance = fluxMiningStrings[0];
             str_fluxMiningChanceLucky = fluxMiningStrings[1];
         }*/
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = getAbilityDisplayValues(player, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }

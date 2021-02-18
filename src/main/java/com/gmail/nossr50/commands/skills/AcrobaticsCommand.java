@@ -29,7 +29,7 @@ public class AcrobaticsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // ACROBATICS_DODGE
         if (canDodge) {
-            String[] dodgeStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.ACROBATICS_DODGE);
+            String[] dodgeStrings = getAbilityDisplayValues(player, SubSkillType.ACROBATICS_DODGE);
             dodgeChance = dodgeStrings[0];
             dodgeChanceLucky = dodgeStrings[1];
         }
@@ -70,7 +70,7 @@ public class AcrobaticsCommand extends SkillCommand {
                 graceChance      = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
                 //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
 
-                String[] rollStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.ACROBATICS_ROLL);
+                String[] rollStrings = getAbilityDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
 
                 //Format
                 double rollChanceLucky  = rollChance * 1.333D;

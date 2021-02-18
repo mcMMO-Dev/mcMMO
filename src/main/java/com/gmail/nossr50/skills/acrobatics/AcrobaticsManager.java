@@ -86,7 +86,8 @@ public class AcrobaticsManager extends SkillManager {
         double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!isFatal(modifiedDamage) && SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ACROBATICS_DODGE, player)) {
+        if (!isFatal(modifiedDamage)
+                && SkillUtils.isSkillRNGSuccessful(SubSkillType.ACROBATICS_DODGE, player)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mmoPlayer.useChatNotifications()) {

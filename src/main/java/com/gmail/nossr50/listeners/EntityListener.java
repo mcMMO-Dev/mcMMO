@@ -179,7 +179,7 @@ public class EntityListener implements Listener {
                     }
                 }
 
-                if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                if (SkillUtils.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
                     projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
                 }
             }

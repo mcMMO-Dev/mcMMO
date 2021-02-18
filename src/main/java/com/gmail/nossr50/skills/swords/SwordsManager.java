@@ -61,7 +61,7 @@ public class SwordsManager extends SkillManager {
      */
     public void ruptureCheck(@NotNull LivingEntity target) throws IllegalStateException {
         if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
+            if (SkillUtils.isSkillRNGSuccessful(SubSkillType.SWORDS_RUPTURE, getPlayer())) {
 
                 if (target instanceof Player) {
                     Player defender = (Player) target;
@@ -128,7 +128,7 @@ public class SwordsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void counterAttackChecks(@NotNull LivingEntity attacker, double damage) {
-        if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");

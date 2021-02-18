@@ -289,7 +289,7 @@ public class RepairManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
-        if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
         }

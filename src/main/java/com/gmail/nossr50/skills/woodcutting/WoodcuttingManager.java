@@ -69,11 +69,11 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     private boolean checkHarvestLumberActivation() {
-        return SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
+        return SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
     }
 
     private boolean checkCleanCutsActivation() {
-        return SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer());
+        return SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer());
     }
 
     /**
@@ -327,7 +327,8 @@ public class WoodcuttingManager extends SkillManager {
 
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(AdvancedConfig.getInstance().isKnockOnWoodXPOrbEnabled()) {
-                            if(RandomChanceUtil.rollDiceSimple(10, 100)) {
+                            //TODO: Test the results of this RNG, should be 10%
+                            if(SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, player, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }

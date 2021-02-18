@@ -27,7 +27,7 @@ public class SmeltingManager extends SkillManager {
 
     public boolean isSecondSmeltSuccessful() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
-                && SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
+                && SkillUtils.isSkillRNGSuccessful(SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
     }
 
     /*

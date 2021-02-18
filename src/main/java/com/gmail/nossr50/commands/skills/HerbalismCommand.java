@@ -44,7 +44,7 @@ public class HerbalismCommand extends SkillCommand {
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.HERBALISM_DOUBLE_DROPS);
+            String[] doubleDropStrings = getAbilityDisplayValues(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -65,21 +65,21 @@ public class HerbalismCommand extends SkillCommand {
         if (canGreenThumbBlocks || canGreenThumbPlants) {
             greenThumbStage = RankUtils.getRank(player, SubSkillType.HERBALISM_GREEN_THUMB);
 
-            String[] greenThumbStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.HERBALISM_GREEN_THUMB);
+            String[] greenThumbStrings = getAbilityDisplayValues(player, SubSkillType.HERBALISM_GREEN_THUMB);
             greenThumbChance = greenThumbStrings[0];
             greenThumbChanceLucky = greenThumbStrings[1];
         }
 
         // HYLIAN LUCK
         if (hasHylianLuck) {
-            String[] hylianLuckStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.HERBALISM_HYLIAN_LUCK);
+            String[] hylianLuckStrings = getAbilityDisplayValues(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
             hylianLuckChance = hylianLuckStrings[0];
             hylianLuckChanceLucky = hylianLuckStrings[1];
         }
 
         // SHROOM THUMB
         if (canShroomThumb) {
-            String[] shroomThumbStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.HERBALISM_SHROOM_THUMB);
+            String[] shroomThumbStrings = getAbilityDisplayValues(player, SubSkillType.HERBALISM_SHROOM_THUMB);
             shroomThumbChance = shroomThumbStrings[0];
             shroomThumbChanceLucky = shroomThumbStrings[1];
         }

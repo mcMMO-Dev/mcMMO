@@ -42,7 +42,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         //Clean Cuts
         if(canTripleDrop) {
-            String[] tripleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
+            String[] tripleDropStrings = getAbilityDisplayValues(player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
             tripleDropChance = tripleDropStrings[0];
             tripleDropChanceLucky = tripleDropStrings[1];
         }
@@ -56,7 +56,7 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     private void setDoubleDropClassicChanceStrings(Player player) {
-        String[] doubleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
+        String[] doubleDropStrings = getAbilityDisplayValues(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }

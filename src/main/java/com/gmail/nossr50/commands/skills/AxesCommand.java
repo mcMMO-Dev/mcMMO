@@ -47,7 +47,7 @@ public class AxesCommand extends SkillCommand {
         
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.AXES_CRITICAL_STRIKES);
+            String[] criticalHitStrings = getAbilityDisplayValues(player, SubSkillType.AXES_CRITICAL_STRIKES);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }

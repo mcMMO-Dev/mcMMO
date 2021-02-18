@@ -146,7 +146,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(@NotNull Wolf wolf, double damage) {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
 
@@ -167,7 +167,7 @@ public class TamingManager extends SkillManager {
      */
     public double gore(@NotNull LivingEntity target, double damage) {
         if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.TAMING_GORE, getPlayer())) {
+            if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.TAMING_GORE, getPlayer())) {
                 return 0;
             }
 

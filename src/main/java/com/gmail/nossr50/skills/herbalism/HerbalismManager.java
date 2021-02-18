@@ -587,7 +587,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
@@ -602,7 +602,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
-        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
+        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
             return false;
         }
 
@@ -658,7 +658,7 @@ public class HerbalismManager extends SkillManager {
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
         player.updateInventory();
 
-        if (!SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
+        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }

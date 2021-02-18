@@ -103,7 +103,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(@NotNull Player defender) {
-        if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.UNARMED_DISARM, getPlayer()) && !hasIronGrip(defender)) {
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, getPlayer()) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -126,7 +126,7 @@ public class UnarmedManager extends SkillManager {
      * Check for arrow deflection.
      */
     public boolean deflectCheck() {
-        if (SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.UNARMED_ARROW_DEFLECT, getPlayer())) {
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.UNARMED_ARROW_DEFLECT, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.ArrowDeflect");
             return true;
         }
@@ -183,7 +183,7 @@ public class UnarmedManager extends SkillManager {
     private boolean hasIronGrip(@NotNull Player defender) {
         if (!Misc.isNPCEntityExcludingVillagers(defender)
                 && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
-                && SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.UNARMED_IRON_GRIP, defender)) {
+                && SkillUtils.isSkillRNGSuccessful(SubSkillType.UNARMED_IRON_GRIP, defender)) {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
 

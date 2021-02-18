@@ -56,14 +56,14 @@ public class MiningCommand extends SkillCommand {
 
         // Mastery TRIPLE DROPS
         if (canMotherLode) {
-            String[] masteryTripleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.MINING_MOTHER_LODE);
+            String[] masteryTripleDropStrings = getAbilityDisplayValues(player, SubSkillType.MINING_MOTHER_LODE);
             tripleDropChance = masteryTripleDropStrings[0];
             tripleDropChanceLucky = masteryTripleDropStrings[1];
         }
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = getAbilityDisplayValues(player, SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }

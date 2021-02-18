@@ -67,7 +67,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = getAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.REPAIR_SUPER_REPAIR);
+            String[] superRepairStrings = getAbilityDisplayValues(player, SubSkillType.REPAIR_SUPER_REPAIR);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }

@@ -124,14 +124,14 @@ public class Roll extends AcrobaticsSubSkill {
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
-        String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.ACROBATICS_ROLL);
+        String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
         rollChance = rollStrings[0];
         rollChanceLucky = rollStrings[1];
 
         /*
          * Graceful is double the odds of a normal roll
          */
-        String[] gracefulRollStrings = RandomChanceUtil.calculateAbilityDisplayValuesCustom(SkillProbabilityType.DYNAMIC_CONFIGURABLE, player, SubSkillType.ACROBATICS_ROLL, 2.0D);
+        String[] gracefulRollStrings = RandomChanceUtil.calculateAbilityDisplayValuesCustom(player, SubSkillType.ACROBATICS_ROLL, 2.0D);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
 
@@ -198,7 +198,7 @@ public class Roll extends AcrobaticsSubSkill {
         double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
-                && SkillUtils.isSkillRNGSuccessful(SkillProbabilityType.DYNAMIC_CONFIGURABLE, SubSkillType.ACROBATICS_ROLL, player)) {
+                && SkillUtils.isSkillRNGSuccessful(SubSkillType.ACROBATICS_ROLL, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS);
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
