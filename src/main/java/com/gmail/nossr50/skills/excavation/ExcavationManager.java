@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
@@ -44,7 +43,7 @@ public class ExcavationManager extends SkillManager {
                             && SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), treasure.getDropProbability())) {
 
                         //Spawn Vanilla XP orbs if a dice roll succeeds
-                        if(RandomChanceUtil.rollDice(getArchaelogyExperienceOrbChance(), 100)) {
+                        if(SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
                             Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
                         }
 

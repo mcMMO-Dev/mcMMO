@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         //Clean Cuts
         if(canTripleDrop) {
-            String[] tripleDropStrings = getAbilityDisplayValues(player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
+            String[] tripleDropStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
             tripleDropChance = tripleDropStrings[0];
             tripleDropChanceLucky = tripleDropStrings[1];
         }
@@ -56,7 +57,7 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     private void setDoubleDropClassicChanceStrings(Player player) {
-        String[] doubleDropStrings = getAbilityDisplayValues(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
+        String[] doubleDropStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }

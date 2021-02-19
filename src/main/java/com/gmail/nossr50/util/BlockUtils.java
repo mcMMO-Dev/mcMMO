@@ -8,7 +8,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -52,9 +52,9 @@ public final class BlockUtils {
      * @param blockState the blockstate
      * @return true if the player succeeded in the check
      */
-    public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType skillType, SubSkillType subSkillType) {
+    public static boolean checkDoubleDrops(@NotNull Player player, @NotNull BlockState blockState, @NotNull PrimarySkillType skillType, @NotNull SubSkillType subSkillType) {
         if (Config.getInstance().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
-            return RandomChanceUtil.processProbabilityResults(new SkillProbabilityWrapper(player, subSkillType, true));
+            return SkillUtils.isSkillRNGSuccessful(subSkillType, player);
         }
 
         return false;

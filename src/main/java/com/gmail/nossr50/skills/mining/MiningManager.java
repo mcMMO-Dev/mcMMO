@@ -15,7 +15,6 @@ import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -114,7 +113,7 @@ public class MiningManager extends SkillManager {
 
     private boolean processTripleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_MOTHER_LODE, true)) {
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.MINING_MOTHER_LODE, getPlayer())) {
             BlockUtils.markDropsAsBonus(blockState, 2);
             return true;
         } else {
@@ -124,7 +123,7 @@ public class MiningManager extends SkillManager {
 
     private void processDoubleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.MINING_DOUBLE_DROPS, getPlayer())) {
             boolean useTriple = mmoPlayer.getAbilityMode(skill.getAbility()) && AdvancedConfig.getInstance().getAllowMiningTripleDrops();
             BlockUtils.markDropsAsBonus(blockState, useTriple);
         }

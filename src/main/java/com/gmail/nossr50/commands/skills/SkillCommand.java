@@ -11,10 +11,8 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
@@ -217,10 +215,6 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected int calculateRank(float skillValue, int maxLevel, int rankChangeLevel) {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
-    }
-
-    protected static String[] getAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkill) {
-        return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, player, subSkill);
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {

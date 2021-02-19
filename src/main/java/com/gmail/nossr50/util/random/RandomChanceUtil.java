@@ -9,7 +9,6 @@ import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
 
 //TODO: Normalize chance values
-//TODO: Test the 2 types of SkillProbabilityTypes
 //TODO: Update calls to this class and its members
 public class RandomChanceUtil {
     public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%");
@@ -57,22 +56,29 @@ public class RandomChanceUtil {
      *
      * @return "percentage" representation of success
      */
-    private static double chanceOfSuccessPercentage(@NotNull Player player, @NotNull SubSkillType subSkillType, boolean isLucky) {
-        try {
-            Probability probability = SkillUtils.getSubSkillProbability(subSkillType, player);
-            //Probability values are on a 0-1 scale and need to be "transformed" into a 1-100 scale
-            double percentageValue = probability.getValue() * 100;
+    public static double chanceOfSuccessPercentage(@NotNull Player player, @NotNull SubSkillType subSkillType, boolean isLucky) {
+        Probability probability = SkillUtils.getSubSkillProbability(subSkillType, player);
+        //Probability values are on a 0-1 scale and need to be "transformed" into a 1-100 scale
+        double percentageValue = probability.getValue() * 100;
 
-            //Apply lucky modifier
-            if(isLucky) {
-                percentageValue *= LUCKY_MODIFIER;
-            }
-
-            return percentageValue;
-        } catch (InvalidStaticChance invalidStaticChance) {
-            invalidStaticChance.printStackTrace();
-            return 0;
+        //Apply lucky modifier
+        if(isLucky) {
+            percentageValue *= LUCKY_MODIFIER;
         }
+
+        return percentageValue;
+    }
+
+    public static double chanceOfSuccessPercentage(@NotNull Probability probability, boolean isLucky) {
+        //Probability values are on a 0-1 scale and need to be "transformed" into a 1-100 scale
+        double percentageValue = probability.getValue() * 100;
+
+        //Apply lucky modifier
+        if(isLucky) {
+            percentageValue *= LUCKY_MODIFIER;
+        }
+
+        return percentageValue;
     }
 
 }

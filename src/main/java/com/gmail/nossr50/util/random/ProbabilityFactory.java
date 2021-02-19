@@ -16,7 +16,7 @@ public class ProbabilityFactory {
 
     public static @NotNull Probability ofSubSkill(@Nullable Player player,
                                                   @NotNull SubSkillType subSkillType,
-                                                  @NotNull SkillProbabilityType skillProbabilityType) throws InvalidStaticChance, RuntimeException {
+                                                  @NotNull SkillProbabilityType skillProbabilityType) {
 
         switch (skillProbabilityType) {
             case DYNAMIC_CONFIGURABLE:
@@ -40,7 +40,11 @@ public class ProbabilityFactory {
                 xCeiling = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
                 return new ProbabilityImpl(xPos, xCeiling, probabilityCeiling);
             case STATIC_CONFIGURABLE:
-                return ofPercentageValue(getStaticRandomChance(subSkillType));
+                try {
+                    return ofPercentageValue(getStaticRandomChance(subSkillType));
+                } catch (InvalidStaticChance invalidStaticChance) {
+                    invalidStaticChance.printStackTrace();
+                }
             default:
                 throw new RuntimeException("No case in switch statement for Skill Probability Type!");
         }

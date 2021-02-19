@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -14,8 +15,8 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.random.SkillProbabilityType;
+import com.gmail.nossr50.util.random.Probability;
+import com.gmail.nossr50.util.random.ProbabilityImpl;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -32,6 +33,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -124,14 +126,17 @@ public class Roll extends AcrobaticsSubSkill {
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
-        String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
+        String[] rollStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
         rollChance = rollStrings[0];
         rollChanceLucky = rollStrings[1];
 
         /*
          * Graceful is double the odds of a normal roll
          */
-        String[] gracefulRollStrings = RandomChanceUtil.calculateAbilityDisplayValuesCustom(player, SubSkillType.ACROBATICS_ROLL, 2.0D);
+        //TODO: Yeah I know, ...I'm tired I'll clean it up later
+        Probability probability = getRollProbability(player);
+        Probability gracefulProbability = new ProbabilityImpl(probability.getValue() * 2);
+        String[] gracefulRollStrings = SkillUtils.getRNGDisplayValues(gracefulProbability);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
 
@@ -160,6 +165,11 @@ public class Roll extends AcrobaticsSubSkill {
             componentBuilder.append(Component.text(LocaleLoader.getString("JSON.JWrapper.Perks.Lucky", "33")));
         }
 
+    }
+
+    @NotNull
+    private Probability getRollProbability(Player player) {
+        return SkillUtils.getSubSkillProbability(SubSkillType.ACROBATICS_ROLL, player);
     }
 
     @Override
@@ -235,11 +245,12 @@ public class Roll extends AcrobaticsSubSkill {
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
 
-        SkillProbabilityWrapper rcs = new SkillProbabilityWrapper(player, subSkillType);
-        rcs.setxPos(rcs.getxPos() * 2); //Double the effective odds
+        double gracefulOdds = SkillUtils.getSubSkillProbability(subSkillType, player).getValue() * 2;
+        Probability gracefulProbability = new ProbabilityImpl(gracefulOdds);
 
         if (!isFatal(player, modifiedDamage)
-                && RandomChanceUtil.processProbabilityResults(rcs))
+                //TODO: Graceful isn't sending out an event
+                && SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.ACROBATICS, player, gracefulProbability))
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
@@ -352,48 +363,49 @@ public class Roll extends AcrobaticsSubSkill {
      */
     @Override
     public String getMechanics() {
-        //Vars passed to locale
-        //0 = chance to roll at half max level
-        //1 = chance to roll with grace at half max level
-        //2 = level where maximum bonus is reached
-        //3 = additive chance to succeed per level
-        //4 = damage threshold when rolling
-        //5 = damage threshold when rolling with grace
-        //6 = half of level where maximum bonus is reached
-        /*
-        Roll:
-            # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
-            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
-            # DamageThreshold: The max damage a player can negate with a roll
-            ChanceMax: 100.0
-            MaxBonusLevel: 100
-            DamageThreshold: 7.0
-         */
-        double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
-
-        //Chance to roll at half max skill
-        SkillProbabilityWrapper rollHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
-        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
-        rollHalfMaxSkill.setxPos(halfMaxSkillValue);
-
-        //Chance to graceful roll at full skill
-        SkillProbabilityWrapper rollGraceHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
-        rollGraceHalfMaxSkill.setxPos(halfMaxSkillValue * 2); //Double the effective odds
-
-        //Chance to roll per level
-        SkillProbabilityWrapper rollOneSkillLevel = new SkillProbabilityWrapper(null, subSkillType);
-        rollGraceHalfMaxSkill.setxPos(1); //Level 1 skill
-
-        //Chance Stat Calculations
-        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
-        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
-
-        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
-
-        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
-
-        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
+        return "This feature is currently not implemented but will be in the future! -mcMMO Devs";
+//        //Vars passed to locale
+//        //0 = chance to roll at half max level
+//        //1 = chance to roll with grace at half max level
+//        //2 = level where maximum bonus is reached
+//        //3 = additive chance to succeed per level
+//        //4 = damage threshold when rolling
+//        //5 = damage threshold when rolling with grace
+//        //6 = half of level where maximum bonus is reached
+//        /*
+//        Roll:
+//            # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
+//            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
+//            # DamageThreshold: The max damage a player can negate with a roll
+//            ChanceMax: 100.0
+//            MaxBonusLevel: 100
+//            DamageThreshold: 7.0
+//         */
+//        double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
+//
+//        //Chance to roll at half max skill
+//        SkillProbabilityWrapper rollHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
+//        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
+//        rollHalfMaxSkill.setxPos(halfMaxSkillValue);
+//
+//        //Chance to graceful roll at full skill
+//        SkillProbabilityWrapper rollGraceHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
+//        rollGraceHalfMaxSkill.setxPos(halfMaxSkillValue * 2); //Double the effective odds
+//
+//        //Chance to roll per level
+//        SkillProbabilityWrapper rollOneSkillLevel = new SkillProbabilityWrapper(null, subSkillType);
+//        rollGraceHalfMaxSkill.setxPos(1); //Level 1 skill
+//
+//        //Chance Stat Calculations
+//        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
+//        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
+//        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
+//
+//        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
+//
+//        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
+//
+//        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
     }
 
     /**
@@ -405,26 +417,27 @@ public class Roll extends AcrobaticsSubSkill {
     @Override
     public Double[] getStats(Player player)
     {
-        double playerChanceRoll, playerChanceGrace;
-
-        SkillProbabilityWrapper roll          = new SkillProbabilityWrapper(player, getSubSkillType());
-        SkillProbabilityWrapper graceful      = new SkillProbabilityWrapper(player, getSubSkillType());
-
-        graceful.setxPos(graceful.getxPos() * 2); //Double odds
-
-        //Calculate
-        playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);
-        playerChanceGrace       = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
-
-        return new Double[]{ playerChanceRoll, playerChanceGrace };
+//        double playerChanceRoll, playerChanceGrace;
+//
+//        SkillProbabilityWrapper roll          = new SkillProbabilityWrapper(player, getSubSkillType());
+//        SkillProbabilityWrapper graceful      = new SkillProbabilityWrapper(player, getSubSkillType());
+//
+//        graceful.setxPos(graceful.getxPos() * 2); //Double odds
+//
+//        //Calculate
+//        playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);
+//        playerChanceGrace       = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
+//
+//        return new Double[]{ playerChanceRoll, playerChanceGrace };
+        return new Double[] {0.0, 0.0};
     }
 
-    public void addFallLocation(Player player)
+    public void addFallLocation(@NotNull Player player)
     {
         UserManager.getPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
     }
 
-    public Location getBlockLocation(Player player)
+    public @NotNull Location getBlockLocation(@NotNull Player player)
     {
         return player.getLocation().getBlock().getLocation();
     }

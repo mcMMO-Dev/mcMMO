@@ -358,38 +358,31 @@ public final class SkillUtils {
      * @return true if the Skill RNG succeeds, false if it fails
      */
     public static boolean isSkillRNGSuccessful(@NotNull SubSkillType subSkillType, @NotNull Player player) {
-        try {
-            //Process probability
-            Probability probability = getSubSkillProbability(subSkillType, player);
+        //Process probability
+        Probability probability = getSubSkillProbability(subSkillType, player);
 
-            //Send out event
-            SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(player, subSkillType);
+        //Send out event
+        SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(player, subSkillType);
 
-            if(subSkillEvent.isCancelled()) {
-                return false; //Event got cancelled so this doesn't succeed
-            }
-
-            //Result modifier
-            double resultModifier = subSkillEvent.getResultModifier();
-
-            //Mutate probability
-            if(resultModifier != 1.0D)
-                probability = ProbabilityFactory.ofPercentageValue(probability.getValue() * resultModifier);
-
-            //Luck
-            boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
-
-            if(isLucky) {
-                return RandomChanceUtil.processProbability(probability, RandomChanceUtil.LUCKY_MODIFIER);
-            } else {
-                return RandomChanceUtil.processProbability(probability);
-            }
-
-        } catch (RuntimeException | InvalidStaticChance e) {
-            e.printStackTrace();
+        if(subSkillEvent.isCancelled()) {
+            return false; //Event got cancelled so this doesn't succeed
         }
 
-        return false;
+        //Result modifier
+        double resultModifier = subSkillEvent.getResultModifier();
+
+        //Mutate probability
+        if(resultModifier != 1.0D)
+            probability = ProbabilityFactory.ofPercentageValue(probability.getValue() * resultModifier);
+
+        //Luck
+        boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
+
+        if(isLucky) {
+            return RandomChanceUtil.processProbability(probability, RandomChanceUtil.LUCKY_MODIFIER);
+        } else {
+            return RandomChanceUtil.processProbability(probability);
+        }
     }
 
     /**
@@ -446,12 +439,26 @@ public final class SkillUtils {
      * @throws InvalidStaticChance when a skill that does not have a hard coded static chance and it is asked for
      * @throws RuntimeException
      */
-    public static @NotNull Probability getSubSkillProbability(@NotNull SubSkillType subSkillType, @Nullable Player player) throws InvalidStaticChance, RuntimeException {
+    public static @NotNull Probability getSubSkillProbability(@NotNull SubSkillType subSkillType, @Nullable Player player) {
         SkillProbabilityType skillProbabilityType = SkillProbabilityType.DYNAMIC_CONFIGURABLE;
 
         if(subSkillType == SubSkillType.TAMING_FAST_FOOD_SERVICE || subSkillType == SubSkillType.AXES_ARMOR_IMPACT || subSkillType == SubSkillType.AXES_GREATER_IMPACT)
             skillProbabilityType = SkillProbabilityType.STATIC_CONFIGURABLE;
 
         return ProbabilityFactory.ofSubSkill(player, subSkillType, skillProbabilityType);
+    }
+
+    public static @NotNull String[] getRNGDisplayValues(@NotNull Player player, @NotNull SubSkillType subSkill) {
+        double firstValue = RandomChanceUtil.chanceOfSuccessPercentage(player, subSkill, false);
+        double secondValue = RandomChanceUtil.chanceOfSuccessPercentage(player, subSkill, true);
+
+        return new String[]{RandomChanceUtil.percent.format(firstValue), RandomChanceUtil.percent.format(secondValue)};
+    }
+
+    public static @NotNull String[] getRNGDisplayValues(@NotNull Probability probability) {
+        double firstValue = RandomChanceUtil.chanceOfSuccessPercentage(probability, false);
+        double secondValue = RandomChanceUtil.chanceOfSuccessPercentage(probability, true);
+
+        return new String[]{RandomChanceUtil.percent.format(firstValue), RandomChanceUtil.percent.format(secondValue)};
     }
 }
