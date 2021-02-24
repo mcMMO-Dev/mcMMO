@@ -55,6 +55,7 @@ import com.gmail.nossr50.worldguard.WorldGuardManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -258,12 +259,12 @@ public class mcMMO extends JavaPlugin {
 
             if(Config.getInstance().getIsMetricsEnabled()) {
                 metrics = new Metrics(this, 3894);
-                metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
+                metrics.addCustomChart(new SimplePie("version", () -> getDescription().getVersion()));
 
                 if(Config.getInstance().getIsRetroMode())
-                    metrics.addCustomChart(new Metrics.SimplePie("leveling_system", () -> "Retro"));
+                    metrics.addCustomChart(new SimplePie("leveling_system", () -> "Retro"));
                 else
-                    metrics.addCustomChart(new Metrics.SimplePie("leveling_system", () -> "Standard"));
+                    metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
             }
         }
         catch (Throwable t) {
