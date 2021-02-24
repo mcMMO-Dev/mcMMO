@@ -59,7 +59,7 @@ public class RandomChanceUtil {
     public static double chanceOfSuccessPercentage(@NotNull Player player, @NotNull SubSkillType subSkillType, boolean isLucky) {
         Probability probability = SkillUtils.getSubSkillProbability(subSkillType, player);
         //Probability values are on a 0-1 scale and need to be "transformed" into a 1-100 scale
-        double percentageValue = probability.getValue() * 100;
+        double percentageValue = probability.getValue(); //Doesn't need to be scaled
 
         //Apply lucky modifier
         if(isLucky) {
@@ -71,7 +71,7 @@ public class RandomChanceUtil {
 
     public static double chanceOfSuccessPercentage(@NotNull Probability probability, boolean isLucky) {
         //Probability values are on a 0-1 scale and need to be "transformed" into a 1-100 scale
-        double percentageValue = probability.getValue() * 100;
+        double percentageValue = probability.getValue();
 
         //Apply lucky modifier
         if(isLucky) {
