@@ -1,4 +1,5 @@
 Version 2.1.175
+    Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
 
 Version 2.1.174
     Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
