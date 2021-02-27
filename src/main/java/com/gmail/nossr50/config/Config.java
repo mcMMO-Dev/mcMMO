@@ -9,6 +9,7 @@ import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -598,4 +599,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getPowerLevelUpBroadcastInterval() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval", 100); }
 
     public boolean isMasterySystemEnabled() { return config.getBoolean( "General.PowerLevel.Skill_Mastery.Enabled"); }
+    public boolean isGreenThumbReplantableCrop(@NotNull Material material) {
+        return config.getBoolean("Green_Thumb_Replanting_Crops." + StringUtils.getCapitalized(material.toString()), true);
+    }
 }

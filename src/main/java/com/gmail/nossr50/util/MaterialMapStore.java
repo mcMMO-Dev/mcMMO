@@ -49,6 +49,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> pickAxes;
     private final @NotNull HashSet<String> tridents;
     private final @NotNull HashSet<String> bows;
+    private final @NotNull HashSet<String> crossbows;
     private final @NotNull HashSet<String> tools;
 
     private final @NotNull HashSet<String> enchantables;
@@ -88,6 +89,7 @@ public class MaterialMapStore {
         diamondTools = new HashSet<>();
         netheriteTools = new HashSet<>();
         bows = new HashSet<>();
+        crossbows = new HashSet<>();
         stringTools = new HashSet<>();
         tools = new HashSet<>();
 
@@ -447,6 +449,7 @@ public class MaterialMapStore {
         fillTridents();
         fillStringTools();
         fillBows();
+        fillCrossbows();
 
         //Tools collection
         tools.addAll(woodTools);
@@ -462,6 +465,10 @@ public class MaterialMapStore {
 
     private void fillBows() {
         bows.add("bow");
+    }
+
+    private void fillCrossbows() {
+        crossbows.add("crossbow");
     }
 
     private void fillStringTools() {
@@ -769,6 +776,14 @@ public class MaterialMapStore {
 
     public boolean isBow(@NotNull String id) {
         return bows.contains(id);
+    }
+
+    public boolean isCrossbow(@NotNull Material material) {
+        return isCrossbow(material.getKey().getKey());
+    }
+
+    public boolean isCrossbow(@NotNull String id) {
+        return crossbows.contains(id);
     }
 
     public boolean isLeatherArmor(@NotNull Material material) {

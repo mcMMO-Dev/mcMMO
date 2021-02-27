@@ -11,7 +11,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class SmeltingManager extends SkillManager {
     public SmeltingManager(McMMOPlayer mcMMOPlayer) {
@@ -107,19 +109,29 @@ public class SmeltingManager extends SkillManager {
         }
     }
 
-    public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
+    public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent) {
+        ItemStack sourceItemStack = furnaceSmeltEvent.getSource();
+        ItemStack resultItemStack = furnaceSmeltEvent.getResult();
 
-        applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE, XPGainSource.PASSIVE);
+        applyXpGain(Smelting.getResourceXp(sourceItemStack), XPGainReason.PVE, XPGainSource.PASSIVE); //Add XP
+        int itemLimit = resultItemStack.getMaxStackSize();
 
-        if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, result.getType())
-                && isSecondSmeltSuccessful() && result.getAmount() < 64) {
-            ItemStack newResult = result.clone();
+        processDoubleSmelt(furnaceSmeltEvent, resultItemStack, itemLimit);
+    }
 
-            newResult.setAmount(result.getAmount() + 1);
-            return newResult;
+    private void processDoubleSmelt(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull ItemStack resultItemStack, int itemLimit) {
+        //TODO: Permission check work around, could store it as NBT on the furnace
+        //We don't do permission checks because this can be for an offline player and Bukkit has nothing to grab permissions for offline players
+
+        //Process double smelt
+        if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
+                && resultItemStack.getAmount() < itemLimit
+                && isSecondSmeltSuccessful()) {
+
+            ItemStack newResult = resultItemStack.clone();
+            newResult.setAmount(Math.min(resultItemStack.getAmount() + 1, itemLimit)); //Don't go over max stack limits
+            furnaceSmeltEvent.setResult(newResult);
         }
-
-        return result;
     }
 
     public int vanillaXPBoost(int experience) {

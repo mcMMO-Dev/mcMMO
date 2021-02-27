@@ -1,4 +1,7 @@
 Version 2.1.175
+    Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
+    Fixed a bug where arrows could be duped when fired from a crossbow with piercing enchantment
+    Added setting to enable or disable Green Thumb automatically replanting crops per crop to config.yml under 'Green_Thumb_Replanting_Crops' section
     (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Added a setting to chat.yml to toggle sending party or admin chat messages to console

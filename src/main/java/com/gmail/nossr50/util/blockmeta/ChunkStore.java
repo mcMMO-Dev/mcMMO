@@ -36,6 +36,9 @@ public interface ChunkStore {
      */
     int getChunkZ();
 
+    int getChunkMin();
+    int getChunkMax();
+
     @NotNull UUID getWorldId();
 
     /**

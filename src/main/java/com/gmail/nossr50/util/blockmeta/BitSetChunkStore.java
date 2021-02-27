@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import com.gmail.nossr50.util.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -10,12 +11,13 @@ import java.util.BitSet;
 import java.util.UUID;
 
 public class BitSetChunkStore implements ChunkStore {
-    private static final int CURRENT_VERSION = 8;
+    private static final int CURRENT_VERSION = 9;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
 
     private final int cx;
     private final int cz;
-    private final int worldHeight;
+    private final int worldMin;
+    private final int worldMax;
     private final @NotNull UUID worldUid;
     // Bitset store conforms to a "bottom-up" bit ordering consisting of a stack of {worldHeight} Y planes, each Y plane consists of 16 Z rows of 16 X bits.
     private final @NotNull BitSet store;
@@ -23,15 +25,16 @@ public class BitSetChunkStore implements ChunkStore {
     private transient boolean dirty = false;
 
     public BitSetChunkStore(@NotNull World world, int cx, int cz) {
-        this(world.getUID(), world.getMaxHeight(), cx, cz);
+        this(world.getUID(), Misc.getWorldMinCompat(world), world.getMaxHeight(), cx, cz);
     }
 
-    private BitSetChunkStore(@NotNull UUID worldUid, int worldHeight, int cx, int cz) {
+    private BitSetChunkStore(@NotNull UUID worldUid, int worldMin, int worldMax, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
         this.worldUid = worldUid;
-        this.worldHeight = worldHeight;
-        this.store = new BitSet(16 * 16 * worldHeight);
+        this.worldMin = worldMin;
+        this.worldMax = worldMax;
+        this.store = new BitSet(16 * 16 * (worldMax - worldMin));
     }
 
     @Override
@@ -52,6 +55,16 @@ public class BitSetChunkStore implements ChunkStore {
     @Override
     public int getChunkZ() {
         return cz;
+    }
+
+    @Override
+    public int getChunkMin() {
+        return worldMin;
+    }
+
+    @Override
+    public int getChunkMax() {
+        return worldMax;
     }
 
     @Override
@@ -86,22 +99,34 @@ public class BitSetChunkStore implements ChunkStore {
     }
 
     private int coordToIndex(int x, int y, int z) {
-        return coordToIndex(x, y, z, worldHeight);
+        return coordToIndex(x, y, z, worldMin, worldMax);
     }
 
-    private static int coordToIndex(int x, int y, int z, int worldHeight) {
-        if (x < 0 || x >= 16 || y < 0 || y >= worldHeight || z < 0 || z >= 16)
-            throw new IndexOutOfBoundsException(String.format("x: %d y: %d z: %d World Height: %d", x, y, z, worldHeight));
-        return (z * 16 + x) + (256 * y);
+    private static int coordToIndex(int x, int y, int z, int worldMin, int worldMax) {
+        if (x < 0 || x >= 16 || y < worldMin || y >= worldMax || z < 0 || z >= 16)
+            throw new IndexOutOfBoundsException(String.format("x: %d y: %d z: %d World Min: %d World Max: %d", x, y, z, worldMin, worldMax));
+        int yOffset = -worldMin; // Ensures y multiplier remains positive
+        return (z * 16 + x) + (256 * (y + yOffset));
     }
 
-    private static int getWorldHeight(@NotNull UUID worldUid, int storedWorldHeight)
+    private static int getWorldMin(@NotNull UUID worldUid, int storedWorldMin)
     {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
         if (world == null)
-            return storedWorldHeight;
+            return storedWorldMin;
+
+        return Misc.getWorldMinCompat(world);
+    }
+
+    private static int getWorldMax(@NotNull UUID worldUid, int storedWorldMax)
+    {
+        World world = Bukkit.getWorld(worldUid);
+
+        // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
+        if (world == null)
+            return storedWorldMax;
 
         return world.getMaxHeight();
     }
@@ -114,7 +139,8 @@ public class BitSetChunkStore implements ChunkStore {
         out.writeLong(worldUid.getMostSignificantBits());
         out.writeInt(cx);
         out.writeInt(cz);
-        out.writeInt(worldHeight);
+        out.writeInt(worldMin);
+        out.writeInt(worldMax);
 
         // Store the byte array directly so we don't have the object type info overhead
         byte[] storeData = store.toByteArray();
@@ -129,7 +155,7 @@ public class BitSetChunkStore implements ChunkStore {
         // Can be used to determine the format of the file
         int fileVersionNumber = in.readInt();
 
-        if (magic != MAGIC_NUMBER || fileVersionNumber != CURRENT_VERSION)
+        if (magic != MAGIC_NUMBER || fileVersionNumber < 8)
             throw new IOException();
 
         long lsb = in.readLong();
@@ -138,21 +164,38 @@ public class BitSetChunkStore implements ChunkStore {
         int cx = in.readInt();
         int cz = in.readInt();
 
-        int worldHeight = in.readInt();
+        int worldMin = 0;
+        if (fileVersionNumber >= 9)
+            worldMin = in.readInt();
+        int worldMax = in.readInt();
         byte[] temp = new byte[in.readInt()];
         in.readFully(temp);
         BitSet stored = BitSet.valueOf(temp);
 
-        int currentWorldHeight = getWorldHeight(worldUid, worldHeight);
+        int currentWorldMin = getWorldMin(worldUid, worldMin);
+        int currentWorldMax = getWorldMax(worldUid, worldMax);
 
-        boolean worldHeightShrunk = currentWorldHeight < worldHeight;
-        // Lop off extra data if world height has shrunk
-        if (worldHeightShrunk)
-            stored.clear(coordToIndex(16, currentWorldHeight, 16, worldHeight), stored.length());
+        // The order in which the world height update code occurs here is important, the world max truncate math only holds up if done before adjusting for min changes
+        // Lop off extra data if world max has shrunk
+        if (currentWorldMax < worldMax)
+            stored.clear(coordToIndex(16, currentWorldMax, 16, worldMin, worldMax), stored.length());
+        // Left shift store if world min has shrunk
+        if (currentWorldMin > worldMin)
+            stored = stored.get(currentWorldMin, stored.length()); // Because BitSet's aren't fixed size, a "substring" operation is equivalent to a left shift
+        // Right shift store if world min has expanded
+        if (currentWorldMin < worldMin)
+        {
+            int offset = (worldMin - currentWorldMin) * 16 * 16; // We are adding this many bits to the front
+            // This isn't the most efficient way to do this, however, its a rare case to occur, and in the grand scheme of things, the small performance we could gain would cost us significant reduced readability of the code
+            BitSet shifted = new BitSet();
+            for (int i = 0; i < stored.length(); i++)
+                shifted.set(i + offset, stored.get(i));
+            stored = shifted;
+        }
 
-        BitSetChunkStore chunkStore = new BitSetChunkStore(worldUid, currentWorldHeight, cx, cz);
+        BitSetChunkStore chunkStore = new BitSetChunkStore(worldUid, currentWorldMin, currentWorldMax, cx, cz);
         chunkStore.store.or(stored);
-        chunkStore.dirty = worldHeightShrunk; // In the expanded case there is no reason to re-write it unless the data changes
+        chunkStore.dirty = currentWorldMin != worldMin || currentWorldMax != worldMax;
 
         return chunkStore;
     }
@@ -203,7 +246,7 @@ public class BitSetChunkStore implements ChunkStore {
 
                 private int cx;
                 private int cz;
-                private int worldHeight;
+                private int worldMax;
                 private UUID worldUid;
                 private boolean[][][] store;
 
@@ -226,19 +269,20 @@ public class BitSetChunkStore implements ChunkStore {
                     cz = in.readInt();
 
                     store = (boolean[][][]) in.readObject();
-                    worldHeight = store[0][0].length;
+                    worldMax = store[0][0].length;
                 }
 
                 public @NotNull BitSetChunkStore convert()
                 {
-                    int currentWorldHeight = getWorldHeight(worldUid, worldHeight);
+                    int currentWorldMin = getWorldMin(worldUid, 0);
+                    int currentWorldMax = getWorldMax(worldUid, worldMax);
 
-                    BitSetChunkStore converted = new BitSetChunkStore(worldUid, currentWorldHeight, cx, cz);
+                    BitSetChunkStore converted = new BitSetChunkStore(worldUid, currentWorldMin, currentWorldMax, cx, cz);
 
                     // Read old data into new chunkstore
                     for (int x = 0; x < 16; x++) {
                         for (int z = 0; z < 16; z++) {
-                            for (int y = 0; y < worldHeight && y < currentWorldHeight; y++) {
+                            for (int y = 0; y < worldMax && y < currentWorldMax; y++) {
                                 converted.store.set(converted.coordToIndex(x, y, z), store[x][z][y]);
                             }
                         }
