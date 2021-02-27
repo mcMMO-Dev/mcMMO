@@ -182,8 +182,10 @@ public class HerbalismManager extends SkillManager {
 
         //TODO: The design of Green Terra needs to change, this is a mess
         if(Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
-            if(!getPlayer().isSneaking()) {
-                greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
+            if(Config.getInstance().isGreenThumbReplantableCrop(originalBreak.getType())) {
+                if(!getPlayer().isSneaking()) {
+                    greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
+                }
             }
         }
 
@@ -688,7 +690,7 @@ public class HerbalismManager extends SkillManager {
      */
     private boolean processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
         if (!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
-        && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
+            && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
             return false;
         }
 
