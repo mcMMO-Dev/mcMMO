@@ -144,7 +144,7 @@ public class SmeltingManager extends SkillManager {
 
         //Process double smelt
         if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
-                && resultItemStack.getAmount() < itemLimit //We take away 1 because there's a certain "exploit" when certain plugins are used in combination
+                && resultItemStack.getAmount() < itemLimit
                 && isSecondSmeltSuccessful()) {
 
             ItemStack newResult = resultItemStack.clone();
