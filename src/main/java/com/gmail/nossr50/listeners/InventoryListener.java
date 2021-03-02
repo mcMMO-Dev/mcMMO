@@ -117,7 +117,7 @@ public class InventoryListener implements Listener {
                 //Profile doesn't exist
                 if(offlineProfile != null) {
                     //Process smelting
-                    offlineProfile.getSmeltingManager().smeltProcessing(event);
+                    offlineProfile.getSmeltingManager().smeltProcessing(event, furnace);
                 }
             }
         }

@@ -1,7 +1,7 @@
-Version 2.1.175
-    Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
-    Fixed a bug where arrows could be duped when fired from a crossbow with piercing enchantment
-    Added setting to enable or disable Green Thumb automatically replanting crops per crop to config.yml under 'Green_Thumb_Replanting_Crops' section
+Version 2.1.176
+    Added another measure to prevent item stacks from reaching 65 from double smelt
+    Updated Adventure (our text dependency) fixes some errors when using color codes in party/admin chat (thanks TheBusyBiscuit)
+    Added some support for negative Y values in anticipation of 1.17 world height changes (thanks t00thpick1)
     (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Added a setting to chat.yml to toggle sending party or admin chat messages to console
@@ -56,6 +56,11 @@ Version 2.1.175
 
     New Power Level Command
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
+
+Version 2.1.175
+    Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
+    Fixed a bug where arrows could be duped when fired from a crossbow with piercing enchantment
+    Added setting to enable or disable Green Thumb automatically replanting crops per crop to config.yml under 'Green_Thumb_Replanting_Crops' section
 
 Version 2.1.174
     Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
