@@ -11,6 +11,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import org.bukkit.block.Furnace;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
@@ -110,23 +111,40 @@ public class SmeltingManager extends SkillManager {
         }
     }
 
-    public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent) {
+    public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull Furnace furnace) {
         ItemStack sourceItemStack = furnaceSmeltEvent.getSource();
         ItemStack resultItemStack = furnaceSmeltEvent.getResult();
 
         applyXpGain(Smelting.getResourceXp(sourceItemStack), XPGainReason.PVE, XPGainSource.PASSIVE); //Add XP
-        int itemLimit = resultItemStack.getMaxStackSize();
 
-        processDoubleSmelt(furnaceSmeltEvent, resultItemStack, itemLimit);
+
+        processDoubleSmelt(furnaceSmeltEvent, resultItemStack, furnace);
     }
 
-    private void processDoubleSmelt(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull ItemStack resultItemStack, int itemLimit) {
+    private void processDoubleSmelt(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull ItemStack resultItemStack, @NotNull Furnace furnace) {
+        int itemLimit = resultItemStack.getMaxStackSize();
+
+        //Check for viewers
+        if(furnace.getInventory().getViewers().size() > 0) {
+            itemLimit = itemLimit - 1; //Lower max size to prevent exploit, the exploit involves an open window and a stack at 63 which is about to double smelt, instructions to replicate below
+            /*
+                Momshroom02/26/2021
+                    1) have max (or close to it) smelting.
+                    2) put more than half a stack of an ore in a furnace and wait for it to smelt.
+                    3) have your inv full except for one items worth of whatever the furnace product is.  (so like a stack of 63 iron and the rest of your inv is full).
+                    4) shift click on the furnace output to remove only one item-- leaving 63.
+                    5) let one more item smelt so the furnace appears to have 64
+                    6) manually drag (don't shift click) the stack of product out of the furnace- it'll be 65 items
+                    when you drop that and pick it up with only one free space in your inv, it'll look like there's more than one left on the ground, but for me, there was only one, and the "dupe" was visual only-- idk about VK's player.
+             */
+        }
+
         //TODO: Permission check work around, could store it as NBT on the furnace
         //We don't do permission checks because this can be for an offline player and Bukkit has nothing to grab permissions for offline players
 
         //Process double smelt
         if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
-                && resultItemStack.getAmount() < itemLimit
+                && resultItemStack.getAmount() < itemLimit //We take away 1 because there's a certain "exploit" when certain plugins are used in combination
                 && isSecondSmeltSuccessful()) {
 
             ItemStack newResult = resultItemStack.clone();
