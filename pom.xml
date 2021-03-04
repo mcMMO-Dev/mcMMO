@@ -16,6 +16,16 @@
         <system>GitHub</system>
     </issueManagement>
     <packaging>jar</packaging>
+    <distributionManagement>
+        <repository>
+            <id>neetgames</id>
+            <url>https://nexus.neetgames.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>neetgames</id>
+            <url>https://nexus.neetgames.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <build>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
