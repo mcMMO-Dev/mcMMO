@@ -459,6 +459,14 @@ Skills:
         Level_Cap: 0
 
 
+# Disable or Enable the Green Thumb auto replant feature for specific crops, use the name of the block not the crop itemstack
+Green_Thumb_Replanting_Crops:
+    Carrots: true
+    Wheat: true
+    Nether_Wart: true
+    Potatoes: true
+    Beetroots: true
+    Cocoa: true
 #
 #  Settings for Double Drops
 ###

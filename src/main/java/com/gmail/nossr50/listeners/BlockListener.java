@@ -147,10 +147,13 @@ public class BlockListener implements Listener {
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
-        mcMMO.getPlaceStore().setTrue(movedBlock);
+        if (movedBlock.getY() >= Misc.getWorldMinCompat(movedBlock.getWorld())) // Very weird that the event is giving us these, they shouldn't exist
+            mcMMO.getPlaceStore().setTrue(movedBlock);
 
         for (Block block : event.getBlocks()) {
             movedBlock = block.getRelative(direction);
+            if (movedBlock.getY() < Misc.getWorldMinCompat(movedBlock.getWorld())) // Very weird that the event is giving us these, they shouldn't exist
+                continue;
             mcMMO.getPlaceStore().setTrue(movedBlock);
         }
     }

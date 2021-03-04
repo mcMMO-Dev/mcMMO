@@ -207,14 +207,10 @@ public class EntityListener implements Listener {
 
                 }
 
-
-                //Bow only
-                if (!isCrossbow) {
-                    for (Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
-                        if (enchantment.getKey().equals(piercingEnchantment)) {
-                            return;
-                        }
-                    }
+                //Check both hands
+                if(ItemUtils.doesPlayerHaveEnchantmentInHands(player, "piercing")) {
+                    return;
+                }
 
                     if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
                         projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
