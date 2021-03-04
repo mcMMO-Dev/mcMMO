@@ -59,12 +59,12 @@ public final class UserManager {
      * @param player target player
      * @return OnlineMMOPlayer object for this player, null if Player has not been loaded
      */
-    public @Nullable OnlineMMOPlayer queryPlayer(@Nullable Player player) {
+    public @Nullable McMMOPlayer queryPlayer(@Nullable Player player) {
         if(player == null)
             return null;
 
         if(player.hasMetadata(mcMMO.playerDataKey))
-            return (OnlineMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
         else
             return null;
     }

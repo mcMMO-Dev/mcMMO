@@ -5,6 +5,8 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.ProjectileOriginMeta;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -212,19 +214,18 @@ public class EntityListener implements Listener {
                     return;
                 }
 
-                    if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
-                        projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
-                    }
+                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                    projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
                 }
             }
         }
     }
 
-    private void markProjectileOriginAsCrossbow(Projectile projectile) {
+    private void markProjectileOriginAsCrossbow(@NotNull Projectile projectile) {
         projectile.setMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY, new ProjectileOriginMeta(plugin, 2));
     }
 
-    private void markProjectileOriginAsBow(Projectile projectile) {
+    private void markProjectileOriginAsBow(@NotNull Projectile projectile) {
         projectile.setMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY, new ProjectileOriginMeta(plugin, 1));
     }
 
@@ -567,14 +568,14 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(player);
 
             //Profile not loaded
             if(mmoPlayer == null)
                 return;
 
             /* Check for invincibility */
-            if (mmoPlayer.getGodMode()) {
+            if (mmoPlayer.isGodMode()) {
                 event.setCancelled(true);
                 return;
             }
