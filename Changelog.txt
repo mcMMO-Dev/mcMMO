@@ -1,5 +1,5 @@
 Version 2.1.176
-    Added another measure to prevent item stacks from reaching 65 from double smelt
+    Another fix for Double Smelt bringing item stack size to illegal values
 
 Version 2.1.175
     Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
