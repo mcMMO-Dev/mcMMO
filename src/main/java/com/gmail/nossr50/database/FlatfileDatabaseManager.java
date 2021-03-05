@@ -14,6 +14,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -477,6 +478,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
+        boolean updateRequired = false;
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -504,11 +506,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     // Update playerName in database after name change
                     if (!character[USERNAME].equalsIgnoreCase(playerName)) {
-                        mcMMO.p.debug("Name change detected: " + character[USERNAME] + " => " + playerName);
+//                        mcMMO.p.debug("Name change detected: " + character[USERNAME] + " => " + playerName);
                         character[USERNAME] = playerName;
+                        updateRequired = true; //Flag profile to update
                     }
 
-                    return loadFromLine(character);
+                    return loadFromLine(character, updateRequired);
                 }
 
                 // Didn't find the player, create a new one
@@ -563,7 +566,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
 
                     try {
-                        destination.saveUser(loadFromLine(character));
+                        destination.saveUser(loadFromLine(character, false));
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -1146,7 +1149,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private PlayerProfile loadFromLine(String[] character) {
+    private PlayerProfile loadFromLine(@NotNull String[] character, boolean updateRequired) {
         Map<PrimarySkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
@@ -1210,6 +1213,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
         catch (Exception e) {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
+        }
+
+        PlayerProfile playerProfile = new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
+
+        if(updateRequired) {
+            playerProfile.markProfileDirty();
+            playerProfile.scheduleSyncSave(); //Save profile since fields have changed
         }
 
         return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);

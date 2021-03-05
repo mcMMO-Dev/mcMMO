@@ -1,5 +1,6 @@
 Version 2.1.177
     Environmentally aware will now protect Wolves from Magma blocks
+    Fixed a bug where mcMMO would fail to update a players name when it detected a name change
 
 Version 2.1.176
     Another fix for Double Smelt bringing item stack size to illegal values
