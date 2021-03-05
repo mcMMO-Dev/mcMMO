@@ -573,6 +573,7 @@ public class EntityListener implements Listener {
                 switch (cause) {
                     case CONTACT:
                     case FIRE:
+                    case HOT_FLOOR:
                     case LAVA:
                         if (tamingManager.canUseEnvironmentallyAware()) {
                             tamingManager.processEnvironmentallyAware(wolf, event.getDamage());

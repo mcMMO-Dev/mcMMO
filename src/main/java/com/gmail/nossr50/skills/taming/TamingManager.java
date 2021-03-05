@@ -261,7 +261,7 @@ public class TamingManager extends SkillManager {
         player.sendMessage(message);
     }
 
-    public void processEnvironmentallyAware(Wolf wolf, double damage) {
+    public void processEnvironmentallyAware(@NotNull Wolf wolf, double damage) {
         if (damage > wolf.getHealth()) {
             return;
         }
