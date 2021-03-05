@@ -3,10 +3,13 @@ Version 2.1.177
     Fixed a bug where mcMMO would fail to update a players name when it detected a name change
     mcMMO will treat vanished players as if they are offline when using the inspect command on them now (see notes)
     mcMMO now listens to PlayerFishEvent at HIGH event priority instead of HIGHEST
+    Changed how vanilla treasures are overridden (AIR instead of SALMON)
+    (API) Added McMMOReplaceVanillaTreasureEvent -- see notes
 
     NOTES:
     A few changes were made to the inspect command, it used to reject you when used on vanished players, now it will be processed as if they are offline.
     Additionally if you do inspect a vanished player, it will not use their display name (consistent with offline players) as that would give them away for being online
+    McMMOReplaceVanillaTreasureEvent is an event which is fired when mcMMO replaces a vanilla treasure with a Salmon if the server config file is set to override vanilla treasures, this causes some issues for other fishing plugins so this event helps those plugins be more compatible
 
 Version 2.1.176
     Another fix for Double Smelt bringing item stack size to illegal values
