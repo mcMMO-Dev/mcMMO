@@ -14,7 +14,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
