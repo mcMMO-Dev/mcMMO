@@ -298,7 +298,7 @@ public class PlayerListener implements Listener {
                             fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
                             fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
 
-                        ItemStack replacementCatch = new ItemStack(Material.AIR);
+                        ItemStack replacementCatch = new ItemStack(Material.SALMON, 1);
 
                         McMMOReplaceVanillaTreasureEvent replaceVanillaTreasureEvent = new McMMOReplaceVanillaTreasureEvent(fishingCatch, replacementCatch);
                         Bukkit.getPluginManager().callEvent(replaceVanillaTreasureEvent);
