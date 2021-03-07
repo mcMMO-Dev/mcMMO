@@ -1,3 +1,10 @@
+Version 2.1.179
+    Fixed a bug for FlatFile databases where some players with changed nicknames would have their levels not loaded upon login (possibly wiping their data)
+
+    NOTES:
+    Players affected by this bug (introduced in 2.1.177) may have their data lost, but this patch reverts the change which caused this bug.
+    I suspect their data isn't lost and may be restored after this patch is loaded up, however if it is lost mcMMO makes regular backups so you can load one of those (check <Server Directory>/plugins/mcMMO/) or manually edit their levels via MMOEDIT as a solution of sorts.
+
 Version 2.1.178
     Item replacement in vanilla fishing override back to SALMON from AIR (see notes)
 

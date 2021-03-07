@@ -477,7 +477,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-        boolean updateRequired = false;
+//        boolean updateRequired = false;
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -505,12 +505,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     // Update playerName in database after name change
                     if (!character[USERNAME].equalsIgnoreCase(playerName)) {
-//                        mcMMO.p.debug("Name change detected: " + character[USERNAME] + " => " + playerName);
+                        //TODO: A proper fix for changed names
+                        mcMMO.p.debug("Name change detected: " + character[USERNAME] + " => " + playerName);
                         character[USERNAME] = playerName;
-                        updateRequired = true; //Flag profile to update
+//                        updateRequired = true; //Flag profile to update
                     }
 
-                    return loadFromLine(character, updateRequired);
+                    return loadFromLine(character);
                 }
 
                 // Didn't find the player, create a new one
@@ -565,7 +566,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
 
                     try {
-                        destination.saveUser(loadFromLine(character, false));
+                        destination.saveUser(loadFromLine(character));
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -1148,7 +1149,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private PlayerProfile loadFromLine(@NotNull String[] character, boolean updateRequired) {
+    private PlayerProfile loadFromLine(@NotNull String[] character) {
         Map<PrimarySkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
@@ -1216,10 +1217,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         PlayerProfile playerProfile = new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
 
-        if(updateRequired) {
-            playerProfile.markProfileDirty();
-            playerProfile.scheduleSyncSave(); //Save profile since fields have changed
-        }
+//        if(updateRequired) {
+//            playerProfile.markProfileDirty();
+//            playerProfile.scheduleSyncSave(); //Save profile since fields have changed
+//        }
 
         return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
     }
