@@ -38,6 +38,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private final ReentrantLock massUpdateLock = new ReentrantLock();
 
+    private final String ENCODING = "utf8mb4"; //This is compliant with UTF-8 while "utf8" is not, confusing but this is how it is.
+
     protected SQLDatabaseManager() {
         String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
                 + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
@@ -814,7 +816,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "`lastlogin` int(32) unsigned NOT NULL,"
                     + "PRIMARY KEY (`id`),"
                     + "INDEX(`user`(20) ASC),"
-                    + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                    + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=" + ENCODING + " AUTO_INCREMENT=1;");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -828,7 +830,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
                         + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + ENCODING + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -853,7 +855,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + ENCODING + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -881,7 +883,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`total` int(10) unsigned NOT NULL DEFAULT "+totalLevel+","
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + ENCODING + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -906,7 +908,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + ENCODING + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);

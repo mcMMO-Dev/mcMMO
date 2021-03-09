@@ -1,3 +1,6 @@
+Version 2.1.180
+    mcMMO now uses UTF-8 compliant encoding for SQL databases (utf8mb4)
+
 Version 2.1.179
     Fixed a bug for FlatFile databases where some players with changed nicknames would have their levels not loaded upon login (possibly wiping their data)
 
