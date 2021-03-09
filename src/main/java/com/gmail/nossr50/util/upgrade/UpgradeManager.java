@@ -11,7 +11,7 @@ public class UpgradeManager extends ConfigLoader {
     private final Set<UpgradeType> setNeededUpgrades;
 
     public UpgradeManager() {
-        super("upgrades.yml");
+        super("upgrades_overhaul.yml"); //overhaul is added so we don't have any issues with classic
 
         setNeededUpgrades = EnumSet.allOf(UpgradeType.class);
 

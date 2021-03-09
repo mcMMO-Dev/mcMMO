@@ -1,5 +1,7 @@
 Version 2.1.180
     mcMMO now uses UTF-8 compliant encoding for SQL databases (utf8mb4)
+    Fixed a bug where mcMMO could in some circumstances fail to update SQL schema and mark it as successful
+    Renamed updates.yml to updates_overhaul.yml to avoid some potential issues when upgrading from classic
 
 Version 2.1.179
     Fixed a bug for FlatFile databases where some players with changed nicknames would have their levels not loaded upon login (possibly wiping their data)
