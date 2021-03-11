@@ -1,10 +1,9 @@
 package com.gmail.nossr50.util.text;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * This Unit Test checks if Adventure was set up correctly and works as expected.

@@ -385,6 +385,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     private void writeUserToLine(PlayerProfile profile, String playerName, UUID uuid, StringBuilder writer) {
+        // FlyingMonkey_:0:::0:0:0:0:0:0:0:0:0:0:5:0:156:460:
         writer.append(playerName).append(":");
         writer.append(profile.getSkillLevel(PrimarySkillType.MINING)).append(":");
         writer.append(":");
@@ -936,6 +937,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     HashSet<String> players = new HashSet<>();
 
                     while ((line = in.readLine()) != null) {
+                        String oldVersion = null;
+
                         // Remove empty lines from the file
                         if (line.isEmpty()) {
                             continue;
@@ -968,8 +971,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             continue;
                         }
 
-                        String oldVersion = null;
-
                         if (character.length > 33 && !character[33].isEmpty()) {
                             // Removal of Spout Support
                             // Version 1.4.07-dev2
@@ -984,11 +985,21 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         if (Config.getInstance().getTruncateSkills()) {
                             for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
                                 int index = getSkillIndex(skill);
+
                                 if (index >= character.length) {
                                     continue;
                                 }
+
                                 int cap = Config.getInstance().getLevelCap(skill);
-                                if (Integer.parseInt(character[index]) > cap) {
+                                int skillLevel = 0;
+
+                                try {
+                                    skillLevel = Integer.parseInt(character[index]);
+                                } catch (NumberFormatException e) {
+                                    mcMMO.p.getLogger().severe("Repairing some corrupt or unexpected data in mcmmo.users it is possible some data may be lost.");
+                                }
+
+                                if (skillLevel > cap) {
                                     mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME_INDEX]);
                                     character[index] = cap + "";
                                     updated = true;
@@ -1224,34 +1235,34 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
 
-        // TODO on updates, put new values in a try{} ?
+        String username = character[USERNAME_INDEX];
 
-        skillsXp.put(PrimarySkillType.TAMING, (float) Integer.parseInt(character[EXP_TAMING]));
-        skillsXp.put(PrimarySkillType.MINING, (float) Integer.parseInt(character[EXP_MINING]));
-        skillsXp.put(PrimarySkillType.REPAIR, (float) Integer.parseInt(character[EXP_REPAIR]));
-        skillsXp.put(PrimarySkillType.WOODCUTTING, (float) Integer.parseInt(character[EXP_WOODCUTTING]));
-        skillsXp.put(PrimarySkillType.UNARMED, (float) Integer.parseInt(character[EXP_UNARMED]));
-        skillsXp.put(PrimarySkillType.HERBALISM, (float) Integer.parseInt(character[EXP_HERBALISM]));
-        skillsXp.put(PrimarySkillType.EXCAVATION, (float) Integer.parseInt(character[EXP_EXCAVATION]));
-        skillsXp.put(PrimarySkillType.ARCHERY, (float) Integer.parseInt(character[EXP_ARCHERY]));
-        skillsXp.put(PrimarySkillType.SWORDS, (float) Integer.parseInt(character[EXP_SWORDS]));
-        skillsXp.put(PrimarySkillType.AXES, (float) Integer.parseInt(character[EXP_AXES]));
-        skillsXp.put(PrimarySkillType.ACROBATICS, (float) Integer.parseInt(character[EXP_ACROBATICS]));
-        skillsXp.put(PrimarySkillType.FISHING, (float) Integer.parseInt(character[EXP_FISHING]));
-        skillsXp.put(PrimarySkillType.ALCHEMY, (float) Integer.parseInt(character[EXP_ALCHEMY]));
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.TAMING, EXP_TAMING, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.MINING, EXP_MINING, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.REPAIR, EXP_REPAIR, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.WOODCUTTING, EXP_WOODCUTTING, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.UNARMED, EXP_UNARMED, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.HERBALISM, EXP_HERBALISM, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.EXCAVATION, EXP_EXCAVATION, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ARCHERY, EXP_ARCHERY, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.SWORDS, EXP_SWORDS, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.AXES, EXP_AXES, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ACROBATICS, EXP_ACROBATICS, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.FISHING, EXP_FISHING, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ALCHEMY, EXP_ALCHEMY, username);
 
         // Taming - Unused
-        skillsDATS.put(SuperAbilityType.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_BREAKER, COOLDOWN_SUPER_BREAKER, username);
         // Repair - Unused
-        skillsDATS.put(SuperAbilityType.TREE_FELLER, Integer.valueOf(character[COOLDOWN_TREE_FELLER]));
-        skillsDATS.put(SuperAbilityType.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
-        skillsDATS.put(SuperAbilityType.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
-        skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.TREE_FELLER, COOLDOWN_TREE_FELLER, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BERSERK, COOLDOWN_BERSERK, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.GREEN_TERRA, COOLDOWN_GREEN_TERRA, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.GIGA_DRILL_BREAKER, COOLDOWN_GIGA_DRILL_BREAKER, username);
         // Archery - Unused
-        skillsDATS.put(SuperAbilityType.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
-        skillsDATS.put(SuperAbilityType.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SERRATED_STRIKES, COOLDOWN_SERRATED_STRIKES, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SKULL_SPLITTER, COOLDOWN_SKULL_SPLITTER, username);
         // Acrobatics - Unused
-        skillsDATS.put(SuperAbilityType.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING, username);
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
@@ -1285,25 +1296,59 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
     }
 
-    private Map<PrimarySkillType, Integer> getSkillMapFromLine(String[] character) {
-        Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
+    private void tryLoadSkillCooldownFromRawData(@NotNull Map<SuperAbilityType, Integer> cooldownMap, @NotNull String[] character, @NotNull SuperAbilityType superAbilityType, int cooldownSuperBreaker, @NotNull String userName) {
+        try {
+            cooldownMap.put(superAbilityType, Integer.valueOf(character[cooldownSuperBreaker]));
+        } catch (NumberFormatException e) {
+            mcMMO.p.getLogger().severe("Data corruption when trying to load the value for skill "+superAbilityType.toString()+" for player named " + userName+ " setting value to zero");
+            e.printStackTrace();
+        }
+    }
 
-        skills.put(PrimarySkillType.TAMING, Integer.valueOf(character[SKILLS_TAMING]));
-        skills.put(PrimarySkillType.MINING, Integer.valueOf(character[SKILLS_MINING]));
-        skills.put(PrimarySkillType.REPAIR, Integer.valueOf(character[SKILLS_REPAIR]));
-        skills.put(PrimarySkillType.WOODCUTTING, Integer.valueOf(character[SKILLS_WOODCUTTING]));
-        skills.put(PrimarySkillType.UNARMED, Integer.valueOf(character[SKILLS_UNARMED]));
-        skills.put(PrimarySkillType.HERBALISM, Integer.valueOf(character[SKILLS_HERBALISM]));
-        skills.put(PrimarySkillType.EXCAVATION, Integer.valueOf(character[SKILLS_EXCAVATION]));
-        skills.put(PrimarySkillType.ARCHERY, Integer.valueOf(character[SKILLS_ARCHERY]));
-        skills.put(PrimarySkillType.SWORDS, Integer.valueOf(character[SKILLS_SWORDS]));
-        skills.put(PrimarySkillType.AXES, Integer.valueOf(character[SKILLS_AXES]));
-        skills.put(PrimarySkillType.ACROBATICS, Integer.valueOf(character[SKILLS_ACROBATICS]));
-        skills.put(PrimarySkillType.FISHING, Integer.valueOf(character[SKILLS_FISHING]));
-        skills.put(PrimarySkillType.ALCHEMY, Integer.valueOf(character[SKILLS_ALCHEMY]));
+    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<PrimarySkillType, Float> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int expTaming, @NotNull String userName) {
+        try {
+            float valueFromString = Integer.parseInt(character[expTaming]);
+            skillMap.put(primarySkillType, valueFromString);
+        } catch (NumberFormatException e) {
+            skillMap.put(primarySkillType, 0F);
+            mcMMO.p.getLogger().severe("Data corruption when trying to load the value for skill "+primarySkillType.toString()+" for player named " + userName+ " setting value to zero");
+            e.printStackTrace();
+        }
+    }
+
+    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<PrimarySkillType, Integer> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int expTaming, @NotNull String userName) {
+        try {
+            int valueFromString = Integer.parseInt(character[expTaming]);
+            skillMap.put(primarySkillType, valueFromString);
+        } catch (NumberFormatException e) {
+            skillMap.put(primarySkillType, 0);
+            mcMMO.p.getLogger().severe("Data corruption when trying to load the value for skill "+primarySkillType.toString()+" for player named " + userName+ " setting value to zero");
+            e.printStackTrace();
+        }
+    }
+
+    private @NotNull Map<PrimarySkillType, Integer> getSkillMapFromLine(@NotNull String[] character) {
+        Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
+        String username = character[USERNAME_INDEX];
+
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.TAMING, SKILLS_TAMING, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.MINING, SKILLS_MINING, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.REPAIR, SKILLS_REPAIR, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.WOODCUTTING, SKILLS_WOODCUTTING, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.UNARMED, SKILLS_UNARMED, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.HERBALISM, SKILLS_HERBALISM, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.EXCAVATION, SKILLS_EXCAVATION, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ARCHERY, SKILLS_ARCHERY, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.SWORDS, SKILLS_SWORDS, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.AXES, SKILLS_AXES, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ACROBATICS, SKILLS_ACROBATICS, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.FISHING, SKILLS_FISHING, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ALCHEMY, SKILLS_ALCHEMY, username);
 
         return skills;
     }
+
+
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.FLATFILE;
