@@ -1,7 +1,14 @@
 Version 2.1.180
+    mcMMO will now automatically remove corrupted data from mcmmo.users instead of catastrophic failure
+    When using FlatFile database (the default) mcMMO will try its best to inform you which players had corrupted data when it does repairs
+    Various minor optimizations and tweaks to the FlatFile database
+    mcMMO is now much more verbose when things go wrong with the FlatFile database (removed some silent errors, added more error messages/warnings)
     mcMMO now uses UTF-8 compliant encoding for SQL databases (utf8mb4)
     Fixed a bug where mcMMO could in some circumstances fail to update SQL schema and mark it as successful
     Renamed updates.yml to updates_overhaul.yml to avoid some potential issues when upgrading from classic
+
+    NOTES:
+    This update was tested pretty thoroughly so it should be pretty safe, let me know if you have issues in the mcMMO discord or GitHub issues page for mcMMO!
 
 Version 2.1.179
     Fixed a bug for FlatFile databases where some players with changed nicknames would have their levels not loaded upon login (possibly wiping their data)
