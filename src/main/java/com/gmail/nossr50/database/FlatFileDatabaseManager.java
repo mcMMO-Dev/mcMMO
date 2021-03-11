@@ -299,6 +299,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         BufferedReader in = null;
         FileWriter out = null;
         String usersFilePath = mcMMO.getUsersFilePath();
+        boolean corruptDataFound = false;
 
         synchronized (fileWritingLock) {
             try {
@@ -312,7 +313,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 while ((line = in.readLine()) != null) {
                     //Check for incomplete or corrupted data
                     if(!line.contains(":")) {
-                        mcMMO.p.getLogger().severe("mcMMO found some unexpected data in mcmmo.users and is removing it");
+
+                        if(!corruptDataFound) {
+                            mcMMO.p.getLogger().severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
+                            corruptDataFound = true;
+                        }
+
                         continue;
                     }
 
@@ -321,7 +327,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     //This would be rare, but check the splitData for having enough entries to contain a username
                     if(splitData.length < USERNAME_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
                         //Something is wrong if we don't have enough split data to have an entry for a username
-                        mcMMO.p.getLogger().severe("mcMMO found some corrupted data in mcmmo.users and is removing it.");
+
+                        if(!corruptDataFound) {
+                            mcMMO.p.getLogger().severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
+                            corruptDataFound = true;
+                        }
+
                         continue;
                     }
 
