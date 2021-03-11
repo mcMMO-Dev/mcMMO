@@ -557,29 +557,37 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     // Find if the line contains the player we want.
-                    String[] character = line.split(":");
+                    String[] rawSplitData = line.split(":");
+
+                    if(rawSplitData.length < (USERNAME_INDEX + 1)) {
+                        //Users without a name aren't worth it
+                        mcMMO.p.getLogger().severe("Corrupted data was found in mcmmo.users, removing it from the database");
+                    }
 
                     // Compare names because we don't have a valid uuid for that player even
                     // if input uuid is not null
-                    if (character[UUID_INDEX].equalsIgnoreCase("NULL")) {
-                        if (!character[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
+                    if (rawSplitData[UUID_INDEX].equalsIgnoreCase("NULL")
+                            || rawSplitData[UUID_INDEX].isEmpty()
+                            || rawSplitData[UUID_INDEX].equalsIgnoreCase("")) {
+                        if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
                             continue;
                         }
                     }
+
                     // If input uuid is not null then we should compare uuids
-                    else if ((uuid != null && !character[UUID_INDEX].equalsIgnoreCase(uuid.toString())) || (uuid == null && !character[USERNAME_INDEX].equalsIgnoreCase(playerName))) {
+                    else if ((uuid != null && !rawSplitData[UUID_INDEX].equalsIgnoreCase(uuid.toString())) || (uuid == null && !rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName))) {
                         continue;
                     }
 
                     // Update playerName in database after name change
-                    if (!character[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
+                    if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
                         //TODO: A proper fix for changed names
-                        mcMMO.p.debug("Name change detected: " + character[USERNAME_INDEX] + " => " + playerName);
-                        character[USERNAME_INDEX] = playerName;
+                        mcMMO.p.debug("Name change detected: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
+                        rawSplitData[USERNAME_INDEX] = playerName;
 //                        updateRequired = true; //Flag profile to update
                     }
 
-                    return loadFromLine(character);
+                    return loadFromLine(rawSplitData);
                 }
 
                 // Didn't find the player, create a new one
@@ -930,6 +938,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
             synchronized (fileWritingLock) {
                 try {
+                    boolean corruptDataNotice = false;
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
                     String line;
@@ -937,213 +946,52 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     HashSet<String> players = new HashSet<>();
 
                     while ((line = in.readLine()) != null) {
-                        String oldVersion = null;
-
                         // Remove empty lines from the file
                         if (line.isEmpty()) {
                             continue;
                         }
 
-                        // Length checks depend on last character being ':'
+                        // Length checks depend on last rawSplitData being ':'
                         if (line.charAt(line.length() - 1) != ':') {
                             line = line.concat(":");
                         }
-                        boolean updated = false;
-                        String[] character = line.split(":");
+
+                        String[] rawSplitData = line.split(":");
+
+                        //Not enough data found to have a name so we remove the data
+                        if(rawSplitData.length < USERNAME_INDEX + 1) {
+                            if(!corruptDataNotice) {
+                                mcMMO.p.getLogger().severe("Removing corrupt data from mcmmo.users");
+                                corruptDataNotice = true;
+                            }
+
+                            continue;
+                        }
 
                         // Prevent the same username from being present multiple times
-                        if (!usernames.add(character[USERNAME_INDEX])) {
-                            character[USERNAME_INDEX] = "_INVALID_OLD_USERNAME_'";
-                            updated = true;
-                            if (character.length < UUID_INDEX + 1 || character[UUID_INDEX].equals("NULL")) {
+                        if (!usernames.add(rawSplitData[USERNAME_INDEX])) {
+                            //TODO: Check if the commented out code was even necessary
+                            rawSplitData[USERNAME_INDEX] = "_INVALID_OLD_USERNAME_'";
+                            if (rawSplitData.length < UUID_INDEX + 1 || rawSplitData[UUID_INDEX].equals("NULL")) {
+                                mcMMO.p.getLogger().severe("Fixing duplicate player names found in mcmmo.users");
                                 continue;
                             }
                         }
 
                         // Prevent the same player from being present multiple times
-                        if (character.length >= 42 && (!character[UUID_INDEX].isEmpty() && !character[UUID_INDEX].equals("NULL") && !players.add(character[UUID_INDEX]))) {
+                        if (rawSplitData.length >= (UUID_INDEX + 1) //TODO: Test this condition
+                                && (!rawSplitData[UUID_INDEX].isEmpty()
+                                && !rawSplitData[UUID_INDEX].equals("NULL") && !players.add(rawSplitData[UUID_INDEX]))) {
+
+                            mcMMO.p.getLogger().severe("Removing duplicate player data from mcmmo.users");
+                            mcMMO.p.getLogger().info("Duplicate Data: "+line);
                             continue;
                         }
 
-                        if (character.length < 33) {
-                            // Before Version 1.0 - Drop
-                            mcMMO.p.getLogger().warning("Dropping malformed or before version 1.0 line from database - " + line);
-                            continue;
-                        }
-
-                        if (character.length > 33 && !character[33].isEmpty()) {
-                            // Removal of Spout Support
-                            // Version 1.4.07-dev2
-                            // commit 7bac0e2ca5143bce84dc160617fed97f0b1cb968
-                            character[33] = "";
-                            if (oldVersion == null) {
-                                oldVersion = "1.4.07";
-                            }
-                            updated = true;
-                        }
-
-                        if (Config.getInstance().getTruncateSkills()) {
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                                int index = getSkillIndex(skill);
-
-                                if (index >= character.length) {
-                                    continue;
-                                }
-
-                                int cap = Config.getInstance().getLevelCap(skill);
-                                int skillLevel = 0;
-
-                                try {
-                                    skillLevel = Integer.parseInt(character[index]);
-                                } catch (NumberFormatException e) {
-                                    mcMMO.p.getLogger().severe("Repairing some corrupt or unexpected data in mcmmo.users it is possible some data may be lost.");
-                                }
-
-                                if (skillLevel > cap) {
-                                    mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME_INDEX]);
-                                    character[index] = cap + "";
-                                    updated = true;
-                                }
-                            }
-                        }
-
-                        // If they're valid, rewrite them to the file.
-                        if (!updated && character.length == 43) {
-                            writer.append(line).append("\r\n");
-                            continue;
-                        }
-
-                        if (character.length <= 33) {
-                            // Introduction of HUDType
-                            // Version 1.1.06
-                            // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
-                            character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = "";
-                            oldVersion = "1.1.06";
-                        }
-
-                        if (character.length <= 35) {
-                            // Introduction of Fishing
-                            // Version 1.2.00
-                            // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
-                            character = Arrays.copyOf(character, character.length + 2);
-                            character[character.length - 1] = "0";
-                            character[character.length - 2] = "0";
-                            if (oldVersion == null) {
-                                oldVersion = "1.2.00";
-                            }
-                        }
-                        if (character.length <= 36) {
-                            // Introduction of Blast Mining cooldowns
-                            // Version 1.3.00-dev
-                            // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
-                            character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = "0";
-                            if (oldVersion == null) {
-                                oldVersion = "1.3.00";
-                            }
-                        }
-                        if (character.length <= 37) {
-                            // Making old-purge work with flatfile
-                            // Version 1.4.00-dev
-                            // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
-                            // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
-                            character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = "0";
-                            if (oldVersion == null) {
-                                oldVersion = "1.4.00";
-                            }
-                        }
-                        if (character.length <= 38) {
-                            // Addition of mob healthbars
-                            // Version 1.4.06
-                            // commit da29185b7dc7e0d992754bba555576d48fa08aa6
-                            character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = Config.getInstance().getMobHealthbarDefault().toString();
-                            if (oldVersion == null) {
-                                oldVersion = "1.4.06";
-                            }
-                        }
-                        if (character.length <= 39) {
-                            // Addition of Alchemy
-                            // Version 1.4.08
-                            character = Arrays.copyOf(character, character.length + 2);
-                            character[character.length - 1] = "0";
-                            character[character.length - 2] = "0";
-                            if (oldVersion == null) {
-                                oldVersion = "1.4.08";
-                            }
-                        }
-                        if (character.length <= 41) {
-                            // Addition of UUIDs
-                            // Version 1.5.01
-                            // Add a value because otherwise it gets removed
-                            character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = "NULL";
-                            if (oldVersion == null) {
-                                oldVersion = "1.5.01";
-                            }
-                        }
-                        if (character.length <= 42) {
-                            // Addition of scoreboard tips auto disable
-                            // Version 1.5.02
-                            character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = "0";
-                            if (oldVersion == null) {
-                                oldVersion = "1.5.02";
-                            }
-                        }
-
-                        boolean corrupted = false;
-
-                        for (int i = 0; i < character.length; i++) {
-                            if (character[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
-                                corrupted = true;
-                                if (i == 37) {
-                                    character[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-                                }
-                                else if (i == 38) {
-                                    character[i] = Config.getInstance().getMobHealthbarDefault().toString();
-                                }
-                                else {
-                                    character[i] = "0";
-                                }
-                            }
-
-                            if (StringUtils.isInt(character[i]) && i == 38) {
-                                corrupted = true;
-                                character[i] = Config.getInstance().getMobHealthbarDefault().toString();
-                            }
-
-                            if (!StringUtils.isInt(character[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38 || i == 41)) {
-                                corrupted = true;
-                                character[i] = "0";
-                            }
-                        }
-
-                        if (corrupted) {
-                            mcMMO.p.debug("Updating corrupted database line for player " + character[USERNAME_INDEX]);
-                        }
-
-                        if (oldVersion != null) {
-                            mcMMO.p.debug("Updating database line from before version " + oldVersion + " for player " + character[USERNAME_INDEX]);
-                        }
-
-                        updated |= corrupted;
-                        updated |= oldVersion != null;
-
-                        if (Config.getInstance().getTruncateSkills()) {
-                            Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                                int cap = Config.getInstance().getLevelCap(skill);
-                                if (skills.get(skill) > cap) {
-                                    updated = true;
-                                }
-                            }
-                        }
-
-                        if (updated) {
-                            line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
+                        //Correctly size the data (null entries for missing values)
+                        if(line.length() < DATA_ENTRY_COUNT) { //TODO: Test this condition
+                            String[] correctSizeSplitData = Arrays.copyOf(rawSplitData, DATA_ENTRY_COUNT);
+                            line = org.apache.commons.lang.StringUtils.join(rawSplitData, ":") + ":";
                         }
 
                         writer.append(line).append("\r\n");
@@ -1162,7 +1010,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             in.close();
                         }
                         catch (IOException e) {
-                            // Ignore
+                            e.printStackTrace();
                         }
                     }
                     if (out != null) {
@@ -1170,7 +1018,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             out.close();
                         }
                         catch (IOException e) {
-                            // Ignore
+                            e.printStackTrace();
                         }
                     }
                 }
