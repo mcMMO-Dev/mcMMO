@@ -962,15 +962,17 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         //Not enough data found to be considered a user reliably (NOTE: not foolproof)
                         if(rawSplitData.length < (UUID_INDEX + 1)) {
                             if(!corruptDataFound) {
-                                mcMMO.p.getLogger().severe("Removing corrupt data from mcmmo.users");
+                                mcMMO.p.getLogger().severe("Some corrupt data was found in mcmmo.users and has been repaired, it is possible that some player data has been lost in this process.");
                                 corruptDataFound = true;
                             }
 
                             if(rawSplitData.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
                                     && rawSplitData[0] != null && !rawSplitData[0].isEmpty()) {
-                                //This user may have had a name so declare it
-                                mcMMO.p.getLogger().severe("Not enough data found to recover corrupted player data for user: "+rawSplitData[0]);
+                                if(rawSplitData[0].length() <= 16 && rawSplitData[0].length() >= 3) {
+                                    mcMMO.p.getLogger().severe("Not enough data found to recover corrupted player data for user: "+rawSplitData[0]);
+                                }
                             }
+                            //This user may have had a name so declare it
 
                             continue;
                         }
