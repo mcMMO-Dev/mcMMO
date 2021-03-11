@@ -310,16 +310,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 boolean wroteUser = false;
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
-                    boolean goodData = true;
-
                     //Check for incomplete or corrupted data
-                    if(!line.contains(":"))
+                    if(!line.contains(":")) {
+                        mcMMO.p.getLogger().severe("mcMMO found some unexpected data in mcmmo.users and is removing it");
                         continue;
+                    }
 
                     String[] splitData = line.split(":");
 
                     //This would be rare, but check the splitData for having enough entries to contain a username
-
                     if(splitData.length < USERNAME_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
                         //Something is wrong if we don't have enough split data to have an entry for a username
                         mcMMO.p.getLogger().severe("mcMMO found some corrupted data in mcmmo.users and is removing it.");
