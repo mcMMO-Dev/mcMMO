@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.util.*;
 
-public final class FlatfileDatabaseManager implements DatabaseManager {
+public final class FlatFileDatabaseManager implements DatabaseManager {
     private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
     private final List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
@@ -74,7 +74,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     public static int DATA_ENTRY_COUNT = COOLDOWN_CHIMAERA_WING + 1; //Update this everytime new data is added
 
-    protected FlatfileDatabaseManager() {
+    protected FlatFileDatabaseManager() {
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
@@ -339,8 +339,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 /*
                  * If we couldn't find the user in the DB we need to add him
                  */
-                if(!wroteUser)
-                {
+                if(!wroteUser) {
                     writeUserToLine(profile, playerName, uuid, writer);
                 }
 

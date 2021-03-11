@@ -23,7 +23,7 @@ public class DatabaseManagerFactory {
             mcMMO.p.debug("Falling back on " + (Config.getInstance().getUseMySQL() ? "SQL" : "Flatfile") + " database");
         }
 
-        return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
+        return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new FlatFileDatabaseManager();
     }
 
     /**
@@ -60,7 +60,7 @@ public class DatabaseManagerFactory {
         switch (type) {
             case FLATFILE:
                 mcMMO.p.getLogger().info("Using FlatFile Database");
-                return new FlatfileDatabaseManager();
+                return new FlatFileDatabaseManager();
 
             case SQL:
                 mcMMO.p.getLogger().info("Using SQL Database");
