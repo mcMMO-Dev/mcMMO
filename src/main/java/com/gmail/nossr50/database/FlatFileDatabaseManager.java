@@ -384,8 +384,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void writeUserToLine(PlayerProfile profile, String playerName, UUID uuid, StringBuilder writer) {
-        // FlyingMonkey_:0:::0:0:0:0:0:0:0:0:0:0:5:0:156:460:
+    private void writeUserToLine(PlayerProfile profile, String playerName, @Nullable UUID uuid, StringBuilder writer) {
         writer.append(playerName).append(":");
         writer.append(profile.getSkillLevel(PrimarySkillType.MINING)).append(":");
         writer.append(":");
@@ -582,7 +581,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     // Update playerName in database after name change
                     if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
                         //TODO: A proper fix for changed names
-                        mcMMO.p.debug("Name change detected: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
+                        mcMMO.p.getLogger().info("Name change detected: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                         rawSplitData[USERNAME_INDEX] = playerName;
 //                        updateRequired = true; //Flag profile to update
                     }
@@ -931,6 +930,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
      * Checks that the file is present and valid
      */
     private void checkStructure() {
+        boolean corruptDataFound = false;
+
         if (usersFile.exists()) {
             BufferedReader in = null;
             FileWriter out = null;
@@ -938,7 +939,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
             synchronized (fileWritingLock) {
                 try {
-                    boolean corruptDataNotice = false;
+
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
                     String line;
@@ -958,11 +959,17 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                         String[] rawSplitData = line.split(":");
 
-                        //Not enough data found to have a name so we remove the data
-                        if(rawSplitData.length < USERNAME_INDEX + 1) {
-                            if(!corruptDataNotice) {
+                        //Not enough data found to be considered a user reliably (NOTE: not foolproof)
+                        if(rawSplitData.length < (UUID_INDEX + 1)) {
+                            if(!corruptDataFound) {
                                 mcMMO.p.getLogger().severe("Removing corrupt data from mcmmo.users");
-                                corruptDataNotice = true;
+                                corruptDataFound = true;
+                            }
+
+                            if(rawSplitData.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
+                                    && rawSplitData[0] != null && !rawSplitData[0].isEmpty()) {
+                                //This user may have had a name so declare it
+                                mcMMO.p.getLogger().severe("Not enough data found to recover corrupted player data for user: "+rawSplitData[0]);
                             }
 
                             continue;
@@ -991,10 +998,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         //Correctly size the data (null entries for missing values)
                         if(line.length() < DATA_ENTRY_COUNT) { //TODO: Test this condition
                             String[] correctSizeSplitData = Arrays.copyOf(rawSplitData, DATA_ENTRY_COUNT);
-                            line = org.apache.commons.lang.StringUtils.join(rawSplitData, ":") + ":";
+                            line = org.apache.commons.lang.StringUtils.join(correctSizeSplitData, ":") + ":";
+                            rawSplitData = line.split(":");
+                            PlayerProfile temporaryProfile = loadFromLine(rawSplitData);
+                            writeUserToLine(temporaryProfile, rawSplitData[USERNAME_INDEX], temporaryProfile.getUniqueId(), writer);
+                        } else {
+                            writer.append(line).append("\r\n");
                         }
 
-                        writer.append(line).append("\r\n");
                     }
 
                     // Write the new file
@@ -1024,13 +1035,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 }
             }
 
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FISHING);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_BLAST_MINING_COOLDOWN);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SQL_INDEXES);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_MOB_HEALTHBARS);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SQL_PARTY_NAMES);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SPOUT);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);
+            if(corruptDataFound)
+                mcMMO.p.getLogger().info("Corrupt data was found and removed, everything should be working fine. It is possible some player data was lost.");
+
             return;
         }
 
@@ -1153,9 +1160,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<PrimarySkillType, Float> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int expTaming, @NotNull String userName) {
+    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<PrimarySkillType, Float> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int index, @NotNull String userName) {
         try {
-            float valueFromString = Integer.parseInt(character[expTaming]);
+            float valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0F);
@@ -1164,9 +1171,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<PrimarySkillType, Integer> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int expTaming, @NotNull String userName) {
+    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<PrimarySkillType, Integer> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int index, @NotNull String userName) {
         try {
-            int valueFromString = Integer.parseInt(character[expTaming]);
+            int valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0);
