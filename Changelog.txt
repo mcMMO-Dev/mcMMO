@@ -1,3 +1,10 @@
+Version 2.1.181
+    Removed the "name change detected" message as some plugins (such as Plan) invoke API calls which spams the console with this message
+    Refactored code related to loading player data from the database
+    (API) Added DatabaseManager::loadPlayerProfile(String)
+    (API) Removed DatabaseManager::loadPlayerProfile(String, UUID, boolean)
+    (API) Removed DatabaseManager::loadPlayerProfile(String, boolean)
+
 Version 2.1.180
     mcMMO will now automatically remove corrupted data from mcmmo.users instead of catastrophic failure
     When using FlatFile database (the default) mcMMO will try its best to inform you which players had corrupted data when it does repairs

@@ -16,6 +16,7 @@ import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -506,6 +507,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    @Override
+    public @NotNull PlayerProfile newUser(@NotNull Player player) {
+        try {
+            Connection connection = getConnection(PoolIdentifier.SAVE);
+            int id = newUser(connection, player.getName(), player.getUniqueId());
+
+            if (id == -1) {
+                return new PlayerProfile(player.getName(), player.getUniqueId(), false);
+            } else {
+                return loadPlayerProfile(player.getUniqueId(), player.getName());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new PlayerProfile(player.getName(), player.getUniqueId(), false);
+    }
+
     private int newUser(Connection connection, String playerName, UUID uuid) {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
@@ -544,20 +563,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return -1;
     }
 
-    @Deprecated
-    public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, null, false, true);
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
+        try {
+            return loadPlayerFromDB(null, playerName);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new PlayerProfile(playerName, false);
+        }
     }
 
-    public PlayerProfile loadPlayerProfile(UUID uuid) {
-        return loadPlayerProfile("", uuid, false, true);
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
+        return loadPlayerFromDB(uuid, playerName);
     }
 
-    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-        return loadPlayerProfile(playerName, uuid, create, true);
-    }
+    private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName) throws RuntimeException {
+        if(uuid == null && playerName == null) {
+            throw new RuntimeException("Error looking up player, both UUID and playerName are null and one must not be.");
+        }
 
-    private PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create, boolean retry) {
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet resultSet = null;
@@ -567,16 +590,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             int id = getUserID(connection, playerName, uuid);
 
             if (id == -1) {
-                // There is no such user
-                if (create) {
-                    id = newUser(connection, playerName, uuid);
-                    create = false;
-                    if (id == -1) {
-                        return new PlayerProfile(playerName, false);
-                    }
-                } else {
-                    return new PlayerProfile(playerName, false);
-                }
+            // There is no such user
+                return new PlayerProfile(playerName, false);
             }
             // There is such a user
             writeMissingRows(connection, id);
@@ -604,7 +619,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.close();
                     statement.close();
 
-                    if (!playerName.isEmpty() && !playerName.equalsIgnoreCase(name) && uuid != null) {
+                    if (playerName != null
+                            && !playerName.isEmpty()
+                            && !playerName.equalsIgnoreCase(name)
+                            && uuid != null) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
                                         + "SET user = ? "
@@ -641,15 +659,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(connection);
         }
 
-        // Problem, nothing was returned
-
-        // return unloaded profile
-        if (!retry) {
-            return new PlayerProfile(playerName, false);
-        }
-
-        // Retry, and abort on re-failure
-        return loadPlayerProfile(playerName, uuid, create, false);
+        //Return empty profile
+        return new PlayerProfile(playerName, false);
     }
 
     public void convertUsers(DatabaseManager destination) {

@@ -14,8 +14,8 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -461,6 +461,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return skills;
     }
 
+    public @NotNull PlayerProfile newUser(@NotNull Player player) {
+        newUser(player.getName(), player.getUniqueId());
+        return new PlayerProfile(player.getName(), player.getUniqueId(), true);
+    }
+
     public void newUser(String playerName, UUID uuid) {
         BufferedWriter out = null;
         synchronized (fileWritingLock) {
@@ -534,17 +539,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    @Deprecated
-    public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, null, false);
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
+        return loadPlayerByName(playerName);
     }
 
-    public PlayerProfile loadPlayerProfile(UUID uuid) {
-        return loadPlayerProfile("", uuid, false);
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
+        return loadPlayerByUUID(uuid, playerName);
     }
 
-    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-//        boolean updateRequired = false;
+    private @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName) {
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -558,68 +561,105 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] rawSplitData = line.split(":");
 
-                    if(rawSplitData.length < (USERNAME_INDEX + 1)) {
-                        //Users without a name aren't worth it
-                        mcMMO.p.getLogger().severe("Corrupted data was found in mcmmo.users, removing it from the database");
-                    }
-
-                    // Compare names because we don't have a valid uuid for that player even
-                    // if input uuid is not null
-                    if (rawSplitData[UUID_INDEX].equalsIgnoreCase("NULL")
-                            || rawSplitData[UUID_INDEX].isEmpty()
-                            || rawSplitData[UUID_INDEX].equalsIgnoreCase("")) {
-                        if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                            continue;
-                        }
-                    }
-
-                    // If input uuid is not null then we should compare uuids
-                    else if ((uuid != null && !rawSplitData[UUID_INDEX].equalsIgnoreCase(uuid.toString())) || (uuid == null && !rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName))) {
+                    /* Don't read corrupt data */
+                    if(rawSplitData.length < (UUID_INDEX + 1)) {
                         continue;
                     }
 
-                    // Update playerName in database after name change
+                    /* Does this entry have a UUID? */
+                    if (rawSplitData[UUID_INDEX].equalsIgnoreCase("NULL")
+                            || rawSplitData[UUID_INDEX].isEmpty()
+                            || rawSplitData[UUID_INDEX].equalsIgnoreCase("")) {
+                        continue; //No UUID entry found for this data in the DB, go to next entry
+                    }
+
+                    // Compare provided UUID to DB
+                    if (!rawSplitData[UUID_INDEX].equalsIgnoreCase(uuid.toString())) {
+                        continue; //Doesn't match, go to the next entry
+                    }
+
+                    /*
+                     * UUID Matched!
+                     * Making it this far means the current data line is considered a match
+                     */
+
+
+                    /* Check for nickname changes and update since we are here anyways */
                     if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                        //TODO: A proper fix for changed names
-                        mcMMO.p.getLogger().info("Name change detected: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
+                        //mcMMO.p.getLogger().info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                         rawSplitData[USERNAME_INDEX] = playerName;
-//                        updateRequired = true; //Flag profile to update
                     }
 
                     return loadFromLine(rawSplitData);
                 }
-
-                // Didn't find the player, create a new one
-                if (create) {
-                    if (uuid == null) {
-                        newUser(playerName, uuid);
-                        return new PlayerProfile(playerName, true);
-                    }
-
-                    newUser(playerName, uuid);
-                    return new PlayerProfile(playerName, uuid, true);
-                }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 // I have no idea why it's necessary to inline tryClose() here, but it removes
                 // a resource leak warning, and I'm trusting the compiler on this one.
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
             }
         }
 
-        // Return unloaded profile
-        if (uuid == null) {
-            return new PlayerProfile(playerName);
+        /*
+         * No match was found in the file
+         */
+
+        return grabUnloadedProfile(uuid, playerName); //Create an empty new profile and return
+    }
+
+    private @NotNull PlayerProfile loadPlayerByName(@NotNull String playerName) {
+        BufferedReader in = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        synchronized (fileWritingLock) {
+            try {
+                // Open the user file
+                in = new BufferedReader(new FileReader(usersFilePath));
+                String line;
+
+                while ((line = in.readLine()) != null) {
+                    // Find if the line contains the player we want.
+                    String[] rawSplitData = line.split(":");
+
+                    /* Don't read corrupt data */
+                    if(rawSplitData.length < (USERNAME_INDEX + 1)) {
+                        continue;
+                    }
+
+                    //If we couldn't find anyone
+                    if(playerName.equalsIgnoreCase(rawSplitData[USERNAME_INDEX])) {
+                        return loadFromLine(rawSplitData);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // I have no idea why it's necessary to inline tryClose() here, but it removes
+                // a resource leak warning, and I'm trusting the compiler on this one.
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+
+        //Return a new blank profile
+        return new PlayerProfile(playerName, null);
+    }
+
+    private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid, @Nullable String playerName) {
+        if(playerName == null) {
+            playerName = ""; //No name for you boy!
         }
 
         return new PlayerProfile(playerName, uuid);
@@ -1204,8 +1244,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         return skills;
     }
-
-
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.FLATFILE;

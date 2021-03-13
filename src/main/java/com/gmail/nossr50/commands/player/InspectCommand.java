@@ -30,7 +30,7 @@ public class InspectCommand implements TabExecutor {
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
-                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
+                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName); // Temporary Profile
 
                 if (!CommandUtils.isLoaded(sender, profile)) {
                     return true;
