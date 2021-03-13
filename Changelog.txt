@@ -1,4 +1,5 @@
 Version 2.1.181
+    mcMMO no longer pointlessly tries to check for missing UUIDs for FlatFile database
     Removed the "name change detected" message as some plugins (such as Plan) invoke API calls which spams the console with this message
     Refactored code related to loading player data from the database
     (API) Added DatabaseManager::loadPlayerProfile(String)

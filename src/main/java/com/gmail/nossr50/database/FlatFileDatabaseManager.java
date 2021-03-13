@@ -78,10 +78,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
-
-        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
-            new UUIDUpdateAsyncTask(mcMMO.p, getStoredUsers()).start();
-        }
     }
 
     public void purgePowerlessUsers() {

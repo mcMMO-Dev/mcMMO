@@ -1337,6 +1337,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Adding UUIDs to mcMMO MySQL user table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
+
+                new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
             }
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
@@ -1347,8 +1349,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         finally {
             tryClose(resultSet);
         }
-
-        new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
     }
 
     private class GetUUIDUpdatesRequired extends BukkitRunnable {
