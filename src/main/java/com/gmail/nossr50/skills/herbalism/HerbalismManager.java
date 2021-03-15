@@ -182,8 +182,10 @@ public class HerbalismManager extends SkillManager {
 
         //TODO: The design of Green Terra needs to change, this is a mess
         if(Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
-            if(!getPlayer().isSneaking()) {
-                greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
+            if(Config.getInstance().isGreenThumbReplantableCrop(originalBreak.getType())) {
+                if(!getPlayer().isSneaking()) {
+                    greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
+                }
             }
         }
 
@@ -688,7 +690,7 @@ public class HerbalismManager extends SkillManager {
      */
     private boolean processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
         if (!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
-        && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
+            && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
             return false;
         }
 
@@ -754,11 +756,16 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        playerInventory.removeItem(seedStack);
-        player.updateInventory(); // Needed until replacement available
-        //Play sound
-        SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
-        return true;
+        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
+            return false;
+        } else {
+            playerInventory.removeItem(seedStack);
+            player.updateInventory(); // Needed until replacement available
+            //Play sound
+            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
+            return true;
+        }
+
 //        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
 

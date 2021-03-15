@@ -13,6 +13,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -714,7 +716,6 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
     public static int getLevelOffline(String playerName, String skillType) {
         return getOfflineProfile(playerName).getSkillLevel(getSkillType(skillType));
     }
@@ -1126,8 +1127,6 @@ public final class ExperienceAPI {
         }
     }
 
-
-
     // Utility methods follow.
     private static void addOfflineXP(UUID playerUniqueId, PrimarySkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerUniqueId);
@@ -1144,8 +1143,10 @@ public final class ExperienceAPI {
         profile.scheduleAsyncSave();
     }
 
-    private static PlayerProfile getOfflineProfile(UUID uuid) {
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
+    private static PlayerProfile getOfflineProfile(UUID uuid) throws InvalidPlayerException {
+        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(uuid);
+        String playerName = offlinePlayer.getName();
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, playerName);
 
         if (!profile.isLoaded()) {
             throw new InvalidPlayerException();
@@ -1155,9 +1156,10 @@ public final class ExperienceAPI {
     }
 
     @Deprecated
-    private static PlayerProfile getOfflineProfile(String playerName) {
-        UUID uuid = mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId();
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
+    private static PlayerProfile getOfflineProfile(String playerName) throws InvalidPlayerException {
+        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(playerName);
+        UUID uuid = offlinePlayer.getUniqueId();
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, playerName);
 
         if (!profile.isLoaded()) {
             throw new InvalidPlayerException();

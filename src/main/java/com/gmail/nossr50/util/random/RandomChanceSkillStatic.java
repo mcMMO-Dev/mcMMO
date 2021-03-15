@@ -14,6 +14,12 @@ public class RandomChanceSkillStatic extends RandomChanceSkill {
         this.xPos = xPos;
     }
 
+    public RandomChanceSkillStatic(double xPos, @Nullable Player player, @NotNull SubSkillType subSkillType, boolean luckyOverride) {
+        super(player, subSkillType, false, luckyOverride);
+
+        this.xPos = xPos;
+    }
+
     public RandomChanceSkillStatic(double xPos, @Nullable Player player, @NotNull SubSkillType subSkillType, double resultModifier) {
         super(player, subSkillType, resultModifier);
 

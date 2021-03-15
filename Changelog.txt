@@ -1,3 +1,107 @@
+Version 2.1.181
+    mcMMO no longer pointlessly tries to check for missing UUIDs for FlatFile database
+    Removed the "name change detected" message as some plugins (such as Plan) invoke API calls which spams the console with this message
+    Refactored code related to loading player data from the database
+    (API) Added DatabaseManager::loadPlayerProfile(String)
+    (API) Removed DatabaseManager::loadPlayerProfile(String, UUID, boolean)
+    (API) Removed DatabaseManager::loadPlayerProfile(String, boolean)
+
+Version 2.1.180
+    mcMMO will now automatically remove corrupted data from mcmmo.users instead of catastrophic failure
+    When using FlatFile database (the default) mcMMO will try its best to inform you which players had corrupted data when it does repairs
+    Various minor optimizations and tweaks to the FlatFile database
+    mcMMO is now much more verbose when things go wrong with the FlatFile database (removed some silent errors, added more error messages/warnings)
+    mcMMO now uses UTF-8 compliant encoding for SQL databases (utf8mb4)
+    Fixed a bug where mcMMO could in some circumstances fail to update SQL schema and mark it as successful
+    Renamed updates.yml to updates_overhaul.yml to avoid some potential issues when upgrading from classic
+
+    NOTES:
+    This update was tested pretty thoroughly so it should be pretty safe, let me know if you have issues in the mcMMO discord or GitHub issues page for mcMMO!
+
+Version 2.1.179
+    Fixed a bug for FlatFile databases where some players with changed nicknames would have their levels not loaded upon login (possibly wiping their data)
+
+    NOTES:
+    Players affected by this bug (introduced in 2.1.177) may have their data lost, but this patch reverts the change which caused this bug.
+    I suspect their data isn't lost and may be restored after this patch is loaded up, however if it is lost mcMMO makes regular backups so you can load one of those (check <Server Directory>/plugins/mcMMO/) or manually edit their levels via MMOEDIT as a solution of sorts.
+
+Version 2.1.178
+    Item replacement in vanilla fishing override back to SALMON from AIR (see notes)
+
+    NOTES:
+    Apparently can't set items to AIR, my bad. I'll look into another solution for fishing plugin compatibility soon.
+
+Version 2.1.177
+    Environmentally aware will now protect Wolves from Magma blocks
+    Fixed a bug where mcMMO would fail to update a players name when it detected a name change
+    mcMMO will treat vanished players as if they are offline when using the inspect command on them now (see notes)
+    mcMMO now listens to PlayerFishEvent at HIGH event priority instead of HIGHEST
+    Changed how vanilla fishing treasures are overridden (AIR instead of SALMON)
+    (API) Added McMMOReplaceVanillaTreasureEvent -- see notes
+
+    NOTES:
+    A few changes were made to the inspect command, it used to reject you when used on vanished players, now it will be processed as if they are offline.
+    Additionally if you do inspect a vanished player, it will not use their display name (consistent with offline players) as that would give them away for being online
+    McMMOReplaceVanillaTreasureEvent is an event which is fired when mcMMO replaces a vanilla treasure with AIR if the server config file is set to override vanilla treasures, this causes some issues for other fishing plugins so this event helps those plugins be more compatible
+
+Version 2.1.176
+    Another fix for Double Smelt bringing item stack size to illegal values
+
+Version 2.1.175
+    Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
+    Fixed a bug where arrows could be duped when fired from a crossbow with piercing enchantment
+    Added setting to enable or disable Green Thumb automatically replanting crops per crop to config.yml under 'Green_Thumb_Replanting_Crops' section
+    Updated Adventure (our text dependency) fixes some errors when using color codes in party/admin chat (thanks TheBusyBiscuit)
+    Added some support for negative Y values in anticipation of 1.17 world height changes (thanks t00thpick1)
+
+Version 2.1.174
+    Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
+    Updated hu_HU locale (thanks andris155)
+    Updated ru locale (thanks imDaniX)
+    Updated fr locale (thanks Elikill58)
+    (API) Added SubSkillBlockEvent for some SubSkill events that have a block (eg: Green Thumb Block events)
+    (API) Green Thumb (Block) now fires a SubSkillBlockEvent which is cancellable
+    (API) Green Thumb (Plant) now fires SubSkillBlockEvent which is cancellable
+    (API) Shroom Thumb now fires a SubSkillBlockEvent which is cancellable
+
+    NOTE: A lot of sub-skills without random chance elements are missing events, this will be cleaned up in the near future. If you need something specific added sooner than that, post a GitHub issue for it and I'll patch it in.
+    I'm likely to separate Green Thumb into two distinct skills in an upcoming patch
+    Only Green Thumb/Shroom Thumb trigger the new SubSkillBlockEvent for now
+
+Version 2.1.173
+    The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
+    mcMMO no longer damages fishing rods or drains a player's hunger when fishing
+    Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
+    Updated ja_JP locale (thanks ViaSnake)
+    Fixed a bug where scoreboards were torn down inappropriately when moving to or from blacklisted worlds (thanks steve4744)
+    Updated Kyori's adventure library to 4.4.0 (used by mcMMO to handle text components)
+
+Version 2.1.172
+    Updated german locale (thanks TheBusyBiscuit)
+    Added 'mcmmo.broadcast.levelup' permission node, if a player lacks this node they will not have their level up milestones broadcast to chat, this is a default permission node
+    Power Levels are now included in level up broadcasts and they have their own settings (mirroring the existing settings for skill broadcasts)
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Enabled' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Send_To_Console' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Party_Members' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Same_World' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restrict_Distance' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restricted_Radius' to config.yml
+    Added 'Broadcasts.PowerLevelUpMilestone' to locale
+    You can now disable the XP orbs from being dropped when Knock On Wood triggers during Tree Feller
+    Added 'Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops' to advanced.yml
+    Changed Fists to not be capitalized (en_US) when lowering/readying berserk
+    SkillActivationPerkEvent can now be called in async threads (thanks electronicboy)
+    Removed a few never implemented settings from Skills.Woodcutting.TreeFeller in advanced.yml
+    Updated bStats (thanks TheBusyBiscuit)
+    Fixed some incorrect reporting to bStats (I'm so dyslexic...)
+
+    NOTES:
+    The new 'mcmmo.broadcast.levelup' node is a default node included under the 'mcmmo.defaults' node umbrella, you shouldn't have to give this to your players unless they don't have access to 'mcmmo.defaults'
+    If you don't have a permission plugin you don't need to worry, players will have this node by default in that case
+    There are situations where level up broadcasts will be skipped, for example if you go from level 0 -> 101 via addlevels or mmmoedit, and your broadcast interval is 100, it will be skipped as 101 falls out of this interval, this kind of skip only applies to command based leveling. Players gaining levels naturally should never have their broadcasts skipped. I'll fix this particular interaction in the future so that command based leveling never skips over milestone broadcasts, but for now it does.
+
 Version 2.1.171
     Fixed a bug where arrows shot by infinite bow enchant would duplicate
     Fixed a bug where Archery XP would calculate incorrectly

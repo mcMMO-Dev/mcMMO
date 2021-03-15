@@ -45,12 +45,12 @@ public class RandomChanceUtil {
         }
     }
 
-    public static double getActivationChance(@NotNull SkillActivationType skillActivationType, @NotNull SubSkillType subSkillType, @Nullable Player player) {
+    public static double getActivationChance(@NotNull SkillActivationType skillActivationType, @NotNull SubSkillType subSkillType, @Nullable Player player, boolean luckyOverride) {
         switch (skillActivationType) {
             case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return getRandomChanceExecutionSuccess(player, subSkillType, true);
+                return getRandomChanceExecutionSuccess(player, subSkillType, true, luckyOverride);
             case RANDOM_STATIC_CHANCE:
-                return getRandomStaticChanceExecutionSuccess(player, subSkillType);
+                return getRandomStaticChanceExecutionSuccess(player, subSkillType, luckyOverride);
             default:
                 return 0.1337;
         }
@@ -129,6 +129,10 @@ public class RandomChanceUtil {
         return getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
     }
 
+    public static double getRandomChanceExecutionChance(@NotNull RandomChanceExecution randomChance, boolean luckyOverride) {
+        return getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
+    }
+
     public static double getRandomChanceExecutionChance(@NotNull RandomChanceStatic randomChance) {
         double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
 
@@ -194,9 +198,14 @@ public class RandomChanceUtil {
         return calculateChanceOfSuccess(rcs);
     }
 
-    public static double getRandomStaticChanceExecutionSuccess(@Nullable Player player, @NotNull SubSkillType subSkillType) {
+    public static double getRandomChanceExecutionSuccess(@Nullable Player player, @NotNull SubSkillType subSkillType, boolean hasCap, boolean luckyOverride) {
+        RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType, hasCap, luckyOverride);
+        return calculateChanceOfSuccess(rcs);
+    }
+
+    public static double getRandomStaticChanceExecutionSuccess(@Nullable Player player, @NotNull SubSkillType subSkillType, boolean luckyOverride) {
         try {
-            return getRandomChanceExecutionChance(new RandomChanceSkillStatic(getStaticRandomChance(subSkillType), player, subSkillType));
+            return getRandomChanceExecutionChance(new RandomChanceSkillStatic(getStaticRandomChance(subSkillType), player, subSkillType, luckyOverride));
         } catch (InvalidStaticChance invalidStaticChance) {
             //Catch invalid static skills
             invalidStaticChance.printStackTrace();
@@ -259,13 +268,15 @@ public class RandomChanceUtil {
     }
 
     public static String @NotNull [] calculateAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull Player player, @NotNull SubSkillType subSkillType) {
-        double successChance = getActivationChance(skillActivationType, subSkillType, player);
+        double successChance = getActivationChance(skillActivationType, subSkillType, player, false);
+        double successChanceLucky = getActivationChance(skillActivationType, subSkillType, player, true);
+
         String[] displayValues = new String[2];
 
         boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
-        displayValues[1] = isLucky ? percent.format(Math.min(successChance * 1.3333D, 100.0D) / 100.0D) : null;
+        displayValues[1] = isLucky ? percent.format(Math.min(successChanceLucky, 100.0D) / 100.0D) : null;
 
         return displayValues;
     }
@@ -288,16 +299,16 @@ public class RandomChanceUtil {
     }
 
     public static String @NotNull [] calculateAbilityDisplayValuesCustom(@NotNull SkillActivationType skillActivationType, @NotNull Player player, @NotNull SubSkillType subSkillType, double multiplier) {
-        double successChance = getActivationChance(skillActivationType, subSkillType, player);
+        double successChance = getActivationChance(skillActivationType, subSkillType, player, false);
+        double successChanceLucky = getActivationChance(skillActivationType, subSkillType, player, true);
+        //TODO: Most likely incorrectly displays the value for graceful roll but gonna ignore for now...
         successChance *= multiplier; //Currently only used for graceful roll
         String[] displayValues = new String[2];
-
-        //TODO: Account for lucky in this
 
         boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
-        displayValues[1] = isLucky ? percent.format(Math.min(successChance * 1.3333D, 100.0D) / 100.0D) : null;
+        displayValues[1] = isLucky ? percent.format(Math.min(successChanceLucky, 100.0D) / 100.0D) : null;
 
         return displayValues;
     }

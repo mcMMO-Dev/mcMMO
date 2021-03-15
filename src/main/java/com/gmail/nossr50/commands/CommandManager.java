@@ -85,7 +85,7 @@ public class CommandManager {
 
     private void validatePermission(@NotNull String permissionNode, @NotNull Permissible permissible) {
         if(!permissible.hasPermission(permissionNode)) {
-            throw new ConditionFailedException("You do not have the appropriate permission to use this command.");
+            throw new ConditionFailedException(LocaleLoader.getString("mcMMO.NoPermission"));
         }
     }
 
@@ -98,7 +98,7 @@ public class CommandManager {
 
     public void validateLoadedData(@NotNull Player player) {
         if(UserManager.getPlayer(player) == null) {
-            throw new ConditionFailedException("Your mcMMO player data has not yet loaded!");
+            throw new ConditionFailedException(LocaleLoader.getString("Profile.PendingLoad"));
         }
     }
 

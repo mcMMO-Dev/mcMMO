@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -327,7 +328,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
     }
 
-    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull PlayerProfile targetProfile) {
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -338,6 +339,22 @@ public class ScoreboardManager {
         if(wrapper != null) {
             wrapper.setOldScoreboard();
             wrapper.setTypeInspectStats(targetProfile);
+
+            changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
+        }
+    }
+
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull McMMOPlayer targetMcMMOPlayer) {
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeInspectStats(targetMcMMOPlayer);
 
             changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
         }

@@ -16,8 +16,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TextUtils {
-
     private static @Nullable LegacyComponentSerializer customLegacySerializer;
+
+    private TextUtils() {
+        // We don't want any instances of this class.
+    }
 
     /**
      * Makes a single component from an array of components, can optionally add prefixes and suffixes to come before and after each component

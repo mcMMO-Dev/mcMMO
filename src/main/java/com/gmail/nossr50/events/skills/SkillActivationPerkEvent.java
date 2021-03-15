@@ -1,5 +1,6 @@
 package com.gmail.nossr50.events.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -16,7 +17,7 @@ public class SkillActivationPerkEvent extends Event {
     private final int maxTicks;
 
     public SkillActivationPerkEvent(Player player, int ticks, int maxTicks) {
-
+        super(!Bukkit.isPrimaryThread());
         this.player = player;
         this.ticks = ticks;
         this.maxTicks = maxTicks;

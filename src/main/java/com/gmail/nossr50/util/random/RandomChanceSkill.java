@@ -75,6 +75,25 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.maximumBonusLevelCap = RandomChanceUtil.getMaxBonusLevelCap(subSkillType);
     }
 
+    public RandomChanceSkill(@Nullable Player player, @NotNull SubSkillType subSkillType, boolean hasCap, boolean luckyOverride) {
+        if (hasCap)
+            this.probabilityCap = RandomChanceUtil.getMaximumProbability(subSkillType);
+        else
+            this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
+
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (player != null && mcMMOPlayer != null) {
+            this.skillLevel = mcMMOPlayer.getSkillLevel(subSkillType.getParentSkill());
+        } else {
+            this.skillLevel = 0;
+        }
+
+        isLucky = luckyOverride;
+
+        this.resultModifier = 1.0D;
+        this.maximumBonusLevelCap = RandomChanceUtil.getMaxBonusLevelCap(subSkillType);
+    }
+
     public RandomChanceSkill(@Nullable Player player, @NotNull SubSkillType subSkillType, boolean hasCap, double resultModifier) {
         if (hasCap)
             this.probabilityCap = RandomChanceUtil.getMaximumProbability(subSkillType);

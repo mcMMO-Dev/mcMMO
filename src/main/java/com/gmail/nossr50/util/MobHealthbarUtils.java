@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
@@ -62,10 +61,6 @@ public final class MobHealthbarUtils {
         if (oldName == null) {
             oldName = "";
         }
-        else if (oldName.equalsIgnoreCase(AdvancedConfig.getInstance().getKrakenName())) {
-            return;
-        }
-
 
         boolean oldNameVisible = target.isCustomNameVisible();
         String newName = createHealthDisplay(Config.getInstance().getMobHealthbarDefault(), target, damage);

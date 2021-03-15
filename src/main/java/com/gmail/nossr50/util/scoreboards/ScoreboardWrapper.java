@@ -25,6 +25,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -315,6 +316,17 @@ public class ScoreboardWrapper {
         this.sidebarType = SidebarType.STATS_BOARD;
         targetPlayer = profile.getPlayerName();
         targetProfile = profile;
+
+        targetSkill = null;
+        leaderboardPage = -1;
+
+        loadObjective(LocaleLoader.getString("Scoreboard.Header.PlayerInspect", targetPlayer));
+    }
+
+    public void setTypeInspectStats(@NotNull McMMOPlayer mcMMOPlayer) {
+        this.sidebarType = SidebarType.STATS_BOARD;
+        targetPlayer = mcMMOPlayer.getPlayer().getName();
+        targetProfile = mcMMOPlayer.getProfile();
 
         targetSkill = null;
         leaderboardPage = -1;

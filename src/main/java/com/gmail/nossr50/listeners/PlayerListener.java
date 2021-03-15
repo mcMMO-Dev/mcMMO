@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
+import com.gmail.nossr50.events.McMMOReplaceVanillaTreasureEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -72,10 +73,12 @@ public class PlayerListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
             //Remove scoreboards
-            ScoreboardManager.teardownPlayer(event.getPlayer());
+            if(Config.getInstance().getScoreboardsEnabled()) {
+                ScoreboardManager.teardownPlayer(event.getPlayer());
+            }
             return;
-        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld())) {
-            //This only fires if they are traveling to a non-blacklisted world from a blacklisted world
+        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld()) && Config.getInstance().getScoreboardsEnabled()) {
+            //This only fires if they are travelling to a non-blacklisted world from a blacklisted world
 
             //Setup scoreboards
             ScoreboardManager.setupPlayer(event.getPlayer());
@@ -256,7 +259,7 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerFishHighest(PlayerFishEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
@@ -289,12 +292,20 @@ public class PlayerListener implements Listener {
                 if(event.getCaught() != null) {
                     Item fishingCatch = (Item) event.getCaught();
 
-                    if (Config.getInstance().   getFishingOverrideTreasures() &&
+                    if (Config.getInstance().getFishingOverrideTreasures() &&
                             fishingCatch.getItemStack().getType() != Material.SALMON &&
                             fishingCatch.getItemStack().getType() != Material.COD &&
                             fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
                             fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
-                        fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
+
+                        ItemStack replacementCatch = new ItemStack(Material.SALMON, 1);
+
+                        McMMOReplaceVanillaTreasureEvent replaceVanillaTreasureEvent = new McMMOReplaceVanillaTreasureEvent(fishingCatch, replacementCatch);
+                        Bukkit.getPluginManager().callEvent(replaceVanillaTreasureEvent);
+
+                        //Replace
+                        replacementCatch = replaceVanillaTreasureEvent.getReplacementItemStack();
+                        fishingCatch.setItemStack(replacementCatch);
                     }
 
                     if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
@@ -763,7 +774,7 @@ public class PlayerListener implements Listener {
                     player.setVelocity(player.getEyeLocation().getDirection().multiply(10));
                 }
 
-                mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();
+                //mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();
             }
         }
 
@@ -815,19 +826,24 @@ public class PlayerListener implements Listener {
 
                 FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat        
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
-                    player.updateInventory();
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
+                    //call event for Green Thumb Block
+                    if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, block).isCancelled()) {
+                        Bukkit.getPluginManager().callEvent(fakeSwing);
+                        player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
+                        player.updateInventory();
+                        if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                            blockState.update(true);
+                        }
                     }
                 }
                 /* SHROOM THUMB CHECK */
                 else if (herbalismManager.canUseShroomThumb(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    event.setCancelled(true);
-                    if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
+                    if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_SHROOM_THUMB, block).isCancelled()) {
+                        Bukkit.getPluginManager().callEvent(fakeSwing);
+                        event.setCancelled(true);
+                        if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                            blockState.update(true);
+                        }
                     }
                 }
                 break;

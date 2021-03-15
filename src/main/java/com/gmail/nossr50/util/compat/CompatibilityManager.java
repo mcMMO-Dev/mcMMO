@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -102,7 +103,6 @@ public class CompatibilityManager {
 
     private void initPersistentDataLayer() {
         if(minecraftGameVersion.getMinorVersion().asInt() >= 14 || minecraftGameVersion.getMajorVersion().asInt() >= 2) {
-
             persistentDataLayer = new SpigotPersistentDataLayer_1_14();
         } else {
 
@@ -138,11 +138,11 @@ public class CompatibilityManager {
         return isFullyCompatibleServerSoftware;
     }
 
-    public NMSVersion getNmsVersion() {
+    public @NotNull NMSVersion getNmsVersion() {
         return nmsVersion;
     }
 
-    private NMSVersion determineNMSVersion() {
+    private @NotNull NMSVersion determineNMSVersion() {
         if (minecraftGameVersion.getMajorVersion().asInt() == 1) {
             switch (minecraftGameVersion.getMinorVersion().asInt()) {
                 case 12:
@@ -160,8 +160,10 @@ public class CompatibilityManager {
                         return NMSVersion.NMS_1_16_2;
                     } else if(minecraftGameVersion.getPatchVersion().asInt() == 3) {
                         return NMSVersion.NMS_1_16_3;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() >= 4) {
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 4) {
                         return NMSVersion.NMS_1_16_4;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() >= 5) {
+                        return NMSVersion.NMS_1_16_5;
                     }
             }
         }

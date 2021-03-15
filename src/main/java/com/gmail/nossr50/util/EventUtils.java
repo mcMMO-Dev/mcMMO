@@ -28,6 +28,7 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillBlockEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -190,8 +191,23 @@ public final class EventUtils {
      * @return the event after it has been fired
      */
     @Deprecated
-    public static SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType) {
+    public static @NotNull SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType) {
         SubSkillEvent event = new SubSkillEvent(player, subSkillType);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    /**
+     * Calls a new SubSkillBlockEvent for this SubSkill and its related block and then returns it
+     * @param player target player
+     * @param subSkillType target subskill
+     * @param block associated block
+     * @return the event after it has been fired
+     */
+    @Deprecated
+    public static @NotNull SubSkillBlockEvent callSubSkillBlockEvent(@NotNull Player player, @NotNull SubSkillType subSkillType, @NotNull Block block) {
+        SubSkillBlockEvent event = new SubSkillBlockEvent(player, subSkillType, block);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
@@ -245,6 +261,8 @@ public final class EventUtils {
         } else {
             if (isLevelUp) {
                 NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill, mmoPlayer.getSkillLevel(skill));
+                NotificationManager.processPowerLevelUpBroadcasting(mmoPlayer, mmoPlayer.getPowerLevel());
+
             }
         }
 
@@ -279,6 +297,7 @@ public final class EventUtils {
         } else {
             if (isLevelUp) {
                 NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill, mmoPlayer.getSkillLevel(skill));
+                NotificationManager.processPowerLevelUpBroadcasting(mmoPlayer, mmoPlayer.getPowerLevel());
             }
         }
 

@@ -19,6 +19,7 @@ import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
@@ -156,8 +157,7 @@ public class EntityListener implements Listener {
             Player player = (Player) event.getEntity().getShooter();
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
+            if(WorldGuardUtils.isWorldGuardLoaded()) {
                 if(!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
@@ -174,10 +174,9 @@ public class EntityListener implements Listener {
                 if(!projectile.hasMetadata(mcMMO.arrowDistanceKey))
                     projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
 
-                for (Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
-                    if (enchantment.getKey().equals(piercingEnchantment)) {
-                        return;
-                    }
+                //Check both hands
+                if(ItemUtils.doesPlayerHaveEnchantmentInHands(player, "piercing")) {
+                    return;
                 }
 
                 if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
@@ -574,6 +573,7 @@ public class EntityListener implements Listener {
                 switch (cause) {
                     case CONTACT:
                     case FIRE:
+                    case HOT_FLOOR:
                     case LAVA:
                         if (tamingManager.canUseEnvironmentallyAware()) {
                             tamingManager.processEnvironmentallyAware(wolf, event.getDamage());

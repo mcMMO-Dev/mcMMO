@@ -30,13 +30,15 @@ public class InspectCommand implements TabExecutor {
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
-                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
+                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName); // Temporary Profile
 
                 if (!CommandUtils.isLoaded(sender, profile)) {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                if (Config.getInstance().getScoreboardsEnabled()
+                        && sender instanceof Player
+                        && Config.getInstance().getInspectUseBoard()) {
                     ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
                     if (!Config.getInstance().getInspectUseChat()) {
@@ -63,16 +65,21 @@ public class InspectCommand implements TabExecutor {
 
             } else {
                 Player target = mcMMOPlayer.getPlayer();
+                boolean isVanished = false;
 
                 if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
-                    sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-                    return true;
-                } else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    isVanished = true;
+                }
+
+                //Only distance check players who are online and not vanished
+                if (!isVanished && CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
-                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
+                if (Config.getInstance().getScoreboardsEnabled()
+                        && sender instanceof Player
+                        && Config.getInstance().getInspectUseBoard()) {
+                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer);
 
                     if (!Config.getInstance().getInspectUseChat()) {
                         return true;
