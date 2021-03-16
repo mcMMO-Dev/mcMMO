@@ -1,15 +1,16 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
-import com.neetgames.mcmmo.skill.RootSkill;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -25,19 +26,15 @@ public class InspectCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 1) {
             String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
 
-            PlayerProfile playerProfile = mcMMO.getUserManager().queryPlayer(playerName);
-            Player targetPlayer = Bukkit.getPlayer(playerName);
+            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mcMMOPlayer == null) {
+                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName); // Temporary Profile
 
-            if(playerProfile == null) {
-                //TODO: Localize
-                sender.sendMessage("Data was not found in the database for the given player name!");
-                return true;
-            }
-
-
-            if(targetPlayer == null) {
-                //Target is offline
+                if (!CommandUtils.isLoaded(sender, profile)) {
+                    return true;
+                }
 
                 if (Config.getInstance().getScoreboardsEnabled()
                         && sender instanceof Player
@@ -52,42 +49,48 @@ public class InspectCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                for (RootSkill rootSkill : PrimarySkillType.GATHERING_SKILLS) {
+                for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                for (RootSkill rootSkill : PrimarySkillType.COMBAT_SKILLS) {
+                for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                for (RootSkill rootSkill : PrimarySkillType.MISC_SKILLS) {
+                for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
-            } else {
 
-                if (CommandUtils.hidden(sender, targetPlayer, Permissions.inspectHidden(sender))) {
-                    sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-                    return true;
-                } else if (CommandUtils.tooFar(sender, targetPlayer, Permissions.inspectFar(sender))) {
+            } else {
+                Player target = mcMMOPlayer.getPlayer();
+                boolean isVanished = false;
+
+                if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
+                    isVanished = true;
+                }
+
+                //Only distance check players who are online and not vanished
+                if (!isVanished && CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                     return true;
                 }
 
                 if (Config.getInstance().getScoreboardsEnabled()
-                        && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
-                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, playerProfile);
+                        && sender instanceof Player
+                        && Config.getInstance().getInspectUseBoard()) {
+                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer);
 
                     if (!Config.getInstance().getInspectUseChat()) {
                         return true;
                     }
                 }
 
-                sender.sendMessage(LocaleLoader.getString("Inspect.Stats", targetPlayer.getName()));
-                CommandUtils.printGatheringSkills(targetPlayer, sender);
-                CommandUtils.printCombatSkills(targetPlayer, sender);
-                CommandUtils.printMiscSkills(targetPlayer, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", playerProfile.getExperienceHandler().getPowerLevel()));
+                sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
+                CommandUtils.printGatheringSkills(target, sender);
+                CommandUtils.printCombatSkills(target, sender);
+                CommandUtils.printMiscSkills(target, sender);
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
             }
 
             return true;

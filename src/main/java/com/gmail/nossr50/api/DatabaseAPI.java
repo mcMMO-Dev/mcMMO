@@ -22,7 +22,7 @@ public class DatabaseAPI {
      * @return true if the player exists in the DB, false if they do not
      */
     public boolean doesPlayerExistInDB(UUID uuid) {
-        PlayerProfile playerProfile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(uuid);
+        PlayerProfile playerProfile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(uuid, null);
 
         return playerProfile.isLoaded();
     }

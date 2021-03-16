@@ -23,7 +23,7 @@ public class DatabaseRemovePlayerCommand implements TabExecutor {
             String playerName = CommandUtils.getMatchedPlayerName(args[0]);
 
             if (mcMMO.getUserManager().queryPlayer(playerName) == null
-                    && CommandUtils.hasNoProfile(sender, mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName, false))) {
+                    && CommandUtils.hasNoProfile(sender, mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName))) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
                 return true;
             }

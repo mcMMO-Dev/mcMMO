@@ -31,7 +31,7 @@ public class FormulaConversionTask extends BukkitRunnable {
 
             // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mmoPlayer == null) {
-                profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName, false);
+                profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName);
 
                 if (!profile.isLoaded()) {
                     mcMMO.p.debug("Profile not loaded.");

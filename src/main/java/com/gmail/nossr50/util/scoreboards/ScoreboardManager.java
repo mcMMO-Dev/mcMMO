@@ -344,6 +344,22 @@ public class ScoreboardManager {
         }
     }
 
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull McMMOPlayer targetMcMMOPlayer) {
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeInspectStats(targetMcMMOPlayer);
+
+            changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
+        }
+    }
+
     public static void enablePlayerCooldownScoreboard(Player player) {
         ScoreboardWrapper wrapper = getWrapper(player);
 
