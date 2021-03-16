@@ -3,7 +3,6 @@ package com.gmail.nossr50.datatypes.player;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
-import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.skill.RootSkill;
@@ -15,8 +14,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -61,7 +58,7 @@ public class MMODataBuilder {
         /*
          * New Profile with default values
          */
-        return new PersistentPlayerData(playerUUID, playerName);
+        return new MMOPlayerDataImpl(playerUUID, playerName);
     }
 
     public @NotNull MMOPlayerData build() throws Exception {
@@ -96,7 +93,7 @@ public class MMODataBuilder {
 
         validateBarStateMapEntries(barStateMap);
 
-        return new PersistentPlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
+        return new MMOPlayerDataImpl(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
     }
 
     private void validateBarStateMapEntries(@NotNull Map<RootSkill, SkillBossBarState> map) {

@@ -1,12 +1,16 @@
 package com.gmail.nossr50.util.player;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,6 +104,38 @@ public final class UserManager {
         }
 
         return playerCollection;
+    }
+
+    /**
+     * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
+     *
+     * @param syncSave if true, data is saved synchronously
+     */
+    public static void logout(@NotNull McMMOPlayer mmoPlayer, boolean syncSave) {
+        Player targetPlayer = mmoPlayer.getPlayer();
+        BleedTimerTask.bleedOut(targetPlayer);
+
+        //Cleanup
+        mmoPlayer.resetAbilityMode(); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.McMMOPlayer#resetAbilityMode for example
+        mmoPlayer.getTamingManager().cleanupAllSummons();
+
+        if (syncSave) {
+            getProfile().save(true); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.PlayerProfile#save
+        } else {
+            getProfile().scheduleAsyncSave(); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.PlayerProfile#scheduleAsyncSave
+        }
+
+        UserManager.remove(targetPlayer);
+
+        if(Config.getInstance().getScoreboardsEnabled())
+            ScoreboardManager.teardownPlayer(targetPlayer);
+
+        if (inParty()) { //TODO: T&C Wire this up
+            party.removeOnlineMember(targetPlayer); //TODO: T&C Wire this up
+        }
+
+        //Remove user from cache
+        mcMMO.getDatabaseManager().cleanupUser(targetPlayer.getUniqueId());
     }
 
     /**

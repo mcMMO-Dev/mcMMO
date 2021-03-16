@@ -8,8 +8,6 @@ import com.neetgames.mcmmo.player.MMOPlayerData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
-
 public abstract class AbstractMMOPlayer implements MMOPlayer {
     /* All of the persistent data for a player that gets saved and loaded from DB */
     protected final @NotNull MMOPlayerData mmoPlayerData; //All persistent data is kept here
@@ -24,7 +22,7 @@ public abstract class AbstractMMOPlayer implements MMOPlayer {
      *
      * @param mmoPlayerData player data
      */
-    public AbstractMMOPlayer(@NotNull Player player, @NotNull MMOPlayerData mmoPlayerData) {
+    public AbstractMMOPlayer(@NotNull Player player, @NotNull MMOPlayerDataImpl mmoPlayerData) {
         this.mmoPlayerData = mmoPlayerData;
         this.experienceHandler = new OnlineExperienceProcessor(mmoPlayerData);
         this.cooldownManager = new CooldownManager(mmoPlayerData);
@@ -35,7 +33,7 @@ public abstract class AbstractMMOPlayer implements MMOPlayer {
      *
      * @param mmoPlayerData player data
      */
-    public AbstractMMOPlayer(@NotNull MMOPlayerData mmoPlayerData) {
+    public AbstractMMOPlayer(@NotNull MMOPlayerDataImpl mmoPlayerData) {
         this.mmoPlayerData = mmoPlayerData;
         this.experienceHandler = new OfflineExperienceProcessor(mmoPlayerData);
         this.cooldownManager = new CooldownManager(mmoPlayerData);

@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CooldownManager {
-    private final @NotNull PersistentPlayerData playerDataRef;
+    private final @NotNull MMOPlayerDataImpl playerDataRef;
 
-    public CooldownManager(@NotNull PersistentPlayerData playerDataRef) {
+    public CooldownManager(@NotNull MMOPlayerDataImpl playerDataRef) {
         this.playerDataRef = playerDataRef;
     }
 

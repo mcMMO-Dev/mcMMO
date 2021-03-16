@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PersistentPlayerData implements MMOPlayerData {
+public class MMOPlayerDataImpl implements MMOPlayerData {
 
     private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
 
@@ -58,7 +58,7 @@ public class PersistentPlayerData implements MMOPlayerData {
      * @param playerName target player's name
      * @throws NullArgumentException thrown when never null arguments are null
      */
-    public PersistentPlayerData(@NotNull UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
+    public MMOPlayerDataImpl(@NotNull UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
         /*
          * New Data
          */
@@ -109,17 +109,17 @@ public class PersistentPlayerData implements MMOPlayerData {
      * @param lastLogin target player's last login
      * @param leaderBoardExclusion target player's leaderboard exemption status
      */
-    public PersistentPlayerData(@NotNull UUID playerUUID,
-                                @NotNull String playerName,
-                                boolean partyChatSpying,
-                                @NotNull Map<PrimarySkillType, Integer> skillLevelValues,
-                                @NotNull Map<PrimarySkillType, Float> skillExperienceValues,
-                                @NotNull Map<SuperSkill, Integer> abilityDeactivationTimestamps,
-                                @NotNull Map<UniqueDataType, Integer> uniquePlayerData,
-                                @NotNull Map<RootSkill, SkillBossBarState> barStateMap,
-                                int scoreboardTipsShown,
-                                long lastLogin,
-                                boolean leaderBoardExclusion) throws Exception {
+    public MMOPlayerDataImpl(@NotNull UUID playerUUID,
+                             @NotNull String playerName,
+                             boolean partyChatSpying,
+                             @NotNull Map<PrimarySkillType, Integer> skillLevelValues,
+                             @NotNull Map<PrimarySkillType, Float> skillExperienceValues,
+                             @NotNull Map<SuperSkill, Integer> abilityDeactivationTimestamps,
+                             @NotNull Map<UniqueDataType, Integer> uniquePlayerData,
+                             @NotNull Map<RootSkill, SkillBossBarState> barStateMap,
+                             int scoreboardTipsShown,
+                             long lastLogin,
+                             boolean leaderBoardExclusion) throws Exception {
 
         /*
          * Skills Data

@@ -1,8 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
-import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -38,23 +36,19 @@ public class PartyCommand implements TabExecutor {
         PARTY_SUBCOMMANDS = ImmutableList.copyOf(subcommands);
     }
 
-    private final CommandExecutor partyJoinCommand           = new PartyJoinCommand();
     private final CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
     private final CommandExecutor partyCreateCommand         = new PartyCreateCommand();
     private final CommandExecutor partyQuitCommand           = new PartyQuitCommand();
     private final CommandExecutor partyXpShareCommand        = new PartyXpShareCommand();
-    private final CommandExecutor partyItemShareCommand      = new PartyItemShareCommand();
     private final CommandExecutor partyInviteCommand         = new PartyInviteCommand();
     private final CommandExecutor partyKickCommand           = new PartyKickCommand();
     private final CommandExecutor partyDisbandCommand        = new PartyDisbandCommand();
     private final CommandExecutor partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
-    private final CommandExecutor partyLockCommand           = new PartyLockCommand();
     private final CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
     private final CommandExecutor partyRenameCommand         = new PartyRenameCommand();
     private final CommandExecutor partyInfoCommand           = new PartyInfoCommand();
     private final CommandExecutor partyHelpCommand           = new PartyHelpCommand();
     private final CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private final CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {

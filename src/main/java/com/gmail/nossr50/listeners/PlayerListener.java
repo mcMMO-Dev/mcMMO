@@ -5,6 +5,7 @@ import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.util.player.UserManager;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -537,36 +538,20 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Profile not loaded
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-
-        if(mmoPlayer == null) {
+        if(mcMMOPlayer == null) {
             return;
         }
 
-        mcMMO.getUserManager().saveUserImmediately(mmoPlayer, mcMMO.isServerShutdownExecuted());
         //Use a sync save if the server is shutting down to avoid race conditions
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        //TODO: Make sure this cleans up
-        mmoPlayer.logout(mcMMO.isServerShutdownExecuted());
+        //TODO: Actually never sure its possible for this event to fire during server shutdown, should double check that...
+        UserManager.logout(mcMMOPlayer, mcMMO.isServerShutdownExecuted());
     }
 
     /**

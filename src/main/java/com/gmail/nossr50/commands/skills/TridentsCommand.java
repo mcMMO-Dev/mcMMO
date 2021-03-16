@@ -1,8 +1,11 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -29,10 +32,10 @@ public class TridentsCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected @NotNull List<Component> getTextComponents(@NotNull Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.TRIDENTS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.TRIDENTS);
 
         return textComponents;
     }

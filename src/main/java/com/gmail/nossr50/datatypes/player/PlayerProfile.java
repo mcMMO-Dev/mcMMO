@@ -11,7 +11,7 @@ import java.util.UUID;
 public class PlayerProfile extends AbstractMMOPlayer {
 
     /**
-     * Initialize an {@link PlayerProfile} for {@link PersistentPlayerData}
+     * Initialize an {@link PlayerProfile} for {@link MMOPlayerDataImpl}
      * This will be used for existing data
      *
      * @param mmoPlayerData target persistent player data

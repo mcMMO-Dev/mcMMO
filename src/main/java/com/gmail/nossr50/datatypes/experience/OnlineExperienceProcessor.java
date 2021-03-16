@@ -5,12 +5,9 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.experience.ExperienceHandler;
 import com.neetgames.mcmmo.experience.XPGainReason;
 import com.neetgames.mcmmo.experience.XPGainSource;
 import com.neetgames.mcmmo.player.MMOPlayer;
-import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -21,7 +18,6 @@ import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.neetgames.mcmmo.exceptions.UnknownSkillException;
-import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-public class OnlineExperienceProcessor implements ExperienceHandler {
+public class OnlineExperienceProcessor {
 
     private boolean isUsingUnarmed = false;
 

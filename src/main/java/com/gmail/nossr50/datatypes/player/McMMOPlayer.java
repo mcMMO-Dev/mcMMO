@@ -93,7 +93,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
          * New
          * Player
          */
-        super(new PersistentPlayerData(player.getUniqueId(), player.getName()));
+        super(new MMOPlayerDataImpl(player.getUniqueId(), player.getName()));
 
         UUID uuid = player.getUniqueId();
         identity = Identity.identity(uuid);
