@@ -1,76 +1,40 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.player.PersistentPlayerDataSaveTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.UUID;
 
-//TODO: Add per world handling
 public final class UserManager {
 
-    private final @NotNull HashSet<OnlineMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
+    private static HashSet<McMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
 
-    public UserManager() {
-        this.playerDataSet = new HashSet<>();
-    }
+    private UserManager() {}
 
     /**
      * Track a new user.
      *
-     * @param mmoPlayer the player profile to start tracking
+     * @param mcMMOPlayer the player profile to start tracking
      */
-    public void track(@NotNull McMMOPlayer mmoPlayer) {
-        mmoPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mmoPlayer));
+    public static void track(McMMOPlayer mcMMOPlayer) {
+        mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
 
-        playerDataSet.add(mmoPlayer); //for sync saves on shutdown
+        if(playerDataSet == null)
+            playerDataSet = new HashSet<>();
+
+        playerDataSet.add(mcMMOPlayer); //for sync saves on shutdown
     }
 
-    /**
-     * Cleanup player data
-     *
-     * @param mmoPlayer target player
-     */
-    public void cleanupPlayer(@NotNull OnlineMMOPlayer mmoPlayer) {
-        playerDataSet.remove(mmoPlayer);
-    }
-
-    /**
-     * Gets the OnlineMMOPlayer object for a player, this can be null if the player has not yet been loaded.
-     * @param player target player
-     * @return OnlineMMOPlayer object for this player, null if Player has not been loaded
-     */
-    public @Nullable McMMOPlayer queryPlayer(@Nullable Player player) {
-        if(player == null)
-            return null;
-
-        if(player.hasMetadata(mcMMO.playerDataKey))
-            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
-        else
-            return null;
-    }
-
-    public @Nullable PlayerProfile queryOfflinePlayer(@NotNull String playerName) {
-        return mcMMO.getDatabaseManager().queryPlayerByName(playerName);
+    public static void cleanupPlayer(McMMOPlayer mcMMOPlayer) {
+        if(playerDataSet != null)
+            playerDataSet.remove(mcMMOPlayer);
     }
 
     /**
@@ -78,125 +42,116 @@ public final class UserManager {
      *
      * @param player The Player object
      */
-    public void remove(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = (McMMOPlayer) queryPlayer(player);
-
-        if(mmoPlayer != null) {
-            mmoPlayer.cleanup();
-        }
-
+    public static void remove(Player player) {
+        McMMOPlayer mcMMOPlayer = getPlayer(player);
+        mcMMOPlayer.cleanup();
         player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
-        playerDataSet.remove(mmoPlayer); //Clear sync save tracking
+
+        if(playerDataSet != null) {
+            playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
+        }
     }
 
     /**
      * Clear all users.
      */
-    public void clearAll() {
+    public static void clearAll() {
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             remove(player);
         }
 
-        playerDataSet.clear(); //Clear sync save tracking
-    }
-
-    public @NotNull Collection<OnlineMMOPlayer> getPlayers() {
-        Collection<OnlineMMOPlayer> playerCollection = new ArrayList<>();
-
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (hasPlayerDataKey(player)) {
-                playerCollection.add(queryPlayer(player));
-            }
-        }
-
-        return playerCollection;
-    }
-
-    public boolean hasPlayerDataKey(Entity entity) {
-        return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
-    }
-
-    public @NotNull MMODataSnapshot createPlayerDataSnapshot(@NotNull MMOPlayerData mmoPlayerData) {
-        return new MMODataSnapshot(mmoPlayerData);
-    }
-
-    public void saveUserImmediately(@NotNull MMOPlayerData mmoPlayerData, boolean useSync) {
-        if(useSync)
-            scheduleSyncSave(createPlayerDataSnapshot(mmoPlayerData)); //Execute sync saves immediately
-        else
-            scheduleAsyncSaveDelay(createPlayerDataSnapshot(mmoPlayerData), 0);
-    }
-
-    public void saveUserWithDelay(@NotNull MMOPlayerData mmoPlayerData, boolean useSync, int delayTicks) {
-        if(useSync)
-            scheduleSyncSaveDelay(createPlayerDataSnapshot(mmoPlayerData), delayTicks); //Execute sync saves immediately
-        else
-            scheduleAsyncSaveDelay(createPlayerDataSnapshot(mmoPlayerData), delayTicks);
+        if(playerDataSet != null)
+            playerDataSet.clear(); //Clear sync save tracking
     }
 
     /**
      * Save all users ON THIS THREAD.
      */
-    public void saveAllSync() {
-        ImmutableList<OnlineMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
+    public static void saveAll() {
+        if(playerDataSet == null)
+            return;
 
-        mcMMO.p.getLogger().info("Saving player data... (" + trackedSyncData.size() + ")");
+        ImmutableList<McMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
 
-        for (OnlineMMOPlayer onlinePlayer : trackedSyncData) {
+        mcMMO.p.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
+
+        for (McMMOPlayer playerData : trackedSyncData) {
             try
             {
-                mcMMO.p.getLogger().info("Saving data for player: "+onlinePlayer.getPlayerName());
-                saveUserImmediately(onlinePlayer.getMMOPlayerData(), true);
+                mcMMO.p.getLogger().info("Saving data for player: "+playerData.getPlayerName());
+                playerData.getProfile().save(true);
             }
             catch (Exception e)
             {
-                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + onlinePlayer.getPlayerName());
+                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + playerData.getPlayerName());
             }
         }
 
         mcMMO.p.getLogger().info("Finished save operation for "+trackedSyncData.size()+" players!");
     }
 
-    /**
-     * This method is called by PlayerQuitEvent to tear down the mmoPlayer.
-     * If syncSave is true, then saving is executed immediately
-     *
-     * @param syncSave if true, data is saved synchronously
-     */
-    public void logout(@NotNull McMMOPlayer mmoPlayer, boolean syncSave) {
-        BleedTimerTask.bleedOut(mmoPlayer.getPlayer());
+    public static Collection<McMMOPlayer> getPlayers() {
+        Collection<McMMOPlayer> playerCollection = new ArrayList<>();
 
-        //TODO: There is a possibility that async saves don't execute in time if the server is told to shutdown
-
-        if(syncSave) {
-            saveUserImmediately(mmoPlayer.getPersistentPlayerData(), true);
-        } else {
-            saveUserWithDelay(mmoPlayer.getPersistentPlayerData(), false, 20);
+        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+            if (hasPlayerDataKey(player)) {
+                playerCollection.add(getPlayer(player));
+            }
         }
 
-        cleanupPlayer(mmoPlayer);
-
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.teardownPlayer(mmoPlayer.getPlayer());
-
-        //Remove user from cache (SQL)
-        mcMMO.getDatabaseManager().removeCache(mmoPlayer.getUUID());
+        return playerCollection;
     }
 
-
-    public void scheduleAsyncSave(@NotNull MMODataSnapshot mmoDataSnapshot) {
-        new PersistentPlayerDataSaveTask(mmoDataSnapshot).runTaskAsynchronously(mcMMO.p);
+    /**
+     * Get the McMMOPlayer of a player by name.
+     *
+     * @param playerName The name of the player whose McMMOPlayer to retrieve
+     * @return the player's McMMOPlayer object
+     */
+    public static McMMOPlayer getPlayer(String playerName) {
+        return retrieveMcMMOPlayer(playerName, false);
     }
 
-    public void scheduleSyncSave(@NotNull MMODataSnapshot mmoDataSnapshot) {
-        new PersistentPlayerDataSaveTask(mmoDataSnapshot).runTask(mcMMO.p);
+    public static McMMOPlayer getOfflinePlayer(OfflinePlayer player) {
+        if (player instanceof Player) {
+            return getPlayer((Player) player);
+        }
+
+        return retrieveMcMMOPlayer(player.getName(), true);
     }
 
-    public void scheduleAsyncSaveDelay(@NotNull MMODataSnapshot mmoDataSnapshot, int delayTicks) {
-        new PersistentPlayerDataSaveTask(mmoDataSnapshot).runTaskLaterAsynchronously(mcMMO.p, delayTicks);
+    public static McMMOPlayer getOfflinePlayer(String playerName) {
+        return retrieveMcMMOPlayer(playerName, true);
     }
 
-    public void scheduleSyncSaveDelay(@NotNull MMODataSnapshot mmoDataSnapshot, int delayTicks) {
-        new PersistentPlayerDataSaveTask(mmoDataSnapshot).runTaskLater(mcMMO.p, delayTicks);
+    /**
+     * Gets the McMMOPlayer object for a player, this can be null if the player has not yet been loaded.
+     * @param player target player
+     * @return McMMOPlayer object for this player, null if Player has not been loaded
+     */
+    public static McMMOPlayer getPlayer(Player player) {
+        //Avoid Array Index out of bounds
+        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
+            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        else
+            return null;
+    }
+
+    private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
+        if (player == null) {
+            if (!offlineValid) {
+                mcMMO.p.getLogger().warning("A valid mcMMOPlayer object could not be found for " + playerName + ".");
+            }
+
+            return null;
+        }
+
+        return getPlayer(player);
+    }
+
+    public static boolean hasPlayerDataKey(Entity entity) {
+        return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
     }
 }
