@@ -3,12 +3,13 @@ package com.gmail.nossr50.runnables.database;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,12 +27,12 @@ public class FormulaConversionTask extends BukkitRunnable {
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
         for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayerName(playerName);
+            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
             PlayerProfile profile;
 
-            // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-            if (mmoPlayer == null) {
-                profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName);
+            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mcMMOPlayer == null) {
+                profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
                 if (!profile.isLoaded()) {
                     mcMMO.p.debug("Profile not loaded.");
@@ -43,7 +44,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 profile.scheduleAsyncSave();
             }
             else {
-                profile = mmoPlayer;
+                profile = mcMMOPlayer.getProfile();
                 editValues(profile);
             }
             convertedUsers++;
