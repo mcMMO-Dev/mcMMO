@@ -1,161 +1,142 @@
-package com.gmail.nossr50.api;
-
-import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
-
-public final class ChatAPI {
-    private ChatAPI() {}
-
-    /**
-     * Check if a {@link Player} is in the Party chat channel
-     *
-     * @param player target player
-     * @return true if the player is targeting the party chat channel
-     * @deprecated Use {@link #isUsingPartyChat(OnlineMMOPlayer)} instead
-     */
-    @Deprecated
-    public static boolean isUsingPartyChat(@NotNull Player player) {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-
-        if(mmoPlayer != null)
-            return mmoPlayer.getChatChannel() == ChatChannel.PARTY;
-        else
-            return false;
-    }
-
-    /**
-     * Check if a {@link OnlineMMOPlayer} is in the Party chat channel
-     *
-     * @param mmoPlayer target player
-     * @return true if the player is targeting the party chat channel
-     */
-    public static boolean isUsingPartyChat(@NotNull OnlineMMOPlayer mmoPlayer) {
-        return mmoPlayer.getChatChannel() == ChatChannel.PARTY;
-    }
-
-    /**
-     * Check if a player is currently talking in party chat.
-     *
-     * @param playerName The name of the player to check
-     * @return true if the player is using party chat, false otherwise
-     * @deprecated use {@link #isUsingPartyChat(OnlineMMOPlayer)} instead for performance reasons
-     */
-    @Deprecated
-    public static boolean isUsingPartyChat(String playerName) {
-        if(mcMMO.getUserManager().queryMcMMOPlayer(playerName) != null) {
-            return mcMMO.getUserManager().queryMcMMOPlayer(playerName).getChatChannel() == ChatChannel.PARTY;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Check if a {@link Player} is in the Admin chat channel
-     *
-     * @param player target player
-     * @return true if the player is targeting the admin chat channel
-     * @deprecated Use {@link #isUsingAdminChat(OnlineMMOPlayer)} instead
-     */
-    @Deprecated
-    public static boolean isUsingAdminChat(@NotNull Player player) {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-
-        if(mmoPlayer != null)
-            return mmoPlayer.getChatChannel() == ChatChannel.ADMIN;
-        else
-            return false;
-    }
-
-    /**
-     * Check if a {@link OnlineMMOPlayer} is in the Admin chat channel
-     *
-     * @param mmoPlayer target player
-     * @return true if the player is targeting the admin chat channel
-     */
-    public static boolean isUsingAdminChat(@NotNull OnlineMMOPlayer mmoPlayer) {
-        return mmoPlayer.getChatChannel() == ChatChannel.ADMIN;
-    }
-
-    /**
-     * Check if a player is currently talking in admin chat.
-     *
-     * @param playerName The name of the player to check
-     * @return true if the player is using admin chat, false otherwise
-     * @deprecated use {@link #isUsingAdminChat(OnlineMMOPlayer)} instead for performance reasons
-     */
-    @Deprecated
-    public static boolean isUsingAdminChat(String playerName) {
-        if(mcMMO.getUserManager().queryMcMMOPlayer(playerName) != null) {
-            return mcMMO.getUserManager().queryMcMMOPlayer(playerName).getChatChannel() == ChatChannel.ADMIN;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Toggle the party chat channel of a {@link OnlineMMOPlayer}
-     *
-     * @param mmoPlayer The player to toggle party chat on.
-     */
-    public static void togglePartyChat(@NotNull OnlineMMOPlayer mmoPlayer) {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.PARTY);
-    }
-
-    /**
-     * Toggle the party chat mode of a player.
-     *
-     * @param player The player to toggle party chat on.
-     * @deprecated use {@link #togglePartyChat(OnlineMMOPlayer)}
-     */
-    @Deprecated
-    public static void togglePartyChat(Player player) throws NullPointerException {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryPlayer(player)), ChatChannel.PARTY);
-    }
-
-    /**
-     * Toggle the party chat mode of a player.
-     *
-     * @param playerName The name of the player to toggle party chat on.
-     * @deprecated Use {@link #togglePartyChat(OnlineMMOPlayer)} instead
-     */
-    @Deprecated
-    public static void togglePartyChat(String playerName) throws NullPointerException {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryMcMMOPlayer(playerName)), ChatChannel.PARTY);
-    }
-
-    /**
-     * Toggle the admin chat channel of a {@link OnlineMMOPlayer}
-     *
-     * @param mmoPlayer The player to toggle admin chat on.
-     */
-    public static void toggleAdminChat(@NotNull OnlineMMOPlayer mmoPlayer) {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.ADMIN);
-    }
-
-    /**
-     * Toggle the admin chat mode of a player.
-     *
-     * @param player The player to toggle admin chat on.
-     * @deprecated Use {@link #toggleAdminChat(OnlineMMOPlayer)} instead
-     */
-    @Deprecated
-    public static void toggleAdminChat(Player player) throws NullPointerException {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryPlayer(player)), ChatChannel.ADMIN);
-    }
-
-    /**
-     * Toggle the admin chat mode of a player.
-     *
-     * @param playerName The name of the player to toggle party chat on.
-     * @deprecated Use {@link #toggleAdminChat(OnlineMMOPlayer)} instead
-     */
-    @Deprecated
-    public static void toggleAdminChat(String playerName) throws NullPointerException {
-        mcMMO.p.getChatManager().setOrToggleChatChannel(Objects.requireNonNull(mcMMO.getUserManager().queryMcMMOPlayer(playerName)), ChatChannel.ADMIN);
-    }
-}
+//package com.gmail.nossr50.api;
+//
+//import com.gmail.nossr50.datatypes.chat.ChatChannel;
+//import com.gmail.nossr50.mcMMO;
+//import com.gmail.nossr50.util.player.UserManager;
+//import org.bukkit.entity.Player;
+//
+//public final class ChatAPI {
+//    private ChatAPI() {}
+//
+////    /**
+////     * Send a message to all members of a party
+////     * </br>
+////     * This function is designed for API usage.
+////     *
+////     * @param plugin The plugin sending the message
+////     * @param sender The name of the sender
+////     * @param displayName The display name of the sender
+////     * @param party The name of the party to send to
+////     * @param message The message to send
+////     */
+////    public static void sendPartyChat(Plugin plugin, String sender, String displayName, String party, String message) {
+////        getPartyChatManager(plugin, party).handleChat(sender, displayName, message);
+////    }
+////
+////    /**
+////     * Send a message to all members of a party
+////     * </br>
+////     * This function is designed for API usage.
+////     *
+////     * @param plugin The plugin sending the message
+////     * @param sender The name of the sender to display in the chat
+////     * @param party The name of the party to send to
+////     * @param message The message to send
+////     */
+////    public static void sendPartyChat(Plugin plugin, String sender, String party, String message) {
+////        getPartyChatManager(plugin, party).handleChat(sender, message);
+////    }
+////
+////    /**
+////     * Send a message to administrators
+////     * </br>
+////     * This function is designed for API usage.
+////     *
+////     * @param plugin The plugin sending the message
+////     * @param sender The name of the sender
+////     * @param displayName The display name of the sender
+////     * @param message The message to send
+////     */
+////    public static void sendAdminChat(Plugin plugin, String sender, String displayName, String message) {
+////        ChatManagerFactory.getChatManager(plugin, ChatChannel.ADMIN).handleChat(sender, displayName, message);
+////    }
+////
+////    /**
+////     * Send a message to administrators
+////     * </br>
+////     * This function is designed for API usage.
+////     *
+////     * @param plugin The plugin sending the message
+////     * @param sender The name of the sender to display in the chat
+////     * @param message The message to send
+////     */
+////    public static void sendAdminChat(Plugin plugin, String sender, String message) {
+////        ChatManagerFactory.getChatManager(plugin, ChatChannel.ADMIN).handleChat(sender, message);
+////    }
+//
+//    /**
+//     * Check if a player is currently talking in party chat.
+//     *
+//     * @param player The player to check
+//     * @return true if the player is using party chat, false otherwise
+//     */
+//    public static boolean isUsingPartyChat(Player player) {
+//        return UserManager.getPlayer(player).getChatChannel() == ChatChannel.PARTY;
+//    }
+//
+//    /**
+//     * Check if a player is currently talking in party chat.
+//     *
+//     * @param playerName The name of the player to check
+//     * @return true if the player is using party chat, false otherwise
+//     */
+//    public static boolean isUsingPartyChat(String playerName) {
+//        return UserManager.getPlayer(playerName).getChatChannel() == ChatChannel.PARTY;
+//    }
+//
+//    /**
+//     * Check if a player is currently talking in admin chat.
+//     *
+//     * @param player The player to check
+//     * @return true if the player is using admin chat, false otherwise
+//     */
+//    public static boolean isUsingAdminChat(Player player) {
+//        return UserManager.getPlayer(player).getChatChannel() == ChatChannel.ADMIN;
+//    }
+//
+//    /**
+//     * Check if a player is currently talking in admin chat.
+//     *
+//     * @param playerName The name of the player to check
+//     * @return true if the player is using admin chat, false otherwise
+//     */
+//    public static boolean isUsingAdminChat(String playerName) {
+//        return UserManager.getPlayer(playerName).getChatChannel() == ChatChannel.ADMIN;
+//    }
+//
+//    /**
+//     * Toggle the party chat mode of a player.
+//     *
+//     * @param player The player to toggle party chat on.
+//     */
+//    public static void togglePartyChat(Player player) {
+//        mcMMO.p.getChatManager().setOrToggleChatChannel(UserManager.getPlayer(player), ChatChannel.PARTY);
+//    }
+//
+//    /**
+//     * Toggle the party chat mode of a player.
+//     *
+//     * @param playerName The name of the player to toggle party chat on.
+//     */
+//    public static void togglePartyChat(String playerName) {
+//        mcMMO.p.getChatManager().setOrToggleChatChannel(UserManager.getPlayer(playerName), ChatChannel.PARTY);
+//    }
+//
+//    /**
+//     * Toggle the admin chat mode of a player.
+//     *
+//     * @param player The player to toggle admin chat on.
+//     */
+//    public static void toggleAdminChat(Player player) {
+//        mcMMO.p.getChatManager().setOrToggleChatChannel(UserManager.getPlayer(player), ChatChannel.ADMIN);
+//    }
+//
+//    /**
+//     * Toggle the admin chat mode of a player.
+//     *
+//     * @param playerName The name of the player to toggle party chat on.
+//     */
+//    public static void toggleAdminChat(String playerName) {
+//        mcMMO.p.getChatManager().setOrToggleChatChannel(UserManager.getPlayer(playerName), ChatChannel.ADMIN);
+//    }
+//}
