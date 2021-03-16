@@ -266,6 +266,13 @@ public class mcMMO extends JavaPlugin {
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
             }
+
+            //TODO: Remove this when ChatControlRed fixes itself
+            if(pluginManager.getPlugin("ChatControlRed") != null) {
+                getLogger().severe("mcMMO has detected ChatControlRed on your server, users have reported a severe plugin conflict between these two plugins which degrades server performance and wastes many server resources.");
+                getLogger().severe("It is HIGHLY RECOMMENDED that you do --NOT-- use ChatControlRed until this issue is resolved!");
+            }
+
         }
         catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
