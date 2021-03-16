@@ -621,7 +621,11 @@ public class mcMMO extends JavaPlugin {
 
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
-        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
+        long second = 20;
+        long minute = second * 60;
+
+        long saveIntervalTicks = Math.max(minute, Config.getInstance().getSaveInterval() * minute);
+
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
