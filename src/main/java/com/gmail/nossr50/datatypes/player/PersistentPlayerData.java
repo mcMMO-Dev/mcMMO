@@ -37,8 +37,8 @@ public class PersistentPlayerData implements MMOPlayerData {
     private final DirtyData<MutableLong> lastLogin;
 
     /* Skill Data */
-    private final @NotNull DirtyMap<RootSkill, Integer> skillLevelValues;
-    private final @NotNull DirtyMap<RootSkill, Float> skillExperienceValues;
+    private final @NotNull DirtyMap<PrimarySkillType, Integer> skillLevelValues;
+    private final @NotNull DirtyMap<PrimarySkillType, Float> skillExperienceValues;
     private final @NotNull DirtyMap<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull DirtyMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
     private final @NotNull DirtyMap<RootSkill, SkillBossBarState> barStateMap;
@@ -79,7 +79,7 @@ public class PersistentPlayerData implements MMOPlayerData {
 
         //Core skills
         //TODO: Don't store values for disabled skills
-        for(RootSkill rootSkill : CoreSkills.getCoreRootSkills()) {
+        for(RootSkill rootSkill : PrimarySkillType.getCoreRootSkills()) {
             skillLevelValues.put(rootSkill, AdvancedConfig.getInstance().getStartingLevel());
             skillExperienceValues.put(rootSkill, 0F);
         }
@@ -112,8 +112,8 @@ public class PersistentPlayerData implements MMOPlayerData {
     public PersistentPlayerData(@NotNull UUID playerUUID,
                                 @NotNull String playerName,
                                 boolean partyChatSpying,
-                                @NotNull Map<RootSkill, Integer> skillLevelValues,
-                                @NotNull Map<RootSkill, Float> skillExperienceValues,
+                                @NotNull Map<PrimarySkillType, Integer> skillLevelValues,
+                                @NotNull Map<PrimarySkillType, Float> skillExperienceValues,
                                 @NotNull Map<SuperSkill, Integer> abilityDeactivationTimestamps,
                                 @NotNull Map<UniqueDataType, Integer> uniquePlayerData,
                                 @NotNull Map<RootSkill, SkillBossBarState> barStateMap,
@@ -286,12 +286,12 @@ public class PersistentPlayerData implements MMOPlayerData {
     }
 
     @Override
-    public @NotNull DirtyMap<RootSkill, Integer> getDirtySkillLevelMap() {
+    public @NotNull DirtyMap<PrimarySkillType, Integer> getDirtySkillLevelMap() {
         return skillLevelValues;
     }
 
     @Override
-    public @NotNull DirtyMap<RootSkill, Float> getDirtyExperienceValueMap() {
+    public @NotNull DirtyMap<PrimarySkillType, Float> getDirtyExperienceValueMap() {
         return skillExperienceValues;
     }
 
@@ -301,12 +301,12 @@ public class PersistentPlayerData implements MMOPlayerData {
     }
 
     @Override
-    public @NotNull Map<RootSkill, Integer> getSkillLevelsMap() {
+    public @NotNull Map<PrimarySkillType, Integer> getSkillLevelsMap() {
         return skillLevelValues;
     }
 
     @Override
-    public @NotNull Map<RootSkill, Float> getSkillsExperienceMap() {
+    public @NotNull Map<PrimarySkillType, Float> getSkillsExperienceMap() {
         return skillExperienceValues;
     }
 
@@ -346,12 +346,12 @@ public class PersistentPlayerData implements MMOPlayerData {
     }
 
     @Override
-    public @NotNull ImmutableMap<RootSkill, Integer> copyPrimarySkillLevelsMap() {
+    public @NotNull ImmutableMap<PrimarySkillType, Integer> copyPrimarySkillLevelsMap() {
         return ImmutableMap.copyOf(getSkillLevelsMap());
     }
 
     @Override
-    public @NotNull ImmutableMap<RootSkill, Float> copyPrimarySkillExperienceValuesMap() {
+    public @NotNull ImmutableMap<PrimarySkillType, Float> copyPrimarySkillExperienceValuesMap() {
         return ImmutableMap.copyOf(getSkillsExperienceMap());
     }
 }

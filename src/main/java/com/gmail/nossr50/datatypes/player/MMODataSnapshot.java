@@ -22,11 +22,11 @@ public class MMODataSnapshot {
     private final long lastLogin;
 
     /* Skill Data */
-    private final @NotNull ImmutableMap<RootSkill, Integer> skillLevelValues;
-    private final @NotNull ImmutableMap<RootSkill, Float> skillExperienceValues;
-    private final @NotNull ImmutableMap<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private final @NotNull ImmutableMap<PrimarySkillType, Integer> skillLevelValues;
+    private final @NotNull ImmutableMap<PrimarySkillType, Float> skillExperienceValues;
+    private final @NotNull ImmutableMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull ImmutableMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull ImmutableMap<RootSkill, SkillBossBarState> barStateMap;
+    private final @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private final boolean partyChatSpying;
@@ -66,15 +66,15 @@ public class MMODataSnapshot {
     }
 
 
-    public @NotNull ImmutableMap<RootSkill, Integer> getSkillLevelValues() {
+    public @NotNull ImmutableMap<PrimarySkillType, Integer> getSkillLevelValues() {
         return skillLevelValues;
     }
 
-    public @NotNull ImmutableMap<RootSkill, Float> getSkillExperienceValues() {
+    public @NotNull ImmutableMap<PrimarySkillType, Float> getSkillExperienceValues() {
         return skillExperienceValues;
     }
 
-    public @NotNull ImmutableMap<SuperSkill, Integer> getAbilityDeactivationTimestamps() {
+    public @NotNull ImmutableMap<SuperAbilityType, Integer> getAbilityDeactivationTimestamps() {
         return abilityDeactivationTimestamps;
     }
 
@@ -82,7 +82,7 @@ public class MMODataSnapshot {
         return uniquePlayerData;
     }
 
-    public @NotNull ImmutableMap<RootSkill, SkillBossBarState> getBarStateMap() {
+    public @NotNull ImmutableMap<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
@@ -102,7 +102,7 @@ public class MMODataSnapshot {
         return (skillExperienceValues.getOrDefault(rootSkill, 0F)).intValue();
     }
 
-    public long getAbilityDATS(@NotNull SuperSkill superAbilityType) {
+    public long getAbilityDATS(@NotNull SuperAbilityType superAbilityType) {
         return abilityDeactivationTimestamps.getOrDefault(superAbilityType, 0);
     }
 

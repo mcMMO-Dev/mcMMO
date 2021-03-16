@@ -23,7 +23,7 @@ public class ExcavationCommand extends SkillCommand {
     private boolean canTreasureHunt;
 
     public ExcavationCommand() {
-        super(CoreSkills.EXCAVATION);
+        super(PrimarySkillType.EXCAVATION);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ExcavationCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.EXCAVATION);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.EXCAVATION);
 
         return textComponents;
     }

@@ -75,7 +75,7 @@ public class MctopCommand implements TabExecutor {
     }
 
     private void display(int page, @NotNull RootSkill rootSkill, @NotNull CommandSender sender, @NotNull Command command) {
-        if (rootSkill != null && !Permissions.mctop(sender, CoreSkills.getSkill(rootSkill))) {
+        if (rootSkill != null && !Permissions.mctop(sender, PrimarySkillType.getSkill(rootSkill))) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }

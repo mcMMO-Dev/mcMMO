@@ -39,7 +39,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canShroomThumb;
 
     public HerbalismCommand() {
-        super(CoreSkills.HERBALISM);
+        super(PrimarySkillType.HERBALISM);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class HerbalismCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.HERBALISM);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.HERBALISM);
 
         return textComponents;
     }

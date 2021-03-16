@@ -25,7 +25,7 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canRoll;
 
     public AcrobaticsCommand() {
-        super(CoreSkills.ACROBATICS);
+        super(PrimarySkillType.ACROBATICS);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class AcrobaticsCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.ACROBATICS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ACROBATICS);
 
         return textComponents;
     }

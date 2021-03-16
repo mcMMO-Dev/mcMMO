@@ -43,7 +43,7 @@ public class FishingCommand extends SkillCommand {
     private String maMinWaitTime, maMaxWaitTime;
 
     public FishingCommand() {
-        super(CoreSkills.FISHING);
+        super(PrimarySkillType.FISHING);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class FishingCommand extends SkillCommand {
 
         // FISHING_SHAKE
         if (canShake) {
-            String[] shakeStrings = RandomChanceUtil.calculateAbilityDisplayValuesStatic(mmoPlayer, CoreSkills.FISHING, fishingManager.getShakeChance());
+            String[] shakeStrings = RandomChanceUtil.calculateAbilityDisplayValuesStatic(mmoPlayer, PrimarySkillType.FISHING, fishingManager.getShakeChance());
             shakeChance = shakeStrings[0];
             shakeChanceLucky = shakeStrings[1];
         }
@@ -155,7 +155,7 @@ public class FishingCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.FISHING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.FISHING);
 
         return textComponents;
     }

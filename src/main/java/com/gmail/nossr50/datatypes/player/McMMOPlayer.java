@@ -142,7 +142,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
          * If in the future someone wants to remove this, don't forget to also remove what is in the PrimarySkillType enum. - bm01
          */
         try {
-            for (CoreRootSkill coreRootSkill : CoreSkills.getCoreRootSkills()) {
+            for (CoreRootSkill coreRootSkill : PrimarySkillType.getCoreRootSkills()) {
                 skillManagers.put(coreRootSkill, coreRootSkill.getSkillManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }

@@ -170,7 +170,7 @@ public class NotificationManager {
 
         McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(CoreSkills.getSkill(rootSkill), levelsGained, newLevel);
+        Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(PrimarySkillType.getSkill(rootSkill), levelsGained, newLevel);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(Misc.adaptPlayer(mmoPlayer), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
         sendNotification(Misc.adaptPlayer(mmoPlayer), customEvent);

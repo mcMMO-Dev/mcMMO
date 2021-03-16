@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CrossbowsCommand extends SkillCommand {
     public CrossbowsCommand() {
-        super(CoreSkills.CROSSBOWS);
+        super(PrimarySkillType.CROSSBOWS);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CrossbowsCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.CROSSBOWS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.CROSSBOWS);
 
         return textComponents;
     }

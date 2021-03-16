@@ -42,12 +42,12 @@
 //    }
 //
 //    private void registerCoreSkills() {
-//        for(CoreRootSkill coreRootSkill : CoreSkills.getCoreRootSkills()) {
+//        for(CoreRootSkill coreRootSkill : PrimarySkillType.getCoreRootSkills()) {
 //            mcMMO.p.getLogger().info("Registering core skill: " + coreRootSkill.getRawSkillName());
 //            registerSkill(coreRootSkill);
 //        }
 //
-//        for(CoreSkill coreSkill : CoreSkills.)
+//        for(CoreSkill coreSkill : PrimarySkillType.)
 //    }
 //
 //    @Override

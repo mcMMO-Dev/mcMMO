@@ -56,7 +56,7 @@ public class MmoInfoCommand implements TabExecutor {
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mystery"));
                     return true;
-                } else if(InteractionManager.getAbstractByName(args[0]) != null || CoreSkills.SUBSKILL_NAMES.contains(args[0]))
+                } else if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0]))
                 {
                     displayInfo(mmoPlayer, args[0]);
                     return true;
@@ -74,7 +74,7 @@ public class MmoInfoCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], CoreSkills.SUBSKILL_NAMES, new ArrayList<>(CoreSkills.SUBSKILL_NAMES.size()));
+            return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SUBSKILL_NAMES, new ArrayList<>(PrimarySkillType.SUBSKILL_NAMES.size()));
         }
         return ImmutableList.of();
     }

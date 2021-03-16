@@ -25,7 +25,7 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canRetrieve;
 
     public ArcheryCommand() {
-        super(CoreSkills.ARCHERY);
+        super(PrimarySkillType.ARCHERY);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ArcheryCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.ARCHERY);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ARCHERY);
 
         return textComponents;
     }

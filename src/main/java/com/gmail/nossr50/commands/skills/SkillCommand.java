@@ -47,7 +47,7 @@ public abstract class SkillCommand implements TabExecutor {
     private final CommandExecutor skillGuideCommand;
 
     public SkillCommand(@NotNull RootSkill rootSkill) {
-        this.rootSkill = CoreSkills.getSkill(primarySkillType);
+        this.rootSkill = PrimarySkillType.getSkill(primarySkillType);
         this.primarySkillType = primarySkillType;
         skillName = rootSkill.getName();
         skillGuideCommand = new SkillGuideCommand(rootSkill);
@@ -147,7 +147,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
-        if(!CoreSkills.isChildSkill(rootSkill))
+        if(!PrimarySkillType.isChildSkill(rootSkill))
         {
             /*
              * NON-CHILD SKILLS
@@ -209,7 +209,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected @NotNull String[] calculateLengthDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
-        int maxLength = CoreSkills.getSuperAbilityType().getMaxLength();
+        int maxLength = PrimarySkillType.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
 

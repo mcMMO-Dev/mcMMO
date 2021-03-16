@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TridentsCommand extends SkillCommand {
     public TridentsCommand() {
-        super(CoreSkills.TRIDENTS);
+        super(PrimarySkillType.TRIDENTS);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class TridentsCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.TRIDENTS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.TRIDENTS);
 
         return textComponents;
     }

@@ -30,8 +30,8 @@ public class MMODataBuilder {
     private long lastLogin;
 
     /* Skill Data */
-    private @Nullable Map<RootSkill, Integer> skillLevelValues;
-    private @Nullable Map<RootSkill, Float> skillExperienceValues;
+    private @Nullable Map<PrimarySkillType, Integer> skillLevelValues;
+    private @Nullable Map<PrimarySkillType, Float> skillExperienceValues;
     private @Nullable Map<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private @Nullable Map<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
     private @Nullable Map<RootSkill, SkillBossBarState> barStateMap;
@@ -107,7 +107,7 @@ public class MMODataBuilder {
         }
     }
 
-    private void validateExperienceValueMapEntries(@NotNull Map<RootSkill, Float> map) {
+    private void validateExperienceValueMapEntries(@NotNull Map<PrimarySkillType, Float> map) {
         for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
             map.putIfAbsent(key, 0F);
 
@@ -140,7 +140,7 @@ public class MMODataBuilder {
         }
     }
 
-    private void validateSkillLevelMapEntries(@NotNull Map<RootSkill, Integer> map) {
+    private void validateSkillLevelMapEntries(@NotNull Map<PrimarySkillType, Integer> map) {
         for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
             map.putIfAbsent(key, 0);
 
@@ -178,20 +178,20 @@ public class MMODataBuilder {
         return this;
     }
 
-    public @Nullable Map<RootSkill, Integer> getSkillLevelValues() {
+    public @Nullable Map<PrimarySkillType, Integer> getSkillLevelValues() {
         return skillLevelValues;
     }
 
-    public @NotNull MMODataBuilder setSkillLevelValues(@NotNull Map<RootSkill, Integer> skillLevelValues) {
+    public @NotNull MMODataBuilder setSkillLevelValues(@NotNull Map<PrimarySkillType, Integer> skillLevelValues) {
         this.skillLevelValues = skillLevelValues;
         return this;
     }
 
-    public @Nullable Map<RootSkill, Float> getSkillExperienceValues() {
+    public @Nullable Map<PrimarySkillType, Float> getSkillExperienceValues() {
         return skillExperienceValues;
     }
 
-    public @NotNull MMODataBuilder setSkillExperienceValues(@NotNull Map<RootSkill, Float> skillExperienceValues) {
+    public @NotNull MMODataBuilder setSkillExperienceValues(@NotNull Map<PrimarySkillType, Float> skillExperienceValues) {
         this.skillExperienceValues = skillExperienceValues;
         return this;
     }

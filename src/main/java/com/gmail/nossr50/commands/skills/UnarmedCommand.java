@@ -32,7 +32,7 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canIronGrip;
 
     public UnarmedCommand() {
-        super(CoreSkills.UNARMED);
+        super(PrimarySkillType.UNARMED);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class UnarmedCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.UNARMED);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.UNARMED);
 
         return textComponents;
     }

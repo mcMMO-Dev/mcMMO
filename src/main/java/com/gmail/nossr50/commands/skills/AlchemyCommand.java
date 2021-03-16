@@ -29,7 +29,7 @@ public class AlchemyCommand extends SkillCommand {
     private boolean canConcoctions;
 
     public AlchemyCommand() {
-        super(CoreSkills.ALCHEMY);
+        super(PrimarySkillType.ALCHEMY);
     }
 
     protected String[] calculateAbilityDisplayValues(@NotNull Player player) {
@@ -48,7 +48,7 @@ public class AlchemyCommand extends SkillCommand {
         AlchemyManager alchemyManager = ((McMMOPlayer) (mmoPlayer)).getAlchemyManager();
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(Misc.adaptPlayer(mmoPlayer), CoreSkills.ALCHEMY);
+        boolean isLucky = Permissions.lucky(Misc.adaptPlayer(mmoPlayer), PrimarySkillType.ALCHEMY);
 
         displayValues[0] = decimal.format(alchemyManager.calculateBrewSpeed(false)) + "x";
         displayValues[1] = isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;
@@ -105,7 +105,7 @@ public class AlchemyCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.ALCHEMY);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.ALCHEMY);
 
         return textComponents;
     }

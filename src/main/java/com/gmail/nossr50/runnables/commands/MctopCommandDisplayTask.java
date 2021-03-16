@@ -92,7 +92,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             ScoreboardManager.showTopPowerScoreboard((Player) sender, page, userStats);
         }
         else {
-            ScoreboardManager.showTopScoreboard((Player) sender, CoreSkills.getSkill(rootSkill), page, userStats);
+            ScoreboardManager.showTopScoreboard((Player) sender, PrimarySkillType.getSkill(rootSkill), page, userStats);
         }
     }
 }

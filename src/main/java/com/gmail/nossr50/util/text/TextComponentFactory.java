@@ -489,7 +489,7 @@ public class TextComponentFactory {
     }
 
     public static void getSubSkillTextComponents(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull List<Component> textComponents, @NotNull RootSkill rootSkill) {
-        return getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.getSkill(rootSkill));
+        return getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.getSkill(rootSkill));
     }
 
     public static void getSubSkillTextComponents(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull List<Component> textComponents, @NotNull PrimarySkillType parentSkill) {

@@ -47,7 +47,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        Map<RootSkill, Integer> rootSkillLevelMap = mmoPlayerData.getDirtySkillLevelMap().unwrapMap();
+        Map<PrimarySkillType, Integer> rootSkillLevelMap = mmoPlayerData.getDirtySkillLevelMap().unwrapMap();
 
         for (RootSkill rootSkill : rootSkillLevelMap.keySet()) {
             powerLevel += rootSkillLevelMap.get(rootSkill);
@@ -63,7 +63,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
 
     @Override
     public int getSkillXpValue(@NotNull RootSkill rootSkill) {
-        if(CoreSkills.isChildSkill(rootSkill)) {
+        if(PrimarySkillType.isChildSkill(rootSkill)) {
             return 0;
         }
 
@@ -72,7 +72,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
 
     @Override
     public void setSkillXpValue(@NotNull RootSkill rootSkill, float xpLevel) {
-        if (CoreSkills.isChildSkill(rootSkill)) {
+        if (PrimarySkillType.isChildSkill(rootSkill)) {
             return;
         }
 
@@ -108,7 +108,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
             return;
         }
 
-        if (CoreSkills.isChildSkill(rootSkill)) {
+        if (PrimarySkillType.isChildSkill(rootSkill)) {
             Set<RootSkill> parentSkills = FamilyTree.getParentSkills(rootSkill);
             float splitXp = xp / parentSkills.size();
 
@@ -147,12 +147,12 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
 
     @Override
     public int getSkillLevel(@NotNull RootSkill rootSkill) {
-        return CoreSkills.isChildSkill(rootSkill) ? getChildSkillLevel(rootSkill) : getSkillLevel(rootSkill);
+        return PrimarySkillType.isChildSkill(rootSkill) ? getChildSkillLevel(rootSkill) : getSkillLevel(rootSkill);
     }
 
     @Override
     public int getExperienceToNextLevel(@NotNull RootSkill rootSkill) {
-        if(CoreSkills.isChildSkill(rootSkill)) {
+        if(PrimarySkillType.isChildSkill(rootSkill)) {
             return 0;
         }
 
@@ -265,7 +265,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
     @Override
     public double getProgressInCurrentSkillLevel(@NotNull RootSkill rootSkill) throws UnknownSkillException
     {
-        if(CoreSkills.isChildSkill(rootSkill)) {
+        if(PrimarySkillType.isChildSkill(rootSkill)) {
             return 1.0D;
         }
 
@@ -283,11 +283,11 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
     @Override
     public void applyXpGain(@NotNull RootSkill rootSkill, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
         //Only check for permissions if the player is online, otherwise just assume a command is being executed by an admin or some other means and add the XP
-        if (!Permissions.skillEnabled(mmoPlayer.getPlayer(), CoreSkills.getSkill(rootSkill))) {
+        if (!Permissions.skillEnabled(mmoPlayer.getPlayer(), PrimarySkillType.getSkill(rootSkill))) {
             return;
         }
 
-        if (CoreSkills.isChildSkill(rootSkill)) {
+        if (PrimarySkillType.isChildSkill(rootSkill)) {
             Set<RootSkill> parentSkills = FamilyTree.getParentSkills(rootSkill);
 
             for (RootSkill parentSkill : parentSkills) {
@@ -301,7 +301,7 @@ public class OnlineExperienceProcessor implements ExperienceHandler {
             return;
         }
 
-        setUsingUnarmed(rootSkill == CoreSkills.UNARMED);
+        setUsingUnarmed(rootSkill == PrimarySkillType.UNARMED);
         updateLevelStats(rootSkill, xpGainReason, xpGainSource);
     }
 

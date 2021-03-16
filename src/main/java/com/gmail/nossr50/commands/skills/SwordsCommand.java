@@ -29,7 +29,7 @@ public class SwordsCommand extends SkillCommand {
     private boolean canBleed;
 
     public SwordsCommand() {
-        super(CoreSkills.SWORDS);
+        super(PrimarySkillType.SWORDS);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class SwordsCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.SWORDS);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SWORDS);
 
         return textComponents;
     }

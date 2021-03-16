@@ -18,7 +18,7 @@ public class SalvageCommand extends SkillCommand {
     private boolean canArcaneSalvage;
 
     public SalvageCommand() {
-        super(CoreSkills.SALVAGE);
+        super(PrimarySkillType.SALVAGE);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SalvageCommand extends SkillCommand {
     protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, CoreSkills.SALVAGE);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SALVAGE);
 
         return textComponents;
     }
