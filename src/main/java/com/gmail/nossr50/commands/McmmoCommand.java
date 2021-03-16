@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.commands.party.PartySubCommandType;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -109,7 +108,7 @@ public class McmmoCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.DARK_AQUA + " /party invite <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Invite"));
             sender.sendMessage(ChatColor.DARK_AQUA + " /party accept " + LocaleLoader.getString("Commands.Party.Accept"));
 
-            if (Permissions.partySubcommand(sender, PartySubCommandType.TELEPORT)) {
+            if (Permissions.partySubcommand(sender, PartySubcommandType.TELEPORT)) {
                 sender.sendMessage(ChatColor.DARK_AQUA + " /party teleport <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Teleport"));
             }
         }

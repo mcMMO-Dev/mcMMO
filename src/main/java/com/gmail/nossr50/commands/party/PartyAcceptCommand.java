@@ -1,8 +1,9 @@
 package com.gmail.nossr50.commands.party;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,25 +17,25 @@ public class PartyAcceptCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             //Check if player profile is loaded
-            if (mcMMO.getUserManager().queryPlayer(player) == null) {
+            if (UserManager.getPlayer(player) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
 
-            if (!mmoPlayer.hasPartyInvite()) {
+            if (!mcMMOPlayer.hasPartyInvite()) {
                 sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));
                 return true;
             }
 
             // Changing parties
-            if (!mcMMO.getPartyManager().changeOrJoinParty(mmoPlayer, mmoPlayer.getPartyInvite().getName())) {
+            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, mcMMOPlayer.getPartyInvite().getName())) {
                 return true;
             }
 
-            mcMMO.getPartyManager().joinInvitedParty(mmoPlayer);
+            PartyManager.joinInvitedParty(mcMMOPlayer);
             return true;
         }
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "accept"));

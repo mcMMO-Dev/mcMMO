@@ -1,14 +1,15 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +31,10 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(Player player, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
-            burnTimeModifier = String.valueOf(((McMMOPlayer) (mmoPlayer)).getSmeltingManager().getFuelEfficiencyMultiplier());
+            burnTimeModifier = String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getFuelEfficiencyMultiplier());
         }
 
         // FLUX MINING
@@ -45,22 +46,22 @@ public class SmeltingCommand extends SkillCommand {
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
-        canFuelEfficiency = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_FUEL_EFFICIENCY);
-        canSecondSmelt = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
+    protected void permissionsCheck(Player player) {
+        canFuelEfficiency = canUseSubskill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
+        canSecondSmelt = canUseSubskill(player, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
-        canUnderstandTheArt = Permissions.vanillaXpBoost(Misc.adaptPlayer(mmoPlayer), rootSkill) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
+        canUnderstandTheArt = Permissions.vanillaXpBoost(player, skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         /*if (canFluxMine) {
@@ -80,17 +81,17 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canUnderstandTheArt) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_UNDERSTANDING_THE_ART,
-                    String.valueOf(((McMMOPlayer) (mmoPlayer)).getSmeltingManager().getVanillaXpMultiplier())));
+                    String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier())));
         }
 
         return messages;
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SMELTING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.SMELTING);
 
         return textComponents;
     }

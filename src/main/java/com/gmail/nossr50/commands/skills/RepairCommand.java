@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -9,13 +10,13 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class RepairCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(Player player, float skillValue) {
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
         Repairable goldRepairable = mcMMO.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
@@ -67,37 +68,37 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
+            String[] superRepairStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.REPAIR_SUPER_REPAIR);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
-        canSuperRepair = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
-        canMasterRepair = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_REPAIR_MASTERY);
-        canArcaneForge = canUseSubskill(mmoPlayer, SubSkillType.REPAIR_ARCANE_FORGING);
-        canRepairDiamond = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.DIAMOND);
-        canRepairGold = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.GOLD);
-        canRepairIron = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.IRON);
-        canRepairStone = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.STONE);
-        canRepairString = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.STRING);
-        canRepairLeather = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.LEATHER);
-        canRepairWood = Permissions.repairMaterialType(Misc.adaptPlayer(mmoPlayer), MaterialType.WOOD);
-        arcaneBypass = (Permissions.arcaneBypass(mmoPlayer.getPlayer()) || Permissions.hasRepairEnchantBypassPerk(mmoPlayer.getPlayer()));
+    protected void permissionsCheck(Player player) {
+        canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
+        canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
+        canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);
+        canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
+        canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
+        canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);
+        canRepairStone = Permissions.repairMaterialType(player, MaterialType.STONE);
+        canRepairString = Permissions.repairMaterialType(player, MaterialType.STRING);
+        canRepairLeather = Permissions.repairMaterialType(player, MaterialType.LEATHER);
+        canRepairWood = Permissions.repairMaterialType(player, MaterialType.WOOD);
+        arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(player));
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {
-            RepairManager repairManager = ((McMMOPlayer) (mmoPlayer)).getRepairManager();
+            RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
 
             messages.add(getStatMessage(false, true,
                     SubSkillType.REPAIR_ARCANE_FORGING,
-                    String.valueOf(RankUtils.getRank(mmoPlayer, SubSkillType.REPAIR_ARCANE_FORGING)),
+                    String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
                     RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
             if (ArcaneForging.arcaneForgingEnchantLoss || ArcaneForging.arcaneForgingDowngrades) {
@@ -120,10 +121,10 @@ public class RepairCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.REPAIR);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.REPAIR);
 
         return textComponents;
     }

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.hardcore;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.command.CommandSender;
 
 public class VampirismCommand extends HardcoreModeCommand {
@@ -19,9 +19,9 @@ public class VampirismCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected boolean checkEnabled(RootSkill rootSkill) {
-        if (rootSkill == null) {
-            for (RootSkill rootSkill : PrimarySkillType.values()) {
+    protected boolean checkEnabled(PrimarySkillType skill) {
+        if (skill == null) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 if (!primarySkillType.getHardcoreVampirismEnabled()) {
                     return false;
                 }
@@ -30,16 +30,16 @@ public class VampirismCommand extends HardcoreModeCommand {
             return true;
         }
 
-        return rootSkill.getHardcoreVampirismEnabled();
+        return skill.getHardcoreVampirismEnabled();
     }
 
     @Override
-    protected void enable(RootSkill rootSkill) {
+    protected void enable(PrimarySkillType skill) {
         toggle(true, skill);
     }
 
     @Override
-    protected void disable(RootSkill rootSkill) {
+    protected void disable(PrimarySkillType skill) {
         toggle(false, skill);
     }
 
@@ -49,16 +49,16 @@ public class VampirismCommand extends HardcoreModeCommand {
         sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 
-    private void toggle(boolean enable, RootSkill rootSkill) {
-        if (rootSkill == null) {
-            for (RootSkill rootSkill : PrimarySkillType.NON_CHILD_SKILLS) {
+    private void toggle(boolean enable, PrimarySkillType skill) {
+        if (skill == null) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 primarySkillType.setHardcoreVampirismEnabled(enable);
             }
         }
         else {
-            rootSkill.setHardcoreVampirismEnabled(enable);
+            skill.setHardcoreVampirismEnabled(enable);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), (rootSkill == null ? "all skills" : skill)));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), (skill == null ? "all skills" : skill)));
     }
 }

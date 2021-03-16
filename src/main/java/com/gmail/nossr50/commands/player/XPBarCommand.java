@@ -1,10 +1,13 @@
 package com.gmail.nossr50.commands.player;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -21,9 +24,9 @@ public class XPBarCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player) {
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer((Player) sender);
+            McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
             if(mmoPlayer == null) {
-                NotificationManager.sendPlayerInformationChatOnlyPrefixed(Misc.adaptPlayer(mmoPlayer), "Profile.PendingLoad");
+                NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(), "Profile.PendingLoad");
                 return false;
             }
 
@@ -32,29 +35,29 @@ public class XPBarCommand implements TabExecutor {
             } else if(args.length < 2) {
               String option = args[0];
 
-              if(option.equalsIgnoreCase(rootSkillBossBarSetting.RESET.toString())) {
-                  mmoPlayer.getExperienceBarManager().xpBarSettingToggle(rootSkillBossBarSetting.RESET, null);
+              if(option.equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString())) {
+                  mmoPlayer.getExperienceBarManager().xpBarSettingToggle(ExperienceBarManager.XPBarSettingTarget.RESET, null);
                   return true;
-              } else if(option.equalsIgnoreCase(rootSkillBossBarSetting.DISABLE.toString())) {
+              } else if(option.equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.DISABLE.toString())) {
                   mmoPlayer.getExperienceBarManager().disableAllBars();
                   return true;
               } else {
                   return false;
               }
 
-              //Per rootSkillSettings path
+              //Per skill Settings path
             } else if (args.length == 2) {
                 String skillName = args[1];
 
-                if(rootSkillUtils.isSkill(rootSkillName)) {
+                if(SkillUtils.isSkill(skillName)) {
 
-                    PrimarySkillType targetSkill = mcMMO.p.getSkillRegister().getSkill(rootSkillName);
+                    PrimarySkillType targetSkill = PrimarySkillType.getSkill(skillName);
 
                     //Target setting
                     String option = args[0].toLowerCase();
 
-                    SkillBossBarSetting settingTarget = getSettingTarget(option);
-                    if(settingTarget != null && settingTarget != SkillBossBarSetting.RESET) {
+                    ExperienceBarManager.XPBarSettingTarget settingTarget = getSettingTarget(option);
+                    if(settingTarget != null && settingTarget != ExperienceBarManager.XPBarSettingTarget.RESET) {
                         //Change setting
                         mmoPlayer.getExperienceBarManager().xpBarSettingToggle(settingTarget, targetSkill);
                         return true;
@@ -72,16 +75,16 @@ public class XPBarCommand implements TabExecutor {
         }
     }
 
-    private @Nullable SkillBossBarSetting getSettingTarget(String string) {
+    private @Nullable ExperienceBarManager.XPBarSettingTarget getSettingTarget(String string) {
         switch (string.toLowerCase()) {
             case "hide":
-                return SkillBossBarSetting.HIDE;
+                return ExperienceBarManager.XPBarSettingTarget.HIDE;
             case "show":
-                return SkillBossBarSetting.SHOW;
+                return ExperienceBarManager.XPBarSettingTarget.SHOW;
             case "reset":
-                return SkillBossBarSetting.RESET;
+                return ExperienceBarManager.XPBarSettingTarget.RESET;
             case "disable":
-                return SkillBossBarSetting.DISABLE;
+                return ExperienceBarManager.XPBarSettingTarget.DISABLE;
         }
 
         return null;
@@ -93,13 +96,13 @@ public class XPBarCommand implements TabExecutor {
             case 1:
                 List<String> options = new ArrayList<>();
 
-                for(rootSkillBossBarSetting settingTarget : SkillBossBarSetting.values()) {
+                for(ExperienceBarManager.XPBarSettingTarget settingTarget : ExperienceBarManager.XPBarSettingTarget.values()) {
                     options.add(StringUtils.getCapitalized(settingTarget.toString()));
                 }
 
-                return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(rootSkillBossBarSetting.values().length));
+                return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(ExperienceBarManager.XPBarSettingTarget.values().length));
             case 2:
-                if(!args[0].equalsIgnoreCase(rootSkillBossBarSetting.RESET.toString()))
+                if(!args[0].equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString()))
                     return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();

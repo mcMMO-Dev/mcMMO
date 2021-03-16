@@ -1,16 +1,12 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.party.PartyTeleportRecord;
+import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class PtpAcceptAnyCommand implements CommandExecutor {
@@ -21,36 +17,7 @@ public class PtpAcceptAnyCommand implements CommandExecutor {
             return true;
         }
 
-        if(sender instanceof ConsoleCommandSender)
-            return false;
-
-        Player playerSender = (Player) sender;
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(playerSender);
-
-        if(mmoPlayer == null) {
-            playerSender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
-            return false;
-        }
-
-        Party party = mcMMO.getPartyManager().getParty(playerSender);
-        if(party == null) {
-            //TODO: Localize error message
-            playerSender.sendMessage("You don't have a party!");
-            return false;
-        }
-
-        PartyMember partyMember = party.getPartyMember(playerSender.getUniqueId());
-
-        if(partyMember == null) {
-            mcMMO.p.getLogger().severe("PartyMember ref didn't exist for player named "+playerSender.getName() + ", this should never happen!");
-            return false;
-        }
-
-        PartyTeleportRecord ptpRecord = partyMember.getPartyTeleportRecord();
-
-        if(ptpRecord == null) {
-
-        }
+        PartyTeleportRecord ptpRecord = UserManager.getPlayer(sender.getName()).getPartyTeleportRecord();
 
         if (ptpRecord.isConfirmRequired()) {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));

@@ -2,15 +2,15 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
@@ -19,8 +19,6 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.neetgames.mcmmo.skill.RootSkill;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
@@ -37,8 +35,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public abstract class SkillCommand implements TabExecutor {
-    protected @NotNull RootSkill rootSkill;
-    protected @NotNull RootSkill rootSkill;
+    protected PrimarySkillType skill;
     private final String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
@@ -46,11 +43,10 @@ public abstract class SkillCommand implements TabExecutor {
 
     private final CommandExecutor skillGuideCommand;
 
-    public SkillCommand(@NotNull RootSkill rootSkill) {
-        this.rootSkill = PrimarySkillType.getSkill(primarySkillType);
-        this.primarySkillType = primarySkillType;
-        skillName = rootSkill.getName();
-        skillGuideCommand = new SkillGuideCommand(rootSkill);
+    public SkillCommand(PrimarySkillType skill) {
+        this.skill = skill;
+        skillName = skill.getName();
+        skillGuideCommand = new SkillGuideCommand(skill);
     }
 
     @Override
@@ -63,33 +59,33 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer((Player) sender);
-
-        if(mmoPlayer == null) {
+        if(UserManager.getPlayer((Player) sender) == null)
+        {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
         if (args.length == 0) {
-            Player player = Misc.adaptPlayer(mmoPlayer);
+            Player player = (Player) sender;
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            boolean isLucky = Permissions.lucky(player, rootSkill);
+            boolean isLucky = Permissions.lucky(player, skill);
             boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
-            float skillValue = mmoPlayer.getExperienceHandler().getSkillLevel(rootSkill);
+            float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
-            //Send the players a few blank lines to make finding the top of the rootSkillcommand easier
+            //Send the players a few blank lines to make finding the top of the skill command easier
             if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
                 for (int i = 0; i < 2; i++) {
                     player.sendMessage("");
                 }
 
-            permissionsCheck(mmoPlayer);
-            dataCalculations(mmoPlayer, skillValue);
+            permissionsCheck(player);
+            dataCalculations(player, skillValue);
 
-            sendSkillCommandHeader(mmoPlayer, (int) skillValue);
+            sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
 
             //Make JSON text components
-            List<Component> subskillTextComponents = getTextComponents(mmoPlayer);
+            List<Component> subskillTextComponents = getTextComponents(player);
 
             //Subskills Header
             player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Effects.SubSkills.Overhaul")));
@@ -104,7 +100,7 @@ public abstract class SkillCommand implements TabExecutor {
                 }*/
 
             //Stats
-            sendStatMessages(mmoPlayer, isLucky, hasEndurance, skillValue);
+            getStatMessages(player, isLucky, hasEndurance, skillValue);
 
             //Header
 
@@ -112,12 +108,12 @@ public abstract class SkillCommand implements TabExecutor {
             //Link Header
             if (Config.getInstance().getUrlLinksEnabled()) {
                 player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
-                TextComponentFactory.sendPlayerUrlHeader(mmoPlayer);
+                TextComponentFactory.sendPlayerUrlHeader(player);
             }
 
 
             if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getSkillUseBoard()) {
-                ScoreboardManager.enablePlayerSkillScoreboard(player, primarySkillType);
+                ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
             }
 
             return true;
@@ -125,39 +121,39 @@ public abstract class SkillCommand implements TabExecutor {
         return skillGuideCommand.onCommand(sender, command, label, args);
     }
 
-    private void sendStatMessages(@NotNull OnlineMMOPlayer mmoPlayer, boolean isLucky, boolean hasEndurance, float skillValue) {
-        List<String> statsMessages = statsDisplay(mmoPlayer, skillValue, hasEndurance, isLucky);
+    private void getStatMessages(Player player, boolean isLucky, boolean hasEndurance, float skillValue) {
+        List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
 
         if (!statsMessages.isEmpty()) {
-            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Commands.Stats.Self.Overhaul")));
+            player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Commands.Stats.Self.Overhaul")));
 
             for (String message : statsMessages) {
-                Misc.adaptPlayer(mmoPlayer).sendMessage(message);
+                player.sendMessage(message);
             }
         }
 
-        Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
+        player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
     }
 
-    private void sendSkillCommandHeader(@NotNull OnlineMMOPlayer mmoPlayer, int skillValue) {
+    private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
         ChatColor hd1 = ChatColor.DARK_AQUA;
         ChatColor c1 = ChatColor.GOLD;
         ChatColor c2 = ChatColor.RED;
 
 
-        Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
+        player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
-        if(!PrimarySkillType.isChildSkill(rootSkill))
+        if(!skill.isChildSkill())
         {
             /*
              * NON-CHILD SKILLS
              */
 
             //XP GAIN METHOD
-            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(rootSkill.toString()))));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
             //LEVEL
-            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mmoPlayer.getExperienceHandler().getSkillXpValue(rootSkill), mmoPlayer.getExperienceHandler().getExperienceToNextLevel(rootSkill)));
+            player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
 
         } else {
             /*
@@ -165,11 +161,11 @@ public abstract class SkillCommand implements TabExecutor {
              */
 
 
-            Set<RootSkill> parents = FamilyTree.getParentSkills(rootSkill);
+            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
 
             //TODO: Add JSON here
-            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mmoPlayer.getSkillLevel(parent), mmoPlayer.getSkillXpLevel(parent), mmoPlayer.getXpToLevel(parent)))*/
-            ArrayList<RootSkill> parentList = new ArrayList<>(parents);
+            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
+            ArrayList<PrimarySkillType> parentList = new ArrayList<>(parents);
 
             StringBuilder parentMessage = new StringBuilder();
 
@@ -185,15 +181,35 @@ public abstract class SkillCommand implements TabExecutor {
             }
 
             //XP GAIN METHOD
-            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
-            Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
+            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
+            //LEVEL
+            //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
         }
+        /*
+        if (!skill.isChildSkill()) {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+        } else {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
+            player.sendMessage(LocaleLoader.getString("Effects.Child", skillValue));
+
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
+            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
+
+            for (PrimarySkillType parent : parents) {
+                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+            }
+        }
+        */
     }
 
     @Override
-    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
             return ImmutableList.of("?");
         }
@@ -204,12 +220,12 @@ public abstract class SkillCommand implements TabExecutor {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
-    protected @NotNull String[] getAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull OnlineMMOPlayer mmoPlayer, @NotNull SubSkillType subSkill) {
-        return RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType, Misc.adaptPlayer(mmoPlayer), subSkill);
+    protected String[] getAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkill) {
+        return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, player, subSkill);
     }
 
-    protected @NotNull String[] calculateLengthDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
-        int maxLength = PrimarySkillType.getSuperAbilityType().getMaxLength();
+    protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
+        int maxLength = skill.getAbility().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
 
@@ -217,13 +233,13 @@ public abstract class SkillCommand implements TabExecutor {
 
         if(abilityLengthCap <= 0)
         {
-            length = 2 + (int) (rootSkillValue / abilityLengthVar);
+            length = 2 + (int) (skillValue / abilityLengthVar);
         }
         else {
             length = 2 + (int) (Math.min(abilityLengthCap, skillValue) / abilityLengthVar);
         }
 
-        int enduranceLength = PerksUtils.handleActivationPerks(Misc.adaptPlayer(mmoPlayer), length, maxLength);
+        int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {
             length = Math.min(length, maxLength);
@@ -232,12 +248,12 @@ public abstract class SkillCommand implements TabExecutor {
         return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
     }
 
-    protected @NotNull String getStatMessage(SubSkillType subSkillType, String... vars)
+    protected String getStatMessage(SubSkillType subSkillType, String... vars)
     {
         return getStatMessage(false, false, subSkillType, vars);
     }
 
-    protected @NotNull String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars)
+    protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars)
     {
         String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
         String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
@@ -251,7 +267,7 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    protected @NotNull String getLimitBreakDescriptionParameter() {
+    protected String getLimitBreakDescriptionParameter() {
         if(AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
             return "(PVP/PVE)";
         } else {
@@ -259,23 +275,24 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    protected abstract void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue);
+    protected abstract void dataCalculations(Player player, float skillValue);
 
-    protected abstract void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer);
+    protected abstract void permissionsCheck(Player player);
 
     //protected abstract List<String> effectsDisplay();
 
-    protected abstract @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky);
+    protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
 
-    protected abstract @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer player);
+    protected abstract List<Component> getTextComponents(Player player);
 
     /**
      * Checks if a player can use a skill
-     * @param mmoPlayer target player
+     * @param player target player
      * @param subSkillType target subskill
-     * @return true if the player has permission and has the rootSkillunlocked
+     * @return true if the player has permission and has the skill unlocked
      */
-    protected boolean canUseSubskill(@NotNull OnlineMMOPlayer mmoPlayer, SubSkillType subSkillType) {
-        return Permissions.isSubSkillEnabled(Misc.adaptPlayer(mmoPlayer), subSkillType) && RankUtils.hasUnlockedSubskill(mmoPlayer, subSkillType);
+    protected boolean canUseSubskill(Player player, SubSkillType subSkillType)
+    {
+        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

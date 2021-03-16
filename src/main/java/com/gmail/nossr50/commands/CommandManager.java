@@ -7,10 +7,11 @@ import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.jetbrains.annotations.NotNull;
@@ -96,13 +97,13 @@ public class CommandManager {
     }
 
     public void validateLoadedData(@NotNull Player player) {
-        if(mcMMO.getUserManager().queryPlayer(player) == null) {
+        if(UserManager.getPlayer(player) == null) {
             throw new ConditionFailedException(LocaleLoader.getString("Profile.PendingLoad"));
         }
     }
 
     public void validatePlayerParty(@NotNull Player player) {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         if(mmoPlayer.getParty() == null) {
             throw new ConditionFailedException(LocaleLoader.getString("Commands.Party.None"));

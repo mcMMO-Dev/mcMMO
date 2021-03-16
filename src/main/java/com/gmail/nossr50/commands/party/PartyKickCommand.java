@@ -1,10 +1,12 @@
 package com.gmail.nossr50.commands.party;
 
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.neetgames.mcmmo.party.Party;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,12 +18,12 @@ public class PartyKickCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
-            if (mcMMO.getUserManager().queryPlayer((Player) sender) == null) {
+            if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            Party playerParty = mcMMO.getUserManager().queryPlayer((Player) sender).getParty();
+            Party playerParty = UserManager.getPlayer((Player) sender).getParty();
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
 
             if (!playerParty.hasMember(targetName)) {
@@ -33,17 +35,17 @@ public class PartyKickCommand implements CommandExecutor {
 
             if (target.isOnline()) {
                 Player onlineTarget = target.getPlayer();
-                String partyName = playerParty.getPartyName();
+                String partyName = playerParty.getName();
 
-                if (!mcMMO.getPartyManager().handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                if (!PartyManager.handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                     return true;
                 }
 
-                mcMMO.getPartyManager().processPartyLeaving(mcMMO.getUserManager().queryPlayer(onlineTarget));
+                PartyManager.processPartyLeaving(UserManager.getPlayer(onlineTarget));
                 onlineTarget.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
             }
 
-            mcMMO.getPartyManager().removeFromParty(target, playerParty);
+            PartyManager.removeFromParty(target, playerParty);
             return true;
         }
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));

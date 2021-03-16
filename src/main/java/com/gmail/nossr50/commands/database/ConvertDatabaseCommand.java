@@ -8,6 +8,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.DatabaseConversionTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,21 +50,15 @@ public class ConvertDatabaseCommand implements CommandExecutor {
 
             sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Start", previousType.toString(), newType.toString()));
 
-            mcMMO.getUserManager().saveAllSync();
-            mcMMO.getUserManager().clearAll();
-
-            if(oldDatabase == null) {
-                sender.sendMessage("Could not load the other database, failed to convert users.");
-                return true;
-            }
+            UserManager.saveAll();
+            UserManager.clearAll();
 
             for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                PlayerProfile profile = oldDatabase.queryPlayerDataByUUID(player.getUniqueId(), null);
+                PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId(), null);
 
-                if(profile == null)
-                    continue;
-
-                mcMMO.getUserManager().saveUserImmediately(profile.getPersistentPlayerData(), true);
+                if (profile.isLoaded()) {
+                    mcMMO.getDatabaseManager().saveUser(profile);
+                }
 
                 new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
             }

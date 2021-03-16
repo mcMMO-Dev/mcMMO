@@ -1,15 +1,16 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,53 +37,53 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(Player player, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT);
+            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
         
         // BERSERK
         if (canBerserk) {
-            String[] berserkStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
+            String[] berserkStrings = calculateLengthDisplayValues(player, skillValue);
             berserkLength = berserkStrings[0];
             berserkLengthEndurance = berserkStrings[1];
         }
 
         // UNARMED_DISARM
         if (canDisarm) {
-            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,  mmoPlayer, SubSkillType.UNARMED_DISARM);
+            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_DISARM);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = ((McMMOPlayer) (mmoPlayer)).getUnarmedManager().getSteelArmStyleDamage();
+            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.UNARMED_IRON_GRIP);
+            String[] ironGripStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_IRON_GRIP);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
-        canBerserk = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(mmoPlayer.getPlayer());
-        canIronArm = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_STEEL_ARM_STYLE);
-        canDeflect = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT);
-        canDisarm = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_DISARM);
-        canIronGrip = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_IRON_GRIP);
+    protected void permissionsCheck(Player player) {
+        canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
+        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
+        canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
+        canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
+        canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);
         // TODO: Apparently we forgot about block cracker?
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canDeflect) {
@@ -113,19 +114,19 @@ public class UnarmedCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
-        if(canUseSubskill(mmoPlayer, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
+        if(canUseSubskill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.UNARMED_UNARMED_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(mmoPlayer, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, 1000))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, 1000))));
         }
 
         return messages;
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.UNARMED);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.UNARMED);
 
         return textComponents;
     }

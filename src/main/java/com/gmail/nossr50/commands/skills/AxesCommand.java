@@ -1,16 +1,17 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,43 +35,43 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(Player player, float skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
-            impactDamage = ((McMMOPlayer) (mmoPlayer)).getArcheryManager().getImpactDurabilityDamage();
+            impactDamage = UserManager.getPlayer(player).getAxesManager().getImpactDurabilityDamage();
         }
 
         // AXE MASTERY
         if (canAxeMastery) {
-            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(mmoPlayer.getPlayer());
+            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
         }
         
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.AXES_CRITICAL_STRIKES);
+            String[] criticalHitStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.AXES_CRITICAL_STRIKES);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
         
         // SKULL SPLITTER
         if (canSkullSplitter) {
-            String[] skullSplitterStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
+            String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
             skullSplitterLength = skullSplitterStrings[0];
             skullSplitterLengthEndurance = skullSplitterStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
-        canSkullSplitter = Permissions.skullSplitter(mmoPlayer.getPlayer()) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.AXES_SKULL_SPLITTER);
-        canCritical = canUseSubskill(mmoPlayer, SubSkillType.AXES_CRITICAL_STRIKES);
-        canAxeMastery = canUseSubskill(mmoPlayer, SubSkillType.AXES_AXE_MASTERY);
-        canImpact = canUseSubskill(mmoPlayer, SubSkillType.AXES_ARMOR_IMPACT);
-        canGreaterImpact = canUseSubskill(mmoPlayer, SubSkillType.AXES_GREATER_IMPACT);
+    protected void permissionsCheck(Player player) {
+        canSkullSplitter = Permissions.skullSplitter(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
+        canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
+        canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
+        canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
+        canGreaterImpact = canUseSubskill(player, SubSkillType.AXES_GREATER_IMPACT);
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canImpact) {
@@ -95,19 +96,19 @@ public class AxesCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(mmoPlayer, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
+        if(canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(mmoPlayer, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
         }
 
         return messages;
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.AXES);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.AXES);
 
         return textComponents;
     }

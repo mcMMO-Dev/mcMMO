@@ -1,12 +1,13 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.party.PartyFeature;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
+import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
-import com.neetgames.mcmmo.party.Party;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 public class PartyXpShareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(mcMMO.getUserManager().queryPlayer((Player) sender) == null)
+        if(UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        Party party = mcMMO.getUserManager().queryPlayer((Player) sender).getParty();
+        Party party = UserManager.getPlayer((Player) sender).getParty();
 
         if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.5"));
@@ -49,7 +50,7 @@ public class PartyXpShareCommand implements CommandExecutor {
 
         String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Xp"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
 
-        for (Player member : party.getPartyMembers()) {
+        for (Player member : party.getOnlineMembers()) {
             member.sendMessage(changeModeMessage);
         }
     }

@@ -1,10 +1,11 @@
 package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.party.PartyTeleportRecord;
+import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,21 +21,21 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if(mcMMO.getUserManager().queryPlayer((Player) sender) == null)
+        if(UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
         Player player = (Player) sender;
-        PartyTeleportRecord ptpRecord = mcMMO.getUserManager().queryPlayer(player).getPartyTeleportRecord();
+        PartyTeleportRecord ptpRecord = UserManager.getPlayer(player).getPartyTeleportRecord();
 
         if (!ptpRecord.hasRequest()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));
             return true;
         }
 
-        if (rootSkillUtils.cooldownExpired(ptpRecord.getTimeout(), Config.getInstance().getPTPCommandTimeout())) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), Config.getInstance().getPTPCommandTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;

@@ -2,22 +2,23 @@ package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.party.PartyFeature;
-import com.gmail.nossr50.party.PartyTeleportRecord;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
+import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.google.common.collect.ImmutableList;
-import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -56,24 +57,24 @@ public class PtpCommand implements TabExecutor {
         if(WorldBlacklist.isWorldBlacklisted(player.getWorld()))
             return true;
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return true;
         }
 
-        if(mcMMO.getUserManager().queryPlayer((Player) sender) == null)
+        if(UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (!mmoPlayer.inParty()) {
+        if (!mcMMOPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return true;
         }
 
-        Party party = mmoPlayer.getParty();
+        Party party = mcMMOPlayer.getParty();
 
         if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.2"));
@@ -89,7 +90,7 @@ public class PtpCommand implements TabExecutor {
                 return ptpAcceptAnyCommand.onCommand(sender, command, label, args);
             }
 
-            long recentlyHurt = mmoPlayer.getRecentlyHurtTimestamp();
+            long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
             int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
 
             if (hurtCooldown > 0) {
@@ -111,7 +112,7 @@ public class PtpCommand implements TabExecutor {
             }
 
             int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
-            long ptpLastUse = mmoPlayer.getPartyTeleportRecord().getLastUse();
+            long ptpLastUse = mcMMOPlayer.getPartyTeleportRecord().getLastUse();
 
             if (ptpCooldown > 0) {
                 int timeRemaining = SkillUtils.calculateTimeLeft(ptpLastUse * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
@@ -134,19 +135,19 @@ public class PtpCommand implements TabExecutor {
             List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<>(TELEPORT_SUBCOMMANDS.size()));
 
             if (matches.size() == 0) {
-                if (mcMMO.getUserManager().queryPlayer((Player) sender) == null) {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return ImmutableList.of();
                 }
 
                 Player player = (Player) sender;
-                OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                if (!mmoPlayer.inParty()) {
+                if (!mcMMOPlayer.inParty()) {
                     return ImmutableList.of();
                 }
 
-                List<String> playerNames = mmoPlayer.getParty().getOnlinePlayerNames(player);
+                List<String> playerNames = mcMMOPlayer.getParty().getOnlinePlayerNames(player);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             }
 
@@ -160,7 +161,7 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
-        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().getPlayer(targetName);
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
         Player target = mcMMOTarget.getPlayer();
 
 
@@ -197,7 +198,7 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetName);
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
 
         if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
@@ -210,7 +211,7 @@ public class PtpCommand implements TabExecutor {
             return false;
         }
 
-        if (!mcMMO.getPartyManager().inSameParty(player, target)) {
+        if (!PartyManager.inSameParty(player, target)) {
             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
             return false;
         }
@@ -229,29 +230,28 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
-        if(mcMMO.getUserManager().queryPlayer(targetPlayer) == null) {
+        if(UserManager.getPlayer(targetPlayer) == null)
+        {
             targetPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
 
-        if(mcMMO.getUserManager().queryPlayer(teleportingPlayer) == null) {
+        if(UserManager.getPlayer(teleportingPlayer) == null)
+        {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
 
-        McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(teleportingPlayer);
-        McMMOPlayer mmoTargetPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(targetPlayer);
-
-        if(mmoPlayer == null || mmoTargetPlayer == null)
-            return;
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
 
         long warmup = Config.getInstance().getPTPCommandWarmup();
 
-        mmoPlayer.actualizeTeleportCommenceLocation();
+        mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
-            new TeleportationWarmup(mmoPlayer, mmoTargetPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+            new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {
             EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);

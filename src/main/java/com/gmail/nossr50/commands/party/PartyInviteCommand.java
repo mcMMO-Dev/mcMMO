@@ -1,11 +1,12 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,7 @@ public class PartyInviteCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
             String targetName = CommandUtils.getMatchedPlayerName(args[1]);
-            OnlineMMOPlayer mcMMOTarget = mcMMO.getUserManager().queryPlayer(targetName);
+            McMMOPlayer mcMMOTarget = UserManager.getOfflinePlayer(targetName);
 
             if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                 return false;
@@ -25,13 +26,13 @@ public class PartyInviteCommand implements CommandExecutor {
 
             Player target = mcMMOTarget.getPlayer();
 
-            if (mcMMO.getUserManager().queryPlayer((Player) sender) == null) {
+            if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
             Player player = (Player) sender;
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             String playerName = player.getName();
 
             if (player.equals(target)) {
@@ -39,19 +40,19 @@ public class PartyInviteCommand implements CommandExecutor {
                 return true;
             }
 
-            if (mcMMO.getPartyManager().inSameParty(player, target)) {
+            if (PartyManager.inSameParty(player, target)) {
                 sender.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", targetName));
                 return true;
             }
 
-            if (!mcMMO.getPartyManager().canInvite(mmoPlayer)) {
+            if (!PartyManager.canInvite(mcMMOPlayer)) {
                 player.sendMessage(LocaleLoader.getString("Party.Locked"));
                 return true;
             }
 
-            Party playerParty = mmoPlayer.getParty();
+            Party playerParty = mcMMOPlayer.getParty();
 
-            if (mcMMO.getPartyManager().isPartyFull(target, playerParty)) {
+            if (PartyManager.isPartyFull(target, playerParty)) {
                 player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), Config.getInstance().getPartyMaxSize()));
                 return true;
             }
@@ -59,7 +60,7 @@ public class PartyInviteCommand implements CommandExecutor {
             mcMMOTarget.setPartyInvite(playerParty);
 
             sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-            target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", playerParty.getPartyName(), playerName));
+            target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", playerParty.getName(), playerName));
             target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
             return true;
         }

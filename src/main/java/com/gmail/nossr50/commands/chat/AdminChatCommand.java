@@ -8,9 +8,9 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.jetbrains.annotations.NotNull;
 
 @CommandPermission("mcmmo.chat.adminchat")
@@ -28,7 +28,7 @@ public class AdminChatCommand extends BaseCommand {
         if(args == null || args.length == 0) {
             //Process with no arguments
             if(bukkitCommandIssuer.isPlayer()) {
-                OnlineMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
                 pluginRef.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.ADMIN);
             } else {
                 //Not support for console
@@ -36,7 +36,7 @@ public class AdminChatCommand extends BaseCommand {
             }
         } else {
             if(bukkitCommandIssuer.isPlayer()) {
-                OnlineMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
 
                 if(mmoPlayer == null)
                     return;

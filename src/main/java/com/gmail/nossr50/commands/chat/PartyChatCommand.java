@@ -8,12 +8,12 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManagerImpl;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
-import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +34,7 @@ public class PartyChatCommand extends BaseCommand {
         if(args == null || args.length == 0) {
             //Process with no arguments
             if(bukkitCommandIssuer.isPlayer()) {
-                OnlineMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
                 pluginRef.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.PARTY);
             } else {
                 //Not support for console
@@ -47,7 +47,7 @@ public class PartyChatCommand extends BaseCommand {
              * Player Logic
              */
             if(bukkitCommandIssuer.getIssuer() instanceof Player) {
-                OnlineMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
                 processCommandArgsPlayer(mmoPlayer, args);
             /*
              * Console Logic
@@ -59,11 +59,11 @@ public class PartyChatCommand extends BaseCommand {
     }
 
     /**
-     * Processes the command with arguments for a {@link OnlineMMOPlayer}
+     * Processes the command with arguments for a {@link McMMOPlayer}
      * @param mmoPlayer target player
      * @param args command arguments
      */
-    private void processCommandArgsPlayer(@NotNull OnlineMMOPlayer mmoPlayer, @NotNull String[] args) {
+    private void processCommandArgsPlayer(@NotNull McMMOPlayer mmoPlayer, @NotNull String[] args) {
         //Player is not toggling and is chatting directly to party
         pluginRef.getChatManager().processPlayerMessage(mmoPlayer, args, ChatChannel.PARTY);
     }
@@ -78,7 +78,7 @@ public class PartyChatCommand extends BaseCommand {
             mcMMO.p.getLogger().severe("You need to specify a party name and then write a message afterwards.");
         } else {
             //Grab party
-            Party targetParty = PartyManagerImpl.getParty(args[0]);
+            Party targetParty = PartyManager.getParty(args[0]);
 
             if(targetParty != null) {
                 pluginRef.getChatManager().processConsoleMessage(StringUtils.buildStringAfterNthElement(args, 1), targetParty);

@@ -1,9 +1,12 @@
 package com.gmail.nossr50.commands.experience;
 
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.skill.RootSkill;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,16 +22,16 @@ public class AddxpCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill, int value) {
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         if (player != null) {
             //Check if player profile is loaded
-            if(mcMMO.getUserManager().getPlayer(player) == null)
+            if(UserManager.getPlayer(player) == null)
                 return;
 
-            mcMMO.getUserManager().getPlayer(player).applyXpGain(rootSkill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
+            UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
         }
         else {
-            profile.addXp(rootSkill, value);
+            profile.addXp(skill, value);
             profile.scheduleAsyncSave();
         }
     }
@@ -42,10 +45,10 @@ public class AddxpCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, RootSkill rootSkill, boolean isSilent) {
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, rootSkill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getName()));
     }
 }

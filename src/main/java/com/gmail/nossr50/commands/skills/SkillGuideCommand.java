@@ -1,9 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.text.StringUtils;
-import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,18 +11,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO: Switch to root rootSkillbased
 public class SkillGuideCommand implements CommandExecutor {
     private final String header;
-    private final RootSkill rootSkill;
     private final ArrayList<String> guide;
 
     private final String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
-    public SkillGuideCommand(@NotNull RootSkill rootSkill) {
-        this.rootSkill = rootSkill;
-        header = LocaleLoader.getString("Guides.Header", rootSkill.getName());
-        guide = getGuide(rootSkill);
+    public SkillGuideCommand(PrimarySkillType skill) {
+        header = LocaleLoader.getString("Guides.Header", skill.getName());
+        guide = getGuide(skill);
     }
 
     @Override
@@ -90,11 +86,11 @@ public class SkillGuideCommand implements CommandExecutor {
         return allStrings;
     }
 
-    private ArrayList<String> getGuide(RootSkill rootSkill) {
+    private ArrayList<String> getGuide(PrimarySkillType skill) {
         ArrayList<String> guide = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(rootSkill.toString()) + ".Section." + i).split("\n");
+            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");
 
             if (section[0].startsWith("!")) {
                 break;

@@ -1,16 +1,15 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,26 +26,26 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(Player player, float skillValue) {
         // GIGA DRILL BREAKER
         if (canGigaDrill) {
-            String[] gigaDrillStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
+            String[] gigaDrillStrings = calculateLengthDisplayValues(player, skillValue);
             gigaDrillBreakerLength = gigaDrillStrings[0];
             gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
-        canGigaDrill = Permissions.gigaDrillBreaker(mmoPlayer.getPlayer()) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
-        canTreasureHunt = canUseSubskill(mmoPlayer, SubSkillType.EXCAVATION_ARCHAEOLOGY);
+    protected void permissionsCheck(Player player) {
+        canGigaDrill = Permissions.gigaDrillBreaker(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
+        canTreasureHunt = canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        ExcavationManager excavationManager = ((McMMOPlayer) (mmoPlayer)).getExcavationManager();
+        ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
 
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)
@@ -55,7 +54,7 @@ public class ExcavationCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(mmoPlayer, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+        if(canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             messages.add(getStatMessage(false, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,
                     percent.format(excavationManager.getArchaelogyExperienceOrbChance() / 100.0D)));
             messages.add(getStatMessage(true, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,
@@ -67,10 +66,10 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.EXCAVATION);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.EXCAVATION);
 
         return textComponents;
     }

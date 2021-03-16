@@ -1,31 +1,30 @@
 package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.commands.ToggleCommand;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class McChatSpy extends ToggleCommand {
     @Override
-    protected boolean hasOtherPermission(@NotNull CommandSender sender) {
+    protected boolean hasOtherPermission(CommandSender sender) {
         return Permissions.adminChatSpyOthers(sender);
     }
 
     @Override
-    protected boolean hasSelfPermission(@NotNull CommandSender sender) {
+    protected boolean hasSelfPermission(CommandSender sender) {
         return Permissions.adminChatSpy(sender);
     }
 
     @Override
-    protected void applyCommandAction(@NotNull OnlineMMOPlayer mmoPlayer) {
-        Misc.adaptPlayer(mmoPlayer).sendMessage(LocaleLoader.getString("Commands.AdminChatSpy." + (mmoPlayer.isPartyChatSpying() ? "Disabled" : "Enabled")));
-        mmoPlayer.togglePartyChatSpying();
+    protected void applyCommandAction(McMMOPlayer mcMMOPlayer) {
+        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.AdminChatSpy." + (mcMMOPlayer.isPartyChatSpying() ? "Disabled" : "Enabled")));
+        mcMMOPlayer.togglePartyChatSpying();
     }
 
     @Override
-    protected void sendSuccessMessage(@NotNull CommandSender sender, @NotNull String playerName) {
+    protected void sendSuccessMessage(CommandSender sender, String playerName) {
         sender.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Toggle", playerName));
     }
 }

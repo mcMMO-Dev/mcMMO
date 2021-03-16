@@ -1,15 +1,16 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +39,10 @@ public class MiningCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue) {
+    protected void dataCalculations(Player player, float skillValue) {
         // BLAST MINING
         if (canBlast || canDemoExpert || canBiggerBombs) {
-            MiningManager miningManager = ((McMMOPlayer) (mmoPlayer)).getMiningManager();
+            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
             blastMiningRank = miningManager.getBlastMiningTier();
             bonusTNTDrops = miningManager.getDropMultiplier();
@@ -53,30 +54,30 @@ public class MiningCommand extends SkillCommand {
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, mmoPlayer, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
         
         // SUPER BREAKER
         if (canSuperBreaker) {
-            String[] superBreakerStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
+            String[] superBreakerStrings = calculateLengthDisplayValues(player, skillValue);
             superBreakerLength = superBreakerStrings[0];
             superBreakerLengthEndurance = superBreakerStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck(@NotNull OnlineMMOPlayer mmoPlayer) {
-        canBiggerBombs = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(mmoPlayer.getPlayer());
-        canBlast = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(mmoPlayer.getPlayer());
-        canDemoExpert = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(mmoPlayer.getPlayer());
-        canDoubleDrop = canUseSubskill(mmoPlayer, SubSkillType.MINING_DOUBLE_DROPS);
-        canSuperBreaker = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(mmoPlayer.getPlayer());
+    protected void permissionsCheck(Player player) {
+        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
+        canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
+        canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
+        canDoubleDrop = canUseSubskill(player, SubSkillType.MINING_DOUBLE_DROPS);
+        canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
     @Override
-    protected @NotNull List<String> statsDisplay(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canBiggerBombs) {
@@ -110,10 +111,10 @@ public class MiningCommand extends SkillCommand {
     }
 
     @Override
-    protected @NotNull List<Component> getTextComponents(@NotNull OnlineMMOPlayer mmoPlayer) {
+    protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.MINING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.MINING);
 
         return textComponents;
     }

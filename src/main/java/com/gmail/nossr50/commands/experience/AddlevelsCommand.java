@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.experience;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.skill.RootSkill;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,9 +23,9 @@ public class AddlevelsCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill, int value) {
-        float xpRemoved = profile.getSkillXpLevelRaw(rootSkill);
-        profile.addLevels(rootSkill, value);
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
+        float xpRemoved = profile.getSkillXpLevelRaw(skill);
+        profile.addLevels(skill, value);
 
         if (player == null) {
             profile.scheduleAsyncSave();
@@ -35,10 +35,11 @@ public class AddlevelsCommand extends ExperienceCommand {
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         if(mmoPlayer == null) {
-            EventUtils.tryLevelChangeEvent(player, rootSkill, value, xpRemoved, true, XPGainReason.COMMAND);
+            EventUtils.tryLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
         } else {
             EventUtils.tryLevelChangeEvent(mmoPlayer, skill, value, xpRemoved, true, XPGainReason.COMMAND);
         }
+
     }
 
     @Override
@@ -50,10 +51,10 @@ public class AddlevelsCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, RootSkill rootSkill, boolean isSilent) {
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, rootSkill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
     }
 }

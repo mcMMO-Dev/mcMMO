@@ -1,16 +1,13 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -37,13 +34,6 @@ public class MmoInfoCommand implements TabExecutor {
                 return false;
 
             Player player = (Player) commandSender;
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
-
-            if(mmoPlayer == null) {
-                player.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
-                return true;
-            }
-
             if(Permissions.mmoinfo(player))
             {
                 if(args == null || args[0] == null)
@@ -58,7 +48,7 @@ public class MmoInfoCommand implements TabExecutor {
                     return true;
                 } else if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0]))
                 {
-                    displayInfo(mmoPlayer, args[0]);
+                    displayInfo(player, args[0]);
                     return true;
                 }
 
@@ -79,21 +69,19 @@ public class MmoInfoCommand implements TabExecutor {
         return ImmutableList.of();
     }
 
-    private void displayInfo(@NotNull OnlineMMOPlayer mmoPlayer, String subSkillName)
+    private void displayInfo(Player player, String subSkillName)
     {
-        //Check to see if the rootSkillexists in the new system
+        //Check to see if the skill exists in the new system
         AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName(subSkillName);
         if(abstractSubSkill != null)
         {
             /* New System Skills are programmable */
-            abstractSubSkill.printInfo(mmoPlayer.getPlayer());
+            abstractSubSkill.printInfo(player);
             //TextComponentFactory.sendPlayerUrlHeader(player);
         } else {
             /*
-             * rootSkillis only in the old system
+             * Skill is only in the old system
              */
-            Player player = Misc.adaptPlayer(mmoPlayer);
-
             player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
             player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
             player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
@@ -107,6 +95,6 @@ public class MmoInfoCommand implements TabExecutor {
         }
 
         //Send Player Wiki Link
-        TextComponentFactory.sendPlayerSubSkillWikiLink(mmoPlayer, subSkillName);
+        TextComponentFactory.sendPlayerSubSkillWikiLink(player, subSkillName);
     }
 }

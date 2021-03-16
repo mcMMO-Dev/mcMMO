@@ -2,11 +2,10 @@ package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -27,14 +26,12 @@ public class McstatsCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            Player player = (Player) sender;
-
-            if (mcMMO.getUserManager().queryPlayer(player) == null) {
+            if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            Player player = (Player) sender;
 
             if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {
                 ScoreboardManager.enablePlayerStatsScoreboard(player);
@@ -54,9 +51,9 @@ public class McstatsCommand implements TabExecutor {
             int powerLevelCap = Config.getInstance().getPowerLevelCap();
 
             if (powerLevelCap != Integer.MAX_VALUE) {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", mmoPlayer.getPowerLevel(), powerLevelCap));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
             } else {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mmoPlayer.getPowerLevel()));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
             }
 
             return true;

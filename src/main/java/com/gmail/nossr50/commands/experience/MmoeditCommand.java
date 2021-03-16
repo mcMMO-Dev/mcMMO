@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.experience;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.neetgames.mcmmo.skill.RootSkill;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,11 +23,11 @@ public class MmoeditCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(Player player, PlayerProfile profile, RootSkill rootSkill, int value) {
-        int skillLevel = profile.getSkillLevel(rootSkill);
-        float xpRemoved = profile.getSkillXpLevelRaw(rootSkill);
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
+        int skillLevel = profile.getSkillLevel(skill);
+        float xpRemoved = profile.getSkillXpLevelRaw(skill);
 
-        profile.modifySkill(rootSkill, value);
+        profile.modifySkill(skill, value);
 
         if (player == null) {
             profile.scheduleAsyncSave();
@@ -43,7 +43,7 @@ public class MmoeditCommand extends ExperienceCommand {
         if(mmoPlayer != null) {
             EventUtils.tryLevelEditEvent(mmoPlayer, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
         } else {
-            EventUtils.tryLevelEditEvent(player, rootSkill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+            EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
         }
 
     }
@@ -57,10 +57,10 @@ public class MmoeditCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, RootSkill rootSkill, boolean isSilent) {
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", rootSkill.getName(), value));
+        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skill.getName(), value));
     }
 }
