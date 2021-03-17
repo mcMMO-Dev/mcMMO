@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -22,14 +23,14 @@ import java.util.List;
 public class MctopCommandDisplayTask extends BukkitRunnable {
     private final List<PlayerStat> userStats;
     private final CommandSender sender;
-    private final @Nullable RootSkill rootSkill;
+    private final @Nullable PrimarySkillType primarySkillType;
     private final int page;
     private final boolean useBoard, useChat;
 
-    MctopCommandDisplayTask(@NotNull List<PlayerStat> userStats, int page, @Nullable RootSkill rootSkill, @NotNull CommandSender sender, boolean useBoard, boolean useChat) {
+    MctopCommandDisplayTask(@NotNull List<PlayerStat> userStats, int page, @Nullable PrimarySkillType primarySkillType, @NotNull CommandSender sender, boolean useBoard, boolean useChat) {
         this.userStats = userStats;
         this.page = page;
-        this.rootSkill = rootSkill;
+        this.primarySkillType = primarySkillType;
         this.sender = sender;
         this.useBoard = useBoard;
         this.useChat = useChat;
@@ -53,7 +54,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
     }
 
     private void displayChat() {
-        if (rootSkill == null) {
+        if (primarySkillType == null) {
             if(sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
             }
@@ -63,10 +64,10 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         }
         else {
             if(sender instanceof Player) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", primarySkillType.getName()));
             }
             else {
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName())));
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", primarySkillType.getName())));
             }
         }
 
@@ -88,11 +89,11 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
     }
 
     private void displayBoard() {
-        if (rootSkill == null) {
+        if (primarySkillType == null) {
             ScoreboardManager.showTopPowerScoreboard((Player) sender, page, userStats);
         }
         else {
-            ScoreboardManager.showTopScoreboard((Player) sender, PrimarySkillType.getSkill(rootSkill), page, userStats);
+            ScoreboardManager.showTopScoreboard((Player) sender, primarySkillType, page, userStats);
         }
     }
 }

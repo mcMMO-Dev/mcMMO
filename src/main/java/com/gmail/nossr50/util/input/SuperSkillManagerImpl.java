@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.neetgames.mcmmo.player.MMOPlayerData;
+import com.neetgames.mcmmo.player.MMOPlayerDataImpl;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -38,9 +38,9 @@ public class SuperSkillManagerImpl implements SuperSkillManager {
     private boolean abilityActivationPermission = true;
 
     private final Map<AbilityToolType, Boolean> toolMode = new HashMap<>();
-    private final MMOPlayerData mmoPlayerData;
+    private final MMOPlayerDataImpl mmoPlayerData;
 
-    public SuperSkillManagerImpl(@NotNull McMMOPlayer mmoPlayer, @NotNull MMOPlayerData mmoPlayerData) {
+    public SuperSkillManagerImpl(@NotNull McMMOPlayer mmoPlayer, @NotNull MMOPlayerDataImpl mmoPlayerData) {
         this.mmoPlayer = mmoPlayer;
         this.mmoPlayerData = mmoPlayerData;
         this.player = Misc.adaptPlayer(mmoPlayer);

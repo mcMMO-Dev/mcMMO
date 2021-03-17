@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.*;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
@@ -15,12 +14,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.InvalidSkillException;
-import com.neetgames.mcmmo.exceptions.ProfileRetrievalException;
-import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
-import com.neetgames.mcmmo.skill.SuperSkill;
-import org.apache.commons.lang.NullArgumentException;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.entity.Player;
@@ -32,7 +26,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
-public final class SQLDatabaseManager extends AbstractDatabaseManager {
+public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
     public static final String MOBHEALTHBAR_VARCHAR = "VARCHAR(50)";
     public static final String UUID_VARCHAR = "VARCHAR(36)";
@@ -281,8 +275,8 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
             statement.setInt(14, dataSnapshot.getSkillLevel(PrimarySkillType.TRIDENTS));
             statement.setInt(15, dataSnapshot.getSkillLevel(PrimarySkillType.CROSSBOWS));
             int total = 0;
-            for (RootSkill rootSkill : PrimarySkillType.getNonChildSkills())
-                total += dataSnapshot.getSkillLevel(rootSkill);
+            for (PrimarySkillType primarySkillType : PrimarySkillType.getNonChildSkills())
+                total += dataSnapshot.getSkillLevel(primarySkillType);
             statement.setInt(16, total);
             statement.setInt(17, id);
             success &= (statement.executeUpdate() != 0);
@@ -414,17 +408,17 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         return success;
     }
 
-    public @NotNull List<PlayerStat> readLeaderboard(@Nullable RootSkill rootSkill, int pageNumber, int statsPerPage) throws InvalidSkillException {
+    public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType, int pageNumber, int statsPerPage) throws InvalidSkillException {
         List<PlayerStat> stats = new ArrayList<>();
 
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(rootSkill != null && PrimarySkillType.isChildSkill(rootSkill)) {
+        if(primarySkillType != null && PrimarySkillType.isChildSkill(primarySkillType)) {
             mcMMO.p.getLogger().severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
 
 
-        String query = rootSkill == null ? ALL_QUERY_VERSION : rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH);
+        String query = primarySkillType == null ? ALL_QUERY_VERSION : primarySkillType.getRawSkillName().toLowerCase(Locale.ENGLISH);
         ResultSet resultSet = null;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -469,8 +463,8 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            for (RootSkill rootSkill : PrimarySkillType.getNonChildSkills()) {
-                String skillName = rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH);
+            for (PrimarySkillType primarySkillType : PrimarySkillType.getNonChildSkills()) {
+                String skillName = primarySkillType.getRawSkillName().toLowerCase(Locale.ENGLISH);
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
@@ -497,7 +491,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
 
                 while (resultSet.next()) {
                     if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                        skills.put(rootSkill, rank + resultSet.getRow());
+                        skills.put(primarySkillType, rank + resultSet.getRow());
                         break;
                     }
                 }
@@ -639,7 +633,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
         return loadPlayerFromDB(uuid, playerName);
     @Override
-    public @Nullable MMOPlayerData queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException {
+    public @Nullable PlayerData queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException {
         return loadPlayerProfile(player, player.getName(), player.getUniqueId());
     }
 
@@ -648,11 +642,11 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
             throw new RuntimeException("Error looking up player, both UUID and playerName are null and one must not be.");
         }
     @Override
-    public @Nullable MMOPlayerData queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException {
+    public @Nullable PlayerData queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException {
         return loadPlayerProfile(null, playerName, uuid);
     }
 
-    private @Nullable MMOPlayerData loadPlayerProfile(@Nullable Player player, @NotNull String playerName, @Nullable UUID playerUUID) {
+    private @Nullable PlayerData loadPlayerProfile(@Nullable Player player, @NotNull String playerName, @Nullable UUID playerUUID) {
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet resultSet = null;
@@ -675,7 +669,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
 
             if (resultSet.next()) {
                 try {
-                    MMOPlayerData mmoPlayerData = loadFromResult(playerName, resultSet);
+                    PlayerData mmoPlayerData = loadFromResult(playerName, resultSet);
                     String name = resultSet.getString(42); // TODO: Magic Number, make sure it stays updated
                     resultSet.close();
                     statement.close();
@@ -741,7 +735,7 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
                     resultSet = statement.executeQuery();
                     resultSet.next();
                     //TODO: Optimize, probably needless to make a snapshot here, brain tired
-                    MMOPlayerData mmoPlayerData = loadFromResult(playerName, resultSet);
+                    PlayerData mmoPlayerData = loadFromResult(playerName, resultSet);
                     MMODataSnapshot mmoDataSnapshot = mcMMO.getUserManager().createPlayerDataSnapshot(mmoPlayerData);
                     destination.saveUser(mmoDataSnapshot);
                     resultSet.close();
@@ -1057,12 +1051,12 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
             }
 
             if (Config.getInstance().getTruncateSkills()) {
-                for (RootSkill rootSkill : PrimarySkillType.getNonChildSkills()) {
-                    int cap = Config.getInstance().getLevelCap(rootSkill);
+                for (PrimarySkillType primarySkillType : PrimarySkillType.getNonChildSkills()) {
+                    int cap = Config.getInstance().getLevelCap(primarySkillType);
                     if (cap != Integer.MAX_VALUE) {
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `"
-                                + rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `"
-                                + rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH) + "` > " + cap);
+                                + primarySkillType.getRawSkillName().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `"
+                                + primarySkillType.getRawSkillName().toLowerCase(Locale.ENGLISH) + "` > " + cap);
                         statement.executeUpdate();
                         tryClose(statement);
                     }
@@ -1226,13 +1220,13 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
         }
     }
 
-    private @Nullable MMOPlayerData loadFromResult(@NotNull String playerName, @NotNull ResultSet result) throws SQLException {
+    private @Nullable PlayerData loadFromResult(@NotNull String playerName, @NotNull ResultSet result) throws SQLException {
         MMODataBuilder MMODataBuilder = new MMODataBuilder();
         Map<PrimarySkillType, Integer> skills = new HashMap<>(); // Skill & Level
         Map<PrimarySkillType, Float> skillsXp = new HashMap<>(); // Skill & XP
-        Map<SuperSkill, Integer> skillsDATS = new HashMap<>(); // Ability & Cooldown
+        Map<SuperAbilityType, Integer> skillsDATS = new HashMap<>(); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
-        Map<RootSkill, SkillBossBarState> xpBarStateMap = new HashMap<RootSkill, SkillBossBarState>();
+        Map<PrimarySkillType, SkillBossBarState> xpBarStateMap = new HashMap<PrimarySkillType, SkillBossBarState>();
 
         MobHealthBarType mobHealthbarType;
         UUID uuid;
@@ -1500,8 +1494,8 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
             if (resultSet.getRow() != PrimarySkillType.getNonChildSkills().size()) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
-                for (RootSkill rootSkill : PrimarySkillType.getNonChildSkills()) {
-                    String skill_name = rootSkill.getRawSkillName().toLowerCase(Locale.ENGLISH);
+                for (PrimarySkillType primarySkillType : PrimarySkillType.getNonChildSkills()) {
+                    String skill_name = primarySkillType.getRawSkillName().toLowerCase(Locale.ENGLISH);
 
                     try {
                         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");

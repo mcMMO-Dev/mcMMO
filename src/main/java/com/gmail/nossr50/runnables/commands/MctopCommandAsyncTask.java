@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.skill.RootSkill;
 import org.apache.commons.lang.Validate;
@@ -14,11 +15,11 @@ import java.util.List;
 
 public class MctopCommandAsyncTask extends BukkitRunnable {
     private final @NotNull CommandSender sender;
-    private final @Nullable RootSkill rootSkill;
+    private final @Nullable PrimarySkillType primarySkillType;
     private final int page;
     private final boolean useBoard, useChat;
 
-    public MctopCommandAsyncTask(int page, @Nullable RootSkill rootSkill, @NotNull CommandSender sender, boolean useBoard, boolean useChat) {
+    public MctopCommandAsyncTask(int page, @Nullable PrimarySkillType primarySkillType, @NotNull CommandSender sender, boolean useBoard, boolean useChat) {
         Validate.isTrue(useBoard || useChat, "Attempted to start a rank retrieval with both board and chat off");
         Validate.notNull(sender, "Attempted to start a rank retrieval with no recipient");
 
@@ -27,7 +28,7 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
         }
 
         this.page = page;
-        this.rootSkill = rootSkill;
+        this.primarySkillType = primarySkillType;
         this.sender = sender;
         this.useBoard = useBoard;
         this.useChat = useChat;
@@ -35,8 +36,8 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        final List<PlayerStat> userStats = mcMMO.getDatabaseManager().readLeaderboard(rootSkill, page, 10);
+        final List<PlayerStat> userStats = mcMMO.getDatabaseManager().readLeaderboard(primarySkillType, page, 10);
 
-        new MctopCommandDisplayTask(userStats, page, rootSkill, sender, useBoard, useChat).runTaskLater(mcMMO.p, 1);
+        new MctopCommandDisplayTask(userStats, page, primarySkillType, sender, useBoard, useChat).runTaskLater(mcMMO.p, 1);
     }
 }

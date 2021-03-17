@@ -331,11 +331,11 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean getAddExtraDetails() { return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);}
     public boolean isExperienceBarsEnabled() { return config.getBoolean("Experience_Bars.Enable", true); }
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Enable", true);}
-    public boolean isExperienceBarEnabled(@NotNull RootSkill rootSkill) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getRawSkillName())+".Enable", true);}
+    public boolean isExperienceBarEnabled(@NotNull PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.getRawSkillName())+".Enable", true);}
 
-    public BarColor getExperienceBarColor(@NotNull RootSkill rootSkill)
+    public BarColor getExperienceBarColor(@NotNull PrimarySkillType primarySkillType)
     {
-        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getRawSkillName())+".Color");
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.getRawSkillName())+".Color");
 
         for(BarColor barColor : BarColor.values())
         {
@@ -374,8 +374,8 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         return BarStyle.SOLID;
     }
 
-    public BarStyle getExperienceBarStyle(@NotNull RootSkill rootSkill) {
-        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(rootSkill.getRawSkillName())+".BarStyle");
+    public BarStyle getExperienceBarStyle(@NotNull PrimarySkillType primarySkillType) {
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.getRawSkillName())+".BarStyle");
 
         for(BarStyle barStyle : BarStyle.values())
         {

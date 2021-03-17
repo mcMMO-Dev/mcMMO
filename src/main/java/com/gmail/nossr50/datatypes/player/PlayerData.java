@@ -1,17 +1,16 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.validation.NonNullRule;
 import com.gmail.nossr50.datatypes.validation.PositiveIntegerRule;
 import com.gmail.nossr50.datatypes.validation.Validator;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
 import com.neetgames.mcmmo.skill.*;
-import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.neetlib.dirtydata.DirtyData;
 import com.neetgames.neetlib.dirtydata.DirtyMap;
 import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
@@ -25,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MMOPlayerDataImpl implements MMOPlayerData {
+public class PlayerData {
 
     private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
 
@@ -39,9 +38,9 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
     /* Skill Data */
     private final @NotNull DirtyMap<PrimarySkillType, Integer> skillLevelValues;
     private final @NotNull DirtyMap<PrimarySkillType, Float> skillExperienceValues;
-    private final @NotNull DirtyMap<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private final @NotNull DirtyMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private final @NotNull DirtyMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull DirtyMap<RootSkill, SkillBossBarState> barStateMap;
+    private final @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private final @NotNull DirtyData<MutableBoolean> partyChatSpying;
@@ -58,7 +57,7 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
      * @param playerName target player's name
      * @throws NullArgumentException thrown when never null arguments are null
      */
-    public MMOPlayerDataImpl(@NotNull UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
+    public PlayerData(@NotNull UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
         /*
          * New Data
          */
@@ -73,15 +72,19 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
 
         this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(0), dirtyFlag);
 
-        for(SuperSkill superSkill : mcMMO.p.getSkillRegister().getSuperSkills()) {
+        for(SuperAbilityType superSkill : SuperAbilityType.values()) {
             abilityDeactivationTimestamps.put(superSkill, 0);
         }
 
         //Core skills
         //TODO: Don't store values for disabled skills
-        for(RootSkill rootSkill : PrimarySkillType.getCoreRootSkills()) {
-            skillLevelValues.put(rootSkill, AdvancedConfig.getInstance().getStartingLevel());
-            skillExperienceValues.put(rootSkill, 0F);
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+
+            if(primarySkillType.isChildSkill())
+                continue;
+
+            skillLevelValues.put(primarySkillType, AdvancedConfig.getInstance().getStartingLevel());
+            skillExperienceValues.put(primarySkillType, 0F);
         }
 
         //Unique Player Data
@@ -109,17 +112,17 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
      * @param lastLogin target player's last login
      * @param leaderBoardExclusion target player's leaderboard exemption status
      */
-    public MMOPlayerDataImpl(@NotNull UUID playerUUID,
-                             @NotNull String playerName,
-                             boolean partyChatSpying,
-                             @NotNull Map<PrimarySkillType, Integer> skillLevelValues,
-                             @NotNull Map<PrimarySkillType, Float> skillExperienceValues,
-                             @NotNull Map<SuperSkill, Integer> abilityDeactivationTimestamps,
-                             @NotNull Map<UniqueDataType, Integer> uniquePlayerData,
-                             @NotNull Map<RootSkill, SkillBossBarState> barStateMap,
-                             int scoreboardTipsShown,
-                             long lastLogin,
-                             boolean leaderBoardExclusion) throws Exception {
+    public PlayerData(@NotNull UUID playerUUID,
+                      @NotNull String playerName,
+                      boolean partyChatSpying,
+                      @NotNull Map<PrimarySkillType, Integer> skillLevelValues,
+                      @NotNull Map<PrimarySkillType, Float> skillExperienceValues,
+                      @NotNull Map<SuperAbilityType, Integer> abilityDeactivationTimestamps,
+                      @NotNull Map<UniqueDataType, Integer> uniquePlayerData,
+                      @NotNull Map<PrimarySkillType, SkillBossBarState> barStateMap,
+                      int scoreboardTipsShown,
+                      long lastLogin,
+                      boolean leaderBoardExclusion) throws Exception {
 
         /*
          * Skills Data
@@ -156,15 +159,18 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
      * @throws UnexpectedValueException when values are outside of expected norms
      * @throws Exception when values are outside of expected norms
      */
-    private void validateRootSkillMap(Map<? extends RootSkill, ? extends Number> map) throws UnexpectedValueException, Exception {
+    private void validateRootSkillMap(Map<PrimarySkillType, ? extends Number> map) throws UnexpectedValueException, Exception {
         //TODO: Check for missing/unregistered
         Validator<Number> validator = new Validator<>();
 
         validator.addRule(new PositiveIntegerRule<>());
         validator.addRule(new NonNullRule<>());
 
-        for(RootSkill rootSkill : mcMMO.p.getSkillRegister().getRootSkills()) {
-            validator.validate(map.get(rootSkill));
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if(primarySkillType.isChildSkill())
+                continue;
+            
+            validator.validate(map.get(primarySkillType));
         }
     }
 
@@ -175,56 +181,49 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
      * @throws UnexpectedValueException when values are outside of expected norms
      * @throws Exception when values are outside of expected norms
      */
-    private void validateSuperSkillMap(Map<? extends SuperSkill, ? extends Number> map) throws UnexpectedValueException, Exception {
+    private void validateSuperSkillMap(Map<? extends SuperAbilityType, ? extends Number> map) throws UnexpectedValueException, Exception {
         //TODO: Check for missing/unregistered
         Validator<Number> validator = new Validator<>();
 
         validator.addRule(new PositiveIntegerRule<>());
         validator.addRule(new NonNullRule<>());
 
-        for(SuperSkill superSkill : mcMMO.p.getSkillRegister().getSuperSkills()) {
+        for(SuperAbilityType superSkill : SuperAbilityType.values()) {
             validator.validate(map.get(superSkill));
         }
     }
-    @Override
-    public void setSkillLevel(@NotNull RootSkill rootSkill, int i) {
-        skillLevelValues.put(rootSkill, i);
+    
+    public void setSkillLevel(@NotNull PrimarySkillType primarySkillType, int i) {
+        skillLevelValues.put(primarySkillType, i);
     }
 
-    @Override
-    public int getSkillLevel(@NotNull RootSkill rootSkill) {
+    
+    public int getSkillLevel(@NotNull PrimarySkillType primarySkillType) {
         return 0;
     }
 
-    @Override
     public boolean isDirtyProfile() {
         return dirtyFlag.getImmutableCopy();
     }
 
-    @Override
     public void resetDirtyFlag() {
         dirtyFlag.setBoolean(false);
     }
 
-    @Override
     public @NotNull String getPlayerName() {
         return playerName.getData().getImmutableCopy();
     }
 
-    @Override
     public @NotNull UUID getPlayerUUID() {
         return playerUUID;
     }
 
-    @Override
     public boolean isPartyChatSpying() { return partyChatSpying.getData().getImmutableCopy(); }
 
-    @Override
     public void togglePartyChatSpying() {
         partyChatSpying.getData().setBoolean(!partyChatSpying.getData().getImmutableCopy());
     }
 
-    @Override
     public void setPartyChatSpying(boolean bool) {
         this.partyChatSpying.getData().setBoolean(bool);
     }
@@ -233,124 +232,101 @@ public class MMOPlayerDataImpl implements MMOPlayerData {
      * Scoreboards
      */
 
-    @Override
     public int getScoreboardTipsShown() {
         return scoreboardTipsShown.getData(false).getImmutableCopy();
     }
 
-    @Override
     public void setScoreboardTipsShown(int newValue) {
         scoreboardTipsShown.getData(true).setInt(newValue);
     }
 
-    @Override
     public int getChimaeraWingDATS() {
         return uniquePlayerData.get((UniqueDataType.CHIMAERA_WING_DATS));
     }
 
-    @Override
     public void setChimaeraWingDATS(int DATS) {
         uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, DATS);
     }
 
-    @Override
     public void setUniqueData(@NotNull UniqueDataType uniqueDataType, int newData) {
         uniquePlayerData.put(uniqueDataType, newData);
     }
 
-    @Override
+    
     public long getUniqueData(@NotNull UniqueDataType uniqueDataType) { return uniquePlayerData.get(uniqueDataType); }
 
-    @Override
-    public long getAbilityDATS(@NotNull SuperSkill superSkill) {
+    public long getAbilityDATS(@NotNull SuperAbilityType superSkill) {
         return abilityDeactivationTimestamps.get(superSkill);
     }
 
-    public void setAbilityDATS(@NotNull SuperSkill superSkill, long DATS) {
+    public void setAbilityDATS(@NotNull SuperAbilityType superSkill, long DATS) {
         abilityDeactivationTimestamps.put(superSkill, (int) (DATS * .001D));
     }
 
-    @Override
     public void resetCooldowns() {
         abilityDeactivationTimestamps.replaceAll((a, v) -> 0);
     }
 
-    @Override
-    public @NotNull Map<RootSkill, SkillBossBarState> getBarStateMap() {
+    public @NotNull Map<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
-    @Override
-    public @NotNull DirtyMap<RootSkill, SkillBossBarState> getDirtyBarStateMap() {
+    public @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> getDirtyBarStateMap() {
         return barStateMap;
     }
 
-    @Override
     public @NotNull DirtyMap<PrimarySkillType, Integer> getDirtySkillLevelMap() {
         return skillLevelValues;
     }
 
-    @Override
     public @NotNull DirtyMap<PrimarySkillType, Float> getDirtyExperienceValueMap() {
         return skillExperienceValues;
     }
 
-    @Override
     public @NotNull DirtyData<MutableBoolean> getDirtyPartyChatSpying() {
         return partyChatSpying;
     }
 
-    @Override
     public @NotNull Map<PrimarySkillType, Integer> getSkillLevelsMap() {
         return skillLevelValues;
     }
 
-    @Override
     public @NotNull Map<PrimarySkillType, Float> getSkillsExperienceMap() {
         return skillExperienceValues;
     }
 
-    @Override
-    public @NotNull Map<SuperSkill, Integer> getAbilityDeactivationTimestamps() {
+    public @NotNull Map<SuperAbilityType, Integer> getAbilityDeactivationTimestamps() {
         return abilityDeactivationTimestamps;
     }
 
-    @Override
     public @NotNull Map<UniqueDataType, Integer> getUniquePlayerData() {
         return uniquePlayerData;
     }
 
-    @Override
     public void setDirtyProfile() {
         this.dirtyFlag.setBoolean(true);
     }
 
-    @Override
     public long getLastLogin() {
         return lastLogin.getData().getImmutableCopy();
     }
 
-    @Override
     public void setLastLogin(long newValue) {
         lastLogin.getData().setLong(newValue);
     }
 
-    @Override
     public boolean isLeaderBoardExcluded() {
         return leaderBoardExclusion.getData().getImmutableCopy();
     }
 
-    @Override
     public void setLeaderBoardExclusion(boolean bool) {
         leaderBoardExclusion.getData(true).setBoolean(bool);
     }
 
-    @Override
     public @NotNull ImmutableMap<PrimarySkillType, Integer> copyPrimarySkillLevelsMap() {
         return ImmutableMap.copyOf(getSkillLevelsMap());
     }
 
-    @Override
     public @NotNull ImmutableMap<PrimarySkillType, Float> copyPrimarySkillExperienceValuesMap() {
         return ImmutableMap.copyOf(getSkillsExperienceMap());
     }

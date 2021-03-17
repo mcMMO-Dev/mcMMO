@@ -24,14 +24,14 @@
 //    private final @NotNull Set<Skill> registeredSkills;
 //    private final @NotNull Set<SuperSkill> superSkills;
 //    private final @NotNull Set<RankedSkill> rankedSkills;
-//    private final @NotNull Set<RootSkill> rootSkills; //Can include not-official root skills
+//    private final @NotNull Set<RootSkill> primarySkillTypes; //Can include not-official root skills
 //    private final @NotNull Set<CoreRootSkill> coreRootSkills; //Only includes official root skills
 //    private final @NotNull Set<CoreSkill> coreSkills; //Only includes official core skills
 //
 //    public SkillRegisterImpl() {
 //        skillNameMap = new HashMap<>();
 //        registeredSkills = new HashSet<>();
-//        rootSkills = new HashSet<>();
+//        primarySkillTypes = new HashSet<>();
 //        superSkills = new HashSet<>();
 //        rankedSkills = new HashSet<>();
 //        coreRootSkills = new HashSet<>();
@@ -72,7 +72,7 @@
 //
 //    @Override
 //    public @NotNull Set<RootSkill> getRootSkills() {
-//        return rootSkills;
+//        return primarySkillTypes;
 //    }
 //
 //    @Override
@@ -117,7 +117,7 @@
 //        }
 //
 //        if(skill instanceof RootSkill) {
-//            rootSkills.remove(skill);
+//            primarySkillTypes.remove(skill);
 //        }
 //
 //        if (skill instanceof SuperSkill) {
@@ -149,7 +149,7 @@
 //        }
 //
 //        if(skill instanceof RootSkill) {
-//            rootSkills.add((RootSkill) skill);
+//            primarySkillTypes.add((RootSkill) skill);
 //        }
 //
 //        if (skill instanceof SuperSkill) {
@@ -194,11 +194,11 @@
 //     * @see SkillIdentity#getFullyQualifiedName()
 //     */
 //    public @Nullable RootSkill matchRootSkill(@NotNull String skillName) {
-//        for (RootSkill rootSkill : rootSkills) {
-//            if (rootSkill.getSkillIdentity().getFullyQualifiedName().equalsIgnoreCase(skillName)
-//                    || skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(rootSkill.getRawSkillName()) + ".SkillName"))
-//                    || rootSkill.getRawSkillName().equalsIgnoreCase(skillName)) {
-//                return rootSkill;
+//        for (PrimarySkillType primarySkillType : primarySkillTypes) {
+//            if (primarySkillType.getSkillIdentity().getFullyQualifiedName().equalsIgnoreCase(skillName)
+//                    || skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(primarySkillType.getRawSkillName()) + ".SkillName"))
+//                    || primarySkillType.getRawSkillName().equalsIgnoreCase(skillName)) {
+//                return primarySkillType;
 //            }
 //        }
 //

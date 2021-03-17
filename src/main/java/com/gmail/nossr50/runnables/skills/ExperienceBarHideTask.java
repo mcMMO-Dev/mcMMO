@@ -7,13 +7,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ExperienceBarHideTask extends BukkitRunnable {
     public final OnlineMMOPlayer mmoPlayer;
-    public final RootSkill rootSkill;
+    public final PrimarySkillType primarySkillType;
     public final MMOExperienceBarManager MMOExperienceBarManagerRef;
 
-    public ExperienceBarHideTask(MMOExperienceBarManager MMOExperienceBarManagerRef, OnlineMMOPlayer mmoPlayer, RootSkill rootSkill) {
+    public ExperienceBarHideTask(MMOExperienceBarManager MMOExperienceBarManagerRef, OnlineMMOPlayer mmoPlayer, PrimarySkillType primarySkillType) {
         this.MMOExperienceBarManagerRef = MMOExperienceBarManagerRef;
         this.mmoPlayer = mmoPlayer;
-        this.rootSkill = rootSkill;
+        this.primarySkillType = primarySkillType;
     }
 
     /**
@@ -32,7 +32,7 @@ public class ExperienceBarHideTask extends BukkitRunnable {
         if(MMOExperienceBarManagerRef == null || mmoPlayer == null)
             return;
 
-        MMOExperienceBarManagerRef.hideExperienceBar(rootSkill);
-        MMOExperienceBarManagerRef.clearTask(rootSkill);
+        MMOExperienceBarManagerRef.hideExperienceBar(primarySkillType);
+        MMOExperienceBarManagerRef.clearTask(primarySkillType);
     }
 }

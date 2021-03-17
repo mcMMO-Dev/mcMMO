@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ExperienceBarWrapper {
 
-    private final @NotNull RootSkill rootSkill; //Primary Skill
+    private final @NotNull PrimarySkillType primarySkillType; //Primary Skill
     private @NotNull BossBar bossBar;
     protected final @NotNull McMMOPlayer mmoPlayer;
     private int lastLevelUpdated;
@@ -33,14 +33,14 @@ public class ExperienceBarWrapper {
     protected String niceSkillName;
     protected String title;
 
-    public ExperienceBarWrapper(@NotNull RootSkill rootSkill, @NotNull McMMOPlayer mmoPlayer) {
+    public ExperienceBarWrapper(@NotNull PrimarySkillType primarySkillType, @NotNull McMMOPlayer mmoPlayer) {
         this.mmoPlayer = mmoPlayer;
-        this.rootSkill = rootSkill;
+        this.primarySkillType = primarySkillType;
         title = "";
         lastLevelUpdated = 0;
 
         //These vars are stored to help reduce operations involving strings
-        niceSkillName = StringUtils.getCapitalized(rootSkill.toString());
+        niceSkillName = StringUtils.getCapitalized(primarySkillType.toString());
 
         //Create the bar
         initBar();
@@ -59,7 +59,7 @@ public class ExperienceBarWrapper {
     private String getTitleTemplate() {
         //If they are using extra details
 
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, rootSkill)) {
+        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, primarySkillType)) {
                 return LocaleLoader.getString("XPBar.Template.EarlyGameBoost");
         } else if(ExperienceConfig.getInstance().getAddExtraDetails())
             return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
@@ -68,16 +68,16 @@ public class ExperienceBarWrapper {
     }
 
     private int getLevel() {
-        return mmoPlayer.getSkillLevel(rootSkill);
+        return mmoPlayer.getSkillLevel(primarySkillType);
     }
     private int getCurrentXP() {
-        return mmoPlayer.getSkillExperience(rootSkill);
+        return mmoPlayer.getSkillExperience(primarySkillType);
     }
     private int getMaxXP() {
-        return mmoPlayer.getExperienceToNextLevel(rootSkill);
+        return mmoPlayer.getExperienceToNextLevel(primarySkillType);
     }
     private int getPowerLevel() { return mmoPlayer.getPowerLevel(); }
-    private int getPercentageOfLevel() { return (int) (mmoPlayer.getProgressInCurrentSkillLevel(rootSkill) * 100); }
+    private int getPercentageOfLevel() { return (int) (mmoPlayer.getProgressInCurrentSkillLevel(primarySkillType) * 100); }
 
     public String getTitle() {
         return bossBar.getTitle();
@@ -114,10 +114,10 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Check player level
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, rootSkill)) {
+        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, primarySkillType)) {
            setColor(BarColor.YELLOW);
         } else {
-            setColor(ExperienceConfig.getInstance().getExperienceBarColor(rootSkill));
+            setColor(ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType));
         }
 
         //Every time progress updates we need to check for a title update
@@ -157,7 +157,7 @@ public class ExperienceBarWrapper {
 
     private void createBossBar()
     {
-        bossBar = Bukkit.getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(rootSkill), ExperienceConfig.getInstance().getExperienceBarStyle(rootSkill));
+        bossBar = Bukkit.getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType), ExperienceConfig.getInstance().getExperienceBarStyle(primarySkillType));
         bossBar.addPlayer(mmoPlayer.getPlayer());
     }
 }

@@ -1,9 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.neetgames.mcmmo.exceptions.UnknownSkillException;
-import com.neetgames.mcmmo.experience.ExperienceHandler;
-import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.skill.RootSkill;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -11,12 +9,12 @@ import java.util.UUID;
 public class PlayerProfile extends AbstractMMOPlayer {
 
     /**
-     * Initialize an {@link PlayerProfile} for {@link MMOPlayerDataImpl}
+     * Initialize an {@link PlayerProfile} for {@link PlayerData}
      * This will be used for existing data
      *
      * @param mmoPlayerData target persistent player data
      */
-    public PlayerProfile(@NotNull MMOPlayerData mmoPlayerData) {
+    public PlayerProfile(@NotNull PlayerData mmoPlayerData) {
         super(mmoPlayerData);
     }
 
@@ -32,27 +30,27 @@ public class PlayerProfile extends AbstractMMOPlayer {
 
     @Override
     public int getPowerLevel() {
-        return experienceHandler.getPowerLevel();
+        return experienceProcessor.getPowerLevel();
     }
 
     @Override
-    public int getSkillLevel(@NotNull RootSkill rootSkill) throws UnknownSkillException {
-        return experienceHandler.getSkillLevel(rootSkill);
+    public int getSkillLevel(@NotNull PrimarySkillType primarySkillType) throws UnknownSkillException {
+        return experienceProcessor.getSkillLevel(primarySkillType);
     }
 
     @Override
-    public int getSkillExperience(@NotNull RootSkill rootSkill) throws UnknownSkillException {
-        return experienceHandler.getSkillXpValue(rootSkill);
+    public int getSkillExperience(@NotNull PrimarySkillType primarySkillType) throws UnknownSkillException {
+        return experienceProcessor.getSkillXpValue(primarySkillType);
     }
 
     @Override
-    public int getExperienceToNextLevel(@NotNull RootSkill rootSkill) throws UnknownSkillException {
-        return experienceHandler.getExperienceToNextLevel(rootSkill);
+    public int getExperienceToNextLevel(@NotNull PrimarySkillType primarySkillType) throws UnknownSkillException {
+        return experienceProcessor.getExperienceToNextLevel(primarySkillType);
     }
 
     @Override
-    public double getProgressInCurrentSkillLevel(@NotNull RootSkill rootSkill) throws UnknownSkillException {
-        return experienceHandler.getProgressInCurrentSkillLevel(rootSkill);
+    public double getProgressInCurrentSkillLevel(@NotNull PrimarySkillType primarySkillType) throws UnknownSkillException {
+        return experienceProcessor.getProgressInCurrentSkillLevel(primarySkillType);
     }
 
     @Override
@@ -62,11 +60,11 @@ public class PlayerProfile extends AbstractMMOPlayer {
 
     @Override
     public @NotNull ExperienceHandler getExperienceHandler() {
-        return experienceHandler;
+        return experienceProcessor;
     }
 
     @Override
-    public @NotNull MMOPlayerData getMMOPlayerData() {
+    public @NotNull PlayerData getMMOPlayerDataImpl() {
         return mmoPlayerData;
     }
 }

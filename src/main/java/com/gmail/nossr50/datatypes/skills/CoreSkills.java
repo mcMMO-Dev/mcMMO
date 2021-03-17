@@ -107,7 +107,7 @@
 //    private static final @NotNull HackySkillMappings hackySkillMappings = new HackySkillMappings();
 //
 //    static {
-//        HashSet<CoreRootSkill> rootSkillSet = new HashSet<>();
+//        HashSet<CoreRootSkill> primarySkillTypeSet = new HashSet<>();
 //        HashSet<CoreRootSkill> childSkillSet = new HashSet<>();
 //        HashSet<CoreSkill> subSkillSet = new HashSet<>();
 //        HashSet<SuperSkill> superSkillSet = new HashSet<>();
@@ -167,25 +167,25 @@
 //        childSkillSet.add(SMELTING);
 //        childSkillSet.add(SALVAGE);
 //
-//        rootSkillSet.add(ACROBATICS);
-//        rootSkillSet.add(ALCHEMY);
-//        rootSkillSet.add(ARCHERY);
-//        rootSkillSet.add(AXES);
-//        rootSkillSet.add(EXCAVATION);
-//        rootSkillSet.add(FISHING);
-//        rootSkillSet.add(HERBALISM);
-//        rootSkillSet.add(MINING);
-//        rootSkillSet.add(REPAIR);
-//        rootSkillSet.add(SALVAGE);
-//        rootSkillSet.add(SMELTING);
-//        rootSkillSet.add(SWORDS);
-//        rootSkillSet.add(TAMING);
-//        rootSkillSet.add(UNARMED);
-//        rootSkillSet.add(WOODCUTTING);
-//        rootSkillSet.add(TRIDENTS);
-//        rootSkillSet.add(CROSSBOWS);
+//        primarySkillTypeSet.add(ACROBATICS);
+//        primarySkillTypeSet.add(ALCHEMY);
+//        primarySkillTypeSet.add(ARCHERY);
+//        primarySkillTypeSet.add(AXES);
+//        primarySkillTypeSet.add(EXCAVATION);
+//        primarySkillTypeSet.add(FISHING);
+//        primarySkillTypeSet.add(HERBALISM);
+//        primarySkillTypeSet.add(MINING);
+//        primarySkillTypeSet.add(REPAIR);
+//        primarySkillTypeSet.add(SALVAGE);
+//        primarySkillTypeSet.add(SMELTING);
+//        primarySkillTypeSet.add(SWORDS);
+//        primarySkillTypeSet.add(TAMING);
+//        primarySkillTypeSet.add(UNARMED);
+//        primarySkillTypeSet.add(WOODCUTTING);
+//        primarySkillTypeSet.add(TRIDENTS);
+//        primarySkillTypeSet.add(CROSSBOWS);
 //
-//        CORE_ROOT_SKILLS = ImmutableSet.copyOf(rootSkillSet);
+//        CORE_ROOT_SKILLS = ImmutableSet.copyOf(primarySkillTypeSet);
 //        CORE_CHILD_SKILLS = ImmutableSet.copyOf(childSkillSet);
 //        CORE_NON_CHILD_SKILLS = ImmutableSet.copyOf(generateNonChildSkillSet());
 //        CORE_SUB_SKILLS = ImmutableSet.copyOf(subSkillSet);
@@ -242,11 +242,11 @@
 //
 //    /**
 //     * Whether or not a skill is considered a child skill
-//     * @param rootSkill target skill
+//     * @param primarySkillType target skill
 //     * @return true if the skill identity belongs to a core "child" root skill
 //     */
-//    public static boolean isChildSkill(@NotNull RootSkill rootSkill) {
-//        return CORE_CHILD_SKILLS.contains(rootSkill);
+//    public static boolean isChildSkill(@NotNull PrimarySkillType primarySkillType) {
+//        return CORE_CHILD_SKILLS.contains(primarySkillType);
 //    }
 //
 //    @Deprecated
@@ -259,12 +259,12 @@
 //    }
 //
 //    @Deprecated
-//    public static @NotNull PrimarySkillType getSkill(@NotNull RootSkill rootSkill) {
+//    public static @NotNull PrimarySkillType getSkill(@NotNull PrimarySkillType primarySkillType) {
 //        if(!hackySkillMappings.init) {
 //            hackySkillMappings.initMappings();
 //        }
 //
-//        return hackySkillMappings.rootToPrimaryMap.get(rootSkill);
+//        return hackySkillMappings.rootToPrimaryMap.get(primarySkillType);
 //    }
 //
 //    @Deprecated

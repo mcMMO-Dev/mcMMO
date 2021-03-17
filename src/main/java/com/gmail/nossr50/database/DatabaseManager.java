@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.neetgames.mcmmo.player.MMOPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,10 +50,10 @@ public interface DatabaseManager {
     /**
      * Save a user to the database.
      *
-     * @param profile The profile of the player to save
+     * @param mmoPlayer The player to save
      * @return true if successful, false on failure
      */
-    boolean saveUser(PlayerProfile profile);
+    boolean saveUser(@NotNull MMOPlayer mmoPlayer);
 
     /**
     * Retrieve leaderboard info.

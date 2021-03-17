@@ -18,8 +18,8 @@ public class FamilyTree {
     private static @Nullable Set<RootSkill> smeltingParents;
     private static @Nullable Set<RootSkill> salvageParents;
 
-    public static @NotNull Set<RootSkill> getParentSkills(@NotNull RootSkill rootSkill) throws UnknownSkillException {
-        if(PrimarySkillType.isChildSkill(rootSkill)) {
+    public static @NotNull Set<RootSkill> getParentSkills(@NotNull PrimarySkillType primarySkillType) throws UnknownSkillException {
+        if(PrimarySkillType.isChildSkill(primarySkillType)) {
             if(smeltingParents == null || salvageParents == null) {
                 smeltingParents = new HashSet<>();
                 salvageParents = new HashSet<>();
@@ -31,12 +31,12 @@ public class FamilyTree {
                 salvageParents.add(PrimarySkillType.REPAIR);
             }
 
-            if(rootSkill.equals(PrimarySkillType.SALVAGE)) {
+            if(primarySkillType.equals(PrimarySkillType.SALVAGE)) {
                 return salvageParents;
-            } else if (rootSkill.equals(PrimarySkillType.SMELTING)) {
+            } else if (primarySkillType.equals(PrimarySkillType.SMELTING)) {
                 return smeltingParents;
             } else {
-                mcMMO.p.getLogger().severe("root skill argument is not a child skill! " + rootSkill.toString());
+                mcMMO.p.getLogger().severe("root skill argument is not a child skill! " + primarySkillType.toString());
                 throw new UnknownSkillException();
             }
 

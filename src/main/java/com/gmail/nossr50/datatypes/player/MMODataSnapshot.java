@@ -3,9 +3,8 @@ package com.gmail.nossr50.datatypes.player;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.google.common.collect.ImmutableMap;
-import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
-import com.neetgames.mcmmo.player.MMOPlayerData;
+import com.neetgames.mcmmo.player.MMOPlayerDataImpl;
 import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
 import com.neetgames.mcmmo.skill.SuperSkill;
@@ -36,7 +35,7 @@ public class MMODataSnapshot {
     private final int scoreboardTipsShown;
 
 
-    public MMODataSnapshot(@NotNull MMOPlayerData mmoPlayerData) {
+    public MMODataSnapshot(@NotNull PlayerData mmoPlayerData) {
         playerName = mmoPlayerData.getPlayerName();
         playerUUID = mmoPlayerData.getPlayerUUID();
         lastLogin = mmoPlayerData.getLastLogin();
@@ -94,12 +93,12 @@ public class MMODataSnapshot {
         return scoreboardTipsShown;
     }
 
-    public int getSkillLevel(@NotNull RootSkill rootSkill) {
-        return skillLevelValues.getOrDefault(rootSkill, 0);
+    public int getSkillLevel(@NotNull PrimarySkillType primarySkillType) {
+        return skillLevelValues.getOrDefault(primarySkillType, 0);
     }
 
-    public int getSkillXpLevel(@NotNull RootSkill rootSkill) {
-        return (skillExperienceValues.getOrDefault(rootSkill, 0F)).intValue();
+    public int getSkillXpLevel(@NotNull PrimarySkillType primarySkillType) {
+        return (skillExperienceValues.getOrDefault(primarySkillType, 0F)).intValue();
     }
 
     public long getAbilityDATS(@NotNull SuperAbilityType superAbilityType) {

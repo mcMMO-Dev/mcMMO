@@ -1,13 +1,11 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.neetgames.mcmmo.UniqueDataType;
-import com.neetgames.mcmmo.player.MMOPlayerData;
-import com.neetgames.mcmmo.skill.RootSkill;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
-import com.neetgames.mcmmo.skill.SuperSkill;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -29,9 +27,9 @@ public class MMODataBuilder {
     /* Skill Data */
     private @Nullable Map<PrimarySkillType, Integer> skillLevelValues;
     private @Nullable Map<PrimarySkillType, Float> skillExperienceValues;
-    private @Nullable Map<SuperSkill, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private @Nullable Map<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
     private @Nullable Map<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private @Nullable Map<RootSkill, SkillBossBarState> barStateMap;
+    private @Nullable Map<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
     private boolean partyChatSpying;
@@ -40,28 +38,28 @@ public class MMODataBuilder {
     /* Scoreboards */
     private int scoreboardTipsShown;
 
-    public @NotNull MMOPlayerData buildNewPlayerData(@NotNull Player player) {
+    public @NotNull PlayerData buildNewPlayerData(@NotNull Player player) {
         /*
          * New Profile with default values
          */
         return buildNewPlayerData(player.getUniqueId(), player.getName());
     }
 
-    public @Nullable MMOPlayerData buildNewPlayerData(@NotNull OfflinePlayer offlinePlayer) {
+    public @Nullable PlayerData buildNewPlayerData(@NotNull OfflinePlayer offlinePlayer) {
         if(offlinePlayer.getName() != null)
             return buildNewPlayerData(offlinePlayer.getUniqueId(), offlinePlayer.getName());
         else
             return null;
     }
 
-    public @NotNull MMOPlayerData buildNewPlayerData(@NotNull UUID playerUUID, @NotNull String playerName) {
+    public @NotNull PlayerData buildNewPlayerData(@NotNull UUID playerUUID, @NotNull String playerName) {
         /*
          * New Profile with default values
          */
-        return new MMOPlayerDataImpl(playerUUID, playerName);
+        return new PlayerData(playerUUID, playerName);
     }
 
-    public @NotNull MMOPlayerData build() throws Exception {
+    public @NotNull PlayerData build() throws Exception {
         if(playerUUID == null)
             throw new NullArgumentException("playerUUID");
 
@@ -93,19 +91,22 @@ public class MMODataBuilder {
 
         validateBarStateMapEntries(barStateMap);
 
-        return new MMOPlayerDataImpl(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
+        return new PlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
     }
 
-    private void validateBarStateMapEntries(@NotNull Map<RootSkill, SkillBossBarState> map) {
-        Map<RootSkill, SkillBossBarState> barMapDefaults = MMOExperienceBarManager.generateDefaultBarStateMap();
+    private void validateBarStateMapEntries(@NotNull Map<PrimarySkillType, SkillBossBarState> map) {
+        Map<PrimarySkillType, SkillBossBarState> barMapDefaults = MMOExperienceBarManager.generateDefaultBarStateMap();
 
-        for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
+        for(PrimarySkillType key : PrimarySkillType.values()) {
             map.putIfAbsent(key, barMapDefaults.get(key));
         }
     }
 
     private void validateExperienceValueMapEntries(@NotNull Map<PrimarySkillType, Float> map) {
-        for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
+        for(PrimarySkillType key : PrimarySkillType.values()) {
+            if(key.isChildSkill())
+                continue;
+
             map.putIfAbsent(key, 0F);
 
             if(map.get(key) < 0F) {
@@ -126,8 +127,8 @@ public class MMODataBuilder {
         }
     }
 
-    private void validateAbilityCooldownMapEntries(@NotNull Map<SuperSkill, Integer> map) {
-        for(SuperSkill key : mcMMO.p.getSkillRegister().getSuperSkills()) {
+    private void validateAbilityCooldownMapEntries(@NotNull Map<SuperAbilityType, Integer> map) {
+        for(SuperAbilityType key : SuperAbilityType.values()) {
             map.putIfAbsent(key, 0);
 
             if(map.get(key) < 0) {
@@ -138,7 +139,11 @@ public class MMODataBuilder {
     }
 
     private void validateSkillLevelMapEntries(@NotNull Map<PrimarySkillType, Integer> map) {
-        for(RootSkill key : mcMMO.p.getSkillRegister().getRootSkills()) {
+        for(PrimarySkillType key : PrimarySkillType.values()) {
+
+            if(key.isChildSkill())
+                continue;
+
             map.putIfAbsent(key, 0);
 
             if(map.get(key) < 0) {
@@ -193,11 +198,11 @@ public class MMODataBuilder {
         return this;
     }
 
-    public @Nullable Map<SuperSkill, Integer> getAbilityDeactivationTimestamps() {
+    public @Nullable Map<SuperAbilityType, Integer> getAbilityDeactivationTimestamps() {
         return abilityDeactivationTimestamps;
     }
 
-    public @NotNull MMODataBuilder setAbilityDeactivationTimestamps(@NotNull Map<SuperSkill, Integer> abilityDeactivationTimestamps) {
+    public @NotNull MMODataBuilder setAbilityDeactivationTimestamps(@NotNull Map<SuperAbilityType, Integer> abilityDeactivationTimestamps) {
         this.abilityDeactivationTimestamps = abilityDeactivationTimestamps;
         return this;
     }
@@ -211,11 +216,11 @@ public class MMODataBuilder {
         return this;
     }
 
-    public @Nullable Map<RootSkill, SkillBossBarState> getBarStateMap() {
+    public @Nullable Map<PrimarySkillType, SkillBossBarState> getBarStateMap() {
         return barStateMap;
     }
 
-    public @NotNull MMODataBuilder setBarStateMap(@NotNull Map<RootSkill, SkillBossBarState> barStateMap) {
+    public @NotNull MMODataBuilder setBarStateMap(@NotNull Map<PrimarySkillType, SkillBossBarState> barStateMap) {
         this.barStateMap = barStateMap;
         return this;
     }

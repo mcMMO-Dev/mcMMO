@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.skills.CoreRootSkill;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -34,10 +33,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperSkillManagerImpl;
-import com.neetgames.mcmmo.player.MMOPlayerData;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.neetgames.mcmmo.player.SuperSkillManager;
-import com.neetgames.mcmmo.skill.RootSkill;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Location;
@@ -58,7 +54,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
     //Used in our chat systems for chat messages
     private final @NotNull PlayerAuthor playerAuthor;
-    private final @NotNull Map<RootSkill, SkillManager> skillManagers = new HashMap<>();
+    private final @NotNull Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
     private final @NotNull MMOExperienceBarManager experienceBarManager;
 
     private @Nullable PartyTeleportRecord ptpRecord;
@@ -93,7 +89,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
          * New
          * Player
          */
-        super(new MMOPlayerDataImpl(player.getUniqueId(), player.getName()));
+        super(new PlayerData(player.getUniqueId(), player.getName()));
 
         UUID uuid = player.getUniqueId();
         identity = Identity.identity(uuid);
@@ -126,7 +122,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
      * @param player target player
      * @param mmoPlayerData existing player data
      */
-    public McMMOPlayer(@NotNull Player player, @NotNull MMOPlayerData mmoPlayerData) {
+    public McMMOPlayer(@NotNull Player player, @NotNull PlayerData mmoPlayerData) {
         /*
          * Existing
          * Player
@@ -587,8 +583,8 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     }
 
     @Override
-    public void updateXPBar(@NotNull RootSkill rootSkill) {
-        experienceBarManager.updateExperienceBar(rootSkill, mcMMO.p);
+    public void updateXPBar(@NotNull PrimarySkillType primarySkillType) {
+        experienceBarManager.updateExperienceBar(primarySkillType, mcMMO.p);
     }
 
     @Override
@@ -603,8 +599,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
         return playerPartyRef;
     }
 
-    @Override
-    public @NotNull SuperSkillManager getSuperSkillManager() {
+    public @NotNull SuperSkillManagerImpl getSuperSkillManager() {
         return superSkillManagerImpl;
     }
 

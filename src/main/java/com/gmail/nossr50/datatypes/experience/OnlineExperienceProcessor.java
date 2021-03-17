@@ -2,6 +2,8 @@ package com.gmail.nossr50.datatypes.experience;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.PlayerData;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -29,83 +31,75 @@ public class OnlineExperienceProcessor {
 
     private boolean isUsingUnarmed = false;
 
-    private final @NotNull MMOPlayerData mmoPlayerData;
+    private final @NotNull PlayerData mmoPlayerData;
     private final @NotNull MMOPlayer mmoPlayer;
     private final @NotNull Player playerRef;
 
     public OnlineExperienceProcessor(@NotNull MMOPlayer mmoPlayer, @NotNull Player playerRef) {
         this.mmoPlayer = mmoPlayer;
         this.playerRef = playerRef;
-        this.mmoPlayerData = mmoPlayer.getMMOPlayerData();
+        this.mmoPlayerData = mmoPlayer.getMMOPlayerDataImpl();
     }
 
-    @Override
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        Map<PrimarySkillType, Integer> rootSkillLevelMap = mmoPlayerData.getDirtySkillLevelMap().unwrapMap();
+        Map<PrimarySkillType, Integer> primarySkillTypeLevelMap = mmoPlayerData.getDirtySkillLevelMap().unwrapMap();
 
-        for (RootSkill rootSkill : rootSkillLevelMap.keySet()) {
-            powerLevel += rootSkillLevelMap.get(rootSkill);
+        for (PrimarySkillType primarySkillType : primarySkillTypeLevelMap.keySet()) {
+            powerLevel += primarySkillTypeLevelMap.get(primarySkillType);
         }
 
         return powerLevel;
     }
 
-    @Override
-    public float getSkillXpLevelRaw(@NotNull RootSkill rootSkill) {
-        return mmoPlayerData.getSkillsExperienceMap().get(rootSkill);
+    public float getSkillXpLevelRaw(@NotNull PrimarySkillType primarySkillType) {
+        return mmoPlayerData.getSkillsExperienceMap().get(primarySkillType);
     }
 
-    @Override
-    public int getSkillXpValue(@NotNull RootSkill rootSkill) {
-        if(PrimarySkillType.isChildSkill(rootSkill)) {
+    public int getSkillXpValue(@NotNull PrimarySkillType primarySkillType) {
+        if(PrimarySkillType.isChildSkill(primarySkillType)) {
             return 0;
         }
 
-        return (int) Math.floor(getSkillXpLevelRaw(rootSkill));
+        return (int) Math.floor(getSkillXpLevelRaw(primarySkillType));
     }
 
-    @Override
-    public void setSkillXpValue(@NotNull RootSkill rootSkill, float xpLevel) {
-        if (PrimarySkillType.isChildSkill(rootSkill)) {
+    public void setSkillXpValue(@NotNull PrimarySkillType primarySkillType, float xpLevel) {
+        if (PrimarySkillType.isChildSkill(primarySkillType)) {
             return;
         }
 
-        mmoPlayerData.getSkillsExperienceMap().put(rootSkill, xpLevel);
+        mmoPlayerData.getSkillsExperienceMap().put(primarySkillType, xpLevel);
     }
 
-    @Override
-    public float levelUp(@NotNull RootSkill rootSkill) {
-        float xpRemoved = getExperienceToNextLevel(rootSkill);
+    public float levelUp(@NotNull PrimarySkillType primarySkillType) {
+        float xpRemoved = getExperienceToNextLevel(primarySkillType);
 
-        setSkillLevel(rootSkill, getSkillLevel(rootSkill) + 1);
-        setSkillXpValue(rootSkill, getSkillXpValue(rootSkill) - xpRemoved);
+        setSkillLevel(primarySkillType, getSkillLevel(primarySkillType) + 1);
+        setSkillXpValue(primarySkillType, getSkillXpValue(primarySkillType) - xpRemoved);
 
         return xpRemoved;
     }
 
-    @Override
-    public boolean hasReachedLevelCap(@NotNull RootSkill rootSkill) {
+    public boolean hasReachedLevelCap(@NotNull PrimarySkillType primarySkillType) {
         if(hasReachedPowerLevelCap())
             return true;
 
-        return getSkillLevel(rootSkill) >= Config.getInstance().getLevelCap(rootSkill);
+        return getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType);
     }
 
-    @Override
     public boolean hasReachedPowerLevelCap() {
         return this.getPowerLevel() >= Config.getInstance().getPowerLevelCap();
     }
 
-    @Override
-    public void beginXpGain(@NotNull RootSkill rootSkill, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
+    public void beginXpGain(@NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
         if (xp <= 0.0) {
             return;
         }
 
-        if (PrimarySkillType.isChildSkill(rootSkill)) {
-            Set<RootSkill> parentSkills = FamilyTree.getParentSkills(rootSkill);
+        if (PrimarySkillType.isChildSkill(primarySkillType)) {
+            Set<RootSkill> parentSkills = FamilyTree.getParentSkills(primarySkillType);
             float splitXp = xp / parentSkills.size();
 
             for (RootSkill parentSkill : parentSkills) {
@@ -118,49 +112,45 @@ public class OnlineExperienceProcessor {
         //TODO: The logic here is so stupid... rewrite later
 
         // Return if the experience has been shared
-        if (mmoPlayer.getParty() != null && ShareHandler.handleXpShare(xp, mmoPlayer, mmoPlayer.getParty(), rootSkill, ShareHandler.getSharedXpGainReason(xpGainReason))) {
+        if (mmoPlayer.getParty() != null && ShareHandler.handleXpShare(xp, mmoPlayer, mmoPlayer.getParty(), primarySkillType, ShareHandler.getSharedXpGainReason(xpGainReason))) {
             return;
         }
 
-        beginUnsharedXpGain(rootSkill, xp, xpGainReason, xpGainSource);
+        beginUnsharedXpGain(primarySkillType, xp, xpGainReason, xpGainSource);
     }
 
-    @Override
-    public void beginUnsharedXpGain(@NotNull RootSkill rootSkill, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
+    public void beginUnsharedXpGain(@NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
         if(Misc.adaptPlayer(mmoPlayer).getGameMode() == GameMode.CREATIVE)
             return;
 
-        ExperienceUtils.applyXpGain(mmoPlayer, rootSkill, modifyXpGain(rootSkill, xp), xpGainReason, xpGainSource);
+        ExperienceUtils.applyXpGain(mmoPlayer, primarySkillType, modifyXpGain(primarySkillType, xp), xpGainReason, xpGainSource);
 
         Party party = mmoPlayer.getParty();
 
         if (party != null) {
             if (!Config.getInstance().getPartyXpNearMembersNeeded() || !mcMMO.getPartyManager().getNearMembers(mmoPlayer).isEmpty()) {
-                party.getPartyExperienceManager().applyXpGain(modifyXpGain(rootSkill, xp));
+                party.getPartyExperienceManager().applyXpGain(modifyXpGain(primarySkillType, xp));
             }
         }
     }
 
-    @Override
-    public int getSkillLevel(@NotNull RootSkill rootSkill) {
-        return PrimarySkillType.isChildSkill(rootSkill) ? getChildSkillLevel(rootSkill) : getSkillLevel(rootSkill);
+    public int getSkillLevel(@NotNull PrimarySkillType primarySkillType) {
+        return PrimarySkillType.isChildSkill(primarySkillType) ? getChildSkillLevel(primarySkillType) : getSkillLevel(primarySkillType);
     }
 
-    @Override
-    public int getExperienceToNextLevel(@NotNull RootSkill rootSkill) {
-        if(PrimarySkillType.isChildSkill(rootSkill)) {
+    public int getExperienceToNextLevel(@NotNull PrimarySkillType primarySkillType) {
+        if(PrimarySkillType.isChildSkill(primarySkillType)) {
             return 0;
         }
 
-        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? getPowerLevel() : getSkillLevel(rootSkill);
+        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? getPowerLevel() : getSkillLevel(primarySkillType);
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
 
         return mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType);
     }
 
-    @Override
-    public int getChildSkillLevel(@NotNull RootSkill rootSkill) {
-        Set<RootSkill> parents = FamilyTree.getParentSkills(rootSkill);
+    public int getChildSkillLevel(@NotNull PrimarySkillType primarySkillType) {
+        Set<RootSkill> parents = FamilyTree.getParentSkills(primarySkillType);
         int sum = 0;
 
         for (RootSkill parentIdentity : parents) {
@@ -170,8 +160,7 @@ public class OnlineExperienceProcessor {
         return sum / parents.size();
     }
 
-    @Override
-    public void removeXp(@NotNull RootSkill skill, int xp) {
+    public void removeXp(@NotNull PrimarySkillType skill, int xp) {
         if (skill.isChildSkill()) {
             return;
         }
@@ -179,8 +168,7 @@ public class OnlineExperienceProcessor {
         setSkillXpValue(skill, getSkillXpValue(skill) - xp);
     }
 
-    @Override
-    public void removeXp(RootSkill skill, float xp) {
+    public void removeXp(PrimarySkillType skill, float xp) {
         if (skill.isChildSkill()) {
             return;
         }
@@ -188,9 +176,8 @@ public class OnlineExperienceProcessor {
         setSkillXpValue(skill, getSkillXpValue(skill) - xp);
     }
 
-    @Override
-    public void setSkillLevel(@NotNull RootSkill rootSkill, int level) {
-        if (rootSkill.isChildSkill()) {
+    public void setSkillLevel(@NotNull PrimarySkillType primarySkillType, int level) {
+        if (primarySkillType.isChildSkill()) {
             return;
         }
 
@@ -198,19 +185,17 @@ public class OnlineExperienceProcessor {
         if(level < 0)
             level = 0;
 
-        setSkillLevel(rootSkill, level);
-        setSkillXpValue(rootSkill, 0F);
+        setSkillLevel(primarySkillType, level);
+        setSkillXpValue(primarySkillType, 0F);
     }
 
-    @Override
-    public void addLevels(@NotNull RootSkill rootSkill, int levels) {
-        setSkillLevel(rootSkill, getSkillLevel(rootSkill) + levels);
+    public void addLevels(@NotNull PrimarySkillType primarySkillType, int levels) {
+        setSkillLevel(primarySkillType, getSkillLevel(primarySkillType) + levels);
     }
 
-    @Override
-    public void addXp(@NotNull RootSkill rootSkill, float xp) {
-        if (rootSkill.isChildSkill()) {
-            Set<RootSkill> parentSkills = FamilyTree.getParents(rootSkill);
+    public void addXp(@NotNull PrimarySkillType primarySkillType, float xp) {
+        if (primarySkillType.isChildSkill()) {
+            Set<RootSkill> parentSkills = FamilyTree.getParents(primarySkillType);
             float dividedXP = (xp / parentSkills.size());
 
             for (RootSkill parentSkill : parentSkills) {
@@ -218,28 +203,25 @@ public class OnlineExperienceProcessor {
             }
         }
         else {
-            setSkillXpValue(rootSkill, getSkillXpValue(rootSkill) + xp);
+            setSkillXpValue(primarySkillType, getSkillXpValue(primarySkillType) + xp);
         }
     }
 
-    @Override
-    public float getRegisteredXpGain(@NotNull RootSkill rootSkill) {
+    public float getRegisteredXpGain(@NotNull PrimarySkillType primarySkillType) {
         float xp = 0F;
 
-        if (get(rootSkill) != null) { //??
-            xp = rollingSkillsXp.get(rootSkill);
+        if (get(primarySkillType) != null) { //??
+            xp = rollingSkillsXp.get(primarySkillType);
         }
 
         return xp;
     }
 
-    @Override
-    public void registerXpGain(@NotNull RootSkill rootSkill, float xp) {
-        gainedSkillsXp.add(new SkillXpGain(rootSkill, xp));
-        rollingSkillsXp.put(rootSkill, getRegisteredXpGain(rootSkill) + xp);
+    public void registerXpGain(@NotNull PrimarySkillType primarySkillType, float xp) {
+        gainedSkillsXp.add(new SkillXpGain(primarySkillType, xp));
+        rollingSkillsXp.put(primarySkillType, getRegisteredXpGain(primarySkillType) + xp);
     }
 
-    @Override
     public void purgeExpiredXpGains() {
         SkillXpGain gain;
         while ((gain = gainedSkillsXp.poll()) != null) {
@@ -247,44 +229,40 @@ public class OnlineExperienceProcessor {
         }
     }
 
-    @Override
-    private float modifyXpGain(@NotNull RootSkill rootSkill, float xp) {
-        if ((rootSkill.getMaxLevel() <= getSkillLevel(rootSkill)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+    private float modifyXpGain(@NotNull PrimarySkillType primarySkillType, float xp) {
+        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
-        xp = (float) (xp / rootSkill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) (xp / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
-        return PerksUtils.handleXpPerks(Misc.adaptPlayer(mmoPlayer), xp, rootSkill);
+        return PerksUtils.handleXpPerks(Misc.adaptPlayer(mmoPlayer), xp, primarySkillType);
     }
 
-    @Override
-    public double getProgressInCurrentSkillLevel(@NotNull RootSkill rootSkill) throws UnknownSkillException
+    public double getProgressInCurrentSkillLevel(@NotNull PrimarySkillType primarySkillType) throws UnknownSkillException
     {
-        if(PrimarySkillType.isChildSkill(rootSkill)) {
+        if(PrimarySkillType.isChildSkill(primarySkillType)) {
             return 1.0D;
         }
 
-        double currentXP = getSkillXpValue(rootSkill);
-        double maxXP = getExperienceToNextLevel(rootSkill);
+        double currentXP = getSkillXpValue(primarySkillType);
+        double maxXP = getExperienceToNextLevel(primarySkillType);
 
         return (currentXP / maxXP);
     }
 
-    @Override
     public void setUsingUnarmed(boolean bool) {
         isUsingUnarmed = bool;
     }
 
-    @Override
-    public void applyXpGain(@NotNull RootSkill rootSkill, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
+    public void applyXpGain(@NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
         //Only check for permissions if the player is online, otherwise just assume a command is being executed by an admin or some other means and add the XP
-        if (!Permissions.skillEnabled(mmoPlayer.getPlayer(), PrimarySkillType.getSkill(rootSkill))) {
+        if (!Permissions.skillEnabled(mmoPlayer.getPlayer(), PrimarySkillType.getSkill(primarySkillType))) {
             return;
         }
 
-        if (PrimarySkillType.isChildSkill(rootSkill)) {
-            Set<RootSkill> parentSkills = FamilyTree.getParentSkills(rootSkill);
+        if (PrimarySkillType.isChildSkill(primarySkillType)) {
+            Set<RootSkill> parentSkills = FamilyTree.getParentSkills(primarySkillType);
 
             for (RootSkill parentSkill : parentSkills) {
                 applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
@@ -293,16 +271,15 @@ public class OnlineExperienceProcessor {
             return;
         }
 
-        if (!EventUtils.handleXpGainEvent(Misc.adaptPlayer(mmoPlayer), rootSkill, xp, xpGainReason)) {
+        if (!EventUtils.handleXpGainEvent(Misc.adaptPlayer(mmoPlayer), primarySkillType, xp, xpGainReason)) {
             return;
         }
 
-        setUsingUnarmed(rootSkill == PrimarySkillType.UNARMED);
-        updateLevelStats(rootSkill, xpGainReason, xpGainSource);
+        setUsingUnarmed(primarySkillType == PrimarySkillType.UNARMED);
+        updateLevelStats(primarySkillType, xpGainReason, xpGainSource);
     }
 
-    @Override
-    public void processPostXpEvent(@NotNull RootSkill rootSkill, @NotNull XPGainSource xpGainSource)
+    public void processPostXpEvent(@NotNull PrimarySkillType primarySkillType, @NotNull XPGainSource xpGainSource)
     {
         /*
          * Everything in this method requires an online player, so if they aren't online we don't waste our time
@@ -313,8 +290,8 @@ public class OnlineExperienceProcessor {
         //Check if they've reached the power level cap just now
         if(hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
-        } else if(hasReachedLevelCap(rootSkill)) {
-            NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(rootSkill)), rootSkill.getRawSkillName());
+        } else if(hasReachedLevelCap(primarySkillType)) {
+            NotificationManager.sendPlayerInformationChatOnly(Misc.adaptPlayer(mmoPlayer), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getRawSkillName());
         }
 
         //Updates from Party sources
@@ -325,33 +302,32 @@ public class OnlineExperienceProcessor {
         if(xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
             return;
 
-        mmoPlayer.updateXPBar(rootSkill);
+        mmoPlayer.updateXPBar(primarySkillType);
     }
 
-    @Override
-    public void updateLevelStats(@NotNull RootSkill rootSkill, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
-        if(hasReachedLevelCap(rootSkill))
+    public void updateLevelStats(@NotNull PrimarySkillType primarySkillType, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
+        if(hasReachedLevelCap(primarySkillType))
             return;
 
-        if (getSkillXpLevelRaw(rootSkill) < getExperienceToNextLevel(rootSkill)) {
-            processPostXpEvent(rootSkill, xpGainSource);
+        if (getSkillXpLevelRaw(primarySkillType) < getExperienceToNextLevel(primarySkillType)) {
+            processPostXpEvent(primarySkillType, xpGainSource);
             return;
         }
 
         int levelsGained = 0;
         float xpRemoved = 0;
 
-        while (getSkillXpLevelRaw(rootSkill) >= getExperienceToNextLevel(rootSkill)) {
-            if (hasReachedLevelCap(rootSkill)) {
-                setSkillXpValue(rootSkill, 0);
+        while (getSkillXpLevelRaw(primarySkillType) >= getExperienceToNextLevel(primarySkillType)) {
+            if (hasReachedLevelCap(primarySkillType)) {
+                setSkillXpValue(primarySkillType, 0);
                 break;
             }
 
-            xpRemoved += levelUp(rootSkill);
+            xpRemoved += levelUp(primarySkillType);
             levelsGained++;
         }
 
-        if (EventUtils.tryLevelChangeEvent(Misc.adaptPlayer(mmoPlayer), rootSkill, levelsGained, xpRemoved, true, xpGainReason)) {
+        if (EventUtils.tryLevelChangeEvent(Misc.adaptPlayer(mmoPlayer), primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
             return;
         }
 
@@ -363,9 +339,9 @@ public class OnlineExperienceProcessor {
          * Check to see if the player unlocked any new skills
          */
 
-        NotificationManager.sendPlayerLevelUpNotification(mmoPlayer, rootSkill, levelsGained, getSkillLevel(rootSkill));
+        NotificationManager.sendPlayerLevelUpNotification(mmoPlayer, primarySkillType, levelsGained, getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(rootSkill, xpGainSource);
+        processPostXpEvent(primarySkillType, xpGainSource);
     }
 }
