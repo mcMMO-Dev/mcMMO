@@ -2,7 +2,6 @@ Version 2.1.182
     Fixed several errors in de locale (Thanks TheBusyBiscuit & w1tcherrr)
     Fixed a bug where double smelt never succeeded if the furnace was empty
     Added some safety so that mcMMO automatic save interval is never more frequent than 1 minute
-    Added a warning when mcMMO detects ChatControlRed running on the server which has an unresolved severe plugin conflict with mcMMO
 
 Version 2.1.181
     mcMMO no longer pointlessly tries to check for missing UUIDs for FlatFile database
