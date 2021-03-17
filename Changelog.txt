@@ -1,4 +1,5 @@
 Version 2.1.182
+    Removed hardcore and vampirism commands, these commands are dangerous, just modify the config file if you want to use hardcore / vampirism
     Fixed several errors in de locale (Thanks TheBusyBiscuit & w1tcherrr)
     Fixed a bug where double smelt never succeeded if the furnace was empty
     Added some safety so that mcMMO automatic save interval is never more frequent than 1 minute
