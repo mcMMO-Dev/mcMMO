@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -16,6 +15,7 @@ import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDat
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

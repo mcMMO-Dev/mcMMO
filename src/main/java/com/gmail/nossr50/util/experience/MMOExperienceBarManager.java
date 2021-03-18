@@ -3,12 +3,12 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.neetgames.mcmmo.skill.*;
+import com.neetgames.mcmmo.skill.SkillBossBarSetting;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 

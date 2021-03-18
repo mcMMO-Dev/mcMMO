@@ -4,6 +4,7 @@ import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.player.PlayerData;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.neetgames.mcmmo.player.MMOPlayer;
@@ -50,10 +51,10 @@ public interface DatabaseManager {
     /**
      * Save a user to the database.
      *
-     * @param mmoPlayer The player to save
+     * @param playerData target player data
      * @return true if successful, false on failure
      */
-    boolean saveUser(@NotNull MMOPlayer mmoPlayer);
+    boolean saveUser(@NotNull PlayerData playerData);
 
     /**
     * Retrieve leaderboard info.

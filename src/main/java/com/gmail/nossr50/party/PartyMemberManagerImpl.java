@@ -1,13 +1,13 @@
 package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.util.Misc;
 import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.party.PartyMember;
 import com.neetgames.mcmmo.party.PartyMemberManager;
 import com.neetgames.mcmmo.party.PartyMemberRank;
 import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

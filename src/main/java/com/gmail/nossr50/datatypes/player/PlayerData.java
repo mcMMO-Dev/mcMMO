@@ -10,7 +10,7 @@ import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
-import com.neetgames.mcmmo.skill.*;
+import com.neetgames.mcmmo.skill.SkillBossBarState;
 import com.neetgames.neetlib.dirtydata.DirtyData;
 import com.neetgames.neetlib.dirtydata.DirtyMap;
 import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
@@ -19,6 +19,8 @@ import com.neetgames.neetlib.mutableprimitives.MutableLong;
 import com.neetgames.neetlib.mutableprimitives.MutableString;
 import org.apache.commons.lang.NullArgumentException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class PlayerData {
 
     /* Player Stuff */
     private final @NotNull DirtyData<MutableString> playerName;
-    private final @NotNull UUID playerUUID;
+    private final @Nullable UUID playerUUID;
 
     /* Records */
     private final DirtyData<MutableLong> lastLogin;
@@ -57,7 +59,7 @@ public class PlayerData {
      * @param playerName target player's name
      * @throws NullArgumentException thrown when never null arguments are null
      */
-    public PlayerData(@NotNull UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
+    public PlayerData(@Nullable UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
         /*
          * New Data
          */

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SaveTimerTask extends BukkitRunnable {

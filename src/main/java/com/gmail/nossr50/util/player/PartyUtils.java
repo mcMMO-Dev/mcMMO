@@ -1,8 +1,8 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.Config;
-import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.party.PartyFeature;
+import com.neetgames.mcmmo.party.Party;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

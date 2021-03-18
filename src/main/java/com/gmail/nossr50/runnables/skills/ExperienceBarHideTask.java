@@ -1,8 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
-import com.neetgames.mcmmo.skill.RootSkill;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ExperienceBarHideTask extends BukkitRunnable {

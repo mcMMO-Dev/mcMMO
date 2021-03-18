@@ -1,9 +1,9 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AbilityCooldownTask extends BukkitRunnable {

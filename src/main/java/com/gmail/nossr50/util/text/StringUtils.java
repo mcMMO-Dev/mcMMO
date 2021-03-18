@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.text;
 
-import com.gmail.nossr50.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.party.PartyFeature;
 import org.bukkit.Material;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;

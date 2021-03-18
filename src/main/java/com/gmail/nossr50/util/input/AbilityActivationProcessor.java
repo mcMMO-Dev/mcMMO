@@ -2,8 +2,6 @@ package com.gmail.nossr50.util.input;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.util.Misc;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -17,7 +15,9 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

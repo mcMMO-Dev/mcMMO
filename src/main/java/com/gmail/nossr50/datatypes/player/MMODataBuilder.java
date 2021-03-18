@@ -52,14 +52,14 @@ public class MMODataBuilder {
             return null;
     }
 
-    public @NotNull PlayerData buildNewPlayerData(@NotNull UUID playerUUID, @NotNull String playerName) {
+    public @NotNull PlayerData buildNewPlayerData(@Nullable UUID playerUUID, @NotNull String playerName) {
         /*
          * New Profile with default values
          */
         return new PlayerData(playerUUID, playerName);
     }
 
-    public @NotNull PlayerData build() throws Exception {
+    public PlayerData build() throws NullArgumentException {
         if(playerUUID == null)
             throw new NullArgumentException("playerUUID");
 
@@ -91,7 +91,9 @@ public class MMODataBuilder {
 
         validateBarStateMapEntries(barStateMap);
 
-        return new PlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
+        return new PlayerData(playerUUID, playerName, partyChatSpying, skillLevelValues,
+                skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData,
+                barStateMap, scoreboardTipsShown, lastLogin, leaderBoardExemption);
     }
 
     private void validateBarStateMapEntries(@NotNull Map<PrimarySkillType, SkillBossBarState> map) {

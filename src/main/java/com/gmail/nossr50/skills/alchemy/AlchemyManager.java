@@ -2,13 +2,13 @@ package com.gmail.nossr50.skills.alchemy;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

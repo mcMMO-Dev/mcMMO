@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.child;
 
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.exceptions.UnknownSkillException;
 import com.neetgames.mcmmo.skill.RootSkill;

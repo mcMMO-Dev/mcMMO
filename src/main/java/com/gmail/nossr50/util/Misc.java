@@ -1,11 +1,11 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.google.common.collect.ImmutableSet;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

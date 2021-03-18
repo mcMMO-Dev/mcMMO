@@ -14,8 +14,8 @@ public class PlayerProfile extends AbstractMMOPlayer {
      *
      * @param mmoPlayerData target persistent player data
      */
-    public PlayerProfile(@NotNull PlayerData mmoPlayerData) {
-        super(mmoPlayerData);
+    public PlayerProfile(@NotNull PlayerData mmoPlayerData, boolean isLoaded) {
+        super(mmoPlayerData, isLoaded);
     }
 
     @Override
@@ -63,8 +63,7 @@ public class PlayerProfile extends AbstractMMOPlayer {
         return experienceProcessor;
     }
 
-    @Override
-    public @NotNull PlayerData getMMOPlayerDataImpl() {
+    public @NotNull PlayerData getPlayerData() {
         return mmoPlayerData;
     }
 }

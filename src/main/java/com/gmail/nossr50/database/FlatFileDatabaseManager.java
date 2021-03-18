@@ -5,7 +5,10 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
-import com.gmail.nossr50.datatypes.player.*;
+import com.gmail.nossr50.datatypes.player.MMODataBuilder;
+import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
+import com.gmail.nossr50.datatypes.player.PlayerData;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
@@ -18,6 +21,7 @@ import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.InvalidSkillException;
 import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
+import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -256,10 +260,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
 
-    public boolean saveUser(@NotNull MMOPlayer mmoPlayer) {
-        PlayerData mmoPlayerData = mmoPlayer.getPlayerData();
-        String playerName = dataSnapshot.getPlayerName();
-        UUID uuid = dataSnapshot.getPlayerUUID();
+    public boolean saveUser(@NotNull PlayerData playerData) {
+        MMODataSnapshot mmoDataSnapshot = new MMODataSnapshot(playerData); //Clone data into Immutable data
+        String playerName = mmoDataSnapshot.getPlayerName();
+        UUID uuid = mmoDataSnapshot.getPlayerUUID();
 
         BufferedReader in = null;
         FileWriter out = null;
@@ -290,7 +294,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String[] splitData = line.split(":");
 
                     //This would be rare, but check the splitData for having enough entries to contain a username
-                    if(splitData.length < USERNAME) { //UUID have been in mcMMO DB for a very long time so any user without
+                    if(splitData.length < FlatFileMappings.USERNAME) { //UUID have been in mcMMO DB for a very long time so any user without
                         //Something is wrong if we don't have enough split data to have an entry for a username
 
                         if(!corruptDataFound) {
@@ -307,7 +311,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         writer.append(line).append("\r\n"); //Not the user so write it to file and move on
                     } else {
                         //User found
-                        writeUserToLine(profile, playerName, uuid, writer);
+                        writeUserToLine(mmoDataSnapshot, playerName, uuid, writer);
                         wroteUser = true;
                     }
                 }
@@ -316,7 +320,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                  * If we couldn't find the user in the DB we need to add him
                  */
                 if(!wroteUser) {
-                    writeUserToLine(profile, playerName, uuid, writer);
+                    writeUserToLine(mmoDataSnapshot, playerName, uuid, writer);
                 }
 
                 // Write the new file
@@ -487,7 +491,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public @NotNull PlayerProfile newUser(@NotNull Player player) {
         newUser(player.getName(), player.getUniqueId());
-        return new PlayerProfile(player.getName(), player.getUniqueId(), true);
+        MMODataBuilder mmoDataBuilder = new MMODataBuilder();
+        PlayerData newPlayerData = mmoDataBuilder.buildNewPlayerData(player);
+
+        return new PlayerProfile(newPlayerData, true);
     }
 
     public void newUser(String playerName, UUID uuid) {
@@ -649,7 +656,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         rawSplitData[FlatFileMappings.USERNAME] = playerName;
                     }
 
-                    return loadFromLine(rawSplitData);
+                    PlayerData playerData = loadFromLine(rawSplitData);
+                    if(playerData == null) {
+                        mcMMO.p.getLogger().severe("Could not load player data from line");
+                        mcMMO.p.getLogger().severe("Data: "+line);
+
+                        return grabUnloadedProfile(uuid, playerName);
+                    } else {
+                        return new PlayerProfile(playerData, true);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -688,13 +703,20 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String[] rawSplitData = line.split(":");
 
                     /* Don't read corrupt data */
-                    if(rawSplitData.length < (USERNAME + 1)) {
+                    if(rawSplitData.length < (FlatFileMappings.USERNAME + 1)) {
                         continue;
                     }
 
                     //If we couldn't find anyone
                     if(playerName.equalsIgnoreCase(rawSplitData[FlatFileMappings.USERNAME])) {
-                        return loadFromLine(rawSplitData);
+                        PlayerData playerData = loadFromLine(rawSplitData);
+                        if(playerData != null) {
+                            //Data loaded
+                            return new PlayerProfile(playerData, true);
+                        } else {
+                            //Data was unable to be loaded, return "unloaded" profile
+                            return grabUnloadedProfile(null, playerName);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -713,15 +735,17 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         //Return a new blank profile
-        return new PlayerProfile(playerName, null);
+        return grabUnloadedProfile(null, playerName);
     }
 
-    private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid, @Nullable String playerName) {
+    private @NotNull PlayerProfile grabUnloadedProfile(@Nullable UUID uuid, @Nullable String playerName) {
         if(playerName == null) {
             playerName = ""; //No name for you boy!
         }
 
-        return new PlayerProfile(playerName, uuid);
+        MMODataBuilder mmoDataBuilder = new MMODataBuilder();
+        PlayerData newPlayerData = mmoDataBuilder.buildNewPlayerData(uuid, playerName);
+        return new PlayerProfile(newPlayerData, false);
     }
 
     public void convertUsers(@NotNull DatabaseManager destination) {
@@ -740,7 +764,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
 
                     try {
-                        destination.saveUser(loadFromLine(character));
+                        PlayerData processedLineData = loadFromLine(character);
+
+                        if(processedLineData == null) {
+                            mcMMO.p.getLogger().severe("Unable to convert data from line in FlatFile DB");
+                            mcMMO.p.getLogger().info("Data: "+line);
+                            continue;
+                        }
+
+                        destination.saveUser(processedLineData);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -1105,8 +1137,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             String[] correctSizeSplitData = Arrays.copyOf(rawSplitData, FlatFileMappings.LENGTH_OF_SPLIT_DATA_ARRAY);
                             line = org.apache.commons.lang.StringUtils.join(correctSizeSplitData, ":") + ":";
                             rawSplitData = line.split(":");
-                            PlayerProfile temporaryProfile = loadFromLine(rawSplitData);
-                            writeUserToLine(temporaryProfile, rawSplitData[FlatFileMappings.USERNAME], temporaryProfile.getUniqueId(), writer);
+                            PlayerData dataFromLine = loadFromLine(rawSplitData);
+
+                            if(dataFromLine == null)
+                                continue;
+
+
+                            PlayerProfile temporaryProfile = new PlayerProfile(dataFromLine, true);
+                            //TODO: MMODataSnapshot is an unnecessary creation of resources for this operation
+                            writeUserToLine(new MMODataSnapshot(temporaryProfile.getPlayerData()), rawSplitData[FlatFileMappings.USERNAME], temporaryProfile.getUUID(), writer);
                         } else {
                             writer.append(line).append("\r\n");
                         }
@@ -1298,7 +1337,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
             //Build Data
             return playerDataBuilder.build();
-        } catch (Exception e) {
+        } catch (NullArgumentException e) {
             mcMMO.p.getLogger().severe("Critical failure when trying to construct persistent player data!");
             e.printStackTrace();
             return null;

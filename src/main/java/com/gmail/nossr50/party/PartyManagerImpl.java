@@ -1,15 +1,12 @@
 package com.gmail.nossr50.party;
 
+import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.party.Party;
 import com.neetgames.mcmmo.party.PartyManager;
-import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
-import com.gmail.nossr50.mcMMO;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * About mcMMO parties

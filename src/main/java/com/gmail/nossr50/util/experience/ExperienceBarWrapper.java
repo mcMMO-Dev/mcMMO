@@ -2,12 +2,9 @@ package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.CoreSkills;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.text.StringUtils;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
-import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

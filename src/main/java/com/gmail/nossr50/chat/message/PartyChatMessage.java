@@ -2,12 +2,12 @@ package com.gmail.nossr50.chat.message;
 
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.base.Objects;
+import com.neetgames.mcmmo.party.Party;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;

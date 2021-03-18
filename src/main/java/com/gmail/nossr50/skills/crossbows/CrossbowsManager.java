@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.crossbows;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -8,6 +7,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.World;

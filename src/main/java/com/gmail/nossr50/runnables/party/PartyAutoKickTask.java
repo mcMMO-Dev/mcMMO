@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.party;
 
 import com.gmail.nossr50.config.Config;
-import com.neetgames.mcmmo.party.Party;
 import com.gmail.nossr50.mcMMO;
+import com.neetgames.mcmmo.party.Party;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 

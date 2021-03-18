@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
-import com.neetgames.mcmmo.skill.RootSkill;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;

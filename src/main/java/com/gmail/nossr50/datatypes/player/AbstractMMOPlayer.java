@@ -14,6 +14,7 @@ public abstract class AbstractMMOPlayer implements MMOPlayer {
     /* Managers */
     protected final @NotNull ExperienceProcessor experienceProcessor;
     protected final @NotNull CooldownManager cooldownManager;
+    protected boolean isLoaded;
 
     /**
      * Init for online players
@@ -21,10 +22,11 @@ public abstract class AbstractMMOPlayer implements MMOPlayer {
      *
      * @param mmoPlayerData player data
      */
-    public AbstractMMOPlayer(@NotNull Player player, @NotNull PlayerData mmoPlayerData) {
+    public AbstractMMOPlayer(@NotNull Player player, @NotNull PlayerData mmoPlayerData, boolean isLoaded) {
         this.mmoPlayerData = mmoPlayerData;
         this.experienceProcessor = new OnlineExperienceProcessor(mmoPlayerData);
         this.cooldownManager = new CooldownManager(mmoPlayerData);
+        this.isLoaded = isLoaded;
     }
 
     /**
@@ -32,9 +34,18 @@ public abstract class AbstractMMOPlayer implements MMOPlayer {
      *
      * @param mmoPlayerData player data
      */
-    public AbstractMMOPlayer(@NotNull PlayerData mmoPlayerData) {
+    public AbstractMMOPlayer(@NotNull PlayerData mmoPlayerData, boolean isLoaded) {
         this.mmoPlayerData = mmoPlayerData;
         this.experienceProcessor = new OfflineExperienceProcessor(mmoPlayerData);
         this.cooldownManager = new CooldownManager(mmoPlayerData);
+        this.isLoaded = isLoaded;
+    }
+
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        isLoaded = loaded;
     }
 }

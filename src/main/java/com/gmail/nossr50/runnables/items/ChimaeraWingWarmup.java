@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.ItemUtils;

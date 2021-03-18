@@ -5,7 +5,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
-import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.neetgames.mcmmo.skill.AbstractRootSkill;
 import org.bukkit.entity.Player;

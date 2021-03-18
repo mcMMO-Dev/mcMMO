@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.experience;
 
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
