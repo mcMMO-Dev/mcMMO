@@ -126,7 +126,8 @@ public class ScoreboardWrapper {
             try {
                 cooldownTask.cancel();
             }
-            catch (Throwable ignored) {
+            catch (Exception e) {
+                e.printStackTrace();
             }
 
             cooldownTask = null;
@@ -430,8 +431,9 @@ public class ScoreboardWrapper {
         try {
             updateTask.cancel();
         }
-        catch (Throwable ignored) {
-        } // catch NullPointerException and IllegalStateException and any Error; don't care
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         updateTask = null;
 
