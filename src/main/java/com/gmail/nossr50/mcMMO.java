@@ -74,10 +74,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mcMMO extends JavaPlugin {
-    public static final String ULTRA_PERMISSONS = "UltraPermissons";
-    public static final String UP_WARNING_2 = "Stop using " + ULTRA_PERMISSONS + " with mcMMO immediately!";
-    public static final String UP_WARNING_1 = "mcMMO has detected " + ULTRA_PERMISSONS + " on your server, users have reported a severe plugin conflict between these two plugins which severely degrades server performance";
-    public static final String UP_WARNING_3 = "The author of UltraPermissions has passed away and its unlikely this issue will ever be solved";
     /* Managers */
     private static PlatformManager platformManager;
     private static ChunkManager       placeStore;
@@ -151,6 +147,11 @@ public class mcMMO extends JavaPlugin {
     public static final String databaseCommandKey    = "mcMMO: Processing Database Command";
 
     public static FixedMetadataValue metadataValue;
+
+    public static final String ULTRA_PERMISSONS = "UltraPermissons";
+    public static final String UP_WARNING_2 = "Stop using " + ULTRA_PERMISSONS + " with mcMMO immediately!";
+    public static final String UP_WARNING_1 = "mcMMO has detected " + ULTRA_PERMISSONS + " on your server, users have reported a severe plugin conflict between these two plugins which severely degrades server performance";
+    public static final String UP_WARNING_3 = "The author of UltraPermissions has passed away and its unlikely this issue will ever be solved";
 
     public mcMMO() {
         p = this;
