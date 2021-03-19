@@ -63,7 +63,7 @@ public class ScoreboardWrapper {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
-            for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
+            for (OnlineMMOPlayer mmoPlayer : UserManager.getPlayers()) {
                 powerObjective.getScore(mmoPlayer.getPlayerName()).setScore(mmoPlayer.getExperienceHandler().getPowerLevel());
             }
         }
@@ -204,10 +204,10 @@ public class ScoreboardWrapper {
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
 
-        if(mcMMO.getUserManager().getPlayer(playerName) == null)
+        if(UserManager.getPlayer(playerName) == null)
             return;
 
-        PlayerProfile profile = mcMMO.getUserManager().queryPlayer(player);
+        PlayerProfile profile = UserManager.queryPlayer(player);
 
         if (profile.getScoreboardTipsShown() >= Config.getInstance().getTipsAmount()) {
             return;
@@ -447,7 +447,7 @@ public class ScoreboardWrapper {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if(mmoPlayer == null)
             return;
@@ -539,7 +539,7 @@ public class ScoreboardWrapper {
                     newProfile = mmoPlayer; // self
                 }
                 else {
-                    newProfile = mcMMO.getUserManager().getPlayer(targetPlayer); // online
+                    newProfile = UserManager.getPlayer(targetPlayer); // online
                 }
 
                 // Calculate power level here

@@ -42,7 +42,7 @@ public final class ShareHandler {
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player otherMember : nearMembers) {
-            OnlineMMOPlayer partyMember = mcMMO.getUserManager().queryPlayer(otherMember);
+            OnlineMMOPlayer partyMember = UserManager.queryPlayer(otherMember);
 
             //Profile not loaded
             if(partyMember == null) {

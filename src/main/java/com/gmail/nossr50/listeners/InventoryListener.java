@@ -66,13 +66,13 @@ public class InventoryListener implements Listener {
                 }
 
                 //Profile doesn't exist
-                if(mcMMO.getUserManager().queryOfflineMcMMOPlayer(offlinePlayer) == null)
+                if(UserManager.queryOfflineMcMMOPlayer(offlinePlayer) == null)
                 {
                     return;
                 }
 
 
-                boolean debugMode = player.isOnline() && mcMMO.getUserManager().queryPlayer(player).isDebugMode();
+                boolean debugMode = player.isOnline() && UserManager.queryPlayer(player).isDebugMode();
 
                 if(debugMode) {
                     player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
@@ -81,7 +81,7 @@ public class InventoryListener implements Listener {
                     player.sendMessage("Burn Length before Fuel Efficiency is applied - "+event.getBurnTime());
                 }
 
-                event.setBurnTime(mcMMO.getUserManager().queryPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+                event.setBurnTime(UserManager.queryPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
 
                 if(debugMode) {
                     player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
@@ -111,7 +111,7 @@ public class InventoryListener implements Listener {
 
             if(offlinePlayer != null) {
 
-                OnlineMMOPlayer offlineProfile = mcMMO.getUserManager().queryOfflineMcMMOPlayer(offlinePlayer);
+                OnlineMMOPlayer offlineProfile = UserManager.queryOfflineMcMMOPlayer(offlinePlayer);
 
                 //Profile doesn't exist
                 if(offlineProfile != null) {
@@ -144,18 +144,18 @@ public class InventoryListener implements Listener {
                     return;
             }
 
-            if (!mcMMO.getUserManager().hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
+            if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
                 return;
             }
 
             //Profile not loaded
-            if(mcMMO.getUserManager().queryPlayer(player) == null)
+            if(UserManager.queryPlayer(player) == null)
             {
                 return;
             }
 
             int xpToDrop = event.getExpToDrop();
-            int exp = mcMMO.getUserManager().queryPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+            int exp = UserManager.queryPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
             event.setExpToDrop(exp);
         }
     }
@@ -197,7 +197,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 
@@ -310,7 +310,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 

@@ -254,7 +254,7 @@ public final class Misc {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player != null) {
-            mcMMO.getUserManager().remove(player);
+            UserManager.remove(player);
             new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }

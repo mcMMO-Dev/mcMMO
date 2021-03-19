@@ -739,7 +739,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.next();
                     //TODO: Optimize, probably needless to make a snapshot here, brain tired
                     PlayerData mmoPlayerData = loadFromResult(playerName, resultSet);
-                    MMODataSnapshot mmoDataSnapshot = mcMMO.getUserManager().createPlayerDataSnapshot(mmoPlayerData);
+                    MMODataSnapshot mmoDataSnapshot = UserManager.createPlayerDataSnapshot(mmoPlayerData);
                     destination.saveUser(mmoDataSnapshot);
                     resultSet.close();
                 }

@@ -38,7 +38,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
         brewSpeed = DEFAULT_BREW_SPEED;
         brewTimer = DEFAULT_BREW_TICKS;
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
         if (player != null
                 && !Misc.isNPCEntityExcludingVillagers(player)
                 && Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS)

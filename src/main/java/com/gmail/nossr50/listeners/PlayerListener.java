@@ -88,12 +88,12 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player) || Config.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
+        if (!UserManager.hasPlayerDataKey(player) || Config.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
             return;
         }
 
         //Profile not loaded
-        McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(player);
+        McMMOPlayer mmoPlayer = (McMMOPlayer) UserManager.queryPlayer(player);
 
         if(mmoPlayer == null) {
             return;
@@ -199,17 +199,17 @@ public class PlayerListener implements Listener {
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if(mmoPlayer == null) {
             return;
@@ -274,12 +274,12 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
             return;
         }
 
         //Profile not loaded
-        McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(player);
+        McMMOPlayer mmoPlayer = (McMMOPlayer) UserManager.queryPlayer(player);
 
         if(mmoPlayer == null) {
             return;
@@ -361,18 +361,18 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
         Entity caught = event.getCaught();
-        FishingManager fishingManager = mcMMO.getUserManager().queryPlayer(player).getFishingManager();
+        FishingManager fishingManager = UserManager.queryPlayer(player).getFishingManager();
 
         //Track the hook
         if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
@@ -474,11 +474,11 @@ public class PlayerListener implements Listener {
                     return;
             }
 
-            if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
             //Profile not loaded
             if(mmoPlayer == null) {
@@ -589,17 +589,17 @@ public class PlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        mcMMO.getUserManager().queryPlayer(player).actualizeRespawnATS();
+        UserManager.queryPlayer(player).actualizeRespawnATS();
     }
 
     /**
@@ -636,17 +636,17 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (event.getHand() != EquipmentSlot.HAND || !mcMMO.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
         MiningManager miningManager = ((McMMOPlayer) (mmoPlayer)).getMiningManager();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -675,7 +675,7 @@ public class PlayerListener implements Listener {
                             && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && mcMMO.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
-                                SalvageManager salvageManager = mcMMO.getUserManager().queryPlayer(player).getSalvageManager();
+                                SalvageManager salvageManager = UserManager.queryPlayer(player).getSalvageManager();
                                 event.setCancelled(true);
 
                                 // Make sure the player knows what he's doing when trying to salvage an enchanted item
@@ -752,17 +752,17 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (playerInteractEvent.getHand() != EquipmentSlot.HAND || !mcMMO.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (playerInteractEvent.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
@@ -797,7 +797,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if (mmoPlayer == null) {
             mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");

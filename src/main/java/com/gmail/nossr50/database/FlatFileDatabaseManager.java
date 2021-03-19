@@ -19,7 +19,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.InvalidSkillException;
-import com.neetgames.mcmmo.player.MMOPlayer;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;

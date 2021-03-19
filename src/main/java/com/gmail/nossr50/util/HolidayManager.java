@@ -368,7 +368,7 @@ public final class HolidayManager {
         if(!Config.getInstance().isAprilFoolsAllowed())
             return;
 
-        final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        final OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
         if (mmoPlayer == null) return;
 
         int levelTotal = Misc.getRandom().nextInt(1 + mmoPlayer.getSkillLevel(PrimarySkillType.MINING)) + 1;

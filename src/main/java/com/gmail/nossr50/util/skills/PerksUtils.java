@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.SkillActivationPerkEvent;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,7 +53,7 @@ public final class PerksUtils {
         double modifier = 1.0F;
 
         if (Permissions.customXpBoost(player, skill)) {
-            if(mcMMO.getUserManager().queryPlayer(player) != null && mcMMO.getUserManager().queryPlayer(player).isDebugMode()) {
+            if(UserManager.queryPlayer(player) != null && UserManager.queryPlayer(player).isDebugMode()) {
                 player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY + "XP Perk Multiplier IS CUSTOM! ");
             }
 
@@ -81,7 +80,7 @@ public final class PerksUtils {
 
         float modifiedXP = (float) (xp * modifier);
 
-        if(mcMMO.getUserManager().queryPlayer(player) != null && mcMMO.getUserManager().queryPlayer(player).isDebugMode()) {
+        if(UserManager.queryPlayer(player) != null && UserManager.queryPlayer(player).isDebugMode()) {
             player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP Perk Multiplier - " + ChatColor.GOLD + modifier);
             player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "Original XP before perk boosts " + ChatColor.RED + (double) xp);
             player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP AFTER PERKS " + ChatColor.DARK_RED + modifiedXP);

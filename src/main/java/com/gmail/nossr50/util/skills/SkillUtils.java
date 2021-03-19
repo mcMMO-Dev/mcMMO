@@ -185,7 +185,7 @@ public final class SkillUtils {
                 }
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
             //Not Loaded
             if(mmoPlayer == null)

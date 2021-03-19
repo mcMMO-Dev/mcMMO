@@ -118,7 +118,7 @@ public class Roll extends AcrobaticsSubSkill {
         String rollChance, rollChanceLucky, gracefulRollChance, gracefulRollChanceLucky;
 
         /* Values related to the player */
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
         float skillValue = mmoPlayer.getExperienceHandler().getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
@@ -268,7 +268,7 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if (ItemUtils.hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mmoPlayer.isDebugMode()) {
@@ -277,7 +277,7 @@ public class Roll extends AcrobaticsSubSkill {
             return true;
         }
 
-        if(mcMMO.getUserManager().queryPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
+        if(UserManager.queryPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
         {
             if(mmoPlayer.isDebugMode()) {
                 Misc.adaptPlayer(mmoPlayer).sendMessage("Acrobatics XP Prevented: Fallen in location before");
@@ -419,7 +419,7 @@ public class Roll extends AcrobaticsSubSkill {
 
     public void addFallLocation(Player player)
     {
-        mcMMO.getUserManager().queryPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
+        UserManager.queryPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
     }
 
     public Location getBlockLocation(Player player)

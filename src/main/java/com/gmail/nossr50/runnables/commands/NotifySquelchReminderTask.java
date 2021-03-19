@@ -10,9 +10,9 @@ public class NotifySquelchReminderTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if(mcMMO.getUserManager().getPlayer(player) != null)
+            if(UserManager.getPlayer(player) != null)
             {
-                if(!mcMMO.getUserManager().getPlayer(player).useChatNotifications())
+                if(!UserManager.getPlayer(player).useChatNotifications())
                 {
                     player.sendMessage(LocaleLoader.getString("Reminder.Squelched"));
                 }

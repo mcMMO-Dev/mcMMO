@@ -197,7 +197,7 @@ public class EntityListener implements Listener {
 
                 //Crossbow only
                 if (isCrossbow) {
-                    OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                    OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
                     //Process launch event
                     if (Permissions.skillEnabled(player, PrimarySkillType.CROSSBOWS)) {
@@ -409,7 +409,7 @@ public class EntityListener implements Listener {
                     }
 
                     //Deflect checks
-                    final OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(defendingPlayer);
+                    final OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(defendingPlayer);
                     if (mmoPlayer != null) {
                         UnarmedManager unarmedManager = ((McMMOPlayer) (mmoPlayer)).getUnarmedManager();
 
@@ -473,7 +473,7 @@ public class EntityListener implements Listener {
     }
 
     public boolean checkParties(Cancellable event, Player defendingPlayer, Player attackingPlayer) {
-        if (!mcMMO.getUserManager().hasPlayerDataKey(defendingPlayer) || !mcMMO.getUserManager().hasPlayerDataKey(attackingPlayer)) {
+        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
             return true;
         }
 
@@ -563,11 +563,11 @@ public class EntityListener implements Listener {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 
-            McMMOPlayer mmoPlayer = (McMMOPlayer) mcMMO.getUserManager().queryPlayer(player);
+            McMMOPlayer mmoPlayer = (McMMOPlayer) UserManager.queryPlayer(player);
 
             //Profile not loaded
             if(mmoPlayer == null)
@@ -605,12 +605,12 @@ public class EntityListener implements Listener {
                 Wolf wolf = (Wolf) pet;
 
                 //Profile not loaded
-                if(mcMMO.getUserManager().queryPlayer(player) == null)
+                if(UserManager.queryPlayer(player) == null)
                 {
                     return;
                 }
 
-                TamingManager tamingManager = mcMMO.getUserManager().queryPlayer(player).getTamingManager();
+                TamingManager tamingManager = UserManager.queryPlayer(player).getTamingManager();
 
                 switch (cause) {
                     case CONTACT:
@@ -794,12 +794,12 @@ public class EntityListener implements Listener {
         // using this exact metadata
         Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
@@ -811,7 +811,7 @@ public class EntityListener implements Listener {
                 return;
         }
 
-        MiningManager miningManager = mcMMO.getUserManager().queryPlayer(player).getMiningManager();
+        MiningManager miningManager = UserManager.queryPlayer(player).getMiningManager();
 
         if (miningManager.canUseBiggerBombs()) {
             event.setRadius(miningManager.biggerBombs(event.getRadius()));
@@ -840,7 +840,7 @@ public class EntityListener implements Listener {
         // using this exact metadata
         Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -852,12 +852,12 @@ public class EntityListener implements Listener {
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        MiningManager miningManager = mcMMO.getUserManager().queryPlayer(player).getMiningManager();
+        MiningManager miningManager = UserManager.queryPlayer(player).getMiningManager();
 
         if (miningManager.canUseBlastMining()) {
             miningManager.blastMiningDropProcessing(event.getYield(), event);
@@ -886,7 +886,7 @@ public class EntityListener implements Listener {
         Player player = (Player) entity;
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
@@ -898,7 +898,7 @@ public class EntityListener implements Listener {
                 return;
         }
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -951,7 +951,7 @@ public class EntityListener implements Listener {
                                * 1000
                                */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(mcMMO.getUserManager().queryPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+                    event.setFoodLevel(UserManager.queryPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
 
@@ -963,7 +963,7 @@ public class EntityListener implements Listener {
                                     */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(mcMMO.getUserManager().queryPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+                    event.setFoodLevel(UserManager.queryPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
             case COD:
@@ -973,7 +973,7 @@ public class EntityListener implements Listener {
             case COOKED_SALMON:
 
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(mcMMO.getUserManager().queryPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
+                    event.setFoodLevel(UserManager.queryPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
                 return;
 
@@ -1008,7 +1008,7 @@ public class EntityListener implements Listener {
 
         LivingEntity livingEntity = event.getEntity();
 
-        if (mcMMO.getUserManager().queryPlayer(player) == null
+        if (UserManager.queryPlayer(player) == null
                 || (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(livingEntity))
                 || persistentDataLayer.hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
                 || persistentDataLayer.hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
@@ -1018,12 +1018,12 @@ public class EntityListener implements Listener {
         persistentDataLayer.flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        mcMMO.getUserManager().queryPlayer(player).getTamingManager().awardTamingXP(livingEntity);
+        UserManager.queryPlayer(player).getTamingManager().awardTamingXP(livingEntity);
     }
 
     /**
@@ -1056,7 +1056,7 @@ public class EntityListener implements Listener {
 
         Tameable tameable = (Tameable) entity;
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
+        if (!UserManager.hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
             return;
         }
 

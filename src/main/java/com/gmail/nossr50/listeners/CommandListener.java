@@ -26,7 +26,7 @@
 //
 //        SkillUtils.removeAbilityBoostsFromInventory(player);
 //
-//        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+//        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 //
 //        if(mmoPlayer == null)
 //            return;

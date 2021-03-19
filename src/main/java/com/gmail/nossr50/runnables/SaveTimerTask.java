@@ -12,8 +12,8 @@ public class SaveTimerTask extends BukkitRunnable {
         int count = 1;
 
         //TODO: write a more efficient bulk save
-        for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
-            mcMMO.getUserManager().saveUserWithDelay(mmoPlayer.getPersistentPlayerData(), false, count);
+        for (OnlineMMOPlayer mmoPlayer : UserManager.getPlayers()) {
+            UserManager.saveUserWithDelay(mmoPlayer.getPersistentPlayerData(), false, count);
             count++;
         }
 

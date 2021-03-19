@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -25,10 +24,10 @@ public final class HardcoreManager {
         double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
 
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
             return;
 
-        PlayerProfile playerProfile = mcMMO.getUserManager().queryPlayer(player);
+        PlayerProfile playerProfile = UserManager.queryPlayer(player);
         int totalLevelsLost = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();
@@ -76,11 +75,11 @@ public final class HardcoreManager {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = Config.getInstance().getHardcoreVampirismLevelThreshold();
 
-        if(mcMMO.getUserManager().queryPlayer(killer) == null || mcMMO.getUserManager().queryPlayer(victim) == null)
+        if(UserManager.queryPlayer(killer) == null || UserManager.queryPlayer(victim) == null)
             return;
 
-        PlayerProfile killerProfile = mcMMO.getUserManager().queryPlayer(killer);
-        PlayerProfile victimProfile = mcMMO.getUserManager().queryPlayer(victim);
+        PlayerProfile killerProfile = UserManager.queryPlayer(killer);
+        PlayerProfile victimProfile = UserManager.queryPlayer(victim);
         int totalLevelsStolen = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();

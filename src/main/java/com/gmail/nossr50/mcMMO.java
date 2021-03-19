@@ -84,8 +84,7 @@ public class mcMMO extends JavaPlugin {
     private static PlayerLevelUtils playerLevelUtils;
     private static SmeltingTracker smeltingTracker;
     private static SpawnedProjectileTracker spawnedProjectileTracker;
-    private static UserManager userManager;
-    private static PartyManager partyManager;
+    private static PartyManager partyManager; //TODO: T&C wire this up
     private static TransientMetadataTools transientMetadataTools;
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
@@ -315,9 +314,6 @@ public class mcMMO extends JavaPlugin {
         //Init spawned projectile tracker
         spawnedProjectileTracker = new SpawnedProjectileTracker();
 
-        //Init Player Data Manager
-        userManager = new UserManager();
-
         //Set up Adventure's audiences
         audiences = BukkitAudiences.create(this);
 
@@ -369,8 +365,8 @@ public class mcMMO extends JavaPlugin {
         mcMMO.p.getLogger().info("Server shutdown has been executed, saving and cleaning up data...");
 
         try {
-            userManager.saveAllSync();      // Make sure to save player information if the server shuts down
-            userManager.clearAll();
+            UserManager.saveAll();      // Make sure to save player information if the server shuts down
+            UserManager.clearAll();
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             mcMMO.getPartyManager().saveParties(); // Save our parties
 

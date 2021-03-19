@@ -6,7 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ClearRegisteredXPGainTask extends BukkitRunnable {
     @Override
     public void run() {
-        for (OnlineMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers()) {
+        for (OnlineMMOPlayer mmoPlayer : UserManager.getPlayers()) {
             mmoPlayer.purgeExpiredXpGains();
         }
     }

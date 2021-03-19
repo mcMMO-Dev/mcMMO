@@ -96,7 +96,7 @@ public final class EventUtils {
      */
     public static OnlineMMOPlayer getMcMMOPlayer(@NotNull Entity entity)
     {
-        return mcMMO.getUserManager().queryPlayer((Player)entity);
+        return UserManager.queryPlayer((Player)entity);
     }
 
     /**
@@ -140,11 +140,11 @@ public final class EventUtils {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return true;
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
             if(mmoPlayer == null)
             {
@@ -237,7 +237,7 @@ public final class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-            PlayerProfile profile = mcMMO.getUserManager().queryPlayer(player);
+            PlayerProfile profile = UserManager.queryPlayer(player);
 
             profile.getExperienceHandler().setSkillLevel(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
@@ -273,7 +273,7 @@ public final class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-            PlayerProfile profile = mcMMO.getUserManager().queryPlayer(player);
+            PlayerProfile profile = UserManager.queryPlayer(player);
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
@@ -327,7 +327,7 @@ public final class EventUtils {
     }
 
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(teleportingPlayer);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(teleportingPlayer);
 
         if(mmoPlayer == null)
             return;
@@ -382,15 +382,15 @@ public final class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            mcMMO.getUserManager().queryPlayer(player).addXp(skill, event.getRawXpGained());
-            mcMMO.getUserManager().queryPlayer(player).registerXpGain(skill, event.getRawXpGained());
+            UserManager.queryPlayer(player).addXp(skill, event.getRawXpGained());
+            UserManager.queryPlayer(player).registerXpGain(skill, event.getRawXpGained());
         }
 
         return !isCancelled;
     }
 
     public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
             return true;
 
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
@@ -401,7 +401,7 @@ public final class EventUtils {
         if (!isCancelled) {
             levelChanged = event.getLevelChanged();
             experienceChanged = event.getExperienceChanged();
-            PlayerProfile playerProfile = mcMMO.getUserManager().queryPlayer(player);
+            PlayerProfile playerProfile = UserManager.queryPlayer(player);
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
@@ -440,17 +440,17 @@ public final class EventUtils {
             HashMap<String, Integer> levelChangedVictim = eventVictim.getLevelChanged();
             HashMap<String, Float> experienceChangedVictim = eventVictim.getExperienceChanged();
 
-            OnlineMMOPlayer killerPlayer = mcMMO.getUserManager().queryPlayer(killer);
+            OnlineMMOPlayer killerPlayer = UserManager.queryPlayer(killer);
 
             //Not loaded
             if(killerPlayer == null)
                 return true;
 
             //Not loaded
-            if(mcMMO.getUserManager().queryPlayer(victim) == null)
+            if(UserManager.queryPlayer(victim) == null)
                 return true;
 
-            PlayerProfile victimProfile = mcMMO.getUserManager().queryPlayer(victim);
+            PlayerProfile victimProfile = UserManager.queryPlayer(victim);
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();

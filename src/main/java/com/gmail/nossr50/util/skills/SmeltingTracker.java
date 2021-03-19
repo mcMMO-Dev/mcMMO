@@ -21,7 +21,7 @@ public class SmeltingTracker {
 
     private void changeFurnaceOwnership(Furnace furnace, Player player) {
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         /*
             Debug output
@@ -52,7 +52,7 @@ public class SmeltingTracker {
         OfflinePlayer furnaceOwner = getFurnaceOwner(furnace);
 
         if(furnaceOwner != null && furnaceOwner.isOnline()) {
-            OnlineMMOPlayer furnaceOwnerProfile = mcMMO.getUserManager().queryPlayer(furnaceOwner.getPlayer());
+            OnlineMMOPlayer furnaceOwnerProfile = UserManager.queryPlayer(furnaceOwner.getPlayer());
 
             if(furnaceOwnerProfile != null) {
                 if(furnaceOwnerProfile.isDebugMode()) {

@@ -219,11 +219,11 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if(mmoPlayer == null)
             return;
@@ -305,11 +305,11 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Check if profile is loaded
         if(mmoPlayer == null) {
@@ -402,12 +402,12 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
@@ -416,7 +416,7 @@ public class BlockListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         if (ItemUtils.isSword(heldItem)) {
-            HerbalismManager herbalismManager = mcMMO.getUserManager().queryPlayer(player).getHerbalismManager();
+            HerbalismManager herbalismManager = UserManager.queryPlayer(player).getHerbalismManager();
 
             if (herbalismManager.canUseHylianLuck()) {
                 if (herbalismManager.processHylianLuck(blockState)) {
@@ -431,7 +431,7 @@ public class BlockListener implements Listener {
             }
         }
         /*else if (!heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
-            SmeltingManager smeltingManager = mcMMO.getUserManager().getPlayer(player).getSmeltingManager();
+            SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 
             if (smeltingManager.canUseFluxMining(blockState)) {
                 if (smeltingManager.processFluxMining(blockState)) {
@@ -466,11 +466,11 @@ public class BlockListener implements Listener {
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Profile not loaded
         if(mmoPlayer == null)
@@ -552,14 +552,14 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
@@ -603,10 +603,10 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDamageCleanup(BlockDamageEvent event) {
         Player player = event.getPlayer();
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
@@ -624,19 +624,19 @@ public class BlockListener implements Listener {
     //TODO: Convert into locale strings
     private void debugStickDump(Player player, BlockState blockState) {
         //Profile not loaded
-        if(mcMMO.getUserManager().queryPlayer(player) == null)
+        if(UserManager.queryPlayer(player) == null)
         {
             return;
         }
 
-        if(mcMMO.getUserManager().queryPlayer(player).isDebugMode())
+        if(UserManager.queryPlayer(player).isDebugMode())
         {
             if(mcMMO.getPlaceStore().isTrue(blockState))
                 player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
             else
             {
                 player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
-                mcMMO.getUserManager().queryPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
+                UserManager.queryPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
             }
 
             if(WorldGuardUtils.isWorldGuardLoaded())

@@ -75,7 +75,7 @@ public final class CombatUtils {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -125,7 +125,7 @@ public final class CombatUtils {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -161,7 +161,7 @@ public final class CombatUtils {
         double finalDamage = initialDamage;
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -212,7 +212,7 @@ public final class CombatUtils {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -253,7 +253,7 @@ public final class CombatUtils {
         double finalDamage = initialDamage;
 
         if(master != null && master.isOnline() && master.isValid()) {
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(master);
+            OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(master);
 
             //Make sure the profiles been loaded
             if(mmoPlayer == null) {
@@ -285,7 +285,7 @@ public final class CombatUtils {
     private static void processArcheryCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
         double initialDamage = event.getDamage();
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -337,7 +337,7 @@ public final class CombatUtils {
     private static void processCrossbowCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Projectile arrow) {
         double initialDamage = event.getDamage();
 
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Make sure the profiles been loaded
         if(mmoPlayer == null) {
@@ -349,7 +349,7 @@ public final class CombatUtils {
         double finalDamage = event.getDamage();
 
         if (target instanceof Player && PrimarySkillType.UNARMED.getPVPEnabled()) {
-            UnarmedManager unarmedManager = mcMMO.getUserManager().queryPlayer((Player) target).getUnarmedManager();
+            UnarmedManager unarmedManager = UserManager.queryPlayer((Player) target).getUnarmedManager();
 
             if (unarmedManager.canDeflect()) {
                 event.setCancelled(unarmedManager.deflectCheck());
@@ -394,11 +394,11 @@ public final class CombatUtils {
             }
 
             Player player = (Player) target;
-            if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 
-            OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+            OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
             AcrobaticsManager acrobaticsManager = ((McMMOPlayer) (mmoPlayer)).getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
@@ -421,7 +421,7 @@ public final class CombatUtils {
         if (painSourceRoot instanceof Player && entityType == EntityType.PLAYER) {
             Player player = (Player) painSourceRoot;
 
-            if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 
@@ -429,7 +429,7 @@ public final class CombatUtils {
 
             if (target instanceof Tameable) {
                 if (heldItem.getType() == Material.BONE) {
-                    TamingManager tamingManager = mcMMO.getUserManager().queryPlayer(player).getTamingManager();
+                    TamingManager tamingManager = UserManager.queryPlayer(player).getTamingManager();
 
                     if (tamingManager.canUseBeastLore()) {
                         tamingManager.beastLore(target);
@@ -522,7 +522,7 @@ public final class CombatUtils {
                 }
 
                 if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
-                    OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+                    OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
                     if(mmoPlayer == null) {
                         return;
@@ -777,7 +777,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    mcMMO.getUserManager().queryPlayer(attacker).getSwordsManager().ruptureCheck(target);
+                    UserManager.queryPlayer(attacker).getSwordsManager().ruptureCheck(target);
                     break;
 
                 case AXES:
@@ -903,10 +903,10 @@ public final class CombatUtils {
             Player defender = (Player) entity;
 
             //TODO: NPC Interaction?
-            if(mcMMO.getUserManager().queryPlayer(defender) == null)
+            if(UserManager.queryPlayer(defender) == null)
                 return true;
 
-            if (!defender.getWorld().getPVP() || defender == player || mcMMO.getUserManager().queryPlayer(defender).getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || UserManager.queryPlayer(defender).getGodMode()) {
                 return false;
             }
 

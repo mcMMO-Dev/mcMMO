@@ -91,7 +91,7 @@ public class BlastMining {
     }
 
     public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
-        if (!tnt.hasMetadata(mcMMO.tntMetadataKey) || !mcMMO.getUserManager().hasPlayerDataKey(defender)) {
+        if (!tnt.hasMetadata(mcMMO.tntMetadataKey) || !UserManager.hasPlayerDataKey(defender)) {
             return false;
         }
 
@@ -102,12 +102,12 @@ public class BlastMining {
             return false;
         }
 
-        if(mcMMO.getUserManager().queryPlayer(defender) == null)
+        if(UserManager.queryPlayer(defender) == null)
         {
             return false;
         }
 
-        MiningManager miningManager =  mcMMO.getUserManager().queryPlayer(defender).getMiningManager();
+        MiningManager miningManager =  UserManager.queryPlayer(defender).getMiningManager();
 
         if (!miningManager.canUseDemolitionsExpertise()) {
             return false;

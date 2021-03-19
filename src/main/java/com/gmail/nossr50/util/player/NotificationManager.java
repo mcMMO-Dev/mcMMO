@@ -47,7 +47,7 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key)
     {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if(mmoPlayer == null || !mmoPlayer.hasSkillChatNotifications())
             return;
@@ -63,7 +63,7 @@ public class NotificationManager {
 
     public static boolean doesPlayerUseNotifications(@NotNull Player player)
     {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         if(mmoPlayer == null)
             return false;
@@ -86,7 +86,7 @@ public class NotificationManager {
     }
 
     public static void sendPlayerInformationChatOnly(@NotNull Player player, @NotNull String key, String... values) {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Don't send chat notifications if they are disabled
         if(mmoPlayer != null && !mmoPlayer.hasSkillChatNotifications())
@@ -98,7 +98,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnlyPrefixed(@NotNull Player player, @NotNull String key, String... values)
     {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Don't send chat notifications if they are disabled
         if(mmoPlayer != null && !mmoPlayer.hasSkillChatNotifications())
@@ -110,7 +110,7 @@ public class NotificationManager {
     }
 
     public static void sendPlayerInformation(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key, String... values) {
-        OnlineMMOPlayer mmoPlayer = mcMMO.getUserManager().queryPlayer(player);
+        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
 
         //Don't send chat notifications if they are disabled
         if(mmoPlayer != null && !mmoPlayer.hasSkillChatNotifications())
