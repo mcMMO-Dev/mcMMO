@@ -16,6 +16,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.neetgames.mcmmo.MobHealthBarType;
 import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.database.PoolIdentifier;
 import com.neetgames.mcmmo.exceptions.InvalidSkillException;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.apache.tomcat.jdbc.pool.DataSource;
@@ -635,17 +636,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
         return loadPlayerFromDB(uuid, playerName);
-    @Override
-    public @Nullable PlayerData queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException {
-        return loadPlayerProfile(player, player.getName(), player.getUniqueId());
     }
 
     private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName) throws RuntimeException {
         if(uuid == null && playerName == null) {
             throw new RuntimeException("Error looking up player, both UUID and playerName are null and one must not be.");
         }
-    @Override
-    public @Nullable PlayerData queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException {
+
         return loadPlayerProfile(null, playerName, uuid);
     }
 

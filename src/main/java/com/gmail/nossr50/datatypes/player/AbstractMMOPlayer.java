@@ -6,13 +6,15 @@ import com.neetgames.mcmmo.experience.ExperienceProcessor;
 import com.neetgames.mcmmo.player.MMOPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractMMOPlayer implements MMOPlayer {
     /* All of the persistent data for a player that gets saved and loaded from DB */
-    protected final @NotNull PlayerData mmoPlayerData; //All persistent data is kept here
+    protected final @NotNull PlayerData playerData; //All persistent data is kept here
+    protected @Nullable Player player = null;
 
     /* Managers */
-    protected final @NotNull ExperienceProcessor experienceProcessor;
+    protected final @Nullable ExperienceProcessor experienceProcessor;
     protected final @NotNull CooldownManager cooldownManager;
     protected boolean isLoaded;
 
@@ -20,25 +22,30 @@ public abstract class AbstractMMOPlayer implements MMOPlayer {
      * Init for online players
      * This will be used for existing data
      *
-     * @param mmoPlayerData player data
+     * @param playerData player data
      */
-    public AbstractMMOPlayer(@NotNull Player player, @NotNull PlayerData mmoPlayerData, boolean isLoaded) {
-        this.mmoPlayerData = mmoPlayerData;
-        this.experienceProcessor = new OnlineExperienceProcessor(mmoPlayerData);
-        this.cooldownManager = new CooldownManager(mmoPlayerData);
-        this.isLoaded = isLoaded;
-    }
+    public AbstractMMOPlayer(@Nullable Player player, @NotNull PlayerData playerData, boolean isLoaded) {
+        this.playerData = playerData;
 
-    /**
-     * Init for offline players
-     *
-     * @param mmoPlayerData player data
-     */
-    public AbstractMMOPlayer(@NotNull PlayerData mmoPlayerData, boolean isLoaded) {
-        this.mmoPlayerData = mmoPlayerData;
-        this.experienceProcessor = new OfflineExperienceProcessor(mmoPlayerData);
-        this.cooldownManager = new CooldownManager(mmoPlayerData);
+        if(player != null)
+            this.player = player;
+
         this.isLoaded = isLoaded;
+
+        if(isLoaded) {
+            if(player != null && player.isOnline()) {
+                //Online Player
+                this.experienceProcessor = new OnlineExperienceProcessor(player, playerData);
+            } else {
+                //Offline Player
+                this.experienceProcessor = new OfflineExperienceProcessor(player, playerData);
+            }
+        } else {
+            //Invalid Player (no loaded data) so experience operations are pointless
+            this.experienceProcessor = null;
+        }
+
+        this.cooldownManager = new CooldownManager(playerData);
     }
 
     public boolean isLoaded() {

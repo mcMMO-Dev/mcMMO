@@ -16,6 +16,7 @@ import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.neetgames.mcmmo.exceptions.UnknownSkillException;
+import com.neetgames.mcmmo.experience.ExperienceProcessor;
 import com.neetgames.mcmmo.experience.XPGainReason;
 import com.neetgames.mcmmo.experience.XPGainSource;
 import com.neetgames.mcmmo.party.Party;
@@ -27,18 +28,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-public class OnlineExperienceProcessor {
+public class OnlineExperienceProcessor implements ExperienceProcessor {
 
-    private boolean isUsingUnarmed = false;
+    private boolean isUsingUnarmed = false; //Gross but it works
 
-    private final @NotNull PlayerData mmoPlayerData;
-    private final @NotNull MMOPlayer mmoPlayer;
     private final @NotNull Player playerRef;
+    private final @NotNull PlayerData mmoPlayerData;
 
-    public OnlineExperienceProcessor(@NotNull MMOPlayer mmoPlayer, @NotNull Player playerRef) {
-        this.mmoPlayer = mmoPlayer;
+    public OnlineExperienceProcessor(@NotNull Player playerRef, @NotNull PlayerData playerData) {
         this.playerRef = playerRef;
-        this.mmoPlayerData = mmoPlayer.getMMOPlayerDataImpl();
+        this.mmoPlayerData = playerData;
     }
 
     public int getPowerLevel() {
@@ -58,7 +57,7 @@ public class OnlineExperienceProcessor {
     }
 
     public int getSkillXpValue(@NotNull PrimarySkillType primarySkillType) {
-        if(PrimarySkillType.isChildSkill(primarySkillType)) {
+        if(primarySkillType.isChildSkill()) {
             return 0;
         }
 
@@ -66,7 +65,7 @@ public class OnlineExperienceProcessor {
     }
 
     public void setSkillXpValue(@NotNull PrimarySkillType primarySkillType, float xpLevel) {
-        if (PrimarySkillType.isChildSkill(primarySkillType)) {
+        if (primarySkillType.isChildSkill()) {
             return;
         }
 

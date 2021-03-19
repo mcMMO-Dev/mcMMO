@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.neetgames.mcmmo.exceptions.UnknownSkillException;
+import com.neetgames.mcmmo.experience.ExperienceProcessor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -20,12 +21,12 @@ public class PlayerProfile extends AbstractMMOPlayer {
 
     @Override
     public @NotNull UUID getUUID() {
-        return mmoPlayerData.getPlayerUUID();
+        return playerData.getPlayerUUID();
     }
 
     @Override
     public @NotNull String getPlayerName() {
-        return mmoPlayerData.getPlayerName();
+        return playerData.getPlayerName();
     }
 
     @Override
@@ -58,12 +59,11 @@ public class PlayerProfile extends AbstractMMOPlayer {
         return false;
     }
 
-    @Override
-    public @NotNull ExperienceHandler getExperienceHandler() {
+    public @NotNull ExperienceProcessor getExperienceHandler() {
         return experienceProcessor;
     }
 
     public @NotNull PlayerData getPlayerData() {
-        return mmoPlayerData;
+        return playerData;
     }
 }

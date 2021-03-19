@@ -88,11 +88,15 @@ public final class CommandUtils {
             return true;
         }
 
-        PlayerProfile profile = new PlayerProfile(playerName, false);
+        //TODO: T&C - Ancient bug spotted, look at master for this method impl
+        //TODO: T&C Check all code that invokes this method and see if we are handling things properly
+        //TODO: T&C Likely don't need String playerName in the signature
 
-        if (unloadedProfile(sender, profile)) {
-            return false;
-        }
+//        PlayerProfile profile = new PlayerProfile(playerName, false);
+//
+//        if (unloadedProfile(sender, profile)) {
+//            return false;
+//        }
 
         sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
         return false;

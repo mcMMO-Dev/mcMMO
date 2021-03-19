@@ -96,9 +96,9 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
-        experienceBarManager = new MMOExperienceBarManager(this, mmoPlayerData.getBarStateMap());
+        experienceBarManager = new MMOExperienceBarManager(this, playerData.getBarStateMap());
 
-        superSkillManagerImpl = new SuperSkillManagerImpl(this, mmoPlayerData);
+        superSkillManagerImpl = new SuperSkillManagerImpl(this, playerData);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
@@ -149,7 +149,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
 
         superSkillManagerImpl = new SuperSkillManagerImpl(this, mmoPlayerData);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
-        experienceBarManager = new MMOExperienceBarManager(this, this.mmoPlayerData.getBarStateMap());
+        experienceBarManager = new MMOExperienceBarManager(this, this.playerData.getBarStateMap());
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
 
@@ -180,7 +180,7 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
      * Update the last login to the current system time
      */
     private void updateLastLogin() {
-        mmoPlayerData.setLastLogin(System.currentTimeMillis());
+        playerData.setLastLogin(System.currentTimeMillis());
     }
 
     public @NotNull String getPlayerName() {
@@ -501,14 +501,14 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
      */
     @Override
     public boolean isChatSpying() {
-        return mmoPlayerData.isPartyChatSpying();
+        return playerData.isPartyChatSpying();
     }
 
     /**
      * Toggle this player's party chat spying flag
      */
     public void togglePartyChatSpying() {
-        mmoPlayerData.togglePartyChatSpying();
+        playerData.togglePartyChatSpying();
     }
 
     /**
