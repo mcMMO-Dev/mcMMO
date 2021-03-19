@@ -104,9 +104,17 @@ Version 2.2.000
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
 Version 2.1.182
+    You can now use '.all' (for example: mcmmo.perks.xp.customboost.all) to give an XP perk to all skills
+    Removed hardcore and vampirism commands, these commands are dangerous, just modify the config file if you want to use hardcore / vampirism
     Fixed several errors in de locale (Thanks TheBusyBiscuit & w1tcherrr)
-    Fixed a bug where double smelt never succeeded if the furnace was empty
+    Fixed a bug where double smelt never succeeded if the furnace was empty (but worked normally afterwards)
     Added some safety so that mcMMO automatic save interval is never more frequent than 1 minute
+    Removed a few silent exceptions for scoreboards & mcMMO
+    Added warning about UltraPermissions to mcMMO
+    Fixed a potential NPE in McMMOPlayerExperienceEvent
+
+    NOTES:
+    mcMMO will do a better job reporting if something went wrong with scoreboards, which may lead to improved plugin compatibility between mcMMO and other plugins touching scoreboards.
 
 Version 2.1.181
     mcMMO no longer pointlessly tries to check for missing UUIDs for FlatFile database

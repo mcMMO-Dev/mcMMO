@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SaveTimerTask extends BukkitRunnable {
     @Override
     public void run() {
+        mcMMO.p.debug("[User Data] Saving...");
         // All player data will be saved periodically through this
         int count = 1;
 
