@@ -6,11 +6,12 @@ import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.database.McpurgeCommand;
+import com.gmail.nossr50.commands.database.RemoveCommand;
 import com.gmail.nossr50.commands.database.MmoshowdbCommand;
 import com.gmail.nossr50.commands.experience.AddlevelsCommand;
 import com.gmail.nossr50.commands.experience.AddxpCommand;
 import com.gmail.nossr50.commands.experience.MmoeditCommand;
-import com.gmail.nossr50.commands.experience.SkillresetCommand;
+import com.gmail.nossr50.commands.experience.SkillResetCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.*;
@@ -206,7 +207,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.skillreset;mcmmo.commands.skillreset.others"); // Only need the main ones, not the individual skill ones
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
-        command.setExecutor(new SkillresetCommand());
+        command.setExecutor(new SkillResetCommand());
     }
 
     private static void registerXprateCommand() {
@@ -302,7 +303,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcremove");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setExecutor(new DatabaseRemovePlayerCommand());
+        command.setExecutor(new RemoveCommand());
     }
 
     private static void registerMmoshowdbCommand() {

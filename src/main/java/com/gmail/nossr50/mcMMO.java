@@ -708,10 +708,6 @@ public class mcMMO extends JavaPlugin {
         return spawnedProjectileTracker;
     }
 
-    public static @NotNull UserManager getUserManager() {
-        return userManager;
-    }
-
     public static @NotNull PartyManager getPartyManager() {
         return partyManager;
     }

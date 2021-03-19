@@ -1,11 +1,13 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
@@ -77,9 +79,9 @@ public final class CommandUtils {
      *
      * @return true if the player is online and a valid mmoPlayer object was found
      */
-    public static boolean checkPlayerExistence(CommandSender sender, String playerName, OnlineMMOPlayer mmoPlayer) {
-        if (mmoPlayer != null) {
-            if (CommandUtils.hidden(sender, Misc.adaptPlayer(mmoPlayer), false)) {
+    public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
+        if (mcMMOPlayer != null) {
+            if (CommandUtils.hidden(sender, mcMMOPlayer.getPlayer(), false)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
                 return false;
             }
@@ -88,7 +90,7 @@ public final class CommandUtils {
 
         PlayerProfile profile = new PlayerProfile(playerName, false);
 
-        if (hasNoProfile(sender, profile)) {
+        if (unloadedProfile(sender, profile)) {
             return false;
         }
 
@@ -96,12 +98,12 @@ public final class CommandUtils {
         return false;
     }
 
-    public static boolean hasNoProfile(CommandSender sender, PlayerProfile profile) {
+    public static boolean unloadedProfile(CommandSender sender, PlayerProfile profile) {
         if (profile.isLoaded()) {
             return false;
         }
 
-
+        sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
         return true;
     }
 
@@ -117,6 +119,15 @@ public final class CommandUtils {
         }
 
         return hasPlayerDataKey;
+    }
+
+    public static boolean isLoaded(CommandSender sender, PlayerProfile profile) {
+        if (profile.isLoaded()) {
+            return true;
+        }
+
+        sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
+        return false;
     }
 
     public static boolean isInvalidInteger(CommandSender sender, String value) {
@@ -207,10 +218,10 @@ public final class CommandUtils {
     }
 
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if(UserManager.queryPlayer(inspect) == null)
+        if(UserManager.getPlayer(inspect) == null)
             return;
 
-        PlayerProfile profile = UserManager.queryPlayer(inspect);
+        PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
 
         List<String> displayData = new ArrayList<>();
         displayData.add(header);

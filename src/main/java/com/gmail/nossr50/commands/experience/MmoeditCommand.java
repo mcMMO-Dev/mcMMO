@@ -8,6 +8,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.neetgames.mcmmo.experience.XPGainReason;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
