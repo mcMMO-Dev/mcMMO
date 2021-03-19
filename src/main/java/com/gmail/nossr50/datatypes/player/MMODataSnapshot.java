@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class MMODataSnapshot {
+    /* Save Attempts */
+    private int saveAttempts = 0;
+
     /* Player Stuff */
     private final @NotNull String playerName;
     private final @NotNull UUID playerUUID;
@@ -109,4 +112,17 @@ public class MMODataSnapshot {
     public boolean isLeaderBoardExcluded() {
         return leaderBoardExclusion;
     }
+
+    public int getSaveAttempts() {
+        return saveAttempts;
+    }
+
+    public void setSaveAttempts(int saveAttempts) {
+        this.saveAttempts = saveAttempts;
+    }
+
+    public void incrementSaveAttempts() {
+        this.saveAttempts += 1;
+    }
+
 }

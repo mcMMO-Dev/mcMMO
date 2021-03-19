@@ -4,6 +4,7 @@ import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
 import com.gmail.nossr50.datatypes.player.PlayerData;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -54,6 +55,13 @@ public interface DatabaseManager {
      * @return true if successful, false on failure
      */
     boolean saveUser(@NotNull PlayerData playerData);
+
+    /**
+     *
+     * @param dataSnapshot target data snapshot
+     * @return true if successful, false on failure
+     */
+    boolean saveUser(@NotNull MMODataSnapshot dataSnapshot);
 
     /**
     * Retrieve leaderboard info.

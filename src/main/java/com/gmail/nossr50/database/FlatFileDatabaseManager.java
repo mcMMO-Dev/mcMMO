@@ -258,9 +258,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         //Not used in FlatFile
     }
 
-
     public boolean saveUser(@NotNull PlayerData playerData) {
-        MMODataSnapshot mmoDataSnapshot = new MMODataSnapshot(playerData); //Clone data into Immutable data
+        MMODataSnapshot mmoDataSnapshot = new MMODataSnapshot(playerData);
+        return saveUser(mmoDataSnapshot); //Clone data into Immutable data
+    }
+
+    public boolean saveUser(@NotNull MMODataSnapshot mmoDataSnapshot) {
         String playerName = mmoDataSnapshot.getPlayerName();
         UUID uuid = mmoDataSnapshot.getPlayerUUID();
 
@@ -305,8 +308,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     }
 
                     if (!(uuid != null
-                                    && splitData[FlatFileMappings.UUID_INDEX].equalsIgnoreCase(uuid.toString()))
-                                    && !splitData[FlatFileMappings.USERNAME].equalsIgnoreCase(playerName)) {
+                            && splitData[FlatFileMappings.UUID_INDEX].equalsIgnoreCase(uuid.toString()))
+                            && !splitData[FlatFileMappings.USERNAME].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n"); //Not the user so write it to file and move on
                     } else {
                         //User found

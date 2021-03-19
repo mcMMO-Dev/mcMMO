@@ -30,7 +30,7 @@ public class MmoeditCommand extends ExperienceCommand {
         profile.modifySkill(skill, value);
 
         if (player == null) {
-            profile.scheduleAsyncSave();
+            UserManager.getPlayerSaveHandler().scheduleAsyncSave(profile.getPlayerData());
             return;
         }
 

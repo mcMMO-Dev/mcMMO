@@ -19,6 +19,7 @@ import java.util.HashSet;
 public final class UserManager {
 
     private static HashSet<McMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
+    private @NotNull static final PlayerSaveHandler playerSaveHandler = new PlayerSaveHandler();
 
     private UserManager() {}
 
@@ -69,7 +70,7 @@ public final class UserManager {
     }
 
     /**
-     * Save all users ON THIS THREAD.
+     * Save all users on main thread
      */
     public static void saveAll() {
         if(playerDataSet == null)
@@ -79,15 +80,12 @@ public final class UserManager {
 
         mcMMO.p.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
 
-        for (McMMOPlayer playerData : trackedSyncData) {
-            try
-            {
-                mcMMO.p.getLogger().info("Saving data for player: "+playerData.getPlayerName());
-                playerData.getProfile().save(true);
-            }
-            catch (Exception e)
-            {
-                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + playerData.getPlayerName());
+        for (McMMOPlayer mmoPlayer : trackedSyncData) {
+            try {
+                mcMMO.p.getLogger().info("Saving data for player: "+mmoPlayer.getPlayerName());
+                getPlayerSaveHandler().save(mmoPlayer.getPlayerData(), true);
+            } catch (Exception e) {
+                mcMMO.p.getLogger().severe("Could not save mcMMO player data for player: " + mmoPlayer.getPlayerName());
             }
         }
 
@@ -120,9 +118,9 @@ public final class UserManager {
         mmoPlayer.getTamingManager().cleanupAllSummons();
 
         if (syncSave) {
-            getProfile().save(true); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.PlayerProfile#save
+            getPlayerSaveHandler().save(mmoPlayer.getPlayerData(), true); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.PlayerProfile#save
         } else {
-            getProfile().scheduleAsyncSave(); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.PlayerProfile#scheduleAsyncSave
+            getPlayerSaveHandler().scheduleAsyncSave(mmoPlayer.getPlayerData()); //TODO: T&C Wire this up, see master branch com.gmail.nossr50.datatypes.player.PlayerProfile#scheduleAsyncSave
         }
 
         UserManager.remove(targetPlayer);
@@ -190,4 +188,9 @@ public final class UserManager {
     public static boolean hasPlayerDataKey(Entity entity) {
         return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
     }
+
+    public static @NotNull PlayerSaveHandler getPlayerSaveHandler() {
+        return playerSaveHandler;
+    }
+
 }
