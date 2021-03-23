@@ -775,7 +775,9 @@ public class McMMOPlayer implements Identified {
      * @return Modified experience
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+        //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
+        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
+                || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
