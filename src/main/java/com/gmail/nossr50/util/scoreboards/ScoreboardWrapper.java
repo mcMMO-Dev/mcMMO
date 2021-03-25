@@ -428,14 +428,16 @@ public class ScoreboardWrapper {
      * Load new values into the sidebar.
      */
     private void updateSidebar() {
-        try {
-            updateTask.cancel();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        if(updateTask != null) {
+            try {
+                updateTask.cancel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            updateTask = null;
         }
 
-        updateTask = null;
 
         if (sidebarType == SidebarType.NONE) {
             return;
