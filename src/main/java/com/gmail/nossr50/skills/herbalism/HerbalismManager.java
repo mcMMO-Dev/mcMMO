@@ -111,16 +111,16 @@ public class HerbalismManager extends SkillManager {
                     mmoPlayer.getPlayer().sendMessage("Bush XP: " + xpReward);
                 }
 
-                //Check for double drops
-                if(checkDoubleDrop(blockState)) {
-
-                    if(mmoPlayer.isDebugMode()) {
-                        mmoPlayer.getPlayer().sendMessage("Double Drops succeeded for Berry Bush");
-                    }
-
-                    //Add metadata to mark this block for double or triple drops
-                    markForBonusDrops(blockState);
-                }
+//                //Check for double drops
+//                if(checkDoubleDrop(blockState)) {
+//
+//                    if(mmoPlayer.isDebugMode()) {
+//                        mmoPlayer.getPlayer().sendMessage("Double Drops succeeded for Berry Bush");
+//                    }
+//
+//                    //Add metadata to mark this block for double or triple drops
+//                    markForBonusDrops(blockState);
+//                }
 
                 applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
             }

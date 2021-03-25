@@ -1,10 +1,13 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -31,6 +34,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -41,6 +45,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +56,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
 
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
@@ -66,6 +73,30 @@ public class EntityListener implements Listener {
         this.pluginRef = pluginRef;
         persistentDataLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
     }
+
+//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+//    public void onBlockDropItemEvent(EntityDropItemEvent event) {
+//        if(event.getEntity() instanceof Block) {
+//            Block itemDispensingBlock = (Block) event.getEntity();
+//
+//            //Is it a berry bush?
+//            if(itemDispensingBlock.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+//                //Berry Bush Time!
+//                if (event.getEntity().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
+//                    Bukkit.broadcastMessage("Pop pop!");
+//                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getEntity().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+//                    int bonusCount = bonusDropMeta.asInt();
+//
+//                    for (int i = 0; i < bonusCount; i++) {
+//                        Misc.spawnItemNaturally(event.getEntity().getLocation(), event.getItemDrop().getItemStack(), ItemSpawnReason.BONUS_DROPS);
+//                    }
+//                }
+//            }
+//
+//            if(event.getEntity().hasMetadata(mcMMO.BONUS_DROPS_METAKEY))
+//                event.getEntity().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, pluginRef);
+//        }
+//    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityTransform(EntityTransformEvent event) {

@@ -9,6 +9,7 @@ Version 2.1.182
     Removed a few silent exceptions for scoreboards & mcMMO
     Added warning about UltraPermissions to mcMMO
     Fixed a potential NPE in McMMOPlayerExperienceEvent
+    Added Sweet Berry Bush to config.yml bonus drops for Herbalism
 
     NOTES:
     mcMMO will do a better job reporting if something went wrong with scoreboards, which may lead to improved plugin compatibility between mcMMO and other plugins touching scoreboards.
