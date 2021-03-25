@@ -1,4 +1,6 @@
 Version 2.1.182
+    Players now receive XP from harvesting Sweet Berry bushes (double XP for harvesting fully grown berries)
+    Sweet Berry Bush will no longer ready tools for Super Abilities
     You can now use '.all' (for example: mcmmo.perks.xp.customboost.all) to give an XP perk to all skills
     Removed hardcore and vampirism commands, these commands are dangerous, just modify the config file if you want to use hardcore / vampirism
     Fixed several errors in de locale (Thanks TheBusyBiscuit & w1tcherrr)

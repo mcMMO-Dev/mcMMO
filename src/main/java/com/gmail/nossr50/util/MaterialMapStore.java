@@ -1265,6 +1265,7 @@ public class MaterialMapStore {
         toolBlackList.add("stonecutter");
         toolBlackList.add("lodestone");
         toolBlackList.add("respawn_anchor");
+        toolBlackList.add("sweet_berry_bush");
     }
 
     public boolean isIntendedToolPickaxe(Material material) {

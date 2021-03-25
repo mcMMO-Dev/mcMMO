@@ -841,10 +841,13 @@ public class PlayerListener implements Listener {
                     if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_SHROOM_THUMB, block).isCancelled()) {
                         Bukkit.getPluginManager().callEvent(fakeSwing);
                         event.setCancelled(true);
-                        if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                        if (herbalismManager.processShroomThumb(blockState)
+                                && EventUtils.simulateBlockBreak(block, player, false)) {
                             blockState.update(true);
                         }
                     }
+                } else {
+                    herbalismManager.processBerryBushHarvesting(blockState);
                 }
                 break;
 
