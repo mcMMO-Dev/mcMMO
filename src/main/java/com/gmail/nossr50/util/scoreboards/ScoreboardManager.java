@@ -285,6 +285,9 @@ public class ScoreboardManager {
     // **** Setup methods **** //
 
     public static void enablePlayerSkillScoreboard(Player player, PrimarySkillType skill) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        mmoPlayer.setLastSkillShownScoreboard(skill);
+
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -295,6 +298,25 @@ public class ScoreboardManager {
         if(wrapper != null) {
             wrapper.setOldScoreboard();
             wrapper.setTypeSkill(skill);
+
+            changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
+        }
+    }
+
+    public static void retryLastSkillBoard(Player player) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        PrimarySkillType primarySkillType = mmoPlayer.getLastSkillShownScoreboard();
+
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeSkill(primarySkillType);
 
             changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
         }
@@ -528,8 +550,7 @@ public class ScoreboardManager {
         return mcMMO.p.getServer().getScoreboardManager();
     }
 
-
-    private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
+    public static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
         }

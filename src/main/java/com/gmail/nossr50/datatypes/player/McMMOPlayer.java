@@ -118,6 +118,8 @@ public class McMMOPlayer implements Identified {
     private final FixedMetadataValue playerMetadata;
     private final String playerName;
 
+    private PrimarySkillType lastSkillShownScoreboard = PrimarySkillType.values()[0];
+
     public McMMOPlayer(Player player, PlayerProfile profile) {
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
@@ -185,6 +187,14 @@ public class McMMOPlayer implements Identified {
     {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
+
+    public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
+        return lastSkillShownScoreboard;
+    }
+
+    public void setLastSkillShownScoreboard(PrimarySkillType primarySkillType) {
+        this.lastSkillShownScoreboard = primarySkillType;
+    }
 
     public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
     {

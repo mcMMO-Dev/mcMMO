@@ -1,5 +1,7 @@
 Version 2.1.182
     Fixed a NPE with Scoreboards enabled when trying to update scoreboards
+    Fixed an error when using mcMMO with Featherboard that broke mcMMO skill boards when using certain commands
+    Added 'Scoreboard.Recovery' locale key
     Players now receive XP from harvesting Sweet Berry bushes (double XP for harvesting fully grown berries)
     Sweet Berry Bush will no longer ready tools for Super Abilities
     You can now use '.all' (for example: mcmmo.perks.xp.customboost.all) to give an XP perk to all skills

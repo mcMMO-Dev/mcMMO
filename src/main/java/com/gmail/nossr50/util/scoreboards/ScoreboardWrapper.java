@@ -14,9 +14,11 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -43,7 +45,7 @@ public class ScoreboardWrapper {
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
     private Objective sidebarObjective;
-    private final Objective powerObjective;
+    private Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
@@ -51,14 +53,27 @@ public class ScoreboardWrapper {
     public PrimarySkillType targetSkill = null;
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
+    private boolean registered = false;
 
     public ScoreboardWrapper(Player player, Scoreboard scoreboard) {
         this.player = player;
         this.playerName = player.getName();
         this.scoreboard = scoreboard;
+        initBoard();
+    }
+
+    private void initBoard() {
         sidebarType = SidebarType.NONE;
-        sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
-        powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy", POWER_OBJECTIVE);
+        if(registered) {
+            //Make sure our references are pointed at the right things
+            sidebarObjective = scoreboard.getObjective(ScoreboardManager.SIDEBAR_OBJECTIVE);
+            powerObjective = scoreboard.getObjective(ScoreboardManager.POWER_OBJECTIVE);
+        } else {
+            //Register Objectives
+            sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
+            powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy", POWER_OBJECTIVE);
+            registered = true;
+        }
 
         if (Config.getInstance().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
@@ -399,7 +414,19 @@ public class ScoreboardWrapper {
         //Unregister objective
         McMMOScoreboardObjectiveEvent unregisterEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.UNREGISTER_THIS_OBJECTIVE);
         if(!unregisterEvent.isCancelled()) {
-            sidebarObjective.unregister();
+            try {
+                sidebarObjective.unregister();
+            } catch (IllegalStateException e) {
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+                mcMMO.p.debug("Recovering scoreboard for player: " + player.getName());
+
+                if(mmoPlayer.isDebugMode())
+                    NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
+
+                initBoard(); //Start over
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> ScoreboardManager.retryLastSkillBoard(player), 0);
+            }
         }
 
         //Register objective
