@@ -1,6 +1,7 @@
 Version 2.1.183
     Updated Russian locale (thanks ImDaniX)
     Added Donkeys to beat lore (thanks QuantumToasted)
+    Alchemy guide now correctly labels Rabbit's foot for potion of leaping (thanks mldriscoll)
 
 Version 2.1.182
     Players now receive XP from harvesting Sweet Berry bushes (double XP for harvesting fully grown berries)
