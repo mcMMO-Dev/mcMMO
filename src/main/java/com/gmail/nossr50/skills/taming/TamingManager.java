@@ -29,6 +29,7 @@ import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -251,12 +252,16 @@ public class TamingManager extends SkillManager {
 
         // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
         if (beast instanceof AbstractHorse && !(beast instanceof Llama)) {
-            AbstractHorse horse = (AbstractHorse) beast;
-            double jumpStrength = horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getValue();
-            // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
-            jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
-            message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
-                    .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
+            AbstractHorse horseLikeCreature = (AbstractHorse) beast;
+            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(Attribute.HORSE_JUMP_STRENGTH);
+
+            if(jumpAttribute != null) {
+                double jumpStrength = jumpAttribute.getValue();
+                // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
+                jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
+                message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horseLikeCreature.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
+                        .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
+            }
         }
 
         player.sendMessage(message);
