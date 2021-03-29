@@ -54,7 +54,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
             UserManager.clearAll();
 
             for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId());
+                PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId(), null);
 
                 if (profile.isLoaded()) {
                     mcMMO.getDatabaseManager().saveUser(profile);

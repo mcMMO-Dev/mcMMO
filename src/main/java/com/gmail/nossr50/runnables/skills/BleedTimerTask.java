@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
-    private static final Map<LivingEntity, BleedContainer> bleedList = new HashMap<>();
+    private static final @NotNull Map<LivingEntity, BleedContainer> bleedList = new HashMap<>();
     private static boolean isIterating = false;
 
     @Override
@@ -69,9 +70,11 @@ public class BleedTimerTask extends BukkitRunnable {
                 }
 
                 //Count Armor
-                for(ItemStack armorPiece : ((Player) target).getInventory().getArmorContents())
-                {
-                    armorCount++;
+                for (ItemStack armorPiece : ((Player) target).getInventory().getArmorContents()) {
+                    //We only want to count slots that contain armor.
+                    if (armorPiece != null) {
+                        armorCount++;
+                    }
                 }
 
             } else {
@@ -146,7 +149,7 @@ public class BleedTimerTask extends BukkitRunnable {
         isIterating = false;
     }
 
-    public static BleedContainer copyContainer(BleedContainer container)
+    public static @NotNull BleedContainer copyContainer(@NotNull BleedContainer container)
     {
         LivingEntity target = container.target;
         LivingEntity source = container.damageSource;
@@ -162,7 +165,7 @@ public class BleedTimerTask extends BukkitRunnable {
      *
      * @param entity LivingEntity to bleed out
      */
-    public static void bleedOut(LivingEntity entity) {
+    public static void bleedOut(@NotNull LivingEntity entity) {
         /*
          * Don't remove anything from the list outside of run()
          */
@@ -176,26 +179,36 @@ public class BleedTimerTask extends BukkitRunnable {
      * Add a LivingEntity to the bleedList if it is not in it.
      *
      * @param entity LivingEntity to add
+     * @param attacker source of the bleed/rupture
      * @param ticks Number of bleeding ticks
      */
-    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
+    public static void add(@NotNull LivingEntity entity, @NotNull LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
         if (!Bukkit.isPrimaryThread()) {
             throw new IllegalStateException("Cannot add bleed task async!");
         }
 
-        if (isIterating) throw new IllegalStateException("Cannot add task while iterating timers!");
+        if(isIterating) {
+            //Used to throw an error here, but in reality all we are really doing is preventing concurrency issues from other plugins being naughty and its not really needed
+            //I'm not really a fan of silent errors, but I'm sick of seeing people using crazy enchantments come in and report this "bug"
+            return;
+        }
+
+//        if (isIterating) throw new IllegalStateException("Cannot add task while iterating timers!");
 
         if(toolTier < 4)
             ticks = Math.max(1, (ticks / 3));
 
         ticks+=1;
 
-
         BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, toolTier, attacker);
         bleedList.put(entity, newBleedContainer);
     }
 
-    public static boolean isBleeding(LivingEntity entity) {
+    public static boolean isBleedOperationAllowed() {
+        return !isIterating && Bukkit.isPrimaryThread();
+    }
+
+    public static boolean isBleeding(@NotNull LivingEntity entity) {
         return bleedList.containsKey(entity);
     }
 }

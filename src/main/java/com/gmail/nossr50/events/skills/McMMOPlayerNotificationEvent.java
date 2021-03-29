@@ -1,7 +1,7 @@
 package com.gmail.nossr50.events.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.util.McMMOMessageType;
+import com.gmail.nossr50.util.text.McMMOMessageType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

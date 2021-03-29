@@ -25,8 +25,10 @@ public abstract class ExperienceCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         PrimarySkillType skill;
 
-        switch (args.length) {
-            case 2:
+        if(args.length < 2) {
+            return false;
+        } else {
+            if(args.length == 2 && !isSilent(args) || args.length == 3 && isSilent(args)) {
                 if (CommandUtils.noConsoleUsage(sender)) {
                     return true;
                 }
@@ -62,10 +64,10 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]));
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]), isSilent(args));
                 return true;
-
-            case 3:
+            } else if((args.length == 3 && !isSilent(args))
+                    || (args.length == 4 && isSilent(args))) {
                 if (!permissionsCheckOthers(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
@@ -95,29 +97,45 @@ public abstract class ExperienceCommand implements TabExecutor {
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
                     UUID uuid = null;
-                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
-                    if (player != null) {
-                        uuid = player.getUniqueId();
-                    }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    OfflinePlayer offlinePlayer = mcMMO.p.getServer().getOfflinePlayer(playerName);
+                    PlayerProfile profile;
 
+                    uuid = offlinePlayer.getUniqueId();
+                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, null);
+
+                    //Check loading by UUID
                     if (CommandUtils.unloadedProfile(sender, profile)) {
-                        return true;
+                        //Check loading by name
+                        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
+
+                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                            return true;
+                        }
                     }
 
-                    editValues(null, profile, skill, value);
+                    editValues(null, profile, skill, value, isSilent(args));
                 }
                 else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value);
+                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value, isSilent(args));
                 }
 
                 handleSenderMessage(sender, playerName, skill);
                 return true;
-
-            default:
+            } else {
                 return false;
+            }
         }
     }
+
+    private boolean isSilent(String[] args) {
+        int length = args.length;
+
+        if(length == 0)
+            return false;
+
+        return args[length-1].equalsIgnoreCase("-s");
+    }
+
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
@@ -135,8 +153,8 @@ public abstract class ExperienceCommand implements TabExecutor {
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
     protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value);
-    protected abstract void handlePlayerMessageAll(Player player, int value);
-    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill);
+    protected abstract void handlePlayerMessageAll(Player player, int value, boolean isSilent);
+    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
         return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
@@ -151,21 +169,21 @@ public abstract class ExperienceCommand implements TabExecutor {
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
+    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value, boolean isSilent) {
         if (skill == null) {
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType, value);
             }
 
             if (player != null) {
-                handlePlayerMessageAll(player, value);
+                handlePlayerMessageAll(player, value, isSilent);
             }
         }
         else {
             handleCommand(player, profile, skill, value);
 
             if (player != null) {
-                handlePlayerMessageSkill(player, value, skill);
+                handlePlayerMessageSkill(player, value, skill, isSilent);
             }
         }
     }

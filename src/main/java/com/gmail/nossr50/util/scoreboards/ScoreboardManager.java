@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -284,6 +285,9 @@ public class ScoreboardManager {
     // **** Setup methods **** //
 
     public static void enablePlayerSkillScoreboard(Player player, PrimarySkillType skill) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        mmoPlayer.setLastSkillShownScoreboard(skill);
+
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -294,6 +298,25 @@ public class ScoreboardManager {
         if(wrapper != null) {
             wrapper.setOldScoreboard();
             wrapper.setTypeSkill(skill);
+
+            changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
+        }
+    }
+
+    public static void retryLastSkillBoard(Player player) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        PrimarySkillType primarySkillType = mmoPlayer.getLastSkillShownScoreboard();
+
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeSkill(primarySkillType);
 
             changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
         }
@@ -327,7 +350,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
     }
 
-    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull PlayerProfile targetProfile) {
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -338,6 +361,22 @@ public class ScoreboardManager {
         if(wrapper != null) {
             wrapper.setOldScoreboard();
             wrapper.setTypeInspectStats(targetProfile);
+
+            changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
+        }
+    }
+
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull McMMOPlayer targetMcMMOPlayer) {
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeInspectStats(targetMcMMOPlayer);
 
             changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
         }
@@ -511,8 +550,7 @@ public class ScoreboardManager {
         return mcMMO.p.getServer().getScoreboardManager();
     }
 
-
-    private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
+    public static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
         }

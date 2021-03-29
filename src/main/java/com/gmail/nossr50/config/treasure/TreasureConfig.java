@@ -1,15 +1,13 @@
 package com.gmail.nossr50.config.treasure;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.treasure.*;
-import com.gmail.nossr50.util.EnchantmentUtils;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -22,18 +20,14 @@ import java.util.List;
 
 public class TreasureConfig extends ConfigLoader {
 
+    public static final String FILENAME = "treasures.yml";
     private static TreasureConfig instance;
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<>();
-
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<>();
     public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<>();
 
-    public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<>();
-    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<>();
-
     private TreasureConfig() {
-        super("treasures.yml");
+        super(FILENAME);
         loadKeys();
         validate();
     }
@@ -50,34 +44,6 @@ public class TreasureConfig extends ConfigLoader {
     protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<>();
-        for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {
-            double totalEnchantDropRate = 0;
-            double totalItemDropRate = 0;
-
-            for (Rarity rarity : Rarity.values()) {
-                double enchantDropRate = config.getDouble("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
-                double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity.toString());
-
-                if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.RECORD) {
-                    reason.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
-                }
-
-                if (itemDropRate < 0.0 || itemDropRate > 100.0) {
-                    reason.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
-                }
-
-                totalEnchantDropRate += enchantDropRate;
-                totalItemDropRate += itemDropRate;
-            }
-
-            if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
-                reason.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
-
-            if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
-                reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
-        }
 
         return noErrorsInConfig(reason);
     }
@@ -89,21 +55,11 @@ public class TreasureConfig extends ConfigLoader {
             return;
         }
 
-        loadTreasures("Fishing");
         loadTreasures("Excavation");
         loadTreasures("Hylian_Luck");
-        loadEnchantments();
-
-        for (EntityType entity : EntityType.values()) {
-            if (entity.isAlive()) {
-                loadTreasures("Shake." + entity.toString());
-            }
-        }
     }
 
     private void loadTreasures(String type) {
-        boolean isFishing = type.equals("Fishing");
-        boolean isShake = type.contains("Shake");
         boolean isExcavation = type.equals("Excavation");
         boolean isHylian = type.equals("Hylian_Luck");
 
@@ -111,13 +67,6 @@ public class TreasureConfig extends ConfigLoader {
 
         if (treasureSection == null) {
             return;
-        }
-
-        // Initialize fishing HashMap
-        for (Rarity rarity : Rarity.values()) {
-            if (!fishingRewards.containsKey(rarity)) {
-                fishingRewards.put(rarity, (new ArrayList<>()));
-            }
         }
 
         for (String treasureName : treasureSection.getKeys(false)) {
@@ -131,16 +80,7 @@ public class TreasureConfig extends ConfigLoader {
              * Material, Amount, and Data
              */
             Material material;
-
-            if (materialName.contains("INVENTORY")) {
-                // Use magic material BEDROCK to know that we're grabbing something from the inventory and not a normal treasure
-                if (!shakeMap.containsKey(EntityType.PLAYER))
-                    shakeMap.put(EntityType.PLAYER, new ArrayList<>());
-                shakeMap.get(EntityType.PLAYER).add(new ShakeTreasure(new ItemStack(Material.BEDROCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
-                continue;
-            } else {
-                material = Material.matchMaterial(materialName);
-            }
+            material = Material.matchMaterial(materialName);
 
             int amount = config.getInt(type + "." + treasureName + ".Amount");
             short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
@@ -178,19 +118,6 @@ public class TreasureConfig extends ConfigLoader {
             }
 
             /*
-             * Specific Types
-             */
-            Rarity rarity = null;
-
-            if (isFishing) {
-                rarity = Rarity.getRarity(config.getString(type + "." + treasureName + ".Rarity"));
-
-                if (rarity == null) {
-                    reason.add("Invalid Rarity for item: " + treasureName);
-                }
-            }
-
-            /*
              * Itemstack
              */
             ItemStack item = null;
@@ -198,7 +125,7 @@ public class TreasureConfig extends ConfigLoader {
             if (materialName.contains("POTION")) {
                 Material mat = Material.matchMaterial(materialName);
                 if (mat == null) {
-                    reason.add("Potion format for Treasures.yml has changed");
+                    reason.add("Potion format for " + FILENAME + " has changed");
                 } else {
                     item = new ItemStack(mat, amount, data);
                     PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
@@ -247,16 +174,7 @@ public class TreasureConfig extends ConfigLoader {
             }
 
             if (noErrorsInConfig(reason)) {
-                if (isFishing) {
-                    fishingRewards.get(rarity).add(new FishingTreasure(item, xp));
-                } else if (isShake) {
-                    ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
-
-                    EntityType entityType = EntityType.valueOf(type.substring(6));
-                    if (!shakeMap.containsKey(entityType))
-                        shakeMap.put(entityType, new ArrayList<>());
-                    shakeMap.get(entityType).add(shakeTreasure);
-                } else if (isExcavation) {
+                if (isExcavation) {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
@@ -307,59 +225,5 @@ public class TreasureConfig extends ConfigLoader {
         if (!hylianMap.containsKey(dropper))
             hylianMap.put(dropper, new ArrayList<>());
         hylianMap.get(dropper).add(treasure);
-    }
-
-    private void loadEnchantments() {
-        for (Rarity rarity : Rarity.values()) {
-            if (rarity == Rarity.RECORD) {
-                continue;
-            }
-
-            if (!fishingEnchantments.containsKey(rarity)) {
-                fishingEnchantments.put(rarity, (new ArrayList<>()));
-            }
-
-            ConfigurationSection enchantmentSection = config.getConfigurationSection("Enchantments_Rarity." + rarity.toString());
-
-            if (enchantmentSection == null) {
-                return;
-            }
-
-            for (String enchantmentName : enchantmentSection.getKeys(false)) {
-                int level = config.getInt("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
-                Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
-
-                if (enchantment == null) {
-                    plugin.getLogger().warning("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
-                    continue;
-                }
-
-                fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
-            }
-        }
-    }
-
-    public boolean getInventoryStealEnabled() {
-        return config.contains("Shake.PLAYER.INVENTORY");
-    }
-
-    public boolean getInventoryStealStacks() {
-        return config.getBoolean("Shake.PLAYER.INVENTORY.Whole_Stacks");
-    }
-
-    public double getInventoryStealDropChance() {
-        return config.getDouble("Shake.PLAYER.INVENTORY.Drop_Chance");
-    }
-
-    public int getInventoryStealDropLevel() {
-        return config.getInt("Shake.PLAYER.INVENTORY.Drop_Level");
-    }
-
-    public double getItemDropRate(int tier, Rarity rarity) {
-        return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
-    }
-
-    public double getEnchantmentDropRate(int tier, Rarity rarity) {
-        return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 }

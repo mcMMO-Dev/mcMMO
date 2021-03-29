@@ -2,8 +2,10 @@ package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.events.skills.SkillActivationPerkEvent;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -42,7 +44,9 @@ public final class PerksUtils {
             ticks += 4;
         }
 
-        return ticks;
+        final SkillActivationPerkEvent skillActivationPerkEvent = new SkillActivationPerkEvent(player, ticks, maxTicks);
+        Bukkit.getPluginManager().callEvent(skillActivationPerkEvent);
+        return skillActivationPerkEvent.getTicks();
     }
 
     public static float handleXpPerks(Player player, float xp, PrimarySkillType skill) {

@@ -131,10 +131,11 @@ public class PlayerProfile {
             {
                 saveAttempts++;
 
-                if(useSync)
+                //Back out of async saving if we detect a server shutdown, this is not always going to be caught
+                if(mcMMO.isServerShutdownExecuted() || useSync)
                     scheduleSyncSave(); //Execute sync saves immediately
                 else
-                    scheduleAsyncSaveDelay();
+                    scheduleAsyncSave();
 
             } else {
                 mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "

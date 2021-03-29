@@ -16,7 +16,7 @@ import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -25,15 +25,16 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TamingManager extends SkillManager {
     //TODO: Temporary static cache, will be changed in 2.2
@@ -41,9 +42,7 @@ public class TamingManager extends SkillManager {
     private static HashMap<CallOfTheWildType, TamingSummon> cotwSummonDataProperties;
     private long lastSummonTimeStamp;
 
-    private HashMap<CallOfTheWildType, List<TrackedTamingEntity>> playerSummonedEntities;
-
-    public TamingManager(McMMOPlayer mcMMOPlayer) {
+    public TamingManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.TAMING);
         init();
     }
@@ -54,18 +53,10 @@ public class TamingManager extends SkillManager {
         lastSummonTimeStamp = 0L;
 
         //Init per-player tracking of summoned entities
-        initPerPlayerSummonTracking();
+        mcMMO.getTransientEntityTracker().initPlayer(mmoPlayer.getPlayer());
 
         //Hacky stuff used as a band-aid
         initStaticCaches();
-    }
-
-    private void initPerPlayerSummonTracking() {
-        playerSummonedEntities = new HashMap<>();
-
-        for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-            playerSummonedEntities.put(callOfTheWildType, new ArrayList<>());
-        }
     }
 
     private void initStaticCaches() {
@@ -146,7 +137,7 @@ public class TamingManager extends SkillManager {
      *
      * @param entity The LivingEntity to award XP for
      */
-    public void awardTamingXP(LivingEntity entity) {
+    public void awardTamingXP(@NotNull LivingEntity entity) {
         applyXpGain(ExperienceConfig.getInstance().getTamingXP(entity.getType()), XPGainReason.PVE);
     }
 
@@ -156,7 +147,7 @@ public class TamingManager extends SkillManager {
      * @param wolf The wolf using the ability
      * @param damage The damage being absorbed by the wolf
      */
-    public void fastFoodService(Wolf wolf, double damage) {
+    public void fastFoodService(@NotNull Wolf wolf, double damage) {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
@@ -176,20 +167,23 @@ public class TamingManager extends SkillManager {
      * @param target The LivingEntity to apply Gore on
      * @param damage The initial damage
      */
-    public double gore(LivingEntity target, double damage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
-            return 0;
+    public double gore(@NotNull LivingEntity target, double damage) {
+        if(BleedTimerTask.isBleedOperationAllowed()) {
+            if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
+                return 0;
+            }
+
+            BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
+
+            if (target instanceof Player) {
+                NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
+            }
+
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
+
+            damage = (damage * Taming.goreModifier) - damage;
         }
 
-        BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
-
-        if (target instanceof Player) {
-            NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
-        }
-
-        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
-
-        damage = (damage * Taming.goreModifier) - damage;
         return damage;
     }
 
@@ -256,19 +250,24 @@ public class TamingManager extends SkillManager {
 
         message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
 
-        if (beast instanceof Horse) {
-            Horse horse = (Horse) beast;
-            double jumpStrength = horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getValue();
-            // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
-            jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
-            message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
-                    .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
+        // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
+        if (beast instanceof AbstractHorse && !(beast instanceof Llama)) {
+            AbstractHorse horseLikeCreature = (AbstractHorse) beast;
+            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(Attribute.HORSE_JUMP_STRENGTH);
+
+            if(jumpAttribute != null) {
+                double jumpStrength = jumpAttribute.getValue();
+                // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
+                jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
+                message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horseLikeCreature.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
+                        .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
+            }
         }
 
         player.sendMessage(message);
     }
 
-    public void processEnvironmentallyAware(Wolf wolf, double damage) {
+    public void processEnvironmentallyAware(@NotNull Wolf wolf, double damage) {
         if (damage > wolf.getHealth()) {
             return;
         }
@@ -485,12 +484,9 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setRemoveWhenFarAway(false);
     }
 
-    private void applyMetaDataToCOTWEntity(LivingEntity callOfWildEntity) {
-        //This is used to prevent XP gains for damaging this entity
-        callOfWildEntity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-
+    private void applyMetaDataToCOTWEntity(LivingEntity summonedEntity) {
         //This helps identify the entity as being summoned by COTW
-        callOfWildEntity.setMetadata(mcMMO.COTW_TEMPORARY_SUMMON, mcMMO.metadataValue);
+        mcMMO.getCompatibilityManager().getPersistentDataLayer().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
     }
 
     /**
@@ -498,62 +494,16 @@ public class TamingManager extends SkillManager {
      * @param itemStack target ItemStack
      * @return true if it is used for any COTW
      */
-    public boolean isCOTWItem(ItemStack itemStack) {
+    public boolean isCOTWItem(@NotNull ItemStack itemStack) {
         return summoningItems.containsKey(itemStack.getType());
     }
 
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private int getAmountCurrentlySummoned(CallOfTheWildType callOfTheWildType) {
-        //The tracker is unreliable so validate its contents first
-        recalibrateTracker();
-
-        return playerSummonedEntities.get(callOfTheWildType).size();
+    private int getAmountCurrentlySummoned(@NotNull CallOfTheWildType callOfTheWildType) {
+        return mcMMO.getTransientEntityTracker().getAmountCurrentlySummoned(getPlayer().getUniqueId(), callOfTheWildType);
     }
 
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private void addToTracker(LivingEntity livingEntity, CallOfTheWildType callOfTheWildType) {
-        TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity, callOfTheWildType, this);
-
-        playerSummonedEntities.get(callOfTheWildType).add(trackedEntity);
-    }
-
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    public List<TrackedTamingEntity> getTrackedEntities(CallOfTheWildType callOfTheWildType) {
-        return playerSummonedEntities.get(callOfTheWildType);
-    }
-
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    public void removeFromTracker(TrackedTamingEntity trackedEntity) {
-        playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).remove(trackedEntity);
-
-        NotificationManager.sendPlayerInformationChatOnly(getPlayer(), "Taming.Summon.COTW.TimeExpired", StringUtils.getPrettyEntityTypeString(trackedEntity.getLivingEntity().getType()));
-    }
-
-    /**
-     * Builds a new tracked list by determining which tracked things are still valid
-     */
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private void recalibrateTracker() {
-        for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-            ArrayList<TrackedTamingEntity> validEntities = getValidTrackedEntities(callOfTheWildType);
-            playerSummonedEntities.put(callOfTheWildType, validEntities); //Replace the old list with the new list
-        }
-    }
-
-    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
-    private ArrayList<TrackedTamingEntity> getValidTrackedEntities(CallOfTheWildType callOfTheWildType) {
-        ArrayList<TrackedTamingEntity> validTrackedEntities = new ArrayList<>();
-
-        for(TrackedTamingEntity trackedTamingEntity : getTrackedEntities(callOfTheWildType)) {
-            LivingEntity livingEntity = trackedTamingEntity.getLivingEntity();
-
-            //Remove from existence
-            if(livingEntity != null && livingEntity.isValid()) {
-                validTrackedEntities.add(trackedTamingEntity);
-            }
-        }
-
-        return validTrackedEntities;
+    private void addToTracker(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType) {
+        mcMMO.getTransientEntityTracker().registerEntity(getPlayer().getUniqueId(), new TrackedTamingEntity(livingEntity, callOfTheWildType, getPlayer()));
     }
 
     /**
@@ -562,19 +512,6 @@ public class TamingManager extends SkillManager {
      */
     //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
     public void cleanupAllSummons() {
-        for(List<TrackedTamingEntity> trackedTamingEntities : playerSummonedEntities.values()) {
-            for(TrackedTamingEntity trackedTamingEntity : trackedTamingEntities) {
-                LivingEntity livingEntity = trackedTamingEntity.getLivingEntity();
-
-                //Remove from existence
-                if(livingEntity != null && livingEntity.isValid()) {
-                    livingEntity.setHealth(0);
-                    livingEntity.remove();
-                }
-            }
-
-            //Clear the list
-            trackedTamingEntities.clear();
-        }
+        mcMMO.getTransientEntityTracker().cleanupPlayer(getPlayer());
     }
 }

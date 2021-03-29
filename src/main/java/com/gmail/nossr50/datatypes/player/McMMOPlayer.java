@@ -1,10 +1,12 @@
 package com.gmail.nossr50.datatypes.player;
 
+import com.gmail.nossr50.chat.author.PlayerAuthor;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -12,8 +14,10 @@ import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.events.experience.McMMOPlayerPreXpGainEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
@@ -38,6 +42,7 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -50,20 +55,30 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import org.apache.commons.lang.Validate;
+import net.kyori.adventure.identity.Identified;
+import net.kyori.adventure.identity.Identity;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class McMMOPlayer {
+public class McMMOPlayer implements Identified {
+    private final @NotNull Identity identity;
+
+    //Hacky fix for now, redesign later
+    private final @NotNull PlayerAuthor playerAuthor;
+
     private final Player        player;
     private final PlayerProfile profile;
 
@@ -77,14 +92,14 @@ public class McMMOPlayer {
 
     private PartyTeleportRecord ptpRecord;
 
-    private boolean partyChatMode;
-    private boolean adminChatMode;
     private boolean displaySkillNotifications = true;
     private boolean debugMode;
 
     private boolean abilityUse = true;
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
+
+    private ChatChannel chatChannel;
 
     private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<>();
     private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
@@ -103,9 +118,12 @@ public class McMMOPlayer {
     private final FixedMetadataValue playerMetadata;
     private final String playerName;
 
+    private PrimarySkillType lastSkillShownScoreboard = PrimarySkillType.values()[0];
+
     public McMMOPlayer(Player player, PlayerProfile profile) {
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
+        identity = Identity.identity(uuid);
 
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
@@ -143,6 +161,14 @@ public class McMMOPlayer {
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
         attackStrength = 1.0D;
+
+        this.playerAuthor = new PlayerAuthor(player);
+
+        this.chatChannel = ChatChannel.NONE;
+
+        if(ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
+            chatSpy = true;
+        }
     }
 
     public String getPlayerName() {
@@ -153,14 +179,22 @@ public class McMMOPlayer {
         return attackStrength;
     }
 
-    public void setAttackStrength(double attackStrength) {
-        this.attackStrength = attackStrength;
-    }
+//    public void setAttackStrength(double attackStrength) {
+//        this.attackStrength = attackStrength;
+//    }
 
     /*public void hideXpBar(PrimarySkillType primarySkillType)
     {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
+
+    public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
+        return lastSkillShownScoreboard;
+    }
+
+    public void setLastSkillShownScoreboard(PrimarySkillType primarySkillType) {
+        this.lastSkillShownScoreboard = primarySkillType;
+    }
 
     public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
     {
@@ -522,9 +556,7 @@ public class McMMOPlayer {
      * @param xp Experience amount to process
      */
     public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
-
-        if (xp <= 0.0) {
+        if(xp <= 0) {
             return;
         }
 
@@ -581,6 +613,10 @@ public class McMMOPlayer {
             return;
         }
 
+        final McMMOPlayerPreXpGainEvent mcMMOPlayerPreXpGainEvent = new McMMOPlayerPreXpGainEvent(player, primarySkillType, xp, xpGainReason);
+        Bukkit.getPluginManager().callEvent(mcMMOPlayerPreXpGainEvent);
+        xp = mcMMOPlayerPreXpGainEvent.getXpGained();
+
         if (primarySkillType.isChildSkill()) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
 
@@ -626,7 +662,7 @@ public class McMMOPlayer {
             levelsGained++;
         }
 
-        if (EventUtils.tryLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
+        if (EventUtils.tryLevelChangeEvent(this, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
             return;
         }
 
@@ -737,70 +773,6 @@ public class McMMOPlayer {
         itemShareModifier = Math.max(10, modifier);
     }
 
-    /*
-     * Chat modes
-     */
-
-    public boolean isChatEnabled(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                return adminChatMode;
-
-            case PARTY:
-                return partyChatMode;
-
-            default:
-                return false;
-        }
-    }
-
-    public void disableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = false;
-                return;
-
-            default:
-        }
-    }
-
-    public void enableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = true;
-                partyChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = true;
-                adminChatMode = false;
-                return;
-
-            default:
-        }
-
-    }
-
-    public void toggleChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = !adminChatMode;
-                partyChatMode = !adminChatMode && partyChatMode;
-                return;
-
-            case PARTY:
-                partyChatMode = !partyChatMode;
-                adminChatMode = !partyChatMode && adminChatMode;
-                return;
-
-            default:
-        }
-    }
-
     public boolean isUsingUnarmed() {
         return isUsingUnarmed;
     }
@@ -813,7 +785,9 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+        //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
+        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
+                || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
@@ -962,20 +936,78 @@ public class McMMOPlayer {
             if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
-                if (!getAbilityMode(ability) && timeRemaining > 0) {
+                if (isAbilityOnCooldown(ability)) {
                     NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
             }
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                /*
+                 *
+                 * IF THE TOOL IS AN AXE
+                 *
+                 */
+                if(tool == ToolType.AXE) {
+                    processAxeToolMessages();
+                } else {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                }
+
+                //Send Sound
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 
             setToolPreparationMode(tool, true);
             new ToolLowerTask(this, tool).runTaskLater(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
+    }
+
+    public void processAxeToolMessages() {
+        Block rayCast = player.getTargetBlock(null, 100);
+
+        /*
+         * IF BOTH TREE FELLER & SKULL SPLITTER ARE ON CD
+         */
+        if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            tooTiredMultiple(PrimarySkillType.WOODCUTTING, SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER, SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+        /*
+         * IF TREE FELLER IS ON CD
+         * AND PLAYER IS LOOKING AT TREE
+         */
+        } else if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
+                && BlockUtils.isPartOfTree(rayCast)) {
+            raiseToolWithCooldowns(SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER);
+
+        /*
+         * IF SKULL SPLITTER IS ON CD
+         */
+        } else if(isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            raiseToolWithCooldowns(SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+        } else {
+            NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, ToolType.AXE.getRaiseTool());
+        }
+    }
+
+    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill, SuperAbilityType aSuperAbility, SubSkillType bSubSkill, SuperAbilityType bSuperAbility) {
+        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", aSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(aSuperAbility)));
+        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", bSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(bSuperAbility)));
+        String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
+
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",
+                primarySkillType.getName(),
+                allCDStr);
+    }
+
+    private void raiseToolWithCooldowns(SubSkillType subSkillType, SuperAbilityType superAbilityType) {
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
+                "Axes.Ability.Ready.Extra",
+                subSkillType.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(superAbilityType)));
+    }
+
+    public boolean isAbilityOnCooldown(SuperAbilityType ability) {
+        return !getAbilityMode(ability) && calculateTimeRemaining(ability) > 0;
     }
 
     /**
@@ -1079,5 +1111,36 @@ public class McMMOPlayer {
     public void cleanup() {
         resetAbilityMode();
         getTamingManager().cleanupAllSummons();
+    }
+
+    /**
+     * For use with Adventure API (Kyori lib)
+     * @return this players identity
+     */
+    @Override
+    public @NonNull Identity identity() {
+        return identity;
+    }
+
+
+    /**
+     * The {@link com.gmail.nossr50.chat.author.Author} for this player, used by mcMMO chat
+     * @return the {@link com.gmail.nossr50.chat.author.Author} for this player
+     */
+    public @NotNull PlayerAuthor getPlayerAuthor() {
+        return playerAuthor;
+    }
+
+    public @NotNull ChatChannel getChatChannel() {
+        return chatChannel;
+    }
+
+    /**
+     * Change the chat channel for a player
+     * This does not inform the player
+     * @param chatChannel new chat channel
+     */
+    public void setChatMode(@NotNull ChatChannel chatChannel) {
+        this.chatChannel = chatChannel;
     }
 }

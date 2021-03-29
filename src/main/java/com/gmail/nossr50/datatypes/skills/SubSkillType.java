@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 
 import java.util.Locale;
 
@@ -38,7 +38,7 @@ public enum SubSkillType {
     FISHING_FISHERMANS_DIET(5),
     FISHING_ICE_FISHING(1),
     FISHING_MAGIC_HUNTER(1),
-    FISHING_MASTER_ANGLER(1),
+    FISHING_MASTER_ANGLER(8),
     FISHING_TREASURE_HUNTER(8),
     FISHING_SHAKE(1),
 
@@ -101,6 +101,7 @@ public enum SubSkillType {
 
     /* Woodcutting */
 /*    WOODCUTTING_BARK_SURGEON(3),*/
+    WOODCUTTING_KNOCK_ON_WOOD(2),
     WOODCUTTING_HARVEST_LUMBER(1),
     WOODCUTTING_LEAF_BLOWER(1),
 /*    WOODCUTTING_NATURES_BOUNTY(3),

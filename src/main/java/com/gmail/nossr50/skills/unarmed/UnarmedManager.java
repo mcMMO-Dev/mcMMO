@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.unarmed;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -24,6 +25,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class UnarmedManager extends SkillManager {
 
@@ -32,10 +34,10 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+        return mmoPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
     }
 
-    public boolean canUseIronArm() {
+    public boolean canUseSteelArm() {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE))
             return false;
 
@@ -43,7 +45,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK);
+        return mmoPlayer.getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public boolean canDisarm(LivingEntity target) {
@@ -69,7 +71,7 @@ public class UnarmedManager extends SkillManager {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
-    public boolean blockCrackerCheck(BlockState blockState) {
+    public boolean blockCrackerCheck(@NotNull BlockState blockState) {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_BLOCK_CRACKER, getPlayer())) {
             return false;
         }
@@ -100,8 +102,8 @@ public class UnarmedManager extends SkillManager {
      *
      * @param defender The defending player
      */
-    public void disarmCheck(Player defender) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), mcMMOPlayer.getAttackStrength()) && !hasIronGrip(defender)) {
+    public void disarmCheck(@NotNull Player defender) {
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer()) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -109,7 +111,7 @@ public class UnarmedManager extends SkillManager {
             if(UserManager.getPlayer(defender) == null)
                 return;
 
-            Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
+            Item item = Misc.spawnItem(defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
                 item.setMetadata(mcMMO.disarmedItemKey, UserManager.getPlayer(defender).getPlayerMetadata());
@@ -138,7 +140,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double berserkDamage(double damage) {
-        damage = ((damage * Unarmed.berserkDamageModifier) * mcMMOPlayer.getAttackStrength()) - damage;
+        damage = ((damage * Unarmed.berserkDamageModifier) * mmoPlayer.getAttackStrength()) - damage;
 
         return damage;
     }
@@ -178,7 +180,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      * @return true if the defender was not disarmed, false otherwise
      */
-    private boolean hasIronGrip(Player defender) {
+    private boolean hasIronGrip(@NotNull Player defender) {
         if (!Misc.isNPCEntityExcludingVillagers(defender)
                 && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_IRON_GRIP, defender)) {

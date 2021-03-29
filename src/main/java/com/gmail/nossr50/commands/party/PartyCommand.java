@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -55,7 +54,6 @@ public class PartyCommand implements TabExecutor {
     private final CommandExecutor partyInfoCommand           = new PartyInfoCommand();
     private final CommandExecutor partyHelpCommand           = new PartyHelpCommand();
     private final CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private final CommandExecutor partyChatCommand           = new PartyChatCommand();
     private final CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
     @Override
@@ -132,8 +130,6 @@ public class PartyCommand implements TabExecutor {
                 return partyInviteCommand.onCommand(sender, command, label, args);
             case TELEPORT:
                 return partyTeleportCommand.onCommand(sender, command, label, extractArgs(args));
-            case CHAT:
-                return partyChatCommand.onCommand(sender, command, label, extractArgs(args));
             default:
                 break;
         }

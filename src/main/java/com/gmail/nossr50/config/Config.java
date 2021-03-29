@@ -5,10 +5,12 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -259,13 +261,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPreferBeta() { return config.getBoolean("General.Prefer_Beta", false); }
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
 
-    public String getPartyChatPrefix() { return config.getString("Commands.partychat.Chat_Prefix_Format", "[[GREEN]]([[WHITE]]{0}[[GREEN]])"); }
-    public boolean getPartyChatColorLeaderName() { return config.getBoolean("Commands.partychat.Gold_Leader_Name", true); }
-    public boolean getPartyDisplayNames() { return config.getBoolean("Commands.partychat.Use_Display_Names", true); }
-    public String getPartyChatPrefixAlly() { return config.getString("Commands.partychat.Chat_Prefix_Format_Ally", "[[GREEN]](A)[[RESET]]"); }
-
-    public String getAdminChatPrefix() { return config.getString("Commands.adminchat.Chat_Prefix_Format", "[[AQUA]][[[WHITE]]{0}[[AQUA]]]"); }
-    public boolean getAdminDisplayNames() { return config.getBoolean("Commands.adminchat.Use_Display_Names", true); }
 
     public boolean getMatchOfflinePlayers() { return config.getBoolean("Commands.Generic.Match_OfflinePlayers", false); }
     public long getDatabasePlayerCooldown() { return config.getLong("Commands.Database.Player_Cooldown", 1750); }
@@ -457,7 +452,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }
 
     /* Thresholds */
-    public int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500); }
+    public int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 1000); }
 
     /*
      * SKILL SETTINGS
@@ -516,14 +511,17 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public boolean getRepairAnvilPlaceSoundsEnabled() { return config.getBoolean("Skills.Repair.Anvil_Placed_Sounds", true); }
     public boolean getRepairAnvilUseSoundsEnabled() { return config.getBoolean("Skills.Repair.Anvil_Use_Sounds", true); }
-    public Material getRepairAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK")); }
+    public @Nullable Material getRepairAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK")); }
     public boolean getRepairConfirmRequired() { return config.getBoolean("Skills.Repair.Confirm_Required", true); }
+    public boolean getAllowVanillaInventoryRepair() { return config.getBoolean("Skills.Repair.Allow_Vanilla_Anvil_Repair", false); }
+    public boolean getAllowVanillaAnvilRepair() { return config.getBoolean("Skills.Repair.Allow_Vanilla_Inventory_Repair", false); }
+    public boolean getAllowVanillaGrindstoneRepair() { return config.getBoolean("Skills.Repair.Allow_Vanilla_Grindstone_Repair", false); }
 
     /* Salvage */
     public boolean getSalvageAnvilMessagesEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Messages", true); }
     public boolean getSalvageAnvilPlaceSoundsEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Placed_Sounds", true); }
     public boolean getSalvageAnvilUseSoundsEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Use_Sounds", true); }
-    public Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK")); }
+    public @Nullable Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK")); }
     public boolean getSalvageConfirmRequired() { return config.getBoolean("Skills.Salvage.Confirm_Required", true); }
 
     /* Unarmed */
@@ -584,4 +582,23 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean playerJoinEventInfo() { return config.getBoolean("General.EventInfoOnPlayerJoin", true);}
     public boolean adminNotifications() { return config.getBoolean("General.AdminNotifications", true);}
 
+    public boolean shouldLevelUpBroadcasts() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Enabled", true); }
+    public boolean shouldLevelUpBroadcastToConsole() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Send_To_Console", true); }
+    public boolean isLevelUpBroadcastsPartyMembersOnly() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Party_Members", false); }
+    public boolean isLevelUpBroadcastsSameWorldOnly() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Same_World", false); }
+    public boolean shouldLevelUpBroadcastsRestrictDistance() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restrict_Distance", false); }
+    public int getLevelUpBroadcastRadius() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restricted_Radius", 100); }
+    public int getLevelUpBroadcastInterval() { return config.getInt("General.Level_Up_Chat_Broadcasts.Milestone_Interval", 100); }
+
+    public boolean shouldPowerLevelUpBroadcasts() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Enabled", true); }
+    public boolean shouldPowerLevelUpBroadcastToConsole() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Send_To_Console", true); }
+    public boolean isPowerLevelUpBroadcastsPartyMembersOnly() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Party_Members", false); }
+    public boolean isPowerLevelUpBroadcastsSameWorldOnly() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Same_World", false); }
+    public boolean shouldPowerLevelUpBroadcastsRestrictDistance() { return config.getBoolean("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restrict_Distance", false); }
+    public int getPowerLevelUpBroadcastRadius() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restricted_Radius", 100); }
+    public int getPowerLevelUpBroadcastInterval() { return config.getInt("General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval", 100); }
+
+    public boolean isGreenThumbReplantableCrop(@NotNull Material material) {
+        return config.getBoolean("Green_Thumb_Replanting_Crops." + StringUtils.getCapitalized(material.toString()), true);
+    }
 }

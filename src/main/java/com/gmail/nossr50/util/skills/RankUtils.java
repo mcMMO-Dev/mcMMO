@@ -156,6 +156,17 @@ public class RankUtils {
 
     /**
      * Gets the current rank of the subskill for the player
+     * @param mmoPlayer The player in question
+     * @param subSkillType Target subskill
+     * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
+     */
+    public static int getRank(McMMOPlayer mmoPlayer, SubSkillType subSkillType)
+    {
+        return getRank(mmoPlayer.getPlayer(), subSkillType);
+    }
+
+    /**
+     * Gets the current rank of the subskill for the player
      * @param player The player in question
      * @param subSkillType Target subskill
      * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.

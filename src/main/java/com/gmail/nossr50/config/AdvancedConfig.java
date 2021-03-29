@@ -275,62 +275,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Mining.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
-        /*List<BlastMining.Tier> blastMiningTierList = Arrays.asList(BlastMining.Tier.values());
-
-        for (int rank : blastMiningTierList) {
-            if (getBlastMiningRankLevel(tier) < 0) {
-                reason.add("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getBlastDamageDecrease(tier) < 0) {
-                reason.add("Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getOreBonus(tier) < 0) {
-                reason.add("Skills.Mining.BlastMining.OreBonus.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getDebrisReduction(tier) < 0) {
-                reason.add("Skills.Mining.BlastMining.DebrisReduction.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getDropMultiplier(tier) < 0) {
-                reason.add("Skills.Mining.BlastMining.DropMultiplier.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getBlastRadiusModifier(tier) < 0) {
-                reason.add("Skills.Mining.BlastMining.BlastRadiusModifier.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (tier != BlastMining.Tier.EIGHT) {
-                BlastMining.Tier nextTier = blastMiningTierList.get(blastMiningTierList.indexOf(tier) - 1);
-
-                if (getBlastMiningRankLevel(tier) > getBlastMiningRankLevel(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Mining.BlastMining.Rank_Levels.Rank_" + nextrank + "!");
-                }
-
-                if (getBlastDamageDecrease(tier) > getBlastDamageDecrease(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + rank + " should be less than or equal to Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + nextrank + "!");
-                }
-
-                if (getOreBonus(tier) > getOreBonus(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.OreBonus.Rank_" + rank + " should be less than or equal to Skills.Mining.BlastMining.OreBonus.Rank_" + nextrank + "!");
-                }
-
-                if (getDebrisReduction(tier) > getDebrisReduction(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.DebrisReduction.Rank_" + rank + " should be less than or equal to Skills.Mining.BlastMining.DebrisReduction.Rank_" + nextrank + "!");
-                }
-
-                if (getDropMultiplier(tier) > getDropMultiplier(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.DropMultiplier.Rank_" + rank + " should be less than or equal to Skills.Mining.BlastMining.DropMultiplier.Rank_" + nextrank + "!");
-                }
-
-                if (getBlastRadiusModifier(tier) > getBlastRadiusModifier(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.BlastRadiusModifier.Rank_" + rank + " should be less than or equal to Skills.Mining.BlastMining.BlastRadiusModifier.Rank_" + nextrank + "!");
-                }
-            }
-        }*/
-
         /* REPAIR */
         if (getRepairMasteryMaxBonus() < 1) {
             reason.add("Skills.Repair.RepairMastery.MaxBonusPercentage should be at least 1!");
@@ -348,83 +292,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.SuperRepair.MaxBonusLevel should be at least 1!");
         }
 
-        /*List<ArcaneForging.Tier> arcaneForgingTierList = Arrays.asList(ArcaneForging.Tier.values());
-
-        for (ArcaneForging.Tier tier : arcaneForgingTierList) {
-            if (getArcaneForgingRankLevel(tier) < 0) {
-                reason.add("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getArcaneForgingDowngradeChance(tier) < 0 || getArcaneForgingDowngradeChance(tier) > 100) {
-                reason.add("Skills.Repair.ArcaneForging.Downgrades.Chance.Rank_" + rank + " only accepts values from 0 to 100!");
-            }
-
-            if (getArcaneForgingKeepEnchantsChance(tier) < 0 || getArcaneForgingKeepEnchantsChance(tier) > 100) {
-                reason.add("Skills.Repair.ArcaneForging.Keep_Enchants.Chance.Rank_" + rank + " only accepts values from 0 to 100!");
-            }
-
-            if (tier != ArcaneForging.Tier.EIGHT) {
-                ArcaneForging.Tier nextTier = arcaneForgingTierList.get(arcaneForgingTierList.indexOf(tier) - 1);
-
-                if (getArcaneForgingRankLevel(tier) > getArcaneForgingRankLevel(nextTier)) {
-                    reason.add("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + nextrank + "!");
-                }
-
-                if (getArcaneForgingDowngradeChance(nextTier) > getArcaneForgingDowngradeChance(tier)) {
-                    reason.add("Skills.Repair.ArcaneForging.Downgrades.Chance.Rank_" + nextrank + " should be less than or equal to Skills.Repair.ArcaneForging.Downgrades.Chance.Rank_" + rank + "!");
-                }
-
-                if (getArcaneForgingKeepEnchantsChance(tier) > getArcaneForgingKeepEnchantsChance(nextTier)) {
-                    reason.add("Skills.Repair.ArcaneForging.Keep_Enchants.Chance.Rank_" + rank + " should be less than or equal to Skills.Repair.ArcaneForging.Keep_Enchants.Chance.Rank_" + nextrank + "!");
-                }
-            }
-        }*/
-
-        /* SALVAGE */
-        /*if (getSalvageMaxPercentage() < 1) {
-            reason.add("Skills.Salvage.MaxPercentage should be at least 1!");
-        }
-
-        if (getSalvageMaxPercentageLevel() < 1) {
-            reason.add("Skills.Salvage.MaxPercentageLevel should be at least 1!");
-        }*/
-
-        /*if (getAdvancedSalvageUnlockLevel() < 0) {
-            reason.add("Skills.Salvage.AdvancedSalvage.UnlockLevel should be at least 0!");
-        }*/
-
-        /*List<Salvage.Tier> salvageTierList = Arrays.asList(Salvage.Tier.values());
-
-        for (Salvage.Tier tier : salvageTierList) {
-            if (getArcaneSalvageRankLevel(tier) < 0) {
-                reason.add("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getArcaneSalvageExtractFullEnchantsChance(tier) < 0 || getArcaneSalvageExtractFullEnchantsChance(tier) > 100) {
-                reason.add("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + rank + " only accepts values from 0 to 100!");
-            }
-
-            if (getArcaneSalvageExtractPartialEnchantsChance(tier) < 0 || getArcaneSalvageExtractPartialEnchantsChance(tier) > 100) {
-                reason.add("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank + " only accepts values from 0 to 100!");
-            }
-
-            if (tier != Salvage.Tier.EIGHT) {
-                Salvage.Tier nextTier = salvageTierList.get(salvageTierList.indexOf(tier) - 1);
-
-                if (getArcaneSalvageRankLevel(tier) > getArcaneSalvageRankLevel(nextTier)) {
-                    reason.add("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + nextrank + "!");
-                }
-
-                if (getArcaneSalvageExtractFullEnchantsChance(tier) > getArcaneSalvageExtractFullEnchantsChance(nextTier)) {
-                    reason.add("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + rank + " should be less than or equal to Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + nextrank + "!");
-                }
-
-                if (getArcaneSalvageExtractPartialEnchantsChance(tier) > getArcaneSalvageExtractPartialEnchantsChance(nextTier)) {
-                    reason.add("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank + " should be less than or equal to Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + nextrank + "!");
-                }
-            }
-        }*/
-
         /* SMELTING */
         if (getBurnModifierMaxLevel() < 1) {
             reason.add("Skills.Smelting.FuelEfficiency.MaxBonusLevel should be at least 1!");
@@ -438,37 +305,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Smelting.SecondSmelt.ChanceMax should be at least 1!");
         }
 
-        /*if (getFluxMiningUnlockLevel() < 0) {
-            reason.add("Skills.Smelting.FluxMining.UnlockLevel should be at least 0!");
-        }*/
-
         if (getFluxMiningChance() < 1) {
             reason.add("Skills.Smelting.FluxMining.Chance should be at least 1!");
         }
-
-        /*List<Smelting.Tier> smeltingTierList = Arrays.asList(Smelting.Tier.values());
-
-        for (int rank : smeltingTierList) {
-            if (getSmeltingRankLevel(tier) < 0) {
-                reason.add("Skills.Smelting.Rank_Levels.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (getSmeltingVanillaXPBoostMultiplier(tier) < 1) {
-                reason.add("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank + " should be at least 1!");
-            }
-
-            if (tier != Smelting.Tier.EIGHT) {
-                Smelting.Tier nextTier = smeltingTierList.get(smeltingTierList.indexOf(tier) - 1);
-
-                if (getSmeltingRankLevel(tier) > getSmeltingRankLevel(nextTier)) {
-                    reason.add("Skills.Smelting.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Smelting.Rank_Levels.Rank_" + nextrank + "!");
-                }
-
-                if (getSmeltingVanillaXPBoostMultiplier(tier) > getSmeltingVanillaXPBoostMultiplier(nextTier)) {
-                    reason.add("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank + " should be less than or equal to Skills.Smelting.VanillaXPMultiplier.Rank_" + nextrank + "!");
-                }
-            }
-        }*/
 
         /* SWORDS */
         if (getMaximumProbability(SubSkillType.SWORDS_RUPTURE) < 1) {
@@ -610,23 +449,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         if (getMaxBonusLevel(SubSkillType.WOODCUTTING_HARVEST_LUMBER) < 1) {
             reason.add("Skills.Woodcutting.HarvestLumber.MaxBonusLevel should be at least 1!");
-        }
-
-        /* KRAKEN */
-        if (getKrakenTriesBeforeRelease() < 1) {
-            reason.add("Kraken.Tries_Before_Release should be at least 1!");
-        }
-
-        if (getKrakenHealth() < 1) {
-            reason.add("Kraken.Health should be at least 1!");
-        }
-
-        if (getKrakenAttackInterval() < 1) {
-            reason.add("Kraken.Attack_Interval_Seconds should be at least 1!");
-        }
-
-        if (getKrakenAttackDamage() < 1) {
-            reason.add("Kraken.Attack_Damage should be at least 1!");
         }
 
         return noErrorsInConfig(reason);
@@ -882,6 +704,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getShakeChance(int rank) { return config.getDouble("Skills.Fishing.ShakeChance.Rank_" + rank); }
     public int getFishingVanillaXPModifier(int rank) { return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank); }
 
+    public int getFishingReductionMinWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait", 10);}
+    public int getFishingReductionMaxWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait", 30);}
+    public int getFishingBoatReductionMinWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait", 10);}
+    public int getFishingBoatReductionMaxWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait", 30);}
+    public int getFishingReductionMinWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait", 40);}
+    public int getFishingReductionMaxWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait", 100);}
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
 
     /*public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.IceFishing.UnlockLevel", 50); }
@@ -897,6 +725,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* MINING */
     public boolean getDoubleDropSilkTouchEnabled() { return config.getBoolean("Skills.Mining.DoubleDrops.SilkTouch", true); }
+    public boolean getAllowMiningTripleDrops() { return config.getBoolean("Skills.Mining.SuperBreaker.AllowTripleDrops", true); }
     public int getBlastMiningRankLevel(int rank) { return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank); }
     public double getBlastDamageDecrease(int rank) { return config.getDouble("Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + rank); }
     public double getOreBonus(int rank) { return config.getDouble("Skills.Mining.BlastMining.OreBonus.Rank_" + rank); }
@@ -989,19 +818,5 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
 
     /* WOODCUTTING */
-    /*public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower.UnlockLevel", 100); }*/
-
-    /* KRAKEN STUFF */
-    public boolean getKrakenEnabled() { return config.getBoolean("Kraken.Enabled", true); }
-    public int getKrakenTriesBeforeRelease() { return config.getInt("Kraken.Tries_Before_Release", 50); }
-    public double getKrakenHealth() { return config.getDouble("Kraken.Health", 50.0D); }
-    public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }
-    public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
-    public double getKrakenAttackDamage() { return config.getDouble("Kraken.Attack_Damage", 1.0D); }
-    public boolean getKrakenGlobalEffectsEnabled() { return config.getBoolean("Kraken.Global_Effects", false); }
-    public boolean getKrakenEscapeAllowed() { return config.getBoolean("Kraken.Allow_Escaping", false); }
-    public String getServerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Server", ""); }
-    public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", ""); }
-    public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", ""); }
-    public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", ""); }
+    public boolean isKnockOnWoodXPOrbEnabled() { return config.getBoolean("Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops", true); }
 }

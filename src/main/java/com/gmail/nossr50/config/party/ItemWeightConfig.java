@@ -1,7 +1,7 @@
 package com.gmail.nossr50.config.party;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 
 import java.util.HashSet;

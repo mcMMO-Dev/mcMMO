@@ -9,20 +9,20 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public abstract class SkillManager {
-    protected McMMOPlayer mcMMOPlayer;
+    protected McMMOPlayer mmoPlayer;
     protected PrimarySkillType skill;
 
-    public SkillManager(McMMOPlayer mcMMOPlayer, PrimarySkillType skill) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public SkillManager(McMMOPlayer mmoPlayer, PrimarySkillType skill) {
+        this.mmoPlayer = mmoPlayer;
         this.skill = skill;
     }
 
     public Player getPlayer() {
-        return mcMMOPlayer.getPlayer();
+        return mmoPlayer.getPlayer();
     }
 
     public int getSkillLevel() {
-        return mcMMOPlayer.getSkillLevel(skill);
+        return mmoPlayer.getSkillLevel(skill);
     }
 
     /**
@@ -33,7 +33,7 @@ public abstract class SkillManager {
      */
     @Deprecated
     public void applyXpGain(float xp, XPGainReason xpGainReason) {
-        mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
+        mmoPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
     }
 
     /**
@@ -43,7 +43,7 @@ public abstract class SkillManager {
      * @param xpGainSource the source of the XP
      */
     public void applyXpGain(float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
+        mmoPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
     }
 
     public XPGainReason getXPGainReason(LivingEntity target, Entity damager) {

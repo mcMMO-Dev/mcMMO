@@ -21,8 +21,8 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Color;
 import org.bukkit.entity.Entity;
@@ -63,7 +63,7 @@ public enum PrimarySkillType {
     UNARMED(UnarmedManager.class, Color.BLACK, SuperAbilityType.BERSERK, ToolType.FISTS,
             ImmutableList.of(SubSkillType.UNARMED_BERSERK, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, SubSkillType.UNARMED_BLOCK_CRACKER, SubSkillType.UNARMED_ARROW_DEFLECT, SubSkillType.UNARMED_DISARM, SubSkillType.UNARMED_STEEL_ARM_STYLE, SubSkillType.UNARMED_IRON_GRIP)),
     WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbilityType.TREE_FELLER, ToolType.AXE,
-            ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER));
+            ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD));
 
     private final Class<? extends SkillManager> managerClass;
     private final Color skillColor;
@@ -95,10 +95,10 @@ public enum PrimarySkillType {
                 nonChildSkills.add(skill);
             }
 
-            for(SubSkillType subSkillType : skill.subSkillTypes)
-            {
+            for(SubSkillType subSkillType : skill.subSkillTypes) {
                 subSkillNames.add(subSkillType.getNiceNameNoSpaces(subSkillType));
             }
+
             names.add(skill.getName());
         }
 
@@ -237,6 +237,10 @@ public enum PrimarySkillType {
     public String getName() {
         return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
+
+//    public String getName() {
+//        return StringUtils.getCapitalized(StringUtils.getCapitalized(this.toString()));
+//    }
 
     public boolean getPermissions(Player player) {
         return Permissions.skillEnabled(player, this);

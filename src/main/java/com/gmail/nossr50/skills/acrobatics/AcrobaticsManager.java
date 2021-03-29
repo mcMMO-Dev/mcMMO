@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.acrobatics;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.LimitedSizeList;
+import com.gmail.nossr50.datatypes.BlockLocationHistory;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -28,13 +28,13 @@ public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
-        fallLocationMap = new LimitedSizeList(50);
+        fallLocationMap = new BlockLocationHistory(50);
     }
 
     private long rollXPCooldown = 0;
     private final long rollXPInterval = (1000 * 3); //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
-    private final LimitedSizeList fallLocationMap;
+    private final BlockLocationHistory fallLocationMap;
 
     public boolean hasFallenInLocationBefore(Location location)
     {
@@ -91,11 +91,11 @@ public class AcrobaticsManager extends SkillManager {
         if (!isFatal(modifiedDamage) && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
-            if (mcMMOPlayer.useChatNotifications()) {
+            if (mmoPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
             }
 
-            if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 if(!(attacker instanceof Player)) {
                     //Check to see how many dodge XP rewards this mob has handed out
                     if(attacker.hasMetadata(mcMMO.DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {

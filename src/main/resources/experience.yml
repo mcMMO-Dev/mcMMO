@@ -35,6 +35,10 @@ ExploitFix:
     TreeFellerReducedXP: true
     PistonCheating: true
     SnowGolemExcavation: true
+    # This include NPCs from stuff like Citizens, this is not a setting for Vanilla Minecraft Villagers (Which can be considered NPCs)
+    # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
+    # Of course, mcMMO doesn't know for sure whether or not something is an NPC, it checks a few known things, see our source code to see how
+    PreventPluginNPCInteraction: true
 Experience_Bars:
     # Turn this to false if you wanna disable XP bars
     Enable: true
@@ -139,7 +143,11 @@ Experience_Formula:
         PVP: 1.0
 
     # Experience gained from mobs not naturally spawned will get multiplied by this value. 0 by default.
+    Eggs:
+        Multiplier: 0
     Mobspawners:
+        Multiplier: 0
+    Nether_Portal:
         Multiplier: 0
     Breeding:
         Multiplier: 1.0
@@ -549,4 +557,3 @@ Experience_Values:
             Zombified_Piglin: 3.0
             Strider: 1.2
             Zoglin: 2.5
-

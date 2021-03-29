@@ -1,5 +1,6 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
@@ -15,7 +16,10 @@ import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
@@ -23,6 +27,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
+    public static final String MOBHEALTHBAR_VARCHAR = "VARCHAR(50)";
+    public static final String UUID_VARCHAR = "VARCHAR(36)";
+    public static final String USER_VARCHAR = "VARCHAR(40)";
     private final String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
@@ -34,6 +41,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private boolean debug = false;
 
     private final ReentrantLock massUpdateLock = new ReentrantLock();
+
+    private final String CHARSET_SQL = "utf8mb4"; //This is compliant with UTF-8 while "utf8" is not, confusing but this is how it is.
 
     protected SQLDatabaseManager() {
         String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
@@ -343,8 +352,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return success;
     }
 
-    public List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage) {
+    public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException {
         List<PlayerStat> stats = new ArrayList<>();
+
+        //Fix for a plugin that people are using that is throwing SQL errors
+        if(skill != null && skill.isChildSkill()) {
+            mcMMO.p.getLogger().severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
+            throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
+        }
+
 
         String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase(Locale.ENGLISH);
         ResultSet resultSet = null;
@@ -491,6 +507,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    @Override
+    public @NotNull PlayerProfile newUser(@NotNull Player player) {
+        try {
+            Connection connection = getConnection(PoolIdentifier.SAVE);
+            int id = newUser(connection, player.getName(), player.getUniqueId());
+
+            if (id == -1) {
+                return new PlayerProfile(player.getName(), player.getUniqueId(), false);
+            } else {
+                return loadPlayerProfile(player.getUniqueId(), player.getName());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new PlayerProfile(player.getName(), player.getUniqueId(), false);
+    }
+
     private int newUser(Connection connection, String playerName, UUID uuid) {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
@@ -529,20 +563,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return -1;
     }
 
-    @Deprecated
-    public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, null, false, true);
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
+        try {
+            return loadPlayerFromDB(null, playerName);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new PlayerProfile(playerName, false);
+        }
     }
 
-    public PlayerProfile loadPlayerProfile(UUID uuid) {
-        return loadPlayerProfile("", uuid, false, true);
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
+        return loadPlayerFromDB(uuid, playerName);
     }
 
-    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-        return loadPlayerProfile(playerName, uuid, create, true);
-    }
+    private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName) throws RuntimeException {
+        if(uuid == null && playerName == null) {
+            throw new RuntimeException("Error looking up player, both UUID and playerName are null and one must not be.");
+        }
 
-    private PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create, boolean retry) {
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet resultSet = null;
@@ -552,16 +590,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             int id = getUserID(connection, playerName, uuid);
 
             if (id == -1) {
-                // There is no such user
-                if (create) {
-                    id = newUser(connection, playerName, uuid);
-                    create = false;
-                    if (id == -1) {
-                        return new PlayerProfile(playerName, false);
-                    }
-                } else {
-                    return new PlayerProfile(playerName, false);
-                }
+            // There is no such user
+                return new PlayerProfile(playerName, false);
             }
             // There is such a user
             writeMissingRows(connection, id);
@@ -589,7 +619,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.close();
                     statement.close();
 
-                    if (!playerName.isEmpty() && !playerName.equalsIgnoreCase(name) && uuid != null) {
+                    if (playerName != null
+                            && !playerName.isEmpty()
+                            && !playerName.equalsIgnoreCase(name)
+                            && uuid != null) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
                                         + "SET user = ? "
@@ -626,15 +659,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(connection);
         }
 
-        // Problem, nothing was returned
-
-        // return unloaded profile
-        if (!retry) {
-            return new PlayerProfile(playerName, false);
-        }
-
-        // Retry, and abort on re-failure
-        return loadPlayerProfile(playerName, uuid, create, false);
+        //Return empty profile
+        return new PlayerProfile(playerName, false);
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -804,7 +830,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "`lastlogin` int(32) unsigned NOT NULL,"
                     + "PRIMARY KEY (`id`),"
                     + "INDEX(`user`(20) ASC),"
-                    + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                    + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=" + CHARSET_SQL + " AUTO_INCREMENT=1;");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -818,7 +844,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
                         + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -843,7 +869,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -871,7 +897,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`total` int(10) unsigned NOT NULL DEFAULT "+totalLevel+","
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -896,7 +922,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
-                        + "DEFAULT CHARSET=latin1;");
+                        + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
@@ -1019,12 +1045,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     checkUpgradeAddUniqueChimaeraWing(statement);
                     break;
 
+                case SQL_CHARSET_UTF8MB4:
+                    updateCharacterSet(statement);
+                    break;
+
                 default:
                     break;
 
             }
-
-            mcMMO.getUpgradeManager().setUpgradeCompleted(upgrade);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1181,6 +1209,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.execute("ALTER TABLE `" + tablePrefix + "users` " 
                     + "DROP INDEX `user`,"
                     + "ADD INDEX `user` (`user`(20) ASC)");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_NAME_UNIQUENESS);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -1191,6 +1220,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddAlchemy(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `alchemy` FROM `" + tablePrefix + "skills` LIMIT 1");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
@@ -1202,6 +1232,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddBlastMiningCooldown(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `blast_mining` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_BLAST_MINING_COOLDOWN);
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
@@ -1212,6 +1243,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddUniqueChimaeraWing(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `chimaera_wing` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UNIQUE_PLAYER_DATA);
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Chimaera Wing...");
@@ -1222,6 +1254,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddFishing(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `fishing` FROM `" + tablePrefix + "skills` LIMIT 1");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FISHING);
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
@@ -1233,6 +1266,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddMobHealthbars(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `mobhealthbar` FROM `" + tablePrefix + "huds` LIMIT 1");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_MOB_HEALTHBARS);
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
@@ -1243,6 +1277,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddScoreboardTips(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `scoreboardtips` FROM `" + tablePrefix + "huds` LIMIT 1");
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SCOREBOARD_TIPS);
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for scoreboard tips...");
@@ -1271,6 +1306,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     }
                 }
             }
+
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SQL_INDEXES);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1300,7 +1337,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Adding UUIDs to mcMMO MySQL user table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
+
+                new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
             }
+
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1308,8 +1349,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         finally {
             tryClose(resultSet);
         }
-
-        new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
     }
 
     private class GetUUIDUpdatesRequired extends BukkitRunnable {
@@ -1367,6 +1406,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Removing party name from users table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party`");
             }
+
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SQL_PARTY_NAMES);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1402,6 +1443,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_total` (`total`) USING BTREE");
                 connection.commit();
             }
+
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SKILL_TOTAL);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1433,6 +1476,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Removing Spout HUD type from huds table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype`");
             }
+
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SPOUT);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1544,5 +1589,68 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(statement);
             tryClose(connection);
         }
+    }
+
+    private void updateCharacterSet(@NotNull Statement statement) {
+        //TODO: Could check the tables for being latin1 before executing queries but it seems moot because it is likely the same computational effort
+        /*
+            The following columns were set to use latin1 historically (now utf8mb4)
+            column user in <tablePrefix>users
+            column uuid in <tablePrefix>users
+
+            column mobhealthbar in <tablePrefix>huds
+         */
+
+        //Alter users table
+        mcMMO.p.getLogger().info("SQL Converting tables from latin1 to utf8mb4");
+
+        //Update "user" column
+        try {
+        mcMMO.p.getLogger().info("Updating user column to new encoding");
+        statement.executeUpdate(getUpdateUserInUsersTableSQLQuery());
+
+        //Update "uuid" column
+        mcMMO.p.getLogger().info("Updating user column to new encoding");
+        statement.executeUpdate(getUpdateUUIDInUsersTableSQLQuery());
+
+        //Update "mobhealthbar" column
+        mcMMO.p.getLogger().info("Updating mobhealthbar column to new encoding");
+        statement.executeUpdate(getUpdateMobHealthBarInHudsTableSQLQuery());
+
+        mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.SQL_CHARSET_UTF8MB4);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @NotNull
+    private String getUpdateUserInUsersTableSQLQuery() {
+        return "ALTER TABLE\n" +
+                "    " + tablePrefix + "users\n" +
+                "    CHANGE user user\n" +
+                "    " + USER_VARCHAR + "\n" +
+                "    CHARACTER SET utf8mb4\n" +
+                "    COLLATE utf8mb4_unicode_ci;";
+    }
+
+    @NotNull
+    private String getUpdateUUIDInUsersTableSQLQuery() {
+        return "ALTER TABLE\n" +
+                "    " + tablePrefix + "users\n" +
+                "    CHANGE uuid uuid\n" +
+                "    " + UUID_VARCHAR + "\n" +
+                "    CHARACTER SET utf8mb4\n" +
+                "    COLLATE utf8mb4_unicode_ci;";
+    }
+
+    @NotNull
+    private String getUpdateMobHealthBarInHudsTableSQLQuery() {
+        return "ALTER TABLE\n" +
+                "    " + tablePrefix + "huds\n" +
+                "    CHANGE mobhealthbar mobhealthbar\n" +
+                "    " + MOBHEALTHBAR_VARCHAR + "\n" +
+                "    CHARACTER SET utf8mb4\n" +
+                "    COLLATE utf8mb4_unicode_ci;";
     }
 }

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.compat.layers.attackcooldown;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -11,9 +12,13 @@ public interface PlayerAttackCooldownMethods {
      * @param player target player
      * @return the float value of the player's attack strength
      */
-    float getAttackStrength(Player player) throws InvocationTargetException, IllegalAccessException;
+    float getAttackStrength(@NotNull Player player) throws InvocationTargetException, IllegalAccessException;
 
-    float getCooldownValue(Player player) throws InvocationTargetException, IllegalAccessException;
+    float getCooldownValue(@NotNull Player player) throws InvocationTargetException, IllegalAccessException;
 
-    void resetAttackStrength(Player player) throws InvocationTargetException, IllegalAccessException;
+    void resetAttackStrength(@NotNull Player player) throws InvocationTargetException, IllegalAccessException;
+
+    int getCooldownFieldValue(@NotNull Player player) throws InvocationTargetException, IllegalAccessException;
+
+    void setCooldownFieldValue(@NotNull Player player, int fieldValue) throws InvocationTargetException, IllegalAccessException;
 }

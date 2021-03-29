@@ -2,6 +2,8 @@ package com.gmail.nossr50.locale;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.text.TextUtils;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 
 import java.io.IOException;
@@ -40,6 +42,23 @@ public final class LocaleLoader {
 
         String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
         return formatString(rawMessage, messageArguments);
+    }
+
+    //TODO: Remove this hacky crap with something better later
+    /**
+     * Gets the appropriate TextComponent representation of a formatted string from the Locale files.
+     *
+     * @param key The key to look up the string with
+     * @param messageArguments Any arguments to be added to the text component
+     * @return The properly formatted text component
+     */
+    public static TextComponent getTextComponent(String key, Object... messageArguments) {
+        if (bundle == null) {
+            initialize();
+        }
+
+        String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
+        return formatComponent(rawMessage, messageArguments);
     }
 
     /**
@@ -90,6 +109,16 @@ public final class LocaleLoader {
         return string;
     }
 
+    public static TextComponent formatComponent(String string, Object... messageArguments) {
+        if (messageArguments != null) {
+            MessageFormat formatter = new MessageFormat("");
+            formatter.applyPattern(string.replace("'", "''"));
+            string = formatter.format(messageArguments);
+        }
+
+        return TextUtils.colorizeText(string);
+    }
+
     public static Locale getCurrentLocale() {
         if (bundle == null) {
             initialize();
@@ -128,7 +157,7 @@ public final class LocaleLoader {
         }
     }
 
-    private static String addColors(String input) {
+    public static String addColors(String input) {
         input = input.replaceAll("\\Q[[BLACK]]\\E", ChatColor.BLACK.toString());
         input = input.replaceAll("\\Q[[DARK_BLUE]]\\E", ChatColor.DARK_BLUE.toString());
         input = input.replaceAll("\\Q[[DARK_GREEN]]\\E", ChatColor.DARK_GREEN.toString());

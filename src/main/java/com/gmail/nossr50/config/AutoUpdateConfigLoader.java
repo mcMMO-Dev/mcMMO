@@ -2,6 +2,7 @@ package com.gmail.nossr50.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.HashMap;
@@ -16,6 +17,19 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
     public AutoUpdateConfigLoader(String fileName) {
         super(fileName);
+    }
+
+    protected void saveConfig() {
+        try {
+            plugin.getLogger().info("Saving changes to config file - "+fileName);
+            config.save(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected @NotNull FileConfiguration getInternalConfig() {
+        return YamlConfiguration.loadConfiguration(plugin.getResourceAsReader(fileName));
     }
 
     @Override

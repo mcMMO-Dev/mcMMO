@@ -22,8 +22,8 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -144,21 +144,21 @@ public class Roll extends AcrobaticsSubSkill {
         componentBuilder.append("\n");*/
 
         //Acrobatics.SubSkill.Roll.Chance
-        componentBuilder.append(LocaleLoader.getString("Acrobatics.SubSkill.Roll.Chance", rollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : ""));
-        componentBuilder.append("\n");
-        componentBuilder.append(LocaleLoader.getString("Acrobatics.SubSkill.Roll.GraceChance", gracefulRollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", gracefulRollChanceLucky) : ""));
+        componentBuilder.append(Component.text(LocaleLoader.getString("Acrobatics.SubSkill.Roll.Chance", rollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : "")));
+        componentBuilder.append(Component.newline());
+        componentBuilder.append(Component.text(LocaleLoader.getString("Acrobatics.SubSkill.Roll.GraceChance", gracefulRollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", gracefulRollChanceLucky) : "")));
         //Activation Tips
-        componentBuilder.append("\n").append(LocaleLoader.getString("JSON.Hover.Tips")).append("\n");
-        componentBuilder.append(getTips());
-        componentBuilder.append("\n");
+        componentBuilder.append(Component.newline()).append(Component.text(LocaleLoader.getString("JSON.Hover.Tips"))).append(Component.newline());
+        componentBuilder.append(Component.text(getTips()));
+        componentBuilder.append(Component.newline());
         //Advanced
 
         //Lucky Notice
         if(isLucky)
         {
-            componentBuilder.append(LocaleLoader.getString("JSON.JWrapper.Perks.Header"));
-            componentBuilder.append("\n");
-            componentBuilder.append(LocaleLoader.getString("JSON.JWrapper.Perks.Lucky", "33"));
+            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.JWrapper.Perks.Header")));
+            componentBuilder.append(Component.newline());
+            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.JWrapper.Perks.Lucky", "33")));
         }
 
     }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -19,10 +20,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -98,7 +96,7 @@ public class BlockListener implements Listener {
                     int bonusCount = bonusDropMeta.asInt();
 
                     for (int i = 0; i < bonusCount; i++) {
-                        event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                        Misc.spawnItemNaturally(event.getBlockState().getLocation(), is, ItemSpawnReason.BONUS_DROPS);
                     }
                 }
             }
@@ -150,16 +148,20 @@ public class BlockListener implements Listener {
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
-        mcMMO.getPlaceStore().setTrue(movedBlock);
+        if (movedBlock.getY() >= Misc.getWorldMinCompat(movedBlock.getWorld())) // Very weird that the event is giving us these, they shouldn't exist
+            mcMMO.getPlaceStore().setTrue(movedBlock);
 
         for (Block block : event.getBlocks()) {
             movedBlock = block.getRelative(direction);
+            if (movedBlock.getY() < Misc.getWorldMinCompat(movedBlock.getWorld())) // Very weird that the event is giving us these, they shouldn't exist
+                continue;
             mcMMO.getPlaceStore().setTrue(movedBlock);
         }
     }
 
     /**
      * Monitor blocks formed by entities (snowmen)
+     * Does not seem to monitor stuff like a falling block creating a new block
      *
      * @param event The event to watch
      */
@@ -178,6 +180,9 @@ public class BlockListener implements Listener {
         }
     }
 
+    /*
+     * Does not monitor stuff like a falling block replacing a liquid
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFormEvent(BlockFormEvent event)
     {
@@ -185,12 +190,12 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if(ExperienceConfig.getInstance().preventStoneLavaFarming())
-        {
-            if(event.getNewState().getType() != Material.OBSIDIAN
-                    && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
-            {
-                mcMMO.getPlaceStore().setTrue(event.getNewState());
+        BlockState newState = event.getNewState();
+
+        if(ExperienceConfig.getInstance().preventStoneLavaFarming()) {
+            if(newState.getType() != Material.OBSIDIAN
+                    && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, newState.getBlockData())) {
+                mcMMO.getPlaceStore().setTrue(newState);
             }
         }
     }
@@ -246,33 +251,23 @@ public class BlockListener implements Listener {
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
             mcMMO.getPlaceStore().setTrue(blockState);
         }
-
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockGrow(BlockGrowEvent event)
     {
+        Block block = event.getBlock();
+        World world = block.getWorld();
+
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(world))
             return;
 
-        BlockState blockState = event.getBlock().getState();
+        // Minecraft is dumb, the events still throw when a plant "grows" higher than the max block height.  Even though no new block is created
+        if (block.getY() >= world.getMaxHeight())
+            return;
 
-//        if (!BlockUtils.shouldBeWatched(blockState)) {
-//            return;
-//        }
-
-        mcMMO.getPlaceStore().setFalse(blockState);
+        mcMMO.getPlaceStore().setFalse(block);
     }
 
     /**
@@ -356,13 +351,17 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.hasWoodcuttingXP(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);
             }
             else {
-                woodcuttingManager.woodcuttingBlockCheck(blockState);
+                //Check for XP
+                woodcuttingManager.processWoodcuttingBlockXP(blockState);
+
+                //Check for bonus drops
+                woodcuttingManager.processHarvestLumber(blockState);
             }
         }
 
@@ -491,7 +490,7 @@ public class BlockListener implements Listener {
             if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && ItemUtils.isHoe(heldItem) && (BlockUtils.affectedByGreenTerra(blockState) || BlockUtils.canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.HERBALISM);
             }
-            else if (mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && ItemUtils.isAxe(heldItem) && BlockUtils.isLog(blockState) && Permissions.treeFeller(player)) {
+            else if (mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && ItemUtils.isAxe(heldItem) && BlockUtils.hasWoodcuttingXP(blockState) && Permissions.treeFeller(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.WOODCUTTING);
             }
             else if (mcMMOPlayer.getToolPreparationMode(ToolType.PICKAXE) && ItemUtils.isPickaxe(heldItem) && BlockUtils.affectedBySuperBreaker(blockState) && Permissions.superBreaker(player)) {
@@ -525,7 +524,7 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
+        if (mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.hasWoodcuttingXP(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
             SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
         }
     }
@@ -596,7 +595,7 @@ public class BlockListener implements Listener {
                 }
             }
         }
-        else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isLeaves(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
+        else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isNonWoodPartOfTree(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
             event.setInstaBreak(true);
             SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
         }

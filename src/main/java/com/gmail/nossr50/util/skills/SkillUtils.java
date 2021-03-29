@@ -14,10 +14,10 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +35,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
-public class SkillUtils {
+public final class SkillUtils {
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private SkillUtils() {}
 
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
@@ -217,10 +222,8 @@ public class SkillUtils {
         if(compatLayer.isLegacyAbilityTool(itemStack)) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            //TODO: can be optimized
-            if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
-                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-            }
+            // This is safe to call without prior checks.
+            itemMeta.removeEnchant(Enchantment.DIG_SPEED);
 
             itemStack.setItemMeta(itemMeta);
             ItemUtils.removeAbilityLore(itemStack);
@@ -264,7 +267,8 @@ public class SkillUtils {
         return false;
     }
 
-    protected static Material getRepairAndSalvageItem(ItemStack inHand) {
+    @Nullable
+    public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }

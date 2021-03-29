@@ -5,9 +5,9 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 

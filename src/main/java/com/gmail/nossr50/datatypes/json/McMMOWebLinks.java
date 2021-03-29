@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.json;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 
 public enum McMMOWebLinks {
     WEBSITE,

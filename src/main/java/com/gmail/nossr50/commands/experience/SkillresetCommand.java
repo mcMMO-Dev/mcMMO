@@ -50,7 +50,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = PrimarySkillType.getSkill(args[1]);
+                    skill = PrimarySkillType.getSkill(args[0]);
                 }
 
                 editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill);
@@ -80,13 +80,19 @@ public class SkillresetCommand implements TabExecutor {
                 if (mcMMOPlayer == null) {
                     UUID uuid = null;
                     OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
-                    if (player != null) {
-                        uuid = player.getUniqueId();
-                    }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    uuid = player.getUniqueId();
 
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, playerName);
+
+                    //Check loading by UUID
                     if (CommandUtils.unloadedProfile(sender, profile)) {
-                        return true;
+                        //Didn't find it by UUID so try to find it by name
+                        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
+
+                        //Check if it was present in DB
+                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                            return true;
+                        }
                     }
 
                     editValues(null, profile, skill);

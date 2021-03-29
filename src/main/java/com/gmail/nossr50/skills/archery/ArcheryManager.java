@@ -50,15 +50,18 @@ public class ArcheryManager extends SkillManager {
      * Calculate bonus XP awarded for Archery when hitting a far-away target.
      *
      * @param target The {@link LivingEntity} damaged by the arrow
-     * @param damager The {@link Entity} who shot the arrow
+     * @param arrow The {@link Entity} who shot the arrow
      */
-    public double distanceXpBonusMultiplier(LivingEntity target, Entity damager) {
+    public double distanceXpBonusMultiplier(LivingEntity target, Entity arrow) {
         //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
-        if(!damager.hasMetadata(mcMMO.arrowDistanceKey))
-            return damager.getLocation().distance(target.getLocation());
+        if(!arrow.hasMetadata(mcMMO.arrowDistanceKey))
+            return 1;
 
-        Location firedLocation = (Location) damager.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
+        Location firedLocation = (Location) arrow.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
         Location targetLocation = target.getLocation();
+
+        if(firedLocation == null || firedLocation.getWorld() == null)
+            return 1;
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {
             return 1;
@@ -100,7 +103,7 @@ public class ArcheryManager extends SkillManager {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");
         }
 
-        if (mcMMOPlayer.useChatNotifications()) {
+        if (mmoPlayer.useChatNotifications()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 

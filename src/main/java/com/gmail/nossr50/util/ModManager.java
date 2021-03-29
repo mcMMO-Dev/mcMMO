@@ -136,10 +136,6 @@ public class ModManager {
         return Config.getInstance().getBlockModsEnabled() && customLogs.contains(state.getType());
     }
 
-    public boolean isCustomLeaf(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLeaves.contains(state.getType());
-    }
-
     public boolean isCustomAbilityBlock(BlockState state) {
         return Config.getInstance().getBlockModsEnabled() && customAbilityBlocks.contains(state.getType());
     }

@@ -1,21 +1,18 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.fishing.Fishing;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.text.StringUtils;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -26,15 +23,13 @@ public class FishingCommand extends SkillCommand {
     private String shakeChance;
     private String shakeChanceLucky;
     private int fishermansDietRank;
-    private String biteChance;
 
-    private String trapTreasure;
     private String commonTreasure;
     private String uncommonTreasure;
     private String rareTreasure;
     private String epicTreasure;
     private String legendaryTreasure;
-    private String recordTreasure;
+    private String mythicTreasure;
 
     private String magicChance;
 
@@ -44,6 +39,8 @@ public class FishingCommand extends SkillCommand {
     private boolean canFishermansDiet;
     private boolean canMasterAngler;
     private boolean canIceFish;
+
+    private String maMinWaitTime, maMaxWaitTime;
 
     public FishingCommand() {
         super(PrimarySkillType.FISHING);
@@ -58,19 +55,19 @@ public class FishingCommand extends SkillCommand {
             lootTier = fishingManager.getLootTier();
 
             // Item drop rates
-            commonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON) / 100.0);
-            uncommonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON) / 100.0);
-            rareTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);
-            epicTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.EPIC) / 100.0);
-            legendaryTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.LEGENDARY) / 100.0);
-            recordTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RECORD) / 100.0);
+            commonTreasure = percent.format(FishingTreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON) / 100.0);
+            uncommonTreasure = percent.format(FishingTreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON) / 100.0);
+            rareTreasure = percent.format(FishingTreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);
+            epicTreasure = percent.format(FishingTreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.EPIC) / 100.0);
+            legendaryTreasure = percent.format(FishingTreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.LEGENDARY) / 100.0);
+            mythicTreasure = percent.format(FishingTreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.MYTHIC) / 100.0);
 
             // Magic hunter drop rates
             double totalEnchantChance = 0;
 
             for (Rarity rarity : Rarity.values()) {
-                if (rarity != Rarity.RECORD) {
-                    totalEnchantChance += TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
+                if (rarity != Rarity.MYTHIC) {
+                    totalEnchantChance += FishingTreasureConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
                 }
             }
 
@@ -94,25 +91,8 @@ public class FishingCommand extends SkillCommand {
 
         // MASTER ANGLER
         if (canMasterAngler) {
-            double rawBiteChance = 1.0 / (player.getWorld().hasStorm() ? 300 : 500);
-
-            Location location = fishingManager.getHookLocation();
-
-            if (location == null) {
-                location = player.getLocation();
-            }
-
-            if (Fishing.masterAnglerBiomes.contains(location.getBlock().getBiome())) {
-                rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
-            }
-
-            if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
-                rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
-            }
-
-            double luckyModifier = Permissions.lucky(player, PrimarySkillType.FISHING) ? 1.333D : 1.0D;
-
-            biteChance = percent.format((rawBiteChance * 100.0D) * luckyModifier);
+            maMinWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMinWaitReduction(RankUtils.getRank(player, SubSkillType.FISHING_MASTER_ANGLER), false));
+            maMaxWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMaxWaitReduction(RankUtils.getRank(player, SubSkillType.FISHING_MASTER_ANGLER), false, 0));
         }
     }
 
@@ -122,7 +102,7 @@ public class FishingCommand extends SkillCommand {
         canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
         canShake = canUseSubskill(player, SubSkillType.FISHING_SHAKE);
         canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
-        canMasterAngler = canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
+        canMasterAngler = mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
         canIceFish = canUseSubskill(player, SubSkillType.FISHING_ICE_FISHING);
     }
 
@@ -143,8 +123,13 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMasterAngler) {
-            //TODO: Update this with more details
-            messages.add(getStatMessage(false, true, SubSkillType.FISHING_MASTER_ANGLER, biteChance));
+            messages.add(getStatMessage(false,true,
+                    SubSkillType.FISHING_MASTER_ANGLER,
+                    maMinWaitTime));
+
+            messages.add(getStatMessage(true,true,
+                    SubSkillType.FISHING_MASTER_ANGLER,
+                    maMaxWaitTime));
         }
         
         if (canShake) {
@@ -160,7 +145,7 @@ public class FishingCommand extends SkillCommand {
                     String.valueOf(rareTreasure),
                     String.valueOf(epicTreasure),
                     String.valueOf(legendaryTreasure),
-                    String.valueOf(recordTreasure)));
+                    String.valueOf(mythicTreasure)));
         }
 
         return messages;

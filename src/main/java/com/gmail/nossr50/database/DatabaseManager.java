@@ -1,10 +1,14 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -52,13 +56,14 @@ public interface DatabaseManager {
 
     /**
     * Retrieve leaderboard info.
+     * Will never be null but it may be empty
     *
     * @param skill The skill to retrieve info on
     * @param pageNumber Which page in the leaderboards to retrieve
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
     */
-    List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage);
+    @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException;
 
     /**
      * Retrieve rank info into a HashMap from PrimarySkillType to the rank.
@@ -79,19 +84,16 @@ public interface DatabaseManager {
      */
     void newUser(String playerName, UUID uuid);
 
+    @NotNull PlayerProfile newUser(@NotNull Player player);
+
     /**
      * Load a player from the database.
      *
-     * @deprecated replaced by {@link #loadPlayerProfile(String playerName, UUID uuid, boolean createNew)}
-     *
      * @param playerName The name of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
      * @return The player's data, or an unloaded PlayerProfile if not found
      *          and createNew is false
      */
-    @Deprecated
-    PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
+    @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName);
 
     /**
      * Load a player from the database.
@@ -99,19 +101,7 @@ public interface DatabaseManager {
      * @param uuid The uuid of the player to load from the database
      * @return The player's data, or an unloaded PlayerProfile if not found
      */
-    PlayerProfile loadPlayerProfile(UUID uuid);
-
-    /**
-     * Load a player from the database. Attempt to use uuid, fall back on playername
-     *
-     * @param playerName The name of the player to load from the database
-     * @param uuid The uuid of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
-     * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
-     */
-    PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean createNew);
+    @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName);
 
     /**
      * Get all users currently stored in the database.

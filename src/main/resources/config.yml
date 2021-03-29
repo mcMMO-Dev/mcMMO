@@ -8,6 +8,41 @@
 #  Settings for mcMMO in general
 ###
 General:
+    # When players reach certain level milestones messages will be broadcast
+    Level_Up_Chat_Broadcasts:
+        # Whether or not level up broadcasts are enabled
+        Enabled: true
+        # Whether or not you want power level milestones to be broadcast
+        Broadcast_Powerlevels:
+            Enabled: true
+            # How often to broadcast, you can change this to 1 to always broadcast a level up event, a setting of 100 will limit it to every 100 levels (for example level 100, level 200, etc)
+            Milestone_Interval: 100
+            Broadcast_Targets:
+                # Send the message to the console as well
+                Send_To_Console: true
+                # Whether or not to only send chat messages to party members
+                Only_Party_Members: false
+                # Whether or not players who recieve a level up broadcast have to be on the same world as the one who leveled up
+                Only_Same_World: false
+                # Distance restrictions
+                Distance_Restrictions:
+                    Restrict_Distance: false
+                    # When using Restrict_Distance the blow setting configures the range of the broadcast
+                    Restricted_Radius: 100
+        # How often to broadcast, you can change this to 1 to always broadcast a level up event, a setting of 100 will limit it to every 100 levels (for example level 100, level 200, etc)
+        Milestone_Interval: 100
+        Broadcast_Targets:
+            # Send the message to the console as well
+            Send_To_Console: true
+            # Whether or not to only send chat messages to party members
+            Only_Party_Members: false
+            # Whether or not players who recieve a level up broadcast have to be on the same world as the one who leveled up
+            Only_Same_World: false
+            # Distance restrictions
+            Distance_Restrictions:
+                Restrict_Distance: false
+                # When using Restrict_Distance the blow setting configures the range of the broadcast
+                Restricted_Radius: 100
         # Turning this on will scale mcMMO around 1-1000 with default scaling factor
         # Everything in your config related to skill level requirements, skill level bonuses, etc will be multiplied by 10 when this mode is on
         # This change is purely cosmetic, it retains the old feel of mcMMO where you could level up thousands of times
@@ -303,7 +338,7 @@ Abilities:
         Super_Breaker: 0
         Tree_Feller: 0
     Limits:
-        Tree_Feller_Threshold: 500
+        Tree_Feller_Threshold: 1000
     Tools:
         # Use more tool durability while using abilities. Set Durability_Loss to 0 to disable the extra durability damage.
         Durability_Loss: 1
@@ -416,11 +451,20 @@ Skills:
         Tree_Feller_Sounds: true
         Level_Cap: 0
 
+# Disable or Enable the Green Thumb auto replant feature for specific crops, use the name of the block not the crop itemstack
+Green_Thumb_Replanting_Crops:
+    Carrots: true
+    Wheat: true
+    Nether_Wart: true
+    Potatoes: true
+    Beetroots: true
+    Cocoa: true
 #
 #  Settings for Double Drops
 ###
 Bonus_Drops:
     Herbalism:
+        Sweet_Berry_Bush: true
         Weeping_Vines: true
         Twisting_Vines: true
         Shroomlight: true
@@ -575,13 +619,6 @@ Commands:
         # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
         # to teleport to, from, or within any given world.
         World_Based_Permissions: false
-    partychat:
-        Chat_Prefix_Format: '[[GREEN]]([[WHITE]]{0}[[GREEN]])'
-        Use_Display_Names: true
-        Chat_Prefix_Format_Ally: '[[GREEN]](A)[[RESET]]'
-    adminchat:
-        Chat_Prefix_Format: '[[AQUA]][[[WHITE]]{0}[[AQUA]]]'
-        Use_Display_Names: true
 
 #
 #  Settings for particles

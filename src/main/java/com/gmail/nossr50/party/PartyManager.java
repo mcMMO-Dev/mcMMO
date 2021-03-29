@@ -1,15 +1,13 @@
 package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyLeader;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
@@ -586,10 +584,10 @@ public final class PartyManager {
             return;
         }
 
-        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
-            loadAndUpgradeParties();
-            return;
-        }
+//        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
+//            loadAndUpgradeParties();
+//            return;
+//        }
 
         try {
             YamlConfiguration partiesFile;
@@ -644,6 +642,8 @@ public final class PartyManager {
      * Save party file.
      */
     public static void saveParties() {
+        mcMMO.p.debug("[Party Data] Saving...");
+
         if (partyFile.exists()) {
             if (!partyFile.delete()) {
                 mcMMO.p.getLogger().warning("Could not delete party file. Party saving failed!");
@@ -653,7 +653,6 @@ public final class PartyManager {
 
         YamlConfiguration partiesFile = new YamlConfiguration();
 
-        mcMMO.p.debug("Saving Parties... (" + parties.size() + ")");
         for (Party party : parties) {
             String partyName = party.getName();
             PartyLeader leader = party.getLeader();
@@ -693,72 +692,72 @@ public final class PartyManager {
         }
     }
 
-    private static void loadAndUpgradeParties() {
-        YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
-
-        if (!partyFile.renameTo(new File(mcMMO.getFlatFileDirectory() + "parties.yml.converted"))) {
-            mcMMO.p.getLogger().severe("Could not rename parties.yml to parties.yml.converted!");
-            return;
-        }
-
-        ArrayList<Party> hasAlly = new ArrayList<>();
-
-        for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
-            Party party = new Party(partyName);
-
-            String leaderName = partiesFile.getString(partyName + ".Leader");
-            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(leaderName, false);
-
-            if (!profile.isLoaded()) {
-                mcMMO.p.getLogger().warning("Could not find UUID in database for party leader " + leaderName + " in party " + partyName);
-                continue;
-            }
-
-            UUID leaderUniqueId = profile.getUniqueId();
-
-            party.setLeader(new PartyLeader(leaderUniqueId, leaderName));
-            party.setPassword(partiesFile.getString(partyName + ".Password"));
-            party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
-            party.setLevel(partiesFile.getInt(partyName + ".Level"));
-            party.setXp(partiesFile.getInt(partyName + ".Xp"));
-
-            if (partiesFile.getString(partyName + ".Ally") != null) {
-                hasAlly.add(party);
-            }
-
-            party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
-            party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
-
-            for (ItemShareType itemShareType : ItemShareType.values()) {
-                party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
-            }
-
-            LinkedHashMap<UUID, String> members = party.getMembers();
-
-            for (String memberName : partiesFile.getStringList(partyName + ".Members")) {
-                PlayerProfile memberProfile = mcMMO.getDatabaseManager().loadPlayerProfile(memberName, false);
-
-                if (!memberProfile.isLoaded()) {
-                    mcMMO.p.getLogger().warning("Could not find UUID in database for party member " + memberName + " in party " + partyName);
-                    continue;
-                }
-
-                UUID memberUniqueId = memberProfile.getUniqueId();
-
-                members.put(memberUniqueId, memberName);
-            }
-
-            parties.add(party);
-        }
-
-        mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
-
-        for (Party party : hasAlly) {
-            party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
-        }
-
-        mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS_PARTY);
-    }
+//    private static void loadAndUpgradeParties() {
+//        YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
+//
+//        if (!partyFile.renameTo(new File(mcMMO.getFlatFileDirectory() + "parties.yml.converted"))) {
+//            mcMMO.p.getLogger().severe("Could not rename parties.yml to parties.yml.converted!");
+//            return;
+//        }
+//
+//        ArrayList<Party> hasAlly = new ArrayList<>();
+//
+//        for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
+//            Party party = new Party(partyName);
+//
+//            String leaderName = partiesFile.getString(partyName + ".Leader");
+//            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(leaderName, false);
+//
+//            if (!profile.isLoaded()) {
+//                mcMMO.p.getLogger().warning("Could not find UUID in database for party leader " + leaderName + " in party " + partyName);
+//                continue;
+//            }
+//
+//            UUID leaderUniqueId = profile.getUniqueId();
+//
+//            party.setLeader(new PartyLeader(leaderUniqueId, leaderName));
+//            party.setPassword(partiesFile.getString(partyName + ".Password"));
+//            party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+//            party.setLevel(partiesFile.getInt(partyName + ".Level"));
+//            party.setXp(partiesFile.getInt(partyName + ".Xp"));
+//
+//            if (partiesFile.getString(partyName + ".Ally") != null) {
+//                hasAlly.add(party);
+//            }
+//
+//            party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
+//            party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
+//
+//            for (ItemShareType itemShareType : ItemShareType.values()) {
+//                party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
+//            }
+//
+//            LinkedHashMap<UUID, String> members = party.getMembers();
+//
+//            for (String memberName : partiesFile.getStringList(partyName + ".Members")) {
+//                PlayerProfile memberProfile = mcMMO.getDatabaseManager().loadPlayerProfile(memberName, false);
+//
+//                if (!memberProfile.isLoaded()) {
+//                    mcMMO.p.getLogger().warning("Could not find UUID in database for party member " + memberName + " in party " + partyName);
+//                    continue;
+//                }
+//
+//                UUID memberUniqueId = memberProfile.getUniqueId();
+//
+//                members.put(memberUniqueId, memberName);
+//            }
+//
+//            parties.add(party);
+//        }
+//
+//        mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+//
+//        for (Party party : hasAlly) {
+//            party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
+//        }
+//
+//        mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS_PARTY);
+//    }
 
     /**
      * Handle party change event.
@@ -799,7 +798,7 @@ public final class PartyManager {
      */
     public static void processPartyLeaving(McMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.removeParty();
-        mcMMOPlayer.disableChat(ChatMode.PARTY);
+        mcMMOPlayer.setChatMode(ChatChannel.NONE);
         mcMMOPlayer.setItemShareModifier(10);
     }
 

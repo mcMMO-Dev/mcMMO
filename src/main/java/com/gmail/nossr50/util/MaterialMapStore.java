@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,46 +16,49 @@ import java.util.Locale;
  */
 public class MaterialMapStore {
 
-    private final HashSet<String> abilityBlackList;
-    private final HashSet<String> toolBlackList;
-    private final HashSet<String> mossyWhiteList;
-    private final HashSet<String> leavesWhiteList;
-    private final HashSet<String> herbalismAbilityBlackList;
-    private final HashSet<String> blockCrackerWhiteList;
-    private final HashSet<String> canMakeShroomyWhiteList;
-    private final HashSet<String> multiBlockPlant;
-    private final HashSet<String> foodItemWhiteList;
-    private final HashSet<String> glassBlocks;
+    private final @NotNull HashSet<String> abilityBlackList;
+    private final @NotNull HashSet<String> toolBlackList;
+    private final @NotNull HashSet<String> mossyWhiteList;
+    private final @NotNull HashSet<String> treeFellerDestructibleWhiteList;
+    private final @NotNull HashSet<String> herbalismAbilityBlackList;
+    private final @NotNull HashSet<String> blockCrackerWhiteList;
+    private final @NotNull HashSet<String> canMakeShroomyWhiteList;
+    private final @NotNull HashSet<String> multiBlockPlant;
+    private final @NotNull HashSet<String> foodItemWhiteList;
+    private final @NotNull HashSet<String> glassBlocks;
 
-    private final HashSet<String> netheriteArmor;
-    private final HashSet<String> netheriteTools;
-    private final HashSet<String> woodTools;
-    private final HashSet<String> stoneTools;
-    private final HashSet<String> leatherArmor;
-    private final HashSet<String> ironArmor;
-    private final HashSet<String> ironTools;
-    private final HashSet<String> stringTools;
-    private final HashSet<String> goldArmor;
-    private final HashSet<String> goldTools;
-    private final HashSet<String> chainmailArmor;
-    private final HashSet<String> diamondArmor;
-    private final HashSet<String> diamondTools;
-    private final HashSet<String> armors;
+    private final @NotNull HashSet<String> netheriteArmor;
+    private final @NotNull HashSet<String> netheriteTools;
+    private final @NotNull HashSet<String> woodTools;
+    private final @NotNull HashSet<String> stoneTools;
+    private final @NotNull HashSet<String> leatherArmor;
+    private final @NotNull HashSet<String> ironArmor;
+    private final @NotNull HashSet<String> ironTools;
+    private final @NotNull HashSet<String> stringTools;
+    private final @NotNull HashSet<String> goldArmor;
+    private final @NotNull HashSet<String> goldTools;
+    private final @NotNull HashSet<String> chainmailArmor;
+    private final @NotNull HashSet<String> diamondArmor;
+    private final @NotNull HashSet<String> diamondTools;
+    private final @NotNull HashSet<String> armors;
 
-    private final HashSet<String> swords;
-    private final HashSet<String> axes;
-    private final HashSet<String> hoes;
-    private final HashSet<String> shovels;
-    private final HashSet<String> pickAxes;
-    private final HashSet<String> tridents;
-    private final HashSet<String> bows;
-    private final HashSet<String> tools;
+    private final @NotNull HashSet<String> swords;
+    private final @NotNull HashSet<String> axes;
+    private final @NotNull HashSet<String> hoes;
+    private final @NotNull HashSet<String> shovels;
+    private final @NotNull HashSet<String> pickAxes;
+    private final @NotNull HashSet<String> tridents;
+    private final @NotNull HashSet<String> bows;
+    private final @NotNull HashSet<String> crossbows;
+    private final @NotNull HashSet<String> tools;
 
-    private final HashSet<String> enchantables;
+    private final @NotNull HashSet<String> enchantables;
 
-    private final HashSet<String> ores;
+    private final @NotNull HashSet<String> ores;
+    private final @NotNull HashSet<String> intendedToolPickAxe;
+    private final @NotNull HashSet<String> intendedToolShovel;
 
-    private final HashMap<String, Integer> tierValue;
+    private final @NotNull HashMap<String, Integer> tierValue;
 
 
     public MaterialMapStore()
@@ -62,7 +66,7 @@ public class MaterialMapStore {
         abilityBlackList = new HashSet<>();
         toolBlackList = new HashSet<>();
         mossyWhiteList = new HashSet<>();
-        leavesWhiteList = new HashSet<>();
+        treeFellerDestructibleWhiteList = new HashSet<>();
         herbalismAbilityBlackList = new HashSet<>();
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
@@ -85,6 +89,7 @@ public class MaterialMapStore {
         diamondTools = new HashSet<>();
         netheriteTools = new HashSet<>();
         bows = new HashSet<>();
+        crossbows = new HashSet<>();
         stringTools = new HashSet<>();
         tools = new HashSet<>();
 
@@ -98,58 +103,20 @@ public class MaterialMapStore {
         enchantables = new HashSet<>();
 
         ores = new HashSet<>();
+        intendedToolPickAxe = new HashSet<>();
+        intendedToolShovel = new HashSet<>();
 
         tierValue = new HashMap<>();
 
         fillVanillaMaterialRegisters();
     }
 
-    public boolean isMultiBlockPlant(Material material)
-    {
-        return multiBlockPlant.contains(material.getKey().getKey());
-    }
-
-    public boolean isAbilityActivationBlackListed(Material material)
-    {
-        return abilityBlackList.contains(material.getKey().getKey());
-    }
-
-    public boolean isToolActivationBlackListed(Material material)
-    {
-        return toolBlackList.contains(material.getKey().getKey());
-    }
-
-    public boolean isMossyWhiteListed(Material material)
-    {
-        return mossyWhiteList.contains(material.getKey().getKey());
-    }
-
-    public boolean isLeavesWhiteListed(Material material)
-    {
-        return leavesWhiteList.contains(material.getKey().getKey());
-    }
-
-    public boolean isHerbalismAbilityWhiteListed(Material material)
-    {
-        return herbalismAbilityBlackList.contains(material.getKey().getKey());
-    }
-
-    public boolean isBlockCrackerWhiteListed(Material material)
-    {
-        return blockCrackerWhiteList.contains(material.getKey().getKey());
-    }
-
-    public boolean isShroomyWhiteListed(Material material)
-    {
-        return canMakeShroomyWhiteList.contains(material.getKey().getKey());
-    }
-
-    private void fillVanillaMaterialRegisters()
-    {
+    private void fillVanillaMaterialRegisters() {
+        //The order matters
         fillAbilityBlackList();
         fillToolBlackList();
         fillMossyWhiteList();
-        fillLeavesWhiteList();
+        fillTreeFellerDestructibleWhiteList();
         fillHerbalismAbilityBlackList();
         fillBlockCrackerWhiteList();
         fillShroomyWhiteList();
@@ -160,8 +127,49 @@ public class MaterialMapStore {
         fillTools();
         fillEnchantables();
         fillOres();
+        fillIntendedTools();
 
         fillTierMap();
+    }
+
+    public boolean isMultiBlockPlant(@NotNull Material material)
+    {
+        return multiBlockPlant.contains(material.getKey().getKey());
+    }
+
+    public boolean isAbilityActivationBlackListed(@NotNull Material material)
+    {
+        return abilityBlackList.contains(material.getKey().getKey());
+    }
+
+    public boolean isToolActivationBlackListed(@NotNull Material material)
+    {
+        return toolBlackList.contains(material.getKey().getKey());
+    }
+
+    public boolean isMossyWhiteListed(@NotNull Material material)
+    {
+        return mossyWhiteList.contains(material.getKey().getKey());
+    }
+
+    public boolean isTreeFellerDestructible(@NotNull Material material)
+    {
+        return treeFellerDestructibleWhiteList.contains(material.getKey().getKey());
+    }
+
+    public boolean isHerbalismAbilityWhiteListed(@NotNull Material material)
+    {
+        return herbalismAbilityBlackList.contains(material.getKey().getKey());
+    }
+
+    public boolean isBlockCrackerWhiteListed(@NotNull Material material)
+    {
+        return blockCrackerWhiteList.contains(material.getKey().getKey());
+    }
+
+    public boolean isShroomyWhiteListed(@NotNull Material material)
+    {
+        return canMakeShroomyWhiteList.contains(material.getKey().getKey());
     }
 
     private void fillTierMap() {
@@ -203,6 +211,190 @@ public class MaterialMapStore {
         ores.add("ancient_debris");
         ores.add("nether_gold_ore");
         ores.add("gilded_blackstone");
+    }
+
+    private void fillIntendedTools() {
+        intendedToolPickAxe.addAll(ores);
+
+        intendedToolPickAxe.add("ice");
+        intendedToolPickAxe.add("packed_ice");
+        intendedToolPickAxe.add("blue_ice");
+        intendedToolPickAxe.add("frosted_ice");
+        intendedToolPickAxe.add("anvil");
+        intendedToolPickAxe.add("bell");
+        intendedToolPickAxe.add("block_of_redstone");
+        intendedToolPickAxe.add("brewing_stand");
+        intendedToolPickAxe.add("cauldron");
+        intendedToolPickAxe.add("chain");
+        intendedToolPickAxe.add("hopper");
+        intendedToolPickAxe.add("iron_bars");
+        intendedToolPickAxe.add("iron_door");
+        intendedToolPickAxe.add("iron_trapdoor");
+        intendedToolPickAxe.add("lantern");
+        intendedToolPickAxe.add("weighted_pressure_plates");
+        intendedToolPickAxe.add("block_of_iron");
+        intendedToolPickAxe.add("copper_blocks");
+        intendedToolPickAxe.add("cut_copper");
+        intendedToolPickAxe.add("cut_copper_slab");
+        intendedToolPickAxe.add("cut_copper_stairs");
+        intendedToolPickAxe.add("lapis_lazuli_block");
+        intendedToolPickAxe.add("lightning_rod");
+        intendedToolPickAxe.add("block_of_diamond");
+        intendedToolPickAxe.add("block_of_emerald");
+        intendedToolPickAxe.add("block_of_gold");
+        intendedToolPickAxe.add("block_of_netherite");
+        intendedToolPickAxe.add("piston");
+        intendedToolPickAxe.add("sticky_piston");
+        intendedToolPickAxe.add("conduit");
+        intendedToolPickAxe.add("shulker_box");
+        intendedToolPickAxe.add("element_constructor"); //be & ee
+        intendedToolPickAxe.add("compound_creator"); //be & ee
+        intendedToolPickAxe.add("material_reducer"); //be & ee
+        intendedToolPickAxe.add("activator_rail");
+        intendedToolPickAxe.add("detector_rail");
+        intendedToolPickAxe.add("powered_rail");
+        intendedToolPickAxe.add("rail");
+        intendedToolPickAxe.add("andesite");
+        intendedToolPickAxe.add("basalt");
+        intendedToolPickAxe.add("blackstone");
+        intendedToolPickAxe.add("blast_furnace");
+        intendedToolPickAxe.add("block_of_coal");
+        intendedToolPickAxe.add("block_of_quartz");
+        intendedToolPickAxe.add("bricks");
+        intendedToolPickAxe.add("cobblestone");
+        intendedToolPickAxe.add("cobblestone_wall");
+        intendedToolPickAxe.add("concrete");
+        intendedToolPickAxe.add("dark_prismarine");
+        intendedToolPickAxe.add("diorite");
+        intendedToolPickAxe.add("dispenser");
+        intendedToolPickAxe.add("dripstone_block");
+        intendedToolPickAxe.add("dropper");
+        intendedToolPickAxe.add("enchantment_table");
+        intendedToolPickAxe.add("end_stone");
+        intendedToolPickAxe.add("ender_chest");
+        intendedToolPickAxe.add("furnace");
+        intendedToolPickAxe.add("glazed_terracotta");
+        intendedToolPickAxe.add("granite");
+        intendedToolPickAxe.add("grindstone");
+        intendedToolPickAxe.add("heat_block"); //be & ee
+        intendedToolPickAxe.add("lodestone");
+        intendedToolPickAxe.add("mossy_cobblestone");
+        intendedToolPickAxe.add("nether_bricks");
+        intendedToolPickAxe.add("nether_brick_fence");
+        intendedToolPickAxe.add("nether_gold_ore");
+        intendedToolPickAxe.add("nether_quartz_ore");
+        intendedToolPickAxe.add("netherrack");
+        intendedToolPickAxe.add("observer");
+        intendedToolPickAxe.add("prismarine");
+        intendedToolPickAxe.add("prismarine_bricks");
+        intendedToolPickAxe.add("pointed_dripstone");
+        intendedToolPickAxe.add("polished_andesite");
+        intendedToolPickAxe.add("polished_blackstone");
+        intendedToolPickAxe.add("polished_blackstone_bricks");
+        intendedToolPickAxe.add("polished_diorite");
+        intendedToolPickAxe.add("polished_granite");
+        intendedToolPickAxe.add("red_sandstone");
+        intendedToolPickAxe.add("sandstone");
+        intendedToolPickAxe.add("smoker");
+        intendedToolPickAxe.add("spawner");
+        intendedToolPickAxe.add("stonecutter");
+//        intendedToolPickAxe.add("slabs");
+        intendedToolPickAxe.add("colored_terracotta");
+//        intendedToolPickAxe.add("stairs");
+        intendedToolPickAxe.add("smooth_stone");
+        intendedToolPickAxe.add("stone");
+        intendedToolPickAxe.add("stone_bricks");
+        intendedToolPickAxe.add("stone_button");
+        intendedToolPickAxe.add("stone_pressure_plate");
+        intendedToolPickAxe.add("terracotta");
+        intendedToolPickAxe.add("amethyst_bud");
+        intendedToolPickAxe.add("amethyst_cluster");
+        intendedToolPickAxe.add("block_of_amethyst");
+        intendedToolPickAxe.add("budding_amethyst");
+        intendedToolPickAxe.add("ancient_debris");
+        intendedToolPickAxe.add("crying_obsidian");
+        intendedToolPickAxe.add("glowing_obsidian"); //be
+        intendedToolPickAxe.add("obsidian");
+        intendedToolPickAxe.add("respawn_anchor");
+
+        //slabs
+        intendedToolPickAxe.add("petrified_oak_slab");
+        intendedToolPickAxe.add("stone_slab");
+        intendedToolPickAxe.add("smooth_stone_slab");
+        intendedToolPickAxe.add("cobblestone_slab");
+        intendedToolPickAxe.add("mossy_cobblestone_slab");
+        intendedToolPickAxe.add("stone_brick_slab");
+        intendedToolPickAxe.add("mossy_stone_brick_slab");
+        intendedToolPickAxe.add("andesite_slab");
+        intendedToolPickAxe.add("polished_andesite_slab");
+        intendedToolPickAxe.add("diorite_slab");
+        intendedToolPickAxe.add("polished_diorite_slab");
+        intendedToolPickAxe.add("granite_slab");
+        intendedToolPickAxe.add("polished_granite_slab");
+        intendedToolPickAxe.add("sandstone_slab");
+        intendedToolPickAxe.add("cut_sandstone_slab");
+        intendedToolPickAxe.add("smooth_sandstone_slab");
+        intendedToolPickAxe.add("red_sandstone_slab");
+        intendedToolPickAxe.add("cut_red_sandstone_slab");
+        intendedToolPickAxe.add("smooth_red_sandstone_slab");
+        intendedToolPickAxe.add("brick_slab");
+        intendedToolPickAxe.add("prismarine_brick_slab");
+        intendedToolPickAxe.add("dark_prismarine_slab");
+        intendedToolPickAxe.add("nether_brick_slab");
+        intendedToolPickAxe.add("red_netherbrick_slab");
+        intendedToolPickAxe.add("quartz_slab");
+        intendedToolPickAxe.add("smooth_quartz_slab");
+        intendedToolPickAxe.add("purpur_slab");
+        intendedToolPickAxe.add("end_stone_brick_slab");
+        intendedToolPickAxe.add("blackstone_slab");
+        intendedToolPickAxe.add("polished_blackstone_slab");
+        intendedToolPickAxe.add("polished_blackstone_brick_slab");
+        intendedToolPickAxe.add("lightly_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("semi_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_semi_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("weathered_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_slab");
+
+        //stairs (not all of these exist, just copied the above list and replaced slab with stairs)
+        intendedToolPickAxe.add("petrified_oak_stairs");
+        intendedToolPickAxe.add("stone_stairs");
+        intendedToolPickAxe.add("smooth_stone_stairs");
+        intendedToolPickAxe.add("cobblestone_stairs");
+        intendedToolPickAxe.add("mossy_cobblestone_stairs");
+        intendedToolPickAxe.add("stone_brick_stairs");
+        intendedToolPickAxe.add("mossy_stone_brick_stairs");
+        intendedToolPickAxe.add("andesite_stairs");
+        intendedToolPickAxe.add("polished_andesite_stairs");
+        intendedToolPickAxe.add("diorite_stairs");
+        intendedToolPickAxe.add("polished_diorite_stairs");
+        intendedToolPickAxe.add("granite_stairs");
+        intendedToolPickAxe.add("polished_granite_stairs");
+        intendedToolPickAxe.add("sandstone_stairs");
+        intendedToolPickAxe.add("cut_sandstone_stairs");
+        intendedToolPickAxe.add("smooth_sandstone_stairs");
+        intendedToolPickAxe.add("red_sandstone_stairs");
+        intendedToolPickAxe.add("cut_red_sandstone_stairs");
+        intendedToolPickAxe.add("smooth_red_sandstone_stairs");
+        intendedToolPickAxe.add("brick_stairs");
+        intendedToolPickAxe.add("prismarine_brick_stairs");
+        intendedToolPickAxe.add("dark_prismarine_stairs");
+        intendedToolPickAxe.add("nether_brick_stairs");
+        intendedToolPickAxe.add("red_netherbrick_stairs");
+        intendedToolPickAxe.add("quartz_stairs");
+        intendedToolPickAxe.add("smooth_quartz_stairs");
+        intendedToolPickAxe.add("purpur_stairs");
+        intendedToolPickAxe.add("end_stone_brick_stairs");
+        intendedToolPickAxe.add("blackstone_stairs");
+        intendedToolPickAxe.add("polished_blackstone_stairs");
+        intendedToolPickAxe.add("polished_blackstone_brick_stairs");
+        intendedToolPickAxe.add("lightly_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("semi_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_semi_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_stairs");
+
     }
 
     private void fillArmors() {
@@ -257,6 +449,7 @@ public class MaterialMapStore {
         fillTridents();
         fillStringTools();
         fillBows();
+        fillCrossbows();
 
         //Tools collection
         tools.addAll(woodTools);
@@ -272,6 +465,10 @@ public class MaterialMapStore {
 
     private void fillBows() {
         bows.add("bow");
+    }
+
+    private void fillCrossbows() {
+        crossbows.add("crossbow");
     }
 
     private void fillStringTools() {
@@ -418,26 +615,7 @@ public class MaterialMapStore {
         ironTools.add("iron_shovel");
 
         //Used for repair, remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
-        //TODO: Remove in 2.2
+        //TODO: Remove in config update
         ironTools.add("bucket");
         ironTools.add("flint_and_steel");
         ironTools.add("shears");
@@ -555,7 +733,7 @@ public class MaterialMapStore {
      * @param material target material
      * @return true if it is used for armor
      */
-    public boolean isArmor(Material material) {
+    public boolean isArmor(@NotNull Material material) {
         return isArmor(material.getKey().getKey());
     }
 
@@ -564,207 +742,204 @@ public class MaterialMapStore {
      * @param id target item id
      * @return true if the item id matches armor
      */
-    public boolean isArmor(String id) {
+    public boolean isArmor(@NotNull String id) {
         return armors.contains(id);
     }
 
-    public boolean isTool(Material material) {
+    public boolean isTool(@NotNull Material material) {
         return isTool(material.getKey().getKey());
     }
 
-    public boolean isTool(String id) {
+    public boolean isTool(@NotNull String id) {
         return tools.contains(id);
     }
 
-    public boolean isEnchantable(Material material) {
+    public boolean isEnchantable(@NotNull Material material) {
         return isEnchantable(material.getKey().getKey());
     }
 
-    public boolean isEnchantable(String id) {
+    public boolean isEnchantable(@NotNull String id) {
         return enchantables.contains(id);
     }
 
-    public boolean isOre(Material material) {
+    public boolean isOre(@NotNull Material material) {
         return isOre(material.getKey().getKey());
     }
 
-    public boolean isOre(String id) {
+    public boolean isOre(@NotNull String id) {
         return ores.contains(id);
     }
 
-    public boolean isBow(Material material) {
+    public boolean isBow(@NotNull Material material) {
         return isBow(material.getKey().getKey());
     }
 
-    public boolean isBow(String id) {
+    public boolean isBow(@NotNull String id) {
         return bows.contains(id);
     }
 
-    public boolean isLeatherArmor(Material material) {
+    public boolean isCrossbow(@NotNull Material material) {
+        return isCrossbow(material.getKey().getKey());
+    }
+
+    public boolean isCrossbow(@NotNull String id) {
+        return crossbows.contains(id);
+    }
+
+    public boolean isLeatherArmor(@NotNull Material material) {
         return isLeatherArmor(material.getKey().getKey());
     }
 
-    public boolean isLeatherArmor(String id) {
+    public boolean isLeatherArmor(@NotNull String id) {
         return leatherArmor.contains(id);
     }
 
-    public boolean isIronArmor(Material material) {
+    public boolean isIronArmor(@NotNull Material material) {
         return isIronArmor(material.getKey().getKey());
     }
 
-    public boolean isIronArmor(String id) {
+    public boolean isIronArmor(@NotNull String id) {
         return ironArmor.contains(id);
     }
 
-    public boolean isGoldArmor(Material material) {
+    public boolean isGoldArmor(@NotNull Material material) {
         return isGoldArmor(material.getKey().getKey());
     }
 
-    public boolean isGoldArmor(String id) {
+    public boolean isGoldArmor(@NotNull String id) {
         return goldArmor.contains(id);
     }
 
-    public boolean isDiamondArmor(Material material) {
+    public boolean isDiamondArmor(@NotNull Material material) {
         return isDiamondArmor(material.getKey().getKey());
     }
 
-    public boolean isDiamondArmor(String id) {
+    public boolean isDiamondArmor(@NotNull String id) {
         return diamondArmor.contains(id);
     }
 
-    public boolean isChainmailArmor(Material material) {
+    public boolean isChainmailArmor(@NotNull Material material) {
         return isChainmailArmor(material.getKey().getKey());
     }
 
-    public boolean isChainmailArmor(String id) {
+    public boolean isChainmailArmor(@NotNull String id) {
         return chainmailArmor.contains(id);
     }
 
-    public boolean isNetheriteArmor(Material material) {
+    public boolean isNetheriteArmor(@NotNull Material material) {
         return isNetheriteArmor(material.getKey().getKey());
     }
 
-    public boolean isNetheriteArmor(String id) {
+    public boolean isNetheriteArmor(@NotNull String id) {
         return netheriteArmor.contains(id);
     }
 
-    public boolean isWoodTool(Material material) {
+    public boolean isWoodTool(@NotNull Material material) {
         return isWoodTool(material.getKey().getKey());
     }
 
-    public boolean isWoodTool(String id) {
+    public boolean isWoodTool(@NotNull String id) {
         return woodTools.contains(id);
     }
 
-    public boolean isStoneTool(Material material) {
+    public boolean isStoneTool(@NotNull Material material) {
         return isStoneTool(material.getKey().getKey());
     }
 
-    public boolean isStoneTool(String id) {
+    public boolean isStoneTool(@NotNull String id) {
         return stoneTools.contains(id);
     }
 
-    public boolean isIronTool(Material material) {
+    public boolean isIronTool(@NotNull Material material) {
         return isIronTool(material.getKey().getKey());
     }
 
-    public boolean isIronTool(String id) {
+    public boolean isIronTool(@NotNull String id) {
         return ironTools.contains(id);
     }
 
-    public boolean isGoldTool(Material material) {
+    public boolean isGoldTool(@NotNull Material material) {
         return isGoldTool(material.getKey().getKey());
     }
 
-    public boolean isGoldTool(String id) {
+    public boolean isGoldTool(@NotNull String id) {
         return goldTools.contains(id);
     }
 
-    public boolean isDiamondTool(Material material) {
+    public boolean isDiamondTool(@NotNull Material material) {
         return isDiamondTool(material.getKey().getKey());
     }
 
-    public boolean isDiamondTool(String id) {
+    public boolean isDiamondTool(@NotNull String id) {
         return diamondTools.contains(id);
     }
 
-    public boolean isSword(Material material) {
+    public boolean isSword(@NotNull Material material) {
         return isSword(material.getKey().getKey());
     }
 
-    public boolean isSword(String id) {
+    public boolean isSword(@NotNull String id) {
         return swords.contains(id);
     }
 
-    public boolean isAxe(Material material) {
+    public boolean isAxe(@NotNull Material material) {
         return isAxe(material.getKey().getKey());
     }
 
-    public boolean isAxe(String id) {
+    public boolean isAxe(@NotNull String id) {
         return axes.contains(id);
     }
 
-    public boolean isPickAxe(Material material) {
+    public boolean isPickAxe(@NotNull Material material) {
         return isPickAxe(material.getKey().getKey());
     }
 
-    public boolean isPickAxe(String id) {
+    public boolean isPickAxe(@NotNull String id) {
         return pickAxes.contains(id);
     }
 
-    public boolean isShovel(Material material) {
+    public boolean isShovel(@NotNull Material material) {
         return isShovel(material.getKey().getKey());
     }
 
-    public boolean isShovel(String id) {
+    public boolean isShovel(@NotNull String id) {
         return shovels.contains(id);
     }
 
-    public boolean isHoe(Material material) {
+    public boolean isHoe(@NotNull Material material) {
         return isHoe(material.getKey().getKey());
     }
 
-    public boolean isHoe(String id) {
+    public boolean isHoe(@NotNull String id) {
         return hoes.contains(id);
     }
 
-    public boolean isNetheriteTool(Material material) {
+    public boolean isNetheriteTool(@NotNull Material material) {
         return isNetheriteTool(material.getKey().getKey());
     }
 
-    public boolean isNetheriteTool(String id) {
+    public boolean isNetheriteTool(@NotNull String id) {
         return netheriteTools.contains(id);
     }
 
-    public boolean isStringTool(Material material) {
+    public boolean isStringTool(@NotNull Material material) {
         return isStringTool(material.getKey().getKey());
     }
 
-    public boolean isStringTool(String id) {
+    public boolean isStringTool(@NotNull String id) {
         return stringTools.contains(id);
     }
 
-    public boolean isGlass(Material material) {
+    public boolean isGlass(@NotNull Material material) {
         return glassBlocks.contains(material.getKey().getKey());
     }
 
-    public boolean isFood(Material material) {
+    public boolean isFood(@NotNull Material material) {
         return foodItemWhiteList.contains(material.getKey().getKey());
     }
 
     private void fillMultiBlockPlantSet()
     {
-        //Single Block Plants
-//        plantBlockSet.add("melon");
-//        plantBlockSet.add("pumpkin");
-//        plantBlockSet.add("potatoes");
-//        plantBlockSet.add("carrots");
-//        plantBlockSet.add("beetroots");
-//        plantBlockSet.add("nether_wart");
-//        plantBlockSet.add("grass");
-//        plantBlockSet.add("fern");
-//        plantBlockSet.add("large_fern");
-
         //Multi-Block Plants
         multiBlockPlant.add("cactus");
         multiBlockPlant.add("chorus_plant");
@@ -802,16 +977,18 @@ public class MaterialMapStore {
         herbalismAbilityBlackList.add("farmland");
     }
 
-    private void fillLeavesWhiteList()
+    private void fillTreeFellerDestructibleWhiteList()
     {
-        leavesWhiteList.add("oak_leaves");
-        leavesWhiteList.add("acacia_leaves");
-        leavesWhiteList.add("birch_leaves");
-        leavesWhiteList.add("dark_oak_leaves");
-        leavesWhiteList.add("jungle_leaves");
-        leavesWhiteList.add("spruce_leaves");
-        leavesWhiteList.add("nether_wart_block");
-        leavesWhiteList.add("warped_wart_block");
+        treeFellerDestructibleWhiteList.add("oak_leaves");
+        treeFellerDestructibleWhiteList.add("acacia_leaves");
+        treeFellerDestructibleWhiteList.add("birch_leaves");
+        treeFellerDestructibleWhiteList.add("dark_oak_leaves");
+        treeFellerDestructibleWhiteList.add("jungle_leaves");
+        treeFellerDestructibleWhiteList.add("spruce_leaves");
+        treeFellerDestructibleWhiteList.add("nether_wart_block");
+        treeFellerDestructibleWhiteList.add("warped_wart_block");
+        treeFellerDestructibleWhiteList.add("brown_mushroom_block");
+        treeFellerDestructibleWhiteList.add("red_mushroom_block");
     }
 
     private void fillMossyWhiteList()
@@ -1088,26 +1265,35 @@ public class MaterialMapStore {
         toolBlackList.add("stonecutter");
         toolBlackList.add("lodestone");
         toolBlackList.add("respawn_anchor");
+        toolBlackList.add("sweet_berry_bush");
     }
 
-    public HashSet<String> getNetheriteArmor() {
+    public boolean isIntendedToolPickaxe(Material material) {
+        return intendedToolPickAxe.contains(material.getKey().getKey());
+    }
+
+    public boolean isIntendedToolPickaxe(String string) {
+        return intendedToolPickAxe.contains(string);
+    }
+
+    public @NotNull HashSet<String> getNetheriteArmor() {
         return netheriteArmor;
     }
 
-    public HashSet<String> getNetheriteTools() {
+    public @NotNull HashSet<String> getNetheriteTools() {
         return netheriteTools;
     }
 
 
-    public int getTier(Material material) {
+    public int getTier(@NotNull Material material) {
         return getTier(material.getKey().getKey());
     }
 
-    public int getTier(String id) {
+    public int getTier(@NotNull String id) {
         return tierValue.getOrDefault(id, 1); //1 for unknown items
     }
 
-    private void addToHashSet(String string, HashSet<String> stringHashSet)
+    private void addToHashSet(@NotNull String string, @NotNull HashSet<String> stringHashSet)
     {
         stringHashSet.add(string.toLowerCase(Locale.ENGLISH));
     }

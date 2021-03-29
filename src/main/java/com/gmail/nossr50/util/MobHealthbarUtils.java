@@ -1,11 +1,11 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -55,16 +55,12 @@ public final class MobHealthbarUtils {
         /*
          * Store the name in metadata
          */
-        if(target.getMetadata("mcMMO_oldName").size() <= 0 && originalName != null)
-            target.setMetadata("mcMMO_oldName", new OldName(originalName, plugin));
+        if(target.getMetadata(TransientMetadataTools.OLD_NAME_METAKEY).size() <= 0 && originalName != null)
+            target.setMetadata(TransientMetadataTools.OLD_NAME_METAKEY, new OldName(originalName, plugin));
 
         if (oldName == null) {
             oldName = "";
         }
-        else if (oldName.equalsIgnoreCase(AdvancedConfig.getInstance().getKrakenName())) {
-            return;
-        }
-
 
         boolean oldNameVisible = target.isCustomNameVisible();
         String newName = createHealthDisplay(Config.getInstance().getMobHealthbarDefault(), target, damage);

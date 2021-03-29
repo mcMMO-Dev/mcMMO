@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.child;
 
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.EnumSet;

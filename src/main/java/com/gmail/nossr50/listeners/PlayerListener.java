@@ -1,17 +1,14 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
+import com.gmail.nossr50.events.McMMOReplaceVanillaTreasureEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -39,6 +36,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.PoweredMinecart;
 import org.bukkit.event.Event;
@@ -75,10 +73,12 @@ public class PlayerListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
             //Remove scoreboards
-            ScoreboardManager.teardownPlayer(event.getPlayer());
+            if(Config.getInstance().getScoreboardsEnabled()) {
+                ScoreboardManager.teardownPlayer(event.getPlayer());
+            }
             return;
-        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld())) {
-            //This only fires if they are traveling to a non-blacklisted world from a blacklisted world
+        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld()) && Config.getInstance().getScoreboardsEnabled()) {
+            //This only fires if they are travelling to a non-blacklisted world from a blacklisted world
 
             //Setup scoreboards
             ScoreboardManager.setupPlayer(event.getPlayer());
@@ -259,7 +259,7 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerFishHighest(PlayerFishEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
@@ -292,12 +292,20 @@ public class PlayerListener implements Listener {
                 if(event.getCaught() != null) {
                     Item fishingCatch = (Item) event.getCaught();
 
-                    if (Config.getInstance().   getFishingOverrideTreasures() &&
+                    if (Config.getInstance().getFishingOverrideTreasures() &&
                             fishingCatch.getItemStack().getType() != Material.SALMON &&
                             fishingCatch.getItemStack().getType() != Material.COD &&
                             fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
                             fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
-                        fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
+
+                        ItemStack replacementCatch = new ItemStack(Material.SALMON, 1);
+
+                        McMMOReplaceVanillaTreasureEvent replaceVanillaTreasureEvent = new McMMOReplaceVanillaTreasureEvent(fishingCatch, replacementCatch);
+                        Bukkit.getPluginManager().callEvent(replaceVanillaTreasureEvent);
+
+                        //Replace
+                        replacementCatch = replaceVanillaTreasureEvent.getReplacementItemStack();
+                        fishingCatch.setItemStack(replacementCatch);
                     }
 
                     if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
@@ -391,7 +399,21 @@ public class PlayerListener implements Listener {
         switch (event.getState()) {
             case FISHING:
                 if (fishingManager.canMasterAngler()) {
-                    fishingManager.masterAngler(event.getHook());
+                    int lureLevel = 0;
+                    ItemStack inHand = player.getInventory().getItemInMainHand();
+
+                    //Grab lure level
+                    if(inHand != null && inHand.getType().getKey().getKey().equalsIgnoreCase("fishing_rod")) {
+                        if(inHand.getItemMeta().hasEnchants()) {
+                            for(Enchantment enchantment : inHand.getItemMeta().getEnchants().keySet()) {
+                                if(enchantment.toString().toLowerCase().contains("lure")) {
+                                    lureLevel = inHand.getEnchantmentLevel(enchantment);
+                                }
+                            }
+                        }
+                    }
+
+                    fishingManager.masterAngler(event.getHook(), lureLevel);
                     fishingManager.setFishingTarget();
                 }
                 return;
@@ -408,7 +430,7 @@ public class PlayerListener implements Listener {
                         }
                     }
 
-                    fishingManager.handleFishing((Item) caught);
+                    fishingManager.processFishing((Item) caught);
                     fishingManager.setFishingTarget();
                 }
                 return;
@@ -436,6 +458,10 @@ public class PlayerListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
+        if(Misc.isNPCEntityExcludingVillagers(event.getEntity())) {
+            return;
+        }
+
         if(event.getEntity() instanceof Player)
         {
             Player player = (Player) event.getEntity();
@@ -452,12 +478,10 @@ public class PlayerListener implements Listener {
             }
 
             //Profile not loaded
-            if(UserManager.getPlayer(player) == null)
-            {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            if(mcMMOPlayer == null) {
                 return;
             }
-
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();
@@ -513,16 +537,15 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if(mcMMOPlayer == null) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        //There's an issue with using Async saves on player quit
-        //Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
-        mcMMOPlayer.logout(true);
+        //Use a sync save if the server is shutting down to avoid race conditions
+        mcMMOPlayer.logout(mcMMO.isServerShutdownExecuted());
     }
 
     /**
@@ -605,8 +628,8 @@ public class PlayerListener implements Listener {
         if(clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
             event.setUseItemInHand(Event.Result.ALLOW);
 
-            if(mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
-                    event.setUseInteractedBlock(Event.Result.DENY);
+            if(!event.getPlayer().isSneaking() && mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
+                event.setUseInteractedBlock(Event.Result.DENY);
             }
         }
 
@@ -751,7 +774,7 @@ public class PlayerListener implements Listener {
                     player.setVelocity(player.getEyeLocation().getDirection().multiply(10));
                 }
 
-                mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();
+                //mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();
             }
         }
 
@@ -803,20 +826,28 @@ public class PlayerListener implements Listener {
 
                 FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat        
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
-                    player.updateInventory();
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
+                    //call event for Green Thumb Block
+                    if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, block).isCancelled()) {
+                        Bukkit.getPluginManager().callEvent(fakeSwing);
+                        player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
+                        player.updateInventory();
+                        if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                            blockState.update(true);
+                        }
                     }
                 }
                 /* SHROOM THUMB CHECK */
                 else if (herbalismManager.canUseShroomThumb(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    event.setCancelled(true);
-                    if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
+                    if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_SHROOM_THUMB, block).isCancelled()) {
+                        Bukkit.getPluginManager().callEvent(fakeSwing);
+                        event.setCancelled(true);
+                        if (herbalismManager.processShroomThumb(blockState)
+                                && EventUtils.simulateBlockBreak(block, player, false)) {
+                            blockState.update(true);
+                        }
                     }
+                } else {
+                    herbalismManager.processBerryBushHarvesting(blockState);
                 }
                 break;
 
@@ -884,7 +915,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntityExcludingVillagers(player) || !UserManager.hasPlayerDataKey(player)) {
+        if ((ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(player)) || !UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -896,27 +927,17 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        ChatManager chatManager = null;
-
-        if (mcMMOPlayer.isChatEnabled(ChatMode.PARTY)) {
-            Party party = mcMMOPlayer.getParty();
-
-            if (party == null) {
-                mcMMOPlayer.disableChat(ChatMode.PARTY);
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return;
+        if(plugin.getChatManager().isChatChannelEnabled(mcMMOPlayer.getChatChannel())) {
+            if(mcMMOPlayer.getChatChannel() != ChatChannel.NONE) {
+                if(plugin.getChatManager().isMessageAllowed(mcMMOPlayer)) {
+                    //If the message is allowed we cancel this event to avoid double sending messages
+                    plugin.getChatManager().processPlayerMessage(mcMMOPlayer, event.getMessage(), event.isAsynchronous());
+                    event.setCancelled(true);
+                } else {
+                    //Message wasn't allowed, remove the player from their channel
+                    plugin.getChatManager().setOrToggleChatChannel(mcMMOPlayer, mcMMOPlayer.getChatChannel());
+                }
             }
-
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-            ((PartyChatManager) chatManager).setParty(party);
-        }
-        else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN)) {
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
-        }
-
-        if (chatManager != null) {
-            chatManager.handleChat(player, event.getMessage(), event.isAsynchronous());
-            event.setCancelled(true);
         }
     }
 

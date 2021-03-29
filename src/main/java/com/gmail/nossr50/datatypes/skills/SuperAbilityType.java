@@ -5,7 +5,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -226,7 +226,7 @@ public enum SuperAbilityType {
                 return BlockUtils.affectedBySuperBreaker(blockState);
 
             case TREE_FELLER:
-                return BlockUtils.isLog(blockState);
+                return BlockUtils.hasWoodcuttingXP(blockState);
 
             default:
                 return false;

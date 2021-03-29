@@ -3,8 +3,8 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.HolidayManager.FakeSkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -157,40 +157,40 @@ public class AprilCommand implements TabExecutor {
 
         switch (fakeSkillType) {
             case MACHO:
-                messages.add(LocaleLoader.formatString("[[RED]]Damage Taken: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(77))));
+                messages.add(LocaleLoader.formatString("&cDamage Taken: &e{0}%", decimal.format(Misc.getRandom().nextInt(77))));
                 break;
             case JUMPING:
-                messages.add(LocaleLoader.formatString("[[RED]]Double Jump Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cDouble Jump Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case THROWING:
-                messages.add(LocaleLoader.formatString("[[RED]]Drop Item Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(87))));
+                messages.add(LocaleLoader.formatString("&cDrop Item Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(87))));
                 break;
             case WRECKING:
-                messages.add(LocaleLoader.formatString("[[RED]]Wrecking Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(14))));
+                messages.add(LocaleLoader.formatString("&cWrecking Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(14))));
                 break;
             case CRAFTING:
-                messages.add(LocaleLoader.formatString("[[RED]]Crafting Success: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cCrafting Success: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case WALKING:
-                messages.add(LocaleLoader.formatString("[[RED]]Walk Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cWalk Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case SWIMMING:
-                messages.add(LocaleLoader.formatString("[[RED]]Swim Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cSwim Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case FALLING:
-                messages.add(LocaleLoader.formatString("[[RED]]Skydiving Success: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(37))));
+                messages.add(LocaleLoader.formatString("&cSkydiving Success: &e{0}%", decimal.format(Misc.getRandom().nextInt(37))));
                 break;
             case CLIMBING:
-                messages.add(LocaleLoader.formatString("[[RED]]Rock Climber Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cRock Climber Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case FLYING:
-                messages.add(LocaleLoader.formatString("[[RED]]Fly Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cFly Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case DIVING:
-                messages.add(LocaleLoader.formatString("[[RED]]Hold Breath Chance: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(27))));
+                messages.add(LocaleLoader.formatString("&cHold Breath Chance: &e{0}%", decimal.format(Misc.getRandom().nextInt(27))));
                 break;
             case PIGGY:
-                messages.add(LocaleLoader.formatString("[[RED]]Carrot Turbo Boost: [[YELLOW]]{0}%", decimal.format(Misc.getRandom().nextInt(80)) + 10));
+                messages.add(LocaleLoader.formatString("&cCarrot Turbo Boost: &e{0}%", decimal.format(Misc.getRandom().nextInt(80)) + 10));
                 break;
         }
 

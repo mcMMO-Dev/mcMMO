@@ -20,6 +20,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
+        return mmoPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
     }
 
     public boolean canUseStab() {
@@ -51,7 +52,7 @@ public class SwordsManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
+        return mmoPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
     }
 
     /**
@@ -59,26 +60,28 @@ public class SwordsManager extends SkillManager {
      *
      * @param target The defending entity
      */
-    public void ruptureCheck(LivingEntity target) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mcMMOPlayer.getAttackStrength())) {
+    public void ruptureCheck(@NotNull LivingEntity target) throws IllegalStateException {
+        if(BleedTimerTask.isBleedOperationAllowed()) {
+            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
 
-            if (target instanceof Player) {
-                Player defender = (Player) target;
+                if (target instanceof Player) {
+                    Player defender = (Player) target;
 
-                //Don't start or add to a bleed if they are blocking
-                if(defender.isBlocking())
-                    return;
+                    //Don't start or add to a bleed if they are blocking
+                    if(defender.isBlocking())
+                        return;
 
-                if (NotificationManager.doesPlayerUseNotifications(defender)) {
-                    if(!BleedTimerTask.isBleeding(defender))
-                        NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
+                    if (NotificationManager.doesPlayerUseNotifications(defender)) {
+                        if(!BleedTimerTask.isBleeding(defender))
+                            NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
+                    }
                 }
-            }
 
-            BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
+                BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
 
-            if (mcMMOPlayer.useChatNotifications()) {
-                NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+                if (mmoPlayer.useChatNotifications()) {
+                    NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+                }
             }
         }
     }
@@ -95,7 +98,7 @@ public class SwordsManager extends SkillManager {
         return 0;
     }
 
-    public int getToolTier(ItemStack itemStack)
+    public int getToolTier(@NotNull ItemStack itemStack)
     {
         if(ItemUtils.isNetheriteTool(itemStack))
             return 5;
@@ -125,7 +128,7 @@ public class SwordsManager extends SkillManager {
      * @param attacker The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void counterAttackChecks(LivingEntity attacker, double damage) {
+    public void counterAttackChecks(@NotNull LivingEntity attacker, double damage) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
@@ -143,7 +146,7 @@ public class SwordsManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
+    public void serratedStrikes(@NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
     }
 }
