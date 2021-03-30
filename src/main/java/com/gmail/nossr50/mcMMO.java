@@ -163,6 +163,9 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            //Store this value so other plugins can check it
+            isRetroModeEnabled = Config.getInstance().getIsRetroMode();
+
             //Platform Manager
             platformManager = new PlatformManager();
 
@@ -189,9 +192,6 @@ public class mcMMO extends JavaPlugin {
             if (!noErrorsInConfigFiles) {
                 return;
             }
-
-            //Store this value so other plugins can check it
-            isRetroModeEnabled = Config.getInstance().getIsRetroMode();
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
