@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.UUID;
 
 //TODO: Update javadocs
+//TODO: T&C Look over IDE inspection warnings, things have changed
 public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Identified {
     private final @NotNull Player player;
     private final @NotNull Identity identity;

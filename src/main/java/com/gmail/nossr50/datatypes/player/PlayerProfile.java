@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+//TODO: T&C update javadocs?
 public class PlayerProfile extends AbstractMMOPlayer {
 
     /**
