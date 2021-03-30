@@ -52,9 +52,8 @@ public class PlayerData {
      *
      * @param playerUUID target player's UUID
      * @param playerName target player's name
-     * @throws NullArgumentException thrown when never null arguments are null
      */
-    public PlayerData(@Nullable UUID playerUUID, @NotNull String playerName) throws NullArgumentException {
+    public PlayerData(@Nullable UUID playerUUID, @NotNull String playerName) {
         /*
          * New Data
          */
