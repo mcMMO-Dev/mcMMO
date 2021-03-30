@@ -1,4 +1,5 @@
 Version 2.1.183
+    Players now gain Acrobatics XP from falling even if they don't have the Roll permission node (checks for Acrobatics skill permission)
     treasures.yml now has separate settings for Drop_Level for Standard/Retro mode (see notes / this change is automatic)
     Updated Russian locale (thanks ImDaniX)
     Added Donkeys to beat lore (thanks QuantumToasted)

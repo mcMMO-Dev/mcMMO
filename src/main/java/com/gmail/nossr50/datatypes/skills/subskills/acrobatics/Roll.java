@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -83,6 +84,9 @@ public class Roll extends AcrobaticsSubSkill {
                     entityDamageEvent.setCancelled(true);
                     return true;
                 }
+            } else if(Permissions.skillEnabled(player, PrimarySkillType.ACROBATICS)) {
+                //Give XP Anyways
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, ((EntityDamageEvent) event).getFinalDamage(), false), XPGainReason.PVE);
             }
         }
 
