@@ -153,7 +153,6 @@ public class PlayerData {
      *
      * @param map target map
      * @throws UnexpectedValueException when values are outside of expected norms
-     * @throws Exception when values are outside of expected norms
      */
     private void validateRootSkillMap(Map<PrimarySkillType, ? extends Number> map) throws UnexpectedValueException, NullPointerException {
         //TODO: Check for missing/unregistered
