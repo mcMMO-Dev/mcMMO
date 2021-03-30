@@ -44,7 +44,7 @@ public class PlayerSaveHandler {
 
     public void save(@NotNull PlayerData playerData, boolean useSync) {
         //TODO: We no longer check if a profile is loaded or not as it should never be unloaded if a save operation is being called, need to double check this to be true
-        if(!playerData.isDirtyProfile()) {
+        if(!playerData.isProfileDirty()) {
             return; //Don't save data that hasn't changed
         }
 

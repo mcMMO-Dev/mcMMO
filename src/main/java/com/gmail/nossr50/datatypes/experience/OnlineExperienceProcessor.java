@@ -20,7 +20,6 @@ import com.neetgames.mcmmo.experience.ExperienceProcessor;
 import com.neetgames.mcmmo.experience.XPGainReason;
 import com.neetgames.mcmmo.experience.XPGainSource;
 import com.neetgames.mcmmo.party.Party;
-import com.neetgames.mcmmo.player.MMOPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +42,7 @@ public class OnlineExperienceProcessor implements ExperienceProcessor {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        Map<PrimarySkillType, Integer> primarySkillTypeLevelMap = mmoPlayerData.getDirtySkillLevelMap().unwrapMap();
+        Map<PrimarySkillType, Integer> primarySkillTypeLevelMap = mmoPlayerData.getSkillLevelMap();
 
         for (PrimarySkillType primarySkillType : primarySkillTypeLevelMap.keySet()) {
             powerLevel += primarySkillTypeLevelMap.get(primarySkillType);

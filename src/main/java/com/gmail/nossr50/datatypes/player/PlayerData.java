@@ -11,12 +11,6 @@ import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
-import com.neetgames.neetlib.dirtydata.DirtyData;
-import com.neetgames.neetlib.dirtydata.DirtyMap;
-import com.neetgames.neetlib.mutableprimitives.MutableBoolean;
-import com.neetgames.neetlib.mutableprimitives.MutableInteger;
-import com.neetgames.neetlib.mutableprimitives.MutableLong;
-import com.neetgames.neetlib.mutableprimitives.MutableString;
 import org.apache.commons.lang.NullArgumentException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,28 +22,28 @@ import java.util.UUID;
 
 public class PlayerData {
 
-    private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
-
     /* Player Stuff */
-    private final @NotNull DirtyData<MutableString> playerName;
+    private @NotNull String playerName;
     private final @Nullable UUID playerUUID;
 
     /* Records */
-    private final DirtyData<MutableLong> lastLogin;
+    private long lastLogin;
 
     /* Skill Data */
-    private final @NotNull DirtyMap<PrimarySkillType, Integer> skillLevelValues;
-    private final @NotNull DirtyMap<PrimarySkillType, Float> skillExperienceValues;
-    private final @NotNull DirtyMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
-    private final @NotNull DirtyMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> barStateMap;
+    private final @NotNull Map<PrimarySkillType, Integer> skillLevelValues;
+    private final @NotNull Map<PrimarySkillType, Float> skillExperienceValues;
+    private final @NotNull Map<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private final @NotNull Map<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private final @NotNull Map<PrimarySkillType, SkillBossBarState> barStateMap;
 
     /* Special Flags */
-    private final @NotNull DirtyData<MutableBoolean> partyChatSpying;
-    private final @NotNull DirtyData<MutableBoolean> leaderBoardExclusion;
+    private boolean partyChatSpying;
+    private boolean leaderBoardExclusion;
 
     /* Scoreboards */
-    private final @NotNull DirtyData<MutableInteger> scoreboardTipsShown;
+    private int scoreboardTipsShown;
+
+    private int lastUpdateHash;
 
     /**
      * Create new persistent player data for a player
@@ -63,16 +57,15 @@ public class PlayerData {
         /*
          * New Data
          */
-        this.dirtyFlag = new MutableBoolean(false); //Set this one first
         this.playerUUID = playerUUID;
-        this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
+        this.playerName = playerName;
 
-        this.skillLevelValues = new DirtyMap<>(new HashMap<>(), dirtyFlag);
-        this.skillExperienceValues = new DirtyMap<>(new HashMap<>(), dirtyFlag);
-        this.abilityDeactivationTimestamps = new DirtyMap<>(new HashMap<>(), dirtyFlag);
-        this.uniquePlayerData = new DirtyMap<>(new EnumMap<>(UniqueDataType.class), dirtyFlag);
+        this.skillLevelValues = new HashMap<>();
+        this.skillExperienceValues = new HashMap<>();
+        this.abilityDeactivationTimestamps = new HashMap<>();
+        this.uniquePlayerData = new EnumMap<>(UniqueDataType.class);
 
-        this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(0), dirtyFlag);
+        this.scoreboardTipsShown = 0;
 
         for(SuperAbilityType superSkill : SuperAbilityType.values()) {
             abilityDeactivationTimestamps.put(superSkill, 0);
@@ -92,11 +85,13 @@ public class PlayerData {
         //Unique Player Data
         this.uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
 
-        this.partyChatSpying = new DirtyData<>(new MutableBoolean(false), dirtyFlag);
+        this.partyChatSpying = false;
 
-        this.barStateMap = new DirtyMap<>(MMOExperienceBarManager.generateDefaultBarStateMap(), dirtyFlag);
-        this.lastLogin = new DirtyData<>(new MutableLong(0), dirtyFlag); //Value of 0 will represent that the user hasn't been seen online
-        this.leaderBoardExclusion = new DirtyData<>(new MutableBoolean(false), dirtyFlag);
+        this.barStateMap = MMOExperienceBarManager.generateDefaultBarStateMap();
+        this.lastLogin = 0L; //Value of 0 will represent that the user hasn't been seen online
+        this.leaderBoardExclusion = false;
+
+        this.lastUpdateHash = hashCode();
     }
 
     /**
@@ -129,29 +124,27 @@ public class PlayerData {
         /*
          * Skills Data
          */
-        this.dirtyFlag = new MutableBoolean(false); //Set this one first
-
         validateRootSkillMap(skillLevelValues);
-        this.skillLevelValues = new DirtyMap<>(skillLevelValues, dirtyFlag);
+        this.skillLevelValues = skillLevelValues;
 
         validateRootSkillMap(skillExperienceValues);
-        this.skillExperienceValues = new DirtyMap<>(skillExperienceValues, dirtyFlag);
+        this.skillExperienceValues = skillExperienceValues;
 
         validateSuperSkillMap(abilityDeactivationTimestamps);
-        this.abilityDeactivationTimestamps = new DirtyMap<>(abilityDeactivationTimestamps, dirtyFlag);
+        this.abilityDeactivationTimestamps = abilityDeactivationTimestamps;
 
-        this.uniquePlayerData = new DirtyMap<>(uniquePlayerData, dirtyFlag);
+        this.uniquePlayerData = uniquePlayerData;
 
-        this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(scoreboardTipsShown), dirtyFlag);
+        this.scoreboardTipsShown = scoreboardTipsShown;
 
         this.playerUUID = playerUUID;
-        this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
-        this.barStateMap = new DirtyMap<>(barStateMap, dirtyFlag);
+        this.playerName = playerName;
+        this.barStateMap = barStateMap;
 
-        this.partyChatSpying = new DirtyData<>(new MutableBoolean(partyChatSpying), dirtyFlag);
-        this.lastLogin = new DirtyData<>(new MutableLong(lastLogin), dirtyFlag);
+        this.partyChatSpying = partyChatSpying;
+        this.lastLogin = lastLogin;
 
-        this.leaderBoardExclusion = new DirtyData<>(new MutableBoolean(leaderBoardExclusion), dirtyFlag);
+        this.leaderBoardExclusion = leaderBoardExclusion;
     }
 
     /**
@@ -204,30 +197,31 @@ public class PlayerData {
         return 0;
     }
 
-    public boolean isDirtyProfile() {
-        return dirtyFlag.getImmutableCopy();
+    public boolean isProfileDirty() {
+        return lastUpdateHash != hashCode();
     }
 
+    //TODO: T&C this needs to be called or pointless save operations won't be avoided
     public void resetDirtyFlag() {
-        dirtyFlag.setBoolean(false);
+        lastUpdateHash = hashCode();
     }
 
     public @NotNull String getPlayerName() {
-        return playerName.getData().getImmutableCopy();
+        return playerName;
     }
 
     public @NotNull UUID getPlayerUUID() {
         return playerUUID;
     }
 
-    public boolean isPartyChatSpying() { return partyChatSpying.getData().getImmutableCopy(); }
+    public boolean isPartyChatSpying() { return partyChatSpying; }
 
     public void togglePartyChatSpying() {
-        partyChatSpying.getData().setBoolean(!partyChatSpying.getData().getImmutableCopy());
+        partyChatSpying = !partyChatSpying;
     }
 
     public void setPartyChatSpying(boolean bool) {
-        this.partyChatSpying.getData().setBoolean(bool);
+        this.partyChatSpying = bool;
     }
 
     /*
@@ -235,11 +229,11 @@ public class PlayerData {
      */
 
     public int getScoreboardTipsShown() {
-        return scoreboardTipsShown.getData(false).getImmutableCopy();
+        return scoreboardTipsShown;
     }
 
     public void setScoreboardTipsShown(int newValue) {
-        scoreboardTipsShown.getData(true).setInt(newValue);
+        this.scoreboardTipsShown = newValue;
     }
 
     public int getChimaeraWingDATS() {
@@ -273,22 +267,6 @@ public class PlayerData {
         return barStateMap;
     }
 
-    public @NotNull DirtyMap<PrimarySkillType, SkillBossBarState> getDirtyBarStateMap() {
-        return barStateMap;
-    }
-
-    public @NotNull DirtyMap<PrimarySkillType, Integer> getDirtySkillLevelMap() {
-        return skillLevelValues;
-    }
-
-    public @NotNull DirtyMap<PrimarySkillType, Float> getDirtyExperienceValueMap() {
-        return skillExperienceValues;
-    }
-
-    public @NotNull DirtyData<MutableBoolean> getDirtyPartyChatSpying() {
-        return partyChatSpying;
-    }
-
     public @NotNull Map<PrimarySkillType, Integer> getSkillLevelsMap() {
         return skillLevelValues;
     }
@@ -305,24 +283,20 @@ public class PlayerData {
         return uniquePlayerData;
     }
 
-    public void setDirtyProfile() {
-        this.dirtyFlag.setBoolean(true);
-    }
-
     public long getLastLogin() {
-        return lastLogin.getData().getImmutableCopy();
+        return lastLogin;
     }
 
     public void setLastLogin(long newValue) {
-        lastLogin.getData().setLong(newValue);
+        this.lastLogin = newValue;
     }
 
     public boolean isLeaderBoardExcluded() {
-        return leaderBoardExclusion.getData().getImmutableCopy();
+        return leaderBoardExclusion;
     }
 
     public void setLeaderBoardExclusion(boolean bool) {
-        leaderBoardExclusion.getData(true).setBoolean(bool);
+        this.leaderBoardExclusion = bool;
     }
 
     public @NotNull ImmutableMap<PrimarySkillType, Integer> copyPrimarySkillLevelsMap() {
