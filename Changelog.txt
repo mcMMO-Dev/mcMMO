@@ -4,10 +4,12 @@ Version 2.1.183
     Added Donkeys to beat lore (thanks QuantumToasted)
     Alchemy guide now correctly labels Rabbit's foot for potion of leaping (thanks mldriscoll)
     Fixed a bug where sweet berry bushes would give XP in situations where they shouldn't
+    The /mmoinfo for Roll is removed for the time being, it will return in a future update (see notes)
 
     NOTES:
     Previously treasures.yml would take drop_level and multiply it by 10 if you were on Retro Mode, this is confusing so it has been changed
     treasures.yml will update old entries to follow the new format automatically, please review them to make sure they match expected values, and if not edit them and save then reboot your server
+    Roll is actually the only skill that had an /mmoinfo, its one big mess, I'll fix it in the future
 
 Version 2.1.182
     Players now receive XP from harvesting Sweet Berry bushes (double XP for harvesting fully grown berries)
