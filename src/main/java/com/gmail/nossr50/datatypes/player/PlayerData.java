@@ -25,7 +25,7 @@ public class PlayerData {
 
     /* Player Stuff */
     private @NotNull String playerName;
-    private final @Nullable UUID playerUUID;
+    private final @Nullable UUID playerUUID; //TODO: T&C See if this is ever actually null, and if it is maybe we shouldn't allow it to be
 
     /* Records */
     private long lastLogin;
@@ -120,7 +120,7 @@ public class PlayerData {
                       @NotNull Map<PrimarySkillType, SkillBossBarState> barStateMap,
                       int scoreboardTipsShown,
                       long lastLogin,
-                      boolean leaderBoardExclusion) throws Exception {
+                      boolean leaderBoardExclusion) throws UnexpectedValueException, NullPointerException {
 
         /*
          * Skills Data
@@ -155,18 +155,29 @@ public class PlayerData {
      * @throws UnexpectedValueException when values are outside of expected norms
      * @throws Exception when values are outside of expected norms
      */
-    private void validateRootSkillMap(Map<PrimarySkillType, ? extends Number> map) throws UnexpectedValueException, Exception {
+    private void validateRootSkillMap(Map<PrimarySkillType, ? extends Number> map) throws UnexpectedValueException, NullPointerException {
         //TODO: Check for missing/unregistered
-        Validator<Number> validator = new Validator<>();
+        Validator<Number> positiveValidator = new Validator<>();
+        Validator<Number> nullValidator = new Validator<>();
 
-        validator.addRule(new PositiveIntegerRule<>());
-        validator.addRule(new NonNullRule<>());
+        positiveValidator.addRule(new PositiveIntegerRule<>());
+        nullValidator.addRule(new NonNullRule<>());
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if(primarySkillType.isChildSkill())
                 continue;
-            
-            validator.validate(map.get(primarySkillType));
+
+            try {
+                positiveValidator.validate(map.get(primarySkillType));
+            } catch (Exception e) {
+                throw new UnexpectedValueException();
+            }
+
+            try {
+                nullValidator.validate(map.get(primarySkillType));
+            } catch (Exception e) {
+                throw new NullPointerException();
+            }
         }
     }
 
@@ -177,7 +188,7 @@ public class PlayerData {
      * @throws UnexpectedValueException when values are outside of expected norms
      * @throws Exception when values are outside of expected norms
      */
-    private void validateSuperSkillMap(Map<? extends SuperAbilityType, ? extends Number> map) throws UnexpectedValueException, Exception {
+    private void validateSuperSkillMap(Map<? extends SuperAbilityType, ? extends Number> map) throws UnexpectedValueException, NullPointerException {
         //TODO: Check for missing/unregistered
         Validator<Number> validator = new Validator<>();
 
@@ -185,7 +196,11 @@ public class PlayerData {
         validator.addRule(new NonNullRule<>());
 
         for(SuperAbilityType superSkill : SuperAbilityType.values()) {
-            validator.validate(map.get(superSkill));
+            try {
+                validator.validate(map.get(superSkill));
+            } catch (Exception e) {
+                throw new UnexpectedValueException();
+            }
         }
     }
     
