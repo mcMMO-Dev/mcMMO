@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.validation.NonNullRule;
 import com.gmail.nossr50.datatypes.validation.PositiveIntegerRule;
 import com.gmail.nossr50.datatypes.validation.Validator;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import com.neetgames.mcmmo.UniqueDataType;
 import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
@@ -210,7 +211,7 @@ public class PlayerData {
         return playerName;
     }
 
-    public @NotNull UUID getPlayerUUID() {
+    public @Nullable UUID getPlayerUUID() {
         return playerUUID;
     }
 
@@ -305,5 +306,18 @@ public class PlayerData {
 
     public @NotNull ImmutableMap<PrimarySkillType, Float> copyPrimarySkillExperienceValuesMap() {
         return ImmutableMap.copyOf(getSkillsExperienceMap());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerData that = (PlayerData) o;
+        return lastLogin == that.lastLogin && partyChatSpying == that.partyChatSpying && leaderBoardExclusion == that.leaderBoardExclusion && scoreboardTipsShown == that.scoreboardTipsShown && Objects.equal(playerName, that.playerName) && Objects.equal(playerUUID, that.playerUUID) && Objects.equal(skillLevelValues, that.skillLevelValues) && Objects.equal(skillExperienceValues, that.skillExperienceValues) && Objects.equal(abilityDeactivationTimestamps, that.abilityDeactivationTimestamps) && Objects.equal(uniquePlayerData, that.uniquePlayerData) && Objects.equal(barStateMap, that.barStateMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(playerName, playerUUID, lastLogin, skillLevelValues, skillExperienceValues, abilityDeactivationTimestamps, uniquePlayerData, barStateMap, partyChatSpying, leaderBoardExclusion, scoreboardTipsShown);
     }
 }
