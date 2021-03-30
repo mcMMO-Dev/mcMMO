@@ -313,7 +313,16 @@ public class PlayerData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerData that = (PlayerData) o;
-        return lastLogin == that.lastLogin && partyChatSpying == that.partyChatSpying && leaderBoardExclusion == that.leaderBoardExclusion && scoreboardTipsShown == that.scoreboardTipsShown && Objects.equal(playerName, that.playerName) && Objects.equal(playerUUID, that.playerUUID) && Objects.equal(skillLevelValues, that.skillLevelValues) && Objects.equal(skillExperienceValues, that.skillExperienceValues) && Objects.equal(abilityDeactivationTimestamps, that.abilityDeactivationTimestamps) && Objects.equal(uniquePlayerData, that.uniquePlayerData) && Objects.equal(barStateMap, that.barStateMap);
+        return lastLogin == that.lastLogin
+                && partyChatSpying == that.partyChatSpying
+                && leaderBoardExclusion == that.leaderBoardExclusion
+                && scoreboardTipsShown == that.scoreboardTipsShown
+                && Objects.equal(playerName, that.playerName)
+                && Objects.equal(playerUUID, that.playerUUID)
+                && Objects.equal(skillLevelValues, that.skillLevelValues)
+                && Objects.equal(skillExperienceValues, that.skillExperienceValues)
+                && Objects.equal(abilityDeactivationTimestamps, that.abilityDeactivationTimestamps)
+                && Objects.equal(uniquePlayerData, that.uniquePlayerData) && Objects.equal(barStateMap, that.barStateMap);
     }
 
     @Override
