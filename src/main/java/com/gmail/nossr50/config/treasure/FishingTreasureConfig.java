@@ -164,7 +164,7 @@ public class FishingTreasureConfig extends ConfigLoader {
             }
 
             if (dropLevel < 0) {
-                reason.add(treasureName + " has an invalid Drop_Level: " + dropLevel);
+                reason.add("Fishing Config: " + treasureName + " has an invalid Drop_Level: " + dropLevel);
             }
 
             /*

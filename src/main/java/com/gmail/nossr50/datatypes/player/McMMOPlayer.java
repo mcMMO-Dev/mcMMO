@@ -80,6 +80,8 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
     private final @NotNull SuperSkillManagerImpl superSkillManagerImpl;
     private final @NotNull AbilityActivationProcessor abilityActivationProcessor;
 
+    private PrimarySkillType lastSkillShownScoreboard = PrimarySkillType.values()[0];
+
     /**
      * Create a new {@link OnlineMMOPlayer} with default values for a {@link Player}
      * @param player target player
@@ -174,6 +176,14 @@ public class McMMOPlayer extends PlayerProfile implements OnlineMMOPlayer, Ident
             if(queryParty != null)
                 this.playerPartyRef = queryParty;
         }
+    }
+
+    public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
+        return lastSkillShownScoreboard;
+    }
+
+    public void setLastSkillShownScoreboard(PrimarySkillType primarySkillType) {
+        this.lastSkillShownScoreboard = primarySkillType;
     }
 
     /**

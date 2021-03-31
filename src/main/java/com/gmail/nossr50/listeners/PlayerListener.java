@@ -195,6 +195,7 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to monitor
      */
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
@@ -204,19 +205,15 @@ public class PlayerListener implements Listener {
         }
 
         //Profile not loaded
-        if(UserManager.queryPlayer(player) == null)
+        if(UserManager.getPlayer(player) == null)
         {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if(mmoPlayer == null) {
-            return;
-        }
-
-        mmoPlayer.validateGodMode();
-        mmoPlayer.validateParty();
+        mcMMOPlayer.checkGodMode();
+        mcMMOPlayer.checkParty();
     }
 
     /**
@@ -781,7 +778,134 @@ public class PlayerListener implements Listener {
             }
         }
 
-        mmoPlayer.getAbilityActivationProcessor().processAbilityAndToolActivations(playerInteractEvent);
+        switch (event.getAction()) {
+            case RIGHT_CLICK_BLOCK:
+                if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
+                    break;
+                }
+
+                //Hmm
+                if(event.getClickedBlock() == null)
+                    return;
+
+                Block block = event.getClickedBlock();
+                BlockState blockState = block.getState();
+
+                /* ACTIVATION & ITEM CHECKS */
+                if (BlockUtils.canActivateTools(blockState)) {
+                    if (Config.getInstance().getAbilitiesEnabled()) {
+                        if (BlockUtils.canActivateHerbalism(blockState)) {
+                            mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
+                        }
+
+                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.MINING);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.SWORDS);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.UNARMED);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
+                    }
+
+                    ChimaeraWing.activationCheck(player);
+                }
+
+                /* GREEN THUMB CHECK */
+                HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
+
+                if (heldItem.getType() == Material.BONE_MEAL) {
+                    switch (blockState.getType()) {
+                        case BEETROOTS:
+                        case CARROT:
+                        case COCOA:
+                        case WHEAT:
+                        case NETHER_WART_BLOCK:
+                        case POTATO:
+                            mcMMO.getPlaceStore().setFalse(blockState);
+                    }
+                }
+
+                FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat
+                if(!event.isCancelled() || event.useInteractedBlock() != Event.Result.DENY) {
+                    if (herbalismManager.canGreenThumbBlock(blockState)) {
+                        //call event for Green Thumb Block
+                        if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, block).isCancelled()) {
+                            Bukkit.getPluginManager().callEvent(fakeSwing);
+                            player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                                blockState.update(true);
+                            }
+                        }
+                    }
+                    /* SHROOM THUMB CHECK */
+                    else if (herbalismManager.canUseShroomThumb(blockState)) {
+                        if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_SHROOM_THUMB, block).isCancelled()) {
+                            Bukkit.getPluginManager().callEvent(fakeSwing);
+                            event.setCancelled(true);
+                            if (herbalismManager.processShroomThumb(blockState)
+                                    && EventUtils.simulateBlockBreak(block, player, false)) {
+                                blockState.update(true);
+                            }
+                        }
+                    } else {
+                        herbalismManager.processBerryBushHarvesting(blockState);
+                    }
+                }
+                break;
+
+            case RIGHT_CLICK_AIR:
+                if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
+                    break;
+                }
+                
+                /* ACTIVATION CHECKS */
+                if (Config.getInstance().getAbilitiesEnabled()) {
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.MINING);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.SWORDS);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.UNARMED);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
+                }
+
+                /* ITEM CHECKS */
+                ChimaeraWing.activationCheck(player);
+
+                /* BLAST MINING CHECK */
+                MiningManager miningManager = mcMMOPlayer.getMiningManager();
+                if (miningManager.canDetonate()) {
+                    miningManager.remoteDetonation();
+                }
+
+                break;
+
+            case LEFT_CLICK_AIR:
+            case LEFT_CLICK_BLOCK:
+
+                if (!player.isSneaking()) {
+                    break;
+                }
+
+                /* CALL OF THE WILD CHECKS */
+                Material type = heldItem.getType();
+                TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+                if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry())) {
+                    tamingManager.summonWolf();
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
+                    tamingManager.summonOcelot();
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
+                    tamingManager.summonHorse();
+                }
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     /**

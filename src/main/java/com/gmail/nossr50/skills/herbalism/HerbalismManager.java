@@ -38,6 +38,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,6 +61,10 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
+        if(!BlockUtils.canMakeShroomy(blockState)) {
+            return false;
+        }
+
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
             return false;
 
@@ -67,7 +72,57 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory inventory = player.getInventory();
         Material itemType = inventory.getItemInMainHand().getType();
 
-        return (itemType == Material.BROWN_MUSHROOM || itemType == Material.RED_MUSHROOM) && inventory.contains(Material.BROWN_MUSHROOM, 1) && inventory.contains(Material.RED_MUSHROOM, 1) && BlockUtils.canMakeShroomy(blockState) && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+        return (itemType == Material.BROWN_MUSHROOM
+                || itemType == Material.RED_MUSHROOM)
+                && inventory.contains(Material.BROWN_MUSHROOM, 1)
+                && inventory.contains(Material.RED_MUSHROOM, 1)
+                && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+    }
+
+    public void processBerryBushHarvesting(@NotNull BlockState blockState) {
+        /* Check if the player is harvesting a berry bush */
+        if(blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+            if(mmoPlayer.isDebugMode()) {
+                mmoPlayer.getPlayer().sendMessage("Processing sweet berry bush rewards");
+            }
+            //Check the age
+            if(blockState.getBlockData() instanceof Ageable) {
+                int rewardByAge = 0;
+
+                Ageable ageable = (Ageable) blockState.getBlockData();
+
+                if(ageable.getAge() == 2) {
+                    rewardByAge = 1; //Normal XP
+                } else if(ageable.getAge() == 3) {
+                    rewardByAge = 2; //Double XP
+                } else {
+                    return; //Not old enough, back out of processing
+                }
+
+                if(mmoPlayer.isDebugMode()) {
+                    mmoPlayer.getPlayer().sendMessage("Bush Reward Multiplier: " + rewardByAge);
+                }
+
+                int xpReward = ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, blockState) * rewardByAge;
+
+                if(mmoPlayer.isDebugMode()) {
+                    mmoPlayer.getPlayer().sendMessage("Bush XP: " + xpReward);
+                }
+
+//                //Check for double drops
+//                if(checkDoubleDrop(blockState)) {
+//
+//                    if(mmoPlayer.isDebugMode()) {
+//                        mmoPlayer.getPlayer().sendMessage("Double Drops succeeded for Berry Bush");
+//                    }
+//
+//                    //Add metadata to mark this block for double or triple drops
+//                    markForBonusDrops(blockState);
+//                }
+
+                applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
+            }
+        }
     }
 
     public boolean canUseHylianLuck() {

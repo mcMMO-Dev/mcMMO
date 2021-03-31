@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.treasure;
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,9 @@ import java.util.List;
 public class TreasureConfig extends ConfigLoader {
 
     public static final String FILENAME = "treasures.yml";
+    public static final String LEVEL_REQUIREMENT_RETRO_MODE = ".Level_Requirement.Retro_Mode";
+    public static final String LEVEL_REQUIREMENT_STANDARD_MODE = ".Level_Requirement.Standard_Mode";
+    public static final String LEGACY_DROP_LEVEL = ".Drop_Level";
     private static TreasureConfig instance;
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<>();
@@ -60,6 +65,7 @@ public class TreasureConfig extends ConfigLoader {
     }
 
     private void loadTreasures(String type) {
+        boolean updatedFile = false;
         boolean isExcavation = type.equals("Excavation");
         boolean isHylian = type.equals("Hylian_Luck");
 
@@ -103,7 +109,29 @@ public class TreasureConfig extends ConfigLoader {
 
             int xp = config.getInt(type + "." + treasureName + ".XP");
             double dropChance = config.getDouble(type + "." + treasureName + ".Drop_Chance");
-            int dropLevel = config.getInt(type + "." + treasureName + ".Drop_Level");
+            int legacyDropLevel = config.getInt(type + "." + treasureName + LEGACY_DROP_LEVEL, -1);
+            int dropLevel = -1;
+
+            if(legacyDropLevel >= 0) {
+                //Config needs to be updated to be more specific
+                mcMMO.p.getLogger().info("(" + treasureName + ") Updating Drop_Level in treasures.yml for treasure to match new expected format");
+                config.set(type + "." + treasureName + LEGACY_DROP_LEVEL, null);
+                config.set(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, legacyDropLevel * 10);
+                config.set(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, legacyDropLevel);
+                updatedFile = true;
+            }
+
+            if(mcMMO.isRetroModeEnabled()) {
+                dropLevel = config.getInt(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, 0);
+            } else {
+                dropLevel = config.getInt(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, 0);
+            }
+
+            if(dropLevel < 0) {
+                mcMMO.p.getLogger().info("Treasure drop level wasn't valid, using a default value.");
+                //Set it to the "max" if we don't have a drop level
+                dropLevel = 0;
+            }
 
             if (xp < 0) {
                 reason.add(treasureName + " has an invalid XP value: " + xp);
@@ -113,9 +141,6 @@ public class TreasureConfig extends ConfigLoader {
                 reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
             }
 
-            if (dropLevel < 0) {
-                reason.add(treasureName + " has an invalid Drop_Level: " + dropLevel);
-            }
 
             /*
              * Itemstack
@@ -217,6 +242,15 @@ public class TreasureConfig extends ConfigLoader {
                         AddHylianTreasure(dropper, hylianTreasure);
                     }
                 }
+            }
+        }
+
+        //Apply our fix
+        if(updatedFile) {
+            try {
+                config.save(getFile());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -31,7 +31,6 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -67,6 +66,30 @@ public class EntityListener implements Listener {
         this.pluginRef = pluginRef;
         persistentDataLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
     }
+
+//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+//    public void onBlockDropItemEvent(EntityDropItemEvent event) {
+//        if(event.getEntity() instanceof Block) {
+//            Block itemDispensingBlock = (Block) event.getEntity();
+//
+//            //Is it a berry bush?
+//            if(itemDispensingBlock.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+//                //Berry Bush Time!
+//                if (event.getEntity().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
+//                    Bukkit.broadcastMessage("Pop pop!");
+//                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getEntity().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+//                    int bonusCount = bonusDropMeta.asInt();
+//
+//                    for (int i = 0; i < bonusCount; i++) {
+//                        Misc.spawnItemNaturally(event.getEntity().getLocation(), event.getItemDrop().getItemStack(), ItemSpawnReason.BONUS_DROPS);
+//                    }
+//                }
+//            }
+//
+//            if(event.getEntity().hasMetadata(mcMMO.BONUS_DROPS_METAKEY))
+//                event.getEntity().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, pluginRef);
+//        }
+//    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityTransform(EntityTransformEvent event) {

@@ -71,22 +71,10 @@ public class MmoInfoCommand implements TabExecutor {
 
     private void displayInfo(Player player, String subSkillName)
     {
-        //Check to see if the skill exists in the new system
-        AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName(subSkillName);
-        if(abstractSubSkill != null)
-        {
-            /* New System Skills are programmable */
-            abstractSubSkill.printInfo(player);
-            //TextComponentFactory.sendPlayerUrlHeader(player);
-        } else {
-            /*
-             * Skill is only in the old system
-             */
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.OldSkill"));
-        }
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.OldSkill"));
 
         for(SubSkillType subSkillType : SubSkillType.values())
         {

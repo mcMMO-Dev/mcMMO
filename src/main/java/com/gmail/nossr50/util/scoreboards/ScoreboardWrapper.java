@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.scoreboards;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -13,9 +14,11 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
-import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,7 +45,7 @@ public class ScoreboardWrapper {
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
     private Objective sidebarObjective;
-    private final Objective powerObjective;
+    private Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
@@ -50,21 +53,34 @@ public class ScoreboardWrapper {
     public PrimarySkillType targetSkill = null;
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
+    private boolean registered = false;
 
     public ScoreboardWrapper(Player player, Scoreboard scoreboard) {
         this.player = player;
         this.playerName = player.getName();
         this.scoreboard = scoreboard;
+        initBoard();
+    }
+
+    private void initBoard() {
         sidebarType = SidebarType.NONE;
-        sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
-        powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy", POWER_OBJECTIVE);
+        if(registered) {
+            //Make sure our references are pointed at the right things
+            sidebarObjective = scoreboard.getObjective(ScoreboardManager.SIDEBAR_OBJECTIVE);
+            powerObjective = scoreboard.getObjective(ScoreboardManager.POWER_OBJECTIVE);
+        } else {
+            //Register Objectives
+            sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
+            powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy", POWER_OBJECTIVE);
+            registered = true;
+        }
 
         if (Config.getInstance().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
-            for (OnlineMMOPlayer mmoPlayer : UserManager.getPlayers()) {
-                powerObjective.getScore(mmoPlayer.getPlayerName()).setScore(mmoPlayer.getExperienceHandler().getPowerLevel());
+            for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
+                powerObjective.getScore(mcMMOPlayer.getProfile().getPlayerName()).setScore(mcMMOPlayer.getPowerLevel());
             }
         }
     }
@@ -207,7 +223,7 @@ public class ScoreboardWrapper {
         if(UserManager.getPlayer(playerName) == null)
             return;
 
-        PlayerProfile profile = UserManager.queryPlayer(player);
+        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
         if (profile.getScoreboardTipsShown() >= Config.getInstance().getTipsAmount()) {
             return;
@@ -244,7 +260,7 @@ public class ScoreboardWrapper {
                 oldBoard = null;
             }
             else {
-                mcMMO.p.getLogger().info("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
+                mcMMO.p.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
 
@@ -398,7 +414,19 @@ public class ScoreboardWrapper {
         //Unregister objective
         McMMOScoreboardObjectiveEvent unregisterEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.UNREGISTER_THIS_OBJECTIVE);
         if(!unregisterEvent.isCancelled()) {
-            sidebarObjective.unregister();
+            try {
+                sidebarObjective.unregister();
+            } catch (IllegalStateException e) {
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+                mcMMO.p.debug("Recovering scoreboard for player: " + player.getName());
+
+                if(mmoPlayer.isDebugMode())
+                    NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
+
+                initBoard(); //Start over
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> ScoreboardManager.retryLastSkillBoard(player), 0);
+            }
         }
 
         //Register objective
@@ -427,14 +455,16 @@ public class ScoreboardWrapper {
      * Load new values into the sidebar.
      */
     private void updateSidebar() {
-        try {
-            updateTask.cancel();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        if(updateTask != null) {
+            try {
+                updateTask.cancel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            updateTask = null;
         }
 
-        updateTask = null;
 
         if (sidebarType == SidebarType.NONE) {
             return;
@@ -447,9 +477,9 @@ public class ScoreboardWrapper {
             return;
         }
 
-        OnlineMMOPlayer mmoPlayer = UserManager.queryPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if(mmoPlayer == null)
+        if(mcMMOPlayer == null)
             return;
 
         switch (sidebarType) {
@@ -460,28 +490,28 @@ public class ScoreboardWrapper {
                 Validate.notNull(targetSkill);
 
                 if (!targetSkill.isChildSkill()) {
-                    int currentXP = mmoPlayer.getExperienceHandler().getSkillXpValue(targetSkill);
+                    int currentXP = mcMMOPlayer.getSkillXpLevel(targetSkill);
 
                     sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
-                    sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mmoPlayer.getExperienceHandler().getExperienceToNextLevel(targetSkill) - currentXP);
+                    sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mcMMOPlayer.getXpToLevel(targetSkill) - currentXP);
                 }
                 else {
                     for (PrimarySkillType parentSkill : FamilyTree.getParents(targetSkill)) {
-                        sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mmoPlayer.getExperienceHandler().getSkillLevel(parentSkill));
+                        sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mcMMOPlayer.getSkillLevel(parentSkill));
                     }
                 }
 
-                sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mmoPlayer.getExperienceHandler().getSkillLevel(targetSkill));
+                sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mcMMOPlayer.getSkillLevel(targetSkill));
 
-                if (targetSkill.getSuperAbilityType() != null) {
+                if (targetSkill.getAbility() != null) {
                     boolean stopUpdating;
 
                     if (targetSkill == PrimarySkillType.MINING) {
                         // Special-Case: Mining has two abilities, both with cooldowns
                         Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.SUPER_BREAKER));
                         Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.BLAST_MINING));
-                        int secondsSB = Math.max(mmoPlayer.getCooldownSeconds(SuperAbilityType.SUPER_BREAKER), 0);
-                        int secondsBM = Math.max(mmoPlayer.getCooldownSeconds(SuperAbilityType.BLAST_MINING), 0);
+                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.SUPER_BREAKER), 0);
+                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING), 0);
 
                         cooldownSB.setScore(secondsSB);
                         cooldownBM.setScore(secondsBM);
@@ -489,9 +519,9 @@ public class ScoreboardWrapper {
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
                     }
                     else {
-                        SuperAbilityType ability = targetSkill.getSuperAbilityType();
+                        SuperAbilityType ability = targetSkill.getAbility();
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
-                        int seconds = Math.max(mmoPlayer.getCooldownSeconds(ability), 0);
+                        int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                         cooldown.setScore(seconds);
 
@@ -511,7 +541,7 @@ public class ScoreboardWrapper {
                 boolean anyCooldownsActive = false;
 
                 for (SuperAbilityType ability : SuperAbilityType.values()) {
-                    int seconds = Math.max(mmoPlayer.getCooldownSeconds(ability), 0);
+                    int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                     if (seconds != 0) {
                         anyCooldownsActive = true;
@@ -536,16 +566,16 @@ public class ScoreboardWrapper {
                     newProfile = targetProfile; // offline
                 }
                 else if (targetPlayer == null) {
-                    newProfile = mmoPlayer; // self
+                    newProfile = mcMMOPlayer.getProfile(); // self
                 }
                 else {
-                    newProfile = UserManager.getPlayer(targetPlayer); // online
+                    newProfile = UserManager.getPlayer(targetPlayer).getProfile(); // online
                 }
 
                 // Calculate power level here
                 int powerLevel = 0;
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
-                    int level = newProfile.getExperienceHandler().getSkillLevel(skill);
+                    int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
 
@@ -562,10 +592,10 @@ public class ScoreboardWrapper {
 
             case RANK_BOARD:
             case TOP_BOARD:
-            /*
-             * @see #acceptRankData(Map<PrimarySkillType, Integer> rank)
-             * @see #acceptLeaderboardData(List<PlayerStat> stats)
-             */
+                /*
+                 * @see #acceptRankData(Map<PrimarySkillType, Integer> rank)
+                 * @see #acceptLeaderboardData(List<PlayerStat> stats)
+                 */
                 break;
 
             default:

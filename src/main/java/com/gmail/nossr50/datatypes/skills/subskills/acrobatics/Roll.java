@@ -3,6 +3,9 @@ package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -80,6 +83,9 @@ public class Roll extends AcrobaticsSubSkill {
                     entityDamageEvent.setCancelled(true);
                     return true;
                 }
+            } else if(Permissions.skillEnabled(player, PrimarySkillType.ACROBATICS)) {
+                //Give XP Anyways
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, ((EntityDamageEvent) event).getFinalDamage(), false), XPGainReason.PVE);
             }
         }
 
@@ -367,31 +373,34 @@ public class Roll extends AcrobaticsSubSkill {
             MaxBonusLevel: 100
             DamageThreshold: 7.0
          */
-        double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
 
-        //Chance to roll at half max skill
-        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
-        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
-        rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
-
-        //Chance to graceful roll at full skill
-        RandomChanceSkill rollGraceHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
-        rollGraceHalfMaxSkill.setSkillLevel(halfMaxSkillValue * 2); //Double the effective odds
-
-        //Chance to roll per level
-        RandomChanceSkill rollOneSkillLevel = new RandomChanceSkill(null, subSkillType);
-        rollGraceHalfMaxSkill.setSkillLevel(1); //Level 1 skill
-
-        //Chance Stat Calculations
-        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
-        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
-
-        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
-
-        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
-
-        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
+        return "Under Construction: This will work in a future update.";
+//
+//        double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
+//
+//        //Chance to roll at half max skill
+//        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+//        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
+//        rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
+//
+//        //Chance to graceful roll at full skill
+//        RandomChanceSkill rollGraceHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+//        rollGraceHalfMaxSkill.setSkillLevel(halfMaxSkillValue * 2); //Double the effective odds
+//
+//        //Chance to roll per level
+//        RandomChanceSkill rollOneSkillLevel = new RandomChanceSkill(null, subSkillType);
+//        rollGraceHalfMaxSkill.setSkillLevel(1); //Level 1 skill
+//
+//        //Chance Stat Calculations
+//        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
+//        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
+//        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
+//
+//        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
+//
+//        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
+//
+//        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
     }
 
     /**
