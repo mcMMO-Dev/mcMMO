@@ -19,7 +19,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.commands.NotifySquelchReminderTask;
@@ -82,7 +81,6 @@ public class mcMMO extends JavaPlugin {
     private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
-    private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
@@ -238,7 +236,6 @@ public class mcMMO extends JavaPlugin {
                 PartyManager.loadParties();
 
                 formulaManager = new FormulaManager();
-                holidayManager = new HolidayManager();
 
                 for (Player player : getServer().getOnlinePlayers()) {
                     new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
@@ -371,7 +368,6 @@ public class mcMMO extends JavaPlugin {
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
-            holidayManager.saveAnniversaryFiles();
             placeStore.closeAll();
         }
         catch (Exception e) {
@@ -442,10 +438,6 @@ public class mcMMO extends JavaPlugin {
 
     public static FormulaManager getFormulaManager() {
         return formulaManager;
-    }
-
-    public static HolidayManager getHolidayManager() {
-        return holidayManager;
     }
 
     public static ChunkManager getPlaceStore() {
@@ -674,10 +666,6 @@ public class mcMMO extends JavaPlugin {
 
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
-
-        if (getHolidayManager().nearingAprilFirst()) {
-            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
-        }
 
         // Clear the registered XP data so players can earn XP again
         if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {

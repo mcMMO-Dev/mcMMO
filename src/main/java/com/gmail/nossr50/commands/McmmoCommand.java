@@ -35,7 +35,7 @@ public class McmmoCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
                 }
 
-                mcMMO.getHolidayManager().anniversaryCheck(sender);
+//                mcMMO.getHolidayManager().anniversaryCheck(sender);
                 return true;
 
             case 1:

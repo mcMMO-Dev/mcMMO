@@ -1,4 +1,5 @@
 Version 2.1.184
+    Removed April Fools event
     Fixed a bug where the default treasures.yml file had incorrect keys (see notes)
 
     NOTES:

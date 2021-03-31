@@ -971,17 +971,17 @@ public class PlayerListener implements Listener {
             }
         }
     }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
-            return;
-
-        if (!mcMMO.getHolidayManager().isAprilFirst()) {
-            return;
-        }
-
-        mcMMO.getHolidayManager().handleStatisticEvent(event);
-    }
+//
+//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+//    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
+//        /* WORLD BLACKLIST CHECK */
+//        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+//            return;
+//
+//        if (!mcMMO.getHolidayManager().isAprilFirst()) {
+//            return;
+//        }
+//
+//        mcMMO.getHolidayManager().handleStatisticEvent(event);
+//    }
 }

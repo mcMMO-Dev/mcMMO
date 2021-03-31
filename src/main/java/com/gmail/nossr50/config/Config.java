@@ -243,8 +243,6 @@ public class Config extends AutoUpdateConfigLoader {
      * GENERAL SETTINGS
      */
 
-    public boolean isAprilFoolsAllowed() { return config.getBoolean("General.AprilFoolsEvent", true); }
-
     /* General Settings */
     public boolean getIsMetricsEnabled() { return config.getBoolean("Metrics.bstats", true); }
 

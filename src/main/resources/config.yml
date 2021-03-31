@@ -49,7 +49,6 @@ General:
     RetroMode:
         Enabled: true
     Locale: en_US
-    AprilFoolsEvent: true
     MOTD_Enabled: true
     EventBroadcasts: true
     EventInfoOnPlayerJoin: true
