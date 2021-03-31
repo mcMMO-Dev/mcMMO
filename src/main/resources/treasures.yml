@@ -7,7 +7,7 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level:
-            Standard: 75
+            Standard_Mode: 75
             Retro_Mode: 750
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     GUNPOWDER:
@@ -15,7 +15,7 @@ Excavation:
         XP: 30
         Drop_Chance: 10.0
         Drop_Level:
-            Standard: 10
+            Standard_Mode: 10
             Retro_Mode: 1000
         Drops_From: [Gravel]
     BONE:
@@ -23,7 +23,7 @@ Excavation:
         XP: 30
         Drop_Chance: 10.0
         Drop_Level:
-            Standard: 20
+            Standard_Mode: 20
             Retro_Mode: 200
         Drops_From: [Gravel]
     APPLE:
@@ -31,7 +31,7 @@ Excavation:
         XP: 100
         Drop_Chance: 0.1
         Drop_Level:
-            Standard: 25
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Grass_Block, Mycelium]
     SLIME_BALL:
@@ -39,7 +39,7 @@ Excavation:
         XP: 100
         Drop_Chance: 5.0
         Drop_Level:
-            Standard: 15
+            Standard_Mode: 15
             Retro_Mode: 150
         Drops_From: [Clay]
     BUCKET:
@@ -47,7 +47,7 @@ Excavation:
         XP: 100
         Drop_Chance: 0.1
         Drop_Level:
-            Standard: 50
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Clay]
     NETHERRACK:
@@ -55,7 +55,7 @@ Excavation:
         XP: 30
         Drop_Chance: 0.5
         Drop_Level:
-            Standard: 85
+            Standard_Mode: 85
             Retro_Mode: 850
         Drops_From: [Gravel]
     RED_MUSHROOM:
@@ -63,7 +63,7 @@ Excavation:
         XP: 80
         Drop_Chance: 0.5
         Drop_Level:
-            Standard: 50
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     BROWN_MUSHROOM:
@@ -71,7 +71,7 @@ Excavation:
         XP: 80
         Drop_Chance: 0.5
         Drop_Level:
-            Standard: 50
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     EGG:
@@ -79,7 +79,7 @@ Excavation:
         XP: 100
         Drop_Chance: 1.0
         Drop_Level:
-            Standard: 25
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Grass_Block]
     SOUL_SAND:
@@ -87,7 +87,7 @@ Excavation:
         XP: 80
         Drop_Chance: 0.5
         Drop_Level:
-            Standard: 65
+            Standard_Mode: 65
             Retro_Mode: 650
         Drops_From: [Sand, Red_Sand]
     CLOCK:
@@ -95,7 +95,7 @@ Excavation:
         XP: 100
         Drop_Chance: 0.1
         Drop_Level:
-            Standard: 50
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Clay]
     COBWEB:
@@ -103,7 +103,7 @@ Excavation:
         XP: 150
         Drop_Chance: 5.0
         Drop_Level:
-            Standard: 75
+            Standard_Mode: 75
             Retro_Mode: 750
         Drops_From: [Clay]
     STRING:
@@ -111,7 +111,7 @@ Excavation:
         XP: 200
         Drop_Chance: 5.0
         Drop_Level:
-            Standard: 25
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Clay]
     GLOWSTONE_DUST:
@@ -119,7 +119,7 @@ Excavation:
         XP: 80
         Drop_Chance: 5.0
         Drop_Level:
-            Standard: 5
+            Standard_Mode: 5
             Retro_Mode: 50
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Mycelium]
     MUSIC_DISC_13:
@@ -127,7 +127,7 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level:
-            Standard: 25
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     MUSIC_DISC_CAT:
@@ -135,7 +135,7 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level:
-            Standard: 25
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     DIAMOND:
@@ -143,7 +143,7 @@ Excavation:
         XP: 1000
         Drop_Chance: 0.13
         Drop_Level:
-            Standard: 35
+            Standard_Mode: 35
             Retro_Mode: 350
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     COCOA_BEANS:
@@ -151,7 +151,7 @@ Excavation:
         XP: 100
         Drop_Chance: 1.33
         Drop_Level:
-            Standard: 35
+            Standard_Mode: 35
             Retro_Mode: 350
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     QUARTZ:
@@ -159,7 +159,7 @@ Excavation:
         XP: 100
         Drop_Chance: 0.5
         Drop_Level:
-            Standard: 85
+            Standard_Mode: 85
             Retro_Mode: 850
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand, Soul_Soil]
     NAME_TAG:
@@ -167,7 +167,7 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level:
-            Standard: 25
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
 #
@@ -180,7 +180,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
     PUMPKIN_SEEDS:
@@ -188,7 +188,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
     COCOA_BEANS:
@@ -196,7 +196,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
     CARROT:
@@ -204,7 +204,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
     POTATO:
@@ -212,7 +212,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
     APPLE:
@@ -220,7 +220,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
     EMERALD:
@@ -228,7 +228,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
     DIAMOND:
@@ -236,7 +236,7 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
     GOLD_NUGGET:
@@ -244,6 +244,6 @@ Hylian_Luck:
         XP: 0
         Drop_Chance: 100.0
         Drop_Level:
-            Standard: 0
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]

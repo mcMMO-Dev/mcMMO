@@ -141,7 +141,6 @@ public class TreasureConfig extends ConfigLoader {
                 reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
             }
 
-
             /*
              * Itemstack
              */
