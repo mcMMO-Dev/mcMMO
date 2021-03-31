@@ -25,6 +25,7 @@ public class TreasureConfig extends ConfigLoader {
     public static final String FILENAME = "treasures.yml";
     public static final String LEVEL_REQUIREMENT_RETRO_MODE = ".Level_Requirement.Retro_Mode";
     public static final String LEVEL_REQUIREMENT_STANDARD_MODE = ".Level_Requirement.Standard_Mode";
+    public static final String LEVEL_REQUIREMENT_INVALID = ".Level_Requirement.Standard";
     public static final String LEGACY_DROP_LEVEL = ".Drop_Level";
     private static TreasureConfig instance;
 
@@ -111,6 +112,16 @@ public class TreasureConfig extends ConfigLoader {
             double dropChance = config.getDouble(type + "." + treasureName + ".Drop_Chance");
             int legacyDropLevel = config.getInt(type + "." + treasureName + LEGACY_DROP_LEVEL, -1);
             int dropLevel = -1;
+
+            int badDefaults = config.getInt(type + "." + treasureName + LEVEL_REQUIREMENT_INVALID, -1);
+
+            //Hacky fix for bad keys in treasures.yml defaults
+            if(badDefaults != -1) {
+                config.set(type + "." + treasureName + LEVEL_REQUIREMENT_INVALID, null);
+                config.set(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, badDefaults);
+                updatedFile = true;
+            }
+
 
             if(legacyDropLevel >= 0) {
                 //Config needs to be updated to be more specific
