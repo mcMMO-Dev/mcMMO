@@ -1338,7 +1338,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
             //Build Data
             return playerDataBuilder.build();
-        } catch (NullArgumentException e) {
+        } catch (Exception e) {
             mcMMO.p.getLogger().severe("Critical failure when trying to construct persistent player data!");
             e.printStackTrace();
             return null;

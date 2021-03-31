@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.neetgames.mcmmo.UniqueDataType;
+import com.neetgames.mcmmo.exceptions.UnexpectedValueException;
 import com.neetgames.mcmmo.skill.SkillBossBarState;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.OfflinePlayer;
@@ -59,7 +60,7 @@ public class MMODataBuilder {
         return new PlayerData(playerUUID, playerName);
     }
 
-    public PlayerData build() throws NullArgumentException {
+    public PlayerData build() throws UnexpectedValueException, NullPointerException, NullArgumentException {
         if(playerUUID == null)
             throw new NullArgumentException("playerUUID");
 
