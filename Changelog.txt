@@ -1,11 +1,26 @@
 Version 2.1.186
     Rupture has been reworked to solve a few outstanding issues (see notes)
-    Removed 'Skills.Swords.Rupture.MaxTicks' from advanced.yml
-    Removed 'Skills.Swords.Rupture.BaseTicks' from advanced.yml
     Gore no longer applies Rupture
     Gore no longer sends a message to the Wolf owner when it triggers
     Gore no longer sends a message to players that are hit by it
     Rupture no longer sends a message telling you that your target is bleeding
+    Updated locale string 'Swords.SubSkill.Rupture.Description'
+    Updated locale string 'Swords.SubSkill.Rupture.Stat.Extra'
+    Updated locale string 'Swords.Combat.Rupture.Note'
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Chance_To_Apply_On_Hit' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_Players' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_Mobs' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_Players' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_Mobs' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_Players' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_Mobs' to advanced.yml
+    Removed 'Skills.Swords.Rupture.ChanceMax' from advanced.yml
+    Removed 'Skills.Swords.Rupture.MaxBonusLevel.Standard' from advanced.yml
+    Removed 'Skills.Swords.Rupture.MaxBonusLevel.RetroMode' from advanced.yml
+    Removed 'Skills.Swords.Rupture.MaxTicks' from advanced.yml
+    Removed 'Skills.Swords.Rupture.BaseTicks' from advanced.yml
+    Removed 'Skills.Swords.Rupture.DamagePlayer' from advanced.yml
+    Removed 'Skills.Swords.Rupture.DamageMobs' from advanced.yml
 
     NOTES:
     The old Rupture would constantly interfere with your ability to do a Sweep Attack/Swipe with swords, the new one solves this problem

@@ -89,9 +89,10 @@ public class SwordsManager extends SkillManager {
                 }
             }
 
-            double tickDamageValue = target instanceof Player ? AdvancedConfig.getInstance().getRuptureDamagePlayer() : AdvancedConfig.getInstance().getRuptureDamageMobs();
+            RuptureTask ruptureTask = new RuptureTask(mmoPlayer, target,
+                    AdvancedConfig.getInstance().getRuptureTickDamage(target instanceof Player, getRuptureRank()),
+                    AdvancedConfig.getInstance().getRuptureExplosionDamage(target instanceof Player, getRuptureRank()));
 
-            RuptureTask ruptureTask = new RuptureTask(mmoPlayer, target, RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.SWORDS_RUPTURE), tickDamageValue);
             RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
 
             ruptureTask.runTaskTimer(mcMMO.p, 0, 1);
@@ -133,8 +134,8 @@ public class SwordsManager extends SkillManager {
             return 1;
     }
 
-    public int getRuptureBleedTicks() {
-        return RuptureTask.FIVE_SECOND_DURATION / RuptureTask.DAMAGE_TICK_INTERVAL;
+    public int getRuptureBleedTicks(boolean isTargetPlayer) {
+        return AdvancedConfig.getInstance().getRuptureDurationSeconds(isTargetPlayer) / RuptureTask.DAMAGE_TICK_INTERVAL;
     }
 
     /**

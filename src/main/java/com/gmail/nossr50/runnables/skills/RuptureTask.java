@@ -1,37 +1,38 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 public class RuptureTask extends BukkitRunnable {
 
-    public static final int FIVE_SECOND_DURATION = 20 * 5;
     public static final int DAMAGE_TICK_INTERVAL = 10;
 
     private final @NotNull McMMOPlayer ruptureSource;
     private final @NotNull LivingEntity targetEntity;
-    private final int ruptureRank;
     private final int expireTick;
 
     private int ruptureTick;
     private int damageTickTracker;
-    private final double damageValue; //TODO: Make configurable
+    private final double pureTickDamage; //TODO: Make configurable
+    private final double explosionDamage; //TODO: Make configurable
 
-    public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity, int ruptureRank, double damageValue) {
+    public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity, double pureTickDamage, double explosionDamage) {
         this.ruptureSource = ruptureSource;
         this.targetEntity = targetEntity;
-        this.ruptureRank = ruptureRank;
-        this.expireTick = FIVE_SECOND_DURATION;
-        this.damageValue = damageValue;
+        this.expireTick = AdvancedConfig.getInstance().getRuptureDurationSeconds(targetEntity instanceof Player);
 
         this.ruptureTick = 0;
         this.damageTickTracker = 0;
+        this.pureTickDamage = pureTickDamage;
+        this.explosionDamage = explosionDamage;
     }
 
     @Override
@@ -48,10 +49,11 @@ public class RuptureTask extends BukkitRunnable {
                 if(damageTickTracker >= DAMAGE_TICK_INTERVAL) {
                     damageTickTracker = 0; //Reset
                     ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+                    double finalDamage = 0; //Used for mob health bars and setting last damage
 
                     if(targetEntity.getHealth() > 0.01) {
                         double healthBeforeRuptureIsApplied = targetEntity.getHealth();
-                        double damagedHealth = healthBeforeRuptureIsApplied - getTickDamage();
+                        double damagedHealth = healthBeforeRuptureIsApplied - calculateAdjustedTickDamage();
 
                         if(damagedHealth <= 0) {
                             mcMMO.p.getLogger().severe("DEBUG: Miscalculating Rupture tick damage");
@@ -59,10 +61,7 @@ public class RuptureTask extends BukkitRunnable {
                             targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()
 
                             //TODO: Do we need to set last damage? Double check
-                            double finalDamage = healthBeforeRuptureIsApplied - targetEntity.getHealth();
-
-                            //Update health bars
-                            MobHealthbarUtils.handleMobHealthbars(targetEntity, finalDamage, mcMMO.p);
+                            finalDamage = healthBeforeRuptureIsApplied - targetEntity.getHealth();
 
                             if(finalDamage <= 0) {
                                 mcMMO.p.getLogger().severe("DEBUG: Miscalculating final damage for Rupture");
@@ -72,6 +71,9 @@ public class RuptureTask extends BukkitRunnable {
                             }
                         }
                     }
+
+                    //Update Health bars
+                    MobHealthbarUtils.handleMobHealthbars(targetEntity, finalDamage, mcMMO.p);
                 }
             } else {
                 explode();
@@ -95,8 +97,8 @@ public class RuptureTask extends BukkitRunnable {
         this.cancel(); //Task no longer needed
     }
 
-    private double getTickDamage() {
-        double tickDamage = damageValue;
+    private double calculateAdjustedTickDamage() {
+        double tickDamage = pureTickDamage;
 
         if(targetEntity.getHealth() <= tickDamage) {
             tickDamage = targetEntity.getHealth() - 0.01;
@@ -109,9 +111,21 @@ public class RuptureTask extends BukkitRunnable {
         return tickDamage;
     }
 
-    private int getExplosionDamage() {
-        //TODO: Balance pass
-        return ruptureRank * 10;
+    private double getExplosionDamage() {
+        return explosionDamage;
+    }
+
+    @Override
+    public String toString() {
+        return "RuptureTask{" +
+                "ruptureSource=" + ruptureSource +
+                ", targetEntity=" + targetEntity +
+                ", expireTick=" + expireTick +
+                ", ruptureTick=" + ruptureTick +
+                ", damageTickTracker=" + damageTickTracker +
+                ", pureTickDamage=" + pureTickDamage +
+                ", explosionDamage=" + explosionDamage +
+                '}';
     }
 
     @Override
@@ -119,24 +133,11 @@ public class RuptureTask extends BukkitRunnable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RuptureTask that = (RuptureTask) o;
-        return ruptureRank == that.ruptureRank && expireTick == that.expireTick && ruptureTick == that.ruptureTick && damageTickTracker == that.damageTickTracker && Double.compare(that.damageValue, damageValue) == 0 && Objects.equal(ruptureSource, that.ruptureSource) && Objects.equal(targetEntity, that.targetEntity);
+        return expireTick == that.expireTick && ruptureTick == that.ruptureTick && damageTickTracker == that.damageTickTracker && Double.compare(that.pureTickDamage, pureTickDamage) == 0 && Double.compare(that.explosionDamage, explosionDamage) == 0 && Objects.equal(ruptureSource, that.ruptureSource) && Objects.equal(targetEntity, that.targetEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ruptureSource, targetEntity, ruptureRank, expireTick, ruptureTick, damageTickTracker, damageValue);
-    }
-
-    @Override
-    public String toString() {
-        return "RuptureTimerTask{" +
-                "ruptureSource=" + ruptureSource +
-                ", targetEntity=" + targetEntity +
-                ", ruptureRank=" + ruptureRank +
-                ", expireTick=" + expireTick +
-                ", ruptureTick=" + ruptureTick +
-                ", damageTickTracker=" + damageTickTracker +
-                ", damageValue=" + damageValue +
-                '}';
+        return Objects.hashCode(ruptureSource, targetEntity, expireTick, ruptureTick, damageTickTracker, pureTickDamage, explosionDamage);
     }
 }
