@@ -29,6 +29,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -111,21 +113,40 @@ public class HerbalismManager extends SkillManager {
                     mmoPlayer.getPlayer().sendMessage("Bush XP: " + xpReward);
                 }
 
-//                //Check for double drops
-//                if(checkDoubleDrop(blockState)) {
-//
-//                    if(mmoPlayer.isDebugMode()) {
-//                        mmoPlayer.getPlayer().sendMessage("Double Drops succeeded for Berry Bush");
-//                    }
-//
-//                    //Add metadata to mark this block for double or triple drops
-//                    markForBonusDrops(blockState);
-//                }
-
-                applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
+                CheckBushAge checkBushAge = new CheckBushAge(blockState.getBlock(), mmoPlayer, xpReward);
+                checkBushAge.runTaskLater(mcMMO.p, 1);
             }
         }
     }
+
+    private class CheckBushAge extends BukkitRunnable {
+
+        @NotNull Block block;
+        @NotNull McMMOPlayer mmoPlayer;
+        int xpReward;
+
+        public CheckBushAge(@NotNull Block block, @NotNull McMMOPlayer mmoPlayer, int xpReward) {
+            this.block = block;
+            this.mmoPlayer = mmoPlayer;
+            this.xpReward = xpReward;
+        }
+
+        @Override
+        public void run() {
+            BlockState blockState = block.getState();
+
+            if(blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+                if(blockState.getBlockData() instanceof Ageable) {
+                    Ageable ageable = (Ageable) blockState.getBlockData();
+
+                    if(ageable.getAge() <= 1) {
+                        applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
+                    }
+                }
+            }
+        }
+    }
+
 
     public boolean canUseHylianLuck() {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
