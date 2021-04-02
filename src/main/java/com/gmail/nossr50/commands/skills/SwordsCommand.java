@@ -89,11 +89,10 @@ public class SwordsCommand extends SkillCommand {
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ruptureChanceToApplyLucky) : ""));
             messages.add(getStatMessage(true, true, SubSkillType.SWORDS_RUPTURE,
                     ruptureLengthSecondsAgainstPlayers,
-                    ruptureLengthSecondsAgainstMobs,
-                    rupturePureTickDamageAgainstPlayers,
-                    rupturePureTickDamageAgainstMobs,
-                    ruptureExplosionDamageAgainstPlayers,
-                    ruptureExplosionDamageAgainstMobs));
+                    ruptureLengthSecondsAgainstMobs));
+
+            messages.add(LocaleLoader.getString("Swords.SubSkill.Rupture.Stat.TickDamage", rupturePureTickDamageAgainstPlayers, rupturePureTickDamageAgainstMobs));
+            messages.add(LocaleLoader.getString("Swords.SubSkill.Rupture.Stat.ExplosionDamage", ruptureExplosionDamageAgainstPlayers, ruptureExplosionDamageAgainstMobs));
 
             messages.add(LocaleLoader.getString("Swords.Combat.Rupture.Note"));
         }

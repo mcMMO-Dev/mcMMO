@@ -7,6 +7,8 @@ Version 2.1.186
     Updated locale string 'Swords.SubSkill.Rupture.Description'
     Updated locale string 'Swords.SubSkill.Rupture.Stat.Extra'
     Updated locale string 'Swords.Combat.Rupture.Note'
+    Added locale string 'Swords.SubSkill.Rupture.Stat.TickDamage'
+    Added locale string 'Swords.SubSkill.Rupture.Stat.ExplosionDamage'
     Added 'Skills.Swords.Rupture.Rupture_Mechanics.Chance_To_Apply_On_Hit' to advanced.yml
     Added 'Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_Players' to advanced.yml
     Added 'Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_Mobs' to advanced.yml
