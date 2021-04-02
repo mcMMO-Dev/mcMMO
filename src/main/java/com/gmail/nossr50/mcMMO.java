@@ -27,7 +27,6 @@ import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -126,6 +125,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Metadata Values */
     public static final String REPLANT_META_KEY      = "mcMMO: Recently Replanted";
+    public static final String RUPTURE_META_KEY      = "mcMMO: RuptureTask";
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public static final String DODGE_TRACKER         = "mcMMO: Dodge Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
@@ -640,9 +640,6 @@ public class mcMMO extends JavaPlugin {
 
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
-
-        // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
         long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;

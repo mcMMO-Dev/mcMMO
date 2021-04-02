@@ -1,16 +1,18 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class ParticleEffectUtils {
 
@@ -27,8 +29,39 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+        Location origin = livingEntity.getEyeLocation().clone();
+        World world = origin.getWorld();
+
+        double x = origin.getX();
+        double y = origin.getY();
+        double z = origin.getZ();
+
+        double offSetVal = 0.3D;
+
+        Location locA = new Location(world, x - offSetVal, y, z);
+        Location locB = new Location(world, x + offSetVal, y, z);
+        Location locC = new Location(world, x, y + offSetVal, z);
+        Location locD = new Location(world, x, y - offSetVal, z);
+        Location locE = new Location(world, x, y, z + offSetVal);
+        Location locF = new Location(world, x, y, z - offSetVal);
+
+        Location locG = new Location(world, x + offSetVal, y, z + offSetVal);
+        Location locH = new Location(world, x - offSetVal, y, z - offSetVal);
+        Location locI = new Location(world, x - offSetVal, y - offSetVal, z - offSetVal);
+        Location locJ = new Location(world, x + offSetVal, y - offSetVal, z + offSetVal);
+        Location locK = new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
+        Location locL = new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
+
+        Location[] particleLocations = new Location[]{ locA, locB, locC, locD, locE, locF, locG, locH, locI, locJ, locK, locL};
+
+        for(Location location : particleLocations) {
+            if(RandomUtils.nextInt(100) > 30) {
+                //TODO: Change
+                livingEntity.getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+            }
+        }
     }
+
 
     public static void playDodgeEffect(Player player) {
         if (!Config.getInstance().getDodgeEffectEnabled()) {

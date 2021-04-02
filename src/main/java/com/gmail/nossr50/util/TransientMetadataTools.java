@@ -33,6 +33,11 @@ public class TransientMetadataTools {
             livingEntity.removeMetadata(mcMMO.travelingBlock, pluginRef);
         }
 
+        if(livingEntity.hasMetadata(mcMMO.REPLANT_META_KEY)) {
+            livingEntity.removeMetadata(mcMMO.REPLANT_META_KEY, pluginRef);
+        }
+
+
         //Cleanup mob metadata
         mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
     }

@@ -1,12 +1,15 @@
 package com.gmail.nossr50.skills.swords;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.RuptureTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -60,30 +63,48 @@ public class SwordsManager extends SkillManager {
      *
      * @param target The defending entity
      */
-    public void ruptureCheck(@NotNull LivingEntity target) throws IllegalStateException {
-        if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
+    public void processRupture(@NotNull LivingEntity target) throws IllegalStateException {
+        if(target.hasMetadata(mcMMO.REPLANT_META_KEY)) {
+            if(mmoPlayer.isDebugMode()) {
+                mmoPlayer.getPlayer().sendMessage("Rupture task ongoing for target " + target.toString());
+                RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY);
+                RuptureTask ruptureTask = (RuptureTask) target.getMetadata(mcMMO.RUPTURE_META_KEY);
+                mmoPlayer.getPlayer().sendMessage(ruptureTask.toString());
+            }
 
-                if (target instanceof Player) {
-                    Player defender = (Player) target;
+            return; //Don't apply bleed
+        }
 
-                    //Don't start or add to a bleed if they are blocking
-                    if(defender.isBlocking())
-                        return;
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
 
-                    if (NotificationManager.doesPlayerUseNotifications(defender)) {
-                        if(!BleedTimerTask.isBleeding(defender))
-                            NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
-                    }
-                }
+            if (target instanceof Player) {
+                Player defender = (Player) target;
 
-                BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
+                //Don't start or add to a bleed if they are blocking
+                if(defender.isBlocking())
+                    return;
 
-                if (mmoPlayer.useChatNotifications()) {
-                    NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+                if (NotificationManager.doesPlayerUseNotifications(defender)) {
+                    NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }
             }
+
+            double tickDamageValue = target instanceof Player ? AdvancedConfig.getInstance().getRuptureDamagePlayer() : AdvancedConfig.getInstance().getRuptureDamageMobs();
+
+            RuptureTask ruptureTask = new RuptureTask(mmoPlayer, target, RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.SWORDS_RUPTURE), tickDamageValue);
+            RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
+
+            ruptureTask.runTaskTimer(mcMMO.p, 0, 1);
+            target.setMetadata(mcMMO.RUPTURE_META_KEY, ruptureTaskMeta);
+
+//            if (mmoPlayer.useChatNotifications()) {
+//                NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+//            }
         }
+    }
+
+    private int getRuptureRank() {
+        return RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
     public double getStabDamage()
@@ -112,14 +133,8 @@ public class SwordsManager extends SkillManager {
             return 1;
     }
 
-    public int getRuptureBleedTicks()
-    {
-        int bleedTicks = 2 * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
-
-        if(bleedTicks > Swords.bleedMaxTicks)
-            bleedTicks = Swords.bleedMaxTicks;
-
-        return bleedTicks;
+    public int getRuptureBleedTicks() {
+        return RuptureTask.FIVE_SECOND_DURATION / RuptureTask.DAMAGE_TICK_INTERVAL;
     }
 
     /**

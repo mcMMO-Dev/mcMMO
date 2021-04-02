@@ -12,7 +12,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -168,21 +167,13 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(@NotNull LivingEntity target, double damage) {
-        if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
-                return 0;
-            }
+//        if (target instanceof Player) {
+//            NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
+//        }
+//
+//        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
 
-            BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
-
-            if (target instanceof Player) {
-                NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
-            }
-
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
-
-            damage = (damage * Taming.goreModifier) - damage;
-        }
+        damage = (damage * Taming.goreModifier) - damage;
 
         return damage;
     }

@@ -465,13 +465,7 @@ Skills:
             # DamageMobs: Bleeding damage dealt to mobs
             DamagePlayer: 2.0
             DamageMobs: 3.0
-
-            # These settings determine how long the Bleeding effect lasts
-            MaxTicks: 8
-            BaseTicks: 2
-
         CounterAttack:
-
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
             ChanceMax: 30.0

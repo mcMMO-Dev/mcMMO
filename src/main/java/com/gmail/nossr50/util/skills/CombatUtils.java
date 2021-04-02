@@ -12,7 +12,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
@@ -41,6 +40,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -96,7 +96,7 @@ public final class CombatUtils {
         if(target.getHealth() - event.getFinalDamage() >= 1)
         {
             if (swordsManager.canUseRupture()) {
-                swordsManager.ruptureCheck(target);
+                swordsManager.processRupture(target);
             }
         }
 
@@ -714,7 +714,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    UserManager.getPlayer(attacker).getSwordsManager().ruptureCheck(target);
+                    UserManager.getPlayer(attacker).getSwordsManager().processRupture(target);
                     break;
 
                 case AXES:

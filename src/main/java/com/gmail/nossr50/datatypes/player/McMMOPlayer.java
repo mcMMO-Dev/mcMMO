@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
@@ -23,7 +24,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -1080,7 +1080,15 @@ public class McMMOPlayer implements Identified {
      */
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
-        BleedTimerTask.bleedOut(getPlayer());
+        if(getPlayer().hasMetadata(mcMMO.RUPTURE_META_KEY)) {
+            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(mcMMO.RUPTURE_META_KEY);
+
+            //Punish a logout
+            ruptureTaskMeta.getRuptureTimerTask().explode();
+            ruptureTaskMeta.getRuptureTimerTask().explode();
+            ruptureTaskMeta.getRuptureTimerTask().explode();
+        }
+
         cleanup();
 
         if (syncSave) {
