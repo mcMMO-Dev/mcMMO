@@ -973,6 +973,36 @@ public class PlayerListener implements Listener {
             }
         }
     }
+
+    /**
+     * When a {@link Player} attempts to place an {@link ItemStack}
+     * into an {@link ItemFrame}, we want to make sure to remove any
+     * Ability buffs from that item.
+     * 
+     * @param event The {@link PlayerInteractEntityEvent} to handle
+     */
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        /*
+         *  We can check for an instance instead of EntityType here, so we are
+         *  ready for the infamous "Glow Item Frame" in 1.17 too!
+         */
+        if (event.getRightClicked() instanceof ItemFrame) {
+            ItemFrame frame = (ItemFrame) event.getRightClicked();
+
+            // Check if an item can even be placed
+            if (frame.isFixed() || !frame.getItem().getType().isAir()) {
+                return;
+            }
+
+            // Get the item the Player is about to place
+            ItemStack item = event.getPlayer().getInventory().getItem(event.getHand());
+            
+            // and remove any skill ability buffs!
+            SkillUtils.removeAbilityBuff(item);
+        }
+    }
+
 //
 //    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 //    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
