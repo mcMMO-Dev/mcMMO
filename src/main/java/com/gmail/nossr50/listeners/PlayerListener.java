@@ -990,16 +990,23 @@ public class PlayerListener implements Listener {
         if (event.getRightClicked() instanceof ItemFrame) {
             ItemFrame frame = (ItemFrame) event.getRightClicked();
 
-            // Check if an item can even be placed
-            if (frame.isFixed() || !frame.getItem().getType().isAir()) {
+            // Check for existing items (ignore rotations)
+            if (frame.getItem().getType() != Material.AIR) {
                 return;
             }
 
             // Get the item the Player is about to place
-            ItemStack item = event.getPlayer().getInventory().getItem(event.getHand());
-            
+            ItemStack itemInHand;
+
+            if (event.getHand() == EquipmentSlot.OFF_HAND) {
+                itemInHand = event.getPlayer().getInventory().getItemInOffHand();
+            }
+            else {
+                itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+            }
+
             // and remove any skill ability buffs!
-            SkillUtils.removeAbilityBuff(item);
+            SkillUtils.removeAbilityBuff(itemInHand);
         }
     }
 
