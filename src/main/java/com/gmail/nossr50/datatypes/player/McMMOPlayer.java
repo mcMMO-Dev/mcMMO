@@ -1081,7 +1081,7 @@ public class McMMOPlayer implements Identified {
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
         if(getPlayer().hasMetadata(mcMMO.RUPTURE_META_KEY)) {
-            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(mcMMO.RUPTURE_META_KEY);
+            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(mcMMO.RUPTURE_META_KEY).get(0);
 
             //Punish a logout
             ruptureTaskMeta.getRuptureTimerTask().explode();

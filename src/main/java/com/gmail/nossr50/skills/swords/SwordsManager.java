@@ -65,7 +65,7 @@ public class SwordsManager extends SkillManager {
      */
     public void processRupture(@NotNull LivingEntity target) {
         if(target.hasMetadata(mcMMO.RUPTURE_META_KEY)) {
-            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY);
+            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY).get(0);
 
             if(mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Rupture task ongoing for target " + target.toString());
