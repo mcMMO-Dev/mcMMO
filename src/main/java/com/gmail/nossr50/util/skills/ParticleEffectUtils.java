@@ -1,18 +1,17 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.*;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public final class ParticleEffectUtils {
 

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -56,7 +55,7 @@ public class SwordsCommand extends SkillCommand {
             ruptureExplosionDamageAgainstPlayers = String.valueOf(AdvancedConfig.getInstance().getRuptureExplosionDamage(true, ruptureRank));
             ruptureExplosionDamageAgainstMobs = String.valueOf(AdvancedConfig.getInstance().getRuptureExplosionDamage(false, ruptureRank));
 
-            ruptureChanceToApply = String.valueOf(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(ruptureRank));
+            ruptureChanceToApply = String.valueOf(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(ruptureRank) + "%");
             ruptureChanceToApplyLucky = String.valueOf(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(ruptureRank) * 1.33);
         }
         

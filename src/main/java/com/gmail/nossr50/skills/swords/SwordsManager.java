@@ -63,19 +63,20 @@ public class SwordsManager extends SkillManager {
      *
      * @param target The defending entity
      */
-    public void processRupture(@NotNull LivingEntity target) throws IllegalStateException {
-        if(target.hasMetadata(mcMMO.REPLANT_META_KEY)) {
+    public void processRupture(@NotNull LivingEntity target) {
+        if(target.hasMetadata(mcMMO.RUPTURE_META_KEY)) {
+            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY);
+
             if(mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Rupture task ongoing for target " + target.toString());
-                RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY);
-                RuptureTask ruptureTask = (RuptureTask) target.getMetadata(mcMMO.RUPTURE_META_KEY);
-                mmoPlayer.getPlayer().sendMessage(ruptureTask.toString());
+                mmoPlayer.getPlayer().sendMessage(ruptureTaskMeta.getRuptureTimerTask().toString());
             }
 
+            ruptureTaskMeta.getRuptureTimerTask().refreshRupture();
             return; //Don't apply bleed
         }
 
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
+        if (RandomChanceUtil.rollDice(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(getRuptureRank()), 100)) {
 
             if (target instanceof Player) {
                 Player defender = (Player) target;

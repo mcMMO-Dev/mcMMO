@@ -8,6 +8,7 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +28,7 @@ public class RuptureTask extends BukkitRunnable {
     public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity, double pureTickDamage, double explosionDamage) {
         this.ruptureSource = ruptureSource;
         this.targetEntity = targetEntity;
-        this.expireTick = AdvancedConfig.getInstance().getRuptureDurationSeconds(targetEntity instanceof Player);
+        this.expireTick = AdvancedConfig.getInstance().getRuptureDurationSeconds(targetEntity instanceof Player) * 20;
 
         this.ruptureTick = 0;
         this.damageTickTracker = 0;
@@ -44,12 +45,10 @@ public class RuptureTask extends BukkitRunnable {
 
             //Rupture hasn't ended yet
             if(ruptureTick < expireTick) {
-
                 //Is it time to damage?
                 if(damageTickTracker >= DAMAGE_TICK_INTERVAL) {
                     damageTickTracker = 0; //Reset
                     ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
-                    double finalDamage = 0; //Used for mob health bars and setting last damage
 
                     if(targetEntity.getHealth() > 0.01) {
                         double healthBeforeRuptureIsApplied = targetEntity.getHealth();
@@ -59,21 +58,8 @@ public class RuptureTask extends BukkitRunnable {
                             mcMMO.p.getLogger().severe("DEBUG: Miscalculating Rupture tick damage");
                         } else {
                             targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()
-
-                            //TODO: Do we need to set last damage? Double check
-                            finalDamage = healthBeforeRuptureIsApplied - targetEntity.getHealth();
-
-                            if(finalDamage <= 0) {
-                                mcMMO.p.getLogger().severe("DEBUG: Miscalculating final damage for Rupture");
-                            } else {
-                                //Actually should this even be done?
-                                targetEntity.setLastDamage(finalDamage);
-                            }
                         }
                     }
-
-                    //Update Health bars
-                    MobHealthbarUtils.handleMobHealthbars(targetEntity, finalDamage, mcMMO.p);
                 }
             } else {
                 explode();
@@ -84,8 +70,15 @@ public class RuptureTask extends BukkitRunnable {
         }
     }
 
+    public void refreshRupture() {
+        damageTickTracker = DAMAGE_TICK_INTERVAL;
+        ruptureTick = 0;
+    }
+
     public void explode() {
-        ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+        targetEntity.setMetadata(mcMMO.EXPLOSION_FROM_RUPTURE, new FixedMetadataValue(mcMMO.p, "null"));
+
+        ParticleEffectUtils.playGreaterImpactEffect(targetEntity); //Animate
 
         if(ruptureSource.getPlayer() != null && ruptureSource.getPlayer().isValid()) {
             targetEntity.damage(getExplosionDamage(), ruptureSource.getPlayer());
@@ -94,6 +87,7 @@ public class RuptureTask extends BukkitRunnable {
         }
 
         targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
+
         this.cancel(); //Task no longer needed
     }
 

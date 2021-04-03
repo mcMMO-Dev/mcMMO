@@ -1,5 +1,7 @@
 Version 2.1.186
     Rupture has been reworked to solve a few outstanding issues (see notes)
+    Fixed an exploit involving enchantments (thanks TheBusyBiscuit)
+    Fixed a very small memory leak that would only happen in very rare situations
     Gore no longer applies Rupture
     Gore no longer sends a message to the Wolf owner when it triggers
     Gore no longer sends a message to players that are hit by it
@@ -27,7 +29,7 @@ Version 2.1.186
     NOTES:
     The old Rupture would constantly interfere with your ability to do a Sweep Attack/Swipe with swords, the new one solves this problem
     Targets will bleed and take "pure" damage while bleeding, this never kills the target. It will reduce them to 0.01 HP.
-    After 5 seconds since your last attack on the target have transpired Rupture "explodes" dealing a large amount of damage, this damage is not pure and is affected by armor etc.
+    After 5 seconds of not applying Rupture on the target Rupture explodes dealing a large amount of damage, this damage is not pure and is affected by armor etc.
     Rupture no longer tells you that you that you applied it to the target, it should be obvious from the sounds/particle effects
     The new Rupture no longer constantly interferes with the vanilla Swipe (the AOE attack built into Minecraft)
     The new Rupture has not had a fine tuned balance pass, I will be balancing it frequently after this patch, it may be too weak or too strong in its current form

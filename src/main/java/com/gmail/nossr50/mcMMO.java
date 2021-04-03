@@ -125,6 +125,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Metadata Values */
     public static final String REPLANT_META_KEY      = "mcMMO: Recently Replanted";
+    public static final String EXPLOSION_FROM_RUPTURE = "mcMMO: Rupture Explosion";
     public static final String RUPTURE_META_KEY      = "mcMMO: RuptureTask";
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public static final String DODGE_TRACKER         = "mcMMO: Dodge Tracker";
