@@ -34,6 +34,9 @@ Version 2.1.186
     Rupture no longer tells you that you that you applied it to the target, it should be obvious from the sounds/particle effects
     The new Rupture no longer constantly interferes with the vanilla Swipe (the AOE attack built into Minecraft)
     The new Rupture has not had a fine tuned balance pass, I will be balancing it frequently after this patch, it may be too weak or too strong in its current form
+    Rupture does not stack between players, whoever applied Rupture first determines its strength, this will change in the future (Stronger Ruptures will overwrite weaker ones)
+    When you reapply rupture it immediately triggers a damage tick
+
 
 
 Version 2.1.185
