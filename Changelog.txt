@@ -2,6 +2,7 @@ Version 2.1.186
     Rupture has been reworked to solve a few outstanding issues (see notes)
     Fixed an exploit involving enchantments (thanks TheBusyBiscuit)
     Fixed a very small memory leak that would only happen in very rare situations
+    Fixed a bug where XP wasn't granted while sneaking and interacting with a berry bush
     Gore no longer applies Rupture
     Gore no longer sends a message to the Wolf owner when it triggers
     Gore no longer sends a message to players that are hit by it

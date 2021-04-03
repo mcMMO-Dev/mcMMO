@@ -849,9 +849,7 @@ public class PlayerListener implements Listener {
                             }
                         }
                     } else {
-                        if(!event.getPlayer().isSneaking()) {
-                            herbalismManager.processBerryBushHarvesting(blockState);
-                        }
+                        herbalismManager.processBerryBushHarvesting(blockState);
                     }
                 }
                 break;
