@@ -1,5 +1,6 @@
 Version 2.1.187
     Fixed a ClassCastException error involving Rupture
+    Fixed a bug where /fishing was showing the wrong shake chance
     Default Shake chance increased from 15% to 30% (update advanced.yml manually or delete the file to regenerate it and receive these changes)
     Removed entries for ranks 2-8 of Shake from advanced.yml (Shake only has one rank, these entries were a mistake)
     Modified the warning about UltraPermissions
