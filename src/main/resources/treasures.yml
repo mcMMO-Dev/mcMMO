@@ -6,7 +6,7 @@ Excavation:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 75
             Retro_Mode: 750
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
@@ -14,7 +14,7 @@ Excavation:
         Amount: 1
         XP: 30
         Drop_Chance: 10.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 10
             Retro_Mode: 1000
         Drops_From: [Gravel]
@@ -22,7 +22,7 @@ Excavation:
         Amount: 1
         XP: 30
         Drop_Chance: 10.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 20
             Retro_Mode: 200
         Drops_From: [Gravel]
@@ -30,7 +30,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Grass_Block, Mycelium]
@@ -38,7 +38,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 5.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 15
             Retro_Mode: 150
         Drops_From: [Clay]
@@ -46,7 +46,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Clay]
@@ -54,7 +54,7 @@ Excavation:
         Amount: 1
         XP: 30
         Drop_Chance: 0.5
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 85
             Retro_Mode: 850
         Drops_From: [Gravel]
@@ -62,7 +62,7 @@ Excavation:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
@@ -70,7 +70,7 @@ Excavation:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
@@ -78,7 +78,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 1.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Grass_Block]
@@ -86,7 +86,7 @@ Excavation:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 65
             Retro_Mode: 650
         Drops_From: [Sand, Red_Sand]
@@ -94,7 +94,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Clay]
@@ -102,7 +102,7 @@ Excavation:
         Amount: 1
         XP: 150
         Drop_Chance: 5.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 75
             Retro_Mode: 750
         Drops_From: [Clay]
@@ -110,7 +110,7 @@ Excavation:
         Amount: 1
         XP: 200
         Drop_Chance: 5.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Clay]
@@ -118,7 +118,7 @@ Excavation:
         Amount: 1
         XP: 80
         Drop_Chance: 5.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 5
             Retro_Mode: 50
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Mycelium]
@@ -126,7 +126,7 @@ Excavation:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
@@ -134,7 +134,7 @@ Excavation:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
@@ -142,7 +142,7 @@ Excavation:
         Amount: 1
         XP: 1000
         Drop_Chance: 0.13
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 35
             Retro_Mode: 350
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
@@ -150,7 +150,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 1.33
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 35
             Retro_Mode: 350
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
@@ -158,7 +158,7 @@ Excavation:
         Amount: 1
         XP: 100
         Drop_Chance: 0.5
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 85
             Retro_Mode: 850
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand, Soul_Soil]
@@ -166,20 +166,20 @@ Excavation:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
 #
 #  Settings for Hylian Luck
-#  If you are in retro mode, Drop_Level is multiplied by 10.
+#  If you are in retro mode, Level_Requirement is multiplied by 10.
 ###
 Hylian_Luck:
     MELON_SEEDS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
@@ -187,7 +187,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
@@ -195,7 +195,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
@@ -203,7 +203,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
@@ -211,7 +211,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
@@ -219,7 +219,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
@@ -227,7 +227,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
@@ -235,7 +235,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
@@ -243,7 +243,7 @@ Hylian_Luck:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
+        Level_Requirement:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
