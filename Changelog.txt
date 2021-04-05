@@ -1,5 +1,11 @@
 Version 2.1.187
     Fixed a ClassCastException error involving Rupture
+    Default Shake chance increased from 15% to 30% (update advanced.yml manually or delete the file to regenerate it and receive these changes)
+    Removed entries for ranks 2-8 of Shake from advanced.yml (Shake only has one rank, these entries were a mistake)
+    Modified the warning about UltraPermissions
+
+    NOTES:
+    The latest versions of UltraPermissions should play nicely with mcMMO, but older versions do not. Make sure to update UltraPermissions.
 
 Version 2.1.186
     Rupture has been reworked to solve a few outstanding issues (see notes)
