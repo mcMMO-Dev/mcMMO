@@ -3,8 +3,9 @@ Version 2.1.188
     Fixed a bug where excavation treasures only required level 0 instead of loading the value from the config
     Fixed a bug where /fishing was showing the wrong shake chance
     Default Shake chance increased from 15% to 30% (update advanced.yml manually or delete the file to regenerate it and receive these changes)
-    Removed entries for ranks 2-8 of Shake from advanced.yml (Shake only has one rank, these entries were a mistake)
+    Removed entries for ranks 2-8 of Shake from advanced.yml (Shake only has one rank, the extra entries were a mistake)
     Modified the warning about UltraPermissions
+    Removed the debug message about potentially unused keys (only shown if you had debug mode enabled in config.yml)
 
     NOTES:
     This update makes changes to treasures.yml automatically to apply the fix, you don't need to do anything

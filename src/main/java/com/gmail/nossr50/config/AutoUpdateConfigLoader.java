@@ -53,11 +53,11 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         if (!newKeys.isEmpty() || !oldKeys.isEmpty()) {
             needSave = true;
         }
-
-        for (String key : oldKeys) {
-            plugin.debug("Detected potentially unused key: " + key);
-            //config.set(key, null);
-        }
+//
+//        for (String key : oldKeys) {
+//            plugin.debug("Detected potentially unused key: " + key);
+//            //config.set(key, null);
+//        }
 
         for (String key : newKeys) {
             plugin.debug("Adding new key: " + key + " = " + internalConfig.get(key));
