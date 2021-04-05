@@ -9,7 +9,7 @@ Version 2.1.188
 
     NOTES:
     This update makes changes to treasures.yml automatically to apply the fix, you don't need to do anything
-    The latest versions of UltraPermissions should play nicely with mcMMO, but older versions do not. Make sure to update UltraPermissions.
+    UltraPermissions devs are working on a fix for the performance issue bug
 
 Version 2.1.187
     Fixed a ClassCastException error involving Rupture
