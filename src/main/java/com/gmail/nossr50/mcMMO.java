@@ -266,12 +266,6 @@ public class mcMMO extends JavaPlugin {
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
             }
-
-            if(pluginManager.getPlugin(ULTRA_PERMISSONS) != null) {
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    getLogger().severe("mcMMO and UltraPermissions have a severe conflict resulting in extreme server performance degradation, an update will be available soon (according to the UltraPermission devs) that will fix this issue. For now it is not advised to use these plugins at the same time. It is advised that you keep mcMMO and UltraPermission up to date.");
-                }, 20);
-            }
         }
 
         catch (Throwable t) {
