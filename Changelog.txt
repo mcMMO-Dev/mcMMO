@@ -1,5 +1,6 @@
 Version 2.1.189
     Removed UP warning
+    Updated pl locale (Thanks Mich3l3k)
 
     NOTES:
     Ultra Permissions is SAFE to use with mcMMO
