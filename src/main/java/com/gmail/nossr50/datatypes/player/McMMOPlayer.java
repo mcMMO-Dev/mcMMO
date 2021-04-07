@@ -67,6 +67,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,7 +121,7 @@ public class McMMOPlayer implements Identified {
 
     private PrimarySkillType lastSkillShownScoreboard = PrimarySkillType.values()[0];
 
-    public McMMOPlayer(Player player, PlayerProfile profile) {
+    public McMMOPlayer(@NotNull Player player, @NotNull PlayerProfile profile) {
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
         identity = Identity.identity(uuid);
@@ -171,7 +172,7 @@ public class McMMOPlayer implements Identified {
         }
     }
 
-    public String getPlayerName() {
+    public @NotNull String getPlayerName() {
         return playerName;
     }
 
@@ -192,25 +193,26 @@ public class McMMOPlayer implements Identified {
         return lastSkillShownScoreboard;
     }
 
-    public void setLastSkillShownScoreboard(PrimarySkillType primarySkillType) {
+    public void setLastSkillShownScoreboard(@NotNull PrimarySkillType primarySkillType) {
         this.lastSkillShownScoreboard = primarySkillType;
     }
 
-    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
+    public void processPostXpEvent(@NotNull PrimarySkillType primarySkillType, @NotNull Plugin plugin, @NotNull XPGainSource xpGainSource)
     {
         //Check if they've reached the power level cap just now
-        if(hasReachedPowerLevelCap()) {
+        if (hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
-        } else if(hasReachedLevelCap(primarySkillType)) {
+        } else if (hasReachedLevelCap(primarySkillType, true)) {
+            // We can ignore the power level cap here since we checked it above.
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getName());
         }
 
         //Updates from Party sources
-        if(xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
             return;
 
         //Updates from passive sources (Alchemy, Smelting, etc...)
-        if(xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
             return;
 
         updateXPBar(primarySkillType, plugin);
@@ -528,14 +530,27 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Whether or not a player is level capped
-     * If they are at the power level cap, this will return true, otherwise it checks their skill level
-     * @param primarySkillType
-     * @return
+     * If they are at the power level cap, this will return true,
+     * otherwise it checks their skill level
+     * @param primarySkillType The {@link PrimarySkillType} to check
+     * @return Whether or not a player is level capped.
      */
-    public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
-        if(hasReachedPowerLevelCap())
+    public boolean hasReachedLevelCap(@NotNull PrimarySkillType primarySkillType) {
+        return hasReachedLevelCap(primarySkillType, false);
+    }
+
+    /**
+     * If they are at the power level cap and this cap is not ignored,
+     * it will return true.
+     * Otherwise it checks their skill level
+     * @param primarySkillType The {@link PrimarySkillType} to check
+     * @param ignorePowerLevelCap Whether to ignore the Power Level Cap and only check for the skill level
+     * @return Whether or not a player is level capped.
+     */
+    public boolean hasReachedLevelCap(@NotNull PrimarySkillType primarySkillType, boolean ignorePowerLevelCap) {
+        if (!ignorePowerLevelCap && hasReachedPowerLevelCap()) {
             return true;
+        }
 
         return getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType);
     }
@@ -641,7 +656,7 @@ public class McMMOPlayer implements Identified {
      * @param primarySkillType The skill to check
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(hasReachedLevelCap(primarySkillType))
+        if (hasReachedLevelCap(primarySkillType))
             return;
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
@@ -705,11 +720,11 @@ public class McMMOPlayer implements Identified {
         }
     }
 
-    public void setPartyInvite(Party invite) {
+    public void setPartyInvite(@Nullable Party invite) {
         this.invite = invite;
     }
 
-    public Party getPartyInvite() {
+    public @Nullable Party getPartyInvite() {
         return invite;
     }
 
@@ -717,11 +732,11 @@ public class McMMOPlayer implements Identified {
         return (invite != null);
     }
 
-    public void setParty(Party party) {
+    public void setParty(@Nullable Party party) {
         this.party = party;
     }
 
-    public Party getParty() {
+    public @Nullable Party getParty() {
         return party;
     }
 
@@ -741,11 +756,11 @@ public class McMMOPlayer implements Identified {
         return ptpRecord;
     }
 
-    public void setPartyAllianceInvite(Party allianceInvite) {
+    public void setPartyAllianceInvite(@Nullable Party allianceInvite) {
         this.allianceInvite = allianceInvite;
     }
 
-    public Party getPartyAllianceInvite() {
+    public @Nullable Party getPartyAllianceInvite() {
         return allianceInvite;
     }
 
@@ -784,7 +799,7 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to process
      * @return Modified experience
      */
-    private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
+    private float modifyXpGain(@NotNull PrimarySkillType primarySkillType, float xp) {
         //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
         if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
                 || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
@@ -900,7 +915,7 @@ public class McMMOPlayer implements Identified {
         new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 
-    public void processAbilityActivation(PrimarySkillType skill) {
+    public void processAbilityActivation(@NotNull PrimarySkillType skill) {
         if (!skill.getPermissions(getPlayer())) {
             return;
         }
@@ -1017,7 +1032,7 @@ public class McMMOPlayer implements Identified {
      *
      * @return the number of seconds remaining before the cooldown expires
      */
-    public int calculateTimeRemaining(SuperAbilityType ability) {
+    public int calculateTimeRemaining(@NotNull SuperAbilityType ability) {
         long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
@@ -1069,7 +1084,7 @@ public class McMMOPlayer implements Identified {
         profile.resetCooldowns();
     }
 
-    public FixedMetadataValue getPlayerMetadata() {
+    public @NotNull FixedMetadataValue getPlayerMetadata() {
         return playerMetadata;
     }
 
