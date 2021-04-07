@@ -65,11 +65,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -83,7 +82,7 @@ public class McMMOPlayer implements Identified {
     private final Player        player;
     private final PlayerProfile profile;
 
-    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
+    private final Map<PrimarySkillType, SkillManager> skillManagers = new EnumMap<>(PrimarySkillType.class);
     private final ExperienceBarManager experienceBarManager;
 
     private Party   party;
@@ -102,10 +101,10 @@ public class McMMOPlayer implements Identified {
 
     private ChatChannel chatChannel;
 
-    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<>();
-    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
+    private final Map<SuperAbilityType, Boolean> abilityMode     = new EnumMap<>(SuperAbilityType.class);
+    private final Map<SuperAbilityType, Boolean> abilityInformed = new EnumMap<>(SuperAbilityType.class);
 
-    private final Map<ToolType, Boolean> toolMode = new HashMap<>();
+    private final Map<ToolType, Boolean> toolMode = new EnumMap<>(ToolType.class);
 
     private int recentlyHurt;
     private int respawnATS;
@@ -1021,7 +1020,7 @@ public class McMMOPlayer implements Identified {
                 String.valueOf(calculateTimeRemaining(superAbilityType)));
     }
 
-    public boolean isAbilityOnCooldown(SuperAbilityType ability) {
+    public boolean isAbilityOnCooldown(@NotNull SuperAbilityType ability) {
         return !getAbilityMode(ability) && calculateTimeRemaining(ability) > 0;
     }
 
@@ -1040,43 +1039,43 @@ public class McMMOPlayer implements Identified {
     /*
      * These functions are wrapped from PlayerProfile so that we don't always have to store it alongside the McMMOPlayer object.
      */
-    public int getSkillLevel(PrimarySkillType skill) {
+    public int getSkillLevel(@NotNull PrimarySkillType skill) {
         return profile.getSkillLevel(skill);
     }
 
-    public float getSkillXpLevelRaw(PrimarySkillType skill) {
+    public float getSkillXpLevelRaw(@NotNull PrimarySkillType skill) {
         return profile.getSkillXpLevelRaw(skill);
     }
 
-    public int getSkillXpLevel(PrimarySkillType skill) {
+    public int getSkillXpLevel(@NotNull PrimarySkillType skill) {
         return profile.getSkillXpLevel(skill);
     }
 
-    public void setSkillXpLevel(PrimarySkillType skill, float xpLevel) {
+    public void setSkillXpLevel(@NotNull PrimarySkillType skill, float xpLevel) {
         profile.setSkillXpLevel(skill, xpLevel);
     }
 
-    public int getXpToLevel(PrimarySkillType skill) {
+    public int getXpToLevel(@NotNull PrimarySkillType skill) {
         return profile.getXpToLevel(skill);
     }
 
-    public void removeXp(PrimarySkillType skill, int xp) {
+    public void removeXp(@NotNull PrimarySkillType skill, int xp) {
         profile.removeXp(skill, xp);
     }
 
-    public void modifySkill(PrimarySkillType skill, int level) {
+    public void modifySkill(@NotNull PrimarySkillType skill, int level) {
         profile.modifySkill(skill, level);
     }
 
-    public void addLevels(PrimarySkillType skill, int levels) {
+    public void addLevels(@NotNull PrimarySkillType skill, int levels) {
         profile.addLevels(skill, levels);
     }
 
-    public void addXp(PrimarySkillType skill, float xp) {
+    public void addXp(@NotNull PrimarySkillType skill, float xp) {
         profile.addXp(skill, xp);
     }
 
-    public void setAbilityDATS(SuperAbilityType ability, long DATS) {
+    public void setAbilityDATS(@NotNull SuperAbilityType ability, long DATS) {
         profile.setAbilityDATS(ability, DATS);
     }
 
@@ -1141,7 +1140,7 @@ public class McMMOPlayer implements Identified {
      * @return this players identity
      */
     @Override
-    public @NonNull Identity identity() {
+    public @NotNull Identity identity() {
         return identity;
     }
 
