@@ -14,7 +14,7 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -32,14 +32,14 @@ public class PlayerProfile {
     private int saveAttempts = 0;
 
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<>();     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
-    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private final Map<PrimarySkillType, Integer> skills           = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
+    private final Map<PrimarySkillType, Float>   skillsXp         = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS      = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
+    private final Map<UniqueDataType, Integer>   uniquePlayerData = new EnumMap<>(UniqueDataType.class); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for diminished returns
     private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
-    private final HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<>();
+    private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<>(PrimarySkillType.class);
 
     @Deprecated
     public PlayerProfile(String playerName) {
