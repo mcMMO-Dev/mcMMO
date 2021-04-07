@@ -198,7 +198,7 @@ public class FishingManager extends SkillManager {
     }
 
     public double getShakeChance() {
-        return AdvancedConfig.getInstance().getShakeChance(getLootTier());
+        return AdvancedConfig.getInstance().getShakeChance(RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.FISHING_SHAKE));
     }
 
     protected int getVanillaXPBoostModifier() {

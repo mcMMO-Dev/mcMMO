@@ -530,6 +530,10 @@ public class EntityListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
+        if(event.getEntity().hasMetadata(mcMMO.EXPLOSION_FROM_RUPTURE)) {
+            event.getEntity().removeMetadata(mcMMO.EXPLOSION_FROM_RUPTURE, mcMMO.p);
+        }
+
         if(event.getEntity() instanceof Player)
         {
             Player player = (Player) event.getEntity();
@@ -702,7 +706,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
-        mcMMO.getTransientMetadataTools().cleanAllMobMetadata(event.getEntity());
+        mcMMO.getTransientMetadataTools().cleanAllLivingEntityMetadata(event.getEntity());
     }
 
     /**

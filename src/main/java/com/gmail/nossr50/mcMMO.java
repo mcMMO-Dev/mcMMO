@@ -14,7 +14,7 @@ import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
-import com.gmail.nossr50.runnables.CheckDateTask;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.commands.NotifySquelchReminderTask;
@@ -23,7 +23,6 @@ import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -78,7 +77,6 @@ public class mcMMO extends JavaPlugin {
     private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
-    private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
@@ -126,6 +124,8 @@ public class mcMMO extends JavaPlugin {
 
     /* Metadata Values */
     public static final String REPLANT_META_KEY      = "mcMMO: Recently Replanted";
+    public static final String EXPLOSION_FROM_RUPTURE = "mcMMO: Rupture Explosion";
+    public static final String RUPTURE_META_KEY      = "mcMMO: RuptureTask";
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public static final String DODGE_TRACKER         = "mcMMO: Dodge Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
@@ -149,9 +149,6 @@ public class mcMMO extends JavaPlugin {
     public static FixedMetadataValue metadataValue;
 
     public static final String ULTRA_PERMISSONS = "UltraPermissons";
-    public static final String UP_WARNING_2 = "Stop using " + ULTRA_PERMISSONS + " with mcMMO immediately!";
-    public static final String UP_WARNING_1 = "mcMMO has detected " + ULTRA_PERMISSONS + " on your server, users have reported a severe plugin conflict between these two plugins which severely degrades server performance";
-    public static final String UP_WARNING_3 = "The author of UltraPermissions has passed away and its unlikely this issue will ever be solved";
 
     public mcMMO() {
         p = this;
@@ -234,7 +231,6 @@ public class mcMMO extends JavaPlugin {
                 mcMMO.getPartyManager().loadParties();
 
                 formulaManager = new FormulaManager();
-                holidayManager = new HolidayManager();
 
                 for (Player player : getServer().getOnlinePlayers()) {
                     new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
@@ -266,18 +262,6 @@ public class mcMMO extends JavaPlugin {
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Retro"));
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
-            }
-
-            if(pluginManager.getPlugin(ULTRA_PERMISSONS) != null) {
-                Bukkit.getScheduler().runTaskTimer(this, () -> {
-                    getLogger().severe(UP_WARNING_1);
-                    getLogger().severe(UP_WARNING_2);
-                    getLogger().severe(UP_WARNING_3);
-
-                    Bukkit.broadcastMessage(UP_WARNING_1);
-                    Bukkit.broadcastMessage(UP_WARNING_2);
-                    Bukkit.broadcastMessage(UP_WARNING_3);
-                    }, 0L, 1200L);
             }
         }
 
@@ -370,7 +354,6 @@ public class mcMMO extends JavaPlugin {
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
-            holidayManager.saveAnniversaryFiles();
             placeStore.closeAll();
         }
         catch (Exception e) {
@@ -441,10 +424,6 @@ public class mcMMO extends JavaPlugin {
 
     public static FormulaManager getFormulaManager() {
         return formulaManager;
-    }
-
-    public static HolidayManager getHolidayManager() {
-        return holidayManager;
     }
 
     public static ChunkManager getPlaceStore() {
@@ -631,9 +610,6 @@ public class mcMMO extends JavaPlugin {
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
-        // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
-
         // Old & Powerless User remover
         long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
@@ -656,10 +632,6 @@ public class mcMMO extends JavaPlugin {
 
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
-
-        if (getHolidayManager().nearingAprilFirst()) {
-            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
-        }
 
         // Clear the registered XP data so players can earn XP again
         if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {

@@ -131,7 +131,7 @@ public final class MobHealthbarUtils {
                 return null;
         }
 
-        int coloredDisplay = (int) Math.ceil(fullDisplay * (healthPercentage / 100.0D));
+        int coloredDisplay = (int) Math.max(Math.ceil(fullDisplay * (healthPercentage / 100.0D)), 0.5);
         int grayDisplay = fullDisplay - coloredDisplay;
 
         StringBuilder healthbar = new StringBuilder(color + "");

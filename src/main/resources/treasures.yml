@@ -6,244 +6,244 @@ Excavation:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
-            Standard: 75
+        Level_Requirement:
+            Standard_Mode: 75
             Retro_Mode: 750
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     GUNPOWDER:
         Amount: 1
         XP: 30
         Drop_Chance: 10.0
-        Drop_Level:
-            Standard: 10
+        Level_Requirement:
+            Standard_Mode: 10
             Retro_Mode: 1000
         Drops_From: [Gravel]
     BONE:
         Amount: 1
         XP: 30
         Drop_Chance: 10.0
-        Drop_Level:
-            Standard: 20
+        Level_Requirement:
+            Standard_Mode: 20
             Retro_Mode: 200
         Drops_From: [Gravel]
     APPLE:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
-        Drop_Level:
-            Standard: 25
+        Level_Requirement:
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Grass_Block, Mycelium]
     SLIME_BALL:
         Amount: 1
         XP: 100
         Drop_Chance: 5.0
-        Drop_Level:
-            Standard: 15
+        Level_Requirement:
+            Standard_Mode: 15
             Retro_Mode: 150
         Drops_From: [Clay]
     BUCKET:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
-        Drop_Level:
-            Standard: 50
+        Level_Requirement:
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Clay]
     NETHERRACK:
         Amount: 1
         XP: 30
         Drop_Chance: 0.5
-        Drop_Level:
-            Standard: 85
+        Level_Requirement:
+            Standard_Mode: 85
             Retro_Mode: 850
         Drops_From: [Gravel]
     RED_MUSHROOM:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
-        Drop_Level:
-            Standard: 50
+        Level_Requirement:
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     BROWN_MUSHROOM:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
-        Drop_Level:
-            Standard: 50
+        Level_Requirement:
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     EGG:
         Amount: 1
         XP: 100
         Drop_Chance: 1.0
-        Drop_Level:
-            Standard: 25
+        Level_Requirement:
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Grass_Block]
     SOUL_SAND:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
-        Drop_Level:
-            Standard: 65
+        Level_Requirement:
+            Standard_Mode: 65
             Retro_Mode: 650
         Drops_From: [Sand, Red_Sand]
     CLOCK:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
-        Drop_Level:
-            Standard: 50
+        Level_Requirement:
+            Standard_Mode: 50
             Retro_Mode: 500
         Drops_From: [Clay]
     COBWEB:
         Amount: 1
         XP: 150
         Drop_Chance: 5.0
-        Drop_Level:
-            Standard: 75
+        Level_Requirement:
+            Standard_Mode: 75
             Retro_Mode: 750
         Drops_From: [Clay]
     STRING:
         Amount: 1
         XP: 200
         Drop_Chance: 5.0
-        Drop_Level:
-            Standard: 25
+        Level_Requirement:
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Clay]
     GLOWSTONE_DUST:
         Amount: 1
         XP: 80
         Drop_Chance: 5.0
-        Drop_Level:
-            Standard: 5
+        Level_Requirement:
+            Standard_Mode: 5
             Retro_Mode: 50
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Mycelium]
     MUSIC_DISC_13:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
-            Standard: 25
+        Level_Requirement:
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     MUSIC_DISC_CAT:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
-            Standard: 25
+        Level_Requirement:
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     DIAMOND:
         Amount: 1
         XP: 1000
         Drop_Chance: 0.13
-        Drop_Level:
-            Standard: 35
+        Level_Requirement:
+            Standard_Mode: 35
             Retro_Mode: 350
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     COCOA_BEANS:
         Amount: 1
         XP: 100
         Drop_Chance: 1.33
-        Drop_Level:
-            Standard: 35
+        Level_Requirement:
+            Standard_Mode: 35
             Retro_Mode: 350
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     QUARTZ:
         Amount: 1
         XP: 100
         Drop_Chance: 0.5
-        Drop_Level:
-            Standard: 85
+        Level_Requirement:
+            Standard_Mode: 85
             Retro_Mode: 850
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand, Soul_Soil]
     NAME_TAG:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
-        Drop_Level:
-            Standard: 25
+        Level_Requirement:
+            Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
 #
 #  Settings for Hylian Luck
-#  If you are in retro mode, Drop_Level is multiplied by 10.
+#  If you are in retro mode, Level_Requirement is multiplied by 10.
 ###
 Hylian_Luck:
     MELON_SEEDS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
     PUMPKIN_SEEDS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
     COCOA_BEANS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Bushes]
     CARROT:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
     POTATO:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
     APPLE:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Flowers]
     EMERALD:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
     DIAMOND:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
     GOLD_NUGGET:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
-        Drop_Level:
-            Standard: 0
+        Level_Requirement:
+            Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]

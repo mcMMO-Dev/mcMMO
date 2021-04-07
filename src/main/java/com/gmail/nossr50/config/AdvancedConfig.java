@@ -310,25 +310,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* SWORDS */
-        if (getMaximumProbability(SubSkillType.SWORDS_RUPTURE) < 1) {
-            reason.add("Skills.Swords.Rupture.ChanceMax should be at least 1!");
-        }
-
-        if (getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE) < 1) {
-            reason.add("Skills.Swords.Rupture.MaxBonusLevel should be at least 1!");
-        }
-
-        if (getRuptureMaxTicks() < 1) {
-            reason.add("Skills.Swords.Rupture.MaxTicks should be at least 1!");
-        }
-
-        if (getRuptureMaxTicks() < getRuptureBaseTicks()) {
-            reason.add("Skills.Swords.Rupture.MaxTicks should be at least Skills.Swords.Rupture.BaseTicks!");
-        }
-
-        if (getRuptureBaseTicks() < 1) {
-            reason.add("Skills.Swords.Rupture.BaseTicks should be at least 1!");
-        }
 
         if (getMaximumProbability(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
             reason.add("Skills.Swords.CounterAttack.ChanceMax should be at least 1!");
@@ -665,13 +646,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getGracefulRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.GracefulRoll.DamageThreshold", 14.0D); }
 
     /* ALCHEMY */
-    /*public int getCatalysisUnlockLevel() { return config.getInt("Skills.Alchemy.Catalysis.UnlockLevel", 100); }*/
     public int getCatalysisMaxBonusLevel() { return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000); }
 
     public double getCatalysisMinSpeed() { return config.getDouble("Skills.Alchemy.Catalysis.MinSpeed", 1.0D); }
     public double getCatalysisMaxSpeed() { return config.getDouble("Skills.Alchemy.Catalysis.MaxSpeed", 4.0D); }
 
-    //public int getConcoctionsTierLevel(Alchemy.Tier tier) { return config.getInt("Skills.Alchemy.Rank_Levels.Rank_" + rank); }
 
     /* ARCHERY */
     public double getSkillShotRankDamageMultiplier() { return config.getDouble("Skills.Archery.SkillShot.RankDamageMultiplier", 10.0D); }
@@ -700,7 +679,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     //Nothing to configure, everything is already configurable in config.yml
 
     /* FISHING */
-    //public int getFishingTierLevel(int rank) { return config.getInt("Skills.Fishing.Rank_Levels.Rank_" + rank); }
     public double getShakeChance(int rank) { return config.getDouble("Skills.Fishing.ShakeChance.Rank_" + rank); }
     public int getFishingVanillaXPModifier(int rank) { return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank); }
 
@@ -712,9 +690,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getFishingReductionMaxWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait", 100);}
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
 
-    /*public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.IceFishing.UnlockLevel", 50); }
 
-    public int getMasterAnglerUnlockLevel() {return config.getInt("Skills.Fishing.MasterAngler.UnlockLevel", 125); }*/
     public double getMasterAnglerBoatModifier() {return config.getDouble("Skills.Fishing.MasterAngler.BoatModifier", 2.0); }
     public double getMasterAnglerBiomeModifier() {return config.getDouble("Skills.Fishing.MasterAngler.BiomeModifier", 2.0); }
 
@@ -737,23 +713,15 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100); }
 
-    /* Arcane Forging */
-    //public int getArcaneForgingRankLevel(int rank) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank); }
-
     public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true); }
     public double getArcaneForgingKeepEnchantsChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank); }
 
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.Downgrades_Enabled", true); }
     public double getArcaneForgingDowngradeChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Downgrades_Chance.Rank_" + rank); }
 
-    /* SALVAGE */
-    //public double getSalvageMaxPercentage() { return config.getDouble("Skills.Salvage.MaxPercentage", 100.0D); }
-    //public int getSalvageMaxPercentageLevel() { return config.getInt("Skills.Salvage.MaxPercentageLevel", 1000); }
-
     public boolean getArcaneSalvageEnchantDowngradeEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantDowngradeEnabled", true); }
     public boolean getArcaneSalvageEnchantLossEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true); }
 
-    //public int getArcaneSalvageRankLevel(int rank) { return config.getInt("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + rank); }
     public double getArcaneSalvageExtractFullEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + rank); }
     public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank); }
 
@@ -765,19 +733,35 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             return config.getInt("Skills.Smelting.FuelEfficiency.Standard.MaxBonusLevel", 100);
     }
 
-    /*public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining.UnlockLevel", 250); }*/
     public double getFluxMiningChance() { return config.getDouble("Skills.Smelting.FluxMining.Chance", 33.0D); }
 
-    public int getSmeltingRankLevel(int rank) { return config.getInt("Skills.Smelting.Rank_Levels.Rank_" + rank); }
-
-    public int getSmeltingVanillaXPBoostMultiplier(int rank) { return config.getInt("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank); }
-
     /* SWORDS */
-    public double getRuptureDamagePlayer() { return config.getDouble("Skills.Swords.Rupture.DamagePlayer", 1.0); }
-    public double getRuptureDamageMobs() { return config.getDouble("Skills.Swords.Rupture.DamageMobs", 2.0); }
+    public double getRuptureTickDamage(boolean isTargetPlayer, int rank) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_";
+        String targetType = isTargetPlayer ? "Players" : "Mobs";
+        String key = root + targetType + ".Rank_" + rank;
 
-    public int getRuptureMaxTicks() { return config.getInt("Skills.Swords.Rupture.MaxTicks", 8); }
-    public int getRuptureBaseTicks() { return config.getInt("Skills.Swords.Rupture.BaseTicks", 2); }
+        return config.getDouble(key, 1.0D);
+    }
+
+    public int getRuptureDurationSeconds(boolean isTargetPlayer) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_";
+        String targetType = isTargetPlayer ? "Players" : "Mobs";
+        return config.getInt(root + targetType, 5);
+    }
+
+    public double getRuptureExplosionDamage(boolean isTargetPlayer, int rank) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_";
+        String targetType = isTargetPlayer ? "Players" : "Mobs";
+        String key = root + targetType + ".Rank_" + rank;
+
+        return config.getDouble(key, 40.0D);
+    }
+
+    public double getRuptureChanceToApplyOnHit(int rank) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Chance_To_Apply_On_Hit.Rank_";
+        return config.getDouble(root + rank, 33);
+    }
 
     public double getCounterModifier() { return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D); }
 
@@ -785,24 +769,15 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5); }
 
     /* TAMING */
-    //public int getGoreRuptureTicks() { return config.getInt("Skills.Taming.Gore.RuptureTicks", 2); }
     public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D); }
 
-    /*public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood.UnlockLevel", 50); }*/
     public double getFastFoodChance() { return config.getDouble("Skills.Taming.FastFoodService.Chance", 50.0D); }
     public double getPummelChance() { return config.getDouble("Skills.Taming.Pummel.Chance", 10.0D); }
 
-    //public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware.UnlockLevel", 100); }
-
-    /*public int getThickFurUnlock() { return config.getInt("Skills.Taming.ThickFur.UnlockLevel", 250); }*/
     public double getThickFurModifier() { return config.getDouble("Skills.Taming.ThickFur.Modifier", 2.0D); }
 
-    /*public int getHolyHoundUnlock() {return config.getInt("Skills.Taming.HolyHound.UnlockLevel", 375); }*/
-
-    /*public int getShockProofUnlock() { return config.getInt("Skills.Taming.ShockProof.UnlockLevel", 500); }*/
     public double getShockProofModifier() { return config.getDouble("Skills.Taming.ShockProof.Modifier", 6.0D); }
 
-    /*public int getSharpenedClawsUnlock() { return config.getInt("Skills.Taming.SharpenedClaws.UnlockLevel", 750); }*/
     public double getSharpenedClawsBonus() { return config.getDouble("Skills.Taming.SharpenedClaws.Bonus", 2.0D); }
 
     public double getMinHorseJumpStrength() { return config.getDouble("Skills.Taming.CallOfTheWild.MinHorseJumpStrength", 0.7D); }

@@ -546,6 +546,7 @@ public class PlayerListener implements Listener {
         //Use a sync save if the server is shutting down to avoid race conditions
         //TODO: Actually never sure its possible for this event to fire during server shutdown, should double check that...
         UserManager.logout(mcMMOPlayer, mcMMO.isServerShutdownExecuted());
+        mcMMO.getTransientMetadataTools().cleanAllLivingEntityMetadata(event.getPlayer());
     }
 
     /**
@@ -972,16 +973,53 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
-            return;
+    /**
+     * When a {@link Player} attempts to place an {@link ItemStack}
+     * into an {@link ItemFrame}, we want to make sure to remove any
+     * Ability buffs from that item.
+     *
+     * @param event The {@link PlayerInteractEntityEvent} to handle
+     */
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        /*
+         *  We can check for an instance instead of EntityType here, so we are
+         *  ready for the infamous "Glow Item Frame" in 1.17 too!
+         */
+        if (event.getRightClicked() instanceof ItemFrame) {
+            ItemFrame frame = (ItemFrame) event.getRightClicked();
 
-        if (!mcMMO.getHolidayManager().isAprilFirst()) {
-            return;
+            // Check for existing items (ignore rotations)
+            if (frame.getItem().getType() != Material.AIR) {
+                return;
+            }
+
+            // Get the item the Player is about to place
+            ItemStack itemInHand;
+
+            if (event.getHand() == EquipmentSlot.OFF_HAND) {
+                itemInHand = event.getPlayer().getInventory().getItemInOffHand();
+            }
+            else {
+                itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+            }
+
+            // and remove any skill ability buffs!
+            SkillUtils.removeAbilityBuff(itemInHand);
         }
-
-        mcMMO.getHolidayManager().handleStatisticEvent(event);
     }
+
+//
+//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+//    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
+//        /* WORLD BLACKLIST CHECK */
+//        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+//            return;
+//
+//        if (!mcMMO.getHolidayManager().isAprilFirst()) {
+//            return;
+//        }
+//
+//        mcMMO.getHolidayManager().handleStatisticEvent(event);
+//    }
 }
