@@ -156,15 +156,15 @@ public class mcMMO extends JavaPlugin {
 
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
-    private RepairConfig repairConfig;
-    private SalvageConfig salvageConfig;
-    private PersistentDataConfig persistentDataConfig;
-    private ChatConfig chatConfig;
-    private CoreSkillsConfig coreSkillsConfig;
-    private RankConfig rankConfig;
-    private TreasureConfig treasureConfig;
-    private FishingTreasureConfig fishingTreasureConfig;
-    private SoundConfig soundConfig;
+//    private RepairConfig repairConfig;
+//    private SalvageConfig salvageConfig;
+//    private PersistentDataConfig persistentDataConfig;
+//    private ChatConfig chatConfig;
+//    private CoreSkillsConfig coreSkillsConfig;
+//    private RankConfig rankConfig;
+//    private TreasureConfig treasureConfig;
+//    private FishingTreasureConfig fishingTreasureConfig;
+//    private SoundConfig soundConfig;
 
     public mcMMO() {
         p = this;
