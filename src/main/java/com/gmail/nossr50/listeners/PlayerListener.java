@@ -134,6 +134,9 @@ public class PlayerListener implements Listener {
         else
             return;
 
+        if (attacker instanceof HumanEntity)
+            return;
+
         // world blacklist check
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
