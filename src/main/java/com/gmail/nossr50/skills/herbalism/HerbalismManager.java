@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.herbalism;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.BlockSnapshot;
@@ -210,7 +209,7 @@ public class HerbalismManager extends SkillManager {
     public void processHerbalismBlockBreakEvent(BlockBreakEvent blockBreakEvent) {
         Player player = getPlayer();
 
-        if (Config.getInstance().getHerbalismPreventAFK() && player.isInsideVehicle()) {
+        if (mcMMO.p.getGeneralConfig().getHerbalismPreventAFK() && player.isInsideVehicle()) {
             return;
         }
 
@@ -257,7 +256,7 @@ public class HerbalismManager extends SkillManager {
 
         //TODO: The design of Green Terra needs to change, this is a mess
         if(Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
-            if(Config.getInstance().isGreenThumbReplantableCrop(originalBreak.getType())) {
+            if(mcMMO.p.getGeneralConfig().isGreenThumbReplantableCrop(originalBreak.getType())) {
                 if(!getPlayer().isSneaking()) {
                     greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
                 }

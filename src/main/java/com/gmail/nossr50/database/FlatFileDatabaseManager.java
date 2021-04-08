@@ -1,15 +1,13 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.OfflinePlayer;
@@ -19,14 +17,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public final class FlatFileDatabaseManager implements DatabaseManager {
-    private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
-    private final List<PlayerStat> powerLevels = new ArrayList<>();
+    public static final String IGNORED = "IGNORED";
+    private final @NotNull HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
+    private final @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
+    private final @NotNull String usersFilePath;
+    private final @NotNull Logger logger;
+    private final long purgeTime;
+    private final int startingLevel;
 
     private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
-    private final File usersFile;
+    private final @NotNull File usersFile;
     private static final Object fileWritingLock = new Object();
 
     public static int USERNAME_INDEX = 0;
@@ -72,20 +76,26 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public static int DATA_ENTRY_COUNT = COOLDOWN_CHIMAERA_WING + 1; //Update this everytime new data is added
 
-    protected FlatFileDatabaseManager() {
-        usersFile = new File(mcMMO.getUsersFilePath());
+    protected FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
+        usersFile = new File(usersFilePath);
+        this.usersFilePath = usersFilePath;
+        this.logger = logger;
+        this.purgeTime = purgeTime;
+        this.startingLevel = startingLevel;
+    }
+
+    public void init() {
         checkStructure();
         updateLeaderboards();
     }
 
-    public void purgePowerlessUsers() {
+    public int purgePowerlessUsers() {
         int purgedUsers = 0;
 
-        mcMMO.p.getLogger().info("Purging powerless users...");
+        logger.info("Purging powerless users...");
 
         BufferedReader in = null;
         FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         // This code is O(n) instead of O(n²)
         synchronized (fileWritingLock) {
@@ -96,7 +106,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
+                    Map<Skill, Integer> skills = getSkillMapFromLine(character);
 
                     boolean powerless = true;
                     for (int skill : skills.values()) {
@@ -120,7 +130,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.write(writer.toString());
             }
             catch (IOException e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
                 if (in != null) {
@@ -142,18 +152,18 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
-        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
+        logger.info("Purged " + purgedUsers + " users from the database.");
+        return purgedUsers;
     }
 
     public void purgeOldUsers() {
         int removedPlayers = 0;
         long currentTime = System.currentTimeMillis();
 
-        mcMMO.p.getLogger().info("Purging old users...");
+        logger.info("Purging old users...");
 
         BufferedReader in = null;
         FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         // This code is O(n) instead of O(n²)
         synchronized (fileWritingLock) {
@@ -179,7 +189,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         rewrite = true;
                     }
 
-                    if (currentTime - lastPlayed > PURGE_TIME) {
+                    if (currentTime - lastPlayed > purgeTime) {
                         removedPlayers++;
                     }
                     else {
@@ -200,7 +210,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.write(writer.toString());
             }
             catch (IOException e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
                 if (in != null) {
@@ -222,7 +232,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
-        mcMMO.p.getLogger().info("Purged " + removedPlayers + " users from the database.");
+        logger.info("Purged " + removedPlayers + " users from the database.");
     }
 
     public boolean removeUser(String playerName, UUID uuid) {
@@ -231,7 +241,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         BufferedReader in = null;
         FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
@@ -242,7 +251,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 while ((line = in.readLine()) != null) {
                     // Write out the same file but when we get to the player we want to remove, we skip his line.
                     if (!worked && line.split(":")[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                        mcMMO.p.getLogger().info("User found, removing...");
+                        logger.info("User found, removing...");
                         worked = true;
                         continue; // Skip the player
                     }
@@ -254,7 +263,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.write(writer.toString());
             }
             catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
                 if (in != null) {
@@ -286,13 +295,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         //Not used in FlatFile
     }
 
-    public boolean saveUser(PlayerProfile profile) {
+    public boolean saveUser(@NotNull PlayerProfile profile) {
         String playerName = profile.getPlayerName();
         UUID uuid = profile.getUniqueId();
 
         BufferedReader in = null;
         FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
         boolean corruptDataFound = false;
 
         synchronized (fileWritingLock) {
@@ -309,7 +317,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     if(!line.contains(":")) {
 
                         if(!corruptDataFound) {
-                            mcMMO.p.getLogger().severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
+                            logger.severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
                             corruptDataFound = true;
                         }
 
@@ -318,12 +326,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     String[] splitData = line.split(":");
 
-                    //This would be rare, but check the splitData for having enough entries to contain a username
-                    if(splitData.length < USERNAME_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
-                        //Something is wrong if we don't have enough split data to have an entry for a username
+                    //This would be rare, but check the splitData for having enough entries to contain a UUID
+                    if(splitData.length < UUID_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
 
                         if(!corruptDataFound) {
-                            mcMMO.p.getLogger().severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
+                            logger.severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
                             corruptDataFound = true;
                         }
 
@@ -378,7 +385,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void writeUserToLine(PlayerProfile profile, String playerName, @Nullable UUID uuid, StringBuilder writer) {
+    private void writeUserToLine(PlayerProfile profile, @NotNull String playerName, @Nullable UUID uuid, StringBuilder writer) {
         writer.append(playerName).append(":");
         writer.append(profile.getSkillLevel(PrimarySkillType.MINING)).append(":");
         writer.append(":");
@@ -417,8 +424,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         writer.append(profile.getSkillXpLevel(PrimarySkillType.FISHING)).append(":");
         writer.append((int) profile.getAbilityDATS(SuperAbilityType.BLAST_MINING)).append(":");
         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
-        MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
-        writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
+        writer.append(IGNORED).append(":"); //mob health bar
         writer.append(profile.getSkillLevel(PrimarySkillType.ALCHEMY)).append(":");
         writer.append(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY)).append(":");
         writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
@@ -430,7 +436,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException {
         //Fix for a plugin that people are using that is throwing SQL errors
         if(skill != null && skill.isChildSkill()) {
-            mcMMO.p.getLogger().severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
+            logger.severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
 
@@ -465,26 +471,26 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         synchronized (fileWritingLock) {
             try {
                 // Open the file to write the player
-                out = new BufferedWriter(new FileWriter(mcMMO.getUsersFilePath(), true));
+                out = new BufferedWriter(new FileWriter(usersFilePath, true));
 
-                String startingLevel = AdvancedConfig.getInstance().getStartingLevel() + ":";
+                String startingLevelStr = startingLevel + ":";
 
                 // Add the player to the end
                 out.append(playerName).append(":");
-                out.append(startingLevel); // Mining
+                out.append(startingLevelStr); // Mining
                 out.append(":");
                 out.append(":");
                 out.append("0:"); // Xp
-                out.append(startingLevel); // Woodcutting
+                out.append(startingLevelStr); // Woodcutting
                 out.append("0:"); // WoodCuttingXp
-                out.append(startingLevel); // Repair
-                out.append(startingLevel); // Unarmed
-                out.append(startingLevel); // Herbalism
-                out.append(startingLevel); // Excavation
-                out.append(startingLevel); // Archery
-                out.append(startingLevel); // Swords
-                out.append(startingLevel); // Axes
-                out.append(startingLevel); // Acrobatics
+                out.append(startingLevelStr); // Repair
+                out.append(startingLevelStr); // Unarmed
+                out.append(startingLevelStr); // Herbalism
+                out.append(startingLevelStr); // Excavation
+                out.append(startingLevelStr); // Archery
+                out.append(startingLevelStr); // Swords
+                out.append(startingLevelStr); // Axes
+                out.append(startingLevelStr); // Acrobatics
                 out.append("0:"); // RepairXp
                 out.append("0:"); // UnarmedXp
                 out.append("0:"); // HerbalismXp
@@ -494,7 +500,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // AxesXp
                 out.append("0:"); // AcrobaticsXp
                 out.append(":");
-                out.append(startingLevel); // Taming
+                out.append(startingLevelStr); // Taming
                 out.append("0:"); // TamingXp
                 out.append("0:"); // DATS
                 out.append("0:"); // DATS
@@ -504,12 +510,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // DATS
                 out.append("0:"); // DATS
                 out.append(":");
-                out.append(startingLevel); // Fishing
+                out.append(startingLevelStr); // Fishing
                 out.append("0:"); // FishingXp
                 out.append("0:"); // Blast Mining
                 out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
-                out.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
-                out.append(startingLevel); // Alchemy
+                out.append(IGNORED).append(":"); // Mob Healthbar HUD
+                out.append(startingLevelStr); // Alchemy
                 out.append("0:"); // AlchemyXp
                 out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
                 out.append("0:"); // Scoreboard tips shown
@@ -543,7 +549,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     private @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName) {
         BufferedReader in = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
@@ -580,7 +585,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     /* Check for nickname changes and update since we are here anyways */
                     if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                        //mcMMO.p.getLogger().info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
+                        //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                         rawSplitData[USERNAME_INDEX] = playerName;
                     }
 
@@ -610,7 +615,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     private @NotNull PlayerProfile loadPlayerByName(@NotNull String playerName) {
         BufferedReader in = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
@@ -661,7 +665,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public void convertUsers(DatabaseManager destination) {
         BufferedReader in = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
 
@@ -706,7 +709,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         int i = 0;
         BufferedReader in = null;
         FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
@@ -718,8 +720,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
                     if (!worked && character[USERNAME_INDEX].equalsIgnoreCase(userName)) {
                         if (character.length < 42) {
-                            mcMMO.p.getLogger().severe("Could not update UUID for " + userName + "!");
-                            mcMMO.p.getLogger().severe("Database entry is invalid.");
+                            logger.severe("Could not update UUID for " + userName + "!");
+                            logger.severe("Database entry is invalid.");
                             continue;
                         }
 
@@ -735,10 +737,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.write(writer.toString());
             }
             catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
-                mcMMO.p.getLogger().info(i + " entries written while saving UUID for " + userName);
+                logger.info(i + " entries written while saving UUID for " + userName);
                 if (in != null) {
                     try {
                         in.close();
@@ -764,7 +766,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
         BufferedReader in = null;
         FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
         int i = 0;
 
         synchronized (fileWritingLock) {
@@ -777,8 +778,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
                     if (!fetchedUUIDs.isEmpty() && fetchedUUIDs.containsKey(character[USERNAME_INDEX])) {
                         if (character.length < 42) {
-                            mcMMO.p.getLogger().severe("Could not update UUID for " + character[USERNAME_INDEX] + "!");
-                            mcMMO.p.getLogger().severe("Database entry is invalid.");
+                            logger.severe("Could not update UUID for " + character[USERNAME_INDEX] + "!");
+                            logger.severe("Database entry is invalid.");
                             continue;
                         }
 
@@ -794,10 +795,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.write(writer.toString());
             }
             catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
-                mcMMO.p.getLogger().info(i + " entries written while saving UUID batch");
+                logger.info(i + " entries written while saving UUID batch");
                 if (in != null) {
                     try {
                         in.close();
@@ -823,7 +824,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<>();
         BufferedReader in = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
@@ -862,7 +862,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             return;
         }
 
-        String usersFilePath = mcMMO.getUsersFilePath();
         lastUpdate = System.currentTimeMillis(); // Log when the last update was run
         powerLevels.clear(); // Clear old values from the power levels
 
@@ -894,7 +893,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     playerName = data[USERNAME_INDEX];
                     int powerLevel = 0;
 
-                    Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(data);
+                    Map<Skill, Integer> skills = getSkillMapFromLine(data);
 
                     powerLevel += putStat(acrobatics, playerName, skills.get(PrimarySkillType.ACROBATICS));
                     powerLevel += putStat(alchemy, playerName, skills.get(PrimarySkillType.ALCHEMY));
@@ -914,7 +913,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 }
             }
             catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " during user " + playerName + " (Are you sure you formatted it correctly?) " + e.toString());
+                logger.severe("Exception while reading " + usersFilePath + " during user " + playerName + " (Are you sure you formatted it correctly?) " + e);
             }
             finally {
                 if (in != null) {
@@ -969,7 +968,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         if (usersFile.exists()) {
             BufferedReader in = null;
             FileWriter out = null;
-            String usersFilePath = mcMMO.getUsersFilePath();
 
             synchronized (fileWritingLock) {
                 try {
@@ -996,14 +994,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         //Not enough data found to be considered a user reliably (NOTE: not foolproof)
                         if(rawSplitData.length < (UUID_INDEX + 1)) {
                             if(!corruptDataFound) {
-                                mcMMO.p.getLogger().severe("Some corrupt data was found in mcmmo.users and has been repaired, it is possible that some player data has been lost in this process.");
+                                logger.severe("Some corrupt data was found in mcmmo.users and has been repaired, it is possible that some player data has been lost in this process.");
                                 corruptDataFound = true;
                             }
 
                             if(rawSplitData.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
                                     && rawSplitData[0] != null && !rawSplitData[0].isEmpty()) {
                                 if(rawSplitData[0].length() <= 16 && rawSplitData[0].length() >= 3) {
-                                    mcMMO.p.getLogger().severe("Not enough data found to recover corrupted player data for user: "+rawSplitData[0]);
+                                    logger.severe("Not enough data found to recover corrupted player data for user: "+rawSplitData[0]);
                                 }
                             }
                             //This user may have had a name so declare it
@@ -1016,7 +1014,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             //TODO: Check if the commented out code was even necessary
                             rawSplitData[USERNAME_INDEX] = "_INVALID_OLD_USERNAME_'";
                             if (rawSplitData.length < UUID_INDEX + 1 || rawSplitData[UUID_INDEX].equals("NULL")) {
-                                mcMMO.p.getLogger().severe("Fixing duplicate player names found in mcmmo.users");
+                                logger.severe("Fixing duplicate player names found in mcmmo.users");
                                 continue;
                             }
                         }
@@ -1026,8 +1024,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                                 && (!rawSplitData[UUID_INDEX].isEmpty()
                                 && !rawSplitData[UUID_INDEX].equals("NULL") && !players.add(rawSplitData[UUID_INDEX]))) {
 
-                            mcMMO.p.getLogger().severe("Removing duplicate player data from mcmmo.users");
-                            mcMMO.p.getLogger().info("Duplicate Data: "+line);
+                            logger.severe("Removing duplicate player data from mcmmo.users");
+                            logger.info("Duplicate Data: "+line);
                             continue;
                         }
 
@@ -1049,7 +1047,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     out.write(writer.toString());
                 }
                 catch (IOException e) {
-                    mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                    logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
                 }
                 finally {
                     if (in != null) {
@@ -1072,7 +1070,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
 
             if(corruptDataFound)
-                mcMMO.p.getLogger().info("Corrupt data was found and removed, everything should be working fine. It is possible some player data was lost.");
+                logger.info("Corrupt data was found and removed, everything should be working fine. It is possible some player data was lost.");
 
             return;
         }
@@ -1080,8 +1078,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         usersFile.getParentFile().mkdir();
 
         try {
-            mcMMO.p.debug("Creating mcmmo.users file...");
-            new File(mcMMO.getUsersFilePath()).createNewFile();
+            logger.info("Creating mcmmo.users file...");
+            new File(usersFilePath).createNewFile();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -1119,11 +1117,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromLine(@NotNull String[] character) {
-        Map<PrimarySkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
-        Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
+        Map<Skill, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
+        Map<Skill, Float>     skillsXp   = new HashMap<>();     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
-        MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
 
         String username = character[USERNAME_INDEX];
@@ -1155,12 +1152,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         // Acrobatics - Unused
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING, username);
 
-        try {
-            mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
-        }
-        catch (Exception e) {
-            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
-        }
+//        try {
+//            mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
+//        }
+//        catch (Exception e) {
+//            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+//        }
 
         UUID uuid;
         try {
@@ -1184,44 +1181,45 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
         }
 
-        return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
+        return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, null, scoreboardTipsShown, uniquePlayerDataMap);
     }
 
     private void tryLoadSkillCooldownFromRawData(@NotNull Map<SuperAbilityType, Integer> cooldownMap, @NotNull String[] character, @NotNull SuperAbilityType superAbilityType, int cooldownSuperBreaker, @NotNull String userName) {
         try {
             cooldownMap.put(superAbilityType, Integer.valueOf(character[cooldownSuperBreaker]));
         } catch (NumberFormatException e) {
-            mcMMO.p.getLogger().severe("Data corruption when trying to load the value for skill "+superAbilityType.toString()+" for player named " + userName+ " setting value to zero");
+            logger.severe("Data corruption when trying to load the value for skill "+superAbilityType+" for player named " + userName+ " setting value to zero");
             e.printStackTrace();
         }
     }
 
-    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<PrimarySkillType, Float> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int index, @NotNull String userName) {
+    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<Skill, Float> skillMap, @NotNull String[] character, @NotNull Skill primarySkillType, int index, @NotNull String userName) {
         try {
             float valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0F);
-            mcMMO.p.getLogger().severe("Data corruption when trying to load the value for skill "+primarySkillType.toString()+" for player named " + userName+ " setting value to zero");
+            logger.severe("Data corruption when trying to load the value for skill "+primarySkillType+" for player named " + userName+ " setting value to zero");
             e.printStackTrace();
         }
     }
 
-    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<PrimarySkillType, Integer> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int index, @NotNull String userName) {
+    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<Skill, Integer> skillMap, @NotNull String[] character, @NotNull Skill skill, int index, @NotNull String userName) {
         try {
             int valueFromString = Integer.parseInt(character[index]);
-            skillMap.put(primarySkillType, valueFromString);
+            skillMap.put(skill, valueFromString);
         } catch (NumberFormatException e) {
-            skillMap.put(primarySkillType, 0);
-            mcMMO.p.getLogger().severe("Data corruption when trying to load the value for skill "+primarySkillType.toString()+" for player named " + userName+ " setting value to zero");
+            skillMap.put(skill, 0);
+            logger.severe("Data corruption when trying to load the value for skill "+skill+" for player named " + userName+ " setting value to zero");
             e.printStackTrace();
         }
     }
 
-    private @NotNull Map<PrimarySkillType, Integer> getSkillMapFromLine(@NotNull String[] character) {
-        Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
+    private @NotNull Map<Skill, Integer> getSkillMapFromLine(@NotNull String[] character) {
+        HashMap<Skill, Integer> skills = new HashMap<>();   // Skill & Level
         String username = character[USERNAME_INDEX];
 
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ACROBATICS, SKILLS_ACROBATICS, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.TAMING, SKILLS_TAMING, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.MINING, SKILLS_MINING, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.REPAIR, SKILLS_REPAIR, username);
@@ -1232,7 +1230,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ARCHERY, SKILLS_ARCHERY, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.SWORDS, SKILLS_SWORDS, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.AXES, SKILLS_AXES, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ACROBATICS, SKILLS_ACROBATICS, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.FISHING, SKILLS_FISHING, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ALCHEMY, SKILLS_ALCHEMY, username);
 
@@ -1243,93 +1240,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return DatabaseType.FLATFILE;
     }
 
+    public File getUsersFile() {
+        return usersFile;
+    }
+
     @Override
     public void onDisable() { }
-
-    private int getSkillIndex(PrimarySkillType skill) {
-        switch (skill) {
-            case ACROBATICS:
-                return SKILLS_ACROBATICS;
-            case ALCHEMY:
-                return SKILLS_ALCHEMY;
-            case ARCHERY:
-                return SKILLS_ARCHERY;
-            case AXES:
-                return SKILLS_AXES;
-            case EXCAVATION:
-                return SKILLS_EXCAVATION;
-            case FISHING:
-                return SKILLS_FISHING;
-            case HERBALISM:
-                return SKILLS_HERBALISM;
-            case MINING:
-                return SKILLS_MINING;
-            case REPAIR:
-                return SKILLS_REPAIR;
-            case SWORDS:
-                return SKILLS_SWORDS;
-            case TAMING:
-                return SKILLS_TAMING;
-            case UNARMED:
-                return SKILLS_UNARMED;
-            case WOODCUTTING:
-                return SKILLS_WOODCUTTING;
-            default:
-                throw new RuntimeException("Primary Skills only");
-            
-        }
-    }
-
-    public void resetMobHealthSettings() {
-        BufferedReader in = null;
-        FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
-
-        synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
-
-                while ((line = in.readLine()) != null) {
-                    // Remove empty lines from the file
-                    if (line.isEmpty()) {
-                        continue;
-                    }
-                    String[] character = line.split(":");
-                    
-                    character[HEALTHBAR] = Config.getInstance().getMobHealthbarDefault().toString();
-                    
-                    line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
-
-                    writer.append(line).append("\r\n");
-                }
-
-                // Write the new file
-                out = new FileWriter(usersFilePath);
-                out.write(writer.toString());
-            }
-            catch (IOException e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    }
-                    catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException e) {
-                        // Ignore
-                    }
-                }
-            }
-        }
-    }
 }

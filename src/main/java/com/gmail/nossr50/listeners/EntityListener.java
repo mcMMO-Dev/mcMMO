@@ -1,7 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -163,7 +161,7 @@ public class EntityListener implements Listener {
                 projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
             }
 
-            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * mcMMO.p.getAdvancedConfig().getForceMultiplier(), 1.0)));
             projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
             //Cleanup metadata in 1 minute in case normal collection falls through
             CombatUtils.delayArrowMetaCleanup((Projectile) projectile);
@@ -466,7 +464,7 @@ public class EntityListener implements Listener {
         }
 
         //Party Friendly Fire
-        if(!Config.getInstance().getPartyFriendlyFire())
+        if(!mcMMO.p.getGeneralConfig().getPartyFriendlyFire())
             if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
                     || PartyManager.areAllies(defendingPlayer, attackingPlayer))
                     && !(Permissions.friendlyFire(attackingPlayer)

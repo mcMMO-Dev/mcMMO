@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -8,8 +7,11 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -29,12 +31,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Locale;
 
 public class Roll extends AcrobaticsSubSkill {
@@ -200,7 +204,7 @@ public class Roll extends AcrobaticsSubSkill {
             return gracefulRollCheck(player, mcMMOPlayer, damage, skillLevel);
         }
 
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold());
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
@@ -238,7 +242,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold() * 2);
 
         RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
         rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
@@ -381,7 +385,7 @@ public class Roll extends AcrobaticsSubSkill {
 //
 //        //Chance to roll at half max skill
 //        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
-//        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
+//        int halfMaxSkillValue = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
 //        rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 //
 //        //Chance to graceful roll at full skill
@@ -395,11 +399,11 @@ public class Roll extends AcrobaticsSubSkill {
 //        //Chance Stat Calculations
 //        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
 //        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-//        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
+//        damageThreshold         = mcMMO.p.getAdvancedConfig().getRollDamageThreshold();
 //
 //        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
 //
-//        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
+//        double maxLevel         = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
 //
 //        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
     }
@@ -435,5 +439,99 @@ public class Roll extends AcrobaticsSubSkill {
     public Location getBlockLocation(Player player)
     {
         return player.getLocation().getBlock().getLocation();
+    }
+
+    public String getPrimaryKeyName() {
+        return getPrimarySkill().getPrimaryKeyName();
+    }
+
+    @Override
+    public Class<? extends SkillManager> getManagerClass() {
+        return getPrimarySkill().getManagerClass();
+    }
+
+    @Override
+    public SuperAbilityType getAbility() {
+        return getPrimarySkill().getAbility();
+    }
+
+    @Override
+    public int getMaxLevel() {
+        return getPrimarySkill().getMaxLevel();
+    }
+
+    @Override
+    public boolean isSuperAbilityUnlocked(Player player) {
+        return getPrimarySkill().isSuperAbilityUnlocked(player);
+    }
+
+    @Override
+    public boolean getPVPEnabled() {
+        return getPrimarySkill().getPVPEnabled();
+    }
+
+    @Override
+    public boolean getPVEEnabled() {
+        return getPrimarySkill().getPVEEnabled();
+    }
+
+    @Override
+    public boolean getDoubleDropsDisabled() {
+        return getPrimarySkill().getDoubleDropsDisabled();
+    }
+
+    @Override
+    public boolean getHardcoreStatLossEnabled() {
+        return getPrimarySkill().getHardcoreStatLossEnabled();
+    }
+
+    @Override
+    public void setHardcoreStatLossEnabled(boolean enable) {
+        getPrimarySkill().setHardcoreStatLossEnabled(enable);
+    }
+
+    @Override
+    public boolean getHardcoreVampirismEnabled() {
+        return getPrimarySkill().getHardcoreVampirismEnabled();
+    }
+
+    @Override
+    public void setHardcoreVampirismEnabled(boolean enable) {
+        getPrimarySkill().setHardcoreVampirismEnabled(enable);
+    }
+
+    @Override
+    public ToolType getTool() {
+        return getPrimarySkill().getTool();
+    }
+
+    @Override
+    public List<SubSkillType> getSkillAbilities() {
+        return getPrimarySkill().getSkillAbilities();
+    }
+
+    @Override
+    public double getXpModifier() {
+        return getPrimarySkill().getXpModifier();
+    }
+
+    @Override
+    public boolean isChildSkill() {
+        return getPrimarySkill().isChildSkill();
+    }
+
+    @Override
+    public String getName() {
+        return getPrimarySkill().getName();
+    }
+
+    @Override
+    public boolean getPermissions(Player player) {
+        return getPrimarySkill().getPermissions(player);
+    }
+
+    @Override
+    public boolean shouldProcess(Entity target) {
+        return getPrimarySkill().shouldProcess(target);
     }
 }

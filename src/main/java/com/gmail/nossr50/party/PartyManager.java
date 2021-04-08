@@ -1,6 +1,5 @@
 package com.gmail.nossr50.party;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -61,7 +60,7 @@ public final class PartyManager {
      */
     public static boolean isPartyFull(Player player, Party targetParty)
     {
-        return !Permissions.partySizeBypass(player) && Config.getInstance().getPartyMaxSize() >= 1 && targetParty.getOnlineMembers().size() >= Config.getInstance().getPartyMaxSize();
+        return !Permissions.partySizeBypass(player) && mcMMO.p.getGeneralConfig().getPartyMaxSize() >= 1 && targetParty.getOnlineMembers().size() >= mcMMO.p.getGeneralConfig().getPartyMaxSize();
     }
 
     /**
@@ -153,7 +152,7 @@ public final class PartyManager {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = Config.getInstance().getPartyShareRange();
+            double range = mcMMO.p.getGeneralConfig().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
@@ -171,7 +170,7 @@ public final class PartyManager {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = Config.getInstance().getPartyShareRange();
+            double range = mcMMO.p.getGeneralConfig().getPartyShareRange();
 
             for (Player member : party.getVisibleMembers(player)) {
                 if (!player.equals(member)
@@ -439,9 +438,9 @@ public final class PartyManager {
         /*
          * Don't let players join a full party
          */
-        if(Config.getInstance().getPartyMaxSize() > 0 && invite.getMembers().size() >= Config.getInstance().getPartyMaxSize())
+        if(mcMMO.p.getGeneralConfig().getPartyMaxSize() > 0 && invite.getMembers().size() >= mcMMO.p.getGeneralConfig().getPartyMaxSize())
         {
-            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept", invite.getName(), String.valueOf(Config.getInstance().getPartyMaxSize()));
+            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept", invite.getName(), String.valueOf(mcMMO.p.getGeneralConfig().getPartyMaxSize()));
             return;
         }
 
@@ -810,7 +809,7 @@ public final class PartyManager {
      * @param level The current party level
      */
     public static void informPartyMembersLevelUp(Party party, int levelsGained, int level) {
-        boolean levelUpSoundsEnabled = Config.getInstance().getLevelUpSoundsEnabled();
+        boolean levelUpSoundsEnabled = mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled();
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, level));
 

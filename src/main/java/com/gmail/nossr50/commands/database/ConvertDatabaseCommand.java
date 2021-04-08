@@ -27,7 +27,13 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                 return true;
             }
 
-            DatabaseManager oldDatabase = DatabaseManagerFactory.createDatabaseManager(previousType);
+            DatabaseManager oldDatabase = DatabaseManagerFactory.createDatabaseManager(previousType, mcMMO.getUsersFilePath(), mcMMO.p.getLogger(), mcMMO.p.getPurgeTime(), mcMMO.p.getAdvancedConfig().getStartingLevel());
+            if(oldDatabase == null) {
+                sender.sendMessage("Unable to load the old database! Check your log for errors.");
+                return true;
+            }
+
+            oldDatabase.init();
 
             if (previousType == DatabaseType.CUSTOM) {
                 Class<?> clazz;
@@ -41,6 +47,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                     }
 
                     oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
+                    oldDatabase.init();
                 } catch (Throwable e) {
                     e.printStackTrace();
                     sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));

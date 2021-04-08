@@ -12,25 +12,17 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class Config extends AutoUpdateConfigLoader {
-    private static Config instance;
+public class GeneralConfig extends AutoUpdateConfigLoader {
 
-    private Config() {
-        super("config.yml");
+    public GeneralConfig(@NotNull File dataFolder) {
+        super("config.yml", dataFolder);
         validate();
-    }
-
-    public static Config getInstance() {
-        if (instance == null) {
-            instance = new Config();
-        }
-
-        return instance;
     }
 
     @Override
@@ -62,47 +54,6 @@ public class Config extends AutoUpdateConfigLoader {
         if (getMobHealthbarTime() == 0) {
             reason.add("Mob_Healthbar.Display_Time cannot be 0! Set to -1 to disable or set a valid value.");
         }
-
-        /* Scoreboards */
-        /*if (getRankScoreboardTime() != -1 && getRankScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Rank.Display_Time should be greater than 0, or -1!");
-        }
-
-        if (getStatsScoreboardTime() != -1 && getStatsScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Stats.Display_Time should be greater than 0, or -1!");
-        }
-
-        if (getTopScoreboardTime() != -1 && getTopScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Top.Display_Time should be greater than 0, or -1!");
-        }
-
-        if (getInspectScoreboardTime() != -1 && getInspectScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Inspect.Display_Time should be greater than 0, or -1!");
-        }
-
-        if (getSkillScoreboardTime() != -1 && getSkillScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
-        }
-
-        if (getSkillLevelUpTime() != -1 && getSkillScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
-        }
-
-        if (!(getRankUseChat() || getRankUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Rank must be true!");
-        }
-
-        if (!(getTopUseChat() || getTopUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Top must be true!");
-        }
-
-        if (!(getStatsUseChat() || getStatsUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Stats must be true!");
-        }
-
-        if (!(getInspectUseChat() || getInspectUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Inspect must be true!");
-        }*/
 
         /* Database Purging */
         if (getPurgeInterval() < -1) {
@@ -199,42 +150,6 @@ public class Config extends AutoUpdateConfigLoader {
         if (getRepairAnvilMaterial() == getSalvageAnvilMaterial()) {
             reason.add("Cannot use the same item for Repair and Salvage anvils!");
         }
-
-//        if (getTamingCOTWMaterial(EntityType.WOLF) == null) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Material is invalid!!");
-//        }
-//
-//        if (getTamingCOTWMaterial(EntityType.OCELOT) == null) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Material is invalid!!");
-//        }
-//
-//        if (getTamingCOTWMaterial(EntityType.HORSE) == null) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Material is invalid!!");
-//        }
-//
-//        if (getTamingCOTWCost(EntityType.WOLF) <= 0) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Amount should be greater than 0!");
-//        }
-//
-//        if (getTamingCOTWCost(EntityType.OCELOT) <= 0) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Amount should be greater than 0!");
-//        }
-//
-//        if (getTamingCOTWCost(EntityType.HORSE) <= 0) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Amount should be greater than 0!");
-//        }
-//
-//        if (getTamingCOTWAmount(EntityType.WOLF) <= 0) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Summon_Amount should be greater than 0!");
-//        }
-//
-//        if (getTamingCOTWAmount(EntityType.OCELOT) <= 0) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Summon_Amount should be greater than 0!");
-//        }
-//
-//        if (getTamingCOTWAmount(EntityType.HORSE) <= 0) {
-//            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Summon_Amount should be greater than 0!");
-//        }
 
         return noErrorsInConfig(reason);
     }

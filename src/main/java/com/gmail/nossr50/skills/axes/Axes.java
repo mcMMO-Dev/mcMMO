@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.axes;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.LivingEntity;
@@ -9,18 +9,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Axes {
-    public static double axeMasteryRankDamageMultiplier = AdvancedConfig.getInstance().getAxeMasteryRankDamageMultiplier();
+    public static double axeMasteryRankDamageMultiplier = mcMMO.p.getAdvancedConfig().getAxeMasteryRankDamageMultiplier();
 
-    public static double criticalHitPVPModifier   = AdvancedConfig.getInstance().getCriticalStrikesPVPModifier();
-    public static double criticalHitPVEModifier   = AdvancedConfig.getInstance().getCriticalStrikesPVEModifier();
+    public static double criticalHitPVPModifier   = mcMMO.p.getAdvancedConfig().getCriticalStrikesPVPModifier();
+    public static double criticalHitPVEModifier   = mcMMO.p.getAdvancedConfig().getCriticalStrikesPVEModifier();
 
-    public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();
+    public static double impactChance                = mcMMO.p.getAdvancedConfig().getImpactChance();
 
-    public static double greaterImpactBonusDamage         = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
-    public static double greaterImpactChance              = AdvancedConfig.getInstance().getGreaterImpactChance();
-    public static double greaterImpactKnockbackMultiplier = AdvancedConfig.getInstance().getGreaterImpactModifier();
+    public static double greaterImpactBonusDamage         = mcMMO.p.getAdvancedConfig().getGreaterImpactBonusDamage();
+    public static double greaterImpactChance              = mcMMO.p.getAdvancedConfig().getGreaterImpactChance();
+    public static double greaterImpactKnockbackMultiplier = mcMMO.p.getAdvancedConfig().getGreaterImpactModifier();
 
-    public static double skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
+    public static double skullSplitterModifier = mcMMO.p.getAdvancedConfig().getSkullSplitterModifier();
 
     protected static boolean hasArmor(LivingEntity target) {
         if(target == null || !target.isValid() || target.getEquipment() == null)

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -51,11 +49,11 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (Config.getInstance().getRepairAnvilMessagesEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getRepairAnvilMessagesEnabled()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil");
         }
 
-        if (Config.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getRepairAnvilPlaceSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
@@ -153,7 +151,7 @@ public class RepairManager extends SkillManager {
                 * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())), XPGainReason.PVE);
 
         // BWONG BWONG BWONG
-        if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getRepairAnvilUseSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
         }
@@ -175,7 +173,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !mcMMO.p.getGeneralConfig().getRepairConfirmRequired()) {
             return true;
         }
 
@@ -204,7 +202,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of keeping the enchantment
      */
     public double getKeepEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChance(getArcaneForgingRank());
+        return mcMMO.p.getAdvancedConfig().getArcaneForgingKeepEnchantsChance(getArcaneForgingRank());
     }
 
     /**
@@ -213,7 +211,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of the enchantment being downgraded
      */
     public double getDowngradeEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneForgingDowngradeChance(getArcaneForgingRank());
+        return mcMMO.p.getAdvancedConfig().getArcaneForgingDowngradeChance(getArcaneForgingRank());
     }
 
     /*

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.commands;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -38,7 +37,7 @@ public final class CommandUtils {
         if(!target.isOnline() && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
             return true;
-        } else if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), Config.getInstance().getInspectDistance()) && !hasPermission) {
+        } else if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), mcMMO.p.getGeneralConfig().getInspectDistance()) && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
             return true;
         }
@@ -209,7 +208,7 @@ public final class CommandUtils {
         if (skill.isChildSkill()) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
-        if (profile.getSkillLevel(skill) == Config.getInstance().getLevelCap(skill)){
+        if (profile.getSkillLevel(skill) == mcMMO.p.getGeneralConfig().getLevelCap(skill)){
             return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), LocaleLoader.getString("Skills.MaxXP"));
         }
         return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
@@ -258,7 +257,7 @@ public final class CommandUtils {
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
-        if (Config.getInstance().getMatchOfflinePlayers()) {
+        if (mcMMO.p.getGeneralConfig().getMatchOfflinePlayers()) {
             List<String> matches = matchPlayer(partialName);
 
             if (matches.size() == 1) {

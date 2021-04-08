@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
@@ -186,7 +184,7 @@ public final class ItemUtils {
      * @return true if the item counts as unarmed, false otherwise
      */
     public static boolean isUnarmed(ItemStack item) {
-        if (Config.getInstance().getUnarmedItemsAsUnarmed()) {
+        if (mcMMO.p.getGeneralConfig().getUnarmedItemsAsUnarmed()) {
             return !isMinecraftTool(item);
         }
 
@@ -622,7 +620,7 @@ public final class ItemUtils {
         if(itemMeta == null)
             return;
 
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + mcMMO.p.getAdvancedConfig().getEnchantBuff(), true);
         itemStack.setItemMeta(itemMeta);
     }
 

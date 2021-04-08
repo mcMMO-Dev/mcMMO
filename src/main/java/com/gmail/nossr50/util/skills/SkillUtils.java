@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -56,8 +54,8 @@ public final class SkillUtils {
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
         int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+        int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+        int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
         int length;
 
@@ -125,7 +123,7 @@ public final class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -183,8 +181,8 @@ public final class SkillUtils {
 
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
-            int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-            int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+            int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+            int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
             int ticks;
 

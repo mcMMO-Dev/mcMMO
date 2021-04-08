@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -53,7 +52,7 @@ public final class BlockUtils {
      * @return true if the player succeeded in the check
      */
     public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType skillType, SubSkillType subSkillType) {
-        if (Config.getInstance().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
             return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }
 
@@ -68,10 +67,10 @@ public final class BlockUtils {
      */
     public static boolean shouldBeWatched(BlockState blockState) {
         return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || hasWoodcuttingXP(blockState)
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType())
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, blockState.getType())
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, blockState.getType());
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType())
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, blockState.getType())
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, blockState.getType());
     }
 
     /**

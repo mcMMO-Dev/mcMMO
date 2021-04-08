@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -97,16 +96,16 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             UserManager.track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();
 
-            if (Config.getInstance().getScoreboardsEnabled()) {
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
                 ScoreboardManager.setupPlayer(player);
 
-                if (Config.getInstance().getShowStatsAfterLogin()) {
+                if (mcMMO.p.getGeneralConfig().getShowStatsAfterLogin()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
                     new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, Misc.TICK_CONVERSION_FACTOR);
                 }
             }
 
-            if (Config.getInstance().getShowProfileLoadedMessage()) {
+            if (mcMMO.p.getGeneralConfig().getShowProfileLoadedMessage()) {
                 player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
             }
 

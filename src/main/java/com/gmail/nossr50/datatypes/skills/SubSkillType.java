@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.text.StringUtils;
 
@@ -135,7 +136,7 @@ public enum SubSkillType {
      * If we add skills, those immutable lists need to be updated
      * @return
      */
-    public PrimarySkillType getParentSkill() { return PrimarySkillType.bySecondaryAbility(this); }
+    public PrimarySkillType getParentSkill() { return Skill.bySecondaryAbility(this); }
 
     /**
      * Returns the root address for this skill in the advanced.yml file

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.locale;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.TextUtils;
 import net.kyori.adventure.text.TextComponent;
@@ -130,7 +129,7 @@ public final class LocaleLoader {
         if (bundle == null) {
             Locale.setDefault(new Locale("en", "US"));
             Locale locale = null;
-            String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
+            String[] myLocale = mcMMO.p.getGeneralConfig().getLocale().split("[-_ ]");
 
             if (myLocale.length == 1) {
                 locale = new Locale(myLocale[0]);
@@ -140,7 +139,7 @@ public final class LocaleLoader {
             }
 
             if (locale == null) {
-                throw new IllegalStateException("Failed to parse locale string '" + Config.getInstance().getLocale() + "'");
+                throw new IllegalStateException("Failed to parse locale string '" + mcMMO.p.getGeneralConfig().getLocale() + "'");
             }
 
             Path localePath = Paths.get(mcMMO.getLocalesDirectory() + "locale_" + locale.toString() + ".properties");

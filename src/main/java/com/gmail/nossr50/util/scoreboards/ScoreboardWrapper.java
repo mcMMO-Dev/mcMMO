@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.scoreboards;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -75,7 +74,7 @@ public class ScoreboardWrapper {
             registered = true;
         }
 
-        if (Config.getInstance().getPowerLevelTagsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
@@ -225,7 +224,7 @@ public class ScoreboardWrapper {
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
-        if (profile.getScoreboardTipsShown() >= Config.getInstance().getTipsAmount()) {
+        if (profile.getScoreboardTipsShown() >= mcMMO.p.getGeneralConfig().getTipsAmount()) {
             return;
         }
 

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -25,7 +25,7 @@ public class PartyXpShareCommand implements CommandExecutor {
 
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
-        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
+        if (party.getLevel() < mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.5"));
             return true;
         }

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -64,9 +62,9 @@ public class TamingManager extends SkillManager {
         if(summoningItems == null) {
             summoningItems = new HashMap<>();
 
-            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry()), CallOfTheWildType.CAT);
-            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry()), CallOfTheWildType.WOLF);
-            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry()), CallOfTheWildType.HORSE);
+            summoningItems.put(mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry()), CallOfTheWildType.CAT);
+            summoningItems.put(mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry()), CallOfTheWildType.WOLF);
+            summoningItems.put(mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry()), CallOfTheWildType.HORSE);
         }
 
         //TODO: Temporary static cache, will be changed in 2.2
@@ -75,11 +73,11 @@ public class TamingManager extends SkillManager {
             cotwSummonDataProperties = new HashMap<>();
 
             for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-                Material itemSummonMaterial = Config.getInstance().getTamingCOTWMaterial(callOfTheWildType.getConfigEntityTypeEntry());
-                int itemAmountRequired = Config.getInstance().getTamingCOTWCost(callOfTheWildType.getConfigEntityTypeEntry());
-                int entitiesSummonedPerCOTW = Config.getInstance().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
-                int summonLifespanSeconds = Config.getInstance().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
-                int perPlayerMaxAmount = Config.getInstance().getTamingCOTWMaxAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                Material itemSummonMaterial = mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(callOfTheWildType.getConfigEntityTypeEntry());
+                int itemAmountRequired = mcMMO.p.getGeneralConfig().getTamingCOTWCost(callOfTheWildType.getConfigEntityTypeEntry());
+                int entitiesSummonedPerCOTW = mcMMO.p.getGeneralConfig().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                int summonLifespanSeconds = mcMMO.p.getGeneralConfig().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
+                int perPlayerMaxAmount = mcMMO.p.getGeneralConfig().getTamingCOTWMaxAmount(callOfTheWildType.getConfigEntityTypeEntry());
 
                 TamingSummon tamingSummon = new TamingSummon(callOfTheWildType, itemSummonMaterial, itemAmountRequired, entitiesSummonedPerCOTW, summonLifespanSeconds, perPlayerMaxAmount);
                 cotwSummonDataProperties.put(callOfTheWildType, tamingSummon);
@@ -273,7 +271,7 @@ public class TamingManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if(!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
+        if(!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(mcMMO.p.getAdvancedConfig().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);
@@ -459,7 +457,7 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
         horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
         horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
-        horse.setJumpStrength(Math.max(AdvancedConfig.getInstance().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength())));
+        horse.setJumpStrength(Math.max(mcMMO.p.getAdvancedConfig().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, mcMMO.p.getAdvancedConfig().getMaxHorseJumpStrength())));
         horse.setAdult();
 
         //TODO: setSpeed, once available

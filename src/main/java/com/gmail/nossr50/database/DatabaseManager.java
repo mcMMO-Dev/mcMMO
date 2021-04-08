@@ -1,7 +1,6 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -15,15 +14,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface DatabaseManager {
-    // One month in milliseconds
-    long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
     // During convertUsers, how often to output a status
     int progressInterval = 200;
 
     /**
      * Purge users with 0 power level from the database.
      */
-    void purgePowerlessUsers();
+    int purgePowerlessUsers();
 
     /**
      * Purge users who haven't logged on in over a certain time frame from the database.
@@ -75,6 +72,8 @@ public interface DatabaseManager {
      * @return the requested rank information
      */
     Map<PrimarySkillType, Integer> readRank(String playerName);
+
+    default void init() {};
 
     /**
      * Add a new user to the database.

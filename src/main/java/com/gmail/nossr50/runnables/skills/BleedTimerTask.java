@@ -57,7 +57,7 @@
 //            double damage;
 //
 //            if (target instanceof Player) {
-//                damage = AdvancedConfig.getInstance().getRuptureDamagePlayer();
+//                damage = mcMMO.p.getAdvancedConfig().getRuptureDamagePlayer();
 //
 //                //Above Bleed Rank 3 deals 50% more damage
 //                if (containerEntry.getValue().toolTier >= 4 && containerEntry.getValue().bleedRank >= 3)
@@ -78,7 +78,7 @@
 //                }
 //
 //            } else {
-//                damage = AdvancedConfig.getInstance().getRuptureDamageMobs();
+//                damage = mcMMO.p.getAdvancedConfig().getRuptureDamageMobs();
 //
 ////                debugMessage+="BaseDMG=["+damage+"], ";
 //

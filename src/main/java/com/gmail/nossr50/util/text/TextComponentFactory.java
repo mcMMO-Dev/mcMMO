@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.text;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
@@ -64,7 +63,7 @@ public class TextComponentFactory {
 
     public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted)
     {
-        if(!Config.getInstance().getUrlLinksEnabled())
+        if(!mcMMO.p.getGeneralConfig().getUrlLinksEnabled())
             return;
 
         TextComponent.Builder wikiLinkComponent = Component.text().content(LocaleLoader.getString("Overhaul.mcMMO.MmoInfo.Wiki"));

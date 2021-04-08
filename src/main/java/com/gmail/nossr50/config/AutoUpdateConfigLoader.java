@@ -11,10 +11,20 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
+    public AutoUpdateConfigLoader(String relativePath, String fileName, File dataFolder) {
+        super(relativePath, fileName, dataFolder);
+    }
+
+    public AutoUpdateConfigLoader(String fileName, File dataFolder) {
+        super(fileName, dataFolder);
+    }
+
+    @Deprecated
     public AutoUpdateConfigLoader(String relativePath, String fileName) {
         super(relativePath, fileName);
     }
 
+    @Deprecated
     public AutoUpdateConfigLoader(String fileName) {
         super(fileName);
     }
@@ -136,7 +146,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                     saveName += ".new";
                 }
 
-                BufferedWriter writer = new BufferedWriter(new FileWriter(new File(plugin.getDataFolder(), saveName)));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(new File(dataFolder, saveName)));
                 writer.write(output);
                 writer.flush();
                 writer.close();

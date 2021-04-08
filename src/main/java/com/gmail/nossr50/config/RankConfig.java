@@ -2,6 +2,7 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.mcMMO;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
      * @return the level requirement for a subskill at this particular rank
      */
     private int findRankByRootAddress(int rank, String key) {
-        String scalingKey = Config.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
+        String scalingKey = mcMMO.p.getGeneralConfig().getIsRetroMode() ? ".RetroMode." : ".Standard.";
 
         String targetRank = "Rank_" + rank;
 

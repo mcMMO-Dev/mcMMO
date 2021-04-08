@@ -16,7 +16,6 @@ import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.*;
 import com.gmail.nossr50.commands.skills.*;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -283,7 +282,7 @@ public final class CommandRegistrationManager {
 
     private static void registerMcpurgeCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcpurge");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", Config.getInstance().getOldUsersCutoff()));
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", mcMMO.p.getGeneralConfig().getOldUsersCutoff()));
         command.setPermission("mcmmo.commands.mcpurge");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcpurge"));
@@ -389,15 +388,6 @@ public final class CommandRegistrationManager {
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
         command.setExecutor(new McnotifyCommand());
     }
-    
-    private static void registerMHDCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mhd");
-        command.setDescription("Resets all mob health bar settings for all players to the default"); //TODO: Localize
-        command.setPermission("mcmmo.commands.mhd");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mhd"));
-        command.setExecutor(new MHDCommand());
-    }
 
     private static void registerMcscoreboardCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcscoreboard");
@@ -455,7 +445,6 @@ public final class CommandRegistrationManager {
         registerMcnotifyCommand();
         registerMcrefreshCommand();
         registerMcscoreboardCommand();
-        registerMHDCommand();
         registerXprateCommand();
 
         // Database Commands

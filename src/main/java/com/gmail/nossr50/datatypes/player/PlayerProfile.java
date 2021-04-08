@@ -1,18 +1,19 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.experience.SkillXpGain;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,14 +33,14 @@ public class PlayerProfile {
     private int saveAttempts = 0;
 
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<>();     // Skill & XP
+    private final Map<Skill, Integer>   skills     = new HashMap<>();   // Skill & Level
+    private final Map<Skill, Float>     skillsXp   = new HashMap<>();     // Skill & XP
     private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for diminished returns
     private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
-    private final HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<>();
+    private final HashMap<Skill, Float> rollingSkillsXp = new HashMap<>();
 
     @Deprecated
     public PlayerProfile(String playerName) {
@@ -50,7 +51,7 @@ public class PlayerProfile {
         this.uuid = uuid;
         this.playerName = playerName;
 
-        mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+        mobHealthbarType = mcMMO.p.getGeneralConfig().getMobHealthbarDefault();
         scoreboardTipsShown = 0;
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
@@ -58,7 +59,7 @@ public class PlayerProfile {
         }
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-            skills.put(primarySkillType, AdvancedConfig.getInstance().getStartingLevel());
+            skills.put(primarySkillType, mcMMO.p.getAdvancedConfig().getStartingLevel());
             skillsXp.put(primarySkillType, 0F);
         }
 
@@ -67,20 +68,20 @@ public class PlayerProfile {
     }
 
     @Deprecated
-    public PlayerProfile(String playerName, boolean isLoaded) {
+    public PlayerProfile(@NotNull String playerName, boolean isLoaded) {
         this(playerName);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
+    public PlayerProfile(@NotNull String playerName, UUID uuid, boolean isLoaded) {
         this(playerName, uuid);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
+    public PlayerProfile(@NotNull String playerName, UUID uuid, Map<Skill, Integer> levelData, Map<Skill, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, @Nullable MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
         this.playerName = playerName;
         this.uuid = uuid;
-        this.mobHealthbarType = mobHealthbarType;
+        mobHealthbarType = mcMMO.p.getGeneralConfig().getMobHealthbarDefault();
         this.scoreboardTipsShown = scoreboardTipsShown;
 
         skills.putAll(levelData);

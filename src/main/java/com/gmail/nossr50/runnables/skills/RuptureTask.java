@@ -1,9 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
 import org.bukkit.entity.LivingEntity;
@@ -28,7 +26,7 @@ public class RuptureTask extends BukkitRunnable {
     public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity, double pureTickDamage, double explosionDamage) {
         this.ruptureSource = ruptureSource;
         this.targetEntity = targetEntity;
-        this.expireTick = AdvancedConfig.getInstance().getRuptureDurationSeconds(targetEntity instanceof Player) * 20;
+        this.expireTick = mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(targetEntity instanceof Player) * 20;
 
         this.ruptureTick = 0;
         this.damageTickTracker = 0;

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.party.alliance;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -51,7 +51,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
         switch (args.length) {
             case 1:
-                if (playerParty.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }
@@ -69,7 +69,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
             case 2:
             case 3:
-                if (playerParty.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }

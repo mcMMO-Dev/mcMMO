@@ -1,11 +1,11 @@
 package com.gmail.nossr50.skills.smelting;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -125,7 +125,7 @@ public class SmeltingManager extends SkillManager {
          */
 
         //Process double smelt
-        if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
                 && canDoubleSmeltItemStack(furnace) //Effectively two less than max stack size
                 && isSecondSmeltSuccessful()) {
 

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -37,7 +36,7 @@ public final class ChimaeraWing {
      * @param player Player whose item usage to check
      */
     public static void activationCheck(Player player) {
-        if (!Config.getInstance().getChimaeraEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getChimaeraEnabled()) {
             return;
         }
 
@@ -64,13 +63,13 @@ public final class ChimaeraWing {
 
         int amount = inHand.getAmount();
 
-        if (amount < Config.getInstance().getChimaeraUseCost()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(Config.getInstance().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
+        if (amount < mcMMO.p.getGeneralConfig().getChimaeraUseCost()) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(mcMMO.p.getGeneralConfig().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
             return;
         }
 
         long lastTeleport = mcMMOPlayer.getChimeraWingLastUse();
-        int cooldown = Config.getInstance().getChimaeraCooldown();
+        int cooldown = mcMMO.p.getGeneralConfig().getChimaeraCooldown();
 
         if (cooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
@@ -82,7 +81,7 @@ public final class ChimaeraWing {
         }
 
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        int hurtCooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+        int hurtCooldown = mcMMO.p.getGeneralConfig().getChimaeraRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
@@ -95,9 +94,9 @@ public final class ChimaeraWing {
 
         location = player.getLocation();
 
-        if (Config.getInstance().getChimaeraPreventUseUnderground()) {
+        if (mcMMO.p.getGeneralConfig().getChimaeraPreventUseUnderground()) {
             if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
-                player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
+                player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(amount - mcMMO.p.getGeneralConfig().getChimaeraUseCost())));
                 NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
@@ -109,7 +108,7 @@ public final class ChimaeraWing {
 
         mcMMOPlayer.actualizeTeleportCommenceLocation(player);
 
-        long warmup = Config.getInstance().getChimaeraWarmup();
+        long warmup = mcMMO.p.getGeneralConfig().getChimaeraWarmup();
 
         if (warmup > 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
@@ -123,7 +122,7 @@ public final class ChimaeraWing {
     public static void chimaeraExecuteTeleport() {
         Player player = mcMMOPlayer.getPlayer();
 
-        if (Config.getInstance().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
+        if (mcMMO.p.getGeneralConfig().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());
         }
         else {
@@ -136,12 +135,12 @@ public final class ChimaeraWing {
             }
         }
 
-        player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(player.getInventory().getItemInMainHand().getAmount() - Config.getInstance().getChimaeraUseCost())));
+        player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(player.getInventory().getItemInMainHand().getAmount() - mcMMO.p.getGeneralConfig().getChimaeraUseCost())));
         player.updateInventory();
         mcMMOPlayer.actualizeChimeraWingLastUse();
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
-        if (Config.getInstance().getChimaeraSoundEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getChimaeraSoundEnabled()) {
             SoundManager.sendSound(player, location, SoundType.CHIMAERA_WING);
         }
 
@@ -149,7 +148,7 @@ public final class ChimaeraWing {
     }
 
     public static ItemStack getChimaeraWing(int amount) {
-        ItemStack itemStack = new ItemStack(Config.getInstance().getChimaeraItem(), amount);
+        ItemStack itemStack = new ItemStack(mcMMO.p.getGeneralConfig().getChimaeraItem(), amount);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         //noinspection ConstantConditions
@@ -165,8 +164,8 @@ public final class ChimaeraWing {
     }
 
     public static ShapelessRecipe getChimaeraWingRecipe() {
-        Material ingredient = Config.getInstance().getChimaeraItem();
-        int amount = Config.getInstance().getChimaeraRecipeCost();
+        Material ingredient = mcMMO.p.getGeneralConfig().getChimaeraItem();
+        int amount = mcMMO.p.getGeneralConfig().getChimaeraRecipeCost();
 
         ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"), getChimaeraWing(1));
         chimeraWing.addIngredient(amount, ingredient);

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.chat.SamePartyPredicate;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -204,7 +203,7 @@ public class Party {
 
     public int getXpToLevel() {
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getOnlineMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
+        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getOnlineMembers().size() + mcMMO.p.getGeneralConfig().getPartyXpCurveMultiplier());
     }
 
     public String getXpToLevelPercentage() {
@@ -243,13 +242,13 @@ public class Party {
             return;
         }
 
-        if (!Config.getInstance().getPartyInformAllMembers()) {
+        if (!mcMMO.p.getGeneralConfig().getPartyInformAllMembers()) {
             Player leader = mcMMO.p.getServer().getPlayer(this.leader.getUniqueId());
 
             if (leader != null) {
                 leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
-                if (Config.getInstance().getLevelUpSoundsEnabled()) {
+                if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled()) {
                     SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
                 }
             }
@@ -260,7 +259,7 @@ public class Party {
     }
 
     public boolean hasReachedLevelCap() {
-        return Config.getInstance().getPartyLevelCap() < getLevel() + 1;
+        return mcMMO.p.getGeneralConfig().getPartyLevelCap() < getLevel() + 1;
     }
 
     public void setXpShareMode(ShareMode xpShareMode) {
@@ -386,7 +385,7 @@ public class Party {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = Config.getInstance().getPartyShareRange();
+            double range = mcMMO.p.getGeneralConfig().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {

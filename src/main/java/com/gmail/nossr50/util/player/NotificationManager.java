@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.LevelUpBroadcastPredicate;
 import com.gmail.nossr50.datatypes.PowerLevelUpBroadcastPredicate;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -50,7 +48,7 @@ public class NotificationManager {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
+        McMMOMessageType destination = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
         Component message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
@@ -105,7 +103,7 @@ public class NotificationManager {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
+        McMMOMessageType destination = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
         Component message = TextComponentFactory.getNotificationMultipleValues(key, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
@@ -137,7 +135,7 @@ public class NotificationManager {
     private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, McMMOMessageType destination, Component message) {
         //Init event
         McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
-                notificationType, message, destination, AdvancedConfig.getInstance().doesNotificationSendCopyToChat(notificationType));
+                notificationType, message, destination, mcMMO.p.getAdvancedConfig().doesNotificationSendCopyToChat(notificationType));
 
         //Call event
         Bukkit.getServer().getPluginManager().callEvent(customEvent);
@@ -155,7 +153,7 @@ public class NotificationManager {
         if(!mcMMOPlayer.useChatNotifications())
             return;
 
-        McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
+        McMMOMessageType destination = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
         Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
@@ -183,7 +181,7 @@ public class NotificationManager {
         SoundManager.sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
 
         //ACTION BAR MESSAGE
-        /*if(AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
+        /*if(mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
             mcMMOPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
                     subSkillType.getLocaleName(),
                     String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
@@ -197,7 +195,7 @@ public class NotificationManager {
      */
     private static void sendAdminNotification(String msg) {
         //If its not enabled exit
-        if(!Config.getInstance().adminNotifications())
+        if(!mcMMO.p.getGeneralConfig().adminNotifications())
             return;
 
         for(Player player : Bukkit.getServer().getOnlinePlayers())
@@ -274,13 +272,13 @@ public class NotificationManager {
             return;
 
         //Check if broadcasting is enabled
-        if(Config.getInstance().shouldLevelUpBroadcasts()) {
+        if(mcMMO.p.getGeneralConfig().shouldLevelUpBroadcasts()) {
             //Permission check
             if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
                 return;
             }
 
-            int levelInterval = Config.getInstance().getLevelUpBroadcastInterval();
+            int levelInterval = mcMMO.p.getGeneralConfig().getLevelUpBroadcastInterval();
             int remainder = level % levelInterval;
 
             if(remainder == 0) {
@@ -309,13 +307,13 @@ public class NotificationManager {
             return;
 
         //Check if broadcasting is enabled
-        if(Config.getInstance().shouldPowerLevelUpBroadcasts()) {
+        if(mcMMO.p.getGeneralConfig().shouldPowerLevelUpBroadcasts()) {
             //Permission check
             if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
                 return;
             }
 
-            int levelInterval = Config.getInstance().getPowerLevelUpBroadcastInterval();
+            int levelInterval = mcMMO.p.getGeneralConfig().getPowerLevelUpBroadcastInterval();
             int remainder = powerLevel % levelInterval;
 
             if(remainder == 0) {

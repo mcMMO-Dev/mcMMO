@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.commands;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -30,7 +29,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (useBoard && Config.getInstance().getScoreboardsEnabled()) {
+        if (useBoard && mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
             displayBoard();
         }
 

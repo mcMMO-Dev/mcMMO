@@ -1,9 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.chat.author.PlayerAuthor;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ChatConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
@@ -200,9 +198,9 @@ public class McMMOPlayer implements Identified {
     {
         //Check if they've reached the power level cap just now
         if(hasReachedPowerLevelCap()) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getName());
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType)), primarySkillType.getName());
         }
 
         //Updates from Party sources
@@ -537,7 +535,7 @@ public class McMMOPlayer implements Identified {
         if(hasReachedPowerLevelCap())
             return true;
 
-        return getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType);
+        return getSkillLevel(primarySkillType) >= mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
     }
 
     /**
@@ -546,7 +544,7 @@ public class McMMOPlayer implements Identified {
      * @return true if they have reached the power level cap
      */
     public boolean hasReachedPowerLevelCap() {
-        return this.getPowerLevel() >= Config.getInstance().getPowerLevelCap();
+        return this.getPowerLevel() >= mcMMO.p.getGeneralConfig().getPowerLevelCap();
     }
 
     /**
@@ -597,7 +595,7 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (!Config.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
+        if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
             party.applyXpGain(modifyXpGain(skill, xp));
         }
     }
@@ -666,7 +664,7 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (Config.getInstance().getLevelUpSoundsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         }
 
@@ -787,13 +785,13 @@ public class McMMOPlayer implements Identified {
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
         //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
         if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
-                || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+                || (mcMMO.p.getGeneralConfig().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
         xp = (float) (xp / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
-        if (Config.getInstance().getToolModsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
 
             if (tool != null) {
@@ -863,8 +861,8 @@ public class McMMOPlayer implements Identified {
         }
 
         //These values change depending on whether or not the server is in retro mode
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+        int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+        int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
         int ticks;
 
@@ -881,7 +879,7 @@ public class McMMOPlayer implements Identified {
             //player.sendMessage(ability.getAbilityOn());
         }
 
-        if (AdvancedConfig.getInstance().sendAbilityNotificationToOtherPlayers()) {
+        if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
             SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
         }
 
@@ -905,7 +903,7 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
+        if (mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
             return;
         }
 
@@ -942,7 +940,7 @@ public class McMMOPlayer implements Identified {
                 }
             }
 
-            if (Config.getInstance().getAbilityMessagesEnabled()) {
+            if (mcMMO.p.getGeneralConfig().getAbilityMessagesEnabled()) {
                 /*
                  *
                  * IF THE TOOL IS AN AXE
@@ -1099,7 +1097,7 @@ public class McMMOPlayer implements Identified {
 
         UserManager.remove(thisPlayer);
 
-        if(Config.getInstance().getScoreboardsEnabled())
+        if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
             ScoreboardManager.teardownPlayer(thisPlayer);
 
         if (inParty()) {

@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -12,16 +13,33 @@ public abstract class ConfigLoader {
     protected String fileName;
     protected final File configFile;
     protected FileConfiguration config;
+    protected @NotNull File dataFolder;
 
-    public ConfigLoader(String relativePath, String fileName) {
+    public ConfigLoader(String relativePath, String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
-        configFile = new File(plugin.getDataFolder(), relativePath + File.separator + fileName);
+        this.dataFolder = dataFolder;
+        configFile = new File(dataFolder, relativePath + File.separator + fileName);
         loadFile();
     }
 
+    public ConfigLoader(String fileName, @NotNull File dataFolder) {
+        this.fileName = fileName;
+        this.dataFolder = dataFolder;
+        configFile = new File(dataFolder, fileName);
+        loadFile();
+    }
+
+    @Deprecated
+    public ConfigLoader(String relativePath, String fileName) {
+        this.fileName = fileName;
+        configFile = new File(mcMMO.p.getDataFolder(), relativePath + File.separator + fileName);
+        loadFile();
+    }
+
+    @Deprecated
     public ConfigLoader(String fileName) {
         this.fileName = fileName;
-        configFile = new File(plugin.getDataFolder(), fileName);
+        configFile = new File(mcMMO.p.getDataFolder(), fileName);
         loadFile();
     }
 

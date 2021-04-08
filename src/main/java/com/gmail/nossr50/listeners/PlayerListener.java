@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
@@ -73,11 +72,11 @@ public class PlayerListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
             //Remove scoreboards
-            if(Config.getInstance().getScoreboardsEnabled()) {
+            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
                 ScoreboardManager.teardownPlayer(event.getPlayer());
             }
             return;
-        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld()) && Config.getInstance().getScoreboardsEnabled()) {
+        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld()) && mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
             //This only fires if they are travelling to a non-blacklisted world from a blacklisted world
 
             //Setup scoreboards
@@ -93,7 +92,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || Config.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
+        if (!UserManager.hasPlayerDataKey(player) || mcMMO.p.getGeneralConfig().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
             return;
         }
 
@@ -292,7 +291,7 @@ public class PlayerListener implements Listener {
                 if(event.getCaught() != null) {
                     Item fishingCatch = (Item) event.getCaught();
 
-                    if (Config.getInstance().getFishingOverrideTreasures() &&
+                    if (mcMMO.p.getGeneralConfig().getFishingOverrideTreasures() &&
                             fishingCatch.getItemStack().getType() != Material.SALMON &&
                             fishingCatch.getItemStack().getType() != Material.COD &&
                             fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
@@ -565,11 +564,11 @@ public class PlayerListener implements Listener {
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
         new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 60);
 
-        if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
+        if (mcMMO.p.getGeneralConfig().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
         }
 
-        if (plugin.isXPEventEnabled() && Config.getInstance().playerJoinEventInfo()) {
+        if (plugin.isXPEventEnabled() && mcMMO.p.getGeneralConfig().playerJoinEventInfo()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
         }
     }
@@ -652,7 +651,7 @@ public class PlayerListener implements Listener {
             case RIGHT_CLICK_BLOCK:
                 Material type = clickedBlock.getType();
 
-                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial
                             && PrimarySkillType.REPAIR.getPermissions(player)
@@ -700,7 +699,7 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_BLOCK:
                 type = clickedBlock.getType();
 
-                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -794,7 +793,7 @@ public class PlayerListener implements Listener {
 
                 /* ACTIVATION & ITEM CHECKS */
                 if (BlockUtils.canActivateTools(blockState)) {
-                    if (Config.getInstance().getAbilitiesEnabled()) {
+                    if (mcMMO.p.getGeneralConfig().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
@@ -860,7 +859,7 @@ public class PlayerListener implements Listener {
                 }
                 
                 /* ACTIVATION CHECKS */
-                if (Config.getInstance().getAbilitiesEnabled()) {
+                if (mcMMO.p.getGeneralConfig().getAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
@@ -892,13 +891,13 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
                 TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
-                if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry())) {
+                if (type == mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry())) {
                     tamingManager.summonWolf();
                 }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
+                else if (type == mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
                     tamingManager.summonOcelot();
                 }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
+                else if (type == mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
                     tamingManager.summonHorse();
                 }
 
@@ -951,7 +950,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+        if (!mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             String message = event.getMessage();
             String command = message.substring(1).split(" ")[0];
             String lowerCaseCommand = command.toLowerCase(Locale.ENGLISH);

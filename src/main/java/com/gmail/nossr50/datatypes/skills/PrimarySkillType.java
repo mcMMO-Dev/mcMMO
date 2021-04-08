@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public enum PrimarySkillType {
+public enum PrimarySkillType implements Skill {
     ACROBATICS(AcrobaticsManager.class, Color.WHITE,
             ImmutableList.of(SubSkillType.ACROBATICS_DODGE, SubSkillType.ACROBATICS_ROLL)),
     ALCHEMY(AlchemyManager.class, Color.FUCHSIA,
@@ -122,6 +122,14 @@ public enum PrimarySkillType {
         this.subSkillTypes = subSkillTypes;
     }
 
+    public PrimarySkillType getPrimarySkill() {
+        return this;
+    }
+
+    public String getPrimaryKeyName() {
+        return StringUtils.getCapitalized(this.toString());
+    }
+
     public Class<? extends SkillManager> getManagerClass() {
         return managerClass;
     }
@@ -136,37 +144,37 @@ public enum PrimarySkillType {
      * @return the max level of this skill
      */
     public int getMaxLevel() {
-        return Config.getInstance().getLevelCap(this);
+        return mcMMO.p.getGeneralConfig().getLevelCap(this);
     }
 
     public boolean isSuperAbilityUnlocked(Player player) { return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1; }
 
     public boolean getPVPEnabled() {
-        return Config.getInstance().getPVPEnabled(this);
+        return mcMMO.p.getGeneralConfig().getPVPEnabled(this);
     }
 
     public boolean getPVEEnabled() {
-        return Config.getInstance().getPVEEnabled(this);
+        return mcMMO.p.getGeneralConfig().getPVEEnabled(this);
     }
 
     public boolean getDoubleDropsDisabled() {
-        return Config.getInstance().getDoubleDropsDisabled(this);
+        return mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(this);
     }
 
     public boolean getHardcoreStatLossEnabled() {
-        return Config.getInstance().getHardcoreStatLossEnabled(this);
+        return mcMMO.p.getGeneralConfig().getHardcoreStatLossEnabled(this);
     }
 
     public void setHardcoreStatLossEnabled(boolean enable) {
-        Config.getInstance().setHardcoreStatLossEnabled(this, enable);
+        mcMMO.p.getGeneralConfig().setHardcoreStatLossEnabled(this, enable);
     }
 
     public boolean getHardcoreVampirismEnabled() {
-        return Config.getInstance().getHardcoreVampirismEnabled(this);
+        return mcMMO.p.getGeneralConfig().getHardcoreVampirismEnabled(this);
     }
 
     public void setHardcoreVampirismEnabled(boolean enable) {
-        Config.getInstance().setHardcoreVampirismEnabled(this, enable);
+        mcMMO.p.getGeneralConfig().setHardcoreVampirismEnabled(this, enable);
     }
 
     public ToolType getTool() {
@@ -182,7 +190,7 @@ public enum PrimarySkillType {
     }
 
     public static PrimarySkillType getSkill(String skillName) {
-        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+        if (!mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
                     return type;
@@ -215,42 +223,17 @@ public enum PrimarySkillType {
         }
     }
 
-    public static PrimarySkillType bySecondaryAbility(SubSkillType subSkillType) {
-        for (PrimarySkillType type : values()) {
-            if (type.getSkillAbilities().contains(subSkillType)) {
-                return type;
-            }
-        }
-        return null;
-    }
-
-    public static PrimarySkillType byAbility(SuperAbilityType ability) {
-        for (PrimarySkillType type : values()) {
-            if (type.getAbility() == ability) {
-                return type;
-            }
-        }
-
-        return null;
-    }
-
     public String getName() {
         return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
-
-//    public String getName() {
-//        return StringUtils.getCapitalized(StringUtils.getCapitalized(this.toString()));
-//    }
 
     public boolean getPermissions(Player player) {
         return Permissions.skillEnabled(player, this);
     }
 
-/*    public void celebrateLevelUp(Player player) {
-        ParticleEffectUtils.fireworkParticleShower(player, skillColor);
-    }*/
-
     public boolean shouldProcess(Entity target) {
         return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? getPVPEnabled() : getPVEEnabled();
     }
+
+
 }

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.util.random;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -252,11 +252,11 @@ public class RandomChanceUtil {
     public static double getStaticRandomChance(@NotNull SubSkillType subSkillType) throws InvalidStaticChance {
         switch (subSkillType) {
             case AXES_ARMOR_IMPACT:
-                return AdvancedConfig.getInstance().getImpactChance();
+                return mcMMO.p.getAdvancedConfig().getImpactChance();
             case AXES_GREATER_IMPACT:
-                return AdvancedConfig.getInstance().getGreaterImpactChance();
+                return mcMMO.p.getAdvancedConfig().getGreaterImpactChance();
             case TAMING_FAST_FOOD_SERVICE:
-                return AdvancedConfig.getInstance().getFastFoodChance();
+                return mcMMO.p.getAdvancedConfig().getFastFoodChance();
             default:
                 throw new InvalidStaticChance();
         }
@@ -328,10 +328,10 @@ public class RandomChanceUtil {
     }
 
     public static double getMaximumProbability(@NotNull SubSkillType subSkillType) {
-        return AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
+        return mcMMO.p.getAdvancedConfig().getMaximumProbability(subSkillType);
     }
 
     public static double getMaxBonusLevelCap(@NotNull SubSkillType subSkillType) {
-        return AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
+        return mcMMO.p.getAdvancedConfig().getMaxBonusLevel(subSkillType);
     }
 }

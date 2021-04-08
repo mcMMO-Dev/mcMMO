@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -86,7 +85,7 @@ public class MctopCommand implements TabExecutor {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-            long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
+            long cooldownMillis = Math.max(mcMMO.p.getGeneralConfig().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
                 double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000.0D;
@@ -112,8 +111,8 @@ public class MctopCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (Config.getInstance().getTopUseBoard());
-        boolean useChat = !useBoard || Config.getInstance().getTopUseChat();
+        boolean useBoard = (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getTopUseBoard());
+        boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getTopUseChat();
 
         new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }

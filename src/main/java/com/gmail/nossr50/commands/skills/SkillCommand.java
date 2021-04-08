@@ -1,11 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -74,7 +73,7 @@ public abstract class SkillCommand implements TabExecutor {
             float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
             //Send the players a few blank lines to make finding the top of the skill command easier
-            if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
+            if (mcMMO.p.getAdvancedConfig().doesSkillCommandSendBlankLines())
                 for (int i = 0; i < 2; i++) {
                     player.sendMessage("");
                 }
@@ -106,13 +105,13 @@ public abstract class SkillCommand implements TabExecutor {
 
 
             //Link Header
-            if (Config.getInstance().getUrlLinksEnabled()) {
+            if (mcMMO.p.getGeneralConfig().getUrlLinksEnabled()) {
                 player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
                 TextComponentFactory.sendPlayerUrlHeader(player);
             }
 
 
-            if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getSkillUseBoard()) {
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled() && mcMMO.p.getGeneralConfig().getSkillUseBoard()) {
                 ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
             }
 
@@ -226,8 +225,8 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
         int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+        int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+        int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
         int length;
 
@@ -268,7 +267,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String getLimitBreakDescriptionParameter() {
-        if(AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+        if(mcMMO.p.getAdvancedConfig().canApplyLimitBreakPVE()) {
             return "(PVP/PVE)";
         } else {
             return "(PVP)";
