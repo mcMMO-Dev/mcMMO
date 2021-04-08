@@ -289,10 +289,10 @@ public class NotificationManager {
                         .append(Component.newline())
                         .append(Component.text(LocalDate.now().toString()))
                         .append(Component.newline())
-                        .append(Component.text(primarySkillType.getName()+" reached level "+level)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .append(Component.text(mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType)+" reached level "+level)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
                         .asHoverEvent();
 
-                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, primarySkillType.getName());
+                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
                 Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
 
                 Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);

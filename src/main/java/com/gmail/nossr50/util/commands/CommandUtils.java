@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -25,7 +26,7 @@ public final class CommandUtils {
     private CommandUtils() {}
 
     public static boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
-        if (skill == null || !skill.isChildSkill()) {
+        if (skill == null || !mcMMO.p.getSkillTools().isChildSkill(skill)) {
             return false;
         }
 
@@ -169,7 +170,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), PrimarySkillType.GATHERING_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), mcMMO.p.getSkillTools().GATHERING_SKILLS);
     }
 
     public static void printGatheringSkills(Player player) {
@@ -183,7 +184,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), PrimarySkillType.COMBAT_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), mcMMO.p.getSkillTools().COMBAT_SKILLS);
     }
 
     public static void printCombatSkills(Player player) {
@@ -197,7 +198,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), PrimarySkillType.MISC_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), mcMMO.p.getSkillTools().getMiscSkills());
     }
 
     public static void printMiscSkills(Player player) {
@@ -205,7 +206,7 @@ public final class CommandUtils {
     }
 
     public static String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
-        if (skill.isChildSkill()) {
+        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
         if (profile.getSkillLevel(skill) == mcMMO.p.getGeneralConfig().getLevelCap(skill)){
@@ -214,18 +215,18 @@ public final class CommandUtils {
         return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
     }
 
-    private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if(UserManager.getPlayer(inspect) == null)
+    private static void printGroupedSkillData(Player inspectTarget, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
+        if(UserManager.getPlayer(inspectTarget) == null)
             return;
 
-        PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
+        PlayerProfile profile = UserManager.getPlayer(inspectTarget).getProfile();
 
         List<String> displayData = new ArrayList<>();
         displayData.add(header);
 
-        for (PrimarySkillType skill : skillGroup) {
-            if (skill.getPermissions(inspect)) {
-                displayData.add(displaySkill(profile, skill));
+        for (PrimarySkillType primarySkillType : skillGroup) {
+            if (Permissions.skillEnabled(inspectTarget, primarySkillType)) {
+                displayData.add(displaySkill(profile, primarySkillType));
             }
         }
 

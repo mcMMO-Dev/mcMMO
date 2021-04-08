@@ -68,7 +68,7 @@ public class MctopCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
+            return StringUtil.copyPartialMatches(args[0], mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
         }
         return ImmutableList.of();
     }
@@ -122,7 +122,7 @@ public class MctopCommand implements TabExecutor {
             return null;
         }
 
-        PrimarySkillType skill = PrimarySkillType.getSkill(skillName);
+        PrimarySkillType skill = mcMMO.p.getSkillTools().matchSkill(skillName);
 
         if (CommandUtils.isChildSkill(sender, skill)) {
             return null;

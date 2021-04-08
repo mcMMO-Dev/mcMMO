@@ -48,7 +48,6 @@ public final class Alchemy {
 
     public static final int INGREDIENT_SLOT = 3;
 
-    public static int    catalysisUnlockLevel   = RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS);
     public static int    catalysisMaxBonusLevel = mcMMO.p.getAdvancedConfig().getCatalysisMaxBonusLevel();
     public static double catalysisMinSpeed      = mcMMO.p.getAdvancedConfig().getCatalysisMinSpeed();
     public static double catalysisMaxSpeed      = mcMMO.p.getAdvancedConfig().getCatalysisMaxSpeed();

@@ -164,7 +164,7 @@ public class GeneralConfig extends AutoUpdateConfigLoader {
     //Retro mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
     public boolean getIsRetroMode() { return config.getBoolean("General.RetroMode.Enabled", true); }
 
-    public String getLocale() { return config.getString("General.Locale", "en_us"); }
+    public String getLocale() { return config.getString("General.Locale", "en_US"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
     public boolean getShowProfileLoadedMessage() { return config.getBoolean("General.Show_Profile_Loaded", true); }
     public boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }

@@ -35,7 +35,7 @@ public final class ExperienceAPI {
      * @return true if this is a valid mcMMO skill
      */
     public static boolean isValidSkillType(String skillType) {
-        return PrimarySkillType.getSkill(skillType) != null;
+        return mcMMO.p.getSkillTools().matchSkill(skillType) != null;
     }
 
     /**
@@ -78,9 +78,9 @@ public final class ExperienceAPI {
      * @return true if this is a valid, non-child mcMMO skill
      */
     public static boolean isNonChildSkill(String skillType) {
-        PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
+        PrimarySkillType skill = mcMMO.p.getSkillTools().matchSkill(skillType);
 
-        return skill != null && !skill.isChildSkill();
+        return skill != null && !mcMMO.p.getSkillTools().isChildSkill(skill);
     }
 
     @Deprecated
@@ -294,11 +294,12 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getSkillType(skillType);
 
         if (isUnshared) {
-            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+            getPlayer(player).beginUnsharedXpGain(skill,
+                    (int) (XP / ExperienceConfig.getInstance().getFormulaSkillModifier(skill) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
         }
 
-        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+        getPlayer(player).applyXpGain(skill, (int) (XP / ExperienceConfig.getInstance().getFormulaSkillModifier(skill) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -317,7 +318,7 @@ public final class ExperienceAPI {
     public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
         PrimarySkillType skill = getSkillType(skillType);
 
-        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+        addOfflineXP(playerName, skill, (int) (XP / ExperienceConfig.getInstance().getFormulaSkillModifier(skill) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
@@ -625,7 +626,7 @@ public final class ExperienceAPI {
         PlayerProfile profile = getOfflineProfile(playerName);
         PrimarySkillType skill = getSkillType(skillType);
 
-        if (skill.isChildSkill()) {
+        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -656,7 +657,7 @@ public final class ExperienceAPI {
         PlayerProfile profile = getOfflineProfile(uuid);
         PrimarySkillType skill = getSkillType(skillType);
 
-        if (skill.isChildSkill()) {
+        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -762,7 +763,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType type : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -783,7 +784,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(uuid);
 
-        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType type : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -1168,7 +1169,7 @@ public final class ExperienceAPI {
     }
 
     private static PrimarySkillType getSkillType(String skillType) throws InvalidSkillException {
-        PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
+        PrimarySkillType skill = mcMMO.p.getSkillTools().matchSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
@@ -1180,7 +1181,7 @@ public final class ExperienceAPI {
     private static PrimarySkillType getNonChildSkillType(String skillType) throws InvalidSkillException, UnsupportedOperationException {
         PrimarySkillType skill = getSkillType(skillType);
 
-        if (skill.isChildSkill()) {
+        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
             throw new UnsupportedOperationException("Child skills do not have XP");
         }
 

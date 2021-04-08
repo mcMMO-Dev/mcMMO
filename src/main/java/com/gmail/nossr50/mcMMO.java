@@ -49,6 +49,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
@@ -90,6 +91,9 @@ public class mcMMO extends JavaPlugin {
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
+
+    private @NotNull SkillTools skillTools;
+
     private static boolean serverShutdownExecuted = false;
 
     /* Adventure */
@@ -172,8 +176,10 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
+            skillTools = new SkillTools(this); //Load after general config
+
             //Init configs
-            generalConfig = new GeneralConfig(getDataFolder());
             advancedConfig = new AdvancedConfig(getDataFolder());
 
             //Store this value so other plugins can check it
@@ -765,6 +771,10 @@ public class mcMMO extends JavaPlugin {
 
     public long getPurgeTime() {
         return purgeTime;
+    }
+
+    public @NotNull SkillTools getSkillTools() {
+        return skillTools;
     }
 
     public @NotNull GeneralConfig getGeneralConfig() {

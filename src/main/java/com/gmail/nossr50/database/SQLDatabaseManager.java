@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
@@ -29,6 +28,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final String MOBHEALTHBAR_VARCHAR = "VARCHAR(50)";
     public static final String UUID_VARCHAR = "VARCHAR(36)";
     public static final String USER_VARCHAR = "VARCHAR(40)";
+    public static final int CHILD_SKILLS_SIZE = 2;
     private final String tablePrefix = mcMMO.p.getGeneralConfig().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
@@ -274,7 +274,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(12, profile.getSkillLevel(PrimarySkillType.FISHING));
             statement.setInt(13, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
             int total = 0;
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS)
+            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS)
                 total += profile.getSkillLevel(primarySkillType);
             statement.setInt(14, total);
             statement.setInt(15, id);
@@ -358,7 +358,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         List<PlayerStat> stats = new ArrayList<>();
 
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(skill != null && skill.isChildSkill()) {
+        if(skill != null && mcMMO.p.getSkillTools().isChildSkill(skill)) {
             mcMMO.p.getLogger().severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
@@ -407,7 +407,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.name().toLowerCase(Locale.ENGLISH);
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
@@ -880,7 +880,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
-                String totalLevel = "'" + (mcMMO.p.getAdvancedConfig().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
+                String totalLevel = "'" + (mcMMO.p.getAdvancedConfig().getStartingLevel() * (PrimarySkillType.values().length - CHILD_SKILLS_SIZE)) + "'";
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
@@ -935,7 +935,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             if (mcMMO.p.getGeneralConfig().getTruncateSkills()) {
-                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
                     int cap = mcMMO.p.getGeneralConfig().getLevelCap(skill);
                     if (cap != Integer.MAX_VALUE) {
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `" + skill.name().toLowerCase(Locale.ENGLISH) + "` > " + cap);
@@ -1099,8 +1099,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        Map<Skill, Integer> skills = new HashMap<>(); // Skill & Level
-        Map<Skill, Float> skillsXp = new HashMap<>(); // Skill & XP
+        Map<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class); // Skill & Level
+        Map<PrimarySkillType, Float> skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class); // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
         MobHealthbarType mobHealthbarType;
@@ -1294,10 +1294,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
             resultSet.last();
 
-            if (resultSet.getRow() != PrimarySkillType.NON_CHILD_SKILLS.size()) {
+            if (resultSet.getRow() != mcMMO.p.getSkillTools().NON_CHILD_SKILLS.size()) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
-                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
                     String skill_name = skill.name().toLowerCase(Locale.ENGLISH);
 
                     try {

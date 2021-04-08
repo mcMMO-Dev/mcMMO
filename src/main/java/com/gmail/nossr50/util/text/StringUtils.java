@@ -31,6 +31,35 @@ public class StringUtils {
         return shortDecimal.format(ticks / 20);
     }
 
+    public static String convertToCamelCaseString(String baseString, String splitBy) {
+        String[] substrings = baseString.split(splitBy);
+        String prettyString = "";
+        int size = 1;
+
+        for (String string : substrings) {
+            prettyString = prettyString.concat(getCapitalized(string));
+
+            if (size < substrings.length) {
+                prettyString = prettyString.concat("");
+            }
+
+            size++;
+        }
+
+        return prettyString;
+    }
+
+    public static String getPrettyCamelCaseName(Object o) {
+        return StringUtils.convertToCamelCaseString(o.toString(), "_");
+    }
+
+    public static String getPrettySuperAbilityName(SuperAbilityType superAbilityType) {
+        return StringUtils.getPrettySuperAbilityString(superAbilityType);
+    }
+
+    public static String getPrettySuperAbilityString(SuperAbilityType ability) {
+        return createPrettyString(ability.toString());
+    }
 
     /**
      * Creates a string from an array skipping the first n elements

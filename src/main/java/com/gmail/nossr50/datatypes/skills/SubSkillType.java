@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 
 import java.util.Locale;
@@ -136,7 +137,7 @@ public enum SubSkillType {
      * If we add skills, those immutable lists need to be updated
      * @return
      */
-    public PrimarySkillType getParentSkill() { return Skill.bySecondaryAbility(this); }
+    public PrimarySkillType getParentSkill() { return mcMMO.p.getSkillTools().getPrimarySkillBySubSkill(this); }
 
     /**
      * Returns the root address for this skill in the advanced.yml file

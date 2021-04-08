@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -55,6 +56,6 @@ public class AddlevelsCommand extends ExperienceCommand {
         if(isSilent)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
     }
 }

@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -28,7 +29,7 @@ public class RankUtils {
      */
     public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel)
     {
-        for(SubSkillType subSkillType : primarySkillType.getSkillAbilities())
+        for(SubSkillType subSkillType : mcMMO.p.getSkillTools().getSubSkills(primarySkillType))
         {
             int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
 

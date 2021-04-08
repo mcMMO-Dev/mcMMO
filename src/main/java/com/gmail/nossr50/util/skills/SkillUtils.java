@@ -53,7 +53,7 @@ public final class SkillUtils {
      */
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
-        int maxLength = skill.getAbility().getMaxLength();
+        int maxLength = mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill));
         int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
         int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
@@ -123,7 +123,7 @@ public final class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ? mcMMO.p.getSkillTools().matchSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -189,10 +189,10 @@ public final class SkillUtils {
             if(abilityLengthCap > 0)
             {
                 ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             } else {
                 ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);

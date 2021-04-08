@@ -34,7 +34,7 @@ public final class CommandRegistrationManager {
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             String commandName = skill.toString().toLowerCase(Locale.ENGLISH);
-            String localizedName = skill.getName().toLowerCase(Locale.ENGLISH);
+            String localizedName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill).toLowerCase(Locale.ENGLISH);
 
             PluginCommand command;
 

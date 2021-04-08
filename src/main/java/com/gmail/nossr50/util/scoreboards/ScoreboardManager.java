@@ -91,14 +91,14 @@ public class ScoreboardManager {
             Collections.shuffle(colors, Misc.getRandom());
 
             int i = 0;
-            for (PrimarySkillType type : PrimarySkillType.values()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
+                skillLabelBuilder.put(primarySkillType, getShortenedName(colors.get(i) + mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType), false));
 
-                if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getLocalizedName()));
+                if (mcMMO.p.getSkillTools().getSuperAbility(primarySkillType) != null) {
+                    abilityLabelBuilder.put(mcMMO.p.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + mcMMO.p.getSkillTools().getSuperAbility(primarySkillType).getLocalizedName()));
 
-                    if (type == PrimarySkillType.MINING) {
+                    if (primarySkillType == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
@@ -113,14 +113,14 @@ public class ScoreboardManager {
          * Stylizes the targetBoard using our normal color scheme
          */
         else {
-            for (PrimarySkillType type : PrimarySkillType.values()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
+                skillLabelBuilder.put(primarySkillType, getShortenedName(ChatColor.GREEN + mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType)));
 
-                if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getLocalizedName()));
+                if (mcMMO.p.getSkillTools().getSuperAbility(primarySkillType) != null) {
+                    abilityLabelBuilder.put(mcMMO.p.getSkillTools().getSuperAbility(primarySkillType), formatAbility(mcMMO.p.getSkillTools().getSuperAbility(primarySkillType).getLocalizedName()));
 
-                    if (type == PrimarySkillType.MINING) {
+                    if (primarySkillType == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }

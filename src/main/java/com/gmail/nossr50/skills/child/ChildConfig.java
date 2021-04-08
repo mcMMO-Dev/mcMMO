@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.child;
 
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,7 +21,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
 
         FamilyTree.clearRegistrations(); // when reloading, need to clear statics
 
-        for (PrimarySkillType skill : PrimarySkillType.CHILD_SKILLS) {
+        for (PrimarySkillType skill : mcMMO.p.getSkillTools().CHILD_SKILLS) {
             plugin.debug("Finding parents of " + skill.name());
 
             EnumSet<PrimarySkillType> parentSkills = EnumSet.noneOf(PrimarySkillType.class);

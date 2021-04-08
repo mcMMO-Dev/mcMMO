@@ -2,6 +2,9 @@ Version 2.1.189
     Removed MHD command (it didn't do anything for a while now)
     Removed UP warning
     Updated pl locale (Thanks Mich3l3k)
+    Fixed an IllegalPluginAccessException error that could happen during server shutdown
+    Minor performance optimizations to FlatFile database
+    Refactored a lot of code
 
     NOTES:
     Ultra Permissions is SAFE to use with mcMMO

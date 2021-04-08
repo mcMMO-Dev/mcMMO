@@ -44,7 +44,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(PrimarySkillType skill) {
         this.skill = skill;
-        skillName = skill.getName();
+        skillName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill);
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -142,7 +142,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
-        if(!skill.isChildSkill())
+        if(!mcMMO.p.getSkillTools().isChildSkill(skill))
         {
             /*
              * NON-CHILD SKILLS
@@ -172,10 +172,10 @@ public abstract class SkillCommand implements TabExecutor {
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", mcMMO.p.getSkillTools().getLocalizedSkillName(parentList.get(i)), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY).append(", ");
                 } else {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", mcMMO.p.getSkillTools().getLocalizedSkillName(parentList.get(i)), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
@@ -188,7 +188,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         }
         /*
-        if (!skill.isChildSkill()) {
+        if (!mcMMO.p.getSkillTools().isChildSkill(skill)) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
             player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
             player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
@@ -224,7 +224,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
-        int maxLength = skill.getAbility().getMaxLength();
+        int maxLength = mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill));
         int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
         int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 

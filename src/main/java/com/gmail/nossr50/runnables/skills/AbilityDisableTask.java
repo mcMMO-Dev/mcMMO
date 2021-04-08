@@ -63,7 +63,9 @@ public class AbilityDisableTask extends BukkitRunnable {
         if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
             SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         }
-        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        if(!mcMMO.isServerShutdownExecuted()) {
+            new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        }
     }
 
     private void resendChunkRadiusAt(Player player) {

@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.OfflinePlayer;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
 
 public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final String IGNORED = "IGNORED";
-    private final @NotNull HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
+    private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new EnumMap<PrimarySkillType, List<PlayerStat>>(PrimarySkillType.class);
     private final @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
     private final @NotNull String usersFilePath;
@@ -106,7 +105,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    Map<Skill, Integer> skills = getSkillMapFromLine(character);
+                    Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
 
                     boolean powerless = true;
                     for (int skill : skills.values()) {
@@ -433,15 +432,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         writer.append("\r\n");
     }
 
-    public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException {
+    public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType, int pageNumber, int statsPerPage) throws InvalidSkillException {
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(skill != null && skill.isChildSkill()) {
+        if(primarySkillType != null && mcMMO.p.getSkillTools().isChildSkill(primarySkillType)) {
             logger.severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
 
         updateLeaderboards();
-        List<PlayerStat> statsList = skill == null ? powerLevels : playerStatHash.get(skill);
+        List<PlayerStat> statsList = primarySkillType == null ? powerLevels : playerStatHash.get(primarySkillType);
         int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
 
         return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
@@ -450,9 +449,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public Map<PrimarySkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<PrimarySkillType, Integer> skills = new HashMap<>();
+        Map<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class);
 
-        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
@@ -893,7 +892,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     playerName = data[USERNAME_INDEX];
                     int powerLevel = 0;
 
-                    Map<Skill, Integer> skills = getSkillMapFromLine(data);
+                    Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(data);
 
                     powerLevel += putStat(acrobatics, playerName, skills.get(PrimarySkillType.ACROBATICS));
                     powerLevel += putStat(alchemy, playerName, skills.get(PrimarySkillType.ALCHEMY));
@@ -1117,8 +1116,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromLine(@NotNull String[] character) {
-        Map<Skill, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
-        Map<Skill, Float>     skillsXp   = new HashMap<>();     // Skill & XP
+        Map<PrimarySkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
+        Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
         int scoreboardTipsShown;
@@ -1193,7 +1192,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<Skill, Float> skillMap, @NotNull String[] character, @NotNull Skill primarySkillType, int index, @NotNull String userName) {
+    private void tryLoadSkillFloatValuesFromRawData(@NotNull Map<PrimarySkillType, Float> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int index, @NotNull String userName) {
         try {
             float valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
@@ -1204,19 +1203,19 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<Skill, Integer> skillMap, @NotNull String[] character, @NotNull Skill skill, int index, @NotNull String userName) {
+    private void tryLoadSkillIntValuesFromRawData(@NotNull Map<PrimarySkillType, Integer> skillMap, @NotNull String[] character, @NotNull PrimarySkillType primarySkillType, int index, @NotNull String userName) {
         try {
             int valueFromString = Integer.parseInt(character[index]);
-            skillMap.put(skill, valueFromString);
+            skillMap.put(primarySkillType, valueFromString);
         } catch (NumberFormatException e) {
-            skillMap.put(skill, 0);
-            logger.severe("Data corruption when trying to load the value for skill "+skill+" for player named " + userName+ " setting value to zero");
+            skillMap.put(primarySkillType, 0);
+            logger.severe("Data corruption when trying to load the value for skill "+primarySkillType+" for player named " + userName+ " setting value to zero");
             e.printStackTrace();
         }
     }
 
-    private @NotNull Map<Skill, Integer> getSkillMapFromLine(@NotNull String[] character) {
-        HashMap<Skill, Integer> skills = new HashMap<>();   // Skill & Level
+    private @NotNull Map<PrimarySkillType, Integer> getSkillMapFromLine(@NotNull String[] character) {
+        EnumMap<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
         String username = character[USERNAME_INDEX];
 
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ACROBATICS, SKILLS_ACROBATICS, username);

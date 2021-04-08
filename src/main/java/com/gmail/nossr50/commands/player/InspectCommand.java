@@ -48,17 +48,17 @@ public class InspectCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 

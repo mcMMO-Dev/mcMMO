@@ -132,7 +132,7 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if (primarySkillType.isChildSkill()) {
+        if (mcMMO.p.getSkillTools().isChildSkill(primarySkillType)) {
             return;
         }
 
@@ -140,7 +140,7 @@ public class SelfListener implements Listener {
 
         float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
 
-        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        float modifiedThreshold = (float) (threshold / ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
         float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {

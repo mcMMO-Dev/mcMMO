@@ -129,6 +129,7 @@ public final class LocaleLoader {
         if (bundle == null) {
             Locale.setDefault(new Locale("en", "US"));
             Locale locale = null;
+
             String[] myLocale = mcMMO.p.getGeneralConfig().getLocale().split("[-_ ]");
 
             if (myLocale.length == 1) {
