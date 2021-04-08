@@ -1,6 +1,7 @@
 Version 2.1.189
+    Fixed a bug that would remove components from death messages when players were killed by mobs (thanks lexikiq)
     Removed MHD command (it didn't do anything for a while now)
-    Removed UP warning
+    Removed UltraPermissions warning
     Updated pl locale (Thanks Mich3l3k)
     Fixed an IllegalPluginAccessException error that could happen during server shutdown
     Minor performance optimizations to FlatFile database
