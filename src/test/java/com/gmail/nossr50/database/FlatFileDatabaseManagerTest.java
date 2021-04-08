@@ -6,6 +6,7 @@ import com.google.common.io.Files;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,6 @@ import java.io.*;
 import java.util.logging.Logger;
 
 
-@PrepareForTest({GeneralConfig.class})
 @RunWith(PowerMockRunner.class)
 public class FlatFileDatabaseManagerTest {
 
@@ -28,14 +28,12 @@ public class FlatFileDatabaseManagerTest {
 
     @Before
     public void init() {
-        logger.info("Preparing new test...");
         tempDir = Files.createTempDir();
         flatFileDatabaseManager = new FlatFileDatabaseManager(tempDir.getPath() + File.separator + TEST_FILE_NAME, logger, PURGE_TIME, 0);
     }
 
     @After
     public void tearDown() {
-        logger.info("Tearing down after test...");
         TestUtil.recursiveDelete(tempDir);
         flatFileDatabaseManager = null;
     }
@@ -55,11 +53,10 @@ public class FlatFileDatabaseManagerTest {
 
     @Test
     public void testPurgePowerlessUsers() {
-//        logger.info("testPurgePowerlessUsers");
-//        Assert.assertNotNull(flatFileDatabaseManager);
-//        addDataToFile(flatFileDatabaseManager, normalDatabaseData);
-//        int purgeCount = flatFileDatabaseManager.purgePowerlessUsers();
-//        Assert.assertEquals(purgeCount, 1); //1 User should have been purged
+        Assert.assertNotNull(flatFileDatabaseManager);
+        addDataToFile(flatFileDatabaseManager, normalDatabaseData);
+        int purgeCount = flatFileDatabaseManager.purgePowerlessUsers();
+        Assert.assertEquals(purgeCount, 1); //1 User should have been purged
     }
 
     private void addDataToFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
@@ -68,7 +65,6 @@ public class FlatFileDatabaseManagerTest {
         FileWriter out = null;
 
         try {
-
             StringBuilder writer = new StringBuilder();
 
             for(String data : dataEntries) {
@@ -79,7 +75,7 @@ public class FlatFileDatabaseManagerTest {
             out.write(writer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            logger.severe("File not found");
+            System.out.println("File not found");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -94,12 +90,12 @@ public class FlatFileDatabaseManagerTest {
         }
 
         try {
-            logger.info("Added the following lines to the FlatFileDatabase for the purposes of the test...");
+            System.out.println("Added the following lines to the FlatFileDatabase for the purposes of the test...");
             // Open the file
             in = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = in.readLine()) != null) {
-                logger.info(line);
+                System.out.println(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
