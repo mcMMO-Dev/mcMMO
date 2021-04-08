@@ -12,6 +12,7 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -35,6 +36,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.conversations.Conversation;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.PoweredMinecart;
@@ -43,11 +45,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Locale;
 
@@ -104,36 +108,46 @@ public class PlayerListener implements Listener {
 
         UserManager.getPlayer(player).actualizeTeleportATS();
     }
+
     /**
-     * Handle PlayerDeathEvents at the lowest priority.
+     * Handle {@link EntityDamageByEntityEvent} at the highest priority.
      * <p>
-     * These events are used to modify the death message of a player when
-     * needed to correct issues potentially caused by the custom naming used
-     * for mob healthbars.
+     * This handler is used to clear the names of mobs with health bars to
+     * fix death messages showing mob health bars on death.
      *
-     * @param event The event to modify
+     * @param event the event to listen to
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerDeathLowest(PlayerDeathEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamageByEntityHighest(EntityDamageByEntityEvent event) {
+        // we only care about players as this is for fixing player death messages
+        if (!(event.getEntity() instanceof Player))
+            return;
+        if (!(event.getDamager() instanceof LivingEntity))
+            return;
+        // world blacklist check
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+            return;
+        // world guard main flag check
+        if (WorldGuardUtils.isWorldGuardLoaded() && !WorldGuardManager.getInstance().hasMainFlag((Player) event.getEntity()))
             return;
 
-        String deathMessage = event.getDeathMessage();
+        Player player = (Player) event.getEntity();
+        LivingEntity attacker = (LivingEntity) event.getDamager();
 
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(event.getEntity()))
-                return;
-        }
-
-        if (deathMessage == null) {
+        // we only want to handle player deaths
+        if ((player.getHealth() - event.getFinalDamage()) > 0)
             return;
-        }
 
-        Player player = event.getEntity();
-        event.setDeathMessage(MobHealthbarUtils.fixDeathMessage(deathMessage, player));
+        // temporarily clear the mob's name
+        new MobHealthDisplayUpdaterTask(attacker).run();
+
+        // set the name back
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p);
+            }
+        }.runTaskLater(mcMMO.p, 1);
     }
 
     /**
