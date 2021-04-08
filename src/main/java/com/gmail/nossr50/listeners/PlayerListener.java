@@ -122,17 +122,24 @@ public class PlayerListener implements Listener {
         // we only care about players as this is for fixing player death messages
         if (!(event.getEntity() instanceof Player))
             return;
-        if (!(event.getDamager() instanceof LivingEntity))
+        Player player = (Player) event.getEntity();
+
+        // get the attacker
+        LivingEntity attacker;
+        if (event.getDamager() instanceof LivingEntity)
+            attacker = (LivingEntity) event.getDamager();
+        // attempt to find creator of a projectile
+        else if (event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof LivingEntity)
+            attacker = (LivingEntity) ((Projectile) event.getDamager()).getShooter();
+        else
             return;
+
         // world blacklist check
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
         // world guard main flag check
         if (WorldGuardUtils.isWorldGuardLoaded() && !WorldGuardManager.getInstance().hasMainFlag((Player) event.getEntity()))
             return;
-
-        Player player = (Player) event.getEntity();
-        LivingEntity attacker = (LivingEntity) event.getDamager();
 
         // we only want to handle player deaths
         if ((player.getHealth() - event.getFinalDamage()) > 0)
