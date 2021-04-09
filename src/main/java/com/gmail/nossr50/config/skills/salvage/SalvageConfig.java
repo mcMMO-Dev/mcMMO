@@ -200,12 +200,12 @@ public class SalvageConfig extends ConfigLoader {
 
     private boolean noErrorsInSalvageable(List<String> issues) {
         if (!issues.isEmpty()) {
-            plugin.getLogger().warning("Errors have been found in: " + fileName);
-            plugin.getLogger().warning("The following issues were found:");
+            mcMMO.p.getLogger().warning("Errors have been found in: " + fileName);
+            mcMMO.p.getLogger().warning("The following issues were found:");
         }
 
         for (String issue : issues) {
-            plugin.getLogger().warning(issue);
+            mcMMO.p.getLogger().warning(issue);
         }
 
         return issues.isEmpty();

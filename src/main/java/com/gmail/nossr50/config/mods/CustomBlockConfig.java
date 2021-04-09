@@ -2,6 +2,7 @@ package com.gmail.nossr50.config.mods;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -66,7 +67,7 @@ public class CustomBlockConfig extends ConfigLoader {
             Material blockMaterial = Material.matchMaterial(blockInfo[0]);
 
             if (blockMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + blockInfo[0]);
+                mcMMO.p.getLogger().warning("Invalid material name. This item will be skipped. - " + blockInfo[0]);
                 continue;
             }
 

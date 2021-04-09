@@ -348,7 +348,7 @@ public class FishingTreasureConfig extends ConfigLoader {
                 Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
                 if (enchantment == null) {
-                    plugin.getLogger().warning("Skipping invalid enchantment in " + FILENAME + ": " + enchantmentName);
+                    mcMMO.p.getLogger().warning("Skipping invalid enchantment in " + FILENAME + ": " + enchantmentName);
                     continue;
                 }
 

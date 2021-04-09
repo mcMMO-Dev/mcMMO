@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import org.bukkit.Material;
@@ -70,7 +71,7 @@ public class CustomToolConfig extends ConfigLoader {
             Material toolMaterial = Material.matchMaterial(toolName);
 
             if (toolMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + toolName);
+                mcMMO.p.getLogger().warning("Invalid material name. This item will be skipped. - " + toolName);
                 continue;
             }
 
@@ -78,7 +79,7 @@ public class CustomToolConfig extends ConfigLoader {
             Material repairMaterial = Material.matchMaterial(config.getString(toolType + "." + toolName + ".Repair_Material", ""));
 
             if (repairable && (repairMaterial == null)) {
-                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
+                mcMMO.p.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
                 repairable = false;
             }
 
