@@ -1,7 +1,6 @@
 package com.gmail.nossr50.events.skills.secondaryabilities;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import com.gmail.nossr50.mcMMO;

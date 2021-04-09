@@ -1,7 +1,6 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.TestUtil;
-import com.gmail.nossr50.config.GeneralConfig;
 import com.google.common.io.Files;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.*;

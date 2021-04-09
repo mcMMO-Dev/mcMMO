@@ -34,4 +34,9 @@ public class PersistentDataConfig extends AutoUpdateConfigLoader {
         return config.getBoolean(key, false);
     }
 
+    public boolean useBlockTracker() {
+        return config.getBoolean("mcMMO_Region_System.Enabled", true);
+    }
+
+
 }

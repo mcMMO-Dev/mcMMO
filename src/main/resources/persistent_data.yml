@@ -30,3 +30,8 @@ Persistent_Data:
             # By default mcMMO gives 0 XP for this type of mob, not adjustable currently
             PLAYER_TAMED_MOB:
                 Saved_To_Disk: false
+# When players put down a block we track it, the system used to track player blocks is super efficient and has been coded extremely well
+# It is never recommended to turn this off as it allows exploits such as player dupes etc
+# We use our own file system for this outside of NBT which has been programmed to be lightning fast
+mcMMO_Region_System:
+    Enabled: true

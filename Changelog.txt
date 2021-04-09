@@ -1,4 +1,6 @@
 Version 2.1.189
+    The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
+    Added 'mcMMO_Region_System.Enabled' to persistent_data.yml (don't touch this setting unless you know what you are doing)
     Fixed a bug that would remove components from death messages when players were killed by mobs (thanks lexikiq)
     Removed MHD command (it didn't do anything for a while now)
     Removed UltraPermissions warning
