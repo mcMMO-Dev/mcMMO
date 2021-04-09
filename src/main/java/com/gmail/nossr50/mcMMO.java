@@ -231,7 +231,6 @@ public class mcMMO extends JavaPlugin {
             this.purgeTime = 2630000000L * generalConfig.getOldUsersCutoff();
 
             databaseManager = DatabaseManagerFactory.getDatabaseManager(mcMMO.getUsersFilePath(), getLogger(), purgeTime, mcMMO.p.getAdvancedConfig().getStartingLevel());
-            databaseManager.init();
 
             //Check for the newer API and tell them what to do if its missing
             checkForOutdatedAPI();

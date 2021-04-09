@@ -73,8 +73,6 @@ public interface DatabaseManager {
      */
     Map<PrimarySkillType, Integer> readRank(String playerName);
 
-    default void init() {};
-
     /**
      * Add a new user to the database.
      *

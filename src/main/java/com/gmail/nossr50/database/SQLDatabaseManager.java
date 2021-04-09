@@ -113,10 +113,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setValidationQuery("SELECT 1");
         poolProperties.setValidationInterval(30000);
         loadPool = new DataSource(poolProperties);
-    }
 
-    @Override
-    public void init() {
         checkStructure();
     }
 

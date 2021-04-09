@@ -27,6 +27,7 @@ public enum PrimarySkillType {
     TAMING,
     UNARMED,
     WOODCUTTING;
+//    boolean issueWarning = true;
 
     /*
      *  Everything below here will be removed in 2.2 (Tridents & Crossbows)
@@ -47,6 +48,20 @@ public enum PrimarySkillType {
      *  Everything below here will be removed in 2.2 (Tridents & Crossbows)
      */
 
+
+//    private void processWarning() {
+//        if(issueWarning) {
+//            StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+//            Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, () -> {
+//                mcMMO.p.getLogger().severe("A plugin that hooks into mcMMO via the mcMMO API is using soon to be deprecated API calls. Contact the plugin author and inform them to update their code before it breaks.");
+//                mcMMO.p.getLogger().severe("Deprecation Call from: " + stackTraceElements[2].toString());
+//                mcMMO.p.getLogger().severe("This warning will not repeat itself. Nothing is broken for now, but in the future it will be.");
+//            });
+//
+//            issueWarning = !issueWarning;
+//        }
+//    }
+
     /**
      * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
      * @return the max level of this skill
@@ -65,7 +80,9 @@ public enum PrimarySkillType {
      * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
      */
     @Deprecated
-    public boolean isSuperAbilityUnlocked(@NotNull Player player) { return mcMMO.p.getSkillTools().isSuperAbilityUnlocked(this, player); }
+    public boolean isSuperAbilityUnlocked(@NotNull Player player) {
+        return mcMMO.p.getSkillTools().isSuperAbilityUnlocked(this, player);
+    }
 
     /**
      * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead

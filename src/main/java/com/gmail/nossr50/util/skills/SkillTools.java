@@ -10,6 +10,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -23,57 +24,70 @@ import java.util.*;
 public class SkillTools {
     private final mcMMO pluginRef;
 
-    //TODO: Should these be hash sets instead of lists?
     //TODO: Figure out which ones we don't need, this was copy pasted from a diff branch
-    public final ImmutableList<String> LOCALIZED_SKILL_NAMES;
-    public final ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
-    public final ImmutableSet<String> EXACT_SUBSKILL_NAMES;
-    public final ImmutableList<PrimarySkillType> CHILD_SKILLS;
-    public final ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
-    public final ImmutableList<PrimarySkillType> COMBAT_SKILLS;
-    public final ImmutableList<PrimarySkillType> GATHERING_SKILLS;
-    public final ImmutableList<PrimarySkillType> MISC_SKILLS;
+    public final @NotNull ImmutableList<String> LOCALIZED_SKILL_NAMES;
+    public final @NotNull ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
+    public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
+    public final @NotNull ImmutableList<PrimarySkillType> CHILD_SKILLS;
+    public final @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
+    public final @NotNull ImmutableList<PrimarySkillType> COMBAT_SKILLS;
+    public final @NotNull ImmutableList<PrimarySkillType> GATHERING_SKILLS;
+    public final @NotNull ImmutableList<PrimarySkillType> MISC_SKILLS;
 
-    private ImmutableMap<SubSkillType, PrimarySkillType> subSkillParentRelationshipMap;
-    private ImmutableMap<SuperAbilityType, PrimarySkillType> superAbilityParentRelationshipMap; 
-    private ImmutableMap<PrimarySkillType, Set<SubSkillType>> primarySkillChildrenMap;
+    private final @NotNull ImmutableMap<SubSkillType, PrimarySkillType> subSkillParentRelationshipMap;
+    private final @NotNull ImmutableMap<SuperAbilityType, PrimarySkillType> superAbilityParentRelationshipMap;
+    private final @NotNull ImmutableMap<PrimarySkillType, Set<SubSkillType>> primarySkillChildrenMap;
 
     // The map below is for the super abilities which require readying a tool, its everything except blast mining
-    private ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap; 
-    private ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
+    private final ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap;
+    private final ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
 
     public SkillTools(@NotNull mcMMO pluginRef) {
         this.pluginRef = pluginRef;
 
-        initSubSkillRelationshipMap();
-        initPrimaryChildMap();
-        initPrimaryToolMap();
-        initSuperAbilityParentRelationships();
+        /*
+         * Setup subskill -> parent relationship map
+         */
+        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap = new EnumMap<SubSkillType, PrimarySkillType>(SubSkillType.class);
 
-        List<PrimarySkillType> childSkills = new ArrayList<>();
-        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
+        //Super hacky and disgusting
+        for(PrimarySkillType primarySkillType1 : PrimarySkillType.values()) {
+            for(SubSkillType subSkillType : SubSkillType.values()) {
+                String[] splitSubSkillName = subSkillType.toString().split("_");
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (isChildSkill(primarySkillType)) {
-                childSkills.add(primarySkillType);
-            } else {
-                nonChildSkills.add(primarySkillType);
+                if(primarySkillType1.toString().equalsIgnoreCase(splitSubSkillName[0])) {
+                    //Parent Skill Found
+                    tempSubParentMap.put(subSkillType, primarySkillType1);
+                }
             }
         }
 
-        COMBAT_SKILLS = ImmutableList.of(PrimarySkillType.ARCHERY, PrimarySkillType.AXES, PrimarySkillType.SWORDS, PrimarySkillType.TAMING, PrimarySkillType.UNARMED);
-        GATHERING_SKILLS = ImmutableList.of(PrimarySkillType.EXCAVATION, PrimarySkillType.FISHING, PrimarySkillType.HERBALISM, PrimarySkillType.MINING, PrimarySkillType.WOODCUTTING);
-        MISC_SKILLS = ImmutableList.of(PrimarySkillType.ACROBATICS, PrimarySkillType.ALCHEMY, PrimarySkillType.REPAIR, PrimarySkillType.SALVAGE, PrimarySkillType.SMELTING);
+        subSkillParentRelationshipMap = ImmutableMap.copyOf(tempSubParentMap);
 
-        LOCALIZED_SKILL_NAMES = ImmutableList.copyOf(buildLocalizedPrimarySkillNames());
-        FORMATTED_SUBSKILL_NAMES = ImmutableList.copyOf(buildFormattedSubSkillNameList());
-        EXACT_SUBSKILL_NAMES = ImmutableSet.copyOf(buildExactSubSkillNameList());
+        /*
+         * Setup primary -> (collection) subskill map
+         */
 
-        CHILD_SKILLS = ImmutableList.copyOf(childSkills);
-        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
-    }
+        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap = new EnumMap<PrimarySkillType, Set<SubSkillType>>(PrimarySkillType.class);
 
-    private void initPrimaryToolMap() {
+        //Init the empty Hash Sets
+        for(PrimarySkillType primarySkillType1 : PrimarySkillType.values()) {
+            tempPrimaryChildMap.put(primarySkillType1, new HashSet<>());
+        }
+
+        //Fill in the hash sets
+        for(SubSkillType subSkillType : SubSkillType.values()) {
+            PrimarySkillType parentSkill = subSkillParentRelationshipMap.get(subSkillType);
+
+            //Add this subskill as a child
+            tempPrimaryChildMap.get(parentSkill).add(subSkillType);
+        }
+
+        primarySkillChildrenMap = ImmutableMap.copyOf(tempPrimaryChildMap);
+
+        /*
+         * Setup primary -> tooltype map
+         */
         EnumMap<PrimarySkillType, ToolType> tempToolMap = new EnumMap<PrimarySkillType, ToolType>(PrimarySkillType.class);
 
         tempToolMap.put(PrimarySkillType.AXES, ToolType.AXE);
@@ -85,9 +99,12 @@ public class SkillTools {
         tempToolMap.put(PrimarySkillType.MINING, ToolType.PICKAXE);
 
         primarySkillToolMap = ImmutableMap.copyOf(tempToolMap);
-    }
 
-    private void initSuperAbilityParentRelationships() {
+        /*
+         * Setup ability -> primary map
+         * Setup primary -> ability map
+         */
+
         EnumMap<SuperAbilityType, PrimarySkillType> tempAbilityParentRelationshipMap = new EnumMap<SuperAbilityType, PrimarySkillType>(SuperAbilityType.class);
         EnumMap<PrimarySkillType, SuperAbilityType> tempMainActivatedAbilityChildMap = new EnumMap<PrimarySkillType, SuperAbilityType>(PrimarySkillType.class);
 
@@ -107,6 +124,40 @@ public class SkillTools {
 
         superAbilityParentRelationshipMap = ImmutableMap.copyOf(tempAbilityParentRelationshipMap);
         mainActivatedAbilityChildMap = ImmutableMap.copyOf(tempMainActivatedAbilityChildMap);
+
+        /*
+         * Build child skill and nonchild skill lists
+         */
+
+        List<PrimarySkillType> childSkills = new ArrayList<>();
+        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
+
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (isChildSkill(primarySkillType)) {
+                childSkills.add(primarySkillType);
+            } else {
+                nonChildSkills.add(primarySkillType);
+            }
+        }
+
+        CHILD_SKILLS = ImmutableList.copyOf(childSkills);
+        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
+
+        /*
+         * Build categorized skill lists
+         */
+
+        COMBAT_SKILLS = ImmutableList.of(PrimarySkillType.ARCHERY, PrimarySkillType.AXES, PrimarySkillType.SWORDS, PrimarySkillType.TAMING, PrimarySkillType.UNARMED);
+        GATHERING_SKILLS = ImmutableList.of(PrimarySkillType.EXCAVATION, PrimarySkillType.FISHING, PrimarySkillType.HERBALISM, PrimarySkillType.MINING, PrimarySkillType.WOODCUTTING);
+        MISC_SKILLS = ImmutableList.of(PrimarySkillType.ACROBATICS, PrimarySkillType.ALCHEMY, PrimarySkillType.REPAIR, PrimarySkillType.SALVAGE, PrimarySkillType.SMELTING);
+
+        /*
+         * Build formatted/localized/etc string lists
+         */
+
+        LOCALIZED_SKILL_NAMES = ImmutableList.copyOf(buildLocalizedPrimarySkillNames());
+        FORMATTED_SUBSKILL_NAMES = ImmutableList.copyOf(buildFormattedSubSkillNameList());
+        EXACT_SUBSKILL_NAMES = ImmutableSet.copyOf(buildExactSubSkillNameList());
     }
 
     private @NotNull PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType) throws InvalidSkillException {
@@ -129,45 +180,6 @@ public class SkillTools {
             default:
                 throw new InvalidSkillException("No parent defined for super ability! "+superAbilityType.toString());
         }
-    }
-
-    /**
-     * Builds a list of localized {@link PrimarySkillType} names
-     * @return list of localized {@link PrimarySkillType} names
-     */
-    private @NotNull ArrayList<String> buildLocalizedPrimarySkillNames() {
-        ArrayList<String> localizedSkillNameList = new ArrayList<>();
-
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            localizedSkillNameList.add(getLocalizedSkillName(primarySkillType));
-        }
-
-        Collections.sort(localizedSkillNameList);
-
-        return localizedSkillNameList;
-    }
-
-    /**
-     * Builds a map containing a HashSet of SubSkillTypes considered Children of PrimarySkillType
-     * Disgusting Hacky Fix until the new skill system is in place
-     */
-    private void initPrimaryChildMap() {
-        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap = new EnumMap<PrimarySkillType, Set<SubSkillType>>(PrimarySkillType.class);
-
-        //Init the empty Hash Sets
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            tempPrimaryChildMap.put(primarySkillType, new HashSet<>());
-        }
-
-        //Fill in the hash sets
-        for(SubSkillType subSkillType : SubSkillType.values()) {
-            PrimarySkillType parentSkill = subSkillParentRelationshipMap.get(subSkillType);
-
-            //Add this subskill as a child
-            tempPrimaryChildMap.get(parentSkill).add(subSkillType);
-        }
-
-        primarySkillChildrenMap = ImmutableMap.copyOf(tempPrimaryChildMap);
     }
 
     /**
@@ -196,25 +208,20 @@ public class SkillTools {
     }
 
     /**
-     * Builds a map containing the relationships of SubSkillTypes to PrimarySkillTypes
-     * Disgusting Hacky Fix until the new skill system is in place
+     * Builds a list of localized {@link PrimarySkillType} names
+     * @return list of localized {@link PrimarySkillType} names
      */
-    private void initSubSkillRelationshipMap() {
-        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap = new EnumMap<SubSkillType, PrimarySkillType>(SubSkillType.class);
+    @VisibleForTesting
+    private @NotNull ArrayList<String> buildLocalizedPrimarySkillNames() {
+        ArrayList<String> localizedSkillNameList = new ArrayList<>();
 
-        //Super hacky and disgusting
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            for(SubSkillType subSkillType : SubSkillType.values()) {
-                String[] splitSubSkillName = subSkillType.toString().split("_");
-
-                if(primarySkillType.toString().equalsIgnoreCase(splitSubSkillName[0])) {
-                    //Parent Skill Found
-                    tempSubParentMap.put(subSkillType, primarySkillType);
-                }
-            }
+            localizedSkillNameList.add(getLocalizedSkillName(primarySkillType));
         }
 
-        subSkillParentRelationshipMap = ImmutableMap.copyOf(tempSubParentMap);
+        Collections.sort(localizedSkillNameList);
+
+        return localizedSkillNameList;
     }
 
     /**

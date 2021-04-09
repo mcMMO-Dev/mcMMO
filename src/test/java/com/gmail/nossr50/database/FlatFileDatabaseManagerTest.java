@@ -1,48 +1,62 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.TestUtil;
+import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.google.common.io.Files;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.*;
+import java.util.List;
 import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(PowerMockRunner.class)
 public class FlatFileDatabaseManagerTest {
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
+    public static final int HEALTHY_RETURN_CODE = 0;
     private static File tempDir;
     private final static @NotNull Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final long PURGE_TIME = 2630000000L;
-    private static @Nullable FlatFileDatabaseManager flatFileDatabaseManager;
+    private static @Nullable FlatFileDatabaseManager db;
 
     @Before
     public void init() {
+        assertNull(db);
         tempDir = Files.createTempDir();
-        flatFileDatabaseManager = new FlatFileDatabaseManager(tempDir.getPath() + File.separator + TEST_FILE_NAME, logger, PURGE_TIME, 0);
+        db = new FlatFileDatabaseManager(tempDir.getPath() + File.separator + TEST_FILE_NAME, logger, PURGE_TIME, 0);
     }
 
     @After
     public void tearDown() {
         TestUtil.recursiveDelete(tempDir);
-        flatFileDatabaseManager = null;
+        db = null;
     }
 
+    //Nothing wrong with this database
     private static String[] normalDatabaseData = {
             "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
             "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:",
             "powerless:0:::0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0::0:0:0:0:0:0:0:0:0::0:0:0:0:HEARTS:0:0:e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c:5:1600906906:"
     };
 
-    private static String[] splitDataBadDatabase = {
+    private static String[] corruptDatabaseData = {
+            "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
+            "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:",
+            "corruptdataboy:の:::ののの0:2452:0:1983:1937:1790:3042ののののの:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617のののののの583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:d20c6e8d-5615-4284-b8d1-e20b92011530:5:1600906906:",
+            "のjapaneseuserの:333:::0:2452:0:444:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:25870f0e-7558-4659-9f60-417e24cb3332:5:1600906906:",
+            "sameUUIDasjapaneseuser:333:::0:442:0:544:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:25870f0e-7558-4659-9f60-417e24cb3332:5:1600906906:",
+    };
+
+    private static String[] badDatabaseData = {
             //First entry here is missing some values
             "nossr50:1000:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
             //Second entry here has an integer value replaced by a string
@@ -51,11 +65,59 @@ public class FlatFileDatabaseManagerTest {
 
     @Test
     public void testPurgePowerlessUsers() {
-        Assert.assertNotNull(flatFileDatabaseManager);
-        addDataToFile(flatFileDatabaseManager, normalDatabaseData);
-        int purgeCount = flatFileDatabaseManager.purgePowerlessUsers();
-        Assert.assertEquals(purgeCount, 1); //1 User should have been purged
+        assertNotNull(db);
+        addDataToFile(db, normalDatabaseData);
+        int purgeCount = db.purgePowerlessUsers();
+        assertEquals(purgeCount, 1); //1 User should have been purged
     }
+
+    @Test
+    public void testCheckFileHealthAndStructure() {
+        assertNotNull(db);
+
+        addDataToFile(db, badDatabaseData);
+
+        List<FlatFileDataFlag> dataFlags = db.checkFileHealthAndStructure();
+        assertNotNull(dataFlags);
+        assertNotEquals(dataFlags.size(), 0);
+    }
+
+    @Test
+    public void testFindDuplicateNames() {
+
+    }
+
+    @Test
+    public void testFindDuplicateUUIDs() {
+
+    }
+
+    @Test
+    public void testFindCorruptData() {
+
+    }
+
+    @Test
+    public void testFindEmptyNames() {
+
+    }
+
+    @Test
+    public void testFindBadValues() {
+
+    }
+
+    @Test
+    public void testFindOutdatedData() {
+
+    }
+
+    @Test
+    public void testGetDatabaseType() {
+        assertNotNull(db);
+        assertEquals(db.getDatabaseType(), DatabaseType.FLATFILE);
+    }
+
 
     private void addDataToFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
         String filePath = flatFileDatabaseManager.getUsersFile().getAbsolutePath();

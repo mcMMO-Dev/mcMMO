@@ -32,48 +32,48 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     private final @NotNull File usersFile;
     private static final Object fileWritingLock = new Object();
 
-    public static int USERNAME_INDEX = 0;
-    public static int SKILLS_MINING = 1;
-    public static int EXP_MINING = 4;
-    public static int SKILLS_WOODCUTTING = 5;
-    public static int EXP_WOODCUTTING = 6;
-    public static int SKILLS_REPAIR = 7;
-    public static int SKILLS_UNARMED = 8;
-    public static int SKILLS_HERBALISM = 9;
-    public static int SKILLS_EXCAVATION = 10;
-    public static int SKILLS_ARCHERY = 11;
-    public static int SKILLS_SWORDS = 12;
-    public static int SKILLS_AXES = 13;
-    public static int SKILLS_ACROBATICS = 14;
-    public static int EXP_REPAIR = 15;
-    public static int EXP_UNARMED = 16;
-    public static int EXP_HERBALISM = 17;
-    public static int EXP_EXCAVATION = 18;
-    public static int EXP_ARCHERY = 19;
-    public static int EXP_SWORDS = 20;
-    public static int EXP_AXES = 21;
-    public static int EXP_ACROBATICS = 22;
-    public static int SKILLS_TAMING = 24;
-    public static int EXP_TAMING = 25;
-    public static int COOLDOWN_BERSERK = 26;
-    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
-    public static int COOLDOWN_TREE_FELLER = 28;
-    public static int COOLDOWN_GREEN_TERRA = 29;
-    public static int COOLDOWN_SERRATED_STRIKES = 30;
-    public static int COOLDOWN_SKULL_SPLITTER = 31;
-    public static int COOLDOWN_SUPER_BREAKER = 32;
-    public static int SKILLS_FISHING = 34;
-    public static int EXP_FISHING = 35;
-    public static int COOLDOWN_BLAST_MINING = 36;
-    public static int LAST_LOGIN = 37;
-    public static int HEALTHBAR = 38;
-    public static int SKILLS_ALCHEMY = 39;
-    public static int EXP_ALCHEMY = 40;
-    public static int UUID_INDEX = 41;
-    public static int SCOREBOARD_TIPS = 42;
-    public static int COOLDOWN_CHIMAERA_WING = 43;
+    public static final int USERNAME_INDEX = 0;
+    public static final int SKILLS_MINING = 1;
+    public static final int EXP_MINING = 4;
+    public static final int SKILLS_WOODCUTTING = 5;
+    public static final int EXP_WOODCUTTING = 6;
+    public static final int SKILLS_REPAIR = 7;
+    public static final int SKILLS_UNARMED = 8;
+    public static final int SKILLS_HERBALISM = 9;
+    public static final int SKILLS_EXCAVATION = 10;
+    public static final int SKILLS_ARCHERY = 11;
+    public static final int SKILLS_SWORDS = 12;
+    public static final int SKILLS_AXES = 13;
+    public static final int SKILLS_ACROBATICS = 14;
+    public static final int EXP_REPAIR = 15;
+    public static final int EXP_UNARMED = 16;
+    public static final int EXP_HERBALISM = 17;
+    public static final int EXP_EXCAVATION = 18;
+    public static final int EXP_ARCHERY = 19;
+    public static final int EXP_SWORDS = 20;
+    public static final int EXP_AXES = 21;
+    public static final int EXP_ACROBATICS = 22;
+    public static final int SKILLS_TAMING = 24;
+    public static final int EXP_TAMING = 25;
+    public static final int COOLDOWN_BERSERK = 26;
+    public static final int COOLDOWN_GIGA_DRILL_BREAKER = 27;
+    public static final int COOLDOWN_TREE_FELLER = 28;
+    public static final int COOLDOWN_GREEN_TERRA = 29;
+    public static final int COOLDOWN_SERRATED_STRIKES = 30;
+    public static final int COOLDOWN_SKULL_SPLITTER = 31;
+    public static final int COOLDOWN_SUPER_BREAKER = 32;
+    public static final int SKILLS_FISHING = 34;
+    public static final int EXP_FISHING = 35;
+    public static final int COOLDOWN_BLAST_MINING = 36;
+    public static final int LAST_LOGIN = 37;
+    public static final int HEALTHBAR = 38;
+    public static final int SKILLS_ALCHEMY = 39;
+    public static final int EXP_ALCHEMY = 40;
+    public static final int UUID_INDEX = 41;
+    public static final int SCOREBOARD_TIPS = 42;
+    public static final int COOLDOWN_CHIMAERA_WING = 43;
 
-    public static int DATA_ENTRY_COUNT = COOLDOWN_CHIMAERA_WING + 1; //Update this everytime new data is added
+    public static final int DATA_ENTRY_COUNT = COOLDOWN_CHIMAERA_WING + 1; //Update this everytime new data is added
 
     protected FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
         usersFile = new File(usersFilePath);
@@ -81,11 +81,18 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         this.logger = logger;
         this.purgeTime = purgeTime;
         this.startingLevel = startingLevel;
-    }
 
-    public void init() {
-        checkStructure();
-        updateLeaderboards();
+        checkFileHealthAndStructure();
+        List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
+
+        if(flatFileDataFlags != null) {
+            if(flatFileDataFlags.size() > 0) {
+                logger.info("Detected "+flatFileDataFlags.size() + " data entries which need correction.");
+            }
+        }
+
+        checkFileHealthAndStructure();
+//        updateLeaderboards();
     }
 
     public int purgePowerlessUsers() {
@@ -855,7 +862,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     /**
      * Update the leader boards.
      */
-    private void updateLeaderboards() {
+    public void updateLeaderboards() {
         // Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
         if (System.currentTimeMillis() < lastUpdate + UPDATE_WAIT_TIME) {
             return;
@@ -958,11 +965,45 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
     }
 
+    public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
+        FlatFileDataProcessor dataProcessor = null;
+        int dataFlagCount = 0;
+
+        if (usersFile.exists()) {
+            BufferedReader bufferedReader = null;
+
+            synchronized (fileWritingLock) {
+
+                dataProcessor = new FlatFileDataProcessor(usersFile, logger);
+
+                try {
+                    String currentLine;
+                    bufferedReader = new BufferedReader(new FileReader(usersFilePath));
+                    while ((currentLine = bufferedReader.readLine()) != null) {
+                        dataProcessor.processData(currentLine);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                dataFlagCount = dataProcessor.getDataFlagCount();
+            }
+        }
+
+        if(dataProcessor == null || dataProcessor.getFlatFileDataFlags() == null) {
+            return null;
+        } else {
+            return dataProcessor.getFlatFileDataFlags();
+        }
+    }
+
+
     /**
      * Checks that the file is present and valid
      */
-    private void checkStructure() {
+    public int checkFileHealthAndStructureOld() {
         boolean corruptDataFound = false;
+        boolean oldDataFound = false;
 
         if (usersFile.exists()) {
             BufferedReader in = null;
@@ -1030,6 +1071,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                         //Correctly size the data (null entries for missing values)
                         if(line.length() < DATA_ENTRY_COUNT) { //TODO: Test this condition
+                            oldDataFound = true;
                             String[] correctSizeSplitData = Arrays.copyOf(rawSplitData, DATA_ENTRY_COUNT);
                             line = org.apache.commons.lang.StringUtils.join(correctSizeSplitData, ":") + ":";
                             rawSplitData = line.split(":");
@@ -1070,8 +1112,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
             if(corruptDataFound)
                 logger.info("Corrupt data was found and removed, everything should be working fine. It is possible some player data was lost.");
-
-            return;
         }
 
         usersFile.getParentFile().mkdir();
@@ -1082,6 +1122,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if(corruptDataFound) {
+            return 1;
+        } else if(oldDataFound) {
+            return 2;
+        } else {
+            return 0;
         }
     }
 
@@ -1239,7 +1287,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return DatabaseType.FLATFILE;
     }
 
-    public File getUsersFile() {
+    public @NotNull File getUsersFile() {
         return usersFile;
     }
 
