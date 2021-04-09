@@ -13,7 +13,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
@@ -580,7 +579,7 @@ public class ScoreboardWrapper {
                     powerLevel += level;
 
                     // TODO: Verify that this is what we want - calculated in power level but not displayed
-                    if (!Permissions.skillEnabled(player, skill)) {
+                    if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
                         continue;
                     }
 
@@ -608,7 +607,7 @@ public class ScoreboardWrapper {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
-            if (!Permissions.skillEnabled(player, skill)) {
+            if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
                 continue;
             }
 

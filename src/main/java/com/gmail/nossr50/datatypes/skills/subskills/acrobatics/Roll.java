@@ -83,7 +83,7 @@ public class Roll extends AcrobaticsSubSkill {
                     entityDamageEvent.setCancelled(true);
                     return true;
                 }
-            } else if(Permissions.skillEnabled(player, PrimarySkillType.ACROBATICS)) {
+            } else if(mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ACROBATICS)) {
                 //Give XP Anyways
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, ((EntityDamageEvent) event).getFinalDamage(), false), XPGainReason.PVE);
             }

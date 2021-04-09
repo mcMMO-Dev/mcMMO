@@ -252,7 +252,7 @@ public class McMMOPlayer implements Identified {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill",
-                    String.valueOf(mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType)),
+                    String.valueOf(mcMMO.p.getSkillTools().getLevelCap(primarySkillType)),
                     mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
         }
 
@@ -570,7 +570,7 @@ public class McMMOPlayer implements Identified {
         int powerLevel = 0;
 
         for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
-            if (Permissions.skillEnabled(player, primarySkillType)) {
+            if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
                 powerLevel += getSkillLevel(primarySkillType);
             }
         }
@@ -588,7 +588,7 @@ public class McMMOPlayer implements Identified {
         if(hasReachedPowerLevelCap())
             return true;
 
-        return getSkillLevel(primarySkillType) >= mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
+        return getSkillLevel(primarySkillType) >= mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
     }
 
     /**
@@ -616,7 +616,7 @@ public class McMMOPlayer implements Identified {
             float splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
-                if (Permissions.skillEnabled(player, parentSkill)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, parentSkill)) {
                     beginXpGain(parentSkill, splitXp, xpGainReason, xpGainSource);
                 }
             }
@@ -660,7 +660,7 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to add
      */
     public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if (!Permissions.skillEnabled(player, primarySkillType)) {
+        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
             return;
         }
 
@@ -837,7 +837,7 @@ public class McMMOPlayer implements Identified {
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
         //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
-        if ((mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType) <= getSkillLevel(primarySkillType))
+        if ((mcMMO.p.getSkillTools().getLevelCap(primarySkillType) <= getSkillLevel(primarySkillType))
                 || (mcMMO.p.getGeneralConfig().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
@@ -953,7 +953,7 @@ public class McMMOPlayer implements Identified {
     }
 
     public void processAbilityActivation(@NotNull PrimarySkillType primarySkillType) {
-        if (!Permissions.skillEnabled(getPlayer(), primarySkillType)) {
+        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(getPlayer(), primarySkillType)) {
             return;
         }
 

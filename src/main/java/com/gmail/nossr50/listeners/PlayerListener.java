@@ -296,7 +296,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.skillEnabled(player, PrimarySkillType.FISHING)) {
+        if (!UserManager.hasPlayerDataKey(player) || !mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
             return;
         }
 
@@ -382,7 +382,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.skillEnabled(player, PrimarySkillType.FISHING)) {
+        if (!UserManager.hasPlayerDataKey(player) || !mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
             return;
         }
 
@@ -677,7 +677,7 @@ public class PlayerListener implements Listener {
                 if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial
-                            && Permissions.skillEnabled(player, PrimarySkillType.REPAIR)
+                            && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)
                             && mcMMO.getRepairableManager().isRepairable(heldItem)
                             && heldItem.getAmount() <= 1) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -691,7 +691,7 @@ public class PlayerListener implements Listener {
                     }
                     /* SALVAGE CHECKS */
                     else if (type == Salvage.anvilMaterial
-                            && Permissions.skillEnabled(player, PrimarySkillType.SALVAGE)
+                            && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
                             && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && mcMMO.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
@@ -724,7 +724,7 @@ public class PlayerListener implements Listener {
 
                 if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.anvilMaterial && Permissions.skillEnabled(player, PrimarySkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (type == Repair.anvilMaterial && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                         // Cancel repairing an enchanted item
@@ -734,7 +734,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && Permissions.skillEnabled(player, PrimarySkillType.SALVAGE) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
+                    else if (type == Salvage.anvilMaterial && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
                         SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
 
                         // Cancel salvaging an enchanted item

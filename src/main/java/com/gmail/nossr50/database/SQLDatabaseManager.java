@@ -936,7 +936,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             if (mcMMO.p.getGeneralConfig().getTruncateSkills()) {
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
-                    int cap = mcMMO.p.getGeneralConfig().getLevelCap(skill);
+                    int cap = mcMMO.p.getSkillTools().getLevelCap(skill);
                     if (cap != Integer.MAX_VALUE) {
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `" + skill.name().toLowerCase(Locale.ENGLISH) + "` > " + cap);
                         statement.executeUpdate();

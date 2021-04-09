@@ -802,7 +802,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static int getLevelCap(String skillType) {
-        return mcMMO.p.getGeneralConfig().getLevelCap(getSkillType(skillType));
+        return mcMMO.p.getSkillTools().getLevelCap(getSkillType(skillType));
     }
 
     /**

@@ -432,7 +432,7 @@ public class PlayerProfile {
         int sum = 0;
 
         for (PrimarySkillType parent : parents) {
-            sum += Math.min(getSkillLevel(parent), mcMMO.p.getGeneralConfig().getLevelCap(parent));
+            sum += Math.min(getSkillLevel(parent), mcMMO.p.getSkillTools().getLevelCap(parent));
         }
 
         return sum / parents.size();

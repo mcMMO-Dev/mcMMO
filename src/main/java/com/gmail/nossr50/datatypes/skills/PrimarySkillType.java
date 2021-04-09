@@ -8,6 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public enum PrimarySkillType {
@@ -140,7 +141,7 @@ public enum PrimarySkillType {
      */
     @Deprecated
     public List<SubSkillType> getSkillAbilities() {
-        return mcMMO.p.getSkillTools().getSubSkills(this);
+        return new ArrayList<>(mcMMO.p.getSkillTools().getSubSkills(this));
     }
 
     /**
@@ -217,7 +218,7 @@ public enum PrimarySkillType {
      */
     @Deprecated
     public boolean getPermissions(Player player) {
-        return Permissions.skillEnabled(player, this);
+        return mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, this);
     }
 
     /**

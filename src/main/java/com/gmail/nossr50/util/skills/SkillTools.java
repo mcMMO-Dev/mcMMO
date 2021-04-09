@@ -11,6 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -27,19 +28,19 @@ public class SkillTools {
     public final ImmutableList<String> LOCALIZED_SKILL_NAMES;
     public final ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
     public final ImmutableSet<String> EXACT_SUBSKILL_NAMES;
-    public final List<PrimarySkillType> CHILD_SKILLS;
+    public final ImmutableList<PrimarySkillType> CHILD_SKILLS;
     public final ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
     public final ImmutableList<PrimarySkillType> COMBAT_SKILLS;
     public final ImmutableList<PrimarySkillType> GATHERING_SKILLS;
     public final ImmutableList<PrimarySkillType> MISC_SKILLS;
 
-    private EnumMap<SubSkillType, PrimarySkillType> subSkillParentRelationshipMap; //TODO: This disgusts me, but it will have to do until the new skill system is in place
-    private EnumMap<SuperAbilityType, PrimarySkillType> superAbilityParentRelationshipMap; //TODO: This disgusts me, but it will have to do until the new skill system is in place
-    private EnumMap<PrimarySkillType, HashSet<SubSkillType>> primarySkillChildrenMap; //TODO: This disgusts me, but it will have to do until the new skill system is in place
+    private ImmutableMap<SubSkillType, PrimarySkillType> subSkillParentRelationshipMap;
+    private ImmutableMap<SuperAbilityType, PrimarySkillType> superAbilityParentRelationshipMap; 
+    private ImmutableMap<PrimarySkillType, Set<SubSkillType>> primarySkillChildrenMap;
 
     // The map below is for the super abilities which require readying a tool, its everything except blast mining
-    private EnumMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap; //TODO: This disgusts me, but it will have to do until the new skill system is in place
-    private EnumMap<PrimarySkillType, ToolType> primarySkillToolMap; //TODO: Christ..
+    private ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap; 
+    private ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
 
     public SkillTools(@NotNull mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -72,39 +73,43 @@ public class SkillTools {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    //TODO: What is with this design?
     private void initPrimaryToolMap() {
-        primarySkillToolMap = new EnumMap<PrimarySkillType, ToolType>(PrimarySkillType.class);
+        EnumMap<PrimarySkillType, ToolType> tempToolMap = new EnumMap<PrimarySkillType, ToolType>(PrimarySkillType.class);
 
-        primarySkillToolMap.put(PrimarySkillType.AXES, ToolType.AXE);
-        primarySkillToolMap.put(PrimarySkillType.WOODCUTTING, ToolType.AXE);
-        primarySkillToolMap.put(PrimarySkillType.UNARMED, ToolType.FISTS);
-        primarySkillToolMap.put(PrimarySkillType.SWORDS, ToolType.SWORD);
-        primarySkillToolMap.put(PrimarySkillType.EXCAVATION, ToolType.SHOVEL);
-        primarySkillToolMap.put(PrimarySkillType.HERBALISM, ToolType.HOE);
-        primarySkillToolMap.put(PrimarySkillType.MINING, ToolType.PICKAXE);
+        tempToolMap.put(PrimarySkillType.AXES, ToolType.AXE);
+        tempToolMap.put(PrimarySkillType.WOODCUTTING, ToolType.AXE);
+        tempToolMap.put(PrimarySkillType.UNARMED, ToolType.FISTS);
+        tempToolMap.put(PrimarySkillType.SWORDS, ToolType.SWORD);
+        tempToolMap.put(PrimarySkillType.EXCAVATION, ToolType.SHOVEL);
+        tempToolMap.put(PrimarySkillType.HERBALISM, ToolType.HOE);
+        tempToolMap.put(PrimarySkillType.MINING, ToolType.PICKAXE);
+
+        primarySkillToolMap = ImmutableMap.copyOf(tempToolMap);
     }
 
     private void initSuperAbilityParentRelationships() {
-        superAbilityParentRelationshipMap = new EnumMap<SuperAbilityType, PrimarySkillType>(SuperAbilityType.class);
-        mainActivatedAbilityChildMap = new EnumMap<PrimarySkillType, SuperAbilityType>(PrimarySkillType.class);
+        EnumMap<SuperAbilityType, PrimarySkillType> tempAbilityParentRelationshipMap = new EnumMap<SuperAbilityType, PrimarySkillType>(SuperAbilityType.class);
+        EnumMap<PrimarySkillType, SuperAbilityType> tempMainActivatedAbilityChildMap = new EnumMap<PrimarySkillType, SuperAbilityType>(PrimarySkillType.class);
 
         for(SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             try {
                 PrimarySkillType parent = getSuperAbilityParent(superAbilityType);
-                superAbilityParentRelationshipMap.put(superAbilityType, parent);
+                tempAbilityParentRelationshipMap.put(superAbilityType, parent);
 
                 if(superAbilityType != SuperAbilityType.BLAST_MINING) {
                     //This map is used only for abilities that have a tool readying phase, so blast mining is ignored
-                    mainActivatedAbilityChildMap.put(parent, superAbilityType);
+                    tempMainActivatedAbilityChildMap.put(parent, superAbilityType);
                 }
             } catch (InvalidSkillException e) {
                 e.printStackTrace();
             }
         }
+
+        superAbilityParentRelationshipMap = ImmutableMap.copyOf(tempAbilityParentRelationshipMap);
+        mainActivatedAbilityChildMap = ImmutableMap.copyOf(tempMainActivatedAbilityChildMap);
     }
 
-    private PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType) throws InvalidSkillException {
+    private @NotNull PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType) throws InvalidSkillException {
         switch(superAbilityType) {
             case BERSERK:
                 return PrimarySkillType.UNARMED;
@@ -130,7 +135,7 @@ public class SkillTools {
      * Builds a list of localized {@link PrimarySkillType} names
      * @return list of localized {@link PrimarySkillType} names
      */
-    private ArrayList<String> buildLocalizedPrimarySkillNames() {
+    private @NotNull ArrayList<String> buildLocalizedPrimarySkillNames() {
         ArrayList<String> localizedSkillNameList = new ArrayList<>();
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
@@ -147,11 +152,11 @@ public class SkillTools {
      * Disgusting Hacky Fix until the new skill system is in place
      */
     private void initPrimaryChildMap() {
-        primarySkillChildrenMap = new EnumMap<PrimarySkillType, HashSet<SubSkillType>>(PrimarySkillType.class);
+        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap = new EnumMap<PrimarySkillType, Set<SubSkillType>>(PrimarySkillType.class);
 
         //Init the empty Hash Sets
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            primarySkillChildrenMap.put(primarySkillType, new HashSet<SubSkillType>());
+            tempPrimaryChildMap.put(primarySkillType, new HashSet<>());
         }
 
         //Fill in the hash sets
@@ -159,8 +164,10 @@ public class SkillTools {
             PrimarySkillType parentSkill = subSkillParentRelationshipMap.get(subSkillType);
 
             //Add this subskill as a child
-            primarySkillChildrenMap.get(parentSkill).add(subSkillType);
+            tempPrimaryChildMap.get(parentSkill).add(subSkillType);
         }
+
+        primarySkillChildrenMap = ImmutableMap.copyOf(tempPrimaryChildMap);
     }
 
     /**
@@ -168,7 +175,7 @@ public class SkillTools {
      * Used in tab completion mostly
      * @return a list of formatted sub skill names
      */
-    private ArrayList<String> buildFormattedSubSkillNameList() {
+    private @NotNull ArrayList<String> buildFormattedSubSkillNameList() {
         ArrayList<String> subSkillNameList = new ArrayList<>();
 
         for(SubSkillType subSkillType : SubSkillType.values()) {
@@ -178,7 +185,7 @@ public class SkillTools {
         return subSkillNameList;
     }
 
-    private HashSet<String> buildExactSubSkillNameList() {
+    private @NotNull HashSet<String> buildExactSubSkillNameList() {
         HashSet<String> subSkillNameExactSet = new HashSet<>();
 
         for(SubSkillType subSkillType : SubSkillType.values()) {
@@ -193,7 +200,7 @@ public class SkillTools {
      * Disgusting Hacky Fix until the new skill system is in place
      */
     private void initSubSkillRelationshipMap() {
-        subSkillParentRelationshipMap = new EnumMap<SubSkillType, PrimarySkillType>(SubSkillType.class);
+        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap = new EnumMap<SubSkillType, PrimarySkillType>(SubSkillType.class);
 
         //Super hacky and disgusting
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
@@ -202,10 +209,12 @@ public class SkillTools {
 
                 if(primarySkillType.toString().equalsIgnoreCase(splitSubSkillName[0])) {
                     //Parent Skill Found
-                    subSkillParentRelationshipMap.put(subSkillType, primarySkillType);
+                    tempSubParentMap.put(subSkillType, primarySkillType);
                 }
             }
         }
+
+        subSkillParentRelationshipMap = ImmutableMap.copyOf(tempSubParentMap);
     }
 
     /**
@@ -292,9 +301,9 @@ public class SkillTools {
         return primarySkillToolMap.get(primarySkillType);
     }
 
-    public List<SubSkillType> getSubSkills(PrimarySkillType primarySkillType) {
+    public Set<SubSkillType> getSubSkills(PrimarySkillType primarySkillType) {
         //TODO: Cache this!
-        return new ArrayList<>(primarySkillChildrenMap.get(primarySkillType));
+        return primarySkillChildrenMap.get(primarySkillType);
     }
 
     public double getXpModifier(PrimarySkillType primarySkillType) {
@@ -323,7 +332,7 @@ public class SkillTools {
         return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(primarySkillType.toString()) + ".SkillName"));
     }
 
-    public boolean doesPlayerHaveSkillPermission(PrimarySkillType primarySkillType, Player player) {
+    public boolean doesPlayerHaveSkillPermission(Player player, PrimarySkillType primarySkillType) {
         return Permissions.skillEnabled(player, primarySkillType);
     }
 
@@ -364,7 +373,7 @@ public class SkillTools {
     }
 
     public int getLevelCap(@NotNull PrimarySkillType primarySkillType) {
-        return mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
+        return mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
     }
 
     /**

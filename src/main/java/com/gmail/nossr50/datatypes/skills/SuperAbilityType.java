@@ -111,7 +111,7 @@ public enum SuperAbilityType {
     }
 
     public int getCooldown() {
-        return mcMMO.p.getGeneralConfig().getCooldown(this);
+        return mcMMO.p.getSkillTools().getSuperAbilityCooldown(this);
     }
 
     public int getMaxLength() {

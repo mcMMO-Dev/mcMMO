@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -209,7 +208,7 @@ public final class CommandUtils {
         if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
-        if (profile.getSkillLevel(skill) == mcMMO.p.getGeneralConfig().getLevelCap(skill)){
+        if (profile.getSkillLevel(skill) == mcMMO.p.getSkillTools().getLevelCap(skill)){
             return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), LocaleLoader.getString("Skills.MaxXP"));
         }
         return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
@@ -225,7 +224,7 @@ public final class CommandUtils {
         displayData.add(header);
 
         for (PrimarySkillType primarySkillType : skillGroup) {
-            if (Permissions.skillEnabled(inspectTarget, primarySkillType)) {
+            if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(inspectTarget, primarySkillType)) {
                 displayData.add(displaySkill(profile, primarySkillType));
             }
         }

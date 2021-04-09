@@ -384,7 +384,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, PrimarySkillType.SWORDS)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SWORDS)) {
                     processSwordCombat(target, player, event);
 
                 }
@@ -394,7 +394,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, PrimarySkillType.AXES)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.AXES)) {
                     processAxeCombat(target, player, event);
                 }
             }
@@ -403,7 +403,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, PrimarySkillType.UNARMED)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.UNARMED)) {
                     processUnarmedCombat(target, player, event);
                 }
             }
@@ -416,7 +416,7 @@ public final class CombatUtils {
             if (tamer instanceof Player && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.TAMING, target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntityExcludingVillagers(master) && Permissions.skillEnabled(master, PrimarySkillType.TAMING)) {
+                if (!Misc.isNPCEntityExcludingVillagers(master) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(master, PrimarySkillType.TAMING)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -428,14 +428,14 @@ public final class CombatUtils {
             if (projectileSource instanceof Player && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntityExcludingVillagers(player) && Permissions.skillEnabled(player, PrimarySkillType.ARCHERY)) {
+                if (!Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ARCHERY)) {
                     processArcheryCombat(target, player, event, arrow);
                 } else {
                     //Cleanup Arrow
                     cleanupArrowMetadata(arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && Permissions.skillEnabled(player, PrimarySkillType.TAMING)) {
+                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TAMING)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                     if(mcMMOPlayer == null)

@@ -47,7 +47,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
         for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
-//            if (!Permissions.skillEnabled(player, skill)) {
+//            if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
 //                continue;
 //            }
 
