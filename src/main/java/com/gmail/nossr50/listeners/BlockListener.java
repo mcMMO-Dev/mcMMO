@@ -350,7 +350,8 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.hasWoodcuttingXP(blockState) && ItemUtils.isAxe(heldItem) && Permissions.skillEnabled(player, PrimarySkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.hasWoodcuttingXP(blockState) && ItemUtils.isAxe(heldItem)
+                && Permissions.skillEnabled(player, PrimarySkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);

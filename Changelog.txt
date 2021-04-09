@@ -8,7 +8,8 @@ Version 2.1.189
     Fixed an IllegalPluginAccessException error that could happen during server shutdown
     Minor performance optimizations to FlatFile database
     Refactored a lot of code
-    (API) PrimarySkillType is now just an enum with nothing special going on, SkillTools will facilitate what it used to do - see mcMMO::getSkillTools
+    (API) PrimarySkillType will soon be just an enum with nothing special going on
+    (API) Deprecated the members of PrimarySkillType use mcMMO::getSkillTools instead, deprecated members will be removed in Tridents & Crossbows (due soon)
     Added unit tests for FlatFileDatabaseManager
 
     NOTES:

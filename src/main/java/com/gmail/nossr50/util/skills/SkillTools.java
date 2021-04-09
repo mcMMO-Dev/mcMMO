@@ -267,7 +267,9 @@ public class SkillTools {
     }
 
     public boolean isSuperAbilityUnlocked(PrimarySkillType primarySkillType, Player player) {
-        return RankUtils.getRank(player, getSuperAbility(primarySkillType).getSubSkillTypeDefinition()) >= 1;
+        SuperAbilityType superAbilityType = mcMMO.p.getSkillTools().getSuperAbility(primarySkillType);
+        SubSkillType subSkillType = superAbilityType.getSubSkillTypeDefinition();
+        return RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 
     public boolean getPVPEnabled(PrimarySkillType primarySkillType) {
@@ -361,6 +363,10 @@ public class SkillTools {
         return "SuperAbility." + StringUtils.getPrettyCamelCaseName(superAbilityType) + ".Refresh";
     }
 
+    public int getLevelCap(@NotNull PrimarySkillType primarySkillType) {
+        return mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
+    }
+
     /**
      * Get the permissions for this ability.
      *
@@ -418,33 +424,4 @@ public class SkillTools {
     public @NotNull ImmutableList<PrimarySkillType> getMiscSkills() {
         return MISC_SKILLS;
     }
-
-    //    /**
-//     * Check if a block is affected by this ability.
-//     *
-//     * @param blockState the block to check
-//     * @param superAbilityType target super ability
-//     * @return true if the block is affected by this ability, false otherwise
-//     */
-//    public boolean superAbilityBlockCheck(SuperAbilityType superAbilityType, BlockState blockState) {
-//        switch (superAbilityType) {
-//            case BERSERK:
-//                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
-//
-//            case GIGA_DRILL_BREAKER:
-//                return BlockUtils.affectedByGigaDrillBreaker(blockState);
-//
-//            case GREEN_TERRA:
-//                return BlockUtils.canMakeMossy(blockState);
-//
-//            case SUPER_BREAKER:
-//                return BlockUtils.affectedBySuperBreaker(blockState);
-//
-//            case TREE_FELLER:
-//                dfss
-//
-//            default:
-//                return false;
-//        }
-//    }
 }
