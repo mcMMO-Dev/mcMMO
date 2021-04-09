@@ -373,7 +373,7 @@ public class SkillTools {
     }
 
     public int getLevelCap(@NotNull PrimarySkillType primarySkillType) {
-        return mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
+        return mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
     }
 
     /**
