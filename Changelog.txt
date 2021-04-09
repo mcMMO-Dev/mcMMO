@@ -7,22 +7,17 @@ Version 2.1.189
     Updated pl locale (Thanks Mich3l3k)
     Fixed an IllegalPluginAccessException error that could happen during server shutdown
     Minor performance optimizations to FlatFile database
+    Minor performance optimizations to misc parts of the codebase
     Refactored a lot of code
     (API) PrimarySkillType will soon be just an enum with nothing special going on
     (API) Deprecated the members of PrimarySkillType use mcMMO::getSkillTools instead, deprecated members will be removed in Tridents & Crossbows (due soon)
+    (API) Some members of PrimarySkillType were removed and not deprecated (such as the field constants)
     Added unit tests for FlatFileDatabaseManager
 
     NOTES:
     Ultra Permissions is SAFE to use with mcMMO
     After getting in contact with the UltraPermissions devs and exhaustive testing, I have concluded that using UltraPermissions is completely safe with mcMMO. The users who had an issue with performance currently have an unknown cause, potentially it is from a plugin using the UltraPermissions API I really can't say without more data. My apologies to the UltraPermissions team for reporting an issue between our two plugins directly, as that is not the case. I would have tested it myself sooner but UltraPermissions was closed source and premium so I wasn't particularly motivated to do so, however I have been given access to the binaries so now I can do all the testing I want if future issues ever arise which I have zero expectations that they will.
 
-    UltraPermissions is as efficient as LuckPerms
-    I have done a lot of profiling of UltraPermissions via Spark in the last few hours, I also compared it to LuckPerms. I wasn't expecting it, but UltraPermissions runs just as fast as LuckPerms if not faster. So it has no performance issues whatsoever from my point of view.
-
-    Use whatever permission plugin you like, there will be no difference between using LuckPerms or UltraPermissions with mcMMO.
-
-    If you had issues with UltraPermissions please contact the UP devs
-    If you experience lag with mcMMO and UltraPermissions, we are trying to determine the culprit. It is likely the culprit is from another plugin doing bad things with the UltraPermissions API. Please get in contact with the UltraPermission devs if you run into issues ( @MATRIX | Timo K.  & @Liz3 ). Neither I nor they can replicate it so we need you guys to provide more data.
 Version 2.1.188
     Updated default entries in treasures.yml to use "Level_Requirement" instead of "Drop_Level"
     Fixed a bug where excavation treasures only required level 0 instead of loading the value from the config
