@@ -1,8 +1,7 @@
 package com.gmail.nossr50.database.flatfile;
 
-import com.gmail.nossr50.database.FlatFileDataContainer;
 import com.gmail.nossr50.database.FlatFileDataFlag;
-import com.gmail.nossr50.database.FlatFileDatabaseManager;
+import com.google.common.base.Objects;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -10,30 +9,21 @@ import java.util.Set;
 
 public class CategorizedFlatFileData implements FlatFileDataContainer {
     private final @NotNull Set<FlatFileDataFlag> dataFlags;
-    private final @NotNull String stringDataRepresentation;
+    private final @NotNull String[] splitData;
     private final int uniqueProcessingId;
-    private final boolean[] badDataIndexes;
 
-    protected CategorizedFlatFileData(int uniqueProcessingId, @NotNull HashSet<FlatFileDataFlag> dataFlags, @NotNull String stringDataRepresentation) {
+    protected CategorizedFlatFileData(int uniqueProcessingId, @NotNull HashSet<FlatFileDataFlag> dataFlags, @NotNull String[] splitData) {
         this.uniqueProcessingId = uniqueProcessingId;
         this.dataFlags = dataFlags;
-        this.stringDataRepresentation = stringDataRepresentation;
-        badDataIndexes = new boolean[FlatFileDatabaseManager.DATA_ENTRY_COUNT];
-    }
-
-    protected CategorizedFlatFileData(int uniqueProcessingId, @NotNull HashSet<FlatFileDataFlag> dataFlags, @NotNull String stringDataRepresentation, boolean[] badDataIndexes) {
-        this.uniqueProcessingId = uniqueProcessingId;
-        this.dataFlags = dataFlags;
-        this.stringDataRepresentation = stringDataRepresentation;
-        this.badDataIndexes = badDataIndexes;
+        this.splitData = splitData;
     }
 
     public @NotNull Set<FlatFileDataFlag> getDataFlags() {
         return dataFlags;
     }
 
-    public @NotNull String getStringDataRepresentation() {
-        return stringDataRepresentation;
+    public @NotNull String[] getSplitData() {
+        return splitData;
     }
 
     public int getUniqueProcessingId() {
@@ -44,7 +34,25 @@ public class CategorizedFlatFileData implements FlatFileDataContainer {
         return dataFlags.size() == 0;
     }
 
-    public boolean[] getBadDataIndexes() {
-        return badDataIndexes;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CategorizedFlatFileData that = (CategorizedFlatFileData) o;
+        return uniqueProcessingId == that.uniqueProcessingId && Objects.equal(dataFlags, that.dataFlags) && Objects.equal(splitData, that.splitData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(dataFlags, splitData, uniqueProcessingId);
+    }
+
+    @Override
+    public String toString() {
+        return "CategorizedFlatFileData{" +
+                "dataFlags=" + dataFlags +
+                ", stringDataRepresentation='" + splitData + '\'' +
+                ", uniqueProcessingId=" + uniqueProcessingId +
+                '}';
     }
 }

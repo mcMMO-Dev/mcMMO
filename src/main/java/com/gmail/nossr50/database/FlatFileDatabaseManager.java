@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final String IGNORED = "IGNORED";
+    public static final String LEGACY_INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_'";
     private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new EnumMap<PrimarySkillType, List<PlayerStat>>(PrimarySkillType.class);
     private final @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
@@ -965,24 +966,45 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
     }
 
+    /**
+     * Makes sure that the users file has valid entries
+     * @return
+     */
     public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
         FlatFileDataProcessor dataProcessor = null;
 
         if (usersFile.exists()) {
             BufferedReader bufferedReader = null;
+            FileWriter fileWriter = null;
 
             synchronized (fileWritingLock) {
 
-                dataProcessor = new FlatFileDataProcessor(usersFile, logger);
+                dataProcessor = new FlatFileDataProcessor(logger);
 
                 try {
                     String currentLine;
                     bufferedReader = new BufferedReader(new FileReader(usersFilePath));
+
+                    //Analyze the data
                     while ((currentLine = bufferedReader.readLine()) != null) {
+                        if(currentLine.isEmpty())
+                            continue;
+
+                        //TODO: We are never passing empty lines, should we remove the flag for them?
                         dataProcessor.processData(currentLine);
+                    }
+
+                    //Only update the file if needed
+                    if(dataProcessor.getFlatFileDataFlags().size() > 0) {
+                        logger.info("Saving the updated and or repaired FlatFile Database...");
+                        fileWriter = new FileWriter(usersFilePath);
+                        //Write data to file
+                        fileWriter.write(dataProcessor.processDataForSave().toString());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                } finally {
+                    closeResources(bufferedReader, fileWriter);
                 }
             }
         }
@@ -994,139 +1016,23 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-
-    /**
-     * Checks that the file is present and valid
-     */
-    public int checkFileHealthAndStructureOld() {
-        boolean corruptDataFound = false;
-        boolean oldDataFound = false;
-
-        if (usersFile.exists()) {
-            BufferedReader in = null;
-            FileWriter out = null;
-
-            synchronized (fileWritingLock) {
-                try {
-
-                    in = new BufferedReader(new FileReader(usersFilePath));
-                    StringBuilder writer = new StringBuilder();
-                    String line;
-                    HashSet<String> usernames = new HashSet<>();
-                    HashSet<String> players = new HashSet<>();
-
-                    while ((line = in.readLine()) != null) {
-                        // Remove empty lines from the file
-                        if (line.isEmpty()) {
-                            continue;
-                        }
-
-                        // Length checks depend on last rawSplitData being ':'
-                        if (line.charAt(line.length() - 1) != ':') {
-                            line = line.concat(":");
-                        }
-
-                        String[] rawSplitData = line.split(":");
-
-                        //Not enough data found to be considered a user reliably (NOTE: not foolproof)
-                        if(rawSplitData.length < (UUID_INDEX + 1)) {
-                            if(!corruptDataFound) {
-                                logger.severe("Some corrupt data was found in mcmmo.users and has been repaired, it is possible that some player data has been lost in this process.");
-                                corruptDataFound = true;
-                            }
-
-                            if(rawSplitData.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
-                                    && rawSplitData[0] != null && !rawSplitData[0].isEmpty()) {
-                                if(rawSplitData[0].length() <= 16 && rawSplitData[0].length() >= 3) {
-                                    logger.severe("Not enough data found to recover corrupted player data for user: "+rawSplitData[0]);
-                                }
-                            }
-                            //This user may have had a name so declare it
-
-                            continue;
-                        }
-
-                        // Prevent the same username from being present multiple times
-                        if (!usernames.add(rawSplitData[USERNAME_INDEX])) {
-                            //TODO: Check if the commented out code was even necessary
-                            rawSplitData[USERNAME_INDEX] = "_INVALID_OLD_USERNAME_'";
-                            if (rawSplitData.length < UUID_INDEX + 1 || rawSplitData[UUID_INDEX].equals("NULL")) {
-                                logger.severe("Fixing duplicate player names found in mcmmo.users");
-                                continue;
-                            }
-                        }
-
-                        // Prevent the same player from being present multiple times
-                        if (rawSplitData.length >= (UUID_INDEX + 1) //TODO: Test this condition
-                                && (!rawSplitData[UUID_INDEX].isEmpty()
-                                && !rawSplitData[UUID_INDEX].equals("NULL") && !players.add(rawSplitData[UUID_INDEX]))) {
-
-                            logger.severe("Removing duplicate player data from mcmmo.users");
-                            logger.info("Duplicate Data: "+line);
-                            continue;
-                        }
-
-                        //Correctly size the data (null entries for missing values)
-                        if(line.length() < DATA_ENTRY_COUNT) { //TODO: Test this condition
-                            oldDataFound = true;
-                            String[] correctSizeSplitData = Arrays.copyOf(rawSplitData, DATA_ENTRY_COUNT);
-                            line = org.apache.commons.lang.StringUtils.join(correctSizeSplitData, ":") + ":";
-                            rawSplitData = line.split(":");
-                            PlayerProfile temporaryProfile = loadFromLine(rawSplitData);
-                            writeUserToLine(temporaryProfile, rawSplitData[USERNAME_INDEX], temporaryProfile.getUniqueId(), writer);
-                        } else {
-                            writer.append(line).append("\r\n");
-                        }
-
-                    }
-
-                    // Write the new file
-                    out = new FileWriter(usersFilePath);
-                    out.write(writer.toString());
-                }
-                catch (IOException e) {
-                    logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
-                }
-                finally {
-                    if (in != null) {
-                        try {
-                            in.close();
-                        }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if (out != null) {
-                        try {
-                            out.close();
-                        }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+    private void closeResources(BufferedReader bufferedReader, FileWriter fileWriter) {
+        if(bufferedReader != null) {
+            try {
+                bufferedReader.close();
             }
-
-            if(corruptDataFound)
-                logger.info("Corrupt data was found and removed, everything should be working fine. It is possible some player data was lost.");
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        usersFile.getParentFile().mkdir();
-
-        try {
-            logger.info("Creating mcmmo.users file...");
-            new File(usersFilePath).createNewFile();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(corruptDataFound) {
-            return 1;
-        } else if(oldDataFound) {
-            return 2;
-        } else {
-            return 0;
+        if (fileWriter != null) {
+            try {
+                fileWriter.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,30 +1,27 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.database.flatfile.CategorizedFlatFileData;
-import com.gmail.nossr50.database.flatfile.CategorizedFlatFileDataBuilder;
+import com.gmail.nossr50.database.flatfile.FlatFileDataBuilder;
+import com.gmail.nossr50.database.flatfile.FlatFileDataContainer;
+import com.gmail.nossr50.database.flatfile.FlatFileSaveDataProcessor;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.*;
 
 public class FlatFileDataProcessor {
-    public static final String INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_";
-    private @NotNull List<CategorizedFlatFileData> categorizedDataList;
-    private @NotNull List<FlatFileDataFlag> flatFileDataFlags;
-    private final @NotNull File userFile;
+    private final @NotNull List<FlatFileDataContainer> flatFileDataContainers;
+    private final @NotNull List<FlatFileDataFlag> flatFileDataFlags;
     private final @NotNull Logger logger;
     private final HashSet<String> names;
     private final HashSet<UUID> uuids;
     private int uniqueProcessingID;
     boolean corruptDataFound;
 
-    public FlatFileDataProcessor(@NotNull File userFile, @NotNull Logger logger) {
-        this.userFile = userFile;
+    public FlatFileDataProcessor(@NotNull Logger logger) {
         this.logger = logger;
-        categorizedDataList = new ArrayList<>();
+        flatFileDataContainers = new ArrayList<>();
         flatFileDataFlags = new ArrayList<>();
         names = new HashSet<>();
         uuids = new HashSet<>();
@@ -32,16 +29,7 @@ public class FlatFileDataProcessor {
     }
 
     public void processData(@NotNull String lineData) {
-        CategorizedFlatFileDataBuilder builder = new CategorizedFlatFileDataBuilder(lineData, uniqueProcessingID);
-        uniqueProcessingID++;
-
-        /*
-         * Is the line empty?
-         */
-        if (lineData.isEmpty()) {
-            registerData(builder.appendFlag(FlatFileDataFlag.EMPTY_LINE));
-            return;
-        }
+        assert !lineData.isEmpty();
 
         //Make sure the data line is "correct"
         if(lineData.charAt(lineData.length() - 1) != ':') {
@@ -52,6 +40,11 @@ public class FlatFileDataProcessor {
 
         //Split the data into an array
         String[] splitDataLine = lineData.split(":");
+
+        FlatFileDataBuilder builder = new FlatFileDataBuilder(splitDataLine, uniqueProcessingID);
+        uniqueProcessingID++;
+        boolean[] badDataValues = new boolean[DATA_ENTRY_COUNT];
+        boolean anyBadData = false;
 
         //This is the minimum size of the split array needed to be considered proper data
         if(splitDataLine.length < getMinimumSplitDataLength()) {
@@ -82,7 +75,6 @@ public class FlatFileDataProcessor {
          * Check for duplicate names
          */
 
-        boolean nameIsDupe = false;
         boolean invalidUUID = false;
 
         String name = splitDataLine[USERNAME_INDEX];
@@ -91,12 +83,17 @@ public class FlatFileDataProcessor {
         if(name.isEmpty()) {
             reportBadDataLine("No name found for data", "[MISSING NAME]", lineData);
             builder.appendFlag(FlatFileDataFlag.MISSING_NAME);
+            anyBadData = true;
+            badDataValues[USERNAME_INDEX] = true;
         }
 
         if(strOfUUID.isEmpty() || strOfUUID.equalsIgnoreCase("NULL")) {
             invalidUUID = true;
+            badDataValues[UUID_INDEX] = true;
             reportBadDataLine("Empty/null UUID for user", "Empty/null", lineData);
-            builder.appendFlag(FlatFileDataFlag.MISSING_OR_NULL_UUID);
+            builder.appendFlag(FlatFileDataFlag.BAD_UUID_DATA);
+
+            anyBadData = true;
         }
 
         UUID uuid = null;
@@ -104,36 +101,23 @@ public class FlatFileDataProcessor {
         try {
             uuid = UUID.fromString(strOfUUID);
         } catch (IllegalArgumentException e) {
-            invalidUUID = true;
             //UUID does not conform
-
+            invalidUUID = true;
+            badDataValues[UUID_INDEX] = true;
             reportBadDataLine("Invalid UUID data found for user", strOfUUID, lineData);
-            e.printStackTrace();
+            builder.appendFlag(FlatFileDataFlag.BAD_UUID_DATA);
         }
 
         //Duplicate UUID is no good, reject them
-        if(uuid != null && uuids.contains(uuid)) {
+        if(!invalidUUID && uuid != null && uuids.contains(uuid)) {
             registerData(builder.appendFlag(FlatFileDataFlag.DUPLICATE_UUID));
             return;
         }
 
         uuids.add(uuid);
 
-
         if(names.contains(name)) {
-            //Duplicate entry
-            nameIsDupe = true;
-
-            //We can accept them if they are a duped name if they have a unique UUID
-            if(invalidUUID) {
-                //Reject the data
-                reportBadDataLine("Duplicate user found and due to a missing UUID their data had to be discarded", name, lineData);
-
-                registerData(builder.appendFlag(FlatFileDataFlag.DUPLICATE_NAME_NOT_FIXABLE));
-                return;
-            } else {
-                builder.appendFlag(FlatFileDataFlag.DUPLICATE_NAME_FIXABLE);
-            }
+            builder.appendFlag(FlatFileDataFlag.DUPLICATE_NAME);
         }
 
         if(!name.isEmpty())
@@ -141,10 +125,17 @@ public class FlatFileDataProcessor {
 
         //Make sure the data is up to date schema wise
         if(splitDataLine.length < DATA_ENTRY_COUNT) {
-            splitDataLine = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT+1);
-            lineData = org.apache.commons.lang.StringUtils.join(splitDataLine, ":") + ":";
+            int oldLength = splitDataLine.length;
+            splitDataLine = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT);
+            int newLength = splitDataLine.length;
+
+            //TODO: Test this
+            for(int i = oldLength; i < (newLength - 1); i++){
+                badDataValues[i] = true;
+            }
+
             builder.appendFlag(FlatFileDataFlag.INCOMPLETE);
-            builder.setStringDataRepresentation(lineData);
+            builder.setSplitStringData(splitDataLine);
         }
 
         /*
@@ -153,9 +144,6 @@ public class FlatFileDataProcessor {
          */
 
         //Check each data for bad values
-        boolean[] badDataValues = new boolean[DATA_ENTRY_COUNT];
-        boolean anyBadData = false;
-
         for(int i = 0; i < DATA_ENTRY_COUNT; i++) {
             if(shouldNotBeEmpty(splitDataLine[i], i)) {
                 badDataValues[i] = true;
@@ -175,6 +163,7 @@ public class FlatFileDataProcessor {
 
         if(anyBadData) {
             builder.appendFlag(FlatFileDataFlag.BAD_VALUES);
+            builder.appendBadDataValues(badDataValues);
         }
 
         registerData(builder);
@@ -240,13 +229,15 @@ public class FlatFileDataProcessor {
         return UUID_INDEX + 1;
     }
 
-    private void registerData(@NotNull CategorizedFlatFileDataBuilder builder) {
-        CategorizedFlatFileData categorizedFlatFileData = builder.build();
-        categorizedDataList.add(categorizedFlatFileData);
-        flatFileDataFlags.addAll(categorizedFlatFileData.getDataFlags());
+    private void registerData(@NotNull FlatFileDataBuilder builder) {
+        FlatFileDataContainer flatFileDataContainer = builder.build();
+        flatFileDataContainers.add(flatFileDataContainer);
+
+        if(flatFileDataContainer.getDataFlags() != null)
+            flatFileDataFlags.addAll(flatFileDataContainer.getDataFlags());
     }
 
-    public @NotNull ExpectedType getExpectedValueType(int dataIndex) {
+    public @NotNull ExpectedType getExpectedValueType(int dataIndex) throws IndexOutOfBoundsException {
         switch(dataIndex) {
             case USERNAME_INDEX:
                 return ExpectedType.STRING;
@@ -297,13 +288,13 @@ public class FlatFileDataProcessor {
                 return ExpectedType.FLOAT;
             case UUID_INDEX:
                 return ExpectedType.UUID;
-            default:
-                return ExpectedType.OUT_OF_RANGE;
         }
+
+        throw new IndexOutOfBoundsException();
     }
 
-    public @NotNull List<CategorizedFlatFileData> getCategorizedDataList() {
-        return categorizedDataList;
+    public @NotNull List<FlatFileDataContainer> getFlatFileDataContainers() {
+        return flatFileDataContainers;
     }
 
     public @NotNull List<FlatFileDataFlag> getFlatFileDataFlags() {
@@ -313,4 +304,23 @@ public class FlatFileDataProcessor {
     public int getDataFlagCount() {
         return flatFileDataFlags.size();
     }
+
+    public @NotNull StringBuilder processDataForSave() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        //Fix our data if needed and prepare it to be saved
+
+        for(FlatFileDataContainer dataContainer : flatFileDataContainers) {
+            String[] splitData = FlatFileSaveDataProcessor.getPreparedSaveDataLine(dataContainer);
+
+            if(splitData == null)
+                continue;
+
+            String fromSplit = org.apache.commons.lang.StringUtils.join(splitData, ":") + ":";
+            stringBuilder.append(fromSplit).append("\r\n");
+        }
+
+        return stringBuilder;
+    }
+
 }
