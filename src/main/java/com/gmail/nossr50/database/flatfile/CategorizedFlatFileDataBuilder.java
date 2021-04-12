@@ -22,7 +22,6 @@ public class CategorizedFlatFileDataBuilder {
     }
 
     public CategorizedFlatFileData build() {
-        assert dataFlags.size() > 0;
         return new CategorizedFlatFileData(uniqueProcessingId, dataFlags, stringDataRepresentation);
     }
 

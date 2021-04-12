@@ -48,6 +48,11 @@ public class FlatFileDatabaseManagerTest {
             "powerless:0:::0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0::0:0:0:0:0:0:0:0:0::0:0:0:0:HEARTS:0:0:e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c:5:1600906906:"
     };
 
+    private static String[] duplicateNameDatabaseData = {
+            "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
+            "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:631e3896-da2a-4077-974b-d047859d76bc:0:0:",
+    };
+
     private static String[] corruptDatabaseData = {
             "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
             "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:",
@@ -66,7 +71,7 @@ public class FlatFileDatabaseManagerTest {
     @Test
     public void testPurgePowerlessUsers() {
         assertNotNull(db);
-        addDataToFile(db, normalDatabaseData);
+        replaceDataInFile(db, normalDatabaseData);
         int purgeCount = db.purgePowerlessUsers();
         assertEquals(purgeCount, 1); //1 User should have been purged
     }
@@ -75,7 +80,7 @@ public class FlatFileDatabaseManagerTest {
     public void testCheckFileHealthAndStructure() {
         assertNotNull(db);
 
-        addDataToFile(db, badDatabaseData);
+        replaceDataInFile(db, badDatabaseData);
 
         List<FlatFileDataFlag> dataFlags = db.checkFileHealthAndStructure();
         assertNotNull(dataFlags);
@@ -84,7 +89,13 @@ public class FlatFileDatabaseManagerTest {
 
     @Test
     public void testFindDuplicateNames() {
+        assertNotNull(db);
 
+        replaceDataInFile(db, duplicateNameDatabaseData);
+
+        List<FlatFileDataFlag> dataFlags = db.checkFileHealthAndStructure();
+        assertNotNull(dataFlags);
+        assertTrue(dataFlags.contains(FlatFileDataFlag.DUPLICATE_NAME_FIXABLE));
     }
 
     @Test
@@ -119,7 +130,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
 
-    private void addDataToFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
+    private void replaceDataInFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
         String filePath = flatFileDatabaseManager.getUsersFile().getAbsolutePath();
         BufferedReader in = null;
         FileWriter out = null;

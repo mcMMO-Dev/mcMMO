@@ -113,6 +113,9 @@ public class FlatFileDataProcessor {
             return;
         }
 
+        uuids.add(uuid);
+
+
         if(names.contains(name)) {
             //Duplicate entry
             nameIsDupe = true;
@@ -128,6 +131,8 @@ public class FlatFileDataProcessor {
                 builder.appendFlag(FlatFileDataFlag.DUPLICATE_NAME_FIXABLE);
             }
         }
+
+        names.add(name);
 
         //Make sure the data is up to date schema wise
         if(splitDataLine.length < DATA_ENTRY_COUNT) {
@@ -151,7 +156,7 @@ public class FlatFileDataProcessor {
             if(shouldNotBeEmpty(splitDataLine[i], i)) {
                 badDataValues[i] = true;
                 anyBadData = true;
-                reportBadDataLine("Data is empty when it should not be at index", "[EMPTY]", lineData);
+                reportBadDataLine("Data is empty when it should not be at index", "[index=" + i + "]", lineData);
                 continue;
             }
 
@@ -167,6 +172,8 @@ public class FlatFileDataProcessor {
         if(anyBadData) {
             builder.appendFlag(FlatFileDataFlag.BAD_VALUES);
         }
+
+        registerData(builder);
     }
 
     public boolean shouldNotBeEmpty(String data, int index) {
@@ -239,8 +246,10 @@ public class FlatFileDataProcessor {
         switch(dataIndex) {
             case USERNAME_INDEX:
                 return ExpectedType.STRING;
-            case 2: //Used to be for something, no longer used
-            case 3: //Used to be for something, no longer used
+            case 2: //Assumption: Used to be for something, no longer used
+            case 3: //Assumption: Used to be for something, no longer used
+            case 23: //Assumption: Used to be used for something, no longer used
+            case 33: //Assumption: Used to be used for something, no longer used
             case HEALTHBAR:
                 return ExpectedType.IGNORED;
             case SKILLS_MINING:

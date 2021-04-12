@@ -967,7 +967,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
         FlatFileDataProcessor dataProcessor = null;
-        int dataFlagCount = 0;
 
         if (usersFile.exists()) {
             BufferedReader bufferedReader = null;
@@ -985,8 +984,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                dataFlagCount = dataProcessor.getDataFlagCount();
             }
         }
 
