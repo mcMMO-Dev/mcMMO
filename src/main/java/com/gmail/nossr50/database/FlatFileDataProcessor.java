@@ -39,7 +39,7 @@ public class FlatFileDataProcessor {
          * Is the line empty?
          */
         if (lineData.isEmpty()) {
-            registerData(builder.appendFlag(FlatFileDataFlag.EMPTY));
+            registerData(builder.appendFlag(FlatFileDataFlag.EMPTY_LINE));
             return;
         }
 
@@ -61,6 +61,10 @@ public class FlatFileDataProcessor {
                 corruptDataFound = true;
             }
 
+            //Flag as junk (corrupt)
+            builder.appendFlag(FlatFileDataFlag.JUNK);
+
+            //TODO: This block here is probably pointless
             if(splitDataLine.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
                     && splitDataLine[0] != null && !splitDataLine[0].isEmpty()) {
                 if(splitDataLine[0].length() <= 16 && splitDataLine[0].length() >= 3) {
@@ -68,10 +72,10 @@ public class FlatFileDataProcessor {
                     registerData(builder.appendFlag(FlatFileDataFlag.TOO_INCOMPLETE));
                     return;
                 }
-            } else {
-                registerData(builder.appendFlag(FlatFileDataFlag.JUNK));
-                return;
             }
+
+            registerData(builder.appendFlag(FlatFileDataFlag.JUNK));
+            return;
         }
 
         /*
@@ -132,13 +136,13 @@ public class FlatFileDataProcessor {
             }
         }
 
-        names.add(name);
+        if(!name.isEmpty())
+            names.add(name);
 
         //Make sure the data is up to date schema wise
         if(splitDataLine.length < DATA_ENTRY_COUNT) {
-            String[] correctSizeSplitData = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT);
-            lineData = org.apache.commons.lang.StringUtils.join(correctSizeSplitData, ":") + ":";
-            splitDataLine = lineData.split(":");
+            splitDataLine = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT+1);
+            lineData = org.apache.commons.lang.StringUtils.join(splitDataLine, ":") + ":";
             builder.appendFlag(FlatFileDataFlag.INCOMPLETE);
             builder.setStringDataRepresentation(lineData);
         }
@@ -180,7 +184,7 @@ public class FlatFileDataProcessor {
         if(getExpectedValueType(index) == ExpectedType.IGNORED) {
             return false;
         } else {
-            return data.isEmpty();
+            return data == null || data.isEmpty();
         }
     }
 

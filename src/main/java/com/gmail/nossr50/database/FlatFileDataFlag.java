@@ -10,5 +10,5 @@ public enum FlatFileDataFlag {
     MISSING_OR_NULL_UUID,
     TOO_INCOMPLETE,
     JUNK,
-    EMPTY,
+    EMPTY_LINE,
 }
