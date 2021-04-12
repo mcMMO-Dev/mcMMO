@@ -16,7 +16,7 @@ public class FlatFileDataProcessor {
     private final @NotNull Logger logger;
     private final HashSet<String> names;
     private final HashSet<UUID> uuids;
-    private int uniqueProcessingID;
+    private int uniqueProcessingID; //TODO: Not being used, should we use it?
     boolean corruptDataFound;
 
     public FlatFileDataProcessor(@NotNull Logger logger) {
@@ -55,7 +55,7 @@ public class FlatFileDataProcessor {
             }
 
             //Flag as junk (corrupt)
-            builder.appendFlag(FlatFileDataFlag.JUNK);
+            builder.appendFlag(FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE);
 
             //TODO: This block here is probably pointless
             if(splitDataLine.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
@@ -67,7 +67,7 @@ public class FlatFileDataProcessor {
                 }
             }
 
-            registerData(builder.appendFlag(FlatFileDataFlag.JUNK));
+            registerData(builder.appendFlag(FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE));
             return;
         }
 
@@ -123,20 +123,8 @@ public class FlatFileDataProcessor {
         if(!name.isEmpty())
             names.add(name);
 
-        //Make sure the data is up to date schema wise
-        if(splitDataLine.length < DATA_ENTRY_COUNT) {
-            int oldLength = splitDataLine.length;
-            splitDataLine = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT);
-            int newLength = splitDataLine.length;
-
-            //TODO: Test this
-            for(int i = oldLength; i < (newLength - 1); i++){
-                badDataValues[i] = true;
-            }
-
-            builder.appendFlag(FlatFileDataFlag.INCOMPLETE);
-            builder.setSplitStringData(splitDataLine);
-        }
+        //Make sure the data is up to date schema wise, if it isn't we adjust it to the correct size and flag it for repair
+        splitDataLine = isDataSchemaUpToDate(splitDataLine, builder, badDataValues);
 
         /*
          * After establishing this data has at least an identity we check for bad data
@@ -168,6 +156,26 @@ public class FlatFileDataProcessor {
 
         registerData(builder);
     }
+
+    public @NotNull String[] isDataSchemaUpToDate(@NotNull String[] splitDataLine, @NotNull FlatFileDataBuilder builder, boolean[] badDataValues) {
+        assert splitDataLine.length <= DATA_ENTRY_COUNT; //should NEVER be higher
+
+        if(splitDataLine.length < DATA_ENTRY_COUNT) {
+            int oldLength = splitDataLine.length;
+            splitDataLine = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT);
+            int newLength = splitDataLine.length;
+
+            //TODO: Test this
+            for(int i = oldLength; i < (newLength - 1); i++){
+                badDataValues[i] = true;
+            }
+
+            builder.appendFlag(FlatFileDataFlag.INCOMPLETE);
+            builder.setSplitStringData(splitDataLine);
+        }
+        return splitDataLine;
+    }
+
 
     public boolean shouldNotBeEmpty(String data, int index) {
         if(getExpectedValueType(index) == ExpectedType.IGNORED) {
@@ -221,8 +229,9 @@ public class FlatFileDataProcessor {
     }
 
     private void reportBadDataLine(String warning, String context, String dataLine) {
-        logger.severe("FlatFileDatabaseBuilder Warning: " + warning + " - " + context);
-        logger.severe("FlatFileDatabaseBuilder: (Line Data) - " + dataLine);
+        logger.warning("FlatFileDatabaseBuilder Warning: " + warning + " - " + context);
+        logger.warning("FlatFileDatabaseBuilder: (Line Data) - " + dataLine);
+        logger.warning("mcMMO will repair this data if automatically (if it is possible).");
     }
 
     private int getMinimumSplitDataLength() {
@@ -237,7 +246,7 @@ public class FlatFileDataProcessor {
             flatFileDataFlags.addAll(flatFileDataContainer.getDataFlags());
     }
 
-    public @NotNull ExpectedType getExpectedValueType(int dataIndex) throws IndexOutOfBoundsException {
+    public static @NotNull ExpectedType getExpectedValueType(int dataIndex) throws IndexOutOfBoundsException {
         switch(dataIndex) {
             case USERNAME_INDEX:
                 return ExpectedType.STRING;
@@ -316,6 +325,8 @@ public class FlatFileDataProcessor {
             if(splitData == null)
                 continue;
 
+            //We add a trailing : as it is needed for some reason (is it?)
+            //TODO: Is the trailing ":" actually necessary?
             String fromSplit = org.apache.commons.lang.StringUtils.join(splitData, ":") + ":";
             stringBuilder.append(fromSplit).append("\r\n");
         }

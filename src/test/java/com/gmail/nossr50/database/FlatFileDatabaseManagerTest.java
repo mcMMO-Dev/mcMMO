@@ -131,18 +131,13 @@ public class FlatFileDatabaseManagerTest {
 
     @Test
     public void testFindCorruptData() {
-        overwriteDataAndCheckForFlag(db, corruptDatabaseData, FlatFileDataFlag.JUNK);
+        overwriteDataAndCheckForFlag(db, corruptDatabaseData, FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE);
     }
 
     @Test
     public void testFindEmptyNames() {
         overwriteDataAndCheckForFlag(db, emptyNameDatabaseData, FlatFileDataFlag.MISSING_NAME);
     }
-
-//    @Test
-//    public void testFindEmptyLine() {
-//        overwriteDataAndCheckForFlag(db, emptyLineDatabaseData, FlatFileDataFlag.EMPTY_LINE);
-//    }
 
     @Test
     public void testFindBadValues() {

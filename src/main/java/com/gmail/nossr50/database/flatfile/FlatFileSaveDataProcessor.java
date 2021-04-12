@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.*;
-import static com.gmail.nossr50.database.FlatFileDatabaseManager.UUID_INDEX;
 
 public class FlatFileSaveDataProcessor {
 
@@ -18,11 +17,10 @@ public class FlatFileSaveDataProcessor {
         //Data of this type is not salvageable
         //TODO: Test that we ignore the things we are supposed to ignore
         //TODO: Should we even keep track of the bad data or just not even build data containers for it? Making containers for it is only really useful for debugging.. well I suppose operations are typically async so it shouldn't matter
-        if(dataContainer.getDataFlags().contains(FlatFileDataFlag.JUNK)
+        if(dataContainer.getDataFlags().contains(FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE)
                 || dataContainer.getDataFlags().contains(FlatFileDataFlag.DUPLICATE_UUID) //For now we will not try to fix any issues with UUIDs
                 || dataContainer.getDataFlags().contains(FlatFileDataFlag.BAD_UUID_DATA) //For now we will not try to fix any issues with UUIDs
-                || dataContainer.getDataFlags().contains(FlatFileDataFlag.TOO_INCOMPLETE)
-                || dataContainer.getDataFlags().contains(FlatFileDataFlag.EMPTY_LINE)) {
+                || dataContainer.getDataFlags().contains(FlatFileDataFlag.TOO_INCOMPLETE)) {
             return null;
         }
 

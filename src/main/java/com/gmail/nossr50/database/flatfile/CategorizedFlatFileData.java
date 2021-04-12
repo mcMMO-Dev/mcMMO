@@ -12,7 +12,7 @@ public class CategorizedFlatFileData implements FlatFileDataContainer {
     private final @NotNull String[] splitData;
     private final int uniqueProcessingId;
 
-    protected CategorizedFlatFileData(int uniqueProcessingId, @NotNull HashSet<FlatFileDataFlag> dataFlags, @NotNull String[] splitData) {
+    public CategorizedFlatFileData(int uniqueProcessingId, @NotNull HashSet<FlatFileDataFlag> dataFlags, @NotNull String[] splitData) {
         this.uniqueProcessingId = uniqueProcessingId;
         this.dataFlags = dataFlags;
         this.splitData = splitData;

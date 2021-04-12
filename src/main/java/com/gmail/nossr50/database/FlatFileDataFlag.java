@@ -6,8 +6,7 @@ public enum FlatFileDataFlag {
     MISSING_NAME,
     DUPLICATE_NAME,
     DUPLICATE_UUID,
-    BAD_UUID_DATA, //Can be because it is missing, null, or just not compatible data
+    BAD_UUID_DATA, //Can be because it is missing, null, or corrupted or some other reason
     TOO_INCOMPLETE,
-    JUNK,
-    EMPTY_LINE,
+    CORRUPTED_OR_UNRECOGNIZABLE,
 }
