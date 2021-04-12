@@ -76,25 +76,28 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public static final int DATA_ENTRY_COUNT = COOLDOWN_CHIMAERA_WING + 1; //Update this everytime new data is added
 
-    protected FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
-        usersFile = new File(usersFilePath);
-        this.usersFilePath = usersFilePath;
+    protected FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime, int startingLevel, boolean testing) {
+        this.usersFile = usersFile;
+        this.usersFilePath = usersFile.getPath();
         this.logger = logger;
         this.purgeTime = purgeTime;
         this.startingLevel = startingLevel;
 
-        checkFileHealthAndStructure();
-        List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
+        if(!testing) {
+            List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
 
-        if(flatFileDataFlags != null) {
-            if(flatFileDataFlags.size() > 0) {
-                logger.info("Detected "+flatFileDataFlags.size() + " data entries which need correction.");
+            if(flatFileDataFlags != null) {
+                if(flatFileDataFlags.size() > 0) {
+                    logger.info("Detected "+flatFileDataFlags.size() + " data entries which need correction.");
+                }
             }
         }
-
-        checkFileHealthAndStructure();
-//        updateLeaderboards();
     }
+
+    protected FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
+        this(new File(usersFilePath), logger, purgeTime, startingLevel, false);
+    }
+
 
     public int purgePowerlessUsers() {
         int purgedUsers = 0;
@@ -971,6 +974,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
      * @return
      */
     public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
+        ArrayList<FlatFileDataFlag> flagsFound = null;
+        logger.info("(" + usersFile.getPath() + ") Validating database file..");
         FlatFileDataProcessor dataProcessor = null;
 
         if (usersFile.exists()) {
@@ -996,6 +1001,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     //Only update the file if needed
                     if(dataProcessor.getFlatFileDataFlags().size() > 0) {
+                        flagsFound = new ArrayList<>(dataProcessor.getFlatFileDataFlags());
                         logger.info("Saving the updated and or repaired FlatFile Database...");
                         fileWriter = new FileWriter(usersFilePath);
                         //Write data to file
@@ -1009,10 +1015,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
-        if(dataProcessor == null || dataProcessor.getFlatFileDataFlags() == null) {
+        if(flagsFound == null || flagsFound.size() == 0) {
             return null;
         } else {
-            return dataProcessor.getFlatFileDataFlags();
+            return flagsFound;
         }
     }
 

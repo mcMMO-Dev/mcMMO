@@ -9,10 +9,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
@@ -23,6 +31,8 @@ public class FlatFileDatabaseManagerTest {
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
     public static final int HEALTHY_RETURN_CODE = 0;
+    public static final String BAD_FILE_LINE_ONE = "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:";
+    public static final String BAD_DATA_FILE_LINE_TWENTY_THREE = "nossr51:baddata:::baddata:baddata:640:baddata:1000:1000:1000:baddata:baddata:baddata:baddata:16:0:500:20273:0:0:0:0::1000:0:0:baddata:1593543012:0:0:0:0::1000:0:0:baddata:IGNORED:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1:0:";
     private static File tempDir;
     private final static @NotNull Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final long PURGE_TIME = 2630000000L;
@@ -32,7 +42,7 @@ public class FlatFileDatabaseManagerTest {
     public void init() {
         assertNull(db);
         tempDir = Files.createTempDir();
-        db = new FlatFileDatabaseManager(tempDir.getPath() + File.separator + TEST_FILE_NAME, logger, PURGE_TIME, 0);
+        db = new FlatFileDatabaseManager(new File(tempDir.getPath() + File.separator + TEST_FILE_NAME), logger, PURGE_TIME, 0, true);
     }
 
     @After
@@ -153,6 +163,73 @@ public class FlatFileDatabaseManagerTest {
     public void testGetDatabaseType() {
         assertNotNull(db);
         assertEquals(db.getDatabaseType(), DatabaseType.FLATFILE);
+    }
+
+    @Test
+    public void testLoadFromFile() {
+        Path resourceDirectory = Paths.get("src","test","resources");
+        String absolutePath = resourceDirectory.toFile().getAbsolutePath();
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        URI resourceFileURI = null;
+
+        try {
+            resourceFileURI = classLoader.getResource("baddatadb.users").toURI();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(resourceFileURI);
+        File fromResourcesFile = new File(resourceFileURI);
+        assertNotNull(resourceFileURI);
+        File copyOfFile = new File(tempDir.getPath() + File.separator + "baddatafile.users");
+
+        if(copyOfFile.exists()) {
+            copyOfFile.delete();
+        }
+
+        assertTrue(fromResourcesFile.exists());
+
+        try {
+            Files.copy(fromResourcesFile, copyOfFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(copyOfFile);
+
+        //This makes sure our private method is working before the tests run afterwards
+        ArrayList<String[]> dataFromFile = getSplitDataFromFile(copyOfFile);
+        System.out.println("File Path: "+copyOfFile.getAbsolutePath());
+        assertEquals(BAD_FILE_LINE_ONE.split(":"), dataFromFile.get(0));
+        assertEquals(dataFromFile.get(22)[0], "nossr51");
+        assertEquals(BAD_DATA_FILE_LINE_TWENTY_THREE.split(":"), dataFromFile.get(22));
+
+        FlatFileDatabaseManager db_a = new FlatFileDatabaseManager(copyOfFile, logger, PURGE_TIME, 0, true);
+        List<FlatFileDataFlag> flagsFound = db_a.checkFileHealthAndStructure();
+        assertNotNull(flagsFound);
+        assertTrue(flagsFound.contains(FlatFileDataFlag.BAD_VALUES));
+    }
+
+    private @NotNull ArrayList<String[]> getSplitDataFromFile(@NotNull File file) {
+        ArrayList<String[]> splitDataList = new ArrayList<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.isEmpty())
+                    continue;
+
+                String[] splitData = line.split(":");
+                splitDataList.add(splitData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return splitDataList;
     }
 
     private void replaceDataInFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
