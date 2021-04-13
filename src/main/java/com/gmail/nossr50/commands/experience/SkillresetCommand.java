@@ -10,6 +10,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -167,7 +168,7 @@ public class SkillresetCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType);
             }
 

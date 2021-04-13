@@ -12,6 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockState;
@@ -80,7 +81,7 @@ public final class ExperienceAPI {
     public static boolean isNonChildSkill(String skillType) {
         PrimarySkillType skill = mcMMO.p.getSkillTools().matchSkill(skillType);
 
-        return skill != null && !mcMMO.p.getSkillTools().isChildSkill(skill);
+        return skill != null && !SkillTools.isChildSkill(skill);
     }
 
     @Deprecated
@@ -626,7 +627,7 @@ public final class ExperienceAPI {
         PlayerProfile profile = getOfflineProfile(playerName);
         PrimarySkillType skill = getSkillType(skillType);
 
-        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (SkillTools.isChildSkill(skill)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -657,7 +658,7 @@ public final class ExperienceAPI {
         PlayerProfile profile = getOfflineProfile(uuid);
         PrimarySkillType skill = getSkillType(skillType);
 
-        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (SkillTools.isChildSkill(skill)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -763,7 +764,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        for (PrimarySkillType type : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType type : SkillTools.NON_CHILD_SKILLS) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -784,7 +785,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(uuid);
 
-        for (PrimarySkillType type : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType type : SkillTools.NON_CHILD_SKILLS) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -1181,7 +1182,7 @@ public final class ExperienceAPI {
     private static PrimarySkillType getNonChildSkillType(String skillType) throws InvalidSkillException, UnsupportedOperationException {
         PrimarySkillType skill = getSkillType(skillType);
 
-        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (SkillTools.isChildSkill(skill)) {
             throw new UnsupportedOperationException("Child skills do not have XP");
         }
 

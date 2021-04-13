@@ -51,7 +51,7 @@
 //
 //    private void toggle(boolean enable, PrimarySkillType skill) {
 //        if (skill == null) {
-//            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+//            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
 //                primarySkillType.setHardcoreStatLossEnabled(enable);
 //            }
 //        }

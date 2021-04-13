@@ -15,6 +15,7 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
@@ -142,7 +143,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
-        if(!mcMMO.p.getSkillTools().isChildSkill(skill))
+        if(!SkillTools.isChildSkill(skill))
         {
             /*
              * NON-CHILD SKILLS
@@ -188,7 +189,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         }
         /*
-        if (!mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (!SkillTools.isChildSkill(skill)) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
             player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
             player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));

@@ -51,6 +51,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -280,7 +281,7 @@ public class McMMOPlayer implements Identified {
 
     public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
     {
-        if(mcMMO.p.getSkillTools().isChildSkill(primarySkillType)) {
+        if(SkillTools.isChildSkill(primarySkillType)) {
             return 1.0D;
         }
 
@@ -569,7 +570,7 @@ public class McMMOPlayer implements Identified {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
                 powerLevel += getSkillLevel(primarySkillType);
             }
@@ -611,7 +612,7 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (SkillTools.isChildSkill(skill)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
             float splitXp = xp / parentSkills.size();
 
@@ -668,7 +669,7 @@ public class McMMOPlayer implements Identified {
         Bukkit.getPluginManager().callEvent(mcMMOPlayerPreXpGainEvent);
         xp = mcMMOPlayerPreXpGainEvent.getXpGained();
 
-        if (mcMMO.p.getSkillTools().isChildSkill(primarySkillType)) {
+        if (SkillTools.isChildSkill(primarySkillType)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {

@@ -7,6 +7,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -50,7 +51,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
-                if (skill != null && mcMMO.p.getSkillTools().isChildSkill(skill))
+                if (skill != null && SkillTools.isChildSkill(skill))
                 {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
@@ -83,7 +84,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
-                if (skill != null && mcMMO.p.getSkillTools().isChildSkill(skill))
+                if (skill != null && SkillTools.isChildSkill(skill))
                 {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
@@ -171,7 +172,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value, boolean isSilent) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType, value);
             }
 

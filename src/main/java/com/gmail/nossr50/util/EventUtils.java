@@ -35,6 +35,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -405,7 +406,7 @@ public final class EventUtils {
             experienceChanged = event.getExperienceChanged();
             PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
 
-            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
                 int threshold = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyLevelThreshold();
@@ -454,7 +455,7 @@ public final class EventUtils {
 
             PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
 
-            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 

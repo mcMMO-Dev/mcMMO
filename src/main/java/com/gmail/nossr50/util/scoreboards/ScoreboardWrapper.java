@@ -16,6 +16,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -488,7 +489,7 @@ public class ScoreboardWrapper {
             case SKILL_BOARD:
                 Validate.notNull(targetSkill);
 
-                if (!mcMMO.p.getSkillTools().isChildSkill(targetSkill)) {
+                if (!SkillTools.isChildSkill(targetSkill)) {
                     int currentXP = mcMMOPlayer.getSkillXpLevel(targetSkill);
 
                     sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
@@ -573,7 +574,7 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
@@ -606,7 +607,7 @@ public class ScoreboardWrapper {
         Integer rank;
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
             if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
                 continue;
             }

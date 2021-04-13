@@ -12,6 +12,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -132,7 +133,7 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if (mcMMO.p.getSkillTools().isChildSkill(primarySkillType)) {
+        if (SkillTools.isChildSkill(primarySkillType)) {
             return;
         }
 

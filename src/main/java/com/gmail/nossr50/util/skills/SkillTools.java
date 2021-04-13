@@ -29,7 +29,7 @@ public class SkillTools {
     public final @NotNull ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
     public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
     public final @NotNull ImmutableList<PrimarySkillType> CHILD_SKILLS;
-    public final @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
+    public final static @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> COMBAT_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> GATHERING_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> MISC_SKILLS;
@@ -41,6 +41,16 @@ public class SkillTools {
     // The map below is for the super abilities which require readying a tool, its everything except blast mining
     private final ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap;
     private final ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
+
+    static {
+        ArrayList<PrimarySkillType> tempNonChildSkills = new ArrayList<>();
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (primarySkillType != PrimarySkillType.SALVAGE && primarySkillType != PrimarySkillType.SMELTING)
+                tempNonChildSkills.add(primarySkillType);
+        }
+
+        NON_CHILD_SKILLS = ImmutableList.copyOf(tempNonChildSkills);
+    }
 
     public SkillTools(@NotNull mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -130,18 +140,18 @@ public class SkillTools {
          */
 
         List<PrimarySkillType> childSkills = new ArrayList<>();
-        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
+//        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (isChildSkill(primarySkillType)) {
+            if (isChildSkill(primarySkillType))
                 childSkills.add(primarySkillType);
-            } else {
-                nonChildSkills.add(primarySkillType);
-            }
+//            } {
+//                nonChildSkills.add(primarySkillType);
+//            }
         }
 
         CHILD_SKILLS = ImmutableList.copyOf(childSkills);
-        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
+//        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
 
         /*
          * Build categorized skill lists
@@ -318,7 +328,7 @@ public class SkillTools {
     }
 
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
-    public boolean isChildSkill(PrimarySkillType primarySkillType) {
+    public static boolean isChildSkill(PrimarySkillType primarySkillType) {
         switch (primarySkillType) {
             case SALVAGE:
             case SMELTING:

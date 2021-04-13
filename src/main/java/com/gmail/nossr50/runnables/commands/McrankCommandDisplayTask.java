@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -46,7 +47,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
-        for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
 //            if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
 //                continue;
 //            }

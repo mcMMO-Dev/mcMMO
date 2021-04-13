@@ -7,6 +7,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
@@ -25,7 +26,7 @@ public final class CommandUtils {
     private CommandUtils() {}
 
     public static boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
-        if (skill == null || !mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (skill == null || !SkillTools.isChildSkill(skill)) {
             return false;
         }
 
@@ -205,7 +206,7 @@ public final class CommandUtils {
     }
 
     public static String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
-        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (SkillTools.isChildSkill(skill)) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
         if (profile.getSkillLevel(skill) == mcMMO.p.getSkillTools().getLevelCap(skill)){

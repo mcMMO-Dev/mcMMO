@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<>();
         HashMap<String, Float> experienceChanged = new HashMap<>();
 
-        for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (!mcMMO.p.getGeneralConfig().getHardcoreStatLossEnabled(primarySkillType)) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0F);
@@ -86,7 +87,7 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<>();
         HashMap<String, Float> experienceChanged = new HashMap<>();
 
-        for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (!mcMMO.p.getGeneralConfig().getHardcoreVampirismEnabled(primarySkillType)) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0F);
@@ -135,7 +136,7 @@ public final class HardcoreManager {
     public static boolean isStatLossEnabled() {
         boolean enabled = false;
 
-        for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (mcMMO.p.getGeneralConfig().getHardcoreStatLossEnabled(primarySkillType)) {
                 enabled = true;
                 break;
@@ -153,7 +154,7 @@ public final class HardcoreManager {
     public static boolean isVampirismEnabled() {
         boolean enabled = false;
 
-        for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (mcMMO.p.getGeneralConfig().getHardcoreVampirismEnabled(primarySkillType)) {
                 enabled = true;
                 break;

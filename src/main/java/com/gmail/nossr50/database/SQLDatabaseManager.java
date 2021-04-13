@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.entity.Player;
@@ -174,8 +175,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
         catch (SQLException ex) {
             printErrors(ex);
-        }
-        finally {
+        } finally {
             tryClose(statement);
             tryClose(connection);
             massUpdateLock.unlock();
@@ -271,7 +271,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(12, profile.getSkillLevel(PrimarySkillType.FISHING));
             statement.setInt(13, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
             int total = 0;
-            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS)
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS)
                 total += profile.getSkillLevel(primarySkillType);
             statement.setInt(14, total);
             statement.setInt(15, id);
@@ -330,7 +330,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?");
-            statement.setString(1, profile.getMobHealthbarType() == null ? mcMMO.p.getGeneralConfig().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
+            statement.setString(1, MobHealthbarType.HEARTS.name());
             statement.setInt(2, profile.getScoreboardTipsShown());
             statement.setInt(3, id);
             success = (statement.executeUpdate() != 0);
@@ -355,7 +355,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         List<PlayerStat> stats = new ArrayList<>();
 
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(skill != null && mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if(skill != null && SkillTools.isChildSkill(skill)) {
             mcMMO.p.getLogger().severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
@@ -404,7 +404,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            for (PrimarySkillType primarySkillType : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.name().toLowerCase(Locale.ENGLISH);
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
@@ -932,7 +932,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             if (mcMMO.p.getGeneralConfig().getTruncateSkills()) {
-                for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
                     int cap = mcMMO.p.getSkillTools().getLevelCap(skill);
                     if (cap != Integer.MAX_VALUE) {
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `" + skill.name().toLowerCase(Locale.ENGLISH) + "` > " + cap);
@@ -1152,14 +1152,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsDATS.put(SuperAbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
         uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS, result.getInt(OFFSET_DATS + 13));
 
-
-        try {
-            mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 1));
-        }
-        catch (Exception e) {
-            mobHealthbarType = mcMMO.p.getGeneralConfig().getMobHealthbarDefault();
-        }
-
         try {
             scoreboardTipsShown = result.getInt(OFFSET_OTHER + 2);
         }
@@ -1174,7 +1166,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             uuid = null;
         }
 
-        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniqueData);
+        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, scoreboardTipsShown, uniqueData, null);
     }
 
     private void printErrors(SQLException ex) {
@@ -1291,10 +1283,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
             resultSet.last();
 
-            if (resultSet.getRow() != mcMMO.p.getSkillTools().NON_CHILD_SKILLS.size()) {
+            if (resultSet.getRow() != SkillTools.NON_CHILD_SKILLS.size()) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
-                for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
                     String skill_name = skill.name().toLowerCase(Locale.ENGLISH);
 
                     try {

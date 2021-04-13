@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -92,12 +93,17 @@ public interface DatabaseManager {
      */
     @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName);
 
+    default @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer) {
+        return loadPlayerProfile(offlinePlayer.getUniqueId(), offlinePlayer.getName());
+    }
+
     /**
      * Load a player from the database.
-     *
      * @param uuid The uuid of the player to load from the database
      * @return The player's data, or an unloaded PlayerProfile if not found
+     * @deprecated Use {@link DatabaseManager#loadPlayerProfile(org.bukkit.OfflinePlayer)} if possible
      */
+    @Deprecated
     @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName);
 
     /**

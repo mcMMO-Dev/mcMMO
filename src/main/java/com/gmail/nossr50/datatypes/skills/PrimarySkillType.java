@@ -191,7 +191,7 @@ public enum PrimarySkillType {
      */
     @Deprecated
     public boolean isChildSkill() {
-        return mcMMO.p.getSkillTools().isChildSkill(this);
+        return SkillTools.isChildSkill(this);
     }
 
     /**

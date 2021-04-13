@@ -9,12 +9,15 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -28,6 +31,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     private final @NotNull Logger logger;
     private final long purgeTime;
     private final int startingLevel;
+    private boolean testing;
 
     private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
     private final @NotNull File usersFile;
@@ -82,6 +86,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         this.logger = logger;
         this.purgeTime = purgeTime;
         this.startingLevel = startingLevel;
+        this.testing = testing;
 
         if(!testing) {
             List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
@@ -218,6 +223,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 // Write the new file
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
+
+                if(testing) {
+                    System.out.println(writer.toString());
+                }
             }
             catch (IOException e) {
                 logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
@@ -321,8 +330,19 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 boolean wroteUser = false;
+                if(testing) {
+                    System.out.println("-- saveUser bufferedreader feed --");
+                }
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
+                    if(testing) {
+                        System.out.println(line);
+                    }
+                    if(line.startsWith("#")) {
+                        writer.append(line).append("\r\n");
+                        continue;
+                    }
+
                     //Check for incomplete or corrupted data
                     if(!line.contains(":")) {
 
@@ -363,6 +383,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                  */
                 if(!wroteUser) {
                     writeUserToLine(profile, playerName, uuid, writer);
+                }
+
+                if(testing) {
+                    System.out.println("-- saveUser (FileWriter contents before save) --");
+                    System.out.println(writer.toString());
                 }
 
                 // Write the new file
@@ -445,7 +470,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType, int pageNumber, int statsPerPage) throws InvalidSkillException {
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(primarySkillType != null && mcMMO.p.getSkillTools().isChildSkill(primarySkillType)) {
+        if(primarySkillType != null && SkillTools.isChildSkill(primarySkillType)) {
             logger.severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
@@ -462,7 +487,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         Map<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class);
 
-        for (PrimarySkillType skill : mcMMO.p.getSkillTools().NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
@@ -549,15 +574,19 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer) {
+        return loadPlayerByUUID(offlinePlayer.getUniqueId(), offlinePlayer.getName(), offlinePlayer.isOnline());
+    }
+
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
         return loadPlayerByName(playerName);
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
-        return loadPlayerByUUID(uuid, playerName);
+        return loadPlayerByUUID(uuid, playerName, false);
     }
 
-    private @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName) {
+    private @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName, boolean isOnline) {
         BufferedReader in = null;
 
         synchronized (fileWritingLock) {
@@ -594,9 +623,13 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
 
                     /* Check for nickname changes and update since we are here anyways */
-                    if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                        //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
-                        rawSplitData[USERNAME_INDEX] = playerName;
+                    if(playerName != null) {
+                        if(isOnline) {
+                            if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
+                                //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
+                                rawSplitData[USERNAME_INDEX] = playerName;
+                            }
+                        }
                     }
 
                     return loadFromLine(rawSplitData);
@@ -969,14 +1002,38 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
     }
 
-    /**
-     * Makes sure that the users file has valid entries
-     * @return
-     */
+    private void initEmptyDB() {
+        BufferedWriter bufferedWriter = null;
+        synchronized (fileWritingLock) {
+            try {
+                // Open the file to write the player
+                bufferedWriter = new BufferedWriter(new FileWriter(usersFilePath, true));
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                bufferedWriter.append("# mcMMO Database created on ").append(localDateTime.format(dateTimeFormatter)).append("\r\n"); //Empty file
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (bufferedWriter != null) {
+                    try {
+                        bufferedWriter.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+    }
+
     public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
         ArrayList<FlatFileDataFlag> flagsFound = null;
         logger.info("(" + usersFile.getPath() + ") Validating database file..");
         FlatFileDataProcessor dataProcessor = null;
+
+        if(!usersFile.exists()) {
+            initEmptyDB();
+        }
 
         if (usersFile.exists()) {
             BufferedReader bufferedReader = null;
@@ -988,10 +1045,18 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 try {
                     String currentLine;
+                    String dbCommentDate = null;
+
                     bufferedReader = new BufferedReader(new FileReader(usersFilePath));
 
                     //Analyze the data
                     while ((currentLine = bufferedReader.readLine()) != null) {
+                        //Commented lines
+                        if(currentLine.startsWith("#") && dbCommentDate == null) { //The first commented line in the file is likely to be our note about when the file was created
+                            dbCommentDate = currentLine;
+                            continue;
+                        }
+
                         if(currentLine.isEmpty())
                             continue;
 
@@ -1005,6 +1070,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         logger.info("Saving the updated and or repaired FlatFile Database...");
                         fileWriter = new FileWriter(usersFilePath);
                         //Write data to file
+                        if(dbCommentDate != null)
+                            fileWriter.write(dbCommentDate);
+
                         fileWriter.write(dataProcessor.processDataForSave().toString());
                     }
                 } catch (IOException e) {
@@ -1078,6 +1146,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
         int scoreboardTipsShown;
+        long lastLogin;
 
         String username = character[USERNAME_INDEX];
 
@@ -1108,13 +1177,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         // Acrobatics - Unused
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING, username);
 
-//        try {
-//            mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
-//        }
-//        catch (Exception e) {
-//            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
-//        }
-
         UUID uuid;
         try {
             uuid = UUID.fromString(character[UUID_INDEX]);
@@ -1137,7 +1199,13 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
         }
 
-        return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, null, scoreboardTipsShown, uniquePlayerDataMap);
+        try {
+            lastLogin = Long.parseLong(character[LAST_LOGIN]);
+        } catch (Exception e) {
+            lastLogin = System.currentTimeMillis();
+        }
+
+        return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, scoreboardTipsShown, uniquePlayerDataMap, lastLogin);
     }
 
     private void tryLoadSkillCooldownFromRawData(@NotNull Map<SuperAbilityType, Integer> cooldownMap, @NotNull String[] character, @NotNull SuperAbilityType superAbilityType, int cooldownSuperBreaker, @NotNull String userName) {

@@ -1,5 +1,10 @@
 Version 2.1.189
+    FlatFileDB now stores the last login of users again (was completely non functional for a while)
+    Newly created flat file databases (mcmmo.users file) will have a comment line at the top noting the date the database was created
+    Fixed a bug where FlatFileDatabase users could have their names saved as "null" (names will be fixed the next time the player logs in)
     Rewrote how FlatFileDatabase verifies data integrity
+    (API) Added com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(org.bukkit.OfflinePlayer)
+    (API) Deprecated com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(java.util.UUID, java.lang.String)
     Added unit tests for FlatFileDatabaseManager (see notes)
     Fixed a bug where FlatFileDatabaseManager didn't properly upgrade older database entries to the newest schema
     The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
@@ -17,7 +22,7 @@ Version 2.1.189
     (API) Some members of PrimarySkillType were removed and not deprecated (such as the field constants)
 
     NOTES:
-    The tests added for FlatFileDatabase will help make sure bugs don't result in any loss of data
+    I spent over 20 hours refactoring FlatFileDB and writing unit tests for it, this will ensure that any changes in the code that could break the database are caught
     Ultra Permissions is SAFE to use with mcMMO
     After getting in contact with the UltraPermissions devs and exhaustive testing, I have concluded that using UltraPermissions is completely safe with mcMMO. The users who had an issue with performance currently have an unknown cause, potentially it is from a plugin using the UltraPermissions API I really can't say without more data. My apologies to the UltraPermissions team for reporting an issue between our two plugins directly, as that is not the case. I would have tested it myself sooner but UltraPermissions was closed source and premium so I wasn't particularly motivated to do so, however I have been given access to the binaries so now I can do all the testing I want if future issues ever arise which I have zero expectations that they will.
 

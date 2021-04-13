@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.child;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.SkillTools;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -41,13 +41,13 @@ public class FamilyTree {
     }
 
     protected static void enforceChildSkill(PrimarySkillType skill) {
-        if (!mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (!SkillTools.isChildSkill(skill)) {
             throw new IllegalArgumentException(skill.name() + " is not a child skill!");
         }
     }
 
     protected static void enforceNotChildSkill(PrimarySkillType skill) {
-        if (mcMMO.p.getSkillTools().isChildSkill(skill)) {
+        if (SkillTools.isChildSkill(skill)) {
             throw new IllegalArgumentException(skill.name() + " is a child skill!");
         }
     }

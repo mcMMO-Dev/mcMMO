@@ -2,6 +2,7 @@ package com.gmail.nossr50.api;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.SkillTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getNonChildSkills() {
-        return getListFromEnum(mcMMO.p.getSkillTools().NON_CHILD_SKILLS);
+        return getListFromEnum(SkillTools.NON_CHILD_SKILLS);
     }
 
     /**
