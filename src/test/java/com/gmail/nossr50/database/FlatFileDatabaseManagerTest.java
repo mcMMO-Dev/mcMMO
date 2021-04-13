@@ -6,14 +6,20 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.io.Files;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.*;
@@ -26,8 +32,9 @@ import static org.junit.Assert.*;
 
 
 //TODO: Test update leaderboards
-@RunWith(PowerMockRunner.class)
 public class FlatFileDatabaseManagerTest {
+
+    public mcMMO plugin;
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
     public static final @NotNull String BAD_FILE_LINE_ONE = "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:";
@@ -137,7 +144,7 @@ public class FlatFileDatabaseManagerTest {
         //Make a Profile to save and check to see if it worked
         UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
         String playerName = "nossr50";
-        PlayerProfile testProfile = new PlayerProfile(playerName, uuid);
+        PlayerProfile testProfile = new PlayerProfile(playerName, uuid, 0);
         //The above profile should be "zero" initialized
 
         //Save the zero version and see if it looks correct
@@ -206,6 +213,56 @@ public class FlatFileDatabaseManagerTest {
 
         PlayerProfile profile = db.loadPlayerProfile(playerName);
         testHealthyDataProfileValues(playerName, uuid, profile);
+    }
+
+    @Test
+    public void testNewUser() {
+        //We will test that new user values line up with our expectations
+        UUID uuid = new UUID(0, 1);
+        String playerName = "nossr50";
+
+        int newUserTestStartingLvl = 1337;
+        db = new FlatFileDatabaseManager(new File(tempDir.getPath() + File.separator + TEST_FILE_NAME), logger, PURGE_TIME, newUserTestStartingLvl, true);
+        db.checkFileHealthAndStructure();
+
+        PlayerProfile playerProfile = db.newUser(playerName, uuid);
+
+        assertTrue(playerProfile.isLoaded());
+        assertEquals(playerName, playerProfile.getPlayerName());
+        assertEquals(uuid, playerProfile.getUniqueId());
+
+        PlayerProfile retrievedFromDisk = db.loadPlayerProfile(uuid);
+        assertTrue(retrievedFromDisk.isLoaded());
+        assertEquals(playerName, retrievedFromDisk.getPlayerName());
+        assertEquals(uuid, retrievedFromDisk.getUniqueId());
+
+        //Checking a new user for being "zero" initialized
+        checkNewUserValues(playerProfile, newUserTestStartingLvl);
+        checkNewUserValues(retrievedFromDisk, newUserTestStartingLvl);
+
+        //TODO: Should we do any dupe checking? Probably not needed as it would be caught on the next load
+        db.newUser("disco", new UUID(3, 3));
+        db.newUser("dingus", new UUID(3, 4));
+        db.newUser("duped_dingus", new UUID(3, 4));
+    }
+
+    private void checkNewUserValues(@NotNull PlayerProfile playerProfile, int startingLevel) {
+        //Checking a new user for being zero initialized
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if(SkillTools.isChildSkill(primarySkillType))
+                continue;
+
+            assertEquals(startingLevel, playerProfile.getSkillLevel(primarySkillType));
+            assertEquals(0, playerProfile.getSkillXpLevelRaw(primarySkillType), 0);
+        }
+
+        for(SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+            assertEquals(0, playerProfile.getAbilityDATS(superAbilityType));
+        }
+
+        assertTrue(playerProfile.getLastLogin() > 0);
+        assertEquals(playerProfile.getChimaerWingDATS(), 0);
+        assertEquals(playerProfile.getScoreboardTipsShown(), 0);
     }
 
     @Test

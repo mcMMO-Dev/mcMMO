@@ -92,6 +92,8 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 return;
             }
 
+            mcMMOPlayer.getProfile().updateLastLogin();
+
             mcMMOPlayer.setupPartyData();
             UserManager.track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();

@@ -86,7 +86,7 @@ public final class CommandUtils {
             return true;
         }
 
-        PlayerProfile profile = new PlayerProfile(playerName, false);
+        PlayerProfile profile = new PlayerProfile(playerName, false, 0);
 
         if (unloadedProfile(sender, profile)) {
             return false;

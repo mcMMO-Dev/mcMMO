@@ -76,11 +76,11 @@ public interface DatabaseManager {
 
     /**
      * Add a new user to the database.
-     *
-     * @param playerName The name of the player to be added to the database
+     *  @param playerName The name of the player to be added to the database
      * @param uuid The uuid of the player to be added to the database
+     * @return
      */
-    void newUser(String playerName, UUID uuid);
+    @NotNull PlayerProfile newUser(String playerName, UUID uuid);
 
     @NotNull PlayerProfile newUser(@NotNull Player player);
 
@@ -101,10 +101,12 @@ public interface DatabaseManager {
      * Load a player from the database.
      * @param uuid The uuid of the player to load from the database
      * @return The player's data, or an unloaded PlayerProfile if not found
-     * @deprecated Use {@link DatabaseManager#loadPlayerProfile(org.bukkit.OfflinePlayer)} if possible
+     * @deprecated Use {@link DatabaseManager#loadPlayerProfile(org.bukkit.OfflinePlayer)} or {@link DatabaseManager#loadPlayerProfile(java.util.UUID)} if possible
      */
     @Deprecated
     @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName);
+
+    @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid);
 
     /**
      * Get all users currently stored in the database.

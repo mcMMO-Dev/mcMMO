@@ -1,6 +1,7 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -491,19 +492,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return skills;
     }
 
-    public void newUser(String playerName, UUID uuid) {
+    public @NotNull PlayerProfile newUser(String playerName, UUID uuid) {
         Connection connection = null;
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
             newUser(connection, playerName, uuid);
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             printErrors(ex);
-        }
-        finally {
+        } finally {
             tryClose(connection);
         }
+
+        return new PlayerProfile(playerName, uuid, true, mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
     @Override
@@ -513,7 +514,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             int id = newUser(connection, player.getName(), player.getUniqueId());
 
             if (id == -1) {
-                return new PlayerProfile(player.getName(), player.getUniqueId(), false);
+                return new PlayerProfile(player.getName(), player.getUniqueId(), false, mcMMO.p.getAdvancedConfig().getStartingLevel());
             } else {
                 return loadPlayerProfile(player.getUniqueId(), player.getName());
             }
@@ -521,7 +522,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             e.printStackTrace();
         }
 
-        return new PlayerProfile(player.getName(), player.getUniqueId(), false);
+        return new PlayerProfile(player.getName(), player.getUniqueId(), false, mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
     private int newUser(Connection connection, String playerName, UUID uuid) {
@@ -567,13 +568,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return loadPlayerFromDB(null, playerName);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return new PlayerProfile(playerName, false);
+            return new PlayerProfile(playerName, false, mcMMO.p.getAdvancedConfig().getStartingLevel());
         }
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
         return loadPlayerFromDB(uuid, playerName);
     }
+
+    @Override
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid) {
+        return loadPlayerFromDB(uuid, null);
+    }
+
 
     private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName) throws RuntimeException {
         if(uuid == null && playerName == null) {
@@ -590,7 +597,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             if (id == -1) {
             // There is no such user
-                return new PlayerProfile(playerName, false);
+                return new PlayerProfile(playerName, mcMMO.p.getAdvancedConfig().getStartingLevel());
             }
             // There is such a user
             writeMissingRows(connection, id);
@@ -659,7 +666,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         //Return empty profile
-        return new PlayerProfile(playerName, false);
+        return new PlayerProfile(playerName, mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
     public void convertUsers(DatabaseManager destination) {

@@ -31,7 +31,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     private final @NotNull Logger logger;
     private final long purgeTime;
     private final int startingLevel;
-    private boolean testing;
+    private final boolean testing;
 
     private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
     private final @NotNull File usersFile;
@@ -97,6 +97,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     logger.info("Detected "+flatFileDataFlags.size() + " data entries which need correction.");
                 }
             }
+
+            updateLeaderboards();
         }
     }
 
@@ -193,29 +195,31 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String name = character[USERNAME_INDEX];
                     long lastPlayed = 0;
                     boolean rewrite = false;
+
                     try {
-                        lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
-                    }
-                    catch (NumberFormatException e) {
+                        lastPlayed = Long.parseLong(character[OVERHAUL_LAST_LOGIN]);
+                    } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
-                    if (lastPlayed == 0) {
+
+                    if (lastPlayed == -1) {
                         OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(name);
-                        lastPlayed = player.getLastPlayed();
-                        rewrite = true;
+
+                        if(player.getLastPlayed() != 0) {
+                            lastPlayed = player.getLastPlayed();
+                            rewrite = true;
+                        }
                     }
 
                     if (currentTime - lastPlayed > purgeTime) {
                         removedPlayers++;
-                    }
-                    else {
+                    } else {
                         if (rewrite) {
                             // Rewrite their data with a valid time
-                            character[37] = Long.toString(lastPlayed);
+                            character[OVERHAUL_LAST_LOGIN] = Long.toString(lastPlayed);
                             String newLine = org.apache.commons.lang.StringUtils.join(character, ":");
                             writer.append(newLine).append("\r\n");
-                        }
-                        else {
+                        } else {
                             writer.append(line).append("\r\n");
                         }
                     }
@@ -421,51 +425,52 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void writeUserToLine(PlayerProfile profile, @NotNull String playerName, @Nullable UUID uuid, StringBuilder writer) {
+    public void writeUserToLine(@NotNull PlayerProfile profile, @NotNull String playerName, @Nullable UUID uuid, @NotNull Appendable writer) throws IOException {
         writer.append(playerName).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.MINING)).append(":");
-        writer.append(":");
-        writer.append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.MINING)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.WOODCUTTING)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.REPAIR)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.UNARMED)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.HERBALISM)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.EXCAVATION)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.ARCHERY)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.SWORDS)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.AXES)).append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.ACROBATICS)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.REPAIR)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.UNARMED)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.HERBALISM)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.EXCAVATION)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.ARCHERY)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.SWORDS)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.AXES)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.ACROBATICS)).append(":");
-        writer.append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.TAMING)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.TAMING)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.BERSERK)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.TREE_FELLER)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER)).append(":");
-        writer.append(":");
-        writer.append(profile.getSkillLevel(PrimarySkillType.FISHING)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.FISHING)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbilityType.BLAST_MINING)).append(":");
-        writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MINING))).append(":");
+        writer.append(IGNORED).append(":");
+        writer.append(IGNORED).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.MINING))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.WOODCUTTING))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.REPAIR))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.UNARMED))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.HERBALISM))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.EXCAVATION))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ARCHERY))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.SWORDS))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.AXES))).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ACROBATICS))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.REPAIR))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.UNARMED))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.HERBALISM))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.EXCAVATION))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ARCHERY))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.SWORDS))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.AXES))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ACROBATICS))).append(":");
+        writer.append(IGNORED).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TAMING))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TAMING))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BERSERK))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.TREE_FELLER))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER))).append(":");
+        writer.append(IGNORED).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.FISHING))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.FISHING))).append(":");
+        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BLAST_MINING))).append(":");
+        writer.append(IGNORED).append(":"); //Legacy last login
         writer.append(IGNORED).append(":"); //mob health bar
-        writer.append(profile.getSkillLevel(PrimarySkillType.ALCHEMY)).append(":");
-        writer.append(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY)).append(":");
+        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ALCHEMY))).append(":");
+        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY))).append(":");
         writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
-        writer.append(profile.getScoreboardTipsShown()).append(":");
-        writer.append(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS)).append(":");
+        writer.append(String.valueOf(profile.getScoreboardTipsShown())).append(":");
+        writer.append(String.valueOf(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS))).append(":");
+        writer.append(String.valueOf(profile.getLastLogin())).append(":"); //overhaul last login
         writer.append("\r\n");
     }
 
@@ -498,81 +503,21 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     public @NotNull PlayerProfile newUser(@NotNull Player player) {
-        newUser(player.getName(), player.getUniqueId());
-        return new PlayerProfile(player.getName(), player.getUniqueId(), true);
+        return new PlayerProfile(player.getName(), player.getUniqueId(), true, startingLevel);
     }
 
-    public void newUser(String playerName, UUID uuid) {
-        BufferedWriter out = null;
+    public @NotNull PlayerProfile newUser(@NotNull String playerName, @NotNull UUID uuid) {
+        PlayerProfile playerProfile = new PlayerProfile(playerName, uuid, true, startingLevel);
+
         synchronized (fileWritingLock) {
-            try {
-                // Open the file to write the player
-                out = new BufferedWriter(new FileWriter(usersFilePath, true));
-
-                String startingLevelStr = startingLevel + ":";
-
-                // Add the player to the end
-                out.append(playerName).append(":");
-                out.append(startingLevelStr); // Mining
-                out.append(":");
-                out.append(":");
-                out.append("0:"); // Xp
-                out.append(startingLevelStr); // Woodcutting
-                out.append("0:"); // WoodCuttingXp
-                out.append(startingLevelStr); // Repair
-                out.append(startingLevelStr); // Unarmed
-                out.append(startingLevelStr); // Herbalism
-                out.append(startingLevelStr); // Excavation
-                out.append(startingLevelStr); // Archery
-                out.append(startingLevelStr); // Swords
-                out.append(startingLevelStr); // Axes
-                out.append(startingLevelStr); // Acrobatics
-                out.append("0:"); // RepairXp
-                out.append("0:"); // UnarmedXp
-                out.append("0:"); // HerbalismXp
-                out.append("0:"); // ExcavationXp
-                out.append("0:"); // ArcheryXp
-                out.append("0:"); // SwordsXp
-                out.append("0:"); // AxesXp
-                out.append("0:"); // AcrobaticsXp
-                out.append(":");
-                out.append(startingLevelStr); // Taming
-                out.append("0:"); // TamingXp
-                out.append("0:"); // DATS
-                out.append("0:"); // DATS
-                out.append("0:"); // DATS
-                out.append("0:"); // DATS
-                out.append("0:"); // DATS
-                out.append("0:"); // DATS
-                out.append("0:"); // DATS
-                out.append(":");
-                out.append(startingLevelStr); // Fishing
-                out.append("0:"); // FishingXp
-                out.append("0:"); // Blast Mining
-                out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
-                out.append(IGNORED).append(":"); // Mob Healthbar HUD
-                out.append(startingLevelStr); // Alchemy
-                out.append("0:"); // AlchemyXp
-                out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
-                out.append("0:"); // Scoreboard tips shown
-                // Add more in the same format as the line above
-
-                out.newLine();
-            }
-            catch (Exception e) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(usersFilePath, true))) {
+                writeUserToLine(playerProfile, playerName, uuid, bufferedWriter);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            finally {
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException e) {
-                        // Ignore
-                    }
-                }
-            }
         }
+
+        return playerProfile;
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer) {
@@ -585,6 +530,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
         return loadPlayerByUUID(uuid, playerName, false);
+    }
+
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid) {
+        return loadPlayerByUUID(uuid, null, false);
     }
 
     private @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName, boolean isOnline) {
@@ -700,7 +649,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         //Return a new blank profile
-        return new PlayerProfile(playerName, null);
+        return new PlayerProfile(playerName, new UUID(0, 0), startingLevel);
     }
 
     private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid, @Nullable String playerName) {
@@ -708,7 +657,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             playerName = ""; //No name for you boy!
         }
 
-        return new PlayerProfile(playerName, uuid);
+        return new PlayerProfile(playerName, uuid, 0);
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -731,8 +680,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     try {
                         destination.saveUser(loadFromLine(character));
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     convertedUsers++;

@@ -43,11 +43,13 @@ public class PlayerProfile {
     private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);
 
     @Deprecated
-    public PlayerProfile(String playerName) {
-        this(playerName, null);
+    //TODO: Add deprecated constructor w/o startinglevel
+    public PlayerProfile(String playerName, int startingLevel) {
+        this(playerName, null, startingLevel);
     }
 
-    public PlayerProfile(String playerName, UUID uuid) {
+    //TODO: Add deprecated constructor w/o startinglevel
+    public PlayerProfile(String playerName, UUID uuid, int startingLevel) {
         this.uuid = uuid;
         this.playerName = playerName;
 
@@ -58,9 +60,7 @@ public class PlayerProfile {
         }
 
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
-            int startingLvl = mcMMO.p != null ? mcMMO.p.getAdvancedConfig().getStartingLevel() : 0; //TODO: Setup the mock since this was to avoid setting up a mock in a test
-
-            skills.put(primarySkillType, startingLvl);
+            skills.put(primarySkillType, startingLevel);
             skillsXp.put(primarySkillType, 0F);
         }
 
@@ -70,13 +70,13 @@ public class PlayerProfile {
     }
 
     @Deprecated
-    public PlayerProfile(@NotNull String playerName, boolean isLoaded) {
-        this(playerName);
+    public PlayerProfile(@NotNull String playerName, boolean isLoaded, int startingLvl) {
+        this(playerName, startingLvl);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(@NotNull String playerName, UUID uuid, boolean isLoaded) {
-        this(playerName, uuid);
+    public PlayerProfile(@NotNull String playerName, UUID uuid, boolean isLoaded, int startingLvl) {
+        this(playerName, uuid, startingLvl);
         this.loaded = isLoaded;
     }
 
@@ -165,6 +165,10 @@ public class PlayerProfile {
             return -1L;
         else
             return lastLogin;
+    }
+
+    public void updateLastLogin() {
+        this.lastLogin = System.currentTimeMillis();
     }
 
     public String getPlayerName() {

@@ -5,6 +5,8 @@ Version 2.1.189
     Rewrote how FlatFileDatabase verifies data integrity
     (API) Added com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(org.bukkit.OfflinePlayer)
     (API) Deprecated com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(java.util.UUID, java.lang.String)
+    (API) Removed com.gmail.nossr50.database.DatabaseManager.newUser(java.lang.String, java.util.UUID)
+    (API) Added
     Added unit tests for FlatFileDatabaseManager (see notes)
     Fixed a bug where FlatFileDatabaseManager didn't properly upgrade older database entries to the newest schema
     The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
