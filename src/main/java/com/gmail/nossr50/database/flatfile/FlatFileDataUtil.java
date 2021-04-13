@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.*;
 
-public class FlatFileSaveDataProcessor {
+public class FlatFileDataUtil {
 
     public static @Nullable String[] getPreparedSaveDataLine(@NotNull FlatFileDataContainer dataContainer) {
         if(dataContainer.getDataFlags() == null) {
@@ -64,6 +64,7 @@ public class FlatFileSaveDataProcessor {
             case 3: //Assumption: Used to be for something, no longer used
             case 23: //Assumption: Used to be used for something, no longer used
             case 33: //Assumption: Used to be used for something, no longer used
+            case LEGACY_LAST_LOGIN:
             case HEALTHBAR:
                 return "IGNORED";
             case SKILLS_MINING:
@@ -80,8 +81,8 @@ public class FlatFileSaveDataProcessor {
             case SKILLS_FISHING:
             case SKILLS_ALCHEMY:
                 return String.valueOf(startingLevel);
-            case LAST_LOGIN:
-                return String.valueOf(System.currentTimeMillis() / 1000); //This is just to shorten the value
+            case OVERHAUL_LAST_LOGIN:
+                return String.valueOf(-1L);
             case COOLDOWN_BERSERK:
             case COOLDOWN_GIGA_DRILL_BREAKER:
             case COOLDOWN_TREE_FELLER:

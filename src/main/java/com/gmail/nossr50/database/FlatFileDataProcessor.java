@@ -2,8 +2,9 @@ package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.database.flatfile.FlatFileDataBuilder;
 import com.gmail.nossr50.database.flatfile.FlatFileDataContainer;
-import com.gmail.nossr50.database.flatfile.FlatFileSaveDataProcessor;
+import com.gmail.nossr50.database.flatfile.FlatFileDataUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -134,16 +135,19 @@ public class FlatFileDataProcessor {
         //Check each data for bad values
         for(int i = 0; i < DATA_ENTRY_COUNT; i++) {
             if(shouldNotBeEmpty(splitDataLine[i], i)) {
+
+                if(i == OVERHAUL_LAST_LOGIN) {
+                    builder.appendFlag(FlatFileDataFlag.LAST_LOGIN_SCHEMA_UPGRADE);
+                }
+
                 badDataValues[i] = true;
                 anyBadData = true;
-                reportBadDataLine("Data is empty when it should not be at index", "[index=" + i + "]", lineData);
                 continue;
             }
 
             boolean isCorrectType = isOfExpectedType(splitDataLine[i], getExpectedValueType(i));
 
             if(!isCorrectType) {
-                reportBadDataLine("Data is not of correct type", splitDataLine[i], lineData);
                 anyBadData = true;
                 badDataValues[i] = true;
             }
@@ -177,7 +181,7 @@ public class FlatFileDataProcessor {
     }
 
 
-    public boolean shouldNotBeEmpty(String data, int index) {
+    public boolean shouldNotBeEmpty(@Nullable String data, int index) {
         if(getExpectedValueType(index) == ExpectedType.IGNORED) {
             return false;
         } else {
@@ -255,6 +259,7 @@ public class FlatFileDataProcessor {
             case 23: //Assumption: Used to be used for something, no longer used
             case 33: //Assumption: Used to be used for something, no longer used
             case HEALTHBAR:
+            case LEGACY_LAST_LOGIN:
                 return ExpectedType.IGNORED;
             case SKILLS_MINING:
             case SKILLS_REPAIR:
@@ -269,7 +274,6 @@ public class FlatFileDataProcessor {
             case SKILLS_TAMING:
             case SKILLS_FISHING:
             case SKILLS_ALCHEMY:
-            case LAST_LOGIN:
             case COOLDOWN_BERSERK:
             case COOLDOWN_GIGA_DRILL_BREAKER:
             case COOLDOWN_TREE_FELLER:
@@ -297,6 +301,8 @@ public class FlatFileDataProcessor {
                 return ExpectedType.FLOAT;
             case UUID_INDEX:
                 return ExpectedType.UUID;
+            case OVERHAUL_LAST_LOGIN:
+                return ExpectedType.LONG;
         }
 
         throw new IndexOutOfBoundsException();
@@ -320,7 +326,7 @@ public class FlatFileDataProcessor {
         //Fix our data if needed and prepare it to be saved
 
         for(FlatFileDataContainer dataContainer : flatFileDataContainers) {
-            String[] splitData = FlatFileSaveDataProcessor.getPreparedSaveDataLine(dataContainer);
+            String[] splitData = FlatFileDataUtil.getPreparedSaveDataLine(dataContainer);
 
             if(splitData == null)
                 continue;

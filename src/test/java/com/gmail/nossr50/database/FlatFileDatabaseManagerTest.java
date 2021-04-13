@@ -19,14 +19,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
 
+//TODO: Test update leaderboards
 @RunWith(PowerMockRunner.class)
 public class FlatFileDatabaseManagerTest {
 
@@ -35,8 +34,10 @@ public class FlatFileDatabaseManagerTest {
     public static final @NotNull String BAD_DATA_FILE_LINE_TWENTY_THREE = "nossr51:baddata:::baddata:baddata:640:baddata:1000:1000:1000:baddata:baddata:baddata:baddata:16:0:500:20273:0:0:0:0::1000:0:0:baddata:1593543012:0:0:0:0::1000:0:0:baddata:IGNORED:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1:0:";
     public static final @NotNull String DB_BADDATA = "baddatadb.users";
     public static final @NotNull String DB_HEALTHY = "healthydb.users";
-    public static final @NotNull String HEALTHY_DB_LINE_1 = "nossr50:1:IGNORED:IGNORED:10:2:20:3:4:5:6:7:8:9:10:30:40:50:60:70:80:90:100:IGNORED:11:110:111:222:333:444:555:666:777:IGNORED:12:120:888:2020:HEARTS:13:130:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1111:999:";
+    public static final @NotNull String HEALTHY_DB_LINE_1 = "nossr50:1:IGNORED:IGNORED:10:2:20:3:4:5:6:7:8:9:10:30:40:50:60:70:80:90:100:IGNORED:11:110:111:222:333:444:555:666:777:IGNORED:12:120:888:IGNORED:HEARTS:13:130:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1111:999:2020:";
     public static final @NotNull String HEALTHY_DB_LINE_ONE_UUID_STR = "588fe472-1c82-4c4e-9aa1-7eefccb277e3";
+    public static final String DB_MISSING_LAST_LOGIN = "missinglastlogin.users";
+    public static final String LINE_TWO_FROM_MISSING_DB = "nossr50:1:IGNORED:IGNORED:10:2:20:3:4:5:6:7:8:9:10:30:40:50:60:70:80:90:100:IGNORED:11:110:111:222:333:444:555:666:777:IGNORED:12:120:888:0:HEARTS:13:130:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1111:999:";
     private static File tempDir;
     private final static @NotNull Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final long PURGE_TIME = 2630000000L;
@@ -157,21 +158,99 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testLoadByName() {
+    public void testAddedMissingLastLoginValues() {
+        File dbFile = prepareDatabaseTestResource(DB_MISSING_LAST_LOGIN);
 
+        //This makes sure our private method is working before the tests run afterwards
+        ArrayList<String[]> dataFromFile = getSplitDataFromFile(dbFile);
+        System.out.println("File Path: "+ dbFile.getAbsolutePath());
+        assertArrayEquals(LINE_TWO_FROM_MISSING_DB.split(":"), dataFromFile.get(1));
+        assertEquals(dataFromFile.get(1)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
+
+        db = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0, true);
+        List<FlatFileDataFlag> flagsFound = db.checkFileHealthAndStructure();
+        assertNotNull(flagsFound);
+        assertTrue(flagsFound.contains(FlatFileDataFlag.LAST_LOGIN_SCHEMA_UPGRADE));
+
+        //Check for the fixed value
+        PlayerProfile profile = db.loadPlayerProfile("nossr50");
+        assertEquals(-1, (long) profile.getLastLogin());
+    }
+
+
+    @Test
+    public void testLoadByName() {
+        File healthyDB = prepareDatabaseTestResource(DB_HEALTHY);
+
+        /*
+         * We have established the files are in good order, so now for the actual testing
+         */
+
+        //This makes sure our private method is working before the tests run afterwards
+        ArrayList<String[]> dataFromFile = getSplitDataFromFile(healthyDB);
+        System.out.println("File Path: "+healthyDB.getAbsolutePath());
+        assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
+        assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
+        UUID healthDBEntryOneUUID = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR);
+
+        db = new FlatFileDatabaseManager(healthyDB, logger, PURGE_TIME, 0, true);
+        List<FlatFileDataFlag> flagsFound = db.checkFileHealthAndStructure();
+        assertNull(flagsFound); //No flags should be found
+
+        /*
+         * Once the DB looks fine load the profile
+         */
+
+        String playerName = "nossr50";
+        UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
+
+        PlayerProfile profile = db.loadPlayerProfile(playerName);
+        testHealthyDataProfileValues(playerName, uuid, profile);
     }
 
     @Test
     public void testLoadByUUID() {
+        File dbFile = prepareDatabaseTestResource(DB_HEALTHY);
+
         /*
-         * This test uses a file provided in test resources
+         * We have established the files are in good order, so now for the actual testing
          */
 
+        //This makes sure our private method is working before the tests run afterwards
+        ArrayList<String[]> dataFromFile = getSplitDataFromFile(dbFile);
+        System.out.println("File Path: " + dbFile.getAbsolutePath());
+        assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
+        assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
+
+        db = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0, true);
+        List<FlatFileDataFlag> flagsFound = db.checkFileHealthAndStructure();
+        assertNull(flagsFound); //No flags should be found
+
+        /*
+         * Once the DB looks fine load the profile
+         */
+
+        String playerName = "nossr50";
+        UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
+
+        PlayerProfile profile1 = db.loadPlayerProfile(uuid, null);
+        PlayerProfile profile2 = db.loadPlayerProfile(uuid, playerName);
+        PlayerProfile profile3 = db.loadPlayerProfile(uuid, "incorrectName");
+        PlayerProfile profile4 = db.loadPlayerProfile(new UUID(0, 1), "shouldBeUnloaded");
+        assertFalse(profile4.isLoaded());
+
+        //Three possible ways to load the thing
+        testHealthyDataProfileValues(playerName, uuid, profile1);
+        testHealthyDataProfileValues(playerName, uuid, profile2);
+        testHealthyDataProfileValues(playerName, uuid, profile3);
+    }
+
+    private File prepareDatabaseTestResource(@NotNull String dbFileName) {
         ClassLoader classLoader = getClass().getClassLoader();
         URI resourceFileURI = null;
 
         try {
-            resourceFileURI = classLoader.getResource(DB_HEALTHY).toURI();
+            resourceFileURI = classLoader.getResource(dbFileName).toURI();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -179,7 +258,7 @@ public class FlatFileDatabaseManagerTest {
         assertNotNull(resourceFileURI);
         File fromResourcesFile = new File(resourceFileURI);
         assertNotNull(resourceFileURI);
-        File copyOfFile = new File(tempDir.getPath() + File.separator + DB_HEALTHY);
+        File copyOfFile = new File(tempDir.getPath() + File.separator + dbFileName);
 
         if(copyOfFile.exists()) {
             //noinspection ResultOfMethodCallIgnored
@@ -196,37 +275,10 @@ public class FlatFileDatabaseManagerTest {
         }
 
         assertNotNull(copyOfFile);
-
-
-
-        /*
-         * We have established the files are in good order, so now for the actual testing
-         */
-
-        //This makes sure our private method is working before the tests run afterwards
-        ArrayList<String[]> dataFromFile = getSplitDataFromFile(copyOfFile);
-        System.out.println("File Path: "+copyOfFile.getAbsolutePath());
-        assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
-        assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
-        UUID healthDBEntryOneUUID = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR);
-
-        FlatFileDatabaseManager db_a = new FlatFileDatabaseManager(copyOfFile, logger, PURGE_TIME, 0, true);
-        List<FlatFileDataFlag> flagsFound = db_a.checkFileHealthAndStructure();
-        assertNull(flagsFound); //No flags should be found
-
-        /*
-         * Once the DB looks fine load the profile
-         */
-
-        String playerName = "nossr50";
-        UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
-
-        PlayerProfile profile = db_a.loadPlayerProfile(uuid, null);
-        testHealthyDataProfileValues(db_a, playerName, uuid, profile);
+        return copyOfFile;
     }
 
-    private void testHealthyDataProfileValues(FlatFileDatabaseManager flatFileDatabaseManager, String playerName, UUID uuid, PlayerProfile playerProfile) {
-        PlayerProfile profile = flatFileDatabaseManager.loadPlayerProfile(uuid, null);
+    private void testHealthyDataProfileValues(@NotNull String playerName, @NotNull UUID uuid, @NotNull PlayerProfile profile) {
         assertTrue(profile.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
         assertEquals(uuid, profile.getUniqueId());
         assertEquals(playerName, profile.getPlayerName());

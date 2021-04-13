@@ -3,6 +3,7 @@ package com.gmail.nossr50.database;
 public enum FlatFileDataFlag {
     INCOMPLETE,
     BAD_VALUES,
+    LAST_LOGIN_SCHEMA_UPGRADE,
     MISSING_NAME,
     DUPLICATE_NAME,
     DUPLICATE_UUID,

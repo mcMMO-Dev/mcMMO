@@ -162,7 +162,7 @@ public class PlayerProfile {
     @Deprecated
     public @NotNull Long getLastLogin() {
         if(lastLogin == null)
-            return System.currentTimeMillis();
+            return -1L;
         else
             return lastLogin;
     }

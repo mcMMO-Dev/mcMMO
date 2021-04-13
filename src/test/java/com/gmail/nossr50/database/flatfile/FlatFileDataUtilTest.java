@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
-public class FlatFileSaveDataProcessorTest {
+public class FlatFileDataUtilTest {
 
     @Test
     public void getPreparedSaveDataLine() {
@@ -22,6 +22,6 @@ public class FlatFileSaveDataProcessorTest {
     @Test(expected = AssertionError.class)
     public void testTooManyDataEntriesSplitString() {
         FlatFileDataContainer dataContainer = new CategorizedFlatFileData(0, new HashSet<>(), new String[FlatFileDatabaseManager.DATA_ENTRY_COUNT + 1]);
-        FlatFileSaveDataProcessor.getPreparedSaveDataLine(dataContainer);
+        FlatFileDataUtil.getPreparedSaveDataLine(dataContainer);
     }
 }

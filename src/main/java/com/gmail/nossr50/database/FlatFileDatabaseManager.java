@@ -70,15 +70,16 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final int SKILLS_FISHING = 34;
     public static final int EXP_FISHING = 35;
     public static final int COOLDOWN_BLAST_MINING = 36;
-    public static final int LAST_LOGIN = 37;
+    public static final int LEGACY_LAST_LOGIN = 37;
     public static final int HEALTHBAR = 38;
     public static final int SKILLS_ALCHEMY = 39;
     public static final int EXP_ALCHEMY = 40;
     public static final int UUID_INDEX = 41;
     public static final int SCOREBOARD_TIPS = 42;
     public static final int COOLDOWN_CHIMAERA_WING = 43;
+    public static final int OVERHAUL_LAST_LOGIN = 44;
 
-    public static final int DATA_ENTRY_COUNT = COOLDOWN_CHIMAERA_WING + 1; //Update this everytime new data is added
+    public static final int DATA_ENTRY_COUNT = OVERHAUL_LAST_LOGIN + 1; //Update this everytime new data is added
 
     protected FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime, int startingLevel, boolean testing) {
         this.usersFile = usersFile;
@@ -666,6 +667,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
+                    if(line.startsWith("#")) {
+                        continue;
+                    }
+
                     // Find if the line contains the player we want.
                     String[] rawSplitData = line.split(":");
 
@@ -718,6 +723,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
+                    if(line.startsWith("#")) {
+                        continue;
+                    }
+
                     String[] character = line.split(":");
 
                     try {
@@ -1071,7 +1080,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         fileWriter = new FileWriter(usersFilePath);
                         //Write data to file
                         if(dbCommentDate != null)
-                            fileWriter.write(dbCommentDate);
+                            fileWriter.write(dbCommentDate + "\r\n");
 
                         fileWriter.write(dataProcessor.processDataForSave().toString());
                     }
@@ -1200,9 +1209,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         try {
-            lastLogin = Long.parseLong(character[LAST_LOGIN]);
+            lastLogin = Long.parseLong(character[OVERHAUL_LAST_LOGIN]);
         } catch (Exception e) {
-            lastLogin = System.currentTimeMillis();
+            lastLogin = -1;
         }
 
         return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, scoreboardTipsShown, uniquePlayerDataMap, lastLogin);
