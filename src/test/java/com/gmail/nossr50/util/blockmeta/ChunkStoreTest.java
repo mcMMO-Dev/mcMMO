@@ -86,9 +86,9 @@ public class ChunkStoreTest {
         HashChunkManager hashChunkManager = new HashChunkManager();
         int radius = 2; //Could be anything but drastically changes test time
 
-        for(int x = -radius; x < radius; x++) {
+        for(int x = -radius; x <= radius; x++) {
             for(int y = mockWorld.getMinHeight(); y < mockWorld.getMaxHeight(); y++) {
-                for(int z = -radius; z < radius; z++) {
+                for(int z = -radius; z <= radius; z++) {
                     TestBlock testBlock = new TestBlock(x, y, z, mockWorld);
                     hashChunkManager.setTrue(testBlock);
                     Assert.assertTrue(hashChunkManager.isTrue(testBlock));
