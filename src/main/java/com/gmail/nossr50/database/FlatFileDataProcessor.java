@@ -119,6 +119,8 @@ public class FlatFileDataProcessor {
 
         if(names.contains(name)) {
             builder.appendFlag(FlatFileDataFlag.DUPLICATE_NAME);
+            anyBadData = true;
+            badDataValues[USERNAME_INDEX] = true;
         }
 
         if(!name.isEmpty())

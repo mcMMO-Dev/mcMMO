@@ -11,6 +11,11 @@
         <developerConnection>scm:git:git@github.com:mcMMO-Dev/mcMMO.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <issueManagement>
         <url>https://github.com/mcMMO-Dev/mcMMO/issues</url>
         <system>GitHub</system>
@@ -66,13 +71,12 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
-                <configuration>
-                    <reuseForks>false</reuseForks>
-                    <forkCount>1</forkCount>
-                </configuration>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
 
             <plugin>
@@ -219,6 +223,17 @@
         </repository>
         <!-- ... -->
     </repositories>
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>org.junit</groupId>-->
+<!--                <artifactId>junit-bom</artifactId>-->
+<!--                <version>5.7.1</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
     <dependencies>
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
@@ -271,6 +286,12 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-common</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-nbt</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
@@ -314,9 +335,21 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <version>4.11</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.6.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -349,7 +382,4 @@
             <version>19.0.0</version>
         </dependency>
     </dependencies>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>

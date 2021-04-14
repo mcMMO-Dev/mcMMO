@@ -6,35 +6,27 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.io.Files;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 //TODO: Test update leaderboards
+//This class uses JUnit5/Jupiter
 public class FlatFileDatabaseManagerTest {
-
-    public mcMMO plugin;
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
     public static final @NotNull String BAD_FILE_LINE_ONE = "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:";
@@ -68,7 +60,7 @@ public class FlatFileDatabaseManagerTest {
     int expectedScoreboardTips = 1111;
     Long expectedLastLogin = 2020L;
 
-    @Before
+    @BeforeEach
     public void init() {
         assertNull(db);
         //noinspection UnstableApiUsage
@@ -76,7 +68,7 @@ public class FlatFileDatabaseManagerTest {
         db = new FlatFileDatabaseManager(new File(tempDir.getPath() + File.separator + TEST_FILE_NAME), logger, PURGE_TIME, 0, true);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         TestUtil.recursiveDelete(tempDir);
         db = null;
@@ -184,7 +176,6 @@ public class FlatFileDatabaseManagerTest {
         assertEquals(-1, (long) profile.getLastLogin());
     }
 
-
     @Test
     public void testLoadByName() {
         File healthyDB = prepareDatabaseTestResource(DB_HEALTHY);
@@ -244,6 +235,47 @@ public class FlatFileDatabaseManagerTest {
         db.newUser("disco", new UUID(3, 3));
         db.newUser("dingus", new UUID(3, 4));
         db.newUser("duped_dingus", new UUID(3, 4));
+
+        assertEquals(5, getSplitDataFromFile(db.getUsersFile()).size());
+    }
+
+    @Test
+    public void testAddingUsersToEndOfExistingDB() {
+        //We will test that new user values line up with our expectations
+        UUID uuid = new UUID(0, 80);
+        String playerName = "the_kitty_man";
+
+        File file = prepareDatabaseTestResource(DB_HEALTHY); //Existing DB
+
+        int newUserTestStartingLvl = 1337;
+        db = new FlatFileDatabaseManager(file, logger, PURGE_TIME, newUserTestStartingLvl, true);
+        db.checkFileHealthAndStructure();
+
+        PlayerProfile playerProfile = db.newUser(playerName, uuid);
+
+        assertTrue(playerProfile.isLoaded());
+        assertEquals(playerName, playerProfile.getPlayerName());
+        assertEquals(uuid, playerProfile.getUniqueId());
+
+        PlayerProfile retrievedFromDisk = db.loadPlayerProfile(uuid, playerName);
+        assertTrue(retrievedFromDisk.isLoaded());
+        assertEquals(playerName, retrievedFromDisk.getPlayerName());
+        assertEquals(uuid, retrievedFromDisk.getUniqueId());
+
+        //Checking a new user for being "zero" initialized
+        checkNewUserValues(playerProfile, newUserTestStartingLvl);
+        checkNewUserValues(retrievedFromDisk, newUserTestStartingLvl);
+
+        //TODO: Should we do any dupe checking? Probably not needed as it would be caught on the next load
+        db.newUser("bidoof", new UUID(3, 3));
+        db.newUser("derp", new UUID(3, 4));
+        db.newUser("pizza", new UUID(3, 4));
+
+        assertEquals(7, getSplitDataFromFile(db.getUsersFile()).size());
+
+        //Now we *fix* the DB and there should be one less
+        db.checkFileHealthAndStructure();
+        assertEquals(6, getSplitDataFromFile(db.getUsersFile()).size());
     }
 
     private void checkNewUserValues(@NotNull PlayerProfile playerProfile, int startingLevel) {
@@ -466,7 +498,32 @@ public class FlatFileDatabaseManagerTest {
 
     @Test
     public void testOverwriteName() {
+        overwriteDataAndCheckForFlag(db, duplicateNameDatabaseData, FlatFileDataFlag.DUPLICATE_NAME);
+        ArrayList<String[]> splitDataLines = getSplitDataFromFile(db.getUsersFile());
+        assertNotEquals(splitDataLines.get(1)[0], splitDataLines.get(0)[0]); //Name comparison
+    }
 
+    @Test
+    public void testUpdateName() {
+        //TODO: The code in this test didn't actually trigger the save, so I'll have to do something else to test saving
+//        UUID uuid = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR); //Entrant "nossr50"
+//        String playerName = "the_new_name_man";
+//
+//        File file = prepareDatabaseTestResource(DB_HEALTHY); //Existing DB
+//        db = new FlatFileDatabaseManager(file, logger, PURGE_TIME, 0, true);
+//        db.checkFileHealthAndStructure();
+//        ArrayList<String[]> splitDataLines = getSplitDataFromFile(db.getUsersFile());
+//        String oldName = "nossr50";
+//        assertEquals(oldName, splitDataLines.get(0)[0]); //Name comparison
+//        assertEquals(uuid.toString(), splitDataLines.get(0)[FlatFileDatabaseManager.UUID_INDEX]); //UUID Comparison
+//
+//        //Now we load the player and their name should get replaced
+//        PlayerProfile profile = db.loadPlayerByUUID(uuid, playerName, true);
+//        assertEquals(playerName, profile.getPlayerName());
+//
+//        splitDataLines = getSplitDataFromFile(db.getUsersFile()); //Load the file again
+//        assertNotEquals(oldName, splitDataLines.get(0)[0]); //Name comparison
+//        assertEquals(playerName, splitDataLines.get(0)[0]); //Name comparison
     }
 
     @Test
@@ -573,9 +630,9 @@ public class FlatFileDatabaseManagerTest {
         //This makes sure our private method is working before the tests run afterwards
         ArrayList<String[]> dataFromFile = getSplitDataFromFile(copyOfFile);
         System.out.println("File Path: "+copyOfFile.getAbsolutePath());
-        assertEquals(BAD_FILE_LINE_ONE.split(":"), dataFromFile.get(0));
+        assertArrayEquals(BAD_FILE_LINE_ONE.split(":"), dataFromFile.get(0));
         assertEquals(dataFromFile.get(22)[0], "nossr51");
-        assertEquals(BAD_DATA_FILE_LINE_TWENTY_THREE.split(":"), dataFromFile.get(22));
+        assertArrayEquals(BAD_DATA_FILE_LINE_TWENTY_THREE.split(":"), dataFromFile.get(22));
 
         FlatFileDatabaseManager db_a = new FlatFileDatabaseManager(copyOfFile, logger, PURGE_TIME, 0, true);
         List<FlatFileDataFlag> flagsFound = db_a.checkFileHealthAndStructure();

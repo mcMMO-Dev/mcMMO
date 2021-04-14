@@ -174,6 +174,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return purgedUsers;
     }
 
+    //TODO: Test this
     public void purgeOldUsers() {
         int removedPlayers = 0;
         long currentTime = System.currentTimeMillis();
@@ -211,7 +212,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         }
                     }
 
-                    if (currentTime - lastPlayed > purgeTime) {
+                    if (lastPlayed != -1 && lastPlayed != 0 && currentTime - lastPlayed > purgeTime) {
                         removedPlayers++;
                     } else {
                         if (rewrite) {
@@ -425,53 +426,53 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    public void writeUserToLine(@NotNull PlayerProfile profile, @NotNull String playerName, @Nullable UUID uuid, @NotNull Appendable writer) throws IOException {
-        writer.append(playerName).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MINING))).append(":");
-        writer.append(IGNORED).append(":");
-        writer.append(IGNORED).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.MINING))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.WOODCUTTING))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.REPAIR))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.UNARMED))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.HERBALISM))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.EXCAVATION))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ARCHERY))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.SWORDS))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.AXES))).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ACROBATICS))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.REPAIR))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.UNARMED))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.HERBALISM))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.EXCAVATION))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ARCHERY))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.SWORDS))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.AXES))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ACROBATICS))).append(":");
-        writer.append(IGNORED).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TAMING))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TAMING))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BERSERK))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.TREE_FELLER))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER))).append(":");
-        writer.append(IGNORED).append(":");
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.FISHING))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.FISHING))).append(":");
-        writer.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BLAST_MINING))).append(":");
-        writer.append(IGNORED).append(":"); //Legacy last login
-        writer.append(IGNORED).append(":"); //mob health bar
-        writer.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ALCHEMY))).append(":");
-        writer.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY))).append(":");
-        writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
-        writer.append(String.valueOf(profile.getScoreboardTipsShown())).append(":");
-        writer.append(String.valueOf(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS))).append(":");
-        writer.append(String.valueOf(profile.getLastLogin())).append(":"); //overhaul last login
-        writer.append("\r\n");
+    public void writeUserToLine(@NotNull PlayerProfile profile, @NotNull String playerName, @Nullable UUID uuid, @NotNull Appendable appendable) throws IOException {
+        appendable.append(playerName).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MINING))).append(":");
+        appendable.append(IGNORED).append(":");
+        appendable.append(IGNORED).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.MINING))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.WOODCUTTING))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.REPAIR))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.UNARMED))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.HERBALISM))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.EXCAVATION))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ARCHERY))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.SWORDS))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.AXES))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ACROBATICS))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.REPAIR))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.UNARMED))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.HERBALISM))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.EXCAVATION))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ARCHERY))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.SWORDS))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.AXES))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ACROBATICS))).append(":");
+        appendable.append(IGNORED).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TAMING))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TAMING))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BERSERK))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.TREE_FELLER))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER))).append(":");
+        appendable.append(IGNORED).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.FISHING))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.FISHING))).append(":");
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BLAST_MINING))).append(":");
+        appendable.append(IGNORED).append(":"); //Legacy last login
+        appendable.append(IGNORED).append(":"); //mob health bar
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ALCHEMY))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY))).append(":");
+        appendable.append(uuid != null ? uuid.toString() : "NULL").append(":");
+        appendable.append(String.valueOf(profile.getScoreboardTipsShown())).append(":");
+        appendable.append(String.valueOf(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS))).append(":");
+        appendable.append(String.valueOf(profile.getLastLogin())).append(":"); //overhaul last login
+        appendable.append("\r\n");
     }
 
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType, int pageNumber, int statsPerPage) throws InvalidSkillException {
@@ -510,9 +511,23 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         PlayerProfile playerProfile = new PlayerProfile(playerName, uuid, true, startingLevel);
 
         synchronized (fileWritingLock) {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(usersFilePath, true))) {
-                writeUserToLine(playerProfile, playerName, uuid, bufferedWriter);
-            } catch (Exception e) {
+            try(BufferedReader bufferedReader = new BufferedReader(new FileReader(usersFilePath))) {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                String line;
+
+                //Build up the file
+                while((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\r\n");
+                }
+
+                try (FileWriter fileWriter = new FileWriter(usersFile)) {
+                    writeUserToLine(playerProfile, playerName, uuid, stringBuilder);
+                    fileWriter.write(stringBuilder.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -536,7 +551,17 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return loadPlayerByUUID(uuid, null, false);
     }
 
-    private @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName, boolean isOnline) {
+    /**
+     * Find and load a player by UUID
+     *
+     * @param uuid target uuid
+     * @param playerName target player name
+     * @param replaceName name to replace if the found name differs
+     * @return a profile with the targets data or an unloaded profile if no data was found
+     * @deprecated only use this if you know what you are doing, replacing the name can cause havoc
+     */
+    @Deprecated
+    public @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName, boolean replaceName) {
         BufferedReader in = null;
 
         synchronized (fileWritingLock) {
@@ -574,7 +599,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     /* Check for nickname changes and update since we are here anyways */
                     if(playerName != null) {
-                        if(isOnline) {
+                        if(replaceName) {
+                            logger.info("A users name is being updated, this can happen from either a call to our API or they simply changed their name");
                             if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
                                 //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                                 rawSplitData[USERNAME_INDEX] = playerName;
@@ -1162,7 +1188,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             lastLogin = -1;
         }
 
-        return new PlayerProfile(character[USERNAME_INDEX], uuid, skills, skillsXp, skillsDATS, scoreboardTipsShown, uniquePlayerDataMap, lastLogin);
+        return new PlayerProfile(username, uuid, skills, skillsXp, skillsDATS, scoreboardTipsShown, uniquePlayerDataMap, lastLogin);
     }
 
     private void tryLoadSkillCooldownFromRawData(@NotNull Map<SuperAbilityType, Integer> cooldownMap, @NotNull String[] character, @NotNull SuperAbilityType superAbilityType, int cooldownSuperBreaker, @NotNull String userName) {
