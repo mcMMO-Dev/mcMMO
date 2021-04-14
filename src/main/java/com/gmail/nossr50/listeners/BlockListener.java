@@ -20,6 +20,7 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -147,13 +148,21 @@ public class BlockListener implements Listener {
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
-        if (movedBlock.getY() >= Misc.getWorldMinCompat(movedBlock.getWorld())) // Very weird that the event is giving us these, they shouldn't exist
+
+        WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
+
+        World world = movedBlock.getWorld();
+
+        //Spigot makes bad things happen in its API
+        if(event.getBlock().getY() < worldCompatibilityLayer.getMaxWorldHeight(world) || event.getBlock().getY() >= worldCompatibilityLayer.getMinWorldHeight(world)) {
             mcMMO.getPlaceStore().setTrue(movedBlock);
+        }
 
         for (Block block : event.getBlocks()) {
-            movedBlock = block.getRelative(direction);
-            if (movedBlock.getY() < Misc.getWorldMinCompat(movedBlock.getWorld())) // Very weird that the event is giving us these, they shouldn't exist
-                continue;
+            if(block.getY() < worldCompatibilityLayer.getMaxWorldHeight(world) || block.getY() >= worldCompatibilityLayer.getMinWorldHeight(world)) {
+                mcMMO.getPlaceStore().setTrue(block.getRelative(direction));
+            }
+
             mcMMO.getPlaceStore().setTrue(movedBlock);
         }
     }
@@ -185,13 +194,21 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFormEvent(BlockFormEvent event)
     {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-            return;
+        World world = event.getBlock().getWorld();
+        /* WORLD BLACKLIST CHECK */ {
+            if(WorldBlacklist.isWorldBlacklisted(world))
+                return;
+        }
 
         BlockState newState = event.getNewState();
 
         if(ExperienceConfig.getInstance().preventStoneLavaFarming()) {
+            WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
+
+            if(event.getBlock().getY() > worldCompatibilityLayer.getMaxWorldHeight(world) || event.getBlock().getY() < worldCompatibilityLayer.getMinWorldHeight(world)) {
+                return;
+            }
+
             if(newState.getType() != Material.OBSIDIAN
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, newState.getBlockData())) {
                 mcMMO.getPlaceStore().setTrue(newState);

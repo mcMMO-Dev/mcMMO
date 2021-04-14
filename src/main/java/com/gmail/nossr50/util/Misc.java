@@ -260,12 +260,6 @@ public final class Misc {
         }
     }
 
-    public static int getWorldMinCompat(World world)
-    {
-        // TODO this method should access the world min variable in a version safe manner so that we don't restrict usage to new versions of spigot only
-        return 0;
-    }
-
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
         if ((convertedUsers % progressInterval) == 0) {
             mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
