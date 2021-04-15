@@ -292,7 +292,7 @@ public final class BlockUtils {
     public static boolean isWithinWorldBounds(@NotNull WorldCompatibilityLayer worldCompatibilityLayer, @NotNull Block block) {
         World world = block.getWorld();
 
-        return block.getY() > worldCompatibilityLayer.getMinWorldHeight(world) || block.getY() < worldCompatibilityLayer.getMaxWorldHeight(world);
+        return block.getY() > worldCompatibilityLayer.getMinWorldHeight(world) && block.getY() < worldCompatibilityLayer.getMaxWorldHeight(world);
     }
 
 }
