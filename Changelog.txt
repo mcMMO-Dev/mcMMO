@@ -1,5 +1,5 @@
 Version 2.1.191
-    Fixed an exploit
+    Fixed a bug related to our blocktracker
     Fixed a bug that prevented the leaderboards from working on FlatFile in some circumstances
     Some minor optimizations to our Block events
     (Unit Tests) Added a test for initializing the leaderboard on FlatFile
