@@ -1,6 +1,7 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.TestUtil;
+import com.gmail.nossr50.database.flatfile.LeaderboardStatus;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
@@ -24,7 +25,6 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//TODO: Test update leaderboards
 //This class uses JUnit5/Jupiter
 public class FlatFileDatabaseManagerTest {
 
@@ -65,7 +65,11 @@ public class FlatFileDatabaseManagerTest {
         assertNull(db);
         //noinspection UnstableApiUsage
         tempDir = Files.createTempDir();
-        db = new FlatFileDatabaseManager(new File(tempDir.getPath() + File.separator + TEST_FILE_NAME), logger, PURGE_TIME, 0, true);
+        db = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+    }
+
+    private @NotNull String getTemporaryUserFilePath() {
+        return tempDir.getPath() + File.separator + TEST_FILE_NAME;
     }
 
     @AfterEach
@@ -132,6 +136,17 @@ public class FlatFileDatabaseManagerTest {
     };
 
     @Test
+    public void testDefaultInit() {
+        db = new FlatFileDatabaseManager(getTemporaryUserFilePath(), logger, PURGE_TIME, 0);
+    }
+
+    @Test
+    public void testUpdateLeaderboards() {
+        assertNotNull(db);
+        assertEquals(LeaderboardStatus.UPDATED, db.updateLeaderboards());
+    }
+
+    @Test
     public void testSaveUser() {
         //Make a Profile to save and check to see if it worked
         UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
@@ -141,8 +156,6 @@ public class FlatFileDatabaseManagerTest {
 
         //Save the zero version and see if it looks correct
         assertNotNull(db);
-        assertFalse(db.getUsersFile().exists());
-        db.checkFileHealthAndStructure();
         assertTrue(db.getUsersFile().exists()); //Users file should have been created from the above com.gmail.nossr50.database.FlatFileDatabaseManager.checkFileHealthAndStructure
         assertNotNull(db.getUsersFile());
 
@@ -530,9 +543,7 @@ public class FlatFileDatabaseManagerTest {
     public void testDataNotFound() {
         //Save the zero version and see if it looks correct
         assertNotNull(db);
-        assertFalse(db.getUsersFile().exists());
-        db.checkFileHealthAndStructure();
-        assertTrue(db.getUsersFile().exists()); //Users file should have been created from the above com.gmail.nossr50.database.FlatFileDatabaseManager.checkFileHealthAndStructure
+        assertTrue(db.getUsersFile().exists());
         assertNotNull(db.getUsersFile());
 
         //Check for the "unloaded" profile

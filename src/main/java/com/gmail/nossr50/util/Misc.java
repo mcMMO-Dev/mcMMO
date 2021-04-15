@@ -9,7 +9,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;

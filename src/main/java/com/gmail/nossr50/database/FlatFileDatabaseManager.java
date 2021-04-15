@@ -1,6 +1,7 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.database.flatfile.LeaderboardStatus;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -88,6 +89,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         this.purgeTime = purgeTime;
         this.startingLevel = startingLevel;
         this.testing = testing;
+
+        if(!usersFile.exists()) {
+            initEmptyDB();
+        }
 
         if(!testing) {
             List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
@@ -882,10 +887,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     /**
      * Update the leader boards.
      */
-    public void updateLeaderboards() {
+    public @NotNull LeaderboardStatus updateLeaderboards() {
         // Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
         if (System.currentTimeMillis() < lastUpdate + UPDATE_WAIT_TIME) {
-            return;
+            return LeaderboardStatus.TOO_SOON_TO_UPDATE;
         }
 
         lastUpdate = System.currentTimeMillis(); // Log when the last update was run
@@ -915,6 +920,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
+
+                    if(line.startsWith("#"))
+                        continue;
+
                     String[] data = line.split(":");
                     playerName = data[USERNAME_INDEX];
                     int powerLevel = 0;
@@ -940,8 +949,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
             catch (Exception e) {
                 logger.severe("Exception while reading " + usersFilePath + " during user " + playerName + " (Are you sure you formatted it correctly?) " + e);
-            }
-            finally {
+                return LeaderboardStatus.FAILED;
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
@@ -951,6 +960,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     }
                 }
             }
+
         }
 
         SkillComparator c = new SkillComparator();
@@ -983,6 +993,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         playerStatHash.put(PrimarySkillType.TAMING, taming);
         playerStatHash.put(PrimarySkillType.FISHING, fishing);
         playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
+
+        return LeaderboardStatus.UPDATED;
     }
 
     private void initEmptyDB() {
@@ -1013,10 +1025,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         ArrayList<FlatFileDataFlag> flagsFound = null;
         logger.info("(" + usersFile.getPath() + ") Validating database file..");
         FlatFileDataProcessor dataProcessor = null;
-
-        if(!usersFile.exists()) {
-            initEmptyDB();
-        }
 
         if (usersFile.exists()) {
             BufferedReader bufferedReader = null;
