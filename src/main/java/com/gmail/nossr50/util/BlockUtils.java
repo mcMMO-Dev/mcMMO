@@ -7,14 +7,17 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
+import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
@@ -285,4 +288,11 @@ public final class BlockUtils {
     public static boolean isPartOfTree(Block rayCast) {
         return hasWoodcuttingXP(rayCast.getState()) || isNonWoodPartOfTree(rayCast.getType());
     }
+
+    public static boolean isWithinWorldBounds(@NotNull WorldCompatibilityLayer worldCompatibilityLayer, @NotNull Block block) {
+        World world = block.getWorld();
+
+        return block.getY() > worldCompatibilityLayer.getMinWorldHeight(world) || block.getY() < worldCompatibilityLayer.getMaxWorldHeight(world);
+    }
+
 }

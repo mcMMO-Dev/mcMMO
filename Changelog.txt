@@ -1,3 +1,6 @@
+Version 2.1.191
+    Fixed a critical bug related to our BlockTracker
+    Some minor optimizations to our Block events
 Version 2.1.190
     Fixed a null error in BitSetChunkStore
 Version 2.1.189
