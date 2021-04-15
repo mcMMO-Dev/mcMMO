@@ -77,9 +77,22 @@ public class CompatibilityManager {
     }
 
     private void initWorldCompatibilityLayer() {
-        if(minecraftGameVersion.getMinorVersion().asInt() >= 16 && minecraftGameVersion.getPatchVersion().asInt() >= 4 || minecraftGameVersion.getMajorVersion().asInt() >= 2) {
+        if((minecraftGameVersion.getMinorVersion().asInt() >= 16 && minecraftGameVersion.getPatchVersion().asInt() >= 4)
+                || minecraftGameVersion.getMajorVersion().asInt() >= 2) {
             if(hasNewWorldMinHeightAPI()) {
                 worldCompatibilityLayer = new WorldCompatibilityLayer_1_16_4();
+            } else {
+                worldCompatibilityLayer = new WorldCompatibilityLayer() {
+                    @Override
+                    public int getMinWorldHeight(@NotNull World world) {
+                        return WorldCompatibilityLayer.super.getMinWorldHeight(world);
+                    }
+
+                    @Override
+                    public int getMaxWorldHeight(@NotNull World world) {
+                        return WorldCompatibilityLayer.super.getMaxWorldHeight(world);
+                    }
+                };
             }
         } else {
             worldCompatibilityLayer = new WorldCompatibilityLayer() {

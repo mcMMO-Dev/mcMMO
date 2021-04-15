@@ -1,4 +1,7 @@
+Version 2.1.190
+    Fixed a null error in BitSetChunkStore
 Version 2.1.189
+    Fixed a bug that would remove components from death messages when players were killed by mobs (thanks lexikiq)
     Rewrote how FlatFileDatabase verifies data integrity
     FlatFileDatabase has much better data validation and will repair broken/invalid data much better
     Fixed a bug where FlatFileDatabase users could have their names saved as "null" (names will be fixed the next time the player logs in)
@@ -7,21 +10,20 @@ Version 2.1.189
     Newly created flat file databases (mcmmo.users file) will have a comment line at the top noting the date the database was created
     Minor performance optimizations to FlatFile database
     mcMMO will once again purge old users if the config option is on (see notes)
+    Fixed a bug where FlatFileDatabaseManager didn't properly upgrade older database entries to the newest schema
+    The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
+    Added 'mcMMO_Region_System.Enabled' to persistent_data.yml (don't touch this setting unless you know what you are doing)
+    Removed MHD command (it didn't do anything for a while now)
+    Removed UltraPermissions warning
+    Updated pl locale (Thanks Mich3l3k)
+    Fixed an IllegalPluginAccessException error that could happen during server shutdown
+    Minor performance optimizations to misc parts of the codebase
     (API) Added com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(org.bukkit.OfflinePlayer)
     (API) Deprecated com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(java.util.UUID, java.lang.String)
     (API) Removed com.gmail.nossr50.database.DatabaseManager.newUser(java.lang.String, java.util.UUID)
     (API) PrimarySkillType will soon be just an enum with nothing special going on
     (API) Deprecated the members of PrimarySkillType use mcMMO::getSkillTools instead, deprecated members will be removed in Tridents & Crossbows (due soon)
     (API) Some members of PrimarySkillType were removed and not deprecated (such as the field constants)
-    Fixed a bug where FlatFileDatabaseManager didn't properly upgrade older database entries to the newest schema
-    The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
-    Added 'mcMMO_Region_System.Enabled' to persistent_data.yml (don't touch this setting unless you know what you are doing)
-    Fixed a bug that would remove components from death messages when players were killed by mobs (thanks lexikiq)
-    Removed MHD command (it didn't do anything for a while now)
-    Removed UltraPermissions warning
-    Updated pl locale (Thanks Mich3l3k)
-    Fixed an IllegalPluginAccessException error that could happen during server shutdown
-    Minor performance optimizations to misc parts of the codebase
 
     NOTES:
     I spent over 26 hours refactoring FlatFileDB and writing unit tests for it, this will ensure that any changes in the code that could break the database are caught at compile time (so long as we have enough tests, could probably use more)
