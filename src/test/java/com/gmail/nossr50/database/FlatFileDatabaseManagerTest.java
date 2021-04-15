@@ -175,10 +175,23 @@ public class FlatFileDatabaseManagerTest {
         assertTrue(db.saveUser(testProfile)); //True means we saved the user
 
         //Check for the empty profile
-        PlayerProfile retrievedFromData = db.loadPlayerProfile(playerName);
+        PlayerProfile retrievedFromData = db.loadPlayerProfile(uuid);
         assertTrue(retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
         assertEquals(uuid, retrievedFromData.getUniqueId());
         assertEquals(playerName, retrievedFromData.getPlayerName());
+
+        /*
+         * Test overwriting names with new names
+         */
+
+        String alteredName = "changedmyname";
+        PlayerProfile changedNameProfile = new PlayerProfile(alteredName, uuid, 0);
+        assertTrue(db.saveUser(changedNameProfile)); //True means we saved the user
+
+        retrievedFromData = db.loadPlayerProfile(uuid);
+        assertTrue(retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
+        assertEquals(uuid, retrievedFromData.getUniqueId());
+        assertEquals(alteredName, retrievedFromData.getPlayerName());
     }
 
     @Test
@@ -560,29 +573,6 @@ public class FlatFileDatabaseManagerTest {
         overwriteDataAndCheckForFlag(db, duplicateNameDatabaseData, FlatFileDataFlag.DUPLICATE_NAME);
         ArrayList<String[]> splitDataLines = getSplitDataFromFile(db.getUsersFile());
         assertNotEquals(splitDataLines.get(1)[0], splitDataLines.get(0)[0]); //Name comparison
-    }
-
-    @Test
-    public void testUpdateName() {
-        //TODO: The code in this test didn't actually trigger the save, so I'll have to do something else to test saving
-//        UUID uuid = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR); //Entrant "nossr50"
-//        String playerName = "the_new_name_man";
-//
-//        File file = prepareDatabaseTestResource(DB_HEALTHY); //Existing DB
-//        db = new FlatFileDatabaseManager(file, logger, PURGE_TIME, 0, true);
-//        db.checkFileHealthAndStructure();
-//        ArrayList<String[]> splitDataLines = getSplitDataFromFile(db.getUsersFile());
-//        String oldName = "nossr50";
-//        assertEquals(oldName, splitDataLines.get(0)[0]); //Name comparison
-//        assertEquals(uuid.toString(), splitDataLines.get(0)[FlatFileDatabaseManager.UUID_INDEX]); //UUID Comparison
-//
-//        //Now we load the player and their name should get replaced
-//        PlayerProfile profile = db.loadPlayerByUUID(uuid, playerName, true);
-//        assertEquals(playerName, profile.getPlayerName());
-//
-//        splitDataLines = getSplitDataFromFile(db.getUsersFile()); //Load the file again
-//        assertNotEquals(oldName, splitDataLines.get(0)[0]); //Name comparison
-//        assertEquals(playerName, splitDataLines.get(0)[0]); //Name comparison
     }
 
     @Test
