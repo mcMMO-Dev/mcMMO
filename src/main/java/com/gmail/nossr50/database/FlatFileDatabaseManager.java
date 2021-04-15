@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -341,14 +342,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 boolean wroteUser = false;
-                if(testing) {
-                    System.out.println("-- saveUser bufferedreader feed --");
-                }
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
-                    if(testing) {
-                        System.out.println(line);
-                    }
                     if(line.startsWith("#")) {
                         writer.append(line).append("\r\n");
                         continue;
@@ -384,7 +379,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         writer.append(line).append("\r\n"); //Not the user so write it to file and move on
                     } else {
                         //User found
-                        writeUserToLine(profile, playerName, uuid, writer);
+                        writeUserToLine(profile, writer);
                         wroteUser = true;
                     }
                 }
@@ -393,12 +388,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                  * If we couldn't find the user in the DB we need to add him
                  */
                 if(!wroteUser) {
-                    writeUserToLine(profile, playerName, uuid, writer);
-                }
-
-                if(testing) {
-                    System.out.println("-- saveUser (FileWriter contents before save) --");
-                    System.out.println(writer.toString());
+                    writeUserToLine(profile, writer);
                 }
 
                 // Write the new file
@@ -431,8 +421,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    public void writeUserToLine(@NotNull PlayerProfile profile, @NotNull String playerName, @Nullable UUID uuid, @NotNull Appendable appendable) throws IOException {
-        appendable.append(playerName).append(":");
+    public void writeUserToLine(@NotNull PlayerProfile profile, @NotNull Appendable appendable) throws IOException {
+        appendable.append(profile.getPlayerName()).append(":");
         appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MINING))).append(":");
         appendable.append(IGNORED).append(":");
         appendable.append(IGNORED).append(":");
@@ -473,7 +463,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         appendable.append(IGNORED).append(":"); //mob health bar
         appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ALCHEMY))).append(":");
         appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY))).append(":");
-        appendable.append(uuid != null ? uuid.toString() : "NULL").append(":");
+        appendable.append(profile.getUniqueId() != null ? profile.getUniqueId().toString() : "NULL").append(":");
         appendable.append(String.valueOf(profile.getScoreboardTipsShown())).append(":");
         appendable.append(String.valueOf(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS))).append(":");
         appendable.append(String.valueOf(profile.getLastLogin())).append(":"); //overhaul last login
@@ -527,7 +517,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 }
 
                 try (FileWriter fileWriter = new FileWriter(usersFile)) {
-                    writeUserToLine(playerProfile, playerName, uuid, stringBuilder);
+                    writeUserToLine(playerProfile, stringBuilder);
                     fileWriter.write(stringBuilder.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -541,103 +531,53 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer) {
-        return loadPlayerByUUID(offlinePlayer.getUniqueId(), offlinePlayer.getName(), offlinePlayer.isOnline());
+        return processUserQuery(getUserQuery(offlinePlayer.getUniqueId(), offlinePlayer.getName()));
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
-        return loadPlayerByName(playerName);
-    }
-
-    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
-        return loadPlayerByUUID(uuid, playerName, false);
+        return processUserQuery(getUserQuery(null, playerName));
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid) {
-        return loadPlayerByUUID(uuid, null, false);
+        return processUserQuery(getUserQuery(uuid, null));
+    }
+
+    private @NotNull UserQuery getUserQuery(@Nullable UUID uuid, @Nullable String playerName) throws NullPointerException {
+        boolean hasName = playerName != null && !playerName.equalsIgnoreCase("null");
+
+        if(hasName && uuid != null) {
+            return new UserQueryFull(playerName, uuid);
+        } else if (uuid != null) {
+            return new UserQueryUUIDImpl(uuid);
+        } else if(hasName) {
+            return new UserQueryNameImpl(playerName);
+        } else {
+            throw new NullPointerException("Both name and UUID cannot be null, at least one must be non-null!");
+        }
     }
 
     /**
-     * Find and load a player by UUID
+     * Find and load a player by UUID/Name
+     * If the name isn't null and doesn't match the name in the DB, the players name is then replaced/updated
      *
-     * @param uuid target uuid
-     * @param playerName target player name
-     * @param replaceName name to replace if the found name differs
+     * @param userQuery the query
      * @return a profile with the targets data or an unloaded profile if no data was found
-     * @deprecated only use this if you know what you are doing, replacing the name can cause havoc
      */
-    @Deprecated
-    public @NotNull PlayerProfile loadPlayerByUUID(@NotNull UUID uuid, @Nullable String playerName, boolean replaceName) {
-        BufferedReader in = null;
-
-        synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
-                String line;
-
-                while ((line = in.readLine()) != null) {
-                    // Find if the line contains the player we want.
-                    String[] rawSplitData = line.split(":");
-
-                    /* Don't read corrupt data */
-                    if(rawSplitData.length < (UUID_INDEX + 1)) {
-                        continue;
-                    }
-
-                    /* Does this entry have a UUID? */
-                    if (rawSplitData[UUID_INDEX].equalsIgnoreCase("NULL")
-                            || rawSplitData[UUID_INDEX].isEmpty()
-                            || rawSplitData[UUID_INDEX].equalsIgnoreCase("")) {
-                        continue; //No UUID entry found for this data in the DB, go to next entry
-                    }
-
-                    // Compare provided UUID to DB
-                    if (!rawSplitData[UUID_INDEX].equalsIgnoreCase(uuid.toString())) {
-                        continue; //Doesn't match, go to the next entry
-                    }
-
-                    /*
-                     * UUID Matched!
-                     * Making it this far means the current data line is considered a match
-                     */
-
-
-                    /* Check for nickname changes and update since we are here anyways */
-                    if(playerName != null) {
-                        if(replaceName) {
-                            logger.info("A users name is being updated, this can happen from either a call to our API or they simply changed their name");
-                            if (!rawSplitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                                //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
-                                rawSplitData[USERNAME_INDEX] = playerName;
-                            }
-                        }
-                    }
-
-                    return loadFromLine(rawSplitData);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                // I have no idea why it's necessary to inline tryClose() here, but it removes
-                // a resource leak warning, and I'm trusting the compiler on this one.
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-            }
+    private @NotNull PlayerProfile processUserQuery(@NotNull UserQuery userQuery) throws RuntimeException {
+        switch(userQuery.getType()) {
+            case UUID_AND_NAME:
+                return queryByUUIDAndName((UserQueryFull) userQuery);
+            case UUID:
+                return queryByUUID((UserQueryUUID) userQuery);
+            case NAME:
+                return queryByName((UserQueryNameImpl) userQuery);
+            default:
+                throw new RuntimeException("No case for this UserQueryType!");
         }
-
-        /*
-         * No match was found in the file
-         */
-
-        return grabUnloadedProfile(uuid, playerName); //Create an empty new profile and return
     }
 
-    private @NotNull PlayerProfile loadPlayerByName(@NotNull String playerName) {
+    private @NotNull PlayerProfile queryByName(@NotNull UserQueryName userQuery) {
+        String playerName = userQuery.getName();
         BufferedReader in = null;
 
         synchronized (fileWritingLock) {
@@ -645,19 +585,23 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 // Open the user file
                 in = new BufferedReader(new FileReader(usersFilePath));
                 String line;
+
 
                 while ((line = in.readLine()) != null) {
                     if(line.startsWith("#")) {
                         continue;
                     }
 
+
                     // Find if the line contains the player we want.
                     String[] rawSplitData = line.split(":");
+
 
                     /* Don't read corrupt data */
                     if(rawSplitData.length < (USERNAME_INDEX + 1)) {
                         continue;
                     }
+
 
                     //If we couldn't find anyone
                     if(playerName.equalsIgnoreCase(rawSplitData[USERNAME_INDEX])) {
@@ -679,8 +623,133 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
+
         //Return a new blank profile
         return new PlayerProfile(playerName, new UUID(0, 0), startingLevel);
+    }
+
+    private @NotNull PlayerProfile queryByUUID(@NotNull UserQueryUUID userQuery) {
+        BufferedReader in = null;
+        UUID uuid = userQuery.getUUID();
+
+        synchronized (fileWritingLock) {
+            try {
+                // Open the user file
+                in = new BufferedReader(new FileReader(usersFilePath));
+                String line;
+
+                while ((line = in.readLine()) != null) {
+                    if(line.startsWith("#")) {
+                        continue;
+                    }
+                    // Find if the line contains the player we want.
+                    String[] rawSplitData = line.split(":");
+
+                    /* Don't read corrupt data */
+                    if(rawSplitData.length < (UUID_INDEX + 1)) {
+                        continue;
+                    }
+
+                    try {
+                        UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
+                        if(fromDataUUID.equals(uuid)) {
+                            return loadFromLine(rawSplitData);
+                        }
+                    } catch (Exception e) {
+                        if(testing) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // I have no idea why it's necessary to inline tryClose() here, but it removes
+                // a resource leak warning, and I'm trusting the compiler on this one.
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+
+        /*
+         * No match was found in the file
+         */
+
+        return grabUnloadedProfile(uuid, "Player-Not-Found="+uuid.toString());
+    }
+
+    private @NotNull PlayerProfile queryByUUIDAndName(@NotNull UserQueryFull userQuery) {
+        BufferedReader in = null;
+        String playerName = userQuery.getName();
+        UUID uuid = userQuery.getUUID();
+
+        synchronized (fileWritingLock) {
+            try {
+                // Open the user file
+                in = new BufferedReader(new FileReader(usersFilePath));
+                String line;
+
+                while ((line = in.readLine()) != null) {
+                    if(line.startsWith("#")) {
+                        continue;
+                    }
+                    // Find if the line contains the player we want.
+                    String[] rawSplitData = line.split(":");
+
+                    /* Don't read corrupt data */
+                    if(rawSplitData.length < (UUID_INDEX + 1)) {
+                        continue;
+                    }
+
+                    try {
+                        UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
+                        if(fromDataUUID.equals(uuid)) {
+                            //Matched UUID, now check if name matches
+                            String dbPlayerName = rawSplitData[USERNAME_INDEX];
+
+                            boolean matchingName = dbPlayerName.equalsIgnoreCase(playerName);
+
+                            if (!matchingName) {
+                                logger.info("When loading user: "+playerName +" with UUID of (" + uuid.toString()
+                                        +") we found a mismatched name, the name in the DB will be replaced (DB name: "+dbPlayerName+")");
+                                //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
+                                rawSplitData[USERNAME_INDEX] = playerName;
+                            }
+
+                            //TODO: Logic to replace name here
+                            return loadFromLine(rawSplitData);
+                        }
+                    } catch (Exception e) {
+                        if(testing) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // I have no idea why it's necessary to inline tryClose() here, but it removes
+                // a resource leak warning, and I'm trusting the compiler on this one.
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+
+        /*
+         * No match was found in the file
+         */
+
+        return grabUnloadedProfile(uuid, playerName); //Create an empty new profile and return
     }
 
     private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid, @Nullable String playerName) {

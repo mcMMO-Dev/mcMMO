@@ -79,11 +79,8 @@ public class SkillresetCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    UUID uuid = null;
-                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
-                    uuid = player.getUniqueId();
-
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, playerName);
+                    OfflinePlayer offlinePlayer = mcMMO.p.getServer().getOfflinePlayer(playerName);
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(offlinePlayer);
 
                     //Check loading by UUID
                     if (CommandUtils.unloadedProfile(sender, profile)) {

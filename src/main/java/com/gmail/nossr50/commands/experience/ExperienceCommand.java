@@ -97,12 +97,9 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    UUID uuid = null;
-                    OfflinePlayer offlinePlayer = mcMMO.p.getServer().getOfflinePlayer(playerName);
                     PlayerProfile profile;
 
-                    uuid = offlinePlayer.getUniqueId();
-                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, null);
+                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
                     //Check loading by UUID
                     if (CommandUtils.unloadedProfile(sender, profile)) {

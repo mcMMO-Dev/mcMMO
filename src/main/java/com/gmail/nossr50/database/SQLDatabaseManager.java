@@ -15,6 +15,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -515,7 +516,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (id == -1) {
                 return new PlayerProfile(player.getName(), player.getUniqueId(), false, mcMMO.p.getAdvancedConfig().getStartingLevel());
             } else {
-                return loadPlayerProfile(player.getUniqueId(), player.getName());
+                return loadPlayerProfile(player);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -571,7 +572,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
+    @Override
+    public @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer) {
+        return loadPlayerFromDB(offlinePlayer.getUniqueId(), offlinePlayer.getName());
+    }
+
+        public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid, @Nullable String playerName) {
         return loadPlayerFromDB(uuid, playerName);
     }
 

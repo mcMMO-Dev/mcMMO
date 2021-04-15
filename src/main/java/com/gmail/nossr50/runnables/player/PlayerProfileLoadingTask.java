@@ -41,7 +41,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             return;
         }
 
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getUniqueId(), player.getName());
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player);
 
         if(!profile.isLoaded()) {
             mcMMO.p.getLogger().info("Creating new data for player: "+player.getName());

@@ -1,3 +1,19 @@
+Version 2.1.192
+    Removed some debug messages from FlatFileDatabaseManager
+    Fixed another bug where player names could be saved as null for FlatFileDB (they will update on the players next login at the next save interval)
+    (API) Removed deprecation from com.gmail.nossr50.api.ExperienceAPI.getOfflineProfile(java.lang.String)
+    (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(org.bukkit.OfflinePlayer)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineProfile(org.bukkit.OfflinePlayer)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXP(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPRaw(org.bukkit.OfflinePlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPRaw(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPToNextLevel(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(java.lang.String)
+    (Unit Tests) Added some more unit tests to FlatFileDB
+
+    NOTES:
+    I removed a lot of API that should honestly never have been added, this will break some plugins, those plugins will have to update.
+
 Version 2.1.191
     Fixed a bug related to our blocktracker
     Fixed a bug that prevented the leaderboards from working on FlatFile in some circumstances

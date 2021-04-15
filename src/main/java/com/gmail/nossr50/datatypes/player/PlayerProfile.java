@@ -22,7 +22,7 @@ import java.util.concurrent.DelayQueue;
 
 public class PlayerProfile {
     private final String playerName;
-    private UUID uuid;
+    private @Nullable UUID uuid;
     private boolean loaded;
     private volatile boolean changed;
 
@@ -49,7 +49,7 @@ public class PlayerProfile {
     }
 
     //TODO: Add deprecated constructor w/o startinglevel
-    public PlayerProfile(String playerName, UUID uuid, int startingLevel) {
+    public PlayerProfile(String playerName, @Nullable UUID uuid, int startingLevel) {
         this.uuid = uuid;
         this.playerName = playerName;
 
@@ -100,10 +100,6 @@ public class PlayerProfile {
         new PlayerProfileSaveTask(this, false).runTaskAsynchronously(mcMMO.p);
     }
 
-    public void scheduleSyncSave() {
-        new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
-    }
-
     public void scheduleAsyncSaveDelay() {
         new PlayerProfileSaveTask(this, false).runTaskLaterAsynchronously(mcMMO.p, 20);
     }
@@ -126,8 +122,7 @@ public class PlayerProfile {
         if (changed) {
             mcMMO.p.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
 
-            if(saveAttempts > 0)
-            {
+            if(saveAttempts > 0) {
                 mcMMO.p.getLogger().severe("Attempted to save profile for player "+getPlayerName()
                         + " resulted in failure. "+saveAttempts+" have been made so far.");
             }
@@ -138,7 +133,7 @@ public class PlayerProfile {
 
                 //Back out of async saving if we detect a server shutdown, this is not always going to be caught
                 if(mcMMO.isServerShutdownExecuted() || useSync)
-                    scheduleSyncSave(); //Execute sync saves immediately
+                    new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
                 else
                     scheduleAsyncSave();
 

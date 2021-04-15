@@ -9,18 +9,25 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.io.Files;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Statistic;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,6 +66,11 @@ public class FlatFileDatabaseManagerTest {
 
     int expectedScoreboardTips = 1111;
     Long expectedLastLogin = 2020L;
+
+    @BeforeAll
+    static void initBeforeAll() {
+        logger.setFilter(new DebugFilter());
+    }
 
     @BeforeEach
     public void init() {
@@ -175,7 +187,7 @@ public class FlatFileDatabaseManagerTest {
 
         //This makes sure our private method is working before the tests run afterwards
         ArrayList<String[]> dataFromFile = getSplitDataFromFile(dbFile);
-        System.out.println("File Path: "+ dbFile.getAbsolutePath());
+        logger.info("File Path: "+ dbFile.getAbsolutePath());
         assertArrayEquals(LINE_TWO_FROM_MISSING_DB.split(":"), dataFromFile.get(1));
         assertEquals(dataFromFile.get(1)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
 
@@ -199,7 +211,7 @@ public class FlatFileDatabaseManagerTest {
 
         //This makes sure our private method is working before the tests run afterwards
         ArrayList<String[]> dataFromFile = getSplitDataFromFile(healthyDB);
-        System.out.println("File Path: "+healthyDB.getAbsolutePath());
+        logger.info("File Path: "+healthyDB.getAbsolutePath());
         assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
         assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
         UUID healthDBEntryOneUUID = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR);
@@ -270,7 +282,7 @@ public class FlatFileDatabaseManagerTest {
         assertEquals(playerName, playerProfile.getPlayerName());
         assertEquals(uuid, playerProfile.getUniqueId());
 
-        PlayerProfile retrievedFromDisk = db.loadPlayerProfile(uuid, playerName);
+        PlayerProfile retrievedFromDisk = db.loadPlayerProfile(uuid);
         assertTrue(retrievedFromDisk.isLoaded());
         assertEquals(playerName, retrievedFromDisk.getPlayerName());
         assertEquals(uuid, retrievedFromDisk.getUniqueId());
@@ -320,7 +332,7 @@ public class FlatFileDatabaseManagerTest {
 
         //This makes sure our private method is working before the tests run afterwards
         ArrayList<String[]> dataFromFile = getSplitDataFromFile(dbFile);
-        System.out.println("File Path: " + dbFile.getAbsolutePath());
+        logger.info("File Path: " + dbFile.getAbsolutePath());
         assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
         assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
 
@@ -335,16 +347,50 @@ public class FlatFileDatabaseManagerTest {
         String playerName = "nossr50";
         UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
 
-        PlayerProfile profile1 = db.loadPlayerProfile(uuid, null);
-        PlayerProfile profile2 = db.loadPlayerProfile(uuid, playerName);
-        PlayerProfile profile3 = db.loadPlayerProfile(uuid, "incorrectName");
-        PlayerProfile profile4 = db.loadPlayerProfile(new UUID(0, 1), "shouldBeUnloaded");
-        assertFalse(profile4.isLoaded());
-
-        //Three possible ways to load the thing
+        PlayerProfile profile1 = db.loadPlayerProfile(uuid);
         testHealthyDataProfileValues(playerName, uuid, profile1);
-        testHealthyDataProfileValues(playerName, uuid, profile2);
-        testHealthyDataProfileValues(playerName, uuid, profile3);
+
+
+        assertFalse(db.loadPlayerProfile(new UUID(0, 1)).isLoaded()); //This profile should not exist and therefor will return unloaded
+    }
+
+    @Test
+    public void testLoadByUUIDAndName() {
+        File dbFile = prepareDatabaseTestResource(DB_HEALTHY);
+
+        /*
+         * We have established the files are in good order, so now for the actual testing
+         */
+
+        //This makes sure our private method is working before the tests run afterwards
+        ArrayList<String[]> dataFromFile = getSplitDataFromFile(dbFile);
+        logger.info("File Path: " + dbFile.getAbsolutePath());
+        assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
+        assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
+
+        db = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0, true);
+        List<FlatFileDataFlag> flagsFound = db.checkFileHealthAndStructure();
+        assertNull(flagsFound); //No flags should be found
+
+        /*
+         * Once the DB looks fine load the profile
+         */
+
+        String playerName = "nossr50";
+        UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
+
+        TestOfflinePlayer player = new TestOfflinePlayer(playerName, uuid);
+        PlayerProfile profile1 = db.loadPlayerProfile(player);
+        testHealthyDataProfileValues(playerName, uuid, profile1);
+
+        String updatedName = "updatedName";
+        TestOfflinePlayer updatedNamePlayer = new TestOfflinePlayer(updatedName, uuid);
+        PlayerProfile updatedNameProfile = db.loadPlayerProfile(updatedNamePlayer);
+        testHealthyDataProfileValues(updatedName, uuid, updatedNameProfile);
+
+        TestOfflinePlayer shouldNotExist = new TestOfflinePlayer("doesntexist", new UUID(0, 1));
+        PlayerProfile profile3 = db.loadPlayerProfile(shouldNotExist);
+        assertFalse(profile3.isLoaded());
     }
 
     private File prepareDatabaseTestResource(@NotNull String dbFileName) {
@@ -393,11 +439,11 @@ public class FlatFileDatabaseManagerTest {
             if(SkillTools.isChildSkill(primarySkillType))
                 continue;
 
-//            System.out.println("Checking expected values for: "+primarySkillType);
-//            System.out.println("Profile Level Value: "+profile.getSkillLevel(primarySkillType));
-//            System.out.println("Expected Lvl Value: "+getExpectedLevelHealthyDBEntryOne(primarySkillType));
-//            System.out.println("Profile Exp Value: "+profile.getSkillXpLevelRaw(primarySkillType));
-//            System.out.println("Expected Exp Value: "+getExpectedExperienceHealthyDBEntryOne(primarySkillType));
+//            logger.info("Checking expected values for: "+primarySkillType);
+//            logger.info("Profile Level Value: "+profile.getSkillLevel(primarySkillType));
+//            logger.info("Expected Lvl Value: "+getExpectedLevelHealthyDBEntryOne(primarySkillType));
+//            logger.info("Profile Exp Value: "+profile.getSkillXpLevelRaw(primarySkillType));
+//            logger.info("Expected Exp Value: "+getExpectedExperienceHealthyDBEntryOne(primarySkillType));
 
             assertEquals(getExpectedLevelHealthyDBEntryOne(primarySkillType), profile.getSkillLevel(primarySkillType));
             assertEquals(getExpectedExperienceHealthyDBEntryOne(primarySkillType), profile.getSkillXpLevelRaw(primarySkillType), 0);
@@ -640,7 +686,7 @@ public class FlatFileDatabaseManagerTest {
 
         //This makes sure our private method is working before the tests run afterwards
         ArrayList<String[]> dataFromFile = getSplitDataFromFile(copyOfFile);
-        System.out.println("File Path: "+copyOfFile.getAbsolutePath());
+        logger.info("File Path: "+copyOfFile.getAbsolutePath());
         assertArrayEquals(BAD_FILE_LINE_ONE.split(":"), dataFromFile.get(0));
         assertEquals(dataFromFile.get(22)[0], "nossr51");
         assertArrayEquals(BAD_DATA_FILE_LINE_TWENTY_THREE.split(":"), dataFromFile.get(22));
@@ -688,7 +734,7 @@ public class FlatFileDatabaseManagerTest {
             out.write(writer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            System.out.println("File not found");
+            logger.info("File not found");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -703,12 +749,12 @@ public class FlatFileDatabaseManagerTest {
         }
 
         try {
-            System.out.println("Added the following lines to the FlatFileDatabase for the purposes of the test...");
+            logger.info("Added the following lines to the FlatFileDatabase for the purposes of the test...");
             // Open the file
             in = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                logger.info(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -730,5 +776,189 @@ public class FlatFileDatabaseManagerTest {
         List<FlatFileDataFlag> dataFlags = targetDatabase.checkFileHealthAndStructure();
         assertNotNull(dataFlags);
         assertTrue(dataFlags.contains(flag));
+    }
+
+    private class TestOfflinePlayer implements OfflinePlayer {
+
+        private final @NotNull String name;
+        private final @NotNull UUID uuid;
+
+        private TestOfflinePlayer(@NotNull String name, @NotNull UUID uuid) {
+            this.name = name;
+            this.uuid = uuid;
+        }
+
+        @Override
+        public boolean isOnline() {
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @NotNull
+        @Override
+        public UUID getUniqueId() {
+            return uuid;
+        }
+
+        @Override
+        public boolean isBanned() {
+            return false;
+        }
+
+        @Override
+        public boolean isWhitelisted() {
+            return false;
+        }
+
+        @Override
+        public void setWhitelisted(boolean value) {
+
+        }
+
+        @Nullable
+        @Override
+        public Player getPlayer() {
+            return null;
+        }
+
+        @Override
+        public long getFirstPlayed() {
+            return 0;
+        }
+
+        @Override
+        public long getLastPlayed() {
+            return 0;
+        }
+
+        @Override
+        public boolean hasPlayedBefore() {
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public Location getBedSpawnLocation() {
+            return null;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void setStatistic(@NotNull Statistic statistic, int newValue) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public int getStatistic(@NotNull Statistic statistic) throws IllegalArgumentException {
+            return 0;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull Material material) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull Material material) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public int getStatistic(@NotNull Statistic statistic, @NotNull Material material) throws IllegalArgumentException {
+            return 0;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull Material material, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull Material material, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void setStatistic(@NotNull Statistic statistic, @NotNull Material material, int newValue) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public int getStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType) throws IllegalArgumentException {
+            return 0;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType, int amount) {
+
+        }
+
+        @Override
+        public void setStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType, int newValue) {
+
+        }
+
+        @NotNull
+        @Override
+        public Map<String, Object> serialize() {
+            return null;
+        }
+
+        @Override
+        public boolean isOp() {
+            return false;
+        }
+
+        @Override
+        public void setOp(boolean value) {
+
+        }
+    }
+
+    private static class DebugFilter implements Filter {
+
+        @Override
+        public boolean isLoggable(LogRecord record) {
+            return false;
+        }
     }
 }

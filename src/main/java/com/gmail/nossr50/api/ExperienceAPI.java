@@ -13,11 +13,11 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -433,6 +433,23 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Get the amount of XP an offline player has in a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param offlinePlayer The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP in a given skill
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     */
+    public static int getOfflineXP(@NotNull OfflinePlayer offlinePlayer, @NotNull String skillType) throws InvalidPlayerException {
+        return getOfflineProfile(offlinePlayer).getSkillXpLevel(getNonChildSkillType(skillType));
+    }
+
+    /**
      * Get the raw amount of XP a player has in a specific skill.
      * </br>
      * This function is designed for API usage.
@@ -484,6 +501,30 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Get the raw amount of XP an offline player has in a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param offlinePlayer The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP in a given skill
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     */
+    public static float getOfflineXPRaw(@NotNull OfflinePlayer offlinePlayer, @NotNull String skillType) throws InvalidPlayerException, UnsupportedOperationException, InvalidSkillException {
+        return getOfflineProfile(offlinePlayer).getSkillXpLevelRaw(getNonChildSkillType(skillType));
+    }
+
+    public static float getOfflineXPRaw(@NotNull OfflinePlayer offlinePlayer, @NotNull PrimarySkillType skillType) throws InvalidPlayerException, UnsupportedOperationException {
+        if(SkillTools.isChildSkill(skillType))
+            throw new UnsupportedOperationException();
+
+        return getOfflineProfile(offlinePlayer).getSkillXpLevelRaw(skillType);
+    }
+
+    /**
      * Get the total amount of XP needed to reach the next level.
      * </br>
      * This function is designed for API usage.
@@ -530,8 +571,25 @@ public final class ExperienceAPI {
      * @throws InvalidPlayerException if the given player does not exist in the database
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
-    public static int getOfflineXPToNextLevel(UUID uuid, String skillType) {
+    public static int getOfflineXPToNextLevel(@NotNull UUID uuid, @NotNull String skillType) {
         return getOfflineProfile(uuid).getXpToLevel(getNonChildSkillType(skillType));
+    }
+
+    /**
+     * Get the total amount of XP an offline player needs to reach the next level.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param offlinePlayer The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the total amount of XP needed to reach the next level
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     */
+    public static int getOfflineXPToNextLevel(@NotNull OfflinePlayer offlinePlayer, @NotNull String skillType) throws UnsupportedOperationException, InvalidSkillException, InvalidPlayerException {
+        return getOfflineProfile(offlinePlayer).getXpToLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -591,6 +649,26 @@ public final class ExperienceAPI {
     public static float getOfflineXPRemaining(UUID uuid, String skillType) {
         PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(uuid);
+
+        return profile.getXpToLevel(skill) - profile.getSkillXpLevelRaw(skill);
+    }
+
+    /**
+     * Get the amount of XP an offline player has left before leveling up.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param offlinePlayer The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP needed to reach the next level
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     */
+    public static float getOfflineXPRemaining(OfflinePlayer offlinePlayer, String skillType) throws InvalidSkillException, InvalidPlayerException, UnsupportedOperationException {
+        PrimarySkillType skill = getNonChildSkillType(skillType);
+        PlayerProfile profile = getOfflineProfile(offlinePlayer);
 
         return profile.getXpToLevel(skill) - profile.getSkillXpLevelRaw(skill);
     }
@@ -1129,25 +1207,22 @@ public final class ExperienceAPI {
     }
 
     // Utility methods follow.
-    private static void addOfflineXP(UUID playerUniqueId, PrimarySkillType skill, int XP) {
+    private static void addOfflineXP(@NotNull UUID playerUniqueId, @NotNull PrimarySkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerUniqueId);
 
         profile.addXp(skill, XP);
         profile.save(true);
     }
 
-    @Deprecated
-    private static void addOfflineXP(String playerName, PrimarySkillType skill, int XP) {
+    private static void addOfflineXP(@NotNull String playerName, @NotNull PrimarySkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerName);
 
         profile.addXp(skill, XP);
         profile.scheduleAsyncSave();
     }
 
-    private static PlayerProfile getOfflineProfile(UUID uuid) throws InvalidPlayerException {
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(uuid);
-        String playerName = offlinePlayer.getName();
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, playerName);
+    private static @NotNull PlayerProfile getOfflineProfile(@NotNull UUID uuid) throws InvalidPlayerException {
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
 
         if (!profile.isLoaded()) {
             throw new InvalidPlayerException();
@@ -1156,11 +1231,18 @@ public final class ExperienceAPI {
         return profile;
     }
 
-    @Deprecated
-    private static PlayerProfile getOfflineProfile(String playerName) throws InvalidPlayerException {
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(playerName);
-        UUID uuid = offlinePlayer.getUniqueId();
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid, playerName);
+    private static @NotNull PlayerProfile getOfflineProfile(@NotNull OfflinePlayer offlinePlayer) throws InvalidPlayerException {
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(offlinePlayer);
+
+        if (!profile.isLoaded()) {
+            throw new InvalidPlayerException();
+        }
+
+        return profile;
+    }
+
+    private static @NotNull PlayerProfile getOfflineProfile(@NotNull String playerName) throws InvalidPlayerException {
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
         if (!profile.isLoaded()) {
             throw new InvalidPlayerException();
