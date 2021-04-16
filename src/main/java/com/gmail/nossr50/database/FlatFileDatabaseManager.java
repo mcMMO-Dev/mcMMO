@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.blockmeta.HashChunkManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -484,15 +485,16 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
     }
 
-    public Map<PrimarySkillType, Integer> readRank(String playerName) {
+    public @NotNull HashMap<PrimarySkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class);
+        HashMap<PrimarySkillType, Integer> skills = new HashMap<>();
 
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
+        //TODO: Gross
         skills.put(null, getPlayerRank(playerName, powerLevels));
 
         return skills;

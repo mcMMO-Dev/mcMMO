@@ -1,3 +1,7 @@
+Version 2.1.193
+    Fixed another bug where mcrank/mctop/leaderboards weren't loading
+    Fixed a bug where override locales weren't being loaded (but worked after a reloadlocale command)
+    (Unit Tests) Added a test to make sure leaderboards were working
 Version 2.1.192
     Removed some debug messages from FlatFileDatabaseManager
     Fixed another bug where player names could be saved as null for FlatFileDB (they will update on the players next login at the next save interval)
@@ -10,9 +14,6 @@ Version 2.1.192
     (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPToNextLevel(org.bukkit.OfflinePlayer, java.lang.String)
     (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(java.lang.String)
     (Unit Tests) Added some more unit tests to FlatFileDB
-
-    NOTES:
-    I removed a lot of API that should honestly never have been added, this will break some plugins, those plugins will have to update.
 
 Version 2.1.191
     Fixed a bug related to our blocktracker

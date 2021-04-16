@@ -645,6 +645,36 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
+    public void testReadRank() {
+        //This is an empty DB
+        assertNotNull(db);
+        String rankBoyName = "rankBoy";
+        UUID rankBoyUUID = new UUID(1337, 1337);
+        String rankGirlName = "rankGirl";
+        UUID rankGirlUUID = new UUID(7331, 7331);
+
+        PlayerProfile rankGirlProfile = addPlayerProfileWithLevelsAndSave(rankGirlName, rankGirlUUID, 100); //Rank 1
+        PlayerProfile rankBoyProfile = addPlayerProfileWithLevelsAndSave(rankBoyName, rankBoyUUID, 10); //Rank 2
+
+        assertEquals(LeaderboardStatus.UPDATED, db.updateLeaderboards());
+        Map<PrimarySkillType, Integer> rankGirlPositions = db.readRank(rankGirlName);
+        Map<PrimarySkillType, Integer> rankBoyPositions = db.readRank(rankBoyName);
+
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if(primarySkillType.isChildSkill()) {
+                assertNull(rankBoyPositions.get(primarySkillType));
+                assertNull(rankGirlPositions.get(primarySkillType));
+            } else {
+                assertEquals(1, rankGirlPositions.get(primarySkillType));
+                assertEquals(2, rankBoyPositions.get(primarySkillType));
+            }
+        }
+
+        assertEquals(1, db.readRank(rankGirlName).get(null)); //Girl should be position 1
+        assertEquals(2, db.readRank(rankBoyName).get(null)); //Boy should be position 2
+    }
+
+    @Test
     public void testLoadFromFile() {
         ClassLoader classLoader = getClass().getClassLoader();
         URI resourceFileURI = null;
@@ -706,6 +736,38 @@ public class FlatFileDatabaseManagerTest {
         }
 
         return splitDataList;
+    }
+
+    private @NotNull PlayerProfile addPlayerProfileWithLevelsAndSave(String playerName, UUID uuid, int levels) {
+        assertNotNull(db);
+        assertFalse(db.loadPlayerProfile(uuid).isLoaded());
+
+        db.newUser(playerName, uuid);
+        PlayerProfile leveledProfile = db.loadPlayerProfile(uuid);
+
+        assertTrue(leveledProfile.isLoaded());
+        assertEquals(playerName, leveledProfile.getPlayerName());
+        assertEquals(uuid, leveledProfile.getUniqueId());
+
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if(SkillTools.isChildSkill(primarySkillType))
+                continue;
+
+            leveledProfile.modifySkill(primarySkillType, levels); //TODO: This method also resets XP, not cool
+        }
+
+        db.saveUser(leveledProfile);
+        leveledProfile = db.loadPlayerProfile(uuid);
+
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if(SkillTools.isChildSkill(primarySkillType)) {
+                continue;
+            }
+
+            assertEquals(levels, leveledProfile.getSkillLevel(primarySkillType));
+        }
+
+        return leveledProfile;
     }
 
     private void replaceDataInFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
