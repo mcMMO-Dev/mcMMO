@@ -157,8 +157,10 @@ public class MiningManager extends SkillManager {
     //TODO: Rewrite this garbage
     //TODO: Rewrite this garbage
     public void blastMiningDropProcessing(float yield, EntityExplodeEvent event) {
-        //Strip out only stuff that gives mining XP
+        if (yield == 0)
+            return;
 
+        //Strip out only stuff that gives mining XP
         List<BlockState> ores = new ArrayList<>();
 
         List<BlockState> notOres = new ArrayList<>();
