@@ -107,6 +107,11 @@ public class WoodcuttingManager extends SkillManager {
             treeFellerReachedThreshold = false;
 
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Woodcutting.Skills.TreeFeller.Threshold");
+
+            //Tree feller won't be activated for this block, award normal xp.
+            processWoodcuttingBlockXP(blockState);
+            processHarvestLumber(blockState);
+
             return;
         }
 
@@ -282,7 +287,7 @@ public class WoodcuttingManager extends SkillManager {
             Block block = blockState.getBlock();
 
             if (!EventUtils.simulateBlockBreak(block, player, true)) {
-                break; // TODO: Shouldn't we use continue instead?
+                continue;
             }
 
             /*

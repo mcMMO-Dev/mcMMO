@@ -941,6 +941,10 @@ public class McMMOPlayer implements Identified {
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
+        //If the current item is still buffed somehow, remove it to prevent enchantments from stacking.
+        if (superAbilityType == SuperAbilityType.SUPER_BREAKER || superAbilityType == SuperAbilityType.GIGA_DRILL_BREAKER)
+            SkillUtils.removeAbilityBuff(player.getInventory().getItemInMainHand());
+
         // Enable the ability
         profile.setAbilityDATS(superAbilityType, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(superAbilityType, true);
