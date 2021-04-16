@@ -5,6 +5,7 @@ Version 2.1.193
     Fixed blocks being dropped from blast mining even if yield was set to 0 (thanks Warriorrrr)
     Fixed Tree feller not working entirely if one fake block break event is cancelled. (thanks Warriorrrr)
     Fixes no woodcutting xp being rewarded if a tree is too big while using tree feller. (thanks Warriorrrr)
+    Updated pl locale (thanks Mich3l3k)
 
 Version 2.1.192
     Removed some debug messages from FlatFileDatabaseManager
