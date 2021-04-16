@@ -184,6 +184,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
             skillTools = new SkillTools(this); //Load after general config
 
@@ -207,7 +208,6 @@ public class mcMMO extends JavaPlugin {
 
             upgradeManager = new UpgradeManager();
 
-            setupFilePaths();
 
             modManager = new ModManager();
 
@@ -338,7 +338,6 @@ public class mcMMO extends JavaPlugin {
 
         transientEntityTracker = new TransientEntityTracker();
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
-        LocaleLoader.reloadLocale(); //Apply override locale
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {

@@ -152,6 +152,7 @@ public final class LocaleLoader {
                     mcMMO.p.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
                 }
             }
+
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
         }

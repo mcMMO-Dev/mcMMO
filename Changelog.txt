@@ -1,3 +1,6 @@
+Version 2.1.194
+    Fixed a bug where mcMMO didn't properly setup file paths for locale override
+
 Version 2.1.193
     Fixed another bug where mcrank/mctop/leaderboards weren't loading
     Fixed a bug where override locales weren't being loaded (but worked after a reloadlocale command)
