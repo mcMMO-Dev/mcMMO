@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.blockmeta.HashChunkManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -1074,7 +1072,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             try {
                 // Open the file to write the player
                 bufferedWriter = new BufferedWriter(new FileWriter(usersFilePath, true));
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
                 LocalDateTime localDateTime = LocalDateTime.now();
                 bufferedWriter.append("# mcMMO Database created on ").append(localDateTime.format(dateTimeFormatter)).append("\r\n"); //Empty file
             } catch (Exception e) {

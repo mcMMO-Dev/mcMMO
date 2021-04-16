@@ -9,7 +9,6 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -19,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class ExperienceCommand implements TabExecutor {
     @Override

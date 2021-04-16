@@ -1,5 +1,11 @@
 Version 2.1.194
-    Fixed a bug where mcMMO didn't properly setup file paths for locale override
+    Locale override files are now named locale_override.properties (converted automatically/generated automatically)
+    Existing in use locale override files will be renamed to locale_override.properties and have some useful text put in them
+    mcMMO will now generate a locale override file with some detailed instructions if one doesn't exist (will be found in /plugins/mcMMO/locales/locale_override.properties)
+
+    NOTES:
+    If you were overriding locale before this update mcMMO will just rename the existing override file to locale_override.properties add some useful text and then load it
+    Remember you can use /mcreloadlocale to swap the edits in without restarting the server
 
 Version 2.1.193
     Fixed another bug where mcrank/mctop/leaderboards weren't loading
