@@ -1,7 +1,7 @@
 Version 2.1.193
     Fixed another bug where mcrank/mctop/leaderboards weren't loading
     Fixed a bug where override locales weren't being loaded (but worked after a reloadlocale command)
-    (Unit Tests) Added a test to make sure leaderboards were working
+    (Unit Tests) Added a test to make sure leaderboards for FlatFile were working
     Fixed blocks being dropped from blast mining even if yield was set to 0 (thanks Warriorrrr)
     Fixed Tree feller not working entirely if one fake block break event is cancelled. (thanks Warriorrrr)
     Fixes no woodcutting xp being rewarded if a tree is too big while using tree feller. (thanks Warriorrrr)
