@@ -493,6 +493,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
+        skills.put(null, getPlayerRank(playerName, powerLevels));
+
         return skills;
     }
 
