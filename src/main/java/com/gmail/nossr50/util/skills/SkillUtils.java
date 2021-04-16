@@ -158,8 +158,7 @@ public final class SkillUtils {
             //1.13.2+ will have persistent metadata for this item
             AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
             compatLayer.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
-        }
-        else {
+        } else {
             int duration = 0;
             int amplifier = 0;
 
