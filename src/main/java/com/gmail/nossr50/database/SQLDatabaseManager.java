@@ -31,6 +31,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final String UUID_VARCHAR = "VARCHAR(36)";
     public static final String USER_VARCHAR = "VARCHAR(40)";
     public static final int CHILD_SKILLS_SIZE = 2;
+    public static final String LEGACY_DRIVER_PATH = "com.mysql.jdbc.Driver";
     private final String tablePrefix = mcMMO.p.getGeneralConfig().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
@@ -44,6 +45,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private final ReentrantLock massUpdateLock = new ReentrantLock();
 
     private final String CHARSET_SQL = "utf8mb4"; //This is compliant with UTF-8 while "utf8" is not, confusing but this is how it is.
+    private String driverPath = "com.mysql.cj.jdbc.Driver"; //modern driver
 
     protected SQLDatabaseManager() {
         String connectionString = "jdbc:mysql://" + mcMMO.p.getGeneralConfig().getMySQLServerName()
@@ -60,10 +62,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             // Force driver to load if not yet loaded
-            Class.forName("com.mysql.jdbc.Driver");
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Class.forName(driverPath);
+        } catch (ClassNotFoundException e) {
+            try {
+                driverPath = LEGACY_DRIVER_PATH; //fall on deprecated path if new path isn't found
+                Class.forName(driverPath);
+            } catch (ClassNotFoundException ex) {
+                e.printStackTrace();
+                ex.printStackTrace();
+                mcMMO.p.getLogger().severe("Neither driver found");
+            }
             return;
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
@@ -71,7 +79,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         debug = mcMMO.p.getGeneralConfig().getMySQLDebug();
 
         PoolProperties poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+        poolProperties.setDriverClassName(driverPath);
         poolProperties.setUrl(connectionString);
         poolProperties.setUsername(mcMMO.p.getGeneralConfig().getMySQLUserName());
         poolProperties.setPassword(mcMMO.p.getGeneralConfig().getMySQLUserPassword());
@@ -86,7 +94,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setValidationInterval(30000);
         miscPool = new DataSource(poolProperties);
         poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+        poolProperties.setDriverClassName(driverPath);
         poolProperties.setUrl(connectionString);
         poolProperties.setUsername(mcMMO.p.getGeneralConfig().getMySQLUserName());
         poolProperties.setPassword(mcMMO.p.getGeneralConfig().getMySQLUserPassword());
@@ -101,7 +109,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setValidationInterval(30000);
         savePool = new DataSource(poolProperties);
         poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+        poolProperties.setDriverClassName(driverPath);
         poolProperties.setUrl(connectionString);
         poolProperties.setUsername(mcMMO.p.getGeneralConfig().getMySQLUserName());
         poolProperties.setPassword(mcMMO.p.getGeneralConfig().getMySQLUserPassword());
@@ -1018,7 +1026,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     break;
 
                 case ADD_SQL_INDEXES:
-                    checkUpgradeAddSQLIndexes(statement);
+//                    checkUpgradeAddSQLIndexes(statement);
                     break;
 
                 case ADD_MOB_HEALTHBARS:

@@ -1,4 +1,7 @@
 Version 2.1.194
+    Fixed an XP exploit
+    Updated SQL to not throw errors if upgrades.yml was reset for any reason
+    Updated SQL to use the newest driver path (and fall back to the old one if the new one doesn't exist on the server)
     Locale override files are now named locale_override.properties (converted automatically/generated automatically)
     Existing in use locale override files will be renamed to locale_override.properties and have some useful text put in them
     mcMMO will now generate a locale override file with some detailed instructions if one doesn't exist (will be found in /plugins/mcMMO/locales/locale_override.properties)
