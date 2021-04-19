@@ -71,8 +71,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
                 ex.printStackTrace();
                 mcMMO.p.getLogger().severe("Neither driver found");
+                return;
             }
-            return;
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
 
