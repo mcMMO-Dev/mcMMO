@@ -1,3 +1,6 @@
+Version 2.1.195
+    Fixed a null connection error which affected some SQL users
+
 Version 2.1.194
     Fixed an XP exploit
     Updated SQL to not throw errors if upgrades.yml was reset for any reason
