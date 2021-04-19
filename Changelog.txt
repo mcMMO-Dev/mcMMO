@@ -1,6 +1,9 @@
 Version 2.1.196
     Crossbows can now be fished up with enchantments
 
+    NOTES:
+    Crossbows is not in the default fishing loot list, you'd have to add it yourself.
+
 Version 2.1.195
     Fixed a null connection error which affected some SQL users
 
