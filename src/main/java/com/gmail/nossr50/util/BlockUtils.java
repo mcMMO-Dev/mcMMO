@@ -293,7 +293,7 @@ public final class BlockUtils {
         World world = block.getWorld();
 
         //pretty sure both height and min height are able to have blocks placed on them
-        return block.getY() >= worldCompatibilityLayer.getMinWorldHeight(world) && block.getY() <= worldCompatibilityLayer.getMaxWorldHeight(world);
+        return block.getY() >= worldCompatibilityLayer.getMinWorldHeight(world) && block.getY() < worldCompatibilityLayer.getMaxWorldHeight(world);
     }
 
 }

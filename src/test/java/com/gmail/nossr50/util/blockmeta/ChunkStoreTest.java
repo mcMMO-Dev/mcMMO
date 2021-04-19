@@ -40,6 +40,8 @@ import static org.mockito.Mockito.mock;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Bukkit.class, mcMMO.class})
 public class ChunkStoreTest {
+    public static final int LEGACY_WORLD_HEIGHT_MAX = 256;
+    public static final int LEGACY_WORLD_HEIGHT_MIN = 0;
     private static File tempDir;
     @BeforeClass
     public static void setUpClass() {
@@ -77,8 +79,20 @@ public class ChunkStoreTest {
         Mockito.when(platformManager.getCompatibilityManager()).thenReturn(compatibilityManager);
         Mockito.when(platformManager.getCompatibilityManager().getWorldCompatibilityLayer()).thenReturn(worldCompatibilityLayer);
         Assert.assertNotNull(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer());
-        Mockito.when(worldCompatibilityLayer.getMinWorldHeight(mockWorld)).thenReturn(0);
-        Mockito.when(worldCompatibilityLayer.getMaxWorldHeight(mockWorld)).thenReturn(255);
+        Mockito.when(worldCompatibilityLayer.getMinWorldHeight(mockWorld)).thenReturn(LEGACY_WORLD_HEIGHT_MIN);
+        Mockito.when(worldCompatibilityLayer.getMaxWorldHeight(mockWorld)).thenReturn(LEGACY_WORLD_HEIGHT_MAX);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testIndexOutOfBounds() {
+        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
+        HashChunkManager hashChunkManager = new HashChunkManager();
+
+
+        //Top Block
+        TestBlock illegalHeightBlock = new TestBlock(1337, 256, -1337, mockWorld);
+        Assert.assertFalse(hashChunkManager.isTrue(illegalHeightBlock));
+        hashChunkManager.setTrue(illegalHeightBlock);
     }
 
     @Test
@@ -108,7 +122,7 @@ public class ChunkStoreTest {
         Assert.assertTrue(hashChunkManager.isTrue(bottomBlock));
 
         //Top Block
-        TestBlock topBlock = new TestBlock(1337, 256, -1337, mockWorld);
+        TestBlock topBlock = new TestBlock(1337, 255, -1337, mockWorld);
         Assert.assertFalse(hashChunkManager.isTrue(topBlock));
 
         Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, topBlock));
