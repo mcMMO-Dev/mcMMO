@@ -1,3 +1,6 @@
+Version 2.1.196
+    Crossbows can now be fished up with enchantments
+
 Version 2.1.195
     Fixed a null connection error which affected some SQL users
 
