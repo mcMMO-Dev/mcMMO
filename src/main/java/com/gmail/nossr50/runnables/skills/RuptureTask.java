@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRupture;
+import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
@@ -57,7 +57,7 @@ public class RuptureTask extends BukkitRunnable {
                     return;
 
                 //Send a fake damage event
-                McMMOEntityDamageByRupture event = new McMMOEntityDamageByRupture(ruptureSource, targetEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, calculateAdjustedTickDamage());
+                McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, calculateAdjustedTickDamage());
                 mcMMO.p.getServer().getPluginManager().callEvent(event);
 
                 //Ensure the event wasn't cancelled and damage is still greater than 0

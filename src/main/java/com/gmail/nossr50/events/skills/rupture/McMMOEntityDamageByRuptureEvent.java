@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class McMMOEntityDamageByRupture extends FakeEntityDamageByEntityEvent {
-	public McMMOEntityDamageByRupture(@NotNull Player damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
+public class McMMOEntityDamageByRuptureEvent extends FakeEntityDamageByEntityEvent {
+	public McMMOEntityDamageByRuptureEvent(@NotNull Player damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
 		super(damager, damagee, cause, getDamageMap(damage));
 	}
 
-	public McMMOEntityDamageByRupture(@NotNull McMMOPlayer damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
+	public McMMOEntityDamageByRuptureEvent(@NotNull McMMOPlayer damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
 		this(damager.getPlayer(), damagee, cause, damage);
 	}
 
