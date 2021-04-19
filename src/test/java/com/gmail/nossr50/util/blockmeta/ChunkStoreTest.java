@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.blockmeta;
 
 import com.gmail.nossr50.TestUtil;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
 import com.gmail.nossr50.util.platform.PlatformManager;
@@ -97,6 +98,22 @@ public class ChunkStoreTest {
                 }
             }
         }
+
+        //Bot Block
+        TestBlock bottomBlock = new TestBlock(1337, 0, -1337, mockWorld);
+        Assert.assertFalse(hashChunkManager.isTrue(bottomBlock));
+
+        Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, bottomBlock));
+        hashChunkManager.setTrue(bottomBlock);
+        Assert.assertTrue(hashChunkManager.isTrue(bottomBlock));
+
+        //Top Block
+        TestBlock topBlock = new TestBlock(1337, 256, -1337, mockWorld);
+        Assert.assertFalse(hashChunkManager.isTrue(topBlock));
+
+        Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, topBlock));
+        hashChunkManager.setTrue(topBlock);
+        Assert.assertTrue(hashChunkManager.isTrue(topBlock));
     }
 
     @Test
