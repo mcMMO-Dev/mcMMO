@@ -1,9 +1,9 @@
 package com.gmail.nossr50.events.fake;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -13,21 +13,21 @@ import java.util.Map;
  */
 public class FakeEntityDamageByEntityEvent extends EntityDamageByEntityEvent implements FakeEvent {
 
-    public FakeEntityDamageByEntityEvent(Entity damager, Entity damagee, DamageCause cause, final Map<DamageModifier, Double> modifiers) {
+    public FakeEntityDamageByEntityEvent(@NotNull Entity damager, @NotNull Entity damagee, @NotNull DamageCause cause, @NotNull final Map<DamageModifier, Double> modifiers) {
         super(damager, damagee, cause, modifiers, getFunctionModifiers(modifiers));
     }
 
     @Deprecated
-    public FakeEntityDamageByEntityEvent(Entity damager, Entity damagee, DamageCause cause, double damage) {
+    public FakeEntityDamageByEntityEvent(@NotNull Entity damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
         super(damager, damagee, cause, damage);
     }
 
-    public static EnumMap<DamageModifier, Function<? super Double, Double>> getFunctionModifiers(Map<DamageModifier, Double> modifiers) {
+    @NotNull
+    public static EnumMap<DamageModifier, Function<? super Double, Double>> getFunctionModifiers(@NotNull Map<DamageModifier, Double> modifiers) {
         EnumMap<DamageModifier, Function<? super Double, Double>> modifierFunctions = new EnumMap<>(DamageModifier.class);
-        Function<? super Double, Double> ZERO = Functions.constant(-0.0);
 
         for (DamageModifier modifier : modifiers.keySet()) {
-            modifierFunctions.put(modifier, ZERO);
+            modifierFunctions.put(modifier, (o -> -0.0));
         }
 
         return modifierFunctions;

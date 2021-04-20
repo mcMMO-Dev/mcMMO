@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
@@ -45,18 +46,25 @@ public class RuptureTask extends BukkitRunnable {
             if(ruptureTick < expireTick) {
                 //Is it time to damage?
                 if(damageTickTracker >= DAMAGE_TICK_INTERVAL) {
-                    damageTickTracker = 0; //Reset
-                    ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
 
-                    if(targetEntity.getHealth() > 0.01) {
-                        double healthBeforeRuptureIsApplied = targetEntity.getHealth();
-                        double damagedHealth = healthBeforeRuptureIsApplied - calculateAdjustedTickDamage();
+                    damageTickTracker = 0; //Reset timer
+                    double healthBeforeRuptureIsApplied = targetEntity.getHealth();
 
-                        if(damagedHealth <= 0) {
-                            mcMMO.p.getLogger().severe("DEBUG: Miscalculating Rupture tick damage");
-                        } else {
-                            targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()
-                        }
+                    //Ensure victim has health
+                    if (healthBeforeRuptureIsApplied > 0.01) {
+                        //Send a fake damage event
+                        McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
+                        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+                        //Ensure the event wasn't cancelled and damage is still greater than 0
+                        double damage = event.getFinalDamage();
+                        if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
+                            return;
+
+                        ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+                        double damagedHealth = healthBeforeRuptureIsApplied - damage;
+
+                        targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
                     }
                 }
             } else {

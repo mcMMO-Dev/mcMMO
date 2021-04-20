@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
+import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.archery.Archery;
@@ -290,7 +291,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent) {
+        if (event instanceof FakeEntityDamageByEntityEvent || event instanceof McMMOEntityDamageByRuptureEvent) {
             return;
         }
 
