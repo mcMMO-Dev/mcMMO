@@ -46,32 +46,27 @@ public class RuptureTask extends BukkitRunnable {
             //Rupture hasn't ended yet
             if(ruptureTick < expireTick) {
                 //Is it time to damage?
-                if(damageTickTracker < DAMAGE_TICK_INTERVAL)
-                    return;
+                if(damageTickTracker >= DAMAGE_TICK_INTERVAL) {
 
-                damageTickTracker = 0; //Reset timer
-                double healthBeforeRuptureIsApplied = targetEntity.getHealth();
+                    damageTickTracker = 0; //Reset timer
+                    double healthBeforeRuptureIsApplied = targetEntity.getHealth();
 
-                //Ensure victim has health
-                if(healthBeforeRuptureIsApplied <= 0.01)
-                    return;
+                    //Ensure victim has health
+                    if (healthBeforeRuptureIsApplied > 0.01) {
+                        //Send a fake damage event
+                        McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, calculateAdjustedTickDamage());
+                        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-                //Send a fake damage event
-                McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, calculateAdjustedTickDamage());
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
+                        //Ensure the event wasn't cancelled and damage is still greater than 0
+                        double damage = event.getFinalDamage();
+                        if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
+                            return;
 
-                //Ensure the event wasn't cancelled and damage is still greater than 0
-                double damage = event.getFinalDamage();
-                if (event.isCancelled() || damage <= 0)
-                    return;
+                        ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+                        double damagedHealth = healthBeforeRuptureIsApplied - damage;
 
-                ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
-                double damagedHealth = healthBeforeRuptureIsApplied - damage;
-
-                if(damagedHealth <= 0) {
-                    mcMMO.p.getLogger().severe("DEBUG: Miscalculating Rupture tick damage");
-                } else {
-                    targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()
+                        targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
+                    }
                 }
             } else {
                 explode();

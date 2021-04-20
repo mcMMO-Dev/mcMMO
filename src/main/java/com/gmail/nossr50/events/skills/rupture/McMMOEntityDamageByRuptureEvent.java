@@ -1,33 +1,23 @@
 package com.gmail.nossr50.events.skills.rupture;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
+import com.google.common.collect.ImmutableMap;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
-public class McMMOEntityDamageByRuptureEvent extends FakeEntityDamageByEntityEvent {
-	public McMMOEntityDamageByRuptureEvent(@NotNull Player damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
-		super(damager, damagee, cause, getDamageMap(damage));
-	}
+public class McMMOEntityDamageByRuptureEvent extends EntityDamageByEntityEvent {
+	private final McMMOPlayer mcMMODamager;
 
 	public McMMOEntityDamageByRuptureEvent(@NotNull McMMOPlayer damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
-		this(damager.getPlayer(), damagee, cause, damage);
-	}
-
-	private static Map<EntityDamageEvent.DamageModifier, Double> getDamageMap(double damage) {
-		Map<EntityDamageEvent.DamageModifier, Double> damageMap = new HashMap<>();
-		damageMap.put(EntityDamageEvent.DamageModifier.BASE, damage);
-		return damageMap;
+		super(damager.getPlayer(), damagee, cause, new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, damage)), new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, (o -> -0.0))));
+		this.mcMMODamager = damager;
 	}
 
 	@NotNull
-	@Override
-	public Player getDamager() {
-		return (Player) super.getDamager();
+	public McMMOPlayer getMcMMODamager() {
+		return mcMMODamager;
 	}
 }
