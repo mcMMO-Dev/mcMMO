@@ -11,8 +11,8 @@ import java.util.EnumMap;
 public class McMMOEntityDamageByRuptureEvent extends EntityDamageByEntityEvent {
 	private final McMMOPlayer mcMMODamager;
 
-	public McMMOEntityDamageByRuptureEvent(@NotNull McMMOPlayer damager, @NotNull Entity damagee, @NotNull DamageCause cause, double damage) {
-		super(damager.getPlayer(), damagee, cause, new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, damage)), new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, (o -> -0.0))));
+	public McMMOEntityDamageByRuptureEvent(@NotNull McMMOPlayer damager, @NotNull Entity damagee, double damage) {
+		super(damager.getPlayer(), damagee, DamageCause.CUSTOM, new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, damage)), new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, (o -> -0.0))));
 		this.mcMMODamager = damager;
 	}
 
