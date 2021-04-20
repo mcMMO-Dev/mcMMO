@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -112,7 +111,7 @@ public class UnarmedManager extends SkillManager {
 
             Item item = Misc.spawnItem(defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
 
-            if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
+            if (item != null && mcMMO.p.getAdvancedConfig().getDisarmProtected()) {
                 item.setMetadata(mcMMO.disarmedItemKey, UserManager.queryPlayer(defender).getPlayerMetadata());
             }
 
@@ -166,8 +165,8 @@ public class UnarmedManager extends SkillManager {
         double finalBonus = bonus + 0.5 + (rank / 2);
 
 
-        if(AdvancedConfig.getInstance().isSteelArmDamageCustom()) {
-            return AdvancedConfig.getInstance().getSteelArmOverride(RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE), finalBonus);
+        if(mcMMO.p.getAdvancedConfig().isSteelArmDamageCustom()) {
+            return mcMMO.p.getAdvancedConfig().getSteelArmOverride(RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE), finalBonus);
         } else {
             return finalBonus;
         }

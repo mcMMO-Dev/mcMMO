@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundType;
 
 public class SoundConfig extends AutoUpdateConfigLoader {
@@ -31,7 +32,7 @@ public class SoundConfig extends AutoUpdateConfigLoader {
         {
             if(config.getDouble("Sounds."+soundType.toString()+".Volume") < 0)
             {
-                plugin.getLogger().info("[mcMMO] Sound volume cannot be below 0 for "+soundType.toString());
+                mcMMO.p.getLogger().info("[mcMMO] Sound volume cannot be below 0 for "+soundType.toString());
                 return false;
             }
 
@@ -40,7 +41,7 @@ public class SoundConfig extends AutoUpdateConfigLoader {
             {
                 if(config.getDouble("Sounds."+soundType.toString()+".Pitch") < 0)
                 {
-                    plugin.getLogger().info("[mcMMO] Sound pitch cannot be below 0 for "+soundType.toString());
+                    mcMMO.p.getLogger().info("[mcMMO] Sound pitch cannot be below 0 for "+soundType.toString());
                     return false;
                 }
             }

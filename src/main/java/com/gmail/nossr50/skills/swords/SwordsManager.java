@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.swords;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
 import com.gmail.nossr50.datatypes.skills.AbilityToolType;
@@ -76,7 +75,7 @@ public class SwordsManager extends SkillManager {
             return; //Don't apply bleed
         }
 
-        if (RandomChanceUtil.rollDice(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(getRuptureRank()), 100)) {
+        if (RandomChanceUtil.rollDice(mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank()), 100)) {
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
@@ -91,8 +90,8 @@ public class SwordsManager extends SkillManager {
             }
 
             RuptureTask ruptureTask = new RuptureTask(mmoPlayer, target,
-                    AdvancedConfig.getInstance().getRuptureTickDamage(target instanceof Player, getRuptureRank()),
-                    AdvancedConfig.getInstance().getRuptureExplosionDamage(target instanceof Player, getRuptureRank()));
+                    mcMMO.p.getAdvancedConfig().getRuptureTickDamage(target instanceof Player, getRuptureRank()),
+                    mcMMO.p.getAdvancedConfig().getRuptureExplosionDamage(target instanceof Player, getRuptureRank()));
 
             RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
 
@@ -136,7 +135,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public int getRuptureBleedTicks(boolean isTargetPlayer) {
-        return AdvancedConfig.getInstance().getRuptureDurationSeconds(isTargetPlayer) / RuptureTask.DAMAGE_TICK_INTERVAL;
+        return mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(isTargetPlayer) / RuptureTask.DAMAGE_TICK_INTERVAL;
     }
 
     /**

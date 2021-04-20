@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -11,17 +12,27 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
+    public AutoUpdateConfigLoader(String relativePath, String fileName, File dataFolder) {
+        super(relativePath, fileName, dataFolder);
+    }
+
+    public AutoUpdateConfigLoader(String fileName, File dataFolder) {
+        super(fileName, dataFolder);
+    }
+
+    @Deprecated
     public AutoUpdateConfigLoader(String relativePath, String fileName) {
         super(relativePath, fileName);
     }
 
+    @Deprecated
     public AutoUpdateConfigLoader(String fileName) {
         super(fileName);
     }
 
     protected void saveConfig() {
         try {
-            plugin.getLogger().info("Saving changes to config file - "+fileName);
+            mcMMO.p.getLogger().info("Saving changes to config file - "+fileName);
             config.save(configFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,13 +40,13 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
     }
 
     protected @NotNull FileConfiguration getInternalConfig() {
-        return YamlConfiguration.loadConfiguration(plugin.getResourceAsReader(fileName));
+        return YamlConfiguration.loadConfiguration(mcMMO.p.getResourceAsReader(fileName));
     }
 
     @Override
     protected void loadFile() {
         super.loadFile();
-        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(plugin.getResourceAsReader(fileName));
+        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(mcMMO.p.getResourceAsReader(fileName));
 
         Set<String> configKeys = config.getKeys(true);
         Set<String> internalConfigKeys = internalConfig.getKeys(true);
@@ -55,12 +66,12 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         }
 //
 //        for (String key : oldKeys) {
-//            plugin.debug("Detected potentially unused key: " + key);
+//            mcMMO.p.debug("Detected potentially unused key: " + key);
 //            //config.set(key, null);
 //        }
 
         for (String key : newKeys) {
-            plugin.debug("Adding new key: " + key + " = " + internalConfig.get(key));
+            mcMMO.p.debug("Adding new key: " + key + " = " + internalConfig.get(key));
             config.set(key, internalConfig.get(key));
         }
 
@@ -79,7 +90,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             // Read the internal config to get comments, then put them in the new one
             try {
                 // Read internal
-                BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource(fileName)));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(mcMMO.p.getResource(fileName)));
                 LinkedHashMap<String, String> comments = new LinkedHashMap<>();
                 StringBuilder temp = new StringBuilder();
 
@@ -129,14 +140,21 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             }
 
             // Save it
+            if(dataFolder == null) {
+                mcMMO.p.getLogger().severe("Data folder should never be null!");
+                return;
+            }
+
             try {
                 String saveName = fileName;
                 // At this stage we cannot guarantee that Config has been loaded, so we do the check directly here
-                if (!plugin.getConfig().getBoolean("General.Config_Update_Overwrite", true)) {
+                if (!mcMMO.p.getConfig().getBoolean("General.Config_Update_Overwrite", true)) {
                     saveName += ".new";
                 }
 
-                BufferedWriter writer = new BufferedWriter(new FileWriter(new File(plugin.getDataFolder(), saveName)));
+                File newSaveFile = new File(dataFolder, saveName);
+                FileWriter fileWriter = new FileWriter(newSaveFile.getAbsolutePath());
+                BufferedWriter writer = new BufferedWriter(fileWriter);
                 writer.write(output);
                 writer.flush();
                 writer.close();

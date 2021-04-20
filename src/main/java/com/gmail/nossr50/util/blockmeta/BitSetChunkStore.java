@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public class BitSetChunkStore implements ChunkStore {
     private transient boolean dirty = false;
 
     public BitSetChunkStore(@NotNull World world, int cx, int cz) {
-        this(world.getUID(), Misc.getWorldMinCompat(world), world.getMaxHeight(), cx, cz);
+        this(world.getUID(), mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(world), world.getMaxHeight(), cx, cz);
     }
 
     private BitSetChunkStore(@NotNull UUID worldUid, int worldMin, int worldMax, int cx, int cz) {
@@ -109,15 +109,14 @@ public class BitSetChunkStore implements ChunkStore {
         return (z * 16 + x) + (256 * (y + yOffset));
     }
 
-    private static int getWorldMin(@NotNull UUID worldUid, int storedWorldMin)
-    {
+    private static int getWorldMin(@NotNull UUID worldUid, int storedWorldMin) {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
         if (world == null)
             return storedWorldMin;
 
-        return Misc.getWorldMinCompat(world);
+        return mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(world);
     }
 
     private static int getWorldMax(@NotNull UUID worldUid, int storedWorldMax)

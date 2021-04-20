@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.math.RandomUtils;
@@ -24,7 +24,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playBleedEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getBleedEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getBleedEffectEnabled()) {
             return;
         }
 
@@ -63,7 +63,7 @@ public final class ParticleEffectUtils {
 
 
     public static void playDodgeEffect(Player player) {
-        if (!Config.getInstance().getDodgeEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getDodgeEffectEnabled()) {
             return;
         }
 
@@ -71,7 +71,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playFluxEffect(Location location) {
-        if (!Config.getInstance().getFluxEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getFluxEffectEnabled()) {
             return;
         }
 
@@ -100,7 +100,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playGreaterImpactEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getGreaterImpactEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getGreaterImpactEffectEnabled()) {
             return;
         }
 
@@ -110,7 +110,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getCallOfTheWildEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getCallOfTheWildEffectEnabled()) {
             return;
         }
 
@@ -118,7 +118,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playAbilityDisabledEffect(Player player) {
-        if (!Config.getInstance().getAbilityDeactivationEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getAbilityDeactivationEffectEnabled()) {
         }
 
         /*if (hasHeadRoom(player)) {

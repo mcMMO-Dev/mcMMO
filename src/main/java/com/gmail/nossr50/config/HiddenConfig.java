@@ -9,7 +9,6 @@ public class HiddenConfig {
     private static HiddenConfig instance;
     private final String fileName;
     private YamlConfiguration config;
-    private boolean chunkletsEnabled;
     private int conversionRate;
     private boolean useEnchantmentBuffs;
 
@@ -30,15 +29,11 @@ public class HiddenConfig {
         InputStreamReader reader = mcMMO.p.getResourceAsReader(fileName);
         if (reader != null) {
             config = YamlConfiguration.loadConfiguration(reader);
-            chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
             conversionRate = config.getInt("Options.ConversionRate", 1);
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
         }
     }
 
-    public boolean getChunkletsEnabled() {
-        return chunkletsEnabled;
-    }
 
     public int getConversionRate() {
         return conversionRate;

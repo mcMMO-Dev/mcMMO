@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -36,12 +35,12 @@ public class InspectCommand implements TabExecutor {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled()
+                if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
                         && sender instanceof Player
-                        && Config.getInstance().getInspectUseBoard()) {
+                        && mcMMO.p.getGeneralConfig().getInspectUseBoard()) {
                     ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
-                    if (!Config.getInstance().getInspectUseChat()) {
+                    if (!mcMMO.p.getGeneralConfig().getInspectUseChat()) {
                         return true;
                     }
                 }
@@ -49,17 +48,17 @@ public class InspectCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
@@ -76,12 +75,12 @@ public class InspectCommand implements TabExecutor {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled()
+                if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
                         && sender instanceof Player
-                        && Config.getInstance().getInspectUseBoard()) {
+                        && mcMMO.p.getGeneralConfig().getInspectUseBoard()) {
                     ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer);
 
-                    if (!Config.getInstance().getInspectUseChat()) {
+                    if (!mcMMO.p.getGeneralConfig().getInspectUseChat()) {
                         return true;
                     }
                 }

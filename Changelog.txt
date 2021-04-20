@@ -103,21 +103,88 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
-Version 2.1.189
-    Removed UP warning
-    Updated pl locale (Thanks Mich3l3k)
+Version 2.1.196
+    Crossbows can now be fished up with enchantments
 
     NOTES:
-    Ultra Permissions is SAFE to use with mcMMO
+    Crossbows is not in the default fishing loot list, you'd have to add it yourself.
+
+Version 2.1.195
+    Fixed a null connection error which affected some SQL users
+
+Version 2.1.194
+    Fixed an XP exploit
+    Updated SQL to not throw errors if upgrades.yml was reset for any reason
+    Updated SQL to use the newest driver path (and fall back to the old one if the new one doesn't exist on the server)
+    Locale override files are now named locale_override.properties (converted automatically/generated automatically)
+    Existing in use locale override files will be renamed to locale_override.properties and have some useful text put in them
+    mcMMO will now generate a locale override file with some detailed instructions if one doesn't exist (will be found in /plugins/mcMMO/locales/locale_override.properties)
+
+    NOTES:
+    If you were overriding locale before this update mcMMO will just rename the existing override file to locale_override.properties add some useful text and then load it
+    Remember you can use /mcreloadlocale to swap the edits in without restarting the server
+
+Version 2.1.193
+    Fixed another bug where mcrank/mctop/leaderboards weren't loading
+    Fixed a bug where override locales weren't being loaded (but worked after a reloadlocale command)
+    (Unit Tests) Added a test to make sure leaderboards for FlatFile were working
+    Fixed blocks being dropped from blast mining even if yield was set to 0 (thanks Warriorrrr)
+    Fixed Tree feller not working entirely if one fake block break event is cancelled. (thanks Warriorrrr)
+    Fixes no woodcutting xp being rewarded if a tree is too big while using tree feller. (thanks Warriorrrr)
+    Updated pl locale (thanks Mich3l3k)
+
+Version 2.1.192
+    Removed some debug messages from FlatFileDatabaseManager
+    Fixed another bug where player names could be saved as null for FlatFileDB (they will update on the players next login at the next save interval)
+    (API) Removed deprecation from com.gmail.nossr50.api.ExperienceAPI.getOfflineProfile(java.lang.String)
+    (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(org.bukkit.OfflinePlayer)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineProfile(org.bukkit.OfflinePlayer)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXP(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPRaw(org.bukkit.OfflinePlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPRaw(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPToNextLevel(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(java.lang.String)
+    (Unit Tests) Added some more unit tests to FlatFileDB
+
+Version 2.1.191
+    Fixed a bug related to our blocktracker
+    Fixed a bug that prevented the leaderboards from working on FlatFile in some circumstances
+    Some minor optimizations to our Block events
+    (Unit Tests) Added a test for initializing the leaderboard on FlatFile
+Version 2.1.190
+    Fixed a null error in BitSetChunkStore
+Version 2.1.189
+    Fixed a bug that would remove components from death messages when players were killed by mobs (thanks lexikiq)
+    Rewrote how FlatFileDatabase verifies data integrity
+    FlatFileDatabase has much better data validation and will repair broken/invalid data much better
+    Fixed a bug where FlatFileDatabase users could have their names saved as "null" (names will be fixed the next time the player logs in)
+    Added 20~ unit tests for FlatFileDatabaseManager (see notes)
+    FlatFileDB now stores the last login of users again (was completely non functional for a while)
+    Newly created flat file databases (mcmmo.users file) will have a comment line at the top noting the date the database was created
+    Minor performance optimizations to FlatFile database
+    mcMMO will once again purge old users if the config option is on (see notes)
+    Fixed a bug where FlatFileDatabaseManager didn't properly upgrade older database entries to the newest schema
+    The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
+    Added 'mcMMO_Region_System.Enabled' to persistent_data.yml (don't touch this setting unless you know what you are doing)
+    Removed MHD command (it didn't do anything for a while now)
+    Removed UltraPermissions warning
+    Updated pl locale (Thanks Mich3l3k)
+    Fixed an IllegalPluginAccessException error that could happen during server shutdown
+    Minor performance optimizations to misc parts of the codebase
+    (API) Added com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(org.bukkit.OfflinePlayer)
+    (API) Deprecated com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(java.util.UUID, java.lang.String)
+    (API) Removed com.gmail.nossr50.database.DatabaseManager.newUser(java.lang.String, java.util.UUID)
+    (API) PrimarySkillType will soon be just an enum with nothing special going on
+    (API) Deprecated the members of PrimarySkillType use mcMMO::getSkillTools instead, deprecated members will be removed in Tridents & Crossbows (due soon)
+    (API) Some members of PrimarySkillType were removed and not deprecated (such as the field constants)
+
+    NOTES:
+    I spent over 26 hours refactoring FlatFileDB and writing unit tests for it, this will ensure that any changes in the code that could break the database are caught at compile time (so long as we have enough tests, could probably use more)
+    Regarding purging old users on the FlatFileDB, since this wasn't functioning for a while, the last login of users has been reset and if mcMMO hasn't seen that user since this update, it won't purge them as it has no way to know if they are truly an old user
+    I'm likely going to add SQLite DB as an option in the future, I spent time to fix up the FlatFileDB as some Unit Testing practice.
+    Ultra Permissions is SAFE to use with mcMMO, disregard previous messages stating otherwise
     After getting in contact with the UltraPermissions devs and exhaustive testing, I have concluded that using UltraPermissions is completely safe with mcMMO. The users who had an issue with performance currently have an unknown cause, potentially it is from a plugin using the UltraPermissions API I really can't say without more data. My apologies to the UltraPermissions team for reporting an issue between our two plugins directly, as that is not the case. I would have tested it myself sooner but UltraPermissions was closed source and premium so I wasn't particularly motivated to do so, however I have been given access to the binaries so now I can do all the testing I want if future issues ever arise which I have zero expectations that they will.
 
-    UltraPermissions is as efficient as LuckPerms
-    I have done a lot of profiling of UltraPermissions via Spark in the last few hours, I also compared it to LuckPerms. I wasn't expecting it, but UltraPermissions runs just as fast as LuckPerms if not faster. So it has no performance issues whatsoever from my point of view.
-
-    Use whatever permission plugin you like, there will be no difference between using LuckPerms or UltraPermissions with mcMMO.
-
-    If you had issues with UltraPermissions please contact the UP devs
-    If you experience lag with mcMMO and UltraPermissions, we are trying to determine the culprit. It is likely the culprit is from another plugin doing bad things with the UltraPermissions API. Please get in contact with the UltraPermission devs if you run into issues ( @MATRIX | Timo K.  & @Liz3 ). Neither I nor they can replicate it so we need you guys to provide more data.
 Version 2.1.188
     Updated default entries in treasures.yml to use "Level_Requirement" instead of "Drop_Level"
     Fixed a bug where excavation treasures only required level 0 instead of loading the value from the config

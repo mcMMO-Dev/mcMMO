@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -32,7 +31,7 @@ public class BlastMining {
         }
 
         protected int getLevel() {
-            return AdvancedConfig.getInstance().getBlastMiningRankLevel(this);
+            return mcMMO.p.getAdvancedConfig().getBlastMiningRankLevel(this);
         }
 
 
@@ -41,13 +40,13 @@ public class BlastMining {
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
 
     public static double getBlastRadiusModifier(int rank) {
-        return AdvancedConfig.getInstance().getBlastRadiusModifier(rank);
+        return mcMMO.p.getAdvancedConfig().getBlastRadiusModifier(rank);
     }
 
 
 
     public static double getBlastDamageDecrease(int rank) {
-        return AdvancedConfig.getInstance().getBlastDamageDecrease(rank);
+        return mcMMO.p.getAdvancedConfig().getBlastDamageDecrease(rank);
     }
 
 

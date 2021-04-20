@@ -51,7 +51,7 @@
 //
 //    private void toggle(boolean enable, PrimarySkillType skill) {
 //        if (skill == null) {
-//            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+//            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
 //                primarySkillType.setHardcoreStatLossEnabled(enable);
 //            }
 //        }
@@ -59,6 +59,6 @@
 //            skill.setHardcoreStatLossEnabled(enable);
 //        }
 //
-//        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (skill == null ? "all skills" : skill.getName())));
+//        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (skill == null ? "all skills" : mcMMO.p.getSkillTools().getLocalizedSkillName(skill))));
 //    }
 //}

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
@@ -42,7 +41,7 @@ public class LevelUpBroadcastPredicate<T extends CommandSender> implements Predi
             Player listeningPlayer = (Player) t;
 
             //Party Member Check
-            if(Config.getInstance().isLevelUpBroadcastsPartyMembersOnly()) {
+            if(mcMMO.p.getGeneralConfig().isLevelUpBroadcastsPartyMembersOnly()) {
                 McMMOPlayer mmoListeningPlayer = UserManager.getPlayer(listeningPlayer);
 
                 if(mmoListeningPlayer == null) {
@@ -68,8 +67,8 @@ public class LevelUpBroadcastPredicate<T extends CommandSender> implements Predi
                 }
 
                 //Distance checks
-                if(Config.getInstance().shouldLevelUpBroadcastsRestrictDistance()) {
-                    if(!Misc.isNear(mmoBroadcastingPlayer.getPlayer().getLocation(), listeningPlayer.getLocation(), Config.getInstance().getLevelUpBroadcastRadius())) {
+                if(mcMMO.p.getGeneralConfig().shouldLevelUpBroadcastsRestrictDistance()) {
+                    if(!Misc.isNear(mmoBroadcastingPlayer.getPlayer().getLocation(), listeningPlayer.getLocation(), mcMMO.p.getGeneralConfig().getLevelUpBroadcastRadius())) {
                         return false;
                     }
                 }
@@ -83,12 +82,12 @@ public class LevelUpBroadcastPredicate<T extends CommandSender> implements Predi
             return true;
         } else {
             //Send out to console
-            return Config.getInstance().shouldLevelUpBroadcastToConsole();
+            return mcMMO.p.getGeneralConfig().shouldLevelUpBroadcastToConsole();
         }
     }
 
     private static boolean isLevelUpBroadcastsSameWorldOnly() {
-        return Config.getInstance().isLevelUpBroadcastsSameWorldOnly();
+        return mcMMO.p.getGeneralConfig().isLevelUpBroadcastsSameWorldOnly();
     }
 
     @Override

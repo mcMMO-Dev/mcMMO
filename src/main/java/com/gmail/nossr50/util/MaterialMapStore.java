@@ -422,6 +422,7 @@ public class MaterialMapStore {
         enchantables.addAll(pickAxes);
         enchantables.addAll(tridents);
         enchantables.addAll(bows);
+        enchantables.addAll(crossbows);
 
         enchantables.add("shears");
         enchantables.add("fishing_rod");

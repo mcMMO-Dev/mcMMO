@@ -2,8 +2,8 @@ package com.gmail.nossr50.util.text;
 
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * This Unit Test checks if Adventure was set up correctly and works as expected.
@@ -26,7 +26,6 @@ public class TextUtilsTest {
          */
         TextComponent component = TextUtils.colorizeText(inputText);
 
-        Assert.assertEquals("Looks like Adventure is not working correctly.",
-                NamedTextColor.DARK_RED, component.color());
+        Assertions.assertEquals(NamedTextColor.DARK_RED, component.color(), "Looks like Adventure is not working correctly.");
     }
 }

@@ -1,10 +1,7 @@
 package com.gmail.nossr50.skills.alchemy;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -43,16 +40,15 @@ public final class Alchemy {
         }
 
         protected int getLevel() {
-            return AdvancedConfig.getInstance().getConcoctionsTierLevel(this);
+            return mcMMO.p.getAdvancedConfig().getConcoctionsTierLevel(this);
         }
     }*/
 
     public static final int INGREDIENT_SLOT = 3;
 
-    public static int    catalysisUnlockLevel   = RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS);
-    public static int    catalysisMaxBonusLevel = AdvancedConfig.getInstance().getCatalysisMaxBonusLevel();
-    public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
-    public static double catalysisMaxSpeed      = AdvancedConfig.getInstance().getCatalysisMaxSpeed();
+    public static int    catalysisMaxBonusLevel = mcMMO.p.getAdvancedConfig().getCatalysisMaxBonusLevel();
+    public static double catalysisMinSpeed      = mcMMO.p.getAdvancedConfig().getCatalysisMinSpeed();
+    public static double catalysisMaxSpeed      = mcMMO.p.getAdvancedConfig().getCatalysisMaxSpeed();
 
     public static Map<Location, AlchemyBrewTask> brewingStandMap = new HashMap<>();
 

@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -46,17 +46,17 @@ public class SwordsCommand extends SkillCommand {
         // SWORDS_RUPTURE
         if (canRupture) {
             int ruptureRank = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE);
-            ruptureLengthSecondsAgainstPlayers = String.valueOf(AdvancedConfig.getInstance().getRuptureDurationSeconds(true));
-            ruptureLengthSecondsAgainstMobs = String.valueOf(AdvancedConfig.getInstance().getRuptureDurationSeconds(false));
+            ruptureLengthSecondsAgainstPlayers = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(true));
+            ruptureLengthSecondsAgainstMobs = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(false));
 
-            rupturePureTickDamageAgainstPlayers = String.valueOf(AdvancedConfig.getInstance().getRuptureTickDamage(true, ruptureRank));
-            rupturePureTickDamageAgainstMobs = String.valueOf(AdvancedConfig.getInstance().getRuptureTickDamage(false, ruptureRank));
+            rupturePureTickDamageAgainstPlayers = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureTickDamage(true, ruptureRank));
+            rupturePureTickDamageAgainstMobs = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureTickDamage(false, ruptureRank));
 
-            ruptureExplosionDamageAgainstPlayers = String.valueOf(AdvancedConfig.getInstance().getRuptureExplosionDamage(true, ruptureRank));
-            ruptureExplosionDamageAgainstMobs = String.valueOf(AdvancedConfig.getInstance().getRuptureExplosionDamage(false, ruptureRank));
+            ruptureExplosionDamageAgainstPlayers = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureExplosionDamage(true, ruptureRank));
+            ruptureExplosionDamageAgainstMobs = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureExplosionDamage(false, ruptureRank));
 
-            ruptureChanceToApply = String.valueOf(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(ruptureRank) + "%");
-            ruptureChanceToApplyLucky = String.valueOf(AdvancedConfig.getInstance().getRuptureChanceToApplyOnHit(ruptureRank) * 1.33);
+            ruptureChanceToApply = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(ruptureRank) + "%");
+            ruptureChanceToApplyLucky = String.valueOf(mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(ruptureRank) * 1.33);
         }
         
         // SERRATED STRIKES

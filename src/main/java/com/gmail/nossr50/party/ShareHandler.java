@@ -3,6 +3,7 @@ package com.gmail.nossr50.party;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcMMO;
 import com.neetgames.mcmmo.experience.XPGainReason;
 import com.neetgames.mcmmo.experience.XPGainSource;
 import com.neetgames.mcmmo.party.Party;
@@ -38,7 +39,7 @@ public final class ShareHandler {
         nearMembers.add(mmoPlayer.getPlayer());
 
         int partySize = nearMembers.size();
-        double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + (partySize * Config.getInstance().getPartyShareBonusIncrease()), Config.getInstance().getPartyShareBonusCap());
+        double shareBonus = Math.min(mcMMO.p.getGeneralConfig().getPartyShareBonusBase() + (partySize * mcMMO.p.getGeneralConfig().getPartyShareBonusIncrease()), mcMMO.p.getGeneralConfig().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player otherMember : nearMembers) {

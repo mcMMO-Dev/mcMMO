@@ -2,6 +2,7 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.mcMMO;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
      * @return the level requirement for a subskill at this particular rank
      */
     private int findRankByRootAddress(int rank, String key) {
-        String scalingKey = Config.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
+        String scalingKey = mcMMO.p.getGeneralConfig().getIsRetroMode() ? ".RetroMode." : ".Standard.";
 
         String targetRank = "Rank_" + rank;
 
@@ -126,7 +127,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
         String key = getRankAddressKey(subSkillType, rank, retroMode);
         int defaultValue = getInternalConfig().getInt(key);
         config.set(key, defaultValue);
-        plugin.getLogger().info(key +" SET -> " + defaultValue);
+        mcMMO.p.getLogger().info(key +" SET -> " + defaultValue);
     }
 
     /**
@@ -144,10 +145,10 @@ public class RankConfig extends AutoUpdateConfigLoader {
         if(badSkillSetup.isEmpty())
             return;
 
-        plugin.getLogger().info("(FIXING CONFIG) mcMMO is correcting a few mistakes found in your skill rank config setup");
+        mcMMO.p.getLogger().info("(FIXING CONFIG) mcMMO is correcting a few mistakes found in your skill rank config setup");
 
         for(SubSkillType subSkillType : badSkillSetup) {
-            plugin.getLogger().info("(FIXING CONFIG) Resetting rank config settings for skill named - "+subSkillType.toString());
+            mcMMO.p.getLogger().info("(FIXING CONFIG) Resetting rank config settings for skill named - "+subSkillType.toString());
             fixBadEntries(subSkillType);
         }
     }
@@ -179,7 +180,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
                 if(prevRank > curRank)
                 {
                     //We're going to allow this but we're going to warn them
-                    plugin.getLogger().info("(CONFIG ISSUE) You have the ranks for the subskill "+ subSkillType.toString()+" set up poorly, sequential ranks should have ascending requirements");
+                    mcMMO.p.getLogger().info("(CONFIG ISSUE) You have the ranks for the subskill "+ subSkillType.toString()+" set up poorly, sequential ranks should have ascending requirements");
                     badSkillSetup.add(subSkillType);
                 }
             }

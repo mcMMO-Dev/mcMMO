@@ -1,8 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -47,7 +45,7 @@ public class MiningManager extends SkillManager {
         Player player = getPlayer();
 
         return canUseBlastMining() && player.isSneaking()
-                && (ItemUtils.isPickaxe(getPlayer().getInventory().getItemInMainHand()) || player.getInventory().getItemInMainHand().getType() == Config.getInstance().getDetonatorItem())
+                && (ItemUtils.isPickaxe(getPlayer().getInventory().getItemInMainHand()) || player.getInventory().getItemInMainHand().getType() == mcMMO.p.getGeneralConfig().getDetonatorItem())
                 && Permissions.remoteDetonation(player);
     }
 
@@ -85,17 +83,17 @@ public class MiningManager extends SkillManager {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
         }
 
-        if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType()) || !canDoubleDrop())
+        if(!mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType()) || !canDoubleDrop())
             return;
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
-        if(silkTouch && !AdvancedConfig.getInstance().getDoubleDropSilkTouchEnabled())
+        if(silkTouch && !mcMMO.p.getAdvancedConfig().getDoubleDropSilkTouchEnabled())
             return;
 
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            boolean useTriple = mmoPlayer.getAbilityMode(skill.getAbility()) && AdvancedConfig.getInstance().getAllowMiningTripleDrops();
+            boolean useTriple = mmoPlayer.getAbilityMode(mcMMO.p.getSkillTools().getSuperAbility(skill)) && mcMMO.p.getAdvancedConfig().getAllowMiningTripleDrops();
             BlockUtils.markDropsAsBonus(blockState, useTriple);
         }
     }
@@ -158,8 +156,10 @@ public class MiningManager extends SkillManager {
     //TODO: Rewrite this garbage
     //TODO: Rewrite this garbage
     public void blastMiningDropProcessing(float yield, EntityExplodeEvent event) {
-        //Strip out only stuff that gives mining XP
+        if (yield == 0)
+            return;
 
+        //Strip out only stuff that gives mining XP
         List<BlockState> ores = new ArrayList<>();
 
         List<BlockState> notOres = new ArrayList<>();
@@ -248,11 +248,11 @@ public class MiningManager extends SkillManager {
     }
 
     public static double getOreBonus(int rank) {
-        return AdvancedConfig.getInstance().getOreBonus(rank);
+        return mcMMO.p.getAdvancedConfig().getOreBonus(rank);
     }
 
     public static double getDebrisReduction(int rank) {
-        return AdvancedConfig.getInstance().getDebrisReduction(rank);
+        return mcMMO.p.getAdvancedConfig().getDebrisReduction(rank);
     }
 
     /**
@@ -265,7 +265,7 @@ public class MiningManager extends SkillManager {
     }
 
     public static int getDropMultiplier(int rank) {
-        return AdvancedConfig.getInstance().getDropMultiplier(rank);
+        return mcMMO.p.getAdvancedConfig().getDropMultiplier(rank);
     }
 
     /**

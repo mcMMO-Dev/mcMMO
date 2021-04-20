@@ -1,8 +1,6 @@
 package com.gmail.nossr50.skills.fishing;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -198,11 +196,11 @@ public class FishingManager extends SkillManager {
     }
 
     public double getShakeChance() {
-        return AdvancedConfig.getInstance().getShakeChance(RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.FISHING_SHAKE));
+        return mcMMO.p.getAdvancedConfig().getShakeChance(RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.FISHING_SHAKE));
     }
 
     protected int getVanillaXPBoostModifier() {
-        return AdvancedConfig.getInstance().getFishingVanillaXPModifier(getLootTier());
+        return mcMMO.p.getAdvancedConfig().getFishingVanillaXPModifier(getLootTier());
     }
 
     /**
@@ -273,8 +271,8 @@ public class FishingManager extends SkillManager {
             int maxWaitReduction = getMasterAnglerTickMaxWaitReduction(masterAnglerRank, boatBonus, convertedLureBonus);
 
             //Ticks for minWait and maxWait never go below this value
-            int bonusCapMin = AdvancedConfig.getInstance().getFishingReductionMinWaitCap();
-            int bonusCapMax = AdvancedConfig.getInstance().getFishingReductionMaxWaitCap();
+            int bonusCapMin = mcMMO.p.getAdvancedConfig().getFishingReductionMinWaitCap();
+            int bonusCapMax = mcMMO.p.getAdvancedConfig().getFishingReductionMaxWaitCap();
 
             int reducedMinWaitTime = getReducedTicks(minWaitTicks, minWaitReduction, bonusCapMin);
             int reducedMaxWaitTime = getReducedTicks(maxWaitTicks, maxWaitReduction, bonusCapMax);
@@ -337,7 +335,7 @@ public class FishingManager extends SkillManager {
     }
 
     public int getMasterAnglerTickMaxWaitReduction(int masterAnglerRank, boolean boatBonus, int emulatedLureBonus) {
-        int totalBonus = AdvancedConfig.getInstance().getFishingReductionMaxWaitTicks() * masterAnglerRank;
+        int totalBonus = mcMMO.p.getAdvancedConfig().getFishingReductionMaxWaitTicks() * masterAnglerRank;
 
         if(boatBonus) {
             totalBonus += getFishingBoatMaxWaitReduction();
@@ -349,7 +347,7 @@ public class FishingManager extends SkillManager {
     }
 
     public int getMasterAnglerTickMinWaitReduction(int masterAnglerRank, boolean boatBonus) {
-        int totalBonus = AdvancedConfig.getInstance().getFishingReductionMinWaitTicks() * masterAnglerRank;
+        int totalBonus = mcMMO.p.getAdvancedConfig().getFishingReductionMinWaitTicks() * masterAnglerRank;
 
         if(boatBonus) {
             totalBonus += getFishingBoatMinWaitReduction();
@@ -359,11 +357,11 @@ public class FishingManager extends SkillManager {
     }
 
     public int getFishingBoatMinWaitReduction() {
-        return AdvancedConfig.getInstance().getFishingBoatReductionMinWaitTicks();
+        return mcMMO.p.getAdvancedConfig().getFishingBoatReductionMinWaitTicks();
     }
 
     public int getFishingBoatMaxWaitReduction() {
-        return AdvancedConfig.getInstance().getFishingBoatReductionMaxWaitTicks();
+        return mcMMO.p.getAdvancedConfig().getFishingBoatReductionMaxWaitTicks();
     }
 
     public boolean isMagicHunterEnabled() {
@@ -386,7 +384,7 @@ public class FishingManager extends SkillManager {
         FishingTreasure treasure = null;
         boolean fishingSucceeds = false;
 
-        if (Config.getInstance().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
+        if (mcMMO.p.getGeneralConfig().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
             this.fishingCatch = null;
         }
@@ -447,7 +445,7 @@ public class FishingManager extends SkillManager {
         }
 
         if(fishingSucceeds) {
-            if (Config.getInstance().getFishingExtraFish()) {
+            if (mcMMO.p.getGeneralConfig().getFishingExtraFish()) {
                 Misc.spawnItem(player.getEyeLocation(), fishingCatch.getItemStack(), ItemSpawnReason.FISHING_EXTRA_FISH);
             }
 
@@ -579,7 +577,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
-        diceRoll *= (1.0 - luck * Config.getInstance().getFishingLureModifier() / 100);
+        diceRoll *= (1.0 - luck * mcMMO.p.getGeneralConfig().getFishingLureModifier() / 100);
 
         FishingTreasure treasure = null;
 

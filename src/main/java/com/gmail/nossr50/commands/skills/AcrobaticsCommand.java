@@ -69,7 +69,7 @@ public class AcrobaticsCommand extends SkillCommand {
                 //Chance Stat Calculations
                 rollChance       = RandomChanceUtil.getRandomChanceExecutionChance(roll_rcs);
                 graceChance      = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
-                //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
+                //damageThreshold  = mcMMO.p.getAdvancedConfig().getRollDamageThreshold();
 
                 String[] rollStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
 

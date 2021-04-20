@@ -72,7 +72,7 @@ public class AcrobaticsManager extends SkillManager {
                 return false;
             }
 
-            return skill.shouldProcess(damager);
+            return mcMMO.p.getSkillTools().canCombatSkillsTrigger(skill, damager);
         }
 
         return false;

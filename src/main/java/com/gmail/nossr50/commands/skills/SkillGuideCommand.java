@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,7 +19,7 @@ public class SkillGuideCommand implements CommandExecutor {
     private final String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
     public SkillGuideCommand(PrimarySkillType skill) {
-        header = LocaleLoader.getString("Guides.Header", skill.getName());
+        header = LocaleLoader.getString("Guides.Header", mcMMO.p.getSkillTools().getLocalizedSkillName(skill));
         guide = getGuide(skill);
     }
 

@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
@@ -45,7 +45,7 @@ public class MmoInfoCommand implements TabExecutor {
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mystery"));
                     return true;
-                } else if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0]))
+                } else if(InteractionManager.getAbstractByName(args[0]) != null || mcMMO.p.getSkillTools().EXACT_SUBSKILL_NAMES.contains(args[0]))
                 {
                     displayInfo(player, args[0]);
                     return true;
@@ -63,7 +63,7 @@ public class MmoInfoCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SUBSKILL_NAMES, new ArrayList<>(PrimarySkillType.SUBSKILL_NAMES.size()));
+            return StringUtil.copyPartialMatches(args[0], mcMMO.p.getSkillTools().EXACT_SUBSKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().EXACT_SUBSKILL_NAMES.size()));
         }
         return ImmutableList.of();
     }

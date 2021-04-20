@@ -6,23 +6,15 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
 import net.md_5.bungee.api.ChatColor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdvancedConfig extends AutoUpdateConfigLoader {
-    private static AdvancedConfig instance;
 
-    private AdvancedConfig() {
-        super("advanced.yml");
+    public AdvancedConfig(File dataFolder) {
+        super("advanced.yml", dataFolder);
         validate();
-    }
-
-    public static AdvancedConfig getInstance() {
-        if (instance == null) {
-            instance = new AdvancedConfig();
-        }
-
-        return instance;
     }
 
     @Override
@@ -68,15 +60,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Acrobatics.GracefulRoll.DamageThreshold should be at least 0!");
         }
 
-        /* ALCHEMY */
-        /*if (getCatalysisUnlockLevel() < 0) {
-            reason.add("Skills.Alchemy.Catalysis.UnlockLevel should be at least 0!");
-        }
-
-        if (getCatalysisMaxBonusLevel() <= getCatalysisUnlockLevel()) {
-            reason.add("Skills.Alchemy.Catalysis.MaxBonusLevel should be greater than Skills.Alchemy.Catalysis.UnlockLevel!");
-        }*/
-
         if (getCatalysisMinSpeed() <= 0) {
             reason.add("Skills.Alchemy.Catalysis.MinSpeed must be greater than 0!");
         }
@@ -84,21 +67,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         if (getCatalysisMaxSpeed() < getCatalysisMinSpeed()) {
             reason.add("Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
         }
-
-        /*List<Alchemy.Tier> alchemyTierList = Arrays.asList(Alchemy.Tier.values());
-        for (Alchemy.Tier tier : alchemyTierList) {
-            if (getConcoctionsTierLevel(tier) < 0) {
-                reason.add("Skills.Alchemy.Rank_Levels.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (tier != Alchemy.Tier.fromNumerical(Alchemy.Tier.values().length)) {
-                Alchemy.Tier nextTier = alchemyTierList.get(alchemyTierList.indexOf(tier) - 1);
-
-                if (getConcoctionsTierLevel(tier) > getConcoctionsTierLevel(nextTier)) {
-                    reason.add("Skills.Alchemy.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Alchemy.Rank_Levels.Rank_" + nextrank + "!");
-                }
-            }
-        }*/
 
         /* ARCHERY */
 

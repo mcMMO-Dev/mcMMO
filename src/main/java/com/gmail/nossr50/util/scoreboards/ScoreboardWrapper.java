@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.scoreboards;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -17,6 +16,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -75,7 +75,7 @@ public class ScoreboardWrapper {
             registered = true;
         }
 
-        if (Config.getInstance().getPowerLevelTagsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
@@ -225,7 +225,7 @@ public class ScoreboardWrapper {
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
-        if (profile.getScoreboardTipsShown() >= Config.getInstance().getTipsAmount()) {
+        if (profile.getScoreboardTipsShown() >= mcMMO.p.getGeneralConfig().getTipsAmount()) {
             return;
         }
 
@@ -489,7 +489,7 @@ public class ScoreboardWrapper {
             case SKILL_BOARD:
                 Validate.notNull(targetSkill);
 
-                if (!targetSkill.isChildSkill()) {
+                if (!SkillTools.isChildSkill(targetSkill)) {
                     int currentXP = mcMMOPlayer.getSkillXpLevel(targetSkill);
 
                     sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
@@ -503,7 +503,7 @@ public class ScoreboardWrapper {
 
                 sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mcMMOPlayer.getSkillLevel(targetSkill));
 
-                if (targetSkill.getAbility() != null) {
+                if (mcMMO.p.getSkillTools().getSuperAbility(targetSkill) != null) {
                     boolean stopUpdating;
 
                     if (targetSkill == PrimarySkillType.MINING) {
@@ -519,7 +519,7 @@ public class ScoreboardWrapper {
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
                     }
                     else {
-                        SuperAbilityType ability = targetSkill.getAbility();
+                        SuperAbilityType ability = mcMMO.p.getSkillTools().getSuperAbility(targetSkill);
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
                         int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
@@ -574,13 +574,13 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
 
                     // TODO: Verify that this is what we want - calculated in power level but not displayed
-                    if (!skill.getPermissions(player)) {
+                    if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
                         continue;
                     }
 
@@ -607,8 +607,8 @@ public class ScoreboardWrapper {
         Integer rank;
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-            if (!skill.getPermissions(player)) {
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
                 continue;
             }
 

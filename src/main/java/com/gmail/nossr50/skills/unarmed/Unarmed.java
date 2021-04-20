@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.Player;
@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Unarmed {
-    public static boolean blockCrackerSmoothBrick = Config.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
+    public static boolean blockCrackerSmoothBrick = mcMMO.p.getGeneralConfig().getUnarmedBlockCrackerSmoothbrickToCracked();
     public static double berserkDamageModifier = 1.5;
 
     public static void handleItemPickup(Player player, EntityPickupItemEvent event) {

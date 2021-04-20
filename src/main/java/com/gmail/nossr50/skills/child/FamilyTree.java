@@ -5,6 +5,7 @@ import com.neetgames.mcmmo.exceptions.UnknownSkillException;
 import com.neetgames.mcmmo.skill.RootSkill;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.gmail.nossr50.util.skills.SkillTools;
 
 import java.util.HashSet;
 import java.util.Set;

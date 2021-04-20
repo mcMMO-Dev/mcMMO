@@ -1,20 +1,35 @@
 package com.gmail.nossr50.util.blockmeta;
 
 import com.gmail.nossr50.TestUtil;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.compat.CompatibilityManager;
+import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
+import com.gmail.nossr50.util.platform.PlatformManager;
 import com.google.common.io.Files;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.*;
+import org.bukkit.block.*;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
@@ -23,8 +38,10 @@ import static org.mockito.Mockito.mock;
  * Could be a lot better.  But some tests are better than none!  Tests the major things, still kinda unit-testy.  Verifies that the serialization isn't completely broken.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ Bukkit.class, Misc.class })
+@PrepareForTest({ Bukkit.class, mcMMO.class})
 public class ChunkStoreTest {
+    public static final int LEGACY_WORLD_HEIGHT_MAX = 256;
+    public static final int LEGACY_WORLD_HEIGHT_MIN = 0;
     private static File tempDir;
     @BeforeClass
     public static void setUpClass() {
@@ -37,6 +54,10 @@ public class ChunkStoreTest {
     }
 
     private World mockWorld;
+    private CompatibilityManager compatibilityManager;
+    private WorldCompatibilityLayer worldCompatibilityLayer;
+    private PlatformManager platformManager;
+
     @Before
     public void setUpMock(){
         UUID worldUUID = UUID.randomUUID();
@@ -46,6 +67,67 @@ public class ChunkStoreTest {
         Mockito.when(mockWorld.getWorldFolder()).thenReturn(tempDir);
         PowerMockito.mockStatic(Bukkit.class);
         Mockito.when(Bukkit.getWorld(worldUUID)).thenReturn(mockWorld);
+
+        platformManager = mock(PlatformManager.class);
+        compatibilityManager = mock(CompatibilityManager.class);
+        worldCompatibilityLayer = mock(WorldCompatibilityLayer.class);
+
+        Whitebox.setInternalState(mcMMO.class, "platformManager", platformManager);
+        Mockito.when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
+
+        Assert.assertNotNull(mcMMO.getCompatibilityManager());
+        Mockito.when(platformManager.getCompatibilityManager()).thenReturn(compatibilityManager);
+        Mockito.when(platformManager.getCompatibilityManager().getWorldCompatibilityLayer()).thenReturn(worldCompatibilityLayer);
+        Assert.assertNotNull(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer());
+        Mockito.when(worldCompatibilityLayer.getMinWorldHeight(mockWorld)).thenReturn(LEGACY_WORLD_HEIGHT_MIN);
+        Mockito.when(worldCompatibilityLayer.getMaxWorldHeight(mockWorld)).thenReturn(LEGACY_WORLD_HEIGHT_MAX);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testIndexOutOfBounds() {
+        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
+        HashChunkManager hashChunkManager = new HashChunkManager();
+
+
+        //Top Block
+        TestBlock illegalHeightBlock = new TestBlock(1337, 256, -1337, mockWorld);
+        Assert.assertFalse(hashChunkManager.isTrue(illegalHeightBlock));
+        hashChunkManager.setTrue(illegalHeightBlock);
+    }
+
+    @Test
+    public void testSetTrue() {
+        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
+        HashChunkManager hashChunkManager = new HashChunkManager();
+        int radius = 2; //Could be anything but drastically changes test time
+
+        for(int x = -radius; x <= radius; x++) {
+            for(int y = mockWorld.getMinHeight(); y < mockWorld.getMaxHeight(); y++) {
+                for(int z = -radius; z <= radius; z++) {
+                    TestBlock testBlock = new TestBlock(x, y, z, mockWorld);
+                    hashChunkManager.setTrue(testBlock);
+                    Assert.assertTrue(hashChunkManager.isTrue(testBlock));
+                    hashChunkManager.setFalse(testBlock);
+                    Assert.assertFalse(hashChunkManager.isTrue(testBlock));
+                }
+            }
+        }
+
+        //Bot Block
+        TestBlock bottomBlock = new TestBlock(1337, 0, -1337, mockWorld);
+        Assert.assertFalse(hashChunkManager.isTrue(bottomBlock));
+
+        Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, bottomBlock));
+        hashChunkManager.setTrue(bottomBlock);
+        Assert.assertTrue(hashChunkManager.isTrue(bottomBlock));
+
+        //Top Block
+        TestBlock topBlock = new TestBlock(1337, 255, -1337, mockWorld);
+        Assert.assertFalse(hashChunkManager.isTrue(topBlock));
+
+        Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, topBlock));
+        hashChunkManager.setTrue(topBlock);
+        Assert.assertTrue(hashChunkManager.isTrue(topBlock));
     }
 
     @Test
@@ -79,8 +161,7 @@ public class ChunkStoreTest {
 
     @Test
     public void testNegativeWorldMin() throws IOException {
-        PowerMockito.mockStatic(Misc.class);
-        Mockito.when(Misc.getWorldMinCompat(mockWorld)).thenReturn(-64);
+        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
 
         BitSetChunkStore original = new BitSetChunkStore(mockWorld, 1, 2);
         original.setTrue(14, -32, 12);
@@ -99,8 +180,7 @@ public class ChunkStoreTest {
         original.setTrue(13, 3, 12);
         byte[] serializedBytes = serializeChunkstore(original);
 
-        PowerMockito.mockStatic(Misc.class);
-        Mockito.when(Misc.getWorldMinCompat(mockWorld)).thenReturn(-64);
+        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
         ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
         assertEqualIgnoreMinMax(original, deserialized);
     }
@@ -358,6 +438,278 @@ public class ChunkStoreTest {
             if (str.equals(LegacyChunkStore.class.getName()))
                 str = "com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore";
             super.writeUTF(str);
+        }
+    }
+
+    private class TestBlock implements Block {
+
+        private final int x, y, z;
+        private final @NotNull World world;
+
+        private TestBlock(int x, int y, int z, World world) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.world = world;
+        }
+
+        @Override
+        public byte getData() {
+            return 0;
+        }
+
+        @NotNull
+        @Override
+        public BlockData getBlockData() {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Block getRelative(int modX, int modY, int modZ) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Block getRelative(@NotNull BlockFace face) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Block getRelative(@NotNull BlockFace face, int distance) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Material getType() {
+            return null;
+        }
+
+        @Override
+        public byte getLightLevel() {
+            return 0;
+        }
+
+        @Override
+        public byte getLightFromSky() {
+            return 0;
+        }
+
+        @Override
+        public byte getLightFromBlocks() {
+            return 0;
+        }
+
+        @NotNull
+        @Override
+        public World getWorld() {
+            return world;
+        }
+
+        @Override
+        public int getX() {
+            return x;
+        }
+
+        @Override
+        public int getY() {
+            return y;
+        }
+
+        @Override
+        public int getZ() {
+            return z;
+        }
+
+        @NotNull
+        @Override
+        public Location getLocation() {
+            return null;
+        }
+
+        @Nullable
+        @Override
+        public Location getLocation(@Nullable Location loc) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Chunk getChunk() {
+            return null;
+        }
+
+        @Override
+        public void setBlockData(@NotNull BlockData data) {
+
+        }
+
+        @Override
+        public void setBlockData(@NotNull BlockData data, boolean applyPhysics) {
+
+        }
+
+        @Override
+        public void setType(@NotNull Material type) {
+
+        }
+
+        @Override
+        public void setType(@NotNull Material type, boolean applyPhysics) {
+
+        }
+
+        @Nullable
+        @Override
+        public BlockFace getFace(@NotNull Block block) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public BlockState getState() {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Biome getBiome() {
+            return null;
+        }
+
+        @Override
+        public void setBiome(@NotNull Biome bio) {
+
+        }
+
+        @Override
+        public boolean isBlockPowered() {
+            return false;
+        }
+
+        @Override
+        public boolean isBlockIndirectlyPowered() {
+            return false;
+        }
+
+        @Override
+        public boolean isBlockFacePowered(@NotNull BlockFace face) {
+            return false;
+        }
+
+        @Override
+        public boolean isBlockFaceIndirectlyPowered(@NotNull BlockFace face) {
+            return false;
+        }
+
+        @Override
+        public int getBlockPower(@NotNull BlockFace face) {
+            return 0;
+        }
+
+        @Override
+        public int getBlockPower() {
+            return 0;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public boolean isLiquid() {
+            return false;
+        }
+
+        @Override
+        public double getTemperature() {
+            return 0;
+        }
+
+        @Override
+        public double getHumidity() {
+            return 0;
+        }
+
+        @NotNull
+        @Override
+        public PistonMoveReaction getPistonMoveReaction() {
+            return null;
+        }
+
+        @Override
+        public boolean breakNaturally() {
+            return false;
+        }
+
+        @Override
+        public boolean breakNaturally(@Nullable ItemStack tool) {
+            return false;
+        }
+
+        @Override
+        public boolean applyBoneMeal(@NotNull BlockFace face) {
+            return false;
+        }
+
+        @NotNull
+        @Override
+        public Collection<ItemStack> getDrops() {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Collection<ItemStack> getDrops(@Nullable ItemStack tool) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public Collection<ItemStack> getDrops(@NotNull ItemStack tool, @Nullable Entity entity) {
+            return null;
+        }
+
+        @Override
+        public boolean isPassable() {
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public RayTraceResult rayTrace(@NotNull Location start, @NotNull Vector direction, double maxDistance, @NotNull FluidCollisionMode fluidCollisionMode) {
+            return null;
+        }
+
+        @NotNull
+        @Override
+        public BoundingBox getBoundingBox() {
+            return null;
+        }
+
+        @Override
+        public void setMetadata(@NotNull String metadataKey, @NotNull MetadataValue newMetadataValue) {
+
+        }
+
+        @NotNull
+        @Override
+        public List<MetadataValue> getMetadata(@NotNull String metadataKey) {
+            return null;
+        }
+
+        @Override
+        public boolean hasMetadata(@NotNull String metadataKey) {
+            return false;
+        }
+
+        @Override
+        public void removeMetadata(@NotNull String metadataKey, @NotNull Plugin owningPlugin) {
+
         }
     }
 }

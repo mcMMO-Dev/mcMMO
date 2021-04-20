@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -33,10 +33,10 @@ public class McstatsCommand implements TabExecutor {
 
             Player player = (Player) sender;
 
-            if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {
+            if (mcMMO.p.getGeneralConfig().getStatsUseBoard() && mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
                 ScoreboardManager.enablePlayerStatsScoreboard(player);
 
-                if (!Config.getInstance().getStatsUseChat()) {
+                if (!mcMMO.p.getGeneralConfig().getStatsUseChat()) {
                     return true;
                 }
             }
@@ -48,7 +48,7 @@ public class McstatsCommand implements TabExecutor {
             CommandUtils.printCombatSkills(player);
             CommandUtils.printMiscSkills(player);
 
-            int powerLevelCap = Config.getInstance().getPowerLevelCap();
+            int powerLevelCap = mcMMO.p.getGeneralConfig().getPowerLevelCap();
 
             if (powerLevelCap != Integer.MAX_VALUE) {
                 player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));

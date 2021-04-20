@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableSet;
 import com.neetgames.mcmmo.player.OnlineMMOPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -257,12 +256,6 @@ public final class Misc {
             UserManager.remove(player);
             new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
-    }
-
-    public static int getWorldMinCompat(World world)
-    {
-        // TODO this method should access the world min variable in a version safe manner so that we don't restrict usage to new versions of spigot only
-        return 0;
     }
 
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {

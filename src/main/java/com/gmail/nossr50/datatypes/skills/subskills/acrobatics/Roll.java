@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -83,7 +82,7 @@ public class Roll extends AcrobaticsSubSkill {
                     entityDamageEvent.setCancelled(true);
                     return true;
                 }
-            } else if(Permissions.skillEnabled(player, PrimarySkillType.ACROBATICS)) {
+            } else if(mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ACROBATICS)) {
                 //Give XP Anyways
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, ((EntityDamageEvent) event).getFinalDamage(), false), XPGainReason.PVE);
             }
@@ -199,7 +198,7 @@ public class Roll extends AcrobaticsSubSkill {
             return gracefulRollCheck(player, mmoPlayer, damage, skillLevel);
         }
 
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold());
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
@@ -237,7 +236,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     private double gracefulRollCheck(Player player, OnlineMMOPlayer mmoPlayer, double damage, int skillLevel) {
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold() * 2);
 
         RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
         rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
@@ -380,7 +379,7 @@ public class Roll extends AcrobaticsSubSkill {
 //
 //        //Chance to roll at half max skill
 //        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
-//        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
+//        int halfMaxSkillValue = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
 //        rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 //
 //        //Chance to graceful roll at full skill
@@ -394,11 +393,11 @@ public class Roll extends AcrobaticsSubSkill {
 //        //Chance Stat Calculations
 //        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
 //        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-//        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
+//        damageThreshold         = mcMMO.p.getAdvancedConfig().getRollDamageThreshold();
 //
 //        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
 //
-//        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
+//        double maxLevel         = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
 //
 //        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
     }
@@ -435,4 +434,5 @@ public class Roll extends AcrobaticsSubSkill {
     {
         return player.getLocation().getBlock().getLocation();
     }
+
 }

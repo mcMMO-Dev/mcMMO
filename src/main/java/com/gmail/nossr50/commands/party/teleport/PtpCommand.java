@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -76,7 +75,7 @@ public class PtpCommand implements TabExecutor {
 
         Party party = mcMMOPlayer.getParty();
 
-        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
+        if (party.getLevel() < mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.2"));
             return true;
         }
@@ -91,7 +90,7 @@ public class PtpCommand implements TabExecutor {
             }
 
             long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-            int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
+            int hurtCooldown = mcMMO.p.getGeneralConfig().getPTPCommandRecentlyHurtCooldown();
 
             if (hurtCooldown > 0) {
                 int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
@@ -111,7 +110,7 @@ public class PtpCommand implements TabExecutor {
                 return true;
             }
 
-            int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
+            int ptpCooldown = mcMMO.p.getGeneralConfig().getPTPCommandCooldown();
             long ptpLastUse = mcMMOPlayer.getPartyTeleportRecord().getLastUse();
 
             if (ptpCooldown > 0) {
@@ -165,7 +164,7 @@ public class PtpCommand implements TabExecutor {
         Player target = mcMMOTarget.getPlayer();
 
 
-        if (Config.getInstance().getPTPCommandWorldPermissions()) {
+        if (mcMMO.p.getGeneralConfig().getPTPCommandWorldPermissions()) {
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 
@@ -194,7 +193,7 @@ public class PtpCommand implements TabExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
         target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", player.getName()));
-        target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", Config.getInstance().getPTPCommandTimeout()));
+        target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", mcMMO.p.getGeneralConfig().getPTPCommandTimeout()));
     }
 
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
@@ -245,7 +244,7 @@ public class PtpCommand implements TabExecutor {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
         McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
 
-        long warmup = Config.getInstance().getPTPCommandWarmup();
+        long warmup = mcMMO.p.getGeneralConfig().getPTPCommandWarmup();
 
         mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
 

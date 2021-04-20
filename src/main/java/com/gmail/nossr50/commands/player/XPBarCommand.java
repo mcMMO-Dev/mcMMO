@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -51,7 +52,7 @@ public class XPBarCommand implements TabExecutor {
 
                 if(SkillUtils.isSkill(skillName)) {
 
-                    PrimarySkillType targetSkill = PrimarySkillType.getSkill(skillName);
+                    PrimarySkillType targetSkill = mcMMO.p.getSkillTools().matchSkill(skillName);
 
                     //Target setting
                     String option = args[0].toLowerCase();
@@ -103,7 +104,7 @@ public class XPBarCommand implements TabExecutor {
                 return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(ExperienceBarManager.XPBarSettingTarget.values().length));
             case 2:
                 if(!args[0].equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString()))
-                    return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
+                    return StringUtil.copyPartialMatches(args[1], mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }

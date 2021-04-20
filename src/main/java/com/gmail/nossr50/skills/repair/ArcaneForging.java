@@ -1,9 +1,9 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.mcMMO;
 
 public class ArcaneForging {
 
-    public static boolean arcaneForgingDowngrades  = AdvancedConfig.getInstance().getArcaneForgingDowngradeEnabled();
-    public static boolean arcaneForgingEnchantLoss = AdvancedConfig.getInstance().getArcaneForgingEnchantLossEnabled();
+    public static boolean arcaneForgingDowngrades  = mcMMO.p.getAdvancedConfig().getArcaneForgingDowngradeEnabled();
+    public static boolean arcaneForgingEnchantLoss = mcMMO.p.getAdvancedConfig().getArcaneForgingEnchantLossEnabled();
 }

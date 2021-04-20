@@ -182,7 +182,7 @@ public class RepairConfig extends ConfigLoader {
 
     private boolean noErrorsInRepairable(List<String> issues) {
         for (String issue : issues) {
-            plugin.getLogger().warning(issue);
+            mcMMO.p.getLogger().warning(issue);
         }
 
         return issues.isEmpty();

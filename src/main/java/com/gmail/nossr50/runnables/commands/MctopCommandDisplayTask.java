@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.commands;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -36,7 +35,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (useBoard && Config.getInstance().getScoreboardsEnabled()) {
+        if (useBoard && mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
             displayBoard();
         }
 
@@ -62,10 +61,10 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         }
         else {
             if(sender instanceof Player) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", primarySkillType.getName()));
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
             }
             else {
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", primarySkillType.getName())));
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill))));
             }
         }
 

@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -64,10 +62,10 @@ public final class SkillUtils {
      * Skill Stat Calculations
      */
 
-    public static @NotNull String[] calculateLengthDisplayValues(@NotNull OnlineMMOPlayer mmoPlayer, float skillValue, @NotNull PrimarySkillType skill) {
-        int maxLength = skill.getSuperAbilityType().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+    public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
+        int maxLength = mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill));
+        int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+        int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
         int length;
 
@@ -134,8 +132,8 @@ public final class SkillUtils {
      * @param skillName The name of the skill to check
      * @return true if this is a valid skill, false otherwise
      */
-    public static boolean isSkill(@NotNull String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? mcMMO.p.getSkillRegister().getSkill(skillName) != null : isLocalizedSkill(skillName);
+    public static boolean isSkill(String skillName) {
+        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ? mcMMO.p.getSkillTools().matchSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(@NotNull Player player, @NotNull NotificationType notificationType, @NotNull String key) {
@@ -170,8 +168,7 @@ public final class SkillUtils {
             //1.13.2+ will have persistent metadata for this item
             AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
             compatLayer.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
-        }
-        else {
+        } else {
             int duration = 0;
             int amplifier = 0;
 
@@ -193,18 +190,18 @@ public final class SkillUtils {
 
             PrimarySkillType skill = mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
-            int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-            int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+            int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+            int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
             int ticks;
 
             if(abilityLengthCap > 0)
             {
-                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mmoPlayer.getExperienceHandler().getSkillLevel(skill) / abilityLengthVar)),
-                        skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             } else {
-                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mmoPlayer.getExperienceHandler().getSkillLevel(skill)) / abilityLengthVar),
-                        skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
