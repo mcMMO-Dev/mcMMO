@@ -130,7 +130,7 @@
                             <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>co.aikar:acf-bukkit</include>
                             <include>com.neetgames:mcMMO-API</include>
-                            <include>com.neetgames:jmal</include>
+<!--                            <include>com.neetgames:jmal</include>-->
                             <include>com.neetgames:NEET-lib</include>
                         </includes>
                     </artifactSet>
@@ -194,6 +194,10 @@
     </build>
     <repositories>
         <repository>
+            <id>neet-games</id>
+            <url>https://nexus.neetgames.com/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -205,11 +209,11 @@
             <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
+        <!-- ... -->
         <repository>
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
-        <!-- ... -->
         <repository> <!-- for development builds -->
             <id>sonatype-oss</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -229,7 +233,7 @@
         </dependency>
         <dependency>
             <groupId>com.neetgames</groupId>
-            <artifactId>jmal</artifactId>
+            <artifactId>jmal-bukkit</artifactId>
             <version>0.01.00-SNAPSHOT</version>
         </dependency>
         <dependency>
