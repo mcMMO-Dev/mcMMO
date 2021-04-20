@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
@@ -104,12 +103,8 @@ public final class UserManager {
         return playerCollection;
     }
 
-    /**
-     * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
-     *
-     * @param syncSave if true, data is saved synchronously
-     */
     public static void logout(@NotNull McMMOPlayer mmoPlayer, boolean syncSave) {
+        //TODO: T&C copy impl again from master
         Player targetPlayer = mmoPlayer.getPlayer();
         BleedTimerTask.bleedOut(targetPlayer);
 
@@ -136,17 +131,16 @@ public final class UserManager {
         mcMMO.getDatabaseManager().cleanupUser(targetPlayer.getUniqueId());
     }
 
-    /**
-     * Get the McMMOPlayer of a player by name.
-     *
-     * @param playerName The name of the player whose McMMOPlayer to retrieve
-     * @return the player's McMMOPlayer object
-     */
-    public static McMMOPlayer getPlayer(String playerName) {
+    @Deprecated
+    public static @NotNull McMMOPlayer getPlayer(@NotNull String playerName) {
         return retrieveMcMMOPlayer(playerName, false);
     }
 
-    public static McMMOPlayer getOfflinePlayer(OfflinePlayer player) {
+    public static @NotNull McMMOPlayer queryPlayer(@NotNull String playerName) {
+        return retrieveMcMMOPlayer(playerName, false);
+    }
+
+    public static @NotNull McMMOPlayer getOfflinePlayer(@NotNull OfflinePlayer player) {
         if (player instanceof Player) {
             return getPlayer((Player) player);
         }
@@ -154,16 +148,11 @@ public final class UserManager {
         return retrieveMcMMOPlayer(player.getName(), true);
     }
 
-    public static McMMOPlayer getOfflinePlayer(String playerName) {
+    public static @NotNull McMMOPlayer getOfflinePlayer(@NotNull String playerName) {
         return retrieveMcMMOPlayer(playerName, true);
     }
 
-    /**
-     * Gets the McMMOPlayer object for a player, this can be null if the player has not yet been loaded.
-     * @param player target player
-     * @return McMMOPlayer object for this player, null if Player has not been loaded
-     */
-    public static McMMOPlayer getPlayer(Player player) {
+    public static @NotNull McMMOPlayer queryPlayer(@NotNull Player player) {
         //Avoid Array Index out of bounds
         if(player != null && player.hasMetadata(mcMMO.playerDataKey))
             return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
@@ -171,7 +160,15 @@ public final class UserManager {
             return null;
     }
 
-    private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
+    public static @NotNull McMMOPlayer getPlayer(@NotNull Player player) {
+        //Avoid Array Index out of bounds
+        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
+            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        else
+            return null;
+    }
+
+    private static @NotNull McMMOPlayer retrieveMcMMOPlayer(@NotNull String playerName, boolean offlineValid) {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player == null) {
