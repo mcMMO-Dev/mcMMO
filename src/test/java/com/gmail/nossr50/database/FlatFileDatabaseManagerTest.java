@@ -9,12 +9,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.io.Files;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Statistic;
-import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -845,7 +839,6 @@ public class FlatFileDatabaseManagerTest {
     }
 
     private static class DebugFilter implements Filter {
-
         @Override
         public boolean isLoggable(LogRecord record) {
             return false;
