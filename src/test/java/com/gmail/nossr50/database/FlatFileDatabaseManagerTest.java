@@ -1,6 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.TestUtil;
 import com.gmail.nossr50.database.flatfile.LeaderboardStatus;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -86,7 +85,7 @@ public class FlatFileDatabaseManagerTest {
 
     @AfterEach
     public void tearDown() {
-        TestUtil.recursiveDelete(tempDir);
+        recursiveDelete(tempDir);
         db = null;
     }
 
@@ -844,4 +843,14 @@ public class FlatFileDatabaseManagerTest {
             return false;
         }
     }
+
+    public static void recursiveDelete(@NotNull File directoryToBeDeleted) {
+        if (directoryToBeDeleted.isDirectory()) {
+            for (File file : directoryToBeDeleted.listFiles()) {
+                recursiveDelete(file);
+            }
+        }
+        directoryToBeDeleted.delete();
+    }
+
 }

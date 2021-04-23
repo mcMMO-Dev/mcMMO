@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import com.gmail.nossr50.TestUtil;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
@@ -40,7 +39,7 @@ public class ChunkStoreTest {
 
     @AfterClass
     public static void tearDownClass() {
-        TestUtil.recursiveDelete(tempDir);
+        recursiveDelete(tempDir);
     }
 
     private World mockWorld;
@@ -439,5 +438,14 @@ public class ChunkStoreTest {
         Mockito.when(testBlock.getZ()).thenReturn(z);
         Mockito.when(testBlock.getWorld()).thenReturn(mockWorld);
         return testBlock;
+    }
+
+    public static void recursiveDelete(@NotNull File directoryToBeDeleted) {
+        if (directoryToBeDeleted.isDirectory()) {
+            for (File file : directoryToBeDeleted.listFiles()) {
+                recursiveDelete(file);
+            }
+        }
+        directoryToBeDeleted.delete();
     }
 }
