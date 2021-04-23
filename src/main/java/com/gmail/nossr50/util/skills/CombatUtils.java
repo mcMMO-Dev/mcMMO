@@ -93,9 +93,7 @@ public final class CombatUtils {
         }
 
         if(target.getHealth() - event.getFinalDamage() > 0) {
-            if (swordsManager.canUseRupture()) {
-                swordsManager.processRupture(target);
-            }
+            swordsManager.processRupture(target);
         }
 
         //Add Stab Damage

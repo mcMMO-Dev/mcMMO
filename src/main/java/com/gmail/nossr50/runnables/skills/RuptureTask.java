@@ -7,13 +7,13 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 public class RuptureTask extends BukkitRunnable {
 
     public static final int DAMAGE_TICK_INTERVAL = 10;
+    public static final int ANIMATION_TICK_INTERVAL = 2;
 
     private final @NotNull McMMOPlayer ruptureSource;
     private final @NotNull LivingEntity targetEntity;
@@ -21,8 +21,9 @@ public class RuptureTask extends BukkitRunnable {
 
     private int ruptureTick;
     private int damageTickTracker;
-    private final double pureTickDamage; //TODO: Make configurable
-    private final double explosionDamage; //TODO: Make configurable
+    private int animationTick;
+    private final double pureTickDamage;
+    private final double explosionDamage;
 
     public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity, double pureTickDamage, double explosionDamage) {
         this.ruptureSource = ruptureSource;
@@ -31,6 +32,7 @@ public class RuptureTask extends BukkitRunnable {
 
         this.ruptureTick = 0;
         this.damageTickTracker = 0;
+        this.animationTick = ANIMATION_TICK_INTERVAL; //Play an animation right away
         this.pureTickDamage = pureTickDamage;
         this.explosionDamage = explosionDamage;
     }
@@ -61,14 +63,20 @@ public class RuptureTask extends BukkitRunnable {
                         if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
                             return;
 
-                        ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+                        if(animationTick >= ANIMATION_TICK_INTERVAL) {
+                            ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+                            animationTick = 0;
+                        } else {
+                            animationTick++;
+                        }
+
                         double damagedHealth = healthBeforeRuptureIsApplied - damage;
 
                         targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
                     }
                 }
             } else {
-                explode();
+                endRupture();
             }
         } else {
             targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
@@ -81,18 +89,18 @@ public class RuptureTask extends BukkitRunnable {
         ruptureTick = 0;
     }
 
-    public void explode() {
-        targetEntity.setMetadata(mcMMO.EXPLOSION_FROM_RUPTURE, new FixedMetadataValue(mcMMO.p, "null"));
-
-        ParticleEffectUtils.playGreaterImpactEffect(targetEntity); //Animate
-
-        if(ruptureSource.getPlayer() != null && ruptureSource.getPlayer().isValid()) {
-            targetEntity.damage(getExplosionDamage(), ruptureSource.getPlayer());
-        } else {
-            targetEntity.damage(getExplosionDamage(), null);
-        }
-
-        targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
+    public void endRupture() {
+//        targetEntity.setMetadata(mcMMO.EXPLOSION_FROM_RUPTURE, new FixedMetadataValue(mcMMO.p, "null"));
+//
+//        ParticleEffectUtils.playGreaterImpactEffect(targetEntity); //Animate
+//
+//        if(ruptureSource.getPlayer() != null && ruptureSource.getPlayer().isValid()) {
+//            targetEntity.damage(getExplosionDamage(), ruptureSource.getPlayer());
+//        } else {
+//            targetEntity.damage(getExplosionDamage(), null);
+//        }
+//
+//        targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
 
         this.cancel(); //Task no longer needed
     }

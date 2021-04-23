@@ -1,11 +1,18 @@
 Version 2.1.196
+    Removed the explosion from Rupture
+    Adjusted Rupture to play its particle effect less often
     Fixed a bug where Rupture never applied to additional targets during Serrated Strikes
+    Fixed a bug where players without Rupture permission could use Rupture during Serrated Strikes
     Fixed a possible null error for our SelfListener
+    Added locale string 'Swords.Combat.Rupture.Note.Update.One'
+    Updated locale string 'Guides.Swords.Section.1'
     Crossbows can now be fished up with enchantments
     (API) Added McMMOEntityDamageByRuptureEvent (thanks qixils)
 
     NOTES:
+    Rupture will be in a state of change for a while as I receive feedback (give me feedback in Discord!)
     Crossbows is not in the default fishing loot list, you'd have to add it yourself.
+    For Devs: McMMOEntityDamageByRuptureEvent extends EntityDamageByEntityEvent and uses CUSTOM type damage
 
 Version 2.1.195
     Fixed a null connection error which affected some SQL users

@@ -1141,9 +1141,9 @@ public class McMMOPlayer implements Identified {
             RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(mcMMO.RUPTURE_META_KEY).get(0);
 
             //Punish a logout
-            ruptureTaskMeta.getRuptureTimerTask().explode();
-            ruptureTaskMeta.getRuptureTimerTask().explode();
-            ruptureTaskMeta.getRuptureTimerTask().explode();
+            ruptureTaskMeta.getRuptureTimerTask().endRupture();
+            ruptureTaskMeta.getRuptureTimerTask().endRupture();
+            ruptureTaskMeta.getRuptureTimerTask().endRupture();
         }
 
         cleanup();

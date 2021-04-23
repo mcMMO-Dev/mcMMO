@@ -63,6 +63,9 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void processRupture(@NotNull LivingEntity target) {
+        if(!canUseRupture())
+            return;
+
         if(target.hasMetadata(mcMMO.RUPTURE_META_KEY)) {
             RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY).get(0);
 
@@ -132,10 +135,6 @@ public class SwordsManager extends SkillManager {
             return 2;
         else
             return 1;
-    }
-
-    public int getRuptureBleedTicks(boolean isTargetPlayer) {
-        return mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(isTargetPlayer) / RuptureTask.DAMAGE_TICK_INTERVAL;
     }
 
     /**

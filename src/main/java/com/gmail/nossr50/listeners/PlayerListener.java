@@ -832,23 +832,24 @@ public class PlayerListener implements Listener {
                     ChimaeraWing.activationCheck(player);
                 }
 
-                /* GREEN THUMB CHECK */
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
-
-                if (heldItem.getType() == Material.BONE_MEAL) {
-                    switch (blockState.getType()) {
-                        case BEETROOTS:
-                        case CARROT:
-                        case COCOA:
-                        case WHEAT:
-                        case NETHER_WART_BLOCK:
-                        case POTATO:
-                            mcMMO.getPlaceStore().setFalse(blockState);
-                    }
-                }
 
                 FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat
                 if(!event.isCancelled() || event.useInteractedBlock() != Event.Result.DENY) {
+                    //TODO: Is this code to set false from bone meal even needed? I'll have to double check later.
+                    if (heldItem.getType() == Material.BONE_MEAL) {
+                        switch (blockState.getType()) {
+                            case BEETROOTS:
+                            case CARROT:
+                            case COCOA:
+                            case WHEAT:
+                            case NETHER_WART_BLOCK:
+                            case POTATO:
+                                mcMMO.getPlaceStore().setFalse(blockState);
+                                break;
+                        }
+                    }
+
                     if (herbalismManager.canGreenThumbBlock(blockState)) {
                         //call event for Green Thumb Block
                         if(!EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, block).isCancelled()) {
