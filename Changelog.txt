@@ -2,6 +2,7 @@ Version 2.1.196
     Fixed a bug where Rupture never applied to additional targets during Serrated Strikes
     Fixed a possible null error for our SelfListener
     Crossbows can now be fished up with enchantments
+    (API) Added McMMOEntityDamageByRuptureEvent (thanks qixils)
 
     NOTES:
     Crossbows is not in the default fishing loot list, you'd have to add it yourself.
