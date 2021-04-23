@@ -712,7 +712,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    UserManager.getPlayer(attacker).getSwordsManager().processRupture(target);
+                    UserManager.getPlayer(attacker).getSwordsManager().processRupture(livingEntity);
                     break;
 
                 case AXES:
