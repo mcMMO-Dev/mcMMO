@@ -1,4 +1,5 @@
 Version 2.1.196
+    Fixed a possible null error for our SelfListener
     Crossbows can now be fished up with enchantments
 
     NOTES:

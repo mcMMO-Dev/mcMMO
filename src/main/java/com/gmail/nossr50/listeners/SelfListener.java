@@ -33,6 +33,13 @@ public class SelfListener implements Listener {
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         Player player = event.getPlayer();
         PrimarySkillType skill = event.getSkill();
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //TODO: Handle proper validation at the event level
+        if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
+            return;
+
         if(player.isOnline()) {
             //Players can gain multiple levels especially during xprate events
             for(int i = 0; i < event.getLevelsGained(); i++)
@@ -73,6 +80,11 @@ public class SelfListener implements Listener {
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //TODO: Handle proper validation at the event level
+        if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
+            return;
+
         PrimarySkillType primarySkillType = event.getSkill();
 
         if(mcMMOPlayer.isDebugMode()) {
