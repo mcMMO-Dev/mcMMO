@@ -87,10 +87,9 @@ public class ChunkStoreTest {
     public void testIndexOutOfBounds() {
         Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
         HashChunkManager hashChunkManager = new HashChunkManager();
-
-
+        
         //Top Block
-        TestBlock illegalHeightBlock = new TestBlock(1337, 256, -1337, mockWorld);
+        Block illegalHeightBlock = initMockBlock(1337, 256, -1337);
         Assert.assertFalse(hashChunkManager.isTrue(illegalHeightBlock));
         hashChunkManager.setTrue(illegalHeightBlock);
     }
@@ -104,7 +103,8 @@ public class ChunkStoreTest {
         for(int x = -radius; x <= radius; x++) {
             for(int y = mockWorld.getMinHeight(); y < mockWorld.getMaxHeight(); y++) {
                 for(int z = -radius; z <= radius; z++) {
-                    TestBlock testBlock = new TestBlock(x, y, z, mockWorld);
+                    Block testBlock = initMockBlock(x, y, z);
+
                     hashChunkManager.setTrue(testBlock);
                     Assert.assertTrue(hashChunkManager.isTrue(testBlock));
                     hashChunkManager.setFalse(testBlock);
@@ -114,7 +114,7 @@ public class ChunkStoreTest {
         }
 
         //Bot Block
-        TestBlock bottomBlock = new TestBlock(1337, 0, -1337, mockWorld);
+        Block bottomBlock = initMockBlock(1337, 0, -1337);
         Assert.assertFalse(hashChunkManager.isTrue(bottomBlock));
 
         Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, bottomBlock));
@@ -122,7 +122,7 @@ public class ChunkStoreTest {
         Assert.assertTrue(hashChunkManager.isTrue(bottomBlock));
 
         //Top Block
-        TestBlock topBlock = new TestBlock(1337, 255, -1337, mockWorld);
+        Block topBlock = initMockBlock(1337, 255, -1337);
         Assert.assertFalse(hashChunkManager.isTrue(topBlock));
 
         Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, topBlock));
@@ -270,9 +270,9 @@ public class ChunkStoreTest {
     }
 
     private interface Delegate {
+
         void run();
     }
-
     private void assertThrows(@NotNull Delegate delegate, @NotNull Class<?> clazz) {
         try {
             delegate.run();
@@ -315,6 +315,7 @@ public class ChunkStoreTest {
     }
 
     public static class LegacyChunkStore implements ChunkStore, Serializable {
+
         private static final long serialVersionUID = -1L;
         transient private boolean dirty = false;
         public boolean[][][] store;
@@ -323,7 +324,6 @@ public class ChunkStoreTest {
         private final int cx;
         private final int cz;
         private final @NotNull UUID worldUid;
-
         public LegacyChunkStore(@NotNull World world, int cx, int cz) {
             this.cx = cx;
             this.cz = cz;
@@ -425,13 +425,13 @@ public class ChunkStoreTest {
         private void readObject(@NotNull ObjectInputStream in) throws IOException, ClassNotFoundException {
             throw new UnsupportedOperationException();
         }
-    }
 
+    }
     private static class UnitTestObjectOutputStream extends ObjectOutputStream {
+
         public UnitTestObjectOutputStream(@NotNull OutputStream outputStream) throws IOException {
             super(outputStream);
         }
-
         @Override
         public void writeUTF(@NotNull String str) throws IOException {
             // Pretend to be the old class
@@ -439,277 +439,15 @@ public class ChunkStoreTest {
                 str = "com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore";
             super.writeUTF(str);
         }
+
     }
-
-    private class TestBlock implements Block {
-
-        private final int x, y, z;
-        private final @NotNull World world;
-
-        private TestBlock(int x, int y, int z, World world) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.world = world;
-        }
-
-        @Override
-        public byte getData() {
-            return 0;
-        }
-
-        @NotNull
-        @Override
-        public BlockData getBlockData() {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Block getRelative(int modX, int modY, int modZ) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Block getRelative(@NotNull BlockFace face) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Block getRelative(@NotNull BlockFace face, int distance) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Material getType() {
-            return null;
-        }
-
-        @Override
-        public byte getLightLevel() {
-            return 0;
-        }
-
-        @Override
-        public byte getLightFromSky() {
-            return 0;
-        }
-
-        @Override
-        public byte getLightFromBlocks() {
-            return 0;
-        }
-
-        @NotNull
-        @Override
-        public World getWorld() {
-            return world;
-        }
-
-        @Override
-        public int getX() {
-            return x;
-        }
-
-        @Override
-        public int getY() {
-            return y;
-        }
-
-        @Override
-        public int getZ() {
-            return z;
-        }
-
-        @NotNull
-        @Override
-        public Location getLocation() {
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public Location getLocation(@Nullable Location loc) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Chunk getChunk() {
-            return null;
-        }
-
-        @Override
-        public void setBlockData(@NotNull BlockData data) {
-
-        }
-
-        @Override
-        public void setBlockData(@NotNull BlockData data, boolean applyPhysics) {
-
-        }
-
-        @Override
-        public void setType(@NotNull Material type) {
-
-        }
-
-        @Override
-        public void setType(@NotNull Material type, boolean applyPhysics) {
-
-        }
-
-        @Nullable
-        @Override
-        public BlockFace getFace(@NotNull Block block) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public BlockState getState() {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Biome getBiome() {
-            return null;
-        }
-
-        @Override
-        public void setBiome(@NotNull Biome bio) {
-
-        }
-
-        @Override
-        public boolean isBlockPowered() {
-            return false;
-        }
-
-        @Override
-        public boolean isBlockIndirectlyPowered() {
-            return false;
-        }
-
-        @Override
-        public boolean isBlockFacePowered(@NotNull BlockFace face) {
-            return false;
-        }
-
-        @Override
-        public boolean isBlockFaceIndirectlyPowered(@NotNull BlockFace face) {
-            return false;
-        }
-
-        @Override
-        public int getBlockPower(@NotNull BlockFace face) {
-            return 0;
-        }
-
-        @Override
-        public int getBlockPower() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean isLiquid() {
-            return false;
-        }
-
-        @Override
-        public double getTemperature() {
-            return 0;
-        }
-
-        @Override
-        public double getHumidity() {
-            return 0;
-        }
-
-        @NotNull
-        @Override
-        public PistonMoveReaction getPistonMoveReaction() {
-            return null;
-        }
-
-        @Override
-        public boolean breakNaturally() {
-            return false;
-        }
-
-        @Override
-        public boolean breakNaturally(@Nullable ItemStack tool) {
-            return false;
-        }
-
-        @Override
-        public boolean applyBoneMeal(@NotNull BlockFace face) {
-            return false;
-        }
-
-        @NotNull
-        @Override
-        public Collection<ItemStack> getDrops() {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Collection<ItemStack> getDrops(@Nullable ItemStack tool) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Collection<ItemStack> getDrops(@NotNull ItemStack tool, @Nullable Entity entity) {
-            return null;
-        }
-
-        @Override
-        public boolean isPassable() {
-            return false;
-        }
-
-        @Nullable
-        @Override
-        public RayTraceResult rayTrace(@NotNull Location start, @NotNull Vector direction, double maxDistance, @NotNull FluidCollisionMode fluidCollisionMode) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public BoundingBox getBoundingBox() {
-            return null;
-        }
-
-        @Override
-        public void setMetadata(@NotNull String metadataKey, @NotNull MetadataValue newMetadataValue) {
-
-        }
-
-        @NotNull
-        @Override
-        public List<MetadataValue> getMetadata(@NotNull String metadataKey) {
-            return null;
-        }
-
-        @Override
-        public boolean hasMetadata(@NotNull String metadataKey) {
-            return false;
-        }
-
-        @Override
-        public void removeMetadata(@NotNull String metadataKey, @NotNull Plugin owningPlugin) {
-
-        }
+    @NotNull
+    private Block initMockBlock(int x, int y, int z) {
+        Block testBlock = mock(Block.class);
+        Mockito.when(testBlock.getX()).thenReturn(x);
+        Mockito.when(testBlock.getY()).thenReturn(y);
+        Mockito.when(testBlock.getZ()).thenReturn(z);
+        Mockito.when(testBlock.getWorld()).thenReturn(mockWorld);
+        return testBlock;
     }
 }
