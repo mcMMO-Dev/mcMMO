@@ -10,6 +10,7 @@ Version 2.1.196
     (API) Added McMMOEntityDamageByRuptureEvent (thanks qixils)
 
     NOTES:
+    For now Rupture is non-lethal, I may add back a lethal component at the end of its damage
     Rupture will be in a state of change for a while as I receive feedback (give me feedback in Discord!)
     Crossbows is not in the default fishing loot list, you'd have to add it yourself.
     For Devs: McMMOEntityDamageByRuptureEvent extends EntityDamageByEntityEvent and uses CUSTOM type damage

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class RuptureTask extends BukkitRunnable {
 
     public static final int DAMAGE_TICK_INTERVAL = 10;
-    public static final int ANIMATION_TICK_INTERVAL = 2;
+    public static final int ANIMATION_TICK_INTERVAL = 1;
 
     private final @NotNull McMMOPlayer ruptureSource;
     private final @NotNull LivingEntity targetEntity;
@@ -44,44 +44,60 @@ public class RuptureTask extends BukkitRunnable {
             ruptureTick += 1; //Advance rupture tick by 1.
             damageTickTracker += 1; //Increment damage tick tracker
 
+            //TODO: Clean this code up, applyRupture() is a confusing name for something that returns boolean
             //Rupture hasn't ended yet
             if(ruptureTick < expireTick) {
                 //Is it time to damage?
                 if(damageTickTracker >= DAMAGE_TICK_INTERVAL) {
 
                     damageTickTracker = 0; //Reset timer
-                    double healthBeforeRuptureIsApplied = targetEntity.getHealth();
+                    if (applyRupture()) return;
 
-                    //Ensure victim has health
-                    if (healthBeforeRuptureIsApplied > 0.01) {
-                        //Send a fake damage event
-                        McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
-                        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                        //Ensure the event wasn't cancelled and damage is still greater than 0
-                        double damage = event.getFinalDamage();
-                        if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
-                            return;
-
-                        if(animationTick >= ANIMATION_TICK_INTERVAL) {
-                            ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
-                            animationTick = 0;
-                        } else {
-                            animationTick++;
-                        }
-
-                        double damagedHealth = healthBeforeRuptureIsApplied - damage;
-
-                        targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
-                    }
+                    playAnimation();
                 }
             } else {
+                if(!applyRupture()) {
+                    playAnimation();
+                }
+
                 endRupture();
             }
         } else {
             targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
             this.cancel(); //Task no longer needed
         }
+    }
+
+    private void playAnimation() {
+        if(animationTick >= ANIMATION_TICK_INTERVAL) {
+            ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+            animationTick = 0;
+        } else {
+            animationTick++;
+        }
+    }
+
+    private boolean applyRupture() {
+        double healthBeforeRuptureIsApplied = targetEntity.getHealth();
+
+        //Ensure victim has health
+        if (healthBeforeRuptureIsApplied > 0.01) {
+            //Send a fake damage event
+            McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+            //Ensure the event wasn't cancelled and damage is still greater than 0
+            double damage = event.getFinalDamage();
+
+            if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
+                return true;
+
+            double damagedHealth = healthBeforeRuptureIsApplied - damage;
+
+            targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
+        }
+
+        return false;
     }
 
     public void refreshRupture() {
