@@ -223,7 +223,7 @@ public abstract class SkillCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
-            return ImmutableList.of("?");
+            return ImmutableList.of("?", "keep");
         }
         return ImmutableList.of();
     }
