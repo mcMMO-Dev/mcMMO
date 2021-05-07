@@ -116,7 +116,7 @@ public abstract class SkillCommand implements TabExecutor {
             }
 
             return true;
-        } else if ("keep".equals(args[0])) {
+        } else if ("keep".equals(args[0].toLowerCase())) {
             if (!mcMMO.p.getGeneralConfig().getAllowKeepBoard()
                     || !mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
                     || !mcMMO.p.getGeneralConfig().getSkillUseBoard()) {
