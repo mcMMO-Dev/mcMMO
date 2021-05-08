@@ -38,6 +38,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -122,16 +123,20 @@ public class BlockListener implements Listener {
         }
 
         BlockFace direction = event.getDirection();
-        Block movedBlock;
+        
         WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
+        
+        Set<Block> movedBlocks = new HashSet<>();
+        // only add already stored blocks to be re-added in their new locations
         for (Block block : event.getBlocks()) {
-            movedBlock = block.getRelative(direction);
-
-            if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock)) {
-                mcMMO.getPlaceStore().setTrue(movedBlock);
-            }
+        	if (!mcMMO.getPlaceStore().isTrue(block)) continue;
+        	mcMMO.getPlaceStore().setFalse(block);
+           	movedBlocks.add(block.getRelative(direction));
         }
+        
+        movedBlocks.stream()
+        .filter(movedBlock -> BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock))
+        .forEach(mcMMO.getPlaceStore()::setTrue);
     }
 
     /**
@@ -148,23 +153,25 @@ public class BlockListener implements Listener {
         if(!ExperienceConfig.getInstance().isPistonCheatingPrevented()) {
             return;
         }
+        //an extra retract event is called with only the piston and getBlocks is empty
+        if (event.getBlocks().isEmpty()) {
+        	return;
+        }
 
-        // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
-        Block movedBlock = event.getBlock().getRelative(direction);
 
         WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
 
-        //Spigot makes bad things happen in its API
-        if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock)) {
-            mcMMO.getPlaceStore().setTrue(movedBlock);
-        }
-
+        Set<Block> movedBlocks = new HashSet<>();
+        
         for (Block block : event.getBlocks()) {
-            if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
-                mcMMO.getPlaceStore().setTrue(block.getRelative(direction));
-            }
+        	if (!mcMMO.getPlaceStore().isTrue(block)) continue;
+        	mcMMO.getPlaceStore().setFalse(block);
+        	movedBlocks.add(block.getRelative(direction));
         }
+        movedBlocks.stream()
+        .filter(movedBlock -> BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock))
+        .forEach(mcMMO.getPlaceStore()::setTrue);
     }
 
     /**
