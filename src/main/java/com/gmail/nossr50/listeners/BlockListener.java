@@ -129,9 +129,9 @@ public class BlockListener implements Listener {
         Set<Block> movedBlocks = new HashSet<>();
         // only add already stored blocks to be re-added in their new locations
         for (Block block : event.getBlocks()) {
-        	if (!mcMMO.getPlaceStore().isTrue(block)) continue;
-        	mcMMO.getPlaceStore().setFalse(block);
-           	movedBlocks.add(block.getRelative(direction));
+            if (!mcMMO.getPlaceStore().isTrue(block)) continue;
+            mcMMO.getPlaceStore().setFalse(block);
+            movedBlocks.add(block.getRelative(direction));
         }
         
         movedBlocks.stream()
@@ -155,19 +155,19 @@ public class BlockListener implements Listener {
         }
         //an extra retract event is called with only the piston and getBlocks is empty
         if (event.getBlocks().isEmpty()) {
-        	return;
+            return;
         }
 
         BlockFace direction = event.getDirection();
 
         WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
+        
         Set<Block> movedBlocks = new HashSet<>();
         
         for (Block block : event.getBlocks()) {
-        	if (!mcMMO.getPlaceStore().isTrue(block)) continue;
-        	mcMMO.getPlaceStore().setFalse(block);
-        	movedBlocks.add(block.getRelative(direction));
+            if (!mcMMO.getPlaceStore().isTrue(block)) continue;
+            mcMMO.getPlaceStore().setFalse(block);
+            movedBlocks.add(block.getRelative(direction));
         }
         movedBlocks.stream()
         .filter(movedBlock -> BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock))
