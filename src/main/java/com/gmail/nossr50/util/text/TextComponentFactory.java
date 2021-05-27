@@ -286,7 +286,7 @@ public class TextComponentFactory {
             else
                 textComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.SkillName", skillName));
 
-            textComponent.clickEvent(ClickEvent.runCommand("/mmoinfo " + subSkillType.getNiceNameNoSpaces(subSkillType)));
+            textComponent.clickEvent(ClickEvent.runCommand("/mmoinfo " + subSkillType.toString()));
 
         } else {
             textComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.Mystery",
