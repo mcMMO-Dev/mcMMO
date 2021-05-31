@@ -1,3 +1,6 @@
+Version 2.1.197
+    Updated Japanese locale (thanks ViaSnake)
+
 Version 2.1.196
     Removed the explosion from Rupture
     Adjusted Rupture to play its particle effect less often
