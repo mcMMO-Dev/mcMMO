@@ -1,5 +1,6 @@
 Version 2.1.197
     This build of mcMMO should be more compatible with certain versions of ViaVersion
+    Players are no longer launched from Minecarts when using a Fishing Rod (they are still dismounted) thanks lexikiq
     Updated Japanese locale (thanks ViaSnake)
     Updated Brazil Portuguese (pt_BR) locale (thanks Paulo Guilherme)
 
