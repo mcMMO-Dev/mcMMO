@@ -1,5 +1,10 @@
 Version 2.1.197
+    This build of mcMMO should be more compatible with certain versions of ViaVersion
     Updated Japanese locale (thanks ViaSnake)
+    Updated Brazil Portuguese (pt_BR) locale (thanks Paulo Guilherme)
+
+    NOTES:
+    If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.
 
 Version 2.1.196
     Removed the explosion from Rupture
