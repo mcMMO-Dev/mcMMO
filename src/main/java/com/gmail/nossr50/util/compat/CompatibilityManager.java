@@ -77,7 +77,8 @@ public class CompatibilityManager {
     }
 
     private void initWorldCompatibilityLayer() {
-        if((minecraftGameVersion.getMinorVersion().asInt() >= 16 && minecraftGameVersion.getPatchVersion().asInt() >= 4)
+        if(minecraftGameVersion.getMinorVersion().asInt() > 17
+                || (minecraftGameVersion.getMinorVersion().asInt() >= 16 && minecraftGameVersion.getPatchVersion().asInt() >= 4)
                 || minecraftGameVersion.getMajorVersion().asInt() >= 2) {
             if(hasNewWorldMinHeightAPI()) {
                 worldCompatibilityLayer = new WorldCompatibilityLayer_1_16_4();
@@ -213,6 +214,8 @@ public class CompatibilityManager {
                     } else if(minecraftGameVersion.getPatchVersion().asInt() >= 5) {
                         return NMSVersion.NMS_1_16_5;
                     }
+                case 17:
+                    return NMSVersion.NMS_1_17;
             }
         }
 
