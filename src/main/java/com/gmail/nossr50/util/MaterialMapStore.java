@@ -400,6 +400,8 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("large_amethyst_bud");
         intendedToolPickAxe.add("amethyst_cluster");
         intendedToolPickAxe.add("budding_amethyst");
+        intendedToolPickAxe.add("deepslate");
+        intendedToolPickAxe.add("cobbled_deepslate");
 
     }
 

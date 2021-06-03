@@ -380,6 +380,8 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Deepslate: 30
+        Cobbled_Deepslate: 15
         Calcite: 400
         Smooth_Basalt: 300
         Block_Of_Amethyst: 500
@@ -481,6 +483,7 @@ Experience_Values:
         Nether_Quartz_Ore: 25
         Redstone_Ore: 15
         Nether_Gold_Ore: 35
+        Cobbled_Deepslate: 5
     Taming:
         Animal_Taming:
             Llama: 1200

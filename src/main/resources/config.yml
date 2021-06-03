@@ -513,6 +513,17 @@ Bonus_Drops:
         Peony: true
         Lily_Of_The_Valley: true
     Mining:
+        Calcite: true
+        Smooth_Basalt: true
+        Block_Of_Amethyst: true
+        Budding_Amethyst: true
+        Small_Amethyst_Bud: true
+        Medium_Amethyst_Bud: true
+        Large_Amethyst_Bud: true
+        Amethyst_Cluster: true
+        Amethyst_Shard: true
+        Deepslate: true
+        Cobbled_Deepslate: true
         Gilded_Blackstone: true
         Crying_Obsidian: true
         Nether_Bricks: true
@@ -589,6 +600,8 @@ Bonus_Drops:
         Nether_Quartz: true
         Quartz: true
         Redstone: true
+        Deepslate: true
+        Cobbled_Deepslate: true
 
 #
 #  Settings for commands

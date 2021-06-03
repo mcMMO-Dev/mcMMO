@@ -1,4 +1,5 @@
 Version 2.1.197
+    This update adds compatibility for new mobs and blocks from 1.17
     This build of mcMMO should be more compatible with certain versions of ViaVersion
     Players are no longer launched from Minecarts when using a Fishing Rod (they are still dismounted) thanks lexikiq
     Updated Japanese locale (thanks ViaSnake)
@@ -15,8 +16,23 @@ Version 2.1.197
     Added Medium Amethyst Bud to experience.yml for Mining
     Added Large Amethyst Bud to experience.yml for Mining
     Added Amethyst Cluster to experience.yml for Mining
+    Added Deepslate to experience.yml for Mining
+    Added Cobbled Deepslate to experience.yml for Mining
+    Added Amethyst Shard to Bonus Drops for Mining in config.yml
+    Added Calcite to Bonus Drops for Mining in config.yml
+    Added Smooth Basalt to Bonus Drops for Mining in config.yml
+    Added Block_Of_Amethyst to Bonus Drops for Mining in config.yml
+    Added Budding Amethyst to Bonus Drops for Mining in config.yml
+    Added Small_Amethyst_Bud to Bonus Drops for Mining in config.yml
+    Added Medium Amethyst Bud to Bonus Drops for Mining in config.yml
+    Added Large Amethyst Bud to Bonus Drops for Mining in config.yml
+    Added Amethyst Cluster to Bonus Drops for Mining in config.yml
+    Added Deepslate to Bonus Drops for Mining in config.yml
+    Added Cobbled Deepslate to Bonus Drops for Mining in config.yml
+    Added Cobbled Deepslate to experience.yml for Smelting
 
     NOTES:
+    You shouldn't need to edit your configs for this update, your configs should update automatically.
     If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.
 
 Version 2.1.196
