@@ -6,6 +6,15 @@ Version 2.1.197
     Added Goat to experience.yml
     Added Axolotl to experience.yml
     Added Glow_Squid to experience.yml
+    Updated Super Breaker to recognize the new mining blocks
+    Added Calcite to experience.yml for Mining
+    Added Smooth Basalt to experience.yml for Mining
+    Added Block_Of_Amethyst to experience.yml for Mining
+    Added Budding Amethyst to experience.yml for Mining
+    Added Small_Amethyst_Bud to experience.yml for Mining
+    Added Medium Amethyst Bud to experience.yml for Mining
+    Added Large Amethyst Bud to experience.yml for Mining
+    Added Amethyst Cluster to experience.yml for Mining
 
     NOTES:
     If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.

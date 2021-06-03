@@ -380,6 +380,14 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Calcite: 400
+        Smooth_Basalt: 300
+        Block_Of_Amethyst: 500
+        Budding_Amethyst: 400
+        Small_Amethyst_Bud: 10
+        Medium_Amethyst_Bud: 20
+        Large_Amethyst_Bud: 30
+        Amethyst_Cluster: 60
         Bone_Block: 500
         Crying_Obsidian: 3000
         Chain: 100

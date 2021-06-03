@@ -307,10 +307,6 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("stone_button");
         intendedToolPickAxe.add("stone_pressure_plate");
         intendedToolPickAxe.add("terracotta");
-        intendedToolPickAxe.add("amethyst_bud");
-        intendedToolPickAxe.add("amethyst_cluster");
-        intendedToolPickAxe.add("block_of_amethyst");
-        intendedToolPickAxe.add("budding_amethyst");
         intendedToolPickAxe.add("ancient_debris");
         intendedToolPickAxe.add("crying_obsidian");
         intendedToolPickAxe.add("glowing_obsidian"); //be
@@ -394,6 +390,16 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("weathered_cut_copper_stairs");
         intendedToolPickAxe.add("waxed_cut_copper_stairs");
         intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_stairs");
+
+        //1.17
+        intendedToolPickAxe.add("calcite");
+        intendedToolPickAxe.add("smooth_basalt");
+        intendedToolPickAxe.add("block_of_amethyst");
+        intendedToolPickAxe.add("small_amethyst_bud");
+        intendedToolPickAxe.add("medium_amethyst_bud");
+        intendedToolPickAxe.add("large_amethyst_bud");
+        intendedToolPickAxe.add("amethyst_cluster");
+        intendedToolPickAxe.add("budding_amethyst");
 
     }
 
@@ -1269,11 +1275,11 @@ public class MaterialMapStore {
         toolBlackList.add("sweet_berry_bush");
     }
 
-    public boolean isIntendedToolPickaxe(Material material) {
+    public boolean isIntendedToolPickaxe(@NotNull Material material) {
         return intendedToolPickAxe.contains(material.getKey().getKey());
     }
 
-    public boolean isIntendedToolPickaxe(String string) {
+    public boolean isIntendedToolPickaxe(@NotNull String string) {
         return intendedToolPickAxe.contains(string);
     }
 
