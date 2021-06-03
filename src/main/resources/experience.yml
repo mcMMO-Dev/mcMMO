@@ -473,12 +473,15 @@ Experience_Values:
         String: 1.8
         Other: 1.5
     Smelting:
+        Raw_Copper: 75
         Ancient_Debris: 200
         Coal_Ore: 10
         Diamond_Ore: 75
         Emerald_Ore: 100
         Gold_Ore: 35
+        Raw_Gold: 35
         Iron_Ore: 25
+        Raw_Iron: 25
         Lapis_Ore: 40
         Nether_Quartz_Ore: 25
         Redstone_Ore: 15

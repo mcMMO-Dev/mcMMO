@@ -568,6 +568,9 @@ Bonus_Drops:
         Sandstone: true
         Stone: true
         Cobblestone: true
+        Raw_Copper: true
+        Raw_Iron: true
+        Raw_Gold: true
     Woodcutting:
         Crimson_Hyphae: true
         Warped_Hyphae: true
@@ -601,7 +604,6 @@ Bonus_Drops:
         Quartz: true
         Redstone: true
         Deepslate: true
-        Cobbled_Deepslate: true
 
 #
 #  Settings for commands

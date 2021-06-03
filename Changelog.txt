@@ -8,6 +8,7 @@ Version 2.1.197
     Added Axolotl to experience.yml
     Added Glow_Squid to experience.yml
     Updated Super Breaker to recognize the new mining blocks
+
     Added Calcite to experience.yml for Mining
     Added Smooth Basalt to experience.yml for Mining
     Added Block_Of_Amethyst to experience.yml for Mining
@@ -18,6 +19,7 @@ Version 2.1.197
     Added Amethyst Cluster to experience.yml for Mining
     Added Deepslate to experience.yml for Mining
     Added Cobbled Deepslate to experience.yml for Mining
+
     Added Amethyst Shard to Bonus Drops for Mining in config.yml
     Added Calcite to Bonus Drops for Mining in config.yml
     Added Smooth Basalt to Bonus Drops for Mining in config.yml
@@ -29,7 +31,14 @@ Version 2.1.197
     Added Amethyst Cluster to Bonus Drops for Mining in config.yml
     Added Deepslate to Bonus Drops for Mining in config.yml
     Added Cobbled Deepslate to Bonus Drops for Mining in config.yml
+    Added Raw Iron to Bonus Drops for Mining in config.yml
+    Added Raw Gold to Bonus Drops for Mining in config.yml
+    Added Raw Copper to Bonus Drops for Mining in config.yml
+
     Added Cobbled Deepslate to experience.yml for Smelting
+    Added Raw Copper to experience.yml for Smelting
+    Added Raw Iron to experience.yml for Smelting
+    Added Raw Gold to experience.yml for Smelting
 
     NOTES:
     You shouldn't need to edit your configs for this update, your configs should update automatically.
