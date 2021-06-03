@@ -488,6 +488,8 @@ Experience_Values:
             Fox: 1000
             Panda: 1000
             Bee: 100
+            Goat: 250
+            Axolotl: 600
     Combat:
         Multiplier:
             Animals: 1.0
@@ -557,3 +559,6 @@ Experience_Values:
             Zombified_Piglin: 3.0
             Strider: 1.2
             Zoglin: 2.5
+            Goat: 1.5
+            Axolotl: 1.75
+            Glow_Squid: 1.5

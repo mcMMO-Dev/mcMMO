@@ -3,6 +3,9 @@ Version 2.1.197
     Players are no longer launched from Minecarts when using a Fishing Rod (they are still dismounted) thanks lexikiq
     Updated Japanese locale (thanks ViaSnake)
     Updated Brazil Portuguese (pt_BR) locale (thanks Paulo Guilherme)
+    Added Goat to experience.yml
+    Added Axolotl to experience.yml
+    Added Glow_Squid to experience.yml
 
     NOTES:
     If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.
