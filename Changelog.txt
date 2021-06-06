@@ -4,10 +4,10 @@ Version 2.1.197
     Players are no longer launched from Minecarts when using a Fishing Rod (they are still dismounted) thanks lexikiq
     Updated Japanese locale (thanks ViaSnake)
     Updated Brazil Portuguese (pt_BR) locale (thanks Paulo Guilherme)
-    Added Goat to experience.yml
-    Added Axolotl to experience.yml
-    Added Glow_Squid to experience.yml
-    Updated Super Breaker to recognize the new mining blocks
+    Added Goat to experience.yml for combat and taming
+    Added Axolotl to experience.yml for combat and taming
+    Added Glow_Squid to experience.yml for combat and taming
+    Updated Super Breaker to recognize the new pick-axe appropriate blocks
 
     Added Calcite to experience.yml for Mining
     Added Smooth Basalt to experience.yml for Mining
@@ -19,6 +19,16 @@ Version 2.1.197
     Added Amethyst Cluster to experience.yml for Mining
     Added Deepslate to experience.yml for Mining
     Added Cobbled Deepslate to experience.yml for Mining
+    Added Copper Ore to experience.yml for Mining
+    Added Deepslate Redstone Ore to experience.yml for Mining
+    Added Deepslate Copper Ore to experience.yml for Mining
+    Added Deepslate Coal Ore to experience.yml for Mining
+    Added Deepslate Diamond Ore to experience.yml for Mining
+    Added Deepslate Emerald Ore to experience.yml for Mining
+    Added Deepslate Iron Ore to experience.yml for Mining
+    Added Deepslate Gold Ore to experience.yml for Mining
+    Added Deepslate Lapis Lazuli Ore to experience.yml for Mining
+    Added Lapis Lazuli Ore to experience.yml for Mining (was missing)
 
     Added Amethyst Shard to Bonus Drops for Mining in config.yml
     Added Calcite to Bonus Drops for Mining in config.yml
@@ -34,14 +44,35 @@ Version 2.1.197
     Added Raw Iron to Bonus Drops for Mining in config.yml
     Added Raw Gold to Bonus Drops for Mining in config.yml
     Added Raw Copper to Bonus Drops for Mining in config.yml
+    Added Copper Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Redstone Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Copper Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Coal Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Diamond Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Emerald Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Iron Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Gold Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Lapis Lazuli Ore to Bonus Drops for Mining in config.yml
+    Added Lapis Lazuli Ore to Bonus Drops for Mining in config.yml (was missing)
 
     Added Cobbled Deepslate to experience.yml for Smelting
     Added Raw Copper to experience.yml for Smelting
     Added Raw Iron to experience.yml for Smelting
     Added Raw Gold to experience.yml for Smelting
+    Added Copper Ore to experience.yml for Smelting
+    Added Deepslate Redstone Ore to experience.yml for Smelting
+    Added Deepslate Copper Ore to experience.yml for Smelting
+    Added Deepslate Coal Ore to experience.yml for Smelting
+    Added Deepslate Diamond Ore to experience.yml for Smelting
+    Added Deepslate Emerald Ore to experience.yml for Smelting
+    Added Deepslate Iron Ore to experience.yml for Smelting
+    Added Deepslate Gold Ore to experience.yml for Smelting
+    Added Deepslate Lapis Lazuli Ore to experience.yml for Smelting
+    Added Lapis Lazuli Ore to experience.yml for Smelting (was missing)
 
     NOTES:
     You shouldn't need to edit your configs for this update, your configs should update automatically.
+    Expect some patches following this update for Axolotl and other new entities, waiting on the Spigot API to become available
     If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.
 
 Version 2.1.196

@@ -206,16 +206,29 @@ public class MaterialMapStore {
         ores.add("gold_ore");
         ores.add("iron_ore");
         ores.add("lapis_ore");
+        ores.add("lapis_lazuli_ore");
         ores.add("redstone_ore");
         ores.add("emerald_ore");
         ores.add("ancient_debris");
         ores.add("nether_gold_ore");
         ores.add("gilded_blackstone");
+
+        //1.17 Mining Ore Blocks
+        ores.add("deepslate_redstone_ore");
+        ores.add("deepslate_copper_ore");
+        ores.add("deepslate_coal_ore");
+        ores.add("deepslate_diamond_ore");
+        ores.add("deepslate_emerald_ore");
+        ores.add("deepslate_iron_ore");
+        ores.add("deepslate_gold_ore");
+        ores.add("deepslate_lapis_lazuli_ore");
+        ores.add("copper_ore");
     }
 
     private void fillIntendedTools() {
         intendedToolPickAxe.addAll(ores);
 
+        intendedToolPickAxe.add("lapis_lazuli_ore");
         intendedToolPickAxe.add("ice");
         intendedToolPickAxe.add("packed_ice");
         intendedToolPickAxe.add("blue_ice");
@@ -391,7 +404,7 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("waxed_cut_copper_stairs");
         intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_stairs");
 
-        //1.17
+        //1.17 Mining (non-ores)
         intendedToolPickAxe.add("calcite");
         intendedToolPickAxe.add("smooth_basalt");
         intendedToolPickAxe.add("block_of_amethyst");
@@ -402,7 +415,6 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("budding_amethyst");
         intendedToolPickAxe.add("deepslate");
         intendedToolPickAxe.add("cobbled_deepslate");
-
     }
 
     private void fillArmors() {

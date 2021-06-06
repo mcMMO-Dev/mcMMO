@@ -513,6 +513,16 @@ Bonus_Drops:
         Peony: true
         Lily_Of_The_Valley: true
     Mining:
+        Deepslate_Redstone_Ore: true
+        Deepslate_Copper_Ore: true
+        Deepslate_Coal_Ore: true
+        Deepslate_Diamond_Ore: true
+        Deepslate_Emerald_Ore: true
+        Deepslate_Iron_Ore: true
+        Deepslate_Gold_Ore: true
+        Deepslate_Lapis_Lazuli_Ore: true
+        Lapis_Lazuli_Ore: true
+        Copper_Ore: true
         Calcite: true
         Smooth_Basalt: true
         Block_Of_Amethyst: true
