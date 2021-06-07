@@ -415,6 +415,7 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("budding_amethyst");
         intendedToolPickAxe.add("deepslate");
         intendedToolPickAxe.add("cobbled_deepslate");
+        intendedToolPickAxe.add("tuff");
     }
 
     private void fillArmors() {
