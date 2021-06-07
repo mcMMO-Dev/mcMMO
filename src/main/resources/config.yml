@@ -514,6 +514,7 @@ Bonus_Drops:
         Peony: true
         Lily_Of_The_Valley: true
     Mining:
+        Tuff: true
         Deepslate_Redstone_Ore: true
         Deepslate_Copper_Ore: true
         Deepslate_Coal_Ore: true

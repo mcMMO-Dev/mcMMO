@@ -159,7 +159,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Giga Drill Breaker, false
      * otherwise
      */
-    public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
+    public static boolean affectedByGigaDrillBreaker(@NotNull BlockState blockState) {
         if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.EXCAVATION, blockState.getBlockData()))
             return true;
         return mcMMO.getModManager().isCustomExcavationBlock(blockState);
@@ -171,7 +171,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a log, false otherwise
      */
-    public static boolean hasWoodcuttingXP(BlockState blockState) {
+    public static boolean hasWoodcuttingXP(@NotNull BlockState blockState) {
         return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, blockState.getBlockData());
     }
 
@@ -181,11 +181,11 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a leaf, false otherwise
      */
-    public static boolean isNonWoodPartOfTree(BlockState blockState) {
+    public static boolean isNonWoodPartOfTree(@NotNull BlockState blockState) {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(blockState.getType());
     }
 
-    public static boolean isNonWoodPartOfTree(Material material) {
+    public static boolean isNonWoodPartOfTree(@NotNull Material material) {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(material);
     }
 

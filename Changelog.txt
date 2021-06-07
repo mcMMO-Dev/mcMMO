@@ -12,6 +12,7 @@ Version 2.1.197
 
     Added Rooted Dirt to experience.yml for Excavation
     Added Moss Block to experience.yml for Herbalism
+    Added Tuff to experience.yml for Mining
     Added Calcite to experience.yml for Mining
     Added Smooth Basalt to experience.yml for Mining
     Added Block_Of_Amethyst to experience.yml for Mining
@@ -34,6 +35,7 @@ Version 2.1.197
     Added Lapis Lazuli Ore to experience.yml for Mining (was missing)
 
     Added Moss Block to Bonus Drops for Herbalism in config.yml
+    Added Tuff to Bonus Drops for Mining in config.yml
     Added Amethyst Shard to Bonus Drops for Mining in config.yml
     Added Calcite to Bonus Drops for Mining in config.yml
     Added Smooth Basalt to Bonus Drops for Mining in config.yml

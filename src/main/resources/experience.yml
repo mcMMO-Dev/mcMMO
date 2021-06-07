@@ -382,6 +382,7 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Tuff: 10
         Copper_Ore: 1400
         Deepslate_Copper_Ore: 1900
         Deepslate: 30
