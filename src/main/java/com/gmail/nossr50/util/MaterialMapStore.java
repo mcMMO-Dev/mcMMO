@@ -1006,6 +1006,7 @@ public class MaterialMapStore {
         treeFellerDestructibleWhiteList.add("dark_oak_leaves");
         treeFellerDestructibleWhiteList.add("jungle_leaves");
         treeFellerDestructibleWhiteList.add("spruce_leaves");
+        treeFellerDestructibleWhiteList.add("azalea_leaves");
         treeFellerDestructibleWhiteList.add("nether_wart_block");
         treeFellerDestructibleWhiteList.add("warped_wart_block");
         treeFellerDestructibleWhiteList.add("brown_mushroom_block");

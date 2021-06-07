@@ -463,6 +463,7 @@ Green_Thumb_Replanting_Crops:
 ###
 Bonus_Drops:
     Herbalism:
+        Moss_Block: true
         Sweet_Berry_Bush: true
         Weeping_Vines: true
         Twisting_Vines: true

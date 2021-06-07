@@ -8,7 +8,10 @@ Version 2.1.197
     Added Axolotl to experience.yml for combat and taming
     Added Glow_Squid to experience.yml for combat and taming
     Updated Super Breaker to recognize the new pick-axe appropriate blocks
+    Updated Tree Feller to recognize Azalea Leaves
 
+    Added Rooted Dirt to experience.yml for Excavation
+    Added Moss Block to experience.yml for Herbalism
     Added Calcite to experience.yml for Mining
     Added Smooth Basalt to experience.yml for Mining
     Added Block_Of_Amethyst to experience.yml for Mining
@@ -30,6 +33,7 @@ Version 2.1.197
     Added Deepslate Lapis Lazuli Ore to experience.yml for Mining
     Added Lapis Lazuli Ore to experience.yml for Mining (was missing)
 
+    Added Moss Block to Bonus Drops for Herbalism in config.yml
     Added Amethyst Shard to Bonus Drops for Mining in config.yml
     Added Calcite to Bonus Drops for Mining in config.yml
     Added Smooth Basalt to Bonus Drops for Mining in config.yml
@@ -71,6 +75,7 @@ Version 2.1.197
     Added Lapis Lazuli Ore to experience.yml for Smelting (was missing)
 
     NOTES:
+    Another patch will follow this one shortly to add more 1.17 support, I am waiting on the Spigot API to test some stuff which isn't out yet.
     You shouldn't need to edit your configs for this update, your configs should update automatically.
     Expect some patches following this update for Axolotl and other new entities, waiting on the Spigot API to become available
     If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.

@@ -245,6 +245,7 @@ Experience_Values:
     Excavation:
         Clay: 40
         Dirt: 40
+        Rooted_Dirt: 60
         Coarse_Dirt: 40
         Podzol: 40
         Grass_Block: 40
@@ -294,6 +295,7 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Moss_Block: 150
         Crimson_Roots: 6
         Warped_Roots: 6
         Nether_Wart_Block: 3
