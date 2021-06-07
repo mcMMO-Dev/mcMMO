@@ -12,6 +12,8 @@ Version 2.1.197
     Updated Tree Feller to recognize Azalea Leaves
 
     Added Rooted Dirt to experience.yml for Excavation
+    Added Small Dripleaf to experience.yml for Herbalism
+    Added Big Dripleaf to experience.yml for Herbalism
     Added Moss Block to experience.yml for Herbalism
     Added Cave Vines to experience.yml for Herbalism
     Added Cave Vines Plant to experience.yml for Herbalism
