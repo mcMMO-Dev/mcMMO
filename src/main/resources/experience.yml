@@ -295,6 +295,7 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Glow_Lichen: 95
         Moss_Block: 150
         Crimson_Roots: 6
         Warped_Roots: 6

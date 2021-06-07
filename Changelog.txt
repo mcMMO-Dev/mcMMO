@@ -12,6 +12,7 @@ Version 2.1.197
 
     Added Rooted Dirt to experience.yml for Excavation
     Added Moss Block to experience.yml for Herbalism
+    Added Glow Lichen to experience.yml for Herbalism
     Added Tuff to experience.yml for Mining
     Added Calcite to experience.yml for Mining
     Added Smooth Basalt to experience.yml for Mining
