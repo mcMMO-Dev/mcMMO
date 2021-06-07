@@ -7,6 +7,7 @@ Version 2.1.197
     Added Goat to experience.yml for combat and taming
     Added Axolotl to experience.yml for combat and taming
     Added Glow_Squid to experience.yml for combat and taming
+    Added Glow Berries to Farmer's Diet
     Updated Super Breaker to recognize the new pick-axe appropriate blocks
     Updated Tree Feller to recognize Azalea Leaves
 

@@ -912,6 +912,16 @@ public class EntityListener implements Listener {
          * is based on how 'common' the item is We can adjust this quite easily
          * if we find something is giving too much of a bonus
          */
+
+        //Hacky 1.17 support
+        if(foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
+            if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
+                event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+            }
+
+            return;
+        }
+
         switch (foodInHand) {
             case BAKED_POTATO: /*
                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
