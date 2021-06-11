@@ -1,4 +1,5 @@
 Version 2.1.198
+    Fixed a bug where Smelting didn't work with the new 1.17 materials
     Updated dependency Adventure to 4.8.0 (thanks TheBusyBiscuit)
 
 Version 2.1.197
