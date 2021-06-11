@@ -1,3 +1,5 @@
+Version 2.1.199
+    Renamed Deepslate Lapis Lazuli Ore to Deepslate Lapis Ore in experience.yml and config.yml
 Version 2.1.198
     Fixed a bug where Smelting didn't work with the new 1.17 materials
     Updated dependency Adventure to 4.8.0 (thanks TheBusyBiscuit)
