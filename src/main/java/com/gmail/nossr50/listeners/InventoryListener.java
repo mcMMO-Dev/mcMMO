@@ -66,8 +66,7 @@ public class InventoryListener implements Listener {
                 }
 
                 //Profile doesn't exist
-                if(UserManager.getOfflinePlayer(offlinePlayer) == null)
-                {
+                if(UserManager.getOfflinePlayer(offlinePlayer) == null) {
                     return;
                 }
 
