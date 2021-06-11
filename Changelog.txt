@@ -1,3 +1,6 @@
+Version 2.1.198
+    Updated dependency Adventure to 4.8.0 (thanks TheBusyBiscuit)
+
 Version 2.1.197
     This update adds compatibility for new mobs and blocks from 1.17
     This build of mcMMO should be more compatible with certain versions of ViaVersion
