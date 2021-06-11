@@ -221,7 +221,8 @@ public class MaterialMapStore {
         ores.add("deepslate_emerald_ore");
         ores.add("deepslate_iron_ore");
         ores.add("deepslate_gold_ore");
-        ores.add("deepslate_lapis_lazuli_ore");
+//        ores.add("deepslate_lapis_lazuli_ore");
+        ores.add("deepslate_lapis_ore");
         ores.add("copper_ore");
     }
 
