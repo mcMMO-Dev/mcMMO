@@ -1,43 +1,54 @@
 package com.gmail.nossr50.util.blockmeta;
 
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
 import com.gmail.nossr50.util.platform.PlatformManager;
 import com.google.common.io.Files;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.jetbrains.annotations.NotNull;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
-
-import java.io.*;
-import java.util.UUID;
-
-import static org.mockito.Mockito.mock;
 
 /**
- * Could be a lot better.  But some tests are better than none!  Tests the major things, still kinda unit-testy.  Verifies that the serialization isn't completely broken.
+ * Could be a lot better. But some tests are better than none! Tests the major things, still kinda unit-testy. Verifies
+ * that the serialization isn't completely broken.
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ Bukkit.class, mcMMO.class})
-public class ChunkStoreTest {
+class ChunkStoreTest {
+
     public static final int LEGACY_WORLD_HEIGHT_MAX = 256;
     public static final int LEGACY_WORLD_HEIGHT_MIN = 0;
     private static File tempDir;
-    @BeforeClass
+
+    @BeforeAll
     public static void setUpClass() {
         tempDir = Files.createTempDir();
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
         recursiveDelete(tempDir);
     }
@@ -46,99 +57,114 @@ public class ChunkStoreTest {
     private CompatibilityManager compatibilityManager;
     private WorldCompatibilityLayer worldCompatibilityLayer;
     private PlatformManager platformManager;
+    
+    private MockedStatic<Bukkit> bukkitMock;
+    private MockedStatic<mcMMO> mcMMOMock;
 
-    @Before
-    public void setUpMock(){
+    @BeforeEach
+    void setUpMock() {
         UUID worldUUID = UUID.randomUUID();
-        mockWorld = mock(World.class);
+        mockWorld = Mockito.mock(World.class);
         Mockito.when(mockWorld.getUID()).thenReturn(worldUUID);
         Mockito.when(mockWorld.getMaxHeight()).thenReturn(256);
         Mockito.when(mockWorld.getWorldFolder()).thenReturn(tempDir);
-        PowerMockito.mockStatic(Bukkit.class);
-        Mockito.when(Bukkit.getWorld(worldUUID)).thenReturn(mockWorld);
 
-        platformManager = mock(PlatformManager.class);
-        compatibilityManager = mock(CompatibilityManager.class);
-        worldCompatibilityLayer = mock(WorldCompatibilityLayer.class);
+        bukkitMock = Mockito.mockStatic(Bukkit.class);
+        bukkitMock.when(() -> Bukkit.getWorld(worldUUID)).thenReturn(mockWorld);
 
-        Whitebox.setInternalState(mcMMO.class, "platformManager", platformManager);
-        Mockito.when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
+        platformManager = Mockito.mock(PlatformManager.class);
+        compatibilityManager = Mockito.mock(CompatibilityManager.class);
+        worldCompatibilityLayer = Mockito.mock(WorldCompatibilityLayer.class);
 
-        Assert.assertNotNull(mcMMO.getCompatibilityManager());
+        mcMMOMock = Mockito.mockStatic(mcMMO.class);
+
+        mcMMOMock.when(() -> mcMMO.getPlatformManager()).thenReturn(platformManager);
+        Assertions.assertNotNull(mcMMO.getPlatformManager());
+
+        mcMMOMock.when(() -> mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
+        Assertions.assertNotNull(mcMMO.getCompatibilityManager());
+
         Mockito.when(platformManager.getCompatibilityManager()).thenReturn(compatibilityManager);
         Mockito.when(platformManager.getCompatibilityManager().getWorldCompatibilityLayer()).thenReturn(worldCompatibilityLayer);
-        Assert.assertNotNull(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer());
+        Assertions.assertNotNull(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer());
         Mockito.when(worldCompatibilityLayer.getMinWorldHeight(mockWorld)).thenReturn(LEGACY_WORLD_HEIGHT_MIN);
         Mockito.when(worldCompatibilityLayer.getMaxWorldHeight(mockWorld)).thenReturn(LEGACY_WORLD_HEIGHT_MAX);
-    }
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testIndexOutOfBounds() {
-        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
-        HashChunkManager hashChunkManager = new HashChunkManager();
-        
-        //Top Block
-        Block illegalHeightBlock = initMockBlock(1337, 256, -1337);
-        Assert.assertFalse(hashChunkManager.isTrue(illegalHeightBlock));
-        hashChunkManager.setTrue(illegalHeightBlock);
+    }
+    
+    @AfterEach
+    void teardownMock() {
+        bukkitMock.close();
+        mcMMOMock.close();
     }
 
     @Test
-    public void testSetTrue() {
+    void testIndexOutOfBounds() {
         Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
         HashChunkManager hashChunkManager = new HashChunkManager();
-        int radius = 2; //Could be anything but drastically changes test time
 
-        for(int x = -radius; x <= radius; x++) {
-            for(int y = mockWorld.getMinHeight(); y < mockWorld.getMaxHeight(); y++) {
-                for(int z = -radius; z <= radius; z++) {
+        // Top Block
+        Block illegalHeightBlock = initMockBlock(1337, 256, -1337);
+        Assertions.assertFalse(hashChunkManager.isTrue(illegalHeightBlock));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> hashChunkManager.setTrue(illegalHeightBlock));
+    }
+
+    @Test
+    void testSetTrue() {
+        Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
+        HashChunkManager hashChunkManager = new HashChunkManager();
+        int radius = 2; // Could be anything but drastically changes test time
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = mockWorld.getMinHeight(); y < mockWorld.getMaxHeight(); y++) {
+                for (int z = -radius; z <= radius; z++) {
                     Block testBlock = initMockBlock(x, y, z);
 
                     hashChunkManager.setTrue(testBlock);
-                    Assert.assertTrue(hashChunkManager.isTrue(testBlock));
+                    Assertions.assertTrue(hashChunkManager.isTrue(testBlock));
                     hashChunkManager.setFalse(testBlock);
-                    Assert.assertFalse(hashChunkManager.isTrue(testBlock));
+                    Assertions.assertFalse(hashChunkManager.isTrue(testBlock));
                 }
             }
         }
 
-        //Bot Block
+        // Bot Block
         Block bottomBlock = initMockBlock(1337, 0, -1337);
-        Assert.assertFalse(hashChunkManager.isTrue(bottomBlock));
+        Assertions.assertFalse(hashChunkManager.isTrue(bottomBlock));
 
-        Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, bottomBlock));
+        Assertions.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, bottomBlock));
         hashChunkManager.setTrue(bottomBlock);
-        Assert.assertTrue(hashChunkManager.isTrue(bottomBlock));
+        Assertions.assertTrue(hashChunkManager.isTrue(bottomBlock));
 
-        //Top Block
+        // Top Block
         Block topBlock = initMockBlock(1337, 255, -1337);
-        Assert.assertFalse(hashChunkManager.isTrue(topBlock));
+        Assertions.assertFalse(hashChunkManager.isTrue(topBlock));
 
-        Assert.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, topBlock));
+        Assertions.assertTrue(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, topBlock));
         hashChunkManager.setTrue(topBlock);
-        Assert.assertTrue(hashChunkManager.isTrue(topBlock));
+        Assertions.assertTrue(hashChunkManager.isTrue(topBlock));
     }
 
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         BitSetChunkStore original = new BitSetChunkStore(mockWorld, 0, 0);
         original.setTrue(0, 0, 0);
-        Assert.assertTrue(original.isTrue(0, 0, 0));
+        Assertions.assertTrue(original.isTrue(0, 0, 0));
         original.setFalse(0, 0, 0);
-        Assert.assertFalse(original.isTrue(0, 0, 0));
+        Assertions.assertFalse(original.isTrue(0, 0, 0));
     }
 
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         BitSetChunkStore original = new BitSetChunkStore(mockWorld, 0, 0);
-        Assert.assertTrue(original.isEmpty());
+        Assertions.assertTrue(original.isEmpty());
         original.setTrue(0, 0, 0);
         original.setFalse(0, 0, 0);
-        Assert.assertTrue(original.isEmpty());
+        Assertions.assertTrue(original.isEmpty());
     }
 
     @Test
-    public void testRoundTrip() throws IOException {
+    void testRoundTrip() throws IOException {
         BitSetChunkStore original = new BitSetChunkStore(mockWorld, 1, 2);
         original.setTrue(14, 89, 12);
         original.setTrue(14, 90, 12);
@@ -149,7 +175,7 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testNegativeWorldMin() throws IOException {
+    void testNegativeWorldMin() throws IOException {
         Mockito.when(mcMMO.getCompatibilityManager().getWorldCompatibilityLayer().getMinWorldHeight(mockWorld)).thenReturn(-64);
 
         BitSetChunkStore original = new BitSetChunkStore(mockWorld, 1, 2);
@@ -162,7 +188,7 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testNegativeWorldMinUpgrade() throws IOException {
+    void testNegativeWorldMinUpgrade() throws IOException {
         BitSetChunkStore original = new BitSetChunkStore(mockWorld, 1, 2);
         original.setTrue(14, 1, 12);
         original.setTrue(14, 2, 12);
@@ -175,16 +201,16 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testChunkCoords() throws IOException {
+    void testChunkCoords() throws IOException {
         for (int x = -96; x < 0; x++) {
-                int cx = x >> 4;
-                int ix = Math.abs(x) % 16;
-                System.out.print(cx + ":" + ix + "  ");
+            int cx = x >> 4;
+            int ix = Math.abs(x) % 16;
+            System.out.print(cx + ":" + ix + "  ");
         }
     }
 
     @Test
-    public void testUpgrade() throws IOException {
+    void testUpgrade() throws IOException {
         LegacyChunkStore original = new LegacyChunkStore(mockWorld, 12, 32);
         original.setTrue(14, 89, 12);
         original.setTrue(14, 90, 12);
@@ -195,21 +221,20 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testSimpleRegionRoundtrip() throws IOException {
+    void testSimpleRegionRoundtrip() throws IOException {
         LegacyChunkStore original = new LegacyChunkStore(mockWorld, 12, 12);
         original.setTrue(14, 89, 12);
         original.setTrue(14, 90, 12);
         original.setTrue(13, 89, 12);
         File file = new File(tempDir, "SimpleRegionRoundTrip.region");
         McMMOSimpleRegionFile region = new McMMOSimpleRegionFile(file, 0, 0);
-        try (DataOutputStream outputStream = region.getOutputStream(12, 12)){
+        try (DataOutputStream outputStream = region.getOutputStream(12, 12)) {
             outputStream.write(serializeChunkstore(original));
         }
         region.close();
         region = new McMMOSimpleRegionFile(file, 0, 0);
-        try (DataInputStream is = region.getInputStream(original.getChunkX(), original.getChunkZ()))
-        {
-            Assert.assertNotNull(is);
+        try (DataInputStream is = region.getInputStream(original.getChunkX(), original.getChunkZ())) {
+            Assertions.assertNotNull(is);
             ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(is);
             assertEqual(original, deserialized);
         }
@@ -218,7 +243,7 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testSimpleRegionRejectsOutOfBounds() {
+    void testSimpleRegionRejectsOutOfBounds() {
         File file = new File(tempDir, "SimpleRegionRoundTrip.region");
         McMMOSimpleRegionFile region = new McMMOSimpleRegionFile(file, 0, 0);
         assertThrows(() -> region.getOutputStream(-1, 0), IndexOutOfBoundsException.class);
@@ -229,7 +254,7 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testChunkStoreRejectsOutOfBounds() {
+    void testChunkStoreRejectsOutOfBounds() {
         ChunkStore chunkStore = new BitSetChunkStore(mockWorld, 0, 0);
         assertThrows(() -> chunkStore.setTrue(-1, 0, 0), IndexOutOfBoundsException.class);
         assertThrows(() -> chunkStore.setTrue(0, -1, 0), IndexOutOfBoundsException.class);
@@ -240,14 +265,14 @@ public class ChunkStoreTest {
     }
 
     @Test
-    public void testRegressionChunkMirrorBug() {
+    void testRegressionChunkMirrorBug() {
         ChunkManager chunkManager = new HashChunkManager();
-        Block mockBlockA = mock(Block.class);
+        Block mockBlockA = Mockito.mock(Block.class);
         Mockito.when(mockBlockA.getX()).thenReturn(15);
         Mockito.when(mockBlockA.getZ()).thenReturn(15);
         Mockito.when(mockBlockA.getY()).thenReturn(0);
         Mockito.when(mockBlockA.getWorld()).thenReturn(mockWorld);
-        Block mockBlockB = mock(Block.class);
+        Block mockBlockB = Mockito.mock(Block.class);
         Mockito.when(mockBlockB.getX()).thenReturn(-15);
         Mockito.when(mockBlockB.getZ()).thenReturn(-15);
         Mockito.when(mockBlockB.getY()).thenReturn(0);
@@ -255,42 +280,39 @@ public class ChunkStoreTest {
 
         chunkManager.setTrue(mockBlockA);
         chunkManager.setFalse(mockBlockB);
-        Assert.assertTrue(chunkManager.isTrue(mockBlockA));
+        Assertions.assertTrue(chunkManager.isTrue(mockBlockA));
     }
 
     private interface Delegate {
 
         void run();
     }
+
     private void assertThrows(@NotNull Delegate delegate, @NotNull Class<?> clazz) {
         try {
             delegate.run();
-            Assert.fail(); // We didn't throw
-        }
-        catch (Throwable t) {
-            Assert.assertTrue(t.getClass().equals(clazz));
+            Assertions.fail(); // We didn't throw
+        } catch (Throwable t) {
+            Assertions.assertTrue(t.getClass().equals(clazz));
         }
     }
 
-    private void assertEqual(ChunkStore expected, ChunkStore actual)
-    {
-        Assert.assertEquals(expected.getChunkMin(), actual.getChunkMin());
-        Assert.assertEquals(expected.getChunkMax(), actual.getChunkMax());
+    private void assertEqual(ChunkStore expected, ChunkStore actual) {
+        Assertions.assertEquals(expected.getChunkMin(), actual.getChunkMin());
+        Assertions.assertEquals(expected.getChunkMax(), actual.getChunkMax());
         assertEqualIgnoreMinMax(expected, actual);
     }
 
-    private void assertEqualIgnoreMinMax(ChunkStore expected, ChunkStore actual)
-    {
-        Assert.assertEquals(expected.getChunkX(), actual.getChunkX());
-        Assert.assertEquals(expected.getChunkZ(), actual.getChunkZ());
-        Assert.assertEquals(expected.getWorldId(), actual.getWorldId());
-        for (int y = Math.min(actual.getChunkMin(), expected.getChunkMin()); y < Math.max(actual.getChunkMax(), expected.getChunkMax()); y++)
-        {
+    private void assertEqualIgnoreMinMax(ChunkStore expected, ChunkStore actual) {
+        Assertions.assertEquals(expected.getChunkX(), actual.getChunkX());
+        Assertions.assertEquals(expected.getChunkZ(), actual.getChunkZ());
+        Assertions.assertEquals(expected.getWorldId(), actual.getWorldId());
+        for (int y = Math.min(actual.getChunkMin(), expected.getChunkMin()); y < Math.max(actual.getChunkMax(), expected.getChunkMax()); y++) {
             if (expected.getChunkMin() > y || actual.getChunkMin() > y || expected.getChunkMax() <= y || actual.getChunkMax() <= y)
                 continue; // Ignore
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++)
-                    Assert.assertTrue(expected.isTrue(x, y, z) == actual.isTrue(x, y, z));
+                    Assertions.assertTrue(expected.isTrue(x, y, z) == actual.isTrue(x, y, z));
         }
     }
 
@@ -299,7 +321,9 @@ public class ChunkStoreTest {
         if (chunkStore instanceof BitSetChunkStore)
             BitSetChunkStore.Serialization.writeChunkStore(new DataOutputStream(byteArrayOutputStream), chunkStore);
         else
-            new UnitTestObjectOutputStream(byteArrayOutputStream).writeObject(chunkStore); // Serializes the class as if it were the old PrimitiveChunkStore
+            new UnitTestObjectOutputStream(byteArrayOutputStream).writeObject(chunkStore); // Serializes the class as if
+                                                                                           // it were the old
+                                                                                           // PrimitiveChunkStore
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -313,6 +337,7 @@ public class ChunkStoreTest {
         private final int cx;
         private final int cz;
         private final @NotNull UUID worldUid;
+
         public LegacyChunkStore(@NotNull World world, int cx, int cz) {
             this.cx = cx;
             this.cz = cz;
@@ -416,11 +441,13 @@ public class ChunkStoreTest {
         }
 
     }
+
     private static class UnitTestObjectOutputStream extends ObjectOutputStream {
 
         public UnitTestObjectOutputStream(@NotNull OutputStream outputStream) throws IOException {
             super(outputStream);
         }
+
         @Override
         public void writeUTF(@NotNull String str) throws IOException {
             // Pretend to be the old class
@@ -430,14 +457,15 @@ public class ChunkStoreTest {
         }
 
     }
+
     @NotNull
     private Block initMockBlock(int x, int y, int z) {
-        Block testBlock = mock(Block.class);
-        Mockito.when(testBlock.getX()).thenReturn(x);
-        Mockito.when(testBlock.getY()).thenReturn(y);
-        Mockito.when(testBlock.getZ()).thenReturn(z);
-        Mockito.when(testBlock.getWorld()).thenReturn(mockWorld);
-        return testBlock;
+        Block mockBlock = Mockito.mock(Block.class);
+        Mockito.when(mockBlock.getX()).thenReturn(x);
+        Mockito.when(mockBlock.getY()).thenReturn(y);
+        Mockito.when(mockBlock.getZ()).thenReturn(z);
+        Mockito.when(mockBlock.getWorld()).thenReturn(mockWorld);
+        return mockBlock;
     }
 
     public static void recursiveDelete(@NotNull File directoryToBeDeleted) {
