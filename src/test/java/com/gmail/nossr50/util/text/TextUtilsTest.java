@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test;
  * See https://github.com/mcMMO-Dev/mcMMO/pull/4446
  *
  */
-public class TextUtilsTest {
+class TextUtilsTest {
 
     @Test
-    public void testColorizeText() {
+    void testColorizeText() {
         String inputText = "&4This text should be red.";
 
         /*
@@ -26,6 +26,7 @@ public class TextUtilsTest {
          */
         TextComponent component = TextUtils.colorizeText(inputText);
 
-        Assertions.assertEquals(NamedTextColor.DARK_RED, component.color(), "Looks like Adventure is not working correctly.");
+        String message = "Looks like Adventure is not working correctly. We likely need to update our dependency!";
+        Assertions.assertEquals(NamedTextColor.DARK_RED, component.color(), message);
     }
 }
