@@ -1,5 +1,19 @@
 package com.gmail.nossr50.party;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -11,23 +25,12 @@ import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
 
 public final class PartyManager {
     private static final String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
@@ -246,7 +249,7 @@ public final class PartyManager {
     @Deprecated
     public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
-            if (party.getMembers().containsKey(playerName)) {
+            if (party.getMembers().containsValue(playerName)) {
                 return party;
             }
         }
@@ -587,17 +590,23 @@ public final class PartyManager {
 //            loadAndUpgradeParties();
 //            return;
 //        }
+        
+
+        /*
+         * Compiling the Pattern in advance will have a positive impact
+         * on performance, so we won't need to compile a regular expression
+         * for literally every player entry in the file.
+         */
+        Pattern playerPattern = Pattern.compile("[|]");
 
         try {
-            YamlConfiguration partiesFile;
-            partiesFile = YamlConfiguration.loadConfiguration(partyFile);
-
-            ArrayList<Party> hasAlly = new ArrayList<>();
+            YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
+            List<Party> hasAlly = new ArrayList<>();
 
             for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
                 Party party = new Party(partyName);
 
-                String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
+                String[] leaderSplit = playerPattern.split(partiesFile.getString(partyName + ".Leader"));
                 party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));
                 party.setPassword(partiesFile.getString(partyName + ".Password"));
                 party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
@@ -618,7 +627,7 @@ public final class PartyManager {
                 LinkedHashMap<UUID, String> members = party.getMembers();
 
                 for (String memberEntry : partiesFile.getStringList(partyName + ".Members")) {
-                    String[] memberSplit = memberEntry.split("[|]");
+                    String[] memberSplit = playerPattern.split(memberEntry);
                     members.put(UUID.fromString(memberSplit[0]), memberSplit[1]);
                 }
 
@@ -632,7 +641,7 @@ public final class PartyManager {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            mcMMO.p.getLogger().log(Level.SEVERE, e, () -> "Failed to load parties from \"" + partiesFilePath + '"');
         }
 
     }

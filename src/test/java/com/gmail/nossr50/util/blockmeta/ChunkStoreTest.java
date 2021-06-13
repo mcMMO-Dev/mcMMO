@@ -246,22 +246,22 @@ class ChunkStoreTest {
     void testSimpleRegionRejectsOutOfBounds() {
         File file = new File(tempDir, "SimpleRegionRoundTrip.region");
         McMMOSimpleRegionFile region = new McMMOSimpleRegionFile(file, 0, 0);
-        assertThrows(() -> region.getOutputStream(-1, 0), IndexOutOfBoundsException.class);
-        assertThrows(() -> region.getOutputStream(0, -1), IndexOutOfBoundsException.class);
-        assertThrows(() -> region.getOutputStream(32, 0), IndexOutOfBoundsException.class);
-        assertThrows(() -> region.getOutputStream(0, 32), IndexOutOfBoundsException.class);
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> region.getOutputStream(-1, 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> region.getOutputStream(0, -1));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> region.getOutputStream(32, 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> region.getOutputStream(0, 32));
         region.close();
     }
 
     @Test
     void testChunkStoreRejectsOutOfBounds() {
         ChunkStore chunkStore = new BitSetChunkStore(mockWorld, 0, 0);
-        assertThrows(() -> chunkStore.setTrue(-1, 0, 0), IndexOutOfBoundsException.class);
-        assertThrows(() -> chunkStore.setTrue(0, -1, 0), IndexOutOfBoundsException.class);
-        assertThrows(() -> chunkStore.setTrue(0, 0, -1), IndexOutOfBoundsException.class);
-        assertThrows(() -> chunkStore.setTrue(16, 0, 0), IndexOutOfBoundsException.class);
-        assertThrows(() -> chunkStore.setTrue(0, mockWorld.getMaxHeight(), 0), IndexOutOfBoundsException.class);
-        assertThrows(() -> chunkStore.setTrue(0, 0, 16), IndexOutOfBoundsException.class);
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(-1, 0, 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, -1, 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, 0, -1));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(16, 0, 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, mockWorld.getMaxHeight(), 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, 0, 16));
     }
 
     @Test
@@ -283,20 +283,6 @@ class ChunkStoreTest {
         Assertions.assertTrue(chunkManager.isTrue(mockBlockA));
     }
 
-    private interface Delegate {
-
-        void run();
-    }
-
-    private void assertThrows(@NotNull Delegate delegate, @NotNull Class<?> clazz) {
-        try {
-            delegate.run();
-            Assertions.fail(); // We didn't throw
-        } catch (Throwable t) {
-            Assertions.assertTrue(t.getClass().equals(clazz));
-        }
-    }
-
     private void assertEqual(ChunkStore expected, ChunkStore actual) {
         Assertions.assertEquals(expected.getChunkMin(), actual.getChunkMin());
         Assertions.assertEquals(expected.getChunkMax(), actual.getChunkMax());
@@ -312,7 +298,7 @@ class ChunkStoreTest {
                 continue; // Ignore
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++)
-                    Assertions.assertTrue(expected.isTrue(x, y, z) == actual.isTrue(x, y, z));
+                    Assertions.assertEquals(expected.isTrue(x, y, z), actual.isTrue(x, y, z));
         }
     }
 
