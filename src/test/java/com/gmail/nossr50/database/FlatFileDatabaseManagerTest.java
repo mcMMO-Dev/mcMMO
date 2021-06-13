@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 //This class uses JUnit5/Jupiter
-public class FlatFileDatabaseManagerTest {
+class FlatFileDatabaseManagerTest {
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
     public static final @NotNull String BAD_FILE_LINE_ONE = "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:";
@@ -72,7 +72,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @BeforeEach
-    public void init() {
+    void init() {
         assertNull(db);
         //noinspection UnstableApiUsage
         tempDir = Files.createTempDir();
@@ -84,7 +84,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         recursiveDelete(tempDir);
         db = null;
     }
@@ -147,18 +147,18 @@ public class FlatFileDatabaseManagerTest {
     };
 
     @Test
-    public void testDefaultInit() {
+    void testDefaultInit() {
         db = new FlatFileDatabaseManager(getTemporaryUserFilePath(), logger, PURGE_TIME, 0);
     }
 
     @Test
-    public void testUpdateLeaderboards() {
+    void testUpdateLeaderboards() {
         assertNotNull(db);
         assertEquals(LeaderboardStatus.UPDATED, db.updateLeaderboards());
     }
 
     @Test
-    public void testSaveUser() {
+    void testSaveUser() {
         //Make a Profile to save and check to see if it worked
         UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
         String playerName = "nossr50";
@@ -194,7 +194,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testAddedMissingLastLoginValues() {
+    void testAddedMissingLastLoginValues() {
         File dbFile = prepareDatabaseTestResource(DB_MISSING_LAST_LOGIN);
 
         //This makes sure our private method is working before the tests run afterwards
@@ -214,7 +214,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testLoadByName() {
+    void testLoadByName() {
         File healthyDB = prepareDatabaseTestResource(DB_HEALTHY);
 
         /*
@@ -244,7 +244,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testNewUser() {
+    void testNewUser() {
         //We will test that new user values line up with our expectations
         UUID uuid = new UUID(0, 1);
         String playerName = "nossr50";
@@ -277,7 +277,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testAddingUsersToEndOfExistingDB() {
+    void testAddingUsersToEndOfExistingDB() {
         //We will test that new user values line up with our expectations
         UUID uuid = new UUID(0, 80);
         String playerName = "the_kitty_man";
@@ -335,7 +335,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testLoadByUUID() {
+    void testLoadByUUID() {
         File dbFile = prepareDatabaseTestResource(DB_HEALTHY);
 
         /*
@@ -367,7 +367,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testLoadByUUIDAndName() {
+    void testLoadByUUIDAndName() {
         File dbFile = prepareDatabaseTestResource(DB_HEALTHY);
 
         /*
@@ -568,14 +568,14 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testOverwriteName() {
+    void testOverwriteName() {
         overwriteDataAndCheckForFlag(db, duplicateNameDatabaseData, FlatFileDataFlag.DUPLICATE_NAME);
         ArrayList<String[]> splitDataLines = getSplitDataFromFile(db.getUsersFile());
         assertNotEquals(splitDataLines.get(1)[0], splitDataLines.get(0)[0]); //Name comparison
     }
 
     @Test
-    public void testDataNotFound() {
+    void testDataNotFound() {
         //Save the zero version and see if it looks correct
         assertNotNull(db);
         assertTrue(db.getUsersFile().exists());
@@ -587,14 +587,14 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testPurgePowerlessUsers() {
+    void testPurgePowerlessUsers() {
         replaceDataInFile(db, normalDatabaseData);
         int purgeCount = db.purgePowerlessUsers();
         assertEquals(purgeCount, 1); //1 User should have been purged
     }
 
     @Test
-    public void testCheckFileHealthAndStructure() {
+    void testCheckFileHealthAndStructure() {
         replaceDataInFile(db, badDatabaseData);
 
         List<FlatFileDataFlag> dataFlags = db.checkFileHealthAndStructure();
@@ -603,48 +603,48 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testFindFixableDuplicateNames() {
+    void testFindFixableDuplicateNames() {
         overwriteDataAndCheckForFlag(db, duplicateNameDatabaseData, FlatFileDataFlag.DUPLICATE_NAME);
     }
 
     @Test
-    public void testFindDuplicateUUIDs() {
+    void testFindDuplicateUUIDs() {
         overwriteDataAndCheckForFlag(db, duplicateUUIDDatabaseData, FlatFileDataFlag.DUPLICATE_UUID);
     }
 
     @Test()
-    public void findBadUUIDData() {
+    void findBadUUIDData() {
         overwriteDataAndCheckForFlag(db, badUUIDDatabaseData, FlatFileDataFlag.BAD_UUID_DATA);
     }
 
     @Test
-    public void testFindCorruptData() {
+    void testFindCorruptData() {
         overwriteDataAndCheckForFlag(db, corruptDatabaseData, FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE);
     }
 
     @Test
-    public void testFindEmptyNames() {
+    void testFindEmptyNames() {
         overwriteDataAndCheckForFlag(db, emptyNameDatabaseData, FlatFileDataFlag.MISSING_NAME);
     }
 
     @Test
-    public void testFindBadValues() {
+    void testFindBadValues() {
         overwriteDataAndCheckForFlag(db, badDatabaseData, FlatFileDataFlag.BAD_VALUES);
     }
 
     @Test
-    public void testFindOutdatedData() {
+    void testFindOutdatedData() {
         overwriteDataAndCheckForFlag(db, outdatedDatabaseData, FlatFileDataFlag.INCOMPLETE);
     }
 
     @Test
-    public void testGetDatabaseType() {
+    void testGetDatabaseType() {
         assertNotNull(db);
         assertEquals(db.getDatabaseType(), DatabaseType.FLATFILE);
     }
 
     @Test
-    public void testReadRank() {
+    void testReadRank() {
         //This is an empty DB
         assertNotNull(db);
         String rankBoyName = "rankBoy";
@@ -674,7 +674,7 @@ public class FlatFileDatabaseManagerTest {
     }
 
     @Test
-    public void testLoadFromFile() {
+    void testLoadFromFile() {
         ClassLoader classLoader = getClass().getClassLoader();
         URI resourceFileURI = null;
 
