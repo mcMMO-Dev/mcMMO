@@ -1,11 +1,11 @@
 package com.gmail.nossr50.database.flatfile;
 
+import com.gmail.nossr50.database.FlatFileDatabaseManager;
+
 import java.util.HashSet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import com.gmail.nossr50.database.FlatFileDatabaseManager;
 
 class FlatFileDataUtilTest {
 
