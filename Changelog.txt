@@ -1,4 +1,5 @@
 Version 2.1.199
+    Fixed IndexOutOfBounds error for servers running 1.17 or higher
     Fixed a bug that caused MySQL/MariaDB to malfunction for 1.17 (see notes)
     Renamed Deepslate Lapis Lazuli Ore to Deepslate Lapis Ore in experience.yml and config.yml
     Added some code to prevent mcMMO from breaking if it doesn't recognize the version of the game
