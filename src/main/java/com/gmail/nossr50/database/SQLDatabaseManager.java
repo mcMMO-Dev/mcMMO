@@ -51,7 +51,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         String connectionString = "jdbc:mysql://" + mcMMO.p.getGeneralConfig().getMySQLServerName()
                 + ":" + mcMMO.p.getGeneralConfig().getMySQLServerPort() + "/" + mcMMO.p.getGeneralConfig().getMySQLDatabaseName();
 
-        if(mcMMO.p.getGeneralConfig().getMySQLSSL())
+        if(!mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 17, 0) //Temporary hack for SQL and 1.17 support
+                && mcMMO.p.getGeneralConfig().getMySQLSSL())
             connectionString +=
                     "?verifyServerCertificate=false"+
                     "&useSSL=true"+

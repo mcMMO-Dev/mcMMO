@@ -1,5 +1,13 @@
 Version 2.1.199
+    Fixed a bug that caused MySQL/MariaDB to malfunction for 1.17 (see notes)
     Renamed Deepslate Lapis Lazuli Ore to Deepslate Lapis Ore in experience.yml and config.yml
+    Added some code to prevent mcMMO from breaking if it doesn't recognize the version of the game
+    Optimized CompatibilitySupportLayer - this handles some of the logic for supporting multiple versions of the game
+    Added Unit Tests for MinecraftGameVersion
+
+    NOTES:
+    I have temporarily disabled SSL for MySQL/MariaDB for 1.17 ( proper fix coming soon )
+
 Version 2.1.198
     Fixed a bug where Smelting didn't work with the new 1.17 materials
     Updated dependency Adventure to 4.8.0 (thanks TheBusyBiscuit)
