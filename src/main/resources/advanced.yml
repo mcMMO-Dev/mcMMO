@@ -200,6 +200,8 @@ Skills:
         SkullSplitter:
             # DamageModifier: Damage will get divided by this modifier
             DamageModifier: 2.0
+            # Determines if a fake player animation event is called
+            FakeArmSwing: true
     #
     #  Settings for Fishing
     ###
@@ -498,6 +500,8 @@ Skills:
             # BleedTicks: This determines how long the bleeding effect of SerratedStrikes lasts
             DamageModifier: 4.0
             BleedTicks: 5
+            # Determines if a fake player animation event is called
+            FakeArmSwing: true
     #
     #  Settings for Taming
     ###

@@ -21,6 +21,7 @@ public class Axes {
     public static double greaterImpactKnockbackMultiplier = mcMMO.p.getAdvancedConfig().getGreaterImpactModifier();
 
     public static double skullSplitterModifier = mcMMO.p.getAdvancedConfig().getSkullSplitterModifier();
+    public static boolean skullSplitterFakeArmSwing = mcMMO.p.getAdvancedConfig().getSkullSplitterFakeArmSwing();
 
     protected static boolean hasArmor(LivingEntity target) {
         if(target == null || !target.isValid() || target.getEquipment() == null)

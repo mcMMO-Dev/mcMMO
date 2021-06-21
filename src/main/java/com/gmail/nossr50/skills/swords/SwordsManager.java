@@ -162,6 +162,6 @@ public class SwordsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void serratedStrikes(@NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill, Swords.serratedStrikesFakeArmSwing);
     }
 }
