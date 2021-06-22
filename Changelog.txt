@@ -1,3 +1,6 @@
+Version 2.1.200
+    Dodge will no longer trigger while blocking
+
 Version 2.1.199
     Fixed IndexOutOfBounds error for servers running 1.17 or higher
     Fixed a bug that caused MySQL/MariaDB to malfunction for 1.17 (see notes)
