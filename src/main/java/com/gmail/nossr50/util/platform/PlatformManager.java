@@ -47,7 +47,8 @@ public class PlatformManager {
     private @NotNull MinecraftGameVersion determineGameVersion(String platformVersionString) {
         int major = 0, minor = 0, patch = 0;
 
-        String[] splitVersion = platformVersionString.split("\\.", 3);
+        String[] bukkitAPIVersion = platformVersionString.split("-", 2);
+        String[] splitVersion = bukkitAPIVersion[0].split("\\.", 3);
 
         mcMMO.p.getLogger().info("Platform String: " + platformVersionString);
 
