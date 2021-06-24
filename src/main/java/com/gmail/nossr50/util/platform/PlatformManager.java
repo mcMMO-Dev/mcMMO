@@ -48,6 +48,8 @@ public class PlatformManager {
         int major = 0, minor = 0, patch = 0;
 
         mcMMO.p.getLogger().info("Platform String: " + platformVersionString);
+
+        // Gets two numbers separated by . and optional third number after next dot. Must end with - or _
         Matcher versionMatch = Pattern.compile("(\\d+)\\.(\\d+)(?:\\.(\\d+))?[-_].*").matcher(platformVersionString);
 
         if (versionMatch.find()) {
