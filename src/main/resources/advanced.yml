@@ -78,6 +78,9 @@ Feedback:
         PartyMessage:
             Enabled: true
             SendCopyOfMessageToChat: true
+        AbilityRefreshed:
+            Enabled: true
+            SendCopyOfMessageToChat: false
 Skills:
     General:
         LimitBreak:
