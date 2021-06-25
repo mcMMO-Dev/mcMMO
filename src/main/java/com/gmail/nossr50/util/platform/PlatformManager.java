@@ -56,7 +56,7 @@ public class PlatformManager {
             major = Integer.parseInt(versionMatch.group(1));
             minor = Integer.parseInt(versionMatch.group(2));
 
-            if (!(versionMatch.group(3) == null)) {
+            if (versionMatch.group(3) != null) {
                 patch = Integer.parseInt(versionMatch.group(3));
             }
         }
