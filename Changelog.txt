@@ -1,5 +1,7 @@
 Version 2.1.200
     Dodge will no longer trigger while blocking
+    Action Bar messages can now be disabled (thanks TheBusyBiscuit)
+    mcMMO is better at MC version parsing now (thanks stepech & TheBusyBiscuit)
 
 Version 2.1.199
     Fixed IndexOutOfBounds error for servers running 1.17 or higher
