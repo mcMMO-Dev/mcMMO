@@ -250,9 +250,11 @@ public class EntityListener implements Listener {
             else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
-        } else if ((block.getType() == Material.REDSTONE_ORE)) {
+        } else if ((block.getType() == Material.REDSTONE_ORE || block.getType().getKey().getKey().equalsIgnoreCase("deepslate_redstone_ore"))) {
+            //Redstone ore fire this event and should be ignored
         }
         else {
+
             if (mcMMO.getPlaceStore().isTrue(block)) {
                 mcMMO.getPlaceStore().setFalse(block);
             }
