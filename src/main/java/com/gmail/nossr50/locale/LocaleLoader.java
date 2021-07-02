@@ -57,7 +57,7 @@ public final class LocaleLoader {
      *
      * @return The properly formatted text component
      */
-    public static TextComponent getTextComponent(String key, Object... messageArguments) {
+    public static @NotNull TextComponent getTextComponent(@NotNull String key, Object... messageArguments) {
         if (bundle == null) {
             initialize();
         }
@@ -113,7 +113,7 @@ public final class LocaleLoader {
         return string;
     }
 
-    public static TextComponent formatComponent(String string, Object... messageArguments) {
+    public static @NotNull TextComponent formatComponent(@NotNull String string, Object... messageArguments) {
         if (messageArguments != null) {
             MessageFormat formatter = new MessageFormat("");
             formatter.applyPattern(string.replace("'", "''"));

@@ -250,9 +250,11 @@ public class EntityListener implements Listener {
             else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
-        } else if ((block.getType() == Material.REDSTONE_ORE)) {
+        } else if ((block.getType() == Material.REDSTONE_ORE || block.getType().getKey().getKey().equalsIgnoreCase("deepslate_redstone_ore"))) {
+            //Redstone ore fire this event and should be ignored
         }
         else {
+
             if (mcMMO.getPlaceStore().isTrue(block)) {
                 mcMMO.getPlaceStore().setFalse(block);
             }
@@ -912,6 +914,16 @@ public class EntityListener implements Listener {
          * is based on how 'common' the item is We can adjust this quite easily
          * if we find something is giving too much of a bonus
          */
+
+        //Hacky 1.17 support
+        if(foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
+            if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
+                event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+            }
+
+            return;
+        }
+
         switch (foodInHand) {
             case BAKED_POTATO: /*
                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @

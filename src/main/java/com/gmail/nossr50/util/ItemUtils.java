@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasureBook;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.smelting.Smelting;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -340,7 +341,7 @@ public final class ItemUtils {
     }
 
     public static boolean isSmeltable(ItemStack item) {
-        return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType());
+        return item != null && Smelting.getSmeltXP(item) >= 1;
     }
 
     public static boolean isSmelted(ItemStack item) {

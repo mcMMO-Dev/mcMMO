@@ -1,3 +1,117 @@
+Version 2.1.200
+    Fixed a major 1.17 exploit
+    Dodge will no longer trigger while blocking
+    Action Bar messages can now be disabled (thanks TheBusyBiscuit)
+    mcMMO is better at MC version parsing now (thanks stepech & TheBusyBiscuit)
+
+Version 2.1.199
+    Fixed IndexOutOfBounds error for servers running 1.17 or higher
+    Fixed a bug that caused MySQL/MariaDB to malfunction for 1.17 (see notes)
+    Renamed Deepslate Lapis Lazuli Ore to Deepslate Lapis Ore in experience.yml and config.yml
+    Added some code to prevent mcMMO from breaking if it doesn't recognize the version of the game
+    Optimized CompatibilitySupportLayer - this handles some of the logic for supporting multiple versions of the game
+    Added Unit Tests for MinecraftGameVersion
+
+    NOTES:
+    I have temporarily disabled SSL for MySQL/MariaDB for 1.17 ( proper fix coming soon )
+
+Version 2.1.198
+    Fixed a bug where Smelting didn't work with the new 1.17 materials
+    Updated dependency Adventure to 4.8.0 (thanks TheBusyBiscuit)
+
+Version 2.1.197
+    This update adds compatibility for new mobs and blocks from 1.17
+    This build of mcMMO should be more compatible with certain versions of ViaVersion
+    Players are no longer launched from Minecarts when using a Fishing Rod (they are still dismounted) thanks lexikiq
+    Updated Japanese locale (thanks ViaSnake)
+    Updated Brazil Portuguese (pt_BR) locale (thanks Paulo Guilherme)
+    Added Goat to experience.yml for combat and taming
+    Added Axolotl to experience.yml for combat and taming
+    Added Glow_Squid to experience.yml for combat and taming
+    Added Glow Berries to Farmer's Diet
+    Updated Super Breaker to recognize the new pick-axe appropriate blocks
+    Updated Tree Feller to recognize Azalea Leaves
+
+    Added Rooted Dirt to experience.yml for Excavation
+    Added Small Dripleaf to experience.yml for Herbalism
+    Added Big Dripleaf to experience.yml for Herbalism
+    Added Moss Block to experience.yml for Herbalism
+    Added Cave Vines to experience.yml for Herbalism
+    Added Cave Vines Plant to experience.yml for Herbalism
+    Added Glow Lichen to experience.yml for Herbalism
+    Added Tuff to experience.yml for Mining
+    Added Calcite to experience.yml for Mining
+    Added Smooth Basalt to experience.yml for Mining
+    Added Block_Of_Amethyst to experience.yml for Mining
+    Added Budding Amethyst to experience.yml for Mining
+    Added Small_Amethyst_Bud to experience.yml for Mining
+    Added Medium Amethyst Bud to experience.yml for Mining
+    Added Large Amethyst Bud to experience.yml for Mining
+    Added Amethyst Cluster to experience.yml for Mining
+    Added Deepslate to experience.yml for Mining
+    Added Cobbled Deepslate to experience.yml for Mining
+    Added Copper Ore to experience.yml for Mining
+    Added Deepslate Redstone Ore to experience.yml for Mining
+    Added Deepslate Copper Ore to experience.yml for Mining
+    Added Deepslate Coal Ore to experience.yml for Mining
+    Added Deepslate Diamond Ore to experience.yml for Mining
+    Added Deepslate Emerald Ore to experience.yml for Mining
+    Added Deepslate Iron Ore to experience.yml for Mining
+    Added Deepslate Gold Ore to experience.yml for Mining
+    Added Deepslate Lapis Lazuli Ore to experience.yml for Mining
+    Added Lapis Lazuli Ore to experience.yml for Mining (was missing)
+
+    Added Moss Block to Bonus Drops for Herbalism in config.yml
+    Added Glow Berries to Bonus Drops for Herbalism in config.yml
+    Added Cave Vines to Bonus Drops for Herbalism in config.yml
+    Added Cave Vines Plant to Bonus Drops for Herbalism in config.yml
+    Added Tuff to Bonus Drops for Mining in config.yml
+    Added Amethyst Shard to Bonus Drops for Mining in config.yml
+    Added Calcite to Bonus Drops for Mining in config.yml
+    Added Smooth Basalt to Bonus Drops for Mining in config.yml
+    Added Block_Of_Amethyst to Bonus Drops for Mining in config.yml
+    Added Budding Amethyst to Bonus Drops for Mining in config.yml
+    Added Small_Amethyst_Bud to Bonus Drops for Mining in config.yml
+    Added Medium Amethyst Bud to Bonus Drops for Mining in config.yml
+    Added Large Amethyst Bud to Bonus Drops for Mining in config.yml
+    Added Amethyst Cluster to Bonus Drops for Mining in config.yml
+    Added Deepslate to Bonus Drops for Mining in config.yml
+    Added Cobbled Deepslate to Bonus Drops for Mining in config.yml
+    Added Raw Iron to Bonus Drops for Mining in config.yml
+    Added Raw Gold to Bonus Drops for Mining in config.yml
+    Added Raw Copper to Bonus Drops for Mining in config.yml
+    Added Copper Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Redstone Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Copper Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Coal Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Diamond Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Emerald Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Iron Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Gold Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Lapis Lazuli Ore to Bonus Drops for Mining in config.yml
+    Added Lapis Lazuli Ore to Bonus Drops for Mining in config.yml (was missing)
+
+    Added Cobbled Deepslate to experience.yml for Smelting
+    Added Raw Copper to experience.yml for Smelting
+    Added Raw Iron to experience.yml for Smelting
+    Added Raw Gold to experience.yml for Smelting
+    Added Copper Ore to experience.yml for Smelting
+    Added Deepslate Redstone Ore to experience.yml for Smelting
+    Added Deepslate Copper Ore to experience.yml for Smelting
+    Added Deepslate Coal Ore to experience.yml for Smelting
+    Added Deepslate Diamond Ore to experience.yml for Smelting
+    Added Deepslate Emerald Ore to experience.yml for Smelting
+    Added Deepslate Iron Ore to experience.yml for Smelting
+    Added Deepslate Gold Ore to experience.yml for Smelting
+    Added Deepslate Lapis Lazuli Ore to experience.yml for Smelting
+    Added Lapis Lazuli Ore to experience.yml for Smelting (was missing)
+
+    NOTES:
+    Another patch will follow this one shortly to add more 1.17 support, I am waiting on the Spigot API to test some stuff which isn't out yet.
+    You shouldn't need to edit your configs for this update, your configs should update automatically.
+    Expect some patches following this update for Axolotl and other new entities, waiting on the Spigot API to become available
+    If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.
+
 Version 2.1.196
     Removed the explosion from Rupture
     Adjusted Rupture to play its particle effect less often

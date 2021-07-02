@@ -113,7 +113,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull Furnace furnace) {
-        applyXpGain(Smelting.getResourceXp(furnaceSmeltEvent.getSource()), XPGainReason.PVE, XPGainSource.PASSIVE); //Add XP
+        applyXpGain(Smelting.getSmeltXP(furnaceSmeltEvent.getSource()), XPGainReason.PVE, XPGainSource.PASSIVE); //Add XP
 
         processDoubleSmelt(furnaceSmeltEvent, furnace);
     }

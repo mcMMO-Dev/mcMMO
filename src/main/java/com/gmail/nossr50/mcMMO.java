@@ -483,7 +483,7 @@ public class mcMMO extends JavaPlugin {
         return upgradeManager;
     }
 
-    public static CompatibilityManager getCompatibilityManager() {
+    public static @Nullable CompatibilityManager getCompatibilityManager() {
         return platformManager.getCompatibilityManager();
     }
 

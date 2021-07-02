@@ -794,7 +794,6 @@ public class PlayerListener implements Listener {
                 if(player.isInsideVehicle() && (player.getVehicle() instanceof Minecart || player.getVehicle() instanceof PoweredMinecart))
                 {
                     player.getVehicle().eject();
-                    player.setVelocity(player.getEyeLocation().getDirection().multiply(10));
                 }
 
                 //mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();

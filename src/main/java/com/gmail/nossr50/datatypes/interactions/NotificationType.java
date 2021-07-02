@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes.interactions;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * This class helps define the types of information interactions we will have with players
  */
@@ -23,14 +25,14 @@ public enum NotificationType {
     CHAT_ONLY("ChatOnly"),
     PARTY_MESSAGE("PartyMessage");
 
-    final String niceName;
+    private final String niceName;
 
-    NotificationType(String niceName)
-    {
+    NotificationType(@NotNull String niceName) {
         this.niceName = niceName;
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return niceName;
-    }}
+    }
+}
