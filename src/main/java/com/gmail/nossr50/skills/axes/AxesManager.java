@@ -120,7 +120,7 @@ public class AxesManager extends SkillManager {
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
                 if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
-                    SkillUtils.handleDurabilityChange(armor, durabilityDamage, 1);
+                    SkillUtils.handleArmorDurabilityChange(armor, durabilityDamage, 1);
                 }
             }
         }
