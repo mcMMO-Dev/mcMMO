@@ -688,7 +688,7 @@ public final class CombatUtils {
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, @NotNull PrimarySkillType type) {
+    public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, @NotNull PrimarySkillType type, boolean shouldArmSwing) {
         int numberOfTargets = getTier(attacker.getInventory().getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
@@ -702,7 +702,9 @@ public final class CombatUtils {
             }
 
             LivingEntity livingEntity = (LivingEntity) entity;
-            EventUtils.callFakeArmSwingEvent(attacker);
+            if (shouldArmSwing) {
+                EventUtils.callFakeArmSwingEvent(attacker);
+            }
 
             switch (type) {
                 case SWORDS:

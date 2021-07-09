@@ -6,4 +6,6 @@ public class Swords {
     public static double  counterAttackModifier      = mcMMO.p.getAdvancedConfig().getCounterModifier();
 
     public static double serratedStrikesModifier   = mcMMO.p.getAdvancedConfig().getSerratedStrikesModifier();
+
+    public static boolean serratedStrikesFakeArmSwing = mcMMO.p.getAdvancedConfig().getSerratedStrikesFakeArmSwing();
 }

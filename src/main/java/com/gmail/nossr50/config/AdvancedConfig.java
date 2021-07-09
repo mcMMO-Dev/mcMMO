@@ -642,6 +642,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getImpactDurabilityDamageMultiplier() { return config.getDouble("Skills.Axes.ArmorImpact.DamagePerRank", 6.5D); }
 
     public double getSkullSplitterModifier() { return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D); }
+    public boolean getSkullSplitterFakeArmSwing() { return config.getBoolean("Skills.Axes.SkullSplitter.FakeArmSwing", true); }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
@@ -735,6 +736,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public double getSerratedStrikesModifier() { return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D); }
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5); }
+    public boolean getSerratedStrikesFakeArmSwing() { return config.getBoolean("Skills.Swords.SerratedStrikes.FakeArmSwing", true); }
 
     /* TAMING */
     public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D); }
