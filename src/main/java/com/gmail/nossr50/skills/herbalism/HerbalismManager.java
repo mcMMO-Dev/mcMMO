@@ -704,7 +704,7 @@ public class HerbalismManager extends SkillManager {
                     return false;
                 }
                 blockState.setType(Material.AIR);
-                Misc.spawnItem(location, treasure.getDrop(), ItemSpawnReason.HYLIAN_LUCK_TREASURE);
+                Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.HYLIAN_LUCK_TREASURE);
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }

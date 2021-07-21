@@ -299,7 +299,7 @@ public class WoodcuttingManager extends SkillManager {
                 xp += processTreeFellerXPGains(blockState, processedLogCount);
 
                 //Drop displaced block
-                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
                 processHarvestLumber(blockState);
@@ -307,7 +307,7 @@ public class WoodcuttingManager extends SkillManager {
                 //Drop displaced non-woodcutting XP blocks
 
                 if(RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
@@ -319,7 +319,7 @@ public class WoodcuttingManager extends SkillManager {
                     }
 
                 } else {
-                    Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
+                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
                 }
             }
 
@@ -384,7 +384,7 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param blockState Block being broken
      */
-    protected static void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
-        Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(), ItemSpawnReason.BONUS_DROPS);
+    protected void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
+        Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(), ItemSpawnReason.BONUS_DROPS);
     }
 }

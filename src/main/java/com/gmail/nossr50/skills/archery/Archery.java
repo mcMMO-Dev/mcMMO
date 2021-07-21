@@ -57,7 +57,7 @@ public class Archery {
             TrackedEntity trackedEntity = entityIterator.next();
 
             if (trackedEntity.getID() == livingEntity.getUniqueId()) {
-                Misc.spawnItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
+                Misc.spawnItems(null, livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
                 entityIterator.remove();
                 return;
             }

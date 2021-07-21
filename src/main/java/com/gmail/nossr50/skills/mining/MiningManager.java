@@ -189,7 +189,7 @@ public class MiningManager extends SkillManager {
         //Drop "debris" based on skill modifiers
         for(BlockState blockState : notOres) {
             if(RandomUtils.nextFloat() < debrisYield) {
-                Misc.spawnItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
+                Misc.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
             }
         }
 
@@ -197,12 +197,12 @@ public class MiningManager extends SkillManager {
             if (RandomUtils.nextFloat() < (yield + oreBonus)) {
                 xp += Mining.getBlockXp(blockState);
 
-                Misc.spawnItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES); // Initial block that would have been dropped
+                Misc.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES); // Initial block that would have been dropped
 
                 if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
 //                        Bukkit.broadcastMessage("Bonus Drop on Ore: "+blockState.getType().toString());
-                        Misc.spawnItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP); // Initial block that would have been dropped
+                        Misc.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP); // Initial block that would have been dropped
                     }
                 }
             }

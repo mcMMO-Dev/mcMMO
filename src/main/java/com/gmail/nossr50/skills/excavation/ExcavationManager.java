@@ -49,7 +49,7 @@ public class ExcavationManager extends SkillManager {
                         }
 
                         xp += treasure.getXp();
-                        Misc.spawnItem(location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
+                        Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
                     }
                 }
             }

@@ -160,10 +160,10 @@ public class SalvageManager extends SkillManager {
         anvilLoc.add(0, .1, 0);
 
         if (enchantBook != null) {
-            Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed, ItemSpawnReason.SALVAGE_ENCHANTMENT_BOOK);
+            Misc.spawnItemTowardsLocation(getPlayer(), anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed, ItemSpawnReason.SALVAGE_ENCHANTMENT_BOOK);
         }
 
-        Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed, ItemSpawnReason.SALVAGE_MATERIALS);
+        Misc.spawnItemTowardsLocation(getPlayer(), anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed, ItemSpawnReason.SALVAGE_MATERIALS);
 
         // BWONG BWONG BWONG - CLUNK!
         if (mcMMO.p.getGeneralConfig().getSalvageAnvilUseSoundsEnabled()) {
