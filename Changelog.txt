@@ -1,3 +1,6 @@
+Version 2.1.201
+    Portuguese translation of Woodcutting changed back to Lenhador
+
 Version 2.1.200
     Fixed a major 1.17 exploit
     Dodge will no longer trigger while blocking
