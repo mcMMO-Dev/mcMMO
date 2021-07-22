@@ -59,18 +59,17 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        Player player = (Player) sender;
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
         if (args.length == 0) {
-            Player player = (Player) sender;
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
             boolean isLucky = Permissions.lucky(player, skill);
-            boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
+            boolean hasEndurance = PerksUtils.handleActivationPerks(player, 0, 0) != 0;
             float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
             //Send the players a few blank lines to make finding the top of the skill command easier
@@ -117,7 +116,20 @@ public abstract class SkillCommand implements TabExecutor {
             }
 
             return true;
+        } else if ("keep".equals(args[0].toLowerCase())) {
+            if (!mcMMO.p.getGeneralConfig().getAllowKeepBoard()
+                    || !mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
+                    || !mcMMO.p.getGeneralConfig().getSkillUseBoard()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
+                return true;
+            }
+
+            ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
+            ScoreboardManager.keepBoard(sender.getName());
+            sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Keep"));
+            return true;
         }
+
         return skillGuideCommand.onCommand(sender, command, label, args);
     }
 
@@ -211,7 +223,7 @@ public abstract class SkillCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
-            return ImmutableList.of("?");
+            return ImmutableList.of("?", "keep");
         }
         return ImmutableList.of();
     }
