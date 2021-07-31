@@ -119,7 +119,9 @@ public class MiningManager extends SkillManager {
 
         tnt.setMetadata(mcMMO.tntMetadataKey, mmoPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
-        tnt.setSource(player);
+        if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 16, 4)) {
+            tnt.setSource(player);
+        }
         targetBlock.setType(Material.AIR);
 
         mmoPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
