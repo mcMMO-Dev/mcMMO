@@ -1,4 +1,5 @@
 Version 2.1.201
+    Fixed an exploit related to Ability Buffs remaining on tools
     Blast Mining no longer drops Budding Amethyst since its not legal to obtain this item through normal gameplay
     Added mcinspect and mmoinspect aliases to inspect command
     Portuguese translation of Woodcutting changed back to Lenhador

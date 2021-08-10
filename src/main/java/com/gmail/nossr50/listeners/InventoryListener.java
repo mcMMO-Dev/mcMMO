@@ -402,6 +402,7 @@ public class InventoryListener implements Listener {
         }
 
         SkillUtils.removeAbilityBuff(event.getCurrentItem());
+
         if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
             if(isOutsideWindowClick(event))
                 return;

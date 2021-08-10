@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.events.McMMOReplaceVanillaTreasureEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -210,6 +211,11 @@ public class PlayerListener implements Listener {
                 HardcoreManager.invokeStatPenalty(killedPlayer);
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    public void onPlayerDeathNormal(PlayerDeathEvent playerDeathEvent) {
+        SkillUtils.removeAbilityBoostsFromInventory(playerDeathEvent.getEntity());
     }
 
     /**
@@ -1031,17 +1037,9 @@ public class PlayerListener implements Listener {
         }
     }
 
-//
-//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-//    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
-//        /* WORLD BLACKLIST CHECK */
-//        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
-//            return;
-//
-//        if (!mcMMO.getHolidayManager().isAprilFirst()) {
-//            return;
-//        }
-//
-//        mcMMO.getHolidayManager().handleStatisticEvent(event);
-//    }
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
+        SkillUtils.removeAbilityBuff(event.getMainHandItem());
+        SkillUtils.removeAbilityBuff(event.getOffHandItem());
+    }
 }
