@@ -5,6 +5,12 @@ Version 2.1.201
     Added mcinspect and mmoinspect aliases to inspect command
     Portuguese translation of Woodcutting changed back to Lenhador
     Updated zh_CN (Chinese) locale, thanks GhostDC!
+    Major changes to zh_TW locale, thanks gregman98
+    Added '/skill keep' shortcut (for example /mining keep) thanks GriffinCodes
+    Impact is now more balanced as the formula has been changed (see notes) thanks emanondev
+
+    NOTES:
+    Impact will deal less durability damage to armors without unbreaking, and more to armors with unbreaking
 
 Version 2.1.200
     Fixed a major 1.17 exploit
