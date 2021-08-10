@@ -89,6 +89,7 @@ commands:
         description: Create/join a party
         permission: mcmmo.commands.party
     inspect:
+        aliases: [mcinspect, mmoinspect]
         description: View detailed mcMMO info on another player
         permission: mcmmo.commands.inspect
     mmoshowdb:
