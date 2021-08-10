@@ -1,4 +1,5 @@
 Version 2.1.201
+    Blast Mining no longer drops Budding Amethyst since its not legal to obtain this item through normal gameplay
     Portuguese translation of Woodcutting changed back to Lenhador
 
 Version 2.1.200
