@@ -53,7 +53,7 @@ public class AbilityDisableTask extends BukkitRunnable {
         mcMMOPlayer.setAbilityMode(ability, false);
         mcMMOPlayer.setAbilityInformed(ability, false);
 
-        ParticleEffectUtils.playAbilityDisabledEffect(player);
+//        ParticleEffectUtils.playAbilityDisabledEffect(player);
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());

@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class ParticleEffectUtils {
 
@@ -23,11 +24,15 @@ public final class ParticleEffectUtils {
         SoundManager.worldSendSoundMaxPitch(world, location, SoundType.POP);
     }
 
-    public static void playBleedEffect(LivingEntity livingEntity) {
+    public static void playBleedEffect(@NotNull LivingEntity livingEntity) {
         if (!mcMMO.p.getGeneralConfig().getBleedEffectEnabled()) {
             return;
         }
 
+        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+    }
+
+    private static @NotNull Location getParticleLocation(@NotNull LivingEntity livingEntity) {
         Location origin = livingEntity.getEyeLocation().clone();
         World world = origin.getWorld();
 
@@ -37,30 +42,32 @@ public final class ParticleEffectUtils {
 
         double offSetVal = 0.3D;
 
-        Location locA = new Location(world, x - offSetVal, y, z);
-        Location locB = new Location(world, x + offSetVal, y, z);
-        Location locC = new Location(world, x, y + offSetVal, z);
-        Location locD = new Location(world, x, y - offSetVal, z);
-        Location locE = new Location(world, x, y, z + offSetVal);
-        Location locF = new Location(world, x, y, z - offSetVal);
+        switch(RandomUtils.nextInt(10)) {
 
-        Location locG = new Location(world, x + offSetVal, y, z + offSetVal);
-        Location locH = new Location(world, x - offSetVal, y, z - offSetVal);
-        Location locI = new Location(world, x - offSetVal, y - offSetVal, z - offSetVal);
-        Location locJ = new Location(world, x + offSetVal, y - offSetVal, z + offSetVal);
-        Location locK = new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
-        Location locL = new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
-
-        Location[] particleLocations = new Location[]{ locA, locB, locC, locD, locE, locF, locG, locH, locI, locJ, locK, locL};
-
-        for(Location location : particleLocations) {
-            if(RandomUtils.nextInt(100) > 30) {
-                //TODO: Change
-                livingEntity.getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_WIRE);
-            }
+            case 0:
+                return new Location(world, x - offSetVal, y, z);
+            case 1:
+                return new Location(world, x + offSetVal, y, z);
+            case 2:
+                return new Location(world, x, y + offSetVal, z);
+            case 3:
+                return new Location(world, x, y - offSetVal, z);
+            case 4: Location locE = new Location(world, x, y, z + offSetVal);
+                return new Location(world, x, y, z - offSetVal);
+            case 5:
+                return new Location(world, x + offSetVal, y, z + offSetVal);
+            case 6:
+                return new Location(world, x - offSetVal, y, z - offSetVal);
+            case 7:
+                return new Location(world, x - offSetVal, y - offSetVal, z - offSetVal);
+            case 8:
+                return new Location(world, x + offSetVal, y - offSetVal, z + offSetVal);
+            case 9:
+                return new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
+            default:
+                return new Location(world, x + offSetVal, y + offSetVal, z - offSetVal);
         }
     }
-
 
     public static void playDodgeEffect(Player player) {
         if (!mcMMO.p.getGeneralConfig().getDodgeEffectEnabled()) {
