@@ -1,8 +1,10 @@
 Version 2.1.201
+    (API) TNT is set as the source in Blast Mining (1.16.1 and up)
     Fixed an exploit related to Ability Buffs remaining on tools
     Blast Mining no longer drops Budding Amethyst since its not legal to obtain this item through normal gameplay
     Added mcinspect and mmoinspect aliases to inspect command
     Portuguese translation of Woodcutting changed back to Lenhador
+    Updated zh_CN (Chinese) locale, thanks GhostDC!
 
 Version 2.1.200
     Fixed a major 1.17 exploit
