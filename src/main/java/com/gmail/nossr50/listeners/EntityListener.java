@@ -300,7 +300,11 @@ public class EntityListener implements Listener {
         double damage = event.getFinalDamage();
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
-
+        
+        if(damage == 0) {
+                return;
+        }
+        
         if(WorldGuardUtils.isWorldGuardLoaded())
         {
             if(attacker instanceof Player) {
@@ -417,21 +421,6 @@ public class EntityListener implements Listener {
             ProjectileSource shooter = ((Projectile) attacker).getShooter();
             if(shooter instanceof LivingEntity) {
                 attacker = (LivingEntity) shooter;
-            }
-        }
-
-        /*
-         * This was put here to solve a plugin conflict with a mod called Project Korra
-         * Project Korra sends out a damage event with exactly 0 damage
-         * mcMMO does some calculations for the damage in an event and it ends up dividing by zero,
-         *  as a result of the modifiers for the event being 0 and the damage set for this event being 0.
-         *
-         * Surprising this kind of thing
-         *
-         */
-        if(mcMMO.isProjectKorraEnabled()) {
-            if(event.getFinalDamage() == 0) {
-                return;
             }
         }
 
