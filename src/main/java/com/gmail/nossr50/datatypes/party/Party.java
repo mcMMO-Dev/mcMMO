@@ -327,7 +327,7 @@ public class Party {
     }
 
     public boolean hasMember(String memberName) {
-        return this.getMembers().containsValue(memberName);
+        return this.getMembers().values().stream().anyMatch(memberName::equalsIgnoreCase);
     }
 
     public boolean hasMember(UUID uuid) {
