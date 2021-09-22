@@ -39,6 +39,9 @@ ExploitFix:
     # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
     # Of course, mcMMO doesn't know for sure whether or not something is an NPC, it checks a few known things, see our source code to see how
     PreventPluginNPCInteraction: true
+Fishing_ExploitFix_Options:
+    MoveRange: 3
+    OverFishLimit: 10
 Experience_Bars:
     # Turn this to false if you wanna disable XP bars
     Enable: true

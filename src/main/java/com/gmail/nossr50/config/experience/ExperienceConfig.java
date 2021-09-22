@@ -155,6 +155,9 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean isNPCInteractionPrevented() { return config.getBoolean("ExploitFix.PreventPluginNPCInteraction", true); }
 
     public boolean isFishingExploitingPrevented() { return config.getBoolean("ExploitFix.Fishing", true); }
+    public int getFishingExploitingOptionMoveRange() { return config.getInt("Fishing_ExploitFix_Options.MoveRange", 3); }
+    public int getFishingExploitingOptionOverFishLimit() { return config.getInt("Fishing_ExploitFix_Options.OverFishLimit", 10); }
+
     public boolean isAcrobaticsExploitingPrevented() { return config.getBoolean("ExploitFix.Acrobatics", true); }
     public boolean isTreeFellerXPReduced() { return config.getBoolean("ExploitFix.TreeFellerReducedXP", true); }
 
