@@ -202,6 +202,7 @@ MySQL:
         SSL: true
         Port: 3306
         Address: localhost
+        allowPublicKeyRetrieval: true
 
 #
 #  Settings for Hardcore mode
