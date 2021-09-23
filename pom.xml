@@ -141,7 +141,6 @@
                             <include>net.kyori:adventure-text-serializer-gson</include>
                             <include>net.kyori:adventure-platform-bukkit</include>
                             <include>net.kyori:adventure-platform-api</include>
-                            <include>net.kyori:adventure-platform-common</include>
                             <include>net.kyori:adventure-platform-viaversion</include>
                             <include>net.kyori:adventure-platform-facet</include>
                             <include>net.kyori:adventure-nbt</include>
@@ -248,48 +247,37 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-key</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-api</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-common</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.kyori</groupId>
-                    <artifactId>adventure-nbt</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
