@@ -3,91 +3,53 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.World;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Blacklist certain features in certain worlds
  */
 public class WorldBlacklist {
-    private static ArrayList<String> blacklist;
+    private static final Set<String> blacklist = new HashSet<>();
     private final mcMMO plugin;
 
-    private final String blackListFileName = "world_blacklist.txt";
-
-    public WorldBlacklist(mcMMO plugin)
-    {
+    public WorldBlacklist(mcMMO plugin) {
         this.plugin = plugin;
-        blacklist = new ArrayList<>();
         init();
     }
 
-    public void init()
-    {
+    public void init() {
         //Make the blacklist file if it doesn't exist
+        String blackListFileName = "world_blacklist.txt";
         File blackListFile = new File(plugin.getDataFolder() + File.separator + blackListFileName);
 
         try {
-            if(!blackListFile.exists())
+            if (!blackListFile.exists())
                 blackListFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //Load up the blacklist
-        loadBlacklist(blackListFile);
-        //registerFlags();
-    }
-
-    private void loadBlacklist(File blackListFile) {
-        FileReader fileReader = null;
-        BufferedReader bufferedReader = null;
-        try {
-            fileReader = new FileReader(blackListFile);
-            bufferedReader = new BufferedReader(fileReader);
-
+        try (BufferedReader reader = new BufferedReader(new FileReader(blackListFile))) {
             String currentLine;
-
-            while((currentLine = bufferedReader.readLine()) != null)
-            {
-                if(currentLine.length() == 0)
-                    continue;
-
-                if(!blacklist.contains(currentLine))
-                    blacklist.add(currentLine);
-            }
-
+            while((currentLine = reader.readLine()) != null)
+                blacklist.add(currentLine.toLowerCase());
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            //Close readers
-            closeRead(bufferedReader);
-            closeRead(fileReader);
-        }
-
-        plugin.getLogger().info(blacklist.size()+" entries in mcMMO World Blacklist");
-    }
-
-    private void closeRead(Reader reader) {
-        if(reader != null) {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    public static boolean isWorldBlacklisted(World world)
-    {
+    public static boolean isWorldBlacklisted(World world) {
+        return blacklist.contains(world.getName().toLowerCase());
+    }
 
-        for(String s : blacklist)
-        {
-            if(world.getName().equalsIgnoreCase(s))
-                return true;
-        }
-
-        return false;
+    public static boolean isWorldBlacklisted(String worldName) {
+        return blacklist.contains(worldName.toLowerCase());
     }
 }
