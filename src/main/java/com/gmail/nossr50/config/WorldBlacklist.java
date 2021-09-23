@@ -32,13 +32,15 @@ public class WorldBlacklist {
                 blackListFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
 
         //Load up the blacklist
         try (BufferedReader reader = new BufferedReader(new FileReader(blackListFile))) {
             String currentLine;
             while((currentLine = reader.readLine()) != null)
-                blacklist.add(currentLine.toLowerCase());
+                if (!currentLine.isEmpty())
+                    blacklist.add(currentLine.toLowerCase());
 
         } catch (IOException e) {
             e.printStackTrace();
