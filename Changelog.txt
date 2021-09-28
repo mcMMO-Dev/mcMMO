@@ -1,5 +1,9 @@
 Version 2.1.202
     Added Amethyst_Block to experience.yml for Mining
+    Added Flowering Azalea Leaves to Tree Feller's white list
+
+    NOTES:
+    This means tree feller will destroy flowering azalea leaves during its ability
 
 Version 2.1.201
     Tweaked the visual/audio effect for Rupture
