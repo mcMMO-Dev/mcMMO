@@ -238,7 +238,10 @@ public class BlockListener implements Listener {
         WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
 
         if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
-            mcMMO.getPlaceStore().setTrue(blockState);
+            //NOTE: BlockMultiPlace has its own logic so don't handle anything that would overlap
+            if (!(event instanceof BlockMultiPlaceEvent)) {
+                mcMMO.getPlaceStore().setTrue(blockState);
+            }
         }
 
 
@@ -276,7 +279,16 @@ public class BlockListener implements Listener {
 
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
             if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
-                mcMMO.getPlaceStore().setTrue(blockState);
+                //Updated: 10/5/2021
+                //Note: For some reason Azalea trees trigger this event but no other tree does (as of 10/5/2021) but if this changes in the future we may need to update this
+                if(BlockUtils.isPartOfTree(event.getBlockPlaced())) {
+                    return;
+                }
+
+                //Track unnatural blocks
+                for(BlockState replacedStates : event.getReplacedBlockStates()) {
+                    mcMMO.getPlaceStore().setTrue(replacedStates);
+                }
             }
         }
     }

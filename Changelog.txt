@@ -1,4 +1,5 @@
 Version 2.1.202
+    Fixed a bug where mcMMO marked bonemealed Azalea trees as unnatural (and thus did not give XP or get affected by Tree Feller)
     Added Amethyst_Block to experience.yml for Mining
     Added Flowering Azalea Leaves to Tree Feller's white list
     Fixed a bug where mcMMO didn't appropriately flag blocks as natural in some tree growing events
@@ -8,9 +9,8 @@ Version 2.1.202
     Updated zh_CN locale (thanks GhostDC)
     Added some settings for over fishing (Settings are in experience.yml under Fishing_ExploitFix_Options - thanks tunagohan)
 
-
     NOTES:
-    This means tree feller will destroy flowering azalea leaves during its ability
+    This means tree feller will correctly traverse flowering azalea leaves during its ability
 
 Version 2.1.201
     Tweaked the visual/audio effect for Rupture
