@@ -1,6 +1,13 @@
 Version 2.1.202
     Added Amethyst_Block to experience.yml for Mining
     Added Flowering Azalea Leaves to Tree Feller's white list
+    Fixed a bug where mcMMO didn't appropriately flag blocks as natural in some tree growing events
+    (SQL) Added more MySQL/MariaDB settings (allowPublicKeyRetrieval - thanks rosaage)
+    (API) Added CREATED_PARTY and DISBANDED_PARTY to EventReason (used in some party events - thanks PikaMug )
+    Party member name matching is no longer case sensitive (thanks Wariorrrr)
+    Updated zh_CN locale (thanks GhostDC)
+    Added some settings for over fishing (Settings are in experience.yml under Fishing_ExploitFix_Options - thanks tunagohan)
+
 
     NOTES:
     This means tree feller will destroy flowering azalea leaves during its ability
