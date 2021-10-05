@@ -1,4 +1,5 @@
 Version 2.1.202
+    Fixed a bug where mcMMO didn't reward XP for Kelp
     Fixed a bug where mcMMO marked bonemealed Azalea trees as unnatural (and thus did not give XP or get affected by Tree Feller)
     Added Amethyst_Block to experience.yml for Mining
     Added Flowering Azalea Leaves to Tree Feller's white list
