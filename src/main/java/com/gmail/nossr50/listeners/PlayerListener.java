@@ -449,7 +449,7 @@ public class PlayerListener implements Listener {
                 if(caught instanceof Item) {
                     if(ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
                         if (fishingManager.isExploitingFishing(event.getHook().getLocation().toVector())) {
-                            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", 3));
+                            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange()));
                             event.setExpToDrop(0);
                             Item caughtItem = (Item) caught;
                             caughtItem.remove();
@@ -886,7 +886,7 @@ public class PlayerListener implements Listener {
                 if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
                     break;
                 }
-                
+
                 /* ACTIVATION CHECKS */
                 if (mcMMO.p.getGeneralConfig().getAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
@@ -1005,7 +1005,7 @@ public class PlayerListener implements Listener {
      * When a {@link Player} attempts to place an {@link ItemStack}
      * into an {@link ItemFrame}, we want to make sure to remove any
      * Ability buffs from that item.
-     * 
+     *
      * @param event The {@link PlayerInteractEntityEvent} to handle
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

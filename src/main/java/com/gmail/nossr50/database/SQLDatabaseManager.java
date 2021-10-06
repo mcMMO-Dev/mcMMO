@@ -61,6 +61,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionString+=
                     "?useSSL=false";
 
+        if(mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
+            connectionString+=
+                    "&allowPublicKeyRetrieval=true";
+        }
+
         try {
             // Force driver to load if not yet loaded
             Class.forName(driverPath);

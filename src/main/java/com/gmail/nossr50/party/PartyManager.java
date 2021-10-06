@@ -347,10 +347,20 @@ public final class PartyManager {
      * Disband a party. Kicks out all members and removes the party.
      *
      * @param party The party to remove
+     * @deprecated Use {@link #disbandParty(McMMOPlayer, Party)}
      */
     public static void disbandParty(Party party) {
+        disbandParty(null, party);
+    }
+
+    /**
+     * Disband a party. Kicks out all members and removes the party.
+     *
+     * @param party The party to remove
+     */
+    public static void disbandParty(McMMOPlayer mcMMOPlayer, Party party) {
         //TODO: Potential issues with unloaded profile?
-        for (Player member : party.getOnlineMembers()) {
+        for (final Player member : party.getOnlineMembers()) {
             //Profile not loaded
             if(UserManager.getPlayer(member) == null)
             {
@@ -366,6 +376,9 @@ public final class PartyManager {
         }
 
         parties.remove(party);
+        if (mcMMOPlayer != null) {
+            handlePartyChangeEvent(mcMMOPlayer.getPlayer(), party.getName(), null, EventReason.DISBANDED_PARTY);
+        }
     }
 
     /**
@@ -388,6 +401,7 @@ public final class PartyManager {
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Create", party.getName()));
         addToParty(mcMMOPlayer, party);
+        handlePartyChangeEvent(player, null, partyName, EventReason.CREATED_PARTY);
     }
 
     /**

@@ -29,10 +29,6 @@ public class WorldListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
-        if (!mcMMO.getPlaceStore().isTrue(event.getLocation().getBlock())) {
-            return;
-        }
-
         for (BlockState blockState : event.getBlocks()) {
             mcMMO.getPlaceStore().setFalse(blockState);
         }
