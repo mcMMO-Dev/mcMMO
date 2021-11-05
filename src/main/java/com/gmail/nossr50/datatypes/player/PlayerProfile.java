@@ -43,12 +43,20 @@ public class PlayerProfile {
     private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);
 
     @Deprecated
-    //TODO: Add deprecated constructor w/o startinglevel
+    public PlayerProfile(String playerName) {
+        this(playerName, null, 0);
+    }
+
+    @Deprecated
+    public PlayerProfile(String playerName, UUID uuid) {
+        this(playerName, uuid, 0);
+    }
+
+    @Deprecated
     public PlayerProfile(String playerName, int startingLevel) {
         this(playerName, null, startingLevel);
     }
 
-    //TODO: Add deprecated constructor w/o startinglevel
     public PlayerProfile(String playerName, @Nullable UUID uuid, int startingLevel) {
         this.uuid = uuid;
         this.playerName = playerName;
@@ -80,7 +88,7 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(@NotNull String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
+    public PlayerProfile(@NotNull String playerName, @Nullable UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.scoreboardTipsShown = scoreboardTipsShown;
