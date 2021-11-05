@@ -285,8 +285,8 @@ public final class BlockUtils {
         return true;
     }
 
-    public static boolean isPartOfTree(Block rayCast) {
-        return hasWoodcuttingXP(rayCast.getState()) || isNonWoodPartOfTree(rayCast.getType());
+    public static boolean isPartOfTree(Block block) {
+        return hasWoodcuttingXP(block.getState()) || isNonWoodPartOfTree(block.getType());
     }
 
     public static boolean isWithinWorldBounds(@NotNull WorldCompatibilityLayer worldCompatibilityLayer, @NotNull Block block) {
