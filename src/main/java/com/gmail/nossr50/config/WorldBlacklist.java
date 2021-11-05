@@ -2,29 +2,33 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
  * Blacklist certain features in certain worlds
  */
 public class WorldBlacklist {
-    private static final Set<String> blacklist = new HashSet<>();
+    private final Set<String> blacklist = new HashSet<>();
+    private static WorldBlacklist instance;
     private final mcMMO plugin;
+    private final String blackListFileName = "world_blacklist.txt";
 
-    public WorldBlacklist(mcMMO plugin) {
+    public WorldBlacklist(@NotNull mcMMO plugin) {
+        WorldBlacklist.instance = this;
         this.plugin = plugin;
         init();
     }
 
     public void init() {
         //Make the blacklist file if it doesn't exist
-        String blackListFileName = "world_blacklist.txt";
         File blackListFile = new File(plugin.getDataFolder() + File.separator + blackListFileName);
 
         try {
@@ -47,11 +51,11 @@ public class WorldBlacklist {
         }
     }
 
-    public static boolean isWorldBlacklisted(World world) {
-        return blacklist.contains(world.getName().toLowerCase());
+    public static boolean isWorldBlacklisted(@NotNull World world) {
+        return isWorldBlacklisted(world.getName());
     }
 
-    public static boolean isWorldBlacklisted(String worldName) {
-        return blacklist.contains(worldName.toLowerCase());
+    public static boolean isWorldBlacklisted(@NotNull String worldName) {
+        return instance.blacklist.contains(worldName.toLowerCase(Locale.ROOT));
     }
 }
