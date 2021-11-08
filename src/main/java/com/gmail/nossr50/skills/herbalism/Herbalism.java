@@ -23,7 +23,7 @@ public class Herbalism {
                 return true;
 
             case DIRT :
-            case GRASS_PATH :
+            case DIRT_PATH:
                 blockState.setType(Material.GRASS_BLOCK);
                 return true;
 
@@ -47,7 +47,7 @@ public class Herbalism {
         switch (blockState.getType()) {
             case DIRT :
             case GRASS_BLOCK:
-            case GRASS_PATH :
+            case DIRT_PATH:
                 blockState.setType(Material.MYCELIUM);
                 return true;
 

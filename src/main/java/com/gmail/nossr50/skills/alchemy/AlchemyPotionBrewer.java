@@ -22,6 +22,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class AlchemyPotionBrewer {
@@ -133,7 +134,7 @@ public final class AlchemyPotionBrewer {
             }
         }
 
-        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, ((BrewingStand) brewingStand).getFuelLevel());
+        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, Arrays.asList(outputList), ((BrewingStand) brewingStand).getFuelLevel());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled() || inputList.isEmpty()) {
