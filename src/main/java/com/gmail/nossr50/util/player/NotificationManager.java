@@ -21,6 +21,7 @@ import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -293,7 +294,8 @@ public class NotificationManager {
                         .asHoverEvent();
 
                 String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
-                Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
+
+                Component message = LegacyComponentSerializer.legacy('§').deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
                 Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
             }
@@ -328,7 +330,7 @@ public class NotificationManager {
                         .asHoverEvent();
 
                 String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
-                Component message = Component.text(localeMessage).hoverEvent(levelMilestoneHover);
+                Component message = LegacyComponentSerializer.legacy('§').deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
                 Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
             }
