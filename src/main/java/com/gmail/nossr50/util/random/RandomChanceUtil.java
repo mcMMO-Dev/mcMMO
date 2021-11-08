@@ -282,10 +282,10 @@ public class RandomChanceUtil {
     }
 
     public static String @NotNull [] calculateAbilityDisplayValuesStatic(@NotNull Player player, @NotNull PrimarySkillType primarySkillType, double chance) {
-        RandomChanceStatic rcs = new RandomChanceStatic(chance, false);
+        RandomChanceStatic rcs = new RandomChanceStatic(chance, LINEAR_CURVE_VAR, false);
         double successChance = getRandomChanceExecutionChance(rcs);
 
-        RandomChanceStatic rcs_lucky = new RandomChanceStatic(chance, true);
+        RandomChanceStatic rcs_lucky = new RandomChanceStatic(chance, LINEAR_CURVE_VAR, true);
         double successChance_lucky = getRandomChanceExecutionChance(rcs_lucky);
 
         String[] displayValues = new String[2];
