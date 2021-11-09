@@ -8,8 +8,8 @@ public class Herbalism {
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *
-     * @param blockState
-     *            The {@link BlockState} to check ability activation for
+     * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     protected static boolean convertGreenTerraBlocks(BlockState blockState) {
@@ -22,16 +22,16 @@ public class Herbalism {
                 blockState.setType(Material.MOSSY_STONE_BRICKS);
                 return true;
 
-            case DIRT :
-            case GRASS_PATH :
+            case DIRT:
+            case DIRT_PATH:
                 blockState.setType(Material.GRASS_BLOCK);
                 return true;
 
-            case COBBLESTONE :
+            case COBBLESTONE:
                 blockState.setType(Material.MOSSY_COBBLESTONE);
                 return true;
 
-            default :
+            default:
                 return false;
         }
     }
@@ -39,19 +39,19 @@ public class Herbalism {
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *
-     * @param blockState
-     *            The {@link BlockState} to check ability activation for
+     * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     protected static boolean convertShroomThumb(BlockState blockState) {
         switch (blockState.getType()) {
-            case DIRT :
+            case DIRT:
             case GRASS_BLOCK:
-            case GRASS_PATH :
+            case DIRT_PATH:
                 blockState.setType(Material.MYCELIUM);
                 return true;
 
-            default :
+            default:
                 return false;
         }
     }

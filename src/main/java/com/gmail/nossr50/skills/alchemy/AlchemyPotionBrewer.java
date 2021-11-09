@@ -114,7 +114,7 @@ public final class AlchemyPotionBrewer {
         }
 
         List<AlchemyPotion> inputList = new ArrayList<>();
-        ItemStack[] outputList = new ItemStack[3];
+        var outputList = new ArrayList<ItemStack>();
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
@@ -129,11 +129,11 @@ public final class AlchemyPotionBrewer {
             inputList.add(input);
 
             if (output != null) {
-                outputList[i] = output.toItemStack(item.getAmount()).clone();
+                outputList.set(i, output.toItemStack(item.getAmount()).clone());
             }
         }
 
-        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, ((BrewingStand) brewingStand).getFuelLevel());
+        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, outputList, ((BrewingStand) brewingStand).getFuelLevel());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled() || inputList.isEmpty()) {
@@ -141,8 +141,8 @@ public final class AlchemyPotionBrewer {
         }
 
         for (int i = 0; i < 3; i++) {
-            if(outputList[i] != null) {
-                inventory.setItem(i, outputList[i]);
+            if(outputList.get(i) != null) {
+                inventory.setItem(i, outputList.get(i));
             }
         }
 

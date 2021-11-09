@@ -1,3 +1,19 @@
+Version 2.1.203
+    mcMMO now requires Java 16
+    mcMMO now requires the newest version of Minecraft (currently 1.17.1)
+    Fixed several API breaks (mostly affected Alchemy)
+
+    NOTES:
+    If you want to play mcMMO on older versions, simply use 2.1.202 instead
+    Keeping mcMMO backwards compatible with older versions is getting messy, and I'd rather be able to focus my attention at newer features than having to make an elaborate build process (or alternatively hacky code) to support older versions of the game
+    Furthermore, it seems most people are playing 1.17.1 by a wide margin
+    You may have trouble compiling the source code if your maven is not setup to run JDK16, if you get any errors when compiling this is likely the reason
+
+    The data from bstats went into making this decision (shoutout to Qixils for typing this up too)
+     71.9% of servers are running 1.17.X
+     97.9% of servers are running ≥1.16
+     99.3% of servers are running ≥1.15
+
 Version 2.1.202
     Fixed a bug where mcMMO didn't reward XP for Kelp
     Fixed a bug where mcMMO marked bonemealed Azalea trees as unnatural (and thus did not give XP or get affected by Tree Feller)
