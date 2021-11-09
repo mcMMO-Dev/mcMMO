@@ -31,12 +31,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # 2. Setup Java 1.8 JDK
-    - name: Java 1.8 setup
-      uses: actions/setup-java@v1.4.3
+    # 2. Setup Java 16 JDK (Adopt)
+    - name: Java 16 setup
+      uses: actions/setup-java@v2
       with:
+        distribution: 'adopt'
         java-package: jdk
-        java-version: 1.8
+        java-version: '16'
 
     # 3. Setup local Maven package cache to speed up building
     - name: Cache Maven packages
