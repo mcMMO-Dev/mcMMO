@@ -5,6 +5,7 @@ Version 2.1.203
     Fixed a bug relating to Shake percentages (thanks Lyther)
     Fixed hexcolors not displaying correctly in level up milestone broadcasts (thanks gecko10000)
     (API) Added deprecated constructors for PlayerProfile (thanks PikaMug)
+    mcMMO has had many of its dependencies updated to newer builds
 
     NOTES:
     If you want to play mcMMO on older versions, simply use 2.1.202 instead
