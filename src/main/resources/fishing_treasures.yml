@@ -1,6 +1,6 @@
 #
 #  Settings for Fishing Treasures / Shake Treasures
-#  Last updated on 12/28/2020
+#  Last updated on 11/10/2021
 ###
 Fishing:
     LEATHER_BOOTS:
@@ -552,11 +552,64 @@ Shake:
             XP: 0
             Drop_Chance: 99.0
             Drop_Level: 0
+    DOLPHIN:
+        COD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
     ENDERMAN:
         ENDER_PEARL:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
+            Drop_Level: 0
+    EVOKER:
+        TOTEM_OF_UNDYING:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 20.0
+            Drop_Level: 0
+        EMERALD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 80.0
+            Drop_Level: 0
+    FOX:
+        EMERALD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 5.0
+            Drop_Level: 0
+        RABBIT_HIDE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 10.0
+            Drop_Level: 0
+        RABBIT_FOOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 10.0
+            Drop_Level: 0
+        EGG:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        WHEAT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 20.0
+            Drop_Level: 0
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 20.0
+            Drop_Level: 0
+        FEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 20.0
             Drop_Level: 0
     GHAST:
         GUNPOWDER:
@@ -566,6 +619,39 @@ Shake:
             Drop_Level: 0
         GHAST_TEAR:
             Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    GLOW_SQUID:
+        GLOW_INK_SAC:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    GUARDIAN:
+        PRISMARINE_SHARD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        COD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 25.0
+            Drop_Level: 0
+        PRISMARINE_CRYSTALS:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 25.0
+            Drop_Level: 0
+    HOGLIN:
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        PORKCHOP:
+            Amount: 2
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
@@ -595,6 +681,22 @@ Shake:
             Amount: 1
             XP: 0
             Drop_Chance: 85.0
+            Drop_Level: 0
+    LLAMA:
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 98.0
+            Drop_Level: 0
+        CHEST:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        WHITE_CARPET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
             Drop_Level: 0
     MAGMA_CUBE:
         MAGMA_CREAM:
@@ -628,6 +730,12 @@ Shake:
             XP: 0
             Drop_Chance: 30.0
             Drop_Level: 0
+    PHANTOM:
+        PHANTOM_MEMBRANE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
     PIG:
         PORKCHOP:
             Amount: 1
@@ -645,6 +753,12 @@ Shake:
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+    PILLAGER:
+        ARROW:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
     PLAYER:
         SKELETON_SKULL:
             Amount: 1
@@ -655,11 +769,43 @@ Shake:
             Whole_Stacks: false
             Drop_Chance: 0.0
             Drop_Level: 0
+    POLAR_BEAR:
+        COD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        SALMON:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    RABBIT:
+        RABBIT_HIDE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 45.0
+            Drop_Level: 0
+        RABBIT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 45.0
+            Drop_Level: 0
+        RABBIT_FOOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 10.0
+            Drop_Level: 0
     SHEEP:
         WHITE_WOOL:
-            Amount: 3
+            Amount: 2
             XP: 0
-            Drop_Chance: 100.0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        MUTTON:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
             Drop_Level: 0
     SHULKER:
         SHULKER_SHELL:
@@ -718,6 +864,39 @@ Shake:
             Drop_Level: 0
     SQUID:
         INK_SAC:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    STRIDER:
+        STRING:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 99.0
+            Drop_Level: 0
+        SADDLE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+    TURTLE:
+        SEAGRASS:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 40.0
+            Drop_Level: 0
+        SCUTE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 40.0
+            Drop_Level: 0
+        BOWL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 20.0
+            Drop_Level: 0
+    VINDICATOR:
+        EMERALD:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
@@ -795,6 +974,12 @@ Shake:
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+    ZOGLIN:
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
     ZOMBIE:
         ZOMBIE_HEAD:
             Amount: 1
@@ -805,4 +990,20 @@ Shake:
             Amount: 1
             XP: 0
             Drop_Chance: 98.0
+            Drop_Level: 0
+    ZOMBIFIED_PIGLIN:
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        GOLD_NUGGET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 47.5
+            Drop_Level: 0
+        GOLD_INGOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.5
             Drop_Level: 0
