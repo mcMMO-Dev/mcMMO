@@ -22,6 +22,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class AlchemyPotionBrewer {
@@ -113,8 +114,8 @@ public final class AlchemyPotionBrewer {
             return;
         }
 
-        List<AlchemyPotion> inputList = new ArrayList<>();
-        var outputList = new ArrayList<ItemStack>();
+        List<AlchemyPotion> inputList = new ArrayList<>(Collections.nCopies(3, null));
+        List<ItemStack> outputList = new ArrayList<>(Collections.nCopies(3, null));
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
@@ -126,10 +127,10 @@ public final class AlchemyPotionBrewer {
             AlchemyPotion input = PotionConfig.getInstance().getPotion(item);
             AlchemyPotion output = input.getChild(ingredient);
 
-            inputList.add(input);
+            inputList.set(i, input);
 
             if (output != null) {
-                outputList.add(output.toItemStack(item.getAmount()).clone());
+                outputList.set(i, output.toItemStack(item.getAmount()).clone());
             }
         }
 
@@ -149,6 +150,8 @@ public final class AlchemyPotionBrewer {
         removeIngredient(inventory, player);
 
         for (AlchemyPotion input : inputList) {
+            if (input == null) continue;;
+
             AlchemyPotion output = input.getChild(ingredient);
 
             if (output != null && player != null) {
