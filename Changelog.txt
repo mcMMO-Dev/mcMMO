@@ -1,3 +1,7 @@
+Version 2.1.204
+    Fixed IndexOutOfBounds exception (thanks gecko10000) (related to Alchemy)
+    Added double smelt to copper ingot and netherite scrap (thanks Lyther)
+
 Version 2.1.203
     mcMMO now requires Java 16
     mcMMO now requires the newest version of Minecraft (currently 1.17.1)
