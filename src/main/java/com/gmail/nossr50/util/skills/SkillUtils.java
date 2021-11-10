@@ -79,7 +79,7 @@ public final class SkillUtils {
      * Others
      */
 
-    public static int handleFoodSkills(Player player, int eventFoodLevel, SubSkillType subSkillType) {
+    public static int handleFoodSkillsHunger(Player player, int eventFoodLevel, SubSkillType subSkillType) {
         int curRank = RankUtils.getRank(player, subSkillType);
 
         int currentFoodLevel = player.getFoodLevel();
@@ -88,6 +88,17 @@ public final class SkillUtils {
         foodChange+=curRank;
 
         return currentFoodLevel + foodChange;
+    }
+
+    public static float handleFoodSkillsSaturation(Player player, float eventSaturationLevel, SubSkillType subSkillType) {
+        int curRank = RankUtils.getRank(player, subSkillType);
+
+        float currentSaturationLevel = player.getSaturation();
+        float saturationChange = eventSaturationLevel - currentSaturationLevel;
+
+        saturationChange += curRank;
+
+        return currentSaturationLevel + saturationChange;
     }
 
     /**

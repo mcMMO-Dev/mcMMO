@@ -166,13 +166,23 @@ public class HerbalismManager extends SkillManager {
     }
 
     /**
-     * Handle the Farmer's Diet ability
+     * Handle the Farmer's Diet ability about hunger
      *
      * @param eventFoodLevel The initial change in hunger from the event
      * @return the modified change in hunger for the event
      */
-    public int farmersDiet(int eventFoodLevel) {
-        return SkillUtils.handleFoodSkills(getPlayer(), eventFoodLevel, SubSkillType.HERBALISM_FARMERS_DIET);
+    public int farmersDietHunger(int eventFoodLevel) {
+        return SkillUtils.handleFoodSkillsHunger(getPlayer(), eventFoodLevel, SubSkillType.HERBALISM_FARMERS_DIET);
+    }
+
+    /**
+     * Handle the Farmer's Diet ability about saturation
+     *
+     * @param eventSaturationLevel The initial change in saturation from the event
+     * @return the modified change in saturation for the event
+     */
+    public float farmersDietSaturation(float eventSaturationLevel) {
+        return SkillUtils.handleFoodSkillsSaturation(getPlayer(), eventSaturationLevel, SubSkillType.HERBALISM_FARMERS_DIET);
     }
 
     /**

@@ -51,6 +51,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
     private final @NotNull AbstractPersistentDataLayer persistentDataLayer;
@@ -893,6 +895,9 @@ public class EntityListener implements Listener {
         int newFoodLevel = event.getFoodLevel();
         int foodChange = newFoodLevel - currentFoodLevel;
 
+        float currentSaturationLevel = player.getSaturation();
+        float newSaturationLevel = 0.0F; //No support in spigot API, use saturation table
+
         if (foodChange <= 0) {
             return;
         }
@@ -909,6 +914,12 @@ public class EntityListener implements Listener {
             return; //Not Food
         }
 
+        Float foodSaturation = ItemUtils.getFoodSaturation(foodInHand);
+
+        if (foodSaturation != null) {
+            newSaturationLevel = currentSaturationLevel + foodSaturation;
+        }
+
         /*
          * Some foods have 3 ranks Some foods have 5 ranks The number of ranks
          * is based on how 'common' the item is We can adjust this quite easily
@@ -917,64 +928,32 @@ public class EntityListener implements Listener {
 
         //Hacky 1.17 support
         if(foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
+            newSaturationLevel = currentSaturationLevel + 0.4F;
             if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+                event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDietHunger(newFoodLevel));
+                player.setSaturation(UserManager.getPlayer(player).getHerbalismManager().farmersDietSaturation(newSaturationLevel));
             }
 
             return;
         }
 
         switch (foodInHand) {
-            case BAKED_POTATO: /*
-                                * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-                                * 1000
-                                */
-            case BEETROOT:
-            case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-            case CARROT: /*
-                               * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
-                               * 1000
-                               */
-            case GOLDEN_CARROT: /*
-                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-                                 * 1000
-                                 */
-            case MUSHROOM_STEW: /*
-                                 * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-                                 * 1000
-                                 */
-            case PUMPKIN_PIE: /*
-                               * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-                               * 1000
-                               */
+            case BAKED_POTATO, BEETROOT, BREAD, CARROT, GOLDEN_CARROT, MUSHROOM_STEW, PUMPKIN_PIE, COOKIE, MELON_SLICE, POISONOUS_POTATO, POTATO -> {
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDietHunger(newFoodLevel));
+                    player.setSaturation(UserManager.getPlayer(player).getHerbalismManager().farmersDietSaturation(newSaturationLevel));
                 }
                 return;
-
-            case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-            case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-            case POISONOUS_POTATO: /*
-                                    * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
-                                    * @ 1000
-                                    */
-            case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
-                }
-                return;
-            case COD:
-            case SALMON:
-            case TROPICAL_FISH:
-            case COOKED_COD:
-            case COOKED_SALMON:
-
+            }
+            case COD, SALMON, TROPICAL_FISH, COOKED_COD, COOKED_SALMON -> {
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
+                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDietHunger(newFoodLevel));
+                    player.setSaturation(UserManager.getPlayer(player).getFishingManager().handleFishermanDietSaturation(newSaturationLevel));
                 }
                 return;
-
-            default:
+            }
+            default -> {
+            }
         }
     }
 

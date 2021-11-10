@@ -213,14 +213,25 @@ public class FishingManager extends SkillManager {
     }
 
     /**
-     * Handle the Fisherman's Diet ability
+     * Handle the Fisherman's Diet ability about hunger
      *
      * @param eventFoodLevel The initial change in hunger from the event
      *
      * @return the modified change in hunger for the event
      */
-    public int handleFishermanDiet(int eventFoodLevel) {
-        return SkillUtils.handleFoodSkills(getPlayer(), eventFoodLevel, SubSkillType.FISHING_FISHERMANS_DIET);
+    public int handleFishermanDietHunger(int eventFoodLevel) {
+        return SkillUtils.handleFoodSkillsHunger(getPlayer(), eventFoodLevel, SubSkillType.FISHING_FISHERMANS_DIET);
+    }
+
+    /**
+     * Handle the Fisherman's Diet ability about saturation
+     *
+     * @param eventSaturationLevel The initial change in saturation from the event
+     *
+     * @return the modified change in saturation for the event
+     */
+    public float handleFishermanDietSaturation(float eventSaturationLevel) {
+        return SkillUtils.handleFoodSkillsSaturation(getPlayer(), eventSaturationLevel, SubSkillType.FISHING_FISHERMANS_DIET);
     }
 
     public void iceFishing(FishHook hook, Block block) {
