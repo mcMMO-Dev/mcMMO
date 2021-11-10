@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,7 +60,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> intendedToolShovel;
 
     private final @NotNull HashMap<String, Integer> tierValue;
-
+    private static final @NotNull HashMap<Material, Float> foodSaturation = new HashMap<>();
 
     public MaterialMapStore()
     {
@@ -130,6 +131,7 @@ public class MaterialMapStore {
         fillIntendedTools();
 
         fillTierMap();
+        fillFoodSaturation();
     }
 
     public boolean isMultiBlockPlant(@NotNull Material material)
@@ -196,6 +198,49 @@ public class MaterialMapStore {
         for(String id : netheriteArmor) {
             tierValue.put(id, 12);
         }
+    }
+
+    private void fillFoodSaturation() {
+        foodSaturation.put(Material.APPLE, 1.2F);
+        foodSaturation.put(Material.BAKED_POTATO, 3.0F);
+        foodSaturation.put(Material.BEETROOT, 0.6F);
+        foodSaturation.put(Material.BEETROOT_SOUP, 3.6F);
+        foodSaturation.put(Material.BREAD, 3.0F);
+        foodSaturation.put(Material.CAKE, 0.2F);
+        foodSaturation.put(Material.CARROT, 1.8F);
+        foodSaturation.put(Material.CHORUS_FRUIT, 1.2F);
+        foodSaturation.put(Material.COOKED_BEEF, 6.4F);
+        foodSaturation.put(Material.COOKED_CHICKEN, 3.6F);
+        foodSaturation.put(Material.COOKED_COD, 3.0F);
+        foodSaturation.put(Material.COOKED_MUTTON, 4.8F);
+        foodSaturation.put(Material.COOKED_PORKCHOP, 6.4F);
+        foodSaturation.put(Material.COOKED_RABBIT, 3.0F);
+        foodSaturation.put(Material.COOKED_SALMON, 4.8F);
+        foodSaturation.put(Material.COOKIE, 0.2F);
+        foodSaturation.put(Material.DRIED_KELP, 0.3F);
+        foodSaturation.put(Material.ENCHANTED_GOLDEN_APPLE, 4.8F);
+        foodSaturation.put(Material.HONEY_BOTTLE, 0.6F);
+        foodSaturation.put(Material.GOLDEN_APPLE, 4.8F);
+        foodSaturation.put(Material.GOLDEN_CARROT, 7.2F);
+        foodSaturation.put(Material.MELON_SLICE, 0.6F);
+        foodSaturation.put(Material.MUSHROOM_STEW, 3.6F);
+        foodSaturation.put(Material.POISONOUS_POTATO, 0.6F);
+        foodSaturation.put(Material.POTATO, 0.3F);
+        foodSaturation.put(Material.PUFFERFISH, 0.1F);
+        foodSaturation.put(Material.PUMPKIN_PIE, 2.4F);
+        foodSaturation.put(Material.RABBIT_STEW, 6.0F);
+        foodSaturation.put(Material.BEEF, 0.9F);
+        foodSaturation.put(Material.CHICKEN, 0.6F);
+        foodSaturation.put(Material.COD, 0.2F);
+        foodSaturation.put(Material.MUTTON, 0.6F);
+        foodSaturation.put(Material.PORKCHOP, 0.9F);
+        foodSaturation.put(Material.RABBIT, 0.9F);
+        foodSaturation.put(Material.SALMON, 0.2F);
+        foodSaturation.put(Material.ROTTEN_FLESH, 0.4F);
+        foodSaturation.put(Material.SPIDER_EYE, 1.6F);
+        foodSaturation.put(Material.SUSPICIOUS_STEW, 3.6F);
+        foodSaturation.put(Material.SWEET_BERRIES, 0.2F);
+        foodSaturation.put(Material.TROPICAL_FISH, 0.1F);
     }
 
     private void fillOres() {
@@ -1317,6 +1362,8 @@ public class MaterialMapStore {
     public int getTier(@NotNull String id) {
         return tierValue.getOrDefault(id, 1); //1 for unknown items
     }
+
+    public @Nullable static float getFoodSaturation(@NotNull Material food) { return foodSaturation.get(food); }
 
     private void addToHashSet(@NotNull String string, @NotNull HashSet<String> stringHashSet)
     {

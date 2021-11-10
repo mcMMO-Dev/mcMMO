@@ -17,10 +17,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -931,7 +928,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        Float foodSaturation = ItemUtils.getFoodSaturation(foodInHand);
+        Float foodSaturation = MaterialMapStore.getFoodSaturation(foodInHand);
 
         if (foodSaturation != null) {
             newSaturationLevel = currentSaturationLevel + foodSaturation;
