@@ -914,12 +914,6 @@ public class EntityListener implements Listener {
             return; //Not Food
         }
 
-        Float foodSaturation = ItemUtils.getFoodSaturation(foodInHand);
-
-        if (foodSaturation != null) {
-            newSaturationLevel = currentSaturationLevel + foodSaturation;
-        }
-
         /*
          * Some foods have 3 ranks Some foods have 5 ranks The number of ranks
          * is based on how 'common' the item is We can adjust this quite easily
@@ -928,13 +922,21 @@ public class EntityListener implements Listener {
 
         //Hacky 1.17 support
         if(foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
-            newSaturationLevel = currentSaturationLevel + 0.4F;
+            newSaturationLevel = currentSaturationLevel + 0.2F;
             if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                 event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDietHunger(newFoodLevel));
                 player.setSaturation(UserManager.getPlayer(player).getHerbalismManager().farmersDietSaturation(newSaturationLevel));
             }
 
             return;
+        }
+
+        Float foodSaturation = ItemUtils.getFoodSaturation(foodInHand);
+
+        if (foodSaturation != null) {
+            newSaturationLevel = currentSaturationLevel + foodSaturation;
+        } else {
+            return; //Food unknown
         }
 
         switch (foodInHand) {

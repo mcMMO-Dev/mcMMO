@@ -90,15 +90,16 @@ public final class SkillUtils {
         return currentFoodLevel + foodChange;
     }
 
+    //Saturation maximum is 10 instead of 20
     public static float handleFoodSkillsSaturation(Player player, float eventSaturationLevel, SubSkillType subSkillType) {
         int curRank = RankUtils.getRank(player, subSkillType);
 
         float currentSaturationLevel = player.getSaturation();
         float saturationChange = eventSaturationLevel - currentSaturationLevel;
 
-        saturationChange += curRank;
+        saturationChange += (curRank/2.0F);
 
-        return currentSaturationLevel + saturationChange;
+        return (currentSaturationLevel + saturationChange);
     }
 
     /**
