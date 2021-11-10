@@ -129,7 +129,7 @@ public final class AlchemyPotionBrewer {
             inputList.add(input);
 
             if (output != null) {
-                outputList.set(i, output.toItemStack(item.getAmount()).clone());
+                outputList.add(output.toItemStack(item.getAmount()).clone());
             }
         }
 
