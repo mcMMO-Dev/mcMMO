@@ -620,7 +620,8 @@ Bonus_Drops:
         Quartz: true
         Redstone: true
         Deepslate: true
-
+        Copper_Ingot: true
+        Netherite_Scrap: true
 #
 #  Settings for commands
 ###
