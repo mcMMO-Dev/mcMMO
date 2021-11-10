@@ -666,6 +666,32 @@ Shake:
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+    HUSK:
+        ZOMBIE_HEAD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        IRON_INGOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        CARROT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        POTATO:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 89.0
+            Drop_Level: 0
     IRON_GOLEM:
         PUMPKIN:
             Amount: 1
@@ -868,6 +894,22 @@ Shake:
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+    STRAY:
+        SKELETON_SKULL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        BONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        ARROW:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
     STRIDER:
         STRING:
             Amount: 2
@@ -986,10 +1028,25 @@ Shake:
             XP: 0
             Drop_Chance: 2.0
             Drop_Level: 0
+        IRON_INGOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        CARROT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        POTATO:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
         ROTTEN_FLESH:
             Amount: 1
             XP: 0
-            Drop_Chance: 98.0
+            Drop_Chance: 89.0
             Drop_Level: 0
     ZOMBIFIED_PIGLIN:
         ROTTEN_FLESH:
