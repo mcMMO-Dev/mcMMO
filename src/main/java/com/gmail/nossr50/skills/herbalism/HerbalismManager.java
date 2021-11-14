@@ -217,10 +217,10 @@ public class HerbalismManager extends SkillManager {
         if(blockBreakEvent.getBlock().getBlockData() instanceof Ageable) {
             Ageable ageableCrop = (Ageable) blockBreakEvent.getBlock().getBlockData();
 
-            if(blockBreakEvent.getBlock().getMetadata(mcMMO.REPLANT_META_KEY).size() >= 1) {
-                if(blockBreakEvent.getBlock().getMetadata(mcMMO.REPLANT_META_KEY).get(0).asBoolean()) {
+            if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() >= 1) {
+                if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.METADATA_KEY_REPLANT).get(0).asBoolean()) {
                     if(isAgeableMature(ageableCrop)) {
-                        blockBreakEvent.getBlock().removeMetadata(mcMMO.REPLANT_META_KEY, mcMMO.p);
+                        blockBreakEvent.getBlock().removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
                     } else {
                         //Crop is recently replanted to back out of destroying it
                         blockBreakEvent.setCancelled(true);
@@ -488,8 +488,8 @@ public class HerbalismManager extends SkillManager {
             BlockState brokenBlockNewState = blockSnapshot.getBlockRef().getState();
 
             //Remove metadata from the snapshot of blocks
-            if(brokenBlockNewState.hasMetadata(mcMMO.BONUS_DROPS_METAKEY)) {
-                brokenBlockNewState.removeMetadata(mcMMO.BONUS_DROPS_METAKEY, mcMMO.p);
+            if(brokenBlockNewState.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS)) {
+                brokenBlockNewState.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
             }
 
             //If the block is not AIR that means it wasn't broken
@@ -744,7 +744,7 @@ public class HerbalismManager extends SkillManager {
     private void startReplantTask(int desiredCropAge, BlockBreakEvent blockBreakEvent, BlockState cropState, boolean isImmature) {
         //Mark the plant as recently replanted to avoid accidental breakage
         new DelayedCropReplant(blockBreakEvent, cropState, desiredCropAge, isImmature).runTaskLater(mcMMO.p, 20 * 2);
-        blockBreakEvent.getBlock().setMetadata(mcMMO.REPLANT_META_KEY, new RecentlyReplantedCropMeta(mcMMO.p, true));
+        blockBreakEvent.getBlock().setMetadata(MetadataConstants.METADATA_KEY_REPLANT, new RecentlyReplantedCropMeta(mcMMO.p, true));
     }
 
     /**

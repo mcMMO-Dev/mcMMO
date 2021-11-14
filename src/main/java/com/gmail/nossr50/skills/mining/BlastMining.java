@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.Player;
@@ -91,12 +92,12 @@ public class BlastMining {
     }
 
     public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
-        if (!tnt.hasMetadata(mcMMO.tntMetadataKey) || !UserManager.hasPlayerDataKey(defender)) {
+        if (!tnt.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT) || !UserManager.hasPlayerDataKey(defender)) {
             return false;
         }
 
         // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
 
         if (!(player != null && player.equals(defender))) {
             return false;

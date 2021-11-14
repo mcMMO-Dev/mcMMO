@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -171,8 +172,8 @@ public class DelayedCropReplant extends BukkitRunnable {
         @Override
         public void run() {
             Block cropBlock = cropLoc.getBlock();
-            if(cropBlock.getMetadata(mcMMO.REPLANT_META_KEY).size() > 0)
-                cropBlock.setMetadata(mcMMO.REPLANT_META_KEY, new RecentlyReplantedCropMeta(mcMMO.p, false));
+            if(cropBlock.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() > 0)
+                cropBlock.setMetadata(MetadataConstants.METADATA_KEY_REPLANT, new RecentlyReplantedCropMeta(mcMMO.p, false));
         }
     }
 

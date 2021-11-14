@@ -1,48 +1,50 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.checkerframework.common.returnsreceiver.qual.This;
 import org.jetbrains.annotations.NotNull;
 
 public class TransientMetadataTools {
-    public static final String OLD_NAME_METAKEY = TransientMetadataTools.OLD_NAME_METAKEY;
     private final mcMMO pluginRef;
 
     public TransientMetadataTools(@NotNull mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 
-    public void cleanAllLivingEntityMetadata(@NotNull LivingEntity livingEntity) {
-        //Since its not written anywhere, apparently the GC won't touch objects with metadata still present on them
-        if (livingEntity.hasMetadata(mcMMO.customNameKey)) {
-            livingEntity.setCustomName(livingEntity.getMetadata(mcMMO.customNameKey).get(0).asString());
-            livingEntity.removeMetadata(mcMMO.customNameKey, pluginRef);
+    public void cleanLivingEntityMetadata(@NotNull LivingEntity entity) {
+        //Since it's not written anywhere, apparently the GC won't touch objects with metadata still present on them
+        if (entity.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY)) {
+            entity.setCustomName(entity.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY).get(0).asString());
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, pluginRef);
         }
 
-        if(livingEntity.hasMetadata(OLD_NAME_METAKEY)) {
-            livingEntity.removeMetadata(OLD_NAME_METAKEY, pluginRef);
-        }
+//        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY)) {
+//            CombatUtils.fixNames(entity);
+//            entity.removeMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY, pluginRef);
+//        }
 
         //Involved in changing mob names to hearts
-        if (livingEntity.hasMetadata(mcMMO.customVisibleKey)) {
-            livingEntity.setCustomNameVisible(livingEntity.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean());
-            livingEntity.removeMetadata(mcMMO.customVisibleKey, pluginRef);
+        if (entity.hasMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY)) {
+            entity.setCustomNameVisible(entity.getMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY).get(0).asBoolean());
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, pluginRef);
         }
 
         //Gets assigned to endermen, potentially doesn't get cleared before this point
-        if(livingEntity.hasMetadata(mcMMO.travelingBlock)) {
-            livingEntity.removeMetadata(mcMMO.travelingBlock, pluginRef);
-        }
-
-        if(livingEntity.hasMetadata(mcMMO.RUPTURE_META_KEY)) {
-            livingEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, pluginRef);
-        }
-
-        if(livingEntity.hasMetadata(mcMMO.EXPLOSION_FROM_RUPTURE)) {
-            livingEntity.removeMetadata(mcMMO.EXPLOSION_FROM_RUPTURE, pluginRef);
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
         }
 
         //Cleanup mob metadata
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
+        mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(entity);
+
+        //TODO: This loop has some redundancy, this whole method needs to be rewritten
+        for(String key : MetadataConstants.MOB_METADATA_KEYS) {
+            if(entity.hasMetadata(key)) {
+                entity.removeMetadata(key, pluginRef);
+            }
+        }
     }
 }

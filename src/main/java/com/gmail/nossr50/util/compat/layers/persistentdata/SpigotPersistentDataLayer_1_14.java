@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.compat.layers.persistentdata;
 import com.gmail.nossr50.api.exceptions.IncompleteNamespacedKeyRegister;
 import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Furnace;
 import org.bukkit.enchantments.Enchantment;
@@ -101,7 +102,7 @@ public class SpigotPersistentDataLayer_1_14 extends AbstractPersistentDataLayer 
         if(PersistentDataConfig.getInstance().isMobPersistent(flag)) {
             if(!hasMobFlag(flag, livingEntity)) {
                 PersistentDataContainer persistentDataContainer = livingEntity.getPersistentDataContainer();
-                persistentDataContainer.set(mobFlagKeyMap.get(flag), PersistentDataType.BYTE, SIMPLE_FLAG_VALUE);
+                persistentDataContainer.set(mobFlagKeyMap.get(flag), PersistentDataType.BYTE, MetadataConstants.SIMPLE_FLAG_VALUE);
             }
         } else {
             transientLayer.flagMetadata(flag, livingEntity);

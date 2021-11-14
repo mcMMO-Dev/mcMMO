@@ -75,6 +75,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mcMMO extends JavaPlugin {
+
+
     /* Managers */
     private static PlatformManager platformManager;
     private static ChunkManager       placeStore;
@@ -129,29 +131,6 @@ public class mcMMO extends JavaPlugin {
 
     private static boolean isRetroModeEnabled;
 
-    /* Metadata Values */
-    public static final String REPLANT_META_KEY      = "mcMMO: Recently Replanted";
-    public static final String EXPLOSION_FROM_RUPTURE = "mcMMO: Rupture Explosion";
-    public static final String RUPTURE_META_KEY      = "mcMMO: RuptureTask";
-    public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
-    public static final String DODGE_TRACKER         = "mcMMO: Dodge Tracker";
-    public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
-    public static final String travelingBlock        = "mcMMO: Traveling Block";
-    public static final String blockMetadataKey      = "mcMMO: Piston Tracking";
-    public static final String tntMetadataKey        = "mcMMO: Tracked TNT";
-    public static final String customNameKey         = "mcMMO: Custom Name";
-    public static final String customVisibleKey      = "mcMMO: Name Visibility";
-    public static final String droppedItemKey        = "mcMMO: Tracked Item";
-    public static final String infiniteArrowKey      = "mcMMO: Infinite Arrow";
-    public static final String trackedArrow          = "mcMMO: Tracked Arrow";
-    public static final String bowForceKey           = "mcMMO: Bow Force";
-    public static final String arrowDistanceKey      = "mcMMO: Arrow Distance";
-    public static final String BONUS_DROPS_METAKEY   = "mcMMO: Double Drops";
-    public static final String disarmedItemKey       = "mcMMO: Disarmed Item";
-    public static final String playerDataKey         = "mcMMO: Player Data";
-    public static final String databaseCommandKey    = "mcMMO: Processing Database Command";
-
-    public static FixedMetadataValue metadataValue;
     private long purgeTime = 2630000000L;
 
     private GeneralConfig generalConfig;
@@ -199,7 +178,7 @@ public class mcMMO extends JavaPlugin {
             //Filter out any debug messages (if debug/verbose logging is not enabled)
             getLogger().setFilter(new LogFilter(this));
 
-            metadataValue = new FixedMetadataValue(this, true);
+            MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;

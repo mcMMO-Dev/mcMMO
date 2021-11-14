@@ -2,7 +2,7 @@ package com.gmail.nossr50.api;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -84,7 +84,7 @@ public final class AbilityAPI {
 
     public static boolean isBleeding(LivingEntity entity) {
         if(entity.isValid()) {
-            if(entity.hasMetadata(mcMMO.RUPTURE_META_KEY)) {
+            if(entity.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
                 return true;
             }
         }

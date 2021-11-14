@@ -10,6 +10,7 @@ import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -427,7 +428,7 @@ public class InventoryListener implements Listener {
 
         final HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!whoClicked.hasMetadata(mcMMO.playerDataKey)) {
+        if (!whoClicked.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA)) {
             return;
         }
 

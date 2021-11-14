@@ -54,8 +54,8 @@ public final class MobHealthbarUtils {
         /*
          * Store the name in metadata
          */
-        if(target.getMetadata(TransientMetadataTools.OLD_NAME_METAKEY).size() <= 0 && originalName != null)
-            target.setMetadata(TransientMetadataTools.OLD_NAME_METAKEY, new OldName(originalName, plugin));
+        if(target.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY).size() <= 0)
+            target.setMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY, new OldName(originalName, plugin));
 
         if (oldName == null) {
             oldName = "";
@@ -73,12 +73,12 @@ public final class MobHealthbarUtils {
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
-                target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, oldName));
-                target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, oldNameVisible));
+                target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, new FixedMetadataValue(mcMMO.p, oldName));
+                target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
             }
-            else if (!target.hasMetadata(mcMMO.customNameKey)) {
-                target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, ""));
-                target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, false));
+            else if (!target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY)) {
+                target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, new FixedMetadataValue(mcMMO.p, ""));
+                target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, false));
             }
 
             new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds

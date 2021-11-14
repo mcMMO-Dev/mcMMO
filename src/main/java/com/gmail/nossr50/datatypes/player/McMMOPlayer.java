@@ -41,10 +41,7 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -1137,8 +1134,8 @@ public class McMMOPlayer implements Identified {
      */
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
-        if(getPlayer().hasMetadata(mcMMO.RUPTURE_META_KEY)) {
-            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(mcMMO.RUPTURE_META_KEY).get(0);
+        if(getPlayer().hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
+            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(MetadataConstants.METADATA_KEY_RUPTURE).get(0);
 
             //Punish a logout
             ruptureTaskMeta.getRuptureTimerTask().endRupture();

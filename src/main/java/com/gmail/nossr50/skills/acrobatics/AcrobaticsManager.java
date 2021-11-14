@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -101,18 +102,18 @@ public class AcrobaticsManager extends SkillManager {
             if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 if(!(attacker instanceof Player)) {
                     //Check to see how many dodge XP rewards this mob has handed out
-                    if(attacker.hasMetadata(mcMMO.DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
+                    if(attacker.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
                         //If Dodge XP has been handed out 5 times then consider it being exploited
-                        MetadataValue metadataValue = attacker.getMetadata(mcMMO.DODGE_TRACKER).get(0);
-                        int count = attacker.getMetadata(mcMMO.DODGE_TRACKER).get(0).asInt();
+                        MetadataValue metadataValue = attacker.getMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER).get(0);
+                        int count = attacker.getMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER).get(0).asInt();
 
                         if(count <= 5) {
                             applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
-                            attacker.setMetadata(mcMMO.DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
+                            attacker.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
                         }
                     } else {
                         applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
-                        attacker.setMetadata(mcMMO.DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, 1));
+                        attacker.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, 1));
                     }
                 }
             }

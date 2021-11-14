@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.compat.layers.persistentdata;
 import com.gmail.nossr50.api.exceptions.IncompleteNamespacedKeyRegister;
 import com.gmail.nossr50.datatypes.meta.UUIDMeta;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.block.Furnace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -36,30 +37,15 @@ public class SpigotPersistentDataLayer_1_13 extends AbstractPersistentDataLayer 
 
     private void initMobFlagKeyMap() throws IncompleteNamespacedKeyRegister {
         for(MobMetaFlagType flagType : MobMetaFlagType.values()) {
-            switch(flagType) {
-                case MOB_SPAWNER_MOB:
-                    mobFlagKeyMap.put(flagType, STR_MOB_SPAWNER_MOB);
-                    break;
-                case EGG_MOB:
-                    mobFlagKeyMap.put(flagType, STR_EGG_MOB);
-                    break;
-                case NETHER_PORTAL_MOB:
-                    mobFlagKeyMap.put(flagType, STR_NETHER_PORTAL_MOB);
-                    break;
-                case COTW_SUMMONED_MOB:
-                    mobFlagKeyMap.put(flagType, STR_COTW_SUMMONED_MOB);
-                    break;
-                case PLAYER_BRED_MOB:
-                    mobFlagKeyMap.put(flagType, STR_PLAYER_BRED_MOB);
-                    break;
-                case PLAYER_TAMED_MOB:
-                    mobFlagKeyMap.put(flagType, STR_PLAYER_TAMED_MOB);
-                    break;
-                case EXPLOITED_ENDERMEN:
-                    mobFlagKeyMap.put(flagType, STR_EXPLOITED_ENDERMEN);
-                    break;
-                default:
-                    throw new IncompleteNamespacedKeyRegister("Missing flag register for: "+flagType.toString());
+            switch (flagType) {
+                case MOB_SPAWNER_MOB -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB);
+                case EGG_MOB -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_EGG_MOB);
+                case NETHER_PORTAL_MOB -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB);
+                case COTW_SUMMONED_MOB -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB);
+                case PLAYER_BRED_MOB -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB);
+                case PLAYER_TAMED_MOB -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB);
+                case EXPLOITED_ENDERMEN -> mobFlagKeyMap.put(flagType, MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN);
+                default -> throw new IncompleteNamespacedKeyRegister("Missing flag register for: " + flagType);
             }
         }
     }
@@ -92,7 +78,7 @@ public class SpigotPersistentDataLayer_1_13 extends AbstractPersistentDataLayer 
     @Override
     public void flagMetadata(@NotNull MobMetaFlagType flag, @NotNull LivingEntity livingEntity) {
         if(!hasMobFlag(flag, livingEntity)) {
-            livingEntity.setMetadata(mobFlagKeyMap.get(flag), mcMMO.metadataValue);
+            livingEntity.setMetadata(mobFlagKeyMap.get(flag), MetadataConstants.MCMMO_METADATA_VALUE);
         }
     }
 
@@ -105,10 +91,8 @@ public class SpigotPersistentDataLayer_1_13 extends AbstractPersistentDataLayer 
 
     @Override
     public UUID getFurnaceOwner(@NotNull Furnace furnace) {
-        Metadatable metadatable = (Metadatable) furnace;
-
-        if(metadatable.getMetadata(KEY_FURNACE_OWNER).size() > 0) {
-            UUIDMeta uuidMeta = (UUIDMeta) metadatable.getMetadata(KEY_FURNACE_OWNER).get(0);
+        if(furnace.getMetadata(KEY_FURNACE_OWNER).size() > 0) {
+            UUIDMeta uuidMeta = (UUIDMeta) ((Metadatable) furnace).getMetadata(KEY_FURNACE_OWNER).get(0);
             return (UUID) uuidMeta.value();
         } else {
             return null;
@@ -117,13 +101,12 @@ public class SpigotPersistentDataLayer_1_13 extends AbstractPersistentDataLayer 
 
     @Override
     public void setFurnaceOwner(@NotNull Furnace furnace, @NotNull UUID uuid) {
-        Metadatable metadatable = (Metadatable) furnace;
 
-        if(metadatable.getMetadata(KEY_FURNACE_OWNER).size() > 0) {
-            metadatable.removeMetadata(KEY_FURNACE_OWNER, mcMMO.p);
+        if(furnace.getMetadata(KEY_FURNACE_OWNER).size() > 0) {
+            furnace.removeMetadata(KEY_FURNACE_OWNER, mcMMO.p);
         }
 
-        metadatable.setMetadata(KEY_FURNACE_OWNER, new UUIDMeta(mcMMO.p, uuid));
+        furnace.setMetadata(KEY_FURNACE_OWNER, new UUIDMeta(mcMMO.p, uuid));
     }
 
     @Override

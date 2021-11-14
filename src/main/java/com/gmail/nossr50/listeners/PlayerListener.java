@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.events.McMMOReplaceVanillaTreasureEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -185,7 +184,7 @@ public class PlayerListener implements Listener {
 
         Player killedPlayer = event.getEntity();
 
-        if (!killedPlayer.hasMetadata(mcMMO.playerDataKey) || Permissions.hardcoreBypass(killedPlayer)) {
+        if (!killedPlayer.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA) || Permissions.hardcoreBypass(killedPlayer)) {
             return;
         }
 
@@ -273,7 +272,7 @@ public class PlayerListener implements Listener {
         ItemStack dropStack = drop.getItemStack();
 
         if (ItemUtils.isSharable(dropStack)) {
-            drop.setMetadata(mcMMO.droppedItemKey, mcMMO.metadataValue);
+            drop.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ITEM, MetadataConstants.MCMMO_METADATA_VALUE);
         }
 
         SkillUtils.removeAbilityBuff(dropStack);
@@ -404,7 +403,7 @@ public class PlayerListener implements Listener {
         //Track the hook
         if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
         {
-            if(event.getHook().getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() == 0)
+            if(event.getHook().getMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF).size() == 0)
             {
                 fishingManager.setFishHookReference(event.getHook());
             }
@@ -515,19 +514,19 @@ public class PlayerListener implements Listener {
             ItemStack dropStack = drop.getItemStack();
 
             //Remove tracking
-            if(drop.hasMetadata(mcMMO.trackedArrow)) {
-                drop.removeMetadata(mcMMO.trackedArrow, mcMMO.p);
+            if(drop.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW)) {
+                drop.removeMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW, mcMMO.p);
             }
 
-            if (drop.hasMetadata(mcMMO.disarmedItemKey)) {
-                if (!player.getName().equals(drop.getMetadata(mcMMO.disarmedItemKey).get(0).asString())) {
+            if (drop.hasMetadata(MetadataConstants.METADATA_KEY_DISARMED_ITEM)) {
+                if (!player.getName().equals(drop.getMetadata(MetadataConstants.METADATA_KEY_DISARMED_ITEM).get(0).asString())) {
                     event.setCancelled(true);
                 }
 
                 return;
             }
 
-            if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
+            if (!drop.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_ITEM) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
                 event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
                 if (event.isCancelled()) {
@@ -574,7 +573,7 @@ public class PlayerListener implements Listener {
 
         //Use a sync save if the server is shutting down to avoid race conditions
         mcMMOPlayer.logout(mcMMO.isServerShutdownExecuted());
-        mcMMO.getTransientMetadataTools().cleanAllLivingEntityMetadata(event.getPlayer());
+        mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(event.getPlayer());
     }
 
     /**

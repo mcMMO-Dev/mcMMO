@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -24,7 +25,7 @@ public final class UserManager {
      * @param mcMMOPlayer the player profile to start tracking
      */
     public static void track(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
+        mcMMOPlayer.getPlayer().setMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
 
         if(playerDataSet == null)
             playerDataSet = new HashSet<>();
@@ -45,7 +46,7 @@ public final class UserManager {
     public static void remove(Player player) {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
         mcMMOPlayer.cleanup();
-        player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
+        player.removeMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA, mcMMO.p);
 
         if(playerDataSet != null) {
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
@@ -131,8 +132,8 @@ public final class UserManager {
      */
     public static McMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
-        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
-            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        if(player != null && player.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA))
+            return (McMMOPlayer) player.getMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA).get(0).value();
         else
             return null;
     }
@@ -152,6 +153,6 @@ public final class UserManager {
     }
 
     public static boolean hasPlayerDataKey(Entity entity) {
-        return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
+        return entity != null && entity.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA);
     }
 }

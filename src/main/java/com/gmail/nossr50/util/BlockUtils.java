@@ -34,9 +34,9 @@ public final class BlockUtils {
      */
     public static void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(2, mcMMO.p));
         else
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(1, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(1, mcMMO.p));
     }
 
     /**
@@ -45,7 +45,7 @@ public final class BlockUtils {
      * @param amount amount of extra items to drop
      */
     public static void markDropsAsBonus(BlockState blockState, int amount) {
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(amount, mcMMO.p));
     }
 
     /**

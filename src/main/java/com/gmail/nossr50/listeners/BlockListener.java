@@ -91,8 +91,8 @@ public class BlockListener implements Listener {
                     }
                 }
 
-                if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
-                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+                if (event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS).size() > 0) {
+                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS).get(0);
                     int bonusCount = bonusDropMeta.asInt();
 
                     for (int i = 0; i < bonusCount; i++) {
@@ -102,8 +102,8 @@ public class BlockListener implements Listener {
             }
         }
 
-        if(event.getBlock().hasMetadata(mcMMO.BONUS_DROPS_METAKEY))
-            event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
+        if(event.getBlock().hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
+            event.getBlock().removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, plugin);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.compat.layers.persistentdata;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.compat.layers.AbstractCompatibilityLayer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Furnace;
@@ -25,42 +26,23 @@ public abstract class AbstractPersistentDataLayer extends AbstractCompatibilityL
     protected final @NotNull NamespacedKey NSK_VILLAGER_TRADE_ORIGIN_ITEM;
     protected final @NotNull NamespacedKey NSK_EXPLOITED_ENDERMEN;
 
-    //Never change these constants
-    public final @NotNull String STR_SUPER_ABILITY_BOOSTED_ITEM = "super_ability_boosted";
-    public final @NotNull String STR_MOB_SPAWNER_MOB = "mcmmo_mob_spawner_mob";
-    public final @NotNull String STR_EGG_MOB = "mcmmo_egg_mob";
-    public final @NotNull String STR_NETHER_PORTAL_MOB = "mcmmo_nethergate_mob";
-    public final @NotNull String STR_COTW_SUMMONED_MOB = "mcmmo_cotw_summoned_mob";
-    public final @NotNull String STR_PLAYER_BRED_MOB = "mcmmo_player_bred_mob";
-    public final @NotNull String STR_PLAYER_TAMED_MOB = "mcmmo_player_tamed_mob";
-    public final @NotNull String STR_VILLAGER_TRADE_ORIGIN_ITEM = "mcmmo_villager_trade_origin_item";
-    public final @NotNull String STR_EXPLOITED_ENDERMEN = "mcmmo_exploited_endermen";
-
-    /*
-     * Don't modify these keys
-     */
-    public final @NotNull String STR_FURNACE_UUID_MOST_SIG = "furnace_uuid_most_sig";
-    public final @NotNull String STR_FURNACE_UUID_LEAST_SIG = "furnace_uuid_least_sig";
-
     protected final @NotNull NamespacedKey NSK_FURNACE_UUID_MOST_SIG;
     protected final @NotNull NamespacedKey NSK_FURNACE_UUID_LEAST_SIG;
 
     public final @NotNull String LEGACY_ABILITY_TOOL_LORE = "mcMMO Ability Tool";
 
-    protected static final byte SIMPLE_FLAG_VALUE = (byte) 0x1;
-
     public AbstractPersistentDataLayer() {
-        NSK_SUPER_ABILITY_BOOSTED_ITEM = getNamespacedKey(STR_SUPER_ABILITY_BOOSTED_ITEM);
-        NSK_MOB_SPAWNER_MOB = getNamespacedKey(STR_MOB_SPAWNER_MOB);
-        NSK_EGG_MOB = getNamespacedKey(STR_EGG_MOB);
-        NSK_NETHER_GATE_MOB = getNamespacedKey(STR_NETHER_PORTAL_MOB);
-        NSK_COTW_SUMMONED_MOB = getNamespacedKey(STR_COTW_SUMMONED_MOB);
-        NSK_PLAYER_BRED_MOB = getNamespacedKey(STR_PLAYER_BRED_MOB);
-        NSK_PLAYER_TAMED_MOB = getNamespacedKey(STR_PLAYER_TAMED_MOB);
-        NSK_VILLAGER_TRADE_ORIGIN_ITEM = getNamespacedKey(STR_VILLAGER_TRADE_ORIGIN_ITEM);
-        NSK_EXPLOITED_ENDERMEN = getNamespacedKey(STR_EXPLOITED_ENDERMEN);
-        NSK_FURNACE_UUID_MOST_SIG = getNamespacedKey(STR_FURNACE_UUID_MOST_SIG);
-        NSK_FURNACE_UUID_LEAST_SIG = getNamespacedKey(STR_FURNACE_UUID_LEAST_SIG);
+        NSK_SUPER_ABILITY_BOOSTED_ITEM = getNamespacedKey(MetadataConstants.METADATA_KEY_SUPER_ABILITY_BOOSTED_ITEM);
+        NSK_MOB_SPAWNER_MOB = getNamespacedKey(MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB);
+        NSK_EGG_MOB = getNamespacedKey(MetadataConstants.METADATA_KEY_EGG_MOB);
+        NSK_NETHER_GATE_MOB = getNamespacedKey(MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB);
+        NSK_COTW_SUMMONED_MOB = getNamespacedKey(MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB);
+        NSK_PLAYER_BRED_MOB = getNamespacedKey(MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB);
+        NSK_PLAYER_TAMED_MOB = getNamespacedKey(MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB);
+        NSK_VILLAGER_TRADE_ORIGIN_ITEM = getNamespacedKey(MetadataConstants.METADATA_KEY_VILLAGER_TRADE_ORIGIN_ITEM);
+        NSK_EXPLOITED_ENDERMEN = getNamespacedKey(MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN);
+        NSK_FURNACE_UUID_MOST_SIG = getNamespacedKey(MetadataConstants.METADATA_KEY_FURNACE_UUID_MOST_SIG);
+        NSK_FURNACE_UUID_LEAST_SIG = getNamespacedKey(MetadataConstants.METADATA_KEY_FURNACE_UUID_LEAST_SIG);
 
         initializeLayer();
     }

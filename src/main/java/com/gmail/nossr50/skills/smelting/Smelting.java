@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.smelting;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

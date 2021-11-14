@@ -150,7 +150,7 @@ public final class AlchemyPotionBrewer {
         removeIngredient(inventory, player);
 
         for (AlchemyPotion input : inputList) {
-            if (input == null) continue;;
+            if (input == null) continue;
 
             AlchemyPotion output = input.getChild(ingredient);
 

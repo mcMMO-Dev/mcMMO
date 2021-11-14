@@ -283,7 +283,7 @@ public final class CombatUtils {
             finalDamage+=archeryManager.daze((Player) target); //the cast is checked by the if condition
         }
 
-        if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {
+        if (!arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW) && archeryManager.canRetrieveArrows()) {
             archeryManager.retrieveArrows(target, arrow);
         }
 
@@ -295,8 +295,8 @@ public final class CombatUtils {
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
         double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
 
-        if(arrow.hasMetadata(mcMMO.bowForceKey))
-            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
+            forceMultiplier = arrow.getMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
 
@@ -453,7 +453,7 @@ public final class CombatUtils {
      */
     public static void fixNames(@NotNull LivingEntity entity)
     {
-        List<MetadataValue> metadataValue = entity.getMetadata(TransientMetadataTools.OLD_NAME_METAKEY);
+        List<MetadataValue> metadataValue = entity.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY);
 
         if(metadataValue.size() <= 0)
             return;
@@ -461,6 +461,8 @@ public final class CombatUtils {
         OldName oldName = (OldName) metadataValue.get(0);
         entity.setCustomName(oldName.asString());
         entity.setCustomNameVisible(false);
+
+        entity.removeMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY, mcMMO.p);
     }
 
     /**
@@ -632,15 +634,15 @@ public final class CombatUtils {
     }
 
     public static void removeIgnoreDamageMetadata(@NotNull LivingEntity target) {
-        target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+        target.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE, mcMMO.p);
     }
 
     public static void applyIgnoreDamageMetadata(@NotNull LivingEntity target) {
-        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE, MetadataConstants.MCMMO_METADATA_VALUE);
     }
 
     public static boolean hasIgnoreDamageMetadata(@NotNull LivingEntity target) {
-        return target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        return target.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE).size() != 0;
     }
 
     public static void dealNoInvulnerabilityTickDamageRupture(@NotNull LivingEntity target, double damage, Entity attacker, int toolTier) {
@@ -1047,7 +1049,7 @@ public final class CombatUtils {
             return;
         }
 
-        if (!player.hasMetadata(mcMMO.playerDataKey)) {
+        if (!player.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA)) {
             return;
         }
 
@@ -1069,16 +1071,16 @@ public final class CombatUtils {
      * @param entity projectile
      */
     public static void cleanupArrowMetadata(@NotNull Projectile entity) {
-        if(entity.hasMetadata(mcMMO.infiniteArrowKey)) {
-            entity.removeMetadata(mcMMO.infiniteArrowKey, mcMMO.p);
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
         }
 
-        if(entity.hasMetadata(mcMMO.bowForceKey)) {
-            entity.removeMetadata(mcMMO.bowForceKey, mcMMO.p);
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
         }
 
-        if(entity.hasMetadata(mcMMO.arrowDistanceKey)) {
-            entity.removeMetadata(mcMMO.arrowDistanceKey, mcMMO.p);
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
         }
     }
 

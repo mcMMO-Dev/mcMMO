@@ -11,6 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.RuptureTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -66,8 +67,8 @@ public class SwordsManager extends SkillManager {
         if(!canUseRupture())
             return;
 
-        if(target.hasMetadata(mcMMO.RUPTURE_META_KEY)) {
-            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(mcMMO.RUPTURE_META_KEY).get(0);
+        if(target.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
+            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(MetadataConstants.METADATA_KEY_RUPTURE).get(0);
 
             if(mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Rupture task ongoing for target " + target.toString());
@@ -99,7 +100,7 @@ public class SwordsManager extends SkillManager {
             RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
 
             ruptureTask.runTaskTimer(mcMMO.p, 0, 1);
-            target.setMetadata(mcMMO.RUPTURE_META_KEY, ruptureTaskMeta);
+            target.setMetadata(MetadataConstants.METADATA_KEY_RUPTURE, ruptureTaskMeta);
 
 //            if (mmoPlayer.useChatNotifications()) {
 //                NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");

@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
 import org.bukkit.entity.LivingEntity;
@@ -63,7 +64,7 @@ public class RuptureTask extends BukkitRunnable {
                 endRupture();
             }
         } else {
-            targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
+            targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
             this.cancel(); //Task no longer needed
         }
     }

@@ -1,3 +1,10 @@
+Version 2.1.205
+    Fixed yet another exception preventing Alchemy from working (thanks NemuruYama)
+    Added some code to cleanup potential memory leaks
+
+    NOTES:
+    Sorry for the delay in this patch, I have had a terrible cold all weekend, feeling better now
+
 Version 2.1.204
     Fixed IndexOutOfBounds exception (thanks gecko10000) (related to Alchemy)
     Added double smelt to copper ingot and netherite scrap (thanks Lyther)
