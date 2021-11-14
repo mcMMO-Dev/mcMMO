@@ -1,10 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.checkerframework.common.returnsreceiver.qual.This;
 import org.jetbrains.annotations.NotNull;
 
 public class TransientMetadataTools {

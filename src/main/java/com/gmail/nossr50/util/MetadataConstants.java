@@ -1,10 +1,10 @@
 package com.gmail.nossr50.util;
 
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Stores our constants related to metadata
@@ -48,22 +48,24 @@ public class MetadataConstants {
 
     public static final byte SIMPLE_FLAG_VALUE = (byte) 0x1;
 
-    public static final @NotNull Set<String> MOB_METADATA_KEYS;
+    public static final @NotNull ImmutableSet<String> MOB_METADATA_KEYS;
 
     public static FixedMetadataValue MCMMO_METADATA_VALUE;
 
     static {
-        MOB_METADATA_KEYS = new HashSet<>();
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_EGG_MOB);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_RUPTURE);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE);
-        MOB_METADATA_KEYS.add(MetadataConstants.METADATA_KEY_OLD_NAME_KEY);
+        HashSet<String> temp = new HashSet<>();
+        temp.add(MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB);
+        temp.add(MetadataConstants.METADATA_KEY_EGG_MOB);
+        temp.add(MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB);
+        temp.add(MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB);
+        temp.add(MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB);
+        temp.add(MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB);
+        temp.add(MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN);
+        temp.add(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY);
+        temp.add(MetadataConstants.METADATA_KEY_RUPTURE);
+        temp.add(MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE);
+        temp.add(MetadataConstants.METADATA_KEY_OLD_NAME_KEY);
+
+        MOB_METADATA_KEYS = ImmutableSet.copyOf(temp);
     }
 }
