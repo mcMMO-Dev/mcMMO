@@ -421,6 +421,7 @@ public final class ItemUtils {
             case CHORUS_FLOWER:
             case POTATO:
             case BEETROOT:
+            case BEETROOTS:
             case BEETROOT_SEEDS:
             case NETHER_WART:
             case BROWN_MUSHROOM:
