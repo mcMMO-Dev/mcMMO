@@ -379,7 +379,8 @@ public final class EventUtils {
     }
 
     public static boolean handleXpGainEvent(Player player, PrimarySkillType skill, float xpGained, XPGainReason xpGainReason) {
-        if(UserManager.getPlayer(player) == null)
+        McMMOPlayer xpPlayer = UserManager.getPlayer(player);
+        if(xpPlayer == null)
             return true;
         
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
@@ -388,8 +389,8 @@ public final class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            UserManager.getPlayer(player).addXp(skill, event.getRawXpGained());
-            UserManager.getPlayer(player).getProfile().registerXpGain(skill, event.getRawXpGained());
+            xpPlayer.addXp(skill, event.getRawXpGained());
+            xpPlayer.getProfile().registerXpGain(skill, event.getRawXpGained());
         }
 
         return !isCancelled;
