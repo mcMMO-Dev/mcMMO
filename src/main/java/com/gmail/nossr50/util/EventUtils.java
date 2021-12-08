@@ -380,7 +380,7 @@ public final class EventUtils {
 
     public static boolean handleXpGainEvent(Player player, PrimarySkillType skill, float xpGained, XPGainReason xpGainReason) {
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-        if(xpPlayer == null)
+        if(mmoPlayer == null)
             return true;
         
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
