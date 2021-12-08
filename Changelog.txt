@@ -1,3 +1,9 @@
+Version 2.1.206
+
+
+    NOTES:
+    mcMMO will target the newest version of MC moving forward, any backwards compatibility with prior versions of Minecraft should be considered a side effect rather than intended.
+
 Version 2.1.205
     Fixed yet another exception preventing Alchemy from working (thanks NemuruYama)
     Added some code to cleanup potential memory leaks
