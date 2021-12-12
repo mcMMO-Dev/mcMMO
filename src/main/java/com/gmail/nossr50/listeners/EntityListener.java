@@ -11,6 +11,7 @@ import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.runnables.TravelingBlockMetaCleanup;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
@@ -243,9 +244,12 @@ public class EntityListener implements Listener {
                 mcMMO.getPlaceStore().setFalse(block);
 
                 entity.setMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, MetadataConstants.MCMMO_METADATA_VALUE);
+                TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity, pluginRef);
+                metaCleanupTask.runTaskTimer(pluginRef, 20, 20*60); //6000 ticks is 5 minutes
             }
             else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
+                entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE || block.getType().getKey().getKey().equalsIgnoreCase("deepslate_redstone_ore"))) {
             //Redstone ore fire this event and should be ignored

@@ -40,6 +40,19 @@ public final class BlockUtils {
     }
 
     /**
+     * Cleans up some block metadata when a block breaks and the metadata is no longer needed
+     * This also sets the blocks coords to false in our chunk store
+     * @param block target block
+     */
+    public static void cleanupBlockMetadata(Block block) {
+        if(block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
+            block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
+        }
+
+        mcMMO.getPlaceStore().setFalse(block);
+    }
+
+    /**
      * Marks a block to drop extra copies of items
      * @param blockState target blockstate
      * @param amount amount of extra items to drop

@@ -193,7 +193,7 @@ public class GeneralConfig extends AutoUpdateConfigLoader {
         }
     }
 
-    public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
+    public int getMobHealthbarTime() { return Math.max(1, config.getInt("Mob_Healthbar.Display_Time", 3)); }
 
     /* Scoreboards */
     public boolean getScoreboardsEnabled() { return config.getBoolean("Scoreboard.UseScoreboards", true); }

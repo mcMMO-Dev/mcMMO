@@ -13,9 +13,9 @@ public class TransientMetadataTools {
 
     public void cleanLivingEntityMetadata(@NotNull LivingEntity entity) {
         //Since it's not written anywhere, apparently the GC won't touch objects with metadata still present on them
-        if (entity.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY)) {
-            entity.setCustomName(entity.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY).get(0).asString());
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, pluginRef);
+        if (entity.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME)) {
+            entity.setCustomName(entity.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME).get(0).asString());
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, pluginRef);
         }
 
 //        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY)) {

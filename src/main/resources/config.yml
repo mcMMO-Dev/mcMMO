@@ -149,7 +149,6 @@ Scoreboard:
 Mob_Healthbar:
     # Enabled: Whether or not the feature is enabled at all
     # Display_Type: Per player Default display for mob health bars - HEARTS, BAR, or DISABLED
-    # Display_Time: Amount of time (in seconds) to display. To display permanently, set to -1
     Enabled: true
     Display_Type: HEARTS
     Display_Time: 3

@@ -209,18 +209,21 @@ public class HerbalismManager extends SkillManager {
     public void processHerbalismBlockBreakEvent(BlockBreakEvent blockBreakEvent) {
         Player player = getPlayer();
 
+        Block block = blockBreakEvent.getBlock();
+
         if (mcMMO.p.getGeneralConfig().getHerbalismPreventAFK() && player.isInsideVehicle()) {
+            if(block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
+                block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
+            }
             return;
         }
 
         //Check if the plant was recently replanted
-        if(blockBreakEvent.getBlock().getBlockData() instanceof Ageable) {
-            Ageable ageableCrop = (Ageable) blockBreakEvent.getBlock().getBlockData();
-
-            if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() >= 1) {
-                if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.METADATA_KEY_REPLANT).get(0).asBoolean()) {
+        if(block.getBlockData() instanceof Ageable ageableCrop) {
+            if(block.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() >= 1) {
+                if(block.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).get(0).asBoolean()) {
                     if(isAgeableMature(ageableCrop)) {
-                        blockBreakEvent.getBlock().removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
+                        block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
                     } else {
                         //Crop is recently replanted to back out of destroying it
                         blockBreakEvent.setCancelled(true);
@@ -314,7 +317,7 @@ public class HerbalismManager extends SkillManager {
             DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(mmoPlayer, delayedChorusBlocks);
 
             //Large delay because the tree takes a while to break
-            delayedHerbalismXPCheckTask.runTaskLater(mcMMO.p, 20); //Calculate Chorus XP + Bonus Drops 1 tick later
+            delayedHerbalismXPCheckTask.runTaskLater(mcMMO.p, 0); //Calculate Chorus XP + Bonus Drops 1 tick later
         }
     }
 

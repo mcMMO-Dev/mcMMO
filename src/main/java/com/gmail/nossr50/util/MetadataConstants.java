@@ -42,7 +42,7 @@ public class MetadataConstants {
     public static final @NotNull String METADATA_KEY_PLAYER_TAMED_MOB = "mcmmo_player_tamed_mob";
     public static final @NotNull String METADATA_KEY_VILLAGER_TRADE_ORIGIN_ITEM = "mcmmo_villager_trade_origin_item";
     public static final @NotNull String METADATA_KEY_EXPLOITED_ENDERMEN = "mcmmo_exploited_endermen";
-    public static final @NotNull String METADATA_KEY_CUSTOM_NAME_KEY = "mcmmo_custom_name";
+    public static final @NotNull String METADATA_KEY_CUSTOM_NAME = "mcmmo_custom_name";
     public static final @NotNull String METADATA_KEY_OLD_NAME_KEY = "mcmmo_old_name";
     public static final @NotNull String METADATA_KEY_RUPTURE = "mcmmo_rupture";
 
@@ -61,10 +61,11 @@ public class MetadataConstants {
         temp.add(MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB);
         temp.add(MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB);
         temp.add(MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN);
-        temp.add(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY);
+        temp.add(MetadataConstants.METADATA_KEY_CUSTOM_NAME);
         temp.add(MetadataConstants.METADATA_KEY_RUPTURE);
         temp.add(MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE);
         temp.add(MetadataConstants.METADATA_KEY_OLD_NAME_KEY);
+        temp.add(MetadataConstants.METADATA_KEY_DODGE_TRACKER);
 
         MOB_METADATA_KEYS = ImmutableSet.copyOf(temp);
     }

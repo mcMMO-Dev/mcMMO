@@ -119,6 +119,7 @@ public class RuptureTask extends BukkitRunnable {
 //
 //        targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
 
+        targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         this.cancel(); //Task no longer needed
     }
 

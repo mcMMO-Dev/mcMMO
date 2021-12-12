@@ -14,9 +14,9 @@ public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY)) {
-            target.setCustomName(target.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY).get(0).asString());
-            target.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, mcMMO.p);
+        if (target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME)) {
+            target.setCustomName(target.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME).get(0).asString());
+            target.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, mcMMO.p);
         }
 
         if (target.hasMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY)) {

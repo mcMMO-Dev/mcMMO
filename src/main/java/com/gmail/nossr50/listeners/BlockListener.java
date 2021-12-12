@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.events.fake.FakeEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
@@ -46,9 +47,16 @@ public class BlockListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onBlockDropItemEvent(BlockDropItemEvent event)
     {
+        //Make sure we clean up metadata on these blocks
+        if(event.isCancelled()) {
+            if(event.getBlock().hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
+                event.getBlock().removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, plugin);
+            return;
+        }
+
         //Track how many "things" are being dropped
         HashSet<Material> uniqueMaterials = new HashSet<>();
         boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
@@ -318,21 +326,27 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-            return;
-
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
-                return;
-        }
+        Block block = event.getBlock();
 
         if (event instanceof FakeBlockBreakEvent) {
             return;
         }
 
-        BlockState blockState = event.getBlock().getState();
+        if(WorldBlacklist.isWorldBlacklisted(block.getWorld())) {
+            BlockUtils.cleanupBlockMetadata(block);
+            return;
+        }
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer())) {
+                BlockUtils.cleanupBlockMetadata(block);
+                return;
+            }
+        }
+
+        BlockState blockState = block.getState();
         Location location = blockState.getLocation();
 
 //        if (!BlockUtils.shouldBeWatched(blockState)) {
@@ -347,6 +361,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
 
         if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+            BlockUtils.cleanupBlockMetadata(block);
             return;
         }
 
@@ -355,7 +370,8 @@ public class BlockListener implements Listener {
         //Check if profile is loaded
         if(mcMMOPlayer == null) {
             /* Remove metadata from placed watched blocks */
-            mcMMO.getPlaceStore().setFalse(blockState);
+
+            BlockUtils.cleanupBlockMetadata(block);
             return;
         }
 
@@ -417,7 +433,7 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        mcMMO.getPlaceStore().setFalse(blockState);
+        BlockUtils.cleanupBlockMetadata(block);
     }
 
     /**
@@ -427,6 +443,9 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreakHigher(BlockBreakEvent event) {
+        if(event instanceof FakeEvent)
+            return;
+
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
@@ -436,10 +455,6 @@ public class BlockListener implements Listener {
         {
             if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
                 return;
-        }
-
-        if (event instanceof FakeBlockBreakEvent) {
-            return;
         }
 
         Player player = event.getPlayer();

@@ -1,4 +1,10 @@
 Version 2.1.206
+    Fixed a memory leak involving Rupture
+    Fixed a memory leak involving Dodge
+    Fixed a memory leak involving Endermen and block pickups
+    Fixed a memory leak from plugin conflicts when double drops get activated
+    Fixed a memory leak that required a specific config.yml setup with mob health bars
+    You can no longer set mob health bars to -1 in config.yml to set it to display permanently (this was problematic behavior)
     Fixed a bug preventing Action Bar messages from showing
     Fixed a bug where Alchemy XP wasn't being granted
     Lowered the default volume of level up from .75 to .3 in sounds.yml (delete sounds.yml to get this change automagically)

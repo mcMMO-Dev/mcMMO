@@ -73,11 +73,11 @@ public final class MobHealthbarUtils {
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
-                target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, new FixedMetadataValue(mcMMO.p, oldName));
+                target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, new FixedMetadataValue(mcMMO.p, oldName));
                 target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
             }
-            else if (!target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY)) {
-                target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME_KEY, new FixedMetadataValue(mcMMO.p, ""));
+            else if (!target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME)) {
+                target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, new FixedMetadataValue(mcMMO.p, ""));
                 target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, false));
             }
 
