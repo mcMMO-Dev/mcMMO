@@ -1,5 +1,6 @@
 Version 2.1.206
-    Fixed a memory leak involving Rupture
+    Fixed a memory leak involving Herbalism under specific circumstances
+    Fixed a memory leak involving Rupture under specific circumstances
     Fixed a memory leak involving Dodge
     Fixed a memory leak involving Endermen and block pickups
     Fixed a memory leak from plugin conflicts when double drops get activated
