@@ -1,5 +1,6 @@
 Version 2.1.206
-
+    Updated adventure platform dependency
+    Updated to use Java 17
 
     NOTES:
     mcMMO will target the newest version of MC moving forward, any backwards compatibility with prior versions of Minecraft should be considered a side effect rather than intended.
