@@ -1,4 +1,7 @@
 Version 2.1.206
+    Fixed a bug preventing Action Bar messages from showing
+    Fixed a bug where Alchemy XP wasn't being granted
+    Lowered the default volume of level up from .75 to .3 in sounds.yml (delete sounds.yml to get this change automagically)
     Updated adventure platform dependency
     Updated to use Java 17
 
