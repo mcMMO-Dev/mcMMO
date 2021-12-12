@@ -190,7 +190,7 @@ class ChunkStoreTest {
         for (int x = -96; x < 0; x++) {
             int cx = x >> 4;
             int ix = Math.abs(x) % 16;
-            System.out.print(cx + ":" + ix + "  ");
+            //System.out.print(cx + ":" + ix + "  ");
         }
     }
 
