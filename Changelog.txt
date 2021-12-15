@@ -1,3 +1,6 @@
+Version 2.1.207
+    Temporarily rolling required Java version back to 16 until 1.18 is stable and everyone can migrate to it safely
+
 Version 2.1.206
     Fixed a memory leak involving Herbalism under specific circumstances
     Fixed a memory leak involving Rupture under specific circumstances
