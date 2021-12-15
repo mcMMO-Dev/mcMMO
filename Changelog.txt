@@ -1,4 +1,5 @@
 Version 2.1.207
+    Added unicode support to locale files (no more UTF-16 codes)
     Temporarily rolling required Java version back to 16 until 1.18 is stable and everyone can migrate to it safely
 
 Version 2.1.206
