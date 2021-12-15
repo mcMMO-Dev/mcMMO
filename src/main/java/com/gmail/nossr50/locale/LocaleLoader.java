@@ -246,7 +246,6 @@ public final class LocaleLoader {
                         "# If you wish to replace every line in some way, feel free to copy the entire contents of this file, just be advised that you will need to be on top of locale updates in mcMMO and follow our changelog closely.\n" +
                         "\n" +
                         "\n" +
-                        "# WARNING: Locales only support ASCII and UTF16 characters at the moment, so you'll need to run special characters through a UTF16 converter (google it) to get them to work. This will be fixed in the future!\n" +
                         "# FIND KEYS HERE: On our github repo (en_US is our master file and has ALL the keys) -> https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale\n" +
                         "# WARNING: Some keys in our master file are unused, make gratuitous use of Ctrl+F\n" +
                         "# HOW TO APPLY: You can either restart the server for these changes to take effect or run /mcreloadlocale.\n" +
