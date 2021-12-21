@@ -28,8 +28,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class RepairManager extends SkillManager {
     private boolean placedAnvil;
@@ -128,6 +133,34 @@ public class RepairManager extends SkillManager {
 
         // toRemove should be refreshed before the event call.
         toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
+
+        // Check if we allow enchanted materials to be used to repair objects.
+        // (Servers may provide enchanted items that don't follow their intended use)
+        if (!mcMMO.p.getAdvancedConfig().getAllowEnchantedRepairMaterials()) {
+
+            // See if our proposed item is even enchanted in the first place.
+            if (toRemove.getEnchantments().size() > 0) {
+
+                // Lots of array sorting to gather a possible list of items not including the enchanted item.
+                List<ItemStack> possibleMaterials = Arrays.stream(inventory.getContents())
+                        .filter(Objects::nonNull)
+                        .filter(p -> p.getType() == repairMaterial)
+                        .filter(p -> p.getEnchantments().size() == 0).toList();
+
+                // Fail out with "you need material" if we don't find a suitable alternative.
+                if (possibleMaterials.size() == 0) {
+                    String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
+
+                    String materialsNeeded = "";
+
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
+                    return;
+                }
+
+                // If there is at least one item in the array, use the first one.
+                toRemove = possibleMaterials.get(0).clone();
+            }
+        }
         
         // Call event
         if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
