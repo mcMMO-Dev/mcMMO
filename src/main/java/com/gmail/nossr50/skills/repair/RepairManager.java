@@ -28,11 +28,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -141,14 +138,15 @@ public class RepairManager extends SkillManager {
             // See if our proposed item is even enchanted in the first place.
             if (toRemove.getEnchantments().size() > 0) {
 
-                // Lots of array sorting to gather a possible list of items not including the enchanted item.
-                List<ItemStack> possibleMaterials = Arrays.stream(inventory.getContents())
+                // Lots of array sorting to find a potential non-enchanted candidate item.
+                Optional<ItemStack> possibleMaterial = Arrays.stream(inventory.getContents())
                         .filter(Objects::nonNull)
                         .filter(p -> p.getType() == repairMaterial)
-                        .filter(p -> p.getEnchantments().size() == 0).toList();
+                        .filter(p -> p.getEnchantments().isEmpty())
+                        .findFirst();
 
                 // Fail out with "you need material" if we don't find a suitable alternative.
-                if (possibleMaterials.size() == 0) {
+                if (possibleMaterial.isEmpty()) {
                     String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
 
                     String materialsNeeded = "";
@@ -157,8 +155,8 @@ public class RepairManager extends SkillManager {
                     return;
                 }
 
-                // If there is at least one item in the array, use the first one.
-                toRemove = possibleMaterials.get(0).clone();
+                // Update our toRemove item to our suggested possible material.
+                toRemove = possibleMaterial.get().clone();
             }
         }
         
