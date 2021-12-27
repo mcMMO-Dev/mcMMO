@@ -391,6 +391,7 @@ Skills:
         Anvil_Placed_Sounds: true
         Anvil_Use_Sounds: true
         Anvil_Material: IRON_BLOCK
+        Use_Enchanted_Materials: false
         # Ask for a confirmation when a player tries to repair an enchanted item
         Confirm_Required: true
     Salvage:
