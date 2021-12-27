@@ -21,7 +21,6 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -131,12 +130,10 @@ public class BlockListener implements Listener {
 
         BlockFace direction = event.getDirection();
         Block movedBlock;
-        WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
         for (Block block : event.getBlocks()) {
             movedBlock = block.getRelative(direction);
 
-            if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock)) {
+            if(BlockUtils.isWithinWorldBounds(movedBlock)) {
                 mcMMO.getPlaceStore().setTrue(movedBlock);
             }
         }
@@ -161,15 +158,13 @@ public class BlockListener implements Listener {
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
 
-        WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
         //Spigot makes bad things happen in its API
-        if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, movedBlock)) {
+        if(BlockUtils.isWithinWorldBounds(movedBlock)) {
             mcMMO.getPlaceStore().setTrue(movedBlock);
         }
 
         for (Block block : event.getBlocks()) {
-            if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
+            if(BlockUtils.isWithinWorldBounds(block)) {
                 mcMMO.getPlaceStore().setTrue(block.getRelative(direction));
             }
         }
@@ -192,10 +187,9 @@ public class BlockListener implements Listener {
         BlockState blockState = event.getNewState();
 
         if(ExperienceConfig.getInstance().isSnowExploitPrevented() && BlockUtils.shouldBeWatched(blockState)) {
-            WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
             Block block = blockState.getBlock();
 
-            if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
+            if(BlockUtils.isWithinWorldBounds(block)) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
         }
@@ -215,10 +209,9 @@ public class BlockListener implements Listener {
 
         if(ExperienceConfig.getInstance().preventStoneLavaFarming()) {
             BlockState newState = event.getNewState();
-            WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
 
             if(newState.getType() != Material.OBSIDIAN && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, newState.getBlockData())) {
-                if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, newState.getBlock())) {
+                if(BlockUtils.isWithinWorldBounds(newState.getBlock())) {
                     mcMMO.getPlaceStore().setTrue(newState);
                 }
             }
@@ -243,9 +236,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
-        if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
+        if(BlockUtils.isWithinWorldBounds(block)) {
             //NOTE: BlockMultiPlace has its own logic so don't handle anything that would overlap
             if (!(event instanceof BlockMultiPlaceEvent)) {
                 mcMMO.getPlaceStore().setTrue(blockState);
@@ -283,10 +274,8 @@ public class BlockListener implements Listener {
             BlockState blockState = replacedBlockState.getBlock().getState();
             Block block = blockState.getBlock();
 
-            WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-            if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
+            if(BlockUtils.isWithinWorldBounds(block)) {
                 //Updated: 10/5/2021
                 //Note: For some reason Azalea trees trigger this event but no other tree does (as of 10/5/2021) but if this changes in the future we may need to update this
                 if(BlockUtils.isPartOfTree(event.getBlockPlaced())) {
@@ -311,9 +300,7 @@ public class BlockListener implements Listener {
             return;
 
         // Minecraft is dumb, the events still throw when a plant "grows" higher than the max block height.  Even though no new block is created
-        WorldCompatibilityLayer worldCompatibilityLayer = mcMMO.getCompatibilityManager().getWorldCompatibilityLayer();
-
-        if(BlockUtils.isWithinWorldBounds(worldCompatibilityLayer, block)) {
+        if(BlockUtils.isWithinWorldBounds(block)) {
             mcMMO.getPlaceStore().setFalse(block);
         }
     }

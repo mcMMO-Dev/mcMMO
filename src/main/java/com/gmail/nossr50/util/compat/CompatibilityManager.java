@@ -10,12 +10,9 @@ import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataL
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_14;
 import com.gmail.nossr50.util.compat.layers.skills.AbstractMasterAnglerCompatibility;
 import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
-import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
-import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer_1_16_4;
 import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.text.StringUtils;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +37,6 @@ public class CompatibilityManager {
     private AbstractPersistentDataLayer persistentDataLayer;
     private AbstractBungeeSerializerCompatibilityLayer bungeeSerializerCompatibilityLayer;
     private AbstractMasterAnglerCompatibility masterAnglerCompatibility;
-    private WorldCompatibilityLayer worldCompatibilityLayer;
 
     public CompatibilityManager(@NotNull MinecraftGameVersion minecraftGameVersion) {
         mcMMO.p.getLogger().info("Loading compatibility layers...");
@@ -71,27 +67,8 @@ public class CompatibilityManager {
         initPersistentDataLayer();
         initBungeeSerializerLayer();
         initMasterAnglerLayer();
-        initWorldCompatibilityLayer();
 
         isFullyCompatibleServerSoftware = true;
-    }
-
-    private void initWorldCompatibilityLayer() {
-        if(minecraftGameVersion.isAtLeast(1, 17, 0)) {
-            worldCompatibilityLayer = new WorldCompatibilityLayer_1_16_4();
-        } else {
-            worldCompatibilityLayer = new WorldCompatibilityLayer() {
-                @Override
-                public int getMinWorldHeight(@NotNull World world) {
-                    return WorldCompatibilityLayer.super.getMinWorldHeight(world);
-                }
-
-                @Override
-                public int getMaxWorldHeight(@NotNull World world) {
-                    return WorldCompatibilityLayer.super.getMaxWorldHeight(world);
-                }
-            };
-        }
     }
 
     private void initMasterAnglerLayer() {
@@ -200,10 +177,6 @@ public class CompatibilityManager {
 
     public @Nullable AbstractMasterAnglerCompatibility getMasterAnglerCompatibilityLayer() {
         return masterAnglerCompatibility;
-    }
-
-    public @NotNull WorldCompatibilityLayer getWorldCompatibilityLayer() {
-        return worldCompatibilityLayer;
     }
 
     public @Nullable MinecraftGameVersion getMinecraftGameVersion() {

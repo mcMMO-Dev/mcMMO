@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
-import com.gmail.nossr50.util.compat.layers.world.WorldCompatibilityLayer;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
@@ -302,11 +301,17 @@ public final class BlockUtils {
         return hasWoodcuttingXP(block.getState()) || isNonWoodPartOfTree(block.getType());
     }
 
-    public static boolean isWithinWorldBounds(@NotNull WorldCompatibilityLayer worldCompatibilityLayer, @NotNull Block block) {
+    /**
+     * Checks to see if a Block is within the world bounds
+     * Prevent processing blocks from other plugins (or perhaps odd spigot anomalies) from sending blocks that can't exist within the world
+     * @param block
+     * @return
+     */
+    public static boolean isWithinWorldBounds(@NotNull Block block) {
         World world = block.getWorld();
 
         //World min height = inclusive | World max height = exclusive
-        return block.getY() >= worldCompatibilityLayer.getMinWorldHeight(world) && block.getY() < worldCompatibilityLayer.getMaxWorldHeight(world);
+        return block.getY() >= world.getMinHeight() && block.getY() < world.getMaxHeight();
     }
 
 }
