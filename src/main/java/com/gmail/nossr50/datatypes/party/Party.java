@@ -252,10 +252,10 @@ public class Party {
                     SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
                 }
             }
-            return;
+        } else {
+            PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
         }
 
-        PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
     }
 
     public boolean hasReachedLevelCap() {

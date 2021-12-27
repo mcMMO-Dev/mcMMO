@@ -1,4 +1,6 @@
 Version 2.1.207
+    Fixed an IndexOutOfBounds exception with our BlockTracker
+    Fixed a bug where leveling up a party at level cap would spam the chat with messages
     Temporarily rolling required Java version back to 16
     Added unicode (UTF-8) support to locale files (no more UTF-16 codes needed)
     Added locale key 'Scoreboard.Disabled' to en_US

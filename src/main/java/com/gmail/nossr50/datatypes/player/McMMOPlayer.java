@@ -642,7 +642,7 @@ public class McMMOPlayer implements Identified {
 
         applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
 
-        if (party == null) {
+        if (party == null || party.hasReachedLevelCap()) {
             return;
         }
 
