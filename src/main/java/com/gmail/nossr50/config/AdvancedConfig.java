@@ -680,7 +680,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100); }
-    public boolean getAllowEnchantedRepairMaterials() { return config.getBoolean("Skills.Repair.Items.AllowEnchantedRepairMaterials", false); }
+    public boolean getAllowEnchantedRepairMaterials() { return config.getBoolean("Skills.Repair.Use_Enchanted_Materials", false); }
 
     public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true); }
     public double getArcaneForgingKeepEnchantsChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank); }
