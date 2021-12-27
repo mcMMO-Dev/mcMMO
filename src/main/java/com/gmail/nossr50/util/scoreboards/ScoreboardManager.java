@@ -574,6 +574,10 @@ public class ScoreboardManager {
         PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);
     }
 
+    public static boolean isPlayerBoardSetup(@NotNull String playerName) {
+        return PLAYER_SCOREBOARDS.get(playerName) != null;
+    }
+
     public static @Nullable ScoreboardWrapper makeNewScoreboard(Player player) {
         if(getScoreboardManager() == null)
             return null;
