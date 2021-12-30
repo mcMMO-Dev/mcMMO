@@ -16,7 +16,7 @@ Excavation:
         Drop_Chance: 10.0
         Level_Requirement:
             Standard_Mode: 10
-            Retro_Mode: 1000
+            Retro_Mode: 100
         Drops_From: [Gravel]
     BONE:
         Amount: 1
