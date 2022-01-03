@@ -56,8 +56,9 @@ public final class PerksUtils {
             if(UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
                 player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY + "XP Perk Multiplier IS CUSTOM! ");
             }
-
-             modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
+            String RankName = ExperienceConfig.getInstance().getRankName(player, skill);
+            
+            modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost(RankName);
         }
         else if (Permissions.quadrupleXp(player, skill)) {
             modifier = 4;
