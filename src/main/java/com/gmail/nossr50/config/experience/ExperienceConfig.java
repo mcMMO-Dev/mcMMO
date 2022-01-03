@@ -12,14 +12,17 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class ExperienceConfig extends AutoUpdateConfigLoader {
     private static ExperienceConfig instance;
-
+    
     private ExperienceConfig() {
         super("experience.yml");
         validate();
@@ -144,7 +147,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /*
      * FORMULA SETTINGS
      */
-
     /* EXPLOIT TOGGLES */
     public boolean isSnowExploitPrevented() { return config.getBoolean("ExploitFix.SnowGolemExcavation", true); }
     public boolean isEndermanEndermiteFarmingPrevented() { return config.getBoolean("ExploitFix.EndermanEndermiteFarms", true); }
@@ -188,7 +190,15 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getFormulaSkillModifier(PrimarySkillType skill) { return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
 
     /* Custom XP perk */
-    public double getCustomXpPerkBoost() { return config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25); }
+    public double getCustomXpPerkBoost() { 
+    	
+    	for(String RankName : ExperienceConfig.getInstance().getListofCustomPerks()) {
+    		return config.getDouble("Experience_Formula.Custom_XP_Perk."+RankName, 1.25);    		
+    	}
+		return 1;
+    }
+    
+    public Set<String> getListofCustomPerks() {return config.getConfigurationSection("Experience_Formula.Custom_XP_Perk").getKeys(false);}
 
     /* Diminished Returns */
     public float getDiminishedReturnsCap() { return (float) config.getDouble("Dimished_Returns.Guaranteed_Minimum_Percentage", 0.05D); }

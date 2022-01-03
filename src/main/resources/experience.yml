@@ -171,10 +171,11 @@ Experience_Formula:
         Fishing: 1.0
         Alchemy: 1.0
 
-    # XP earned by players with the permission mcmmo.perks.xp.customboost.<skillname> will get multiplied
+    # XP earned by players with the permission mcmmo.perks.xp.customboost.rank1.<skillname> will get multiplied
     # with 1.25 by default, resulting in a 25% XP boost
     Custom_XP_Perk:
-        Boost: 1.25
+        Rank1: 1.25
+        Rank2: 1.3
 
 #
 # Settings for Diminished Returns

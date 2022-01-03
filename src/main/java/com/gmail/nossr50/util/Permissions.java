@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -140,8 +141,12 @@ public final class Permissions {
     }
 
     public static boolean customXpBoost(Permissible permissible, PrimarySkillType skill) {
-        return permissible.hasPermission("mcmmo.perks.xp.customboost.all")
-            || permissible.hasPermission("mcmmo.perks.xp.customboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+    	
+    	for(String RankName : ExperienceConfig.getInstance().getListofCustomPerks()) {
+    		return permissible.hasPermission("mcmmo.perks.xp.customboost." + RankName + ".all")
+    	            || permissible.hasPermission("mcmmo.perks.xp.customboost."+ RankName + "."+ skill.toString().toLowerCase(Locale.ENGLISH));    		
+    	}
+		return false;
     }
 
 
