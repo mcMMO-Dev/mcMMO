@@ -141,7 +141,6 @@ public final class Permissions {
     }
 
     public static boolean customXpBoost(Permissible permissible, PrimarySkillType skill) {
-    	System.out.println(ExperienceConfig.getInstance().getListofCustomPerks());
     	for(String RankName : ExperienceConfig.getInstance().getListofCustomPerks()) {
     		if(permissible.hasPermission("mcmmo.perks.xp.customboost." + RankName + ".all")
     	            || permissible.hasPermission("mcmmo.perks.xp.customboost."+ RankName + "."+ skill.toString().toLowerCase(Locale.ENGLISH))) {

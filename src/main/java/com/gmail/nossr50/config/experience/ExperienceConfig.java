@@ -199,11 +199,9 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     	for(String RankName : getListofCustomPerks()) {
     		if(permissible.hasPermission("mcmmo.perks.xp.customboost." + RankName + ".all")
     	            || permissible.hasPermission("mcmmo.perks.xp.customboost."+ RankName + "."+ skill.toString().toLowerCase(Locale.ENGLISH))) {
-    			System.out.println(RankName);
     			return RankName;
     		}
     	}
-    	System.out.println(false);
 		return null;
     	 
     }
