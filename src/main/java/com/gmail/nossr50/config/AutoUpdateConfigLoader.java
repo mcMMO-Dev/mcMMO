@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConfigurationOptions;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -33,7 +34,9 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
     protected void saveConfig() {
         try {
             mcMMO.p.getLogger().info("Saving changes to config file - "+fileName);
-            config.save(configFile);
+            YamlConfiguration yamlConfiguration = (YamlConfiguration) config;
+            yamlConfiguration.options().indent(4);
+            yamlConfiguration.save(configFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,23 +56,24 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
         boolean needSave = false;
 
+        // keys present in current config file that are not in the template
         Set<String> oldKeys = new HashSet<>(configKeys);
         oldKeys.removeAll(internalConfigKeys);
 
+        if (!oldKeys.isEmpty()) {
+            mcMMO.p.debug("old key(s) in \"" +fileName+"\"");
+            for (String key : oldKeys) {
+                mcMMO.p.debug("  old-key:" + key);
+            }
+        }
+
+
+        // keys present in template that are not in current file
         Set<String> newKeys = new HashSet<>(internalConfigKeys);
         newKeys.removeAll(configKeys);
 
-        // Don't need a re-save if we have old keys sticking around?
-        // Would be less saving, but less... correct?
-        if (!newKeys.isEmpty() /*|| !oldKeys.isEmpty()*/) {
+        if (!newKeys.isEmpty()) {
             needSave = true;
-        }
-        if (!oldKeys.isEmpty()) {
-            mcMMO.p.getLogger().info("[yaml-fixer] old key(s) in " +fileName);
-        }
-        for (String key : oldKeys) {
-            mcMMO.p.getLogger().info("[yaml-fixer] old-key:" + key);
-            //config.set(key, null);
         }
 
         for (String key : newKeys) {
@@ -78,70 +82,8 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         }
 
         if (needSave) {
-            // Get Bukkit's version of an acceptable config with new keys, and no old keys
-            String output = config.saveToString();
-
-            // Convert to the superior 4 space indentation
-            output = output.replace("  ", "    ");
-
-            // Rip out Bukkit's attempt to save comments at the top of the file
-            while (output.replaceAll("[//s]", "").startsWith("#")) {
-                output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
-            }
-
-            // Read the internal config to get comments, then put them in the new one
-            try {
-                // Read internal
-                BufferedReader reader = new BufferedReader(new InputStreamReader(mcMMO.p.getResource(fileName)));
-                LinkedHashMap<String, String> comments = new LinkedHashMap<>();
-                StringBuilder temp = new StringBuilder();
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("#")) {
-                        temp.append(line).append("\n");
-                    }
-                    else if (line.contains(":")) {
-                        line = line.substring(0, line.indexOf(":") + 1);
-                        if (temp.length() > 0) {
-                            if(comments.containsKey(line)) {
-                                int index = 0;
-                                while(comments.containsKey(line + index)) {
-                                    index++;
-                                }
-                                
-                                line = line + index;
-                            }
-
-                            comments.put(line, temp.toString());
-                            temp = new StringBuilder();
-                        }
-                    }
-                }
-
-                // Dump to the new one
-                HashMap<String, Integer> indexed = new HashMap<>();
-                for (String key : comments.keySet()) {
-                    String actualkey = key.substring(0, key.indexOf(":") + 1);
-
-                    int index = 0;
-                    if(indexed.containsKey(actualkey)) {
-                        index = indexed.get(actualkey);
-                    }
-                    boolean isAtTop = !output.contains("\n" + actualkey);
-                    index = output.indexOf((isAtTop ? "" : "\n") + actualkey, index);
-
-                    if (index >= 0) {
-                        output = output.substring(0, index) + "\n" + comments.get(key) + output.substring(isAtTop ? index : index + 1);
-                        indexed.put(actualkey, index + comments.get(key).length() + actualkey.length() + 1);
-                    }
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
             // Save it
+
             if(dataFolder == null) {
                 mcMMO.p.getLogger().severe("Data folder should never be null!");
                 return;
@@ -155,11 +97,10 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                 }
 
                 File newSaveFile = new File(dataFolder, saveName);
-                FileWriter fileWriter = new FileWriter(newSaveFile.getAbsolutePath());
-                BufferedWriter writer = new BufferedWriter(fileWriter);
-                writer.write(output);
-                writer.flush();
-                writer.close();
+                YamlConfiguration yamlConfiguration = (YamlConfiguration) config;
+                yamlConfiguration.options().indent(4);
+                yamlConfiguration.save(newSaveFile);
+
             }
             catch (Exception e) {
                 e.printStackTrace();
