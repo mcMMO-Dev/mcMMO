@@ -3,13 +3,11 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.file.YamlConfigurationOptions;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
