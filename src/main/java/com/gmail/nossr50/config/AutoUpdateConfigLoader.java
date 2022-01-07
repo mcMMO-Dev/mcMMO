@@ -48,6 +48,12 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         super.loadFile();
         FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(mcMMO.p.getResourceAsReader(fileName));
 
+        try {
+            internalConfig.options().parseComments(false);
+            config.options().parseComments(false);
+        }
+        catch (NoSuchMethodError ignored) {}
+
         Set<String> configKeys = config.getKeys(true);
         Set<String> internalConfigKeys = internalConfig.getKeys(true);
 
