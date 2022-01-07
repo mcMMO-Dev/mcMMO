@@ -61,14 +61,16 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
         // Don't need a re-save if we have old keys sticking around?
         // Would be less saving, but less... correct?
-        if (!newKeys.isEmpty() || !oldKeys.isEmpty()) {
+        if (!newKeys.isEmpty() /*|| !oldKeys.isEmpty()*/) {
             needSave = true;
         }
-//
-//        for (String key : oldKeys) {
-//            mcMMO.p.debug("Detected potentially unused key: " + key);
-//            //config.set(key, null);
-//        }
+        if (!oldKeys.isEmpty()) {
+            mcMMO.p.getLogger().info("[yaml-fixer] old key(s) in " +fileName);
+        }
+        for (String key : oldKeys) {
+            mcMMO.p.getLogger().info("[yaml-fixer] old-key:" + key);
+            //config.set(key, null);
+        }
 
         for (String key : newKeys) {
             mcMMO.p.debug("Adding new key: " + key + " = " + internalConfig.get(key));
