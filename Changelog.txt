@@ -1,3 +1,6 @@
+Version 2.1.208
+    Updated lithuanian locale (thanks dexasz)
+    
 Version 2.1.207
     Fixed an IndexOutOfBounds exception with our BlockTracker
     Fixed a bug where leveling up a party at level cap would spam the chat with messages
