@@ -102,7 +102,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>17</release>
+                    <release>16</release>
                     <compilerArgs>
                         <arg>-parameters</arg> <!-- used for ACF syntax stuff -->
                     </compilerArgs>
