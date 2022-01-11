@@ -1,13 +1,13 @@
 package com.gmail.nossr50.config.party;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 
 import java.util.HashSet;
 import java.util.Locale;
 
-public class ItemWeightConfig extends ConfigLoader {
+public class ItemWeightConfig extends BukkitConfig {
     private static ItemWeightConfig instance;
 
     private ItemWeightConfig() {
@@ -40,5 +40,6 @@ public class ItemWeightConfig extends ConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {}
+    protected void loadKeys() {
+    }
 }

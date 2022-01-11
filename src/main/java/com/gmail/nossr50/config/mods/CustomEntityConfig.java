@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class CustomEntityConfig extends ConfigLoader {
     public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<>();
-    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<>();
+    public HashMap<String, CustomEntity> customEntityTypeMap = new HashMap<>();
 
     protected CustomEntityConfig(String fileName) {
         super("mods", fileName);
@@ -31,8 +31,7 @@ public class CustomEntityConfig extends ConfigLoader {
 
             try {
                 clazz = ClassUtils.getClass(className);
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 mcMMO.p.getLogger().warning("Invalid class (" + className + ") detected for " + entityName + ".");
                 mcMMO.p.getLogger().warning("This custom entity may not function properly.");
             }

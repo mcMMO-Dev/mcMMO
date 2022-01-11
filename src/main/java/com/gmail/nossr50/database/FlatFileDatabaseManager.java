@@ -120,7 +120,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         BufferedReader in = null;
         FileWriter out = null;
 
-        // This code is O(n) instead of O(n²)
         synchronized (fileWritingLock) {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));

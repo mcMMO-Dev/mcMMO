@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * A visual representation of a players skill level progress for a PrimarySkillType
+ * A visual representation of a player's skill level progress for a PrimarySkillType
  */
 public class ExperienceBarWrapper {
 

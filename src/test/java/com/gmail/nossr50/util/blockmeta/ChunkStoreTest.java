@@ -3,8 +3,6 @@ package com.gmail.nossr50.util.blockmeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
-import com.gmail.nossr50.util.platform.PlatformManager;
 import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

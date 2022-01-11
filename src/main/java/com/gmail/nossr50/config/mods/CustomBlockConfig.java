@@ -12,17 +12,15 @@ import java.util.List;
 import java.util.Set;
 
 public class CustomBlockConfig extends ConfigLoader {
-    private boolean needsUpdate = false;
-
-    public List<Material> customExcavationBlocks  = new ArrayList<>();
-    public List<Material> customHerbalismBlocks   = new ArrayList<>();
-    public List<Material> customMiningBlocks      = new ArrayList<>();
-    public List<Material> customOres              = new ArrayList<>();
-    public List<Material> customLogs              = new ArrayList<>();
-    public List<Material> customLeaves            = new ArrayList<>();
-    public List<Material> customAbilityBlocks     = new ArrayList<>();
-
+    public List<Material> customExcavationBlocks = new ArrayList<>();
+    public List<Material> customHerbalismBlocks = new ArrayList<>();
+    public List<Material> customMiningBlocks = new ArrayList<>();
+    public List<Material> customOres = new ArrayList<>();
+    public List<Material> customLogs = new ArrayList<>();
+    public List<Material> customLeaves = new ArrayList<>();
+    public List<Material> customAbilityBlocks = new ArrayList<>();
     public HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
+    private boolean needsUpdate = false;
 
     protected CustomBlockConfig(String fileName) {
         super("mods", fileName);
@@ -85,12 +83,10 @@ public class CustomBlockConfig extends ConfigLoader {
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockMaterial);
                 smeltingXp = config.getInt(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
-            }
-            else if (skillType.equals("Woodcutting")) {
+            } else if (skillType.equals("Woodcutting")) {
                 if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
                     customLogs.add(blockMaterial);
-                }
-                else {
+                } else {
                     customLeaves.add(blockMaterial);
                     xp = 0; // Leaves don't grant XP
                 }

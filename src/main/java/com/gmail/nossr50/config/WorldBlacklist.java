@@ -15,20 +15,28 @@ public class WorldBlacklist {
 
     private final String blackListFileName = "world_blacklist.txt";
 
-    public WorldBlacklist(mcMMO plugin)
-    {
+    public WorldBlacklist(mcMMO plugin) {
         this.plugin = plugin;
         blacklist = new ArrayList<>();
         init();
     }
 
-    public void init()
-    {
+    public static boolean isWorldBlacklisted(World world) {
+
+        for (String s : blacklist) {
+            if (world.getName().equalsIgnoreCase(s))
+                return true;
+        }
+
+        return false;
+    }
+
+    public void init() {
         //Make the blacklist file if it doesn't exist
         File blackListFile = new File(plugin.getDataFolder() + File.separator + blackListFileName);
 
         try {
-            if(!blackListFile.exists())
+            if (!blackListFile.exists())
                 blackListFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,12 +56,11 @@ public class WorldBlacklist {
 
             String currentLine;
 
-            while((currentLine = bufferedReader.readLine()) != null)
-            {
-                if(currentLine.length() == 0)
+            while ((currentLine = bufferedReader.readLine()) != null) {
+                if (currentLine.length() == 0)
                     continue;
 
-                if(!blacklist.contains(currentLine))
+                if (!blacklist.contains(currentLine))
                     blacklist.add(currentLine);
             }
 
@@ -66,28 +73,16 @@ public class WorldBlacklist {
             closeRead(fileReader);
         }
 
-        plugin.getLogger().info(blacklist.size()+" entries in mcMMO World Blacklist");
+        plugin.getLogger().info(blacklist.size() + " entries in mcMMO World Blacklist");
     }
 
     private void closeRead(Reader reader) {
-        if(reader != null) {
+        if (reader != null) {
             try {
                 reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static boolean isWorldBlacklisted(World world)
-    {
-
-        for(String s : blacklist)
-        {
-            if(world.getName().equalsIgnoreCase(s))
-                return true;
-        }
-
-        return false;
     }
 }

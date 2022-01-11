@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,10 +8,10 @@ import java.io.File;
 import java.util.List;
 
 public abstract class ConfigLoader {
-    protected String fileName;
     protected final File configFile;
-    protected FileConfiguration config;
-    protected @NotNull final File dataFolder;
+    protected final @NotNull File dataFolder;
+    protected String fileName;
+    protected YamlConfiguration config;
 
     public ConfigLoader(String relativePath, String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
@@ -46,17 +45,15 @@ public abstract class ConfigLoader {
 
     protected void loadFile() {
         if (!configFile.exists()) {
-            mcMMO.p.debug("Creating mcMMO " + fileName + " File...");
+            mcMMO.p.getLogger().info("Creating mcMMO " + fileName + " File...");
 
             try {
                 mcMMO.p.saveResource(fileName, false); // Normal files
-            }
-            catch (IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ex) {
                 mcMMO.p.saveResource(configFile.getParentFile().getName() + File.separator + fileName, false); // Mod files
             }
-        }
-        else {
-            mcMMO.p.debug("Loading mcMMO " + fileName + " File...");
+        } else {
+            mcMMO.p.getLogger().info("Loading mcMMO " + fileName + " File...");
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
@@ -79,8 +76,7 @@ public abstract class ConfigLoader {
     protected void validate() {
         if (validateKeys()) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
-        }
-        else {
+        } else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
             mcMMO.p.noErrorsInConfigFiles = false;

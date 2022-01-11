@@ -578,7 +578,7 @@ public class mcMMO extends JavaPlugin {
 
         // Load salvage configs, make manager and register them at this time
         SalvageConfigManager sManager = new SalvageConfigManager(this);
-        List<Salvageable> salvageables = new ArrayList<>(sManager.getLoadedSalvageables());
+        List<Salvageable> salvageables = sManager.getLoadedSalvageables();
         salvageableManager = new SimpleSalvageableManager(salvageables.size());
         salvageableManager.registerSalvageables(salvageables);
     }

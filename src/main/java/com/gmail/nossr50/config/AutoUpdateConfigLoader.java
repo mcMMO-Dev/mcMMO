@@ -31,10 +31,9 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
     protected void saveConfig() {
         try {
-            mcMMO.p.getLogger().info("Saving changes to config file - "+fileName);
-            YamlConfiguration yamlConfiguration = (YamlConfiguration) config;
-            yamlConfiguration.options().indent(4);
-            yamlConfiguration.save(configFile);
+            mcMMO.p.getLogger().info("Saving changes to config file - " + fileName);
+            config.options().indent(2);
+            config.save(configFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,12 +58,11 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         oldKeys.removeAll(internalConfigKeys);
 
         if (!oldKeys.isEmpty()) {
-            mcMMO.p.debug("old key(s) in \"" +fileName+"\"");
+            mcMMO.p.debug("old key(s) in \"" + fileName + "\"");
             for (String key : oldKeys) {
                 mcMMO.p.debug("  old-key:" + key);
             }
         }
-
 
         // keys present in template that are not in current file
         Set<String> newKeys = new HashSet<>(internalConfigKeys);
@@ -82,7 +80,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         if (needSave) {
             // Save it
 
-            if(dataFolder == null) {
+            if (dataFolder == null) {
                 mcMMO.p.getLogger().severe("Data folder should never be null!");
                 return;
             }
@@ -95,12 +93,11 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                 }
 
                 File newSaveFile = new File(dataFolder, saveName);
-                YamlConfiguration yamlConfiguration = (YamlConfiguration) config;
+                YamlConfiguration yamlConfiguration = config;
                 yamlConfiguration.options().indent(4);
                 yamlConfiguration.save(newSaveFile);
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

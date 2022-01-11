@@ -95,8 +95,7 @@ public class PotionConfig extends ConfigLoader {
             if (potion != null) {
                 potionMap.put(potionName, potion);
                 pass++;
-            }
-            else {
+            } else {
                 fail++;
             }
         }
@@ -114,13 +113,13 @@ public class PotionConfig extends ConfigLoader {
      */
     private AlchemyPotion loadPotion(ConfigurationSection potion_section) {
         try {
-            
+
 
             String name = potion_section.getString("Name");
             if (name != null) {
                 name = ChatColor.translateAlternateColorCodes('&', name);
             }
-            
+
             PotionData data;
             if (!potion_section.contains("PotionData")) { // Backwards config compatability
                 short dataValue = Short.parseShort(potion_section.getName());
@@ -130,7 +129,7 @@ public class PotionConfig extends ConfigLoader {
                 ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
                 data = new PotionData(PotionType.valueOf(potionData.getString("PotionType", "WATER")), potionData.getBoolean("Extended", false), potionData.getBoolean("Upgraded", false));
             }
-            
+
             Material material = Material.POTION;
             String mat = potion_section.getString("Material", null);
             if (mat != null) {
@@ -155,18 +154,16 @@ public class PotionConfig extends ConfigLoader {
 
                     if (type != null) {
                         effects.add(new PotionEffect(type, duration, amplifier));
-                    }
-                    else {
+                    } else {
                         mcMMO.p.getLogger().warning("Failed to parse effect for potion " + name + ": " + effect);
                     }
                 }
             }
-            
+
             Color color;
             if (potion_section.contains("Color")) {
                 color = Color.fromRGB(potion_section.getInt("Color"));
-            }
-            else {
+            } else {
                 color = this.generateColor(effects);
             }
 
@@ -176,16 +173,14 @@ public class PotionConfig extends ConfigLoader {
                     ItemStack ingredient = loadIngredient(child);
                     if (ingredient != null) {
                         children.put(ingredient, potion_section.getConfigurationSection("Children").getString(child));
-                    }
-                    else {
+                    } else {
                         mcMMO.p.getLogger().warning("Failed to parse child for potion " + name + ": " + child);
                     }
                 }
             }
 
             return new AlchemyPotion(material, data, name, lore, effects, color, children);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getName());
             return null;
         }
@@ -243,7 +238,7 @@ public class PotionConfig extends ConfigLoader {
     public AlchemyPotion getPotion(String name) {
         return potionMap.get(name);
     }
-    
+
     public AlchemyPotion getPotion(ItemStack item) {
         for (AlchemyPotion potion : potionMap.values()) {
             if (potion.isSimilar(item)) {
@@ -252,7 +247,7 @@ public class PotionConfig extends ConfigLoader {
         }
         return null;
     }
-    
+
     public Color generateColor(List<PotionEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
             List<Color> colors = new ArrayList<>();
@@ -270,7 +265,7 @@ public class PotionConfig extends ConfigLoader {
         }
         return null;
     }
-    
+
     public Color calculateAverageColor(List<Color> colors) {
         int red = 0;
         int green = 0;
@@ -280,7 +275,7 @@ public class PotionConfig extends ConfigLoader {
             green += color.getGreen();
             blue += color.getBlue();
         }
-        return Color.fromRGB(red/colors.size(), green/colors.size(), blue/colors.size());
+        return Color.fromRGB(red / colors.size(), green / colors.size(), blue / colors.size());
     }
-    
+
 }

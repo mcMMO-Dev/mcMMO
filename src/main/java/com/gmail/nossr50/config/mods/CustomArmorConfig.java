@@ -14,14 +14,12 @@ import java.util.List;
 import java.util.Set;
 
 public class CustomArmorConfig extends ConfigLoader {
-    private boolean needsUpdate = false;
-
-    public List<Material> customBoots       = new ArrayList<>();
+    public List<Material> customBoots = new ArrayList<>();
     public List<Material> customChestplates = new ArrayList<>();
-    public List<Material> customHelmets     = new ArrayList<>();
-    public List<Material> customLeggings    = new ArrayList<>();
-
+    public List<Material> customHelmets = new ArrayList<>();
+    public List<Material> customLeggings = new ArrayList<>();
     public List<Repairable> repairables = new ArrayList<>();
+    private boolean needsUpdate = false;
 
     protected CustomArmorConfig(String fileName) {
         super("mods", fileName);

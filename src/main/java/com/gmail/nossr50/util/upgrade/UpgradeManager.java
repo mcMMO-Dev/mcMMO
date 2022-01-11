@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.upgrade;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class UpgradeManager extends ConfigLoader {
+public class UpgradeManager extends BukkitConfig {
     private final Set<UpgradeType> setNeededUpgrades;
 
     public UpgradeManager() {

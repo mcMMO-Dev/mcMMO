@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.child;
 
-import com.gmail.nossr50.config.AutoUpdateConfigLoader;
+import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.EnumSet;
 import java.util.Locale;
 
-public class ChildConfig extends AutoUpdateConfigLoader {
+public class ChildConfig extends BukkitConfig {
     public ChildConfig() {
         super("child.yml");
         loadKeys();

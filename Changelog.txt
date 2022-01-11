@@ -1,6 +1,14 @@
 Version 2.1.208
+    Significantly rewrote to how mcMMO loads/updates config files
+    Fixed a bug where huge config files caused the server to take forever to start/shutdown
+    Fixed config files duplicating comments and updated their code to use Spigot API (thanks the456gamer)
+    mcMMO now repairs config files (removing duplicate comments, see notes)
     Updated lithuanian locale (thanks dexasz)
-    
+
+    NOTES:
+    Due to a change in Spigot mcMMO started growing config files at an alarming rate until they became so big they wouldn't load, and well before they got to that stage they slowed down loading the server
+    mcMMO now uses the Spigot API in a smarter way for config files
+
 Version 2.1.207
     Fixed an IndexOutOfBounds exception with our BlockTracker
     Fixed a bug where leveling up a party at level cap would spam the chat with messages
