@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class BukkitConfig {
-    public static final String CURRENT_CONFIG_PATCH_VER = "ConfigPatchVersion: 1";
+    public static final String CONFIG_PATCH_PREFIX = "ConfigPatchVersion:";
+    public static final String CURRENT_CONFIG_PATCH_VER = "ConfigPatchVersion: 2";
+    public static final char COMMENT_PREFIX = '#';
     protected final String fileName;
     protected final File configFile;
     protected YamlConfiguration config;
@@ -149,7 +151,11 @@ public abstract class BukkitConfig {
                     break;
                 }
 
-                if (line.startsWith("#")) {
+                //Older version, don't append this line
+                if(line.startsWith(CONFIG_PATCH_PREFIX))
+                    continue;
+
+                if (isFirstCharAsciiCharacter(line, COMMENT_PREFIX)) {
                     if(seenBefore.contains(line))
                         dupedLines++;
                     else
@@ -188,5 +194,20 @@ public abstract class BukkitConfig {
             mcMMO.p.getLogger().severe("Failed to patch config file: " + configFile.getName());
             ex.printStackTrace();
         }
+    }
+
+    private boolean isFirstCharAsciiCharacter(String line, char character) {
+        if(line == null || line.isEmpty()) {
+            return true;
+        }
+
+        for(Character c : line.toCharArray()) {
+            if(c.equals(' '))
+                continue;
+
+            return c.equals(character);
+        }
+
+        return false;
     }
 }
