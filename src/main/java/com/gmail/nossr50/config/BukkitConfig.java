@@ -62,7 +62,14 @@ public abstract class BukkitConfig {
         mcMMO.p.getLogger().info("[config] Loading config from disk: " + fileName);
         YamlConfiguration config = new YamlConfiguration();
         config.options().indent(4);
-        config.options().parseComments(true);
+
+        try {
+            config.options().parseComments(true);
+        } catch (NoSuchMethodError e) {
+            //e.printStackTrace();
+            mcMMO.p.getLogger().severe("Your Spigot/CraftBukkit API is out of date, update your server software!");
+        }
+
         config.options().copyDefaults(true);
 
         try {
