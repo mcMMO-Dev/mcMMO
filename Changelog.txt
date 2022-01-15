@@ -1,3 +1,10 @@
+Version 2.1.209
+    Fixed a bug where some config files did not get trimmed completely
+
+    NOTES:
+    This should fix the issue for everyone, let me know if you still run into trouble!
+    Don't be afraid to ping me on discord
+
 Version 2.1.208
     Significantly rewrote to how mcMMO loads/updates config files
     Fixed a bug where huge config files caused the server to take forever to start/shutdown
