@@ -5,9 +5,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.compat.layers.bungee.AbstractBungeeSerializerCompatibilityLayer;
 import com.gmail.nossr50.util.compat.layers.bungee.BungeeLegacySerializerCompatibilityLayer;
 import com.gmail.nossr50.util.compat.layers.bungee.BungeeModernSerializerCompatibilityLayer;
-import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
-import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_13;
-import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_14;
 import com.gmail.nossr50.util.compat.layers.skills.AbstractMasterAnglerCompatibility;
 import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
 import com.gmail.nossr50.util.nms.NMSVersion;
@@ -25,7 +22,7 @@ import java.util.HashMap;
  * In 2.2 we are switching to modules and that will clean things up significantly
  *
  */
-//TODO: I need to rewrite this crap
+//TODO: I need to delete this crap
 public class CompatibilityManager {
     private @NotNull HashMap<CompatibilityType, Boolean> supportedLayers;
     private boolean isFullyCompatibleServerSoftware = true; //true if all compatibility layers load successfully
@@ -33,8 +30,6 @@ public class CompatibilityManager {
     private final @NotNull NMSVersion nmsVersion;
 
     /* Compatibility Layers */
-//    private PlayerAttackCooldownExploitPreventionLayer playerAttackCooldownExploitPreventionLayer;
-    private AbstractPersistentDataLayer persistentDataLayer;
     private AbstractBungeeSerializerCompatibilityLayer bungeeSerializerCompatibilityLayer;
     private AbstractMasterAnglerCompatibility masterAnglerCompatibility;
 
@@ -64,7 +59,6 @@ public class CompatibilityManager {
      * For any unsupported layers, load a dummy layer
      */
     private void initCompatibilityLayers() {
-        initPersistentDataLayer();
         initBungeeSerializerLayer();
         initMasterAnglerLayer();
 
@@ -87,17 +81,6 @@ public class CompatibilityManager {
         }
 
         supportedLayers.put(CompatibilityType.BUNGEE_SERIALIZER, true);
-    }
-
-    private void initPersistentDataLayer() {
-        if(minecraftGameVersion.isAtLeast(1, 14, 2)) {
-            persistentDataLayer = new SpigotPersistentDataLayer_1_14();
-        } else {
-
-            persistentDataLayer = new SpigotPersistentDataLayer_1_13();
-        }
-
-        supportedLayers.put(CompatibilityType.PERSISTENT_DATA, true);
     }
 
     //TODO: move to text manager
@@ -169,10 +152,6 @@ public class CompatibilityManager {
 
     public AbstractBungeeSerializerCompatibilityLayer getBungeeSerializerCompatibilityLayer() {
         return bungeeSerializerCompatibilityLayer;
-    }
-
-    public AbstractPersistentDataLayer getPersistentDataLayer() {
-        return persistentDataLayer;
     }
 
     public @Nullable AbstractMasterAnglerCompatibility getMasterAnglerCompatibilityLayer() {

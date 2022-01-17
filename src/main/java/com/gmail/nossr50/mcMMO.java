@@ -18,6 +18,7 @@ import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
+import com.gmail.nossr50.metadata.MetadataService;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
@@ -77,8 +78,9 @@ import java.util.List;
 public class mcMMO extends JavaPlugin {
 
 
-    /* Managers */
+    /* Managers & Services */
     private static PlatformManager platformManager;
+    private static MetadataService metadataService;
     private static ChunkManager       placeStore;
     private static RepairableManager  repairableManager;
     private static SalvageableManager salvageableManager;
@@ -174,6 +176,9 @@ public class mcMMO extends JavaPlugin {
 
             //Platform Manager
             platformManager = new PlatformManager();
+
+            //metadata service
+            metadataService = new MetadataService(this);
 
             //Filter out any debug messages (if debug/verbose logging is not enabled)
             getLogger().setFilter(new LogFilter(this));
@@ -464,6 +469,10 @@ public class mcMMO extends JavaPlugin {
 
     public static @Nullable CompatibilityManager getCompatibilityManager() {
         return platformManager.getCompatibilityManager();
+    }
+
+    public static MetadataService getMetadataService() {
+        return metadataService;
     }
 
     @Deprecated

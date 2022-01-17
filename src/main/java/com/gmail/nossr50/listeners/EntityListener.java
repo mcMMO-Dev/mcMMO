@@ -10,6 +10,8 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
+import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.TravelingBlockMetaCleanup;
 import com.gmail.nossr50.skills.archery.Archery;
@@ -19,8 +21,6 @@ import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
-import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -51,7 +51,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
-    private final @NotNull AbstractPersistentDataLayer persistentDataLayer;
+    private final @NotNull MobMetadataService mobMetadataService;
 
     /**
      * We can use this {@link NamespacedKey} for {@link Enchantment} comparisons to
@@ -61,7 +61,7 @@ public class EntityListener implements Listener {
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
-        persistentDataLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
+        mobMetadataService = mcMMO.getMetadataService().getMobMetadataService();
     }
 
 //    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -94,11 +94,11 @@ public class EntityListener implements Listener {
             LivingEntity livingEntity = (LivingEntity) event.getEntity();
 
             //Transfer metadata keys from mob-spawned mobs to new mobs
-            if(persistentDataLayer.hasMobFlags(livingEntity)) {
+            if(mobMetadataService.hasMobFlags(livingEntity)) {
                 for(Entity entity : event.getTransformedEntities()) {
                     if(entity instanceof LivingEntity) {
                         LivingEntity transformedEntity = (LivingEntity) entity;
-                        persistentDataLayer.addMobFlags(livingEntity, transformedEntity);
+                        mobMetadataService.addMobFlags(livingEntity, transformedEntity);
                     }
                 }
             }
@@ -122,8 +122,8 @@ public class EntityListener implements Listener {
             if(event.getEntity() instanceof Enderman) {
                 Enderman enderman = (Enderman) event.getEntity();
 
-                if(!persistentDataLayer.hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman)) {
-                    persistentDataLayer.flagMetadata(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman);
+                if(!mobMetadataService.hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman)) {
+                    mobMetadataService.flagMetadata(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman);
                 }
             }
         }
@@ -729,11 +729,11 @@ public class EntityListener implements Listener {
     }
 
     private void trackSpawnedAndPassengers(LivingEntity livingEntity, MobMetaFlagType mobMetaFlagType) {
-        persistentDataLayer.flagMetadata(mobMetaFlagType, livingEntity);
+        mobMetadataService.flagMetadata(mobMetaFlagType, livingEntity);
 
         for(Entity passenger : livingEntity.getPassengers()) {
             if(passenger != null) {
-                persistentDataLayer.flagMetadata(mobMetaFlagType, livingEntity);
+                mobMetadataService.flagMetadata(mobMetaFlagType, livingEntity);
             }
         }
     }
@@ -741,7 +741,7 @@ public class EntityListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityBreed(EntityBreedEvent event) {
         if(ExperienceConfig.getInstance().isCOTWBreedingPrevented()) {
-            if(persistentDataLayer.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getFather()) || persistentDataLayer.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getMother())) {
+            if(mobMetadataService.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getFather()) || mobMetadataService.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getMother())) {
                 event.setCancelled(true);
                 Animals mom = (Animals) event.getMother();
                 Animals father = (Animals) event.getFather();
@@ -1007,12 +1007,12 @@ public class EntityListener implements Listener {
 
         if (!UserManager.hasPlayerDataKey(player)
                 || (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(livingEntity))
-                || persistentDataLayer.hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
-                || persistentDataLayer.hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
+                || mobMetadataService.hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
+                || mobMetadataService.hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
             return;
         }
 
-        persistentDataLayer.flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
+        mobMetadataService.flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
         //Profile not loaded
         if(UserManager.getPlayer(player) == null)

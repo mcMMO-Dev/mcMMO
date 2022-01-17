@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
 
 public class PersistentDataConfig extends BukkitConfig {
     private static PersistentDataConfig instance;

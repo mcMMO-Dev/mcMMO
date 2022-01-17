@@ -273,7 +273,7 @@ public class TransientEntityTracker {
         }
 
         //Remove our metadata
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
+        mcMMO.getMetadataService().getMobMetadataService().removeMobFlags(livingEntity);
 
         //Clean from trackers
         unregisterEntity(livingEntity);

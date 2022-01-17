@@ -34,7 +34,7 @@ public class SmeltingTracker {
     }
 
     private void setFurnaceOwner(Furnace furnace, Player player) {
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().setFurnaceOwner(furnace, player.getUniqueId());
+        mcMMO.getMetadataService().getBlockMetadataService().setFurnaceOwner(furnace, player.getUniqueId());
     }
 
     private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mcMMOPlayer) {
@@ -65,7 +65,7 @@ public class SmeltingTracker {
     }
 
     public @Nullable OfflinePlayer getFurnaceOwner(Furnace furnace) {
-        UUID uuid = mcMMO.getCompatibilityManager().getPersistentDataLayer().getFurnaceOwner(furnace);
+        UUID uuid = mcMMO.getMetadataService().getBlockMetadataService().getFurnaceOwner(furnace);
 
         if(uuid != null) {
             return Bukkit.getOfflinePlayer(uuid);

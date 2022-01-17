@@ -10,9 +10,9 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.ItemMetadataService;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -156,8 +156,7 @@ public final class SkillUtils {
             ItemUtils.addDigSpeedToItem(heldItem, heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED));
 
             //1.13.2+ will have persistent metadata for this item
-            AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
-            compatLayer.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
+            mcMMO.getMetadataService().getItemMetadataService().setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
         } else {
             int duration = 0;
             int amplifier = 0;
@@ -214,20 +213,22 @@ public final class SkillUtils {
 
 
         //1.13.2+ will have persistent metadata for this itemStack
-        AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
+        ItemMetadataService itemMetadataService = mcMMO.getMetadataService().getItemMetadataService();
 
-        if(compatLayer.isLegacyAbilityTool(itemStack)) {
+        if(itemMetadataService.isLegacyAbilityTool(itemStack)) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            // This is safe to call without prior checks.
-            itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+            if(itemMeta != null) {
+                // This is safe to call without prior checks.
+                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
 
-            itemStack.setItemMeta(itemMeta);
-            ItemUtils.removeAbilityLore(itemStack);
+                itemStack.setItemMeta(itemMeta);
+                ItemUtils.removeAbilityLore(itemStack);
+            }
         }
 
-        if(compatLayer.isSuperAbilityBoosted(itemStack)) {
-            compatLayer.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
+        if(itemMetadataService.isSuperAbilityBoosted(itemStack)) {
+            itemMetadataService.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
         }
     }
 

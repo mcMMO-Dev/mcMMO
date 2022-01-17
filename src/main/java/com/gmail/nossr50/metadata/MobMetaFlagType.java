@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util.compat.layers.persistentdata;
+package com.gmail.nossr50.metadata;
 
 public enum MobMetaFlagType {
     MOB_SPAWNER_MOB,

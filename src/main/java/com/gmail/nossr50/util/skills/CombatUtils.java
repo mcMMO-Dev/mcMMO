@@ -10,6 +10,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
+import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -19,8 +21,6 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
-import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
@@ -50,8 +50,8 @@ public final class CombatUtils {
 
     private CombatUtils() {}
 
-    private static @NotNull AbstractPersistentDataLayer getPersistentData() {
-        return mcMMO.getCompatibilityManager().getPersistentDataLayer();
+    private static @NotNull MobMetadataService getMobMetadataService() {
+        return mcMMO.getMetadataService().getMobMetadataService();
     }
 
     //Likely.. because who knows what plugins are throwing around
@@ -801,17 +801,17 @@ public final class CombatUtils {
                 }
             }
 
-            if(getPersistentData().hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
+            if(getMobMetadataService().hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
                 baseXP = 0;
-            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata("ES")) {
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata("ES")) {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
-            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getNetherPortalXpMultiplier();
-            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
-            } else if (getPersistentData().hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
+            } else if (getMobMetadataService().hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
-            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getTamedMobXpMultiplier();
             }
 

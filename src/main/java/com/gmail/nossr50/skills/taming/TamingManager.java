@@ -10,10 +10,10 @@ import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -475,7 +475,7 @@ public class TamingManager extends SkillManager {
 
     private void applyMetaDataToCOTWEntity(LivingEntity summonedEntity) {
         //This helps identify the entity as being summoned by COTW
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
+        mcMMO.getMetadataService().getMobMetadataService().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
     }
 
     /**

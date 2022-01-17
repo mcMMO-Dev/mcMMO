@@ -18,11 +18,6 @@ public class TransientMetadataTools {
             entity.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, pluginRef);
         }
 
-//        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY)) {
-//            CombatUtils.fixNames(entity);
-//            entity.removeMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY, pluginRef);
-//        }
-
         //Involved in changing mob names to hearts
         if (entity.hasMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY)) {
             entity.setCustomNameVisible(entity.getMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY).get(0).asBoolean());
@@ -35,7 +30,7 @@ public class TransientMetadataTools {
         }
 
         //Cleanup mob metadata
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(entity);
+        mcMMO.getMetadataService().getMobMetadataService().removeMobFlags(entity);
 
         //TODO: This loop has some redundancy, this whole method needs to be rewritten
         for(String key : MetadataConstants.MOB_METADATA_KEYS) {
