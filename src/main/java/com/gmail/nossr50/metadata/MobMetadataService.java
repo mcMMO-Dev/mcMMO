@@ -17,6 +17,7 @@ import java.util.WeakHashMap;
 
 import static com.gmail.nossr50.metadata.MetadataService.*;
 
+//TODO: Use SpawnReason where appropriate instead of MobMetaFlagType
 public class MobMetadataService {
     private final @NotNull WeakHashMap<Entity, HashSet<MobMetaFlagType>> mobRegistry; //transient data
     private final @NotNull EnumMap<MobMetaFlagType, NamespacedKey> mobFlagKeyMap; //used for persistent data
@@ -52,17 +53,6 @@ public class MobMetadataService {
                 default -> throw new IncompleteNamespacedKeyRegister("missing namespaced key register for type: " + mobMetaFlagType);
             }
         }
-    }
-
-    /**
-     * Helper method to simplify generating namespaced keys
-     *
-     * @param key the {@link String} value of the key
-     *
-     * @return the generated {@link NamespacedKey}
-     */
-    private @NotNull NamespacedKey getNamespacedKey(@NotNull String key) {
-        return new NamespacedKey(mcMMO.p, key);
     }
 
     /**

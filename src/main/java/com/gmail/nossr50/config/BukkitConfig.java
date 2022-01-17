@@ -67,7 +67,7 @@ public abstract class BukkitConfig {
             config.options().parseComments(true);
         } catch (NoSuchMethodError e) {
             //e.printStackTrace();
-            mcMMO.p.getLogger().severe("Your Spigot/CraftBukkit API is out of date, update your server software!");
+            // mcMMO.p.getLogger().severe("Your Spigot/CraftBukkit API is out of date, update your server software!");
         }
 
         config.options().copyDefaults(true);
