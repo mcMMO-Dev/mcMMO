@@ -99,9 +99,7 @@ public abstract class BukkitConfig {
         if (validateKeys()) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
         } else {
-            mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
-            mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
-            mcMMO.p.noErrorsInConfigFiles = false;
+            mcMMO.p.getLogger().warning("Errors were found in " + fileName + ", overwriting invalid values!");
         }
     }
 
