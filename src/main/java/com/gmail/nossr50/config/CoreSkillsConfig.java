@@ -9,7 +9,6 @@ public class CoreSkillsConfig extends BukkitConfig {
 
     public CoreSkillsConfig() {
         super("coreskills.yml");
-        validate();
     }
 
     public static CoreSkillsConfig getInstance() {
@@ -25,9 +24,8 @@ public class CoreSkillsConfig extends BukkitConfig {
     }
 
     @Override
-    protected boolean validateKeys() {
-
-        return true;
+    protected void validateConfigKeys() {
+        //TODO: Rewrite legacy validation code
     }
 
     /*

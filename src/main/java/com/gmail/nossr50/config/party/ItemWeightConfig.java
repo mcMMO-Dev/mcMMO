@@ -22,6 +22,11 @@ public class ItemWeightConfig extends BukkitConfig {
         return instance;
     }
 
+    @Override
+    protected void validateConfigKeys() {
+        //TODO: Rewrite legacy validation code
+    }
+
     public int getItemWeight(Material material) {
         return config.getInt("Item_Weights." + StringUtils.getPrettyItemString(material).replace(" ", "_"), config.getInt("Item_Weights.Default"));
     }

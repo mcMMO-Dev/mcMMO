@@ -9,7 +9,6 @@ public class ChatConfig extends BukkitConfig {
 
     private ChatConfig() {
         super("chat.yml");
-        validate();
     }
 
     public static ChatConfig getInstance() {
@@ -26,8 +25,8 @@ public class ChatConfig extends BukkitConfig {
     }
 
     @Override
-    protected boolean validateKeys() {
-        return true;
+    protected void validateConfigKeys() {
+        //TODO: Rewrite legacy validation code
     }
 
     public boolean isChatEnabled() {

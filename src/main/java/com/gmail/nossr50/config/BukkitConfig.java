@@ -7,18 +7,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class BukkitConfig {
-    public static final String CONFIG_PATCH_PREFIX = "ConfigPatchVersion:";
-    public static final String CURRENT_CONFIG_PATCH_VER = "ConfigPatchVersion: 2";
-    public static final char COMMENT_PREFIX = '#';
+    protected static final String CONFIG_PATCH_PREFIX = "ConfigPatchVersion:";
+    protected static final String CURRENT_CONFIG_PATCH_VER = "ConfigPatchVersion: 2";
+    protected static final char COMMENT_PREFIX = '#';
     protected final String fileName;
     protected final File configFile;
     protected YamlConfiguration config;
     protected @NotNull
     final File dataFolder;
+    protected boolean unmodifiedConfig = true; //Used to mark when we have made a fix that needs an immediate save
 
     public BukkitConfig(@NotNull String fileName, @NotNull File dataFolder) {
         mcMMO.p.getLogger().info("[config] Initializing config: " + fileName);
@@ -30,6 +30,7 @@ public abstract class BukkitConfig {
         initDefaults();
         updateFile();
         mcMMO.p.getLogger().info("[config] Config initialized: " + fileName);
+        validate();
     }
 
     @Deprecated
@@ -83,23 +84,28 @@ public abstract class BukkitConfig {
 
     protected abstract void loadKeys();
 
-    protected boolean validateKeys() {
-        return true;
+    protected abstract void validateConfigKeys();
+
+    protected void fixConfigKey(@NotNull String key, @NotNull String value, @NotNull String reason) {
+        mcMMO.p.getLogger().warning(reason);
+        config.set(key, value);
+        this.unmodifiedConfig = false; //flag to save config
     }
 
-    protected boolean noErrorsInConfig(List<String> issues) {
-        for (String issue : issues) {
-            mcMMO.p.getLogger().warning(issue);
-        }
+    private void validate() {
+        //TODO: Rewrite legacy validation code
+        validateConfigKeys();
 
-        return issues.isEmpty();
-    }
-
-    protected void validate() {
-        if (validateKeys()) {
+        if (unmodifiedConfig) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
         } else {
-            mcMMO.p.getLogger().warning("Errors were found in " + fileName + ", overwriting invalid values!");
+            mcMMO.p.getLogger().warning("Errors were found in " + fileName + ", overwriting invalid values with defaults");
+            try {
+                config.save(configFile);
+                unmodifiedConfig = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
