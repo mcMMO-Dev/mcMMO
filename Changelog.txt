@@ -1,5 +1,7 @@
 Version 2.1.210
     Fixed a memory leak involving mob metadata
+    mcMMO doesn't disable itself when configs are invalid anymore
+    mcMMO will fix bad config values when loading (WIP)
 
     NOTES:
     There was a big rewrite in this update relating to how various types of metadata were being tracked/stored/retrieved
