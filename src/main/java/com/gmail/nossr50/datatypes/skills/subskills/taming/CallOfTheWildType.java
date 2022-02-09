@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.subskills.taming;
 
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.entity.EntityType;
 
 public enum CallOfTheWildType {

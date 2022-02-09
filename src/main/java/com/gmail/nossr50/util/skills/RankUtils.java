@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -28,7 +29,7 @@ public class RankUtils {
      */
     public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel)
     {
-        for(SubSkillType subSkillType : primarySkillType.getSkillAbilities())
+        for(SubSkillType subSkillType : mcMMO.p.getSkillTools().getSubSkills(primarySkillType))
         {
             int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
 
@@ -156,6 +157,17 @@ public class RankUtils {
 
     /**
      * Gets the current rank of the subskill for the player
+     * @param mmoPlayer The player in question
+     * @param subSkillType Target subskill
+     * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
+     */
+    public static int getRank(McMMOPlayer mmoPlayer, SubSkillType subSkillType)
+    {
+        return getRank(mmoPlayer.getPlayer(), subSkillType);
+    }
+
+    /**
+     * Gets the current rank of the subskill for the player
      * @param player The player in question
      * @param subSkillType Target subskill
      * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
@@ -276,8 +288,7 @@ public class RankUtils {
         if (subSkillRanks == null)
             subSkillRanks = new HashMap<>();
 
-        if (subSkillRanks.get(s) == null)
-            subSkillRanks.put(s, new HashMap<>());
+        subSkillRanks.computeIfAbsent(s, k -> new HashMap<>());
     }
 
 /*    public static int getSubSkillUnlockRequirement(SubSkillType subSkillType)

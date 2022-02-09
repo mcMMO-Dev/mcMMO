@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 /**
  * Called when mcMMO tames an animal via Call of the Wild
  */
-public class FakeEntityTameEvent extends EntityTameEvent {
+public class FakeEntityTameEvent extends EntityTameEvent implements FakeEvent {
     public FakeEntityTameEvent(LivingEntity entity, AnimalTamer owner) {
         super(entity, owner);
     }

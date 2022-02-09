@@ -6,7 +6,7 @@ public class McMMOUrl {
     public static final String urlPatreon   = "https://www.patreon.com/nossr50";
     public static final String urlWiki      = "https://www.mcmmo.org/wiki/";
     public static final String urlSpigot    = "http://spigot.mcmmo.org";
-    public static final String urlTranslate = "https://www.mcmmo.org/translate/";
+    public static final String urlTranslate = "https://translate.mcmmo.org/";
 
     public static String getUrl(McMMOWebLinks webLinks)
     {

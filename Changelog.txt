@@ -1,11 +1,1172 @@
+Version 2.1.210
+    Fixed a memory leak involving mob metadata
+    mcMMO doesn't disable itself when configs are invalid anymore
+    mcMMO will fix bad config values when loading (WIP)
+
+    NOTES:
+    There was a big rewrite in this update relating to how various types of metadata were being tracked/stored/retrieved
+    If you run into issues with this version of mcMMO, please post about it on GitHub
+
+Version 2.1.209
+    Fixed a bug where some config files did not get trimmed completely
+
+    NOTES:
+    This should fix the issue for everyone, let me know if you still run into trouble!
+    Don't be afraid to ping me on discord
+
+Version 2.1.208
+    Significantly rewrote to how mcMMO loads/updates config files
+    Fixed a bug where huge config files caused the server to take forever to start/shutdown
+    Fixed config files duplicating comments and updated their code to use Spigot API (thanks the456gamer)
+    mcMMO now repairs config files (removing duplicate comments, see notes)
+    Updated lithuanian locale (thanks dexasz)
+
+    NOTES:
+    Due to a change in Spigot mcMMO started growing config files at an alarming rate until they became so big they wouldn't load, and well before they got to that stage they slowed down loading the server
+    mcMMO now uses the Spigot API in a smarter way for config files
+
+Version 2.1.207
+    Fixed an IndexOutOfBounds exception with our BlockTracker
+    Fixed a bug where leveling up a party at level cap would spam the chat with messages
+    mcMMO will no longer use enchanted repair materials (thanks JeBobs)
+    Added an option to allow enchanted repair materials 'Skills.Repair.Use_Enchanted_Materials' in config.yml
+    Temporarily rolling required Java version back to 16
+    Added unicode (UTF-8) support to locale files (no more UTF-16 codes needed)
+    Added locale key 'Scoreboard.Disabled' to en_US
+    Added locale key 'Scoreboard.NotSetupYet' to en_US
+    Fixed a bug where Salvage sent messages even though the event was cancelled (Thanks TheBusyBiscuit)
+
+Version 2.1.206
+    Fixed a memory leak involving Herbalism under specific circumstances
+    Fixed a memory leak involving Rupture under specific circumstances
+    Fixed a memory leak involving Dodge
+    Fixed a memory leak involving Endermen and block pickups
+    Fixed a memory leak from plugin conflicts when double drops get activated
+    Fixed a memory leak that required a specific config.yml setup with mob health bars
+    You can no longer set mob health bars to -1 in config.yml to set it to display permanently (this was problematic behavior)
+    Fixed a bug preventing Action Bar messages from showing
+    Fixed a bug where Alchemy XP wasn't being granted
+    Lowered the default volume of level up from .75 to .3 in sounds.yml (delete sounds.yml to get this change automagically)
+    Updated adventure platform dependency
+    Updated to use Java 17
+
+    NOTES:
+    mcMMO will target the newest version of MC moving forward, any backwards compatibility with prior versions of Minecraft should be considered a side effect rather than intended.
+
+Version 2.1.205
+    Fixed yet another exception preventing Alchemy from working (thanks NemuruYama)
+    Added some code to cleanup potential memory leaks
+
+    NOTES:
+    Sorry for the delay in this patch, I have had a terrible cold all weekend, feeling better now
+
+Version 2.1.204
+    Fixed IndexOutOfBounds exception (thanks gecko10000) (related to Alchemy)
+    Added double smelt to copper ingot and netherite scrap (thanks Lyther)
+
+Version 2.1.203
+    mcMMO now requires Java 16
+    mcMMO now requires the newest version of Minecraft (currently 1.17.1)
+    Fixed several API breaks (mostly affected Alchemy)
+    Fixed a bug relating to Shake percentages (thanks Lyther)
+    Fixed hexcolors not displaying correctly in level up milestone broadcasts (thanks gecko10000)
+    (API) Added deprecated constructors for PlayerProfile (thanks PikaMug)
+    mcMMO has had many of its dependencies updated to newer builds
+
+    NOTES:
+    If you want to play mcMMO on older versions, simply use 2.1.202 instead
+    Keeping mcMMO backwards compatible with older versions is getting messy, and I'd rather be able to focus my attention at newer features than having to make an elaborate build process (or alternatively hacky code) to support older versions of the game
+    Furthermore, it seems most people are playing 1.17.1 by a wide margin
+    You may have trouble compiling the source code if your maven is not setup to run JDK16, if you get any errors when compiling this is likely the reason
+
+    The data from bstats went into making this decision (shoutout to Qixils for typing this up too)
+     71.9% of servers are running 1.17.X
+     97.9% of servers are running ≥1.16
+     99.3% of servers are running ≥1.15
+
+Version 2.1.202
+    Fixed a bug where mcMMO didn't reward XP for Kelp
+    Fixed a bug where mcMMO marked bonemealed Azalea trees as unnatural (and thus did not give XP or get affected by Tree Feller)
+    Added Amethyst_Block to experience.yml for Mining
+    Added Flowering Azalea Leaves to Tree Feller's white list
+    Fixed a bug where mcMMO didn't appropriately flag blocks as natural in some tree growing events
+    (SQL) Added more MySQL/MariaDB settings (allowPublicKeyRetrieval - thanks rosaage)
+    (API) Added CREATED_PARTY and DISBANDED_PARTY to EventReason (used in some party events - thanks PikaMug )
+    Party member name matching is no longer case sensitive (thanks Wariorrrr)
+    Updated zh_CN locale (thanks GhostDC)
+    Added some settings for over fishing (Settings are in experience.yml under Fishing_ExploitFix_Options - thanks tunagohan)
+
+    NOTES:
+    This means tree feller will correctly traverse flowering azalea leaves during its ability
+
+Version 2.1.201
+    Tweaked the visual/audio effect for Rupture
+    (API) TNT is set as the source in Blast Mining (1.16.1 and up)
+    Fixed an exploit related to Ability Buffs remaining on tools
+    Blast Mining no longer drops Budding Amethyst since its not legal to obtain this item through normal gameplay
+    Added mcinspect and mmoinspect aliases to inspect command
+    Portuguese translation of Woodcutting changed back to Lenhador
+    Updated zh_CN (Chinese) locale, thanks GhostDC!
+    Major changes to zh_TW locale, thanks gregman98
+    Added '/skill keep' shortcut (for example /mining keep) thanks GriffinCodes
+    Impact is now more balanced as the formula has been changed (see notes) thanks emanondev
+
+    NOTES:
+    Impact will deal less durability damage to armors without unbreaking, and more to armors with unbreaking
+
+Version 2.1.200
+    Fixed a major 1.17 exploit
+    Dodge will no longer trigger while blocking
+    Action Bar messages can now be disabled (thanks TheBusyBiscuit)
+    mcMMO is better at MC version parsing now (thanks stepech & TheBusyBiscuit)
+
+Version 2.1.199
+    Fixed IndexOutOfBounds error for servers running 1.17 or higher
+    Fixed a bug that caused MySQL/MariaDB to malfunction for 1.17 (see notes)
+    Renamed Deepslate Lapis Lazuli Ore to Deepslate Lapis Ore in experience.yml and config.yml
+    Added some code to prevent mcMMO from breaking if it doesn't recognize the version of the game
+    Optimized CompatibilitySupportLayer - this handles some of the logic for supporting multiple versions of the game
+    Added Unit Tests for MinecraftGameVersion
+
+    NOTES:
+    I have temporarily disabled SSL for MySQL/MariaDB for 1.17 ( proper fix coming soon )
+
+Version 2.1.198
+    Fixed a bug where Smelting didn't work with the new 1.17 materials
+    Updated dependency Adventure to 4.8.0 (thanks TheBusyBiscuit)
+
+Version 2.1.197
+    This update adds compatibility for new mobs and blocks from 1.17
+    This build of mcMMO should be more compatible with certain versions of ViaVersion
+    Players are no longer launched from Minecarts when using a Fishing Rod (they are still dismounted) thanks lexikiq
+    Updated Japanese locale (thanks ViaSnake)
+    Updated Brazil Portuguese (pt_BR) locale (thanks Paulo Guilherme)
+    Added Goat to experience.yml for combat and taming
+    Added Axolotl to experience.yml for combat and taming
+    Added Glow_Squid to experience.yml for combat and taming
+    Added Glow Berries to Farmer's Diet
+    Updated Super Breaker to recognize the new pick-axe appropriate blocks
+    Updated Tree Feller to recognize Azalea Leaves
+
+    Added Rooted Dirt to experience.yml for Excavation
+    Added Small Dripleaf to experience.yml for Herbalism
+    Added Big Dripleaf to experience.yml for Herbalism
+    Added Moss Block to experience.yml for Herbalism
+    Added Cave Vines to experience.yml for Herbalism
+    Added Cave Vines Plant to experience.yml for Herbalism
+    Added Glow Lichen to experience.yml for Herbalism
+    Added Tuff to experience.yml for Mining
+    Added Calcite to experience.yml for Mining
+    Added Smooth Basalt to experience.yml for Mining
+    Added Block_Of_Amethyst to experience.yml for Mining
+    Added Budding Amethyst to experience.yml for Mining
+    Added Small_Amethyst_Bud to experience.yml for Mining
+    Added Medium Amethyst Bud to experience.yml for Mining
+    Added Large Amethyst Bud to experience.yml for Mining
+    Added Amethyst Cluster to experience.yml for Mining
+    Added Deepslate to experience.yml for Mining
+    Added Cobbled Deepslate to experience.yml for Mining
+    Added Copper Ore to experience.yml for Mining
+    Added Deepslate Redstone Ore to experience.yml for Mining
+    Added Deepslate Copper Ore to experience.yml for Mining
+    Added Deepslate Coal Ore to experience.yml for Mining
+    Added Deepslate Diamond Ore to experience.yml for Mining
+    Added Deepslate Emerald Ore to experience.yml for Mining
+    Added Deepslate Iron Ore to experience.yml for Mining
+    Added Deepslate Gold Ore to experience.yml for Mining
+    Added Deepslate Lapis Lazuli Ore to experience.yml for Mining
+    Added Lapis Lazuli Ore to experience.yml for Mining (was missing)
+
+    Added Moss Block to Bonus Drops for Herbalism in config.yml
+    Added Glow Berries to Bonus Drops for Herbalism in config.yml
+    Added Cave Vines to Bonus Drops for Herbalism in config.yml
+    Added Cave Vines Plant to Bonus Drops for Herbalism in config.yml
+    Added Tuff to Bonus Drops for Mining in config.yml
+    Added Amethyst Shard to Bonus Drops for Mining in config.yml
+    Added Calcite to Bonus Drops for Mining in config.yml
+    Added Smooth Basalt to Bonus Drops for Mining in config.yml
+    Added Block_Of_Amethyst to Bonus Drops for Mining in config.yml
+    Added Budding Amethyst to Bonus Drops for Mining in config.yml
+    Added Small_Amethyst_Bud to Bonus Drops for Mining in config.yml
+    Added Medium Amethyst Bud to Bonus Drops for Mining in config.yml
+    Added Large Amethyst Bud to Bonus Drops for Mining in config.yml
+    Added Amethyst Cluster to Bonus Drops for Mining in config.yml
+    Added Deepslate to Bonus Drops for Mining in config.yml
+    Added Cobbled Deepslate to Bonus Drops for Mining in config.yml
+    Added Raw Iron to Bonus Drops for Mining in config.yml
+    Added Raw Gold to Bonus Drops for Mining in config.yml
+    Added Raw Copper to Bonus Drops for Mining in config.yml
+    Added Copper Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Redstone Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Copper Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Coal Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Diamond Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Emerald Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Iron Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Gold Ore to Bonus Drops for Mining in config.yml
+    Added Deepslate Lapis Lazuli Ore to Bonus Drops for Mining in config.yml
+    Added Lapis Lazuli Ore to Bonus Drops for Mining in config.yml (was missing)
+
+    Added Cobbled Deepslate to experience.yml for Smelting
+    Added Raw Copper to experience.yml for Smelting
+    Added Raw Iron to experience.yml for Smelting
+    Added Raw Gold to experience.yml for Smelting
+    Added Copper Ore to experience.yml for Smelting
+    Added Deepslate Redstone Ore to experience.yml for Smelting
+    Added Deepslate Copper Ore to experience.yml for Smelting
+    Added Deepslate Coal Ore to experience.yml for Smelting
+    Added Deepslate Diamond Ore to experience.yml for Smelting
+    Added Deepslate Emerald Ore to experience.yml for Smelting
+    Added Deepslate Iron Ore to experience.yml for Smelting
+    Added Deepslate Gold Ore to experience.yml for Smelting
+    Added Deepslate Lapis Lazuli Ore to experience.yml for Smelting
+    Added Lapis Lazuli Ore to experience.yml for Smelting (was missing)
+
+    NOTES:
+    Another patch will follow this one shortly to add more 1.17 support, I am waiting on the Spigot API to test some stuff which isn't out yet.
+    You shouldn't need to edit your configs for this update, your configs should update automatically.
+    Expect some patches following this update for Axolotl and other new entities, waiting on the Spigot API to become available
+    If you run into any issues with ViaVersion or ViaBackwards, use the latest dev builds for each.
+
+Version 2.1.196
+    Removed the explosion from Rupture
+    Adjusted Rupture to play its particle effect less often
+    Fixed a bug where Rupture never applied to additional targets during Serrated Strikes
+    Fixed a bug where players without Rupture permission could use Rupture during Serrated Strikes
+    Fixed a possible null error for our SelfListener
+    Added locale string 'Swords.Combat.Rupture.Note.Update.One'
+    Updated locale string 'Guides.Swords.Section.1'
+    Crossbows can now be fished up with enchantments
+    (API) Added McMMOEntityDamageByRuptureEvent (thanks qixils)
+
+    NOTES:
+    For now Rupture is non-lethal, I may add back a lethal component at the end of its damage
+    Rupture will be in a state of change for a while as I receive feedback (give me feedback in Discord!)
+    Crossbows is not in the default fishing loot list, you'd have to add it yourself.
+    For Devs: McMMOEntityDamageByRuptureEvent extends EntityDamageByEntityEvent and uses CUSTOM type damage
+
+Version 2.1.195
+    Fixed a null connection error which affected some SQL users
+
+Version 2.1.194
+    Fixed an XP exploit
+    Updated SQL to not throw errors if upgrades.yml was reset for any reason
+    Updated SQL to use the newest driver path (and fall back to the old one if the new one doesn't exist on the server)
+    Locale override files are now named locale_override.properties (converted automatically/generated automatically)
+    Existing in use locale override files will be renamed to locale_override.properties and have some useful text put in them
+    mcMMO will now generate a locale override file with some detailed instructions if one doesn't exist (will be found in /plugins/mcMMO/locales/locale_override.properties)
+
+    NOTES:
+    If you were overriding locale before this update mcMMO will just rename the existing override file to locale_override.properties add some useful text and then load it
+    Remember you can use /mcreloadlocale to swap the edits in without restarting the server
+
+Version 2.1.193
+    Fixed another bug where mcrank/mctop/leaderboards weren't loading
+    Fixed a bug where override locales weren't being loaded (but worked after a reloadlocale command)
+    (Unit Tests) Added a test to make sure leaderboards for FlatFile were working
+    Fixed blocks being dropped from blast mining even if yield was set to 0 (thanks Warriorrrr)
+    Fixed Tree feller not working entirely if one fake block break event is cancelled. (thanks Warriorrrr)
+    Fixes no woodcutting xp being rewarded if a tree is too big while using tree feller. (thanks Warriorrrr)
+    Updated pl locale (thanks Mich3l3k)
+
+Version 2.1.192
+    Removed some debug messages from FlatFileDatabaseManager
+    Fixed another bug where player names could be saved as null for FlatFileDB (they will update on the players next login at the next save interval)
+    (API) Removed deprecation from com.gmail.nossr50.api.ExperienceAPI.getOfflineProfile(java.lang.String)
+    (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(org.bukkit.OfflinePlayer)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineProfile(org.bukkit.OfflinePlayer)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXP(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPRaw(org.bukkit.OfflinePlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPRaw(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.ExperienceAPI.getOfflineXPToNextLevel(org.bukkit.OfflinePlayer, java.lang.String)
+    (API) Added com.gmail.nossr50.api.DatabaseAPI.doesPlayerExistInDB(java.lang.String)
+    (Unit Tests) Added some more unit tests to FlatFileDB
+
+Version 2.1.191
+    Fixed a bug related to our blocktracker
+    Fixed a bug that prevented the leaderboards from working on FlatFile in some circumstances
+    Some minor optimizations to our Block events
+    (Unit Tests) Added a test for initializing the leaderboard on FlatFile
+Version 2.1.190
+    Fixed a null error in BitSetChunkStore
+Version 2.1.189
+    Fixed a bug that would remove components from death messages when players were killed by mobs (thanks lexikiq)
+    Rewrote how FlatFileDatabase verifies data integrity
+    FlatFileDatabase has much better data validation and will repair broken/invalid data much better
+    Fixed a bug where FlatFileDatabase users could have their names saved as "null" (names will be fixed the next time the player logs in)
+    Added 20~ unit tests for FlatFileDatabaseManager (see notes)
+    FlatFileDB now stores the last login of users again (was completely non functional for a while)
+    Newly created flat file databases (mcmmo.users file) will have a comment line at the top noting the date the database was created
+    Minor performance optimizations to FlatFile database
+    mcMMO will once again purge old users if the config option is on (see notes)
+    Fixed a bug where FlatFileDatabaseManager didn't properly upgrade older database entries to the newest schema
+    The setting to disable the mcMMO user block tracker has been moved from our "hidden config" to persistent_data.yml
+    Added 'mcMMO_Region_System.Enabled' to persistent_data.yml (don't touch this setting unless you know what you are doing)
+    Removed MHD command (it didn't do anything for a while now)
+    Removed UltraPermissions warning
+    Updated pl locale (Thanks Mich3l3k)
+    Fixed an IllegalPluginAccessException error that could happen during server shutdown
+    Minor performance optimizations to misc parts of the codebase
+    (API) Added com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(org.bukkit.OfflinePlayer)
+    (API) Deprecated com.gmail.nossr50.database.DatabaseManager.loadPlayerProfile(java.util.UUID, java.lang.String)
+    (API) Removed com.gmail.nossr50.database.DatabaseManager.newUser(java.lang.String, java.util.UUID)
+    (API) PrimarySkillType will soon be just an enum with nothing special going on
+    (API) Deprecated the members of PrimarySkillType use mcMMO::getSkillTools instead, deprecated members will be removed in Tridents & Crossbows (due soon)
+    (API) Some members of PrimarySkillType were removed and not deprecated (such as the field constants)
+
+    NOTES:
+    I spent over 26 hours refactoring FlatFileDB and writing unit tests for it, this will ensure that any changes in the code that could break the database are caught at compile time (so long as we have enough tests, could probably use more)
+    Regarding purging old users on the FlatFileDB, since this wasn't functioning for a while, the last login of users has been reset and if mcMMO hasn't seen that user since this update, it won't purge them as it has no way to know if they are truly an old user
+    I'm likely going to add SQLite DB as an option in the future, I spent time to fix up the FlatFileDB as some Unit Testing practice.
+    Ultra Permissions is SAFE to use with mcMMO, disregard previous messages stating otherwise
+    After getting in contact with the UltraPermissions devs and exhaustive testing, I have concluded that using UltraPermissions is completely safe with mcMMO. The users who had an issue with performance currently have an unknown cause, potentially it is from a plugin using the UltraPermissions API I really can't say without more data. My apologies to the UltraPermissions team for reporting an issue between our two plugins directly, as that is not the case. I would have tested it myself sooner but UltraPermissions was closed source and premium so I wasn't particularly motivated to do so, however I have been given access to the binaries so now I can do all the testing I want if future issues ever arise which I have zero expectations that they will.
+
+Version 2.1.188
+    Updated default entries in treasures.yml to use "Level_Requirement" instead of "Drop_Level"
+    Fixed a bug where excavation treasures only required level 0 instead of loading the value from the config
+    Fixed a bug where /fishing was showing the wrong shake chance
+    Default Shake chance increased from 15% to 30% (update advanced.yml manually or delete the file to regenerate it and receive these changes)
+    Removed entries for ranks 2-8 of Shake from advanced.yml (Shake only has one rank, the extra entries were a mistake)
+    Modified the warning about UltraPermissions
+    Removed the debug message about potentially unused keys (only shown if you had debug mode enabled in config.yml)
+
+    NOTES:
+    This update makes changes to treasures.yml automatically to apply the fix, you don't need to do anything
+    UltraPermissions devs are working on a fix for the performance issue bug
+
+Version 2.1.187
+    Fixed a ClassCastException error involving Rupture
+
+Version 2.1.186
+    Rupture has been reworked to solve a few outstanding issues (see notes)
+    Fixed an exploit involving enchantments (thanks TheBusyBiscuit)
+    Fixed a very small memory leak that would only happen in very rare situations
+    Fixed a bug where XP wasn't granted while sneaking and interacting with a berry bush
+    Gore no longer applies Rupture
+    Gore no longer sends a message to the Wolf owner when it triggers
+    Gore no longer sends a message to players that are hit by it
+    Rupture no longer sends a message telling you that your target is bleeding
+    Updated locale string 'Swords.SubSkill.Rupture.Description'
+    Updated locale string 'Swords.SubSkill.Rupture.Stat.Extra'
+    Updated locale string 'Swords.Combat.Rupture.Note'
+    Added locale string 'Swords.SubSkill.Rupture.Stat.TickDamage'
+    Added locale string 'Swords.SubSkill.Rupture.Stat.ExplosionDamage'
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Chance_To_Apply_On_Hit' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_Players' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_Mobs' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_Players' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_Mobs' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_Players' to advanced.yml
+    Added 'Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_Mobs' to advanced.yml
+    Removed 'Skills.Swords.Rupture.ChanceMax' from advanced.yml
+    Removed 'Skills.Swords.Rupture.MaxBonusLevel.Standard' from advanced.yml
+    Removed 'Skills.Swords.Rupture.MaxBonusLevel.RetroMode' from advanced.yml
+    Removed 'Skills.Swords.Rupture.MaxTicks' from advanced.yml
+    Removed 'Skills.Swords.Rupture.BaseTicks' from advanced.yml
+    Removed 'Skills.Swords.Rupture.DamagePlayer' from advanced.yml
+    Removed 'Skills.Swords.Rupture.DamageMobs' from advanced.yml
+
+    NOTES:
+    The old Rupture would constantly interfere with your ability to do a Sweep Attack/Swipe with swords, the new one solves this problem
+    Targets will bleed and take "pure" damage while bleeding, this never kills the target. It will reduce them to 0.01 HP.
+    After 5 seconds of not applying Rupture on the target Rupture explodes dealing a large amount of damage, this damage is not pure and is affected by armor etc.
+    Rupture no longer tells you that you that you applied it to the target, it should be obvious from the sounds/particle effects
+    The new Rupture no longer constantly interferes with the vanilla Swipe (the AOE attack built into Minecraft)
+    The new Rupture has not had a fine tuned balance pass, I will be balancing it frequently after this patch, it may be too weak or too strong in its current form
+    Rupture does not stack between players, whoever applied Rupture first determines its strength, this will change in the future (Stronger Ruptures will overwrite weaker ones)
+    When you reapply rupture it immediately triggers a damage tick
+
+
+
+Version 2.1.185
+    Fixed an exploit for Herbalism
+
+Version 2.1.184
+    Removed April Fools event
+    Fixed a bug where the default treasures.yml file had incorrect keys (see notes)
+
+    NOTES:
+    mcMMO will fix bad config files automatically, you don't need to do anything
+
+Version 2.1.183
+    Players now gain Acrobatics XP from falling even if they don't have the Roll permission node (checks for Acrobatics skill permission)
+    treasures.yml now has separate settings for Drop_Level for Standard/Retro mode (see notes / this change is automatic)
+    Updated Russian locale (thanks ImDaniX)
+    Added Donkeys to beat lore (thanks QuantumToasted)
+    Alchemy guide now correctly labels Rabbit's foot for potion of leaping (thanks mldriscoll)
+    Fixed a bug where sweet berry bushes would give XP in situations where they shouldn't
+    The /mmoinfo for Roll is removed for the time being, it will return in a future update (see notes)
+
+    NOTES:
+    Previously treasures.yml would take drop_level and multiply it by 10 if you were on Retro Mode, this is confusing so it has been changed
+    treasures.yml will update old entries to follow the new format automatically, please review them to make sure they match expected values, and if not edit them and save then reboot your server
+    Roll is actually the only skill that had an /mmoinfo, its one big mess, I'll fix it in the future
+
+Version 2.1.182
+    Players now receive XP from harvesting Sweet Berry bushes (double XP for harvesting fully grown berries)
+    Fixed an error when using mcMMO with Featherboard that broke mcMMO skill boards when using certain commands
+    Fixed a NPE with Scoreboards enabled when trying to update scoreboards
+    Added 'Scoreboard.Recovery' locale key
+    Sweet Berry Bush will no longer ready tools for Super Abilities
+    You can now use '.all' (for example: mcmmo.perks.xp.customboost.all) to give an XP perk to all skills
+    Removed hardcore and vampirism commands, these commands are dangerous, just modify the config file if you want to use hardcore / vampirism
+    Fixed several errors in de locale (Thanks TheBusyBiscuit & w1tcherrr)
+    Fixed a bug where double smelt never succeeded if the furnace was empty (but worked normally afterwards)
+    Added some safety so that mcMMO automatic save interval is never more frequent than 1 minute
+    Removed a few silent exceptions for scoreboards & mcMMO
+    Added warning about UltraPermissions to mcMMO
+    Fixed a potential NPE in McMMOPlayerExperienceEvent
+    Added Sweet Berry Bush to config.yml bonus drops for Herbalism
+
+    NOTES:
+    Sweet Berry Bushes won't give double drops for now, looking into an elegant solution
+    mcMMO will do a better job reporting if something went wrong with scoreboards, which may lead to improved plugin compatibility between mcMMO and other plugins touching scoreboards.
+
+Version 2.1.181
+    mcMMO no longer pointlessly tries to check for missing UUIDs for FlatFile database
+    Removed the "name change detected" message as some plugins (such as Plan) invoke API calls which spams the console with this message
+    Refactored code related to loading player data from the database
+    (API) Added DatabaseManager::loadPlayerProfile(String)
+    (API) Removed DatabaseManager::loadPlayerProfile(String, UUID, boolean)
+    (API) Removed DatabaseManager::loadPlayerProfile(String, boolean)
+
+Version 2.1.180
+    mcMMO will now automatically remove corrupted data from mcmmo.users instead of catastrophic failure
+    When using FlatFile database (the default) mcMMO will try its best to inform you which players had corrupted data when it does repairs
+    Various minor optimizations and tweaks to the FlatFile database
+    mcMMO is now much more verbose when things go wrong with the FlatFile database (removed some silent errors, added more error messages/warnings)
+    mcMMO now uses UTF-8 compliant encoding for SQL databases (utf8mb4)
+    Fixed a bug where mcMMO could in some circumstances fail to update SQL schema and mark it as successful
+    Renamed updates.yml to updates_overhaul.yml to avoid some potential issues when upgrading from classic
+
+    NOTES:
+    This update was tested pretty thoroughly so it should be pretty safe, let me know if you have issues in the mcMMO discord or GitHub issues page for mcMMO!
+
+Version 2.1.179
+    Fixed a bug for FlatFile databases where some players with changed nicknames would have their levels not loaded upon login (possibly wiping their data)
+
+    NOTES:
+    Players affected by this bug (introduced in 2.1.177) may have their data lost, but this patch reverts the change which caused this bug.
+    I suspect their data isn't lost and may be restored after this patch is loaded up, however if it is lost mcMMO makes regular backups so you can load one of those (check <Server Directory>/plugins/mcMMO/) or manually edit their levels via MMOEDIT as a solution of sorts.
+
+Version 2.1.178
+    Item replacement in vanilla fishing override back to SALMON from AIR (see notes)
+
+    NOTES:
+    Apparently can't set items to AIR, my bad. I'll look into another solution for fishing plugin compatibility soon.
+
+Version 2.1.177
+    Environmentally aware will now protect Wolves from Magma blocks
+    Fixed a bug where mcMMO would fail to update a players name when it detected a name change
+    mcMMO will treat vanished players as if they are offline when using the inspect command on them now (see notes)
+    mcMMO now listens to PlayerFishEvent at HIGH event priority instead of HIGHEST
+    Changed how vanilla fishing treasures are overridden (AIR instead of SALMON)
+    (API) Added McMMOReplaceVanillaTreasureEvent -- see notes
+
+    NOTES:
+    A few changes were made to the inspect command, it used to reject you when used on vanished players, now it will be processed as if they are offline.
+    Additionally if you do inspect a vanished player, it will not use their display name (consistent with offline players) as that would give them away for being online
+    McMMOReplaceVanillaTreasureEvent is an event which is fired when mcMMO replaces a vanilla treasure with AIR if the server config file is set to override vanilla treasures, this causes some issues for other fishing plugins so this event helps those plugins be more compatible
+
+Version 2.1.176
+    Another fix for Double Smelt bringing item stack size to illegal values
+
+Version 2.1.175
+    Fixed a bug where mcMMO would occasionally give a 65 item stack from a double smelt on a furnace
+    Fixed a bug where arrows could be duped when fired from a crossbow with piercing enchantment
+    Added setting to enable or disable Green Thumb automatically replanting crops per crop to config.yml under 'Green_Thumb_Replanting_Crops' section
+    Updated Adventure (our text dependency) fixes some errors when using color codes in party/admin chat (thanks TheBusyBiscuit)
+    Added some support for negative Y values in anticipation of 1.17 world height changes (thanks t00thpick1)
+
+Version 2.1.174
+    Some legacy color codes in our locale file were swapped to &-code equivalents (thanks ViaSnake)
+    Updated hu_HU locale (thanks andris155)
+    Updated ru locale (thanks imDaniX)
+    Updated fr locale (thanks Elikill58)
+    (API) Added SubSkillBlockEvent for some SubSkill events that have a block (eg: Green Thumb Block events)
+    (API) Green Thumb (Block) now fires a SubSkillBlockEvent which is cancellable
+    (API) Green Thumb (Plant) now fires SubSkillBlockEvent which is cancellable
+    (API) Shroom Thumb now fires a SubSkillBlockEvent which is cancellable
+
+    NOTE: A lot of sub-skills without random chance elements are missing events, this will be cleaned up in the near future. If you need something specific added sooner than that, post a GitHub issue for it and I'll patch it in.
+    I'm likely to separate Green Thumb into two distinct skills in an upcoming patch
+    Only Green Thumb/Shroom Thumb trigger the new SubSkillBlockEvent for now
+
+Version 2.1.173
+    The experience orbs dropped by Knock on Wood rank 2 during Tree Feller are now much less frequent but provide more XP
+    mcMMO no longer damages fishing rods or drains a player's hunger when fishing
+    Fixed a visual bug where players who had lucky perk were shown incorrect odds when using skill commands (such as /axes)
+    Updated ja_JP locale (thanks ViaSnake)
+    Fixed a bug where scoreboards were torn down inappropriately when moving to or from blacklisted worlds (thanks steve4744)
+    Updated Kyori's adventure library to 4.4.0 (used by mcMMO to handle text components)
+
+Version 2.1.172
+    Updated german locale (thanks TheBusyBiscuit)
+    Added 'mcmmo.broadcast.levelup' permission node, if a player lacks this node they will not have their level up milestones broadcast to chat, this is a default permission node
+    Power Levels are now included in level up broadcasts and they have their own settings (mirroring the existing settings for skill broadcasts)
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Enabled' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Milestone_Interval' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Send_To_Console' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Party_Members' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Only_Same_World' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restrict_Distance' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Powerlevels.Broadcast_Targets.Distance_Restrictions.Restricted_Radius' to config.yml
+    Added 'Broadcasts.PowerLevelUpMilestone' to locale
+    You can now disable the XP orbs from being dropped when Knock On Wood triggers during Tree Feller
+    Added 'Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops' to advanced.yml
+    Changed Fists to not be capitalized (en_US) when lowering/readying berserk
+    SkillActivationPerkEvent can now be called in async threads (thanks electronicboy)
+    Removed a few never implemented settings from Skills.Woodcutting.TreeFeller in advanced.yml
+    Updated bStats (thanks TheBusyBiscuit)
+    Fixed some incorrect reporting to bStats (I'm so dyslexic...)
+
+    NOTES:
+    The new 'mcmmo.broadcast.levelup' node is a default node included under the 'mcmmo.defaults' node umbrella, you shouldn't have to give this to your players unless they don't have access to 'mcmmo.defaults'
+    If you don't have a permission plugin you don't need to worry, players will have this node by default in that case
+    There are situations where level up broadcasts will be skipped, for example if you go from level 0 -> 101 via addlevels or mmmoedit, and your broadcast interval is 100, it will be skipped as 101 falls out of this interval, this kind of skip only applies to command based leveling. Players gaining levels naturally should never have their broadcasts skipped. I'll fix this particular interaction in the future so that command based leveling never skips over milestone broadcasts, but for now it does.
+
+Version 2.1.171
+    Fixed a bug where arrows shot by infinite bow enchant would duplicate
+    Fixed a bug where Archery XP would calculate incorrectly
+    Axes can now replant cocoa plants (thanks Lyther)
+    Players who level up at certain milestones have their level ups broadcast to the server (very configurable and optional, see notes)
+    New locale string 'Broadcasts.LevelUpMilestone'
+    Added 'General.Level_Up_Chat_Broadcasts.Enabled' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Milestone_Interval' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Send_To_Console' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Party_Members' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Only_Same_World' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restrict_Distance' to config.yml
+    Added 'General.Level_Up_Chat_Broadcasts.Broadcast_Targets.Distance_Restrictions.Restricted_Radius' to config.yml
+
+    NOTES:
+    The new broadcast system is very configurable, you could set the milestone interval to 1 if you want players to always be informed when someone levels up
+    With default settings, messages are broadcast to all players on all worlds and to the server console when a player hits a level up that is a 100 interval, for example level 100, 300, 600, 2200 would all qualify
+    You can change the settings to specify who receives these messages or turn the whole system off
+    The message is customizable via locale: https://mcmmo.org/wiki/Locale
+    There are comments in config.yml above each setting (as long as YAML doesn't move comments around chaotically...) that explain each setting
+    In case your comments are missing, here's what they look like by default: https://gist.github.com/nossr50/baf656477c75663e9e2f9284acee8d67
+
+
+Version 2.1.170
+    Reverted a change that broke compatibility with the mcMMO papi ecloud thingy
+
+Version 2.1.169
+    Fixed a few memory leaks involving arrows
+    Fixed mcMMO inappropriately assigning metadata to projectiles not fired from players
+    Fix mctop not working if locale was set to something other than en_US
+    mcMMO will now always emulate lure in order to stack it correctly and avoid vanilla bugs
+
+Version 2.1.168
+    Fixed an IndexOutOfBoundsException error when trying to access UserBlockTracker from an invalid range (thanks t00thpick1)
+    (API) UserBlockTracker is now the interface by which our block-tracker will be known (thanks t00thpick1)
+    Optimized memory access for Acrobatics fall anti-exploit mechanics (thanks t00thpick1)
+
+Version 2.1.167
+    Fixed a serious dupe bug
+    Add McMMOPlayerPreXpGainEvent event for plugins to modify given exp (thanks electronicboy)
+    Add SkillActivationPerkEvent (thanks electronicboy)
+
+    NOTE:
+    This bug was introduced in 2.1.165, update immediately if you are on 2.1.165 or 2.1.166
+
+Version 2.1.166
+    Fixed a small memory leak in the new COTW tracker
+    Potentially fixed a ConcurrentModificationException involving the TransientEntityTracker (report this error if you encounter it)
+    Music discs removed from the default fishing_treasures.yml
+    Optimized how mcMMO saves player data (should improve timings on servers with bad disk speeds and or bad connectivity to their SQL server instance)
+
+    NOTES:
+    No one likes fishing up music discs, if you want this change it is recommended you delete fishing_treasures.yml and let it regenerate
+    (You won't have this file if you haven't updated in a while, if so you don't need to do anything)
+    If any of you encounter a ConcurrentModificationException error that mentions TransientEntityTracker in its stack trace after this update let me know, I have another fix in mind for this if this update didn't fix it.
+
+Version 2.1.165
+    Fixed a bug where Enchanted Books dropped by mcMMO (in Fishing) did not function correctly
+    The mcMMO system which tracks player placed blocks has had some major rewrites (thanks t00thpick1)
+    Optimized our ChunkUnloadEvent, this should improve timings in this area
+    How mcMMO tracks COTW entities has been rewritten
+    When COTW summons are killed players are now informed (from anything other than the time expiring).
+    mcMMO will now be compatible with changes to world height (1.17 compatibility)
+    mcMMO will ignore EntityPickupItemEvents from "Fake-Player" NPCs if it recognizes them as such, this will prevent some compatibility issues with some plugins
+    SuperBreaker will now always activate if the target blocks fastest tool is a Pickaxe (used to require the block giving XP or being considered an ore)
+    Master Angler mentions that it works better with a boat in its hover tip
+    Added missing cooldown locale message 'Commands.Database.Cooldown'
+    Added new locale message 'Taming.Summon.COTW.Removed'
+    Updated locale entry 'Fishing.SubSkill.MasterAngler.Description'
+
+    NOTES:
+    Books dropped before this fix will not be usable and should just be chucked in lava, the broken books have blue names, the working books have yellow names.
+    t00thpick1 has taken time to rewrite our block meta tracking system to be more efficient, easier to maintain, and support upcoming features such as world height changes
+    This new system is compatible with the old one, it will convert old files to the new format as needed. You won't even know it is doing anything.
+    This update shouldn't break anything as the API is the same.
+
+    Alright back to work on T&C unless some major bugs come out of this...
+
+Version 2.1.164
+    mcMMO will now let players use vanilla blocks that have interactions (such as the vanilla Anvil) which are assigned as either Repair or Salvage blocks if a player is sneaking (see notes)
+    The Rarity known as Records has been renamed to Mythic
+    Fishing treasures have been moved from treasures.yml -> fishing_treasures.yml, copy over any custom entries you had from treasures.yml carefully as the config file has changed and you can't just copy paste your old entries without making a few edits
+    Added Enchanted Books to fishing_treasures.yml as Legendary rarity (can drop with any legal enchantment - see notes)
+    Added all Netherite gear to the Mythic rarity in fishing_treasures.yml
+    Added Name Tag to fishing_treasures.yml as Rare rarity
+    Added Netherite Scrap to fishing_treasures.yml as Legendary rarity
+    Added Nautilus Shell to fishing_treasures.yml as Legendary rarity
+    Music Disc rarity in fishing_tresures.yml has been broken up across tiers, they will be more common now.
+    Mythic rarity (formerly known as Records) now allows for Enchantments to be applied to drops (See Notes)
+    New exploit fix setting 'PreventPluginNPCInteraction' which defaults to true, when disabled it will allow combat interactions with "NPC" entities from plugins like Citizens
+    ExploitFix.PreventPluginNPCInteraction Added to experience.yml
+    Modified locale string 'Fishing.SubSkill.TreasureHunter.Stat.Extra' in existing locale files
+    You can now define a whitelist of enchants or a blacklist of enchants for an Enchanted_Book entries in fishing_treasures.yml, see notes for an example
+
+    NOTES:
+    Before reading, Fishing/Excavation are getting a complete loot table rewrite in the future, everything changed in this patch is meant as a temporary quality of life fix until the bigger better change in the future.
+    There's no real reason to allow for vanilla treasures anymore, so if you were using the vanilla treasure override I suggest turning it off.
+    You can't add Enchanted_Book to any treasures outside of Fishing's treasure drops right now, I'll fix it in an upcoming patch. Well you can add it, but it won't work.
+    The rarity formerly known as 'Records' was odd to me, if you got the best possible drop it was always going to be a Music Record drop (using the default mcMMO treasure list), and by default the Records tier had only music records. It was treated differently in the code as well, for example Records drops never had enchantments applied to them. So you could add say NETHERITE_ARMOR to them in your user config and it would never put enchantments on it, that seemed very odd to me.
+    As a response to this, I've renamed Records as Mythic, I've moved the records into varying tiers, you'll start getting them much earlier now. I've also added Netherite and Enchanted Books to the Mythic tier.
+    Enchanted Books have been added to Fishing loot, this is a basic hacky work around until the config update comes. Enchanted books can have any legal enchant and you can specify which Enchants a book can spawn with.
+    Also the Enchantment chance to be applied to the book is completely equal across all enchantments, it does not follow the same logic as applying enchantments to fished up gear.
+
+    Here is an example of using the whitelist or blacklist for an Enchanted_Book entry in fishing_treasures.yml
+    https://gist.github.com/nossr50/4e15b8ba6915b5a5f516eccfba2d7169
+    If you can't load this image, at the address of your treasure for example, at Fishing.Enchanted_Book.Enchantments_Blacklist: you define a list (which must follow yaml spec, google yaml linter) of enchants to disallow, likewise at Fishing.Enchanted_Book.Enchantments_Whitelist you can setup a whitelist, if neither is defined then the book can spawn with all possible enchants, if both are defined the whitelist is used instead of the blacklist
+    Take care when moving any fishing entries you may have defined in treasures.yml over to fishing_treasures.yml, the config file has had a few things changed (as noted in these notes).
+
+    When talking about NPCs in the below notes, I am referring to "Fake" Players used in plugins such as Citizens, not Villagers from Vanilla Minecraft or anything labeled NPC in another plugin which does not constitute a "Fake Player"
+    Historically mcMMO has checked an entity for being a Fake-Player-NPC and backed out of any interaction, this was originally done because of Fake-Player-NPCs that were meant to be invincible/etc and not give XP
+    However nowadays what a Fake-Player-NPC is used for is pretty loose, mcMMO only has definitions for some NPCs (such as from Citizens) it doesn't know about most Fake-Player-NPCs in most plugins unless they identify themselves in a similar way to the predefined parameters
+    Leave this new exploit fix setting on true unless you understand the implications
+
+    If you only ran mcMMO on your server you'd have no way to use Enchanted Books if you set the repair anvil to the vanilla anvil, so now you can sneak to open up its menu. By the way, mcMMO has the vanilla anvil as repair's default anvil (instead of iron block which it had been historically).
+Version 2.1.163
+    Fixed the translate URL pointing to the wrong place (thanks chew)
+    Fixed a bug where FlatFile databases would always attempt a UUID conversion task every save operation (every 10 minutes) causing console spam
+    mcMMO will no longer throw errors when incoming XP is below 0 (it will just silently cancel the operation)
+    COTW Summoned entities are now removed when the chunk they are in is unloaded (prevents some exploits)
+
+    NOTES:
+    Seems I skipped releasing 2.1.162, not a big deal though as you should be using this version instead!
+    I often test in SQL environments so I missed this bug, reminder to come bother me on discord if you find any annoying bugs!
+    Also work on T&C is going great lately, I feel great. Perhaps my depression is getting better!
+
+Version 2.1.162
+    Fixed a bug where Alchemy brew events were processed after setting brew results (thanks Wolf2323)
+
+Version 2.1.161
+    Fixed a bug where a bunch of text from mcMMO was never being sent and or being sent as blank messages
+
+    NOTES:
+    Adventure (the chat library we use) had an update that required shading in another new module, but there were no errors thrown without running a jvm debug flag and testing it, which is why I missed it. I also missed it because I don't read update notes very closely
+Version 2.1.160
+    Fixed another 9+ year old exploit
+    Silenced a harmless "error" related to Rupture/Bleed often produced when using mcMMO and crazy enchantments together
+
+Version 2.1.159
+    Fixed a memory leak involving renamed mobs
+    Updated Adventure library (used in our chat code)
+
+Version 2.1.158
+    Fixed a bug where Lure level 4 and above would break fishing with the new Master Angler
+    URLs in party/admin chat work again (use https:// in front to make links clickable)
+    Updated nl locale (thanks xl3ehindTim)
+    * Added Crossbow to string repairables (Thanks Momshroom)
+    * Added Shield to wood repairables, with oak planks as material (Thanks Momshroom)
+    * Added Elytra and Trident to Other repairables, using phantom membrane and prismarine crystals respectively. (Thanks Momshroom)
+
+    NOTES:
+    * You'll need to update repair.vanilla.yml yourself or delete the file and regenerate it (lazy easy way).
+    Links in party/admin chat might not be clickable without https:// added in front of the url
+    Added some stuff to Repair, a rework to Repair is coming in the future, this stuff will work for now as a placeholder.
+    Master Angler will emulate the effects of Lure if the level is higher than 3 instead of attempting to stack with it to avoid a vanilla Minecraft bug where fish are never caught
+
+Version 2.1.157
+    Fixed a NPE that prevented mctop (Leaderboards) from working
+
+Version 2.1.156
+    Added Woodcutting skill 'Knock on Wood' - This ability gives you goodies (saplings, xp orbs, apples, etc) when using Tree Feller
+    Tree Feller no longer gives non-wood items by default, it now requires Knock on Wood for additional loot
+    When you raise your axe you will now see information about any super abilities on CD
+    Fixed a bug where Green Thumb would replant blocks floating in the air
+    Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
+    * Fixed a bug where Master Angler rank 1 level requirement was set too high (default configs)
+    Added some errors that trigger if a plugin hooking into mcMMO is grabbing leaderboards for child skills through our SQL/FlatFile class (which don't exist)
+    mcMMO will automatically fix some errors in logic for user settings in skillranks.yml
+    Corrected some logic errors when checking for oddities in skillranks.yml
+    Removed incorrect translations of Master Angler from various locales
+    Modified Master Angler stat lines in /fishing
+    Updated Green Thumb description to mention that it needs a hoe
+    'Abilities.Limits.Tree_Feller_Threshold' in config.yml now defaults to 1000 instead of 500 (edit your config)
+    Added new permission node 'mcmmo.ability.woodcutting.knockonwood'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Name'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Stat'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Description'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Normal'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Rank2'
+
+    NOTES:
+    You don't need to touch your config files unless you want to get the new tree feller threshold (1000 instead of 500), you could also delete config.yml and regenerate it, for all the other config changes in this update, they are handled automagically.
+    * - If you haven't manually edited your Master Angler entries in skillranks.yml then the previous mcMMO update has rank 1 for Master Angler too high, this update automatically fixes it.
+    You may have noticed sometimes config file entries are in a strange jumbled order, yeah that's "normal". We'll be moving to HOCON for the config update and wont' have to deal with this crap for much longer.
+    I'll probably be doing a bunch of tweaks to mcMMO UI in the near future, I don't know, or I'll work on T&C
+
+Version 2.1.155
+    Master Angler now has 8 ranks
+    Master Angler is now supported by the latest builds of Spigot on 1.16.4
+    Wolves will now earn a lot more XP from combat than before (Wolves are going to be tweaked a lot in the near future)
+    Fixed a bug where Spectral Arrow awarded too much XP
+    Fixed a bug where party members other than the party leader had names that weren't properly hex colored
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait' to advanced.yml
+    Removed Skills.Fishing.MasterAngler.BoatModifier from advanced.yml
+    Removed Skills.Fishing.MasterAngler.BoatModifier from advanced.yml
+    Optimized party/admin chat a bit
+    Added some misc safeguards against possible NPEs
+    Added some debug output when fishing if mmodebug is on
+    (API) Removed AbstractPlayerAuthor#getComponentDisplayName
+    (API) Removed AbstractPlayerAuthor#getComponentUserName
+    (API) Removed Author#getAuthoredComponentName
+
+    NOTES:
+    Master Angler won't work if you aren't on 1.16.4, the truth is it hasn't worked for a very long time (Since before 1.13.2)
+    The Spigot API related to it has been broken since years and years ago, and they finally updated the API but it is only in the newest builds of Spigot.
+    If you are on something that doesn't support the new Master Angler that skill will be missing when you type /fishing
+    The boat bonus for master angler is static and doesn't improve when leveling master angler.
+    All the new master angler stuff is configurable and can be found in advanced.yml
+    The configurable reduction tick stuff for master angler is multiplied by the rank level when determining the final bonus (use /mmodebug when fishing to see some details)
+    Master Angler stacks with the Lure enchant
+    Removed some unnecessary API, we aren't a chat plugin so these things shouldn't be here.
+    Slowly adding Nullability annotations to the codebase
+
+Version 2.1.154
+    Hex colors are now supported in Party & Admin chat
+    Added support for &#RRGGBB color codes (hex colors) in chat and nicknames for party and admin chat
+    Added hex colored nickname support to admin/party chat
+    Fixed a bug where Tree Feller was not dropping some items like saplings
+    Fixed a bug where using admin chat would in some circumstances throw a NPE
+    (API) Author class has been reworked
+    (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
+    (API) McMMMOChatEvent::setDisplayName() removed
+    (API) Removed Author::setName use Player::SetDisplayName instead
+    (API) Modified Author::getAuthoredName signature to -> Author::getAuthoredName(ChatChannel)
+    (API) Added Author::getAuthoredComponentName(ChatChannel)
+    (API) PartyAuthor and AdminAuthor removed, replaced by PlayerAuthor
+    (API) Probably some more undocumented changes that I'm forgetting...
+
+Notes:
+    For example '/p &#ccFF33hi guys' will send a message colored in hex colors
+    You'll see ~§x in console when hex color codes are used, this is a quirk of how the 'adventure' library we are using is handling some bungee component related things, so it's outside of my hands for now
+
+Version 2.1.153
+    Fixed a bug where most sub-skills were not being displayed when using a skills command (for example /taming)
+    Fixed a bug where some URL links were not being colored
+    Updated fr locale (thanks Vlammar)
+
+Version 2.1.152
+    Fixed a bug where Tree Feller would sometimes double drop blocks inappropriately
+    Fixed a bug with bleed damage calculations and player armor
+    Added some code to prevent a possible NPE when spawning items in a world that got unloaded
+    Added the missing 'pc' alias for party chat
+    Added the missing 'ac' alias for admin chat
+    (API) New ENUM ItemSpawnReason which gives context for why mcMMO is dropping an item
+    (API) McMMOItemSpawnEvent::getItemSpawnReason() was added
+    (API) Many instances of spawning items that didn't used to create and call an McMMOItemSpawnEvent now do
+    Updated hu_HU locale (thanks andris)
+
+    NOTES:
+    I really should stop letting my OCD compel me to rewrite code all the time.
+    Bleed was meant to do reduced damage to players wearing 4 pieces of armor or more, it was incorrectly counting everyone as wearing 4 pieces even when they weren't.
+    This means Bleed was doing a bit less damage than was intended against players without a full set of armor equipped.
+
+Version 2.1.151
+    Added new config for chat options named 'chat.yml'
+    Added 'Chat.Channels.Party.Spies.Automatically_Enable_Spying' to chat.yml which when enabled will start users who have the chat spy permission in chat spying mode
+    All chat settings that used to be in 'config.yml' are now in 'chat.yml'
+    The list of party members shown when using the party command has been simplified, this will change again in the T&C update
+    Fixed a bug where players could use the party chat command without the party chat permission
+    Party Leaders now use a different style when chatting than normal party members (can be customized)
+    Added 'Chat.Style.Party.Leader' to the locale, party leaders use this as their chat style
+
+    NOTES:
+    I greatly disliked the old party member list but was avoiding rewriting it until later, someone pointed out how ugly it was and my OCD triggered and now it is rewritten. I will rewrite it again in Tridents & Crossbows.
+    The new config file lets you disable the chat system (you can disable all of it, or just party chat, and or just admin chat) without permission nodes.
+    If you disable the party/admin chat, then the party/admin chat command never gets registered and attempting to use the command will result in a whole lot of nothing, so if you want users to have a permission denied message then just stick to negating permission nodes.
+    I'll probably be tweaking mcMMO visually a lot in the near future, probably after Tridents & Crossbows goes out.
+    I hate adding more config files using the old .yml system, but the config update is a ways out and this works for now.
+    Reminder that the look/feel of party/admin chat is now determined by locale entries
+    https://mcmmo.org/wiki/Locale can help you understand how to change the locale
+
+Version 2.1.150
+    Fixed an ArrayIndexOutOfBounds exception when using /skillreset
+    You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.
+    mcMMO should now be compatible with 1.16.4's new social features (affects Party/Admin chat)
+    mcMMO Party & Admin Chat have had a complete rewrite
+    Players & Console can now use color codes (including stuff like &a or [[GREEN]]) in party or admin chat
+    Added new permission node 'mcmmo.chat.colors' which allows players to use color codes, negate to disallow this
+    The style and look of admin/party chat is now determined by locale file instead of options in config.yml
+    The default style of admin/party chat has been updated, and it may be updated again in the future
+    Improved messages players receive when they toggle on or off admin or party chat
+    All locale files have had 99.9% of their [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
+    Added new locale entry 'Commands.Usage.3.XP'
+    Added new locale entry 'Chat.Identity.Console'
+    Added new locale entry 'Chat.Style.Admin'
+    Added new locale entry 'Chat.Style.Party'
+    Added new locale entry 'Chat.Spy.Party'
+    Added new locale entry 'Chat.Channel.On'
+    Added new locale entry 'Chat.Channel.Off'
+    (API) ChatAPI::getPartyChatManager() has been removed
+    (API) ChatAPI::sendPartyChat has been removed (similar functionality can be found in the new ChatManager class)
+    (API) ChatAPI::sendAdminChat has been removed (similar functionality can be found in the new ChatManager class)
+    (API) Fake events in mcMMO now implement 'FakeEvent' (thanks TheBusyBiscuit)
+    (API) Updated Adventure Library to 4.1.1
+    (API) McMMOChatEvent has been reworked, plugins dependent on this event should review this class and make appropriate changes
+
+    NOTES:
+    The yet to be released Tridents & Crossbows update will also feature some new features related to party chat, so expect more tweaks to those features in the future.
+    I actually spent a little over a week on this, the old code for party/admin chat was absolutely horrid and when porting in the new 1.16.4 features I couldn't stand the sight of it so I burned everything to the ground and rewrote all of it.
+    The mcMMO chat events now make use of adventure library by Kyori, you can override the message payload with a TextComponent, which allows for some fancy stuff potentially.
+    I'll put in some of my own fancy stuff for party and admin chat in a future update.
+
+Version 2.1.149
+    Added a new config file 'persistent_data.yml'
+    Almost all persistent mob data is now off by default and needs to be turned on in persistent_data.yml (new config file) for performance concerns
+
+NOTES:
+There are some performance issues with how Spigot/MC saves NBT when you start adding NBT to mobs, because of this I have decided that the new persistent data from 2.1.148 is now opt-in.
+
+Not every server will suffer a TPS hit when using the persistent data options, but there is a significant IO cost which can affect TPS if you have them on
+
+I am therefore making many persistent options (the problematic ones involving mobs) opt-in so only those aware of the performance risk will be using the feature.
+
+Persistent data on mobs was a new feature that was introduced in 2.1.148, it was not in mcMMO for the last 10 years and most of you probably didn't even know that it was missing
+
+An example of persistent data would be, normally mcMMO would give 0 XP for a mob from a mob spawner, in the last 10 years if the server rebooted then those existing mobs would give XP again. But with the persistent data option turned on in persistentdata.yml they will be saved to disk, and mcMMO will not forget about them upon reboot.
+
+For now it is not recommended to use persistent data without monitoring performance of ticks afterwards to make sure it was something your server could handle.
+
+I have a solution in mind to make persistent data not so expensive, but writing the code for that will take some time. This will serve as an interim fix.
+
+I am going to focus on Tridents & Crossbows instead of that alternative solution, so don't expect it anytime soon. Use persistent data only if you understand the potential performance cost risk.
+@
+Version 2.1.148
+    Fixed a memory leak involving entity metadata
+    Alchemy progression is now more reasonable (delete skillranks.yml or edit it yourself to receive the change, see notes)
+    Made some optimizations to combat processing
+    New experience multiplier labeled 'Eggs' in experience.yml with a default value of 0 (previously mobs from eggs were using the Mobspawner experience multiplier)
+    New experience multiplier labeled 'Nether_Portal' in experience.yml with a default value of 0
+    New experience multiplier labeled 'Player_Tamed' in experience.yml with a default value of 0
+    New advanced.yml config setting 'Skills.Mining.SuperBreaker.AllowTripleDrops' defaults to true
+
+    Fixed a bug where mobs from eggs were only tracked if it was dispensed (egg tracking now tracks from egg items as well)
+    Fixed a bug where egg spawned mobs were sometimes not marked as being from an egg (used in experience multipliers)
+    Fixed a bug where entities transformed by a single event (such as lightning) weren't tracked properly if there was more than one entity involved
+    mmodebug now prints out some information about final damage when attacking an entity in certain circumstances
+
+    (1.14+ required)
+        Mobs spawned from mob spawners are tracked persistently and are no longer forgotten about after a restart
+        Tamed mobs are tracked persistently and are no longer forgotten about after a restart
+        Egg spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Nether Portal spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Endermen who target endermite are tracked persistently and are no longer forgotten about after a restart
+        COTW spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Player bred mobs are tracked persistently and are no longer forgotten about after a restart
+        Player tamed mobs are tracked persistently and are no longer forgotten about after a restart
+
+    NOTES:
+    Egg mobs & Nether portal pigs being assigned to the mobspawner xp multiplier didn't make sense to me, so it has been changed. They have their own XP multipliers now.
+    While working on making data persistent I stumbled upon some alarming memory leak candidates, one of them was 7 years old. Sigh.
+    Alchemy now progresses much smoother, with rank 2 no longer unlocking right away. Thanks to Momshroom for pointing out this oddity. Delete skillranks.yml or edit it yourself to recieve this change.
+    https://gist.github.com/nossr50/4c8efc980314781a960a3bdd7bb34f0d This link shows the new Alchemy progression in skillranks.yml feel free to copy paste (or just delete the file and regenerate it)
+    There's no persistent API for entities in Spigot for 1.13.2, but in the future I'll wire up NMS and write it to NBT myself.
+    This means the new persistence stuff requires 1.14.0 or higher, if you're still on 1.13.2 for now that stuff will behave like it always did
+
+Version 2.1.147
+    Fixed a bug where players below the level threshold on a hardcore mode enabled server would gain levels on death in certain circumstances
+
+Version 2.1.146
+    A bug where players would disconnect from mcMMO messages has been fixed (thanks kashike / read notes)
+        It should be noted this was NOT an mcMMO bug, but a bug within Spigot since Spigot 1.16
+    A dupe exploit has been fixed
+    Improvements were made to tracking player placed blocks in mcMMO
+    Players no longer lose levels below the level threshold in hardcore mode
+    Hardcore now only applies penalties to levels above threshold
+
+    NOTES:
+    Shout out to Kashike
+    Kashike is a developer on the mcMMO team, however after I recruited him had a lot of life stuff come at him and has./tn't had a chance to contribute until now!
+
+    JSON is used by Minecraft for a lot of stuff, in this case the JSON mcMMO made use of was related to displaying text in chat or displaying text on the clients screen in other places such as the action bar, there's been a bad bug in Spigot since 1.16 that would disconnect players some of the time when sending JSON components.
+    mcMMO makes heavy use of these components, so since spigot has yet to fix the bug I decided we needed a work around for the time being.
+    The library named 'adventure' is developed by the Kyori organization, which is Kashike's baby.
+    Kashike is a very talented and skilled developer and he did the work on this patch to solve this issue.
+
+    This is a link to an bug report I did on this bug on Spigot's issue tracker, it is my understanding they have yet to find a way to reliably reproduce this bug.
+    If you have any information please post about it in this thread.
+
+    https://hub.spigotmc.org/jira/browse/SPIGOT-6056
+    Although mcMMO solved this issue by switching to Kyori's Adventure library for sending JSON Components, most Spigot plugins have not implemented a work around like this and will continue to make players disconnect until it is solved within Spigot.
+
+    Hardcore changes
+    If you set a level threshold of 100 and player with 150 levels dies, they should never lose more than 50 levels as the first 100 are considered part of the threshold.
+    Prior to this change in this exact same scenario a player could be penalized and be put below the threshold.
+
+    Shout out to HexedHero for reporting the dupe exploit and providing a demonstration of how to replicate it
+
+    Tridents & Crossbows update
+    It is still being worked on but it won't make a September release.
+    October is the new target release but I am terrible with estimates so take it with a grain of salt!
+
+
+Version 2.1.145
+    Reverted 'Changed one of the PlayerInteractEvent listeners to ignore cancelled events' from 2.1.144
+
+
+Version 2.1.144
+    Steel Arm Style damage is now customizable in advanced.yml (make sure to set override to true)
+    Fixed a bug where Deflect worked against non-arrow projectiles
+    Fixed a bug where Deflect was checked twice, resulting in two chances to deflect effectively
+    Fixed a bug where Roll wouldn't award XP when fall height was over a certain amount
+    Lowered the XP ceiling of Roll
+    Fixed a NPE that would happen involving taming in combat processing
+    Updated hu_HU locale (thanks andris155)
+    Fixed a bug where mcMMO could erase item data on Wheat Seeds when using Green Thumb on a block
+    Changed one of the PlayerInteractEvent listeners to ignore cancelled events (should improve plugin compatibility)
+    mmodebug mode now prints some information when fuel efficiency is applied to a furnace
+
+    NOTES:
+    I seem to consistently find old bugs in mcMMO, this deflect bug where it was checked twice, who knows how many years its been in mcMMO, I didn't check but its probably between 5-7.
+    I was waiting to make Steel Arm Customizable for the config update (due in the future), but enough people ask for it that I decided to do the extra work to put it into 2.1.XX
+    Tridents & Crossbows is likely going to be in development continuing into September, I am taking my time to make it feature packed and I hope you guys will appreciate it.
+
+Version 2.1.143
+    mcMMO now tracks super ability boosted items through persistent metadata
+    mcMMO no longer relies on lore to tell if an item has been modified by a super ability
+    Slight buff to Rupture (1 more tick duration across all ranks)
+    Lore no longer gets added to items being buffed by mcMMO./
+
+    NOTES:
+        The item tracking is persistent for MC versions 1.13-1.16.2 (and beyond). However the code handling the persistence for 1.13.2 differs from the other versions. It shouldn't result in any problems.
+        Any items that currently have the old "mcMMO Ability Tool" lore on them will have that lore stripped off them and will have any dig speed enchants removed. This should only affect glitched items that never properly got their buffs removed.
+
+Version 2.1.142
+    Iron Arm Style renamed to Steel Arm Style
+    Steel Arm Style now scales over 20 ranks instead of 5
+    Added 'mcmmo.ability.unarmed.steelarmstyle' permission node
+    Removed 'mcmmo.ability.unarmed.ironarmstyle' permission node
+    Added locale entry 'Unarmed.SubSkill.SteelArmStyle.Name'
+    Added locale entry 'Unarmed.SubSkill.SteelArmStyle.Description'
+    Updated locale entry 'Unarmed.Ability.Bonus.0'
+
+Version 2.1.141
+    Added some missing values for 1.16.2 compatibility modes
+
+Version 2.1.140
+    Fixed a few potential issues with scoreboards
+    Updated polish locale
+
+    NOTES:
+    Scoreboards code in mcMMO is pretty messy and poorly designed, I am going to rewrite it in a future update. The fixes applied in this patch should solve some problems some users were having for now.
+
+Version 2.1.139
+    Code used to fetch UUIDs was reworked to avoid a scenario where it failed (thanks t00thpick1)
+    Added 'Netherite_Gold_Ore' to Smelting XP tables (thanks Quavelen)
+    Added 'Gilded_Blackstone' and 'Nether_Gold_Ore' to code used to determine what can activate Super Breaker in certain situations (thanks Quavelen)
+    MMOinfo for Roll was corrected (thanks emanondev)
+
+Version 2.1.138
+    Fixed a bug where Netherite weapons/tools/armor weren't applying correct values in some skill calculations
+
+Version 2.1.137
+    Added some code to avoid NPE errors when checking armor on entities
+
+Version 2.1.136
+    Furnace ownership is no longer lost when the furnace stops doing a job
+    Furnaces remember owners between restarts (requires MC 1.14 or higher)
+
+    NOTES:
+        I'm making use of a Spigot API for persistent data for versions of MC 1.14 and above, for versions below the data will be temporary as it has been up until this point.
+        In the future I'll wire up NMS to make use of NBT and all versions will have persistent data support.
+
+Version 2.1.135
+    Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
+    Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
+    Fixed Super abilities not being translated on scoreboards (Thanks Ineusia)
+    Added option in advanced.yml to squelch ability activation messages being sent to other players via action bar (Thanks Ineusia)
+
+Version 2.1.134
+    Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
+    Smelting now has a Bonus Drops section in config.yml
+    Smelting now only doubles smelting results for items which have bonus drop entries in config.yml
+    Smelting XP can now be gained offline, but all other benefits from Smelting don't happen unless you're online
+    Fix brewing stand not consuming items (thanks Durburz)
+    Changed the UUID updater task to not catastrophically fail when requests failed
+    Fixed a bug where players could set each other on fire when partied or when PVP was disabled
+    Fixed a NPE that could happen with thrown potions
+    Fixed a potential NPE when damaging player armor with Axes
+    Fixed a potential NPE when damaging a player with Blast Mining
+    Fixed a potential NPE when checking tools related to Super Abilities
+    Fixed a potential NPE when checking the Chimaera Wing
+    Fixed a potential NPE when creating party member lists
+    Fixed a potential NPE when fishing
+    Fixed a potential NPE when players right click blocks
+    Fixed a locale mistake in locale hu_HU
+    Fixed a locale mistake in locale ru
+    Minor code cleanup
+
+    NOTES:
+    It used to be that Furnaces would assign an owner and that would be their owner until the server shutdown, now owners will change based on who last had their hands on the furnace.
+    You won't become the owner if you are not allowed to view the inventory of a furnace, or break the furnace, or interact with the contents of the furnace
+
+Version 2.1.133
+    A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed
+    French locale has been updated (thanks Elikill58)
+    Another fix has been deployed to prevent mobs from having hearts in player death messages (thanks FrankHeijden)
+    Players no longer ready their tool if they don't have access to the skill (thanks Draycia)
+    Unused NMS compatibility layers have been disabled for now (expect them to be used in the future for 1.12/1.8 support stuff)
+
+Version 2.1.132
+    A fix is in place to prevent an exploit from working that is due to a yet to be patched Spigot server software bug
+    Fixed a NPE that could happen when players swapped items from their hotbar
+
+    NOTE: The exploit was not described on purpose, please update.
+    I reported the bug to Spigot, so hopefully it will be patched in the near future.
+
+Version 2.1.131
+
+    New permission node 'mcmmo.ability.repair.netheriterepair' which is included in the mcmmo.defaults permission package
+    New permission node 'mcmmo.ability.salvage.netheritesalvage' which is included in the mcmmo.defaults permission package
+    Changed Salvage maximum quantity values to 4 for all Netherite armor
+    mcMMO will set the default salvage quantities for netherite armor to 4 once and then never again (see notes)
+
+    Added Basalt to Bonus Drops for Mining in config.yml (see notes)
+    Added Polished Basalt to Bonus Drops for Mining in config.yml (see notes)
+    Added Blackstone to Bonus Drops for Mining in config.yml (see notes)
+    Added Chain to Bonus Drops for Mining in config.yml (see notes)
+    Added Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Red Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Cracked Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Chiseled Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Crying Obsidian to Bonus Drops for Mining in config.yml (see notes)
+    Added Gilded Blackstone to Bonus Drops for Mining in config.yml (see notes)
+    Added Warped Roots to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Warped Stem to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Roots to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Stem to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Shroomlight to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Twisting Vines to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Nether Wart Block to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Warped Wart Block to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Weeping Vines to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Stripped Crimson Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Stripped Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+
+    Added Red Nether Bricks to Experience tables for Mining in experience.yml (see notes)
+    Added Netherite to Experience tables for Repair in experience.yml (see notes)
+    Added Piglin Brute to Experience tables for all combat skills in experience.yml
+
+    Netherite now requires 100 Salvage skill (by default configs) in order to salvage
+    Added the missing NMS wiring (it should be noted NMS isn't currently being used in mcMMO, but the framework is there. Working on a sideproject involving this...)
+
+    NOTES:
+
+    You should not need to edit your configs to receive any changes in this patch, simply starting your server is enough.
+    Default salvage quantities for netherite armor were above 4 in some cases which was not intended, mcMMO will run some code to correct this once and then it will not edit the file again.
+    Repair and Salvage are going to get some tweaks regarding Netherite gear really soon.
+    This update adds quite a few missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
+
+
+Version 2.1.130
+    Fixed a bug that prevented Repair from working on the new Netherite weapons/armors
+    Fixed a bug where Netherite gear used Gold Ingots to repair instead of Netherite Scraps (by default)
+    mcMMO will now run a script to fix a misspelling of netherite in repair/salvage configs (script only runs once and then never again)
+    mcMMO will produce a fake PlayerItemDamageEvent before damaging axes in Tree Feller execution
+
+
+    NOTES:
+    Early versions of 1.16 support had Netherite misspelled, the script I added executes before loading those config files to fix the spelling mistakes if it finds any
+    If you are still having issues with Repair/Salvage, delete the repair and salvage .yml files in /plugins/mcMMO and restart the server
+
+Version 2.1.129
+    Added new subcommand /mmoxpbar disable - Hides all mcMMO XP bars
+    New locale string 'Commands.XPBar.DisableAll'
+    Added Blackstone to Mining experience tables
+    Added Chain to Mining experience tables
+    Added Bone Block to Mining experience tables
+    Added Cracked Nether Bricks to Mining experience tables
+    Added Chiseled Nether Bricks to Mining experience tables
+    Added Crying Obsidian to Mining experience tables
+    Added Gilded Blackstone to Mining experience tables
+    Added Crimson Hyphae to Woodcutting experience tables
+    Added Stripped Crimson Hyphae to Woodcutting experience tables
+    Added Warped Hyphae to Woodcutting experience tables
+    Added Stripped Warped Hyphae to Woodcutting experience tables
+    Added Shroomlight to Herbalism experience tables
+    Added Zoglin to combat experience tables
+    Added Redstone Dust to bonus drops for Mining ( edit config.yml )
+    Lodestone will now be ignored for activating abilities
+    Respawn Anchor will now be ignored for activating abilities
+    Soul Campfire will now be ignored for activating abilities
+
+    Edit your experience.yml or delete it to generate a new one
+    Edit config.yml and add Redstone_Dust under bonus drops for Mining, you could delete it to generate a new one but MySQL data is stored here
+
+    Default experience.yml looks like this now: https://raw.githubusercontent.com/mcMMO-Dev/mcMMO/master/src/main/resources/experience.yml
+
+Version 2.1.128
+    The first rank of Iron Arm for Unarmed now only gives 1.5 bonus damage instead of 4 (other ranks are the same as before)
+    Blast Mining nerf reverted
+    Fixed a bug where debris were not reduced from Blast Mining skills
+    Fixed a bug where certain types of ore did not receive bonuses from Blast Mining
+    Fixed a few locale errors with commands
+    (API) Added ExperienceAPI::addCombatXP for adding combat XP to players, signature may change so its deprecated for now
+    mcMMO now logs whether or not its using FlatFile or SQL database on load
+    (1.16) Strider added to combat experience with a value of 1.2
+
+    NOTES: A more thorough look at Unarmed balance will happen in the future, the intention of this nerf is to make Unarmed less rewarding until it is leveled quite a bit.
+    I do plan to add saving XP bar settings to an upcoming version of mcMMO, but I'm working on another thing for mcMMO atm.
+
+Version 2.1.127
+    Child Skills now have XP bars, they are hidden by default
+    Updated hu_HU locale (thanks andris155)
+    Updated korean locale (thanks GownHeeJun)
+    Fixed a potential resource leak (thanks f1xme)
+    Fixed some potential chunk bugs (thanks f1xme)
+
+
+    NOTES:
+    You can enable the child skill bars with the command /mmoxpbar <skill> show
+
 Version 2.1.126
     mcMMO now relies on NMS for some of its features, if NMS cannot properly be wired up when initializing mcMMO behaviours relying on NMS will either be partially supported or disabled
     mcMMO now has a compatibility mode, any features that require specific versions of Minecraft for full functionality will be disabled if your server is not running a compatible version, mcMMO will still function in compatibility mode, but either the feature will be modified or disabled depending on the version of the server software
     New command /mmocompat - Shows information about whether or not mcMMO is fully functional or if some features are disabled due to the server software not being fully supported. Can be used by players or console.
+    New command /mmoxpbar (alias /xpbarsettings) - Players can choose to always show XP bars or to never show XP bars on a per skill basis
+    XPBars now last for 3 seconds before hiding instead of 2 seconds
     Fixed an exploit involving fishing rods
+    mcMMO is now less verbose about unsupported materials found in configs
+
+    New locale strings
+        Commands.Description.mmoxpbar
+        Commands.Description.mmocompat
+        Commands.XPBar.Reset
+        Commands.XPBar.SettingChanged
+        Compatibility.Layer.Unsupported
+        Compatibility.Layer.PartialSupport
+
 
     Notes:
         There are no features that rely on NMS in this version, it took a lot of work to write the NMS framework and I'm going to delay implementation for future versions.
+        /mmoxpbar (or /xpbarsettings) example usages
+            /mmoxpbar show archery - Always show archery XP bar
+            /mmoxpbar hide acrobatics - Never show acrobatics XP bar
+            /mmoxpbar reset - Reset all settings related to XP bars (hide/show)
 
 Version 2.1.125
     *Fixed a bug where you could not place blocks on top of certain repair/salvage anvils
@@ -14,7 +1175,7 @@ Version 2.1.125
 
 Version 2.1.124
     Repair/Salvage can now be set to use vanilla blocks that already do something and that vanilla functionality will be disabled by mcMMO (you could use vanilla-anvils instead of iron_blocks for repair now)
-    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)g
+    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
     Added Piglin to experience.yml combat XP tables with a value of 2.0 (edit your config)
     Added Hoglin to experience.yml combat XP tables with a value of 4.0 (edit your config)
     Added Zombified_Piglin & Zombie_Pigman to experience.yml combat XP tables with a value of 3.0 (edit your config)

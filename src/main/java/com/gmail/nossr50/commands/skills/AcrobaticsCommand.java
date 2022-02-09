@@ -5,11 +5,11 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import net.md_5.bungee.api.chat.TextComponent;
+import com.gmail.nossr50.util.text.TextComponentFactory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canDodge) {
             messages.add(getStatMessage(SubSkillType.ACROBATICS_DODGE, dodgeChance)
@@ -69,9 +69,9 @@ public class AcrobaticsCommand extends SkillCommand {
                 //Chance Stat Calculations
                 rollChance       = RandomChanceUtil.getRandomChanceExecutionChance(roll_rcs);
                 graceChance      = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
-                //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
+                //damageThreshold  = mcMMO.p.getAdvancedConfig().getRollDamageThreshold();
 
-                String rollStrings[] = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
+                String[] rollStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
 
                 //Format
                 double rollChanceLucky  = rollChance * 1.333D;
@@ -89,8 +89,8 @@ public class AcrobaticsCommand extends SkillCommand {
     }
 
     @Override
-    protected List<TextComponent> getTextComponents(Player player) {
-        List<TextComponent> textComponents = new ArrayList<>();
+    protected List<Component> getTextComponents(Player player) {
+        List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.ACROBATICS);
 

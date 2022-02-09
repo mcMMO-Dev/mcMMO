@@ -7,31 +7,35 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class ExperienceCommand implements TabExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         PrimarySkillType skill;
 
-        switch (args.length) {
-            case 2:
+        if(args.length < 2) {
+            return false;
+        } else {
+            if(args.length == 2 && !isSilent(args) || args.length == 3 && isSilent(args)) {
                 if (CommandUtils.noConsoleUsage(sender)) {
                     return true;
                 }
 
                 if (!permissionsCheckSelf(sender)) {
-                    sender.sendMessage(command.getPermissionMessage());
+                    if(command.getPermissionMessage() != null)
+                        sender.sendMessage(command.getPermissionMessage());
+                    sender.sendMessage("(mcMMO) No permission!");
                     return true;
                 }
 
@@ -39,13 +43,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.getSkill(args[0]);
+                skill = mcMMO.p.getSkillTools().matchSkill(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 }
 
-                if (skill != null && skill.isChildSkill())
+                if (skill != null && SkillTools.isChildSkill(skill))
                 {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
@@ -59,10 +63,10 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]));
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]), isSilent(args));
                 return true;
-
-            case 3:
+            } else if((args.length == 3 && !isSilent(args))
+                    || (args.length == 4 && isSilent(args))) {
                 if (!permissionsCheckOthers(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
@@ -72,13 +76,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.getSkill(args[1]);
+                skill = mcMMO.p.getSkillTools().matchSkill(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 }
 
-                if (skill != null && skill.isChildSkill())
+                if (skill != null && SkillTools.isChildSkill(skill))
                 {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
@@ -91,39 +95,52 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    UUID uuid = null;
-                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
-                    if (player != null) {
-                        uuid = player.getUniqueId();
-                    }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    PlayerProfile profile;
 
+                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
+
+                    //Check loading by UUID
                     if (CommandUtils.unloadedProfile(sender, profile)) {
-                        return true;
+                        //Check loading by name
+                        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
+
+                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                            return true;
+                        }
                     }
 
-                    editValues(null, profile, skill, value);
+                    editValues(null, profile, skill, value, isSilent(args));
                 }
                 else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value);
+                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value, isSilent(args));
                 }
 
                 handleSenderMessage(sender, playerName, skill);
                 return true;
-
-            default:
+            } else {
                 return false;
+            }
         }
     }
 
+    private boolean isSilent(String[] args) {
+        int length = args.length;
+
+        if(length == 0)
+            return false;
+
+        return args[length-1].equalsIgnoreCase("-s");
+    }
+
+
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         switch (args.length) {
             case 1:
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }
@@ -132,8 +149,8 @@ public abstract class ExperienceCommand implements TabExecutor {
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
     protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value);
-    protected abstract void handlePlayerMessageAll(Player player, int value);
-    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill);
+    protected abstract void handlePlayerMessageAll(Player player, int value, boolean isSilent);
+    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
         return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
@@ -144,25 +161,25 @@ public abstract class ExperienceCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), playerName));
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
+    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value, boolean isSilent) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType, value);
             }
 
             if (player != null) {
-                handlePlayerMessageAll(player, value);
+                handlePlayerMessageAll(player, value, isSilent);
             }
         }
         else {
             handleCommand(player, profile, skill, value);
 
             if (player != null) {
-                handlePlayerMessageSkill(player, value, skill);
+                handlePlayerMessageSkill(player, value, skill, isSilent);
             }
         }
     }

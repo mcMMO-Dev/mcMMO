@@ -22,6 +22,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class AlchemyPotionBrewer {
@@ -56,19 +57,19 @@ public final class AlchemyPotionBrewer {
     }
 
     private static void removeIngredient(BrewerInventory inventory, Player player) {
-        ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
+        if(inventory.getIngredient() == null)
+            return;
 
-        if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
-            return;
-        }
-        else if (ingredient.getAmount() <= 1) {
-            inventory.setIngredient(null);
-            return;
-        }
-        else {
-            ingredient.setAmount(ingredient.getAmount() - 1);
-            inventory.setIngredient(ingredient);
-            return;
+        ItemStack ingredient = inventory.getIngredient().clone();
+
+        if (!isEmpty(ingredient) && isValidIngredient(player, ingredient)) {
+            if (ingredient.getAmount() <= 1) {
+                inventory.setIngredient(null);
+            }
+            else {
+                ingredient.setAmount(ingredient.getAmount() - 1);
+                inventory.setIngredient(ingredient);
+            }
         }
     }
 
@@ -113,7 +114,8 @@ public final class AlchemyPotionBrewer {
             return;
         }
 
-        List<AlchemyPotion> inputList = new ArrayList<AlchemyPotion>();
+        List<AlchemyPotion> inputList = new ArrayList<>(Collections.nCopies(3, null));
+        List<ItemStack> outputList = new ArrayList<>(Collections.nCopies(3, null));
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
@@ -125,23 +127,31 @@ public final class AlchemyPotionBrewer {
             AlchemyPotion input = PotionConfig.getInstance().getPotion(item);
             AlchemyPotion output = input.getChild(ingredient);
 
-            inputList.add(input);
+            inputList.set(i, input);
 
             if (output != null) {
-                inventory.setItem(i, output.toItemStack(item.getAmount()).clone());
+                outputList.set(i, output.toItemStack(item.getAmount()).clone());
             }
         }
 
-        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, ((BrewingStand) brewingStand).getFuelLevel());
+        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, outputList, ((BrewingStand) brewingStand).getFuelLevel());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled() || inputList.isEmpty()) {
             return;
         }
 
+        for (int i = 0; i < 3; i++) {
+            if(outputList.get(i) != null) {
+                inventory.setItem(i, outputList.get(i));
+            }
+        }
+
         removeIngredient(inventory, player);
 
         for (AlchemyPotion input : inputList) {
+            if (input == null) continue;
+
             AlchemyPotion output = input.getChild(ingredient);
 
             if (output != null && player != null) {

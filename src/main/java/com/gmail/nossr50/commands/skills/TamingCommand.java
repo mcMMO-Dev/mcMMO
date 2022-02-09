@@ -5,9 +5,9 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import net.md_5.bungee.api.chat.TextComponent;
+import com.gmail.nossr50.util.text.TextComponentFactory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -56,7 +56,7 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canEnvironmentallyAware) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1")));
@@ -92,8 +92,8 @@ public class TamingCommand extends SkillCommand {
     }
 
     @Override
-    protected List<TextComponent> getTextComponents(Player player) {
-        List<TextComponent> textComponents = new ArrayList<>();
+    protected List<Component> getTextComponents(Player player) {
+        List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(player, textComponents, this.skill);
 

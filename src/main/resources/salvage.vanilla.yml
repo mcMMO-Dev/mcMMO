@@ -221,40 +221,40 @@ Salvageables:
         MaximumQuantity: 4
 
     NETHERITE_SWORD:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: .5
-        MaximumQuantity: 2
+        MaximumQuantity: 4
     NETHERITE_SHOVEL:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: .3
-        MaximumQuantity: 1
+        MaximumQuantity: 4
     NETHERITE_PICKAXE:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: 1
-        MaximumQuantity: 3
+        MaximumQuantity: 4
     NETHERITE_AXE:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: 1
-        MaximumQuantity: 3
+        MaximumQuantity: 4
     NETHERITE_HOE:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: .5
-        MaximumQuantity: 2
+        MaximumQuantity: 4
     # Armor
     NETHERITE_HELMET:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: 6
-        MaximumQuantity: 5
+        MaximumQuantity: 4
     NETHERITE_CHESTPLATE:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: 6
-        MaximumQuantity: 8
+        MaximumQuantity: 4
     NETHERITE_LEGGINGS:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: 6
-        MaximumQuantity: 7
+        MaximumQuantity: 4
     NETHERITE_BOOTS:
-        MinimumLevel: 50
+        MinimumLevel: 100
         XpMultiplier: 6
         MaximumQuantity: 4
     #

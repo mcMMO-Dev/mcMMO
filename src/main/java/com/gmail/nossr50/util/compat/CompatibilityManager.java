@@ -2,11 +2,17 @@ package com.gmail.nossr50.util.compat;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.compat.layers.PlayerAttackCooldownExploitPreventionLayer;
+import com.gmail.nossr50.util.compat.layers.bungee.AbstractBungeeSerializerCompatibilityLayer;
+import com.gmail.nossr50.util.compat.layers.bungee.BungeeLegacySerializerCompatibilityLayer;
+import com.gmail.nossr50.util.compat.layers.bungee.BungeeModernSerializerCompatibilityLayer;
+import com.gmail.nossr50.util.compat.layers.skills.AbstractMasterAnglerCompatibility;
+import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
 import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -16,16 +22,18 @@ import java.util.HashMap;
  * In 2.2 we are switching to modules and that will clean things up significantly
  *
  */
+//TODO: I need to delete this crap
 public class CompatibilityManager {
-    private HashMap<CompatibilityType, Boolean> supportedLayers;
+    private @NotNull HashMap<CompatibilityType, Boolean> supportedLayers;
     private boolean isFullyCompatibleServerSoftware = true; //true if all compatibility layers load successfully
-    private final MinecraftGameVersion minecraftGameVersion;
-    private final NMSVersion nmsVersion;
+    private final @NotNull MinecraftGameVersion minecraftGameVersion;
+    private final @NotNull NMSVersion nmsVersion;
 
     /* Compatibility Layers */
-    private PlayerAttackCooldownExploitPreventionLayer playerAttackCooldownExploitPreventionLayer;
+    private AbstractBungeeSerializerCompatibilityLayer bungeeSerializerCompatibilityLayer;
+    private AbstractMasterAnglerCompatibility masterAnglerCompatibility;
 
-    public CompatibilityManager(MinecraftGameVersion minecraftGameVersion) {
+    public CompatibilityManager(@NotNull MinecraftGameVersion minecraftGameVersion) {
         mcMMO.p.getLogger().info("Loading compatibility layers...");
         this.minecraftGameVersion = minecraftGameVersion;
         this.nmsVersion = determineNMSVersion();
@@ -51,27 +59,32 @@ public class CompatibilityManager {
      * For any unsupported layers, load a dummy layer
      */
     private void initCompatibilityLayers() {
-        if(nmsVersion == NMSVersion.UNSUPPORTED) {
-            mcMMO.p.getLogger().info("NMS not supported for this version of Minecraft, possible solutions include updating mcMMO or updating your server software. NMS Support is not available on every version of Minecraft.");
-            mcMMO.p.getLogger().info("Certain features of mcMMO that require NMS will be disabled, you can check what is disabled by running the /mmocompat command!");
-            //Load dummy compatibility layers
-            isFullyCompatibleServerSoftware = false;
-            loadDummyCompatibilityLayers();
-        } else {
-            playerAttackCooldownExploitPreventionLayer = new PlayerAttackCooldownExploitPreventionLayer(nmsVersion);
+        initBungeeSerializerLayer();
+        initMasterAnglerLayer();
 
-            //Mark as operational
-            if(playerAttackCooldownExploitPreventionLayer.noErrorsOnInitialize()) {
-                supportedLayers.put(CompatibilityType.PLAYER_ATTACK_COOLDOWN_EXPLOIT_PREVENTION, true);
-            }
+        isFullyCompatibleServerSoftware = true;
+    }
+
+    private void initMasterAnglerLayer() {
+        if(minecraftGameVersion.isAtLeast(1, 16, 3)) {
+            masterAnglerCompatibility = new MasterAnglerCompatibilityLayer();
+        } else {
+            masterAnglerCompatibility = null;
         }
     }
 
-    private void loadDummyCompatibilityLayers() {
+    private void initBungeeSerializerLayer() {
+        if(minecraftGameVersion.isAtLeast(1, 16, 0)) {
+            bungeeSerializerCompatibilityLayer = new BungeeModernSerializerCompatibilityLayer();
+        } else {
+            bungeeSerializerCompatibilityLayer = new BungeeLegacySerializerCompatibilityLayer();
+        }
 
+        supportedLayers.put(CompatibilityType.BUNGEE_SERIALIZER, true);
     }
 
-    public void reportCompatibilityStatus(CommandSender commandSender) {
+    //TODO: move to text manager
+    public void reportCompatibilityStatus(@NotNull CommandSender commandSender) {
         if(isFullyCompatibleServerSoftware) {
             commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
                     "mcMMO is fully compatible with the currently running server software."));
@@ -80,7 +93,7 @@ public class CompatibilityManager {
             for(CompatibilityType compatibilityType : CompatibilityType.values()) {
                 if(!supportedLayers.get(compatibilityType)) {
                     commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
-                            "Support layer for " + StringUtils.getCapitalized(compatibilityType.toString()) + "is not supported on this version of Minecraft."));
+                            LocaleLoader.getString("Compatibility.Layer.Unsupported",  StringUtils.getCapitalized(compatibilityType.toString()))));
                 }
             }
         }
@@ -88,7 +101,7 @@ public class CompatibilityManager {
         commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix", "NMS Status - " + nmsVersion.toString()));
     }
 
-    public boolean isCompatibilityLayerOperational(CompatibilityType compatibilityType) {
+    public boolean isCompatibilityLayerOperational(@NotNull CompatibilityType compatibilityType) {
         return supportedLayers.get(compatibilityType);
     }
 
@@ -96,30 +109,56 @@ public class CompatibilityManager {
         return isFullyCompatibleServerSoftware;
     }
 
-    public NMSVersion getNmsVersion() {
+    public @NotNull NMSVersion getNmsVersion() {
         return nmsVersion;
     }
 
-    private NMSVersion determineNMSVersion() {
-        switch(minecraftGameVersion.getMajorVersion().asInt()) {
-            case 1:
-                switch(minecraftGameVersion.getMinorVersion().asInt()) {
-                    case 12:
-                        return NMSVersion.NMS_1_12_2;
-                    case 13:
-                        return NMSVersion.NMS_1_13_2;
-                    case 14:
-                        return NMSVersion.NMS_1_14_4;
-                    case 15:
-                        return NMSVersion.NMS_1_15_2;
-                }
+    private @NotNull NMSVersion determineNMSVersion() {
+        //This bit here helps prevent mcMMO breaking if it isn't updated but the game continues to update
+        if(minecraftGameVersion.isAtLeast(1, 17, 0)) {
+            return NMSVersion.NMS_1_17;
+        }
+
+        //Messy but it works
+        if (minecraftGameVersion.getMajorVersion().asInt() == 1) {
+            switch (minecraftGameVersion.getMinorVersion().asInt()) {
+                case 12:
+                    return NMSVersion.NMS_1_12_2;
+                case 13:
+                    return NMSVersion.NMS_1_13_2;
+                case 14:
+                    return NMSVersion.NMS_1_14_4;
+                case 15:
+                    return NMSVersion.NMS_1_15_2;
+                case 16:
+                    if (minecraftGameVersion.getPatchVersion().asInt() == 1) {
+                        return NMSVersion.NMS_1_16_1;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 2) {
+                        return NMSVersion.NMS_1_16_2;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 3) {
+                        return NMSVersion.NMS_1_16_3;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 4) {
+                        return NMSVersion.NMS_1_16_4;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() >= 5) {
+                        return NMSVersion.NMS_1_16_5;
+                    }
+                case 17:
+                    return NMSVersion.NMS_1_17;
+            }
         }
 
         return NMSVersion.UNSUPPORTED;
     }
 
-    public PlayerAttackCooldownExploitPreventionLayer getPlayerAttackCooldownExploitPreventionLayer() {
-        return playerAttackCooldownExploitPreventionLayer;
+    public AbstractBungeeSerializerCompatibilityLayer getBungeeSerializerCompatibilityLayer() {
+        return bungeeSerializerCompatibilityLayer;
     }
 
+    public @Nullable AbstractMasterAnglerCompatibility getMasterAnglerCompatibilityLayer() {
+        return masterAnglerCompatibility;
+    }
+
+    public @Nullable MinecraftGameVersion getMinecraftGameVersion() {
+        return minecraftGameVersion;
+    }
 }

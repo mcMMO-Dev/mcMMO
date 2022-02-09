@@ -19,6 +19,12 @@ load: POSTWORLD
 api-version: 1.13
 
 commands:
+#    mmodroptreasures:
+#        description: An admin command used to spawn treasure drops
+#        permission: mcmmo.commands.droptreasures
+    mmoxpbar:
+        aliases: xpbarsettings
+        description: Change XP bar settings
     mmocompat:
         description: Information about the server and whether or not its considered fully compatible or running in compatibility mode
     mmodebug:
@@ -83,6 +89,7 @@ commands:
         description: Create/join a party
         permission: mcmmo.commands.party
     inspect:
+        aliases: [mcinspect, mmoinspect]
         description: View detailed mcMMO info on another player
         permission: mcmmo.commands.inspect
     mmoshowdb:
@@ -150,21 +157,18 @@ commands:
     mcpurge:
         description: Purge users with 0 powerlevel and/or who haven't connected in several months from the server DB.
         permission: mcmmo.commands.mcpurge
-    hardcore:
-        aliases: [mchardcore]
-        description: Modify the mcMMO hardcore percentage or toggle hardcore mode on/off
-        permission: mcmmo.commands.hardcore
-    vampirism:
-        aliases: [mcvampirism]
-        description: Modify the mcMMO vampirism percentage or toggle vampirism mode on/off
-        permission: mcmmo.commands.vampirism
+#    hardcore:
+#        aliases: [mchardcore]
+#        description: Modify the mcMMO hardcore percentage or toggle hardcore mode on/off
+#        permission: mcmmo.commands.hardcore
+#    vampirism:
+#        aliases: [mcvampirism]
+#        description: Modify the mcMMO vampirism percentage or toggle vampirism mode on/off
+#        permission: mcmmo.commands.vampirism
     mcnotify:
         aliases: [notify]
         description: Toggle mcMMO abilities chat display notifications on/off
         permission: mcmmo.commands.mcnotify
-    mhd:
-        description: Sets all players mob health settings to default
-        permission: mcmmo.commands.mhd
     mcscoreboard:
         aliases: [mcsb]
         description: Manage your mcMMO Scoreboard
@@ -179,6 +183,25 @@ commands:
         description: Reloads locale
         permission: mcmmo.commands.reloadlocale
 permissions:
+    #mcmmo.defaults is the intended default permission, give this to your players for the intended experience
+    mcmmo.defaults:
+        default: true
+        description: mcmmo permisions that default to true
+        children:
+            mcmmo.chat.partychat: true
+            mcmmo.commands.defaults: true
+            mcmmo.motd: true
+            mcmmo.skills.all: true
+            mcmmo.chat.colors: true
+            mcmmo.broadcast.levelup: true
+    mcmmo.defaultsop:
+        default: op
+        description: mcmmo permissions that default to op
+        children:
+            mcmmo.chat.adminchat: true
+            mcmmo.commands.defaultsop: true
+            mcmmo.item.all: true
+            mcmmo.tools.all: true
     mcmmo.*:
         default: false
         description: Implies all mcmmo permissions.
@@ -195,6 +218,8 @@ permissions:
             mcmmo.defaultsop: true
             mcmmo.party.all: true
             mcmmo.perks.all: true
+    mcmmo.broadcast.levelup:
+        description: when the player reaches certain level milestones their achievement will be broadcast in chat to other plays
     mcmmo.ability.*:
         default: false
         description: Implies all mcmmo.ability permissions.
@@ -462,6 +487,7 @@ permissions:
             mcmmo.ability.repair.arcaneforging: true
             mcmmo.ability.repair.superrepair: true
             mcmmo.ability.repair.armorrepair: true
+            mcmmo.ability.repair.netheriterepair: true
             mcmmo.ability.repair.diamondrepair: true
             mcmmo.ability.repair.goldrepair: true
             mcmmo.ability.repair.ironrepair: true
@@ -478,6 +504,8 @@ permissions:
         description: Allows access to the Arcane Forging ability
     mcmmo.ability.repair.armorrepair:
         description: Allows ability to repair armor
+    mcmmo.ability.repair.netheriterepair:
+        description: Allows ability to repair Netherite tools & armor
     mcmmo.ability.repair.diamondrepair:
         description: Allows ability to repair Diamond tools & armor
     mcmmo.ability.repair.goldrepair:
@@ -514,6 +542,7 @@ permissions:
             mcmmo.ability.salvage.arcanesalvage: true
             mcmmo.ability.salvage.armorsalvage: true
             mcmmo.ability.salvage.diamondsalvage: true
+            mcmmo.ability.salvage.netheritesalvage: true
             mcmmo.ability.salvage.goldsalvage: true
             mcmmo.ability.salvage.ironsalvage: true
             mcmmo.ability.salvage.leathersalvage: true
@@ -529,6 +558,8 @@ permissions:
         description: Allows access to the Arcane Salvage ability
     mcmmo.ability.salvage.armorsalvage:
         description: Allows ability to salvage armor
+    mcmmo.ability.salvage.netheritesalvage:
+        description: Allows ability to salvage Netherite tools & armor
     mcmmo.ability.salvage.diamondsalvage:
         description: Allows ability to salvage Diamond tools & armor
     mcmmo.ability.salvage.goldsalvage:
@@ -655,7 +686,7 @@ permissions:
         children:
             mcmmo.ability.unarmed.berserk: true
             mcmmo.ability.unarmed.blockcracker: true
-            mcmmo.ability.unarmed.ironarmstyle: true
+            mcmmo.ability.unarmed.steelarmstyle: true
             mcmmo.ability.unarmed.arrowdeflect: true
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
@@ -666,8 +697,8 @@ permissions:
         description: Allows access to the Berserker ability
     mcmmo.ability.unarmed.blockcracker:
         description: Allows access to the Block Cracker ability
-    mcmmo.ability.unarmed.ironarmstyle:
-        description: Allows bonus damage from the Iron Arm ability
+    mcmmo.ability.unarmed.steelarmstyle:
+        description: Allows bonus damage from the Steel Arm Style ability
     mcmmo.ability.unarmed.arrowdeflect:
         description: Allows access to the Arrow Deflect ability
     mcmmo.ability.unarmed.disarm:
@@ -686,8 +717,11 @@ permissions:
             mcmmo.ability.woodcutting.splinter: true
             mcmmo.ability.woodcutting.barksurgeon: true
             mcmmo.ability.woodcutting.naturesbounty: true
+            mcmmo.ability.woodcutting.knockonwood: true
             mcmmo.ability.woodcutting.leafblower: true
             mcmmo.ability.woodcutting.treefeller: true
+    mcmmo.ability.woodcutting.knockonwood:
+        description: Allows access to Knock on Wood subskill
     mcmmo.ability.woodcutting.splinter:
         description: Allows access to Splinter
     mcmmo.ability.woodcutting.barksurgeon:
@@ -737,12 +771,15 @@ permissions:
     mcmmo.chat.all:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
-            mcmmo.chat.adminchat: true 
-            mcmmo.chat.partychat: true 
+            mcmmo.chat.adminchat: true
+            mcmmo.chat.partychat: true
+            mcmmo.chat.colors: true
     mcmmo.chat.adminchat:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
+    mcmmo.chat.colors:
+        description: players can use color codes like &a or [[GREEN]] in mcMMO chat channels
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.commands.*:
@@ -794,7 +831,7 @@ permissions:
             mcmmo.commands.addxp: true
             mcmmo.commands.addxp.others: true
             mcmmo.commands.defaults: true
-            mcmmo.commands.hardcore.all: true
+#            mcmmo.commands.hardcore.all: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
             mcmmo.commands.mcability.others: true
@@ -815,7 +852,7 @@ permissions:
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.reloadlocale: true
             mcmmo.commands.skillreset.all: true
-            mcmmo.commands.vampirism.all: true
+#            mcmmo.commands.vampirism.all: true
             mcmmo.commands.xprate.all: true
     mcmmo.commands.acrobatics:
         description: Allows access to the acrobatics command
@@ -837,23 +874,23 @@ permissions:
         description: Allows access to the excavation command
     mcmmo.commands.fishing:
         description: Allows access to the fishing command
-    mcmmo.commands.hardcore.*:
-        default: false
-        description: Implies access to all mcmmo.commands.hardcore permissions
-        children:
-            mcmmo.commands.hardcore.all: true
-    mcmmo.commands.hardcore.all:
-        description: Implies access to all mcmmo.commands.hardcore permissions
-        children:
-            mcmmo.commands.hardcore: true
-            mcmmo.commands.hardcore.modify: true
-            mcmmo.commands.hardcore.toggle: true
-    mcmmo.commands.hardcore:
-        description: Allows access to the hardcore command
-    mcmmo.commands.hardcore.modify:
-        description: Allows access to the hardcore command to modify the hardcore rate
-    mcmmo.commands.hardcore.toggle:
-        description: Allows access to the hardcore command to toggle hardcore on/off
+#    mcmmo.commands.hardcore.*:
+#        default: false
+#        description: Implies access to all mcmmo.commands.hardcore permissions
+#        children:
+#            mcmmo.commands.hardcore.all: true
+#    mcmmo.commands.hardcore.all:
+#        description: Implies access to all mcmmo.commands.hardcore permissions
+#        children:
+#            mcmmo.commands.hardcore: true
+#            mcmmo.commands.hardcore.modify: true
+#            mcmmo.commands.hardcore.toggle: true
+#    mcmmo.commands.hardcore:
+#        description: Allows access to the hardcore command
+#    mcmmo.commands.hardcore.modify:
+#        description: Allows access to the hardcore command to modify the hardcore rate
+#    mcmmo.commands.hardcore.toggle:
+#        description: Allows access to the hardcore command to toggle hardcore on/off
     mcmmo.commands.herbalism:
         description: Allows access to the herbalism command
     mcmmo.commands.inspect.*:
@@ -1244,23 +1281,23 @@ permissions:
         description: Allows access to the taming command
     mcmmo.commands.unarmed:
         description: Allows access to the unarmed command
-    mcmmo.commands.vampirism.*:
-        default: false
-        description: Implies access to all mcmmo.commands.vampirism permissions
-        children:
-            mcmmo.commands.vampirism.all: true
-    mcmmo.commands.vampirism.all:
-        description: Implies access to all mcmmo.commands.vampirism permissions
-        children:
-            mcmmo.commands.vampirism: true
-            mcmmo.commands.vampirism.modify: true
-            mcmmo.commands.vampirism.toggle: true
-    mcmmo.commands.vampirism:
-        description: Allows access to the vampirism command
-    mcmmo.commands.vampirism.modify:
-        description: Allows access to the vampirism command to modify the vampirism rate
-    mcmmo.commands.vampirism.toggle:
-        description: Allows access to the vampirism command to toggle vampirism on/off
+#    mcmmo.commands.vampirism.*:
+#        default: false
+#        description: Implies access to all mcmmo.commands.vampirism permissions
+#        children:
+#            mcmmo.commands.vampirism.all: true
+#    mcmmo.commands.vampirism.all:
+#        description: Implies access to all mcmmo.commands.vampirism permissions
+#        children:
+#            mcmmo.commands.vampirism: true
+#            mcmmo.commands.vampirism.modify: true
+#            mcmmo.commands.vampirism.toggle: true
+#    mcmmo.commands.vampirism:
+#        description: Allows access to the vampirism command
+#    mcmmo.commands.vampirism.modify:
+#        description: Allows access to the vampirism command to modify the vampirism rate
+#    mcmmo.commands.vampirism.toggle:
+#        description: Allows access to the vampirism command to toggle vampirism on/off
     mcmmo.commands.woodcutting:
         description: Allows access to the woodcutting command
     mcmmo.commands.xprate.*:
@@ -1280,22 +1317,6 @@ permissions:
         description: Allows access to the xprate reset command
     mcmmo.commands.xprate.set:
         description: Allows access to the xprate command to control xp events
-    mcmmo.defaults:
-        default: true
-        description: mcmmo permisions that default to true
-        children:
-            mcmmo.chat.partychat: true
-            mcmmo.commands.defaults: true
-            mcmmo.motd: true 
-            mcmmo.skills.all: true
-    mcmmo.defaultsop:
-        default: op
-        description: mcmmo permissions that default to op
-        children:
-            mcmmo.chat.adminchat: true
-            mcmmo.commands.defaultsop: true
-            mcmmo.item.all: true
-            mcmmo.tools.all: true
     mcmmo.item.*:
         default: true
         description: Implies all mcmmo.item permissions

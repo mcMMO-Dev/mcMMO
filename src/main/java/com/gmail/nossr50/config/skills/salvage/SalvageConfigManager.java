@@ -9,18 +9,21 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class SalvageConfigManager {
-    private final List<Salvageable> salvageables = new ArrayList<Salvageable>();
+    public static final String SALVAGE_VANILLA_YML = "salvage.vanilla.yml";
+    private final List<Salvageable> salvageables = new ArrayList<>(); //TODO: Collision checking, make the list a set
+
 
     public SalvageConfigManager(mcMMO plugin) {
         Pattern pattern = Pattern.compile("salvage\\.(?:.+)\\.yml");
         File dataFolder = plugin.getDataFolder();
-        File vanilla = new File(dataFolder, "salvage.vanilla.yml");
 
-        if (!vanilla.exists()) {
-            plugin.saveResource("salvage.vanilla.yml", false);
-        }
+        SalvageConfig mainSalvageConfig = new SalvageConfig(SALVAGE_VANILLA_YML);
+        salvageables.addAll(mainSalvageConfig.getLoadedSalvageables());
 
         for (String fileName : dataFolder.list()) {
+            if(fileName.equals(SALVAGE_VANILLA_YML))
+                continue;
+
             if (!pattern.matcher(fileName).matches()) {
                 continue;
             }
@@ -37,6 +40,6 @@ public class SalvageConfigManager {
     }
 
     public List<Salvageable> getLoadedSalvageables() {
-        return salvageables;
+        return new ArrayList<>(salvageables);
     }
 }

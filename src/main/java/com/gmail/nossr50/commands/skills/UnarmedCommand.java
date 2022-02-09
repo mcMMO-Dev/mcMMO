@@ -4,12 +4,12 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import net.md_5.bungee.api.chat.TextComponent;
+import com.gmail.nossr50.util.text.TextComponentFactory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class UnarmedCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);;
+            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -54,14 +54,14 @@ public class UnarmedCommand extends SkillCommand {
 
         // UNARMED_DISARM
         if (canDisarm) {
-            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_DISARM);;
+            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_DISARM);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getIronArmDamage();
+            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP
@@ -75,7 +75,7 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
-        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
+        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
         canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
         canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
         canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);
@@ -84,7 +84,7 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canDeflect) {
             messages.add(getStatMessage(SubSkillType.UNARMED_ARROW_DEFLECT, deflectChance)
@@ -123,8 +123,8 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected List<TextComponent> getTextComponents(Player player) {
-        List<TextComponent> textComponents = new ArrayList<>();
+    protected List<Component> getTextComponents(Player player) {
+        List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.UNARMED);
 

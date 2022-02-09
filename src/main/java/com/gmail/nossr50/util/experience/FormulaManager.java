@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FormulaManager {
-    private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
+    private static final File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
     // Experience needed to reach a level, cached values to improve conversion speed
     private Map<Integer, Integer> experienceNeededRetroLinear;
@@ -89,7 +88,7 @@ public class FormulaManager {
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = Config.getInstance().getLevelCap(primarySkillType);
+        int maxLevel = mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getXPtoNextLevel(newLevel, formulaType);
@@ -116,9 +115,9 @@ public class FormulaManager {
      * @return amount of experience needed to reach next level
      */
     public int getXPtoNextLevel(int level, FormulaType formulaType) {
-        /**
-         * Retro mode XP requirements are the default requirements
-         * Standard mode XP requirements are multiplied by a factor of 10
+        /*
+          Retro mode XP requirements are the default requirements
+          Standard mode XP requirements are multiplied by a factor of 10
          */
 
         //TODO: When the heck is Unknown used?

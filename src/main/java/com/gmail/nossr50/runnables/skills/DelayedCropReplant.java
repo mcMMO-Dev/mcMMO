@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,8 +12,11 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.Cocoa;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DelayedCropReplant extends BukkitRunnable {
 
@@ -21,7 +25,7 @@ public class DelayedCropReplant extends BukkitRunnable {
     private final Material cropMaterial;
     private boolean wasImmaturePlant;
     private final BlockBreakEvent blockBreakEvent;
-    private BlockFace cropFace;
+    private @Nullable BlockFace cropFace;
 
     /**
      * Replants a crop after a delay setting the age to desiredCropAge
@@ -48,6 +52,7 @@ public class DelayedCropReplant extends BukkitRunnable {
     public void run() {
         Block cropBlock = cropLocation.getBlock();
         BlockState currentState = cropBlock.getState();
+        PlantAnchorType plantAnchorType = PlantAnchorType.NORMAL;
 
         //Remove the metadata marking the block as recently replanted
         new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(mcMMO.p, 10);
@@ -81,6 +86,10 @@ public class DelayedCropReplant extends BukkitRunnable {
                 directional.setFacing(cropFace);
 
                 newState.setBlockData(directional);
+
+                if(newData instanceof Cocoa) {
+                    plantAnchorType = PlantAnchorType.COCOA;
+                }
             }
 
             //Age the crop
@@ -89,16 +98,70 @@ public class DelayedCropReplant extends BukkitRunnable {
             newState.setBlockData(ageable);
 
 
-            newState.update(true);
+            newState.update(true, true);
 
             //Play an effect
             ParticleEffectUtils.playGreenThumbEffect(cropLocation);
-
+            new PhysicsBlockUpdate(newState.getBlock(), cropFace, plantAnchorType).runTaskLater(mcMMO.p, 1);
         }
-
     }
 
-    private class markPlantAsOld extends BukkitRunnable {
+    private enum PlantAnchorType {
+        NORMAL,
+        COCOA
+    }
+
+    private static class PhysicsBlockUpdate extends BukkitRunnable {
+        private final Block plantBlock;
+        private final PlantAnchorType plantAnchorType;
+        private BlockFace plantFace;
+
+        private PhysicsBlockUpdate(@NotNull Block plantBlock, @Nullable BlockFace plantFace, @NotNull PlantAnchorType plantAnchorType) {
+            this.plantBlock = plantBlock;
+            this.plantAnchorType = plantAnchorType;
+
+            if(plantFace != null) {
+                this.plantFace = plantFace;
+            }
+        }
+
+        @Override
+        public void run() {
+            //Update neighbors
+            switch (plantAnchorType) {
+                case COCOA:
+                    checkPlantIntegrity(plantFace);
+                    break;
+                case NORMAL:
+                    checkPlantIntegrity(BlockFace.DOWN);
+                    break;
+            }
+        }
+
+        private void checkPlantIntegrity(@NotNull BlockFace blockFace) {
+            Block neighbor = plantBlock.getRelative(blockFace);
+
+            if(plantAnchorType == PlantAnchorType.COCOA) {
+                if(!neighbor.getType().toString().toLowerCase().contains("jungle")) {
+                    plantBlock.breakNaturally();
+                }
+            } else {
+                switch (neighbor.getType()) {
+                    case AIR:
+                    case CAVE_AIR:
+                    case WATER:
+                    case LAVA:
+                        plantBlock.breakNaturally();
+                        break;
+                    default:
+                }
+            }
+        }
+    }
+
+
+
+    private static class markPlantAsOld extends BukkitRunnable {
 
         private final Location cropLoc;
 
@@ -109,8 +172,8 @@ public class DelayedCropReplant extends BukkitRunnable {
         @Override
         public void run() {
             Block cropBlock = cropLoc.getBlock();
-            if(cropBlock.getMetadata(mcMMO.REPLANT_META_KEY).size() > 0)
-                cropBlock.setMetadata(mcMMO.REPLANT_META_KEY, new RecentlyReplantedCropMeta(mcMMO.p, false));
+            if(cropBlock.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() > 0)
+                cropBlock.setMetadata(MetadataConstants.METADATA_KEY_REPLANT, new RecentlyReplantedCropMeta(mcMMO.p, false));
         }
     }
 

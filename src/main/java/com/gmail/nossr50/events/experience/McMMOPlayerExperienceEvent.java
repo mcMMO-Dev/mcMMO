@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Generic event for mcMMO experience events.
@@ -28,7 +29,13 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     protected McMMOPlayerExperienceEvent(Player player, PrimarySkillType skill, XPGainReason xpGainReason) {
         super(player);
         this.skill = skill;
-        this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
+
+        if(UserManager.getPlayer(player) != null) {
+            this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
+        } else {
+            this.skillLevel = 0;
+        }
+
         this.xpGainReason = xpGainReason;
     }
 
@@ -67,7 +74,7 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

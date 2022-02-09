@@ -1,0 +1,808 @@
+#
+#  Settings for Fishing Treasures / Shake Treasures
+#  Last updated on 12/28/2020
+###
+Fishing:
+    LEATHER_BOOTS:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    LEATHER_HELMET:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    LEATHER_LEGGINGS:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    LEATHER_CHESTPLATE:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    WOODEN_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    WOODEN_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    WOODEN_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    WOODEN_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    WOODEN_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    LAPIS_LAZULI:
+        Amount: 20
+        XP: 200
+        Rarity: COMMON
+    STONE_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    STONE_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    STONE_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    STONE_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    STONE_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_BOOTS:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_HELMET:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_LEGGINGS:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    GOLDEN_CHESTPLATE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    IRON_INGOT:
+        Amount: 5
+        XP: 200
+        Rarity: UNCOMMON
+    GOLD_INGOT:
+        Amount: 5
+        XP: 200
+        Rarity: UNCOMMON
+    IRON_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    IRON_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    IRON_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    IRON_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    IRON_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    BOW:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    ENDER_PEARL:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    BLAZE_ROD:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    NAME_TAG:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
+    IRON_BOOTS:
+        Amount: 1
+        XP: 200
+        Rarity: EPIC
+    IRON_HELMET:
+        Amount: 1
+        XP: 200
+        Rarity: EPIC
+    IRON_LEGGINGS:
+        Amount: 1
+        XP: 200
+        Rarity: EPIC
+    IRON_CHESTPLATE:
+        Amount: 1
+        XP: 200
+        Rarity: EPIC
+    GHAST_TEAR:
+        Amount: 1
+        XP: 200
+        Rarity: EPIC
+    DIAMOND:
+        Amount: 5
+        XP: 200
+        Rarity: EPIC
+    NAUTILUS_SHELL:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_BOOTS:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_HELMET:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_LEGGINGS:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    DIAMOND_CHESTPLATE:
+        Amount: 1
+        XP: 200
+        Rarity: LEGENDARY
+    NETHERITE_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_BOOTS:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_HELMET:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_LEGGINGS:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    NETHERITE_CHESTPLATE:
+        Amount: 1
+        XP: 200
+        Rarity: MYTHIC
+    ENCHANTED_BOOK:
+        Amount: 1
+        XP: 400
+        Rarity: LEGENDARY
+# Uncomment the below 3 lines to use the Whitelist, Alternatively rename it Enchantments_Blacklist to use the blacklist
+# NOTE: Enchantments_Whitelist and Enchantments_Blacklist only do anything for Enchanted_Books at the moment, you can't use it with any other treasure definition
+#        Enchantments_Whitelist:
+#            - Fortune
+#            - Protection
+    NETHERITE_SCRAP:
+        Amount: 1
+        XP: 400
+        Rarity: LEGENDARY
+#
+#	Fishing drop rates
+###
+Item_Drop_Rates:
+    Tier_1:
+        COMMON: 7.50
+        UNCOMMON: 1.25
+        RARE: 0.25
+        EPIC: 0.10
+        LEGENDARY: 0.01
+        MYTHIC: 0.01
+    Tier_2:
+        COMMON: 6.50
+        UNCOMMON: 1.75
+        RARE: 0.75
+        EPIC: 0.50
+        LEGENDARY: 0.05
+        MYTHIC: 0.01
+    Tier_3:
+        COMMON: 3.50
+        UNCOMMON: 2.75
+        RARE: 1.25
+        EPIC: 1.00
+        LEGENDARY: 0.10
+        MYTHIC: 0.01
+    Tier_4:
+        COMMON: 2.00
+        UNCOMMON: 3.50
+        RARE: 2.25
+        EPIC: 1.50
+        LEGENDARY: 1.00
+        MYTHIC: 0.01
+    Tier_5:
+        COMMON: 1.50
+        UNCOMMON: 3.75
+        RARE: 2.50
+        EPIC: 2.00
+        LEGENDARY: 1.00
+        MYTHIC: 0.01
+    Tier_6:
+        COMMON: 1.00
+        UNCOMMON: 3.25
+        RARE: 3.75
+        EPIC: 2.50
+        LEGENDARY: 1.50
+        MYTHIC: 0.05
+    Tier_7:
+        COMMON: 0.25
+        UNCOMMON: 2.75
+        RARE: 4.00
+        EPIC: 5.00
+        LEGENDARY: 2.50
+        MYTHIC: 0.10
+    Tier_8:
+        COMMON: 0.10
+        UNCOMMON: 1.50
+        RARE: 6.00
+        EPIC: 7.50
+        LEGENDARY: 5.00
+        MYTHIC: 0.25
+#
+#	Fishing enchantment drop rates
+###
+Enchantments_Rarity:
+    COMMON:
+        EFFICIENCY: 1
+        UNBREAKING: 1
+        FORTUNE: 1
+        PROTECTION: 1
+        FIRE_PROTECTION: 1
+        FEATHER_FALLING: 1
+        BLAST_PROTECTION: 1
+        PROJECTILE_PROTECTION: 1
+        RESPIRATION: 1
+        THORNS: 1
+        SHARPNESS: 1
+        SMITE: 1
+        BANE_OF_ARTHROPODS: 1
+        POWER: 1
+    UNCOMMON:
+        EFFICIENCY: 2
+        PROTECTION: 2
+        FIRE_PROTECTION: 2
+        FEATHER_FALLING: 2
+        BLAST_PROTECTION: 2
+        PROJECTILE_PROTECTION: 2
+        SHARPNESS: 2
+        SMITE: 2
+        BANE_OF_ARTHROPODS: 2
+        KNOCKBACK: 1
+        LOOTING: 1
+        POWER: 2
+        PUNCH: 1
+    RARE:
+        EFFICIENCY: 3
+        UNBREAKING: 2
+        PROTECTION: 3
+        FIRE_PROTECTION: 3
+        FEATHER_FALLING: 3
+        BLAST_PROTECTION: 3
+        PROJECTILE_PROTECTION: 3
+        RESPIRATION: 2
+        SHARPNESS: 3
+        SMITE: 3
+        BANE_OF_ARTHROPODS: 3
+        FIRE_ASPECT: 1
+        LOOTING: 2
+        POWER: 3
+    EPIC:
+        EFFICIENCY: 4
+        FORTUNE: 2
+        AQUA_AFFINITY: 1
+        THORNS: 2
+        SHARPNESS: 4
+        SMITE: 4
+        BANE_OF_ARTHROPODS: 4
+        POWER: 4
+        FLAME: 1
+    LEGENDARY:
+        EFFICIENCY: 5
+        UNBREAKING: 3
+        FORTUNE: 3
+        PROTECTION: 4
+        FIRE_PROTECTION: 4
+        FEATHER_FALLING: 4
+        BLAST_PROTECTION: 4
+        PROJECTILE_PROTECTION: 4
+        RESPIRATION: 3
+        AQUA_AFFINITY: 1
+        THORNS: 3
+        SHARPNESS: 5
+        SMITE: 5
+        BANE_OF_ARTHROPODS: 5
+        KNOCKBACK: 2
+        FIRE_ASPECT: 2
+        LOOTING: 3
+        SILK_TOUCH: 1
+        POWER: 5
+        PUNCH: 2
+        INFINITY: 1
+    MYTHIC:
+        EFFICIENCY: 5
+        UNBREAKING: 3
+        FORTUNE: 3
+        PROTECTION: 4
+        FIRE_PROTECTION: 4
+        FEATHER_FALLING: 4
+        BLAST_PROTECTION: 4
+        PROJECTILE_PROTECTION: 4
+        RESPIRATION: 3
+        AQUA_AFFINITY: 1
+        THORNS: 3
+        SHARPNESS: 5
+        SMITE: 5
+        BANE_OF_ARTHROPODS: 5
+        KNOCKBACK: 2
+        FIRE_ASPECT: 2
+        LOOTING: 3
+        SILK_TOUCH: 1
+        POWER: 5
+        PUNCH: 2
+        INFINITY: 1
+Enchantment_Drop_Rates:
+    Tier_1:
+        COMMON: 5.00
+        UNCOMMON: 1.00
+        RARE: 0.10
+        EPIC: 0.01
+        LEGENDARY: 0.01
+        MYTHIC: 0.01
+    Tier_2:
+        COMMON: 7.50
+        UNCOMMON: 1.00
+        RARE: 0.10
+        EPIC: 0.01
+        LEGENDARY: 0.01
+        MYTHIC: 0.01
+    Tier_3:
+        COMMON: 7.50
+        UNCOMMON: 2.50
+        RARE: 0.25
+        EPIC: 0.10
+        LEGENDARY: 0.01
+        MYTHIC: 0.01
+    Tier_4:
+        COMMON: 10.0
+        UNCOMMON: 2.75
+        RARE: 0.50
+        EPIC: 0.10
+        LEGENDARY: 0.05
+        MYTHIC: 0.05
+    Tier_5:
+        COMMON: 10.0
+        UNCOMMON: 4.00
+        RARE: 0.75
+        EPIC: 0.25
+        LEGENDARY: 0.10
+        MYTHIC: 0.10
+    Tier_6:
+        COMMON: 9.50
+        UNCOMMON: 5.50
+        RARE: 1.75
+        EPIC: 0.50
+        LEGENDARY: 0.25
+        MYTHIC: 0.25
+    Tier_7:
+        COMMON: 8.50
+        UNCOMMON: 7.50
+        RARE: 2.75
+        EPIC: 0.75
+        LEGENDARY: 0.50
+        MYTHIC: 0.50
+    Tier_8:
+        COMMON: 7.50
+        UNCOMMON: 10.0
+        RARE: 5.25
+        EPIC: 1.50
+        LEGENDARY: 0.75
+        MYTHIC: 0.75
+#
+#  Settings for Shake
+#  If you are in retro mode, Drop_Level is multiplied by 10.
+###
+Shake:
+    BLAZE:
+        BLAZE_ROD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    CAVE_SPIDER:
+        SPIDER_EYE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        STRING:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        COBWEB:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        POTION|0|POISON:
+            PotionData:
+                PotionType: POISON
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+    CHICKEN:
+        FEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+        CHICKEN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+        EGG:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+    COW:
+        MILK_BUCKET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        BEEF:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+    CREEPER:
+        CREEPER_HEAD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        GUNPOWDER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 99.0
+            Drop_Level: 0
+    ENDERMAN:
+        ENDER_PEARL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    GHAST:
+        GUNPOWDER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        GHAST_TEAR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    HORSE:
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 99.0
+            Drop_Level: 0
+        SADDLE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+    IRON_GOLEM:
+        PUMPKIN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        IRON_INGOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 12.0
+            Drop_Level: 0
+        POPPY:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 85.0
+            Drop_Level: 0
+    MAGMA_CUBE:
+        MAGMA_CREAM:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    MUSHROOM_COW:
+        MILK_BUCKET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 5.0
+            Drop_Level: 0
+        MUSHROOM_STEW:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 5.0
+            Drop_Level: 0
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+        BEEF:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+        RED_MUSHROOM:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+    PIG:
+        PORKCHOP:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    PIG_ZOMBIE:
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        GOLD_NUGGET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    PLAYER:
+        SKELETON_SKULL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 0.0
+            Drop_Level: 0
+        INVENTORY:
+            Whole_Stacks: false
+            Drop_Chance: 0.0
+            Drop_Level: 0
+    SHEEP:
+        WHITE_WOOL:
+            Amount: 3
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    SHULKER:
+        SHULKER_SHELL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 25.0
+            Drop_Level: 0
+        PURPUR_BLOCK:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 75.0
+            Drop_Level: 0
+    SKELETON:
+        SKELETON_SKULL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        BONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        ARROW:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+    SLIME:
+        SLIME_BALL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    SPIDER:
+        SPIDER_EYE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        STRING:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    SNOWMAN:
+        PUMPKIN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        SNOWBALL:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 97.0
+            Drop_Level: 0
+    SQUID:
+        INK_SAC:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    WITCH:
+        SPLASH_POTION|0|INSTANT_HEAL:
+            PotionData:
+                PotionType: INSTANT_HEAL
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        SPLASH_POTION|0|FIRE_RESISTANCE:
+            PotionData:
+                PotionType: FIRE_RESISTANCE
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        SPLASH_POTION|0|SPEED:
+            PotionData:
+                PotionType: SPEED
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        GLASS_BOTTLE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 7.0
+            Drop_Level: 0
+        GLOWSTONE_DUST:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        GUNPOWDER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        REDSTONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        SPIDER_EYE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        STICK:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        SUGAR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+    WITHER_SKELETON:
+        WITHER_SKELETON_SKULL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        BONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        COAL:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+    ZOMBIE:
+        ZOMBIE_HEAD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 98.0
+            Drop_Level: 0

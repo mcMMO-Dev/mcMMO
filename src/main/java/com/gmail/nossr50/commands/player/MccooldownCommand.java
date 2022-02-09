@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -12,12 +12,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class MccooldownCommand implements TabExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -26,53 +27,48 @@ public class MccooldownCommand implements TabExecutor {
             return true;
         }
 
-        switch (args.length) {
-            case 0:
-                Player player = (Player) sender;
+        if (args.length == 0) {
+            Player player = (Player) sender;
 
-                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getCooldownUseBoard()) {
-                    ScoreboardManager.enablePlayerCooldownScoreboard(player);
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled() && mcMMO.p.getGeneralConfig().getCooldownUseBoard()) {
+                ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
-                    if (!Config.getInstance().getCooldownUseChat()) {
-                        return true;
-                    }
-                }
-
-                if(UserManager.getPlayer(player) == null)
-                {
-                    player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                if (!mcMMO.p.getGeneralConfig().getCooldownUseChat()) {
                     return true;
                 }
+            }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            if (UserManager.getPlayer(player) == null) {
+                player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                return true;
+            }
 
-                player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
-                player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                for (SuperAbilityType ability : SuperAbilityType.values()) {
-                    if (!ability.getPermissions(player)) {
-                        continue;
-                    }
+            player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 
-                    int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
-
-                    if (seconds <= 0) {
-                        player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
-                    }
-                    else {
-                        player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
-                    }
+            for (SuperAbilityType ability : SuperAbilityType.values()) {
+                if (!ability.getPermissions(player)) {
+                    continue;
                 }
 
-                return true;
+                int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
 
-            default:
-                return false;
+                if (seconds <= 0) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getLocalizedName()));
+                } else {
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getLocalizedName(), seconds));
+                }
+            }
+
+            return true;
         }
+        return false;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         return ImmutableList.of();
     }
 }

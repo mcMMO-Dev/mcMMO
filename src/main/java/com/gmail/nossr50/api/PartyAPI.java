@@ -1,6 +1,5 @@
 package com.gmail.nossr50.api;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyLeader;
@@ -108,7 +107,7 @@ public final class PartyAPI {
      */
     public static int getMaxPartySize()
     {
-        return Config.getInstance().getPartyMaxSize();
+        return mcMMO.p.getGeneralConfig().getPartyMaxSize();
     }
 
     /**
@@ -185,7 +184,7 @@ public final class PartyAPI {
      */
     @Deprecated
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
-        List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
+        List<OfflinePlayer> members = new ArrayList<>();
 
         for (UUID memberUniqueId : PartyManager.getAllMembers(player).keySet()) {
             OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);

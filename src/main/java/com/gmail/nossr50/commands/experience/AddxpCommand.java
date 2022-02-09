@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
@@ -37,12 +38,18 @@ public class AddxpCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageAll(Player player, int value) {
+    protected void handlePlayerMessageAll(Player player, int value, boolean isSilent) {
+        if(isSilent)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", value));
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getName()));
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
+        if(isSilent)
+            return;
+
+        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
     }
 }

@@ -10,9 +10,9 @@ import org.bukkit.inventory.ItemStack;
  * Called just before a player repairs an object with mcMMO.
  */
 public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private short repairAmount;
-    private ItemStack repairMaterial;
-    private ItemStack repairedObject;
+    private final short repairAmount;
+    private final ItemStack repairMaterial;
+    private final ItemStack repairedObject;
     private boolean cancelled;
 
     public McMMOPlayerRepairCheckEvent(Player player, short repairAmount, ItemStack repairMaterial, ItemStack repairedObject) {

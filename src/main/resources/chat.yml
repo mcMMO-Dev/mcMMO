@@ -1,0 +1,23 @@
+# Settings for the chat channels in mcMMO
+Chat:
+    # Turn this off if you don't want mcMMO to process any chat (such as party chat or admin chat)
+    Enable: true
+    Channels:
+        Party:
+            # Enable or disable party chat
+            Enable: true
+            # Whether or not to use the current display name of a player
+            Use_Display_Names: true
+            Spies:
+                # Whether or not players with the chat spy permission join the server with chat spying toggled on
+                Automatically_Enable_Spying: false
+        Admin:
+            # Enable or disable admin chat
+            Enable: true
+            # Whether or not to use the current display name of a player
+            Use_Display_Names: true
+# CUSTOMIZATION INFORMATION
+# If you want to customize the look and feel of chat channels, that is handled through localization which is configurable
+# You can find information on how to handle that in the link below
+# https://mcmmo.org/wiki/Locale
+# When editing the locale for chat, do a search in the master text file (your local locale override file is empty at first, read the wiki article above) for "chat" and that should lead you right to the locale entries related to chat

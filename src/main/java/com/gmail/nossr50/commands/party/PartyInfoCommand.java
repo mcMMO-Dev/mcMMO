@@ -1,11 +1,11 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
@@ -13,13 +13,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PartyInfoCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         switch (args.length) {
             case 0:
             case 1:
@@ -60,8 +61,8 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayPartyFeatures(Player player, Party party) {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Features.Header"));
 
-        List<String> unlockedPartyFeatures = new ArrayList<String>();
-        List<String> lockedPartyFeatures = new ArrayList<String>();
+        List<String> unlockedPartyFeatures = new ArrayList<>();
+        List<String> lockedPartyFeatures = new ArrayList<>();
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
             if (!partyFeature.hasPermission(player)) {
@@ -84,7 +85,7 @@ public class PartyInfoCommand implements CommandExecutor {
     }
 
     private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {
-        return party.getLevel() >= Config.getInstance().getPartyFeatureUnlockLevel(partyFeature);
+        return party.getLevel() >= mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(partyFeature);
     }
 
     private void displayShareModeInfo(Player player, Party party) {

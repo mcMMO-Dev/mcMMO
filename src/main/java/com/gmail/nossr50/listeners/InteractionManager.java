@@ -39,8 +39,7 @@ public class InteractionManager {
             subSkillList.add(abstractSubSkill);
 
         //Init ArrayList
-        if(interactRegister.get(abstractSubSkill.getInteractType()) == null)
-            interactRegister.put(abstractSubSkill.getInteractType(), new ArrayList<>());
+        interactRegister.computeIfAbsent(abstractSubSkill.getInteractType(), k -> new ArrayList<>());
 
         //Registration array reference
         ArrayList<Interaction> arrayRef = interactRegister.get(abstractSubSkill.getInteractType());
@@ -51,10 +50,9 @@ public class InteractionManager {
         String lowerCaseName = abstractSubSkill.getConfigKeyName().toLowerCase(Locale.ENGLISH);
 
         //Register in name map
-        if(subSkillNameMap.get(lowerCaseName) == null)
-            subSkillNameMap.put(lowerCaseName, abstractSubSkill);
+        subSkillNameMap.putIfAbsent(lowerCaseName, abstractSubSkill);
 
-        System.out.println("[mcMMO] registered subskill: "+ abstractSubSkill.getConfigKeyName());
+        mcMMO.p.getLogger().info("Registered subskill: "+ abstractSubSkill.getConfigKeyName());
     }
 
     /**

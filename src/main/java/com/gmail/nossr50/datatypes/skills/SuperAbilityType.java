@@ -1,10 +1,10 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -15,49 +15,56 @@ public enum SuperAbilityType {
             "Unarmed.Skills.Berserk.Off",
             "Unarmed.Skills.Berserk.Other.On",
             "Unarmed.Skills.Berserk.Refresh",
-            "Unarmed.Skills.Berserk.Other.Off"),
+            "Unarmed.Skills.Berserk.Other.Off",
+            "Unarmed.SubSkill.Berserk.Name"),
 
     SUPER_BREAKER(
             "Mining.Skills.SuperBreaker.On",
             "Mining.Skills.SuperBreaker.Off",
             "Mining.Skills.SuperBreaker.Other.On",
             "Mining.Skills.SuperBreaker.Refresh",
-            "Mining.Skills.SuperBreaker.Other.Off"),
+            "Mining.Skills.SuperBreaker.Other.Off",
+            "Mining.SubSkill.SuperBreaker.Name"),
 
     GIGA_DRILL_BREAKER(
             "Excavation.Skills.GigaDrillBreaker.On",
             "Excavation.Skills.GigaDrillBreaker.Off",
             "Excavation.Skills.GigaDrillBreaker.Other.On",
             "Excavation.Skills.GigaDrillBreaker.Refresh",
-            "Excavation.Skills.GigaDrillBreaker.Other.Off"),
+            "Excavation.Skills.GigaDrillBreaker.Other.Off",
+            "Excavation.SubSkill.GigaDrillBreaker.Name"),
 
     GREEN_TERRA(
             "Herbalism.Skills.GTe.On",
             "Herbalism.Skills.GTe.Off",
             "Herbalism.Skills.GTe.Other.On",
             "Herbalism.Skills.GTe.Refresh",
-            "Herbalism.Skills.GTe.Other.Off"),
+            "Herbalism.Skills.GTe.Other.Off",
+            "Herbalism.SubSkill.GreenTerra.Name"),
 
     SKULL_SPLITTER(
             "Axes.Skills.SS.On",
             "Axes.Skills.SS.Off",
             "Axes.Skills.SS.Other.On",
             "Axes.Skills.SS.Refresh",
-            "Axes.Skills.SS.Other.Off"),
+            "Axes.Skills.SS.Other.Off",
+            "Axes.SubSkill.SkullSplitter.Name"),
 
     TREE_FELLER(
             "Woodcutting.Skills.TreeFeller.On",
             "Woodcutting.Skills.TreeFeller.Off",
             "Woodcutting.Skills.TreeFeller.Other.On",
             "Woodcutting.Skills.TreeFeller.Refresh",
-            "Woodcutting.Skills.TreeFeller.Other.Off"),
+            "Woodcutting.Skills.TreeFeller.Other.Off",
+            "Woodcutting.SubSkill.TreeFeller.Name"),
 
     SERRATED_STRIKES(
             "Swords.Skills.SS.On",
             "Swords.Skills.SS.Off",
             "Swords.Skills.SS.Other.On",
             "Swords.Skills.SS.Refresh",
-            "Swords.Skills.SS.Other.Off"),
+            "Swords.Skills.SS.Other.Off",
+            "Swords.SubSkill.SerratedStrikes.Name"),
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
@@ -67,7 +74,8 @@ public enum SuperAbilityType {
             null,
             "Mining.Blast.Other.On",
             "Mining.Blast.Refresh",
-            null),
+            null,
+            "Mining.SubSkill.BlastMining.Name"),
     ;
 
     /*
@@ -85,27 +93,29 @@ public enum SuperAbilityType {
         BLAST_MINING.subSkillTypeDefinition         = SubSkillType.MINING_BLAST_MINING;
     }
 
-    private String abilityOn;
-    private String abilityOff;
-    private String abilityPlayer;
-    private String abilityRefresh;
-    private String abilityPlayerOff;
+    private final String abilityOn;
+    private final String abilityOff;
+    private final String abilityPlayer;
+    private final String abilityRefresh;
+    private final String abilityPlayerOff;
     private SubSkillType subSkillTypeDefinition;
+    private final String localizedName;
 
-    private SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+    SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff, String localizedName) {
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;
         this.abilityRefresh = abilityRefresh;
         this.abilityPlayerOff = abilityPlayerOff;
+        this.localizedName = localizedName;
     }
 
     public int getCooldown() {
-        return Config.getInstance().getCooldown(this);
+        return mcMMO.p.getSkillTools().getSuperAbilityCooldown(this);
     }
 
     public int getMaxLength() {
-        return Config.getInstance().getMaxLength(this);
+        return mcMMO.p.getGeneralConfig().getMaxLength(this);
     }
 
     public String getAbilityOn() {
@@ -130,6 +140,10 @@ public enum SuperAbilityType {
 
     public String getName() {
         return StringUtils.getPrettyAbilityString(this);
+    }
+
+    public String getLocalizedName() {
+        return LocaleLoader.getString(localizedName);
     }
 
     @Override
@@ -211,7 +225,7 @@ public enum SuperAbilityType {
                 return BlockUtils.affectedBySuperBreaker(blockState);
 
             case TREE_FELLER:
-                return BlockUtils.isLog(blockState);
+                return BlockUtils.hasWoodcuttingXP(blockState);
 
             default:
                 return false;

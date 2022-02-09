@@ -1,11 +1,12 @@
 package com.gmail.nossr50.skills.excavation;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -14,8 +15,6 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -46,12 +45,11 @@ public class ExcavationManager extends SkillManager {
 
                         //Spawn Vanilla XP orbs if a dice roll succeeds
                         if(RandomChanceUtil.rollDice(getArchaelogyExperienceOrbChance(), 100)) {
-                            ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
-                            experienceOrb.setExperience(getExperienceOrbsReward());
+                            Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
                         }
 
                         xp += treasure.getXp();
-                        Misc.dropItem(location, treasure.getDrop());
+                        Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
                     }
                 }
             }
@@ -61,7 +59,7 @@ public class ExcavationManager extends SkillManager {
     }
 
     public int getExperienceOrbsReward() {
-        return 1 * getArchaeologyRank();
+        return getArchaeologyRank();
     }
 
     public double getArchaelogyExperienceOrbChance() {
@@ -100,6 +98,6 @@ public class ExcavationManager extends SkillManager {
         excavationBlockCheck(blockState);
         excavationBlockCheck(blockState);
 
-        SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
+        SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), mcMMO.p.getGeneralConfig().getAbilityToolDamage());
     }
 }

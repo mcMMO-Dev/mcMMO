@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class McMMOPlayerVampirismEvent extends McMMOPlayerDeathPenaltyEvent {
-    private boolean isVictim;
+    private final boolean isVictim;
 
     public McMMOPlayerVampirismEvent(Player player, boolean isVictim, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
         super(player, levelChanged, experienceChanged);

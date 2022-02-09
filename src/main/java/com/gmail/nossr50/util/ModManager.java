@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
@@ -22,36 +21,36 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ModManager {
-    private List<Repairable> repairables = new ArrayList<Repairable>();
+    private final List<Repairable> repairables = new ArrayList<>();
 
     // Armor Mods
-    private List<Material> customBoots       = new ArrayList<Material>();
-    private List<Material> customChestplates = new ArrayList<Material>();
-    private List<Material> customHelmets     = new ArrayList<Material>();
-    private List<Material> customLeggings    = new ArrayList<Material>();
+    private final List<Material> customBoots       = new ArrayList<>();
+    private final List<Material> customChestplates = new ArrayList<>();
+    private final List<Material> customHelmets     = new ArrayList<>();
+    private final List<Material> customLeggings    = new ArrayList<>();
 
     // Block Mods
-    private List<Material> customExcavationBlocks  = new ArrayList<Material>();
-    private List<Material> customHerbalismBlocks   = new ArrayList<Material>();
-    private List<Material> customMiningBlocks      = new ArrayList<Material>();
-    private List<Material> customOres              = new ArrayList<Material>();
-    private List<Material> customLogs              = new ArrayList<Material>();
-    private List<Material> customLeaves            = new ArrayList<Material>();
-    private List<Material> customAbilityBlocks     = new ArrayList<Material>();
-    private HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
+    private final List<Material> customExcavationBlocks  = new ArrayList<>();
+    private final List<Material> customHerbalismBlocks   = new ArrayList<>();
+    private final List<Material> customMiningBlocks      = new ArrayList<>();
+    private final List<Material> customOres              = new ArrayList<>();
+    private final List<Material> customLogs              = new ArrayList<>();
+    private final List<Material> customLeaves            = new ArrayList<>();
+    private final List<Material> customAbilityBlocks     = new ArrayList<>();
+    private final HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
 
     // Entity Mods
-    private HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
-    private HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
+    private final HashMap<String, CustomEntity> customEntityClassMap = new HashMap<>();
+    private final HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<>();
 
     // Tool Mods
-    private List<Material> customAxes     = new ArrayList<Material>();
-    private List<Material> customBows     = new ArrayList<Material>();
-    private List<Material> customHoes     = new ArrayList<Material>();
-    private List<Material> customPickaxes = new ArrayList<Material>();
-    private List<Material> customShovels  = new ArrayList<Material>();
-    private List<Material> customSwords   = new ArrayList<Material>();
-    private HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
+    private final List<Material> customAxes     = new ArrayList<>();
+    private final List<Material> customBows     = new ArrayList<>();
+    private final List<Material> customHoes     = new ArrayList<>();
+    private final List<Material> customPickaxes = new ArrayList<>();
+    private final List<Material> customShovels  = new ArrayList<>();
+    private final List<Material> customSwords   = new ArrayList<>();
+    private final HashMap<Material, CustomTool> customToolMap = new HashMap<>();
 
     public void registerCustomArmor(CustomArmorConfig config) {
         customBoots.addAll(config.customBoots);
@@ -89,71 +88,67 @@ public class ModManager {
     }
 
     public boolean isCustomBoots(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customBoots.contains(material);
+        return mcMMO.p.getGeneralConfig().getArmorModsEnabled() && customBoots.contains(material);
     }
 
     public boolean isCustomChestplate(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customChestplates.contains(material);
+        return mcMMO.p.getGeneralConfig().getArmorModsEnabled() && customChestplates.contains(material);
     }
 
     public boolean isCustomHelmet(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customHelmets.contains(material);
+        return mcMMO.p.getGeneralConfig().getArmorModsEnabled() && customHelmets.contains(material);
     }
 
     public boolean isCustomLeggings(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customLeggings.contains(material);
+        return mcMMO.p.getGeneralConfig().getArmorModsEnabled() && customLeggings.contains(material);
     }
 
     public boolean isCustomAxe(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customAxes.contains(material);
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && customAxes.contains(material);
     }
 
     public boolean isCustomBow(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customBows.contains(material);
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && customBows.contains(material);
     }
 
     public boolean isCustomHoe(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customHoes.contains(material);
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && customHoes.contains(material);
     }
 
     public boolean isCustomPickaxe(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customPickaxes.contains(material);
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && customPickaxes.contains(material);
     }
 
     public boolean isCustomShovel(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customShovels.contains(material);
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && customShovels.contains(material);
     }
 
     public boolean isCustomSword(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customSwords.contains(material);
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && customSwords.contains(material);
     }
 
     public boolean isCustomOre(Material data) {
-        return Config.getInstance().getBlockModsEnabled() && customOres.contains(data);
+        return mcMMO.p.getGeneralConfig().getBlockModsEnabled() && customOres.contains(data);
     }
 
     public boolean isCustomLog(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLogs.contains(state.getType());
-    }
-
-    public boolean isCustomLeaf(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLeaves.contains(state.getType());
+        return mcMMO.p.getGeneralConfig().getBlockModsEnabled() && customLogs.contains(state.getType());
     }
 
     public boolean isCustomAbilityBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customAbilityBlocks.contains(state.getType());
+        return mcMMO.p.getGeneralConfig().getBlockModsEnabled() && customAbilityBlocks.contains(state.getType());
     }
 
     public boolean isCustomExcavationBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customExcavationBlocks.contains(state.getType());
+        return mcMMO.p.getGeneralConfig().getBlockModsEnabled() && customExcavationBlocks.contains(state.getType());
     }
 
     public boolean isCustomHerbalismBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customHerbalismBlocks.contains(state.getType());
+        return mcMMO.p.getGeneralConfig().getBlockModsEnabled() && customHerbalismBlocks.contains(state.getType());
     }
 
     public boolean isCustomMiningBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customMiningBlocks.contains(state.getType());
+        return mcMMO.p.getGeneralConfig().getBlockModsEnabled() && customMiningBlocks.contains(state.getType());
     }
 
     public CustomBlock getBlock(BlockState state) {
@@ -171,7 +166,7 @@ public class ModManager {
      * @return true if the item is a custom tool, false otherwise
      */
     public boolean isCustomTool(ItemStack item) {
-        return Config.getInstance().getToolModsEnabled() && item != null && customToolMap.containsKey(item.getType());
+        return mcMMO.p.getGeneralConfig().getToolModsEnabled() && item != null && customToolMap.containsKey(item.getType());
     }
 
     /**
@@ -189,7 +184,7 @@ public class ModManager {
     }
 
     public boolean isCustomEntity(Entity entity) {
-        if (!Config.getInstance().getEntityModsEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getEntityModsEnabled()) {
             return false;
         }
 
@@ -231,7 +226,7 @@ public class ModManager {
     }
 
     public void addCustomEntity(Entity entity) {
-        if (!Config.getInstance().getEntityModsEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getEntityModsEnabled()) {
             return;
         }
 

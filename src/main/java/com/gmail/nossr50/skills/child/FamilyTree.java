@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.child;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.skills.SkillTools;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class FamilyTree {
-    private static HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<PrimarySkillType, Set<PrimarySkillType>>();
+    private static final HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<>();
 
     public static Set<PrimarySkillType> getParents(PrimarySkillType childSkill) {
         enforceChildSkill(childSkill);
@@ -40,13 +41,13 @@ public class FamilyTree {
     }
 
     protected static void enforceChildSkill(PrimarySkillType skill) {
-        if (!skill.isChildSkill()) {
+        if (!SkillTools.isChildSkill(skill)) {
             throw new IllegalArgumentException(skill.name() + " is not a child skill!");
         }
     }
 
     protected static void enforceNotChildSkill(PrimarySkillType skill) {
-        if (skill.isChildSkill()) {
+        if (SkillTools.isChildSkill(skill)) {
             throw new IllegalArgumentException(skill.name() + " is a child skill!");
         }
     }

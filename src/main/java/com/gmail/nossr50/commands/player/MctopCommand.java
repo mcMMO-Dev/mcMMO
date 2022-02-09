@@ -1,15 +1,15 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,13 +17,14 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MctopCommand implements TabExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         PrimarySkillType skill = null;
 
         switch (args.length) {
@@ -66,13 +67,11 @@ public class MctopCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
-            default:
-                return ImmutableList.of();
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+        if (args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
         }
+        return ImmutableList.of();
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender, Command command) {
@@ -87,10 +86,10 @@ public class MctopCommand implements TabExecutor {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-            long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
+            long cooldownMillis = Math.max(mcMMO.p.getGeneralConfig().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000;
+                double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000.0D;
                 if (seconds < 1) {
                     seconds = 1;
                 }
@@ -99,11 +98,11 @@ public class MctopCommand implements TabExecutor {
                 return;
             }
 
-            if (((Player) sender).hasMetadata(mcMMO.databaseCommandKey)) {
+            if (((Player) sender).hasMetadata(MetadataConstants.METADATA_KEY_DATABASE_COMMAND)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(mcMMO.databaseCommandKey, new FixedMetadataValue(mcMMO.p, null));
+                ((Player) sender).setMetadata(MetadataConstants.METADATA_KEY_DATABASE_COMMAND, new FixedMetadataValue(mcMMO.p, null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();
@@ -113,8 +112,8 @@ public class MctopCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (Config.getInstance().getTopUseBoard());
-        boolean useChat = !useBoard || Config.getInstance().getTopUseChat();
+        boolean useBoard = (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getTopUseBoard());
+        boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getTopUseChat();
 
         new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
@@ -124,7 +123,7 @@ public class MctopCommand implements TabExecutor {
             return null;
         }
 
-        PrimarySkillType skill = PrimarySkillType.getSkill(skillName);
+        PrimarySkillType skill = mcMMO.p.getSkillTools().matchSkill(skillName);
 
         if (CommandUtils.isChildSkill(sender, skill)) {
             return null;

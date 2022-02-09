@@ -1,14 +1,16 @@
 package com.gmail.nossr50.skills.acrobatics;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.LimitedSizeList;
+import com.gmail.nossr50.datatypes.BlockLocationHistory;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.MobDodgeMetaCleanup;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -20,6 +22,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -28,13 +31,13 @@ public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
-        fallLocationMap = new LimitedSizeList(50);
+        fallLocationMap = new BlockLocationHistory(50);
     }
 
     private long rollXPCooldown = 0;
-    private long rollXPInterval = (1000 * 3); //1 Minute
+    private final long rollXPInterval = (1000 * 3); //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
-    private LimitedSizeList fallLocationMap;
+    private final BlockLocationHistory fallLocationMap;
 
     public boolean hasFallenInLocationBefore(Location location)
     {
@@ -64,6 +67,9 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canDodge(Entity damager) {
+        if(getPlayer().isBlocking())
+            return false;
+
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
 
@@ -72,7 +78,7 @@ public class AcrobaticsManager extends SkillManager {
                 return false;
             }
 
-            return skill.shouldProcess(damager);
+            return mcMMO.p.getSkillTools().canCombatSkillsTrigger(skill, damager);
         }
 
         return false;
@@ -91,25 +97,27 @@ public class AcrobaticsManager extends SkillManager {
         if (!isFatal(modifiedDamage) && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
-            if (mcMMOPlayer.useChatNotifications()) {
+            if (mmoPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
             }
 
-            if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                if(!(attacker instanceof Player)) {
+            if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+                if(attacker instanceof Mob) {
+                    Mob mob = (Mob) attacker;
                     //Check to see how many dodge XP rewards this mob has handed out
-                    if(attacker.hasMetadata(mcMMO.DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
+                    if(mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
                         //If Dodge XP has been handed out 5 times then consider it being exploited
-                        MetadataValue metadataValue = attacker.getMetadata(mcMMO.DODGE_TRACKER).get(0);
-                        int count = attacker.getMetadata(mcMMO.DODGE_TRACKER).get(0).asInt();
+                        MetadataValue metadataValue = mob.getMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER).get(0);
+                        int count = metadataValue.asInt();
 
                         if(count <= 5) {
                             applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
-                            attacker.setMetadata(mcMMO.DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
+                            mob.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
+                            MobDodgeMetaCleanup metaCleanupTask = new MobDodgeMetaCleanup(mob, mcMMO.p);
+                            metaCleanupTask.runTaskTimer(mcMMO.p, 20, 20*60); //one minute
                         }
                     } else {
                         applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
-                        attacker.setMetadata(mcMMO.DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, 1));
                     }
                 }
             }

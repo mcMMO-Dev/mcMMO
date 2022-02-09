@@ -10,8 +10,8 @@ public class BiomeAdapter {
     
     static {
         List<Biome> allBiomes = Arrays.asList(Biome.values());
-        List<Biome> waterBiomes = new ArrayList<Biome>();
-        List<Biome> iceBiomes = new ArrayList<Biome>();
+        List<Biome> waterBiomes = new ArrayList<>();
+        List<Biome> iceBiomes = new ArrayList<>();
         for (Biome biome : allBiomes) {
             if (isWater(biome.name()) && !isCold(biome.name())) {
                 waterBiomes.add(biome);

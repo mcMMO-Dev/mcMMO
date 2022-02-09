@@ -5,14 +5,18 @@ import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Furnace;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class SmeltingManager extends SkillManager {
     public SmeltingManager(McMMOPlayer mcMMOPlayer) {
@@ -31,10 +35,10 @@ public class SmeltingManager extends SkillManager {
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
     }
 
-    /**
-     * Process the Flux Mining ability.
-     *
-     * @param blockState The {@link BlockState} to check ability activation for
+    /*
+      Process the Flux Mining ability.
+
+      @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
     /*public boolean processFluxMining(BlockState blockState) {
@@ -108,17 +112,41 @@ public class SmeltingManager extends SkillManager {
         }
     }
 
-    public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
-        applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE, XPGainSource.PASSIVE);
+    public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull Furnace furnace) {
+        applyXpGain(Smelting.getSmeltXP(furnaceSmeltEvent.getSource()), XPGainReason.PVE, XPGainSource.PASSIVE); //Add XP
 
-        if (isSecondSmeltSuccessful()) {
-            ItemStack newResult = result.clone();
+        processDoubleSmelt(furnaceSmeltEvent, furnace);
+    }
 
-            newResult.setAmount(result.getAmount() + 1);
-            return newResult;
+    private void processDoubleSmelt(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull Furnace furnace) {
+        ItemStack resultItemStack = furnaceSmeltEvent.getResult();
+        /*
+            doubleSmeltCondition should be equal to the max
+         */
+
+        //Process double smelt
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
+                && canDoubleSmeltItemStack(furnace) //Effectively two less than max stack size
+                && isSecondSmeltSuccessful()) {
+
+            ItemStack doubleSmeltStack = resultItemStack.clone(); //TODO: Necessary?
+            doubleSmeltStack.setAmount(resultItemStack.getAmount() + 1); //Add one
+            furnaceSmeltEvent.setResult(doubleSmeltStack); //Set result
         }
+    }
 
-        return result;
+    private boolean canDoubleSmeltItemStack(@NotNull Furnace furnace) {
+        FurnaceInventory furnaceInventory = furnace.getInventory();
+        ItemStack furnaceResult = furnaceInventory.getResult();
+
+        if(furnaceResult == null)
+            return true; //This actually means there is nothing yet in the resulting item slot, which means it should always be okay to double smelt
+
+        int resultAmount = furnaceResult.getAmount(); //Amount before double smelt
+        int itemLimit = furnaceResult.getMaxStackSize();
+        int doubleSmeltCondition = itemLimit - 2; //Don't double smelt if it would cause an illegal stack size
+
+        return resultAmount <= doubleSmeltCondition;
     }
 
     public int vanillaXPBoost(int experience) {

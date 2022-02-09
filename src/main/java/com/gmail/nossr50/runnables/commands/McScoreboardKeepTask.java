@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class McScoreboardKeepTask extends BukkitRunnable {
-    private Player player;
+    private final Player player;
 
     public McScoreboardKeepTask(Player player) {
         this.player = player;

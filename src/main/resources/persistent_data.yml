@@ -1,0 +1,37 @@
+# This config allows servers to change which data is persistent and which data isn't
+# For 10 years mcMMO had transient data (temporary) for a lot of things and recently in October 2020 I added the option to have things be persistent (saved to disk and permanently remembered)
+# However, this is Minecraft, and Minecraft has a lot of entities, and when you start to make data persistent there is a performance cost associated with that
+# Any option you turn on, is another thing your disk has to save when a chunk is being unloaded with that entity inside of it, Minecraft can quickly build up tens of thousands of entities so keep this in mind.
+#
+# I am considering alternative to using Spigots NBT API to avoid this performance cost, but the code for those will take some time to write and test, for now it is not recommended
+#  to turn any of these settings on without monitoring the TPS of your server afterwards. With the exception of the COTW setting which will probably have almost no performance impact if left on.
+Persistent_Data:
+    Mobs:
+        Flags:
+            # By default mcMMO gives 0 XP for this type of mob, adjust in experience.yml
+            MOB_SPAWNER_MOB:
+                Saved_To_Disk: false
+            # By default mcMMO gives 0 XP for this type of mob, adjust in experience.yml
+            EGG_MOB:
+                Saved_To_Disk: false
+            # By default mcMMO gives 0 XP for this type of mob, adjust in experience.yml
+            NETHER_PORTAL_MOB:
+                Saved_To_Disk: false
+            # These mobs have low impact on performance and thus it is recommended you leave this on true
+            COTW_SUMMONED_MOB:
+                Saved_To_Disk: true
+            # By default mcMMO gives normal XP for player bred mobs, adjust in experience.yml
+            PLAYER_BRED_MOB:
+                Saved_To_Disk: false
+            # By default mcMMO gives 0 XP for this type of mob, due to an exploit in Minecraft you can spawn 1000 endermen in seconds using this trick.
+            # Adjust in experience.yml under the section labeled exploit fix
+            EXPLOITED_ENDERMEN:
+                Saved_To_Disk: false
+            # By default mcMMO gives 0 XP for this type of mob, not adjustable currently
+            PLAYER_TAMED_MOB:
+                Saved_To_Disk: false
+# When players put down a block we track it, the system used to track player blocks is super efficient and has been coded extremely well
+# It is never recommended to turn this off as it allows exploits such as player dupes etc
+# We use our own file system for this outside of NBT which has been programmed to be lightning fast
+mcMMO_Region_System:
+    Enabled: true

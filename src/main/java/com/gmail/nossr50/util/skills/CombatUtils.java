@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -11,6 +10,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
+import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -23,8 +24,11 @@ import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -32,7 +36,10 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -40,9 +47,30 @@ import java.util.List;
 import java.util.Map;
 
 public final class CombatUtils {
+
     private CombatUtils() {}
 
-    private static void processSwordCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+    private static @NotNull MobMetadataService getMobMetadataService() {
+        return mcMMO.getMetadataService().getMobMetadataService();
+    }
+
+    //Likely.. because who knows what plugins are throwing around
+    public static boolean isDamageLikelyFromNormalCombat(@NotNull DamageCause damageCause) {
+        switch (damageCause) {
+            case ENTITY_ATTACK:
+            case ENTITY_SWEEP_ATTACK:
+            case PROJECTILE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean hasWeakenedDamage(@NotNull LivingEntity livingEntity) {
+        return livingEntity.hasPotionEffect(PotionEffectType.WEAKNESS);
+    }
+
+    private static void processSwordCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
@@ -64,11 +92,8 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.SWORDS);
         }
 
-        if(target.getHealth() - event.getFinalDamage() >= 1)
-        {
-            if (swordsManager.canUseRupture()) {
-                swordsManager.ruptureCheck(target);
-            }
+        if(target.getHealth() - event.getFinalDamage() > 0) {
+            swordsManager.processRupture(target);
         }
 
         //Add Stab Damage
@@ -87,35 +112,24 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.SWORDS);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.SWORDS);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-//    public static void strengthDebug(Player player) {
-//        BukkitPlatform bukkitPlatform = (BukkitPlatform) mcMMO.getPlatformManager().getPlatform();
-//        Bukkit.broadcastMessage("Strength: "+bukkitPlatform.getPlayerAttackStrength(player));
-//
-//        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, () -> {
-//            Bukkit.broadcastMessage("1 Tick Delay: " + bukkitPlatform.getPlayerAttackStrength(player));
-//        }, 1);
-//
-//        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, () -> {
-//            Bukkit.broadcastMessage("5 Tick Delay: " + bukkitPlatform.getPlayerAttackStrength(player));
-//        }, 5);
-//
-//        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, () -> {
-//            Bukkit.broadcastMessage("80 Tick Delay: " + bukkitPlatform.getPlayerAttackStrength(player));
-//        }, 20 * 4);
-//
-//        Bukkit.broadcastMessage("");
-//
-////        if(isPlayerFullStrength(player)) {
-////            Bukkit.broadcastMessage("Full Strength!");
-////        } else {
-////            Bukkit.broadcastMessage("Not full strength!");
-////        }
-//    }
+    private static void printFinalDamageDebug(@NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull McMMOPlayer mcMMOPlayer, @Nullable String @Nullable ... extraInfoLines) {
+        if(mcMMOPlayer.isDebugMode()) {
+            player.sendMessage("Final Damage value after mcMMO modifiers: "+ event.getFinalDamage());
+            if(extraInfoLines != null) {
+                for(String str : extraInfoLines) {
+                    if(str != null)
+                        player.sendMessage(str);
+                }
+            }
+        }
+    }
 
-    private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+    private static void processAxeCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
@@ -162,10 +176,12 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.AXES);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.AXES);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-    private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+    private static void processUnarmedCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
@@ -186,9 +202,8 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
         }
 
-        //Only execute bonuses if the player is not spamming
-        if (unarmedManager.canUseIronArm()) {
-            finalDamage+=(unarmedManager.calculateIronArmDamage() * mcMMOPlayer.getAttackStrength());
+        if (unarmedManager.canUseSteelArm()) {
+            finalDamage+=(unarmedManager.calculateSteelArmStyleDamage() * mcMMOPlayer.getAttackStrength());
         }
 
         if (unarmedManager.canUseBerserk()) {
@@ -205,10 +220,12 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.UNARMED);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.UNARMED);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-    private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
+    private static void processTamingCombat(@NotNull LivingEntity target, @Nullable Player master, @NotNull Wolf wolf, @NotNull EntityDamageByEntityEvent event) {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
@@ -237,18 +254,19 @@ public final class CombatUtils {
             }
 
             applyScaledModifiers(initialDamage, finalDamage, event);
-            startGainXp(mcMMOPlayer, target, PrimarySkillType.TAMING);
+            processCombatXP(mcMMOPlayer, target, PrimarySkillType.TAMING, 3);
         }
 
     }
 
-    private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Projectile arrow) {
+    private static void processArcheryCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Make sure the profiles been loaded
         if(mcMMOPlayer == null) {
+            cleanupArrowMetadata(arrow);
             return;
         }
 
@@ -256,28 +274,16 @@ public final class CombatUtils {
         
         double finalDamage = event.getDamage();
 
-        if (target instanceof Player && PrimarySkillType.UNARMED.getPVPEnabled()) {
-            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
-
-            if (unarmedManager.canDeflect()) {
-                event.setCancelled(unarmedManager.deflectCheck());
-
-                if (event.isCancelled()) {
-                    return;
-                }
-            }
-        }
-
         if (archeryManager.canSkillShot()) {
             //Not Additive
             finalDamage = archeryManager.skillShot(initialDamage);
         }
 
         if (archeryManager.canDaze(target)) {
-            finalDamage+=archeryManager.daze((Player) target);
+            finalDamage+=archeryManager.daze((Player) target); //the cast is checked by the if condition
         }
 
-        if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {
+        if (!arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW) && archeryManager.canRetrieveArrows()) {
             archeryManager.retrieveArrows(target, arrow);
         }
 
@@ -289,11 +295,20 @@ public final class CombatUtils {
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
         double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
 
-        if(arrow.hasMetadata(mcMMO.bowForceKey))
-            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
+            forceMultiplier = arrow.getMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
+
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer,
+                "Distance Multiplier: "+distanceMultiplier,
+                "Force Multiplier: "+forceMultiplier,
+                "Initial Damage: "+initialDamage,
+                "Final Damage: "+finalDamage);
+        //Clean data
+        cleanupArrowMetadata(arrow);
     }
 
     /**
@@ -301,12 +316,15 @@ public final class CombatUtils {
      *
      * @param event The event to run the combat checks on.
      */
-    public static void processCombatAttack(EntityDamageByEntityEvent event, Entity damageSourceEntity, LivingEntity target) {
-        EntityType entityType = damageSourceEntity.getType();
+    public static void processCombatAttack(@NotNull EntityDamageByEntityEvent event, @NotNull Entity painSourceRoot, @NotNull LivingEntity target) {
+        Entity painSource = event.getDamager();
+        EntityType entityType = painSource.getType();
 
         if (target instanceof Player) {
-            if (Misc.isNPCEntityExcludingVillagers(target)) {
-                return;
+            if(ExperienceConfig.getInstance().isNPCInteractionPrevented()) {
+                if (Misc.isNPCEntityExcludingVillagers(target)) {
+                    return;
+                }
             }
 
             Player player = (Player) target;
@@ -318,35 +336,34 @@ public final class CombatUtils {
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(damageSourceEntity, event.getDamage()));
+                event.setDamage(acrobaticsManager.dodgeCheck(painSourceRoot, event.getDamage()));
             }
 
             if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
-                if (!PrimarySkillType.SWORDS.shouldProcess(target)) {
+                if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.SWORDS, target)) {
                     return;
                 }
 
                 SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
-                if (swordsManager.canUseCounterAttack(damageSourceEntity)) {
-                    swordsManager.counterAttackChecks((LivingEntity) damageSourceEntity, event.getDamage());
+                if (swordsManager.canUseCounterAttack(painSource)) {
+                    swordsManager.counterAttackChecks((LivingEntity) painSource, event.getDamage());
                 }
             }
         }
 
-        if (damageSourceEntity instanceof Player && entityType == EntityType.PLAYER) {
-            Player player = (Player) damageSourceEntity;
+        if (painSourceRoot instanceof Player && entityType == EntityType.PLAYER) {
+            Player player = (Player) painSourceRoot;
 
-            if (UserManager.getPlayer(player) == null) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 
-            McMMOPlayer attackingPlayer = UserManager.getPlayer(player);
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (target instanceof Tameable) {
                 if (heldItem.getType() == Material.BONE) {
-                    TamingManager tamingManager = attackingPlayer.getTamingManager();
+                    TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
 
                     if (tamingManager.canUseBeastLore()) {
                         tamingManager.beastLore(target);
@@ -361,73 +378,82 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (!PrimarySkillType.SWORDS.shouldProcess(target)) {
+                if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.SWORDS, target)) {
                     return;
                 }
 
-                if (PrimarySkillType.SWORDS.getPermissions(player)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SWORDS)) {
                     processSwordCombat(target, player, event);
+
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
-                if (!PrimarySkillType.AXES.shouldProcess(target)) {
+                if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.AXES, target)) {
                     return;
                 }
 
-                if (PrimarySkillType.AXES.getPermissions(player)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.AXES)) {
                     processAxeCombat(target, player, event);
                 }
             }
             else if (ItemUtils.isUnarmed(heldItem)) {
-                if (!PrimarySkillType.UNARMED.shouldProcess(target)) {
+                if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.UNARMED, target)) {
                     return;
                 }
 
-                if (PrimarySkillType.UNARMED.getPermissions(player)) {
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.UNARMED)) {
                     processUnarmedCombat(target, player, event);
                 }
             }
         }
 
         else if (entityType == EntityType.WOLF) {
-            Wolf wolf = (Wolf) damageSourceEntity;
+            Wolf wolf = (Wolf) painSource;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer != null && tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
+            if (tamer instanceof Player && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.TAMING, target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntityExcludingVillagers(master) && PrimarySkillType.TAMING.getPermissions(master)) {
+                if (!Misc.isNPCEntityExcludingVillagers(master) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(master, PrimarySkillType.TAMING)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
         }
         else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
-            Projectile arrow = (Projectile) damageSourceEntity;
+            Projectile arrow = (Projectile) painSource;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource != null && projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
+            if (projectileSource instanceof Player && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
+                if (!Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ARCHERY)) {
                     processArcheryCombat(target, player, event, arrow);
+                } else {
+                    //Cleanup Arrow
+                    cleanupArrowMetadata(arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
+                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TAMING)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+                    if(mcMMOPlayer == null)
+                        return;
+
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
                 }
             }
         }
+
     }
 
     /**
      * This cleans up names from displaying in chat as hearts
      * @param entity target entity
      */
-    public static void fixNames(LivingEntity entity)
+    public static void fixNames(@NotNull LivingEntity entity)
     {
-        List<MetadataValue> metadataValue = entity.getMetadata("mcMMO_oldName");
+        List<MetadataValue> metadataValue = entity.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY);
 
         if(metadataValue.size() <= 0)
             return;
@@ -435,6 +461,8 @@ public final class CombatUtils {
         OldName oldName = (OldName) metadataValue.get(0);
         entity.setCustomName(oldName.asString());
         entity.setCustomNameVisible(false);
+
+        entity.removeMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY, mcMMO.p);
     }
 
     /**
@@ -444,7 +472,7 @@ public final class CombatUtils {
      * @param subSkillType the specific limit break skill for calculations
      * @return the RAW damage bonus from Limit Break which is applied before reductions
      */
-    public static int getLimitBreakDamage(Player attacker, LivingEntity defender, SubSkillType subSkillType) {
+    public static int getLimitBreakDamage(@NotNull Player attacker, @NotNull LivingEntity defender, @NotNull SubSkillType subSkillType) {
         if(defender instanceof Player) {
             Player playerDefender = (Player) defender;
             return getLimitBreakDamageAgainstQuality(attacker, subSkillType, getArmorQualityLevel(playerDefender));
@@ -461,7 +489,7 @@ public final class CombatUtils {
      * @param armorQualityLevel Armor quality level
      * @return the RAW damage boost after its been mutated by armor quality
      */
-    public static int getLimitBreakDamageAgainstQuality(Player attacker, SubSkillType subSkillType, int armorQualityLevel) {
+    public static int getLimitBreakDamageAgainstQuality(@NotNull Player attacker, @NotNull SubSkillType subSkillType, int armorQualityLevel) {
         int rawDamageBoost = RankUtils.getRank(attacker, subSkillType);
 
         if(armorQualityLevel <= 4) {
@@ -480,7 +508,7 @@ public final class CombatUtils {
      * @param defender target defending player
      * @return the armor quality of the defending player
      */
-    public static int getArmorQualityLevel(Player defender) {
+    public static int getArmorQualityLevel(@NotNull Player defender) {
         int armorQualityLevel = 0;
 
         for(ItemStack itemStack : defender.getInventory().getArmorContents()) {
@@ -497,7 +525,7 @@ public final class CombatUtils {
      * @param itemStack target item stack
      * @return the armor quality of a specific Item Stack
      */
-    private static int getArmorQuality(ItemStack itemStack) {
+    private static int getArmorQuality(@NotNull ItemStack itemStack) {
         return mcMMO.getMaterialMapStore().getTier(itemStack.getType().getKey().getKey());
     }
 
@@ -506,8 +534,8 @@ public final class CombatUtils {
      * @param player target entity
      * @return true if the player has access to the limit break
      */
-    public static boolean canUseLimitBreak(Player player, LivingEntity target, SubSkillType subSkillType) {
-        if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+    public static boolean canUseLimitBreak(@NotNull Player player, LivingEntity target, @NotNull SubSkillType subSkillType) {
+        if(target instanceof Player || mcMMO.p.getAdvancedConfig().canApplyLimitBreakPVE()) {
             return RankUtils.hasUnlockedSubskill(player, subSkillType)
                     && Permissions.isSubSkillEnabled(player, subSkillType);
         } else {
@@ -522,7 +550,7 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      */
     @Deprecated
-    public static void dealDamage(LivingEntity target, double damage) {
+    public static void dealDamage(@NotNull LivingEntity target, double damage) {
         dealDamage(target, damage, DamageCause.CUSTOM, null);
     }
 
@@ -534,25 +562,25 @@ public final class CombatUtils {
      * @param attacker Player to pass to event as damager
      */
     @Deprecated
-    public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker) {
+    public static void dealDamage(@NotNull LivingEntity target, double damage, @NotNull LivingEntity attacker) {
         dealDamage(target, damage, DamageCause.CUSTOM, attacker);
     }
 
-    /**
-     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-     *
-     * @param target LivingEntity which to attempt to damage
-     * @param damage Amount of damage to attempt to do
-     * @param attacker Player to pass to event as damager
-     */
-    public static void dealDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, LivingEntity attacker) {
-        if (target.isDead()) {
-            return;
-        }
-
-        // Aren't we applying the damage twice????
-        target.damage(getFakeDamageFinalResult(attacker, target, damage, modifiers));
-    }
+//    /**
+//     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+//     *
+//     * @param target LivingEntity which to attempt to damage
+//     * @param damage Amount of damage to attempt to do
+//     * @param attacker Player to pass to event as damager
+//     */
+//    public static void dealDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, LivingEntity attacker) {
+//        if (target.isDead()) {
+//            return;
+//        }
+//
+//        // Aren't we applying the damage twice????
+//        target.damage(getFakeDamageFinalResult(attacker, target, damage, modifiers));
+//    }
 
     /**
      * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
@@ -562,13 +590,16 @@ public final class CombatUtils {
      * @param attacker Player to pass to event as damager
      */
     @Deprecated
-    public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker) {
+    public static void dealDamage(@NotNull LivingEntity target, double damage, @NotNull DamageCause cause, @Nullable Entity attacker) {
         if (target.isDead()) {
             return;
         }
 
-        if(canDamage(attacker, target, cause, damage))
+        if(canDamage(attacker, target, cause, damage)) {
+            applyIgnoreDamageMetadata(target);
             target.damage(damage);
+            removeIgnoreDamageMetadata(target);
+        }
     }
 
     private static boolean processingNoInvulnDamage;
@@ -576,7 +607,7 @@ public final class CombatUtils {
         return processingNoInvulnDamage;
     }
 
-    public static void dealNoInvulnerabilityTickDamage(LivingEntity target, double damage, Entity attacker) {
+    public static void dealNoInvulnerabilityTickDamage(@NotNull LivingEntity target, double damage, @Nullable Entity attacker) {
         if (target.isDead()) {
             return;
         }
@@ -587,22 +618,34 @@ public final class CombatUtils {
         // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
         // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
         // Snapshot current state so we can pop up properly
-        boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        boolean wasMetaSet = hasIgnoreDamageMetadata(target);
         boolean wasProcessing = processingNoInvulnDamage;
         // set markers
         processingNoInvulnDamage = true;
-        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        applyIgnoreDamageMetadata(target);
         int noDamageTicks = target.getNoDamageTicks();
         target.setNoDamageTicks(0);
         target.damage(damage, attacker);
         target.setNoDamageTicks(noDamageTicks);
         if (!wasMetaSet)
-            target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+            removeIgnoreDamageMetadata(target);
         if (!wasProcessing)
             processingNoInvulnDamage = false;
     }
 
-    public static void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
+    public static void removeIgnoreDamageMetadata(@NotNull LivingEntity target) {
+        target.removeMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE, mcMMO.p);
+    }
+
+    public static void applyIgnoreDamageMetadata(@NotNull LivingEntity target) {
+        target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE, MetadataConstants.MCMMO_METADATA_VALUE);
+    }
+
+    public static boolean hasIgnoreDamageMetadata(@NotNull LivingEntity target) {
+        return target.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE).size() != 0;
+    }
+
+    public static void dealNoInvulnerabilityTickDamageRupture(@NotNull LivingEntity target, double damage, Entity attacker, int toolTier) {
         if (target.isDead()) {
             return;
         }
@@ -647,7 +690,7 @@ public final class CombatUtils {
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, PrimarySkillType type) {
+    public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, @NotNull PrimarySkillType type) {
         int numberOfTargets = getTier(attacker.getInventory().getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
@@ -656,7 +699,7 @@ public final class CombatUtils {
                 break;
             }
 
-            if (Misc.isNPCEntityExcludingVillagers(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+            if ((ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(entity)) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
 
@@ -669,7 +712,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    UserManager.getPlayer(attacker).getSwordsManager().ruptureCheck(target);
+                    UserManager.getPlayer(attacker).getSwordsManager().processRupture(livingEntity);
                     break;
 
                 case AXES:
@@ -688,8 +731,15 @@ public final class CombatUtils {
         }
     }
 
-    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
-        startGainXp(mcMMOPlayer, target, primarySkillType, 1.0);
+    /**
+     * Start the task that gives combat XP.
+     *
+     * @param mcMMOPlayer The attacking player
+     * @param target The defending entity
+     * @param primarySkillType The skill being used
+     */
+    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+        processCombatXP(mcMMOPlayer, target, primarySkillType, 1.0);
     }
 
     /**
@@ -698,8 +748,9 @@ public final class CombatUtils {
      * @param mcMMOPlayer The attacking player
      * @param target The defending entity
      * @param primarySkillType The skill being used
+     * @param multiplier final XP result will be multiplied by this
      */
-    private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
         double baseXP = 0;
         XPGainReason xpGainReason;
 
@@ -750,19 +801,22 @@ public final class CombatUtils {
                 }
             }
 
-            if (target.hasMetadata(mcMMO.entityMetadataKey)
-                    //Epic Spawners compatibility
-                    || target.hasMetadata("ES")) {
+            if(getMobMetadataService().hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
+                baseXP = 0;
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata("ES")) {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
-            }
-
-            if (target.hasMetadata(mcMMO.bredMetadataKey)) {
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
+                baseXP *= ExperienceConfig.getInstance().getNetherPortalXpMultiplier();
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
+                baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
+            } else if (getMobMetadataService().hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
+            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
+                baseXP *= ExperienceConfig.getInstance().getTamedMobXpMultiplier();
             }
-
-            xpGainReason = XPGainReason.PVE;
 
             baseXP *= 10;
+            xpGainReason = XPGainReason.PVE;
         }
 
         baseXP *= multiplier;
@@ -779,7 +833,7 @@ public final class CombatUtils {
      * @param entity The defending Entity
      * @return true if the Entity should be damaged, false otherwise.
      */
-    private static boolean shouldBeAffected(Player player, Entity entity) {
+    private static boolean shouldBeAffected(@NotNull Player player, @NotNull Entity entity) {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
@@ -809,10 +863,12 @@ public final class CombatUtils {
             return getFakeDamageFinalResult(player, entity, 1.0) != 0;
         }
         else if (entity instanceof Tameable) {
-            if (isFriendlyPet(player, (Tameable) entity)) {
+            Tameable tameableEntity = (Tameable) entity;
+
+            if (isFriendlyPet(player, tameableEntity)) {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
-                Player owner = (Player) ((Tameable) entity).getOwner();
+                Player owner = (Player) tameableEntity.getOwner();
                 return Permissions.friendlyFire(player) && Permissions.friendlyFire(owner);
             }
         }
@@ -827,7 +883,7 @@ public final class CombatUtils {
      * @param eventDamage The damage from the event the entity is involved in
      * @return true if the entity is invincible, false otherwise
      */
-    public static boolean isInvincible(LivingEntity entity, double eventDamage) {
+    public static boolean isInvincible(@NotNull LivingEntity entity, double eventDamage) {
         /*
          * So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility.
          * So yeah, this is for that.
@@ -842,7 +898,7 @@ public final class CombatUtils {
      * @param pet The entity to check.
      * @return true if the entity is friendly, false otherwise
      */
-    public static boolean isFriendlyPet(Player attacker, Tameable pet) {
+    public static boolean isFriendlyPet(@NotNull Player attacker, @NotNull Tameable pet) {
         if (pet.isTamed()) {
             AnimalTamer tamer = pet.getOwner();
 
@@ -857,12 +913,12 @@ public final class CombatUtils {
     }
 
     @Deprecated
-    public static double getFakeDamageFinalResult(Entity attacker, Entity target, double damage) {
-        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
+    public static double getFakeDamageFinalResult(@Nullable Entity attacker, @NotNull Entity target, double damage) {
+        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, damage)));
     }
 
     @Deprecated
-    public static double getFakeDamageFinalResult(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+    public static double getFakeDamageFinalResult(@Nullable Entity attacker, @NotNull Entity target, @NotNull DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = sendEntityDamageEvent(attacker, target, damageCause, damage);
 
         if (damageEvent.isCancelled()) {
@@ -872,27 +928,27 @@ public final class CombatUtils {
         return damageEvent.getFinalDamage();
     }
 
-    public static boolean canDamage(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+    public static boolean canDamage(@NotNull Entity attacker, @NotNull Entity target, @NotNull DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = sendEntityDamageEvent(attacker, target, damageCause, damage);
 
         return !damageEvent.isCancelled();
     }
 
-    public static EntityDamageEvent sendEntityDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+    public static @NotNull EntityDamageEvent sendEntityDamageEvent(@Nullable Entity attacker, @NotNull Entity target, @NotNull DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, damageCause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
         mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
         return damageEvent;
     }
 
-    public static double getFakeDamageFinalResult(Entity attacker, Entity target, Map<DamageModifier, Double> modifiers) {
+    public static double getFakeDamageFinalResult(@Nullable Entity attacker, @NotNull Entity target, @NotNull Map<DamageModifier, Double> modifiers) {
         return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, modifiers);
     }
 
-    public static double getFakeDamageFinalResult(Entity attacker, Entity target, double damage, Map<DamageModifier, Double> modifiers) {
+    public static double getFakeDamageFinalResult(@Nullable Entity attacker, @NotNull Entity target, double damage, @NotNull Map<DamageModifier, Double> modifiers) {
         return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, getScaledModifiers(damage, modifiers));
     }
 
-    public static double getFakeDamageFinalResult(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
+    public static double getFakeDamageFinalResult(@Nullable Entity attacker, @NotNull Entity target, @NotNull DamageCause cause, @NotNull Map<DamageModifier, Double> modifiers) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
         mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 
@@ -903,8 +959,8 @@ public final class CombatUtils {
         return damageEvent.getFinalDamage();
     }
 
-    private static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {
-        Map<DamageModifier, Double> modifiers = new HashMap<DamageModifier, Double>();
+    private static @NotNull Map<DamageModifier, Double> getModifiers(@NotNull EntityDamageEvent event) {
+        Map<DamageModifier, Double> modifiers = new HashMap<>();
         for (DamageModifier modifier : DamageModifier.values()) {
             modifiers.put(modifier, event.getDamage(modifier));
         }
@@ -912,8 +968,8 @@ public final class CombatUtils {
         return modifiers;
     }
 
-    private static Map<DamageModifier, Double> getScaledModifiers(double damage, Map<DamageModifier, Double> modifiers) {
-        Map<DamageModifier, Double> scaledModifiers = new HashMap<DamageModifier, Double>();
+    private static @NotNull Map<DamageModifier, Double> getScaledModifiers(double damage, @NotNull Map<DamageModifier, Double> modifiers) {
+        Map<DamageModifier, Double> scaledModifiers = new HashMap<>();
 
         for (DamageModifier modifier : modifiers.keySet()) {
             if (modifier == DamageModifier.BASE) {
@@ -927,7 +983,7 @@ public final class CombatUtils {
         return scaledModifiers;
     }
 
-    public static EntityDamageByEntityEvent applyScaledModifiers(double initialDamage, double finalDamage, EntityDamageByEntityEvent event) {
+    public static @NotNull EntityDamageByEntityEvent applyScaledModifiers(double initialDamage, double finalDamage, @NotNull EntityDamageByEntityEvent event) {
         // No additional damage
         if (initialDamage == finalDamage) {
             return event;
@@ -955,7 +1011,7 @@ public final class CombatUtils {
      * @param inHand The item to check the tier of
      * @return the tier of the item
      */
-    private static int getTier(ItemStack inHand) {
+    private static int getTier(@NotNull ItemStack inHand) {
         int tier = 0;
 
         if (ItemUtils.isWoodTool(inHand)) {
@@ -972,6 +1028,8 @@ public final class CombatUtils {
         }
         else if (ItemUtils.isDiamondTool(inHand)) {
             tier = 4;
+        } else if (ItemUtils.isNetheriteTool(inHand)) {
+            tier = 5;
         }
         else if (mcMMO.getModManager().isCustomTool(inHand)) {
             tier = mcMMO.getModManager().getTool(inHand).getTier();
@@ -980,7 +1038,7 @@ public final class CombatUtils {
         return tier;
     }
 
-    public static void handleHealthbars(Entity attacker, LivingEntity target, double damage, mcMMO plugin) {
+    public static void handleHealthbars(@NotNull Entity attacker, @NotNull LivingEntity target, double damage, @NotNull mcMMO plugin) {
         if (!(attacker instanceof Player)) {
             return;
         }
@@ -991,10 +1049,47 @@ public final class CombatUtils {
             return;
         }
 
-        if (!player.hasMetadata(mcMMO.playerDataKey)) {
+        if (!player.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA)) {
             return;
         }
 
         MobHealthbarUtils.handleMobHealthbars(target, damage, plugin);
+    }
+
+    public static void modifyMoveSpeed(@NotNull LivingEntity livingEntity, double multiplier) {
+        AttributeInstance attributeInstance = livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+
+        if(attributeInstance != null) {
+            double normalSpeed = attributeInstance.getBaseValue();
+            attributeInstance.setBaseValue(normalSpeed * multiplier);
+        }
+    }
+
+    /**
+     * Clean up metadata from a projectile
+     *
+     * @param entity projectile
+     */
+    public static void cleanupArrowMetadata(@NotNull Projectile entity) {
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
+        }
+    }
+
+    /**
+     * Clean up metadata from a projectile after a minute has passed
+     *
+     * @param entity the projectile
+     */
+    public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
+        Bukkit.getServer().getScheduler().runTaskLater(mcMMO.p, () -> { cleanupArrowMetadata(entity);}, 20*60);
     }
 }

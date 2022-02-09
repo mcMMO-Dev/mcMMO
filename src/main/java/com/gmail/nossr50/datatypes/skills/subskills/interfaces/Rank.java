@@ -13,9 +13,9 @@ public interface Rank {
      */
     boolean hasRanks();
 
-    /**
-     * An sequential collection of rank level requirements
-     * @return level requirements
+    /*
+      An sequential collection of rank level requirements
+      @return level requirements
      */
     //Collection<Integer> getUnlockLevels();
 }

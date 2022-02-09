@@ -5,10 +5,9 @@ public class RandomChanceStatic implements RandomChanceExecution {
     private final double probabilityCap;
     private final boolean isLucky;
 
-    public RandomChanceStatic(double xPos, boolean isLucky)
-    {
+    public RandomChanceStatic(double xPos, double probabilityCap, boolean isLucky) {
         this.xPos = xPos;
-        this.probabilityCap = xPos;
+        this.probabilityCap = probabilityCap;
         this.isLucky = isLucky;
     }
 

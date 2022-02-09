@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.LevelUpBroadcastPredicate;
+import com.gmail.nossr50.datatypes.PowerLevelUpBroadcastPredicate;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -11,19 +11,32 @@ import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import com.gmail.nossr50.util.text.McMMOMessageType;
+import com.gmail.nossr50.util.text.TextComponentFactory;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.audience.MessageType;
+import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
 
 public class NotificationManager {
+
+    public static final String HEX_BEIGE_COLOR = "#c2a66e";
+    public static final String HEX_LIME_GREEN_COLOR = "#8ec26e";
+
     /**
      * Sends players notifications from mcMMO
      * Does so by sending out an event so other plugins can cancel it
@@ -36,9 +49,9 @@ public class NotificationManager {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        McMMOMessageType destination = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
+        Component message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);
@@ -91,9 +104,9 @@ public class NotificationManager {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        McMMOMessageType destination = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, values);
+        Component message = TextComponentFactory.getNotificationMultipleValues(key, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);
@@ -103,25 +116,27 @@ public class NotificationManager {
         if (customEvent.isCancelled())
             return;
 
+        final Audience audience = mcMMO.getAudiences().player(player);
+
         //If the message is being sent to the action bar we need to check if the copy if a copy is sent to the chat system
-        if(customEvent.getChatMessageType() == ChatMessageType.ACTION_BAR)
+        if(customEvent.getChatMessageType() == McMMOMessageType.ACTION_BAR)
         {
-            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+            audience.sendActionBar(customEvent.getNotificationTextComponent());
 
             if(customEvent.isMessageAlsoBeingSentToChat())
             {
                 //Send copy to chat system
-                player.spigot().sendMessage(ChatMessageType.SYSTEM, customEvent.getNotificationTextComponent());
+                audience.sendMessage(Identity.nil(), customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
             }
         } else {
-            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+            audience.sendMessage(Identity.nil(), customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
         }
     }
 
-    private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, ChatMessageType destination, TextComponent message) {
+    private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, McMMOMessageType destination, Component message) {
         //Init event
         McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
-                notificationType, message, destination, AdvancedConfig.getInstance().doesNotificationSendCopyToChat(notificationType));
+                notificationType, message, destination, mcMMO.p.getAdvancedConfig().doesNotificationSendCopyToChat(notificationType));
 
         //Call event
         Bukkit.getServer().getPluginManager().callEvent(customEvent);
@@ -139,9 +154,9 @@ public class NotificationManager {
         if(!mcMMOPlayer.useChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        McMMOMessageType destination = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
+        Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
         sendNotification(mcMMOPlayer.getPlayer(), customEvent);
@@ -161,13 +176,13 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mcMMOPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
+        mcMMO.getAudiences().player(mcMMOPlayer.getPlayer()).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
 
         //ACTION BAR MESSAGE
-        /*if(AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
+        /*if(mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
             mcMMOPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
                     subSkillType.getLocaleName(),
                     String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
@@ -181,7 +196,7 @@ public class NotificationManager {
      */
     private static void sendAdminNotification(String msg) {
         //If its not enabled exit
-        if(!Config.getInstance().adminNotifications())
+        if(!mcMMO.p.getGeneralConfig().adminNotifications())
             return;
 
         for(Player player : Bukkit.getServer().getOnlinePlayers())
@@ -249,6 +264,85 @@ public class NotificationManager {
         System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
 
         return newArray;
+    }
+
+    //TODO: Remove the code duplication, am lazy atm
+    //TODO: Fix broadcasts being skipped for situations where a player skips over the milestone like with the addlevels command
+    public static void processLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, int level) {
+        if(level <= 0)
+            return;
+
+        //Check if broadcasting is enabled
+        if(mcMMO.p.getGeneralConfig().shouldLevelUpBroadcasts()) {
+            //Permission check
+            if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
+                return;
+            }
+
+            int levelInterval = mcMMO.p.getGeneralConfig().getLevelUpBroadcastInterval();
+            int remainder = level % levelInterval;
+
+            if(remainder == 0) {
+                //Grab appropriate audience
+                Audience audience = mcMMO.getAudiences().filter(getLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
+                //TODO: Make prettier
+                HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
+                        .append(Component.newline())
+                        .append(Component.text(LocalDate.now().toString()))
+                        .append(Component.newline())
+                        .append(Component.text(mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType)+" reached level "+level)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .asHoverEvent();
+
+                String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
+                Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
+
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
+            }
+        }
+    }
+
+    //TODO: Remove the code duplication, am lazy atm
+    //TODO: Fix broadcasts being skipped for situations where a player skips over the milestone like with the addlevels command
+    public static void processPowerLevelUpBroadcasting(@NotNull McMMOPlayer mmoPlayer, int powerLevel) {
+        if(powerLevel <= 0)
+            return;
+
+        //Check if broadcasting is enabled
+        if(mcMMO.p.getGeneralConfig().shouldPowerLevelUpBroadcasts()) {
+            //Permission check
+            if(!Permissions.levelUpBroadcast(mmoPlayer.getPlayer())) {
+                return;
+            }
+
+            int levelInterval = mcMMO.p.getGeneralConfig().getPowerLevelUpBroadcastInterval();
+            int remainder = powerLevel % levelInterval;
+
+            if(remainder == 0) {
+                //Grab appropriate audience
+                Audience audience = mcMMO.getAudiences().filter(getPowerLevelUpBroadcastPredicate(mmoPlayer.getPlayer()));
+                //TODO: Make prettier
+                HoverEvent<Component> levelMilestoneHover = Component.text(mmoPlayer.getPlayer().getName())
+                        .append(Component.newline())
+                        .append(Component.text(LocalDate.now().toString()))
+                        .append(Component.newline())
+                        .append(Component.text("Power level has reached "+powerLevel)).color(TextColor.fromHexString(HEX_BEIGE_COLOR))
+                        .asHoverEvent();
+
+                String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
+                Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
+
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
+            }
+        }
+    }
+
+    //TODO: Could cache
+    public static @NotNull LevelUpBroadcastPredicate<CommandSender> getLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
+        return new LevelUpBroadcastPredicate<>(levelUpPlayer);
+    }
+
+    public static @NotNull PowerLevelUpBroadcastPredicate<CommandSender> getPowerLevelUpBroadcastPredicate(@NotNull CommandSender levelUpPlayer) {
+        return new PowerLevelUpBroadcastPredicate<>(levelUpPlayer);
     }
 
 }

@@ -8,12 +8,12 @@ import org.bukkit.entity.EntityType;
  */
 public class TamingSummon {
 
-    private Material itemType;
-    private int itemAmountRequired;
-    private int entitiesSummoned;
-    private int summonLifespan;
-    private int summonCap;
-    private CallOfTheWildType callOfTheWildType;
+    private final Material itemType;
+    private final int itemAmountRequired;
+    private final int entitiesSummoned;
+    private final int summonLifespan;
+    private final int summonCap;
+    private final CallOfTheWildType callOfTheWildType;
     private EntityType entityType;
 
     public TamingSummon(CallOfTheWildType callOfTheWildType, Material itemType, int itemAmountRequired, int entitiesSummoned, int summonLifespan, int summonCap) {

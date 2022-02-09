@@ -35,6 +35,13 @@ ExploitFix:
     TreeFellerReducedXP: true
     PistonCheating: true
     SnowGolemExcavation: true
+    # This include NPCs from stuff like Citizens, this is not a setting for Vanilla Minecraft Villagers (Which can be considered NPCs)
+    # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
+    # Of course, mcMMO doesn't know for sure whether or not something is an NPC, it checks a few known things, see our source code to see how
+    PreventPluginNPCInteraction: true
+Fishing_ExploitFix_Options:
+    MoveRange: 3
+    OverFishLimit: 10
 Experience_Bars:
     # Turn this to false if you wanna disable XP bars
     Enable: true
@@ -139,7 +146,11 @@ Experience_Formula:
         PVP: 1.0
 
     # Experience gained from mobs not naturally spawned will get multiplied by this value. 0 by default.
+    Eggs:
+        Multiplier: 0
     Mobspawners:
+        Multiplier: 0
+    Nether_Portal:
         Multiplier: 0
     Breeding:
         Multiplier: 1.0
@@ -237,6 +248,7 @@ Experience_Values:
     Excavation:
         Clay: 40
         Dirt: 40
+        Rooted_Dirt: 60
         Coarse_Dirt: 40
         Podzol: 40
         Grass_Block: 40
@@ -249,6 +261,10 @@ Experience_Values:
         Soul_Sand: 40
         Soul_Soil: 40
     Woodcutting:
+        Crimson_Hyphae: 50
+        Stripped_Crimson_Hyphae: 50
+        Warped_Hyphae: 50
+        Stripped_Warped_Hyphae: 50
         Nether_Wart_Block: 1
         Warped_Wart_Block: 1
         Shroomlight: 100
@@ -282,6 +298,12 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Small_Dripleaf: 140
+        Big_Dripleaf: 140
+        Cave_Vines: 90
+        Cave_Vines_Plant: 90
+        Glow_Lichen: 200
+        Moss_Block: 150
         Crimson_Roots: 6
         Warped_Roots: 6
         Nether_Wart_Block: 3
@@ -289,6 +311,7 @@ Experience_Values:
         Nether_Sprouts: 10
         Crimson_Fungus: 50
         Warped_Fungus: 50
+        Shroomlight: 250
         Bee_Nest: 200
         Sweet_Berry_Bush: 50
         Seagrass: 10
@@ -367,6 +390,23 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Tuff: 10
+        Copper_Ore: 1400
+        Deepslate_Copper_Ore: 1900
+        Deepslate: 30
+        Cobbled_Deepslate: 15
+        Calcite: 400
+        Smooth_Basalt: 300
+        Amethyst_Block: 500
+        Budding_Amethyst: 400
+        Small_Amethyst_Bud: 10
+        Medium_Amethyst_Bud: 20
+        Large_Amethyst_Bud: 30
+        Amethyst_Cluster: 60
+        Bone_Block: 500
+        Crying_Obsidian: 3000
+        Chain: 100
+        Blackstone: 55
         Warped_Nylium: 5
         Crimson_Nylium: 5
         Ancient_Debris: 7777
@@ -378,17 +418,28 @@ Experience_Values:
         Fire_Coral_Block: 90
         Horn_Coral_Block: 125
         Coal_Ore: 400
+        Deepslate_Coal_Ore: 700
         Diamond_Ore: 2400
+        Deepslate_Diamond_Ore: 3600
         Emerald_Ore: 1000
+        Deepslate_Emerald_Ore: 1700
         End_Bricks: 50
+        Chiseled_Nether_Bricks: 50
+        Cracked_Nether_Bricks: 50
         Nether_Bricks: 50
+        Red_Nether_Bricks: 50
         End_Stone: 15
         Glowstone: 15
         Gold_Ore: 1300
+        Deepslate_Gold_Ore: 1900
         Nether_Gold_Ore: 1300
+        Gilded_Blackstone: 200
         Terracotta: 30
         Iron_Ore: 900
+        Deepslate_Iron_Ore: 1300
         Lapis_Ore: 800
+        Lapis_Lazuli_Ore: 800
+        Deepslate_Lapis_Ore: 1400
         Mossy_Cobblestone: 30
         Netherrack: 15
         Obsidian: 150
@@ -396,6 +447,7 @@ Experience_Values:
         Blue_Ice: 15
         Nether_Quartz_Ore: 300
         Redstone_Ore: 600
+        Deepslate_Redstone_Ore: 900
         Sandstone: 30
         Black_Terracotta: 50
         Blue_Terracotta: 50
@@ -437,19 +489,35 @@ Experience_Values:
         Iron: 2.5
         Gold: 0.3
         Diamond: 5.0
+        Netherite: 6.0
         Leather: 1.6
         String: 1.8
         Other: 1.5
     Smelting:
+        Raw_Copper: 75
+        Deepslate_Redstone_Ore: 30
+        Deepslate_Copper_Ore: 100
+        Deepslate_Coal_Ore: 20
+        Deepslate_Diamond_Ore: 140
+        Deepslate_Emerald_Ore: 110
+        Deepslate_Iron_Ore: 40
+        Deepslate_Gold_Ore: 50
+        Deepslate_Lapis_Lazuli_Ore: 60
+        Copper_Ore: 75
         Ancient_Debris: 200
         Coal_Ore: 10
         Diamond_Ore: 75
         Emerald_Ore: 100
         Gold_Ore: 35
+        Raw_Gold: 35
         Iron_Ore: 25
+        Raw_Iron: 25
+        Lapis_Lazuli_Ore: 40
         Lapis_Ore: 40
         Nether_Quartz_Ore: 25
         Redstone_Ore: 15
+        Nether_Gold_Ore: 35
+        Cobbled_Deepslate: 5
     Taming:
         Animal_Taming:
             Llama: 1200
@@ -465,6 +533,8 @@ Experience_Values:
             Fox: 1000
             Panda: 1000
             Bee: 100
+            Goat: 250
+            Axolotl: 600
     Combat:
         Multiplier:
             Animals: 1.0
@@ -528,7 +598,12 @@ Experience_Values:
             Wandering_trader: 1.0
             Bee: 1.5
             Piglin: 2.0
+            Piglin_Brute: 4.5
             Hoglin: 4.0
             Zombie_Pigman: 3.0
             Zombified_Piglin: 3.0
-
+            Strider: 1.2
+            Zoglin: 2.5
+            Goat: 1.5
+            Axolotl: 1.75
+            Glow_Squid: 1.5

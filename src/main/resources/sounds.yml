@@ -22,7 +22,7 @@ Sounds:
         Volume: 0.5
     LEVEL_UP:
         Enable: true
-        Volume: 0.75
+        Volume: 0.3
         Pitch: 0.5
     ITEM_BREAK:
         Enable: true

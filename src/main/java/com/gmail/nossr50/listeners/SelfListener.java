@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -13,6 +12,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -34,45 +34,57 @@ public class SelfListener implements Listener {
         Player player = event.getPlayer();
         PrimarySkillType skill = event.getSkill();
 
-        //Players can gain multiple levels especially during xprate events
-        for(int i = 0; i < event.getLevelsGained(); i++)
-        {
-            int previousLevelGained = event.getSkillLevel() - i;
-            //Send player skill unlock notifications
-            UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
-        }
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        //Reset the delay timer
-        RankUtils.resetUnlockDelayTimer();
-
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.handleLevelUp(player, skill);
-
-        if (!Config.getInstance().getLevelUpEffectsEnabled()) {
+        //TODO: Handle proper validation at the event level
+        if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
             return;
-        }
 
-        /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
-            skill.celebrateLevelUp(player);
-        }*/
+        if(player.isOnline()) {
+            //Players can gain multiple levels especially during xprate events
+            for(int i = 0; i < event.getLevelsGained(); i++)
+            {
+                int previousLevelGained = event.getSkillLevel() - i;
+                //Send player skill unlock notifications
+                UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+            }
+
+            //Reset the delay timer
+            RankUtils.resetUnlockDelayTimer();
+
+            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+                ScoreboardManager.handleLevelUp(player, skill);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
+        Player player = event.getPlayer();
+
+        if(player.isOnline()) {
+            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+                ScoreboardManager.handleXp(player, event.getSkill());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
+        Player player = event.getPlayer();
+        if(player.isOnline()) {
+            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+                ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //TODO: Handle proper validation at the event level
+        if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
+            return;
+
         PrimarySkillType primarySkillType = event.getSkill();
 
         if(mcMMOPlayer.isDebugMode()) {
@@ -133,7 +145,7 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if (primarySkillType.isChildSkill()) {
+        if (SkillTools.isChildSkill(primarySkillType)) {
             return;
         }
 
@@ -141,7 +153,7 @@ public class SelfListener implements Listener {
 
         float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
 
-        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        float modifiedThreshold = (float) (threshold / ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
         float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {

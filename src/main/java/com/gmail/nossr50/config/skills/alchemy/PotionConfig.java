@@ -18,16 +18,16 @@ import java.util.Map;
 public class PotionConfig extends ConfigLoader {
     private static PotionConfig instance;
 
-    private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<ItemStack>();
+    private final List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<>();
 
-    private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
+    private final Map<String, AlchemyPotion> potionMap = new HashMap<>();
 
     private PotionConfig() {
         super("potions.yml");
@@ -95,8 +95,7 @@ public class PotionConfig extends ConfigLoader {
             if (potion != null) {
                 potionMap.put(potionName, potion);
                 pass++;
-            }
-            else {
+            } else {
                 fail++;
             }
         }
@@ -114,13 +113,13 @@ public class PotionConfig extends ConfigLoader {
      */
     private AlchemyPotion loadPotion(ConfigurationSection potion_section) {
         try {
-            
+
 
             String name = potion_section.getString("Name");
             if (name != null) {
                 name = ChatColor.translateAlternateColorCodes('&', name);
             }
-            
+
             PotionData data;
             if (!potion_section.contains("PotionData")) { // Backwards config compatability
                 short dataValue = Short.parseShort(potion_section.getName());
@@ -130,21 +129,21 @@ public class PotionConfig extends ConfigLoader {
                 ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
                 data = new PotionData(PotionType.valueOf(potionData.getString("PotionType", "WATER")), potionData.getBoolean("Extended", false), potionData.getBoolean("Upgraded", false));
             }
-            
+
             Material material = Material.POTION;
             String mat = potion_section.getString("Material", null);
             if (mat != null) {
                 material = Material.valueOf(mat);
             }
 
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
             if (potion_section.contains("Lore")) {
                 for (String line : potion_section.getStringList("Lore")) {
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
 
-            List<PotionEffect> effects = new ArrayList<PotionEffect>();
+            List<PotionEffect> effects = new ArrayList<>();
             if (potion_section.contains("Effects")) {
                 for (String effect : potion_section.getStringList("Effects")) {
                     String[] parts = effect.split(" ");
@@ -155,37 +154,33 @@ public class PotionConfig extends ConfigLoader {
 
                     if (type != null) {
                         effects.add(new PotionEffect(type, duration, amplifier));
-                    }
-                    else {
+                    } else {
                         mcMMO.p.getLogger().warning("Failed to parse effect for potion " + name + ": " + effect);
                     }
                 }
             }
-            
-            Color color = null;
+
+            Color color;
             if (potion_section.contains("Color")) {
                 color = Color.fromRGB(potion_section.getInt("Color"));
-            }
-            else {
+            } else {
                 color = this.generateColor(effects);
             }
 
-            Map<ItemStack, String> children = new HashMap<ItemStack, String>();
+            Map<ItemStack, String> children = new HashMap<>();
             if (potion_section.contains("Children")) {
                 for (String child : potion_section.getConfigurationSection("Children").getKeys(false)) {
                     ItemStack ingredient = loadIngredient(child);
                     if (ingredient != null) {
                         children.put(ingredient, potion_section.getConfigurationSection("Children").getString(child));
-                    }
-                    else {
+                    } else {
                         mcMMO.p.getLogger().warning("Failed to parse child for potion " + name + ": " + child);
                     }
                 }
             }
 
             return new AlchemyPotion(material, data, name, lore, effects, color, children);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getName());
             return null;
         }
@@ -243,7 +238,7 @@ public class PotionConfig extends ConfigLoader {
     public AlchemyPotion getPotion(String name) {
         return potionMap.get(name);
     }
-    
+
     public AlchemyPotion getPotion(ItemStack item) {
         for (AlchemyPotion potion : potionMap.values()) {
             if (potion.isSimilar(item)) {
@@ -252,10 +247,10 @@ public class PotionConfig extends ConfigLoader {
         }
         return null;
     }
-    
+
     public Color generateColor(List<PotionEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
-            List<Color> colors = new ArrayList<Color>();
+            List<Color> colors = new ArrayList<>();
             for (PotionEffect effect : effects) {
                 if (effect.getType().getColor() != null) {
                     colors.add(effect.getType().getColor());
@@ -270,7 +265,7 @@ public class PotionConfig extends ConfigLoader {
         }
         return null;
     }
-    
+
     public Color calculateAverageColor(List<Color> colors) {
         int red = 0;
         int green = 0;
@@ -280,8 +275,7 @@ public class PotionConfig extends ConfigLoader {
             green += color.getGreen();
             blue += color.getBlue();
         }
-        Color color = Color.fromRGB(red/colors.size(), green/colors.size(), blue/colors.size());
-        return color;
+        return Color.fromRGB(red / colors.size(), green / colors.size(), blue / colors.size());
     }
-    
+
 }

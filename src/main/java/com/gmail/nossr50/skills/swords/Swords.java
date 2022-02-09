@@ -1,11 +1,9 @@
 package com.gmail.nossr50.skills.swords;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.mcMMO;
 
 public class Swords {
-    public static int    bleedMaxTicks      = AdvancedConfig.getInstance().getRuptureMaxTicks();
+    public static double  counterAttackModifier      = mcMMO.p.getAdvancedConfig().getCounterModifier();
 
-    public static double  counterAttackModifier      = AdvancedConfig.getInstance().getCounterModifier();
-
-    public static double serratedStrikesModifier   = AdvancedConfig.getInstance().getSerratedStrikesModifier();
+    public static double serratedStrikesModifier   = mcMMO.p.getAdvancedConfig().getSerratedStrikesModifier();
 }

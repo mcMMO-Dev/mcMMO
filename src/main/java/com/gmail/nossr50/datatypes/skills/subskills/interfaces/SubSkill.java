@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.subskills.interfaces;
 
 import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
-import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 
 public interface SubSkill extends Skill {
@@ -61,7 +61,7 @@ public interface SubSkill extends Skill {
      * @param componentBuilder target component builder
      * @param player owner of this skill
      */
-    void addStats(ComponentBuilder componentBuilder, Player player);
+    void addStats(TextComponent.Builder componentBuilder, Player player);
 
     /**
      * Whether or not this subskill is enabled

@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -11,10 +11,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PtpAcceptCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!Permissions.partyTeleportAccept(sender)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
@@ -34,7 +35,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), Config.getInstance().getPTPCommandTimeout())) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), mcMMO.p.getGeneralConfig().getPTPCommandTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;
@@ -47,7 +48,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (Config.getInstance().getPTPCommandWorldPermissions()) {
+        if (mcMMO.p.getGeneralConfig().getPTPCommandWorldPermissions()) {
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 

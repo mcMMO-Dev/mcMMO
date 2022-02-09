@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SimpleRepairableManager implements RepairableManager {
-    private HashMap<Material, Repairable> repairables;
+    private final HashMap<Material, Repairable> repairables;
 
     public SimpleRepairableManager() {
         this(55);
     }
 
     public SimpleRepairableManager(int repairablesSize) {
-        this.repairables = new HashMap<Material, Repairable>(repairablesSize);
+        this.repairables = new HashMap<>(repairablesSize);
     }
 
     @Override

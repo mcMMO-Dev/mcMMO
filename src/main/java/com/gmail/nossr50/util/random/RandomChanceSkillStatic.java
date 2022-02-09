@@ -2,19 +2,25 @@ package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class RandomChanceSkillStatic extends RandomChanceSkill {
     private final double xPos;
 
-    public RandomChanceSkillStatic(double xPos, Player player, SubSkillType subSkillType)
-    {
+    public RandomChanceSkillStatic(double xPos, @Nullable Player player, @NotNull SubSkillType subSkillType) {
         super(player, subSkillType);
 
         this.xPos = xPos;
     }
 
-    public RandomChanceSkillStatic(double xPos, Player player, SubSkillType subSkillType, double resultModifier)
-    {
+    public RandomChanceSkillStatic(double xPos, @Nullable Player player, @NotNull SubSkillType subSkillType, boolean luckyOverride) {
+        super(player, subSkillType, false, luckyOverride);
+
+        this.xPos = xPos;
+    }
+
+    public RandomChanceSkillStatic(double xPos, @Nullable Player player, @NotNull SubSkillType subSkillType, double resultModifier) {
         super(player, subSkillType, resultModifier);
 
         this.xPos = xPos;

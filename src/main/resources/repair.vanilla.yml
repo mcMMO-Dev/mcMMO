@@ -1,7 +1,6 @@
 #
 #  Repair configuration
 #
-# Any file named repair.*.yml in the mcmmmo folder will be loaded as a repair config
 # All repair configs have a main section titled "Repairables"
 # Afterwards, all sub-items are considered a Repairable to be loaded. The names of each subitem should be the exact material name.
 # The bare minimum of a Repairable is that it have a RepairMaterial and a MaximumDurability
@@ -45,6 +44,14 @@ Repairables:
     # Wooden repairables
     ###
     # Tools
+    SHIELD:
+        MinimumLevel: 0
+        XpMultiplier: .25
+        ItemType: OTHER
+        ItemMaterialCategory: WOOD
+        RepairMaterial: OAK_PLANKS
+        MinimumQuantity: 6
+        MaximumDurability: 336
     WOODEN_SWORD:
         MinimumLevel: 0
         XpMultiplier: .25
@@ -183,7 +190,7 @@ Repairables:
         XpMultiplier: 6
 
     #
-    # Diamond repairables
+    # Netherite repairables
     ###
     # Tools
     NETHERITE_SWORD:
@@ -243,3 +250,38 @@ Repairables:
     CARROT_ON_A_STICK:
         MinimumLevel: 0
         XpMultiplier: .5
+    CROSSBOW:
+        MinimumLevel: 0
+        XpMultiplier: .5
+        ItemType: TOOL
+        ItemMaterialCategory: STRING
+        RepairMaterial: STRING
+        MinimumQuantity: 3
+        MaximumDurability: 326
+    WARPED_FUNGUS_ON_A_STICK:
+        MinimumLevel: 0
+        XpMultiplier: .5
+        ItemType: TOOL
+        ItemMaterialCategory: STRING
+        RepairMaterial: STRING
+        MinimumQuantity: 3
+        MaximumDurability: 100
+    #
+    # Other
+    ###
+    ELYTRA:
+        MinimumLevel: 0
+        XpMultiplier: 3
+        ItemType: OTHER
+        ItemMaterialCategory: OTHER
+        RepairMaterial: PHANTOM_MEMBRANE
+        MinimumQuantity: 8
+        MaximumDurability: 432
+    TRIDENT:
+        MinimumLevel: 0
+        XpMultiplier: 3
+        ItemType: TOOL
+        ItemMaterialCategory: OTHER
+        RepairMaterial: PRISMARINE_CRYSTALS
+        MinimumQuantity: 16
+        MaximumDurability: 250

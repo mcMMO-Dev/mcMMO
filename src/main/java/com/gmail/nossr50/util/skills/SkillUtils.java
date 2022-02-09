@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -12,11 +10,12 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.ItemMetadataService;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,12 +28,17 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class SkillUtils {
+public final class SkillUtils {
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private SkillUtils() {}
 
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
@@ -49,9 +53,9 @@ public class SkillUtils {
      */
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
-        int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+        int maxLength = mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill));
+        int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+        int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
         int length;
 
@@ -119,7 +123,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ? mcMMO.p.getSkillTools().matchSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -136,25 +140,24 @@ public class SkillUtils {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            if (heldItem == null || heldItem.getType() == Material.AIR) {
+            if(heldItem == null)
+                return;
+
+            if (!ItemUtils.canBeSuperAbilityDigBoosted(heldItem)) {
                 return;
             }
 
-            int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
-            ItemMeta itemMeta = heldItem.getItemMeta();
-            List<String> itemLore = new ArrayList<String>();
+            int originalDigSpeed = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
 
-            if (itemMeta.hasLore()) {
-                itemLore = itemMeta.getLore();
-            }
+            //Add dig speed
 
-            itemLore.add("mcMMO Ability Tool");
-            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+            //Lore no longer gets added, no point to it afaik
+            //ItemUtils.addAbilityLore(heldItem); //lore can be a secondary failsafe for 1.13 and below
+            ItemUtils.addDigSpeedToItem(heldItem, heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED));
 
-            itemMeta.setLore(itemLore);
-            heldItem.setItemMeta(itemMeta);
-        }
-        else {
+            //1.13.2+ will have persistent metadata for this item
+            mcMMO.getMetadataService().getItemMetadataService().setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
+        } else {
             int duration = 0;
             int amplifier = 0;
 
@@ -176,18 +179,18 @@ public class SkillUtils {
 
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
-            int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-            int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+            int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+            int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
             int ticks;
 
             if(abilityLengthCap > 0)
             {
                 ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             } else {
                 ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
@@ -195,39 +198,37 @@ public class SkillUtils {
         }
     }
 
-    public static void handleAbilitySpeedDecrease(Player player) {
-        if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
-            return;
-        }
-
-        for (ItemStack item : player.getInventory().getContents()) {
-            removeAbilityBuff(item);
+    public static void removeAbilityBoostsFromInventory(@NotNull Player player) {
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            removeAbilityBuff(itemStack);
         }
     }
 
-    public static void removeAbilityBuff(ItemStack item) {
-        if (item == null || item.getType() == Material.AIR || (!ItemUtils.isPickaxe(item) && !ItemUtils.isShovel(item)) || !item.containsEnchantment(Enchantment.DIG_SPEED)) {
+    public static void removeAbilityBuff(@Nullable ItemStack itemStack) {
+        if(itemStack == null)
             return;
+
+        if(!ItemUtils.canBeSuperAbilityDigBoosted(itemStack))
+            return;
+
+
+        //1.13.2+ will have persistent metadata for this itemStack
+        ItemMetadataService itemMetadataService = mcMMO.getMetadataService().getItemMetadataService();
+
+        if(itemMetadataService.isLegacyAbilityTool(itemStack)) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
+
+            if(itemMeta != null) {
+                // This is safe to call without prior checks.
+                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+
+                itemStack.setItemMeta(itemMeta);
+                ItemUtils.removeAbilityLore(itemStack);
+            }
         }
 
-        ItemMeta itemMeta = item.getItemMeta();
-
-        if (itemMeta.hasLore()) {
-            List<String> itemLore = itemMeta.getLore();
-
-            if (itemLore.remove("mcMMO Ability Tool")) {
-                int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
-
-                if (efficiencyLevel <= AdvancedConfig.getInstance().getEnchantBuff()) {
-                    itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-                }
-                else {
-                    itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - AdvancedConfig.getInstance().getEnchantBuff(), true);
-                }
-
-                itemMeta.setLore(itemLore);
-                item.setItemMeta(itemMeta);
-            }
+        if(itemMetadataService.isSuperAbilityBoosted(itemStack)) {
+            itemMetadataService.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
         }
     }
 
@@ -236,14 +237,14 @@ public class SkillUtils {
     }
 
     /**
-     * Modify the durability of an ItemStack.
+     * Modify the durability of an ItemStack, using Tools specific formula for unbreaking enchant damage reduction
      *
      * @param itemStack The ItemStack which durability should be modified
      * @param durabilityModifier the amount to modify the durability by
      * @param maxDamageModifier the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
+        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
 
@@ -263,8 +264,29 @@ public class SkillUtils {
 
         return false;
     }
+    
+    
+    /**
+     * Modify the durability of an ItemStack, using Armor specific formula for unbreaking enchant damage reduction
+     *
+     * @param itemStack The ItemStack which durability should be modified
+     * @param durabilityModifier the amount to modify the durability by
+     * @param maxDamageModifier the amount to adjust the max damage by
+     */
+    public static void handleArmorDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
+            return;
+        }
 
-    protected static Material getRepairAndSalvageItem(ItemStack inHand) {
+        Material type = itemStack.getType();
+        short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4/ (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1)), maxDurability * maxDamageModifier);
+
+        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
+    }
+
+    @Nullable
+    public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }

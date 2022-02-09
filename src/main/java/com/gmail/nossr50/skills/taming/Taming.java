@@ -1,20 +1,20 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
 
 public class Taming {
-    public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
+    public static double fastFoodServiceActivationChance = mcMMO.p.getAdvancedConfig().getFastFoodChance();
 
     public static int    goreBleedTicks    = 2; //Equivalent to rank 1 in Rupture
-    public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
+    public static double goreModifier      = mcMMO.p.getAdvancedConfig().getGoreModifier();
 
-    public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
+    public static double sharpenedClawsBonusDamage = mcMMO.p.getAdvancedConfig().getSharpenedClawsBonus();
 
-    public static double shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
+    public static double shockProofModifier    = mcMMO.p.getAdvancedConfig().getShockProofModifier();
 
-    public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
+    public static double thickFurModifier    = mcMMO.p.getAdvancedConfig().getThickFurModifier();
 
     public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;

@@ -24,6 +24,9 @@ Feedback:
     Events:
         XP:
             SendTitles: true
+        # Send notifications to the chat or actionbar of other nearby players when a user activates an ability
+        AbilityActivation:
+            SendNotificationToOtherPlayers: true
     #The actionbar is the message location right above the health bar
     ## If you disable the action bar messages, mcMMO will send the message to the chat system instead
     ActionBarNotifications:
@@ -75,6 +78,9 @@ Feedback:
         PartyMessage:
             Enabled: true
             SendCopyOfMessageToChat: true
+        AbilityRefreshed:
+            Enabled: true
+            SendCopyOfMessageToChat: false
 Skills:
     General:
         LimitBreak:
@@ -203,14 +209,7 @@ Skills:
     Fishing:
 
         ShakeChance:
-            Rank_1: 15.0
-            Rank_2: 15.0
-            Rank_3: 25.0
-            Rank_4: 35.0
-            Rank_5: 45.0
-            Rank_6: 55.0
-            Rank_7: 65.0
-            Rank_8: 75.0
+            Rank_1: 30
 
         # VanillaXPMultiplier: Vanilla XP gained from fishing is multiplied by these values.
         VanillaXPMultiplier:
@@ -228,10 +227,16 @@ Skills:
             RankChange: 20
 
         MasterAngler:
-            # BoatMultiplier: Catch rate is multiplied by this modifier
-            # BiomeModifier: Catch rate is multiplied by this modifier
-            BoatModifier: 2.0
-            BiomeModifier: 2.0
+            Boat_Tick_Reduction:
+                Min_Wait: 10
+                Max_Wait: 30
+            Tick_Reduction_Per_Rank:
+                Min_Wait: 10
+                Max_Wait: 30
+            Tick_Reduction_Caps:
+                # Don't modify these two unless you fully understand what you are doing
+                Min_Wait: 40
+                Max_Wait: 100
     #
     #  Settings for Herbalism
     ###
@@ -272,6 +277,8 @@ Skills:
     #  Settings for Mining
     ###
     Mining:
+        SuperBreaker:
+            AllowTripleDrops: true
         DoubleDrops:
             SilkTouch: true
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
@@ -443,24 +450,42 @@ Skills:
     ###
     Swords:
         Rupture:
-            # ChanceMax: Maximum chance of triggering bleeding
-            # MaxBonusLevel: On this level, the chance to cause Bleeding will be <ChanceMax>
-            ChanceMax: 33.0
-            MaxBonusLevel:
-                Standard: 100
-                RetroMode: 1000
-
-            # DamagePlayer: Bleeding damage dealt to players
-            # DamageMobs: Bleeding damage dealt to mobs
-            DamagePlayer: 2.0
-            DamageMobs: 3.0
-
-            # These settings determine how long the Bleeding effect lasts
-            MaxTicks: 8
-            BaseTicks: 2
-
+            Rupture_Mechanics:
+                # This is % chance, 15 would mean 15% percent of the time
+                Chance_To_Apply_On_Hit:
+                    Rank_1: 15
+                    Rank_2: 33
+                    Rank_3: 40
+                    Rank_4: 66
+                Duration_In_Seconds:
+                    Against_Players: 5
+                    Against_Mobs: 5
+                # Tick interval damage is applied twice a second during rupture, it is "pure" and does not get lowered from armor or absorption etc
+                Tick_Interval_Damage:
+                    Against_Players:
+                        Rank_1: 0.1
+                        Rank_2: 0.15
+                        Rank_3: 0.2
+                        Rank_4: 0.3
+                    Against_Mobs:
+                        Rank_1: 0.5
+                        Rank_2: 0.75
+                        Rank_3: 0.9
+                        Rank_4: 1
+                # If Rupture runs for 5 seconds without being reapplied, it explodes
+                # this damage is **NOT** pure and is reduced dramatically vs armor/absorption/etc
+                Explosion_Damage:
+                    Against_Players:
+                        Rank_1: 10
+                        Rank_2: 20
+                        Rank_3: 30
+                        Rank_4: 40
+                    Against_Mobs:
+                        Rank_1: 10
+                        Rank_2: 20
+                        Rank_3: 30
+                        Rank_4: 40
         CounterAttack:
-
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
             ChanceMax: 30.0
@@ -540,36 +565,40 @@ Skills:
                 Standard: 100
                 RetroMode: 1000
 
-        IronArmStyle:
+        SteelArmStyle:
             # BonusMin: Minimum bonus damage for unarmed
             # BonusMax: Maximum bonus damage for unarmed
             # IncreaseLevel: Bonus damage increases every increase level
-            IncreaseLevel: 10
+            Damage_Override: false
+            Override:
+                Rank_1: 1
+                Rank_2: 1.5
+                Rank_3: 2.0
+                Rank_4: 2.5
+                Rank_5: 3.0
+                Rank_6: 3.5
+                Rank_7: 4.0
+                Rank_8: 4.5
+                Rank_9: 5.0
+                Rank_10: 5.5
+                Rank_11: 6.0
+                Rank_12: 6.5
+                Rank_13: 7.0
+                Rank_14: 7.5
+                Rank_15: 8.0
+                Rank_16: 8.5
+                Rank_17: 9.0
+                Rank_18: 10.5
+                Rank_19: 12.0
+                Rank_20: 13.5
     #
     #  Settings for Woodcutting
     ###
     Woodcutting:
         TreeFeller:
-            # If set to true then tree feller will not use the new system and will use its old behaviour
-            Classic: false
-            # This is the time in seconds to build a new charge of Tree Feller
-            ChargeRate: 600
-            Rank_Levels:
-                Rank_1:
-                    TreeSizeMax: 100
-                    Charges: 1
-                Rank_2:
-                    TreeSizeMax: 200
-                    Charges: 1
-                Rank_3:
-                    TreeSizeMax: 200
-                    Charges: 2
-                Rank_4:
-                    TreeSizeMax: 200
-                    Charges: 3
-                Rank_5:
-                    TreeSizeMax: 500
-                    Charges: 3
+            Knock_On_Wood:
+                Add_XP_Orbs_To_Drops: true
+
         # Double Drops
         HarvestLumber:
             # ChanceMax & MaxBonusLevel are only used for Classic, I'll make that more clear in the future.

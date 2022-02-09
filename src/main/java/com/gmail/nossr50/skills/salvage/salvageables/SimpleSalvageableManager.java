@@ -5,17 +5,17 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 public class SimpleSalvageableManager implements SalvageableManager {
-    private HashMap<Material, Salvageable> salvageables;
+    private final Map<Material, Salvageable> salvageables;
 
     public SimpleSalvageableManager() {
         this(55);
     }
 
     public SimpleSalvageableManager(int salvageablesSize) {
-        this.salvageables = new HashMap<Material, Salvageable>(salvageablesSize);
+        this.salvageables = new HashMap<>(salvageablesSize);
     }
 
     @Override
