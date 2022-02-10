@@ -577,7 +577,7 @@ Bonus_Drops:
         Netherrack: true
         Obsidian: true
         Nether_Quartz_Ore: true
-        Nether_Quartz: true
+        Quartz: true
         Redstone_Ore: true
         Redstone: true
         Redstone_Dust: true
