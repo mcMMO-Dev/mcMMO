@@ -8,6 +8,7 @@ public class SoundConfig extends BukkitConfig {
 
     public SoundConfig() {
         super("sounds.yml");
+        validate();
         instance = this;
     }
 
@@ -24,24 +25,22 @@ public class SoundConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
+    protected boolean validateKeys() {
         for (SoundType soundType : SoundType.values()) {
             if (config.getDouble("Sounds." + soundType.toString() + ".Volume") < 0) {
                 mcMMO.p.getLogger().info("[mcMMO] Sound volume cannot be below 0 for " + soundType);
-                //TODO: Rewrite legacy validation code
-                //return false;
+                return false;
             }
 
             //Sounds with custom pitching don't use pitch values
             if (!soundType.usesCustomPitch()) {
                 if (config.getDouble("Sounds." + soundType + ".Pitch") < 0) {
                     mcMMO.p.getLogger().info("[mcMMO] Sound pitch cannot be below 0 for " + soundType);
-                    //TODO: Rewrite legacy validation code
-                    //return false;
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     public float getMasterVolume() {

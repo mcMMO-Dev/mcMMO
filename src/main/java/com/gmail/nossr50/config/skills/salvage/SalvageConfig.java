@@ -27,11 +27,6 @@ public class SalvageConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
-    }
-
-    @Override
     protected void loadKeys() {
         salvageables = new HashSet<>();
 
@@ -102,7 +97,7 @@ public class SalvageConfig extends BukkitConfig {
                 try {
                     salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
                 } catch (IllegalArgumentException ex) {
-                    mcMMO.p.getLogger().warning(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
+                    reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
                 }
             }
 
@@ -134,7 +129,7 @@ public class SalvageConfig extends BukkitConfig {
                 try {
                     salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
                 } catch (IllegalArgumentException ex) {
-                    mcMMO.p.getLogger().warning(key + " has an invalid ItemType of " + salvageItemTypeString);
+                    reason.add(key + " has an invalid ItemType of " + salvageItemTypeString);
                 }
             }
 
@@ -142,7 +137,7 @@ public class SalvageConfig extends BukkitConfig {
             double xpMultiplier = config.getDouble("Salvageables." + key + ".XpMultiplier", 1);
 
             if (minimumLevel < 0) {
-                mcMMO.p.getLogger().warning(key + " has an invalid MinimumLevel of " + minimumLevel);
+                reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
             // Maximum Quantity
@@ -159,7 +154,7 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             if (maximumQuantity <= 0) {
-                mcMMO.p.getLogger().warning("Maximum quantity of " + key + " must be greater than 0!");
+                reason.add("Maximum quantity of " + key + " must be greater than 0!");
             }
 
             if (noErrorsInSalvageable(reason)) {

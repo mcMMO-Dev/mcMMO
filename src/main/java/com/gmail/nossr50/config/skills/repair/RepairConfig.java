@@ -24,11 +24,6 @@ public class RepairConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
-    }
-
-    @Override
     protected void loadKeys() {
         repairables = new ArrayList<>();
 
@@ -86,7 +81,7 @@ public class RepairConfig extends BukkitConfig {
                 try {
                     repairMaterialType = MaterialType.valueOf(repairMaterialTypeString);
                 } catch (IllegalArgumentException ex) {
-                    mcMMO.p.getLogger().warning(key + " has an invalid MaterialType of " + repairMaterialTypeString);
+                    reason.add(key + " has an invalid MaterialType of " + repairMaterialTypeString);
                 }
             }
 
@@ -107,7 +102,7 @@ public class RepairConfig extends BukkitConfig {
             }
 
             if (maximumDurability <= 0) {
-                mcMMO.p.getLogger().warning("Maximum durability of " + key + " must be greater than 0!");
+                reason.add("Maximum durability of " + key + " must be greater than 0!");
             }
 
             // Item Type
@@ -126,7 +121,7 @@ public class RepairConfig extends BukkitConfig {
                 try {
                     repairItemType = ItemType.valueOf(repairItemTypeString);
                 } catch (IllegalArgumentException ex) {
-                    mcMMO.p.getLogger().warning(key + " has an invalid ItemType of " + repairItemTypeString);
+                    reason.add(key + " has an invalid ItemType of " + repairItemTypeString);
                 }
             }
 
@@ -134,7 +129,7 @@ public class RepairConfig extends BukkitConfig {
             double xpMultiplier = config.getDouble("Repairables." + key + ".XpMultiplier", 1);
 
             if (minimumLevel < 0) {
-                mcMMO.p.getLogger().warning(key + " has an invalid MinimumLevel of " + minimumLevel);
+                reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
             // Minimum Quantity

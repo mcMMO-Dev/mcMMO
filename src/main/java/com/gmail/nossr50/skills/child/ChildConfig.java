@@ -16,11 +16,6 @@ public class ChildConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
-    }
-
-    @Override
     protected void loadKeys() {
         config.setDefaults(YamlConfiguration.loadConfiguration(mcMMO.p.getResourceAsReader("child.yml")));
 

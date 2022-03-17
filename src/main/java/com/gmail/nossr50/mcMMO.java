@@ -125,6 +125,9 @@ public class mcMMO extends JavaPlugin {
     // API checks
     private static boolean serverAPIOutdated = false;
 
+    // Config Validation Check
+    public boolean noErrorsInConfigFiles = true;
+
     // XP Event Check
     private boolean xpEventEnabled;
 
@@ -195,6 +198,10 @@ public class mcMMO extends JavaPlugin {
             materialMapStore = new MaterialMapStore();
 
             loadConfigFiles();
+
+            if (!noErrorsInConfigFiles) {
+                return;
+            }
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();

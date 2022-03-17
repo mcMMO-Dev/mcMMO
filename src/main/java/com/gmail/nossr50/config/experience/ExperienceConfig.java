@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,17 +13,16 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class ExperienceConfig extends BukkitConfig {
     private static ExperienceConfig instance;
 
     private ExperienceConfig() {
         super("experience.yml");
+        validate();
     }
 
     public static ExperienceConfig getInstance() {
@@ -36,17 +34,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     @Override
-    public void initDefaults() {
-        super.initDefaults();
-    }
-
-    @Override
     protected void loadKeys() {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
+    protected boolean validateKeys() {
         List<String> reason = new ArrayList<>();
 
         /*
@@ -54,48 +46,41 @@ public class ExperienceConfig extends BukkitConfig {
          */
 
         /* Curve values */
-        final BiConsumer<String, Object> consumer = (String str, Object obj) -> config.set(str, obj);
-
-        if (getMultiplier(FormulaType.LINEAR) <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Linear_Values.multiplier should be greater than 0!");
-            config.set("Experience_Formula." + StringUtils.getCapitalized(FormulaType.LINEAR.toString()) + "_Values.multiplier", 0.1);
+        if (getMultiplier(FormulaType.EXPONENTIAL) <= 0) {
+            reason.add("Experience_Formula.Exponential_Values.multiplier should be greater than 0!");
         }
 
-        if (getMultiplier(FormulaType.EXPONENTIAL) <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Exponential_Values.multiplier should be greater than 0!");
-            config.set("Experience_Formula." + StringUtils.getCapitalized(FormulaType.EXPONENTIAL.toString()) + "_Values.multiplier", 0.1);
+        if (getMultiplier(FormulaType.LINEAR) <= 0) {
+            reason.add("Experience_Formula.Linear_Values.multiplier should be greater than 0!");
         }
 
         if (getExponent(FormulaType.EXPONENTIAL) <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Exponential_Values.exponent should be greater than 0!");
-            config.set("Experience_Formula." + StringUtils.getCapitalized(FormulaType.EXPONENTIAL.toString()) + "_Values.exponent", 1.80);
+            reason.add("Experience_Formula.Exponential_Values.exponent should be greater than 0!");
         }
 
         /* Global modifier */
         if (getExperienceGainsGlobalMultiplier() <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Multiplier.Global should be at least 0!");
-            config.set("Experience_Formula.Multiplier.Global", 1.0);
-
+            reason.add("Experience_Formula.Multiplier.Global should be greater than 0!");
         }
 
         /* PVP modifier */
         if (getPlayerVersusPlayerXP() < 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Multiplier.PVP should be at least 0!");
+            reason.add("Experience_Formula.Multiplier.PVP should be at least 0!");
         }
 
         /* Spawned Mob modifier */
         if (getSpawnedMobXpMultiplier() < 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Mobspawners.Multiplier should be at least 0!");
+            reason.add("Experience_Formula.Mobspawners.Multiplier should be at least 0!");
         }
 
         /* Bred Mob modifier */
         if (getBredMobXpMultiplier() < 0) {
-            mcMMO.p.getLogger().warning("Experience_Formula.Breeding.Multiplier should be at least 0!");
+            reason.add("Experience_Formula.Breeding.Multiplier should be at least 0!");
         }
 
         /* Conversion */
         if (getExpModifier() <= 0) {
-            mcMMO.p.getLogger().warning("Conversion.Exp_Modifier should be greater than 0!");
+            reason.add("Conversion.Exp_Modifier should be greater than 0!");
         }
 
         /*
@@ -105,52 +90,54 @@ public class ExperienceConfig extends BukkitConfig {
         /* Alchemy */
         for (PotionStage potionStage : PotionStage.values()) {
             if (getPotionXP(potionStage) < 0) {
-                mcMMO.p.getLogger().warning("Experience_Values.Alchemy.Potion_Stage_" + potionStage.toNumerical() + " should be at least 0!");
+                reason.add("Experience_Values.Alchemy.Potion_Stage_" + potionStage.toNumerical() + " should be at least 0!");
             }
         }
 
         /* Archery */
         if (getArcheryDistanceMultiplier() < 0) {
-            mcMMO.p.getLogger().warning("Experience_Values.Archery.Distance_Multiplier should be at least 0!");
+            reason.add("Experience_Values.Archery.Distance_Multiplier should be at least 0!");
         }
 
         /* Combat XP Multipliers */
         if (getAnimalsXP() < 0) {
-            mcMMO.p.getLogger().warning("Experience_Values.Combat.Multiplier.Animals should be at least 0!");
+            reason.add("Experience_Values.Combat.Multiplier.Animals should be at least 0!");
         }
 
         if (getDodgeXPModifier() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
+            reason.add("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
         }
 
         if (getRollXPModifier() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Roll_XP_Modifier should be at least 0!");
+            reason.add("Skills.Acrobatics.Roll_XP_Modifier should be at least 0!");
         }
 
         if (getFallXPModifier() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Fall_XP_Modifier should be at least 0!");
+            reason.add("Skills.Acrobatics.Fall_XP_Modifier should be at least 0!");
         }
 
         /* Fishing */
         // TODO: Add validation for each fish type once enum is available.
 
         if (getFishingShakeXP() <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Values.Fishing.Shake should be greater than 0!");
+            reason.add("Experience_Values.Fishing.Shake should be greater than 0!");
         }
 
         /* Repair */
         if (getRepairXPBase() <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Values.Repair.Base should be greater than 0!");
+            reason.add("Experience_Values.Repair.Base should be greater than 0!");
         }
 
         /* Taming */
         if (getTamingXP(EntityType.WOLF) <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Values.Taming.Animal_Taming.Wolf should be greater than 0!");
+            reason.add("Experience_Values.Taming.Animal_Taming.Wolf should be greater than 0!");
         }
 
         if (getTamingXP(EntityType.OCELOT) <= 0) {
-            mcMMO.p.getLogger().warning("Experience_Values.Taming.Animal_Taming.Ocelot should be greater than 0!");
+            reason.add("Experience_Values.Taming.Animal_Taming.Ocelot should be greater than 0!");
         }
+
+        return noErrorsInConfig(reason);
     }
 
     public boolean isEarlyGameBoostEnabled() {

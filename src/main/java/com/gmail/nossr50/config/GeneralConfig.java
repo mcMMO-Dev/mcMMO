@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -23,6 +22,7 @@ public class GeneralConfig extends BukkitConfig {
 
     public GeneralConfig(@NotNull File dataFolder) {
         super("config.yml", dataFolder);
+        validate();
     }
 
     @Override
@@ -31,125 +31,127 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
+    protected boolean validateKeys() {
+        // Validate all the settings!
         List<String> reason = new ArrayList<>();
 
         /* General Settings */
         if (getSaveInterval() <= 0) {
-            mcMMO.p.getLogger().info("General.Save_Interval should be greater than 0!");
+            reason.add("General.Save_Interval should be greater than 0!");
         }
 
         /* MySQL Settings */
         for (PoolIdentifier identifier : PoolIdentifier.values()) {
             if (getMySQLMaxConnections(identifier) <= 0) {
-                mcMMO.p.getLogger().warning("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+                reason.add("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
             if (getMySQLMaxPoolSize(identifier) <= 0) {
-                mcMMO.p.getLogger().warning("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+                reason.add("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
         }
 
         /* Mob Healthbar */
         if (getMobHealthbarTime() == 0) {
-            mcMMO.p.getLogger().warning("Mob_Healthbar.Display_Time cannot be 0! Set to -1 to disable or set a valid value.");
+            reason.add("Mob_Healthbar.Display_Time cannot be 0! Set to -1 to disable or set a valid value.");
         }
 
         /* Database Purging */
         if (getPurgeInterval() < -1) {
-            mcMMO.p.getLogger().warning("Database_Purging.Purge_Interval should be greater than, or equal to -1!");
+            reason.add("Database_Purging.Purge_Interval should be greater than, or equal to -1!");
         }
 
         if (getOldUsersCutoff() != -1 && getOldUsersCutoff() <= 0) {
-            mcMMO.p.getLogger().warning("Database_Purging.Old_User_Cutoff should be greater than 0 or -1!");
+            reason.add("Database_Purging.Old_User_Cutoff should be greater than 0 or -1!");
         }
 
         /* Hardcore Mode */
         if (getHardcoreDeathStatPenaltyPercentage() < 0.01 || getHardcoreDeathStatPenaltyPercentage() > 100) {
-            mcMMO.p.getLogger().warning("Hardcore.Death_Stat_Loss.Penalty_Percentage only accepts values from 0.01 to 100!");
+            reason.add("Hardcore.Death_Stat_Loss.Penalty_Percentage only accepts values from 0.01 to 100!");
         }
 
         if (getHardcoreVampirismStatLeechPercentage() < 0.01 || getHardcoreVampirismStatLeechPercentage() > 100) {
-            mcMMO.p.getLogger().warning("Hardcore.Vampirism.Leech_Percentage only accepts values from 0.01 to 100!");
+            reason.add("Hardcore.Vampirism.Leech_Percentage only accepts values from 0.01 to 100!");
         }
 
         /* Items */
         if (getChimaeraUseCost() < 1 || getChimaeraUseCost() > 64) {
-            mcMMO.p.getLogger().warning("Items.Chimaera_Wing.Use_Cost only accepts values from 1 to 64!");
+            reason.add("Items.Chimaera_Wing.Use_Cost only accepts values from 1 to 64!");
         }
 
         if (getChimaeraRecipeCost() < 1 || getChimaeraRecipeCost() > 9) {
-            mcMMO.p.getLogger().warning("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 9!");
+            reason.add("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 9!");
         }
 
         if (getChimaeraItem() == null) {
-            mcMMO.p.getLogger().warning("Items.Chimaera_Wing.Item_Name is invalid!");
+            reason.add("Items.Chimaera_Wing.Item_Name is invalid!");
         }
 
         /* Particles */
         if (getLevelUpEffectsTier() < 1) {
-            mcMMO.p.getLogger().warning("Particles.LevelUp_Tier should be at least 1!");
+            reason.add("Particles.LevelUp_Tier should be at least 1!");
         }
 
         /* PARTY SETTINGS */
         if (getAutoPartyKickInterval() < -1) {
-            mcMMO.p.getLogger().warning("Party.AutoKick_Interval should be at least -1!");
+            reason.add("Party.AutoKick_Interval should be at least -1!");
         }
 
         if (getAutoPartyKickTime() < 0) {
-            mcMMO.p.getLogger().warning("Party.Old_Party_Member_Cutoff should be at least 0!");
+            reason.add("Party.Old_Party_Member_Cutoff should be at least 0!");
         }
 
         if (getPartyShareBonusBase() <= 0) {
-            mcMMO.p.getLogger().warning("Party.Sharing.ExpShare_bonus_base should be greater than 0!");
+            reason.add("Party.Sharing.ExpShare_bonus_base should be greater than 0!");
         }
 
         if (getPartyShareBonusIncrease() < 0) {
-            mcMMO.p.getLogger().warning("Party.Sharing.ExpShare_bonus_increase should be at least 0!");
+            reason.add("Party.Sharing.ExpShare_bonus_increase should be at least 0!");
         }
 
         if (getPartyShareBonusCap() <= 0) {
-            mcMMO.p.getLogger().warning("Party.Sharing.ExpShare_bonus_cap should be greater than 0!");
+            reason.add("Party.Sharing.ExpShare_bonus_cap should be greater than 0!");
         }
 
         if (getPartyShareRange() <= 0) {
-            mcMMO.p.getLogger().warning("Party.Sharing.Range should be greater than 0!");
+            reason.add("Party.Sharing.Range should be greater than 0!");
         }
 
         if (getPartyXpCurveMultiplier() < 1) {
-            mcMMO.p.getLogger().warning("Party.Leveling.Xp_Curve_Modifier should be at least 1!");
+            reason.add("Party.Leveling.Xp_Curve_Modifier should be at least 1!");
         }
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
             if (getPartyFeatureUnlockLevel(partyFeature) < 0) {
-                mcMMO.p.getLogger().warning("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
+                reason.add("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
             }
         }
 
         /* Inspect command distance */
         if (getInspectDistance() <= 0) {
-            mcMMO.p.getLogger().warning("Commands.inspect.Max_Distance should be greater than 0!");
+            reason.add("Commands.inspect.Max_Distance should be greater than 0!");
         }
 
         if (getTreeFellerThreshold() <= 0) {
-            mcMMO.p.getLogger().warning("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
+            reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
         }
 
         if (getFishingLureModifier() < 0) {
-            mcMMO.p.getLogger().warning("Abilities.Fishing.Lure_Modifier should be at least 0!");
+            reason.add("Abilities.Fishing.Lure_Modifier should be at least 0!");
         }
 
         if (getRepairAnvilMaterial() == null) {
-            mcMMO.p.getLogger().warning("Skills.Repair.Anvil_Type is invalid!!");
+            reason.add("Skills.Repair.Anvil_Type is invalid!!");
         }
 
         if (getSalvageAnvilMaterial() == null) {
-            mcMMO.p.getLogger().warning("Skills.Repair.Salvage_Anvil_Type is invalid!");
+            reason.add("Skills.Repair.Salvage_Anvil_Type is invalid!");
         }
 
         if (getRepairAnvilMaterial() == getSalvageAnvilMaterial()) {
-            mcMMO.p.getLogger().warning("Cannot use the same item for Repair and Salvage anvils!");
+            reason.add("Cannot use the same item for Repair and Salvage anvils!");
         }
+
+        return noErrorsInConfig(reason);
     }
 
     /*

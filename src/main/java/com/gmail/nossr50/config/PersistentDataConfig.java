@@ -7,6 +7,7 @@ public class PersistentDataConfig extends BukkitConfig {
 
     private PersistentDataConfig() {
         super("persistent_data.yml");
+        validate();
     }
 
     public static PersistentDataConfig getInstance() {
@@ -23,8 +24,8 @@ public class PersistentDataConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
+    protected boolean validateKeys() {
+        return true;
     }
 
     //Persistent Data Toggles

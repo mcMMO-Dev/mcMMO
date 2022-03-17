@@ -19,12 +19,6 @@ public class UpgradeManager extends BukkitConfig {
         loadKeys();
     }
 
-    @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
-        // Look into what needs to change for this
-    }
-
     /**
      * Check if the given {@link UpgradeType} is necessary.
      *

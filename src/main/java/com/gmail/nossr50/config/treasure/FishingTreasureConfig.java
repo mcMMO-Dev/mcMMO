@@ -30,6 +30,7 @@ public class FishingTreasureConfig extends BukkitConfig {
     private FishingTreasureConfig() {
         super(FILENAME);
         loadKeys();
+        validate();
     }
 
     public static FishingTreasureConfig getInstance() {
@@ -41,8 +42,8 @@ public class FishingTreasureConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
+    protected boolean validateKeys() {
+        // Validate all the settings!
         List<String> reason = new ArrayList<>();
         ConfigurationSection enchantment_drop_rates = config.getConfigurationSection("Enchantment_Drop_Rates");
 
@@ -56,11 +57,11 @@ public class FishingTreasureConfig extends BukkitConfig {
                     double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity);
 
                     if ((enchantDropRate < 0.0 || enchantDropRate > 100.0)) {
-                        mcMMO.p.getLogger().warning("The enchant drop rate for " + tier + " items that are " + rarity + "should be between 0.0 and 100.0!");
+                        reason.add("The enchant drop rate for " + tier + " items that are " + rarity + "should be between 0.0 and 100.0!");
                     }
 
                     if (itemDropRate < 0.0 || itemDropRate > 100.0) {
-                        mcMMO.p.getLogger().warning("The item drop rate for " + tier + " items that are " + rarity + "should be between 0.0 and 100.0!");
+                        reason.add("The item drop rate for " + tier + " items that are " + rarity + "should be between 0.0 and 100.0!");
                     }
 
                     totalEnchantDropRate += enchantDropRate;
@@ -68,16 +69,18 @@ public class FishingTreasureConfig extends BukkitConfig {
                 }
 
                 if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
-                    mcMMO.p.getLogger().warning("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
+                    reason.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
                 }
 
                 if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
-                    mcMMO.p.getLogger().warning("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
+                    reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
                 }
             }
         } else {
             mcMMO.p.getLogger().warning("Your fishing treasures config is empty, is this intentional? Delete it to regenerate.");
         }
+
+        return noErrorsInConfig(reason);
     }
 
     @Override
@@ -138,7 +141,7 @@ public class FishingTreasureConfig extends BukkitConfig {
             short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
 
             if (material == null) {
-                mcMMO.p.getLogger().warning("Cannot find matching item type in this version of MC, skipping - " + materialName);
+                reason.add("Cannot find matching item type in this version of MC, skipping - " + materialName);
                 continue;
             }
 
@@ -147,7 +150,7 @@ public class FishingTreasureConfig extends BukkitConfig {
             }
 
             if (material.isBlock() && (data > 127 || data < -128)) {
-                mcMMO.p.getLogger().warning("Data of " + treasureName + " is invalid! " + data);
+                reason.add("Data of " + treasureName + " is invalid! " + data);
             }
 
             /*
@@ -159,15 +162,15 @@ public class FishingTreasureConfig extends BukkitConfig {
             int dropLevel = config.getInt(type + "." + treasureName + ".Drop_Level");
 
             if (xp < 0) {
-                mcMMO.p.getLogger().warning(treasureName + " has an invalid XP value: " + xp);
+                reason.add(treasureName + " has an invalid XP value: " + xp);
             }
 
             if (dropChance < 0.0D) {
-                mcMMO.p.getLogger().warning(treasureName + " has an invalid Drop_Chance: " + dropChance);
+                reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
             }
 
             if (dropLevel < 0) {
-                mcMMO.p.getLogger().warning("Fishing Config: " + treasureName + " has an invalid Drop_Level: " + dropLevel);
+                reason.add("Fishing Config: " + treasureName + " has an invalid Drop_Level: " + dropLevel);
             }
 
             /*
@@ -202,7 +205,7 @@ public class FishingTreasureConfig extends BukkitConfig {
             if (materialName.contains("POTION")) {
                 Material mat = Material.matchMaterial(materialName);
                 if (mat == null) {
-                    mcMMO.p.getLogger().warning("Potion format for " + FILENAME + " has changed");
+                    reason.add("Potion format for " + FILENAME + " has changed");
                 } else {
                     item = new ItemStack(mat, amount, data);
                     PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
@@ -216,7 +219,7 @@ public class FishingTreasureConfig extends BukkitConfig {
                     try {
                         potionType = PotionType.valueOf(config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
                     } catch (IllegalArgumentException ex) {
-                        mcMMO.p.getLogger().warning("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
+                        reason.add("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
                     }
                     boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
                     boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
@@ -279,15 +282,15 @@ public class FishingTreasureConfig extends BukkitConfig {
             }
 
 
-            //TODO: Rewrite legacy validation code
-            // Look into what needs to change for this
-            if (isFishing) {
-                addFishingTreasure(rarity, new FishingTreasure(item, xp));
-            } else if (isShake) {
-                ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
+            if (noErrorsInConfig(reason)) {
+                if (isFishing) {
+                    addFishingTreasure(rarity, new FishingTreasure(item, xp));
+                } else if (isShake) {
+                    ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
 
-                EntityType entityType = EntityType.valueOf(type.substring(6));
-                addShakeTreasure(shakeTreasure, entityType);
+                    EntityType entityType = EntityType.valueOf(type.substring(6));
+                    addShakeTreasure(shakeTreasure, entityType);
+                }
             }
         }
     }

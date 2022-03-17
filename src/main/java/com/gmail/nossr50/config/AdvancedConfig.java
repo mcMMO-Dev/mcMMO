@@ -14,6 +14,7 @@ public class AdvancedConfig extends BukkitConfig {
 
     public AdvancedConfig(File dataFolder) {
         super("advanced.yml", dataFolder);
+        validate();
     }
 
     @Override
@@ -22,125 +23,125 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     @Override
-    protected void validateConfigKeys() {
-        //TODO: Rewrite legacy validation code
+    protected boolean validateKeys() {
+        // Validate all the settings!
         List<String> reason = new ArrayList<>();
 
         /* GENERAL */
         if (getAbilityLength() < 1) {
-            mcMMO.p.getLogger().warning("Skills.General.Ability.Length.<mode>.IncreaseLevel should be at least 1!");
+            reason.add("Skills.General.Ability.Length.<mode>.IncreaseLevel should be at least 1!");
         }
 
         if (getEnchantBuff() < 1) {
-            mcMMO.p.getLogger().warning("Skills.General.Ability.EnchantBuff should be at least 1!");
+            reason.add("Skills.General.Ability.EnchantBuff should be at least 1!");
         }
 
         /* ACROBATICS */
         if (getMaximumProbability(SubSkillType.ACROBATICS_DODGE) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Dodge.ChanceMax should be at least 1!");
+            reason.add("Skills.Acrobatics.Dodge.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.ACROBATICS_DODGE) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Dodge.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Acrobatics.Dodge.MaxBonusLevel should be at least 1!");
         }
 
         if (getDodgeDamageModifier() <= 1) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Dodge.DamageModifier should be greater than 1!");
+            reason.add("Skills.Acrobatics.Dodge.DamageModifier should be greater than 1!");
         }
 
         if (getMaximumProbability(SubSkillType.ACROBATICS_ROLL) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Roll.ChanceMax should be at least 1!");
+            reason.add("Skills.Acrobatics.Roll.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Roll.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Acrobatics.Roll.MaxBonusLevel should be at least 1!");
         }
 
         if (getRollDamageThreshold() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.Roll.DamageThreshold should be at least 0!");
+            reason.add("Skills.Acrobatics.Roll.DamageThreshold should be at least 0!");
         }
 
         if (getGracefulRollDamageThreshold() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Acrobatics.GracefulRoll.DamageThreshold should be at least 0!");
+            reason.add("Skills.Acrobatics.GracefulRoll.DamageThreshold should be at least 0!");
         }
 
         if (getCatalysisMinSpeed() <= 0) {
-            mcMMO.p.getLogger().warning("Skills.Alchemy.Catalysis.MinSpeed must be greater than 0!");
+            reason.add("Skills.Alchemy.Catalysis.MinSpeed must be greater than 0!");
         }
 
         if (getCatalysisMaxSpeed() < getCatalysisMinSpeed()) {
-            mcMMO.p.getLogger().warning("Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
+            reason.add("Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
         }
 
         /* ARCHERY */
 
         if (getSkillShotRankDamageMultiplier() <= 0) {
-            mcMMO.p.getLogger().warning("Skills.Archery.SkillShot.RankDamageMultiplier should be greater than 0!");
+            reason.add("Skills.Archery.SkillShot.RankDamageMultiplier should be greater than 0!");
         }
 
         if (getMaximumProbability(SubSkillType.ARCHERY_DAZE) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Archery.Daze.ChanceMax should be at least 1!");
+            reason.add("Skills.Archery.Daze.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.ARCHERY_DAZE) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Archery.Daze.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Archery.Daze.MaxBonusLevel should be at least 1!");
         }
 
         if (getDazeBonusDamage() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Archery.Daze.BonusDamage should be at least 0!");
+            reason.add("Skills.Archery.Daze.BonusDamage should be at least 0!");
         }
 
         if (getMaximumProbability(SubSkillType.ARCHERY_ARROW_RETRIEVAL) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Archery.Retrieve.ChanceMax should be at least 1!");
+            reason.add("Skills.Archery.Retrieve.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.ARCHERY_ARROW_RETRIEVAL) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Archery.Retrieve.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Archery.Retrieve.MaxBonusLevel should be at least 1!");
         }
 
         if (getForceMultiplier() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Archery.ForceMultiplier should be at least 0!");
+            reason.add("Skills.Archery.ForceMultiplier should be at least 0!");
         }
 
         /* AXES */
         if (getAxeMasteryRankDamageMultiplier() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Axes.AxeMastery.RankDamageMultiplier should be at least 0!");
+            reason.add("Skills.Axes.AxeMastery.RankDamageMultiplier should be at least 0!");
         }
 
         if (getMaximumProbability(SubSkillType.AXES_CRITICAL_STRIKES) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.CriticalHit.ChanceMax should be at least 1!");
+            reason.add("Skills.Axes.CriticalHit.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.AXES_CRITICAL_STRIKES) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.CriticalHit.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Axes.CriticalHit.MaxBonusLevel should be at least 1!");
         }
 
         if (getCriticalStrikesPVPModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.CriticalStrikes.PVP_Modifier should be at least 1!");
+            reason.add("Skills.Axes.CriticalStrikes.PVP_Modifier should be at least 1!");
         }
 
         if (getCriticalStrikesPVPModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.CriticalStrikes.PVE_Modifier should be at least 1!");
+            reason.add("Skills.Axes.CriticalStrikes.PVE_Modifier should be at least 1!");
         }
 
         if (getGreaterImpactChance() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.GreaterImpact.Chance should be at least 1!");
+            reason.add("Skills.Axes.GreaterImpact.Chance should be at least 1!");
         }
 
         if (getGreaterImpactModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.GreaterImpact.KnockbackModifier should be at least 1!");
+            reason.add("Skills.Axes.GreaterImpact.KnockbackModifier should be at least 1!");
         }
 
         if (getGreaterImpactBonusDamage() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.GreaterImpact.BonusDamage should be at least 1!");
+            reason.add("Skills.Axes.GreaterImpact.BonusDamage should be at least 1!");
         }
 
         if (getImpactChance() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.ArmorImpact.Chance should be at least 1!");
+            reason.add("Skills.Axes.ArmorImpact.Chance should be at least 1!");
         }
 
         if (getSkullSplitterModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Axes.SkullSplitter.DamageModifier should be at least 1!");
+            reason.add("Skills.Axes.SkullSplitter.DamageModifier should be at least 1!");
         }
 
         /* FISHING */
@@ -148,261 +149,262 @@ public class AdvancedConfig extends BukkitConfig {
 
         for (int rank : fishingTierList) {
             if (getFishingTierLevel(tier) < 0) {
-                mcMMO.p.getLogger().warning("Skills.Fishing.Rank_Levels.Rank_" + rank + " should be at least 0!");
+                reason.add("Skills.Fishing.Rank_Levels.Rank_" + rank + " should be at least 0!");
             }
 
             if (getShakeChance(tier) < 0) {
-                mcMMO.p.getLogger().warning("Skills.Fishing.Shake_Chance.Rank_" + rank + " should be at least 0!");
+                reason.add("Skills.Fishing.Shake_Chance.Rank_" + rank + " should be at least 0!");
             }
 
             if (getFishingVanillaXPModifier(tier) < 0) {
-                mcMMO.p.getLogger().warning("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank + " should be at least 0!");
+                reason.add("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank + " should be at least 0!");
             }
 
             if (tier != Fishing.Tier.EIGHT) {
                 Fishing.Tier nextTier = fishingTierList.get(fishingTierList.indexOf(tier) - 1);
 
                 if (getFishingTierLevel(tier) > getFishingTierLevel(nextTier)) {
-                    mcMMO.p.getLogger().warning("Skills.Fishing.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Fishing.Rank_Levels.Rank_" + nextrank + "!");
+                    reason.add("Skills.Fishing.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Fishing.Rank_Levels.Rank_" + nextrank + "!");
                 }
 
                 if (getShakeChance(tier) > getShakeChance(nextTier)) {
-                    mcMMO.p.getLogger().warning("Skills.Fishing.Shake_Chance.Rank_" + rank + " should be less than or equal to Skills.Fishing.Shake_Chance.Rank_" + nextrank + "!");
+                    reason.add("Skills.Fishing.Shake_Chance.Rank_" + rank + " should be less than or equal to Skills.Fishing.Shake_Chance.Rank_" + nextrank + "!");
                 }
 
                 if (getFishingVanillaXPModifier(tier) > getFishingVanillaXPModifier(nextTier)) {
-                    mcMMO.p.getLogger().warning("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank + " should be less than or equal to Skills.Fishing.VanillaXPMultiplier.Rank_" + nextrank + "!");
+                    reason.add("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank + " should be less than or equal to Skills.Fishing.VanillaXPMultiplier.Rank_" + nextrank + "!");
                 }
             }
         }*/
 
         if (getFishermanDietRankChange() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Fishing.FishermansDiet.RankChange should be at least 1!");
+            reason.add("Skills.Fishing.FishermansDiet.RankChange should be at least 1!");
         }
 
         /*if (getIceFishingUnlockLevel() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Fishing.IceFishing.UnlockLevel should be at least 0!");
+            reason.add("Skills.Fishing.IceFishing.UnlockLevel should be at least 0!");
         }
 
         if (getMasterAnglerUnlockLevel() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Fishing.MasterAngler.UnlockLevel should be at least 0!");
+            reason.add("Skills.Fishing.MasterAngler.UnlockLevel should be at least 0!");
         }*/
 
         if (getMasterAnglerBoatModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Fishing.MasterAngler.BoatModifier should be at least 1!");
+            reason.add("Skills.Fishing.MasterAngler.BoatModifier should be at least 1!");
         }
 
         if (getMasterAnglerBiomeModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Fishing.MasterAngler.BiomeModifier should be at least 1!");
+            reason.add("Skills.Fishing.MasterAngler.BiomeModifier should be at least 1!");
         }
 
         /* HERBALISM */
         if (getFarmerDietRankChange() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.FarmersDiet.RankChange should be at least 1!");
+            reason.add("Skills.Herbalism.FarmersDiet.RankChange should be at least 1!");
         }
 
         if (getGreenThumbStageChange() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.GreenThumb.StageChange should be at least 1!");
+            reason.add("Skills.Herbalism.GreenThumb.StageChange should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.HERBALISM_GREEN_THUMB) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.GreenThumb.ChanceMax should be at least 1!");
+            reason.add("Skills.Herbalism.GreenThumb.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.HERBALISM_GREEN_THUMB) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.GreenThumb.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Herbalism.GreenThumb.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.HERBALISM_DOUBLE_DROPS) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.DoubleDrops.ChanceMax should be at least 1!");
+            reason.add("Skills.Herbalism.DoubleDrops.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.HERBALISM_DOUBLE_DROPS) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.DoubleDrops.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Herbalism.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.HERBALISM_HYLIAN_LUCK) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.HylianLuck.ChanceMax should be at least 1!");
+            reason.add("Skills.Herbalism.HylianLuck.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.HERBALISM_HYLIAN_LUCK) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.HylianLuck.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Herbalism.HylianLuck.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.HERBALISM_SHROOM_THUMB) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.ShroomThumb.ChanceMax should be at least 1!");
+            reason.add("Skills.Herbalism.ShroomThumb.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.HERBALISM_SHROOM_THUMB) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Herbalism.ShroomThumb.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Herbalism.ShroomThumb.MaxBonusLevel should be at least 1!");
         }
 
         /* MINING */
         if (getMaximumProbability(SubSkillType.MINING_DOUBLE_DROPS) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Mining.DoubleDrops.ChanceMax should be at least 1!");
+            reason.add("Skills.Mining.DoubleDrops.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.MINING_DOUBLE_DROPS) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Mining.DoubleDrops.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Mining.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
         /* REPAIR */
         if (getRepairMasteryMaxBonus() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Repair.RepairMastery.MaxBonusPercentage should be at least 1!");
+            reason.add("Skills.Repair.RepairMastery.MaxBonusPercentage should be at least 1!");
         }
 
         if (getRepairMasteryMaxLevel() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Repair.RepairMastery.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Repair.RepairMastery.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.REPAIR_SUPER_REPAIR) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Repair.SuperRepair.ChanceMax should be at least 1!");
+            reason.add("Skills.Repair.SuperRepair.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.REPAIR_SUPER_REPAIR) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Repair.SuperRepair.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Repair.SuperRepair.MaxBonusLevel should be at least 1!");
         }
 
         /* SMELTING */
         if (getBurnModifierMaxLevel() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Smelting.FuelEfficiency.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Smelting.FuelEfficiency.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.SMELTING_SECOND_SMELT) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Smelting.SecondSmelt.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Smelting.SecondSmelt.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.SMELTING_SECOND_SMELT) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Smelting.SecondSmelt.ChanceMax should be at least 1!");
+            reason.add("Skills.Smelting.SecondSmelt.ChanceMax should be at least 1!");
         }
 
         if (getFluxMiningChance() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Smelting.FluxMining.Chance should be at least 1!");
+            reason.add("Skills.Smelting.FluxMining.Chance should be at least 1!");
         }
 
         /* SWORDS */
 
         if (getMaximumProbability(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Swords.CounterAttack.ChanceMax should be at least 1!");
+            reason.add("Skills.Swords.CounterAttack.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Swords.CounterAttack.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Swords.CounterAttack.MaxBonusLevel should be at least 1!");
         }
 
         if (getCounterModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Swords.CounterAttack.DamageModifier should be at least 1!");
+            reason.add("Skills.Swords.CounterAttack.DamageModifier should be at least 1!");
         }
 
         if (getSerratedStrikesModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Swords.SerratedStrikes.DamageModifier should be at least 1!");
+            reason.add("Skills.Swords.SerratedStrikes.DamageModifier should be at least 1!");
         }
 
         if (getSerratedStrikesTicks() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Swords.SerratedStrikes.RuptureTicks should be at least 1!");
+            reason.add("Skills.Swords.SerratedStrikes.RuptureTicks should be at least 1!");
         }
 
         /* TAMING */
 
         if (getMaximumProbability(SubSkillType.TAMING_GORE) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.Gore.ChanceMax should be at least 1!");
+            reason.add("Skills.Taming.Gore.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.TAMING_GORE) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.Gore.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Taming.Gore.MaxBonusLevel should be at least 1!");
         }
 
         /*if (getGoreRuptureTicks() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.Gore.RuptureTicks should be at least 1!");
+            reason.add("Skills.Taming.Gore.RuptureTicks should be at least 1!");
         }*/
 
         if (getGoreModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.Gore.Modifier should be at least 1!");
+            reason.add("Skills.Taming.Gore.Modifier should be at least 1!");
         }
 
         /*if (getFastFoodUnlock() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Taming.FastFood.UnlockLevel should be at least 0!");
+            reason.add("Skills.Taming.FastFood.UnlockLevel should be at least 0!");
         }*/
 
         if (getFastFoodChance() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.FastFood.Chance should be at least 1!");
+            reason.add("Skills.Taming.FastFood.Chance should be at least 1!");
         }
 
         /*if (getEnviromentallyAwareUnlock() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Taming.EnvironmentallyAware.UnlockLevel should be at least 0!");
+            reason.add("Skills.Taming.EnvironmentallyAware.UnlockLevel should be at least 0!");
         }*/
 
         /*if (getThickFurUnlock() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Taming.ThickFur.UnlockLevel should be at least 0!");
+            reason.add("Skills.Taming.ThickFur.UnlockLevel should be at least 0!");
         }*/
 
         if (getThickFurModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.ThickFur.Modifier should be at least 1!");
+            reason.add("Skills.Taming.ThickFur.Modifier should be at least 1!");
         }
 
         /*if (getHolyHoundUnlock() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Taming.HolyHound.UnlockLevel should be at least 0!");
+            reason.add("Skills.Taming.HolyHound.UnlockLevel should be at least 0!");
         }
 
         if (getShockProofUnlock() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Taming.ShockProof.UnlockLevel should be at least 0!");
+            reason.add("Skills.Taming.ShockProof.UnlockLevel should be at least 0!");
         }*/
 
         if (getShockProofModifier() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.ShockProof.Modifier should be at least 1!");
+            reason.add("Skills.Taming.ShockProof.Modifier should be at least 1!");
         }
 
         /*if (getSharpenedClawsUnlock() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Taming.SharpenedClaws.UnlockLevel should be at least 0!");
+            reason.add("Skills.Taming.SharpenedClaws.UnlockLevel should be at least 0!");
         }*/
 
         if (getSharpenedClawsBonus() < 1) {
-            mcMMO.p.getLogger().warning("Skills.Taming.SharpenedClaws.Bonus should be at least 1!");
+            reason.add("Skills.Taming.SharpenedClaws.Bonus should be at least 1!");
         }
 
         if (getMaxHorseJumpStrength() < 0 || getMaxHorseJumpStrength() > 2) {
-            mcMMO.p.getLogger().warning("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength should be between 0 and 2!");
+            reason.add("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength should be between 0 and 2!");
         }
 
         /* UNARMED */
         if (getMaximumProbability(SubSkillType.UNARMED_DISARM) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Unarmed.Disarm.ChanceMax should be at least 1!");
+            reason.add("Skills.Unarmed.Disarm.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.UNARMED_DISARM) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Unarmed.Disarm.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Unarmed.Disarm.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.UNARMED_ARROW_DEFLECT) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Unarmed.ArrowDeflect.ChanceMax should be at least 1!");
+            reason.add("Skills.Unarmed.ArrowDeflect.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.UNARMED_ARROW_DEFLECT) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Unarmed.ArrowDeflect.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Unarmed.ArrowDeflect.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.UNARMED_IRON_GRIP) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Unarmed.IronGrip.ChanceMax should be at least 1!");
+            reason.add("Skills.Unarmed.IronGrip.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.UNARMED_IRON_GRIP) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Unarmed.IronGrip.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Unarmed.IronGrip.MaxBonusLevel should be at least 1!");
         }
 
         /* WOODCUTTING */
 
         /*if (getLeafBlowUnlockLevel() < 0) {
-            mcMMO.p.getLogger().warning("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 0!");
+            reason.add("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 0!");
         }*/
 
         if (getMaximumProbability(SubSkillType.WOODCUTTING_HARVEST_LUMBER) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Woodcutting.HarvestLumber.ChanceMax should be at least 1!");
+            reason.add("Skills.Woodcutting.HarvestLumber.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkillType.WOODCUTTING_HARVEST_LUMBER) < 1) {
-            mcMMO.p.getLogger().warning("Skills.Woodcutting.HarvestLumber.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Woodcutting.HarvestLumber.MaxBonusLevel should be at least 1!");
         }
 
+        return noErrorsInConfig(reason);
     }
 
     @Override
