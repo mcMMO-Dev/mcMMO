@@ -462,10 +462,16 @@ public class EntityListener implements Listener {
                 if(mmoPlayer.isDebugMode()) {
                     player.sendMessage(ChatColor.GOLD + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
                     player.sendMessage("You are being damaged by another player in this event");
-                    player.sendMessage("Damage: " + entityDamageEvent.getDamage());
-                    player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
-                    player.sendMessage("Your max health: "+player.getAttribute(Attribute.GENERIC_MAX_HEALTH));
+                    player.sendMessage("Raw Damage: " + entityDamageEvent.getDamage());
+                    player.sendMessage("Your max health: "+player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                     player.sendMessage("Your current health: "+player.getHealth());
+
+                    player.sendMessage(ChatColor.GREEN + "Damage Modifiers (final damage)");
+                    for (EntityDamageEvent.DamageModifier modifier : EntityDamageEvent.DamageModifier.values()) {
+                        player.sendMessage("Modifier "+modifier.name()+": " + entityDamageEvent.getDamage(modifier));
+                    }
+
+                    player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
 
                     if(entityDamageEvent instanceof FakeEntityDamageByEntityEvent) {
                         player.sendMessage("This report is for a fake damage event used by mcMMO to test a players permission to hurt another");
@@ -490,9 +496,15 @@ public class EntityListener implements Listener {
                 if(mmoPlayer.isDebugMode()) {
                     player.sendMessage(ChatColor.GOLD + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
                     player.sendMessage("You are dealing damage to another player in this event");
-                    player.sendMessage("Damage: " + entityDamageEvent.getDamage());
+                    player.sendMessage("Raw Damage: " + entityDamageEvent.getDamage());
+
+                    player.sendMessage(ChatColor.GREEN + "Damage Modifiers (final damage)");
+                    for (EntityDamageEvent.DamageModifier modifier : EntityDamageEvent.DamageModifier.values()) {
+                        player.sendMessage("Modifier "+modifier.name()+": " + entityDamageEvent.getDamage(modifier));
+                    }
+
                     player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
-                    player.sendMessage("Target players max health: "+otherPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH));
+                    player.sendMessage("Target players max health: "+otherPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                     player.sendMessage("Target players current health: "+otherPlayer.getHealth());
 
                     if(entityDamageEvent instanceof FakeEntityDamageByEntityEvent) {
