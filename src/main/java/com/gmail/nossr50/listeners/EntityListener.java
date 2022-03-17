@@ -28,9 +28,11 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -452,6 +454,62 @@ public class EntityListener implements Listener {
 
         if(entityDamageEvent.getDamager() instanceof Projectile) {
             CombatUtils.cleanupArrowMetadata((Projectile) entityDamageEvent.getDamager());
+        }
+
+        if(entityDamageEvent.getEntity() instanceof Player player && entityDamageEvent.getDamager() instanceof Player) {
+            McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            if(mmoPlayer != null) {
+                if(mmoPlayer.isDebugMode()) {
+                    player.sendMessage(ChatColor.GOLD + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
+                    player.sendMessage("You are being damaged by another player in this event");
+                    player.sendMessage("Damage: " + entityDamageEvent.getDamage());
+                    player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
+                    player.sendMessage("Your max health: "+player.getAttribute(Attribute.GENERIC_MAX_HEALTH));
+                    player.sendMessage("Your current health: "+player.getHealth());
+
+                    if(entityDamageEvent instanceof FakeEntityDamageByEntityEvent) {
+                        player.sendMessage("This report is for a fake damage event used by mcMMO to test a players permission to hurt another");
+                    }
+
+                    if(entityDamageEvent instanceof McMMOEntityDamageByRuptureEvent) {
+                        player.sendMessage("This report is for a Rupture damage event, which is sent out by mcMMO");
+                    }
+
+                    if(entityDamageEvent.isCancelled()) {
+                        player.sendMessage("Event was cancelled, which means no damage should be done.");
+                    }
+
+                    player.sendMessage(ChatColor.RED + "(mmodebug end of combat report)");
+                }
+            }
+        }
+
+        if(entityDamageEvent.getDamager() instanceof Player player && entityDamageEvent.getEntity() instanceof Player otherPlayer) {
+            McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            if(mmoPlayer != null) {
+                if(mmoPlayer.isDebugMode()) {
+                    player.sendMessage(ChatColor.GOLD + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
+                    player.sendMessage("You are dealing damage to another player in this event");
+                    player.sendMessage("Damage: " + entityDamageEvent.getDamage());
+                    player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
+                    player.sendMessage("Target players max health: "+otherPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH));
+                    player.sendMessage("Target players current health: "+otherPlayer.getHealth());
+
+                    if(entityDamageEvent instanceof FakeEntityDamageByEntityEvent) {
+                        player.sendMessage("This report is for a fake damage event used by mcMMO to test a players permission to hurt another");
+                    }
+
+                    if(entityDamageEvent instanceof McMMOEntityDamageByRuptureEvent) {
+                        player.sendMessage("This report is for a Rupture damage event, which is sent out by mcMMO");
+                    }
+
+                    if(entityDamageEvent.isCancelled()) {
+                        player.sendMessage("Event was cancelled, which means no damage should be done.");
+                    }
+
+                    player.sendMessage(ChatColor.RED + "(mmodebug end of combat report)");
+                }
+            }
         }
     }
 

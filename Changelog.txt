@@ -1,3 +1,5 @@
+Version 2.1.211
+    Added /mmodebug info for players hitting other players
 Version 2.1.210
     Fixed a memory leak involving mob metadata
     Fixed a potential null pointer exception in InventoryListener
