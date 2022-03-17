@@ -35,7 +35,7 @@ public final class ExperienceAPI {
      * @param skillType A string that may or may not be a skill
      * @return true if this is a valid mcMMO skill
      */
-    public static boolean isValidSkillType(String skillType) {
+    public static boolean isValidSkillType(@NotNull String skillType) {
         return mcMMO.p.getSkillTools().matchSkill(skillType) != null;
     }
 

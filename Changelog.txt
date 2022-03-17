@@ -1,7 +1,9 @@
 Version 2.1.210
     Fixed a memory leak involving mob metadata
+    Fixed a potential null pointer exception in InventoryListener
 
     NOTES:
+    If you're having issues with "immortal players" this is a known plugin incompatibility between mcMMO and another plugin, I need more info on what plugins need to be present to cause it. Please post info to GitHub issues or tag me on discord.
     There was a big rewrite in this update relating to how various types of metadata were being tracked/stored/retrieved
     If you run into issues with this version of mcMMO, please post about it on GitHub
 

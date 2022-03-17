@@ -320,14 +320,13 @@ public final class CombatUtils {
         Entity painSource = event.getDamager();
         EntityType entityType = painSource.getType();
 
-        if (target instanceof Player) {
+        if (target instanceof Player player) {
             if(ExperienceConfig.getInstance().isNPCInteractionPrevented()) {
                 if (Misc.isNPCEntityExcludingVillagers(target)) {
                     return;
                 }
             }
 
-            Player player = (Player) target;
             if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
@@ -738,7 +737,7 @@ public final class CombatUtils {
      * @param target The defending entity
      * @param primarySkillType The skill being used
      */
-    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, @NotNull LivingEntity target, @NotNull PrimarySkillType primarySkillType) {
         processCombatXP(mcMMOPlayer, target, primarySkillType, 1.0);
     }
 
@@ -750,7 +749,7 @@ public final class CombatUtils {
      * @param primarySkillType The skill being used
      * @param multiplier final XP result will be multiplied by this
      */
-    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, @NotNull LivingEntity target, @NotNull PrimarySkillType primarySkillType, double multiplier) {
         double baseXP = 0;
         XPGainReason xpGainReason;
 
