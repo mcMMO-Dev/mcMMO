@@ -1,5 +1,11 @@
 Version 2.1.211
     Added /mmodebug info for players hitting other players
+    Fixed Immortal Player bug
+    Removed all of Spigot's buggy and deprecated DamageModifier API, this fixes the bug where players would become immortal when using certain other plugins
+    Rupture is back to doing "pure" damage (due to the above change)
+
+    NOTES:
+    Rupture damage will be tweaked based on feedback as it is dealing "pure" damage
 Version 2.1.210
     Fixed a memory leak involving mob metadata
     Fixed a potential null pointer exception in InventoryListener

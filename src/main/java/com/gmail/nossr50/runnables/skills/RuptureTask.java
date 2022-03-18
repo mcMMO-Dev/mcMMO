@@ -88,7 +88,7 @@ public class RuptureTask extends BukkitRunnable {
             mcMMO.p.getServer().getPluginManager().callEvent(event);
 
             //Ensure the event wasn't cancelled and damage is still greater than 0
-            double damage = event.getFinalDamage();
+            double damage = event.getDamage(); //Use raw damage for Rupture
 
             if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
                 return true;
