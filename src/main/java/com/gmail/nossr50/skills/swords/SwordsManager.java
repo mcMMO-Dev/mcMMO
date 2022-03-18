@@ -21,11 +21,8 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager(McMMOPlayer mcMMOPlayer) {
@@ -81,8 +78,7 @@ public class SwordsManager extends SkillManager {
 
         if (RandomChanceUtil.rollDice(mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank()), 100)) {
 
-            if (target instanceof Player) {
-                Player defender = (Player) target;
+            if (target instanceof Player defender) {
 
                 //Don't start or add to a bleed if they are blocking
                 if(defender.isBlocking())
@@ -158,11 +154,10 @@ public class SwordsManager extends SkillManager {
 
     /**
      * Handle the effects of the Serrated Strikes ability
-     *
-     * @param target The {@link LivingEntity} being affected by the ability
+     *  @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void serratedStrikes(@NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
+    public void serratedStrikes(@NotNull LivingEntity target, double damage) {
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, skill);
     }
 }

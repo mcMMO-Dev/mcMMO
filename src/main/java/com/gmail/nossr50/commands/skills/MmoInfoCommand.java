@@ -27,12 +27,11 @@ public class MmoInfoCommand implements TabExecutor {
         /*
          * Only allow players to use this command
          */
-        if(commandSender instanceof Player)
+        if(commandSender instanceof Player player)
         {
             if(args.length < 1)
                 return false;
 
-            Player player = (Player) commandSender;
             if(Permissions.mmoinfo(player))
             {
                 if(args == null || args[0] == null)

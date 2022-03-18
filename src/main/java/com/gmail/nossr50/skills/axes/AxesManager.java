@@ -15,11 +15,8 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 public class AxesManager extends SkillManager {
     public AxesManager(McMMOPlayer mcMMOPlayer) {
@@ -93,8 +90,7 @@ public class AxesManager extends SkillManager {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CriticalHit");
         }
 
-        if (target instanceof Player) {
-            Player defender = (Player) target;
+        if (target instanceof Player defender) {
 
             if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
@@ -150,8 +146,7 @@ public class AxesManager extends SkillManager {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Proc");
         }
 
-        if (target instanceof Player) {
-            Player defender = (Player) target;
+        if (target instanceof Player defender) {
 
             if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
@@ -163,11 +158,10 @@ public class AxesManager extends SkillManager {
 
     /**
      * Handle the effects of the Skull Splitter ability
-     *
-     * @param target The {@link LivingEntity} being affected by the ability
+     *  @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void skullSplitterCheck(@NotNull LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, modifiers, skill);
+    public void skullSplitterCheck(@NotNull LivingEntity target, double damage) {
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, skill);
     }
 }

@@ -8,7 +8,6 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 public class BlastMining {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -114,7 +113,7 @@ public class BlastMining {
             return false;
         }
 
-        event.setDamage(DamageModifier.BASE, miningManager.processDemolitionsExpertise(event.getDamage()));
+        event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
 
         if (event.getFinalDamage() == 0) {
             event.setCancelled(true);

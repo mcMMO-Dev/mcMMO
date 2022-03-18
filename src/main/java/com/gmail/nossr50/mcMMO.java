@@ -381,15 +381,10 @@ public class mcMMO extends JavaPlugin {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
                 ZipLibrary.mcMMOBackup();
-            }
-            catch (IOException e) {
-                getLogger().severe(e.toString());
-            }
-            catch(NoClassDefFoundError e) {
+            } catch(NoClassDefFoundError e) {
                 getLogger().severe("Backup class not found!");
                 getLogger().info("Please do not replace the mcMMO jar while the server is running."); 
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 getLogger().severe(e.toString());
             }
         }

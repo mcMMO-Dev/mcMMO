@@ -81,7 +81,7 @@ public final class MobHealthbarUtils {
                 target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, false));
             }
 
-            new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
+            new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, (long) displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
         }
     }
 

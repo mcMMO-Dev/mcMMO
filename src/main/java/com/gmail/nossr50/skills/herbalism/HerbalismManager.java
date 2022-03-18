@@ -88,10 +88,8 @@ public class HerbalismManager extends SkillManager {
                 mmoPlayer.getPlayer().sendMessage("Processing sweet berry bush rewards");
             }
             //Check the age
-            if(blockState.getBlockData() instanceof Ageable) {
+            if(blockState.getBlockData() instanceof Ageable ageable) {
                 int rewardByAge = 0;
-
-                Ageable ageable = (Ageable) blockState.getBlockData();
 
                 if(ageable.getAge() == 2) {
                     rewardByAge = 1; //Normal XP
@@ -134,8 +132,7 @@ public class HerbalismManager extends SkillManager {
             BlockState blockState = block.getState();
 
             if(blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
-                if(blockState.getBlockData() instanceof Ageable) {
-                    Ageable ageable = (Ageable) blockState.getBlockData();
+                if(blockState.getBlockData() instanceof Ageable ageable) {
 
                     if(ageable.getAge() <= 1) {
                         applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
@@ -351,8 +348,7 @@ public class HerbalismManager extends SkillManager {
                  */
 
                 //Not all things that are natural should give double drops, make sure its fully mature as well
-                if(plantData instanceof Ageable) {
-                    Ageable ageable = (Ageable) plantData;
+                if(plantData instanceof Ageable ageable) {
 
                     if(isAgeableMature(ageable) || isBizarreAgeable(plantData)) {
                         if(checkDoubleDrop(brokenPlantState)) {
@@ -447,8 +443,7 @@ public class HerbalismManager extends SkillManager {
                  */
 
                 //Calculate XP
-                if(plantData instanceof Ageable) {
-                    Ageable plantAgeable = (Ageable) plantData;
+                if(plantData instanceof Ageable plantAgeable) {
 
                     if(isAgeableMature(plantAgeable) || isBizarreAgeable(plantData)) {
                         xpToReward += ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
@@ -764,11 +759,9 @@ public class HerbalismManager extends SkillManager {
 
         BlockData blockData = blockState.getBlockData();
 
-        if (!(blockData instanceof Ageable)) {
+        if (!(blockData instanceof Ageable ageable)) {
             return false;
         }
-
-        Ageable ageable = (Ageable) blockData;
 
         //If the ageable is NOT mature and the player is NOT using a hoe, abort
 

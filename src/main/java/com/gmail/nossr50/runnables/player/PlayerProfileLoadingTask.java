@@ -73,7 +73,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         // Increment attempt counter and try
         attempt++;
 
-        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, (100 + (attempt * 100)));
+        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, (100 + (attempt * 100L)));
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {

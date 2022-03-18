@@ -290,8 +290,7 @@ public final class BlockUtils {
         if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE) {
             return true;
         }
-        if (data instanceof Ageable) {
-            Ageable ageable = (Ageable) data;
+        if (data instanceof Ageable ageable) {
             return ageable.getAge() == ageable.getMaximumAge();
         }
         return true;

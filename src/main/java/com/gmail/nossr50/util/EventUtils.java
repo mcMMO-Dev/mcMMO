@@ -130,11 +130,9 @@ public final class EventUtils {
         if(Misc.isNPCEntityExcludingVillagers(entity))
             return false;
 
-        if (!entity.isValid() || !(entity instanceof LivingEntity)) {
+        if (!entity.isValid() || !(entity instanceof LivingEntity livingEntity)) {
             return false;
         }
-
-        LivingEntity livingEntity = (LivingEntity) entity;
 
         if (CombatUtils.isInvincible(livingEntity, damage)) {
             return false;

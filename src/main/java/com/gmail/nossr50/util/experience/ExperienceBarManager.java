@@ -77,7 +77,7 @@ public class ExperienceBarManager {
             return;
 
         ExperienceBarHideTask experienceBarHideTask = new ExperienceBarHideTask(this, mcMMOPlayer, primarySkillType);
-        experienceBarHideTask.runTaskLater(plugin, 20* delaySeconds);
+        experienceBarHideTask.runTaskLater(plugin, 20L * delaySeconds);
         experienceBarHideTaskHashMap.put(primarySkillType, experienceBarHideTask);
     }
 

@@ -37,8 +37,7 @@ public class PowerLevelUpBroadcastPredicate<T extends CommandSender> implements 
             return false;
         }
 
-        if(t instanceof Player) {
-            Player listeningPlayer = (Player) t;
+        if(t instanceof Player listeningPlayer) {
 
             //Party Member Check
             if(mcMMO.p.getGeneralConfig().isPowerLevelUpBroadcastsPartyMembersOnly()) {

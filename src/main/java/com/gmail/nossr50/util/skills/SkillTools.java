@@ -58,7 +58,7 @@ public class SkillTools {
         /*
          * Setup subskill -> parent relationship map
          */
-        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap = new EnumMap<SubSkillType, PrimarySkillType>(SubSkillType.class);
+        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap = new EnumMap<>(SubSkillType.class);
 
         //Super hacky and disgusting
         for(PrimarySkillType primarySkillType1 : PrimarySkillType.values()) {
@@ -78,7 +78,7 @@ public class SkillTools {
          * Setup primary -> (collection) subskill map
          */
 
-        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap = new EnumMap<PrimarySkillType, Set<SubSkillType>>(PrimarySkillType.class);
+        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap = new EnumMap<>(PrimarySkillType.class);
 
         //Init the empty Hash Sets
         for(PrimarySkillType primarySkillType1 : PrimarySkillType.values()) {
@@ -98,7 +98,7 @@ public class SkillTools {
         /*
          * Setup primary -> tooltype map
          */
-        EnumMap<PrimarySkillType, ToolType> tempToolMap = new EnumMap<PrimarySkillType, ToolType>(PrimarySkillType.class);
+        EnumMap<PrimarySkillType, ToolType> tempToolMap = new EnumMap<>(PrimarySkillType.class);
 
         tempToolMap.put(PrimarySkillType.AXES, ToolType.AXE);
         tempToolMap.put(PrimarySkillType.WOODCUTTING, ToolType.AXE);
@@ -115,8 +115,8 @@ public class SkillTools {
          * Setup primary -> ability map
          */
 
-        EnumMap<SuperAbilityType, PrimarySkillType> tempAbilityParentRelationshipMap = new EnumMap<SuperAbilityType, PrimarySkillType>(SuperAbilityType.class);
-        EnumMap<PrimarySkillType, SuperAbilityType> tempMainActivatedAbilityChildMap = new EnumMap<PrimarySkillType, SuperAbilityType>(PrimarySkillType.class);
+        EnumMap<SuperAbilityType, PrimarySkillType> tempAbilityParentRelationshipMap = new EnumMap<>(SuperAbilityType.class);
+        EnumMap<PrimarySkillType, SuperAbilityType> tempMainActivatedAbilityChildMap = new EnumMap<>(PrimarySkillType.class);
 
         for(SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             try {

@@ -256,45 +256,49 @@ public final class LocaleLoader {
 
     @NotNull
     private static String getExamples() {
-        return "This.Is.An.Example.Put.Locale.Keys.Here.One=&aExample text using hex color codes\n" +
-                "This.Is.An.Example.Put.Locale.Keys.Here.Two=[[DARK_AQUA]]Example text using our own color codes\n" +
-                "This.Is.An.Example.Put.Locale.Keys.Here.Three=Example text with no colors\n";
+        return """
+                This.Is.An.Example.Put.Locale.Keys.Here.One=&aExample text using hex color codes
+                This.Is.An.Example.Put.Locale.Keys.Here.Two=[[DARK_AQUA]]Example text using our own color codes
+                This.Is.An.Example.Put.Locale.Keys.Here.Three=Example text with no colors
+                """;
     }
 
     @NotNull
     private static String getLocaleHelpTextWithoutExamples() {
         String localeExplanation =
-                        "# -- Are you looking to change the language of mcMMO but without editing it yourself? --\n" +
-                        "\n" +
-                        "# mcMMO has quite a few built in translations, you can choose which translation by editing config.yml with the appropriate locale code. The setting is `General.Locale` in config.yml\n" +
-                        "# Odds are, if you speak a popular language on earth we already have a translation for it.\n" +
-                        "# However our translations are done by the community, and update infrequently. (Please help us out <3)\n" +
-                        "# We would love more people to help update our locales, submit any updated translation file to our GitHub or email it to me at business@neetgames.com\n" +
-                        "# For a list of built in translations, view this link: https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale\n" +
-                        "\n" +
-                        "\n" +
-                        "# -- Using a built in translation -- \n" +
-                        "# Assuming you read the above section, edit config.yml's General.Locale from en_US to the locale code that we support (see the above link), then reboot your server\n" +
-                        "\n" +
-                        "\n" +
-                        "# -- Do you want to change the text in mcMMO? Including adding colors? ( Locale Override ) -- \n" +
-                        "# First, a brief explanation.\n" +
-                        "# Locales are the language files used by mcMMO, they also contain color codes and most of the styling used by mcMMO.\n" +
-                        "# You can customize a locale outside of the JAR in version 2.1.51 and up.\n" +
-                        "#\n" +
-                        "# Locales can be overridden by editing this file\n" +
-                        "# You can find the up to date current locale files here https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale\n" +
-                        "# The master file is en_US, if a translation is missing entries (as they often are) it will pull from the en_US file https://github.com/mcMMO-Dev/mcMMO/blob/master/src/main/resources/locale/locale_en_US.properties\n" +
-                        "#\n" +
-                        "# To override a locale, add entries to this file and copy ** only ** the strings you want to replace, otherwise you will not see any updated strings when mcMMO updates and will have to manually change them and read patch notes carefully.\n" +
-                        "# If you wish to replace every line in some way, feel free to copy the entire contents of this file, just be advised that you will need to be on top of locale updates in mcMMO and follow our changelog closely.\n" +
-                        "\n" +
-                        "\n" +
-                        "# WARNING: Locales only support ASCII and UTF16 characters at the moment, so you'll need to run special characters through a UTF16 converter (google it) to get them to work. This will be fixed in the future!\n" +
-                        "# FIND KEYS HERE: On our github repo (en_US is our master file and has ALL the keys) -> https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale\n" +
-                        "# WARNING: Some keys in our master file are unused, make gratuitous use of Ctrl+F\n" +
-                        "# HOW TO APPLY: You can either restart the server for these changes to take effect or run /mcreloadlocale.\n" +
-                        "# -- Add Keys Below --\n";
+                """
+                        # -- Are you looking to change the language of mcMMO but without editing it yourself? --
+
+                        # mcMMO has quite a few built in translations, you can choose which translation by editing config.yml with the appropriate locale code. The setting is `General.Locale` in config.yml
+                        # Odds are, if you speak a popular language on earth we already have a translation for it.
+                        # However our translations are done by the community, and update infrequently. (Please help us out <3)
+                        # We would love more people to help update our locales, submit any updated translation file to our GitHub or email it to me at business@neetgames.com
+                        # For a list of built in translations, view this link: https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale
+
+
+                        # -- Using a built in translation --\s
+                        # Assuming you read the above section, edit config.yml's General.Locale from en_US to the locale code that we support (see the above link), then reboot your server
+
+
+                        # -- Do you want to change the text in mcMMO? Including adding colors? ( Locale Override ) --\s
+                        # First, a brief explanation.
+                        # Locales are the language files used by mcMMO, they also contain color codes and most of the styling used by mcMMO.
+                        # You can customize a locale outside of the JAR in version 2.1.51 and up.
+                        #
+                        # Locales can be overridden by editing this file
+                        # You can find the up to date current locale files here https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale
+                        # The master file is en_US, if a translation is missing entries (as they often are) it will pull from the en_US file https://github.com/mcMMO-Dev/mcMMO/blob/master/src/main/resources/locale/locale_en_US.properties
+                        #
+                        # To override a locale, add entries to this file and copy ** only ** the strings you want to replace, otherwise you will not see any updated strings when mcMMO updates and will have to manually change them and read patch notes carefully.
+                        # If you wish to replace every line in some way, feel free to copy the entire contents of this file, just be advised that you will need to be on top of locale updates in mcMMO and follow our changelog closely.
+
+
+                        # WARNING: Locales only support ASCII and UTF16 characters at the moment, so you'll need to run special characters through a UTF16 converter (google it) to get them to work. This will be fixed in the future!
+                        # FIND KEYS HERE: On our github repo (en_US is our master file and has ALL the keys) -> https://github.com/mcMMO-Dev/mcMMO/tree/master/src/main/resources/locale
+                        # WARNING: Some keys in our master file are unused, make gratuitous use of Ctrl+F
+                        # HOW TO APPLY: You can either restart the server for these changes to take effect or run /mcreloadlocale.
+                        # -- Add Keys Below --
+                        """;
         return localeExplanation;
     }
 

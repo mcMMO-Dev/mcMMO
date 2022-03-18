@@ -105,8 +105,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if(blockState instanceof Furnace) {
-            Furnace furnace = (Furnace) blockState;
+        if(blockState instanceof Furnace furnace) {
             OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
 
             if(offlinePlayer != null) {
@@ -191,7 +190,7 @@ public class InventoryListener implements Listener {
 
         InventoryHolder holder = inventory.getHolder();
 
-        if (!(holder instanceof BrewingStand)) {
+        if (!(holder instanceof BrewingStand stand)) {
             return;
         }
 
@@ -208,7 +207,6 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        BrewingStand stand = (BrewingStand) holder;
         ItemStack clicked = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
 

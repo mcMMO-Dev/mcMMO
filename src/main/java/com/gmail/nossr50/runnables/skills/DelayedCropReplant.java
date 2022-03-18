@@ -35,8 +35,7 @@ public class DelayedCropReplant extends BukkitRunnable {
     public DelayedCropReplant(BlockBreakEvent blockBreakEvent, BlockState cropState, int desiredCropAge, boolean wasImmaturePlant) {
         BlockData cropData = cropState.getBlockData();
 
-        if(cropData instanceof Directional) {
-            Directional cropDir = (Directional) cropData;
+        if(cropData instanceof Directional cropDir) {
             cropFace = cropDir.getFacing();
         }
 

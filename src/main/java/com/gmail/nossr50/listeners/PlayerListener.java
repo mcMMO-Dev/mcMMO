@@ -119,9 +119,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntityHighest(EntityDamageByEntityEvent event) {
         // we only care about players as this is for fixing player death messages
-        if (!(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player player))
             return;
-        Player player = (Player) event.getEntity();
 
         // get the attacker
         LivingEntity attacker;
@@ -413,9 +412,8 @@ public class PlayerListener implements Listener {
             {
                 event.setExpToDrop(0);
 
-                if(caught instanceof Item)
+                if(caught instanceof Item caughtItem)
                 {
-                    Item caughtItem = (Item) caught;
                     caughtItem.remove();
                 }
 
@@ -489,9 +487,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(event.getEntity() instanceof Player)
+        if(event.getEntity() instanceof Player player)
         {
-            Player player = (Player) event.getEntity();
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if(WorldGuardUtils.isWorldGuardLoaded())
@@ -1013,8 +1010,7 @@ public class PlayerListener implements Listener {
          *  We can check for an instance instead of EntityType here, so we are
          *  ready for the infamous "Glow Item Frame" in 1.17 too!
          */
-        if (event.getRightClicked() instanceof ItemFrame) {
-            ItemFrame frame = (ItemFrame) event.getRightClicked();
+        if (event.getRightClicked() instanceof ItemFrame frame) {
 
             // Check for existing items (ignore rotations)
             if (frame.getItem().getType() != Material.AIR) {

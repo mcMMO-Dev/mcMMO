@@ -240,8 +240,7 @@ public class TamingManager extends SkillManager {
         message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
 
         // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
-        if (beast instanceof AbstractHorse && !(beast instanceof Llama)) {
-            AbstractHorse horseLikeCreature = (AbstractHorse) beast;
+        if (beast instanceof AbstractHorse horseLikeCreature && !(beast instanceof Llama)) {
             AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(Attribute.HORSE_JUMP_STRENGTH);
 
             if(jumpAttribute != null) {
@@ -277,8 +276,7 @@ public class TamingManager extends SkillManager {
         ParticleEffectUtils.playGreaterImpactEffect(target);
         target.setVelocity(wolf.getLocation().getDirection().normalize().multiply(1.5D));
 
-        if (target instanceof Player) {
-            Player defender = (Player) target;
+        if (target instanceof Player defender) {
 
             if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Taming.SubSkill.Pummel.TargetMessage");
@@ -287,9 +285,8 @@ public class TamingManager extends SkillManager {
     }
 
     public void attackTarget(LivingEntity target) {
-        if(target instanceof Tameable)
+        if(target instanceof Tameable tameable)
         {
-            Tameable tameable = (Tameable) target;
             if(tameable.getOwner() == getPlayer())
             {
                 return;

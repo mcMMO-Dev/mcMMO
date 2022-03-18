@@ -91,8 +91,8 @@ class MinecraftGameVersionTest {
 
         try (MockedStatic<Bukkit> bukkit = Mockito.mockStatic(Bukkit.class)) {
             // Inject our own Bukkit versions
-            bukkit.when(() -> Bukkit.getVersion()).thenReturn(serverSoftwareVersion);
-            bukkit.when(() -> Bukkit.getBukkitVersion()).thenReturn(gameVersion);
+            bukkit.when(Bukkit::getVersion).thenReturn(serverSoftwareVersion);
+            bukkit.when(Bukkit::getBukkitVersion).thenReturn(gameVersion);
 
             PlatformManager manager = new PlatformManager();
             Platform platform = manager.getPlatform();

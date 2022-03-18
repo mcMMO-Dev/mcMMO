@@ -696,9 +696,8 @@ public class BlockListener implements Listener {
                     player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");
             }
 
-            if(blockState instanceof Furnace)
+            if(blockState instanceof Furnace furnace)
             {
-                Furnace furnace = (Furnace) blockState;
                 if(mcMMO.getSmeltingTracker().isFurnaceOwned(furnace))
                 {
                     player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
