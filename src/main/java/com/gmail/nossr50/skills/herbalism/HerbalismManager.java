@@ -578,7 +578,7 @@ public class HerbalismManager extends SkillManager {
         if (isChorusBranch(brokenBlock.getType())) {
             brokenBlocks = getBrokenChorusBlocks(brokenBlock);
         } else {
-            brokenBlocks = getBlocksBrokenAbove(brokenBlock, false);
+            brokenBlocks = getBlocksBrokenAboveOrBelow(brokenBlock, false, mcMMO.getMaterialMapStore().isMultiBlockHangingPlant(brokenBlock.getType()));
         }
 
         return brokenBlocks;
@@ -599,9 +599,11 @@ public class HerbalismManager extends SkillManager {
      * Multi-block plants are hard-coded and kept in {@link MaterialMapStore}
      *
      * @param originBlock The point of the "break"
+     * @param inclusive Whether to include the origin block
+     * @param below Whether to search down instead of up.
      * @return A set of blocks above the target block which can be assumed to be broken
      */
-    private HashSet<Block> getBlocksBrokenAbove(BlockState originBlock, boolean inclusive) {
+    private HashSet<Block> getBlocksBrokenAboveOrBelow(BlockState originBlock, boolean inclusive, boolean below) {
         HashSet<Block> brokenBlocks = new HashSet<>();
         Block block = originBlock.getBlock();
 
@@ -612,16 +614,18 @@ public class HerbalismManager extends SkillManager {
         //Limit our search
         int maxHeight = 512;
 
+        final BlockFace relativeFace = below ? BlockFace.DOWN : BlockFace.UP;
+
         // Search vertically for multi-block plants, exit early if any non-multi block plants
         for (int y = 0; y < maxHeight; y++) {
             //TODO: Should this grab state? It would be more expensive..
-            Block relativeUpBlock = block.getRelative(BlockFace.UP, y);
+            Block relativeBlock = block.getRelative(relativeFace, y);
 
             //Abandon our search if the block isn't multi
-            if(!mcMMO.getMaterialMapStore().isMultiBlockPlant(relativeUpBlock.getType()))
+            if (isOneBlockPlant(relativeBlock.getType()))
                 break;
 
-            brokenBlocks.add(relativeUpBlock);
+            brokenBlocks.add(relativeBlock);
         }
 
         return brokenBlocks;
@@ -634,7 +638,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the block is not contained in the collection of multi-block plants
      */
     private boolean isOneBlockPlant(Material material) {
-        return !mcMMO.getMaterialMapStore().isMultiBlockPlant(material);
+        return !mcMMO.getMaterialMapStore().isMultiBlockPlant(material) && !mcMMO.getMaterialMapStore().isMultiBlockHangingPlant(material);
     }
 
     /**

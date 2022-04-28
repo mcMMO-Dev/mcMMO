@@ -24,6 +24,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> blockCrackerWhiteList;
     private final @NotNull HashSet<String> canMakeShroomyWhiteList;
     private final @NotNull HashSet<String> multiBlockPlant;
+    private final @NotNull HashSet<String> multiBlockHangingPlant;
     private final @NotNull HashSet<String> foodItemWhiteList;
     private final @NotNull HashSet<String> glassBlocks;
 
@@ -71,6 +72,7 @@ public class MaterialMapStore {
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
         multiBlockPlant = new HashSet<>();
+        multiBlockHangingPlant = new HashSet<>();
         foodItemWhiteList = new HashSet<>();
         glassBlocks = new HashSet<>();
 
@@ -121,6 +123,7 @@ public class MaterialMapStore {
         fillBlockCrackerWhiteList();
         fillShroomyWhiteList();
         fillMultiBlockPlantSet();
+        fillMultiBlockHangingPlantSet();
         fillFoodWhiteList();
         fillGlassBlockWhiteList();
         fillArmors();
@@ -135,6 +138,10 @@ public class MaterialMapStore {
     public boolean isMultiBlockPlant(@NotNull Material material)
     {
         return multiBlockPlant.contains(material.getKey().getKey());
+    }
+
+    public boolean isMultiBlockHangingPlant(@NotNull Material material) {
+        return multiBlockHangingPlant.contains(material.getKey().getKey());
     }
 
     public boolean isAbilityActivationBlackListed(@NotNull Material material)
@@ -974,8 +981,12 @@ public class MaterialMapStore {
         multiBlockPlant.add("large_fern");
         multiBlockPlant.add("tall_grass");
         multiBlockPlant.add("bamboo");
-        multiBlockPlant.add("weeping_vines_plant");
-        multiBlockPlant.add("twisted_vines_plant");
+    }
+
+    private void fillMultiBlockHangingPlantSet() {
+        multiBlockHangingPlant.add("weeping_vines_plant");
+        multiBlockHangingPlant.add("twisted_vines_plant");
+        multiBlockHangingPlant.add("cave_vines_plant");
     }
 
     private void fillShroomyWhiteList()
