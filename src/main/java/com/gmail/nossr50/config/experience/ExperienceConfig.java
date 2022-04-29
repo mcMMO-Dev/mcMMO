@@ -25,6 +25,12 @@ public class ExperienceConfig extends BukkitConfig {
         validate();
     }
 
+    @Override
+    public void initDefaults() {
+       config.addDefault("ExploitFix.Combat.XPCeiling.Enabled", true);
+       config.addDefault("ExploitFix.Combat.XPCeiling.Damage_Limit", 100);
+    }
+
     public static ExperienceConfig getInstance() {
         if (instance == null) {
             instance = new ExperienceConfig();
@@ -422,6 +428,13 @@ public class ExperienceConfig extends BukkitConfig {
 
     public boolean getAddExtraDetails() {
         return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);
+    }
+    public boolean useCombatHPCeiling() {
+        return config.getBoolean("ExploitFix.Combat.XPCeiling.Enabled", true);
+    }
+
+    public int getCombatHPCeiling() {
+        return config.getInt("ExploitFix.Combat.XPCeiling.HP_Modifier_Limit", 100);
     }
 
     public boolean isExperienceBarsEnabled() {

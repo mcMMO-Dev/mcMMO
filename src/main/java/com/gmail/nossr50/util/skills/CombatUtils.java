@@ -732,7 +732,10 @@ public final class CombatUtils {
      * @param primarySkillType The skill being used
      * @param multiplier final XP result will be multiplied by this
      */
-    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer, @NotNull LivingEntity target, @NotNull PrimarySkillType primarySkillType, double multiplier) {
+    public static void processCombatXP(@NotNull McMMOPlayer mcMMOPlayer,
+                                       @NotNull LivingEntity target,
+                                       @NotNull PrimarySkillType primarySkillType,
+                                       double multiplier) {
         double baseXP = 0;
         XPGainReason xpGainReason;
 

@@ -1,3 +1,10 @@
+Version 2.1.212
+    An herbalism exploit has been patched (thanks WhatsTheBadNews)
+    Added 'ExploitFix.Combat.XPCeiling.Enabled' to experience.yml
+    Added 'ExploitFix.Combat.XPCeiling.Damage_Limit' to experience.yml
+    Single instances of combat damage above 100 give are capped to give the same reward as 100 by default (100 is a lot, but you can change this in settings)
+
+    NOTES: The damage ceiling won't affect server that don't have mobs running around with abnormally high health, if your server does you'll want to adjust this limit or disable it.
 Version 2.1.211
     Added /mmodebug info for players hitting other players
     Fixed Immortal Player bug

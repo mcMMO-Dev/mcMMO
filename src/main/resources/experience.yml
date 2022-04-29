@@ -25,6 +25,10 @@
 EarlyGameBoost:
     Enabled: true
 ExploitFix:
+    Combat:
+        XPCeiling:
+            Enabled: true
+            Damage_Limit: 100
     COTWBreeding: true
     UnsafeEnchantments: false
     # Prevent many exploits related to fishing
