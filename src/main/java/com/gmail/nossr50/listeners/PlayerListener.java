@@ -428,7 +428,9 @@ public class PlayerListener implements Listener {
                     ItemStack inHand = player.getInventory().getItemInMainHand();
 
                     //Grab lure level
-                    if(inHand != null && inHand.getType().getKey().getKey().equalsIgnoreCase("fishing_rod")) {
+                    if(inHand != null
+                            && inHand.getItemMeta() != null
+                            && inHand.getType().getKey().getKey().equalsIgnoreCase("fishing_rod")) {
                         if(inHand.getItemMeta().hasEnchants()) {
                             for(Enchantment enchantment : inHand.getItemMeta().getEnchants().keySet()) {
                                 if(enchantment.toString().toLowerCase().contains("lure")) {
@@ -436,10 +438,14 @@ public class PlayerListener implements Listener {
                                 }
                             }
                         }
-                    }
 
-                    fishingManager.masterAngler(event.getHook(), lureLevel);
-                    fishingManager.setFishingTarget();
+                    // Prevent any potential odd behavior by only processing if no offhand fishing rod is present
+                    if(!player.getInventory().getItemInOffHand().getType().getKey().getKey().equalsIgnoreCase("fishing_rod")) {
+                        // In case of offhand fishing rod, don't process anything
+                        fishingManager.masterAngler(event.getHook(), lureLevel);
+                        fishingManager.setFishingTarget();
+                    }
+                }
                 }
                 return;
             case CAUGHT_FISH:
