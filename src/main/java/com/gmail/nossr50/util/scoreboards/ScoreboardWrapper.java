@@ -20,6 +20,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -632,6 +633,9 @@ public class ScoreboardWrapper {
 
             if (name.equals(playerName)) {
                 name = ChatColor.GOLD + "--You--";
+            }
+            else {
+                name = " " + ChatColor.WHITE + name + " ";
             }
 
             sidebarObjective.getScore(name).setScore(stat.statVal);
