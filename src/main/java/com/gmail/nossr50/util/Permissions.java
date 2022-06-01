@@ -133,7 +133,12 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.perks.xp.50percentboost.all")
             || permissible.hasPermission("mcmmo.perks.xp.50percentboost." + skill.toString().toLowerCase(Locale.ENGLISH)); 
     }
-    
+
+    public static boolean oneAndAQuarterXp(Permissible permissible, PrimarySkillType skill) {
+        return permissible.hasPermission("mcmmo.perks.xp.25percentboost.all")
+                || permissible.hasPermission("mcmmo.perks.xp.25percentboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+    }
+
     public static boolean oneAndOneTenthXp(Permissible permissible, PrimarySkillType skill) { 
         return permissible.hasPermission("mcmmo.perks.xp.10percentboost.all")
             || permissible.hasPermission("mcmmo.perks.xp.10percentboost." + skill.toString().toLowerCase(Locale.ENGLISH)); 
