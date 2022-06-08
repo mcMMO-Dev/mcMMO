@@ -1,3 +1,33 @@
+Version 2.1.213
+    Updated various mechanics to recognize and understand the new blocks
+    Added 'Packed_Mud' to mining xp
+    Added 'Mud_Bricks' to mining xp
+    Added 'Reinforced_Deepslate' to mining xp
+    Added 'Mud' to excavation xp
+    Added 'Muddy Mangrove Roots' to excavation xp
+    Added 'Mangrove_Roots' to woodcutting xp
+    Added 'Stripped_Mangrove_Log' to woodcutting xp
+    Added 'Stripped_Crimson_Stem' to woodcutting xp
+    Added 'Stripped_Warped_Stem' to woodcutting xp
+    Added 'Allay' to combat experience
+    Added 'Frog' to combat experience and taming experience
+    Added 'Tadpole' to combat experience
+    Added 'Warden' to combat experience
+
+    Changes to excavation treasures (requires manual editing or regenerating the config)
+        Added Mud as a block which can drop various treasures (see notes)
+        Added Muddy_Mangrove_Roots as a block which can drop various treasures (see notes)
+        Added Stick as a new excavation drop, which drops from mud and muddy mangrove roots (see notes)
+        Added Potato as a new excavation drop, which drops from mud and dirt (see notes)
+        Added Feather as a new excavation drop, which drops from mud (see notes)
+        Added Spyglass as a new excavation drop, which drops rarely from mud and dirt (see notes)
+        Added Trident as a new excavation drop, which drops somewhat rarely from mud, muddy mangrove roots, and clay (see notes)
+        Added Heart of the Sea as a new excavation drop, which drops very rarely from mud and requires a very high excavation level to appear
+
+    NOTES:
+    To get the new excavation drop list, the easiest way is to delete treasures.yml and mcMMO will regenerate it with the newest version
+    I'll likely be tweaking the treasures list in the near future, leave feedback on discord if you have suggestions
+
 Version 2.1.212
     An herbalism exploit has been patched (thanks WhatsTheBadNews)
     Added 'ExploitFix.Combat.XPCeiling.Enabled' to experience.yml

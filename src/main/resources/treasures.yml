@@ -2,6 +2,54 @@
 #  Settings for Excavation's Archaeology
 ###
 Excavation:
+    HEART_OF_THE_SEA:
+        Amount: 1
+        XP: 9999
+        Drop_Chance: 0.01
+        Level_Requirement:
+            Standard_Mode: 90
+            Retro_Mode: 900
+        Drops_From: [Mud]
+    POTATO:
+        Amount: 1
+        XP: 50
+        Drop_Chance: 3.0
+        Level_Requirement:
+            Standard_Mode: 10
+            Retro_Mode: 100
+        Drops_From: [Dirt, Mud]
+    SPYGLASS:
+        Amount: 1
+        XP: 500
+        Drop_Chance: 0.1
+        Level_Requirement:
+            Standard_Mode: 7
+            Retro_Mode: 70
+        Drops_From: [Mud, Dirt]
+    STICK:
+        Amount: 2
+        XP: 50
+        Drop_Chance: 2.0
+        Level_Requirement:
+            Standard_Mode: 1
+            Retro_Mode: 10
+        Drops_From: [Mud, Muddy_Mangrove_Roots]
+    FEATHER:
+        Amount: 3
+        XP: 100
+        Drop_Chance: 1.0
+        Level_Requirement:
+            Standard_Mode: 5
+            Retro_Mode: 50
+        Drops_From: [Mud]
+    TRIDENT:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.02
+        Level_Requirement:
+            Standard_Mode: 40
+            Retro_Mode: 400
+        Drops_From: [ Mud, Clay, Muddy_Mangrove_Roots ]
     CAKE:
         Amount: 1
         XP: 3000
@@ -25,7 +73,7 @@ Excavation:
         Level_Requirement:
             Standard_Mode: 20
             Retro_Mode: 200
-        Drops_From: [Gravel]
+        Drops_From: [Gravel, Mud]
     APPLE:
         Amount: 1
         XP: 100
@@ -65,7 +113,7 @@ Excavation:
         Level_Requirement:
             Standard_Mode: 50
             Retro_Mode: 500
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium, Mud]
     BROWN_MUSHROOM:
         Amount: 1
         XP: 80
@@ -73,7 +121,7 @@ Excavation:
         Level_Requirement:
             Standard_Mode: 50
             Retro_Mode: 500
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium, Mud]
     EGG:
         Amount: 1
         XP: 100
@@ -145,7 +193,7 @@ Excavation:
         Level_Requirement:
             Standard_Mode: 35
             Retro_Mode: 350
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil, Mud]
     COCOA_BEANS:
         Amount: 1
         XP: 100
@@ -153,7 +201,7 @@ Excavation:
         Level_Requirement:
             Standard_Mode: 35
             Retro_Mode: 350
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium, Mud]
     QUARTZ:
         Amount: 1
         XP: 100
@@ -170,6 +218,7 @@ Excavation:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+
 #
 #  Settings for Hylian Luck
 #  If you are in retro mode, Level_Requirement is multiplied by 10.

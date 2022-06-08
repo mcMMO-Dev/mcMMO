@@ -264,6 +264,8 @@ Experience_Values:
         Snow_Block: 40
         Soul_Sand: 40
         Soul_Soil: 40
+        Mud: 80
+        Muddy_Mangrove_Roots: 90
     Woodcutting:
         Crimson_Hyphae: 50
         Stripped_Crimson_Hyphae: 50
@@ -292,12 +294,17 @@ Experience_Values:
         Stripped_Jungle_Wood: 100
         Stripped_Acacia_Wood: 90
         Stripped_Dark_Oak_Wood: 90
+        Stripped_Mangrove_Log: 110
+        Stripped_Crimson_Stem: 50
+        Stripped_Warped_Stem: 50
         Oak_Wood: 70
         Spruce_Wood: 70
         Birch_Wood: 70
         Jungle_Wood: 70
         Acacia_Wood: 70
         Dark_Oak_Wood: 70
+        Mangrove_Wood: 80
+        Mangrove_Roots: 10
         Red_Mushroom_Block: 70
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
@@ -394,6 +401,7 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Reinforced_Deepslate: 500
         Tuff: 10
         Copper_Ore: 1400
         Deepslate_Copper_Ore: 1900
@@ -486,6 +494,8 @@ Experience_Values:
         Purpur_Pillar: 250
         Purpur_Slab: 150
         Purpur_Stairs: 250
+        Packed_Mud: 30
+        Mud_Bricks: 40
     Repair:
         Base: 1000.0
         Wood: 0.6
@@ -539,6 +549,7 @@ Experience_Values:
             Bee: 100
             Goat: 250
             Axolotl: 600
+            Frog: 900
     Combat:
         Multiplier:
             Animals: 1.0
@@ -611,3 +622,7 @@ Experience_Values:
             Goat: 1.5
             Axolotl: 1.75
             Glow_Squid: 1.5
+            Allay: 0.2
+            Frog: 1.7
+            Warden: 6.0
+            Tadpole: 0.2
