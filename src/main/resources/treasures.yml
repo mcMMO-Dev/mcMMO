@@ -49,7 +49,7 @@ Excavation:
         Level_Requirement:
             Standard_Mode: 40
             Retro_Mode: 400
-        Drops_From: [ Mud, Clay, Muddy_Mangrove_Roots ]
+        Drops_From: [Mud, Clay, Muddy_Mangrove_Roots]
     CAKE:
         Amount: 1
         XP: 3000
