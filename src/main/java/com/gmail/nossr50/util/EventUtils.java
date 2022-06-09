@@ -44,6 +44,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -225,7 +226,7 @@ public final class EventUtils {
     }
 
     public static FakePlayerAnimationEvent callFakeArmSwingEvent(Player player) {
-        FakePlayerAnimationEvent event = new FakePlayerAnimationEvent(player);
+        FakePlayerAnimationEvent event = new FakePlayerAnimationEvent(player, PlayerAnimationType.ARM_SWING);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
