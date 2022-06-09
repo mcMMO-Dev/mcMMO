@@ -841,7 +841,7 @@ public class PlayerListener implements Listener {
 
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
-                FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat
+                FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer(), PlayerAnimationType.ARM_SWING); //PlayerAnimationEvent compat
                 if(!event.isCancelled() || event.useInteractedBlock() != Event.Result.DENY) {
                     //TODO: Is this code to set false from bone meal even needed? I'll have to double check later.
                     if (heldItem.getType() == Material.BONE_MEAL) {
