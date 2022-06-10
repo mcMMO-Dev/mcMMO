@@ -681,7 +681,7 @@ public final class CombatUtils {
                 continue;
             }
 
-            EventUtils.callFakeArmSwingEvent(attacker);
+            //EventUtils.callFakeArmSwingEvent(attacker);
 
             switch (type) {
                 case SWORDS:

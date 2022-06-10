@@ -1,3 +1,13 @@
+Version 2.1.214
+    Temporarily removed FakePlayerAnimationEvent (see notes)
+
+    NOTES:
+    Spigot updated PlayerAnimationEvent with an API break between versions 1.18 and 1.19, as a temporary fix for mcMMO to be able to support both of these
+    Minecraft versions I have temporarily removed FakePlayerAnimationEvent. I am working on a fix to dynamically use the correct API depending on the version of MC
+    as many people will likely be stuck on 1.18 for a while.
+    FakePlayerAnimationEvent existed to circumvent false positives on anti-cheat plugins such as NoCheat, however
+    I am unsure if it is still needed and removing it may have no ill effects.. however I cannot be certain.
+    Anti-cheat plugin authors should be informed to update if you run into false positives with mcMMO after this update so they can make the appropriate changes.
 Version 2.1.213
     Updated various mechanics to recognize and understand the new blocks
     Added 'Packed_Mud' to mining xp
