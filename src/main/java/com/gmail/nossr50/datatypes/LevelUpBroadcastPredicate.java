@@ -74,7 +74,7 @@ public class LevelUpBroadcastPredicate<T extends CommandSender> implements Predi
             }
 
             //Visibility checks
-            if(!listeningPlayer.canSee(mmoBroadcastingPlayer.getPlayer())) {
+            if(!listeningPlayer.canSee(mmoBroadcastingPlayer.getPlayer()) && listeningPlayer != mmoBroadcastingPlayer.getPlayer()) {
                 return false; //Player who leveled should be invisible to this player so don't send the message
             }
 

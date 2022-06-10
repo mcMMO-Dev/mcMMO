@@ -1,5 +1,6 @@
 Version 2.1.214
     Temporarily removed FakePlayerAnimationEvent (see notes)
+    Players can now see their own level up broadcasts
 
     NOTES:
     Spigot updated PlayerAnimationEvent with an API break between versions 1.18 and 1.19, as a temporary fix for mcMMO to be able to support both of these
