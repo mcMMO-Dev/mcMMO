@@ -61,4 +61,3 @@ https://spigot.mcmmo.org for more up to date information.
 Resource Page
 
 https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/ 
-
