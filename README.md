@@ -31,6 +31,7 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 
 ## Former Team Members
 
+
 ### Former Lead & Awesome guy
 [![gmcferrin](http://www.gravatar.com/avatar/b64c52daf25d206b27650788b5813b7b.png)](https://github.com/gmcferrin)
 
