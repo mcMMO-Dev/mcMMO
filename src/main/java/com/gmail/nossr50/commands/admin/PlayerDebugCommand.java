@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.admin;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
@@ -14,9 +15,15 @@ public class PlayerDebugCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(sender instanceof Player) {
+            if (!Permissions.mmodebug(sender)) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
             mcMMOPlayer.toggleDebugMode(); //Toggle debug mode
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));
+
             return true;
         } else {
             return false;
