@@ -45,7 +45,7 @@ public class MiningCommand extends SkillCommand {
             MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
             blastMiningRank = miningManager.getBlastMiningTier();
-            bonusTNTDrops = miningManager.getDropMultiplier();
+            bonusTNTDrops = miningManager.getDropMultiplier(miningManager.getBlastMiningTier());
             oreBonus = percent.format(miningManager.getOreBonus() / 30.0D); // Base received in TNT is 30%
 //            debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
             blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
