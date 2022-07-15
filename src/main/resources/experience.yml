@@ -497,6 +497,7 @@ Experience_Values:
         Purpur_Stairs: 250
         Packed_Mud: 30
         Mud_Bricks: 40
+        Dripstone_Block: 35
     Repair:
         Base: 1000.0
         Wood: 0.6
