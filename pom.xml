@@ -246,9 +246,9 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>net.gmcbm.dependencies</groupId>
+            <groupId>co.aikar</groupId>
             <artifactId>acf-bukkit</artifactId> <!-- Don't forget to replace this -->
-            <version>0.5.2</version> <!-- Replace this as well -->
+            <version>0.5.1-SNAPSHOT</version> <!-- Replace this as well -->
         </dependency>
 <!--        adventure-api, adventure-text-serializer-gson, adventure-platform-bukkit-->
         <dependency>
