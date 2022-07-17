@@ -84,11 +84,6 @@ public class InventoryListener implements Listener {
                         player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
                         player.sendMessage("");
                     }
-
-                    // Potential fix for #3005
-                    if (event.getBurnTime() > 0 && !event.isBurning()) {
-                        event.setBurning(true);
-                    }
                 }
             }
         }
