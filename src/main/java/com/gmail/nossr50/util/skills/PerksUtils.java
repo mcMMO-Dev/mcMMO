@@ -74,6 +74,9 @@ public final class PerksUtils {
         else if (Permissions.oneAndOneHalfXp(player, skill)) {
             modifier = 1.5;
         }
+        else if (Permissions.oneAndAQuarterXp(player, skill)) {
+            modifier = 1.25;
+        }
         else if (Permissions.oneAndOneTenthXp(player, skill)) {
             modifier = 1.1;
         }

@@ -626,7 +626,7 @@ public class ScoreboardWrapper {
         }
     }
 
-    public void acceptLeaderboardData(List<PlayerStat> leaderboardData) {
+    public void acceptLeaderboardData(@NotNull List<PlayerStat> leaderboardData) {
         for (PlayerStat stat : leaderboardData) {
             String name = stat.name;
 
