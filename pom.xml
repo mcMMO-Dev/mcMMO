@@ -279,12 +279,12 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.1</version>
+            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-api</artifactId>
-            <version>4.0.1</version>
+            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
