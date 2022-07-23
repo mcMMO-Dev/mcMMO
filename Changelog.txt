@@ -1,5 +1,5 @@
 Version 2.1.215
-    Added hacky workaround for Spigot API bug that resulted in burnTimes not showing burning animation to the client
+    Fixed Coal Blocks and potentially other fuel sources not showing burning animation to players (see notes)
     Level up broadcasts from level milestones will now be visible to the player who achieved them
     Fixed a bug where hovering over skill descriptions did not display anything (thanks Greymagic27)
     Added Dripstone to experience.yml (thanks Greymagic27)
@@ -7,6 +7,7 @@ Version 2.1.215
     Item in main hand is now used for Tree Feller drops (thanks destro174)
 
     NOTES:
+    The burning animation bug is actually in Spigot, it takes an int for setBurnTime when it really should only take a short as the game is expecting a short value, I implemented a hacky workaround via Math.min
     There is a bug where you may lose your config comments, this will be complex to solve, for now you can check our GitHub for the configs with comments.
 
 Version 2.1.214
