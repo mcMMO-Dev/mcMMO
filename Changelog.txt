@@ -1,3 +1,8 @@
+Version 2.1.216
+    Added Sculk_* blocks to Mining XP
+
+    NOTES:
+    The Sculk blocks don't quite fit perfectly as mining-related, especially since hoes are the fastest tool to use for them. Let me know what you think.
 Version 2.1.215
     Unarmed bonuses apply to players who hurt an entity with empty fists in the last 60 seconds, these bonuses do not get applied if you are using another mcMMO tool/weapon/trident/etc (see notes)
     Fixed Coal Blocks and potentially other fuel sources not showing burning animation to players (see notes)

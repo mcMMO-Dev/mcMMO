@@ -402,6 +402,11 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Sculk: 4
+        Sculk_Vein: 3
+        Sculk_Sensor: 6
+        Sculk_Catalyst: 10
+        Sculk_Shrieker: 12
         Reinforced_Deepslate: 500
         Tuff: 10
         Copper_Ore: 1400
