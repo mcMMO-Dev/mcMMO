@@ -54,36 +54,33 @@ public class InventoryListener implements Listener {
         }
 
         Furnace furnace = (Furnace) furnaceState;
-
         OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
+        Player player;
 
-        if(offlinePlayer != null && offlinePlayer.isOnline()) {
+        if(offlinePlayer != null && offlinePlayer.isOnline() && offlinePlayer instanceof Player) {
+            player = (Player) offlinePlayer;
 
-            Player player = Bukkit.getPlayer(offlinePlayer.getUniqueId());
+            if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
+                return;
+            }
 
-            if(player != null) {
-                if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
-                    return;
+            McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+            if(mmoPlayer != null) {
+                boolean debugMode = mmoPlayer.isDebugMode();
+
+                if(debugMode) {
+                    player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
+                    player.sendMessage("Furnace - "+furnace.hashCode());
+                    player.sendMessage("Furnace Type: "+furnaceBlock.getType());
+                    player.sendMessage("Burn Length before Fuel Efficiency is applied - "+event.getBurnTime());
                 }
 
-                McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+                event.setBurnTime(mmoPlayer.getSmeltingManager().fuelEfficiency(event.getBurnTime()));
 
-                if(mmoPlayer != null) {
-                    boolean debugMode = player.isOnline() && mmoPlayer.isDebugMode();
-
-                    if(debugMode) {
-                        player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
-                        player.sendMessage("Furnace - "+furnace.hashCode());
-                        player.sendMessage("Furnace Type: "+furnaceBlock.getType().toString());
-                        player.sendMessage("Burn Length before Fuel Efficiency is applied - "+event.getBurnTime());
-                    }
-
-                    event.setBurnTime(mmoPlayer.getSmeltingManager().fuelEfficiency(event.getBurnTime()));
-
-                    if(debugMode) {
-                        player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
-                        player.sendMessage("");
-                    }
+                if(debugMode) {
+                    player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
+                    player.sendMessage("");
                 }
             }
         }
