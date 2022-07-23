@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
@@ -24,6 +25,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class UnarmedManager extends SkillManager {
+    private long lastUsedUnarmed = 0L;
+
+    /**
+     * Players are considered using Unarmed if they have damaged another entity with empty fists in the last 60 seconds
+     */
+    public boolean usedUnarmedCombatRecently() {
+        return lastUsedUnarmed + 60000 > System.currentTimeMillis();
+    }
 
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.UNARMED);
@@ -57,7 +66,11 @@ public class UnarmedManager extends SkillManager {
 
         Player player = getPlayer();
 
-        return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT);
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if(mmoPlayer == null)
+            return false;
+
+        return CombatUtils.isUsingUnarmedCombat(mmoPlayer) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT);
     }
 
     public boolean canUseBlockCracker() {
@@ -187,5 +200,9 @@ public class UnarmedManager extends SkillManager {
         }
 
         return false;
+    }
+
+    public void updateLastUsedUnarmed() {
+        this.lastUsedUnarmed = System.currentTimeMillis();
     }
 }

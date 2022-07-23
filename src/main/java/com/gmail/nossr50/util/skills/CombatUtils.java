@@ -40,6 +40,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.gmail.nossr50.util.ItemUtils.isMinecraftTool;
+
 public final class CombatUtils {
 
     private CombatUtils() {}
@@ -166,47 +168,45 @@ public final class CombatUtils {
         printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-    private static void processUnarmedCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
+    private static void processUnarmedCombat(@NotNull LivingEntity target, @NotNull McMMOPlayer mmoPlayer, @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
 
         double boostedDamage = event.getDamage();
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        UnarmedManager unarmedManager = mmoPlayer.getUnarmedManager();
 
-        //Make sure the profiles been loaded
-        if(mcMMOPlayer == null) {
-            return;
-        }
+        if(isUsingUnarmedCombat(mmoPlayer)) {
+            if (unarmedManager.canActivateAbility()) {
+                mmoPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
+            }
 
-        UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
+            if (unarmedManager.canUseSteelArm()) {
+                boostedDamage+=(unarmedManager.calculateSteelArmStyleDamage() * mmoPlayer.getAttackStrength());
+            }
 
-        if (unarmedManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
-        }
+            if (unarmedManager.canUseBerserk()) {
+                boostedDamage+=(unarmedManager.berserkDamage(boostedDamage) * mmoPlayer.getAttackStrength());
+            }
 
-        if (unarmedManager.canUseSteelArm()) {
-            boostedDamage+=(unarmedManager.calculateSteelArmStyleDamage() * mcMMOPlayer.getAttackStrength());
-        }
+            if (unarmedManager.canDisarm(target)) {
+                unarmedManager.disarmCheck((Player) target);
+            }
 
-        if (unarmedManager.canUseBerserk()) {
-            boostedDamage+=(unarmedManager.berserkDamage(boostedDamage) * mcMMOPlayer.getAttackStrength());
-        }
-
-        if (unarmedManager.canDisarm(target)) {
-            unarmedManager.disarmCheck((Player) target);
-        }
-
-        if(canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
-        {
-            boostedDamage+=(getLimitBreakDamage(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
+            if(canUseLimitBreak(mmoPlayer.getPlayer(), target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
+            {
+                boostedDamage+=(getLimitBreakDamage(mmoPlayer.getPlayer(), target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK) * mmoPlayer.getAttackStrength());
+            }
         }
 
         event.setDamage(boostedDamage);
-        processCombatXP(mcMMOPlayer, target, PrimarySkillType.UNARMED);
+        processCombatXP(mmoPlayer, target, PrimarySkillType.UNARMED);
+        printFinalDamageDebug(mmoPlayer.getPlayer(), event, mmoPlayer);
 
-        printFinalDamageDebug(player, event, mcMMOPlayer);
+        if (ItemUtils.isUnarmed(mmoPlayer.getPlayer().getInventory().getItemInMainHand())) {
+           mmoPlayer.getUnarmedManager().updateLastUsedUnarmed();
+        }
     }
 
     private static void processTamingCombat(@NotNull LivingEntity target, @Nullable Player master, @NotNull Wolf wolf, @NotNull EntityDamageByEntityEvent event) {
@@ -335,6 +335,7 @@ public final class CombatUtils {
         }
 
         if (painSourceRoot instanceof Player player && entityType == EntityType.PLAYER) {
+            McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
             if (!UserManager.hasPlayerDataKey(player)) {
                 return;
@@ -377,13 +378,13 @@ public final class CombatUtils {
                     processAxeCombat(target, player, event);
                 }
             }
-            else if (ItemUtils.isUnarmed(heldItem)) {
+            else if (mmoPlayer != null && (mmoPlayer.getUnarmedManager().usedUnarmedCombatRecently() || ItemUtils.isUnarmed(heldItem))) {
                 if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.UNARMED, target)) {
                     return;
                 }
 
                 if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.UNARMED)) {
-                    processUnarmedCombat(target, player, event);
+                    processUnarmedCombat(target, mmoPlayer, event);
                 }
             }
         }
@@ -976,5 +977,22 @@ public final class CombatUtils {
      */
     public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
         Bukkit.getServer().getScheduler().runTaskLater(mcMMO.p, () -> cleanupArrowMetadata(entity), 20*60);
+    }
+
+    /**
+     * Check if a player is considered "unarmed"
+     *
+     * @param mmoPlayer target player
+     * @return true if the item counts as unarmed, false otherwise
+     */
+    public static boolean isUsingUnarmedCombat(@NotNull McMMOPlayer mmoPlayer) {
+        ItemStack itemInMainHand = mmoPlayer.getPlayer().getInventory().getItemInMainHand();
+
+        // player has to have been unarmed recently or config allows items as unarmed
+        if (mmoPlayer.getUnarmedManager().usedUnarmedCombatRecently() || mcMMO.p.getGeneralConfig().getUnarmedItemsAsUnarmed()) {
+            return !isMinecraftTool(itemInMainHand);
+        }
+
+        return itemInMainHand.getType() == Material.AIR;
     }
 }

@@ -1,4 +1,5 @@
 Version 2.1.215
+    Unarmed bonuses apply to players who hurt an entity with empty fists in the last 60 seconds, these bonuses do not get applied if you are using another mcMMO tool/weapon/trident/etc (see notes)
     Fixed Coal Blocks and potentially other fuel sources not showing burning animation to players (see notes)
     Level up broadcasts from level milestones will now be visible to the player who achieved them
     Fixed a bug where hovering over skill descriptions did not display anything (thanks Greymagic27)
@@ -7,6 +8,8 @@ Version 2.1.215
     Item in main hand is now used for Tree Feller drops (thanks destro174)
 
     NOTES:
+    The unarmed change is to lower the penalty for picking up items during a fight, as an alternative solution, you can turn on Skills.Unarmed.Items_As_Unarmed in config.yml to have players be considered to be using unarmed while holding items regardless of last unarmed combat (holding tools/weapons/tridents will disqualify you from this)
+    Players who damage another entity with empty hands are considered "recently unarmed" for the next 60 seconds, during this period if they attack with items in their hands (other weapons/tools/tridents excluded) they will be processed as if they are using unarmed combat, this also works with stuff like block breaker
     The burning animation bug is actually in Spigot, it takes an int for setBurnTime when it really should only take a short as the game is expecting a short value, I implemented a hacky workaround via Math.min
     There is a bug where you may lose your config comments, this will be complex to solve, for now you can check our GitHub for the configs with comments.
 
