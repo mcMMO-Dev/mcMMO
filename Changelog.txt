@@ -1,4 +1,5 @@
 Version 2.1.215
+    Added hacky workaround for Spigot API bug that resulted in burnTimes not showing burning animation to the client
     Level up broadcasts from level milestones will now be visible to the player who achieved them
     Fixed a bug where hovering over skill descriptions did not display anything (thanks Greymagic27)
     Added Dripstone to experience.yml (thanks Greymagic27)
