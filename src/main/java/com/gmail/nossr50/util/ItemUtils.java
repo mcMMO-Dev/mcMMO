@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasureBook;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -179,12 +178,18 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isPickAxe(item.getType().getKey().getKey());
     }
 
-    public static boolean isUnarmed(@NotNull ItemStack itemInMainHand) {
+    /**
+     * Checks if the item counts as unarmed.
+     *
+     * @param item Item to check
+     * @return true if the item counts as unarmed, false otherwise
+     */
+    public static boolean isUnarmed(ItemStack item) {
         if (mcMMO.p.getGeneralConfig().getUnarmedItemsAsUnarmed()) {
-            return !isMinecraftTool(itemInMainHand);
+            return !isMinecraftTool(item);
         }
 
-        return itemInMainHand.getType() == Material.AIR;
+        return item.getType() == Material.AIR;
     }
 
     /**
