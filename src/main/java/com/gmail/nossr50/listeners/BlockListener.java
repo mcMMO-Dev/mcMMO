@@ -389,7 +389,10 @@ public class BlockListener implements Listener {
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.MINING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedBySuperBreaker(blockState)
+                && (ItemUtils.isPickaxe(heldItem) || ItemUtils.isHoe(heldItem))
+                && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.MINING)
+                && !mcMMO.getPlaceStore().isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
