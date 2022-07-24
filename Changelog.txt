@@ -1,7 +1,10 @@
 Version 2.1.216
+    Reverted Unarmed changes from 2.1.215 (fixes block breaker/beserk active at all time for all players)
     Added Sculk_* blocks to Mining XP
+    You can use Hoe(s) to gain mining XP, Hoe(s) won't benefit from Super Breaker nor will they activate it (see notes)
 
     NOTES:
+    Hoe's being able to gain Mining XP is primarily for Sculk blocks which have Hoe as the fastest tool yet to me feel like Mining blocks, let me know what you think
     The Sculk blocks don't quite fit perfectly as mining-related, especially since hoes are the fastest tool to use for them. Let me know what you think.
 Version 2.1.215
     Fixed Coal Blocks and potentially other fuel sources not showing burning animation to players (see notes)
