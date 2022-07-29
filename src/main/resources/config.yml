@@ -609,6 +609,8 @@ Bonus_Drops:
         Jungle_Log: true
         Spruce_Wood: true
         Spruce_Log: true
+        Mangrove_Wood: true
+        Mangrove_Log: true
     Smelting:
         Iron_Ingot: true
         Gold_Ingot: true
