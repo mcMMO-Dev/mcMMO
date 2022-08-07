@@ -1,5 +1,7 @@
 Version 2.1.217
     Fixed mouse-hover tooltips (thanks Greymagic27)
+    Tree Feller will now break blocks within the limit instead of refusing to fell the entire tree (partial big tree destruction)
+    Mangrove trees resulting from growth are now marked as natural (existing trees marked unnatural before this update will not be retroactively fixed)
 
 Version 2.1.216
     Reverted Unarmed changes from 2.1.215 (fixes block breaker/beserk active at all time for all players)

@@ -85,6 +85,9 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public void processWoodcuttingBlockXP(@NotNull BlockState blockState) {
+        if(mcMMO.getPlaceStore().isTrue(blockState))
+            return;
+
         int xp = getExperienceFromLog(blockState);
         applyXpGain(xp, XPGainReason.PVE);
     }
@@ -101,19 +104,6 @@ public class WoodcuttingManager extends SkillManager {
         treeFellerReachedThreshold = false;
 
         processTree(blockState, treeFellerBlocks);
-
-        // If the player is trying to break too many blocks
-        if (treeFellerReachedThreshold) {
-            treeFellerReachedThreshold = false;
-
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Woodcutting.Skills.TreeFeller.Threshold");
-
-            //Tree feller won't be activated for this block, award normal xp.
-            processWoodcuttingBlockXP(blockState);
-            processHarvestLumber(blockState);
-
-            return;
-        }
 
         // If the tool can't sustain the durability loss
         if (!handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand(), player)) {
@@ -352,6 +342,9 @@ public class WoodcuttingManager extends SkillManager {
      * @return Amount of experience
      */
     private static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
+        if(mcMMO.getPlaceStore().isTrue(blockState))
+            return 0;
+
         int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
 
         if(rawXP <= 0)

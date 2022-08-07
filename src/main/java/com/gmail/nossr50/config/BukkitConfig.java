@@ -25,7 +25,7 @@ public abstract class BukkitConfig {
         this.fileName = fileName;
         this.dataFolder = dataFolder;
         configFile = new File(dataFolder, fileName);
-        purgeComments(true);
+        // purgeComments(true);
         this.config = initConfig();
         initDefaults();
         updateFile();
@@ -124,84 +124,84 @@ public abstract class BukkitConfig {
         return configFile;
     }
 
-    /**
-     * Somewhere between December 2021-January 2022 Spigot updated their
-     * SnakeYAML dependency/API and due to our own crappy legacy code
-     * this introduced a very problematic bug where comments got duplicated
-     * <p>
-     * This method hotfixes the problem by just deleting any existing comments
-     * it's ugly, but it gets the job done
-     *
-     * @param silentFail when true mcMMO will report errors during the patch process or debug information
-     *                   the option to have it fail silently is because mcMMO wants to check files before they are parsed as a file with a zillion comments will fail to even load
-     */
-    private void purgeComments(boolean silentFail) {
-        if(!configFile.exists())
-            return;
-
-        int dupedLines = 0, lineCount = 0, lineCountAfter = 0;
-        try (FileReader fileReader = new FileReader(configFile);
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            StringBuilder stringBuilder = new StringBuilder();
-            String line;
-            Set<String> seenBefore = new HashSet<>();
-
-            stringBuilder.append(CURRENT_CONFIG_PATCH_VER).append(System.lineSeparator());
-            boolean noPatchNeeded = false;
-
-            // While not at the end of the file
-            while ((line = bufferedReader.readLine()) != null) {
-                lineCount++;
-
-                if(line.startsWith(CURRENT_CONFIG_PATCH_VER)) {
-                    noPatchNeeded = true;
-                    break;
-                }
-
-                //Older version, don't append this line
-                if(line.startsWith(CONFIG_PATCH_PREFIX))
-                    continue;
-
-                if (isFirstCharAsciiCharacter(line, COMMENT_PREFIX)) {
-                    if(seenBefore.contains(line))
-                        dupedLines++;
-                    else
-                        seenBefore.add(line);
-
-                    continue; //Delete the line by not appending it
-                }
-
-                stringBuilder
-                        .append(line) //Convert existing files into two-spaced format
-                        .append(System.lineSeparator());
-                lineCountAfter++;
-            }
-
-            if(noPatchNeeded)
-                return;
-
-            if(lineCount == 0 && !silentFail) {
-                mcMMO.p.getLogger().info("[config patcher] Config line count: " + lineCount);
-                throw new InvalidConfigurationException("[config patcher] Patching of config file resulted in an empty file, this will not be saved. Contact the mcMMO devs!");
-            }
-
-            if(dupedLines > 0 && !silentFail) {
-                mcMMO.p.getLogger().info("[config patcher] Found "+dupedLines+" duplicate comments in config file: " + configFile.getName());
-                mcMMO.p.getLogger().info("[config patcher] Purging the duplicate comments... (Nothing is broken, this is just info used for debugging)");
-                mcMMO.p.getLogger().info("[config patcher] Line count before: "+lineCount);
-                mcMMO.p.getLogger().info("[config patcher] Line count after: "+lineCountAfter);
-            }
-
-            // Write out the *patched* file
-            // AKA the file without any comments
-            try (FileWriter fileWriter = new FileWriter(configFile)) {
-                fileWriter.write(stringBuilder.toString());
-            }
-        } catch (IOException | InvalidConfigurationException ex) {
-            mcMMO.p.getLogger().severe("Failed to patch config file: " + configFile.getName());
-            ex.printStackTrace();
-        }
-    }
+//    /**
+//     * Somewhere between December 2021-January 2022 Spigot updated their
+//     * SnakeYAML dependency/API and due to our own crappy legacy code
+//     * this introduced a very problematic bug where comments got duplicated
+//     * <p>
+//     * This method hotfixes the problem by just deleting any existing comments
+//     * it's ugly, but it gets the job done
+//     *
+//     * @param silentFail when true mcMMO will report errors during the patch process or debug information
+//     *                   the option to have it fail silently is because mcMMO wants to check files before they are parsed as a file with a zillion comments will fail to even load
+//     */
+//    private void purgeComments(boolean silentFail) {
+//        if(!configFile.exists())
+//            return;
+//
+//        int dupedLines = 0, lineCount = 0, lineCountAfter = 0;
+//        try (FileReader fileReader = new FileReader(configFile);
+//             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            String line;
+//            Set<String> seenBefore = new HashSet<>();
+//
+//            stringBuilder.append(CURRENT_CONFIG_PATCH_VER).append(System.lineSeparator());
+//            boolean noPatchNeeded = false;
+//
+//            // While not at the end of the file
+//            while ((line = bufferedReader.readLine()) != null) {
+//                lineCount++;
+//
+//                if(line.startsWith(CURRENT_CONFIG_PATCH_VER)) {
+//                    noPatchNeeded = true;
+//                    break;
+//                }
+//
+//                //Older version, don't append this line
+//                if(line.startsWith(CONFIG_PATCH_PREFIX))
+//                    continue;
+//
+//                if (isFirstCharAsciiCharacter(line, COMMENT_PREFIX)) {
+//                    if(seenBefore.contains(line))
+//                        dupedLines++;
+//                    else
+//                        seenBefore.add(line);
+//
+//                    continue; //Delete the line by not appending it
+//                }
+//
+//                stringBuilder
+//                        .append(line) //Convert existing files into two-spaced format
+//                        .append(System.lineSeparator());
+//                lineCountAfter++;
+//            }
+//
+//            if(noPatchNeeded)
+//                return;
+//
+//            if(lineCount == 0 && !silentFail) {
+//                mcMMO.p.getLogger().info("[config patcher] Config line count: " + lineCount);
+//                throw new InvalidConfigurationException("[config patcher] Patching of config file resulted in an empty file, this will not be saved. Contact the mcMMO devs!");
+//            }
+//
+//            if(dupedLines > 0 && !silentFail) {
+//                mcMMO.p.getLogger().info("[config patcher] Found "+dupedLines+" duplicate comments in config file: " + configFile.getName());
+//                mcMMO.p.getLogger().info("[config patcher] Purging the duplicate comments... (Nothing is broken, this is just info used for debugging)");
+//                mcMMO.p.getLogger().info("[config patcher] Line count before: "+lineCount);
+//                mcMMO.p.getLogger().info("[config patcher] Line count after: "+lineCountAfter);
+//            }
+//
+//            // Write out the *patched* file
+//            // AKA the file without any comments
+//            try (FileWriter fileWriter = new FileWriter(configFile)) {
+//                fileWriter.write(stringBuilder.toString());
+//            }
+//        } catch (IOException | InvalidConfigurationException ex) {
+//            mcMMO.p.getLogger().severe("Failed to patch config file: " + configFile.getName());
+//            ex.printStackTrace();
+//        }
+//    }
 
     private boolean isFirstCharAsciiCharacter(String line, char character) {
         if(line == null || line.isEmpty()) {

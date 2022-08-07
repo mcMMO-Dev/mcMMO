@@ -510,32 +510,34 @@ public final class ItemUtils {
      * @return true if the item is a woodcutting drop, false otherwise
      */
     public static boolean isWoodcuttingDrop(ItemStack item) {
-        switch (item.getType()) {
-            case ACACIA_LOG:
-            case BIRCH_LOG:
-            case DARK_OAK_LOG:
-            case JUNGLE_LOG:
-            case OAK_LOG:
-            case SPRUCE_LOG:
-            case STRIPPED_ACACIA_LOG:
-            case STRIPPED_BIRCH_LOG:
-            case STRIPPED_DARK_OAK_LOG:
-            case STRIPPED_JUNGLE_LOG:
-            case STRIPPED_OAK_LOG:
-            case STRIPPED_SPRUCE_LOG:
-            case ACACIA_SAPLING:
-            case SPRUCE_SAPLING:
-            case BIRCH_SAPLING:
-            case DARK_OAK_SAPLING:
-            case JUNGLE_SAPLING:
-            case OAK_SAPLING:
-            case ACACIA_LEAVES:
-            case BIRCH_LEAVES:
-            case DARK_OAK_LEAVES:
-            case JUNGLE_LEAVES:
-            case OAK_LEAVES:
-            case SPRUCE_LEAVES:
-            case APPLE:
+        switch (item.getType().toString()) {
+            case "ACACIA_LOG":
+            case "BIRCH_LOG":
+            case "DARK_OAK_LOG":
+            case "JUNGLE_LOG":
+            case "OAK_LOG":
+            case "SPRUCE_LOG":
+            case "STRIPPED_ACACIA_LOG":
+            case "STRIPPED_BIRCH_LOG":
+            case "STRIPPED_DARK_OAK_LOG":
+            case "STRIPPED_JUNGLE_LOG":
+            case "STRIPPED_OAK_LOG":
+            case "STRIPPED_SPRUCE_LOG":
+            case "STRIPPED_MANGROVE_LOG":
+            case "ACACIA_SAPLING":
+            case "SPRUCE_SAPLING":
+            case "BIRCH_SAPLING":
+            case "DARK_OAK_SAPLING":
+            case "JUNGLE_SAPLING":
+            case "OAK_SAPLING":
+            case "ACACIA_LEAVES":
+            case "BIRCH_LEAVES":
+            case "DARK_OAK_LEAVES":
+            case "JUNGLE_LEAVES":
+            case "OAK_LEAVES":
+            case "SPRUCE_LEAVES":
+            case "BEE_NEST":
+            case "APPLE":
                 return true;
 
             default:
