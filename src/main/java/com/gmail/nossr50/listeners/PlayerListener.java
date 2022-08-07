@@ -844,13 +844,14 @@ public class PlayerListener implements Listener {
                 if(!event.isCancelled() || event.useInteractedBlock() != Event.Result.DENY) {
                     //TODO: Is this code to set false from bone meal even needed? I'll have to double check later.
                     if (heldItem.getType() == Material.BONE_MEAL) {
-                        switch (blockState.getType()) {
-                            case BEETROOTS:
-                            case CARROT:
-                            case COCOA:
-                            case WHEAT:
-                            case NETHER_WART_BLOCK:
-                            case POTATO:
+                        switch (blockState.getType().toString()) {
+                            case "BEETROOTS":
+                            case "CARROT":
+                            case "COCOA":
+                            case "WHEAT":
+                            case "NETHER_WART_BLOCK":
+                            case "POTATO":
+                            case "MANGROVE_PROPAGULE":
                                 mcMMO.getPlaceStore().setFalse(blockState);
                                 break;
                         }
