@@ -279,12 +279,12 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.1.1</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-api</artifactId>
-            <version>4.1.1</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
@@ -300,7 +300,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -330,7 +330,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.0-RC1</version>
+            <version>5.9.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -348,7 +348,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
-            <version>10.1.0-M16</version>
+            <version>10.1.0-M17</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
