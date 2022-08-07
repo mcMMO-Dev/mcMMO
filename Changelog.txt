@@ -1,7 +1,12 @@
 Version 2.1.217
-    Fixed mouse-hover tooltips (thanks Greymagic27)
     Tree Feller will now break blocks within the limit instead of refusing to fell the entire tree (partial big tree destruction)
     Mangrove trees resulting from growth are now marked as natural (existing trees marked unnatural before this update will not be retroactively fixed)
+    Fixed a bug removing comments from configs (see notes)
+    Fixed mouse-hover tooltip windows (thanks Greymagic27)
+
+    NOTES:
+    Regarding the secure chat feature Minecraft rolled out, once APIs have updated I will look into rolling support for that into admin/party chat.
+    Comments should no longer get removed from config but I haven't added any code to add missing comments back in, for now if you want comments you can delete the config file to regenerate it (sorry for the inconvenience)
 
 Version 2.1.216
     Reverted Unarmed changes from 2.1.215 (fixes block breaker/beserk active at all time for all players)
