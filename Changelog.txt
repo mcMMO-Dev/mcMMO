@@ -1,3 +1,6 @@
+Version 2.1.217
+    Fixed mouse-hover tooltips (thanks Greymagic27)
+
 Version 2.1.216
     Reverted Unarmed changes from 2.1.215 (fixes block breaker/beserk active at all time for all players)
     Added Sculk_* blocks to Mining XP
