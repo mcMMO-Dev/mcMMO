@@ -166,7 +166,7 @@ public class MiningManager extends SkillManager {
 
         float oreBonus = (float) (getOreBonus() / 100);
         float debrisReduction = (float) (getDebrisReduction() / 100);
-        int dropMultiplier = getDropMultiplier();
+        int dropMultiplier = getDropMultiplier(getBlastMiningTier());
         float debrisYield = yield - debrisReduction;
 
         //Drop "debris" based on skill modifiers
