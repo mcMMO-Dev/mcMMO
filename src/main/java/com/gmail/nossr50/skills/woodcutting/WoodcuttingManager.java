@@ -379,6 +379,6 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     protected void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
-        Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(), ItemSpawnReason.BONUS_DROPS);
+        Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()), ItemSpawnReason.BONUS_DROPS);
     }
 }
