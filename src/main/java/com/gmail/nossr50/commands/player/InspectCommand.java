@@ -74,7 +74,7 @@ public class InspectCommand implements TabExecutor {
                 if (!isVanished && CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                     return true;
                 }
-                
+
                 if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
                         && sender instanceof Player
                         && mcMMO.p.getGeneralConfig().getInspectUseBoard()) {
