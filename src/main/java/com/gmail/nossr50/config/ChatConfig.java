@@ -2,6 +2,7 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.util.text.StringUtils;
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatConfig extends BukkitConfig {
@@ -49,6 +50,11 @@ public class ChatConfig extends BukkitConfig {
     public boolean useDisplayNames(@NotNull ChatChannel chatChannel) {
         String key = "Chat.Channels." + StringUtils.getCapitalized(chatChannel.toString()) + ".Use_Display_Names";
         return config.getBoolean(key, true);
+    }
+
+    public String colorChatMessage(String message) {
+        return ChatColor.translateAlternateColorCodes('&',
+                config.getString("Chat.Channels.Party.Chat_Color", "&f") + message);
     }
 
     public boolean isSpyingAutomatic() {
