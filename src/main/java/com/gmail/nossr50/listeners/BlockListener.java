@@ -77,7 +77,7 @@ public class BlockListener implements Listener {
         }
 
         //If there are more than one block in the item list we can't really trust it and will back out of rewarding bonus drops
-        if(blockCount <= 1) {
+        if(blockCount <= 1 && !mcMMO.getPlaceStore().isTrue(event.getBlockState())) { // only process bonus drops for naturally generated blocks
             for(Item item : event.getItems())
             {
                 ItemStack is = new ItemStack(item.getItemStack());
