@@ -85,11 +85,19 @@ public class InspectCommand implements TabExecutor {
                     }
                 }
 
-                sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
+                if (isVanished) {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
+                } else {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
+                }
+
                 CommandUtils.printGatheringSkills(target, sender);
                 CommandUtils.printCombatSkills(target, sender);
                 CommandUtils.printMiscSkills(target, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+
+                if (!isVanished) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+                }
             }
 
             return true;
