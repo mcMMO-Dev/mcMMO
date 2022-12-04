@@ -78,6 +78,9 @@ Feedback:
         PartyMessage:
             Enabled: true
             SendCopyOfMessageToChat: true
+        AbilityRefreshed:
+            Enabled: true
+            SendCopyOfMessageToChat: false
 Skills:
     General:
         LimitBreak:
@@ -206,14 +209,7 @@ Skills:
     Fishing:
 
         ShakeChance:
-            Rank_1: 15.0
-            Rank_2: 15.0
-            Rank_3: 25.0
-            Rank_4: 35.0
-            Rank_5: 45.0
-            Rank_6: 55.0
-            Rank_7: 65.0
-            Rank_8: 75.0
+            Rank_1: 30
 
         # VanillaXPMultiplier: Vanilla XP gained from fishing is multiplied by these values.
         VanillaXPMultiplier:
@@ -459,24 +455,42 @@ Skills:
     ###
     Swords:
         Rupture:
-            # ChanceMax: Maximum chance of triggering bleeding
-            # MaxBonusLevel: On this level, the chance to cause Bleeding will be <ChanceMax>
-            ChanceMax: 33.0
-            MaxBonusLevel:
-                Standard: 100
-                RetroMode: 1000
-
-            # DamagePlayer: Bleeding damage dealt to players
-            # DamageMobs: Bleeding damage dealt to mobs
-            DamagePlayer: 2.0
-            DamageMobs: 3.0
-
-            # These settings determine how long the Bleeding effect lasts
-            MaxTicks: 8
-            BaseTicks: 2
-
+            Rupture_Mechanics:
+                # This is % chance, 15 would mean 15% percent of the time
+                Chance_To_Apply_On_Hit:
+                    Rank_1: 15
+                    Rank_2: 33
+                    Rank_3: 40
+                    Rank_4: 66
+                Duration_In_Seconds:
+                    Against_Players: 5
+                    Against_Mobs: 5
+                # Tick interval damage is applied twice a second during rupture, it is "pure" and does not get lowered from armor or absorption etc
+                Tick_Interval_Damage:
+                    Against_Players:
+                        Rank_1: 0.1
+                        Rank_2: 0.15
+                        Rank_3: 0.2
+                        Rank_4: 0.3
+                    Against_Mobs:
+                        Rank_1: 0.5
+                        Rank_2: 0.75
+                        Rank_3: 0.9
+                        Rank_4: 1
+                # If Rupture runs for 5 seconds without being reapplied, it explodes
+                # this damage is **NOT** pure and is reduced dramatically vs armor/absorption/etc
+                Explosion_Damage:
+                    Against_Players:
+                        Rank_1: 10
+                        Rank_2: 20
+                        Rank_3: 30
+                        Rank_4: 40
+                    Against_Mobs:
+                        Rank_1: 10
+                        Rank_2: 20
+                        Rank_3: 30
+                        Rank_4: 40
         CounterAttack:
-
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
             ChanceMax: 30.0

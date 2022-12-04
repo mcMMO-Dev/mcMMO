@@ -1,13 +1,16 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.mcMMO;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.logging.Logger;
 
 public class DatabaseManagerFactory {
     private static Class<? extends DatabaseManager> customManager = null;
 
-    public static DatabaseManager getDatabaseManager() {
+    public static DatabaseManager getDatabaseManager(@NotNull String userFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
         if (customManager != null) {
             try {
                 return createDefaultCustomDatabaseManager();
@@ -20,10 +23,10 @@ public class DatabaseManagerFactory {
                 mcMMO.p.debug("Failed to create custom database manager");
                 e.printStackTrace();
             }
-            mcMMO.p.debug("Falling back on " + (Config.getInstance().getUseMySQL() ? "SQL" : "Flatfile") + " database");
+            mcMMO.p.debug("Falling back on " + (mcMMO.p.getGeneralConfig().getUseMySQL() ? "SQL" : "Flatfile") + " database");
         }
 
-        return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
+        return mcMMO.p.getGeneralConfig().getUseMySQL() ? new SQLDatabaseManager() : new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
     }
 
     /**
@@ -56,11 +59,11 @@ public class DatabaseManagerFactory {
         return customManager;
     }
 
-    public static DatabaseManager createDatabaseManager(DatabaseType type) {
+    public static @Nullable DatabaseManager createDatabaseManager(@NotNull DatabaseType type, @NotNull String userFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
         switch (type) {
             case FLATFILE:
                 mcMMO.p.getLogger().info("Using FlatFile Database");
-                return new FlatfileDatabaseManager();
+                return new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
 
             case SQL:
                 mcMMO.p.getLogger().info("Using SQL Database");
@@ -80,7 +83,7 @@ public class DatabaseManagerFactory {
         }
     }
 
-    public static DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
+    private static DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
         return customManager.getConstructor().newInstance();
     }
 

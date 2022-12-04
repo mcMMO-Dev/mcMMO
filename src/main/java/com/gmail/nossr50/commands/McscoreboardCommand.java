@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
@@ -23,6 +23,16 @@ public class McscoreboardCommand implements TabExecutor {
             return true;
         }
 
+        if(!mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
+            sender.sendMessage(LocaleLoader.getString("Scoreboard.Disabled"));
+            return true;
+        }
+
+        if(!ScoreboardManager.isPlayerBoardSetup(sender.getName())) {
+            sender.sendMessage(LocaleLoader.getString("Scoreboard.NotSetupYet"));
+            return true;
+        }
+
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("reset")) {
@@ -32,7 +42,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("keep")) {
-                    if (!Config.getInstance().getAllowKeepBoard() || !Config.getInstance().getScoreboardsEnabled()) {
+                    if (!mcMMO.p.getGeneralConfig().getAllowKeepBoard() || !mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
                         return true;
                     }

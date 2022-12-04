@@ -1,11 +1,12 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,15 +15,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface DatabaseManager {
-    // One month in milliseconds
-    long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
     // During convertUsers, how often to output a status
     int progressInterval = 200;
 
     /**
      * Purge users with 0 power level from the database.
      */
-    void purgePowerlessUsers();
+    int purgePowerlessUsers();
 
     /**
      * Purge users who haven't logged on in over a certain time frame from the database.
@@ -77,45 +76,26 @@ public interface DatabaseManager {
 
     /**
      * Add a new user to the database.
-     *
-     * @param playerName The name of the player to be added to the database
+     *  @param playerName The name of the player to be added to the database
      * @param uuid The uuid of the player to be added to the database
+     * @return
      */
-    void newUser(String playerName, UUID uuid);
+    @NotNull PlayerProfile newUser(String playerName, UUID uuid);
+
+    @NotNull PlayerProfile newUser(@NotNull Player player);
 
     /**
      * Load a player from the database.
      *
-     * @deprecated replaced by {@link #loadPlayerProfile(String playerName, UUID uuid, boolean createNew)}
-     *
      * @param playerName The name of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
      * @return The player's data, or an unloaded PlayerProfile if not found
      *          and createNew is false
      */
-    @Deprecated
-    PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
+    @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName);
 
-    /**
-     * Load a player from the database.
-     *
-     * @param uuid The uuid of the player to load from the database
-     * @return The player's data, or an unloaded PlayerProfile if not found
-     */
-    PlayerProfile loadPlayerProfile(UUID uuid);
+    @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer);
 
-    /**
-     * Load a player from the database. Attempt to use uuid, fall back on playername
-     *
-     * @param playerName The name of the player to load from the database
-     * @param uuid The uuid of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
-     * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
-     */
-    PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean createNew);
+    @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid);
 
     /**
      * Get all users currently stored in the database.

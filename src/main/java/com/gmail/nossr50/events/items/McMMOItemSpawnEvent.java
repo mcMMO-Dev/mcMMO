@@ -2,11 +2,13 @@ package com.gmail.nossr50.events.items;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Called when mcMMO is preparing to drop an item.
@@ -16,12 +18,23 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
     private ItemStack itemStack;
     private boolean cancelled;
     private final ItemSpawnReason itemSpawnReason;
+    private final Player player;
 
-    public McMMOItemSpawnEvent(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+    public McMMOItemSpawnEvent(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason, @Nullable Player player) {
         this.location = location;
         this.itemStack = itemStack;
         this.itemSpawnReason = itemSpawnReason;
+        this.player = player;
         this.cancelled = false;
+    }
+
+    /**
+     * Get the associated player
+     * This can be null
+     * @return the associated player if one exists null otherwise
+     */
+    public @Nullable Player getPlayer() {
+        return player;
     }
 
     /**

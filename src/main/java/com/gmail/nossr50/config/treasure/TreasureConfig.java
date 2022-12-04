@@ -1,8 +1,9 @@
 package com.gmail.nossr50.config.treasure;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,17 +15,24 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreasureConfig extends ConfigLoader {
+public class TreasureConfig extends BukkitConfig {
 
     public static final String FILENAME = "treasures.yml";
+    public static final String LEVEL_REQUIREMENT_RETRO_MODE = ".Level_Requirement.Retro_Mode";
+    public static final String LEVEL_REQUIREMENT_STANDARD_MODE = ".Level_Requirement.Standard_Mode";
+    public static final String WRONG_KEY_VALUE_STANDARD = ".Drop_Level.Standard_Mode";
+    public static final String WRONG_KEY_VALUE_RETRO = ".Drop_Level.Retro_Mode";
+    public static final String LEGACY_DROP_LEVEL = ".Drop_Level";
+    public static final String WRONG_KEY_ROOT = ".Drop_Level";
     private static TreasureConfig instance;
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<>();
-    public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<>();
+    public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<>();
 
     private TreasureConfig() {
         super(FILENAME);
@@ -60,6 +68,7 @@ public class TreasureConfig extends ConfigLoader {
     }
 
     private void loadTreasures(String type) {
+        boolean shouldWeUpdateFile = false;
         boolean isExcavation = type.equals("Excavation");
         boolean isHylian = type.equals("Hylian_Luck");
 
@@ -103,7 +112,39 @@ public class TreasureConfig extends ConfigLoader {
 
             int xp = config.getInt(type + "." + treasureName + ".XP");
             double dropChance = config.getDouble(type + "." + treasureName + ".Drop_Chance");
-            int dropLevel = config.getInt(type + "." + treasureName + ".Drop_Level");
+            DropLevelKeyConversionType conversionType;
+
+            //Check for legacy drop level values and convert
+            if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.LEGACY) != -1) {
+                //Legacy Drop level, needs to be converted
+                shouldWeUpdateFile = processAutomaticKeyConversion(type, shouldWeUpdateFile, treasureName, DropLevelKeyConversionType.LEGACY);
+            }
+
+            //Check for a bad key that was accidentally shipped out to some users
+            if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.WRONG_KEY_STANDARD) != -1) {
+                //Partially converted to the new system, I had a dyslexic moment so some configs have this
+                shouldWeUpdateFile = processAutomaticKeyConversion(type, shouldWeUpdateFile, treasureName, DropLevelKeyConversionType.WRONG_KEY_STANDARD);
+            }
+
+            //Check for a bad key that was accidentally shipped out to some users
+            if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.WRONG_KEY_RETRO) != -1) {
+                //Partially converted to the new system, I had a dyslexic moment so some configs have this
+                shouldWeUpdateFile = processAutomaticKeyConversion(type, shouldWeUpdateFile, treasureName, DropLevelKeyConversionType.WRONG_KEY_RETRO);
+            }
+
+            int dropLevel = -1;
+
+            if (mcMMO.isRetroModeEnabled()) {
+                dropLevel = config.getInt(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, -1);
+            } else {
+                dropLevel = config.getInt(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, -1);
+            }
+
+            if (dropLevel == -1) {
+                mcMMO.p.getLogger().severe("Could not find a Level_Requirement entry for treasure " + treasureName);
+                mcMMO.p.getLogger().severe("Skipping treasure");
+                continue;
+            }
 
             if (xp < 0) {
                 reason.add(treasureName + " has an invalid XP value: " + xp);
@@ -111,10 +152,6 @@ public class TreasureConfig extends ConfigLoader {
 
             if (dropChance < 0.0D) {
                 reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
-            }
-
-            if (dropLevel < 0) {
-                reason.add(treasureName + " has an invalid Drop_Level: " + dropLevel);
             }
 
             /*
@@ -219,11 +256,73 @@ public class TreasureConfig extends ConfigLoader {
                 }
             }
         }
+
+        //Apply our fix
+        if (shouldWeUpdateFile) {
+            try {
+                config.save(getFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean processAutomaticKeyConversion(String type, boolean shouldWeUpdateTheFile, String treasureName, DropLevelKeyConversionType conversionType) {
+        switch (conversionType) {
+            case LEGACY:
+                int legacyDropLevel = getWrongKeyValue(type, treasureName, conversionType); //Legacy only had one value, Retro Mode didn't have a setting
+                //Config needs to be updated to be more specific
+                mcMMO.p.getLogger().info("(" + treasureName + ") [Fixing bad address: Legacy] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
+                config.set(type + "." + treasureName + LEGACY_DROP_LEVEL, null); //Remove legacy entry
+                config.set(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, legacyDropLevel * 10); //Multiply by 10 for Retro
+                config.set(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, legacyDropLevel);
+                shouldWeUpdateTheFile = true;
+                break;
+            case WRONG_KEY_STANDARD:
+                mcMMO.p.getLogger().info("(" + treasureName + ") [Fixing bad address: STANDARD] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
+                int wrongKeyValueStandard = getWrongKeyValue(type, treasureName, conversionType);
+                config.set(type + "." + treasureName + WRONG_KEY_ROOT, null); //We also kill the Retro key here as we have enough information for setting in values if needed
+
+                if (wrongKeyValueStandard != -1) {
+                    config.set(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, wrongKeyValueStandard);
+                    config.set(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, wrongKeyValueStandard * 10); //Multiply by 10 for Retro
+                }
+
+                shouldWeUpdateTheFile = true;
+                break;
+            case WRONG_KEY_RETRO:
+                mcMMO.p.getLogger().info("(" + treasureName + ") [Fixing bad address: RETRO] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
+                int wrongKeyValueRetro = getWrongKeyValue(type, treasureName, conversionType);
+                config.set(type + "." + treasureName + WRONG_KEY_ROOT, null); //We also kill the Retro key here as we have enough information for setting in values if needed
+
+                if (wrongKeyValueRetro != -1) {
+                    config.set(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, wrongKeyValueRetro);
+                }
+
+                shouldWeUpdateTheFile = true;
+                break;
+        }
+        return shouldWeUpdateTheFile;
+    }
+
+    private int getWrongKeyValue(String type, String treasureName, DropLevelKeyConversionType dropLevelKeyConversionType) {
+        return switch (dropLevelKeyConversionType) {
+            case LEGACY -> config.getInt(type + "." + treasureName + LEGACY_DROP_LEVEL, -1);
+            case WRONG_KEY_STANDARD -> config.getInt(type + "." + treasureName + WRONG_KEY_VALUE_STANDARD, -1);
+            case WRONG_KEY_RETRO -> config.getInt(type + "." + treasureName + WRONG_KEY_VALUE_RETRO, -1);
+        };
+
     }
 
     private void AddHylianTreasure(String dropper, HylianTreasure treasure) {
         if (!hylianMap.containsKey(dropper))
             hylianMap.put(dropper, new ArrayList<>());
         hylianMap.get(dropper).add(treasure);
+    }
+
+    private enum DropLevelKeyConversionType {
+        LEGACY,
+        WRONG_KEY_STANDARD,
+        WRONG_KEY_RETRO
     }
 }

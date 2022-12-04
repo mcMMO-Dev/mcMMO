@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.scoreboards;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -21,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -71,7 +71,7 @@ public class ScoreboardManager {
          * Stylizes the targetBoard in a Rainbow Pattern
          * This is off by default
          */
-        if (Config.getInstance().getScoreboardRainbows()) {
+        if (mcMMO.p.getGeneralConfig().getScoreboardRainbows()) {
             // Everything but black, gray, gold
             List<ChatColor> colors = Lists.newArrayList(
                     ChatColor.WHITE,
@@ -91,14 +91,14 @@ public class ScoreboardManager {
             Collections.shuffle(colors, Misc.getRandom());
 
             int i = 0;
-            for (PrimarySkillType type : PrimarySkillType.values()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
+                skillLabelBuilder.put(primarySkillType, getShortenedName(colors.get(i) + mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType), false));
 
-                if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getLocalizedName()));
+                if (mcMMO.p.getSkillTools().getSuperAbility(primarySkillType) != null) {
+                    abilityLabelBuilder.put(mcMMO.p.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + mcMMO.p.getSkillTools().getSuperAbility(primarySkillType).getLocalizedName()));
 
-                    if (type == PrimarySkillType.MINING) {
+                    if (primarySkillType == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
@@ -113,14 +113,14 @@ public class ScoreboardManager {
          * Stylizes the targetBoard using our normal color scheme
          */
         else {
-            for (PrimarySkillType type : PrimarySkillType.values()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
+                skillLabelBuilder.put(primarySkillType, getShortenedName(ChatColor.GREEN + mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType)));
 
-                if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getLocalizedName()));
+                if (mcMMO.p.getSkillTools().getSuperAbility(primarySkillType) != null) {
+                    abilityLabelBuilder.put(mcMMO.p.getSkillTools().getSuperAbility(primarySkillType), formatAbility(mcMMO.p.getSkillTools().getSuperAbility(primarySkillType).getLocalizedName()));
 
-                    if (type == PrimarySkillType.MINING) {
+                    if (primarySkillType == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
@@ -152,7 +152,7 @@ public class ScoreboardManager {
     }
 
     private static String formatAbility(ChatColor color, String abilityName) {
-        if (Config.getInstance().getShowAbilityNames()) {
+        if (mcMMO.p.getGeneralConfig().getShowAbilityNames()) {
             return getShortenedName(color + abilityName);
         }
         else {
@@ -243,11 +243,11 @@ public class ScoreboardManager {
                 }
             }
 
-            if (Config.getInstance().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
+            if (mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
                 dirtyPowerLevels.add(playerName);
             }
 
-            if (Config.getInstance().getSkillLevelUpBoard()) {
+            if (mcMMO.p.getGeneralConfig().getSkillLevelUpBoard()) {
                 enablePlayerSkillLevelUpScoreboard(player, skill);
             }
 
@@ -284,6 +284,9 @@ public class ScoreboardManager {
     // **** Setup methods **** //
 
     public static void enablePlayerSkillScoreboard(Player player, PrimarySkillType skill) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        mmoPlayer.setLastSkillShownScoreboard(skill);
+
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -295,7 +298,26 @@ public class ScoreboardManager {
             wrapper.setOldScoreboard();
             wrapper.setTypeSkill(skill);
 
-            changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getSkillScoreboardTime());
+        }
+    }
+
+    public static void retryLastSkillBoard(Player player) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        PrimarySkillType primarySkillType = mmoPlayer.getLastSkillShownScoreboard();
+
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeSkill(primarySkillType);
+
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getSkillScoreboardTime());
         }
     }
 
@@ -310,7 +332,7 @@ public class ScoreboardManager {
 
             wrapper.setOldScoreboard();
             wrapper.setTypeSkill(skill);
-            changeScoreboard(wrapper, Config.getInstance().getSkillLevelUpTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getSkillLevelUpTime());
         }
     }
 
@@ -324,10 +346,10 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfStats();
 
-        changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getStatsScoreboardTime());
     }
 
-    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull PlayerProfile targetProfile) {
         ScoreboardWrapper wrapper = getWrapper(player);
 
         if(wrapper == null) {
@@ -339,7 +361,23 @@ public class ScoreboardManager {
             wrapper.setOldScoreboard();
             wrapper.setTypeInspectStats(targetProfile);
 
-            changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getInspectScoreboardTime());
+        }
+    }
+
+    public static void enablePlayerInspectScoreboard(@NotNull Player player, @NotNull McMMOPlayer targetMcMMOPlayer) {
+        ScoreboardWrapper wrapper = getWrapper(player);
+
+        if(wrapper == null) {
+            setupPlayer(player);
+            wrapper = getWrapper(player);
+        }
+
+        if(wrapper != null) {
+            wrapper.setOldScoreboard();
+            wrapper.setTypeInspectStats(targetMcMMOPlayer);
+
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getInspectScoreboardTime());
         }
     }
 
@@ -355,7 +393,7 @@ public class ScoreboardManager {
             wrapper.setOldScoreboard();
             wrapper.setTypeCooldowns();
 
-            changeScoreboard(wrapper, Config.getInstance().getCooldownScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getCooldownScoreboardTime());
         }
     }
 
@@ -372,7 +410,7 @@ public class ScoreboardManager {
             wrapper.setTypeSelfRank();
             wrapper.acceptRankData(rank);
 
-            changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getRankScoreboardTime());
         }
     }
 
@@ -389,7 +427,7 @@ public class ScoreboardManager {
             wrapper.setTypeInspectRank(targetName);
             wrapper.acceptRankData(rank);
 
-            changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getRankScoreboardTime());
         }
     }
 
@@ -407,7 +445,7 @@ public class ScoreboardManager {
             wrapper.setTypeTop(skill, pageNumber);
             wrapper.acceptLeaderboardData(stats);
 
-            changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getTopScoreboardTime());
         }
     }
 
@@ -424,7 +462,7 @@ public class ScoreboardManager {
             wrapper.setTypeTopPower(pageNumber);
             wrapper.acceptLeaderboardData(stats);
 
-            changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
+            changeScoreboard(wrapper, mcMMO.p.getGeneralConfig().getTopScoreboardTime());
         }
     }
 
@@ -478,7 +516,7 @@ public class ScoreboardManager {
      * @return the main targetBoard objective, or null if disabled
      */
     public static @Nullable Objective getPowerLevelObjective() {
-        if (!Config.getInstance().getPowerLevelTagsEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled()) {
             if(getScoreboardManager() == null)
                 return null;
 
@@ -511,8 +549,7 @@ public class ScoreboardManager {
         return mcMMO.p.getServer().getScoreboardManager();
     }
 
-
-    private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
+    public static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
         }
@@ -535,6 +572,10 @@ public class ScoreboardManager {
 
     public static void setRevertTimer(String playerName, int seconds) {
         PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    public static boolean isPlayerBoardSetup(@NotNull String playerName) {
+        return PLAYER_SCOREBOARDS.get(playerName) != null;
     }
 
     public static @Nullable ScoreboardWrapper makeNewScoreboard(Player player) {

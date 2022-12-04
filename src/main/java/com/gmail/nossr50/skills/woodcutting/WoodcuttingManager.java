@@ -1,8 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -14,8 +12,10 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -53,7 +53,7 @@ public class WoodcuttingManager extends SkillManager {
 
     public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.WOODCUTTING);
-        treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
+        treeFellerThreshold = mcMMO.p.getGeneralConfig().getTreeFellerThreshold();
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
@@ -67,12 +67,18 @@ public class WoodcuttingManager extends SkillManager {
                 && ItemUtils.isAxe(heldItem);
     }
 
-    private boolean checkHarvestLumberActivation() {
-        return SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
+    private boolean checkHarvestLumberActivation(Material material) {
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer())
+                && mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
     }
 
-    private boolean checkCleanCutsActivation() {
-        return SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer());
+    private boolean checkCleanCutsActivation(Material material) {
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer())
+                && mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
     }
 
     /**
@@ -105,6 +111,9 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public void processWoodcuttingBlockXP(@NotNull BlockState blockState) {
+        if(mcMMO.getPlaceStore().isTrue(blockState))
+            return;
+
         int xp = getExperienceFromLog(blockState);
         applyXpGain(xp, XPGainReason.PVE);
     }
@@ -121,14 +130,6 @@ public class WoodcuttingManager extends SkillManager {
         treeFellerReachedThreshold = false;
 
         processTree(blockState, treeFellerBlocks);
-
-        // If the player is trying to break too many blocks
-        if (treeFellerReachedThreshold) {
-            treeFellerReachedThreshold = false;
-
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Woodcutting.Skills.TreeFeller.Threshold");
-            return;
-        }
 
         // If the tool can't sustain the durability loss
         if (!handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand(), player)) {
@@ -235,7 +236,7 @@ public class WoodcuttingManager extends SkillManager {
 
         for (BlockState blockState : treeFellerBlocks) {
             if (BlockUtils.hasWoodcuttingXP(blockState)) {
-                durabilityLoss += Config.getInstance().getAbilityToolDamage();
+                durabilityLoss += mcMMO.p.getGeneralConfig().getAbilityToolDamage();
             }
         }
 
@@ -296,13 +297,14 @@ public class WoodcuttingManager extends SkillManager {
         Player player = getPlayer();
         int xp = 0;
         int processedLogCount = 0;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         for (BlockState blockState : treeFellerBlocks) {
             int beforeXP = xp;
             Block block = blockState.getBlock();
 
             if (!EventUtils.simulateBlockBreak(block, player, true)) {
-                break; // TODO: Shouldn't we use continue instead?
+                continue;
             }
 
             /*
@@ -314,7 +316,7 @@ public class WoodcuttingManager extends SkillManager {
                 xp += processTreeFellerXPGains(blockState, processedLogCount);
 
                 //Drop displaced block
-                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
                 processBonusDropCheck(blockState);
@@ -322,10 +324,10 @@ public class WoodcuttingManager extends SkillManager {
                 //Drop displaced non-woodcutting XP blocks
 
                 if(RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                        if(AdvancedConfig.getInstance().isKnockOnWoodXPOrbEnabled()) {
+                        if(mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
                             //TODO: Test the results of this RNG, should be 10%
                             if(SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, player, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
@@ -335,7 +337,7 @@ public class WoodcuttingManager extends SkillManager {
                     }
 
                 } else {
-                    Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
+                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
                 }
             }
 
@@ -367,6 +369,9 @@ public class WoodcuttingManager extends SkillManager {
      * @return Amount of experience
      */
     private static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
+        if(mcMMO.getPlaceStore().isTrue(blockState))
+            return 0;
+
         int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
 
         if(rawXP <= 0)
@@ -400,7 +405,7 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param blockState Block being broken
      */
-    protected static void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
-        Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(), ItemSpawnReason.BONUS_DROPS);
+    protected void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
+        Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()), ItemSpawnReason.BONUS_DROPS);
     }
 }

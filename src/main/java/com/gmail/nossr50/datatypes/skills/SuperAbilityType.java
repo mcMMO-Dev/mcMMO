@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
@@ -112,11 +111,11 @@ public enum SuperAbilityType {
     }
 
     public int getCooldown() {
-        return Config.getInstance().getCooldown(this);
+        return mcMMO.p.getSkillTools().getSuperAbilityCooldown(this);
     }
 
     public int getMaxLength() {
-        return Config.getInstance().getMaxLength(this);
+        return mcMMO.p.getGeneralConfig().getMaxLength(this);
     }
 
     public String getAbilityOn() {

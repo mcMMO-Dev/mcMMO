@@ -1,5 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -37,6 +39,10 @@ public class AwardCombatXpTask extends BukkitRunnable {
         // Don't reward the player for overkills
         if (health < 0) {
             damage += health;
+        }
+
+        if(ExperienceConfig.getInstance().useCombatHPCeiling()) {
+            damage = Math.min(damage, ExperienceConfig.getInstance().getCombatHPCeiling());
         }
 
         mcMMOPlayer.beginXpGain(primarySkillType, (int) (damage * baseXp), xpGainReason, XPGainSource.SELF);

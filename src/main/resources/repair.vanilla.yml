@@ -1,7 +1,6 @@
 #
 #  Repair configuration
 #
-# Any file named repair.*.yml in the mcmmmo folder will be loaded as a repair config
 # All repair configs have a main section titled "Repairables"
 # Afterwards, all sub-items are considered a Repairable to be loaded. The names of each subitem should be the exact material name.
 # The bare minimum of a Repairable is that it have a RepairMaterial and a MaximumDurability

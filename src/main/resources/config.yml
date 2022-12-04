@@ -153,7 +153,6 @@ Scoreboard:
 Mob_Healthbar:
     # Enabled: Whether or not the feature is enabled at all
     # Display_Type: Per player Default display for mob health bars - HEARTS, BAR, or DISABLED
-    # Display_Time: Amount of time (in seconds) to display. To display permanently, set to -1
     Enabled: true
     Display_Type: HEARTS
     Display_Time: 3
@@ -206,6 +205,7 @@ MySQL:
         SSL: true
         Port: 3306
         Address: localhost
+        allowPublicKeyRetrieval: true
 
 #
 #  Settings for Hardcore mode
@@ -395,6 +395,7 @@ Skills:
         Anvil_Placed_Sounds: true
         Anvil_Use_Sounds: true
         Anvil_Material: IRON_BLOCK
+        Use_Enchanted_Materials: false
         # Ask for a confirmation when a player tries to repair an enchanted item
         Confirm_Required: true
     Salvage:
@@ -467,6 +468,11 @@ Green_Thumb_Replanting_Crops:
 ###
 Bonus_Drops:
     Herbalism:
+        Glow_Berries: true
+        Cave_Vines: true
+        Cave_Vines_Plant: true
+        Moss_Block: true
+        Sweet_Berry_Bush: true
         Weeping_Vines: true
         Twisting_Vines: true
         Shroomlight: true
@@ -516,6 +522,28 @@ Bonus_Drops:
         Peony: true
         Lily_Of_The_Valley: true
     Mining:
+        Tuff: true
+        Deepslate_Redstone_Ore: true
+        Deepslate_Copper_Ore: true
+        Deepslate_Coal_Ore: true
+        Deepslate_Diamond_Ore: true
+        Deepslate_Emerald_Ore: true
+        Deepslate_Iron_Ore: true
+        Deepslate_Gold_Ore: true
+        Deepslate_Lapis_Ore: true
+        Lapis_Lazuli_Ore: true
+        Copper_Ore: true
+        Calcite: true
+        Smooth_Basalt: true
+        Block_Of_Amethyst: true
+        Budding_Amethyst: true
+        Small_Amethyst_Bud: true
+        Medium_Amethyst_Bud: true
+        Large_Amethyst_Bud: true
+        Amethyst_Cluster: true
+        Amethyst_Shard: true
+        Deepslate: true
+        Cobbled_Deepslate: true
         Gilded_Blackstone: true
         Crying_Obsidian: true
         Nether_Bricks: true
@@ -553,13 +581,16 @@ Bonus_Drops:
         Netherrack: true
         Obsidian: true
         Nether_Quartz_Ore: true
-        Nether_Quartz: true
+        Quartz: true
         Redstone_Ore: true
         Redstone: true
         Redstone_Dust: true
         Sandstone: true
         Stone: true
         Cobblestone: true
+        Raw_Copper: true
+        Raw_Iron: true
+        Raw_Gold: true
     Woodcutting:
         Crimson_Hyphae: true
         Warped_Hyphae: true
@@ -582,6 +613,8 @@ Bonus_Drops:
         Jungle_Log: true
         Spruce_Wood: true
         Spruce_Log: true
+        Mangrove_Wood: true
+        Mangrove_Log: true
     Smelting:
         Iron_Ingot: true
         Gold_Ingot: true
@@ -592,7 +625,9 @@ Bonus_Drops:
         Nether_Quartz: true
         Quartz: true
         Redstone: true
-
+        Deepslate: true
+        Copper_Ingot: true
+        Netherite_Scrap: true
 #
 #  Settings for commands
 ###

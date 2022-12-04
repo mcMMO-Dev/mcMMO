@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +34,7 @@ public class SmeltingTracker {
     }
 
     private void setFurnaceOwner(Furnace furnace, Player player) {
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().setFurnaceOwner(furnace, player.getUniqueId());
+        mcMMO.getMetadataService().getBlockMetadataService().setFurnaceOwner(furnace, player.getUniqueId());
     }
 
     private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mcMMOPlayer) {
@@ -66,7 +65,7 @@ public class SmeltingTracker {
     }
 
     public @Nullable OfflinePlayer getFurnaceOwner(Furnace furnace) {
-        UUID uuid = mcMMO.getCompatibilityManager().getPersistentDataLayer().getFurnaceOwner(furnace);
+        UUID uuid = mcMMO.getMetadataService().getBlockMetadataService().getFurnaceOwner(furnace);
 
         if(uuid != null) {
             return Bukkit.getOfflinePlayer(uuid);
@@ -89,7 +88,7 @@ public class SmeltingTracker {
     }
 
     public void processFurnaceOwnership(Furnace furnace, Player player) {
-        if(!Permissions.skillEnabled(player, PrimarySkillType.SMELTING))
+        if(!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SMELTING))
             return;
 
         //Don't swap ownership if its the same player

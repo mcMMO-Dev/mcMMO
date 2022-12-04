@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
@@ -17,7 +16,7 @@ public class McpurgeCommand implements TabExecutor {
         if (args.length == 0) {
             mcMMO.getDatabaseManager().purgePowerlessUsers();
 
-            if (Config.getInstance().getOldUsersCutoff() != -1) {
+            if (mcMMO.p.getGeneralConfig().getOldUsersCutoff() != -1) {
                 mcMMO.getDatabaseManager().purgeOldUsers();
             }
 

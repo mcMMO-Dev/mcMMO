@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -26,9 +27,6 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canDoubleDrop;
     private boolean canTripleDrop;
     private boolean canKnockOnWood;
-//    private boolean canSplinter;
-//    private boolean canBarkSurgeon;
-//    private boolean canNaturesBounty;
 
     public WoodcuttingCommand() {
         super(PrimarySkillType.WOODCUTTING);
@@ -47,7 +45,7 @@ public class WoodcuttingCommand extends SkillCommand {
             tripleDropChance = tripleDropStrings[0];
             tripleDropChanceLucky = tripleDropStrings[1];
         }
-        
+
         // TREE FELLER
         if (canTreeFell) {
             String[] treeFellerStrings = calculateLengthDisplayValues(player, skillValue);
@@ -65,13 +63,12 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled();
-        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_CLEAN_CUTS) && !skill.getDoubleDropsDisabled();
+        canDoubleDrop = !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill)
+                && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && RankUtils.getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
+        canTripleDrop = !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill) && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
         canLeafBlow = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
         canKnockOnWood = canTreeFell && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
-        /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);
-        canBarkSurgeon = canUseSubskill(player, SubSkillType.WOODCUTTING_BARK_SURGEON);
-        canNaturesBounty = canUseSubskill(player, SubSkillType.WOODCUTTING_NATURES_BOUNTY);*/
     }
 
     @Override

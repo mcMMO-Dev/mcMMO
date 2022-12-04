@@ -1,6 +1,5 @@
 package net.shatteredlands.shatt.backup;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
 
 import java.io.File;
@@ -27,7 +26,7 @@ public class ZipLibrary {
     private static final File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
 
     public static void mcMMOBackup() throws IOException {
-        if (Config.getInstance().getUseMySQL()) {
+        if (mcMMO.p.getGeneralConfig().getUseMySQL()) {
             mcMMO.p.debug("This server is running in SQL Mode.");
             mcMMO.p.debug("Only config files will be backed up.");
         }

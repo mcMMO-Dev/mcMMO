@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +24,7 @@ public class BitSetChunkStore implements ChunkStore {
     private transient boolean dirty = false;
 
     public BitSetChunkStore(@NotNull World world, int cx, int cz) {
-        this(world.getUID(), Misc.getWorldMinCompat(world), world.getMaxHeight(), cx, cz);
+        this(world.getUID(), world.getMinHeight(), world.getMaxHeight(), cx, cz);
     }
 
     private BitSetChunkStore(@NotNull UUID worldUid, int worldMin, int worldMax, int cx, int cz) {
@@ -109,24 +108,23 @@ public class BitSetChunkStore implements ChunkStore {
         return (z * 16 + x) + (256 * (y + yOffset));
     }
 
-    private static int getWorldMin(@NotNull UUID worldUid, int storedWorldMin)
-    {
+    private static int getWorldMin(@NotNull UUID worldUid) {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
         if (world == null)
-            return storedWorldMin;
+            throw new RuntimeException("Cannot grab a minimum world height for an unloaded world");
 
-        return Misc.getWorldMinCompat(world);
+        return world.getMinHeight();
     }
 
-    private static int getWorldMax(@NotNull UUID worldUid, int storedWorldMax)
+    private static int getWorldMax(@NotNull UUID worldUid)
     {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
         if (world == null)
-            return storedWorldMax;
+            throw new RuntimeException("Cannot grab a maximum world height for an unloaded world");
 
         return world.getMaxHeight();
     }
@@ -172,8 +170,8 @@ public class BitSetChunkStore implements ChunkStore {
         in.readFully(temp);
         BitSet stored = BitSet.valueOf(temp);
 
-        int currentWorldMin = getWorldMin(worldUid, worldMin);
-        int currentWorldMax = getWorldMax(worldUid, worldMax);
+        int currentWorldMin = getWorldMin(worldUid);
+        int currentWorldMax = getWorldMax(worldUid);
 
         // The order in which the world height update code occurs here is important, the world max truncate math only holds up if done before adjusting for min changes
         // Lop off extra data if world max has shrunk
@@ -274,8 +272,8 @@ public class BitSetChunkStore implements ChunkStore {
 
                 public @NotNull BitSetChunkStore convert()
                 {
-                    int currentWorldMin = getWorldMin(worldUid, 0);
-                    int currentWorldMax = getWorldMax(worldUid, worldMax);
+                    int currentWorldMin = getWorldMin(worldUid);
+                    int currentWorldMax = getWorldMax(worldUid);
 
                     BitSetChunkStore converted = new BitSetChunkStore(worldUid, currentWorldMin, currentWorldMax, cx, cz);
 

@@ -92,7 +92,7 @@ public class TransientEntityTracker {
      * @param playerUUID player to register
      */
     private synchronized void registerPlayer(@NotNull UUID playerUUID) {
-        getPerPlayerTransientEntityMap().put(playerUUID, new HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>());
+        getPerPlayerTransientEntityMap().put(playerUUID, new HashMap<>());
 
         for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
             getPerPlayerTransientEntityMap().get(playerUUID).put(callOfTheWildType, new HashSet<>());
@@ -273,7 +273,7 @@ public class TransientEntityTracker {
         }
 
         //Remove our metadata
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
+        mcMMO.getMetadataService().getMobMetadataService().removeMobFlags(livingEntity);
 
         //Clean from trackers
         unregisterEntity(livingEntity);

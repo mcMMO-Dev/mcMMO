@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -9,6 +8,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
@@ -35,6 +35,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -43,6 +44,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -129,11 +132,9 @@ public final class EventUtils {
         if(Misc.isNPCEntityExcludingVillagers(entity))
             return false;
 
-        if (!entity.isValid() || !(entity instanceof LivingEntity)) {
+        if (!entity.isValid() || !(entity instanceof LivingEntity livingEntity)) {
             return false;
         }
-
-        LivingEntity livingEntity = (LivingEntity) entity;
 
         if (CombatUtils.isInvincible(livingEntity, damage)) {
             return false;
@@ -211,12 +212,25 @@ public final class EventUtils {
         return event;
     }
 
-    public static FakePlayerAnimationEvent callFakeArmSwingEvent(Player player) {
-        FakePlayerAnimationEvent event = new FakePlayerAnimationEvent(player);
+    /**
+     * Calls a new SubSkillEvent for this SubSkill and then returns it
+     * @param player target player
+     * @param abstractSubSkill target subskill
+     * @return the event after it has been fired
+     */
+    public static SubSkillEvent callSubSkillEvent(Player player, AbstractSubSkill abstractSubSkill) {
+        SubSkillEvent event = new SubSkillEvent(player, abstractSubSkill);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
+
+//    public static Event callFakeArmSwingEvent(@NotNull Player player) {
+//        PlayerAnimationEvent event = new FakePlayerAnimationEvent(player, PlayerAnimationType.ARM_SWING);
+//        mcMMO.p.getServer().getPluginManager().callEvent(event);
+//
+//        return event;
+//    }
 
     public static boolean tryLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
@@ -301,9 +315,9 @@ public final class EventUtils {
         PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
 
         // Support for NoCheat
-        if (shouldArmSwing) {
-            callFakeArmSwingEvent(player);
-        }
+        //if (shouldArmSwing) {
+        //    callFakeArmSwingEvent(player);
+        //}
 
         FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getInventory().getItemInMainHand(), true);
         pluginManager.callEvent(damageEvent);
@@ -355,7 +369,6 @@ public final class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-
             party.setLevel(party.getLevel() + levelsChanged);
             party.addXp(xpRemoved);
         }
@@ -364,14 +377,18 @@ public final class EventUtils {
     }
 
     public static boolean handleXpGainEvent(Player player, PrimarySkillType skill, float xpGained, XPGainReason xpGainReason) {
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if(mmoPlayer == null)
+            return true;
+
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            UserManager.getPlayer(player).addXp(skill, event.getRawXpGained());
-            UserManager.getPlayer(player).getProfile().registerXpGain(skill, event.getRawXpGained());
+            mmoPlayer.addXp(skill, event.getRawXpGained());
+            mmoPlayer.getProfile().registerXpGain(skill, event.getRawXpGained());
         }
 
         return !isCancelled;
@@ -391,10 +408,10 @@ public final class EventUtils {
             experienceChanged = event.getExperienceChanged();
             PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
 
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
-                int threshold = Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
+                int threshold = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyLevelThreshold();
                 if(playerSkillLevel > threshold) {
                     playerProfile.modifySkill(primarySkillType, Math.max(threshold, playerSkillLevel - levelChanged.get(skillName)));
                     playerProfile.removeXp(primarySkillType, experienceChanged.get(skillName));
@@ -440,7 +457,7 @@ public final class EventUtils {
 
             PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
 
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 
@@ -464,7 +481,7 @@ public final class EventUtils {
     }
 
     public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, SuperAbilityType ability) {
-        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, PrimarySkillType.byAbility(ability));
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, mcMMO.p.getSkillTools().getPrimarySkillBySuperAbility(ability));
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;

@@ -1,9 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.experience.SkillXpGain;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -12,75 +9,85 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.DelayQueue;
 
 public class PlayerProfile {
     private final String playerName;
-    private UUID uuid;
+    private @Nullable UUID uuid;
     private boolean loaded;
     private volatile boolean changed;
 
     /* HUDs */
-    private MobHealthbarType mobHealthbarType;
     private int scoreboardTipsShown;
     private int saveAttempts = 0;
 
+    private @Nullable Long lastLogin;
+
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<>();     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
-    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private final Map<PrimarySkillType, Integer>   skills     = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
+    private final Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
+    private final Map<UniqueDataType, Integer> uniquePlayerData = new EnumMap<>(UniqueDataType.class); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for diminished returns
     private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
-    private final HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<>();
+    private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<>(PrimarySkillType.class);
 
     @Deprecated
     public PlayerProfile(String playerName) {
-        this(playerName, null);
+        this(playerName, null, 0);
     }
 
+    @Deprecated
     public PlayerProfile(String playerName, UUID uuid) {
+        this(playerName, uuid, 0);
+    }
+
+    @Deprecated
+    public PlayerProfile(String playerName, int startingLevel) {
+        this(playerName, null, startingLevel);
+    }
+
+    public PlayerProfile(String playerName, @Nullable UUID uuid, int startingLevel) {
         this.uuid = uuid;
         this.playerName = playerName;
 
-        mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         scoreboardTipsShown = 0;
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             abilityDATS.put(superAbilityType, 0);
         }
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-            skills.put(primarySkillType, AdvancedConfig.getInstance().getStartingLevel());
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
+            skills.put(primarySkillType, startingLevel);
             skillsXp.put(primarySkillType, 0F);
         }
 
         //Misc Cooldowns
         uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, 0); //Chimaera wing
+        lastLogin = System.currentTimeMillis();
     }
 
     @Deprecated
-    public PlayerProfile(String playerName, boolean isLoaded) {
-        this(playerName);
+    public PlayerProfile(@NotNull String playerName, boolean isLoaded, int startingLvl) {
+        this(playerName, startingLvl);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
-        this(playerName, uuid);
+    public PlayerProfile(@NotNull String playerName, UUID uuid, boolean isLoaded, int startingLvl) {
+        this(playerName, uuid, startingLvl);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
+    public PlayerProfile(@NotNull String playerName, @Nullable UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
         this.playerName = playerName;
         this.uuid = uuid;
-        this.mobHealthbarType = mobHealthbarType;
         this.scoreboardTipsShown = scoreboardTipsShown;
 
         skills.putAll(levelData);
@@ -89,14 +96,13 @@ public class PlayerProfile {
         uniquePlayerData.putAll(uniqueProfileData);
 
         loaded = true;
+
+        if(lastLogin != null)
+            this.lastLogin = lastLogin;
     }
 
     public void scheduleAsyncSave() {
         new PlayerProfileSaveTask(this, false).runTaskAsynchronously(mcMMO.p);
-    }
-
-    public void scheduleSyncSave() {
-        new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
     }
 
     public void scheduleAsyncSaveDelay() {
@@ -115,14 +121,13 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
+        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData), lastLogin);
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
             mcMMO.p.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
 
-            if(saveAttempts > 0)
-            {
+            if(saveAttempts > 0) {
                 mcMMO.p.getLogger().severe("Attempted to save profile for player "+getPlayerName()
                         + " resulted in failure. "+saveAttempts+" have been made so far.");
             }
@@ -133,7 +138,7 @@ public class PlayerProfile {
 
                 //Back out of async saving if we detect a server shutdown, this is not always going to be caught
                 if(mcMMO.isServerShutdownExecuted() || useSync)
-                    scheduleSyncSave(); //Execute sync saves immediately
+                    new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
                 else
                     scheduleAsyncSave();
 
@@ -147,6 +152,19 @@ public class PlayerProfile {
         } else {
             saveAttempts = 0;
         }
+    }
+
+    /**
+     * Get this users last login, will return current java.lang.System#currentTimeMillis() if it doesn't exist
+     * @return the last login
+     * @deprecated This is only function for FlatFileDB atm, and it's only here for unit testing right now
+     */
+    public @NotNull Long getLastLogin() {
+        return Objects.requireNonNullElse(lastLogin, -1L);
+    }
+
+    public void updateLastLogin() {
+        this.lastLogin = System.currentTimeMillis();
     }
 
     public String getPlayerName() {
@@ -165,20 +183,6 @@ public class PlayerProfile {
 
     public boolean isLoaded() {
         return loaded;
-    }
-
-    /*
-     * Mob Healthbars
-     */
-
-    public MobHealthbarType getMobHealthbarType() {
-        return mobHealthbarType;
-    }
-
-    public void setMobHealthbarType(MobHealthbarType mobHealthbarType) {
-        markProfileDirty();
-
-        this.mobHealthbarType = mobHealthbarType;
     }
 
     /**
@@ -256,7 +260,7 @@ public class PlayerProfile {
      */
 
     public int getSkillLevel(PrimarySkillType skill) {
-        return skill.isChildSkill() ? getChildSkillLevel(skill) : skills.get(skill);
+        return SkillTools.isChildSkill(skill) ? getChildSkillLevel(skill) : skills.get(skill);
     }
 
     public float getSkillXpLevelRaw(PrimarySkillType skill) {
@@ -264,7 +268,7 @@ public class PlayerProfile {
     }
 
     public int getSkillXpLevel(PrimarySkillType skill) {
-        if(skill.isChildSkill()) {
+        if(SkillTools.isChildSkill(skill)) {
             return 0;
         }
 
@@ -272,7 +276,7 @@ public class PlayerProfile {
     }
 
     public void setSkillXpLevel(PrimarySkillType skill, float xpLevel) {
-        if (skill.isChildSkill()) {
+        if (SkillTools.isChildSkill(skill)) {
             return;
         }
 
@@ -299,7 +303,7 @@ public class PlayerProfile {
      * @param xp Amount of xp to remove
      */
     public void removeXp(PrimarySkillType skill, int xp) {
-        if (skill.isChildSkill()) {
+        if (SkillTools.isChildSkill(skill)) {
             return;
         }
 
@@ -309,7 +313,7 @@ public class PlayerProfile {
     }
 
     public void removeXp(PrimarySkillType skill, float xp) {
-        if (skill.isChildSkill()) {
+        if (SkillTools.isChildSkill(skill)) {
             return;
         }
 
@@ -325,7 +329,7 @@ public class PlayerProfile {
      * @param level New level value for the skill
      */
     public void modifySkill(PrimarySkillType skill, int level) {
-        if (skill.isChildSkill()) {
+        if (SkillTools.isChildSkill(skill)) {
             return;
         }
 
@@ -358,7 +362,7 @@ public class PlayerProfile {
     public void addXp(PrimarySkillType skill, float xp) {
         markProfileDirty();
 
-        if (skill.isChildSkill()) {
+        if (SkillTools.isChildSkill(skill)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
             float dividedXP = (xp / parentSkills.size());
 
@@ -417,7 +421,7 @@ public class PlayerProfile {
      * @return the total amount of Xp until next level
      */
     public int getXpToLevel(PrimarySkillType primarySkillType) {
-        if(primarySkillType.isChildSkill()) {
+        if(SkillTools.isChildSkill(primarySkillType)) {
             return 0;
         }
 
@@ -432,7 +436,7 @@ public class PlayerProfile {
         int sum = 0;
 
         for (PrimarySkillType parent : parents) {
-            sum += Math.min(getSkillLevel(parent), parent.getMaxLevel());
+            sum += Math.min(getSkillLevel(parent), mcMMO.p.getSkillTools().getLevelCap(parent));
         }
 
         return sum / parents.size();

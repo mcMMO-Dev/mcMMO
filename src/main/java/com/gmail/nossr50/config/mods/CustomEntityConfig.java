@@ -2,6 +2,7 @@ package com.gmail.nossr50.config.mods;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
+import com.gmail.nossr50.mcMMO;
 import org.apache.commons.lang.ClassUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 
 public class CustomEntityConfig extends ConfigLoader {
     public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<>();
-    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<>();
+    public HashMap<String, CustomEntity> customEntityTypeMap = new HashMap<>();
 
     protected CustomEntityConfig(String fileName) {
         super("mods", fileName);
@@ -30,10 +31,9 @@ public class CustomEntityConfig extends ConfigLoader {
 
             try {
                 clazz = ClassUtils.getClass(className);
-            }
-            catch (ClassNotFoundException e) {
-                plugin.getLogger().warning("Invalid class (" + className + ") detected for " + entityName + ".");
-                plugin.getLogger().warning("This custom entity may not function properly.");
+            } catch (ClassNotFoundException e) {
+                mcMMO.p.getLogger().warning("Invalid class (" + className + ") detected for " + entityName + ".");
+                mcMMO.p.getLogger().warning("This custom entity may not function properly.");
             }
 
             String entityTypeName = entityName.replace("_", ".");
@@ -48,7 +48,7 @@ public class CustomEntityConfig extends ConfigLoader {
             int callOfTheWildAmount = config.getInt(entityName + ".COTW_Material_Amount");
 
             if (canBeSummoned && (callOfTheWildMaterial == null || callOfTheWildAmount == 0)) {
-                plugin.getLogger().warning("Incomplete Call of the Wild information. This entity will not be able to be summoned by Call of the Wild.");
+                mcMMO.p.getLogger().warning("Incomplete Call of the Wild information. This entity will not be able to be summoned by Call of the Wild.");
                 canBeSummoned = false;
             }
 

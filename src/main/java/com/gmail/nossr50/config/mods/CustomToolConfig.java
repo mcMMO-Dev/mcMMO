@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import org.bukkit.Material;
@@ -15,18 +16,15 @@ import java.util.List;
 import java.util.Set;
 
 public class CustomToolConfig extends ConfigLoader {
-    private boolean needsUpdate = false;
-
-    public List<Material> customAxes     = new ArrayList<>();
-    public List<Material> customBows     = new ArrayList<>();
-    public List<Material> customHoes     = new ArrayList<>();
+    public List<Material> customAxes = new ArrayList<>();
+    public List<Material> customBows = new ArrayList<>();
+    public List<Material> customHoes = new ArrayList<>();
     public List<Material> customPickaxes = new ArrayList<>();
-    public List<Material> customShovels  = new ArrayList<>();
-    public List<Material> customSwords   = new ArrayList<>();
-
+    public List<Material> customShovels = new ArrayList<>();
+    public List<Material> customSwords = new ArrayList<>();
     public HashMap<Material, CustomTool> customToolMap = new HashMap<>();
-
     public List<Repairable> repairables = new ArrayList<>();
+    private boolean needsUpdate = false;
 
     protected CustomToolConfig(String fileName) {
         super("mods", fileName);
@@ -70,7 +68,7 @@ public class CustomToolConfig extends ConfigLoader {
             Material toolMaterial = Material.matchMaterial(toolName);
 
             if (toolMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + toolName);
+                mcMMO.p.getLogger().warning("Invalid material name. This item will be skipped. - " + toolName);
                 continue;
             }
 
@@ -78,7 +76,7 @@ public class CustomToolConfig extends ConfigLoader {
             Material repairMaterial = Material.matchMaterial(config.getString(toolType + "." + toolName + ".Repair_Material", ""));
 
             if (repairable && (repairMaterial == null)) {
-                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
+                mcMMO.p.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
                 repairable = false;
             }
 

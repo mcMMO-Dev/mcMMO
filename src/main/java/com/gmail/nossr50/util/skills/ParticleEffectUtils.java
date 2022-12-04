@@ -1,8 +1,9 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class ParticleEffectUtils {
 
@@ -22,16 +24,53 @@ public final class ParticleEffectUtils {
         SoundManager.worldSendSoundMaxPitch(world, location, SoundType.POP);
     }
 
-    public static void playBleedEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getBleedEffectEnabled()) {
+    public static void playBleedEffect(@NotNull LivingEntity livingEntity) {
+        if (!mcMMO.p.getGeneralConfig().getBleedEffectEnabled()) {
             return;
         }
 
-        livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+    }
+
+    private static @NotNull Location getParticleLocation(@NotNull LivingEntity livingEntity) {
+        Location origin = livingEntity.getEyeLocation().clone();
+        World world = origin.getWorld();
+
+        double x = origin.getX();
+        double y = origin.getY();
+        double z = origin.getZ();
+
+        double offSetVal = 0.3D;
+
+        switch(RandomUtils.nextInt(10)) {
+
+            case 0:
+                return new Location(world, x - offSetVal, y, z);
+            case 1:
+                return new Location(world, x + offSetVal, y, z);
+            case 2:
+                return new Location(world, x, y + offSetVal, z);
+            case 3:
+                return new Location(world, x, y - offSetVal, z);
+            case 4: Location locE = new Location(world, x, y, z + offSetVal);
+                return new Location(world, x, y, z - offSetVal);
+            case 5:
+                return new Location(world, x + offSetVal, y, z + offSetVal);
+            case 6:
+                return new Location(world, x - offSetVal, y, z - offSetVal);
+            case 7:
+                return new Location(world, x - offSetVal, y - offSetVal, z - offSetVal);
+            case 8:
+                return new Location(world, x + offSetVal, y - offSetVal, z + offSetVal);
+            case 9:
+                return new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
+            default:
+                return new Location(world, x + offSetVal, y + offSetVal, z - offSetVal);
+        }
     }
 
     public static void playDodgeEffect(Player player) {
-        if (!Config.getInstance().getDodgeEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getDodgeEffectEnabled()) {
             return;
         }
 
@@ -39,7 +78,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playFluxEffect(Location location) {
-        if (!Config.getInstance().getFluxEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getFluxEffectEnabled()) {
             return;
         }
 
@@ -68,7 +107,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playGreaterImpactEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getGreaterImpactEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getGreaterImpactEffectEnabled()) {
             return;
         }
 
@@ -78,7 +117,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getCallOfTheWildEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getCallOfTheWildEffectEnabled()) {
             return;
         }
 
@@ -86,7 +125,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playAbilityDisabledEffect(Player player) {
-        if (!Config.getInstance().getAbilityDeactivationEffectEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getAbilityDeactivationEffectEnabled()) {
         }
 
         /*if (hasHeadRoom(player)) {

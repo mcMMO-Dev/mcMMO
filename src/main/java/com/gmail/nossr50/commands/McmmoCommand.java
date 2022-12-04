@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -26,7 +25,7 @@ public class McmmoCommand implements CommandExecutor {
                 sender.sendMessage(mcSplit);
                 sender.sendMessage(LocaleLoader.getString("mcMMO.Description.FormerDevs"));
 
-                if (Config.getInstance().getDonateMessageEnabled()) {
+                if (mcMMO.p.getGeneralConfig().getDonateMessageEnabled()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
                     sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com" + ChatColor.GOLD + " Paypal");
                 }
@@ -35,7 +34,7 @@ public class McmmoCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
                 }
 
-                mcMMO.getHolidayManager().anniversaryCheck(sender);
+//                mcMMO.getHolidayManager().anniversaryCheck(sender);
                 return true;
 
             case 1:

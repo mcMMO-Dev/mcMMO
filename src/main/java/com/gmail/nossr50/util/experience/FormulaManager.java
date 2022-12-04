@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -89,7 +88,7 @@ public class FormulaManager {
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = Config.getInstance().getLevelCap(primarySkillType);
+        int maxLevel = mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getXPtoNextLevel(newLevel, formulaType);

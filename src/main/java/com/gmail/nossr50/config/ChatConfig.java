@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class ChatConfig extends AutoUpdateConfigLoader {
+public class ChatConfig extends BukkitConfig {
     private static ChatConfig instance;
 
     private ChatConfig() {
@@ -41,7 +41,9 @@ public class ChatConfig extends AutoUpdateConfigLoader {
 
     /**
      * Whether or not to use display names for players in target {@link ChatChannel}
+     *
      * @param chatChannel target chat channel
+     *
      * @return true if display names should be used
      */
     public boolean useDisplayNames(@NotNull ChatChannel chatChannel) {

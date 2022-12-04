@@ -1,9 +1,9 @@
 package com.gmail.nossr50.skills.archery;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
@@ -19,9 +19,9 @@ import java.util.List;
 public class Archery {
     private static final List<TrackedEntity> trackedEntities = new ArrayList<>();
 
-    public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
+    public static double skillShotMaxBonusDamage     = mcMMO.p.getAdvancedConfig().getSkillShotDamageMax();
 
-    public static double dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
+    public static double dazeBonusDamage = mcMMO.p.getAdvancedConfig().getDazeBonusDamage();
 
     public static final double DISTANCE_XP_MULTIPLIER = ExperienceConfig.getInstance().getArcheryDistanceMultiplier();
 
@@ -57,7 +57,7 @@ public class Archery {
             TrackedEntity trackedEntity = entityIterator.next();
 
             if (trackedEntity.getID() == livingEntity.getUniqueId()) {
-                Misc.spawnItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
+                Misc.spawnItems(null, livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
                 entityIterator.remove();
                 return;
             }
@@ -72,6 +72,6 @@ public class Archery {
     }
 
     public static double getDamageBonusPercent(Player player) {
-        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * (AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D);
+        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * (mcMMO.p.getAdvancedConfig().getSkillShotRankDamageMultiplier()) / 100.0D);
     }
 }

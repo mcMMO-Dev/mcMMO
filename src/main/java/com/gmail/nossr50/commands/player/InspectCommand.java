@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -30,16 +29,18 @@ public class InspectCommand implements TabExecutor {
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
-                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
+                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName); // Temporary Profile
 
                 if (!CommandUtils.isLoaded(sender, profile)) {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
+                        && sender instanceof Player
+                        && mcMMO.p.getGeneralConfig().getInspectUseBoard()) {
                     ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
-                    if (!Config.getInstance().getInspectUseChat()) {
+                    if (!mcMMO.p.getGeneralConfig().getInspectUseChat()) {
                         return true;
                     }
                 }
@@ -47,43 +48,56 @@ public class InspectCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
+                for (PrimarySkillType skill : mcMMO.p.getSkillTools().MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                 }
 
             } else {
                 Player target = mcMMOPlayer.getPlayer();
+                boolean isVanished = false;
 
                 if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
-                    sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-                    return true;
-                } else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    isVanished = true;
+                }
+
+                //Only distance check players who are online and not vanished
+                if (!isVanished && CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                     return true;
                 }
 
-                if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
-                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
+                if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
+                        && sender instanceof Player
+                        && mcMMO.p.getGeneralConfig().getInspectUseBoard()) {
+                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer);
 
-                    if (!Config.getInstance().getInspectUseChat()) {
+                    if (!mcMMO.p.getGeneralConfig().getInspectUseChat()) {
                         return true;
                     }
                 }
 
-                sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
+                if (isVanished) {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
+                } else {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
+                }
+
                 CommandUtils.printGatheringSkills(target, sender);
                 CommandUtils.printCombatSkills(target, sender);
                 CommandUtils.printMiscSkills(target, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+
+                if (!isVanished) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+                }
             }
 
             return true;

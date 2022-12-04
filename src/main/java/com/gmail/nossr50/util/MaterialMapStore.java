@@ -24,6 +24,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> blockCrackerWhiteList;
     private final @NotNull HashSet<String> canMakeShroomyWhiteList;
     private final @NotNull HashSet<String> multiBlockPlant;
+    private final @NotNull HashSet<String> multiBlockHangingPlant;
     private final @NotNull HashSet<String> foodItemWhiteList;
     private final @NotNull HashSet<String> glassBlocks;
 
@@ -71,6 +72,7 @@ public class MaterialMapStore {
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
         multiBlockPlant = new HashSet<>();
+        multiBlockHangingPlant = new HashSet<>();
         foodItemWhiteList = new HashSet<>();
         glassBlocks = new HashSet<>();
 
@@ -121,6 +123,7 @@ public class MaterialMapStore {
         fillBlockCrackerWhiteList();
         fillShroomyWhiteList();
         fillMultiBlockPlantSet();
+        fillMultiBlockHangingPlantSet();
         fillFoodWhiteList();
         fillGlassBlockWhiteList();
         fillArmors();
@@ -135,6 +138,10 @@ public class MaterialMapStore {
     public boolean isMultiBlockPlant(@NotNull Material material)
     {
         return multiBlockPlant.contains(material.getKey().getKey());
+    }
+
+    public boolean isMultiBlockHangingPlant(@NotNull Material material) {
+        return multiBlockHangingPlant.contains(material.getKey().getKey());
     }
 
     public boolean isAbilityActivationBlackListed(@NotNull Material material)
@@ -206,16 +213,33 @@ public class MaterialMapStore {
         ores.add("gold_ore");
         ores.add("iron_ore");
         ores.add("lapis_ore");
+        ores.add("lapis_lazuli_ore");
         ores.add("redstone_ore");
         ores.add("emerald_ore");
         ores.add("ancient_debris");
         ores.add("nether_gold_ore");
         ores.add("gilded_blackstone");
+
+        //1.17 Mining Ore Blocks
+        ores.add("deepslate_redstone_ore");
+        ores.add("deepslate_copper_ore");
+        ores.add("deepslate_coal_ore");
+        ores.add("deepslate_diamond_ore");
+        ores.add("deepslate_emerald_ore");
+        ores.add("deepslate_iron_ore");
+        ores.add("deepslate_gold_ore");
+//        ores.add("deepslate_lapis_lazuli_ore");
+        ores.add("deepslate_lapis_ore");
+        ores.add("copper_ore");
     }
 
     private void fillIntendedTools() {
         intendedToolPickAxe.addAll(ores);
 
+        intendedToolPickAxe.add("lapis_lazuli_ore");
+        intendedToolPickAxe.add("packed_mud");
+        intendedToolPickAxe.add("mud_bricks");
+        intendedToolPickAxe.add("reinforced_deepslate");
         intendedToolPickAxe.add("ice");
         intendedToolPickAxe.add("packed_ice");
         intendedToolPickAxe.add("blue_ice");
@@ -307,10 +331,6 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("stone_button");
         intendedToolPickAxe.add("stone_pressure_plate");
         intendedToolPickAxe.add("terracotta");
-        intendedToolPickAxe.add("amethyst_bud");
-        intendedToolPickAxe.add("amethyst_cluster");
-        intendedToolPickAxe.add("block_of_amethyst");
-        intendedToolPickAxe.add("budding_amethyst");
         intendedToolPickAxe.add("ancient_debris");
         intendedToolPickAxe.add("crying_obsidian");
         intendedToolPickAxe.add("glowing_obsidian"); //be
@@ -395,6 +415,18 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("waxed_cut_copper_stairs");
         intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_stairs");
 
+        //1.17 Mining (non-ores)
+        intendedToolPickAxe.add("calcite");
+        intendedToolPickAxe.add("smooth_basalt");
+        intendedToolPickAxe.add("block_of_amethyst");
+        intendedToolPickAxe.add("small_amethyst_bud");
+        intendedToolPickAxe.add("medium_amethyst_bud");
+        intendedToolPickAxe.add("large_amethyst_bud");
+        intendedToolPickAxe.add("amethyst_cluster");
+        intendedToolPickAxe.add("budding_amethyst");
+        intendedToolPickAxe.add("deepslate");
+        intendedToolPickAxe.add("cobbled_deepslate");
+        intendedToolPickAxe.add("tuff");
     }
 
     private void fillArmors() {
@@ -424,6 +456,7 @@ public class MaterialMapStore {
         enchantables.addAll(pickAxes);
         enchantables.addAll(tridents);
         enchantables.addAll(bows);
+        enchantables.addAll(crossbows);
 
         enchantables.add("shears");
         enchantables.add("fishing_rod");
@@ -951,8 +984,12 @@ public class MaterialMapStore {
         multiBlockPlant.add("large_fern");
         multiBlockPlant.add("tall_grass");
         multiBlockPlant.add("bamboo");
-        multiBlockPlant.add("weeping_vines_plant");
-        multiBlockPlant.add("twisted_vines_plant");
+    }
+
+    private void fillMultiBlockHangingPlantSet() {
+        multiBlockHangingPlant.add("weeping_vines_plant");
+        multiBlockHangingPlant.add("twisted_vines_plant");
+        multiBlockHangingPlant.add("cave_vines_plant");
     }
 
     private void fillShroomyWhiteList()
@@ -985,6 +1022,10 @@ public class MaterialMapStore {
         treeFellerDestructibleWhiteList.add("dark_oak_leaves");
         treeFellerDestructibleWhiteList.add("jungle_leaves");
         treeFellerDestructibleWhiteList.add("spruce_leaves");
+        treeFellerDestructibleWhiteList.add("azalea_leaves");
+        treeFellerDestructibleWhiteList.add("flowering_azalea_leaves");
+        treeFellerDestructibleWhiteList.add("mangrove_leaves");
+        treeFellerDestructibleWhiteList.add("mangrove_roots");
         treeFellerDestructibleWhiteList.add("nether_wart_block");
         treeFellerDestructibleWhiteList.add("warped_wart_block");
         treeFellerDestructibleWhiteList.add("brown_mushroom_block");
@@ -1130,8 +1171,6 @@ public class MaterialMapStore {
     
     private void fillToolBlackList()
     {
-        //TODO: Add anvils / missing logs
-        //TODO: Reorganize this list, can we also dynamically populate some of this?
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
         toolBlackList.add("brown_bed");
@@ -1240,6 +1279,9 @@ public class MaterialMapStore {
         toolBlackList.add("stripped_oak_wood");
         toolBlackList.add("stripped_spruce_log");
         toolBlackList.add("stripped_spruce_wood");
+        toolBlackList.add("mangrove_wood");
+        toolBlackList.add("mangrove_log");
+        toolBlackList.add("stripped_mangrove_log");
         toolBlackList.add("acacia_log");
         toolBlackList.add("acacia_wood");
         toolBlackList.add("birch_log");
@@ -1265,13 +1307,14 @@ public class MaterialMapStore {
         toolBlackList.add("stonecutter");
         toolBlackList.add("lodestone");
         toolBlackList.add("respawn_anchor");
+        toolBlackList.add("sweet_berry_bush");
     }
 
-    public boolean isIntendedToolPickaxe(Material material) {
+    public boolean isIntendedToolPickaxe(@NotNull Material material) {
         return intendedToolPickAxe.contains(material.getKey().getKey());
     }
 
-    public boolean isIntendedToolPickaxe(String string) {
+    public boolean isIntendedToolPickaxe(@NotNull String string) {
         return intendedToolPickAxe.contains(string);
     }
 

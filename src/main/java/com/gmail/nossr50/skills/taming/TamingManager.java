@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -12,11 +10,10 @@ import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -27,6 +24,7 @@ import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -62,9 +60,9 @@ public class TamingManager extends SkillManager {
         if(summoningItems == null) {
             summoningItems = new HashMap<>();
 
-            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry()), CallOfTheWildType.CAT);
-            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry()), CallOfTheWildType.WOLF);
-            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry()), CallOfTheWildType.HORSE);
+            summoningItems.put(mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry()), CallOfTheWildType.CAT);
+            summoningItems.put(mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry()), CallOfTheWildType.WOLF);
+            summoningItems.put(mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry()), CallOfTheWildType.HORSE);
         }
 
         //TODO: Temporary static cache, will be changed in 2.2
@@ -73,11 +71,11 @@ public class TamingManager extends SkillManager {
             cotwSummonDataProperties = new HashMap<>();
 
             for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-                Material itemSummonMaterial = Config.getInstance().getTamingCOTWMaterial(callOfTheWildType.getConfigEntityTypeEntry());
-                int itemAmountRequired = Config.getInstance().getTamingCOTWCost(callOfTheWildType.getConfigEntityTypeEntry());
-                int entitiesSummonedPerCOTW = Config.getInstance().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
-                int summonLifespanSeconds = Config.getInstance().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
-                int perPlayerMaxAmount = Config.getInstance().getTamingCOTWMaxAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                Material itemSummonMaterial = mcMMO.p.getGeneralConfig().getTamingCOTWMaterial(callOfTheWildType.getConfigEntityTypeEntry());
+                int itemAmountRequired = mcMMO.p.getGeneralConfig().getTamingCOTWCost(callOfTheWildType.getConfigEntityTypeEntry());
+                int entitiesSummonedPerCOTW = mcMMO.p.getGeneralConfig().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                int summonLifespanSeconds = mcMMO.p.getGeneralConfig().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
+                int perPlayerMaxAmount = mcMMO.p.getGeneralConfig().getTamingCOTWMaxAmount(callOfTheWildType.getConfigEntityTypeEntry());
 
                 TamingSummon tamingSummon = new TamingSummon(callOfTheWildType, itemSummonMaterial, itemAmountRequired, entitiesSummonedPerCOTW, summonLifespanSeconds, perPlayerMaxAmount);
                 cotwSummonDataProperties.put(callOfTheWildType, tamingSummon);
@@ -165,21 +163,7 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(@NotNull LivingEntity target, double damage) {
-        if(BleedTimerTask.isBleedOperationAllowed()) {
-            if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.TAMING_GORE, getPlayer())) {
-                return 0;
-            }
-
-            BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
-
-            if (target instanceof Player) {
-                NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
-            }
-
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
-
-            damage = (damage * Taming.goreModifier) - damage;
-        }
+        damage = (damage * Taming.goreModifier) - damage;
 
         return damage;
     }
@@ -247,19 +231,23 @@ public class TamingManager extends SkillManager {
 
         message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
 
-        if (beast instanceof Horse) {
-            Horse horse = (Horse) beast;
-            double jumpStrength = horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getValue();
-            // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
-            jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
-            message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
-                    .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
+        // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
+        if (beast instanceof AbstractHorse horseLikeCreature && !(beast instanceof Llama)) {
+            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(Attribute.HORSE_JUMP_STRENGTH);
+
+            if(jumpAttribute != null) {
+                double jumpStrength = jumpAttribute.getValue();
+                // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
+                jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
+                message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horseLikeCreature.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
+                        .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
+            }
         }
 
         player.sendMessage(message);
     }
 
-    public void processEnvironmentallyAware(Wolf wolf, double damage) {
+    public void processEnvironmentallyAware(@NotNull Wolf wolf, double damage) {
         if (damage > wolf.getHealth()) {
             return;
         }
@@ -280,8 +268,7 @@ public class TamingManager extends SkillManager {
         ParticleEffectUtils.playGreaterImpactEffect(target);
         target.setVelocity(wolf.getLocation().getDirection().normalize().multiply(1.5D));
 
-        if (target instanceof Player) {
-            Player defender = (Player) target;
+        if (target instanceof Player defender) {
 
             if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Taming.SubSkill.Pummel.TargetMessage");
@@ -290,9 +277,8 @@ public class TamingManager extends SkillManager {
     }
 
     public void attackTarget(LivingEntity target) {
-        if(target instanceof Tameable)
+        if(target instanceof Tameable tameable)
         {
-            Tameable tameable = (Tameable) target;
             if(tameable.getOwner() == getPlayer())
             {
                 return;
@@ -460,7 +446,7 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
         horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
         horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
-        horse.setJumpStrength(Math.max(AdvancedConfig.getInstance().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength())));
+        horse.setJumpStrength(Math.max(mcMMO.p.getAdvancedConfig().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, mcMMO.p.getAdvancedConfig().getMaxHorseJumpStrength())));
         horse.setAdult();
 
         //TODO: setSpeed, once available
@@ -478,7 +464,7 @@ public class TamingManager extends SkillManager {
 
     private void applyMetaDataToCOTWEntity(LivingEntity summonedEntity) {
         //This helps identify the entity as being summoned by COTW
-        mcMMO.getCompatibilityManager().getPersistentDataLayer().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
+        mcMMO.getMetadataService().getMobMetadataService().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
     }
 
     /**

@@ -2,11 +2,14 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +26,8 @@ public final class UserManager {
      *
      * @param mcMMOPlayer the player profile to start tracking
      */
-    public static void track(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
+    public static void track(@NotNull McMMOPlayer mcMMOPlayer) {
+        mcMMOPlayer.getPlayer().setMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
 
         if(playerDataSet == null)
             playerDataSet = new HashSet<>();
@@ -42,10 +45,14 @@ public final class UserManager {
      *
      * @param player The Player object
      */
-    public static void remove(Player player) {
+    public static void remove(@NotNull Player player) {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
+
+        if(mcMMOPlayer == null)
+            return;
+
         mcMMOPlayer.cleanup();
-        player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
+        player.removeMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA, mcMMO.p);
 
         if(playerDataSet != null) {
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
@@ -90,7 +97,7 @@ public final class UserManager {
         mcMMO.p.getLogger().info("Finished save operation for "+trackedSyncData.size()+" players!");
     }
 
-    public static Collection<McMMOPlayer> getPlayers() {
+    public static @NotNull Collection<McMMOPlayer> getPlayers() {
         Collection<McMMOPlayer> playerCollection = new ArrayList<>();
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
@@ -108,11 +115,11 @@ public final class UserManager {
      * @param playerName The name of the player whose McMMOPlayer to retrieve
      * @return the player's McMMOPlayer object
      */
-    public static McMMOPlayer getPlayer(String playerName) {
+    public static @Nullable McMMOPlayer getPlayer(String playerName) {
         return retrieveMcMMOPlayer(playerName, false);
     }
 
-    public static McMMOPlayer getOfflinePlayer(OfflinePlayer player) {
+    public static @Nullable McMMOPlayer getOfflinePlayer(OfflinePlayer player) {
         if (player instanceof Player) {
             return getPlayer((Player) player);
         }
@@ -120,7 +127,7 @@ public final class UserManager {
         return retrieveMcMMOPlayer(player.getName(), true);
     }
 
-    public static McMMOPlayer getOfflinePlayer(String playerName) {
+    public static @Nullable McMMOPlayer getOfflinePlayer(String playerName) {
         return retrieveMcMMOPlayer(playerName, true);
     }
 
@@ -129,15 +136,18 @@ public final class UserManager {
      * @param player target player
      * @return McMMOPlayer object for this player, null if Player has not been loaded
      */
-    public static McMMOPlayer getPlayer(Player player) {
+    public static @Nullable McMMOPlayer getPlayer(@Nullable Player player) {
         //Avoid Array Index out of bounds
-        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
-            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        if(player != null && player.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA))
+            return (McMMOPlayer) player.getMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA).get(0).value();
         else
             return null;
     }
 
-    private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
+    private static @Nullable McMMOPlayer retrieveMcMMOPlayer(@Nullable String playerName, boolean offlineValid) {
+        if(playerName == null)
+            return null;
+
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player == null) {
@@ -151,7 +161,7 @@ public final class UserManager {
         return getPlayer(player);
     }
 
-    public static boolean hasPlayerDataKey(Entity entity) {
-        return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
+    public static boolean hasPlayerDataKey(@Nullable Entity entity) {
+        return entity != null && entity.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA);
     }
 }

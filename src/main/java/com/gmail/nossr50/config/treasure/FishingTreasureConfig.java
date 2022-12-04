@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.treasure;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
@@ -18,14 +18,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class FishingTreasureConfig extends ConfigLoader {
+public class FishingTreasureConfig extends BukkitConfig {
 
     public static final String FILENAME = "fishing_treasures.yml";
     private static FishingTreasureConfig instance;
 
-    public @NotNull HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<>();
+    public @NotNull HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<>();
     public @NotNull HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<>();
-    public @NotNull HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<>();
+    public @NotNull HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<>();
 
     private FishingTreasureConfig() {
         super(FILENAME);
@@ -45,33 +45,39 @@ public class FishingTreasureConfig extends ConfigLoader {
     protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<>();
-        for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {
-            double totalEnchantDropRate = 0;
-            double totalItemDropRate = 0;
+        ConfigurationSection enchantment_drop_rates = config.getConfigurationSection("Enchantment_Drop_Rates");
 
-            for (Rarity rarity : Rarity.values()) {
-                double enchantDropRate = config.getDouble("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
-                double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity.toString());
+        if(enchantment_drop_rates != null) {
+            for (String tier : enchantment_drop_rates.getKeys(false)) {
+                double totalEnchantDropRate = 0;
+                double totalItemDropRate = 0;
 
-                if ((enchantDropRate < 0.0 || enchantDropRate > 100.0)) {
-                    reason.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                for (Rarity rarity : Rarity.values()) {
+                    double enchantDropRate = config.getDouble("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
+                    double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity);
+
+                    if ((enchantDropRate < 0.0 || enchantDropRate > 100.0)) {
+                        reason.add("The enchant drop rate for " + tier + " items that are " + rarity + "should be between 0.0 and 100.0!");
+                    }
+
+                    if (itemDropRate < 0.0 || itemDropRate > 100.0) {
+                        reason.add("The item drop rate for " + tier + " items that are " + rarity + "should be between 0.0 and 100.0!");
+                    }
+
+                    totalEnchantDropRate += enchantDropRate;
+                    totalItemDropRate += itemDropRate;
                 }
 
-                if (itemDropRate < 0.0 || itemDropRate > 100.0) {
-                    reason.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
+                    reason.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
                 }
 
-                totalEnchantDropRate += enchantDropRate;
-                totalItemDropRate += itemDropRate;
+                if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
+                    reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
+                }
             }
-
-            if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
-                reason.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
-
-            if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
-                reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
+        } else {
+            mcMMO.p.getLogger().warning("Your fishing treasures config is empty, is this intentional? Delete it to regenerate.");
         }
 
         return noErrorsInConfig(reason);
@@ -89,7 +95,7 @@ public class FishingTreasureConfig extends ConfigLoader {
 
         for (EntityType entity : EntityType.values()) {
             if (entity.isAlive()) {
-                loadTreasures("Shake." + entity.toString());
+                loadTreasures("Shake." + entity);
             }
         }
     }
@@ -164,7 +170,7 @@ public class FishingTreasureConfig extends ConfigLoader {
             }
 
             if (dropLevel < 0) {
-                reason.add(treasureName + " has an invalid Drop_Level: " + dropLevel);
+                reason.add("Fishing Config: " + treasureName + " has an invalid Drop_Level: " + dropLevel);
             }
 
             /*
@@ -175,7 +181,7 @@ public class FishingTreasureConfig extends ConfigLoader {
             if (isFishing) {
                 String rarityStr = config.getString(type + "." + treasureName + ".Rarity");
 
-                if(rarityStr != null) {
+                if (rarityStr != null) {
                     rarity = Rarity.getRarity(rarityStr);
                 } else {
                     mcMMO.p.getLogger().severe("Please edit your config and add a Rarity definition for - " + treasureName);
@@ -192,7 +198,7 @@ public class FishingTreasureConfig extends ConfigLoader {
 
             String customName = null;
 
-            if(hasCustomName(type, treasureName)) {
+            if (hasCustomName(type, treasureName)) {
                 customName = config.getString(type + "." + treasureName + ".Custom_Name");
             }
 
@@ -204,7 +210,7 @@ public class FishingTreasureConfig extends ConfigLoader {
                     item = new ItemStack(mat, amount, data);
                     PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
-                    if(itemMeta == null) {
+                    if (itemMeta == null) {
                         mcMMO.p.getLogger().severe("Item meta when adding potion to fishing treasure was null, contact the mcMMO devs!");
                         continue;
                     }
@@ -232,7 +238,7 @@ public class FishingTreasureConfig extends ConfigLoader {
                     }
                     item.setItemMeta(itemMeta);
                 }
-            } else if(material == Material.ENCHANTED_BOOK) {
+            } else if (material == Material.ENCHANTED_BOOK) {
                 //If any whitelisted enchants exist we use whitelist-based matching
                 item = new ItemStack(material, 1);
                 ItemMeta itemMeta = item.getItemMeta();
@@ -276,7 +282,6 @@ public class FishingTreasureConfig extends ConfigLoader {
             }
 
 
-
             if (noErrorsInConfig(reason)) {
                 if (isFishing) {
                     addFishingTreasure(rarity, new FishingTreasure(item, xp));
@@ -307,26 +312,27 @@ public class FishingTreasureConfig extends ConfigLoader {
     /**
      * Matches enchantments on a list (user provided string) to known enchantments in the Spigot API
      * Any matches are added to the passed set
+     *
      * @param enchantListStr the users string list of enchantments
      * @param permissiveList the permissive list of enchantments
      */
     private void matchAndFillSet(@NotNull List<String> enchantListStr, @NotNull Set<Enchantment> permissiveList) {
-        if(enchantListStr.isEmpty()) {
+        if (enchantListStr.isEmpty()) {
             return;
         }
 
-        for(String str : enchantListStr) {
+        for (String str : enchantListStr) {
             boolean foundMatch = false;
-            for(Enchantment enchantment : Enchantment.values()) {
-                if(enchantment.getKey().getKey().equalsIgnoreCase(str)) {
+            for (Enchantment enchantment : Enchantment.values()) {
+                if (enchantment.getKey().getKey().equalsIgnoreCase(str)) {
                     permissiveList.add(enchantment);
                     foundMatch = true;
                     break;
                 }
             }
 
-            if(!foundMatch) {
-                mcMMO.p.getLogger().info("[Fishing Treasure Init] Could not find any enchantments which matched the user defined enchantment named: "+str);
+            if (!foundMatch) {
+                mcMMO.p.getLogger().info("[Fishing Treasure Init] Could not find any enchantments which matched the user defined enchantment named: " + str);
             }
         }
     }
@@ -344,11 +350,11 @@ public class FishingTreasureConfig extends ConfigLoader {
             }
 
             for (String enchantmentName : enchantmentSection.getKeys(false)) {
-                int level = config.getInt("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
+                int level = config.getInt("Enchantments_Rarity." + rarity + "." + enchantmentName);
                 Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
                 if (enchantment == null) {
-                    plugin.getLogger().warning("Skipping invalid enchantment in " + FILENAME + ": " + enchantmentName);
+                    mcMMO.p.getLogger().warning("Skipping invalid enchantment in " + FILENAME + ": " + enchantmentName);
                     continue;
                 }
 
@@ -374,10 +380,10 @@ public class FishingTreasureConfig extends ConfigLoader {
     }
 
     public double getItemDropRate(int tier, @NotNull Rarity rarity) {
-        return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+        return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity);
     }
 
     public double getEnchantmentDropRate(int tier, @NotNull Rarity rarity) {
-        return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+        return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity);
     }
 }

@@ -1,6 +1,8 @@
 package com.gmail.nossr50.api;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.SkillTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getNonChildSkills() {
-        return getListFromEnum(PrimarySkillType.NON_CHILD_SKILLS);
+        return getListFromEnum(SkillTools.NON_CHILD_SKILLS);
     }
 
     /**
@@ -42,7 +44,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getChildSkills() {
-        return getListFromEnum(PrimarySkillType.CHILD_SKILLS);
+        return getListFromEnum(mcMMO.p.getSkillTools().CHILD_SKILLS);
     }
 
     /**
@@ -54,7 +56,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getCombatSkills() {
-        return getListFromEnum(PrimarySkillType.COMBAT_SKILLS);
+        return getListFromEnum(mcMMO.p.getSkillTools().COMBAT_SKILLS);
     }
 
     /**
@@ -66,7 +68,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getGatheringSkills() {
-        return getListFromEnum(PrimarySkillType.GATHERING_SKILLS);
+        return getListFromEnum(mcMMO.p.getSkillTools().GATHERING_SKILLS);
     }
 
     /**
@@ -78,7 +80,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getMiscSkills() {
-        return getListFromEnum(PrimarySkillType.MISC_SKILLS);
+        return getListFromEnum(mcMMO.p.getSkillTools().MISC_SKILLS);
     }
 
     private static List<String> getListFromEnum(List<PrimarySkillType> skillsTypes) {

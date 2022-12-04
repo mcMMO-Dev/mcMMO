@@ -132,7 +132,7 @@ public class McMMOSimpleRegionFile {
         int oldSegmentIndex = chunkSegmentIndex[index]; // Get current segment index
         markChunkSegments(index, false); // Clear our old segments
         int newSegmentIndex = findContiguousSegments(oldSegmentIndex, size); // Find contiguous segments to save to
-        file.seek(newSegmentIndex << segmentExponent); // Seek to file location
+        file.seek((long) newSegmentIndex << segmentExponent); // Seek to file location
         file.write(buffer, 0, size); // Write data
         // update in memory info
         chunkSegmentIndex[index] = newSegmentIndex;
@@ -141,9 +141,9 @@ public class McMMOSimpleRegionFile {
         // Mark segments in use
         markChunkSegments(index, true);
         // Update header info
-        file.seek(SEEK_CHUNK_SEGMENT_INDICES + (4 * index));
+        file.seek(SEEK_CHUNK_SEGMENT_INDICES + (4L * index));
         file.writeInt(chunkSegmentIndex[index]);
-        file.seek(SEEK_CHUNK_BYTE_LENGTHS + (4 * index));
+        file.seek(SEEK_CHUNK_BYTE_LENGTHS + (4L * index));
         file.writeInt(chunkNumBytes[index]);
     }
 
@@ -157,7 +157,7 @@ public class McMMOSimpleRegionFile {
 
         byte[] data = new byte[byteLength];
 
-        file.seek(chunkSegmentIndex[index] << segmentExponent); // Seek to file location
+        file.seek((long) chunkSegmentIndex[index] << segmentExponent); // Seek to file location
         file.readFully(data); // Read in the data
         return new DataInputStream(new InflaterInputStream(new ByteArrayInputStream(data)));
     }

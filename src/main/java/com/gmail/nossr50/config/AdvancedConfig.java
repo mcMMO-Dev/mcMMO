@@ -6,23 +6,20 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
 import net.md_5.bungee.api.ChatColor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdvancedConfig extends AutoUpdateConfigLoader {
-    private static AdvancedConfig instance;
+public class AdvancedConfig extends BukkitConfig {
 
-    private AdvancedConfig() {
-        super("advanced.yml");
+    public AdvancedConfig(File dataFolder) {
+        super("advanced.yml", dataFolder);
         validate();
     }
 
-    public static AdvancedConfig getInstance() {
-        if (instance == null) {
-            instance = new AdvancedConfig();
-        }
-
-        return instance;
+    @Override
+    public void initDefaults() {
+        config.addDefault("Skills.General.StartingLevel", 0);
     }
 
     @Override
@@ -68,15 +65,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Acrobatics.GracefulRoll.DamageThreshold should be at least 0!");
         }
 
-        /* ALCHEMY */
-        /*if (getCatalysisUnlockLevel() < 0) {
-            reason.add("Skills.Alchemy.Catalysis.UnlockLevel should be at least 0!");
-        }
-
-        if (getCatalysisMaxBonusLevel() <= getCatalysisUnlockLevel()) {
-            reason.add("Skills.Alchemy.Catalysis.MaxBonusLevel should be greater than Skills.Alchemy.Catalysis.UnlockLevel!");
-        }*/
-
         if (getCatalysisMinSpeed() <= 0) {
             reason.add("Skills.Alchemy.Catalysis.MinSpeed must be greater than 0!");
         }
@@ -84,21 +72,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         if (getCatalysisMaxSpeed() < getCatalysisMinSpeed()) {
             reason.add("Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
         }
-
-        /*List<Alchemy.Tier> alchemyTierList = Arrays.asList(Alchemy.Tier.values());
-        for (Alchemy.Tier tier : alchemyTierList) {
-            if (getConcoctionsTierLevel(tier) < 0) {
-                reason.add("Skills.Alchemy.Rank_Levels.Rank_" + rank + " should be at least 0!");
-            }
-
-            if (tier != Alchemy.Tier.fromNumerical(Alchemy.Tier.values().length)) {
-                Alchemy.Tier nextTier = alchemyTierList.get(alchemyTierList.indexOf(tier) - 1);
-
-                if (getConcoctionsTierLevel(tier) > getConcoctionsTierLevel(nextTier)) {
-                    reason.add("Skills.Alchemy.Rank_Levels.Rank_" + rank + " should be less than or equal to Skills.Alchemy.Rank_Levels.Rank_" + nextrank + "!");
-                }
-            }
-        }*/
 
         /* ARCHERY */
 
@@ -131,8 +104,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* AXES */
-        if(getAxeMasteryRankDamageMultiplier() < 0)
-        {
+        if (getAxeMasteryRankDamageMultiplier() < 0) {
             reason.add("Skills.Axes.AxeMastery.RankDamageMultiplier should be at least 0!");
         }
 
@@ -310,25 +282,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* SWORDS */
-        if (getMaximumProbability(SubSkillType.SWORDS_RUPTURE) < 1) {
-            reason.add("Skills.Swords.Rupture.ChanceMax should be at least 1!");
-        }
-
-        if (getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE) < 1) {
-            reason.add("Skills.Swords.Rupture.MaxBonusLevel should be at least 1!");
-        }
-
-        if (getRuptureMaxTicks() < 1) {
-            reason.add("Skills.Swords.Rupture.MaxTicks should be at least 1!");
-        }
-
-        if (getRuptureMaxTicks() < getRuptureBaseTicks()) {
-            reason.add("Skills.Swords.Rupture.MaxTicks should be at least Skills.Swords.Rupture.BaseTicks!");
-        }
-
-        if (getRuptureBaseTicks() < 1) {
-            reason.add("Skills.Swords.Rupture.BaseTicks should be at least 1!");
-        }
 
         if (getMaximumProbability(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
             reason.add("Skills.Swords.CounterAttack.ChanceMax should be at least 1!");
@@ -455,12 +408,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {}
+    protected void loadKeys() {
+    }
 
     /* GENERAL */
 
-    public boolean canApplyLimitBreakPVE() { return config.getBoolean("Skills.General.LimitBreak.AllowPVE", false); }
-    public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 1); }
+    public boolean canApplyLimitBreakPVE() {
+        return config.getBoolean("Skills.General.LimitBreak.AllowPVE", false);
+    }
+
+    public int getStartingLevel() {
+        return config.getInt("Skills.General.StartingLevel", 1);
+    }
 
     public boolean allowPlayerTips() {
         return config.getBoolean("Feedback.PlayerTips", true);
@@ -469,10 +428,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /**
      * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
      * It returns a different value depending on whether or not the server is in retro mode
+     *
      * @return the level at which abilities stop increasing in length
      */
     public int getAbilityLengthCap() {
-        if(!mcMMO.isRetroModeEnabled())
+        if (!mcMMO.isRetroModeEnabled())
             return config.getInt("Skills.General.Ability.Length.Standard.CapLevel", 50);
         else
             return config.getInt("Skills.General.Ability.Length.RetroMode.CapLevel", 500);
@@ -481,27 +441,32 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /**
      * This returns the frequency at which abilities will increase in length
      * It returns a different value depending on whether or not the server is in retro mode
+     *
      * @return the number of levels required per ability length increase
      */
     public int getAbilityLength() {
-        if(!mcMMO.isRetroModeEnabled())
+        if (!mcMMO.isRetroModeEnabled())
             return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5);
         else
             return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50);
     }
 
-    public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }
+    public int getEnchantBuff() {
+        return config.getInt("Skills.General.Ability.EnchantBuff", 5);
+    }
 
     /**
      * Grabs the max bonus level for a skill used in RNG calculations
      * All max level values in the config are multiplied by 10 if the server is in retro mode as the values in the config are based around the new 1-100 skill system scaling
      * A value of 10 in the file will be returned as 100 for retro mode servers to accommodate the change in scaling
+     *
      * @param subSkillType target subskill
+     *
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
         String keyPath = subSkillType.getAdvConfigAddress() + ".MaxBonusLevel.";
-        return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath+"RetroMode", 1000) : config.getInt(keyPath+"Standard", 100);
+        return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath + "RetroMode", 1000) : config.getInt(keyPath + "Standard", 100);
     }
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
@@ -513,35 +478,29 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
     }
 
-    public double getMaximumProbability(AbstractSubSkill abstractSubSkill)
-    {
+    public double getMaximumProbability(AbstractSubSkill abstractSubSkill) {
         return getMaximumProbability(abstractSubSkill.getSubSkillType());
     }
 
     /* Notification Settings */
 
-    public boolean doesSkillCommandSendBlankLines()
-    {
+    public boolean doesSkillCommandSendBlankLines() {
         return config.getBoolean("Feedback.SkillCommand.BlankLinesAboveHeader", true);
     }
 
-    public boolean doesNotificationUseActionBar(NotificationType notificationType)
-    {
-        return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString()+".Enabled", true);
+    public boolean doesNotificationUseActionBar(NotificationType notificationType) {
+        return config.getBoolean("Feedback.ActionBarNotifications." + notificationType.toString() + ".Enabled", true);
     }
 
-    public boolean doesNotificationSendCopyToChat(NotificationType notificationType)
-    {
-        return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString()+".SendCopyOfMessageToChat", false);
+    public boolean doesNotificationSendCopyToChat(NotificationType notificationType) {
+        return config.getBoolean("Feedback.ActionBarNotifications." + notificationType.toString() + ".SendCopyOfMessageToChat", false);
     }
 
-    public boolean useTitlesForXPEvent()
-    {
+    public boolean useTitlesForXPEvent() {
         return config.getBoolean("Feedback.Events.XP.SendTitles", true);
     }
 
-    public boolean sendAbilityNotificationToOtherPlayers()
-    {
+    public boolean sendAbilityNotificationToOtherPlayers() {
         return config.getBoolean("Feedback.Events.AbilityActivation.SendNotificationToOtherPlayers", true);
     }
 
@@ -560,6 +519,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /**
      * Used to color our details header in our JSON Hover Object tooltips
+     *
      * @return the ChatColor for this element
      */
     /*public ChatColor getJSONStatHoverDetailsColor()
@@ -608,7 +568,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     {
         return getChatColor(config.getString("Style.JSON.Notification."+notificationType.toString()+".Color"));
     }*/
-
     private ChatColor getChatColorFromKey(String keyLocation) {
         String colorName = config.getString(keyLocation);
 
@@ -649,174 +608,334 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /**
      * Some SubSkills have the ability to retain classic functionality
+     *
      * @param subSkillType SubSkillType with classic functionality
+     *
      * @return true if the subskill is in classic mode
      */
-    public boolean isSubSkillClassic(SubSkillType subSkillType)
-    {
-        return config.getBoolean(subSkillType.getAdvConfigAddress()+".Classic");
+    public boolean isSubSkillClassic(SubSkillType subSkillType) {
+        return config.getBoolean(subSkillType.getAdvConfigAddress() + ".Classic");
     }
 
     /* ACROBATICS */
-    public double getDodgeDamageModifier() { return config.getDouble("Skills.Acrobatics.Dodge.DamageModifier", 2.0D); }
+    public double getDodgeDamageModifier() {
+        return config.getDouble("Skills.Acrobatics.Dodge.DamageModifier", 2.0D);
+    }
 
-    public double getRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.Roll.DamageThreshold", 7.0D); }
+    public double getRollDamageThreshold() {
+        return config.getDouble("Skills.Acrobatics.Roll.DamageThreshold", 7.0D);
+    }
 
-    public double getGracefulRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.GracefulRoll.DamageThreshold", 14.0D); }
+    public double getGracefulRollDamageThreshold() {
+        return config.getDouble("Skills.Acrobatics.GracefulRoll.DamageThreshold", 14.0D);
+    }
 
     /* ALCHEMY */
-    /*public int getCatalysisUnlockLevel() { return config.getInt("Skills.Alchemy.Catalysis.UnlockLevel", 100); }*/
-    public int getCatalysisMaxBonusLevel() { return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000); }
+    public int getCatalysisMaxBonusLevel() {
+        return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000);
+    }
 
-    public double getCatalysisMinSpeed() { return config.getDouble("Skills.Alchemy.Catalysis.MinSpeed", 1.0D); }
-    public double getCatalysisMaxSpeed() { return config.getDouble("Skills.Alchemy.Catalysis.MaxSpeed", 4.0D); }
+    public double getCatalysisMinSpeed() {
+        return config.getDouble("Skills.Alchemy.Catalysis.MinSpeed", 1.0D);
+    }
 
-    //public int getConcoctionsTierLevel(Alchemy.Tier tier) { return config.getInt("Skills.Alchemy.Rank_Levels.Rank_" + rank); }
+    public double getCatalysisMaxSpeed() {
+        return config.getDouble("Skills.Alchemy.Catalysis.MaxSpeed", 4.0D);
+    }
+
 
     /* ARCHERY */
-    public double getSkillShotRankDamageMultiplier() { return config.getDouble("Skills.Archery.SkillShot.RankDamageMultiplier", 10.0D); }
-    public double getSkillShotDamageMax() { return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D); }
+    public double getSkillShotRankDamageMultiplier() {
+        return config.getDouble("Skills.Archery.SkillShot.RankDamageMultiplier", 10.0D);
+    }
 
-    public double getDazeBonusDamage() { return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D); }
+    public double getSkillShotDamageMax() {
+        return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D);
+    }
 
-    public double getForceMultiplier() { return config.getDouble("Skills.Archery.ForceMultiplier", 2.0D); }
+    public double getDazeBonusDamage() {
+        return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D);
+    }
+
+    public double getForceMultiplier() {
+        return config.getDouble("Skills.Archery.ForceMultiplier", 2.0D);
+    }
 
     /* AXES */
-    public double getAxeMasteryRankDamageMultiplier() { return config.getDouble("Skills.Axes.AxeMastery.RankDamageMultiplier", 1.0D); }
+    public double getAxeMasteryRankDamageMultiplier() {
+        return config.getDouble("Skills.Axes.AxeMastery.RankDamageMultiplier", 1.0D);
+    }
 
-    public double getCriticalStrikesPVPModifier() { return config.getDouble("Skills.Axes.CriticalStrikes.PVP_Modifier", 1.5D); }
-    public double getCriticalStrikesPVEModifier() { return config.getDouble("Skills.Axes.CriticalStrikes.PVE_Modifier", 2.0D); }
+    public double getCriticalStrikesPVPModifier() {
+        return config.getDouble("Skills.Axes.CriticalStrikes.PVP_Modifier", 1.5D);
+    }
 
-    public double getGreaterImpactChance() { return config.getDouble("Skills.Axes.GreaterImpact.Chance", 25.0D); }
-    public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact.KnockbackModifier", 1.5D); }
-    public double getGreaterImpactBonusDamage() { return config.getDouble("Skills.Axes.GreaterImpact.BonusDamage", 2.0D); }
+    public double getCriticalStrikesPVEModifier() {
+        return config.getDouble("Skills.Axes.CriticalStrikes.PVE_Modifier", 2.0D);
+    }
 
-    public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact.Chance", 25.0D); }
-    public double getImpactDurabilityDamageMultiplier() { return config.getDouble("Skills.Axes.ArmorImpact.DamagePerRank", 6.5D); }
+    public double getGreaterImpactChance() {
+        return config.getDouble("Skills.Axes.GreaterImpact.Chance", 25.0D);
+    }
 
-    public double getSkullSplitterModifier() { return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D); }
+    public double getGreaterImpactModifier() {
+        return config.getDouble("Skills.Axes.GreaterImpact.KnockbackModifier", 1.5D);
+    }
+
+    public double getGreaterImpactBonusDamage() {
+        return config.getDouble("Skills.Axes.GreaterImpact.BonusDamage", 2.0D);
+    }
+
+    public double getImpactChance() {
+        return config.getDouble("Skills.Axes.ArmorImpact.Chance", 25.0D);
+    }
+
+    public double getImpactDurabilityDamageMultiplier() {
+        return config.getDouble("Skills.Axes.ArmorImpact.DamagePerRank", 6.5D);
+    }
+
+    public double getSkullSplitterModifier() {
+        return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D);
+    }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
 
     /* FISHING */
-    //public int getFishingTierLevel(int rank) { return config.getInt("Skills.Fishing.Rank_Levels.Rank_" + rank); }
-    public double getShakeChance(int rank) { return config.getDouble("Skills.Fishing.ShakeChance.Rank_" + rank); }
-    public int getFishingVanillaXPModifier(int rank) { return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank); }
+    public double getShakeChance(int rank) {
+        return config.getDouble("Skills.Fishing.ShakeChance.Rank_" + rank);
+    }
 
-    public int getFishingReductionMinWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait", 10);}
-    public int getFishingReductionMaxWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait", 30);}
-    public int getFishingBoatReductionMinWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait", 10);}
-    public int getFishingBoatReductionMaxWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait", 30);}
-    public int getFishingReductionMinWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait", 40);}
-    public int getFishingReductionMaxWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait", 100);}
-    public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
+    public int getFishingVanillaXPModifier(int rank) {
+        return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank);
+    }
 
-    /*public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.IceFishing.UnlockLevel", 50); }
+    public int getFishingReductionMinWaitTicks() {
+        return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait", 10);
+    }
 
-    public int getMasterAnglerUnlockLevel() {return config.getInt("Skills.Fishing.MasterAngler.UnlockLevel", 125); }*/
-    public double getMasterAnglerBoatModifier() {return config.getDouble("Skills.Fishing.MasterAngler.BoatModifier", 2.0); }
-    public double getMasterAnglerBiomeModifier() {return config.getDouble("Skills.Fishing.MasterAngler.BiomeModifier", 2.0); }
+    public int getFishingReductionMaxWaitTicks() {
+        return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait", 30);
+    }
+
+    public int getFishingBoatReductionMinWaitTicks() {
+        return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait", 10);
+    }
+
+    public int getFishingBoatReductionMaxWaitTicks() {
+        return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait", 30);
+    }
+
+    public int getFishingReductionMinWaitCap() {
+        return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait", 40);
+    }
+
+    public int getFishingReductionMaxWaitCap() {
+        return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait", 100);
+    }
+
+    public int getFishermanDietRankChange() {
+        return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200);
+    }
+
+
+    public double getMasterAnglerBoatModifier() {
+        return config.getDouble("Skills.Fishing.MasterAngler.BoatModifier", 2.0);
+    }
+
+    public double getMasterAnglerBiomeModifier() {
+        return config.getDouble("Skills.Fishing.MasterAngler.BiomeModifier", 2.0);
+    }
 
     /* HERBALISM */
-    public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.FarmersDiet.RankChange", 200); }
+    public int getFarmerDietRankChange() {
+        return config.getInt("Skills.Herbalism.FarmersDiet.RankChange", 200);
+    }
 
-    public int getGreenThumbStageChange() { return config.getInt("Skills.Herbalism.GreenThumb.StageChange", 200); }
+    public int getGreenThumbStageChange() {
+        return config.getInt("Skills.Herbalism.GreenThumb.StageChange", 200);
+    }
 
     /* MINING */
-    public boolean getDoubleDropSilkTouchEnabled() { return config.getBoolean("Skills.Mining.DoubleDrops.SilkTouch", true); }
-    public boolean getAllowMiningTripleDrops() { return config.getBoolean("Skills.Mining.SuperBreaker.AllowTripleDrops", true); }
-    public int getBlastMiningRankLevel(int rank) { return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank); }
-    public double getBlastDamageDecrease(int rank) { return config.getDouble("Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + rank); }
-    public double getOreBonus(int rank) { return config.getDouble("Skills.Mining.BlastMining.OreBonus.Rank_" + rank); }
-    public double getDebrisReduction(int rank) { return config.getDouble("Skills.Mining.BlastMining.DebrisReduction.Rank_" + rank); }
-    public int getDropMultiplier(int rank) { return config.getInt("Skills.Mining.BlastMining.DropMultiplier.Rank_" + rank); }
-    public double getBlastRadiusModifier(int rank) { return config.getDouble("Skills.Mining.BlastMining.BlastRadiusModifier.Rank_" + rank); }
+    public boolean getDoubleDropSilkTouchEnabled() {
+        return config.getBoolean("Skills.Mining.DoubleDrops.SilkTouch", true);
+    }
+
+    public boolean getAllowMiningTripleDrops() {
+        return config.getBoolean("Skills.Mining.SuperBreaker.AllowTripleDrops", true);
+    }
+
+    public int getBlastMiningRankLevel(int rank) {
+        return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank);
+    }
+
+    public double getBlastDamageDecrease(int rank) {
+        return config.getDouble("Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + rank);
+    }
+
+    public double getOreBonus(int rank) {
+        return config.getDouble("Skills.Mining.BlastMining.OreBonus.Rank_" + rank);
+    }
+
+    public double getDebrisReduction(int rank) {
+        return config.getDouble("Skills.Mining.BlastMining.DebrisReduction.Rank_" + rank);
+    }
+
+    public int getDropMultiplier(int rank) {
+        return config.getInt("Skills.Mining.BlastMining.DropMultiplier.Rank_" + rank);
+    }
+
+    public double getBlastRadiusModifier(int rank) {
+        return config.getDouble("Skills.Mining.BlastMining.BlastRadiusModifier.Rank_" + rank);
+    }
 
     /* REPAIR */
-    public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
-    public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100); }
+    public double getRepairMasteryMaxBonus() {
+        return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D);
+    }
 
-    /* Arcane Forging */
-    //public int getArcaneForgingRankLevel(int rank) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank); }
+    public int getRepairMasteryMaxLevel() {
+        return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100);
+    }
 
-    public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true); }
-    public double getArcaneForgingKeepEnchantsChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank); }
+    public boolean getAllowEnchantedRepairMaterials() {
+        return config.getBoolean("Skills.Repair.Use_Enchanted_Materials", false);
+    }
 
-    public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.Downgrades_Enabled", true); }
-    public double getArcaneForgingDowngradeChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Downgrades_Chance.Rank_" + rank); }
+    public boolean getArcaneForgingEnchantLossEnabled() {
+        return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true);
+    }
 
-    /* SALVAGE */
-    //public double getSalvageMaxPercentage() { return config.getDouble("Skills.Salvage.MaxPercentage", 100.0D); }
-    //public int getSalvageMaxPercentageLevel() { return config.getInt("Skills.Salvage.MaxPercentageLevel", 1000); }
+    public double getArcaneForgingKeepEnchantsChance(int rank) {
+        return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank);
+    }
 
-    public boolean getArcaneSalvageEnchantDowngradeEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantDowngradeEnabled", true); }
-    public boolean getArcaneSalvageEnchantLossEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true); }
+    public boolean getArcaneForgingDowngradeEnabled() {
+        return config.getBoolean("Skills.Repair.ArcaneForging.Downgrades_Enabled", true);
+    }
 
-    //public int getArcaneSalvageRankLevel(int rank) { return config.getInt("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + rank); }
-    public double getArcaneSalvageExtractFullEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + rank); }
-    public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank); }
+    public double getArcaneForgingDowngradeChance(int rank) {
+        return config.getDouble("Skills.Repair.ArcaneForging.Downgrades_Chance.Rank_" + rank);
+    }
+
+    public boolean getArcaneSalvageEnchantDowngradeEnabled() {
+        return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantDowngradeEnabled", true);
+    }
+
+    public boolean getArcaneSalvageEnchantLossEnabled() {
+        return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true);
+    }
+
+    public double getArcaneSalvageExtractFullEnchantsChance(int rank) {
+        return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + rank);
+    }
+
+    public double getArcaneSalvageExtractPartialEnchantsChance(int rank) {
+        return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank);
+    }
 
     /* SMELTING */
     public int getBurnModifierMaxLevel() {
-        if(mcMMO.isRetroModeEnabled())
+        if (mcMMO.isRetroModeEnabled())
             return config.getInt("Skills.Smelting.FuelEfficiency.RetroMode.MaxBonusLevel", 1000);
         else
             return config.getInt("Skills.Smelting.FuelEfficiency.Standard.MaxBonusLevel", 100);
     }
 
-    /*public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining.UnlockLevel", 250); }*/
-    public double getFluxMiningChance() { return config.getDouble("Skills.Smelting.FluxMining.Chance", 33.0D); }
-
-    public int getSmeltingRankLevel(int rank) { return config.getInt("Skills.Smelting.Rank_Levels.Rank_" + rank); }
-
-    public int getSmeltingVanillaXPBoostMultiplier(int rank) { return config.getInt("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank); }
+    public double getFluxMiningChance() {
+        return config.getDouble("Skills.Smelting.FluxMining.Chance", 33.0D);
+    }
 
     /* SWORDS */
-    public double getRuptureDamagePlayer() { return config.getDouble("Skills.Swords.Rupture.DamagePlayer", 1.0); }
-    public double getRuptureDamageMobs() { return config.getDouble("Skills.Swords.Rupture.DamageMobs", 2.0); }
+    public double getRuptureTickDamage(boolean isTargetPlayer, int rank) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_";
+        String targetType = isTargetPlayer ? "Players" : "Mobs";
+        String key = root + targetType + ".Rank_" + rank;
 
-    public int getRuptureMaxTicks() { return config.getInt("Skills.Swords.Rupture.MaxTicks", 8); }
-    public int getRuptureBaseTicks() { return config.getInt("Skills.Swords.Rupture.BaseTicks", 2); }
+        return config.getDouble(key, 1.0D);
+    }
 
-    public double getCounterModifier() { return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D); }
+    public int getRuptureDurationSeconds(boolean isTargetPlayer) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Duration_In_Seconds.Against_";
+        String targetType = isTargetPlayer ? "Players" : "Mobs";
+        return config.getInt(root + targetType, 5);
+    }
 
-    public double getSerratedStrikesModifier() { return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D); }
-    public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5); }
+    public double getRuptureExplosionDamage(boolean isTargetPlayer, int rank) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_";
+        String targetType = isTargetPlayer ? "Players" : "Mobs";
+        String key = root + targetType + ".Rank_" + rank;
+
+        return config.getDouble(key, 40.0D);
+    }
+
+    public double getRuptureChanceToApplyOnHit(int rank) {
+        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Chance_To_Apply_On_Hit.Rank_";
+        return config.getDouble(root + rank, 33);
+    }
+
+    public double getCounterModifier() {
+        return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D);
+    }
+
+    public double getSerratedStrikesModifier() {
+        return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D);
+    }
+
+    public int getSerratedStrikesTicks() {
+        return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5);
+    }
 
     /* TAMING */
-    //public int getGoreRuptureTicks() { return config.getInt("Skills.Taming.Gore.RuptureTicks", 2); }
-    public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D); }
+    public double getGoreModifier() {
+        return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D);
+    }
 
-    /*public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood.UnlockLevel", 50); }*/
-    public double getFastFoodChance() { return config.getDouble("Skills.Taming.FastFoodService.Chance", 50.0D); }
-    public double getPummelChance() { return config.getDouble("Skills.Taming.Pummel.Chance", 10.0D); }
+    public double getFastFoodChance() {
+        return config.getDouble("Skills.Taming.FastFoodService.Chance", 50.0D);
+    }
 
-    //public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware.UnlockLevel", 100); }
+    public double getPummelChance() {
+        return config.getDouble("Skills.Taming.Pummel.Chance", 10.0D);
+    }
 
-    /*public int getThickFurUnlock() { return config.getInt("Skills.Taming.ThickFur.UnlockLevel", 250); }*/
-    public double getThickFurModifier() { return config.getDouble("Skills.Taming.ThickFur.Modifier", 2.0D); }
+    public double getThickFurModifier() {
+        return config.getDouble("Skills.Taming.ThickFur.Modifier", 2.0D);
+    }
 
-    /*public int getHolyHoundUnlock() {return config.getInt("Skills.Taming.HolyHound.UnlockLevel", 375); }*/
+    public double getShockProofModifier() {
+        return config.getDouble("Skills.Taming.ShockProof.Modifier", 6.0D);
+    }
 
-    /*public int getShockProofUnlock() { return config.getInt("Skills.Taming.ShockProof.UnlockLevel", 500); }*/
-    public double getShockProofModifier() { return config.getDouble("Skills.Taming.ShockProof.Modifier", 6.0D); }
+    public double getSharpenedClawsBonus() {
+        return config.getDouble("Skills.Taming.SharpenedClaws.Bonus", 2.0D);
+    }
 
-    /*public int getSharpenedClawsUnlock() { return config.getInt("Skills.Taming.SharpenedClaws.UnlockLevel", 750); }*/
-    public double getSharpenedClawsBonus() { return config.getDouble("Skills.Taming.SharpenedClaws.Bonus", 2.0D); }
+    public double getMinHorseJumpStrength() {
+        return config.getDouble("Skills.Taming.CallOfTheWild.MinHorseJumpStrength", 0.7D);
+    }
 
-    public double getMinHorseJumpStrength() { return config.getDouble("Skills.Taming.CallOfTheWild.MinHorseJumpStrength", 0.7D); }
-    public double getMaxHorseJumpStrength() { return config.getDouble("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength", 2.0D); }
+    public double getMaxHorseJumpStrength() {
+        return config.getDouble("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength", 2.0D);
+    }
 
     /* UNARMED */
 
-    public boolean isSteelArmDamageCustom() { return config.getBoolean("Skills.Unarmed.SteelArmStyle.Damage_Override", false); }
+    public boolean isSteelArmDamageCustom() {
+        return config.getBoolean("Skills.Unarmed.SteelArmStyle.Damage_Override", false);
+    }
+
     public double getSteelArmOverride(int rank, double def) {
         String key = "Rank_" + rank;
         return config.getDouble("Skills.Unarmed.SteelArmStyle.Override." + key, def);
     }
-    public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
+
+    public boolean getDisarmProtected() {
+        return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false);
+    }
 
     /* WOODCUTTING */
-    public boolean isKnockOnWoodXPOrbEnabled() { return config.getBoolean("Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops", true); }
+    public boolean isKnockOnWoodXPOrbEnabled() {
+        return config.getBoolean("Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops", true);
+    }
 }

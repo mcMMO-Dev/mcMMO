@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
@@ -38,11 +37,10 @@ public class PowerLevelUpBroadcastPredicate<T extends CommandSender> implements 
             return false;
         }
 
-        if(t instanceof Player) {
-            Player listeningPlayer = (Player) t;
+        if(t instanceof Player listeningPlayer) {
 
             //Party Member Check
-            if(Config.getInstance().isPowerLevelUpBroadcastsPartyMembersOnly()) {
+            if(mcMMO.p.getGeneralConfig().isPowerLevelUpBroadcastsPartyMembersOnly()) {
                 McMMOPlayer mmoListeningPlayer = UserManager.getPlayer(listeningPlayer);
 
                 if(mmoListeningPlayer == null) {
@@ -68,27 +66,27 @@ public class PowerLevelUpBroadcastPredicate<T extends CommandSender> implements 
                 }
 
                 //Distance checks
-                if(Config.getInstance().shouldPowerLevelUpBroadcastsRestrictDistance()) {
-                    if(!Misc.isNear(mmoBroadcastingPlayer.getPlayer().getLocation(), listeningPlayer.getLocation(), Config.getInstance().getPowerLevelUpBroadcastRadius())) {
+                if(mcMMO.p.getGeneralConfig().shouldPowerLevelUpBroadcastsRestrictDistance()) {
+                    if(!Misc.isNear(mmoBroadcastingPlayer.getPlayer().getLocation(), listeningPlayer.getLocation(), mcMMO.p.getGeneralConfig().getPowerLevelUpBroadcastRadius())) {
                         return false;
                     }
                 }
             }
 
             //Visibility checks
-            if(!listeningPlayer.canSee(mmoBroadcastingPlayer.getPlayer())) {
+            if(!listeningPlayer.canSee(mmoBroadcastingPlayer.getPlayer()) && listeningPlayer != mmoBroadcastingPlayer.getPlayer()) {
                 return false; //Player who leveled should be invisible to this player so don't send the message
             }
 
             return true;
         } else {
             //Send out to console
-            return Config.getInstance().shouldPowerLevelUpBroadcastToConsole();
+            return mcMMO.p.getGeneralConfig().shouldPowerLevelUpBroadcastToConsole();
         }
     }
 
     private static boolean isPowerLevelUpBroadcastsSameWorldOnly() {
-        return Config.getInstance().isPowerLevelUpBroadcastsSameWorldOnly();
+        return mcMMO.p.getGeneralConfig().isPowerLevelUpBroadcastsSameWorldOnly();
     }
 
     @Override

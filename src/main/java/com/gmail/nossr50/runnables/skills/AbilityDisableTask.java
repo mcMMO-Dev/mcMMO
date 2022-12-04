@@ -1,7 +1,5 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -9,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Chunk;
@@ -41,7 +38,7 @@ public class AbilityDisableTask extends BukkitRunnable {
                 // Fallthrough
 
             case BERSERK:
-                if (Config.getInstance().getRefreshChunksEnabled()) {
+                if (mcMMO.p.getGeneralConfig().getRefreshChunksEnabled()) {
                     resendChunkRadiusAt(player);
                 }
                 // Fallthrough
@@ -55,17 +52,19 @@ public class AbilityDisableTask extends BukkitRunnable {
         mcMMOPlayer.setAbilityMode(ability, false);
         mcMMOPlayer.setAbilityInformed(ability, false);
 
-        ParticleEffectUtils.playAbilityDisabledEffect(player);
+//        ParticleEffectUtils.playAbilityDisabledEffect(player);
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
             NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
 
-        if (AdvancedConfig.getInstance().sendAbilityNotificationToOtherPlayers()) {
+        if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
             SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         }
-        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        if(!mcMMO.isServerShutdownExecuted()) {
+            new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, (long) PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        }
     }
 
     private void resendChunkRadiusAt(Player player) {

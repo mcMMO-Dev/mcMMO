@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.items;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
@@ -42,7 +42,7 @@ public class TeleportationWarmup extends BukkitRunnable {
             return;
         }
 
-        int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
+        int hurtCooldown = mcMMO.p.getGeneralConfig().getPTPCommandRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, teleportingPlayer);
@@ -53,7 +53,7 @@ public class TeleportationWarmup extends BukkitRunnable {
             }
         }
 
-        if (Config.getInstance().getPTPCommandWorldPermissions()) {
+        if (mcMMO.p.getGeneralConfig().getPTPCommandWorldPermissions()) {
             World targetWorld = targetPlayer.getWorld();
             World playerWorld = teleportingPlayer.getWorld();
 

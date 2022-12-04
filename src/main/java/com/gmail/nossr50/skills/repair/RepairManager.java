@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -27,8 +25,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
 
 public class RepairManager extends SkillManager {
     private boolean placedAnvil;
@@ -48,11 +49,11 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (Config.getInstance().getRepairAnvilMessagesEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getRepairAnvilMessagesEnabled()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil");
         }
 
-        if (Config.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getRepairAnvilPlaceSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
@@ -127,6 +128,35 @@ public class RepairManager extends SkillManager {
 
         // toRemove should be refreshed before the event call.
         toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
+
+        // Check if we allow enchanted materials to be used to repair objects.
+        // (Servers may provide enchanted items that don't follow their intended use)
+        if (!mcMMO.p.getAdvancedConfig().getAllowEnchantedRepairMaterials()) {
+
+            // See if our proposed item is even enchanted in the first place.
+            if (toRemove.getEnchantments().size() > 0) {
+
+                // Lots of array sorting to find a potential non-enchanted candidate item.
+                Optional<ItemStack> possibleMaterial = Arrays.stream(inventory.getContents())
+                        .filter(Objects::nonNull)
+                        .filter(p -> p.getType() == repairMaterial)
+                        .filter(p -> p.getEnchantments().isEmpty())
+                        .findFirst();
+
+                // Fail out with "you need material" if we don't find a suitable alternative.
+                if (possibleMaterial.isEmpty()) {
+                    String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
+
+                    String materialsNeeded = "";
+
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
+                    return;
+                }
+
+                // Update our toRemove item to our suggested possible material.
+                toRemove = possibleMaterial.get().clone();
+            }
+        }
         
         // Call event
         if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
@@ -150,7 +180,7 @@ public class RepairManager extends SkillManager {
                 * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())), XPGainReason.PVE);
 
         // BWONG BWONG BWONG
-        if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getRepairAnvilUseSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
         }
@@ -172,7 +202,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !mcMMO.p.getGeneralConfig().getRepairConfirmRequired()) {
             return true;
         }
 
@@ -201,7 +231,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of keeping the enchantment
      */
     public double getKeepEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChance(getArcaneForgingRank());
+        return mcMMO.p.getAdvancedConfig().getArcaneForgingKeepEnchantsChance(getArcaneForgingRank());
     }
 
     /**
@@ -210,7 +240,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of the enchantment being downgraded
      */
     public double getDowngradeEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneForgingDowngradeChance(getArcaneForgingRank());
+        return mcMMO.p.getAdvancedConfig().getArcaneForgingDowngradeChance(getArcaneForgingRank());
     }
 
     /*

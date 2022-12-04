@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -8,8 +7,10 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.random.RandomChanceSkill;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
@@ -30,11 +31,24 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param triple     marks the block to give triple drops
      */
-    public static void markDropsAsBonus(@NotNull BlockState blockState, boolean triple) {
+    public static void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(2, mcMMO.p));
         else
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(1, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(1, mcMMO.p));
+    }
+
+    /**
+     * Cleans up some block metadata when a block breaks and the metadata is no longer needed
+     * This also sets the blocks coords to false in our chunk store
+     * @param block target block
+     */
+    public static void cleanupBlockMetadata(Block block) {
+        if(block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
+            block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
+        }
+
+        mcMMO.getPlaceStore().setFalse(block);
     }
 
     /**
@@ -42,8 +56,8 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param amount amount of extra items to drop
      */
-    public static void markDropsAsBonus(@NotNull BlockState blockState, int amount) {
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, mcMMO.p));
+    public static void markDropsAsBonus(BlockState blockState, int amount) {
+            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(amount, mcMMO.p));
     }
 
     /**
@@ -52,9 +66,9 @@ public final class BlockUtils {
      * @param blockState the blockstate
      * @return true if the player succeeded in the check
      */
-    public static boolean checkDoubleDrops(@NotNull Player player, @NotNull BlockState blockState, @NotNull PrimarySkillType skillType, @NotNull SubSkillType subSkillType) {
-        if (Config.getInstance().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
-            return SkillUtils.isSkillRNGSuccessful(subSkillType, player);
+    public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType skillType, SubSkillType subSkillType) {
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
+            return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }
 
         return false;
@@ -68,10 +82,10 @@ public final class BlockUtils {
      */
     public static boolean shouldBeWatched(BlockState blockState) {
         return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || hasWoodcuttingXP(blockState)
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType())
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, blockState.getType())
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())
-                || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, blockState.getType());
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType())
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, blockState.getType())
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, blockState.getType());
     }
 
     /**
@@ -157,7 +171,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Giga Drill Breaker, false
      * otherwise
      */
-    public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
+    public static boolean affectedByGigaDrillBreaker(@NotNull BlockState blockState) {
         if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.EXCAVATION, blockState.getBlockData()))
             return true;
         return mcMMO.getModManager().isCustomExcavationBlock(blockState);
@@ -169,7 +183,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a log, false otherwise
      */
-    public static boolean hasWoodcuttingXP(BlockState blockState) {
+    public static boolean hasWoodcuttingXP(@NotNull BlockState blockState) {
         return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, blockState.getBlockData());
     }
 
@@ -179,11 +193,11 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a leaf, false otherwise
      */
-    public static boolean isNonWoodPartOfTree(BlockState blockState) {
+    public static boolean isNonWoodPartOfTree(@NotNull BlockState blockState) {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(blockState.getType());
     }
 
-    public static boolean isNonWoodPartOfTree(Material material) {
+    public static boolean isNonWoodPartOfTree(@NotNull Material material) {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(material);
     }
 
@@ -276,14 +290,27 @@ public final class BlockUtils {
         if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE) {
             return true;
         }
-        if (data instanceof Ageable) {
-            Ageable ageable = (Ageable) data;
+        if (data instanceof Ageable ageable) {
             return ageable.getAge() == ageable.getMaximumAge();
         }
         return true;
     }
 
-    public static boolean isPartOfTree(Block rayCast) {
-        return hasWoodcuttingXP(rayCast.getState()) || isNonWoodPartOfTree(rayCast.getType());
+    public static boolean isPartOfTree(Block block) {
+        return hasWoodcuttingXP(block.getState()) || isNonWoodPartOfTree(block.getType());
     }
+
+    /**
+     * Checks to see if a Block is within the world bounds
+     * Prevent processing blocks from other plugins (or perhaps odd spigot anomalies) from sending blocks that can't exist within the world
+     * @param block
+     * @return
+     */
+    public static boolean isWithinWorldBounds(@NotNull Block block) {
+        World world = block.getWorld();
+
+        //World min height = inclusive | World max height = exclusive
+        return block.getY() >= world.getMinHeight() && block.getY() < world.getMaxHeight();
+    }
+
 }

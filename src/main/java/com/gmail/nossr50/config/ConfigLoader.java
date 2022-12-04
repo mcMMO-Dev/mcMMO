@@ -1,43 +1,59 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
 
 public abstract class ConfigLoader {
-    protected static final mcMMO plugin = mcMMO.p;
-    protected String fileName;
     protected final File configFile;
-    protected FileConfiguration config;
+    protected final @NotNull File dataFolder;
+    protected String fileName;
+    protected YamlConfiguration config;
 
-    public ConfigLoader(String relativePath, String fileName) {
+    public ConfigLoader(String relativePath, String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
-        configFile = new File(plugin.getDataFolder(), relativePath + File.separator + fileName);
+        this.dataFolder = dataFolder;
+        configFile = new File(dataFolder, relativePath + File.separator + fileName);
         loadFile();
     }
 
+    public ConfigLoader(String fileName, @NotNull File dataFolder) {
+        this.fileName = fileName;
+        this.dataFolder = dataFolder;
+        configFile = new File(dataFolder, fileName);
+        loadFile();
+    }
+
+    @Deprecated
+    public ConfigLoader(String relativePath, String fileName) {
+        this.fileName = fileName;
+        configFile = new File(mcMMO.p.getDataFolder(), relativePath + File.separator + fileName);
+        this.dataFolder = mcMMO.p.getDataFolder();
+        loadFile();
+    }
+
+    @Deprecated
     public ConfigLoader(String fileName) {
         this.fileName = fileName;
-        configFile = new File(plugin.getDataFolder(), fileName);
+        configFile = new File(mcMMO.p.getDataFolder(), fileName);
+        this.dataFolder = mcMMO.p.getDataFolder();
         loadFile();
     }
 
     protected void loadFile() {
         if (!configFile.exists()) {
-            plugin.debug("Creating mcMMO " + fileName + " File...");
+            mcMMO.p.getLogger().info("Creating mcMMO " + fileName + " File...");
 
             try {
-                plugin.saveResource(fileName, false); // Normal files
+                mcMMO.p.saveResource(fileName, false); // Normal files
+            } catch (IllegalArgumentException ex) {
+                mcMMO.p.saveResource(configFile.getParentFile().getName() + File.separator + fileName, false); // Mod files
             }
-            catch (IllegalArgumentException ex) {
-                plugin.saveResource(configFile.getParentFile().getName() + File.separator + fileName, false); // Mod files
-            }
-        }
-        else {
-            plugin.debug("Loading mcMMO " + fileName + " File...");
+        } else {
+            mcMMO.p.getLogger().info("Loading mcMMO " + fileName + " File...");
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
@@ -51,7 +67,7 @@ public abstract class ConfigLoader {
 
     protected boolean noErrorsInConfig(List<String> issues) {
         for (String issue : issues) {
-            plugin.getLogger().warning(issue);
+            mcMMO.p.getLogger().warning(issue);
         }
 
         return issues.isEmpty();
@@ -59,12 +75,11 @@ public abstract class ConfigLoader {
 
     protected void validate() {
         if (validateKeys()) {
-            plugin.debug("No errors found in " + fileName + "!");
-        }
-        else {
-            plugin.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-            plugin.noErrorsInConfigFiles = false;
+            mcMMO.p.debug("No errors found in " + fileName + "!");
+        } else {
+            mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
+            mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
+            mcMMO.p.noErrorsInConfigFiles = false;
         }
     }
 
@@ -73,16 +88,16 @@ public abstract class ConfigLoader {
     }
 
     public void backup() {
-        plugin.getLogger().warning("You are using an old version of the " + fileName + " file.");
-        plugin.getLogger().warning("Your old file has been renamed to " + fileName + ".old and has been replaced by an updated version.");
+        mcMMO.p.getLogger().warning("You are using an old version of the " + fileName + " file.");
+        mcMMO.p.getLogger().warning("Your old file has been renamed to " + fileName + ".old and has been replaced by an updated version.");
 
         configFile.renameTo(new File(configFile.getPath() + ".old"));
 
-        if (plugin.getResource(fileName) != null) {
-            plugin.saveResource(fileName, true);
+        if (mcMMO.p.getResource(fileName) != null) {
+            mcMMO.p.saveResource(fileName, true);
         }
 
-        plugin.getLogger().warning("Reloading " + fileName + " with new values...");
+        mcMMO.p.getLogger().warning("Reloading " + fileName + " with new values...");
         loadFile();
         loadKeys();
     }

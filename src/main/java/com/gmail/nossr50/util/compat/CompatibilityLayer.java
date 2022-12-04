@@ -8,5 +8,5 @@ public interface CompatibilityLayer {
      * Whether or not this CompatibilityLayer successfully initialized and in theory should be functional
      * @return true if this CompatibilityLayer is functional
      */
-    boolean noErrorsOnInitialize();
+    default boolean noErrorsOnInitialize() { return true; };
 }

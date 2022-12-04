@@ -18,8 +18,8 @@ import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
+import com.gmail.nossr50.metadata.MetadataService;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.commands.NotifySquelchReminderTask;
@@ -28,7 +28,6 @@ import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -49,6 +48,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
@@ -60,8 +60,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,15 +76,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mcMMO extends JavaPlugin {
-    /* Managers */
+
+
+    /* Managers & Services */
     private static PlatformManager platformManager;
+    private static MetadataService metadataService;
     private static ChunkManager       placeStore;
     private static RepairableManager  repairableManager;
     private static SalvageableManager salvageableManager;
     private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
-    private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
@@ -91,6 +95,9 @@ public class mcMMO extends JavaPlugin {
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
+
+    private @NotNull SkillTools skillTools;
+
     private static boolean serverShutdownExecuted = false;
 
     /* Adventure */
@@ -126,31 +133,30 @@ public class mcMMO extends JavaPlugin {
 
     private static boolean isRetroModeEnabled;
 
-    /* Metadata Values */
-    public static final String REPLANT_META_KEY      = "mcMMO: Recently Replanted";
-    public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
-    public static final String DODGE_TRACKER         = "mcMMO: Dodge Tracker";
-    public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
-    public static final String travelingBlock        = "mcMMO: Traveling Block";
-    public static final String blockMetadataKey      = "mcMMO: Piston Tracking";
-    public static final String tntMetadataKey        = "mcMMO: Tracked TNT";
-    public static final String customNameKey         = "mcMMO: Custom Name";
-    public static final String customVisibleKey      = "mcMMO: Name Visibility";
-    public static final String droppedItemKey        = "mcMMO: Tracked Item";
-    public static final String infiniteArrowKey      = "mcMMO: Infinite Arrow";
-    public static final String trackedArrow          = "mcMMO: Tracked Arrow";
-    public static final String bowForceKey           = "mcMMO: Bow Force";
-    public static final String arrowDistanceKey      = "mcMMO: Arrow Distance";
-    public static final String BONUS_DROPS_METAKEY   = "mcMMO: Double Drops";
-    public static final String disarmedItemKey       = "mcMMO: Disarmed Item";
-    public static final String playerDataKey         = "mcMMO: Player Data";
-    public static final String databaseCommandKey    = "mcMMO: Processing Database Command";
+    private long purgeTime = 2630000000L;
 
-    public static FixedMetadataValue metadataValue;
+    private GeneralConfig generalConfig;
+    private AdvancedConfig advancedConfig;
+//    private RepairConfig repairConfig;
+//    private SalvageConfig salvageConfig;
+//    private PersistentDataConfig persistentDataConfig;
+//    private ChatConfig chatConfig;
+//    private CoreSkillsConfig coreSkillsConfig;
+//    private RankConfig rankConfig;
+//    private TreasureConfig treasureConfig;
+//    private FishingTreasureConfig fishingTreasureConfig;
+//    private SoundConfig soundConfig;
 
     public mcMMO() {
         p = this;
     }
+
+
+    protected mcMMO(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
+    {
+        super(loader, description, dataFolder, file);
+    }
+
 
     /**
      * Things to be run when the plugin is enabled.
@@ -158,13 +164,26 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            setupFilePaths();
+            generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
+            skillTools = new SkillTools(this); //Load after general config
+
+            //Init configs
+            advancedConfig = new AdvancedConfig(getDataFolder());
+
+            //Store this value so other plugins can check it
+            isRetroModeEnabled = generalConfig.getIsRetroMode();
+
             //Platform Manager
             platformManager = new PlatformManager();
+
+            //metadata service
+            metadataService = new MetadataService(this);
 
             //Filter out any debug messages (if debug/verbose logging is not enabled)
             getLogger().setFilter(new LogFilter(this));
 
-            metadataValue = new FixedMetadataValue(this, true);
+            MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
@@ -172,7 +191,6 @@ public class mcMMO extends JavaPlugin {
 
             upgradeManager = new UpgradeManager();
 
-            setupFilePaths();
 
             modManager = new ModManager();
 
@@ -184,9 +202,6 @@ public class mcMMO extends JavaPlugin {
             if (!noErrorsInConfigFiles) {
                 return;
             }
-
-            //Store this value so other plugins can check it
-            isRetroModeEnabled = Config.getInstance().getIsRetroMode();
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
@@ -205,7 +220,10 @@ public class mcMMO extends JavaPlugin {
                 getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
             }
 
-            databaseManager = DatabaseManagerFactory.getDatabaseManager();
+            // One month in milliseconds
+            this.purgeTime = 2630000000L * generalConfig.getOldUsersCutoff();
+
+            databaseManager = DatabaseManagerFactory.getDatabaseManager(mcMMO.getUsersFilePath(), getLogger(), purgeTime, mcMMO.p.getAdvancedConfig().getStartingLevel());
 
             //Check for the newer API and tell them what to do if its missing
             checkForOutdatedAPI();
@@ -233,7 +251,6 @@ public class mcMMO extends JavaPlugin {
                 PartyManager.loadParties();
 
                 formulaManager = new FormulaManager();
-                holidayManager = new HolidayManager();
 
                 for (Player player : getServer().getOnlinePlayers()) {
                     new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
@@ -246,7 +263,7 @@ public class mcMMO extends JavaPlugin {
 
                 placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
-                if (Config.getInstance().getPTPCommandWorldPermissions()) {
+                if (generalConfig.getPTPCommandWorldPermissions()) {
                     Permissions.generateWorldTeleportPermissions();
                 }
 
@@ -257,16 +274,17 @@ public class mcMMO extends JavaPlugin {
             //If anonymous statistics are enabled then use them
             Metrics metrics;
 
-            if(Config.getInstance().getIsMetricsEnabled()) {
+            if(generalConfig.getIsMetricsEnabled()) {
                 metrics = new Metrics(this, 3894);
                 metrics.addCustomChart(new SimplePie("version", () -> getDescription().getVersion()));
 
-                if(Config.getInstance().getIsRetroMode())
+                if(generalConfig.getIsRetroMode())
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Retro"));
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
             }
         }
+
         catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
 
@@ -349,30 +367,24 @@ public class mcMMO extends JavaPlugin {
             PartyManager.saveParties(); // Save our parties
 
             //TODO: Needed?
-            if(Config.getInstance().getScoreboardsEnabled())
+            if(generalConfig.getScoreboardsEnabled())
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
-            holidayManager.saveAnniversaryFiles();
             placeStore.closeAll();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (Config.getInstance().getBackupsEnabled()) {
+        if (generalConfig.getBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
                 ZipLibrary.mcMMOBackup();
-            }
-            catch (IOException e) {
-                getLogger().severe(e.toString());
-            }
-            catch(NoClassDefFoundError e) {
+            } catch(NoClassDefFoundError e) {
                 getLogger().severe("Backup class not found!");
                 getLogger().info("Please do not replace the mcMMO jar while the server is running."); 
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 getLogger().severe(e.toString());
             }
         }
@@ -426,10 +438,6 @@ public class mcMMO extends JavaPlugin {
         return formulaManager;
     }
 
-    public static HolidayManager getHolidayManager() {
-        return holidayManager;
-    }
-
     public static ChunkManager getPlaceStore() {
         return placeStore;
     }
@@ -454,8 +462,12 @@ public class mcMMO extends JavaPlugin {
         return upgradeManager;
     }
 
-    public static CompatibilityManager getCompatibilityManager() {
+    public static @Nullable CompatibilityManager getCompatibilityManager() {
         return platformManager.getCompatibilityManager();
+    }
+
+    public static MetadataService getMetadataService() {
+        return metadataService;
     }
 
     @Deprecated
@@ -536,7 +548,7 @@ public class mcMMO extends JavaPlugin {
         TreasureConfig.getInstance();
         FishingTreasureConfig.getInstance();
         HiddenConfig.getInstance();
-        AdvancedConfig.getInstance();
+        mcMMO.p.getAdvancedConfig();
         PotionConfig.getInstance();
         CoreSkillsConfig.getInstance();
         SoundConfig.getInstance();
@@ -546,19 +558,19 @@ public class mcMMO extends JavaPlugin {
 
         List<Repairable> repairables = new ArrayList<>();
 
-        if (Config.getInstance().getToolModsEnabled()) {
+        if (generalConfig.getToolModsEnabled()) {
             new ToolConfigManager(this);
         }
 
-        if (Config.getInstance().getArmorModsEnabled()) {
+        if (generalConfig.getArmorModsEnabled()) {
             new ArmorConfigManager(this);
         }
 
-        if (Config.getInstance().getBlockModsEnabled()) {
+        if (generalConfig.getBlockModsEnabled()) {
             new BlockConfigManager(this);
         }
 
-        if (Config.getInstance().getEntityModsEnabled()) {
+        if (generalConfig.getEntityModsEnabled()) {
             new EntityConfigManager(this);
         }
 
@@ -570,7 +582,7 @@ public class mcMMO extends JavaPlugin {
 
         // Load salvage configs, make manager and register them at this time
         SalvageConfigManager sManager = new SalvageConfigManager(this);
-        List<Salvageable> salvageables = new ArrayList<>(sManager.getLoadedSalvageables());
+        List<Salvageable> salvageables = sManager.getLoadedSalvageables();
         salvageableManager = new SimpleSalvageableManager(salvageables.size());
         salvageableManager.registerSalvageables(salvageables);
     }
@@ -613,7 +625,7 @@ public class mcMMO extends JavaPlugin {
 
     private void registerCustomRecipes() {
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            if (Config.getInstance().getChimaeraEnabled()) {
+            if (generalConfig.getChimaeraEnabled()) {
                 getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
             }
         }, 40);
@@ -621,17 +633,18 @@ public class mcMMO extends JavaPlugin {
 
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
-        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
+        long second = 20;
+        long minute = second * 60;
+
+        long saveIntervalTicks = Math.max(minute, generalConfig.getSaveInterval() * minute);
+
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
-        // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
-
         // Old & Powerless User remover
-        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long purgeIntervalTicks = generalConfig.getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (purgeIntervalTicks == 0) {
             new UserPurgeTask().runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
@@ -641,7 +654,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (kickIntervalTicks == 0) {
             new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
@@ -653,38 +666,34 @@ public class mcMMO extends JavaPlugin {
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
-        if (getHolidayManager().nearingAprilFirst()) {
-            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
-        }
-
         // Clear the registered XP data so players can earn XP again
         if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
             new ClearRegisteredXPGainTask().runTaskTimer(this, 60, 60);
         }
 
-        if(AdvancedConfig.getInstance().allowPlayerTips())
+        if(mcMMO.p.getAdvancedConfig().allowPlayerTips())
         {
             new NotifySquelchReminderTask().runTaskTimer(this, 60, ((20 * 60) * 60));
         }
     }
 
     private void checkModConfigs() {
-        if (!Config.getInstance().getToolModsEnabled()) {
+        if (!generalConfig.getToolModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom tool config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
         }
 
-        if (!Config.getInstance().getArmorModsEnabled()) {
+        if (!generalConfig.getArmorModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom armor config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Armor_Mods_Enabled to TRUE in config.yml.");
         }
 
-        if (!Config.getInstance().getBlockModsEnabled()) {
+        if (!generalConfig.getBlockModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom block config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Block_Mods_Enabled to TRUE in config.yml.");
         }
 
-        if (!Config.getInstance().getEntityModsEnabled()) {
+        if (!generalConfig.getEntityModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
         }
@@ -749,4 +758,19 @@ public class mcMMO extends JavaPlugin {
         serverShutdownExecuted = bool;
     }
 
+    public long getPurgeTime() {
+        return purgeTime;
+    }
+
+    public @NotNull SkillTools getSkillTools() {
+        return skillTools;
+    }
+
+    public @NotNull GeneralConfig getGeneralConfig() {
+        return generalConfig;
+    }
+
+    public @NotNull AdvancedConfig getAdvancedConfig() {
+        return advancedConfig;
+    }
 }

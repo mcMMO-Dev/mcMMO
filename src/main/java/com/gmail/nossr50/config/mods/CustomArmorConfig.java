@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.mods;
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import org.bukkit.Material;
@@ -13,14 +14,12 @@ import java.util.List;
 import java.util.Set;
 
 public class CustomArmorConfig extends ConfigLoader {
-    private boolean needsUpdate = false;
-
-    public List<Material> customBoots       = new ArrayList<>();
+    public List<Material> customBoots = new ArrayList<>();
     public List<Material> customChestplates = new ArrayList<>();
-    public List<Material> customHelmets     = new ArrayList<>();
-    public List<Material> customLeggings    = new ArrayList<>();
-
+    public List<Material> customHelmets = new ArrayList<>();
+    public List<Material> customLeggings = new ArrayList<>();
     public List<Repairable> repairables = new ArrayList<>();
+    private boolean needsUpdate = false;
 
     protected CustomArmorConfig(String fileName) {
         super("mods", fileName);
@@ -62,7 +61,7 @@ public class CustomArmorConfig extends ConfigLoader {
             Material armorMaterial = Material.matchMaterial(armorName);
 
             if (armorMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + armorName);
+                mcMMO.p.getLogger().warning("Invalid material name. This item will be skipped. - " + armorName);
                 continue;
             }
 
@@ -70,7 +69,7 @@ public class CustomArmorConfig extends ConfigLoader {
             Material repairMaterial = Material.matchMaterial(config.getString(armorType + "." + armorName + ".Repair_Material", ""));
 
             if (repairable && (repairMaterial == null)) {
-                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + armorName);
+                mcMMO.p.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + armorName);
                 repairable = false;
             }
 

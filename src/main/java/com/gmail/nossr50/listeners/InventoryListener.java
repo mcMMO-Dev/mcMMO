@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -11,6 +10,7 @@ import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -54,35 +54,29 @@ public class InventoryListener implements Listener {
         }
 
         Furnace furnace = (Furnace) furnaceState;
-
         OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
+        Player player;
 
-        if(offlinePlayer != null && offlinePlayer.isOnline()) {
+        if(offlinePlayer != null && offlinePlayer.isOnline() && offlinePlayer instanceof Player) {
+            player = (Player) offlinePlayer;
 
-            Player player = Bukkit.getPlayer(offlinePlayer.getUniqueId());
+            if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
+                return;
+            }
 
-            if(player != null) {
-                if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
-                    return;
-                }
+            McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-                //Profile doesn't exist
-                if(UserManager.getOfflinePlayer(offlinePlayer) == null)
-                {
-                    return;
-                }
-
-
-                boolean debugMode = player.isOnline() && UserManager.getPlayer(player).isDebugMode();
+            if(mmoPlayer != null) {
+                boolean debugMode = mmoPlayer.isDebugMode();
 
                 if(debugMode) {
                     player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
                     player.sendMessage("Furnace - "+furnace.hashCode());
-                    player.sendMessage("Furnace Type: "+furnaceBlock.getType().toString());
+                    player.sendMessage("Furnace Type: "+furnaceBlock.getType());
                     player.sendMessage("Burn Length before Fuel Efficiency is applied - "+event.getBurnTime());
                 }
 
-                event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+                event.setBurnTime(mmoPlayer.getSmeltingManager().fuelEfficiency(event.getBurnTime()));
 
                 if(debugMode) {
                     player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
@@ -90,7 +84,6 @@ public class InventoryListener implements Listener {
                 }
             }
         }
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -106,8 +99,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if(blockState instanceof Furnace) {
-            Furnace furnace = (Furnace) blockState;
+        if(blockState instanceof Furnace furnace) {
             OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
 
             if(offlinePlayer != null) {
@@ -192,7 +184,7 @@ public class InventoryListener implements Listener {
 
         InventoryHolder holder = inventory.getHolder();
 
-        if (!(holder instanceof BrewingStand)) {
+        if (!(holder instanceof BrewingStand stand)) {
             return;
         }
 
@@ -209,7 +201,6 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        BrewingStand stand = (BrewingStand) holder;
         ItemStack clicked = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
 
@@ -382,17 +373,17 @@ public class InventoryListener implements Listener {
 
         ItemStack item = event.getItem();
 
-        if (Config.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
+        if (mcMMO.p.getGeneralConfig().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
             event.setCancelled(true);
             return;
         }
 
-        if (Config.getInstance().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
+        if (mcMMO.p.getGeneralConfig().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
             event.setCancelled(true);
             return;
         }
 
-        if (Config.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
+        if (mcMMO.p.getGeneralConfig().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
             AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);
         }
     }
@@ -404,6 +395,7 @@ public class InventoryListener implements Listener {
         }
 
         SkillUtils.removeAbilityBuff(event.getCurrentItem());
+
         if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
             if(isOutsideWindowClick(event))
                 return;
@@ -428,7 +420,7 @@ public class InventoryListener implements Listener {
 
         final HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!whoClicked.hasMetadata(mcMMO.playerDataKey)) {
+        if (!whoClicked.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA)) {
             return;
         }
 

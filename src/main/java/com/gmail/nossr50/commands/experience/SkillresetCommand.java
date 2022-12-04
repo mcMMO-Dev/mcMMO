@@ -10,6 +10,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This class mirrors the structure of ExperienceCommand, except the
@@ -50,7 +50,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = PrimarySkillType.getSkill(args[0]);
+                    skill = mcMMO.p.getSkillTools().matchSkill(args[0]);
                 }
 
                 editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill);
@@ -70,7 +70,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = PrimarySkillType.getSkill(args[1]);
+                    skill = mcMMO.p.getSkillTools().matchSkill(args[1]);
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
@@ -78,15 +78,18 @@ public class SkillresetCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    UUID uuid = null;
-                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
-                    if (player != null) {
-                        uuid = player.getUniqueId();
-                    }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    OfflinePlayer offlinePlayer = mcMMO.p.getServer().getOfflinePlayer(playerName);
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(offlinePlayer);
 
+                    //Check loading by UUID
                     if (CommandUtils.unloadedProfile(sender, profile)) {
-                        return true;
+                        //Didn't find it by UUID so try to find it by name
+                        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
+
+                        //Check if it was present in DB
+                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                            return true;
+                        }
                     }
 
                     editValues(null, profile, skill);
@@ -110,7 +113,7 @@ public class SkillresetCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }
@@ -143,7 +146,7 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
@@ -155,13 +158,13 @@ public class SkillresetCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), playerName));
         }
     }
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType);
             }
 

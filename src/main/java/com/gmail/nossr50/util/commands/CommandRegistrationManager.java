@@ -12,13 +12,10 @@ import com.gmail.nossr50.commands.experience.AddlevelsCommand;
 import com.gmail.nossr50.commands.experience.AddxpCommand;
 import com.gmail.nossr50.commands.experience.MmoeditCommand;
 import com.gmail.nossr50.commands.experience.SkillresetCommand;
-import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
-import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.*;
 import com.gmail.nossr50.commands.skills.*;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -37,7 +34,7 @@ public final class CommandRegistrationManager {
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             String commandName = skill.toString().toLowerCase(Locale.ENGLISH);
-            String localizedName = skill.getName().toLowerCase(Locale.ENGLISH);
+            String localizedName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill).toLowerCase(Locale.ENGLISH);
 
             PluginCommand command;
 
@@ -285,7 +282,7 @@ public final class CommandRegistrationManager {
 
     private static void registerMcpurgeCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcpurge");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", Config.getInstance().getOldUsersCutoff()));
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", mcMMO.p.getGeneralConfig().getOldUsersCutoff()));
         command.setPermission("mcmmo.commands.mcpurge");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcpurge"));
@@ -363,25 +360,25 @@ public final class CommandRegistrationManager {
         command.setExecutor(new PtpCommand());
     }
 
-    private static void registerHardcoreCommand() {
-        PluginCommand command = mcMMO.p.getCommand("hardcore");
-        command.setDescription(LocaleLoader.getString("Commands.Description.hardcore"));
-        command.setPermission("mcmmo.commands.hardcore;mcmmo.commands.hardcore.toggle;mcmmo.commands.hardcore.modify");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "hardcore", "[on|off]"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "hardcore", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
-        command.setExecutor(new HardcoreCommand());
-    }
-
-    private static void registerVampirismCommand() {
-        PluginCommand command = mcMMO.p.getCommand("vampirism");
-        command.setDescription(LocaleLoader.getString("Commands.Description.vampirism"));
-        command.setPermission("mcmmo.commands.vampirism;mcmmo.commands.vampirism.toggle;mcmmo.commands.vampirism.modify");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "vampirism", "[on|off]"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "vampirism", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
-        command.setExecutor(new VampirismCommand());
-    }
+//    private static void registerHardcoreCommand() {
+//        PluginCommand command = mcMMO.p.getCommand("hardcore");
+//        command.setDescription(LocaleLoader.getString("Commands.Description.hardcore"));
+//        command.setPermission("mcmmo.commands.hardcore;mcmmo.commands.hardcore.toggle;mcmmo.commands.hardcore.modify");
+//        command.setPermissionMessage(permissionsMessage);
+//        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "hardcore", "[on|off]"));
+//        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "hardcore", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
+//        command.setExecutor(new HardcoreCommand());
+//    }
+//
+//    private static void registerVampirismCommand() {
+//        PluginCommand command = mcMMO.p.getCommand("vampirism");
+//        command.setDescription(LocaleLoader.getString("Commands.Description.vampirism"));
+//        command.setPermission("mcmmo.commands.vampirism;mcmmo.commands.vampirism.toggle;mcmmo.commands.vampirism.modify");
+//        command.setPermissionMessage(permissionsMessage);
+//        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "vampirism", "[on|off]"));
+//        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "vampirism", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
+//        command.setExecutor(new VampirismCommand());
+//    }
 
     private static void registerMcnotifyCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcnotify");
@@ -390,15 +387,6 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
         command.setExecutor(new McnotifyCommand());
-    }
-    
-    private static void registerMHDCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mhd");
-        command.setDescription("Resets all mob health bar settings for all players to the default"); //TODO: Localize
-        command.setPermission("mcmmo.commands.mhd");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mhd"));
-        command.setExecutor(new MHDCommand());
     }
 
     private static void registerMcscoreboardCommand() {
@@ -457,7 +445,6 @@ public final class CommandRegistrationManager {
         registerMcnotifyCommand();
         registerMcrefreshCommand();
         registerMcscoreboardCommand();
-        registerMHDCommand();
         registerXprateCommand();
 
         // Database Commands
@@ -473,8 +460,8 @@ public final class CommandRegistrationManager {
         registerSkillresetCommand();
 
         // Hardcore Commands
-        registerHardcoreCommand();
-        registerVampirismCommand();
+//        registerHardcoreCommand();
+//        registerVampirismCommand();
 
         // Party Commands
         registerPartyCommand();

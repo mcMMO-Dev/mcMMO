@@ -9,7 +9,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -108,9 +107,9 @@ public final class Misc {
         return blockState.getLocation().add(0.5, 0.5, 0.5);
     }
 
-    public static void spawnItemsFromCollection(@NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItemsFromCollection(@NotNull Player player, @NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
         for (ItemStack drop : drops) {
-            spawnItem(location, drop, itemSpawnReason);
+            spawnItem(player, location, drop, itemSpawnReason);
         }
     }
 
@@ -122,11 +121,11 @@ public final class Misc {
      * @param drops collection to iterate over
      * @param sizeLimit the number of drops to process
      */
-    public static void spawnItemsFromCollection(@NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason, int sizeLimit) {
+    public static void spawnItemsFromCollection(@Nullable Player player, @NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason, int sizeLimit) {
         ItemStack[] arrayDrops = drops.toArray(new ItemStack[0]);
 
         for(int i = 0; i < sizeLimit-1; i++) {
-            spawnItem(location, arrayDrops[i], itemSpawnReason);
+            spawnItem(player, location, arrayDrops[i], itemSpawnReason);
         }
     }
 
@@ -137,9 +136,9 @@ public final class Misc {
      * @param is The items to drop
      * @param quantity The amount of items to drop
      */
-    public static void spawnItems(@NotNull Location location, @NotNull ItemStack is, int quantity, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItems(@Nullable Player player, @NotNull Location location, @NotNull ItemStack is, int quantity, @NotNull ItemSpawnReason itemSpawnReason) {
         for (int i = 0; i < quantity; i++) {
-            spawnItem(location, is, itemSpawnReason);
+            spawnItem(player, location, is, itemSpawnReason);
         }
     }
 
@@ -151,13 +150,13 @@ public final class Misc {
      * @param itemSpawnReason the reason for the item drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static @Nullable Item spawnItem(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static @Nullable Item spawnItem(@Nullable Player player, @NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -175,13 +174,13 @@ public final class Misc {
      * @param itemSpawnReason the reason for the item drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static @Nullable Item spawnItemNaturally(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static @Nullable Item spawnItemNaturally(@Nullable Player player, @NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -199,9 +198,9 @@ public final class Misc {
      * @param speed the speed that the item should travel
      * @param quantity The amount of items to drop
      */
-    public static void spawnItemsTowardsLocation(@NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack is, int quantity, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItemsTowardsLocation(@Nullable Player player, @NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack is, int quantity, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
         for (int i = 0; i < quantity; i++) {
-            spawnItemTowardsLocation(fromLocation, toLocation, is, speed, itemSpawnReason);
+            spawnItemTowardsLocation(player, fromLocation, toLocation, is, speed, itemSpawnReason);
         }
     }
 
@@ -215,7 +214,7 @@ public final class Misc {
      * @param speed the speed that the item should travel
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static @Nullable Item spawnItemTowardsLocation(@NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack itemToSpawn, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static @Nullable Item spawnItemTowardsLocation(@Nullable Player player, @NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack itemToSpawn, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemToSpawn.getType() == Material.AIR) {
             return null;
         }
@@ -229,7 +228,7 @@ public final class Misc {
             return null;
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem, itemSpawnReason);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         //Something cancelled the event so back out
@@ -258,12 +257,6 @@ public final class Misc {
             UserManager.remove(player);
             new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
-    }
-
-    public static int getWorldMinCompat(World world)
-    {
-        // TODO this method should access the world min variable in a version safe manner so that we don't restrict usage to new versions of spigot only
-        return 0;
     }
 
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {

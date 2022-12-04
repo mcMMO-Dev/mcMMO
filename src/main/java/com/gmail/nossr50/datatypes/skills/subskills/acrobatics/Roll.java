@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -19,6 +18,7 @@ import com.gmail.nossr50.util.random.Probability;
 import com.gmail.nossr50.util.random.ProbabilityImpl;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -84,6 +84,9 @@ public class Roll extends AcrobaticsSubSkill {
                     entityDamageEvent.setCancelled(true);
                     return true;
                 }
+            } else if(mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ACROBATICS)) {
+                //Give XP Anyways
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, ((EntityDamageEvent) event).getFinalDamage(), false), XPGainReason.PVE);
             }
         }
 
@@ -205,7 +208,7 @@ public class Roll extends AcrobaticsSubSkill {
             return gracefulRollCheck(player, mcMMOPlayer, damage, skillLevel);
         }
 
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold());
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
                 && SkillUtils.isSkillRNGSuccessful(SubSkillType.ACROBATICS_ROLL, player)) {
@@ -243,7 +246,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold() * 2);
 
         double gracefulOdds = SkillUtils.getSubSkillProbability(subSkillType, player).getValue() * 2;
         Probability gracefulProbability = new ProbabilityImpl(gracefulOdds);
@@ -363,47 +366,49 @@ public class Roll extends AcrobaticsSubSkill {
      */
     @Override
     public String getMechanics() {
-        return "This feature is currently not implemented but will be in the future! -mcMMO Devs";
-//        //Vars passed to locale
-//        //0 = chance to roll at half max level
-//        //1 = chance to roll with grace at half max level
-//        //2 = level where maximum bonus is reached
-//        //3 = additive chance to succeed per level
-//        //4 = damage threshold when rolling
-//        //5 = damage threshold when rolling with grace
-//        //6 = half of level where maximum bonus is reached
-//        /*
-//        Roll:
-//            # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
-//            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
-//            # DamageThreshold: The max damage a player can negate with a roll
-//            ChanceMax: 100.0
-//            MaxBonusLevel: 100
-//            DamageThreshold: 7.0
-//         */
+        //Vars passed to locale
+        //0 = chance to roll at half max level
+        //1 = chance to roll with grace at half max level
+        //2 = level where maximum bonus is reached
+        //3 = additive chance to succeed per level
+        //4 = damage threshold when rolling
+        //5 = damage threshold when rolling with grace
+        //6 = half of level where maximum bonus is reached
+        /*
+        Roll:
+            # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
+            # DamageThreshold: The max damage a player can negate with a roll
+            ChanceMax: 100.0
+            MaxBonusLevel: 100
+            DamageThreshold: 7.0
+         */
+
+        return "Under Construction: This will work in a future update.";
+//
 //        double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
 //
 //        //Chance to roll at half max skill
-//        SkillProbabilityWrapper rollHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
-//        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
-//        rollHalfMaxSkill.setxPos(halfMaxSkillValue);
+//        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+//        int halfMaxSkillValue = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
+//        rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 //
 //        //Chance to graceful roll at full skill
-//        SkillProbabilityWrapper rollGraceHalfMaxSkill = new SkillProbabilityWrapper(null, subSkillType);
-//        rollGraceHalfMaxSkill.setxPos(halfMaxSkillValue * 2); //Double the effective odds
+//        RandomChanceSkill rollGraceHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+//        rollGraceHalfMaxSkill.setSkillLevel(halfMaxSkillValue * 2); //Double the effective odds
 //
 //        //Chance to roll per level
-//        SkillProbabilityWrapper rollOneSkillLevel = new SkillProbabilityWrapper(null, subSkillType);
-//        rollGraceHalfMaxSkill.setxPos(1); //Level 1 skill
+//        RandomChanceSkill rollOneSkillLevel = new RandomChanceSkill(null, subSkillType);
+//        rollGraceHalfMaxSkill.setSkillLevel(1); //Level 1 skill
 //
 //        //Chance Stat Calculations
 //        rollChanceHalfMax       = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
 //        graceChanceHalfMax      = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-//        damageThreshold         = AdvancedConfig.getInstance().getRollDamageThreshold();
+//        damageThreshold         = mcMMO.p.getAdvancedConfig().getRollDamageThreshold();
 //
 //        chancePerLevel          = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
 //
-//        double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
+//        double maxLevel         = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
 //
 //        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
     }
@@ -417,19 +422,18 @@ public class Roll extends AcrobaticsSubSkill {
     @Override
     public Double[] getStats(Player player)
     {
-//        double playerChanceRoll, playerChanceGrace;
-//
-//        SkillProbabilityWrapper roll          = new SkillProbabilityWrapper(player, getSubSkillType());
-//        SkillProbabilityWrapper graceful      = new SkillProbabilityWrapper(player, getSubSkillType());
-//
-//        graceful.setxPos(graceful.getxPos() * 2); //Double odds
-//
-//        //Calculate
-//        playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);
-//        playerChanceGrace       = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
-//
-//        return new Double[]{ playerChanceRoll, playerChanceGrace };
-        return new Double[] {0.0, 0.0};
+        double playerChanceRoll, playerChanceGrace;
+
+        RandomChanceSkill roll          = new RandomChanceSkill(player, getSubSkillType());
+        RandomChanceSkill graceful      = new RandomChanceSkill(player, getSubSkillType());
+
+        graceful.setSkillLevel(graceful.getSkillLevel() * 2); //Double odds
+
+        //Calculate
+        playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);
+        playerChanceGrace       = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
+
+        return new Double[]{ playerChanceRoll, playerChanceGrace };
     }
 
     public void addFallLocation(@NotNull Player player)

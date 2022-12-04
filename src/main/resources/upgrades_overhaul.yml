@@ -11,3 +11,4 @@ Upgrades_Finished:
     FIX_SPELLING_NETHERITE_REPAIR: false
     FIX_NETHERITE_SALVAGE_QUANTITIES: false
     ADD_UUIDS: false
+    SQL_CHARSET_UTF8MB4: false

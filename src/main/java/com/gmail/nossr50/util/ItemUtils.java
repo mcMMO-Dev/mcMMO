@@ -1,13 +1,12 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasureBook;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.smelting.Smelting;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -186,7 +185,7 @@ public final class ItemUtils {
      * @return true if the item counts as unarmed, false otherwise
      */
     public static boolean isUnarmed(ItemStack item) {
-        if (Config.getInstance().getUnarmedItemsAsUnarmed()) {
+        if (mcMMO.p.getGeneralConfig().getUnarmedItemsAsUnarmed()) {
             return !isMinecraftTool(item);
         }
 
@@ -342,7 +341,7 @@ public final class ItemUtils {
     }
 
     public static boolean isSmeltable(ItemStack item) {
-        return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType());
+        return item != null && Smelting.getSmeltXP(item) >= 1;
     }
 
     public static boolean isSmelted(ItemStack item) {
@@ -422,6 +421,7 @@ public final class ItemUtils {
             case CHORUS_FLOWER:
             case POTATO:
             case BEETROOT:
+            case BEETROOTS:
             case BEETROOT_SEEDS:
             case NETHER_WART:
             case BROWN_MUSHROOM:
@@ -510,32 +510,34 @@ public final class ItemUtils {
      * @return true if the item is a woodcutting drop, false otherwise
      */
     public static boolean isWoodcuttingDrop(ItemStack item) {
-        switch (item.getType()) {
-            case ACACIA_LOG:
-            case BIRCH_LOG:
-            case DARK_OAK_LOG:
-            case JUNGLE_LOG:
-            case OAK_LOG:
-            case SPRUCE_LOG:
-            case STRIPPED_ACACIA_LOG:
-            case STRIPPED_BIRCH_LOG:
-            case STRIPPED_DARK_OAK_LOG:
-            case STRIPPED_JUNGLE_LOG:
-            case STRIPPED_OAK_LOG:
-            case STRIPPED_SPRUCE_LOG:
-            case ACACIA_SAPLING:
-            case SPRUCE_SAPLING:
-            case BIRCH_SAPLING:
-            case DARK_OAK_SAPLING:
-            case JUNGLE_SAPLING:
-            case OAK_SAPLING:
-            case ACACIA_LEAVES:
-            case BIRCH_LEAVES:
-            case DARK_OAK_LEAVES:
-            case JUNGLE_LEAVES:
-            case OAK_LEAVES:
-            case SPRUCE_LEAVES:
-            case APPLE:
+        switch (item.getType().toString()) {
+            case "ACACIA_LOG":
+            case "BIRCH_LOG":
+            case "DARK_OAK_LOG":
+            case "JUNGLE_LOG":
+            case "OAK_LOG":
+            case "SPRUCE_LOG":
+            case "STRIPPED_ACACIA_LOG":
+            case "STRIPPED_BIRCH_LOG":
+            case "STRIPPED_DARK_OAK_LOG":
+            case "STRIPPED_JUNGLE_LOG":
+            case "STRIPPED_OAK_LOG":
+            case "STRIPPED_SPRUCE_LOG":
+            case "STRIPPED_MANGROVE_LOG":
+            case "ACACIA_SAPLING":
+            case "SPRUCE_SAPLING":
+            case "BIRCH_SAPLING":
+            case "DARK_OAK_SAPLING":
+            case "JUNGLE_SAPLING":
+            case "OAK_SAPLING":
+            case "ACACIA_LEAVES":
+            case "BIRCH_LEAVES":
+            case "DARK_OAK_LEAVES":
+            case "JUNGLE_LEAVES":
+            case "OAK_LEAVES":
+            case "SPRUCE_LEAVES":
+            case "BEE_NEST":
+            case "APPLE":
                 return true;
 
             default:
@@ -622,7 +624,7 @@ public final class ItemUtils {
         if(itemMeta == null)
             return;
 
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + mcMMO.p.getAdvancedConfig().getEnchantBuff(), true);
         itemStack.setItemMeta(itemMeta);
     }
 

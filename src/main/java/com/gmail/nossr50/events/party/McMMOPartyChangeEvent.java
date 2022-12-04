@@ -54,6 +54,16 @@ public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable {
      */
     public enum EventReason {
         /**
+         * Created a party.
+         */
+        CREATED_PARTY,
+
+        /**
+         * Disbanded a party.
+         */
+        DISBANDED_PARTY,
+
+        /**
          * Joined a party for the first time.
          */
         JOINED_PARTY,

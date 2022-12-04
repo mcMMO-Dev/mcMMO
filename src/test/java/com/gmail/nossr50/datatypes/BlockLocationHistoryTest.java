@@ -1,12 +1,12 @@
 package com.gmail.nossr50.datatypes;
 
 import org.bukkit.Location;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class BlockLocationHistoryTest {
+class BlockLocationHistoryTest {
     @Test
-    public void testRemovesOldestElement() {
+    void testRemovesOldestElement() {
         BlockLocationHistory history = new BlockLocationHistory(2);
         Location locationA = new Location(null, 0, 1, 2);
         Location locationB = new Location(null, 1, 2, 3);
@@ -15,13 +15,13 @@ public class BlockLocationHistoryTest {
         history.add(locationA);
         history.add(locationB);
         history.add(locationC);
-        Assert.assertFalse(history.contains(locationA));
-        Assert.assertTrue(history.contains(locationB));
-        Assert.assertTrue(history.contains(locationC));
+        Assertions.assertFalse(history.contains(locationA));
+        Assertions.assertTrue(history.contains(locationB));
+        Assertions.assertTrue(history.contains(locationC));
     }
 
     @Test
-    public void testSupportsDuplicateElement() {
+    void testSupportsDuplicateElement() {
         BlockLocationHistory history = new BlockLocationHistory(2);
         Location locationA = new Location(null, 0, 1, 2);
         Location locationB = new Location(null, 1, 2, 3);
@@ -29,9 +29,9 @@ public class BlockLocationHistoryTest {
         history.add(locationA);
         history.add(locationA);
         history.add(locationB);
-        Assert.assertTrue(history.contains(locationA));
-        Assert.assertTrue(history.contains(locationB));
+        Assertions.assertTrue(history.contains(locationA));
+        Assertions.assertTrue(history.contains(locationB));
         history.add(locationB);
-        Assert.assertFalse(history.contains(locationA));
+        Assertions.assertFalse(history.contains(locationA));
     }
 }

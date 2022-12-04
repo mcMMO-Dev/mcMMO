@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -13,11 +11,9 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.metadata.ItemMetadataService;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.*;
@@ -59,9 +55,9 @@ public final class SkillUtils {
      */
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
-        int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+        int maxLength = mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill));
+        int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+        int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
         int length;
 
@@ -129,7 +125,7 @@ public final class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ? mcMMO.p.getSkillTools().matchSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -162,10 +158,8 @@ public final class SkillUtils {
             ItemUtils.addDigSpeedToItem(heldItem, heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED));
 
             //1.13.2+ will have persistent metadata for this item
-            AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
-            compatLayer.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
-        }
-        else {
+            mcMMO.getMetadataService().getItemMetadataService().setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
+        } else {
             int duration = 0;
             int amplifier = 0;
 
@@ -187,18 +181,18 @@ public final class SkillUtils {
 
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
-            int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-            int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+            int abilityLengthVar = mcMMO.p.getAdvancedConfig().getAbilityLength();
+            int abilityLengthCap = mcMMO.p.getAdvancedConfig().getAbilityLengthCap();
 
             int ticks;
 
             if(abilityLengthCap > 0)
             {
                 ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             } else {
                 ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
@@ -221,20 +215,22 @@ public final class SkillUtils {
 
 
         //1.13.2+ will have persistent metadata for this itemStack
-        AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
+        ItemMetadataService itemMetadataService = mcMMO.getMetadataService().getItemMetadataService();
 
-        if(compatLayer.isLegacyAbilityTool(itemStack)) {
+        if(itemMetadataService.isLegacyAbilityTool(itemStack)) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            // This is safe to call without prior checks.
-            itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+            if(itemMeta != null) {
+                // This is safe to call without prior checks.
+                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
 
-            itemStack.setItemMeta(itemMeta);
-            ItemUtils.removeAbilityLore(itemStack);
+                itemStack.setItemMeta(itemMeta);
+                ItemUtils.removeAbilityLore(itemStack);
+            }
         }
 
-        if(compatLayer.isSuperAbilityBoosted(itemStack)) {
-            compatLayer.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
+        if(itemMetadataService.isSuperAbilityBoosted(itemStack)) {
+            itemMetadataService.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
         }
     }
 
@@ -243,14 +239,14 @@ public final class SkillUtils {
     }
 
     /**
-     * Modify the durability of an ItemStack.
+     * Modify the durability of an ItemStack, using Tools specific formula for unbreaking enchant damage reduction
      *
      * @param itemStack The ItemStack which durability should be modified
      * @param durabilityModifier the amount to modify the durability by
      * @param maxDamageModifier the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
+        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
 
@@ -269,6 +265,26 @@ public final class SkillUtils {
         }
 
         return false;
+    }
+
+
+    /**
+     * Modify the durability of an ItemStack, using Armor specific formula for unbreaking enchant damage reduction
+     *
+     * @param itemStack The ItemStack which durability should be modified
+     * @param durabilityModifier the amount to modify the durability by
+     * @param maxDamageModifier the amount to adjust the max damage by
+     */
+    public static void handleArmorDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
+            return;
+        }
+
+        Material type = itemStack.getType();
+        short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4/ (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1)), maxDurability * maxDamageModifier);
+
+        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
     }
 
     @Nullable

@@ -45,11 +45,11 @@ public class AlchemyManager extends SkillManager {
     public double calculateBrewSpeed(boolean isLucky) {
         int skillLevel = getSkillLevel();
 
-        if (skillLevel < Alchemy.catalysisUnlockLevel) {
+        if (skillLevel < RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS)) {
             return Alchemy.catalysisMinSpeed;
         }
 
-        return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - Alchemy.catalysisUnlockLevel) / (Alchemy.catalysisMaxBonusLevel - Alchemy.catalysisUnlockLevel)) * (isLucky ? LUCKY_MODIFIER : 1.0);
+        return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS)) / (Alchemy.catalysisMaxBonusLevel - RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS))) * (isLucky ? LUCKY_MODIFIER : 1.0);
     }
 
     public void handlePotionBrewSuccesses(PotionStage potionStage, int amount) {
