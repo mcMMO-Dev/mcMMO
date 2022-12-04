@@ -1,3 +1,9 @@
+Version 2.1.218
+    Fixed locale pt_BR type (thanks MrPowerGamerBR)
+    Updated Russian Locale (thanks imDaniX)
+    Harvest Lumber checks main hand enchantments when delivering bonuses (thanks destro174)
+    Fixed bug where players could use inspect to determine if vanished players were online (thanks DarkKnights22)
+
 Version 2.1.217
     Tree Feller will now break blocks within the limit instead of refusing to fell the entire tree (partial big tree destruction)
     Mangrove trees resulting from growth are now marked as natural (existing trees marked unnatural before this update will not be retroactively fixed)

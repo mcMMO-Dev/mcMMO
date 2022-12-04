@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>2.1.218-SNAPSHOT</version>
+    <version>2.1.218</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <scm>
