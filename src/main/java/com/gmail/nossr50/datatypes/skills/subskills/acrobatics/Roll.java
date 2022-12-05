@@ -422,16 +422,10 @@ public class Roll extends AcrobaticsSubSkill {
     @Override
     public Double[] getStats(Player player)
     {
-        double playerChanceRoll, playerChanceGrace;
+        double playerChanceRoll = SkillUtils.getSubSkillProbability(subSkillType, player).getValue();
+        double playerChanceGrace = playerChanceRoll * 2;
 
-        RandomChanceSkill roll          = new RandomChanceSkill(player, getSubSkillType());
-        RandomChanceSkill graceful      = new RandomChanceSkill(player, getSubSkillType());
-
-        graceful.setSkillLevel(graceful.getSkillLevel() * 2); //Double odds
-
-        //Calculate
-        playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);
-        playerChanceGrace       = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
+        double gracefulOdds = SkillUtils.getSubSkillProbability(subSkillType, player).getValue() * 2;
 
         return new Double[]{ playerChanceRoll, playerChanceGrace };
     }

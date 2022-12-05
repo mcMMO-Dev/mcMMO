@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.random;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,9 +36,9 @@ public class ProbabilityFactory {
                 }
 
                 //Probability ceiling is configurable in this type
-                probabilityCeiling = AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
+                probabilityCeiling = mcMMO.p.getAdvancedConfig().getMaximumProbability(subSkillType);
                 //The xCeiling is configurable in this type
-                xCeiling = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
+                xCeiling = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(subSkillType);
                 return new ProbabilityImpl(xPos, xCeiling, probabilityCeiling);
             case STATIC_CONFIGURABLE:
                 try {
@@ -69,11 +70,11 @@ public class ProbabilityFactory {
     private static double getStaticRandomChance(@NotNull SubSkillType subSkillType) throws InvalidStaticChance {
         switch (subSkillType) {
             case AXES_ARMOR_IMPACT:
-                return AdvancedConfig.getInstance().getImpactChance();
+                return mcMMO.p.getAdvancedConfig().getImpactChance();
             case AXES_GREATER_IMPACT:
-                return AdvancedConfig.getInstance().getGreaterImpactChance();
+                return mcMMO.p.getAdvancedConfig().getGreaterImpactChance();
             case TAMING_FAST_FOOD_SERVICE:
-                return AdvancedConfig.getInstance().getFastFoodChance();
+                return mcMMO.p.getAdvancedConfig().getFastFoodChance();
             default:
                 throw new InvalidStaticChance();
         }

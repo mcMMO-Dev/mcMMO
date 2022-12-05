@@ -35,7 +35,7 @@ public class PowerLevelCommand extends BaseCommand {
         mmoPlayer.getPlayer().sendMessage("Your power level is: "+powerLevel); //This is not gonna stay, just to show that the command executes in debug
 
         //Send the players a few blank lines to make finding the top of the skill command easier
-        if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines()) {
+        if (mcMMO.p.getAdvancedConfig().doesSkillCommandSendBlankLines()) {
             for (int i = 0; i < 2; i++) {
                 player.sendMessage("");
             }

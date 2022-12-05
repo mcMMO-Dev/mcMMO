@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -76,7 +77,8 @@ public class SwordsManager extends SkillManager {
             return; //Don't apply bleed
         }
 
-        if (RandomChanceUtil.rollDice(mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank()), 100)) {
+        double ruptureOdds = mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank());
+        if (SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, this.getPlayer(), ruptureOdds)) {
 
             if (target instanceof Player defender) {
 
@@ -141,7 +143,8 @@ public class SwordsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void counterAttackChecks(@NotNull LivingEntity attacker, double damage) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
+
+        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");

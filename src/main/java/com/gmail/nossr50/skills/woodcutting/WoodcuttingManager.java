@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -91,19 +92,19 @@ public class WoodcuttingManager extends SkillManager {
         if(Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
             //Mastery enabled for player
             if(Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
-                if(checkCleanCutsActivation()) {
+                if(checkCleanCutsActivation(blockState.getType())) {
                     //Triple drops
                     spawnHarvestLumberBonusDrops(blockState);
                     spawnHarvestLumberBonusDrops(blockState);
                 } else {
                     //Harvest Lumber Check
-                    if(checkHarvestLumberActivation()) {
+                    if(checkHarvestLumberActivation(blockState.getType())) {
                         spawnHarvestLumberBonusDrops(blockState);
                     }
                 }
             //No Mastery (no Clean Cuts)
             } else if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
-                if(checkHarvestLumberActivation()) {
+                if(checkHarvestLumberActivation(blockState.getType())) {
                     spawnHarvestLumberBonusDrops(blockState);
                 }
             }

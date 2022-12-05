@@ -262,7 +262,7 @@ public class TamingManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if(!SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, getPlayer(), AdvancedConfig.getInstance().getPummelChance()))
+        if(!SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, getPlayer(), mcMMO.p.getAdvancedConfig().getPummelChance()))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);
@@ -372,17 +372,12 @@ public class TamingManager extends SkillManager {
     }
 
     private void spawnCOTWEntity(CallOfTheWildType callOfTheWildType, Location spawnLocation, EntityType entityType) {
-        switch(callOfTheWildType) {
-            case CAT:
+        switch (callOfTheWildType) {
+            case CAT ->
                 //Entity type is needed for cats because in 1.13 and below we spawn ocelots, in 1.14 and above we spawn cats
-                spawnCat(spawnLocation, entityType);
-                break;
-            case HORSE:
-                spawnHorse(spawnLocation);
-                break;
-            case WOLF:
-                spawnWolf(spawnLocation);
-                break;
+                    spawnCat(spawnLocation, entityType);
+            case HORSE -> spawnHorse(spawnLocation);
+            case WOLF -> spawnWolf(spawnLocation);
         }
     }
 
