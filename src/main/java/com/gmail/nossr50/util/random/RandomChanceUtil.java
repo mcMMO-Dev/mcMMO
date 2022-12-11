@@ -4,12 +4,11 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
 
-//TODO: Normalize chance values
-//TODO: Update calls to this class and its members
 public class RandomChanceUtil {
     public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%");
     public static final double LUCKY_MODIFIER = 1.333D;
@@ -43,8 +42,9 @@ public class RandomChanceUtil {
      * @param probabilityValue probability value
      * @return true for succeeding, false for failing
      */
-    private static boolean isSuccessfulRoll(double probabilityValue) {
-        return probabilityValue >= ThreadLocalRandom.current().nextDouble(1.0D);
+    @VisibleForTesting
+    static boolean isSuccessfulRoll(double probabilityValue) {
+        return probabilityValue >= ThreadLocalRandom.current().nextDouble(100D);
     }
 
     /**
@@ -52,7 +52,7 @@ public class RandomChanceUtil {
      *
      * @param player target player
      * @param subSkillType target subskill
-     * @param isLucky whether or not to apply luck modifiers
+     * @param isLucky whether to apply luck modifiers
      *
      * @return "percentage" representation of success
      */

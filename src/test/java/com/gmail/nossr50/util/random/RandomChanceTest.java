@@ -85,25 +85,9 @@
 ////        }
 ////    }
 //
-//    @Test
-//    public void testFailsAboutExpected() {
-//        System.out.println(testASCIIHeader);
-//        System.out.println("Test - Player with 800 skill should fail about 20% of the time (100,000 iterations)");
-//        double ratioDivisor = 1000; //1000 because we run the test 100,000 times
-//        double expectedFailRate = 100.0D - 2.15D;
 //
-//        double win = 0, loss = 0;
-//        for(int x = 0; x < 100000; x++) {
-//            if(RandomChanceUtil.checkRandomChanceExecutionSuccess(normalPlayer, SubSkillType.MINING_MOTHER_LODE, true)) {
-//                win++;
-//            } else {
-//                loss++;
-//            }
-//        }
 //
-//        double lossRatio = (loss / ratioDivisor);
-//        Assert.assertEquals(lossRatio, expectedFailRate, 0.01D);
-//    }
+//
 //
 //    private double getSuccessChance(@NotNull McMMOPlayer mmoPlayer) {
 //        RandomChanceSkill randomChanceSkill = new RandomChanceSkill(mmoPlayer.getPlayer(), subSkillType, true);
