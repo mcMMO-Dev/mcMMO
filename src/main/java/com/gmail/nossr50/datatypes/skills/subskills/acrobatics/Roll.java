@@ -136,9 +136,8 @@ public class Roll extends AcrobaticsSubSkill {
         /*
          * Graceful is double the odds of a normal roll
          */
-        //TODO: Yeah I know, ...I'm tired I'll clean it up later
         Probability probability = getRollProbability(player);
-        Probability gracefulProbability = new ProbabilityImpl(probability.getValue() * 2);
+        Probability gracefulProbability = Probability.ofPercentageValue(probability.getValue() * 2);
         String[] gracefulRollStrings = SkillUtils.getRNGDisplayValues(gracefulProbability);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
@@ -249,7 +248,7 @@ public class Roll extends AcrobaticsSubSkill {
         double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold() * 2);
 
         double gracefulOdds = SkillUtils.getSubSkillProbability(subSkillType, player).getValue() * 2;
-        Probability gracefulProbability = new ProbabilityImpl(gracefulOdds);
+        Probability gracefulProbability = Probability.ofPercentageValue(gracefulOdds);
 
         if (!isFatal(player, modifiedDamage)
                 //TODO: Graceful isn't sending out an event

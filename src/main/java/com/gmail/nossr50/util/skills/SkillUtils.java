@@ -391,7 +391,7 @@ public final class SkillUtils {
 
         //Mutate probability
         if(resultModifier != 1.0D)
-            probability = ProbabilityFactory.ofPercentageValue(probability.getValue() * resultModifier);
+            probability = Probability.ofPercentageValue(probability.getValue() * resultModifier);
 
         //Luck
         boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
@@ -414,7 +414,7 @@ public final class SkillUtils {
      */
     public static boolean isStaticSkillRNGSuccessful(@NotNull PrimarySkillType primarySkillType, @Nullable Player player, double probabilityPercentage) {
         //Grab a probability converted from a "percentage" value
-        Probability probability = ProbabilityFactory.ofPercentageValue(probabilityPercentage);
+        Probability probability = Probability.ofPercentageValue(probabilityPercentage);
 
         return isStaticSkillRNGSuccessful(primarySkillType, player, probability);
     }
@@ -463,7 +463,7 @@ public final class SkillUtils {
         if(subSkillType == SubSkillType.TAMING_FAST_FOOD_SERVICE || subSkillType == SubSkillType.AXES_ARMOR_IMPACT || subSkillType == SubSkillType.AXES_GREATER_IMPACT)
             skillProbabilityType = SkillProbabilityType.STATIC_CONFIGURABLE;
 
-        return ProbabilityFactory.ofSubSkill(player, subSkillType, skillProbabilityType);
+        return Probability.ofSubSkill(player, subSkillType, skillProbabilityType);
     }
 
     public static @NotNull String[] getRNGDisplayValues(@NotNull Player player, @NotNull SubSkillType subSkill) {

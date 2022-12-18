@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import static com.gmail.nossr50.util.random.RandomChanceUtil.processProbability;
 import static org.junit.jupiter.api.Assertions.*;
 
-class RandomChanceUtilTest {
+class ProbabilityFactoryTest {
 
     private static Stream<Arguments> provideProbabilitiesForWithinExpectations() {
         return Stream.of(
@@ -48,6 +48,15 @@ class RandomChanceUtilTest {
         }
     }
 
+    @Test
+    void testIsSuccessfulRollFailsOfPercentage() {
+        Probability probability = Probability.ofPercentageValue(100);
+
+        for (int i = 0; i < 100000; i++) {
+            assertFalse(processProbability(probability));
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("provideProbabilitiesForWithinExpectations")
     void testProcessProbabilityWithinExpectations(Probability probability, double expectedWinPercent) {
@@ -67,10 +76,10 @@ class RandomChanceUtilTest {
     }
 
     @Test
-    void chanceOfSuccessPercentage() {
+    void ofPercentageValue() {
     }
 
     @Test
-    void testChanceOfSuccessPercentage() {
+    void ofSubSkill() {
     }
 }

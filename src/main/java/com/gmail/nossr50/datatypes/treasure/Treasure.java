@@ -1,8 +1,6 @@
 package com.gmail.nossr50.datatypes.treasure;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.random.Probability;
-import com.gmail.nossr50.util.random.ProbabilityFactory;
 import com.gmail.nossr50.util.random.ProbabilityImpl;
 import com.google.common.base.Objects;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +17,7 @@ public abstract class Treasure {
         this.drop = drop;
         this.xp = xp;
         this.dropChance = dropChance;
-        this.dropProbability = new ProbabilityImpl(ProbabilityFactory.probabilityFromPercent(dropChance));
+        this.dropProbability = Probability.ofPercentageValue(dropChance / 100);
         this.dropLevel = dropLevel;
     }
 
@@ -49,7 +47,7 @@ public abstract class Treasure {
 
     public void setDropChance(double dropChance) {
         this.dropChance = dropChance;
-        this.dropProbability = new ProbabilityImpl(ProbabilityFactory.probabilityFromPercent(dropChance));
+        this.dropProbability = Probability.ofPercentageValue(dropChance / 100);
     }
 
     public int getDropLevel() {
