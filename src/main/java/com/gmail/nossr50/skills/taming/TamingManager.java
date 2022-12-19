@@ -15,9 +15,9 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -143,7 +143,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(@NotNull Wolf wolf, double damage) {
-        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
 
@@ -262,7 +262,7 @@ public class TamingManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if(!SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, getPlayer(), mcMMO.p.getAdvancedConfig().getPummelChance()))
+        if(!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, getPlayer(), mcMMO.p.getAdvancedConfig().getPummelChance()))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);

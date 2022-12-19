@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -33,14 +33,14 @@ public class ArcheryCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // ARCHERY_ARROW_RETRIEVAL
         if (canRetrieve) {
-            String[] retrieveStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
+            String[] retrieveStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
         
         // ARCHERY_DAZE
         if (canDaze) {
-            String[] dazeStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.ARCHERY_DAZE);
+            String[] dazeStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ARCHERY_DAZE);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }

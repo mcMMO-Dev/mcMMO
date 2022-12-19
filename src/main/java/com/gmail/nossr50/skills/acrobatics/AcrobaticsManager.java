@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -93,7 +94,7 @@ public class AcrobaticsManager extends SkillManager {
         Player player = getPlayer();
 
         if (!isFatal(modifiedDamage)
-                && SkillUtils.isSkillRNGSuccessful(SubSkillType.ACROBATICS_DODGE, player)) {
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ACROBATICS_DODGE, player)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mmoPlayer.useChatNotifications()) {

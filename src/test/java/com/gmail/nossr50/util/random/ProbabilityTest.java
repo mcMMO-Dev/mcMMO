@@ -1,13 +1,15 @@
 package com.gmail.nossr50.util.random;
 
+import org.bukkit.entity.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 import java.util.stream.Stream;
 
-import static com.gmail.nossr50.util.random.RandomChanceUtil.processProbability;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProbabilityTest {
@@ -30,42 +32,62 @@ class ProbabilityTest {
                 Arguments.of(new ProbabilityImpl(1000), 100)
         );
     }
-    @Test
-    void testIsSuccessfulRollSucceeds() {
-        Probability probability = new ProbabilityImpl(100);
 
+    private static Stream<Arguments> provideOfPercentageProbabilitiesForWithinExpectations() {
+        return Stream.of(
+                // static probability, % of time for success
+                Arguments.of(Probability.ofPercent(5), 5),
+                Arguments.of(Probability.ofPercent(10), 10),
+                Arguments.of(Probability.ofPercent(15), 15),
+                Arguments.of(Probability.ofPercent(20), 20),
+                Arguments.of(Probability.ofPercent(25), 25),
+                Arguments.of(Probability.ofPercent(50), 50),
+                Arguments.of(Probability.ofPercent(75), 75),
+                Arguments.of(Probability.ofPercent(90), 90),
+                Arguments.of(Probability.ofPercent(99.9), 99.9),
+                Arguments.of(Probability.ofPercent(0.05), 0.05),
+                Arguments.of(Probability.ofPercent(0.1), 0.1),
+                Arguments.of(Probability.ofPercent(500), 100),
+                Arguments.of(Probability.ofPercent(1000), 100)
+        );
+    }
+    @Test
+    void testAlwaysWinConstructor() {
         for (int i = 0; i < 100000; i++) {
-            assertTrue(processProbability(probability));
+            assertTrue(new ProbabilityImpl(100).evaluate());
         }
     }
 
     @Test
-    void testIsSuccessfulRollFails() {
-        Probability probability = new ProbabilityImpl(0);
-
+    void testAlwaysLoseConstructor() {
         for (int i = 0; i < 100000; i++) {
-            assertFalse(processProbability(probability));
+            assertFalse(new ProbabilityImpl(0).evaluate());
         }
     }
 
     @Test
-    void testIsSuccessfulRollFailsOfPercentage() {
-        Probability probability = Probability.ofPercentageValue(100);
-
+    void testAlwaysWinOfPercent() {
         for (int i = 0; i < 100000; i++) {
-            assertFalse(processProbability(probability));
+            assertTrue(Probability.ofPercent(100).evaluate());
+        }
+    }
+
+    @Test
+    void testAlwaysLoseOfPercent() {
+        for (int i = 0; i < 100000; i++) {
+            assertFalse(Probability.ofPercent(0).evaluate());
         }
     }
 
     @ParameterizedTest
     @MethodSource("provideProbabilitiesForWithinExpectations")
-    void testProcessProbabilityWithinExpectations(Probability probability, double expectedWinPercent) {
+    void testOddsExpectationsImplConstructor(Probability probability, double expectedWinPercent) {
         // Probabilities are tested 200,000,000 times with a margin of error of 0.01%
         int iterations = 200000000;
         double winCount = 0;
 
         for (int i = 0; i < iterations; i++) {
-            if(processProbability(probability)) {
+            if(probability.evaluate()) {
                 winCount++;
             }
         }
@@ -75,11 +97,21 @@ class ProbabilityTest {
         assertEquals(expectedWinPercent, successPercent, 0.01D);
     }
 
-    @Test
-    void ofPercentageValue() {
-    }
+    @ParameterizedTest
+    @MethodSource("provideOfPercentageProbabilitiesForWithinExpectations")
+    void testOddsExpectationsOfPercent(Probability probability, double expectedWinPercent) {
+        // Probabilities are tested 200,000,000 times with a margin of error of 0.01%
+        int iterations = 200000000;
+        double winCount = 0;
 
-    @Test
-    void ofSubSkill() {
+        for (int i = 0; i < iterations; i++) {
+            if(probability.evaluate()) {
+                winCount++;
+            }
+        }
+
+        double successPercent = (winCount / iterations) * 100;
+        System.out.println(successPercent + ", " + expectedWinPercent);
+        assertEquals(expectedWinPercent, successPercent, 0.01D);
     }
 }

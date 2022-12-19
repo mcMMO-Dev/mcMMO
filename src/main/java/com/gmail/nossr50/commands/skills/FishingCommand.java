@@ -10,8 +10,8 @@ import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.Probability;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
@@ -81,8 +81,8 @@ public class FishingCommand extends SkillCommand {
 
         // FISHING_SHAKE
         if (canShake) {
-            Probability shakeProbability = Probability.ofPercentageValue(fishingManager.getShakeChance());
-            String[] shakeStrings = SkillUtils.getRNGDisplayValues(shakeProbability);
+            Probability shakeProbability = Probability.ofPercent(fishingManager.getShakeChance());
+            String[] shakeStrings = ProbabilityUtil.getRNGDisplayValues(shakeProbability);
             shakeChance = shakeStrings[0];
             shakeChanceLucky = shakeStrings[1];
         }

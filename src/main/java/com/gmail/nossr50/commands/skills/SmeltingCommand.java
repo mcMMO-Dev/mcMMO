@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -46,7 +46,7 @@ public class SmeltingCommand extends SkillCommand {
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }

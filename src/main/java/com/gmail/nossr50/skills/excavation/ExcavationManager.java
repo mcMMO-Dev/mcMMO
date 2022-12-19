@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
@@ -40,10 +41,10 @@ public class ExcavationManager extends SkillManager {
 
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
-                            && SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), treasure.getDropProbability())) {
+                            && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), treasure.getDropProbability())) {
 
                         //Spawn Vanilla XP orbs if a dice roll succeeds
-                        if(SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
+                        if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
                             Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
                         }
 

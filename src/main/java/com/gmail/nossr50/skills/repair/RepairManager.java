@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -318,7 +319,7 @@ public class RepairManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
-        if (SkillUtils.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
         }
@@ -369,10 +370,10 @@ public class RepairManager extends SkillManager {
 
             Enchantment enchantment = enchant.getKey();
 
-            if (SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), getKeepEnchantChance())) {
+            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), getKeepEnchantChance())) {
 
                 if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1
-                        && (!SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), 100 - getDowngradeEnchantChance()))) {
+                        && (!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), 100 - getDowngradeEnchantChance()))) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }

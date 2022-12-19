@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -46,7 +46,7 @@ public class HerbalismCommand extends SkillCommand {
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
+            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -67,21 +67,21 @@ public class HerbalismCommand extends SkillCommand {
         if (canGreenThumbBlocks || canGreenThumbPlants) {
             greenThumbStage = RankUtils.getRank(player, SubSkillType.HERBALISM_GREEN_THUMB);
 
-            String[] greenThumbStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.HERBALISM_GREEN_THUMB);
+            String[] greenThumbStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_GREEN_THUMB);
             greenThumbChance = greenThumbStrings[0];
             greenThumbChanceLucky = greenThumbStrings[1];
         }
 
         // HYLIAN LUCK
         if (hasHylianLuck) {
-            String[] hylianLuckStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
+            String[] hylianLuckStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
             hylianLuckChance = hylianLuckStrings[0];
             hylianLuckChanceLucky = hylianLuckStrings[1];
         }
 
         // SHROOM THUMB
         if (canShroomThumb) {
-            String[] shroomThumbStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+            String[] shroomThumbStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_SHROOM_THUMB);
             shroomThumbChance = shroomThumbStrings[0];
             shroomThumbChanceLucky = shroomThumbStrings[1];
         }

@@ -20,7 +20,7 @@ public class ProbabilityImpl implements Probability {
         probabilityValue = staticProbability;
     }
 
-    public ProbabilityImpl(double xPos, double xCeiling, double probabilityCeiling) throws ValueOutOfBoundsException {
+    ProbabilityImpl(double xPos, double xCeiling, double probabilityCeiling) throws ValueOutOfBoundsException {
         if(probabilityCeiling > 100) {
             throw new ValueOutOfBoundsException("Probability Ceiling should never be above 100!");
         } else if (probabilityCeiling < 0) {

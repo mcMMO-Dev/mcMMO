@@ -11,6 +11,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -68,7 +69,7 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (SkillUtils.isNonRNGSkillActivationSuccessful(SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
             return Axes.getAxeMasteryBonusDamage(getPlayer());
         }
 
@@ -82,7 +83,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.AXES_CRITICAL_STRIKES, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_CRITICAL_STRIKES, getPlayer())) {
             return 0;
         }
 
@@ -117,7 +118,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
-                if (SkillUtils.isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
+                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
                     SkillUtils.handleArmorDurabilityChange(armor, durabilityDamage, 1);
                 }
             }
@@ -135,7 +136,7 @@ public class AxesManager extends SkillManager {
      */
     public double greaterImpact(@NotNull LivingEntity target) {
         //static chance (3rd param)
-        if (!SkillUtils.isSkillRNGSuccessful(SubSkillType.AXES_GREATER_IMPACT, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_GREATER_IMPACT, getPlayer())) {
             return 0;
         }
 

@@ -8,17 +8,13 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.ItemMetadataService;
-import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.*;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -355,128 +351,5 @@ public final class SkillUtils {
         }
 
         return quantity;
-    }
-
-    /**
-     * This is one of several Skill RNG check methods
-     * This helper method is for specific {@link SubSkillType}, which help mcMMO understand where the RNG values used in our calculations come from from this {@link SubSkillType}
-     *
-     * 1) Determine where the RNG values come from for the passed {@link SubSkillType}
-     *  NOTE: In the config file, there are values which are static and which are more dynamic, this is currently a bit hardcoded and will need to be updated manually
-     *
-     * 2) Determine whether or not to use Lucky multiplier and influence the outcome
-     *
-     * 3) Creates a {@link Probability} and pipes it to {@link RandomChanceUtil} which processes the result and returns it
-     *
-     * This also calls a {@link SubSkillEvent} which can be cancelled, if it is cancelled this will return false
-     * The outcome of the probability can also be modified by this event that is called
-     *
-     * @param subSkillType target subskill
-     * @param player target player, can be null (null players are given odds equivalent to a player with no levels or luck)
-     * @return true if the Skill RNG succeeds, false if it fails
-     */
-    public static boolean isSkillRNGSuccessful(@NotNull SubSkillType subSkillType, @NotNull Player player) {
-        //Process probability
-        Probability probability = getSubSkillProbability(subSkillType, player);
-
-        //Send out event
-        SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(player, subSkillType);
-
-        if(subSkillEvent.isCancelled()) {
-            return false; //Event got cancelled so this doesn't succeed
-        }
-
-        //Result modifier
-        double resultModifier = subSkillEvent.getResultModifier();
-
-        //Mutate probability
-        if(resultModifier != 1.0D)
-            probability = Probability.ofPercentageValue(probability.getValue() * resultModifier);
-
-        //Luck
-        boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
-
-        if(isLucky) {
-            return RandomChanceUtil.processProbability(probability, RandomChanceUtil.LUCKY_MODIFIER);
-        } else {
-            return RandomChanceUtil.processProbability(probability);
-        }
-    }
-
-    /**
-     * This is one of several Skill RNG check methods
-     * This helper method is specific to static value RNG, which can be influenced by a player's Luck
-     *
-     * @param primarySkillType the related primary skill
-     * @param player the target player, can be null (null players have the worst odds)
-     * @param probabilityPercentage the probability of this player succeeding in "percentage" format (0-100 inclusive)
-     * @return true if the RNG succeeds, false if it fails
-     */
-    public static boolean isStaticSkillRNGSuccessful(@NotNull PrimarySkillType primarySkillType, @Nullable Player player, double probabilityPercentage) {
-        //Grab a probability converted from a "percentage" value
-        Probability probability = Probability.ofPercentageValue(probabilityPercentage);
-
-        return isStaticSkillRNGSuccessful(primarySkillType, player, probability);
-    }
-
-    /**
-     * This is one of several Skill RNG check methods
-     * This helper method is specific to static value RNG, which can be influenced by a player's Luck
-     *
-     * @param primarySkillType the related primary skill
-     * @param player the target player, can be null (null players have the worst odds)
-     * @param probability the probability of this player succeeding
-     * @return true if the RNG succeeds, false if it fails
-     */
-    public static boolean isStaticSkillRNGSuccessful(@NotNull PrimarySkillType primarySkillType, @Nullable Player player, @NotNull Probability probability) {
-        boolean isLucky = player != null && Permissions.lucky(player, primarySkillType);
-
-        if(isLucky) {
-            return RandomChanceUtil.processProbability(probability, RandomChanceUtil.LUCKY_MODIFIER);
-        } else {
-            return RandomChanceUtil.processProbability(probability);
-        }
-    }
-
-    /**
-     * Skills activate without RNG, this allows other plugins to prevent that activation
-     * @param subSkillType target subskill
-     * @param player target player
-     * @return true if the skill succeeds (wasn't cancelled by any other plugin)
-     */
-    public static boolean isNonRNGSkillActivationSuccessful(@NotNull SubSkillType subSkillType, @NotNull Player player) {
-        return !EventUtils.callSubSkillEvent(player, subSkillType).isCancelled();
-    }
-
-    /**
-     * Grab the {@link Probability} for a specific {@link SubSkillType} for a specific {@link Player}
-     *
-     * @param subSkillType target subskill
-     * @param player target player
-     * @return the Probability of this skill succeeding
-     * @throws InvalidStaticChance when a skill that does not have a hard coded static chance and it is asked for
-     * @throws RuntimeException
-     */
-    public static @NotNull Probability getSubSkillProbability(@NotNull SubSkillType subSkillType, @Nullable Player player) {
-        SkillProbabilityType skillProbabilityType = SkillProbabilityType.DYNAMIC_CONFIGURABLE;
-
-        if(subSkillType == SubSkillType.TAMING_FAST_FOOD_SERVICE || subSkillType == SubSkillType.AXES_ARMOR_IMPACT || subSkillType == SubSkillType.AXES_GREATER_IMPACT)
-            skillProbabilityType = SkillProbabilityType.STATIC_CONFIGURABLE;
-
-        return Probability.ofSubSkill(player, subSkillType, skillProbabilityType);
-    }
-
-    public static @NotNull String[] getRNGDisplayValues(@NotNull Player player, @NotNull SubSkillType subSkill) {
-        double firstValue = RandomChanceUtil.chanceOfSuccessPercentage(player, subSkill, false);
-        double secondValue = RandomChanceUtil.chanceOfSuccessPercentage(player, subSkill, true);
-
-        return new String[]{RandomChanceUtil.percent.format(firstValue), RandomChanceUtil.percent.format(secondValue)};
-    }
-
-    public static @NotNull String[] getRNGDisplayValues(@NotNull Probability probability) {
-        double firstValue = RandomChanceUtil.chanceOfSuccessPercentage(probability, false);
-        double secondValue = RandomChanceUtil.chanceOfSuccessPercentage(probability, true);
-
-        return new String[]{RandomChanceUtil.percent.format(firstValue), RandomChanceUtil.percent.format(secondValue)};
     }
 }

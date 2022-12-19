@@ -13,10 +13,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -71,14 +70,14 @@ public class WoodcuttingManager extends SkillManager {
     private boolean checkHarvestLumberActivation(Material material) {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer())
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer())
                 && mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
     }
 
     private boolean checkCleanCutsActivation(Material material) {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && SkillUtils.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer())
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer())
                 && mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
     }
 
@@ -330,7 +329,7 @@ public class WoodcuttingManager extends SkillManager {
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
                             //TODO: Test the results of this RNG, should be 10%
-                            if(SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, player, 10)) {
+                            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, player, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }

@@ -15,10 +15,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.Probability;
-import com.gmail.nossr50.util.random.ProbabilityImpl;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -129,7 +128,7 @@ public class Roll extends AcrobaticsSubSkill {
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
-        String[] rollStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
+        String[] rollStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
         rollChance = rollStrings[0];
         rollChanceLucky = rollStrings[1];
 
@@ -137,8 +136,8 @@ public class Roll extends AcrobaticsSubSkill {
          * Graceful is double the odds of a normal roll
          */
         Probability probability = getRollProbability(player);
-        Probability gracefulProbability = Probability.ofPercentageValue(probability.getValue() * 2);
-        String[] gracefulRollStrings = SkillUtils.getRNGDisplayValues(gracefulProbability);
+        Probability gracefulProbability = Probability.ofPercent(probability.getValue() * 2);
+        String[] gracefulRollStrings = ProbabilityUtil.getRNGDisplayValues(gracefulProbability);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
 
@@ -171,7 +170,7 @@ public class Roll extends AcrobaticsSubSkill {
 
     @NotNull
     private Probability getRollProbability(Player player) {
-        return SkillUtils.getSubSkillProbability(SubSkillType.ACROBATICS_ROLL, player);
+        return ProbabilityUtil.getSubSkillProbability(SubSkillType.ACROBATICS_ROLL, player);
     }
 
     @Override
@@ -210,7 +209,7 @@ public class Roll extends AcrobaticsSubSkill {
         double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
-                && SkillUtils.isSkillRNGSuccessful(SubSkillType.ACROBATICS_ROLL, player)) {
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ACROBATICS_ROLL, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS);
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
@@ -247,12 +246,12 @@ public class Roll extends AcrobaticsSubSkill {
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold() * 2);
 
-        double gracefulOdds = SkillUtils.getSubSkillProbability(subSkillType, player).getValue() * 2;
-        Probability gracefulProbability = Probability.ofPercentageValue(gracefulOdds);
+        double gracefulOdds = ProbabilityUtil.getSubSkillProbability(subSkillType, player).getValue() * 2;
+        Probability gracefulProbability = Probability.ofPercent(gracefulOdds);
 
         if (!isFatal(player, modifiedDamage)
                 //TODO: Graceful isn't sending out an event
-                && SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.ACROBATICS, player, gracefulProbability))
+                && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.ACROBATICS, player, gracefulProbability))
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
@@ -421,10 +420,10 @@ public class Roll extends AcrobaticsSubSkill {
     @Override
     public Double[] getStats(Player player)
     {
-        double playerChanceRoll = SkillUtils.getSubSkillProbability(subSkillType, player).getValue();
+        double playerChanceRoll = ProbabilityUtil.getSubSkillProbability(subSkillType, player).getValue();
         double playerChanceGrace = playerChanceRoll * 2;
 
-        double gracefulOdds = SkillUtils.getSubSkillProbability(subSkillType, player).getValue() * 2;
+        double gracefulOdds = ProbabilityUtil.getSubSkillProbability(subSkillType, player).getValue() * 2;
 
         return new Double[]{ playerChanceRoll, playerChanceGrace };
     }

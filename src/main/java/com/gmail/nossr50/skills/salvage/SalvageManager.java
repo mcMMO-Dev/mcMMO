@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -119,7 +120,7 @@ public class SalvageManager extends SkillManager {
 
         for(int x = 0; x < potentialSalvageYield-1; x++) {
 
-            if(SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, chanceOfSuccess)) {
+            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, chanceOfSuccess)) {
                 chanceOfSuccess-=3;
                 chanceOfSuccess = Math.max(chanceOfSuccess, 90);
 
@@ -250,12 +251,12 @@ public class SalvageManager extends SkillManager {
 
             if (!Salvage.arcaneSalvageEnchantLoss
                     || Permissions.hasSalvageEnchantBypassPerk(player)
-                    || SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractFullEnchantChance())) {
+                    || ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractFullEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
             else if (enchantLevel > 1
                     && Salvage.arcaneSalvageDowngrades
-                    && SkillUtils.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractPartialEnchantChance())) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractPartialEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {

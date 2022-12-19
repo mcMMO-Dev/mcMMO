@@ -6,8 +6,8 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -57,14 +57,14 @@ public class MiningCommand extends SkillCommand {
 
         // Mastery TRIPLE DROPS
         if (canMotherLode) {
-            String[] masteryTripleDropStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.MINING_MOTHER_LODE);
+            String[] masteryTripleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.MINING_MOTHER_LODE);
             tripleDropChance = masteryTripleDropStrings[0];
             tripleDropChanceLucky = masteryTripleDropStrings[1];
         }
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = SkillUtils.getRNGDisplayValues(player, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
