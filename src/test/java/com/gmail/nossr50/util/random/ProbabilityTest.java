@@ -100,8 +100,8 @@ class ProbabilityTest {
     @ParameterizedTest
     @MethodSource("provideOfPercentageProbabilitiesForWithinExpectations")
     void testOddsExpectationsOfPercent(Probability probability, double expectedWinPercent) {
-        // Probabilities are tested 200,000,000 times with a margin of error of 0.01%
-        int iterations = 200000000;
+        // Probabilities are tested 2.0 x 10^9 with a margin of error of 0.01%
+        double iterations = 2.0e9;
         double winCount = 0;
 
         for (int i = 0; i < iterations; i++) {

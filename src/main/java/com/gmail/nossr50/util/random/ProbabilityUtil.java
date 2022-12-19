@@ -54,11 +54,11 @@ public class ProbabilityUtil {
         return percentageValue;
     }
 
-    static double getStaticRandomChance(@NotNull SubSkillType subSkillType) throws InvalidStaticChance {
+    static Probability getStaticRandomChance(@NotNull SubSkillType subSkillType) throws InvalidStaticChance {
         return switch (subSkillType) {
-            case AXES_ARMOR_IMPACT -> mcMMO.p.getAdvancedConfig().getImpactChance();
-            case AXES_GREATER_IMPACT -> mcMMO.p.getAdvancedConfig().getGreaterImpactChance();
-            case TAMING_FAST_FOOD_SERVICE -> mcMMO.p.getAdvancedConfig().getFastFoodChance();
+            case AXES_ARMOR_IMPACT -> Probability.ofPercent(mcMMO.p.getAdvancedConfig().getImpactChance());
+            case AXES_GREATER_IMPACT -> Probability.ofPercent(mcMMO.p.getAdvancedConfig().getGreaterImpactChance());
+            case TAMING_FAST_FOOD_SERVICE -> Probability.ofPercent(mcMMO.p.getAdvancedConfig().getFastFoodChance());
             default -> throw new InvalidStaticChance();
         };
     }
@@ -99,7 +99,7 @@ public class ProbabilityUtil {
                 return new ProbabilityImpl(xPos, xCeiling, probabilityCeiling);
             case STATIC_CONFIGURABLE:
                 try {
-                    return Probability.ofPercent(getStaticRandomChance(subSkillType));
+                    return getStaticRandomChance(subSkillType);
                 } catch (InvalidStaticChance invalidStaticChance) {
                     invalidStaticChance.printStackTrace();
                 }
