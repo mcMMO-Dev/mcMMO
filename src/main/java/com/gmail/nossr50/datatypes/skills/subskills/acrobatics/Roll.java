@@ -33,6 +33,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.Locale;
 
@@ -198,7 +199,8 @@ public class Roll extends AcrobaticsSubSkill {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private double rollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage) {
+    @VisibleForTesting
+    public double rollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage) {
 
         int skillLevel = mcMMOPlayer.getSkillLevel(getPrimarySkill());
 
@@ -246,8 +248,7 @@ public class Roll extends AcrobaticsSubSkill {
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.p.getAdvancedConfig().getRollDamageThreshold() * 2);
 
-        double gracefulOdds = ProbabilityUtil.getSubSkillProbability(subSkillType, player).getValue() * 2;
-        Probability gracefulProbability = Probability.ofPercent(gracefulOdds);
+        Probability gracefulProbability = getGracefulProbability(player);
 
         if (!isFatal(player, modifiedDamage)
                 //TODO: Graceful isn't sending out an event
@@ -269,6 +270,12 @@ public class Roll extends AcrobaticsSubSkill {
         }
 
         return damage;
+    }
+
+    @NotNull
+    public static Probability getGracefulProbability(Player player) {
+        double gracefulOdds = ProbabilityUtil.getSubSkillProbability(SubSkillType.ACROBATICS_ROLL, player).getValue() * 2;
+        return Probability.ofPercent(gracefulOdds);
     }
 
     /**

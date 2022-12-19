@@ -1,12 +1,9 @@
 package com.gmail.nossr50.util.random;
 
-import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 
 import java.util.stream.Stream;
 
@@ -82,26 +79,17 @@ class ProbabilityTest {
     @ParameterizedTest
     @MethodSource("provideProbabilitiesForWithinExpectations")
     void testOddsExpectationsImplConstructor(Probability probability, double expectedWinPercent) {
-        // Probabilities are tested 200,000,000 times with a margin of error of 0.01%
-        int iterations = 200000000;
-        double winCount = 0;
-
-        for (int i = 0; i < iterations; i++) {
-            if(probability.evaluate()) {
-                winCount++;
-            }
-        }
-
-        double successPercent = (winCount / iterations) * 100;
-        System.out.println(successPercent + ", " + expectedWinPercent);
-        assertEquals(expectedWinPercent, successPercent, 0.01D);
+        assertExpectations(probability, expectedWinPercent);
     }
 
     @ParameterizedTest
     @MethodSource("provideOfPercentageProbabilitiesForWithinExpectations")
     void testOddsExpectationsOfPercent(Probability probability, double expectedWinPercent) {
-        // Probabilities are tested 2.0 x 10^9 with a margin of error of 0.01%
-        double iterations = 2.0e9;
+        assertExpectations(probability, expectedWinPercent);
+    }
+
+    private static void assertExpectations(Probability probability, double expectedWinPercent) {
+        double iterations = 2.0e7;
         double winCount = 0;
 
         for (int i = 0; i < iterations; i++) {
@@ -112,6 +100,6 @@ class ProbabilityTest {
 
         double successPercent = (winCount / iterations) * 100;
         System.out.println(successPercent + ", " + expectedWinPercent);
-        assertEquals(expectedWinPercent, successPercent, 0.01D);
+        assertEquals(expectedWinPercent, successPercent, 0.05D);
     }
 }

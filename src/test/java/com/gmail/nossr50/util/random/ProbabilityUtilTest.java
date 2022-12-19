@@ -1,18 +1,22 @@
 package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 
 import java.util.stream.Stream;
 
 import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ProbabilityUtilTest {
 
@@ -25,13 +29,13 @@ class ProbabilityUtilTest {
 
     @BeforeEach
     public void setupMocks() throws NoSuchFieldException, IllegalAccessException {
-        this.mmoInstance = Mockito.mock(mcMMO.class);
+        this.mmoInstance = mock(mcMMO.class);
         mcMMO.class.getField("p").set(null, mmoInstance);
-        this.advancedConfig = Mockito.mock(AdvancedConfig.class);
-        Mockito.when(mmoInstance.getAdvancedConfig()).thenReturn(advancedConfig);
-        Mockito.when(advancedConfig.getImpactChance()).thenReturn(impactChance);
-        Mockito.when(advancedConfig.getGreaterImpactChance()).thenReturn(greaterImpactChance);
-        Mockito.when(advancedConfig.getFastFoodChance()).thenReturn(fastFoodChance);
+        this.advancedConfig = mock(AdvancedConfig.class);
+        when(mmoInstance.getAdvancedConfig()).thenReturn(advancedConfig);
+        when(advancedConfig.getImpactChance()).thenReturn(impactChance);
+        when(advancedConfig.getGreaterImpactChance()).thenReturn(greaterImpactChance);
+        when(advancedConfig.getFastFoodChance()).thenReturn(fastFoodChance);
     }
 
     private static Stream<Arguments> staticChanceSkills() {
@@ -46,19 +50,21 @@ class ProbabilityUtilTest {
     @ParameterizedTest
     @MethodSource("staticChanceSkills")
     void testStaticChanceSkills(SubSkillType subSkillType, double expectedWinPercent) throws InvalidStaticChance {
-        // Probabilities are tested 2.0 x 10^9 with a margin of error of 0.01%
-        double iterations = 2.0e9;
-        double winCount = 0;
-
         Probability staticRandomChance = ProbabilityUtil.getStaticRandomChance(subSkillType);
+        assertProbabilityExpectations(expectedWinPercent, staticRandomChance);
+    }
+
+    private static void assertProbabilityExpectations(double expectedWinPercent, Probability probability) {
+        double iterations = 2.0e7;
+        double winCount = 0;
         for (int i = 0; i < iterations; i++) {
-            if(staticRandomChance.evaluate()) {
+            if(probability.evaluate()) {
                 winCount++;
             }
         }
 
         double successPercent = (winCount / iterations) * 100;
         System.out.println(successPercent + ", " + expectedWinPercent);
-        assertEquals(expectedWinPercent, successPercent, 0.01D);
+        assertEquals(expectedWinPercent, successPercent, 0.05D);
     }
 }
