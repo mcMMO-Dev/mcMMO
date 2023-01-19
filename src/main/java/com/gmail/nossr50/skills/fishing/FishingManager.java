@@ -125,6 +125,20 @@ public class FishingManager extends SkillManager {
         return hasFished;
     }
 
+    public void processExploiting(Vector centerOfCastVector) {
+        BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
+        boolean sameTarget = lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(newCastBoundingBox);
+
+        if (sameTarget)
+            fishCaughtCounter++;
+        else
+            fishCaughtCounter = 1;
+
+        if (fishCaughtCounter + 1 == ExperienceConfig.getInstance().getFishingExploitingOptionOverFishLimit()) {
+            getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResourcesTip", ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange()));
+        }
+    }
+
     public boolean isExploitingFishing(Vector centerOfCastVector) {
 
         /*Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
@@ -134,22 +148,10 @@ public class FishingManager extends SkillManager {
         }*/
 
         BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
-
         boolean sameTarget = lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(newCastBoundingBox);
 
-        if(sameTarget)
-            fishCaughtCounter++;
-        else
-            fishCaughtCounter = 1;
-
-        if(fishCaughtCounter + 1 == ExperienceConfig.getInstance().getFishingExploitingOptionOverFishLimit())
-        {
-            getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResourcesTip", ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange()));
-        }
-
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
-        if(!sameTarget)
-            lastFishingBoundingBox = newCastBoundingBox;
+        if (!sameTarget) lastFishingBoundingBox = newCastBoundingBox;
 
         return sameTarget && fishCaughtCounter >= ExperienceConfig.getInstance().getFishingExploitingOptionOverFishLimit();
     }
