@@ -47,21 +47,28 @@ public class InspectCommand implements TabExecutor {
 
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
+                // Sum power level
+                int powerLevel = 0;
+
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                    powerLevel += profile.getSkillLevel(skill);
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                    powerLevel += profile.getSkillLevel(skill);
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                    powerLevel += profile.getSkillLevel(skill);
                 }
 
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", powerLevel));
             } else {
                 Player target = mcMMOPlayer.getPlayer();
                 boolean isVanished = false;
@@ -95,9 +102,7 @@ public class InspectCommand implements TabExecutor {
                 CommandUtils.printCombatSkills(target, sender);
                 CommandUtils.printMiscSkills(target, sender);
 
-                if (!isVanished) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
-                }
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
             }
 
             return true;
