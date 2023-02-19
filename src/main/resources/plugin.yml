@@ -397,8 +397,8 @@ permissions:
             mcmmo.ability.herbalism.greenthumb.all: true
             mcmmo.ability.herbalism.hylianluck: true
             mcmmo.ability.herbalism.shroomthumb: true
-            mcmmo.ability.herbalism.mastery: true
-    mcmmo.ability.herbalism.mastery:
+            mcmmo.ability.herbalism.verdantbounty: true
+    mcmmo.ability.herbalism.verdantbounty:
         description: Allows access to end game progression for Herbalism
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism

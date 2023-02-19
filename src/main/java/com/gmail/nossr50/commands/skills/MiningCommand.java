@@ -32,7 +32,7 @@ public class MiningCommand extends SkillCommand {
 
     private boolean canSuperBreaker;
     private boolean canDoubleDrop;
-    private boolean canMotherLode;
+    private boolean canTripleDrop;
     private boolean canBlast;
     private boolean canBiggerBombs;
     private boolean canDemoExpert;
@@ -56,7 +56,7 @@ public class MiningCommand extends SkillCommand {
         }
 
         // Mastery TRIPLE DROPS
-        if (canMotherLode) {
+        if (canTripleDrop) {
             String[] masteryTripleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.MINING_MOTHER_LODE);
             tripleDropChance = masteryTripleDropStrings[0];
             tripleDropChanceLucky = masteryTripleDropStrings[1];
@@ -83,7 +83,7 @@ public class MiningCommand extends SkillCommand {
         canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
         canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_DOUBLE_DROPS);
-        canMotherLode = Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE);
+        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE);
         canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
@@ -112,11 +112,10 @@ public class MiningCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
-        if(canMotherLode) {
+        if(canTripleDrop) {
             messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, tripleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
         }
-
 
         if (canSuperBreaker) {
             messages.add(getStatMessage(SubSkillType.MINING_SUPER_BREAKER, superBreakerLength)

@@ -38,7 +38,6 @@ public enum SubSkillType {
     /* Excavation */
     EXCAVATION_ARCHAEOLOGY(8),
     EXCAVATION_GIGA_DRILL_BREAKER(1),
-    EXCAVATION_MASTERY(1),
 
     /* Fishing */
     FISHING_FISHERMANS_DIET(5),
@@ -51,6 +50,7 @@ public enum SubSkillType {
 
     /* Herbalism */
     HERBALISM_DOUBLE_DROPS(1),
+    HERBALISM_VERDANT_BOUNTY(1),
     HERBALISM_FARMERS_DIET(5),
     HERBALISM_GREEN_TERRA(1),
     HERBALISM_GREEN_THUMB(4),
@@ -147,7 +147,7 @@ public enum SubSkillType {
     /**
      * !!! This relies on the immutable lists in PrimarySkillType being populated !!!
      * If we add skills, those immutable lists need to be updated
-     * @return
+     * @return the parent skill of this subskill
      */
     public PrimarySkillType getParentSkill() { return mcMMO.p.getSkillTools().getPrimarySkillBySubSkill(this); }
 

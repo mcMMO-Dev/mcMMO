@@ -35,7 +35,7 @@ public class MiningManager extends SkillManager {
 
     public static final String BUDDING_AMETHYST = "budding_amethyst";
 
-    public MiningManager(McMMOPlayer mcMMOPlayer) {
+    public MiningManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.MINING);
     }
 

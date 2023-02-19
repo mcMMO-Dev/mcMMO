@@ -35,6 +35,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canGreenThumbBlocks;
     private boolean canFarmersDiet;
     private boolean canDoubleDrop;
+    private boolean canTripleDrop;
     private boolean canShroomThumb;
 
     public HerbalismCommand() {
@@ -49,6 +50,12 @@ public class HerbalismCommand extends SkillCommand {
             String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
+        }
+
+        if (canTripleDrop) {
+            String[] tripleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_VERDANT_BOUNTY);
+            doubleDropChance = tripleDropStrings[0];
+            doubleDropChanceLucky = tripleDropStrings[1];
         }
         
         // FARMERS DIET

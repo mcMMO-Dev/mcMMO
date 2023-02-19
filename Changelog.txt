@@ -1,29 +1,16 @@
 Version 2.2.000
-    Updated Adventure (our text dependency) fixes some errors when using color codes in party/admin chat (thanks TheBusyBiscuit)
-    Added some support for negative Y values in anticipation of 1.17 world height changes (thanks t00thpick1)
     (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
-    Added a setting to chat.yml to toggle sending party or admin chat messages to console
+    Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console
     Added a set of "mastery" subskills meant for end game progression
     Added the mastery subskill 'Mother Lode' to Mining
     Added the mastery subskill 'Clean Cuts' to Woodcutting
+    Added the mastery subskill 'Verdant Bounty' to Herbalism
+    All new skills have had settings added to advanced.yml
     Added /mmopower command (aliases /mmopowerlevel /powerlevel)
     Added 'mcmmo.commands.mmopower' permission node
-    Added 'mcmmo.ability.acrobatics.mastery' permission node
-    Added 'mcmmo.ability.alchemy.mastery' permission node
-    Added 'mcmmo.ability.archery.mastery' permission node
-    Added 'mcmmo.ability.axes.mastery' permission node
-    Added 'mcmmo.ability.excavation.mastery' permission node
-    Added 'mcmmo.ability.fishing.mastery' permission node
-    Added 'mcmmo.ability.herbalism.mastery' permission node
+    Added 'mcmmo.ability.herbalism.verdantbounty' permission node
     Added 'mcmmo.ability.mining.motherlode' permission node
-    Added 'mcmmo.ability.repair.mastery' permission node
-    Added 'mcmmo.ability.salvage.mastery' permission node
-    Added 'mcmmo.ability.smelting.mastery' permission node
-    Added 'mcmmo.ability.salvage.mastery' permission node
-    Added 'mcmmo.ability.swords.mastery' permission node
-    Added 'mcmmo.ability.taming.mastery' permission node
-    Added 'mcmmo.ability.unarmed.mastery' permission node
     Added 'mcmmo.ability.woodcutting.cleancuts' permission node
     Added 'Mining.SubSkill.MotherLode.Name' to locale
     Added 'Mining.SubSkill.MotherLode.Stat' to locale
@@ -31,9 +18,12 @@ Version 2.2.000
     Added 'Woodcutting.SubSkill.CleanCuts.Name' to locale
     Added 'Woodcutting.SubSkill.CleanCuts.Stat' to locale
     Added 'Woodcutting.SubSkill.CleanCuts.Description' to locale
-    (Codebase) Major refactoring for how random chance was handled in the code
+    Added 'Herbalism.SubSkill.VerdantBounty.Name' to locale
+    Added 'Herbalism.SubSkill.VerdantBounty.Stat' to locale
+    Added 'Herbalism.SubSkill.VerdantBounty.Description' to locale
+    (Codebase) Major rewrite for how random chance was handled in the code
 
-    Added 'General.PowerLevel.Skill_Mastery.Enabled' to config.yml which is used to enable or disable the mastery skills (will also disable the new power level command)
+    Added 'General.PowerLevel.Skill_Mastery.Enabled' to config.yml which is used to enable or disable the mastery skills wholesale (will also disable the new power level command)
 
     NOTES:
     The goal of this update is to provide a small benefit to each skill and a reason to grind past the "maximum", ideally for a long while.
@@ -47,12 +37,15 @@ Version 2.2.000
     Mastery Skills
     Mining / Mother Lode: With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops while mining (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
     This skill respects double drop settings from the config files.
-    Double Drops only occur if the Triple Drops fail, these two skills do not stack.
+    Double drops will only get checked if the Triple Drops fail for players that have Mother Lode unlocked, these two skills do not stack.
 
     Woodcutting / Clean Cuts: With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops while woodcutting or using Tree Feller (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
     This skill respects double drop settings from the config files.
     Double Drops (Harvest Lumber) will only get checked if the Triple Drops fail for players that have Clean Cuts unlocked, these two skills do not stack.
 
+    Herbalism / Verdant Bounty: With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops when harvesting crops (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
+    This skill respects double drop settings from the config files.
+    Double Drops only occur if the Triple Drops fail, these two skills do not stack.
     New Power Level Command
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
 

@@ -413,6 +413,11 @@ Herbalism:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
+    VerdantBounty:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     GreenTerra:
         Standard:
             Rank_1: 5
@@ -688,6 +693,11 @@ Woodcutting:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
+    CleanCuts:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     KnockOnWood:
         Standard:
             Rank_1: 30
