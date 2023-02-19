@@ -777,6 +777,10 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getDouble("Skills.Mining.BlastMining.OreBonus.Rank_" + rank);
     }
 
+    public boolean isBlastMiningBonusDropsEnabled() {
+        return config.getBoolean("Skills.Mining.BlastMining.Bonus_Drops.Enabled", true);
+    }
+
     public double getDebrisReduction(int rank) {
         return config.getDouble("Skills.Mining.BlastMining.DebrisReduction.Rank_" + rank);
     }

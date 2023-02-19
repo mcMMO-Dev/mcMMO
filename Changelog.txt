@@ -1,3 +1,6 @@
+Version 2.1.219
+    Added 'Skills.Mining.BlastMining.Bonus_Drops.Enabled' to advanced.yml to enable/disable bonus drops from Blast Mining
+
 Version 2.1.218
     Fixed locale pt_BR type (thanks MrPowerGamerBR)
     Updated Russian Locale (thanks imDaniX)
