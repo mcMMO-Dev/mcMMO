@@ -111,7 +111,7 @@ public class Roll extends AcrobaticsSubSkill {
      */
     @Override
     public boolean hasPermission(Player player) {
-        return Permissions.isSubSkillEnabled(player, this);
+        return Permissions.isSubSkillEnabled(player, getSubSkillType());
     }
 
     /**

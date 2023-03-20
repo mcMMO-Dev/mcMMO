@@ -29,7 +29,7 @@ public interface Probability {
      * @return true for succeeding, false for failing
      */
     static private boolean isSuccessfulRoll(double probabilityValue) {
-        return probabilityValue >= ThreadLocalRandom.current().nextDouble(100D);
+        return (probabilityValue * 100) >= ThreadLocalRandom.current().nextDouble(100D);
     }
 
     /**

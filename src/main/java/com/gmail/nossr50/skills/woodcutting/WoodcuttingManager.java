@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -88,7 +87,7 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processBonusDropCheck(@NotNull BlockState blockState) {
         //TODO: Why isn't this using the item drop event? Potentially because of Tree Feller? This should be adjusted either way.
-        if(Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
+        if(mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
             //Mastery enabled for player
             if(Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
                 if(checkCleanCutsActivation(blockState.getType())) {
@@ -406,6 +405,10 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     protected void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
-        Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()), ItemSpawnReason.BONUS_DROPS);
+        Misc.spawnItemsFromCollection(
+                getPlayer(),
+                Misc.getBlockCenter(blockState),
+                blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()),
+                ItemSpawnReason.BONUS_DROPS);
     }
 }

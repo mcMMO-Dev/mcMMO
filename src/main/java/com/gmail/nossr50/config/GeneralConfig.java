@@ -1005,4 +1005,6 @@ public class GeneralConfig extends BukkitConfig {
     public boolean isGreenThumbReplantableCrop(@NotNull Material material) {
         return config.getBoolean("Green_Thumb_Replanting_Crops." + StringUtils.getCapitalized(material.toString()), true);
     }
+
+    public boolean isMasterySystemEnabled() { return config.getBoolean( "General.PowerLevel.Skill_Mastery.Enabled"); }
 }

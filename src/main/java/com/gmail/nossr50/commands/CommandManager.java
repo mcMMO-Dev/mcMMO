@@ -7,7 +7,6 @@ import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.skills.PowerLevelCommand;
 import com.gmail.nossr50.config.ChatConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -48,7 +47,7 @@ public class CommandManager {
     }
 
     private void registerSkillCommands() {
-        if(Config.getInstance().isMasterySystemEnabled()) {
+        if(mcMMO.p.getGeneralConfig().isMasterySystemEnabled()) {
             bukkitCommandManager.registerCommand(new PowerLevelCommand(pluginRef));
         }
     }
