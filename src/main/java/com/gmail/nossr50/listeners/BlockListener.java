@@ -38,6 +38,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -56,6 +57,12 @@ public class BlockListener implements Listener {
             return;
         }
 
+        int tileEntityTolerance = 1;
+
+        // beetroot hotfix, potentially other plants may need this fix
+        if(event.getBlockState().getType() == Material.BEETROOTS)
+            tileEntityTolerance = 2;
+
         //Track how many "things" are being dropped
         HashSet<Material> uniqueMaterials = new HashSet<>();
         boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
@@ -70,7 +77,7 @@ public class BlockListener implements Listener {
                 blockCount++;
         }
 
-        if(uniqueMaterials.size() > 1) {
+        if(uniqueMaterials.size() > tileEntityTolerance) {
             //Too many things are dropping, assume tile entities might be duped
             //Technically this would also prevent something like coal from being bonus dropped if you placed a TE above a coal ore when mining it but that's pretty edge case and this is a good solution for now
             dontRewardTE = true;
