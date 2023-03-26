@@ -10,14 +10,15 @@ public class ProbabilityImpl implements Probability {
     /**
      * Create a probability with a static value
      *
-     * @param staticProbability the value to assign to this probability
+     * @param percentage the percentage value of the probability
      */
-    ProbabilityImpl(double staticProbability) throws ValueOutOfBoundsException {
-        if (staticProbability < 0) {
+    ProbabilityImpl(double percentage) throws ValueOutOfBoundsException {
+        if (percentage < 0) {
             throw new ValueOutOfBoundsException("Value should never be negative for Probability! This suggests a coding mistake, contact the devs!");
         }
 
-        probabilityValue = staticProbability;
+        // Convert to a 0-1 floating point representation
+        probabilityValue = percentage / 100.0D;
     }
 
     ProbabilityImpl(double xPos, double xCeiling, double probabilityCeiling) throws ValueOutOfBoundsException {

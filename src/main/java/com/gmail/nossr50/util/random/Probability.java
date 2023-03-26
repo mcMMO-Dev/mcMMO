@@ -9,16 +9,28 @@ public interface Probability {
     /**
      * The value of this Probability
      * Should return a result between 0 and 1 (inclusive)
-     * 1 should represent something that will always succeed
-     * 0.5 should represent something that succeeds around half the time
-     * etc
+     * A value of 1 or greater represents something that will always succeed
+     * A value of around 0.5 represents something that succeeds around half the time
+     * A value of 0 represents something that will always fail
      *
      * @return the value of probability
      */
     double getValue();
 
-    static @NotNull Probability ofPercent(double percentageValue) {
-        return new ProbabilityImpl(percentageValue);
+    /**
+     * Create a new Probability with the given value
+     * A value of 100 would represent 100% chance of success
+     * A value of 50 would represent 50% chance of success
+     * A value of 0 would represent 0% chance of success
+     * A value of 1 would represent 1% chance of success
+     * A value of 0.5 would represent 0.5% chance of success
+     * A value of 0.01 would represent 0.01% chance of success
+     *
+     * @param percentage the value of the probability
+     * @return a new Probability with the given value
+     */
+    static @NotNull Probability ofPercent(double percentage) {
+        return new ProbabilityImpl(percentage);
     }
 
     /**
@@ -29,7 +41,7 @@ public interface Probability {
      * @return true for succeeding, false for failing
      */
     static private boolean isSuccessfulRoll(double probabilityValue) {
-        return (probabilityValue * 100) >= ThreadLocalRandom.current().nextDouble(100D);
+        return (probabilityValue) >= ThreadLocalRandom.current().nextDouble(1D);
     }
 
     /**

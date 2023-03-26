@@ -78,7 +78,7 @@ class ProbabilityTest {
 
     @ParameterizedTest
     @MethodSource("provideProbabilitiesForWithinExpectations")
-    void testOddsExpectationsImplConstructor(Probability probability, double expectedWinPercent) {
+    void testOddsExpectationsConstructor(Probability probability, double expectedWinPercent) {
         assertExpectations(probability, expectedWinPercent);
     }
 
