@@ -464,6 +464,7 @@ Green_Thumb_Replanting_Crops:
 ###
 Bonus_Drops:
     Herbalism:
+        Pink_Petals: true
         Glow_Berries: true
         Cave_Vines: true
         Cave_Vines_Plant: true
@@ -601,6 +602,8 @@ Bonus_Drops:
         Acacia_Log: true
         Birch_Wood: true
         Birch_Log: true
+        Cherry_Wood: true
+        Cherry_Log: true
         Dark_Oak_Wood: true
         Dark_Oak_Log: true
         Oak_Wood: true
