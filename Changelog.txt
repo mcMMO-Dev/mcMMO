@@ -50,6 +50,7 @@ Version 2.2.000
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
 
 Version 2.1.219
+    Fixed wiki url being incorrect in commands
     Added support for various new things from Minecraft 1.20
     Fixed double drop issue with Beetroots
     Added 'Camel' to taming experience in experience.yml
