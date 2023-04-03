@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public final class ItemUtils {
     /**
@@ -413,37 +414,38 @@ public final class ItemUtils {
      */
     public static boolean isHerbalismDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
-        switch (item.getType()) {
-            case WHEAT:
-            case WHEAT_SEEDS:
-            case CARROT:
-            case CHORUS_FRUIT:
-            case CHORUS_FLOWER:
-            case POTATO:
-            case BEETROOT:
-            case BEETROOTS:
-            case BEETROOT_SEEDS:
-            case NETHER_WART:
-            case BROWN_MUSHROOM:
-            case RED_MUSHROOM:
-            case ROSE_BUSH:
-            case DANDELION:
-            case CACTUS:
-            case SUGAR_CANE:
-            case MELON:
-            case MELON_SEEDS:
-            case PUMPKIN:
-            case PUMPKIN_SEEDS:
-            case LILY_PAD:
-            case VINE:
-            case TALL_GRASS:
-            case COCOA_BEANS:
+        switch (item.getType().getKey().getKey().toLowerCase()) {
+            case "wheat":
+            case "wheat_seeds":
+            case "carrot":
+            case "chorus_fruit":
+            case "chorus_flower":
+            case "potato":
+            case "beetroot":
+            case "beetroots":
+            case "beetroot_seeds":
+            case "nether_wart":
+            case "brown_mushroom":
+            case "red_mushroom":
+            case "rose_bush":
+            case "dandelion":
+            case "cactus":
+            case "sugar_cane":
+            case "melon":
+            case "melon_seeds":
+            case "pumpkin":
+            case "pumpkin_seeds":
+            case "lily_pad":
+            case "vine":
+            case "tall_grass":
+            case "cocoa_beans":
                 return true;
 
             default:
                 return false;
         }
     }
+
 
     /**
      * Checks to see if an item is a mob drop.

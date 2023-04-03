@@ -1017,6 +1017,7 @@ public class MaterialMapStore {
     private void fillTreeFellerDestructibleWhiteList()
     {
         treeFellerDestructibleWhiteList.add("oak_leaves");
+        treeFellerDestructibleWhiteList.add("cherry_leaves");
         treeFellerDestructibleWhiteList.add("acacia_leaves");
         treeFellerDestructibleWhiteList.add("birch_leaves");
         treeFellerDestructibleWhiteList.add("dark_oak_leaves");
@@ -1171,6 +1172,7 @@ public class MaterialMapStore {
     
     private void fillToolBlackList()
     {
+        toolBlackList.add("chiseled_bookshelf");
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
         toolBlackList.add("brown_bed");
@@ -1256,17 +1258,28 @@ public class MaterialMapStore {
         toolBlackList.add("yellow_shulker_box");
         toolBlackList.add("shulker_box");
         toolBlackList.add("acacia_sign");
+        toolBlackList.add("acacia_hanging_sign");
         toolBlackList.add("acacia_wall_sign");
         toolBlackList.add("birch_sign");
+        toolBlackList.add("birch_hanging_sign");
         toolBlackList.add("birch_wall_sign");
         toolBlackList.add("dark_oak_sign");
+        toolBlackList.add("dark_oak_hanging_sign");
         toolBlackList.add("dark_oak_wall_sign");
         toolBlackList.add("jungle_sign");
+        toolBlackList.add("jungle_hanging_sign");
         toolBlackList.add("jungle_wall_sign");
         toolBlackList.add("spruce_sign");
+        toolBlackList.add("spruce_hanging_sign");
         toolBlackList.add("spruce_wall_sign");
         toolBlackList.add("oak_sign");
+        toolBlackList.add("oak_hanging_sign");
         toolBlackList.add("oak_wall_sign");
+        toolBlackList.add("cherry_sign");
+        toolBlackList.add("cherry_hanging_sign");
+        toolBlackList.add("cherry_wall_sign");
+        toolBlackList.add("stripped_cherry_log");
+        toolBlackList.add("stripped_cherry_wood");
         toolBlackList.add("stripped_acacia_log");
         toolBlackList.add("stripped_acacia_wood");
         toolBlackList.add("stripped_birch_log");
@@ -1308,6 +1321,7 @@ public class MaterialMapStore {
         toolBlackList.add("lodestone");
         toolBlackList.add("respawn_anchor");
         toolBlackList.add("sweet_berry_bush");
+        toolBlackList.add("smithing_table");
     }
 
     public boolean isIntendedToolPickaxe(@NotNull Material material) {

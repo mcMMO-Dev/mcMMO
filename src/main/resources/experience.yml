@@ -277,18 +277,21 @@ Experience_Values:
         Crimson_Stem: 35
         Warped_Stem: 35
         Oak_Log: 70
+        Cherry_Log: 105
         Spruce_Log: 80
         Birch_Log: 90
         Jungle_Log: 100
         Acacia_Log: 90
         Dark_Oak_Log: 90
         Stripped_Oak_Log: 70
+        Stripped_Cherry_Log: 105
         Stripped_Spruce_Log: 80
         Stripped_Birch_Log: 90
         Stripped_Jungle_Log: 100
         Stripped_Acacia_Log: 90
         Stripped_Dark_Oak_Log: 90
         Stripped_Oak_Wood: 70
+        Stripped_Cherry_Wood: 70
         Stripped_Spruce_Wood: 80
         Stripped_Birch_Wood: 90
         Stripped_Jungle_Wood: 100
@@ -298,6 +301,7 @@ Experience_Values:
         Stripped_Crimson_Stem: 50
         Stripped_Warped_Stem: 50
         Oak_Wood: 70
+        Cherry_Wood: 105
         Spruce_Wood: 70
         Birch_Wood: 70
         Jungle_Wood: 70
@@ -310,6 +314,8 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Pitcher_Plant: 160
+        Pink_Petals: 10
         Small_Dripleaf: 140
         Big_Dripleaf: 140
         Cave_Vines: 90
@@ -401,6 +407,7 @@ Experience_Values:
         Cornflower: 150
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
+        Torchflower: 90
     Mining:
         Sculk: 4
         Sculk_Vein: 3
@@ -541,6 +548,9 @@ Experience_Values:
         Cobbled_Deepslate: 5
     Taming:
         Animal_Taming:
+            Camel: 1300
+            Sniffer: 1500
+            Snifflet: 900
             Llama: 1200
             Wolf: 250
             Ocelot: 500
@@ -633,3 +643,6 @@ Experience_Values:
             Frog: 1.7
             Warden: 6.0
             Tadpole: 0.2
+            Sniffer: 1.1
+            Snifflet: 1.1
+            Camel: 1.2

@@ -49,6 +49,30 @@ Version 2.2.000
     New Power Level Command
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
 
+Version 2.1.219
+    Added support for various new things from Minecraft 1.20
+    Fixed double drop issue with Beetroots
+    Added 'Camel' to taming experience in experience.yml
+    Added 'Sniffer' to taming experience in experience.yml
+    Added 'Snifflet' to taming experience in experience.yml
+    Added 'Pitcher_Plant' to bonus drops in config.yml
+    Added 'Torchflower' to bonus drops in config.yml
+    Added 'Pink_Petals' to bonus drops in config.yml
+    Added 'Cherry_Log' to bonus drops in config.yml
+    Added 'Cherry_Wood' to bonus drops in config.yml
+    Added 'Camel' to combat experience in experience.yml
+    Added 'Sniffer' to combat experience in experience.yml
+    Added 'Snifflet' to combat experience in experience.yml
+    Added 'Torchflower' to herbalism experience in experience.yml
+    Added 'Pitcher_Plant' to herbalism experience in experience.yml
+    Added 'Pink_Petals' to herbalism experience in experience.yml
+    Added 'Cherry_Log' to woodcutting experience in experience.yml
+    Added 'Cherry_Wood' to woodcutting experience in experience.yml
+    Added 'Stripped_Cherry_Log' to woodcutting experience in experience.yml
+    Added 'Stripped_Cherry_Wood' to woodcutting experience in experience.yml
+    Added 'Skills.Mining.BlastMining.Bonus_Drops.Enabled' to advanced.yml to enable/disable bonus drops from Blast Mining
+    NOTE: There are plans to add experience and potentially subskills for discovering items via the new brushing mechanic, but this will have to wait for new Spigot API to become available
+
 Version 2.1.218
     Fixed locale pt_BR type (thanks MrPowerGamerBR)
     Updated Russian Locale (thanks imDaniX)

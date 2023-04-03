@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
+import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.metadata.MobMetadataService;
@@ -885,8 +886,14 @@ public final class CombatUtils {
         return false;
     }
 
-    public static boolean canDamage(@NotNull Entity attacker, @NotNull Entity target, @NotNull DamageCause damageCause, double damage) {
-        EntityDamageEvent damageEvent = new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
+    public static boolean canDamage(@Nullable Entity attacker, @NotNull Entity target, @NotNull DamageCause damageCause, double damage) {
+        EntityDamageEvent damageEvent;
+        if (attacker != null) {
+            damageEvent = new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
+        } else {
+            damageEvent = new FakeEntityDamageEvent(target, damageCause, damage);
+        }
+
         mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 
         return !damageEvent.isCancelled();

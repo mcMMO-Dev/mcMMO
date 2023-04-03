@@ -40,10 +40,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
@@ -771,34 +768,38 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory playerInventory = player.getInventory();
         Material seed;
 
-        switch (blockState.getType()) {
-            case CARROTS:
-                seed = Material.CARROT;
+        switch (blockState.getType().getKey().getKey().toLowerCase(Locale.ROOT)) {
+            case "carrots":
+                seed = Material.matchMaterial("CARROT");
                 break;
 
-            case WHEAT:
-                seed = Material.WHEAT_SEEDS;
+            case "wheat":
+                seed = Material.matchMaterial("WHEAT_SEEDS");
                 break;
 
-            case NETHER_WART:
-                seed = Material.NETHER_WART;
+            case "nether_wart":
+                seed = Material.getMaterial("NETHER_WART");
                 break;
 
-            case POTATOES:
-                seed = Material.POTATO;
+            case "potatoes":
+                seed = Material.matchMaterial("POTATO");
                 break;
 
-            case BEETROOTS:
-                seed = Material.BEETROOT_SEEDS;
+            case "beetroots":
+                seed = Material.matchMaterial("BEETROOT_SEEDS");
                 break;
 
-            case COCOA:
-                seed = Material.COCOA_BEANS;
+            case "cocoa":
+                seed = Material.matchMaterial("COCOA_BEANS");
                 break;
 
+            case "torchflower":
+                seed = Material.matchMaterial("TORCHFLOWER_SEEDS");
+                break;
             default:
                 return false;
         }
+
 
         ItemStack seedStack = new ItemStack(seed);
 
@@ -850,17 +851,17 @@ public class HerbalismManager extends SkillManager {
             return true;
         }
 
-        switch (blockState.getType()) {
+        switch (blockState.getType().getKey().getKey()) {
 
-            case POTATOES:
-            case CARROTS:
-            case WHEAT:
+            case "potatoes":
+            case "carrots":
+            case "wheat":
 
                     finalAge = getGreenThumbStage(greenTerra);
                 break;
 
-            case BEETROOTS:
-            case NETHER_WART:
+            case "beetroots":
+            case "nether_wart":
 
                 if (greenTerra || greenThumbStage > 2) {
                     finalAge = 2;
@@ -871,9 +872,9 @@ public class HerbalismManager extends SkillManager {
                 else {
                     finalAge = 0;
                 }
-               break;
+                break;
 
-            case COCOA:
+            case "cocoa":
 
                 if (getGreenThumbStage(greenTerra) >= 2) {
                     finalAge = 1;
@@ -886,6 +887,7 @@ public class HerbalismManager extends SkillManager {
             default:
                 return false;
         }
+
 
         //Start the delayed replant
         startReplantTask(finalAge, blockBreakEvent, blockState, false);
