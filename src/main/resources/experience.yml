@@ -314,6 +314,7 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Pink_Petals: 10
         Small_Dripleaf: 140
         Big_Dripleaf: 140
         Cave_Vines: 90

@@ -1,6 +1,7 @@
 Version 2.1.219
     Added support for various new things from Minecraft 1.20
     Fixed double drop issue with Beetroots
+    Added 'Pink_Petals' to herbalism experience in experience.yml
     Added 'Cherry_Log' to woodcutting experience in experience.yml
     Added 'Cherry_Wood' to woodcutting experience in experience.yml
     Added 'Stripped_Cherry_Log' to woodcutting experience in experience.yml
