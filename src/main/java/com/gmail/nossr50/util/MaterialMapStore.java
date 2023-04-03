@@ -1172,6 +1172,7 @@ public class MaterialMapStore {
     
     private void fillToolBlackList()
     {
+        toolBlackList.add("chiseled_bookshelf");
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
         toolBlackList.add("brown_bed");
