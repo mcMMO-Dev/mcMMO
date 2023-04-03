@@ -798,7 +798,6 @@ public class HerbalismManager extends SkillManager {
             case "torchflower":
                 seed = Material.matchMaterial("TORCHFLOWER_SEEDS");
                 break;
-
             default:
                 return false;
         }
@@ -854,17 +853,17 @@ public class HerbalismManager extends SkillManager {
             return true;
         }
 
-        switch (blockState.getType()) {
+        switch (blockState.getType().getKey().getKey()) {
 
-            case POTATOES:
-            case CARROTS:
-            case WHEAT:
+            case "potatoes":
+            case "carrots":
+            case "wheat":
 
                     finalAge = getGreenThumbStage(greenTerra);
                 break;
 
-            case BEETROOTS:
-            case NETHER_WART:
+            case "beetroots":
+            case "nether_wart":
 
                 if (greenTerra || greenThumbStage > 2) {
                     finalAge = 2;
@@ -875,9 +874,9 @@ public class HerbalismManager extends SkillManager {
                 else {
                     finalAge = 0;
                 }
-               break;
+                break;
 
-            case COCOA:
+            case "cocoa":
 
                 if (getGreenThumbStage(greenTerra) >= 2) {
                     finalAge = 1;
@@ -890,6 +889,7 @@ public class HerbalismManager extends SkillManager {
             default:
                 return false;
         }
+
 
         //Start the delayed replant
         startReplantTask(finalAge, blockBreakEvent, blockState, false);
