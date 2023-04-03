@@ -42,10 +42,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
@@ -773,34 +770,39 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory playerInventory = player.getInventory();
         Material seed;
 
-        switch (blockState.getType()) {
-            case CARROTS:
-                seed = Material.CARROT;
+        switch (blockState.getType().getKey().getKey().toLowerCase(Locale.ROOT)) {
+            case "carrots":
+                seed = Material.matchMaterial("CARROT");
                 break;
 
-            case WHEAT:
-                seed = Material.WHEAT_SEEDS;
+            case "wheat":
+                seed = Material.matchMaterial("WHEAT_SEEDS");
                 break;
 
-            case NETHER_WART:
-                seed = Material.NETHER_WART;
+            case "nether_wart":
+                seed = Material.getMaterial("NETHER_WART");
                 break;
 
-            case POTATOES:
-                seed = Material.POTATO;
+            case "potatoes":
+                seed = Material.matchMaterial("POTATO");
                 break;
 
-            case BEETROOTS:
-                seed = Material.BEETROOT_SEEDS;
+            case "beetroots":
+                seed = Material.matchMaterial("BEETROOT_SEEDS");
                 break;
 
-            case COCOA:
-                seed = Material.COCOA_BEANS;
+            case "cocoa":
+                seed = Material.matchMaterial("COCOA_BEANS");
+                break;
+
+            case "torchflower":
+                seed = Material.matchMaterial("TORCHFLOWER_SEEDS");
                 break;
 
             default:
                 return false;
         }
+
 
         ItemStack seedStack = new ItemStack(seed);
 
