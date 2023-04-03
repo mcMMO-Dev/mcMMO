@@ -465,6 +465,7 @@ Green_Thumb_Replanting_Crops:
 Bonus_Drops:
     Herbalism:
         Pitcher_Plant: true
+        Torchflower: true
         Pink_Petals: true
         Glow_Berries: true
         Cave_Vines: true
