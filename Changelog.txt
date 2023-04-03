@@ -5,6 +5,8 @@ Version 2.1.219
     Added 'Pink_Petals' to bonus drops in config.yml
     Added 'Cherry_Log' to bonus drops in config.yml
     Added 'Cherry_Wood' to bonus drops in config.yml
+    Added 'Sniffer' to combat experience in experience.yml
+    Added 'Snifflet' to combat experience in experience.yml
     Added 'Pitcher_Plant' to herbalism experience in experience.yml
     Added 'Pink_Petals' to herbalism experience in experience.yml
     Added 'Cherry_Log' to woodcutting experience in experience.yml
