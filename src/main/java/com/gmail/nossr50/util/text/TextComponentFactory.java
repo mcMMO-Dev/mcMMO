@@ -69,7 +69,7 @@ public class TextComponentFactory {
         TextComponent.Builder wikiLinkComponent = Component.text().content(LocaleLoader.getString("Overhaul.mcMMO.MmoInfo.Wiki"));
         wikiLinkComponent.decoration(TextDecoration.UNDERLINED, true);
 
-        String wikiUrl = "https://mcmmo.org/wiki/"+subskillformatted;
+        String wikiUrl = "https://wiki.mcmmo.org/"+subskillformatted;
 
         wikiLinkComponent.clickEvent(ClickEvent.openUrl(wikiUrl));
 
