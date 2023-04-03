@@ -548,6 +548,9 @@ Experience_Values:
         Cobbled_Deepslate: 5
     Taming:
         Animal_Taming:
+            Camel: 1300
+            Sniffer: 1500
+            Snifflet: 900
             Llama: 1200
             Wolf: 250
             Ocelot: 500
@@ -642,3 +645,4 @@ Experience_Values:
             Tadpole: 0.2
             Sniffer: 1.1
             Snifflet: 1.1
+            Camel: 1.2

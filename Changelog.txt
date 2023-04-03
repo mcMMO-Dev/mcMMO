@@ -1,11 +1,15 @@
 Version 2.1.219
     Added support for various new things from Minecraft 1.20
     Fixed double drop issue with Beetroots
+    Added 'Camel' to taming experience in experience.yml
+    Added 'Sniffer' to taming experience in experience.yml
+    Added 'Snifflet' to taming experience in experience.yml
     Added 'Pitcher_Plant' to bonus drops in config.yml
     Added 'Torchflower' to bonus drops in config.yml
     Added 'Pink_Petals' to bonus drops in config.yml
     Added 'Cherry_Log' to bonus drops in config.yml
     Added 'Cherry_Wood' to bonus drops in config.yml
+    Added 'Camel' to combat experience in experience.yml
     Added 'Sniffer' to combat experience in experience.yml
     Added 'Snifflet' to combat experience in experience.yml
     Added 'Torchflower' to herbalism experience in experience.yml
