@@ -200,15 +200,19 @@ public class PartyCommand implements TabExecutor {
 
                         if (matches.size() == 0) {
                             Player player = (Player) sender;
+                            final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                             //Not Loaded
-                            if(UserManager.getPlayer(player) == null)
+                            if(mcMMOPlayer == null)
                             {
                                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }
 
-                            Party party = UserManager.getPlayer(player).getParty();
+                            if (mcMMOPlayer.getParty() == null)
+                                return ImmutableList.of();
+
+                            final Party party = mcMMOPlayer.getParty();
 
                             playerNames = party.getOnlinePlayerNames(player);
                             return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));
