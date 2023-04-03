@@ -1017,6 +1017,7 @@ public class MaterialMapStore {
     private void fillTreeFellerDestructibleWhiteList()
     {
         treeFellerDestructibleWhiteList.add("oak_leaves");
+        treeFellerDestructibleWhiteList.add("cherry_leaves");
         treeFellerDestructibleWhiteList.add("acacia_leaves");
         treeFellerDestructibleWhiteList.add("birch_leaves");
         treeFellerDestructibleWhiteList.add("dark_oak_leaves");
@@ -1267,6 +1268,8 @@ public class MaterialMapStore {
         toolBlackList.add("spruce_wall_sign");
         toolBlackList.add("oak_sign");
         toolBlackList.add("oak_wall_sign");
+        toolBlackList.add("stripped_cherry_log");
+        toolBlackList.add("stripped_cherry_wood");
         toolBlackList.add("stripped_acacia_log");
         toolBlackList.add("stripped_acacia_wood");
         toolBlackList.add("stripped_birch_log");

@@ -1,5 +1,10 @@
 Version 2.1.219
+    Added support for various things from Minecraft 1.20
     Fixed double drop issue with Beetroots
+    Added 'Cherry_Log' to woodcutting experience in experience.yml
+    Added 'Cherry_Wood' to woodcutting experience in experience.yml
+    Added 'Stripped_Cherry_Log' to woodcutting experience in experience.yml
+    Added 'Stripped_Cherry_Wood' to woodcutting experience in experience.yml
     Added 'Skills.Mining.BlastMining.Bonus_Drops.Enabled' to advanced.yml to enable/disable bonus drops from Blast Mining
 
 Version 2.1.218
