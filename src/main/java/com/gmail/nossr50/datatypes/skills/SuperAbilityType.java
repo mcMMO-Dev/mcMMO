@@ -65,6 +65,20 @@ public enum SuperAbilityType {
             "Swords.Skills.SS.Refresh",
             "Swords.Skills.SS.Other.Off",
             "Swords.SubSkill.SerratedStrikes.Name"),
+    SUPER_SHOTGUN(
+            null,
+            null,
+            "Crossbows.Skills.SSG.Other.On",
+            "Crossbows.Skills.SSG.Refresh",
+            null,
+            "Crossbows.SubSkill.SuperShotgun.Name"),
+    TRIDENT_ABILITY(
+            "Tridents.Skills.TA.On",
+            "Tridents.Skills.TA.Off",
+            "Tridents.Skills.TA.Other.On",
+            "Tridents.Skills.TA.Refresh",
+            "Tridents.Skills.TA.Other.Off",
+            "Tridents.SubSkill.TridentAbility.Name"),
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment

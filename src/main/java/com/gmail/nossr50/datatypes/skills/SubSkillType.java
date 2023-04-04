@@ -31,6 +31,9 @@ public enum SubSkillType {
     AXES_GREATER_IMPACT(1),
     AXES_SKULL_SPLITTER(1),
 
+    /* CROSSBOWS */
+    CROSSBOWS_SUPER_SHOTGUN(1),
+
     /* Excavation */
     EXCAVATION_ARCHAEOLOGY(8),
     EXCAVATION_GIGA_DRILL_BREAKER(1),

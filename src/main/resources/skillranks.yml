@@ -201,6 +201,12 @@ Axes:
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
+Crossbows:
+    SuperShotgun:
+        Standard:
+            Rank_1: 5
+        RetroMode:
+            Rank_1: 50
 Taming:
     BeastLore:
         Standard:

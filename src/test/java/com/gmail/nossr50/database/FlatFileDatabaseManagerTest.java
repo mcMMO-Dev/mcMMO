@@ -52,16 +52,19 @@ class FlatFileDatabaseManagerTest {
     int expectedLvlMining = 1, expectedLvlWoodcutting = 2, expectedLvlRepair = 3,
             expectedLvlUnarmed = 4, expectedLvlHerbalism = 5, expectedLvlExcavation = 6,
             expectedLvlArchery = 7, expectedLvlSwords = 8, expectedLvlAxes = 9, expectedLvlAcrobatics = 10,
-            expectedLvlTaming = 11, expectedLvlFishing = 12, expectedLvlAlchemy = 13;
+            expectedLvlTaming = 11, expectedLvlFishing = 12, expectedLvlAlchemy = 13, expectedLvlCrossbows = 14,
+            expectedLvlTridents = 15;
 
     float expectedExpMining = 10, expectedExpWoodcutting = 20, expectedExpRepair = 30,
             expectedExpUnarmed = 40, expectedExpHerbalism = 50, expectedExpExcavation = 60,
             expectedExpArchery = 70, expectedExpSwords = 80, expectedExpAxes = 90, expectedExpAcrobatics = 100,
-            expectedExpTaming = 110, expectedExpFishing = 120, expectedExpAlchemy = 130;
+            expectedExpTaming = 110, expectedExpFishing = 120, expectedExpAlchemy = 130, expectedExpCrossbows = 140,
+            expectedExpTridents = 150;
 
     long expectedBerserkCd = 111, expectedGigaDrillBreakerCd = 222, expectedTreeFellerCd = 333,
             expectedGreenTerraCd = 444, expectedSerratedStrikesCd = 555, expectedSkullSplitterCd = 666,
-            expectedSuperBreakerCd = 777, expectedBlastMiningCd = 888, expectedChimaeraWingCd = 999;
+            expectedSuperBreakerCd = 777, expectedBlastMiningCd = 888, expectedChimaeraWingCd = 999,
+            expectedSSGCd = 1111, expectedTridentSuperCd = 2222;
 
     int expectedScoreboardTips = 1111;
     Long expectedLastLogin = 2020L;

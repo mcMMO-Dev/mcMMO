@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public final class ItemUtils {
     /**
@@ -43,6 +42,10 @@ public final class ItemUtils {
 
     public static boolean isCrossbow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
+    }
+
+    public static boolean isTrident(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
     }
 
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {

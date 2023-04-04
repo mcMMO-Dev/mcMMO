@@ -38,7 +38,6 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
-import java.util.Locale;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;

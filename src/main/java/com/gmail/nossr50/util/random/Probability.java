@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.random;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.concurrent.ThreadLocalRandom;
 

@@ -79,8 +79,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final int SCOREBOARD_TIPS = 42;
     public static final int COOLDOWN_CHIMAERA_WING = 43;
     public static final int OVERHAUL_LAST_LOGIN = 44;
+    public static final int EXP_CROSSBOWS = 45;
+    public static final int SKILLS_CROSSBOWS = 46;
+    public static final int EXP_TRIDENTS = 47;
+    public static final int SKILLS_TRIDENTS = 48;
+    public static final int COOLDOWN_SUPER_SHOTGUN = 49;
+    public static final int COOLDOWN_TRIDENTS = 50;
 
-    public static final int DATA_ENTRY_COUNT = OVERHAUL_LAST_LOGIN + 1; //Update this everytime new data is added
+    public static final int DATA_ENTRY_COUNT = COOLDOWN_TRIDENTS + 1; //Update this everytime new data is added
 
     protected FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime, int startingLevel, boolean testing) {
         this.usersFile = usersFile;
@@ -465,6 +471,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         appendable.append(String.valueOf(profile.getScoreboardTipsShown())).append(":");
         appendable.append(String.valueOf(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS))).append(":");
         appendable.append(String.valueOf(profile.getLastLogin())).append(":"); //overhaul last login
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.CROSSBOWS))).append(":");
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TRIDENTS))).append(":");
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TRIDENTS))).append(":");
         appendable.append("\r\n");
     }
 
@@ -1222,6 +1232,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ACROBATICS, EXP_ACROBATICS, username);
         tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.FISHING, EXP_FISHING, username);
         tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ALCHEMY, EXP_ALCHEMY, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.CROSSBOWS, EXP_CROSSBOWS, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.TRIDENTS, EXP_TRIDENTS, username);
 
         // Taming - Unused
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_BREAKER, COOLDOWN_SUPER_BREAKER, username);
@@ -1235,6 +1247,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SKULL_SPLITTER, COOLDOWN_SKULL_SPLITTER, username);
         // Acrobatics - Unused
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_SHOTGUN, COOLDOWN_SUPER_SHOTGUN, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.TRIDENT_ABILITY, COOLDOWN_TRIDENTS, username);
 
         UUID uuid;
         try {
@@ -1315,6 +1329,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.AXES, SKILLS_AXES, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.FISHING, SKILLS_FISHING, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ALCHEMY, SKILLS_ALCHEMY, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.CROSSBOWS, SKILLS_CROSSBOWS, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.TRIDENTS, SKILLS_TRIDENTS, username);
 
         return skills;
     }

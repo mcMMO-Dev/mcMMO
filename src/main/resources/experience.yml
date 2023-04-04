@@ -77,6 +77,10 @@ Experience_Bars:
         Enable: true
         Color: BLUE
         BarStyle: SEGMENTED_6
+    Crossbows:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
     Excavation:
         Enable: true
         Color: YELLOW
@@ -112,6 +116,10 @@ Experience_Bars:
     Taming:
         Enable: true
         Color: RED
+        BarStyle: SEGMENTED_6
+    Tridents:
+        Enable: true
+        Color: BLUE
         BarStyle: SEGMENTED_6
     Unarmed:
         Enable: true

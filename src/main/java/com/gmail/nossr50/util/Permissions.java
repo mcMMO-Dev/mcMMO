@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
@@ -226,6 +225,8 @@ public final class Permissions {
 
     /* WOODCUTTING */
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
+    /* CROSSBOWS */
+    public static boolean superShotgun(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun"); }
 
     /*
      * PARTY

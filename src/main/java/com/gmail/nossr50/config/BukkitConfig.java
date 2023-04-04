@@ -5,10 +5,9 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.util.HashSet;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 public abstract class BukkitConfig {
     public static final String CONFIG_PATCH_PREFIX = "ConfigPatchVersion:";
