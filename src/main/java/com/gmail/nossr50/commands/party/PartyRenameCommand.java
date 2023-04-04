@@ -25,7 +25,7 @@ public class PartyRenameCommand implements CommandExecutor {
             Party playerParty = mcMMOPlayer.getParty();
 
             String oldPartyName = playerParty.getName();
-            String newPartyName = args[1];
+            String newPartyName = args[1].replace(".", "");
 
             // This is to prevent party leaders from spamming other players with the rename message
             if (oldPartyName.equalsIgnoreCase(newPartyName)) {
