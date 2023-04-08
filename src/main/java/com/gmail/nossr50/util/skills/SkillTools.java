@@ -171,25 +171,19 @@ public class SkillTools {
     }
 
     private @NotNull PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType) throws InvalidSkillException {
-        switch(superAbilityType) {
-            case BERSERK:
-                return PrimarySkillType.UNARMED;
-            case GREEN_TERRA:
-                return PrimarySkillType.HERBALISM;
-            case TREE_FELLER:
-                return PrimarySkillType.WOODCUTTING;
-            case SUPER_BREAKER:
-            case BLAST_MINING:
-                return PrimarySkillType.MINING;
-            case SKULL_SPLITTER:
-                return PrimarySkillType.AXES;
-            case SERRATED_STRIKES:
-                return PrimarySkillType.SWORDS;
-            case GIGA_DRILL_BREAKER:
-                return PrimarySkillType.EXCAVATION;
-            default:
-                throw new InvalidSkillException("No parent defined for super ability! "+superAbilityType.toString());
-        }
+        return switch (superAbilityType) {
+            case BERSERK -> PrimarySkillType.UNARMED;
+            case GREEN_TERRA -> PrimarySkillType.HERBALISM;
+            case TREE_FELLER -> PrimarySkillType.WOODCUTTING;
+            case SUPER_BREAKER, BLAST_MINING -> PrimarySkillType.MINING;
+            case SKULL_SPLITTER -> PrimarySkillType.AXES;
+            case SERRATED_STRIKES -> PrimarySkillType.SWORDS;
+            case GIGA_DRILL_BREAKER -> PrimarySkillType.EXCAVATION;
+            case SUPER_SHOTGUN -> PrimarySkillType.CROSSBOWS;
+            case TRIDENT_ABILITY -> PrimarySkillType.TRIDENTS;
+            default ->
+                    throw new InvalidSkillException("No parent defined for super ability! " + superAbilityType.toString());
+        };
     }
 
     /**
