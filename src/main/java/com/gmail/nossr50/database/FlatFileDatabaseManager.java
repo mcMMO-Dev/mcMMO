@@ -611,8 +611,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         continue;
                     }
 
-
-                    //If we couldn't find anyone
+                    // we found the player
                     if(playerName.equalsIgnoreCase(rawSplitData[USERNAME_INDEX])) {
                         return loadFromLine(rawSplitData);
                     }
@@ -988,6 +987,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         List<PlayerStat> taming = new ArrayList<>();
         List<PlayerStat> fishing = new ArrayList<>();
         List<PlayerStat> alchemy = new ArrayList<>();
+        List<PlayerStat> crossbows = new ArrayList<>();
+        List<PlayerStat> tridents = new ArrayList<>();
 
         BufferedReader in = null;
         String playerName = null;
@@ -1021,6 +1022,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     powerLevel += putStat(taming, playerName, skills.get(PrimarySkillType.TAMING));
                     powerLevel += putStat(unarmed, playerName, skills.get(PrimarySkillType.UNARMED));
                     powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.WOODCUTTING));
+                    powerLevel += putStat(crossbows, playerName, skills.get(PrimarySkillType.CROSSBOWS));
+                    powerLevel += putStat(tridents, playerName, skills.get(PrimarySkillType.TRIDENTS));
 
                     putStat(powerLevels, playerName, powerLevel);
                 }
@@ -1056,6 +1059,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         taming.sort(c);
         fishing.sort(c);
         alchemy.sort(c);
+        crossbows.sort(c);
+        tridents.sort(c);
         powerLevels.sort(c);
 
         playerStatHash.put(PrimarySkillType.MINING, mining);
@@ -1071,6 +1076,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         playerStatHash.put(PrimarySkillType.TAMING, taming);
         playerStatHash.put(PrimarySkillType.FISHING, fishing);
         playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
+        playerStatHash.put(PrimarySkillType.CROSSBOWS, crossbows);
+        playerStatHash.put(PrimarySkillType.TRIDENTS, tridents);
 
         return LeaderboardStatus.UPDATED;
     }
@@ -1281,12 +1288,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return new PlayerProfile(username, uuid, skills, skillsXp, skillsDATS, scoreboardTipsShown, uniquePlayerDataMap, lastLogin);
     }
 
-    private void tryLoadSkillCooldownFromRawData(@NotNull Map<SuperAbilityType, Integer> cooldownMap, @NotNull String[] character, @NotNull SuperAbilityType superAbilityType, int cooldownSuperBreaker, @NotNull String userName) {
+    private void tryLoadSkillCooldownFromRawData(@NotNull Map<SuperAbilityType, Integer> cooldownMap, @NotNull String[] splitData, @NotNull SuperAbilityType superAbilityType, int index, @NotNull String userName) {
         try {
-            cooldownMap.put(superAbilityType, Integer.valueOf(character[cooldownSuperBreaker]));
+            cooldownMap.put(superAbilityType, Integer.valueOf(splitData[index]));
+        } catch (IndexOutOfBoundsException e) {
+            // TODO: Add debug message
+            // set to 0 when data not found
+            cooldownMap.put(superAbilityType, 0);
         } catch (NumberFormatException e) {
-            logger.severe("Data corruption when trying to load the value for skill "+superAbilityType+" for player named " + userName+ " setting value to zero");
-            e.printStackTrace();
+            throw new NumberFormatException("Data corruption when trying to load the cooldown for skill "+superAbilityType+" for player named " + userName);
         }
     }
 
@@ -1305,6 +1315,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         try {
             int valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
+        } catch (ArrayIndexOutOfBoundsException e ) {
+            // TODO: Add debug message
+            // set to 0 when data not found
+            skillMap.put(primarySkillType, 0);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0);
             logger.severe("Data corruption when trying to load the value for skill "+primarySkillType+" for player named " + userName+ " setting value to zero");
