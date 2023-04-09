@@ -6,6 +6,7 @@ Chat:
         Party:
             # Enable or disable party chat
             Enable: true
+            Chat_Color: ''&f'
             # Whether or not to use the current display name of a player
             Use_Display_Names: true
             Spies:

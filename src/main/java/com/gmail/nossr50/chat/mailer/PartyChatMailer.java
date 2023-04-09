@@ -3,6 +3,7 @@ package com.gmail.nossr50.chat.mailer;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.chat.message.ChatMessage;
 import com.gmail.nossr50.chat.message.PartyChatMessage;
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
@@ -31,7 +32,8 @@ public class PartyChatMailer extends AbstractChatMailer {
      * @param canColor whether or not the author can use colors in chat
      */
     public void processChatMessage(@NotNull Author author, @NotNull String rawString, @NotNull Party party, boolean isAsync, boolean canColor, boolean isLeader) {
-        PartyChatMessage chatMessage = new PartyChatMessage(pluginRef, author, constructPartyAudience(party), rawString, addStyle(author, rawString, canColor, isLeader), party);
+        String coloredMessage = ChatConfig.getInstance().colorChatMessage(rawString);
+        PartyChatMessage chatMessage = new PartyChatMessage(pluginRef, author, constructPartyAudience(party), rawString, addStyle(author, coloredMessage, canColor, isLeader), party);
 
         McMMOChatEvent chatEvent = new McMMOPartyChatEvent(pluginRef, chatMessage, party, isAsync);
         Bukkit.getPluginManager().callEvent(chatEvent);
