@@ -40,7 +40,7 @@ public class ChatConfig extends BukkitConfig {
     }
 
     /**
-     * Whether or not to use display names for players in target {@link ChatChannel}
+     * Whether to use display names for players in target {@link ChatChannel}
      *
      * @param chatChannel target chat channel
      *

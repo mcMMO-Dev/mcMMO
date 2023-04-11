@@ -73,8 +73,8 @@ public class AdminChatMailer extends AbstractChatMailer {
      *
      * @param author the author
      * @param rawString the raw message as the author typed it before any styling
-     * @param isAsync whether or not this is being processed asynchronously
-     * @param canColor whether or not the author can use colors in chat
+     * @param isAsync whether this is being processed asynchronously
+     * @param canColor whether the author can use colors in chat
      */
     public void processChatMessage(@NotNull Author author, @NotNull String rawString, boolean isAsync, boolean canColor) {
         AdminChatMessage chatMessage = new AdminChatMessage(pluginRef, author, constructAudience(), rawString, addStyle(author, rawString, canColor));

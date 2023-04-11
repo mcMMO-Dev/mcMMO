@@ -18,11 +18,6 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     @Override
-    public void initDefaults() {
-        config.addDefault("Skills.General.StartingLevel", 0);
-    }
-
-    @Override
     protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<>();
@@ -427,7 +422,7 @@ public class AdvancedConfig extends BukkitConfig {
 
     /**
      * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
-     * It returns a different value depending on whether or not the server is in retro mode
+     * It returns a different value depending on whether the server is in retro mode
      *
      * @return the level at which abilities stop increasing in length
      */
@@ -440,7 +435,7 @@ public class AdvancedConfig extends BukkitConfig {
 
     /**
      * This returns the frequency at which abilities will increase in length
-     * It returns a different value depending on whether or not the server is in retro mode
+     * It returns a different value depending on whether the server is in retro mode
      *
      * @return the number of levels required per ability length increase
      */

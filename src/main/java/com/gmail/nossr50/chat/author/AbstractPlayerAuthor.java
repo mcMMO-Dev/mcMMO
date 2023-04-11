@@ -73,7 +73,7 @@ public abstract class AbstractPlayerAuthor implements Author {
      * Sanitized names are associated with a {@link ChatChannel} as different chat channels have different chat name settings
      *
      * @param chatChannel target chat channel
-     * @param useDisplayName whether or not to use this authors display name
+     * @param useDisplayName whether to use this authors display name
      */
     private void updateSanitizedNameCache(@NotNull ChatChannel chatChannel, boolean useDisplayName) {
         if(useDisplayName) {

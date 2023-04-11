@@ -84,7 +84,7 @@ public abstract class MajorMinorPatchVersion implements Versioned {
     }
 
     /**
-     * Whether or not this version of Minecraft is a patch
+     * Whether this version of Minecraft is a patch
      * a patch version value above 0 will indicate that this is a patch
      * @return true if this version is a patch
      */

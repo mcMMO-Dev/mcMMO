@@ -303,7 +303,7 @@ public final class Misc {
     }
 
     /**
-     * Whether or not a player is the party leader of a party
+     * Whether a player is the party leader of a party
      *
      * @param mmoPlayer target player
      * @return true if the player is the party leader

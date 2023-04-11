@@ -476,7 +476,7 @@ public class TamingManager extends SkillManager {
     }
 
     /**
-     * Whether or not the itemstack is used for COTW
+     * Whether the itemstack is used for COTW
      * @param itemStack target ItemStack
      * @return true if it is used for any COTW
      */

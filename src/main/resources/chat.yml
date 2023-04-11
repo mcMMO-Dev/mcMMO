@@ -6,15 +6,15 @@ Chat:
         Party:
             # Enable or disable party chat
             Enable: true
-            # Whether or not to use the current display name of a player
+            # Whether to use the current display name of a player
             Use_Display_Names: true
             Spies:
-                # Whether or not players with the chat spy permission join the server with chat spying toggled on
+                # Whether players with the chat spy permission join the server with chat spying toggled on
                 Automatically_Enable_Spying: false
         Admin:
             # Enable or disable admin chat
             Enable: true
-            # Whether or not to use the current display name of a player
+            # Whether to use the current display name of a player
             Use_Display_Names: true
 # CUSTOMIZATION INFORMATION
 # If you want to customize the look and feel of chat channels, that is handled through localization which is configurable

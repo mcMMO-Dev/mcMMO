@@ -64,7 +64,7 @@ public interface SubSkill extends Skill {
     void addStats(TextComponent.Builder componentBuilder, Player player);
 
     /**
-     * Whether or not this subskill is enabled
+     * Whether this subskill is enabled
      * @return true if enabled
      */
     boolean isEnabled();

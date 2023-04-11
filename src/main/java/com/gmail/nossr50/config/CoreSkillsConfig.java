@@ -35,7 +35,7 @@ public class CoreSkillsConfig extends BukkitConfig {
      */
 
     /**
-     * Whether or not a skill is enabled
+     * Whether a skill is enabled
      * Defaults true
      *
      * @param abstractSubSkill SubSkill definition to check
@@ -47,7 +47,7 @@ public class CoreSkillsConfig extends BukkitConfig {
     }
 
     /**
-     * Whether or not this primary skill is enabled
+     * Whether this primary skill is enabled
      *
      * @param primarySkillType target primary skill
      *

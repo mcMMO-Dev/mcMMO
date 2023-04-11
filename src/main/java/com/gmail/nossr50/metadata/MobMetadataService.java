@@ -56,7 +56,7 @@ public class MobMetadataService {
     }
 
     /**
-     * Whether or not a target {@link LivingEntity} has a specific mcMMO mob flags
+     * Whether a target {@link LivingEntity} has a specific mcMMO mob flags
      *
      * @param flag         the type of mob flag to check for
      * @param livingEntity the living entity to check for metadata
@@ -76,7 +76,7 @@ public class MobMetadataService {
     }
 
     /**
-     * Whether or not a target {@link LivingEntity} has any mcMMO mob flags
+     * Whether a target {@link LivingEntity} has any mcMMO mob flags
      *
      * @param livingEntity the living entity to check for metadata
      *

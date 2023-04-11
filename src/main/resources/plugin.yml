@@ -26,7 +26,7 @@ commands:
         aliases: xpbarsettings
         description: Change XP bar settings
     mmocompat:
-        description: Information about the server and whether or not its considered fully compatible or running in compatibility mode
+        description: Information about the server and whether its considered fully compatible or running in compatibility mode
     mmodebug:
         aliases: [mcmmodebugmode]
         description: Toggles a debug mode which will print useful information to chat
@@ -54,7 +54,7 @@ commands:
         description: Add mcMMO levels to a user
         permission: mcmmo.commands.addlevels
     mcability:
-        description: Toggle whether or not abilities get readied on right click
+        description: Toggle whether abilities get readied on right click
         permission: mcmmo.commands.mcability
     mcrefresh:
         description: Refresh all cooldowns for mcMMO

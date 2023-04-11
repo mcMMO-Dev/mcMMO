@@ -41,7 +41,7 @@ public final class ExperienceAPI {
 
     /**
      * Start the task that gives combat XP.
-     * Processes combat XP like mcMMO normally would, so mcMMO will check whether or not the entity should reward XP when giving out the XP
+     * Processes combat XP like mcMMO normally would, so mcMMO will check whether the entity should reward XP when giving out the XP
      *
      * @param mcMMOPlayer The attacking player
      * @param target The defending entity
@@ -56,7 +56,7 @@ public final class ExperienceAPI {
 
     /**
      * Start the task that gives combat XP.
-     * Processes combat XP like mcMMO normally would, so mcMMO will check whether or not the entity should reward XP when giving out the XP
+     * Processes combat XP like mcMMO normally would, so mcMMO will check whether the entity should reward XP when giving out the XP
      *
      * @param mcMMOPlayer The attacking player
      * @param target The defending entity

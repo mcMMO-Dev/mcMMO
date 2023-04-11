@@ -25,12 +25,6 @@ public class ExperienceConfig extends BukkitConfig {
         validate();
     }
 
-    @Override
-    public void initDefaults() {
-       config.addDefault("ExploitFix.Combat.XPCeiling.Enabled", true);
-       config.addDefault("ExploitFix.Combat.XPCeiling.Damage_Limit", 100);
-    }
-
     public static ExperienceConfig getInstance() {
         if (instance == null) {
             instance = new ExperienceConfig();

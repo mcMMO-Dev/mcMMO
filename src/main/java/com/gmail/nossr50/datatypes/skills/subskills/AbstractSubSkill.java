@@ -35,7 +35,7 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     }
 
     /**
-     * Whether or not this subskill is enabled
+     * Whether this subskill is enabled
      *
      * @return true if enabled
      */

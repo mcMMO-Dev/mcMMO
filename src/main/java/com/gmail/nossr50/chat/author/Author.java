@@ -17,14 +17,14 @@ public interface Author extends Identity {
     @NotNull String getAuthoredName(@NotNull ChatChannel chatChannel);
 
     /**
-     * Whether or not this author is a {@link org.bukkit.command.ConsoleCommandSender}
+     * Whether this author is a {@link org.bukkit.command.ConsoleCommandSender}
      *
      * @return true if this author is the console
      */
     boolean isConsole();
 
     /**
-     * Whether or not this author is a {@link org.bukkit.entity.Player}
+     * Whether this author is a {@link org.bukkit.entity.Player}
      * @return true if this author is a player
      */
     boolean isPlayer();

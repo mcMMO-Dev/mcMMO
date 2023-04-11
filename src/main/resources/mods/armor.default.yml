@@ -8,7 +8,7 @@
 # The bare minimum of an Armor piece is that it has a Repair_Material
 #
 #
-# Repairable: Whether or not the item is repairable
+# Repairable: Whether the item is repairable
 ## This defaults to true
 #
 # Repair_Material: This is the material name of the item used to repair this armor.

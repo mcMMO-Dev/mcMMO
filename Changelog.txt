@@ -1,3 +1,7 @@
+Version 2.1.220
+    Config files update automatically again
+    Default configs are now copied to plugins/mcMMO/defaults for easy reference, these configs will always match the default values of the config in the JAR
+
 Version 2.1.219
     Fixed Fishing exploit protection being triggered inappropriately by other plugins (Thanks smudgge)
     Fixed wiki url being incorrect in commands
