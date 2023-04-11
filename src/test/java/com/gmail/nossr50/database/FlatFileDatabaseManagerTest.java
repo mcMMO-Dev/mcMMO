@@ -492,7 +492,7 @@ class FlatFileDatabaseManagerTest {
                 return expectedSerratedStrikesCd;
             case BLAST_MINING:
                 return expectedBlastMiningCd;
-            case TRIDENT_ABILITY:
+            case TRIDENTS_SUPER_ABILITY:
                 return expectedTridentSuperCd;
         }
 

@@ -207,6 +207,12 @@ Crossbows:
             Rank_1: 5
         RetroMode:
             Rank_1: 50
+Tridents:
+    TridentsSuperAbility:
+        Standard:
+            Rank_1: 5
+        RetroMode:
+            Rank_1: 50
 Taming:
     BeastLore:
         Standard:

@@ -1255,7 +1255,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         // Acrobatics - Unused
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_SHOTGUN, COOLDOWN_SUPER_SHOTGUN, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.TRIDENT_ABILITY, COOLDOWN_TRIDENTS, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.TRIDENTS_SUPER_ABILITY, COOLDOWN_TRIDENTS, username);
 
         UUID uuid;
         try {

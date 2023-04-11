@@ -72,7 +72,7 @@ public enum SuperAbilityType {
             "Crossbows.Skills.SSG.Refresh",
             null,
             "Crossbows.SubSkill.SuperShotgun.Name"),
-    TRIDENT_ABILITY(
+    TRIDENTS_SUPER_ABILITY(
             "Tridents.Skills.TA.On",
             "Tridents.Skills.TA.Off",
             "Tridents.Skills.TA.Other.On",
@@ -188,34 +188,20 @@ public enum SuperAbilityType {
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
-        switch (this) {
-            case BERSERK:
-                return Permissions.berserk(player);
-
-            case BLAST_MINING:
-                return Permissions.remoteDetonation(player);
-
-            case GIGA_DRILL_BREAKER:
-                return Permissions.gigaDrillBreaker(player);
-
-            case GREEN_TERRA:
-                return Permissions.greenTerra(player);
-
-            case SERRATED_STRIKES:
-                return Permissions.serratedStrikes(player);
-
-            case SKULL_SPLITTER:
-                return Permissions.skullSplitter(player);
-
-            case SUPER_BREAKER:
-                return Permissions.superBreaker(player);
-
-            case TREE_FELLER:
-                return Permissions.treeFeller(player);
-
-            default:
-                return false;
-        }
+        return switch (this) {
+            case BERSERK -> Permissions.berserk(player);
+            case BLAST_MINING -> Permissions.remoteDetonation(player);
+            case GIGA_DRILL_BREAKER -> Permissions.gigaDrillBreaker(player);
+            case GREEN_TERRA -> Permissions.greenTerra(player);
+            case SERRATED_STRIKES -> Permissions.serratedStrikes(player);
+            case SKULL_SPLITTER -> Permissions.skullSplitter(player);
+            case SUPER_BREAKER -> Permissions.superBreaker(player);
+            case SUPER_SHOTGUN -> Permissions.superShotgun(player);
+            case TREE_FELLER -> Permissions.treeFeller(player);
+            case TRIDENTS_SUPER_ABILITY -> Permissions.tridentsSuper(player);
+            default ->
+                    throw new RuntimeException("Unhandled SuperAbilityType in getPermissions(), devs need to add definition for " + this + "!");
+        };
     }
 
     /**

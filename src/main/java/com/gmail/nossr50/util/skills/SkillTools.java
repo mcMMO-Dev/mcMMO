@@ -180,7 +180,7 @@ public class SkillTools {
             case SERRATED_STRIKES -> PrimarySkillType.SWORDS;
             case GIGA_DRILL_BREAKER -> PrimarySkillType.EXCAVATION;
             case SUPER_SHOTGUN -> PrimarySkillType.CROSSBOWS;
-            case TRIDENT_ABILITY -> PrimarySkillType.TRIDENTS;
+            case TRIDENTS_SUPER_ABILITY -> PrimarySkillType.TRIDENTS;
             default ->
                     throw new InvalidSkillException("No parent defined for super ability! " + superAbilityType.toString());
         };

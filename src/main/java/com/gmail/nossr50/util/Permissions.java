@@ -227,6 +227,7 @@ public final class Permissions {
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
     /* CROSSBOWS */
     public static boolean superShotgun(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun"); }
+    public static boolean tridentsSuper(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.tridents.superability"); }
 
     /*
      * PARTY

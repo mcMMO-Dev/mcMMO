@@ -96,6 +96,9 @@ public enum SubSkillType {
     TAMING_SHOCK_PROOF(1),
     TAMING_THICK_FUR(1),
 
+    /* Tridents */
+    TRIDENTS_TRIDENTS_SUPER_ABILITY(1),
+
     /* Unarmed */
     UNARMED_ARROW_DEFLECT(1),
     UNARMED_BERSERK(1),

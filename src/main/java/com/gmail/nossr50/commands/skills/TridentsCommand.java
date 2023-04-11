@@ -11,11 +11,12 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrossbowsCommand extends SkillCommand {
-    private boolean canSSG;
+public class TridentsCommand extends SkillCommand {
 
-    public CrossbowsCommand() {
-        super(PrimarySkillType.CROSSBOWS);
+    private boolean canTridentsSuper;
+
+    public TridentsCommand() {
+        super(PrimarySkillType.TRIDENTS);
     }
 
     @Override
@@ -25,7 +26,7 @@ public class CrossbowsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSSG = RankUtils.hasUnlockedSubskill(player, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)
+        canTridentsSuper = RankUtils.hasUnlockedSubskill(player, SubSkillType.TRIDENTS_TRIDENTS_SUPER_ABILITY)
                 && Permissions.superShotgun(player);
     }
 
@@ -33,8 +34,8 @@ public class CrossbowsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        if (canSSG) {
-            messages.add("Super Shotgun");
+        if (canTridentsSuper) {
+            messages.add("Tridents Super Ability");
             //TODO: Implement SSG
         }
 
@@ -45,7 +46,7 @@ public class CrossbowsCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.CROSSBOWS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.TRIDENTS);
 
         return textComponents;
     }
