@@ -120,12 +120,18 @@ commands:
     archery:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.archery
+    crossbows:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.crossbows
     swords:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.swords
     taming:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.taming
+    tridents:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.tridents
     unarmed:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.unarmed
