@@ -52,7 +52,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      * @param arrow The {@link Entity} who shot the arrow
      */
-    public double distanceXpBonusMultiplier(LivingEntity target, Entity arrow) {
+    public static double distanceXpBonusMultiplier(LivingEntity target, Entity arrow) {
         //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
         if(!arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE))
             return 1;

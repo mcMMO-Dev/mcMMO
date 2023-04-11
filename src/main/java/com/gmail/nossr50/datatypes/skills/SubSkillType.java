@@ -33,6 +33,7 @@ public enum SubSkillType {
 
     /* CROSSBOWS */
     CROSSBOWS_SUPER_SHOTGUN(1),
+    CROSSBOWS_CROSSBOWS_LIMIT_BREAK(10),
 
     /* Excavation */
     EXCAVATION_ARCHAEOLOGY(8),
@@ -98,6 +99,7 @@ public enum SubSkillType {
 
     /* Tridents */
     TRIDENTS_TRIDENTS_SUPER_ABILITY(1),
+    TRIDENTS_TRIDENTS_LIMIT_BREAK(10),
 
     /* Unarmed */
     UNARMED_ARROW_DEFLECT(1),

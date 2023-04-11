@@ -1,4 +1,7 @@
 Version 2.2.000
+    TODO: Add unit test to determine crossbow or bow skill
+    TODO: Add unit test for trident xp processing
+    TODO: Add missing entries to changelog
     (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console

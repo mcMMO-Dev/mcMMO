@@ -335,8 +335,11 @@ permissions:
             description: Allows access to all Crossbows abilities
             children:
                 mcmmo.ability.crossbows.supershotgun: true
+                mcmmo.ability.crossbows.crossbowslimitbreak: true
     mcmmo.ability.crossbows.supershotgun:
             description: Allows access to the Super Shotgun ability
+    mcmmo.ability.crossbows.crossbowslimitbreak:
+            description: Adds damage to crossbows
     mcmmo.ability.excavation.*:
         default: false
         description: Allows access to all Excavation abilities
@@ -710,8 +713,11 @@ permissions:
         description: Allows access to all Trident abilities
         children:
             mcmmo.ability.tridents.superability: true
+            mcmmo.ability.tridents.tridentslimitbreak: true
     mcmmo.ability.tridents.superability:
         description: Allows access to tridents super ability
+    mcmmo.ability.tridents.tridentslimitbreak:
+        description: Adds damage to tridents
     mcmmo.ability.unarmed.*:
         default: false
         description: Allows access to all Unarmed abilities

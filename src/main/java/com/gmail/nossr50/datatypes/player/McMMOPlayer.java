@@ -233,15 +233,6 @@ public class McMMOPlayer implements Identified {
         return attackStrength;
     }
 
-//    public void setAttackStrength(double attackStrength) {
-//        this.attackStrength = attackStrength;
-//    }
-
-    /*public void hideXpBar(PrimarySkillType primarySkillType)
-    {
-        experienceBarManager.hideExperienceBar(primarySkillType);
-    }*/
-
     public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
         return lastSkillShownScoreboard;
     }
@@ -313,6 +304,13 @@ public class McMMOPlayer implements Identified {
 
     public AxesManager getAxesManager() {
         return (AxesManager) skillManagers.get(PrimarySkillType.AXES);
+    }
+    public CrossbowsManager getCrossbowsManager() {
+        return (CrossbowsManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
+    }
+
+    public TridentsManager getTridentsManager() {
+        return (TridentsManager) skillManagers.get(PrimarySkillType.TRIDENTS);
     }
 
     public ExcavationManager getExcavationManager() {

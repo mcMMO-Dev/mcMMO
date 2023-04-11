@@ -17,8 +17,10 @@ import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -115,6 +117,75 @@ public final class CombatUtils {
                 }
             }
         }
+    }
+    private static void processTridentCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
+        if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+
+        double boostedDamage = event.getDamage();
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
+        TridentsManager tridentsManager = mcMMOPlayer.getTridentsManager();
+
+        if (tridentsManager.canActivateAbility()) {
+            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.TRIDENTS);
+        }
+
+        if(canUseLimitBreak(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK))
+        {
+            boostedDamage+=(getLimitBreakDamage(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
+        }
+
+        event.setDamage(boostedDamage);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.TRIDENTS);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
+    }
+
+    private static void processCrossbowsCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
+        double initialDamage = event.getDamage();
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            cleanupArrowMetadata(arrow);
+            return;
+        }
+
+        // CrossbowsManager crossbowsManager = mcMMOPlayer.getCrossbowsManager();
+
+//        if (crossbowsManager.canActivateAbility()) {
+//            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.CROSSBOWS);
+//        }
+
+        double boostedDamage = event.getDamage();
+
+        if(canUseLimitBreak(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
+            boostedDamage+=getLimitBreakDamage(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK);
+        }
+
+        double distanceMultiplier = ArcheryManager.distanceXpBonusMultiplier(target, arrow);
+        double forceMultiplier = 1.0;
+
+        event.setDamage(boostedDamage);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.CROSSBOWS, forceMultiplier * distanceMultiplier);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer,
+                "Distance Multiplier: "+distanceMultiplier,
+                "Force Multiplier: "+forceMultiplier,
+                "Initial Damage: "+initialDamage,
+                "Final Damage: "+boostedDamage);
+
+        //Clean data
+        cleanupArrowMetadata(arrow);
     }
 
     private static void processAxeCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
@@ -277,7 +348,7 @@ public final class CombatUtils {
             boostedDamage+=getLimitBreakDamage(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
 
-        double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
+        double distanceMultiplier = ArcheryManager.distanceXpBonusMultiplier(target, arrow);
         double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
 
         if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
@@ -387,6 +458,15 @@ public final class CombatUtils {
                     processUnarmedCombat(target, player, event);
                 }
             }
+            else if (ItemUtils.isTrident(heldItem)) {
+                if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.TRIDENTS, target)) {
+                    return;
+                }
+
+                if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TRIDENTS)) {
+                    processTridentCombat(target, player, event);
+                }
+            }
         }
 
         else if (entityType == EntityType.WOLF) {
@@ -405,6 +485,7 @@ public final class CombatUtils {
             ProjectileSource projectileSource = arrow.getShooter();
 
             if (projectileSource instanceof Player player && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
+                // TODO: Add metadata to projectiles to determine source weapon to process combat skills
 
                 if (!Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ARCHERY)) {
                     processArcheryCombat(target, player, event, arrow);
