@@ -214,6 +214,7 @@ public class McMMOPlayer implements Identified {
                 break;
             case TRIDENTS:
                 skillManagers.put(primarySkillType, new TridentsManager(this));
+                break;
             case UNARMED:
                 skillManagers.put(primarySkillType, new UnarmedManager(this));
                 break;
