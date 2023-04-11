@@ -28,7 +28,7 @@ public class FishingTreasureConfig extends BukkitConfig {
     public @NotNull HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<>();
 
     private FishingTreasureConfig() {
-        super(FILENAME);
+        super(FILENAME, false);
         loadKeys();
         validate();
     }

@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface Toolable {
     /**
-     * Whether or not this Skill requires a tool
+     * Whether this Skill requires a tool
      * Not all skills will require a tool
      * @return true if tool is required
      */

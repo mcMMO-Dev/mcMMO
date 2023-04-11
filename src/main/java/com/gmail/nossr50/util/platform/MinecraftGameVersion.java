@@ -28,7 +28,7 @@ public class MinecraftGameVersion extends MajorMinorPatchVersion {
     }
 
     /**
-     * Returns whether or not the Minecraft version is at least equal to or higher than a target version
+     * Returns whether the Minecraft version is at least equal to or higher than a target version
      * @param majorVerNumber target major version number - for example 1.16.5 , the 1 is the major version
      * @param minorVerNumber target minor version number - for example 1.16.5, the 16 is the minor version
      * @param patchVerNumber target patch version number - for example 1.16.5, the 5 is the patch version number

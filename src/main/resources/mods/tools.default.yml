@@ -18,10 +18,10 @@
 ## Valid values range from 1 to 4
 ## This defaults to 1
 #
-# Ability_Enabled: Whether or not abilities are enabled with this tool
+# Ability_Enabled: Whether abilities are enabled with this tool
 ## This defaults to true
 #
-# Repairable: Whether or not the item is repairable
+# Repairable: Whether the item is repairable
 ## This defaults to true
 #
 # Repair_Material: This is the material name of the item used to repair this tool.

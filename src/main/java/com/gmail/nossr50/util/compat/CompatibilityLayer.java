@@ -5,7 +5,7 @@ package com.gmail.nossr50.util.compat;
  */
 public interface CompatibilityLayer {
     /**
-     * Whether or not this CompatibilityLayer successfully initialized and in theory should be functional
+     * Whether this CompatibilityLayer successfully initialized and in theory should be functional
      * @return true if this CompatibilityLayer is functional
      */
     default boolean noErrorsOnInitialize() { return true; };

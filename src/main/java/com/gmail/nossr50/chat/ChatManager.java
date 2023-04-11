@@ -43,7 +43,7 @@ public class ChatManager {
      *
      * @param mmoPlayer target player
      * @param rawMessage the raw message from the player as it was typed
-     * @param isAsync whether or not this is getting processed via async
+     * @param isAsync whether this is getting processed via async
      */
     public void processPlayerMessage(@NotNull McMMOPlayer mmoPlayer, @NotNull String rawMessage, boolean isAsync) {
         processPlayerMessage(mmoPlayer, mmoPlayer.getChatChannel(), rawMessage, isAsync);
@@ -69,7 +69,7 @@ public class ChatManager {
      * @param mmoPlayer target player
      * @param chatChannel target chat channel
      * @param rawMessage raw chat message as it was typed
-     * @param isAsync whether or not this is getting processed via async
+     * @param isAsync whether this is getting processed via async
      */
     private void processPlayerMessage(@NotNull McMMOPlayer mmoPlayer, @NotNull ChatChannel chatChannel, @NotNull String rawMessage, boolean isAsync) {
         switch (chatChannel) {
@@ -155,7 +155,7 @@ public class ChatManager {
     }
 
     /**
-     * Whether or not the player is allowed to send a message to the chat channel they are targeting
+     * Whether the player is allowed to send a message to the chat channel they are targeting
      * @param mmoPlayer target player
      * @return true if the player can send messages to that chat channel
      */
@@ -197,7 +197,7 @@ public class ChatManager {
     }
 
     /**
-     * Whether or not a specific chat channel is enabled
+     * Whether a specific chat channel is enabled
      * ChatChannels are enabled/disabled via user config
      *
      * If chat is disabled, this always returns false

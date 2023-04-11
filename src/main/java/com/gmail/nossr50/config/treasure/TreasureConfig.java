@@ -35,7 +35,7 @@ public class TreasureConfig extends BukkitConfig {
     public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<>();
 
     private TreasureConfig() {
-        super(FILENAME);
+        super(FILENAME, false);
         loadKeys();
         validate();
     }
