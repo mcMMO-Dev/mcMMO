@@ -157,9 +157,26 @@ public class SkillTools {
          * Build categorized skill lists
          */
 
-        COMBAT_SKILLS = ImmutableList.of(PrimarySkillType.ARCHERY, PrimarySkillType.AXES, PrimarySkillType.SWORDS, PrimarySkillType.TAMING, PrimarySkillType.UNARMED);
-        GATHERING_SKILLS = ImmutableList.of(PrimarySkillType.EXCAVATION, PrimarySkillType.FISHING, PrimarySkillType.HERBALISM, PrimarySkillType.MINING, PrimarySkillType.WOODCUTTING);
-        MISC_SKILLS = ImmutableList.of(PrimarySkillType.ACROBATICS, PrimarySkillType.ALCHEMY, PrimarySkillType.REPAIR, PrimarySkillType.SALVAGE, PrimarySkillType.SMELTING);
+        COMBAT_SKILLS = ImmutableList.of(
+                PrimarySkillType.ARCHERY,
+                PrimarySkillType.AXES,
+                PrimarySkillType.CROSSBOWS,
+                PrimarySkillType.SWORDS,
+                PrimarySkillType.TAMING,
+                PrimarySkillType.TRIDENTS,
+                PrimarySkillType.UNARMED);
+        GATHERING_SKILLS = ImmutableList.of(
+                PrimarySkillType.EXCAVATION,
+                PrimarySkillType.FISHING,
+                PrimarySkillType.HERBALISM,
+                PrimarySkillType.MINING,
+                PrimarySkillType.WOODCUTTING);
+        MISC_SKILLS = ImmutableList.of(
+                PrimarySkillType.ACROBATICS,
+                PrimarySkillType.ALCHEMY,
+                PrimarySkillType.REPAIR,
+                PrimarySkillType.SALVAGE,
+                PrimarySkillType.SMELTING);
 
         /*
          * Build formatted/localized/etc string lists
