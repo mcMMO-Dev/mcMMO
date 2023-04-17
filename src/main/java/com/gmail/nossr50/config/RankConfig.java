@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class RankConfig extends AutoUpdateConfigLoader {
+public class RankConfig extends BukkitConfig {
     private static RankConfig instance;
 
     public RankConfig() {
@@ -66,7 +66,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
      */
     public int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank, boolean retroMode) {
         String key = getRankAddressKey(subSkillType, rank, retroMode);
-        return config.getInt(key, getInternalConfig().getInt(key));
+        return config.getInt(key, defaultYamlConfig.getInt(key));
     }
 
     /**
@@ -128,7 +128,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
 
     private void resetRankValue(@NotNull SubSkillType subSkillType, int rank, boolean retroMode) {
         String key = getRankAddressKey(subSkillType, rank, retroMode);
-        int defaultValue = getInternalConfig().getInt(key);
+        int defaultValue = defaultYamlConfig.getInt(key);
         config.set(key, defaultValue);
         mcMMO.p.getLogger().info(key + " SET -> " + defaultValue);
     }

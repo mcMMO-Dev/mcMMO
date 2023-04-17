@@ -55,8 +55,16 @@ Version 2.2.000
     New Power Level Command
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
 
+Version 2.1.220
+    Config files update automatically again
+    Default configs are now copied to plugins/mcMMO/defaults for easy reference, these configs will always match the default values of the config in the JAR
+
 Version 2.1.219
+    Fixed Fishing exploit protection being triggered inappropriately by other plugins (Thanks smudgge)
     Fixed wiki url being incorrect in commands
+    Party loading is more resilient (Thanks Wariorrrr)
+    Fixed periods not being replaced whe nrenaming party (Thanks Wariorrrr)
+    Fixed Party Teleport NPE (Thanks Wariorrrr)
     Added support for various new things from Minecraft 1.20
     Fixed double drop issue with Beetroots
     Added 'Camel' to taming experience in experience.yml

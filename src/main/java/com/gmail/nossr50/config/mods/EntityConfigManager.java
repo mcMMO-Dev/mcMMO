@@ -29,7 +29,7 @@ public class EntityConfigManager {
                 continue;
             }
 
-            modManager.registerCustomEntities(new CustomEntityConfig(fileName));
+            modManager.registerCustomEntities(new CustomEntityLegacyConfig(fileName));
         }
     }
 }

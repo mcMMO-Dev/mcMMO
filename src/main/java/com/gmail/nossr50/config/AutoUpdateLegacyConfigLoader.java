@@ -10,22 +10,22 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AutoUpdateConfigLoader extends ConfigLoader {
-    public AutoUpdateConfigLoader(String relativePath, String fileName, File dataFolder) {
+public abstract class AutoUpdateLegacyConfigLoader extends LegacyConfigLoader {
+    public AutoUpdateLegacyConfigLoader(String relativePath, String fileName, File dataFolder) {
         super(relativePath, fileName, dataFolder);
     }
 
-    public AutoUpdateConfigLoader(String fileName, File dataFolder) {
+    public AutoUpdateLegacyConfigLoader(String fileName, File dataFolder) {
         super(fileName, dataFolder);
     }
 
     @Deprecated
-    public AutoUpdateConfigLoader(String relativePath, String fileName) {
+    public AutoUpdateLegacyConfigLoader(String relativePath, String fileName) {
         super(relativePath, fileName);
     }
 
     @Deprecated
-    public AutoUpdateConfigLoader(String fileName) {
+    public AutoUpdateLegacyConfigLoader(String fileName) {
         super(fileName);
     }
 

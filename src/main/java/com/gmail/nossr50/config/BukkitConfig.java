@@ -19,17 +19,7 @@ public abstract class BukkitConfig {
     protected YamlConfiguration defaultYamlConfig;
     protected YamlConfiguration config;
     protected @NotNull final File dataFolder;
-
-    public BukkitConfig(@NotNull String fileName, @NotNull File dataFolder) {
-        mcMMO.p.getLogger().info("[config] Initializing config: " + fileName);
-        this.fileName = fileName;
-        this.dataFolder = dataFolder;
-        configFile = new File(dataFolder, fileName);
-        this.defaultYamlConfig = copyDefaultConfig();
-        this.config = initConfig();
-        updateFile();
-        mcMMO.p.getLogger().info("[config] Config initialized: " + fileName);
-    }
+    private boolean savedDefaults = false;
 
     public BukkitConfig(@NotNull String fileName, @NotNull File dataFolder, boolean copyDefaults) {
         mcMMO.p.getLogger().info("[config] Initializing config: " + fileName);
@@ -37,10 +27,14 @@ public abstract class BukkitConfig {
         this.fileName = fileName;
         this.dataFolder = dataFolder;
         configFile = new File(dataFolder, fileName);
-        this.defaultYamlConfig = copyDefaultConfig();
+        this.defaultYamlConfig = saveDefaultConfigToDisk();
         this.config = initConfig();
         updateFile();
         mcMMO.p.getLogger().info("[config] Config initialized: " + fileName);
+    }
+
+    public BukkitConfig(@NotNull String fileName, @NotNull File dataFolder) {
+        this(fileName, dataFolder, true);
     }
 
     public BukkitConfig(@NotNull String fileName) {
@@ -55,10 +49,12 @@ public abstract class BukkitConfig {
      */
     public void updateFile() {
         try {
-            if(copyDefaults) {
-                copyMissingDefaultsFromResource();
-            }
             config.save(configFile);
+
+            if(copyDefaults && !savedDefaults) {
+                copyMissingDefaultsFromResource();
+                savedDefaults = true;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,7 +80,7 @@ public abstract class BukkitConfig {
     /**
      * Copies the config from the JAR to defaults/<fileName>
      */
-    YamlConfiguration copyDefaultConfig() {
+    YamlConfiguration saveDefaultConfigToDisk() {
         mcMMO.p.getLogger().info("[config] Copying default config to disk: " + fileName + " to defaults/" + fileName);
         try(InputStream inputStream = mcMMO.p.getResource(fileName)) {
             if(inputStream == null) {

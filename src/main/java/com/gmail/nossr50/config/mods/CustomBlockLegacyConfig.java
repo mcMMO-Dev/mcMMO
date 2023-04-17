@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CustomBlockConfig extends ConfigLoader {
+public class CustomBlockLegacyConfig extends LegacyConfigLoader {
     public List<Material> customExcavationBlocks = new ArrayList<>();
     public List<Material> customHerbalismBlocks = new ArrayList<>();
     public List<Material> customMiningBlocks = new ArrayList<>();
@@ -22,7 +22,7 @@ public class CustomBlockConfig extends ConfigLoader {
     public HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
     private boolean needsUpdate = false;
 
-    protected CustomBlockConfig(String fileName) {
+    protected CustomBlockLegacyConfig(String fileName) {
         super("mods", fileName);
         loadKeys();
     }

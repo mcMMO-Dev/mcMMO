@@ -17,8 +17,8 @@ public class RepairConfig extends BukkitConfig {
     private final HashSet<String> notSupported;
     private List<Repairable> repairables;
 
-    public RepairConfig(String fileName) {
-        super(fileName, false);
+    public RepairConfig(String fileName, boolean copyDefaults) {
+        super(fileName, copyDefaults);
         notSupported = new HashSet<>();
         loadKeys();
     }

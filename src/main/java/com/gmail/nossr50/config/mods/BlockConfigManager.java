@@ -29,7 +29,7 @@ public class BlockConfigManager {
                 continue;
             }
 
-            modManager.registerCustomBlocks(new CustomBlockConfig(fileName));
+            modManager.registerCustomBlocks(new CustomBlockLegacyConfig(fileName));
         }
     }
 }

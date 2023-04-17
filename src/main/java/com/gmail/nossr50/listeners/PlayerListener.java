@@ -450,6 +450,9 @@ public class PlayerListener implements Listener {
             case CAUGHT_FISH:
                 if(caught instanceof Item) {
                     if(ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+
+                        fishingManager.processExploiting(event.getHook().getLocation().toVector());
+
                         if (fishingManager.isExploitingFishing(event.getHook().getLocation().toVector())) {
                             player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange()));
                             event.setExpToDrop(0);

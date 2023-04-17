@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.mcMMO;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CustomArmorConfig extends ConfigLoader {
+public class CustomArmorLegacyConfig extends LegacyConfigLoader {
     public List<Material> customBoots = new ArrayList<>();
     public List<Material> customChestplates = new ArrayList<>();
     public List<Material> customHelmets = new ArrayList<>();
@@ -21,7 +21,7 @@ public class CustomArmorConfig extends ConfigLoader {
     public List<Repairable> repairables = new ArrayList<>();
     private boolean needsUpdate = false;
 
-    protected CustomArmorConfig(String fileName) {
+    protected CustomArmorLegacyConfig(String fileName) {
         super("mods", fileName);
         loadKeys();
     }

@@ -29,7 +29,7 @@ public class ArmorConfigManager {
                 continue;
             }
 
-            modManager.registerCustomArmor(new CustomArmorConfig(fileName));
+            modManager.registerCustomArmor(new CustomArmorLegacyConfig(fileName));
         }
     }
 }

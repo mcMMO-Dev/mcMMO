@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.mcMMO;
 import org.apache.commons.lang.ClassUtils;
@@ -9,11 +9,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-public class CustomEntityConfig extends ConfigLoader {
+public class CustomEntityLegacyConfig extends LegacyConfigLoader {
     public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<>();
     public HashMap<String, CustomEntity> customEntityTypeMap = new HashMap<>();
 
-    protected CustomEntityConfig(String fileName) {
+    protected CustomEntityLegacyConfig(String fileName) {
         super("mods", fileName);
         loadKeys();
     }
