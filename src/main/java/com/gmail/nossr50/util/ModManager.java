@@ -1,9 +1,9 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomBlockConfig;
-import com.gmail.nossr50.config.mods.CustomEntityConfig;
-import com.gmail.nossr50.config.mods.CustomToolConfig;
+import com.gmail.nossr50.config.mods.CustomArmorLegacyConfig;
+import com.gmail.nossr50.config.mods.CustomBlockLegacyConfig;
+import com.gmail.nossr50.config.mods.CustomEntityLegacyConfig;
+import com.gmail.nossr50.config.mods.CustomToolLegacyConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
@@ -52,7 +52,7 @@ public class ModManager {
     private final List<Material> customSwords   = new ArrayList<>();
     private final HashMap<Material, CustomTool> customToolMap = new HashMap<>();
 
-    public void registerCustomArmor(CustomArmorConfig config) {
+    public void registerCustomArmor(CustomArmorLegacyConfig config) {
         customBoots.addAll(config.customBoots);
         customChestplates.addAll(config.customChestplates);
         customHelmets.addAll(config.customHelmets);
@@ -60,7 +60,7 @@ public class ModManager {
         repairables.addAll(config.repairables);
     }
 
-    public void registerCustomBlocks(CustomBlockConfig config) {
+    public void registerCustomBlocks(CustomBlockLegacyConfig config) {
         customExcavationBlocks.addAll(config.customExcavationBlocks);
         customHerbalismBlocks.addAll(config.customHerbalismBlocks);
         customMiningBlocks.addAll(config.customMiningBlocks);
@@ -71,12 +71,12 @@ public class ModManager {
         customBlockMap.putAll(config.customBlockMap);
     }
 
-    public void registerCustomEntities(CustomEntityConfig config) {
+    public void registerCustomEntities(CustomEntityLegacyConfig config) {
         customEntityClassMap.putAll(config.customEntityClassMap);
         customEntityTypeMap.putAll(config.customEntityTypeMap);
     }
 
-    public void registerCustomTools(CustomToolConfig config) {
+    public void registerCustomTools(CustomToolLegacyConfig config) {
         customAxes.addAll(config.customAxes);
         customBows.addAll(config.customBows);
         customHoes.addAll(config.customHoes);

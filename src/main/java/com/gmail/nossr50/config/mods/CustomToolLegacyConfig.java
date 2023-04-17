@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CustomToolConfig extends ConfigLoader {
+public class CustomToolLegacyConfig extends LegacyConfigLoader {
     public List<Material> customAxes = new ArrayList<>();
     public List<Material> customBows = new ArrayList<>();
     public List<Material> customHoes = new ArrayList<>();
@@ -26,7 +26,7 @@ public class CustomToolConfig extends ConfigLoader {
     public List<Repairable> repairables = new ArrayList<>();
     private boolean needsUpdate = false;
 
-    protected CustomToolConfig(String fileName) {
+    protected CustomToolLegacyConfig(String fileName) {
         super("mods", fileName);
         loadKeys();
     }

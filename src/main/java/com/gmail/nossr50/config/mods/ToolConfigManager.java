@@ -29,7 +29,7 @@ public class ToolConfigManager {
                 continue;
             }
 
-            modManager.registerCustomTools(new CustomToolConfig(fileName));
+            modManager.registerCustomTools(new CustomToolLegacyConfig(fileName));
         }
     }
 }

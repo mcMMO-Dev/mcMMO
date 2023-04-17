@@ -16,7 +16,7 @@ public class RepairConfigManager {
         Pattern pattern = Pattern.compile("repair\\.(?:.+)\\.yml");
         File dataFolder = plugin.getDataFolder();
 
-        RepairConfig mainRepairConfig = new RepairConfig(REPAIR_VANILLA_YML);
+        RepairConfig mainRepairConfig = new RepairConfig(REPAIR_VANILLA_YML, true);
         repairables.addAll(mainRepairConfig.getLoadedRepairables());
 
         for (String fileName : dataFolder.list()) {
@@ -33,7 +33,7 @@ public class RepairConfigManager {
                 continue;
             }
 
-            RepairConfig rConfig = new RepairConfig(fileName);
+            RepairConfig rConfig = new RepairConfig(fileName, false);
             repairables.addAll(rConfig.getLoadedRepairables());
         }
     }

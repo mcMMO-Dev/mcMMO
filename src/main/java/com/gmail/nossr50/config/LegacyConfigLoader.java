@@ -7,20 +7,21 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
-public abstract class ConfigLoader {
+@Deprecated
+public abstract class LegacyConfigLoader {
     protected final File configFile;
     protected final @NotNull File dataFolder;
     protected String fileName;
     protected YamlConfiguration config;
 
-    public ConfigLoader(String relativePath, String fileName, @NotNull File dataFolder) {
+    public LegacyConfigLoader(String relativePath, String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
         this.dataFolder = dataFolder;
         configFile = new File(dataFolder, relativePath + File.separator + fileName);
         loadFile();
     }
 
-    public ConfigLoader(String fileName, @NotNull File dataFolder) {
+    public LegacyConfigLoader(String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
         this.dataFolder = dataFolder;
         configFile = new File(dataFolder, fileName);
@@ -28,7 +29,7 @@ public abstract class ConfigLoader {
     }
 
     @Deprecated
-    public ConfigLoader(String relativePath, String fileName) {
+    public LegacyConfigLoader(String relativePath, String fileName) {
         this.fileName = fileName;
         configFile = new File(mcMMO.p.getDataFolder(), relativePath + File.separator + fileName);
         this.dataFolder = mcMMO.p.getDataFolder();
@@ -36,7 +37,7 @@ public abstract class ConfigLoader {
     }
 
     @Deprecated
-    public ConfigLoader(String fileName) {
+    public LegacyConfigLoader(String fileName) {
         this.fileName = fileName;
         configFile = new File(mcMMO.p.getDataFolder(), fileName);
         this.dataFolder = mcMMO.p.getDataFolder();
