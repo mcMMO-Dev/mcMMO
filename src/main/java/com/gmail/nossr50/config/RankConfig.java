@@ -195,6 +195,6 @@ public class RankConfig extends BukkitConfig {
             resetRankValue(subSkillType, index, false);
         }
 
-        saveConfig();
+        updateFile();
     }
 }
