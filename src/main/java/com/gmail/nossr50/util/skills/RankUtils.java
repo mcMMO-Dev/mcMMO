@@ -317,7 +317,6 @@ public class RankUtils {
      * @param rank The target rank
      * @return The level at which this rank unlocks
      */
-    @Deprecated
     public static int getRankUnlockLevel(SubSkillType subSkillType, int rank)
     {
         return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, rank);
