@@ -137,8 +137,7 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.TRIDENTS);
         }
 
-        if(canUseLimitBreak(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK))
-        {
+        if(canUseLimitBreak(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
             boostedDamage+=(getLimitBreakDamage(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
         }
 
@@ -821,13 +820,15 @@ public final class CombatUtils {
         XPGainReason xpGainReason;
 
         if (target instanceof Player defender) {
-            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled() || PartyManager.inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
+            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()
+                    || PartyManager.inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
                 return;
             }
 
             xpGainReason = XPGainReason.PVP;
 
-            if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            if (defender.isOnline()
+                    && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 baseXP = 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
             }
         }
@@ -839,8 +840,7 @@ public final class CombatUtils {
                 EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
             }
-            else if (target instanceof Monster)
-            {
+            else if (target instanceof Monster) {
                 EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getCombatXP(type);
             }
@@ -886,7 +886,7 @@ public final class CombatUtils {
 
         baseXP *= multiplier;
 
-        if (baseXP != 0) {
+        if (baseXP > 0) {
             new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXP, target, xpGainReason).runTaskLater(mcMMO.p, 0);
         }
     }
