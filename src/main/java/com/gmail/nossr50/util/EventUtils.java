@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
+import com.gmail.nossr50.api.TreeFellerBlockBreakEvent;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -43,6 +45,7 @@ import org.bukkit.entity.FishHook;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
@@ -305,26 +308,50 @@ public final class EventUtils {
     /**
      * Simulate a block break event.
      *
-     * @param block The block to break
-     * @param player The player breaking the block
-     * @param shouldArmSwing true if an armswing event should be fired, false otherwise
+     * @param block          The block to break
+     * @param player         The player breaking the block
+     * @param shouldArmSwing ignored (here for API compatibility)
      * @return true if the event wasn't cancelled, false otherwise
+     * {@code @Deprecated} use {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
     public static boolean simulateBlockBreak(Block block, Player player, boolean shouldArmSwing) {
-        PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
+        return simulateBlockBreak(block, player);
+    }
 
-        // Support for NoCheat
-        //if (shouldArmSwing) {
-        //    callFakeArmSwingEvent(player);
-        //}
+    /**
+     * Simulate a block break event.
+     *
+     * @param block The block to break
+     * @param player The player breaking the block
+     * @return true if the event wasn't cancelled, false otherwise
+     * {@code @Deprecated} use {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
+     */
+    public static boolean simulateBlockBreak(Block block, Player player) {
+        return simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
+    }
+
+    /**
+     * Simulate a block break event.
+     *
+     * @param block  The block to break
+     * @param player The player breaking the block
+     * @param eventType The type of event to signal to other plugins
+     * @return true if the event wasn't cancelled, false otherwise
+     */
+    public static boolean simulateBlockBreak(Block block, Player player, FakeBlockBreakEventType eventType) {
+        PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
 
         FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getInventory().getItemInMainHand(), true);
         pluginManager.callEvent(damageEvent);
 
-        FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
-        pluginManager.callEvent(breakEvent);
+        BlockBreakEvent fakeBlockBreakEvent = null;
 
-        return !damageEvent.isCancelled() && !breakEvent.isCancelled();
+        switch (eventType) {
+            case FAKE -> fakeBlockBreakEvent = new FakeBlockBreakEvent(block, player);
+            case TREE_FELLER -> fakeBlockBreakEvent = new TreeFellerBlockBreakEvent(block, player);
+        }
+        pluginManager.callEvent(fakeBlockBreakEvent);
+        return !damageEvent.isCancelled() && !fakeBlockBreakEvent.isCancelled();
     }
 
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {

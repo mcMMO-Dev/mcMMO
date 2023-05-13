@@ -1,8 +1,10 @@
 package com.gmail.nossr50.skills.woodcutting;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -277,7 +279,7 @@ public class WoodcuttingManager extends SkillManager {
             int beforeXP = xp;
             Block block = blockState.getBlock();
 
-            if (!EventUtils.simulateBlockBreak(block, player, true)) {
+            if (!EventUtils.simulateBlockBreak(block, player, FakeBlockBreakEventType.TREE_FELLER)) {
                 continue;
             }
 
@@ -321,7 +323,7 @@ public class WoodcuttingManager extends SkillManager {
             processedLogCount = updateProcessedLogCount(xp, processedLogCount, beforeXP);
         }
 
-        applyXpGain(xp, XPGainReason.PVE);
+        applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
     }
 
     private int updateProcessedLogCount(int xp, int processedLogCount, int beforeXP) {

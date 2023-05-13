@@ -1,7 +1,12 @@
 Version 2.1.220
+    (API) Added TreeFellerBlockBreakEvent class which extends FakeBlockBreakEvent (see notes), this is sent out during Tree Feller processing to allow other plugins to differentiate between Tree Feller and other fake block break events
     Config files update automatically again
-    Default configs are now copied to plugins/mcMMO/defaults for easy reference, these configs will always match the default values of the config in the JAR
+    Default configs are now copied to plugins/mcMMO/defaults for easy reference
+    Fixed child skills counting towards power level in /inspect (Thanks Wariorrrr)
 
+    NOTES: For a while configs were not updating automatically as a rewrite of how config files were loaded was partially done, this is now complete and configs will update automatically again.
+    Fake block break events have been sent out historically by mcMMO to check other plugins for a players permission to break or place a block, Tree Feller will now specify via inheritance its own event type for this so mcMMO plugins can handle Tree Feller fake block break events differently if they so choose.
+    You can now view the default configs more easily as they are now copied to plugins/mcMMO/defaults, these configs will be overwritten on start up to match the default values of the config in the JAR
 Version 2.1.219
     Fixed Fishing exploit protection being triggered inappropriately by other plugins (Thanks smudgge)
     Fixed wiki url being incorrect in commands
