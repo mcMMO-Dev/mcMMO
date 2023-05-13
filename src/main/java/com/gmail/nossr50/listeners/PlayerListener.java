@@ -866,7 +866,7 @@ public class PlayerListener implements Listener {
                             // Bukkit.getPluginManager().callEvent(fakeSwing);
                             player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
                             player.updateInventory();
-                            if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                            if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player)) {
                                 blockState.update(true);
                             }
                         }
@@ -877,7 +877,7 @@ public class PlayerListener implements Listener {
                             // Bukkit.getPluginManager().callEvent(fakeSwing);
                             event.setCancelled(true);
                             if (herbalismManager.processShroomThumb(blockState)
-                                    && EventUtils.simulateBlockBreak(block, player, false)) {
+                                    && EventUtils.simulateBlockBreak(block, player)) {
                                 blockState.update(true);
                             }
                         }

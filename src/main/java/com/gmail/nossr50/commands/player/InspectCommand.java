@@ -9,6 +9,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,26 +48,25 @@ public class InspectCommand implements TabExecutor {
 
                 sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
-                // Sum power level
-                int powerLevel = 0;
-
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().GATHERING_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
-                    powerLevel += profile.getSkillLevel(skill);
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().COMBAT_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
-                    powerLevel += profile.getSkillLevel(skill);
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
                 for (PrimarySkillType skill : mcMMO.p.getSkillTools().MISC_SKILLS) {
                     sender.sendMessage(CommandUtils.displaySkill(profile, skill));
-                    powerLevel += profile.getSkillLevel(skill);
                 }
+
+                // Sum power level
+                int powerLevel = 0;
+                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS)
+                    powerLevel += profile.getSkillLevel(skill);
 
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", powerLevel));
             } else {

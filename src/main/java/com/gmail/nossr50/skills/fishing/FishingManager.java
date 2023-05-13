@@ -187,7 +187,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        return EventUtils.simulateBlockBreak(block, player, false);
+        return EventUtils.simulateBlockBreak(block, player);
     }
 
     /**
