@@ -8,12 +8,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 public final class UserManager {
 
@@ -137,9 +139,13 @@ public final class UserManager {
      * @return McMMOPlayer object for this player, null if Player has not been loaded
      */
     public static @Nullable McMMOPlayer getPlayer(@Nullable Player player) {
+        if (player == null)
+            return null;
+
+        List<MetadataValue> metadata = player.getMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA);
         //Avoid Array Index out of bounds
-        if(player != null && player.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA))
-            return (McMMOPlayer) player.getMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA).get(0).value();
+        if (!metadata.isEmpty())
+            return (McMMOPlayer) metadata.get(0).value();
         else
             return null;
     }

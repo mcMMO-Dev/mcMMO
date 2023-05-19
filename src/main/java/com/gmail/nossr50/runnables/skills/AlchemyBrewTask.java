@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerBrewEvent;
@@ -12,7 +13,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,7 +21,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private static final double DEFAULT_BREW_SPEED = 1.0;
     private static final int    DEFAULT_BREW_TICKS = 400;
 
-    private final BlockState brewingStand;
+    private final BrewingStand brewingStand;
     private final Location location;
     private double brewSpeed;
     private double brewTimer;
@@ -29,7 +29,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private int fuel;
     private boolean firstRun = true;
 
-    public AlchemyBrewTask(BlockState brewingStand, Player player) {
+    public AlchemyBrewTask(BrewingStand brewingStand, Player player) {
         this.brewingStand = brewingStand;
         this.location = brewingStand.getLocation();
         this.player = player;
@@ -37,12 +37,14 @@ public class AlchemyBrewTask extends BukkitRunnable {
         brewSpeed = DEFAULT_BREW_SPEED;
         brewTimer = DEFAULT_BREW_TICKS;
 
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
         if (player != null
                 && !Misc.isNPCEntityExcludingVillagers(player)
                 && Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS)
-                && UserManager.getPlayer(player) != null) {
+                && mcMMOPlayer != null) {
 
-            double catalysis = UserManager.getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));
+            double catalysis = mcMMOPlayer.getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));
 
             McMMOPlayerCatalysisEvent event = new McMMOPlayerCatalysisEvent(player, catalysis);
             mcMMO.p.getServer().getPluginManager().callEvent(event);
@@ -52,13 +54,14 @@ public class AlchemyBrewTask extends BukkitRunnable {
             }
         }
 
-        if (Alchemy.brewingStandMap.containsKey(location)) {
-            Alchemy.brewingStandMap.get(location).cancel();
+        AlchemyBrewTask existing = Alchemy.brewingStandMap.get(location);
+        if (existing != null) {
+            existing.cancel();
         }
 
-        fuel = ((BrewingStand) brewingStand).getFuelLevel();
+        fuel = brewingStand.getFuelLevel();
 
-        if (((BrewingStand) brewingStand).getBrewingTime() == -1) // Only decrement on our end if it isn't a vanilla ingredient.
+        if (brewingStand.getBrewingTime() == -1) // Only decrement on our end if it isn't a vanilla ingredient.
             fuel--;
 
         Alchemy.brewingStandMap.put(location, this);
@@ -67,10 +70,8 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (player == null || !player.isValid() || brewingStand == null || brewingStand.getType() != Material.BREWING_STAND || !AlchemyPotionBrewer.isValidIngredient(player, ((BrewingStand) brewingStand).getInventory().getContents()[Alchemy.INGREDIENT_SLOT])) {
-            if (Alchemy.brewingStandMap.containsKey(location)) {
-                Alchemy.brewingStandMap.remove(location);
-            }
+        if (player == null || !player.isValid() || location.getBlock().getType() != Material.BREWING_STAND || !AlchemyPotionBrewer.isValidIngredient(player, brewingStand.getInventory().getContents()[Alchemy.INGREDIENT_SLOT])) {
+            Alchemy.brewingStandMap.remove(location);
 
             this.cancel();
 
@@ -79,7 +80,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
         if (firstRun) {
             firstRun = false;
-            ((BrewingStand) brewingStand).setFuelLevel(fuel);
+            brewingStand.setFuelLevel(fuel);
         }
 
         brewTimer -= brewSpeed;
@@ -90,7 +91,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
             finish();
         }
         else {
-            ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
+            brewingStand.setBrewingTime((int) brewTimer);
         }
     }
 

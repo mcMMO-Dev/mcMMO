@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
+import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
@@ -16,6 +17,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -54,11 +56,8 @@ public class InventoryListener implements Listener {
 
         Furnace furnace = (Furnace) furnaceState;
         OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
-        Player player;
 
-        if(offlinePlayer != null && offlinePlayer.isOnline() && offlinePlayer instanceof Player) {
-            player = (Player) offlinePlayer;
-
+        if(offlinePlayer != null && offlinePlayer.isOnline() && offlinePlayer instanceof Player player) {
             if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
                 return;
             }
@@ -91,7 +90,7 @@ public class InventoryListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        BlockState blockState = event.getBlock().getState(); //Furnaces can only be cast from a BlockState not a Block
+        BlockState blockState = PaperLib.getBlockState(event.getBlock(), false).getState(); //Furnaces can only be cast from a BlockState not a Block
         ItemStack smelting = event.getSource();
 
         if (!ItemUtils.isSmeltable(smelting)) {
@@ -120,11 +119,11 @@ public class InventoryListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
-        BlockState furnaceBlock = event.getBlock().getState();
-
         if (!ItemUtils.isSmelted(new ItemStack(event.getItemType(), event.getItemAmount()))) {
             return;
         }
+
+        BlockState furnaceBlock = PaperLib.getBlockState(event.getBlock(), false).getState();
 
         Player player = event.getPlayer();
 
@@ -136,18 +135,14 @@ public class InventoryListener implements Listener {
                     return;
             }
 
-            if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
-                return;
-            }
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            //Profile not loaded
-            if(UserManager.getPlayer(player) == null)
-            {
+            if (mcMMOPlayer == null || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
                 return;
             }
 
             int xpToDrop = event.getExpToDrop();
-            int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+            int exp = mcMMOPlayer.getSmeltingManager().vanillaXPBoost(xpToDrop);
             event.setExpToDrop(exp);
         }
     }
@@ -164,7 +159,7 @@ public class InventoryListener implements Listener {
 
         Inventory inventory = event.getInventory();
 
-        Player player = ((Player) event.getWhoClicked()).getPlayer();
+        Player player = ((Player) event.getWhoClicked());
 
         if(event.getInventory() instanceof FurnaceInventory)
         {
@@ -181,7 +176,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        InventoryHolder holder = inventory.getHolder();
+        InventoryHolder holder = PaperLib.getHolder(inventory, false).getHolder();
 
         if (!(holder instanceof BrewingStand stand)) {
             return;
@@ -287,13 +282,17 @@ public class InventoryListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
             return;
 
-        Inventory inventory = event.getInventory();
-
-        if (!(inventory instanceof BrewerInventory)) {
+        if (!event.getInventorySlots().contains(Alchemy.INGREDIENT_SLOT)) {
             return;
         }
 
-        InventoryHolder holder = inventory.getHolder();
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory instanceof BrewerInventory brewerInventory)) {
+            return;
+        }
+
+        InventoryHolder holder = PaperLib.getHolder(inventory, false).getHolder();
 
         if (!(holder instanceof BrewingStand)) {
             return;
@@ -305,12 +304,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (!event.getInventorySlots().contains(Alchemy.INGREDIENT_SLOT)) {
-            return;
-        }
-
         ItemStack cursor = event.getCursor();
-        ItemStack ingredient = ((BrewerInventory) inventory).getIngredient();
+        ItemStack ingredient = brewerInventory.getIngredient();
 
         if (AlchemyPotionBrewer.isEmpty(ingredient) || ingredient.isSimilar(cursor)) {
             Player player = (Player) whoClicked;
@@ -344,8 +339,9 @@ public class InventoryListener implements Listener {
         if (event instanceof FakeBrewEvent)
             return;
         Location location = event.getBlock().getLocation();
-        if (Alchemy.brewingStandMap.containsKey(location)) {
-            Alchemy.brewingStandMap.get(location).finishImmediately();
+        AlchemyBrewTask task = Alchemy.brewingStandMap.get(location);
+        if (task != null) {
+            task.finishImmediately();
             event.setCancelled(true);
         }
     }
@@ -364,7 +360,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        InventoryHolder holder = inventory.getHolder();
+        InventoryHolder holder = PaperLib.getHolder(inventory, false).getHolder();
 
         if (!(holder instanceof BrewingStand)) {
             return;

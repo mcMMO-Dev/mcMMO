@@ -73,19 +73,15 @@ public class ItemMetadataService {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         if(itemMeta != null) {
-            //TODO: can be optimized
-            if (itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
-                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-            }
-
             if (originalSpeed > 0) {
                 itemMeta.addEnchant(Enchantment.DIG_SPEED, originalSpeed, true);
+            } else {
+                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
             }
 
             PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
             dataContainer.remove(NSK_SUPER_ABILITY_BOOSTED_ITEM); //Remove persistent data
 
-            //TODO: needed?
             itemStack.setItemMeta(itemMeta);
         }
     }

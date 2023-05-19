@@ -154,6 +154,7 @@
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>co.aikar:acf-bukkit</include>
+                            <include>io.papermc:paperlib</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -188,6 +189,10 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>io.papermc.lib</pattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -240,6 +245,10 @@
         <repository>
             <id>sonatype-oss-snapshots1</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <!-- ... -->
         <!-- ... -->
@@ -361,6 +370,11 @@
             <artifactId>guava</artifactId>
             <version>31.1-jre</version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.8</version>
         </dependency>
     </dependencies>
 </project>

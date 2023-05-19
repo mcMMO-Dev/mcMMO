@@ -103,8 +103,7 @@ public final class LocaleLoader {
 
     public static String formatString(String string, Object... messageArguments) {
         if (messageArguments != null) {
-            MessageFormat formatter = new MessageFormat("");
-            formatter.applyPattern(string.replace("'", "''"));
+            MessageFormat formatter = new MessageFormat(string.replace("'", "''"));
             string = formatter.format(messageArguments);
         }
 
@@ -115,8 +114,7 @@ public final class LocaleLoader {
 
     public static @NotNull TextComponent formatComponent(@NotNull String string, Object... messageArguments) {
         if (messageArguments != null) {
-            MessageFormat formatter = new MessageFormat("");
-            formatter.applyPattern(string.replace("'", "''"));
+            MessageFormat formatter = new MessageFormat(string.replace("'", "''"));
             string = formatter.format(messageArguments);
         }
 

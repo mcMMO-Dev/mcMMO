@@ -13,6 +13,7 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -27,6 +28,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.Item;
@@ -36,8 +38,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -104,8 +108,9 @@ public class BlockListener implements Listener {
                     }
                 }
 
-                if (event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS).size() > 0) {
-                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS).get(0);
+                List<MetadataValue> metadata = event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS);
+                if (metadata.size() > 0) {
+                    BonusDropMeta bonusDropMeta = (BonusDropMeta) metadata.get(0);
                     int bonusCount = bonusDropMeta.asInt();
 
                     for (int i = 0; i < bonusCount; i++) {
@@ -115,8 +120,7 @@ public class BlockListener implements Listener {
             }
         }
 
-        if(event.getBlock().hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
-            event.getBlock().removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, plugin);
+        event.getBlock().removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, plugin);
     }
 
     /**
@@ -339,7 +343,7 @@ public class BlockListener implements Listener {
             }
         }
 
-        BlockState blockState = block.getState();
+        BlockState blockState = PaperLib.getBlockState(block, false).getState();
         Location location = blockState.getLocation();
 
 //        if (!BlockUtils.shouldBeWatched(blockState)) {
@@ -347,8 +351,10 @@ public class BlockListener implements Listener {
 //        }
 
         /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
-        if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(location)) {
-            Alchemy.brewingStandMap.get(location).cancelBrew();
+        if (blockState instanceof BrewingStand) {
+            AlchemyBrewTask task = Alchemy.brewingStandMap.get(location);
+            if (task != null)
+                task.cancelBrew();
         }
 
         Player player = event.getPlayer();
@@ -605,17 +611,11 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (mcMMOPlayer == null)
             return;
-        }
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
         Block block = event.getBlock();
@@ -659,37 +659,30 @@ public class BlockListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (mcMMOPlayer == null)
             return;
-        }
 
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = PaperLib.getBlockState(event.getBlock(), false).getState();
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         cleanupAbilityTools(player, mcMMOPlayer, blockState, heldItem);
 
-        debugStickDump(player, blockState);
+        debugStickDump(player, mcMMOPlayer, blockState);
     }
 
     //TODO: Rewrite this
     //TODO: Convert into locale strings
-    private void debugStickDump(Player player, BlockState blockState) {
-        //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
-            return;
-        }
+    private void debugStickDump(Player player, McMMOPlayer mcmmoPlayer, BlockState blockState) {
 
-        if(UserManager.getPlayer(player).isDebugMode())
+        if(mcmmoPlayer.isDebugMode())
         {
             if(mcMMO.getPlaceStore().isTrue(blockState))
                 player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
             else
             {
                 player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
-                UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
+                mcmmoPlayer.getExcavationManager().printExcavationDebug(player, blockState);
             }
 
             if(WorldGuardUtils.isWorldGuardLoaded())

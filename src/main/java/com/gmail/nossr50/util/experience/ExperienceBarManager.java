@@ -50,24 +50,19 @@ public class ExperienceBarManager {
                 || !ExperienceConfig.getInstance().isExperienceBarEnabled(primarySkillType))
             return;
 
-        //Init Bar
-        if(experienceBars.get(primarySkillType) == null)
-            experienceBars.put(primarySkillType, new ExperienceBarWrapper(primarySkillType, mcMMOPlayer));
-
-        //Get Bar
-        ExperienceBarWrapper experienceBarWrapper = experienceBars.get(primarySkillType);
+        // Init or get the bar
+        ExperienceBarWrapper bar = experienceBars.computeIfAbsent(primarySkillType, k -> new ExperienceBarWrapper(primarySkillType, mcMMOPlayer));
 
         //Update Progress
-        experienceBarWrapper.setProgress(mcMMOPlayer.getProgressInCurrentSkillLevel(primarySkillType));
+        bar.setProgress(mcMMOPlayer.getProgressInCurrentSkillLevel(primarySkillType));
 
         //Show Bar
-        experienceBarWrapper.showExperienceBar();
+        bar.showExperienceBar();
 
         //Setup Hide Bar Task
-        if(experienceBarHideTaskHashMap.get(primarySkillType) != null)
-        {
-            experienceBarHideTaskHashMap.get(primarySkillType).cancel();
-        }
+        ExperienceBarHideTask task = experienceBarHideTaskHashMap.get(primarySkillType);
+        if (task != null)
+            task.cancel();
 
         scheduleHideTask(primarySkillType, plugin);
     }

@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -80,7 +81,7 @@ public class SmeltingTracker {
             return null;
         }
 
-        return (Furnace) inventory.getHolder();
+        return (Furnace) PaperLib.getHolder(inventory, false).getHolder();
     }
 
     public boolean isFurnaceOwned(Furnace furnace) {
@@ -92,8 +93,9 @@ public class SmeltingTracker {
             return;
 
         //Don't swap ownership if its the same player
-        if(getFurnaceOwner(furnace) != null) {
-            if(getFurnaceOwner(furnace).getUniqueId().equals(player.getUniqueId()))
+        OfflinePlayer owner = getFurnaceOwner(furnace);
+        if(owner != null) {
+            if(owner.getUniqueId().equals(player.getUniqueId()))
                 return;
         }
 
