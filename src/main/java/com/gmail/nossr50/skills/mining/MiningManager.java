@@ -275,7 +275,7 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public int getDropMultiplier() {
-        if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
+        if (!mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
             return 0;
         }
 
