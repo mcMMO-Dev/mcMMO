@@ -35,7 +35,7 @@ public class PistonTrackerTask extends BukkitRunnable {
             Block nextBlock = b.getRelative(direction);
 
             if (nextBlock.hasMetadata(MetadataConstants.METADATA_KEY_PISTON_TRACKING)) {
-                mcMMO.getPlaceStore().setTrue(nextBlock);
+                BlockUtils.setUnnaturalBlock(nextBlock);
                 nextBlock.removeMetadata(MetadataConstants.METADATA_KEY_PISTON_TRACKING, mcMMO.p);
             }
             else if (mcMMO.getPlaceStore().isTrue(nextBlock)) {

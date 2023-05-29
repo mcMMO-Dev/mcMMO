@@ -39,6 +39,18 @@ public final class BlockUtils {
     }
 
     /**
+     * Set up the state for a block to be seen as unnatural and cleanup any unwanted metadata from the block
+     * @param block target block
+     */
+    public static void setUnnaturalBlock(@NotNull Block block) {
+        mcMMO.getPlaceStore().setTrue(block);
+
+        // Failsafe against lingering metadata
+        if(block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
+            block.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
+    }
+
+    /**
      * Cleans up some block metadata when a block breaks and the metadata is no longer needed
      * This also sets the blocks coords to false in our chunk store
      * @param block target block

@@ -1,5 +1,6 @@
 Version 2.1.221
     Fixed blast mining bonus drops not working (Thanks warriiorrrr)
+    Added fail safes to prevent bonus drops metadata from lingering on blocks
 
 Version 2.1.220
     (API) Added TreeFellerBlockBreakEvent class which extends FakeBlockBreakEvent (see notes), this is sent out during Tree Feller processing to allow other plugins to differentiate between Tree Feller and other fake block break events
