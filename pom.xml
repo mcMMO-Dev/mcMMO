@@ -359,7 +359,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
+            <version>32.0.0-jre</version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
             <scope>compile</scope>
         </dependency>
     </dependencies>
