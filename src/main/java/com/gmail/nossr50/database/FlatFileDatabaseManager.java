@@ -197,7 +197,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    String name = character[USERNAME_INDEX];
+                    String uuidString = character[UUID_INDEX];
+                    UUID uuid = UUID.fromString(uuidString);
                     long lastPlayed = 0;
                     boolean rewrite = false;
 
@@ -208,7 +209,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     }
 
                     if (lastPlayed == -1) {
-                        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(name);
+                        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(uuid);
 
                         if(player.getLastPlayed() != 0) {
                             lastPlayed = player.getLastPlayed();
@@ -216,7 +217,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         }
                     }
 
-                    if (lastPlayed != -1 && lastPlayed != 0 && currentTime - lastPlayed > purgeTime) {
+                    if (lastPlayed < 1 && (currentTime - lastPlayed > purgeTime)) {
                         removedPlayers++;
                     } else {
                         if (rewrite) {
