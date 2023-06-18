@@ -20,6 +20,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.metadata.MetadataService;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.placeholders.PapiExpansion;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.commands.NotifySquelchReminderTask;
@@ -282,9 +283,7 @@ public class mcMMO extends JavaPlugin {
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
             }
-        }
-
-        catch (Throwable t) {
+        } catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
 
             if (!(t instanceof ExceptionInInitializerError)) {
@@ -320,6 +319,10 @@ public class mcMMO extends JavaPlugin {
 
         transientEntityTracker = new TransientEntityTracker();
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PapiExpansion().register();
+        }
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
