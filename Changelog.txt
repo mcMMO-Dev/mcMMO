@@ -1,4 +1,5 @@
 Version 2.1.221
+    PAPI Support is now built into mcMMO and loads when mcMMO loads (as long as you have PAPI running)
     Fixed blast mining bonus drops not working (Thanks warriiorrrr)
     Added fail safes to prevent bonus drops metadata from lingering on blocks
 
