@@ -8,6 +8,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 public class SalvageConfig extends BukkitConfig {
     private final HashSet<String> notSupported;
@@ -41,7 +43,7 @@ public class SalvageConfig extends BukkitConfig {
         //Original version of 1.16 support had maximum quantities that were bad, this fixes it
 
         if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES)) {
-            mcMMO.p.getLogger().info("Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
+            mcMMO.p.getLogger().log(Level.INFO, "Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
             for (String namespacedkey : mcMMO.getMaterialMapStore().getNetheriteArmor()) {
                 config.set("Salvageables." + namespacedkey.toUpperCase() + ".MaximumQuantity", 4); //TODO: Doesn't make sense to default to 4 for everything
             }
@@ -49,9 +51,9 @@ public class SalvageConfig extends BukkitConfig {
             try {
                 config.save(getFile());
                 mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES);
-                mcMMO.p.getLogger().info("Fixed incorrect Salvage quantities for Netherite gear!");
+                LogUtils.debug(mcMMO.p.getLogger(), "Fixed incorrect Salvage quantities for Netherite gear!");
             } catch (IOException e) {
-                mcMMO.p.getLogger().info("Unable to fix Salvage config, please delete the salvage yml file to generate a new one.");
+                LogUtils.debug(mcMMO.p.getLogger(), "Unable to fix Salvage config, please delete the salvage yml file to generate a new one.");
                 e.printStackTrace();
             }
         }
@@ -178,8 +180,8 @@ public class SalvageConfig extends BukkitConfig {
                 }
             }
 
-            mcMMO.p.getLogger().info(stringBuilder.toString());
-            mcMMO.p.getLogger().info("Items using materials that are not supported will simply be skipped.");
+            LogUtils.debug(mcMMO.p.getLogger(), stringBuilder.toString());
+            LogUtils.debug(mcMMO.p.getLogger(), "Items using materials that are not supported will simply be skipped.");
         }
     }
 

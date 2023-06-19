@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.treasure;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ public class FishingTreasureBook extends FishingTreasure {
     }
 
     private void initLegalEnchantments() {
-        mcMMO.p.getLogger().info("Registering enchantments for Fishing Book...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Registering enchantments for Fishing Book...");
 
         for(Enchantment enchantment : Enchantment.values()) {
             if(isEnchantAllowed(enchantment)) {

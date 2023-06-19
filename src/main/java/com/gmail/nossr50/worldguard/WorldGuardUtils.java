@@ -1,6 +1,7 @@
 package com.gmail.nossr50.worldguard;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
@@ -67,7 +68,7 @@ public class WorldGuardUtils {
         if(plugin == null) {
             //WG is not present
             detectedIncompatibleWG = true;
-            mcMMO.p.getLogger().info("WorldGuard was not detected.");
+            LogUtils.debug(mcMMO.p.getLogger(), "WorldGuard was not detected.");
         } else {
             //Check that its actually of class WorldGuardPlugin
             if(plugin instanceof WorldGuardPlugin)

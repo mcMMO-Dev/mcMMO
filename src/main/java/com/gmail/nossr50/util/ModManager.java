@@ -268,7 +268,7 @@ public class ModManager {
 
         try {
             entitiesFile.save(entityFile);
-            mcMMO.p.debug(entity.getType().toString() + " was added to the custom entities file!");
+            LogUtils.debug(mcMMO.p.getLogger(), entity.getType().toString() + " was added to the custom entities file!");
         }
         catch (Exception e) {
             e.printStackTrace();

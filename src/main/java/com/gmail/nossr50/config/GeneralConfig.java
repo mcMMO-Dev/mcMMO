@@ -1005,4 +1005,8 @@ public class GeneralConfig extends BukkitConfig {
     public boolean isGreenThumbReplantableCrop(@NotNull Material material) {
         return config.getBoolean("Green_Thumb_Replanting_Crops." + StringUtils.getCapitalized(material.toString()), true);
     }
+
+    public boolean useVerboseLogging() {
+        return config.getBoolean("General.Verbose_Logging", false);
+    }
 }

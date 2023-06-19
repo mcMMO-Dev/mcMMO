@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.child;
 import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,7 +23,7 @@ public class ChildConfig extends BukkitConfig {
         FamilyTree.clearRegistrations(); // when reloading, need to clear statics
 
         for (PrimarySkillType skill : mcMMO.p.getSkillTools().CHILD_SKILLS) {
-            mcMMO.p.debug("Finding parents of " + skill.name());
+            LogUtils.debug(mcMMO.p.getLogger(), "Finding parents of " + skill.name());
 
             EnumSet<PrimarySkillType> parentSkills = EnumSet.noneOf(PrimarySkillType.class);
             boolean useDefaults = false; // If we had an error we back out and use defaults
@@ -53,7 +54,7 @@ public class ChildConfig extends BukkitConfig {
 
             // Register them
             for (PrimarySkillType parentSkill : parentSkills) {
-                mcMMO.p.debug("Registering " + parentSkill.name() + " as parent of " + skill.name());
+                LogUtils.debug(mcMMO.p.getLogger(), "Registering " + parentSkill.name() + " as parent of " + skill.name());
                 FamilyTree.registerParent(skill, parentSkill);
             }
         }

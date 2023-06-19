@@ -9,6 +9,7 @@ import com.gmail.nossr50.events.scoreboard.McMMOScoreboardMakeboardEvent;
 import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -204,7 +205,7 @@ public class ScoreboardManager {
     // Called in onDisable()
     public static void teardownAll() {
         ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(mcMMO.p.getServer().getOnlinePlayers());
-        mcMMO.p.debug("Tearing down scoreboards... (" + onlinePlayers.size() + ")");
+        LogUtils.debug(mcMMO.p.getLogger(), "Tearing down scoreboards... (" + onlinePlayers.size() + ")");
         for (Player player : onlinePlayers) {
             teardownPlayer(player);
         }
@@ -524,7 +525,7 @@ public class ScoreboardManager {
 
             if (objective != null) {
                 objective.unregister();
-                mcMMO.p.debug("Removed leftover targetBoard objects from Power Level Tags.");
+                LogUtils.debug(mcMMO.p.getLogger(), "Removed leftover targetBoard objects from Power Level Tags.");
             }
 
             return null;

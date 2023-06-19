@@ -12,6 +12,7 @@ import com.gmail.nossr50.events.scoreboard.ScoreboardObjectiveEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -260,7 +261,7 @@ public class ScoreboardWrapper {
                 oldBoard = null;
             }
             else {
-                mcMMO.p.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
+                LogUtils.debug(mcMMO.p.getLogger(), "Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
 
@@ -419,7 +420,7 @@ public class ScoreboardWrapper {
             } catch (IllegalStateException e) {
                 McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-                mcMMO.p.debug("Recovering scoreboard for player: " + player.getName());
+                LogUtils.debug(mcMMO.p.getLogger(), "Recovering scoreboard for player: " + player.getName());
 
                 if(mmoPlayer.isDebugMode())
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");

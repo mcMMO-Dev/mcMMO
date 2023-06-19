@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.alchemy;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public final class Alchemy {
      * Finish all active brews.  Used upon Disable to prevent vanilla potions from being brewed upon next Enable.
      */
     public static void finishAllBrews() {
-        mcMMO.p.debug("Completing " + brewingStandMap.size() + " unfinished Alchemy brews.");
+        LogUtils.debug(mcMMO.p.getLogger(), "Completing " + brewingStandMap.size() + " unfinished Alchemy brews.");
 
         List<AlchemyBrewTask> toFinish = new ArrayList<>(brewingStandMap.values());
 

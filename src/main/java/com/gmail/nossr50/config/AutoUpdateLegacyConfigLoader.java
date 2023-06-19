@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ public abstract class AutoUpdateLegacyConfigLoader extends LegacyConfigLoader {
 
     protected void saveConfig() {
         try {
-            mcMMO.p.getLogger().info("Saving changes to config file - " + fileName);
+            LogUtils.debug(mcMMO.p.getLogger(), "Saving changes to config file - " + fileName);
             config.options().indent(2);
             config.save(configFile);
         } catch (IOException e) {
@@ -58,9 +59,9 @@ public abstract class AutoUpdateLegacyConfigLoader extends LegacyConfigLoader {
         oldKeys.removeAll(internalConfigKeys);
 
         if (!oldKeys.isEmpty()) {
-            mcMMO.p.debug("old key(s) in \"" + fileName + "\"");
+            LogUtils.debug(mcMMO.p.getLogger(), "old key(s) in \"" + fileName + "\"");
             for (String key : oldKeys) {
-                mcMMO.p.debug("  old-key:" + key);
+                LogUtils.debug(mcMMO.p.getLogger(), "  old-key:" + key);
             }
         }
 
@@ -73,7 +74,7 @@ public abstract class AutoUpdateLegacyConfigLoader extends LegacyConfigLoader {
         }
 
         for (String key : newKeys) {
-            mcMMO.p.debug("Adding new key: " + key + " = " + internalConfig.get(key));
+            LogUtils.debug(mcMMO.p.getLogger(), "Adding new key: " + key + " = " + internalConfig.get(key));
             config.set(key, internalConfig.get(key));
         }
 

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.backups;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class CleanBackupsTask extends BukkitRunnable {
             Date date = getDate(fileName.split("[.]")[0]);
 
             if (!fileName.contains(".zip") || date == null) {
-                mcMMO.p.debug("Could not determine date for file: " + fileName);
+                LogUtils.debug(mcMMO.p.getLogger(), "Could not determine date for file: " + fileName);
                 continue;
             }
 
@@ -74,11 +75,11 @@ public class CleanBackupsTask extends BukkitRunnable {
             return;
         }
 
-        mcMMO.p.getLogger().info("Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal + " files.");
+        LogUtils.debug(mcMMO.p.getLogger(), "Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal + " files.");
 
         for (File file : toDelete) {
             if (file.delete()) {
-                mcMMO.p.debug("Deleted: " + file.getName());
+                LogUtils.debug(mcMMO.p.getLogger(), "Deleted: " + file.getName());
             }
         }
     }

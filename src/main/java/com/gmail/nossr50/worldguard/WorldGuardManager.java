@@ -1,6 +1,7 @@
 package com.gmail.nossr50.worldguard;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -94,7 +95,7 @@ public class WorldGuardManager {
                 registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
                 registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
                 registry.register(WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
-                mcMMO.p.getLogger().info("Registered WG flags successfully!");
+                LogUtils.debug(mcMMO.p.getLogger(), "Registered WG flags successfully!");
             } catch (FlagConflictException e) {
                 e.printStackTrace();
                 mcMMO.p.getLogger().warning("Failed to register WG flags!");

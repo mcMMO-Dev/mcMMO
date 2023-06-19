@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class RankConfig extends BukkitConfig {
         String key = getRankAddressKey(subSkillType, rank, retroMode);
         int defaultValue = defaultYamlConfig.getInt(key);
         config.set(key, defaultValue);
-        mcMMO.p.getLogger().info(key + " SET -> " + defaultValue);
+        LogUtils.debug(mcMMO.p.getLogger(), key + " SET -> " + defaultValue);
     }
 
     /**
@@ -147,10 +148,10 @@ public class RankConfig extends BukkitConfig {
         if (badSkillSetup.isEmpty())
             return;
 
-        mcMMO.p.getLogger().info("(FIXING CONFIG) mcMMO is correcting a few mistakes found in your skill rank config setup");
+        LogUtils.debug(mcMMO.p.getLogger(), "(FIXING CONFIG) mcMMO is correcting a few mistakes found in your skill rank config setup");
 
         for (SubSkillType subSkillType : badSkillSetup) {
-            mcMMO.p.getLogger().info("(FIXING CONFIG) Resetting rank config settings for skill named - " + subSkillType.toString());
+            LogUtils.debug(mcMMO.p.getLogger(), "(FIXING CONFIG) Resetting rank config settings for skill named - " + subSkillType.toString());
             fixBadEntries(subSkillType);
         }
     }
@@ -178,7 +179,7 @@ public class RankConfig extends BukkitConfig {
 
                 if (prevRank > curRank) {
                     //We're going to allow this but we're going to warn them
-                    mcMMO.p.getLogger().info("(CONFIG ISSUE) You have the ranks for the subskill " + subSkillType + " set up poorly, sequential ranks should have ascending requirements");
+                    LogUtils.debug(mcMMO.p.getLogger(), "(CONFIG ISSUE) You have the ranks for the subskill " + subSkillType + " set up poorly, sequential ranks should have ascending requirements");
                     badSkillSetup.add(subSkillType);
                 }
             }

@@ -958,8 +958,8 @@ public class PlayerListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
 
         if (mcMMOPlayer == null) {
-            mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");
-            mcMMO.p.debug("Party & Admin chat will not work properly for this player.");
+            LogUtils.debug(mcMMO.p.getLogger(), player.getName() + "is chatting, but is currently not logged in to the server.");
+            LogUtils.debug(mcMMO.p.getLogger(), "Party & Admin chat will not work properly for this player.");
             return;
         }
 

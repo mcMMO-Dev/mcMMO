@@ -6,6 +6,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
 import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -37,14 +38,14 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         // Quit if they logged out
         if (!player.isOnline()) {
-            mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
+            LogUtils.debug(mcMMO.p.getLogger(), "Aborting profile loading recovery for " + player.getName() + " - player logged out");
             return;
         }
 
         PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player);
 
         if(!profile.isLoaded()) {
-            mcMMO.p.getLogger().info("Creating new data for player: "+player.getName());
+            LogUtils.debug(mcMMO.p.getLogger(), "Creating new data for player: "+player.getName());
             //Profile isn't loaded so add as new user
             profile = mcMMO.getDatabaseManager().newUser(player);
         }

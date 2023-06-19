@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -272,14 +273,14 @@ public class TreasureConfig extends BukkitConfig {
             case LEGACY:
                 int legacyDropLevel = getWrongKeyValue(type, treasureName, conversionType); //Legacy only had one value, Retro Mode didn't have a setting
                 //Config needs to be updated to be more specific
-                mcMMO.p.getLogger().info("(" + treasureName + ") [Fixing bad address: Legacy] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
+                LogUtils.debug(mcMMO.p.getLogger(), "(" + treasureName + ") [Fixing bad address: Legacy] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
                 config.set(type + "." + treasureName + LEGACY_DROP_LEVEL, null); //Remove legacy entry
                 config.set(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE, legacyDropLevel * 10); //Multiply by 10 for Retro
                 config.set(type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, legacyDropLevel);
                 shouldWeUpdateTheFile = true;
                 break;
             case WRONG_KEY_STANDARD:
-                mcMMO.p.getLogger().info("(" + treasureName + ") [Fixing bad address: STANDARD] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
+                LogUtils.debug(mcMMO.p.getLogger(), "(" + treasureName + ") [Fixing bad address: STANDARD] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
                 int wrongKeyValueStandard = getWrongKeyValue(type, treasureName, conversionType);
                 config.set(type + "." + treasureName + WRONG_KEY_ROOT, null); //We also kill the Retro key here as we have enough information for setting in values if needed
 
@@ -291,7 +292,7 @@ public class TreasureConfig extends BukkitConfig {
                 shouldWeUpdateTheFile = true;
                 break;
             case WRONG_KEY_RETRO:
-                mcMMO.p.getLogger().info("(" + treasureName + ") [Fixing bad address: RETRO] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
+                LogUtils.debug(mcMMO.p.getLogger(), "(" + treasureName + ") [Fixing bad address: RETRO] Converting Drop_Level to Level_Requirement in treasures.yml for treasure to match new expected format");
                 int wrongKeyValueRetro = getWrongKeyValue(type, treasureName, conversionType);
                 config.set(type + "." + treasureName + WRONG_KEY_ROOT, null); //We also kill the Retro key here as we have enough information for setting in values if needed
 

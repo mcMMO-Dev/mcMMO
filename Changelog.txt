@@ -1,3 +1,7 @@
+Version 2.1.222
+    A lot of mcMMO logging was moved from INFO to DEBUG, this should reduce the amount of noise in your logs and console
+
+    NOTES: If you want to see all logging messages, modify config.yml and set General.Verbose_Logging to true
 Version 2.1.221
     PAPI Support is now built into mcMMO and loads when mcMMO loads (as long as you have PAPI running)
     Fixed blast mining bonus drops not working (Thanks warriiorrrr)

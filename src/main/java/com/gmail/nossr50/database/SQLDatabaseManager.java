@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.tomcat.jdbc.pool.DataSource;
@@ -1013,7 +1014,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
-            mcMMO.p.debug("Skipping " + upgrade.name() + " upgrade (unneeded)");
+            LogUtils.debug(mcMMO.p.getLogger(), "Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
         }
 
@@ -1577,7 +1578,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() {
-        mcMMO.p.debug("Releasing connection pool resource...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Releasing connection pool resource...");
         miscPool.close();
         loadPool.close();
         savePool.close();

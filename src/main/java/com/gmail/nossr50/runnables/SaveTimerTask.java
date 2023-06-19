@@ -4,13 +4,14 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SaveTimerTask extends BukkitRunnable {
     @Override
     public void run() {
-        mcMMO.p.debug("[User Data] Saving...");
+        LogUtils.debug(mcMMO.p.getLogger(), "[User Data] Saving...");
         // All player data will be saved periodically through this
         int count = 1;
 

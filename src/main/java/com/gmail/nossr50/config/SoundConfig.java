@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.sounds.SoundType;
 
 public class SoundConfig extends BukkitConfig {
@@ -28,14 +29,14 @@ public class SoundConfig extends BukkitConfig {
     protected boolean validateKeys() {
         for (SoundType soundType : SoundType.values()) {
             if (config.getDouble("Sounds." + soundType.toString() + ".Volume") < 0) {
-                mcMMO.p.getLogger().info("[mcMMO] Sound volume cannot be below 0 for " + soundType);
+                LogUtils.debug(mcMMO.p.getLogger(), "[mcMMO] Sound volume cannot be below 0 for " + soundType);
                 return false;
             }
 
             //Sounds with custom pitching don't use pitch values
             if (!soundType.usesCustomPitch()) {
                 if (config.getDouble("Sounds." + soundType + ".Pitch") < 0) {
-                    mcMMO.p.getLogger().info("[mcMMO] Sound pitch cannot be below 0 for " + soundType);
+                    LogUtils.debug(mcMMO.p.getLogger(), "[mcMMO] Sound pitch cannot be below 0 for " + soundType);
                     return false;
                 }
             }
