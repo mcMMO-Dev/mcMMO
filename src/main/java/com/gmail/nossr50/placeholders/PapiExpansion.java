@@ -17,6 +17,22 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class PapiExpansion extends PlaceholderExpansion {
+  
+    public static final String SKILL_LEVEL = "level_";
+    public static final String SKILL_EXP_NEEDED = "xp_needed_";
+    public static final String SKILL_EXP_REMAINING = "xp_remaining_";
+    public static final String SKILL_EXP = "xp_";
+    public static final String SKILL_RANK = "rank_";
+    public static final String SKILL_EXP_RATE = "xprate_";
+    public static final String POWER_LEVEL = "power_level";
+    public static final String POWER_LEVEL_CAP = "power_level_cap";
+    public static final String IN_PARTY = "in_party";
+    public static final String PARTY_NAME = "party_name";
+    public static final String IS_PARTY_LEADER = "is_party_leader";
+    public static final String PARTY_LEADER = "party_leader";
+    public static final String PARTY_SIZE = "party_size";
+    public static final String EXP_RATE = "xprate";
+    public static final String IS_EXP_EVENT_ACTIVE = "is_xp_event_active";
 
     public PapiExpansion() {
     }
@@ -46,37 +62,37 @@ public class PapiExpansion extends PlaceholderExpansion {
     public String onPlaceholderRequest(final Player player, @NotNull final String params) {
       
       // Non player-specific placeholders
-      if (params.equalsIgnoreCase("is_xp_event_active")) {
+      if (params.equalsIgnoreCase(IS_EXP_EVENT_ACTIVE)) {
         return mcMMO.p.isXPEventEnabled() ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
-      }else if (params.equalsIgnoreCase("xprate")) {
+      } else if (params.equalsIgnoreCase(EXP_RATE)) {
         return String.valueOf(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-      }else if (params.equalsIgnoreCase("power_level_cap")) {
-        return mcMMO.p.getGeneralConfig().getPowerLevelCap()+"";
+      } else if (params.equalsIgnoreCase(POWER_LEVEL_CAP)) {
+        return String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap());
       }
       
       final McMMOPlayer user = UserManager.getPlayer(player);
       if (user == null) return null;
       
-      if (params.startsWith("level_")) {
-        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(6).toUpperCase());
-        return skill == null ? null : user.getSkillLevel(skill)+"";
-      }else if (params.startsWith("xp_needed_")) {
-        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(10).toUpperCase());
-        return skill == null ? null : user.getXpToLevel(skill)+"";
-      }else if (params.startsWith("xp_remaining_")) {
-        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(13).toUpperCase());
-        return skill == null ? null : (user.getXpToLevel(skill) - user.getSkillXpLevel(skill))+"";
-      }else if (params.startsWith("xp_")) {
-        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(3).toUpperCase());
-        return skill == null ? null : user.getSkillXpLevel(skill)+"";
-      }else if (params.startsWith("rank_")) {
+      if (params.startsWith(SKILL_LEVEL)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_LEVEL.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getSkillLevel(skill));
+      } else if (params.startsWith(SKILL_EXP_NEEDED)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP_NEEDED.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getXpToLevel(skill));
+      } else if (params.startsWith(SKILL_EXP_REMAINING)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP_REMAINING.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getXpToLevel(skill) - user.getSkillXpLevel(skill));
+      } else if (params.startsWith(SKILL_EXP)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getSkillXpLevel(skill));
+      } else if (params.startsWith(SKILL_RANK)) {
         try {
-          return ExperienceAPI.getPlayerRankSkill(player.getUniqueId(), StringUtils.getCapitalized(params.substring(5)))+"";
+          return String.valueOf(ExperienceAPI.getPlayerRankSkill(player.getUniqueId(), StringUtils.getCapitalized(params.substring(SKILL_RANK.length()))));
         } catch (Exception ex) {
           return null;
         }
-      }else if (params.startsWith("xprate_")) {
-        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(7).toUpperCase());
+      } else if (params.startsWith(SKILL_EXP_RATE)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP_RATE.length()).toUpperCase());
         if (skill == null) return null;
         double modifier = 1.0F;
         if (Permissions.customXpBoost(player, skill))
@@ -94,25 +110,25 @@ public class PapiExpansion extends PlaceholderExpansion {
         else if (Permissions.oneAndOneTenthXp(player, skill))
             modifier = 1.1;
         return String.valueOf(modifier);
-      }else if (params.equalsIgnoreCase("power_level")) {
-        return user.getPowerLevel()+"";
+      } else if (params.equalsIgnoreCase(POWER_LEVEL)) {
+        return String.valueOf(user.getPowerLevel());
       }
       
       
       //Party placeholders
       final Party party = user.getParty();
       
-      if (params.equalsIgnoreCase("in_party")) {
+      if (params.equalsIgnoreCase(IN_PARTY)) {
         return (party==null) ? PlaceholderAPIPlugin.booleanFalse() : PlaceholderAPIPlugin.booleanTrue();
-      }else if (params.equalsIgnoreCase("party_name")) {
+      } else if (params.equalsIgnoreCase(PARTY_NAME)) {
         return (party == null) ? "" : party.getName();
-      }else if (params.equalsIgnoreCase("is_party_leader")) {
+      } else if (params.equalsIgnoreCase(IS_PARTY_LEADER)) {
         if (party == null) return "";
         return party.getLeader().getPlayerName().equals(player.getName()) ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
-      }else if (params.equalsIgnoreCase("party_leader")) {
+      } else if (params.equalsIgnoreCase(PARTY_LEADER)) {
         return (party == null) ? "" : party.getLeader().getPlayerName();
-      }else if (params.equalsIgnoreCase("party_size")) {
-        return (party == null) ? "" : party.getMembers().size()+"";
+      } else if (params.equalsIgnoreCase(PARTY_SIZE)) {
+        return (party == null) ? "" : String.valueOf(party.getMembers().size());
       }
       
       return null;
