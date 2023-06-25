@@ -494,6 +494,7 @@ public class MaterialMapStore {
         tools.addAll(tridents);
         tools.addAll(stringTools);
         tools.addAll(bows);
+        tools.addAll(crossbows);
     }
 
     private void fillBows() {
