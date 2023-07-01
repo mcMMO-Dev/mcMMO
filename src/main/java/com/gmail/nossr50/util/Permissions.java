@@ -44,6 +44,7 @@ public final class Permissions {
      */
 
     public static boolean mmoinfo(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mmoinfo"); }
+    public static boolean mmodebug(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mmodebug"); }
     public static boolean addlevels(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.addlevels"); }
     public static boolean addlevelsOthers(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.addlevels.others"); }
 

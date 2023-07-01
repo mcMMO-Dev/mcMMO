@@ -160,7 +160,7 @@ public final class CommandRegistrationManager {
     private static void registerMmoDebugCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmodebug");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmodebug"));
-        command.setPermission(null); //No perm required to save support headaches
+        command.setPermission("mcmmo.commands.mmodebug");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmodebug"));
         command.setExecutor(new PlayerDebugCommand());
