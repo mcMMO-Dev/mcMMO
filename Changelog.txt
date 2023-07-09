@@ -1,4 +1,5 @@
 Version 2.1.222
+    Fixed dupe exploit
     Glow Lichen default XP changed from 200 to 5
     A lot of mcMMO logging was moved from INFO to DEBUG, this should reduce the amount of noise in your logs and console
 
