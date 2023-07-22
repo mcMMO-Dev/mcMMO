@@ -26,7 +26,7 @@ public class LevelUpCommandImpl implements LevelUpCommand {
     }
 
     @Override
-    public void apply(McMMOPlayer player, PrimarySkillType primarySkillType, Set<Integer> levelsGained) {
+    public void process(McMMOPlayer player, PrimarySkillType primarySkillType, Set<Integer> levelsGained) {
         if(!skills.contains(primarySkillType)) {
             return;
         }
@@ -39,9 +39,13 @@ public class LevelUpCommandImpl implements LevelUpCommand {
                 } else {
                     LogUtils.debug(mcMMO.p.getLogger(), "Executing command: " + commandStr);
                 }
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandStr);
+                executeCommand();
             }
         }
+    }
+
+    public void executeCommand() {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandStr);
     }
 
     @Override

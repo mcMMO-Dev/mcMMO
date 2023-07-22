@@ -28,7 +28,7 @@ public class LevelUpCommandManager {
         }
 
         for (LevelUpCommand command : commands) {
-            command.apply(mmoPlayer, primarySkillType, levelsGained);
+            command.process(mmoPlayer, primarySkillType, levelsGained);
         }
     }
 
