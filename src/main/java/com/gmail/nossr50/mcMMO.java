@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.commands.CommandManager;
+import com.gmail.nossr50.commands.levelup.LevelUpCommandManager;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
@@ -88,6 +89,7 @@ public class mcMMO extends JavaPlugin {
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
     private static UpgradeManager     upgradeManager;
+    private static LevelUpCommandManager levelUpCommandManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static SmeltingTracker smeltingTracker;
@@ -137,15 +139,8 @@ public class mcMMO extends JavaPlugin {
 
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
-//    private RepairConfig repairConfig;
-//    private SalvageConfig salvageConfig;
-//    private PersistentDataConfig persistentDataConfig;
-//    private ChatConfig chatConfig;
-//    private CoreSkillsConfig coreSkillsConfig;
-//    private RankConfig rankConfig;
-//    private TreasureConfig treasureConfig;
-//    private FishingTreasureConfig fishingTreasureConfig;
-//    private SoundConfig soundConfig;
+
+    private CommandOnLevelUpConfig commandOnLevelUpConfig;
 
     public mcMMO() {
         p = this;
@@ -173,6 +168,7 @@ public class mcMMO extends JavaPlugin {
 
             //Init configs
             advancedConfig = new AdvancedConfig(getDataFolder());
+            commandOnLevelUpConfig = new CommandOnLevelUpConfig(getDataFolder());
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = generalConfig.getIsRetroMode();
@@ -769,5 +765,13 @@ public class mcMMO extends JavaPlugin {
 
     public @NotNull AdvancedConfig getAdvancedConfig() {
         return advancedConfig;
+    }
+
+    public @NotNull CommandOnLevelUpConfig getCommandOnLevelUpConfig() {
+        return commandOnLevelUpConfig;
+    }
+
+    public @NotNull LevelUpCommandManager getLevelUpCommandManager() {
+        return levelUpCommandManager;
     }
 }
