@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -32,13 +32,9 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
     void levelInMiningShouldRunCommandFiveTimes() {
         // GIVEN level up command for Mining should always execute for Mining level up
         assert mcMMO.p.getLevelUpCommandManager().isEmpty();
-        final PrimarySkillType skillType = PrimarySkillType.MINING;
-        final Predicate<Integer> predicate = (i) -> true;
-        final LevelUpCommand levelUpCommand = spy(new LevelUpCommandImpl(
-                predicate,
-                "say hello",
-                Set.of(skillType),
-                true));
+        final String commandStr = "say hello";
+        final LevelUpCommand levelUpCommand
+                = buildLevelUpCommand(commandStr, (skill, ignored) -> skill == PrimarySkillType.MINING);
         mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
 
         int levelsGained = 5;
@@ -57,13 +53,9 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
     void levelInMiningShouldRunCommandAtLeastOnce() {
         // GIVEN level up command for Mining should always execute for Mining level up
         assert mcMMO.p.getLevelUpCommandManager().isEmpty();
-        final PrimarySkillType skillType = PrimarySkillType.MINING;
-        final Predicate<Integer> predicate = (i) -> true;
-        final LevelUpCommand levelUpCommand = spy(new LevelUpCommandImpl(
-                predicate,
-                "say hello",
-                Set.of(skillType),
-                true));
+        final String commandStr = "say hello";
+        final LevelUpCommand levelUpCommand
+                = buildLevelUpCommand(commandStr, (skill, ignored) -> skill == PrimarySkillType.MINING);
         mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
 
         int levelsGained = 1;
@@ -82,13 +74,9 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
     void levelInMiningShouldNotRunCommand() {
         // GIVEN level up command for Woodcutting should not execute for Mining level up
         assert mcMMO.p.getLevelUpCommandManager().isEmpty();
-        final PrimarySkillType skillType = PrimarySkillType.WOODCUTTING;
-        final Predicate<Integer> predicate = (i) -> true;
-        final LevelUpCommand levelUpCommand = spy(new LevelUpCommandImpl(
-                predicate,
-                "say hello",
-                Set.of(skillType),
-                true));
+        final String commandStr = "say hello";
+        final LevelUpCommand levelUpCommand
+                = buildLevelUpCommand(commandStr, (skill, ignored) -> skill == PrimarySkillType.WOODCUTTING);
         mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
 
 
@@ -102,5 +90,24 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
         verify(levelUpCommand).process(any(), any(), any());
         // THEN the command should not be run
         verify(levelUpCommand, never()).executeCommand();
+    }
+
+    private LevelUpCommand buildLevelUpCommand(String commandStr, Set<Integer> levels, Set<PrimarySkillType> skillFilter) {
+        LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
+        builder.commandString(commandStr);
+        builder.withLevels(levels);
+        if (skillFilter != null) {
+            builder.withSkillFilter(skillFilter);
+        }
+        builder.withLogInfo(true);
+        return Mockito.spy(builder.build());
+    }
+
+    private LevelUpCommand buildLevelUpCommand(String commandStr, BiPredicate<PrimarySkillType, Integer> predicate) {
+        LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
+        builder.commandString(commandStr);
+        builder.withPredicate(predicate);
+        builder.withLogInfo(true);
+        return Mockito.spy(builder.build());
     }
 }

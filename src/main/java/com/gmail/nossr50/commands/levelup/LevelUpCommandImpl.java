@@ -9,30 +9,23 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 public class LevelUpCommandImpl implements LevelUpCommand {
-    private final @NotNull Predicate<Integer> shouldApply;
+    private final BiPredicate<PrimarySkillType, Integer> predicate;
     private final boolean logInfo;
     private final @NotNull String commandStr;
 
-    private final @NotNull Set<PrimarySkillType> skills;
-
-    public LevelUpCommandImpl(@NotNull Predicate<Integer> shouldApply, @NotNull String commandStr, @NotNull Set<PrimarySkillType> skills, boolean logInfo) {
-        this.shouldApply = shouldApply;
+    public LevelUpCommandImpl(@NotNull BiPredicate<PrimarySkillType, Integer> predicate, @NotNull String commandStr, boolean logInfo) {
         this.commandStr = commandStr;
-        this.skills = skills;
+        this.predicate = predicate;
         this.logInfo = logInfo;
     }
 
     @Override
     public void process(McMMOPlayer player, PrimarySkillType primarySkillType, Set<Integer> levelsGained) {
-        if(!skills.contains(primarySkillType)) {
-            return;
-        }
-
         for (int i : levelsGained) {
-            if (shouldApply.test(i)) {
+            if (predicate.test(primarySkillType, i)) {
                 // execute command via server console in Bukkit
                 if(logInfo) {
                     mcMMO.p.getLogger().info("Executing command: " + commandStr);
@@ -53,21 +46,20 @@ public class LevelUpCommandImpl implements LevelUpCommand {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LevelUpCommandImpl that = (LevelUpCommandImpl) o;
-        return logInfo == that.logInfo && Objects.equals(shouldApply, that.shouldApply) && Objects.equals(commandStr, that.commandStr) && Objects.equals(skills, that.skills);
+        return logInfo == that.logInfo && Objects.equals(predicate, that.predicate) && Objects.equals(commandStr, that.commandStr);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(shouldApply, logInfo, commandStr, skills);
+        return Objects.hash(predicate, logInfo, commandStr);
     }
 
     @Override
     public String toString() {
         return "LevelUpCommandImpl{" +
-                "shouldApply=" + shouldApply +
+                "predicate=" + predicate +
                 ", logInfo=" + logInfo +
                 ", commandStr='" + commandStr + '\'' +
-                ", skills=" + skills +
                 '}';
     }
 }

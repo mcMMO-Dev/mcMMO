@@ -1,0 +1,23 @@
+level_up_commands:
+    unique_id_here:
+        enabled: false
+        condition:
+            skills:
+                - 'Swords'
+                - 'Axes'
+            levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        commands:
+            - "say %player% reached level %level%!"
+            - "say Isn't that nice?"
+        run_command_as: 'CONSOLE'
+        log_level: 'INFO'
+    other_unique_id_here:
+        enabled: false
+        condition:
+            complex_condition:
+                source: 'player.getLevel() % 2 == 0'
+        commands:
+            - "say %player% reached an even level!"
+            - "say Isn't that fun?"
+        run_command_as: 'CONSOLE'
+        log_level: 'DEBUG'
