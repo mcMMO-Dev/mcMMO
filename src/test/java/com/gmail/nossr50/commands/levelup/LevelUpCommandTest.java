@@ -94,8 +94,9 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
 
     private LevelUpCommand buildLevelUpCommand(String commandStr, Set<Integer> levels, Set<PrimarySkillType> skillFilter) {
         LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
-        builder.commandString(commandStr);
-        builder.withLevels(levels);
+        builder.commandString(commandStr)
+                .withLevels(levels)
+                .withLogInfo(true);
         if (skillFilter != null) {
             builder.withSkillFilter(skillFilter);
         }
@@ -105,9 +106,9 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
 
     private LevelUpCommand buildLevelUpCommand(String commandStr, BiPredicate<PrimarySkillType, Integer> predicate) {
         LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
-        builder.commandString(commandStr);
-        builder.withPredicate(predicate);
-        builder.withLogInfo(true);
+        builder.commandString(commandStr)
+                .withPredicate(predicate)
+                .withLogInfo(true);
         return Mockito.spy(builder.build());
     }
 }
