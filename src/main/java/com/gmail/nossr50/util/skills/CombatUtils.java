@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public final class CombatUtils {
 
@@ -982,6 +983,6 @@ public final class CombatUtils {
      * @param entity the projectile
      */
     public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
-        Bukkit.getServer().getScheduler().runTaskLater(mcMMO.p, () -> cleanupArrowMetadata(entity), 20*60);
+        mcMMO.p.getFoliaLib().getImpl().runLater(() -> cleanupArrowMetadata(entity), 1000 * 60, TimeUnit.MILLISECONDS);
     }
 }
