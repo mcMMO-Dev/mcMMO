@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class UUIDUpdateAsyncTask implements Runnable {
@@ -109,11 +110,11 @@ public class UUIDUpdateAsyncTask implements Runnable {
 
     // Bukkit runnables don't let themselves reschedule themselves, so we are a pseudo bukkit runnable.
     private void runTaskLaterAsynchronously(mcMMO plugin, int delay) {
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this, delay);
+        plugin.getFoliaLib().getImpl().runLaterAsync(this, delay, TimeUnit.MILLISECONDS);
     }
 
     public void start() {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this);
+        plugin.getFoliaLib().getImpl().runAsync(this);
     }
 
     private static UUID toUUID(String id) {
