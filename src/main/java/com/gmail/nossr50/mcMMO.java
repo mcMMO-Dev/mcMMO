@@ -644,7 +644,7 @@ public class mcMMO extends JavaPlugin {
 
         long saveIntervalTicks = Math.max(minute, generalConfig.getSaveInterval() * minute);
 
-        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+        new SaveTimerTask().runTaskTimer(saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
