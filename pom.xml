@@ -245,6 +245,10 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>devmart-other</id>
+            <url>https://nexuslite.gcnt.net/repos/other/</url>
+        </repository>
         <!-- ... -->
         <!-- ... -->
     </repositories>
@@ -370,6 +374,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>32.0.0-jre</version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.2.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
