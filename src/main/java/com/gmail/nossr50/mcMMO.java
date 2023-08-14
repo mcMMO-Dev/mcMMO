@@ -53,6 +53,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.tcoded.folialib.FoliaLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -137,6 +138,9 @@ public class mcMMO extends JavaPlugin {
 
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
+
+    private FoliaLib foliaLib;
+
 //    private RepairConfig repairConfig;
 //    private SalvageConfig salvageConfig;
 //    private PersistentDataConfig persistentDataConfig;
@@ -168,7 +172,7 @@ public class mcMMO extends JavaPlugin {
             getLogger().setFilter(new LogFilter(this));
 
             //Folia lib plugin instance
-            FoliaLib foliaLib = new FoliaLib(this);
+            foliaLib = new FoliaLib(this);
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
@@ -772,5 +776,9 @@ public class mcMMO extends JavaPlugin {
 
     public @NotNull AdvancedConfig getAdvancedConfig() {
         return advancedConfig;
+    }
+
+    public @NotNull FoliaLib getFoliaLib() {
+        return foliaLib;
     }
 }
