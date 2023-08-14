@@ -189,6 +189,10 @@
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstats</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.tcoded.folialib</pattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.folialib</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -379,7 +383,7 @@
         <dependency>
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.4</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import com.gmail.nossr50.util.skills.SkillTools;
-import com.tcoded.folialib.wrapper.WrappedTask;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

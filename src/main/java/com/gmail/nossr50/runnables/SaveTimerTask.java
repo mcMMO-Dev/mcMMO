@@ -7,7 +7,7 @@ import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
-import com.tcoded.folialib.wrapper.WrappedTask;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 
 import java.util.concurrent.TimeUnit;
 

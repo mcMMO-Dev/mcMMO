@@ -54,6 +54,7 @@ import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.ServerImplementation;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -400,7 +401,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         LogUtils.debug(mcMMO.p.getLogger(), "Canceling all tasks...");
-        getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        getFoliaLib().getImpl().cancelAllTasks(); // This removes our tasks
         LogUtils.debug(mcMMO.p.getLogger(), "Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
@@ -630,11 +631,11 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void registerCustomRecipes() {
-        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+        getFoliaLib().getImpl().runLater(() -> {
             if (generalConfig.getChimaeraEnabled()) {
                 getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
             }
-        }, 40);
+        }, 40 * 50, TimeUnit.MILLISECONDS);
     }
 
     private void scheduleTasks() {
@@ -647,7 +648,7 @@ public class mcMMO extends JavaPlugin {
         new SaveTimerTask().runTaskTimer(saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
-        new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
+        getFoliaLib().getImpl().runAsync(new CleanBackupsTask());
 
         // Old & Powerless User remover
         long purgeIntervalTicks = generalConfig.getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
