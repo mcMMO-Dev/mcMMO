@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ScoreboardWrapper {
     public static final String SIDE_OBJECTIVE = "mcMMO_sideObjective";
@@ -426,7 +427,7 @@ public class ScoreboardWrapper {
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
 
                 initBoard(); //Start over
-                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> ScoreboardManager.retryLastSkillBoard(player), 0);
+                mcMMO.p.getFoliaLib().getImpl().runLater(() -> ScoreboardManager.retryLastSkillBoard(player), 0, TimeUnit.MILLISECONDS);
             }
         }
 
