@@ -75,6 +75,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class mcMMO extends JavaPlugin {
 
@@ -236,18 +237,19 @@ public class mcMMO extends JavaPlugin {
 
             if(serverAPIOutdated)
             {
-                Bukkit
-                        .getScheduler()
-                        .scheduleSyncRepeatingTask(this,
+                foliaLib
+                        .getImpl()
+                        .runTimer(
                                 () -> getLogger().severe("You are running an outdated version of "+platformManager.getServerSoftware()+", mcMMO will not work unless you update to a newer version!"),
-                        20, 20*60*30);
+                        20 * 50L, 1000 * 60 * 30, TimeUnit.MILLISECONDS);
 
                 if(platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT)
                 {
-                    Bukkit.getScheduler()
-                            .scheduleSyncRepeatingTask(this,
+                    foliaLib
+                            .getImpl()
+                            .runTimer(
                                     () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
-                    20, 20*60*30);
+                            20 * 50L, 1000 * 60 * 30, TimeUnit.MILLISECONDS);
                 }
             } else {
                 registerEvents();
