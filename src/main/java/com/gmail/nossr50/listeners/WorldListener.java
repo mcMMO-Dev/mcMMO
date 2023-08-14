@@ -12,6 +12,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
+import java.util.concurrent.TimeUnit;
+
 public class WorldListener implements Listener {
     private final mcMMO plugin;
 
@@ -30,11 +32,12 @@ public class WorldListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, () -> {
+        // Using 50 ms later as I do not know of a way to run one tick later (safely)
+        plugin.getFoliaLib().getImpl().runLater(() -> {
             for (BlockState blockState : event.getBlocks()) {
                 mcMMO.getPlaceStore().setFalse(blockState);
             }
-        }, 1);
+        }, 50, TimeUnit.MILLISECONDS);
     }
 
     /**
