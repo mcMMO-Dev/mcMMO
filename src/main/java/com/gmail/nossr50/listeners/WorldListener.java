@@ -37,7 +37,7 @@ public class WorldListener implements Listener {
             for (BlockState blockState : event.getBlocks()) {
                 mcMMO.getPlaceStore().setFalse(blockState);
             }
-        }, 50, TimeUnit.MILLISECONDS);
+        }, 1);
     }
 
     /**

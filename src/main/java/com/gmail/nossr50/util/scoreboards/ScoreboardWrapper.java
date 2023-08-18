@@ -18,10 +18,12 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import com.gmail.nossr50.util.skills.SkillTools;
-import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -30,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class ScoreboardWrapper {
     public static final String SIDE_OBJECTIVE = "mcMMO_sideObjective";
@@ -85,40 +86,38 @@ public class ScoreboardWrapper {
         }
     }
 
-    public WrappedTask updateTask = null;
+    public BukkitTask updateTask = null;
 
-    private class ScoreboardQuickUpdate {
-        public WrappedTask runTaskLater(long delay) {
-            return mcMMO.p.getFoliaLib().getImpl().runLater(() -> {
-                updateSidebar();
-                updateTask = null;
-            }, delay * Misc.TICK_CONVERSION_FACTOR, TimeUnit.MILLISECONDS);
+    private class ScoreboardQuickUpdate extends BukkitRunnable {
+        @Override
+        public void run() {
+            updateSidebar();
+            updateTask = null;
         }
     }
 
-    public WrappedTask revertTask = null;
+    public BukkitTask revertTask = null;
 
-    private class ScoreboardChangeTask {
-        public WrappedTask runTaskLater(long delay) {
-            return mcMMO.p.getFoliaLib().getImpl().runLater(() -> {
-                tryRevertBoard();
-                revertTask = null;
-            }, delay * Misc.TICK_CONVERSION_FACTOR, TimeUnit.MILLISECONDS);
+    private class ScoreboardChangeTask extends BukkitRunnable {
+        @Override
+        public void run() {
+            tryRevertBoard();
+            revertTask = null;
         }
     }
 
-    public WrappedTask cooldownTask = null;
+    public BukkitTask cooldownTask = null;
 
-    private class ScoreboardCooldownTask {
-        public WrappedTask runTaskTimer(long delay, long period) {
-            return mcMMO.p.getFoliaLib().getImpl().runTimer(() -> {
-                // Stop updating if it's no longer something displaying cooldowns
-                if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
-                    doSidebarUpdateSoon();
-                } else {
-                    stopCooldownUpdating();
-                }
-            }, delay, period, TimeUnit.MILLISECONDS);
+    private class ScoreboardCooldownTask extends BukkitRunnable {
+        @Override
+        public void run() {
+            // Stop updating if it's no longer something displaying cooldowns
+            if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
+                doSidebarUpdateSoon();
+            }
+            else {
+                stopCooldownUpdating();
+            }
         }
     }
 
@@ -126,7 +125,7 @@ public class ScoreboardWrapper {
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
-            updateTask = new ScoreboardQuickUpdate().runTaskLater(2L);
+            updateTask = new ScoreboardQuickUpdate().runTaskLater(mcMMO.p, 2L);
         }
     }
 
@@ -134,7 +133,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(mcMMO.p, 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -217,7 +216,7 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = new ScoreboardChangeTask().runTaskLater(ticks);
+        revertTask = new ScoreboardChangeTask().runTaskLater(mcMMO.p, ticks);
 
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
@@ -427,7 +426,7 @@ public class ScoreboardWrapper {
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
 
                 initBoard(); //Start over
-                mcMMO.p.getFoliaLib().getImpl().runLater(() -> ScoreboardManager.retryLastSkillBoard(player), 0, TimeUnit.MILLISECONDS);
+                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> ScoreboardManager.retryLastSkillBoard(player), 0);
             }
         }
 

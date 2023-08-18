@@ -149,10 +149,7 @@ public class PlayerListener implements Listener {
         new MobHealthDisplayUpdaterTask(attacker).run();
 
         // set the name back
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(attacker,
-                () -> MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p),
-                Misc.TICK_MS_CONVERSION_FACTOR, TimeUnit.MILLISECONDS
-        );
+        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(attacker, () -> MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p), 1);
     }
 
     /**

@@ -110,7 +110,7 @@ public class UUIDUpdateAsyncTask implements Runnable {
 
     // Bukkit runnables don't let themselves reschedule themselves, so we are a pseudo bukkit runnable.
     private void runTaskLaterAsynchronously(mcMMO plugin, int delay) {
-        plugin.getFoliaLib().getImpl().runLaterAsync(this, delay, TimeUnit.MILLISECONDS);
+        plugin.getFoliaLib().getImpl().runLaterAsync(this, delay);
     }
 
     public void start() {
