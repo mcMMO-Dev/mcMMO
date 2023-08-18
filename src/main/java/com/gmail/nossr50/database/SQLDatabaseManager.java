@@ -18,12 +18,12 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
@@ -1356,7 +1356,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
 
-                new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
+                mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new GetUUIDUpdatesRequired(), 100 * Misc.TICK_MS_CONVERSION_FACTOR,  TimeUnit.MILLISECONDS); // wait until after first purge
             }
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
@@ -1369,7 +1369,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private class GetUUIDUpdatesRequired extends BukkitRunnable {
+    private class GetUUIDUpdatesRequired implements Runnable {
         public void run() {
             massUpdateLock.lock();
             List<String> names = new ArrayList<>();

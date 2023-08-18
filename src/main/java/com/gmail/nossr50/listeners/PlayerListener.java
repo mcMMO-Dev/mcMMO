@@ -49,9 +49,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
@@ -149,12 +149,10 @@ public class PlayerListener implements Listener {
         new MobHealthDisplayUpdaterTask(attacker).run();
 
         // set the name back
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p);
-            }
-        }.runTaskLater(mcMMO.p, 1);
+        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(attacker,
+                () -> MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p),
+                Misc.TICK_MS_CONVERSION_FACTOR, TimeUnit.MILLISECONDS
+        );
     }
 
     /**

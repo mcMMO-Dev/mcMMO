@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -327,7 +326,7 @@ public final class Misc {
         experienceOrb.setExperience(experienceValue);
     }
 
-    private static class SpawnOrbTask extends BukkitRunnable {
+    private static class SpawnOrbTask implements Runnable {
         private final Location location;
         private int orbExpValue;
 
