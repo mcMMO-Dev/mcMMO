@@ -20,3 +20,13 @@ level_up_commands:
             - "say Isn't that fun?"
         run_command_as: 'CONSOLE'
         log_level: 'DEBUG'
+    power_level_milestones:
+        enabled: true
+        condition:
+            power_level: true
+            levels: [ 10, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 10000, 20000 ]
+        commands:
+            - "say %player% has reached a power level milestone!"
+            - "say %player% is now at power level %level%!"
+        run_command_as: 'CONSOLE'
+        log_level: 'DEBUG'
