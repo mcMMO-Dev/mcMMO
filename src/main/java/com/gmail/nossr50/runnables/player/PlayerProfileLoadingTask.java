@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
@@ -12,9 +13,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class PlayerProfileLoadingTask extends BukkitRunnable {
+public class PlayerProfileLoadingTask extends CancellableRunnable {
     private final Player player;
     private int attempt = 0;
 
@@ -77,7 +77,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, (100 + (attempt * 100L)));
     }
 
-    private class ApplySuccessfulProfile extends BukkitRunnable {
+    private class ApplySuccessfulProfile extends CancellableRunnable {
         private final McMMOPlayer mcMMOPlayer;
 
         private ApplySuccessfulProfile(McMMOPlayer mcMMOPlayer) {

@@ -2,14 +2,14 @@ package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 
-public class McrankCommandAsyncTask extends BukkitRunnable {
+public class McrankCommandAsyncTask extends CancellableRunnable {
     private final String playerName;
     private final CommandSender sender;
     private final boolean useBoard, useChat;

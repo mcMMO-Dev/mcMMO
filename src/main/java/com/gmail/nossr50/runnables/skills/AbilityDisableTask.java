@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -12,9 +13,8 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class AbilityDisableTask extends BukkitRunnable {
+public class AbilityDisableTask extends CancellableRunnable {
     private final McMMOPlayer mcMMOPlayer;
     private final SuperAbilityType ability;
 

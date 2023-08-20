@@ -12,6 +12,7 @@ import com.gmail.nossr50.events.scoreboard.ScoreboardObjectiveEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -22,7 +23,6 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -88,7 +88,7 @@ public class ScoreboardWrapper {
 
     public BukkitTask updateTask = null;
 
-    private class ScoreboardQuickUpdate extends BukkitRunnable {
+    private class ScoreboardQuickUpdate extends CancellableRunnable {
         @Override
         public void run() {
             updateSidebar();
@@ -98,7 +98,7 @@ public class ScoreboardWrapper {
 
     public BukkitTask revertTask = null;
 
-    private class ScoreboardChangeTask extends BukkitRunnable {
+    private class ScoreboardChangeTask extends CancellableRunnable {
         @Override
         public void run() {
             tryRevertBoard();
@@ -108,7 +108,7 @@ public class ScoreboardWrapper {
 
     public BukkitTask cooldownTask = null;
 
-    private class ScoreboardCooldownTask extends BukkitRunnable {
+    private class ScoreboardCooldownTask extends CancellableRunnable {
         @Override
         public void run() {
             // Stop updating if it's no longer something displaying cooldowns

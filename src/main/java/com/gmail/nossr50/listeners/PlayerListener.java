@@ -51,7 +51,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class PlayerListener implements Listener {
     private final mcMMO plugin;

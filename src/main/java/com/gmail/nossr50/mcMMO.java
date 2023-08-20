@@ -54,7 +54,6 @@ import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.tcoded.folialib.FoliaLib;
-import com.tcoded.folialib.impl.ServerImplementation;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -76,7 +75,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class mcMMO extends JavaPlugin {
 

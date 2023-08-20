@@ -2,13 +2,13 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-public class TrackedTamingEntity extends BukkitRunnable {
+public class TrackedTamingEntity extends CancellableRunnable {
     private final @NotNull LivingEntity livingEntity;
     private final @NotNull CallOfTheWildType callOfTheWildType;
     private final @NotNull Player player;

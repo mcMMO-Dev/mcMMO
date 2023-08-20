@@ -39,7 +39,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -112,7 +111,7 @@ public class HerbalismManager extends SkillManager {
         }
     }
 
-    private class CheckBushAge extends BukkitRunnable {
+    private class CheckBushAge extends CancellableRunnable {
 
         @NotNull Block block;
         @NotNull McMMOPlayer mmoPlayer;

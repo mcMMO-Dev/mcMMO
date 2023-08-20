@@ -4,11 +4,11 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class SaveTimerTask extends BukkitRunnable {
+public class SaveTimerTask extends CancellableRunnable {
     @Override
     public void run() {
         LogUtils.debug(mcMMO.p.getLogger(), "[User Data] Saving...");
