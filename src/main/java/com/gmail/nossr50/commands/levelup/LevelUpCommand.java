@@ -26,8 +26,11 @@ public interface LevelUpCommand {
 
     /**
      * Execute the command
+     * @param player the player
+     * @param primarySkillType the skill
+     * @param level the level of the skill
      */
-    void executeCommand();
+    void executeCommand(McMMOPlayer player, PrimarySkillType primarySkillType, int level);
 
     class LevelUpCommandBuilder {
         private Set<PrimarySkillType> skillFilter = null;

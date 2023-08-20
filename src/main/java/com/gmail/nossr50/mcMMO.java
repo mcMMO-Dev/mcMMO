@@ -167,6 +167,7 @@ public class mcMMO extends JavaPlugin {
             skillTools = new SkillTools(this); //Load after general config
 
             //Init configs
+            levelUpCommandManager = new LevelUpCommandManager(this);
             advancedConfig = new AdvancedConfig(getDataFolder());
             commandOnLevelUpConfig = new CommandOnLevelUpConfig(getDataFolder());
 

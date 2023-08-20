@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.levelup;
 
 import com.gmail.nossr50.MMOTestEnvironmentBasic;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.mcMMO;
@@ -46,7 +47,7 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
         verify(levelUpCommandManager).apply(any(), any(), any());
         verify(levelUpCommand).process(any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommand, times(levelsGained)).executeCommand();
+        verify(levelUpCommand, times(levelsGained)).executeCommand(any(McMMOPlayer.class), any(PrimarySkillType.class), anyInt());
     }
 
     @Test
@@ -67,7 +68,7 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
         verify(levelUpCommandManager).apply(any(), any(), any());
         verify(levelUpCommand).process(any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommand).executeCommand();
+        verify(levelUpCommand).executeCommand(any(McMMOPlayer.class), any(PrimarySkillType.class), anyInt());
     }
 
     @Test
@@ -89,12 +90,12 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
         verify(levelUpCommandManager).apply(any(), any(), any());
         verify(levelUpCommand).process(any(), any(), any());
         // THEN the command should not be run
-        verify(levelUpCommand, never()).executeCommand();
+        verify(levelUpCommand, never()).executeCommand(any(McMMOPlayer.class), any(PrimarySkillType.class), anyInt());
     }
 
     private LevelUpCommand buildLevelUpCommand(String commandStr, Set<Integer> levels, Set<PrimarySkillType> skillFilter) {
         LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
-        builder.commandString(commandStr)
+        builder.command(commandStr)
                 .withLevels(levels)
                 .withLogInfo(true);
         if (skillFilter != null) {
@@ -106,7 +107,7 @@ class LevelUpCommandTest extends MMOTestEnvironmentBasic {
 
     private LevelUpCommand buildLevelUpCommand(String commandStr, BiPredicate<PrimarySkillType, Integer> predicate) {
         LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
-        builder.commandString(commandStr)
+        builder.command(commandStr)
                 .withPredicate(predicate)
                 .withLogInfo(true);
         return Mockito.spy(builder.build());

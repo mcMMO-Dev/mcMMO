@@ -24,7 +24,9 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
     public static final String COMMANDS = "commands";
 
     public CommandOnLevelUpConfig(@NotNull File dataFolder) {
-        super("commandonlevelup", dataFolder);
+        super("levelupcommands.yml", dataFolder);
+        // TODO: loadKeys() should really get called in super
+        loadKeys();
     }
 
     @Override
