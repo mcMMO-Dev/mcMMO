@@ -7,6 +7,8 @@ import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiPredicate;
@@ -14,11 +16,18 @@ import java.util.function.BiPredicate;
 public class LevelUpCommandImpl implements LevelUpCommand {
     private final BiPredicate<PrimarySkillType, Integer> predicate;
     private final boolean logInfo;
-    private final @NotNull String commandStr;
+    private final @NotNull LinkedList<String> commandStr;
 
     public LevelUpCommandImpl(@NotNull BiPredicate<PrimarySkillType, Integer> predicate, @NotNull String commandStr, boolean logInfo) {
-        this.commandStr = commandStr;
         this.predicate = predicate;
+        this.commandStr = new LinkedList<>();
+        this.commandStr.add(commandStr);
+        this.logInfo = logInfo;
+    }
+
+    public LevelUpCommandImpl(@NotNull BiPredicate<PrimarySkillType, Integer> predicate, @NotNull LinkedList<String> commandStr, boolean logInfo) {
+        this.predicate = predicate;
+        this.commandStr = commandStr;
         this.logInfo = logInfo;
     }
 
@@ -38,7 +47,13 @@ public class LevelUpCommandImpl implements LevelUpCommand {
     }
 
     public void executeCommand() {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandStr);
+        // TODO: Change this to debug later
+        mcMMO.p.getLogger().info("Executing commands for level up: " + commandStr);
+        for (String command : commandStr) {
+            // TODO: Change this to debug later
+            mcMMO.p.getLogger().info("Executing command: " + command);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
     }
 
     @Override

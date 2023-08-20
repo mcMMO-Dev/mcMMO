@@ -2,7 +2,10 @@ package com.gmail.nossr50.commands.levelup;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
@@ -29,7 +32,7 @@ public interface LevelUpCommand {
     class LevelUpCommandBuilder {
         private Set<PrimarySkillType> skillFilter = null;
         private Set<Integer> levels = null;
-        private String commandStr = null;
+        private LinkedList<String> commands = null;
         private BiPredicate<PrimarySkillType, Integer> predicate = null;
         private boolean logInfo;
 
@@ -47,23 +50,40 @@ public interface LevelUpCommand {
             return this;
         }
 
-        public LevelUpCommandBuilder commandString(String commandStr) {
-            this.commandStr = commandStr;
+        public LevelUpCommandBuilder command(@NotNull String command) {
+            this.commands = new LinkedList<>();
+            this.commands.add(command);
             return this;
         }
 
-        public LevelUpCommandBuilder withLevels(Set<Integer> levels) {
-            this.levels = levels;
+        public LevelUpCommandBuilder commands(@NotNull Collection<String> command) {
+            this.commands = new LinkedList<>(command);
             return this;
         }
 
-        public LevelUpCommandBuilder withSkillFilter(Set<PrimarySkillType> skillFilter) {
+        public LevelUpCommandBuilder withLevels(@NotNull Collection<Integer> levels) {
+            requireNonNull(levels, "levels is null!");
+            this.levels = Set.copyOf(levels);
+            return this;
+        }
+
+        public LevelUpCommandBuilder withSkillFilter(@NotNull Set<PrimarySkillType> skillFilter) {
+            requireNonNull(skillFilter, "skillFilter is null!");
+            if (skillFilter.isEmpty()) {
+                throw new IllegalArgumentException("skillFilter is empty");
+            }
             this.skillFilter = skillFilter;
             return this;
         }
 
+        public LevelUpCommandBuilder withSkillFilter(@NotNull PrimarySkillType skill) {
+            requireNonNull(skill, "skill is null!");
+            this.skillFilter = Set.of(skill);
+            return this;
+        }
+
         public LevelUpCommand build() {
-            requireNonNull(commandStr, "commandStr is null");
+            requireNonNull(commands, "commandStr is null");
             if (predicate == null) {
                 requireNonNull(levels, "levels is null");
 
@@ -73,10 +93,10 @@ public interface LevelUpCommand {
                     } else {
                         return skillFilter.contains(skill) && levels.contains(level);
                     }
-                }, commandStr, logInfo);
+                }, commands, logInfo);
             }
 
-            return new LevelUpCommandImpl(predicate, commandStr, logInfo);
+            return new LevelUpCommandImpl(predicate, commands, logInfo);
         }
     }
 }
