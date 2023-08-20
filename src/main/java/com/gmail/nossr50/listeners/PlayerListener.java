@@ -589,7 +589,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
-        new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 60);
+        mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileLoadingTask(player), 60);
 
         if (mcMMO.p.getGeneralConfig().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);

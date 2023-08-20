@@ -54,7 +54,7 @@ public class DelayedCropReplant extends CancellableRunnable {
         PlantAnchorType plantAnchorType = PlantAnchorType.NORMAL;
 
         //Remove the metadata marking the block as recently replanted
-        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(mcMMO.p, 10);
+        mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(blockBreakEvent.getBlock().getLocation(), new markPlantAsOld(blockBreakEvent.getBlock().getLocation()), 10);
 
         if(blockBreakEvent.isCancelled()) {
             wasImmaturePlant = true;
@@ -101,7 +101,7 @@ public class DelayedCropReplant extends CancellableRunnable {
 
             //Play an effect
             ParticleEffectUtils.playGreenThumbEffect(cropLocation);
-            new PhysicsBlockUpdate(newState.getBlock(), cropFace, plantAnchorType).runTaskLater(mcMMO.p, 1);
+            mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(newState.getLocation(), new PhysicsBlockUpdate(newState.getBlock(), cropFace, plantAnchorType), 1);
         }
     }
 

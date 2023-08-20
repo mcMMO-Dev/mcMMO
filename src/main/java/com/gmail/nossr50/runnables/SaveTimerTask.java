@@ -16,7 +16,7 @@ public class SaveTimerTask extends CancellableRunnable {
         int count = 1;
 
         for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-            new PlayerProfileSaveTask(mcMMOPlayer.getProfile(), false).runTaskLaterAsynchronously(mcMMO.p, count);
+            mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileSaveTask(mcMMOPlayer.getProfile(), false), count);
             count++;
         }
 
