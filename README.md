@@ -1,7 +1,18 @@
 # mcMMO
 ## The #1 RPG Mod for Minecraft
+## Now supports Folia - Thanks in part to the Folia Inquisitors
+# Website
 
-Please help me to do this. I will accept help for it!
+I'm working on a brand new website for mcMMO
+
+You can check it out here http://www.mcmmo.org
+
+Spigot Resource: https://spigot.mcmmo.org
+
+I plan to post links to our new wiki (its still under development), downloads, and dev blogs there.
+
+# Builds
+Currently, you can obtain our builds via the Spigot resource page: http://spigot.mcmmo.org
 
 ### Brief Description
 The goal of mcMMO is to take core Minecraft game mechanics and expand them into an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds fourteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
@@ -18,6 +29,9 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 
 #### Classic Maintainer
 [![t00thpick1](http://www.gravatar.com/avatar/ee23c7794a0c40120c3474287c7bce06.png)](https://github.com/t00thpick1)
+
+#### Contributed to adding Folia ( Folia Inquisitors )
+HSGamer, TechnicallyCoded, Yomamaeatstoes, and Rockyers
 
 ## Former Team Members
 
