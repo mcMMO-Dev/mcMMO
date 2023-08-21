@@ -3,14 +3,14 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class MctopCommandAsyncTask extends BukkitRunnable {
+public class MctopCommandAsyncTask extends CancellableRunnable {
     private final CommandSender sender;
     private final PrimarySkillType skill;
     private final int page;
@@ -35,6 +35,6 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
     public void run() {
         final List<PlayerStat> userStats = mcMMO.getDatabaseManager().readLeaderboard(skill, page, 10);
 
-        new MctopCommandDisplayTask(userStats, page, skill, sender, useBoard, useChat).runTaskLater(mcMMO.p, 1);
+        mcMMO.p.getFoliaLib().getImpl().runNextTick(new MctopCommandDisplayTask(userStats, page, skill, sender, useBoard, useChat));
     }
 }

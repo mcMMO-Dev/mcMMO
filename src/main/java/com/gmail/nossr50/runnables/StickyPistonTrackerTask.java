@@ -2,11 +2,11 @@ package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class StickyPistonTrackerTask extends BukkitRunnable {
+public class StickyPistonTrackerTask extends CancellableRunnable {
     private final BlockFace direction;
     private final Block block;
     private final Block movedBlock;

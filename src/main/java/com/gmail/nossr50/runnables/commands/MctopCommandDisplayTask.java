@@ -4,19 +4,19 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
 /**
  * Display the results of {@link MctopCommandAsyncTask} to the sender.
  */
-public class MctopCommandDisplayTask extends BukkitRunnable {
+public class MctopCommandDisplayTask extends CancellableRunnable {
     private final List<PlayerStat> userStats;
     private final CommandSender sender;
     private final PrimarySkillType skill;

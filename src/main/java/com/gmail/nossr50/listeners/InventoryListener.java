@@ -439,7 +439,7 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(plugin, 0);
+        mcMMO.p.getFoliaLib().getImpl().runAtEntity(whoClicked, new PlayerUpdateInventoryTask((Player) whoClicked));
     }
 
 }

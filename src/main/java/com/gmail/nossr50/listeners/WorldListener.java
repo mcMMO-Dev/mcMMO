@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
@@ -11,8 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-
-import java.util.concurrent.TimeUnit;
 
 public class WorldListener implements Listener {
     private final mcMMO plugin;
@@ -37,7 +34,7 @@ public class WorldListener implements Listener {
             for (BlockState blockState : event.getBlocks()) {
                 mcMMO.getPlaceStore().setFalse(blockState);
             }
-        }, 50, TimeUnit.MILLISECONDS);
+        }, 1);
     }
 
     /**

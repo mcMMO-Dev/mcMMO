@@ -1,9 +1,9 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.block.BlockState;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class HerbalismBlockUpdaterTask extends BukkitRunnable {
+public class HerbalismBlockUpdaterTask extends CancellableRunnable {
     private final BlockState blockState;
 
     public HerbalismBlockUpdaterTask(BlockState blockState) {

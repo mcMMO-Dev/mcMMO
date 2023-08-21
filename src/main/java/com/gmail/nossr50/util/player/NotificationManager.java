@@ -31,7 +31,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 public class NotificationManager {
 
@@ -297,7 +296,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
                 Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
-                mcMMO.p.getFoliaLib().getImpl().runNextTick(() -> audience.sendMessage(Identity.nil(), message));
+                mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> audience.sendMessage(Identity.nil(), message));
             }
         }
     }
@@ -332,7 +331,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
                 Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
-                mcMMO.p.getFoliaLib().getImpl().runNextTick(() -> audience.sendMessage(Identity.nil(), message));
+                mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> audience.sendMessage(Identity.nil(), message));
             }
         }
     }

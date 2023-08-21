@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
@@ -14,11 +15,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Cocoa;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DelayedCropReplant extends BukkitRunnable {
+public class DelayedCropReplant extends CancellableRunnable {
 
     private final int desiredCropAge;
     private final Location cropLocation;
@@ -54,7 +54,7 @@ public class DelayedCropReplant extends BukkitRunnable {
         PlantAnchorType plantAnchorType = PlantAnchorType.NORMAL;
 
         //Remove the metadata marking the block as recently replanted
-        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(mcMMO.p, 10);
+        mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(blockBreakEvent.getBlock().getLocation(), new markPlantAsOld(blockBreakEvent.getBlock().getLocation()), 10);
 
         if(blockBreakEvent.isCancelled()) {
             wasImmaturePlant = true;
@@ -101,7 +101,7 @@ public class DelayedCropReplant extends BukkitRunnable {
 
             //Play an effect
             ParticleEffectUtils.playGreenThumbEffect(cropLocation);
-            new PhysicsBlockUpdate(newState.getBlock(), cropFace, plantAnchorType).runTaskLater(mcMMO.p, 1);
+            mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(newState.getLocation(), new PhysicsBlockUpdate(newState.getBlock(), cropFace, plantAnchorType), 1);
         }
     }
 
@@ -110,7 +110,7 @@ public class DelayedCropReplant extends BukkitRunnable {
         COCOA
     }
 
-    private static class PhysicsBlockUpdate extends BukkitRunnable {
+    private static class PhysicsBlockUpdate extends CancellableRunnable {
         private final Block plantBlock;
         private final PlantAnchorType plantAnchorType;
         private BlockFace plantFace;
@@ -160,7 +160,7 @@ public class DelayedCropReplant extends BukkitRunnable {
 
 
 
-    private static class markPlantAsOld extends BukkitRunnable {
+    private static class markPlantAsOld extends CancellableRunnable {
 
         private final Location cropLoc;
 

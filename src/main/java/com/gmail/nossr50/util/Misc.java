@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +26,6 @@ public final class Misc {
 
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final int TICK_CONVERSION_FACTOR = 20;
-    public static final int TICK_MS_CONVERSION_FACTOR = 50;
 
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
@@ -256,7 +254,7 @@ public final class Misc {
 
         if (player != null) {
             UserManager.remove(player);
-            new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+            mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileLoadingTask(player), 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }
 
@@ -327,7 +325,7 @@ public final class Misc {
         experienceOrb.setExperience(experienceValue);
     }
 
-    private static class SpawnOrbTask extends BukkitRunnable {
+    private static class SpawnOrbTask implements Runnable {
         private final Location location;
         private int orbExpValue;
 

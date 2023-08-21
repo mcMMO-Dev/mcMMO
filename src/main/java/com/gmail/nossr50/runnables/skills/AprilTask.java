@@ -8,9 +8,9 @@
 //import org.bukkit.ChatColor;
 //import org.bukkit.Statistic;
 //import org.bukkit.entity.Player;
-//import org.bukkit.scheduler.BukkitRunnable;
+//import com.gmail.nossr50.util.CancellableRunnable;
 //
-//public class AprilTask extends BukkitRunnable {
+//public class AprilTask extends CancellableRunnable {
 //
 //    @Override
 //    public void run() {

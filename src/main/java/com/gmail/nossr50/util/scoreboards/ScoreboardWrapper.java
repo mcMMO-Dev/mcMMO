@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class ScoreboardWrapper {
     public static final String SIDE_OBJECTIVE = "mcMMO_sideObjective";
@@ -87,38 +86,36 @@ public class ScoreboardWrapper {
 
     public WrappedTask updateTask = null;
 
-    private class ScoreboardQuickUpdate {
-        public WrappedTask runTaskLater(long delay) {
-            return mcMMO.p.getFoliaLib().getImpl().runLater(() -> {
-                updateSidebar();
-                updateTask = null;
-            }, delay * Misc.TICK_CONVERSION_FACTOR, TimeUnit.MILLISECONDS);
+    private class ScoreboardQuickUpdate implements Runnable {
+        @Override
+        public void run() {
+            updateSidebar();
+            updateTask = null;
         }
     }
 
     public WrappedTask revertTask = null;
 
-    private class ScoreboardChangeTask {
-        public WrappedTask runTaskLater(long delay) {
-            return mcMMO.p.getFoliaLib().getImpl().runLater(() -> {
-                tryRevertBoard();
-                revertTask = null;
-            }, delay * Misc.TICK_CONVERSION_FACTOR, TimeUnit.MILLISECONDS);
+    private class ScoreboardChangeTask implements Runnable {
+        @Override
+        public void run() {
+            tryRevertBoard();
+            revertTask = null;
         }
     }
 
     public WrappedTask cooldownTask = null;
 
-    private class ScoreboardCooldownTask {
-        public WrappedTask runTaskTimer(long delay, long period) {
-            return mcMMO.p.getFoliaLib().getImpl().runTimer(() -> {
-                // Stop updating if it's no longer something displaying cooldowns
-                if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
-                    doSidebarUpdateSoon();
-                } else {
-                    stopCooldownUpdating();
-                }
-            }, delay, period, TimeUnit.MILLISECONDS);
+    private class ScoreboardCooldownTask implements Runnable {
+        @Override
+        public void run() {
+            // Stop updating if it's no longer something displaying cooldowns
+            if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
+                doSidebarUpdateSoon();
+            }
+            else {
+                stopCooldownUpdating();
+            }
         }
     }
 
@@ -126,7 +123,7 @@ public class ScoreboardWrapper {
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
-            updateTask = new ScoreboardQuickUpdate().runTaskLater(2L);
+            updateTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardQuickUpdate(), 2L);
         }
     }
 
@@ -134,7 +131,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(), 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -217,7 +214,7 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = new ScoreboardChangeTask().runTaskLater(ticks);
+        revertTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardChangeTask(), ticks);
 
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
@@ -427,7 +424,7 @@ public class ScoreboardWrapper {
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
 
                 initBoard(); //Start over
-                mcMMO.p.getFoliaLib().getImpl().runLater(() -> ScoreboardManager.retryLastSkillBoard(player), 0, TimeUnit.MILLISECONDS);
+                mcMMO.p.getFoliaLib().getImpl().runAtEntity(player, t -> ScoreboardManager.retryLastSkillBoard(player));
             }
         }
 

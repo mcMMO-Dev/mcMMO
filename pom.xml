@@ -154,6 +154,7 @@
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>co.aikar:acf-bukkit</include>
+                            <include>com.tcoded:FoliaLib</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -383,7 +384,7 @@
         <dependency>
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.2.4</version>
+            <version>0.3.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
