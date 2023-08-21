@@ -1,8 +1,7 @@
 # mcMMO
 ## The #1 RPG Mod for Minecraft
-## Now supports Folia - Thanks in part to the Folia Inquisitors
-# Website
 
+## Website
 I'm working on a brand new website for mcMMO
 
 You can check it out here http://www.mcmmo.org
@@ -11,7 +10,7 @@ Spigot Resource: https://spigot.mcmmo.org
 
 I plan to post links to our new wiki (its still under development), downloads, and dev blogs there.
 
-# Builds
+### Builds
 Currently, you can obtain our builds via the Spigot resource page: http://spigot.mcmmo.org
 
 ### Brief Description
@@ -30,8 +29,11 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 #### Classic Maintainer
 [![t00thpick1](http://www.gravatar.com/avatar/ee23c7794a0c40120c3474287c7bce06.png)](https://github.com/t00thpick1)
 
-#### Contributed to adding Folia support ( Folia Inquisitors )
-HSGamer, TechnicallyCoded, Yomamaeatstoes, and Rockyers
+#### Folia Inquisitors
+[<img src="https://github.com/HSGamer.png" width=80 alt="HSGamer">](https://github.com/HSGamer)
+[<img src="https://github.com/TechnicallyCoded.png" width=80 alt="TechnicallyCoded">](https://github.com/TechnicallyCoded)
+[<img src="https://github.com/Yomamaeatstoes.png" width=80 alt="Yomamaeatstoes">](https://github.com/Yomamaeatstoes)
+[<img src="https://github.com/Rockyers.png" width=80 alt="Rockyers">](https://github.com/Rockyers)
 
 ## Former Team Members
 
