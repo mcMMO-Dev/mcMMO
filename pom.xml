@@ -154,6 +154,7 @@
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>co.aikar:acf-bukkit</include>
+                            <include>com.tcoded:FoliaLib</include>
                         </includes>
                     </artifactSet>
                     <relocations>
