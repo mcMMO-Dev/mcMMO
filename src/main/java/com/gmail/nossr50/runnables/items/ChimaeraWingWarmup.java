@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables.items;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -10,9 +11,8 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class ChimaeraWingWarmup extends BukkitRunnable {
+public class ChimaeraWingWarmup extends CancellableRunnable {
     private final McMMOPlayer mcMMOPlayer;
 
     public ChimaeraWingWarmup(McMMOPlayer mcMMOPlayer) {

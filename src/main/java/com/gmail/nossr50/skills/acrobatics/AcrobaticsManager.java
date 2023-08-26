@@ -113,7 +113,7 @@ public class AcrobaticsManager extends SkillManager {
                             applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
                             mob.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
                             MobDodgeMetaCleanup metaCleanupTask = new MobDodgeMetaCleanup(mob, mcMMO.p);
-                            metaCleanupTask.runTaskTimer(mcMMO.p, 20, 20*60); //one minute
+                            mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(mob, metaCleanupTask, 20, 20*60); //one minute
                         }
                     } else {
                         applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);

@@ -102,16 +102,16 @@ public class PlayerProfile {
     }
 
     public void scheduleAsyncSave() {
-        new PlayerProfileSaveTask(this, false).runTaskAsynchronously(mcMMO.p);
+        mcMMO.p.getFoliaLib().getImpl().runAsync(new PlayerProfileSaveTask(this, false));
     }
 
     public void scheduleAsyncSaveDelay() {
-        new PlayerProfileSaveTask(this, false).runTaskLaterAsynchronously(mcMMO.p, 20);
+        mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileSaveTask(this, false), 20);
     }
 
     @Deprecated
     public void scheduleSyncSaveDelay() {
-        new PlayerProfileSaveTask(this, true).runTaskLater(mcMMO.p, 20);
+        mcMMO.p.getFoliaLib().getImpl().runLater(new PlayerProfileSaveTask(this, true), 20);
     }
 
     public void save(boolean useSync) {
@@ -138,7 +138,7 @@ public class PlayerProfile {
 
                 //Back out of async saving if we detect a server shutdown, this is not always going to be caught
                 if(mcMMO.isServerShutdownExecuted() || useSync)
-                    new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
+                    mcMMO.p.getFoliaLib().getImpl().runNextTick(new PlayerProfileSaveTask(this, true));
                 else
                     scheduleAsyncSave();
 

@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -12,9 +13,8 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class AbilityDisableTask extends BukkitRunnable {
+public class AbilityDisableTask extends CancellableRunnable {
     private final McMMOPlayer mcMMOPlayer;
     private final SuperAbilityType ability;
 
@@ -63,7 +63,7 @@ public class AbilityDisableTask extends BukkitRunnable {
             SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         }
         if(!mcMMO.isServerShutdownExecuted()) {
-            new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, (long) PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityCooldownTask(mcMMOPlayer, ability), (long) PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 

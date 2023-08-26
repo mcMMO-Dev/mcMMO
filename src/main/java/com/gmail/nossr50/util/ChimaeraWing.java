@@ -112,7 +112,7 @@ public final class ChimaeraWing {
 
         if (warmup > 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
-            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ChimaeraWingWarmup(mcMMOPlayer), 20 * warmup);
         }
         else {
             chimaeraExecuteTeleport();
@@ -123,15 +123,18 @@ public final class ChimaeraWing {
         Player player = mcMMOPlayer.getPlayer();
 
         if (mcMMO.p.getGeneralConfig().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
-            player.teleport(player.getBedSpawnLocation());
+//            player.teleport(player.getBedSpawnLocation());
+            mcMMO.p.getFoliaLib().getImpl().teleportAsync(player, player.getBedSpawnLocation());
         }
         else {
             Location spawnLocation = player.getWorld().getSpawnLocation();
             if (spawnLocation.getBlock().getType() == Material.AIR) {
-                player.teleport(spawnLocation);
+//                player.teleport(spawnLocation);
+                mcMMO.p.getFoliaLib().getImpl().teleportAsync(player, spawnLocation);
             }
             else {
-                player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
+//                player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
+                mcMMO.p.getFoliaLib().getImpl().teleportAsync(player, player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
             }
         }
 

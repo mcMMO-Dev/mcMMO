@@ -18,12 +18,10 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import com.gmail.nossr50.util.skills.SkillTools;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -86,9 +84,9 @@ public class ScoreboardWrapper {
         }
     }
 
-    public BukkitTask updateTask = null;
+    public WrappedTask updateTask = null;
 
-    private class ScoreboardQuickUpdate extends BukkitRunnable {
+    private class ScoreboardQuickUpdate implements Runnable {
         @Override
         public void run() {
             updateSidebar();
@@ -96,9 +94,9 @@ public class ScoreboardWrapper {
         }
     }
 
-    public BukkitTask revertTask = null;
+    public WrappedTask revertTask = null;
 
-    private class ScoreboardChangeTask extends BukkitRunnable {
+    private class ScoreboardChangeTask implements Runnable {
         @Override
         public void run() {
             tryRevertBoard();
@@ -106,9 +104,9 @@ public class ScoreboardWrapper {
         }
     }
 
-    public BukkitTask cooldownTask = null;
+    public WrappedTask cooldownTask = null;
 
-    private class ScoreboardCooldownTask extends BukkitRunnable {
+    private class ScoreboardCooldownTask implements Runnable {
         @Override
         public void run() {
             // Stop updating if it's no longer something displaying cooldowns
@@ -125,7 +123,7 @@ public class ScoreboardWrapper {
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
-            updateTask = new ScoreboardQuickUpdate().runTaskLater(mcMMO.p, 2L);
+            updateTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardQuickUpdate(), 2L);
         }
     }
 
@@ -133,7 +131,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(mcMMO.p, 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(), 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -216,7 +214,7 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = new ScoreboardChangeTask().runTaskLater(mcMMO.p, ticks);
+        revertTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardChangeTask(), ticks);
 
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
@@ -426,7 +424,7 @@ public class ScoreboardWrapper {
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
 
                 initBoard(); //Start over
-                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> ScoreboardManager.retryLastSkillBoard(player), 0);
+                mcMMO.p.getFoliaLib().getImpl().runAtEntity(player, t -> ScoreboardManager.retryLastSkillBoard(player));
             }
         }
 
