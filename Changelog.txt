@@ -1,3 +1,7 @@
+Version 2.1.223
+    Folia Support added (Thanks to HSGamer, TechnicallyCoded, Rockyers, and Yomamaeatstoes)
+
+    NOTES: This update brings mcMMO to Folia, not all features are guaranteed to work but from limited testing it appears to be working well.
 Version 2.1.222
     Fixed dupe exploit
     Glow Lichen default XP changed from 200 to 5
