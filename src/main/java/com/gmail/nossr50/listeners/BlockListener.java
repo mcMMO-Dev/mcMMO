@@ -136,14 +136,15 @@ public class BlockListener implements Listener {
 
         final BlockFace direction = event.getDirection();
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, () -> {
         for (final Block block : event.getBlocks()) {
-            final Block movedBlock = block.getRelative(direction);
+            mcMMO.p.getFoliaLib().getImpl().runAtLocation(block.getLocation(), t -> {
+                final Block movedBlock = block.getRelative(direction);
 
-            if(BlockUtils.isWithinWorldBounds(movedBlock)) {
-                BlockUtils.setUnnaturalBlock(movedBlock);
-            }
-        }});
+                if (BlockUtils.isWithinWorldBounds(movedBlock)) {
+                    BlockUtils.setUnnaturalBlock(movedBlock);
+                }
+            });
+        }
     }
 
     /**

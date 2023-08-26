@@ -3,19 +3,19 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 
 /**
  * Display the results of McrankCommandAsyncTask to the sender.
  */
-public class McrankCommandDisplayTask extends BukkitRunnable {
+public class McrankCommandDisplayTask extends CancellableRunnable {
     private final Map<PrimarySkillType, Integer> skills;
     private final CommandSender sender;
     private final String playerName;

@@ -15,7 +15,7 @@
 //import org.bukkit.entity.Player;
 //import org.bukkit.event.entity.EntityDamageEvent;
 //import org.bukkit.inventory.ItemStack;
-//import org.bukkit.scheduler.BukkitRunnable;
+//import com.gmail.nossr50.util.CancellableRunnable;
 //import org.jetbrains.annotations.NotNull;
 //
 //import java.util.HashMap;
@@ -23,7 +23,7 @@
 //import java.util.Map;
 //import java.util.Map.Entry;
 //
-//public class BleedTimerTask extends BukkitRunnable {
+//public class BleedTimerTask extends CancellableRunnable {
 //    private static final @NotNull Map<LivingEntity, BleedContainer> bleedList = new HashMap<>();
 //    private static boolean isIterating = false;
 //

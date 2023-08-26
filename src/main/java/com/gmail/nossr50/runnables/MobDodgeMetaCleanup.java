@@ -1,12 +1,12 @@
 package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.entity.Mob;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-public class MobDodgeMetaCleanup extends BukkitRunnable {
+public class MobDodgeMetaCleanup extends CancellableRunnable {
     private final @NotNull Mob mob;
     private final @NotNull mcMMO pluginRef;
 
