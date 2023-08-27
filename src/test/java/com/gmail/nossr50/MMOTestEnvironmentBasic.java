@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
@@ -21,6 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -50,7 +53,7 @@ public abstract class MMOTestEnvironmentBasic {
     protected GeneralConfig generalConfig;
     protected RankConfig rankConfig;
     protected SkillTools skillTools;
-    protected Server server;
+    protected Server mockedServer;
     protected PluginManager pluginManager;
     protected World world;
 
@@ -68,6 +71,16 @@ public abstract class MMOTestEnvironmentBasic {
     protected ChunkManager chunkManager;
 
     protected ConsoleCommandSender consoleCommandSender;
+
+    @BeforeEach
+    void setUp() {
+        mockBaseEnvironment();
+    }
+
+    @AfterEach
+    void tearDown() {
+        cleanupBaseEnvironment();
+    }
 
     protected void mockBaseEnvironment() {
         mockedMcMMO = Mockito.mockStatic(mcMMO.class);
@@ -113,12 +126,16 @@ public abstract class MMOTestEnvironmentBasic {
         mockedRankUtils = Mockito.mockStatic(RankUtils.class);
 
         // wire server
-        this.server = mock(Server.class);
-        when(mcMMO.p.getServer()).thenReturn(server);
+        this.mockedServer = mock(Server.class);
+        when(mcMMO.p.getServer()).thenReturn(mockedServer);
 
         // wire plugin manager
         this.pluginManager = mock(PluginManager.class);
-        when(server.getPluginManager()).thenReturn(pluginManager);
+        when(mockedServer.getPluginManager()).thenReturn(pluginManager);
+        Mockito.doAnswer(invocation -> {
+            selfListener.onPlayerLevelUp(invocation.getArgument(0));
+            return null;
+        }).when(pluginManager).callEvent(any(McMMOPlayerLevelUpEvent.class));
 
         // wire world
         this.world = mock(World.class);
