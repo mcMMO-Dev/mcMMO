@@ -87,7 +87,7 @@ public class mcMMO extends JavaPlugin {
     private static SalvageableManager salvageableManager;
     private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
-    private static FormulaManager     formulaManager;
+    private FormulaManager formulaManager;
     private static UpgradeManager     upgradeManager;
     private static LevelUpCommandManager levelUpCommandManager;
     private static MaterialMapStore materialMapStore;
@@ -428,7 +428,7 @@ public class mcMMO extends JavaPlugin {
         xpEventEnabled = !xpEventEnabled;
     }
 
-    public static FormulaManager getFormulaManager() {
+    public FormulaManager getFormulaManager() {
         return formulaManager;
     }
 

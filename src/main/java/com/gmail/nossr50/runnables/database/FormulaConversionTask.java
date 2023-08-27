@@ -52,7 +52,7 @@ public class FormulaConversionTask extends BukkitRunnable {
             convertedUsers++;
             Misc.printProgress(convertedUsers, DatabaseManager.progressInterval, startMillis);
         }
-        mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);
+        mcMMO.p.getFormulaManager().setPreviousFormulaType(formulaType);
 
         sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", formulaType.toString()));
     }
@@ -63,13 +63,13 @@ public class FormulaConversionTask extends BukkitRunnable {
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             int oldLevel = profile.getSkillLevel(primarySkillType);
             int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
-            int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);
+            int totalOldXP = mcMMO.p.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);
 
             if (totalOldXP == 0) {
                 continue;
             }
 
-            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / ExperienceConfig.getInstance().getExpModifier()), formulaType);
+            int[] newExperienceValues = mcMMO.p.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / ExperienceConfig.getInstance().getExpModifier()), formulaType);
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 

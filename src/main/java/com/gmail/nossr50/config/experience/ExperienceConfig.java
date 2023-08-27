@@ -199,7 +199,7 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Curve settings */
     public FormulaType getFormulaType() {
-        return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve"));
+        return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve", "LINEAR"));
     }
 
     public boolean getCumulativeCurveEnabled() {
@@ -208,11 +208,13 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Curve values */
     public double getMultiplier(FormulaType type) {
-        return config.getDouble("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.multiplier");
+        double def = type == FormulaType.LINEAR ? 20D : 0.1D;
+        return config.getDouble("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.multiplier", def);
     }
 
     public int getBase(FormulaType type) {
-        return config.getInt("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.base");
+        int def = type == FormulaType.LINEAR ? 1020 : 2000;
+        return config.getInt("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.base", def);
     }
 
     public double getExponent(FormulaType type) {

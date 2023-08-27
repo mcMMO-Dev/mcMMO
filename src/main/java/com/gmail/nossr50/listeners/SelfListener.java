@@ -60,9 +60,9 @@ public class SelfListener implements Listener {
         }
 
         final Set<Integer> levelsAchieved = new LinkedHashSet<>();
-        for(int i = 1; i <= event.getLevelsGained(); i++)
-        {
-            levelsAchieved.add(event.getSkillLevel() + i);
+        int startingLevel = event.getSkillLevel() - event.getLevelsGained();
+        for (int i = 0; i < event.getLevelsGained(); i++) {
+            levelsAchieved.add(startingLevel + (i + 1));
         }
         plugin.getLevelUpCommandManager().apply(mcMMOPlayer, skill, levelsAchieved);
     }
