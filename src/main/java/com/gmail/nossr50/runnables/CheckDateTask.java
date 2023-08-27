@@ -3,9 +3,9 @@
 //import com.gmail.nossr50.mcMMO;
 //import com.gmail.nossr50.runnables.skills.AprilTask;
 //import com.gmail.nossr50.util.Misc;
-//import org.bukkit.scheduler.BukkitRunnable;
+//import com.gmail.nossr50.util.CancellableRunnable;
 //
-//public class CheckDateTask extends BukkitRunnable {
+//public class CheckDateTask extends CancellableRunnable {
 //
 //    @Override
 //    public void run() {

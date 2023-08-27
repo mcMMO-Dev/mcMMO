@@ -1,10 +1,10 @@
 package com.gmail.nossr50.runnables.player;
 
+import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
-public class PlayerUpdateInventoryTask extends BukkitRunnable {
+public class PlayerUpdateInventoryTask extends CancellableRunnable {
     private final Player player;
 
     public PlayerUpdateInventoryTask(Player player) {

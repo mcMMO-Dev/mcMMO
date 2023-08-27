@@ -5,10 +5,10 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class AwardCombatXpTask extends BukkitRunnable {
+public class AwardCombatXpTask extends CancellableRunnable {
     private final McMMOPlayer mcMMOPlayer;
     private final double baseXp;
     private final PrimarySkillType primarySkillType;

@@ -16,6 +16,7 @@ website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [WorldGuard, CombatTag, HealthBar, PlaceholderAPI]
 load: POSTWORLD
+folia-supported: true
 api-version: 1.13
 
 commands:

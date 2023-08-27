@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +78,7 @@ public class ExperienceBarManager {
             return;
 
         ExperienceBarHideTask experienceBarHideTask = new ExperienceBarHideTask(this, mcMMOPlayer, primarySkillType);
-        experienceBarHideTask.runTaskLater(plugin, 20L * delaySeconds);
+        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(mcMMOPlayer.getPlayer(), experienceBarHideTask, (long) delaySeconds * Misc.TICK_CONVERSION_FACTOR);
         experienceBarHideTaskHashMap.put(primarySkillType, experienceBarHideTask);
     }
 

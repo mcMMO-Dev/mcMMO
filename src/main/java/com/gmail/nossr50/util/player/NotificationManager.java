@@ -296,7 +296,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.LevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), level, mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
                 Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
-                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
+                mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> audience.sendMessage(Identity.nil(), message));
             }
         }
     }
@@ -331,7 +331,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
                 Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
-                Bukkit.getScheduler().runTaskLater(mcMMO.p, () -> audience.sendMessage(Identity.nil(), message), 0);
+                mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> audience.sendMessage(Identity.nil(), message));
             }
         }
     }

@@ -2,11 +2,11 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.BlockSnapshot;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.util.CancellableRunnable;
 
 import java.util.ArrayList;
 
-public class DelayedHerbalismXPCheckTask extends BukkitRunnable {
+public class DelayedHerbalismXPCheckTask extends CancellableRunnable {
 
     private final McMMOPlayer mcMMOPlayer;
     private final ArrayList<BlockSnapshot> chorusBlocks;

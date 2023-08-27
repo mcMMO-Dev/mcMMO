@@ -36,10 +36,10 @@ public class ConvertExperienceCommand implements CommandExecutor {
             UserManager.saveAll();
             UserManager.clearAll();
 
-            new FormulaConversionTask(sender, newType).runTaskLater(mcMMO.p, 1);
+            mcMMO.p.getFoliaLib().getImpl().runLater(new FormulaConversionTask(sender, newType), 1);
 
             for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileLoadingTask(player), 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
             }
 
             return true;
