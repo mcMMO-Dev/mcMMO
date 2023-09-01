@@ -279,19 +279,6 @@ public class mcMMO extends JavaPlugin {
                 //Populate Ranked Skill Maps (DO THIS LAST)
                 RankUtils.populateRanks();
             }
-
-            //If anonymous statistics are enabled then use them
-            Metrics metrics;
-
-            if(generalConfig.getIsMetricsEnabled()) {
-                metrics = new Metrics(this, 3894);
-                metrics.addCustomChart(new SimplePie("version", () -> getDescription().getVersion()));
-
-                if(generalConfig.getIsRetroMode())
-                    metrics.addCustomChart(new SimplePie("leveling_system", () -> "Retro"));
-                else
-                    metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
-            }
         } catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
 
