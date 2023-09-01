@@ -26,9 +26,11 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
 
     protected Component notificationTextComponent;
     protected final NotificationType notificationType;
+    private final Player who;
 
-    public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, Component notificationTextComponent, McMMOMessageType chatMessageType, boolean isMessageAlsoBeingSentToChat) {
+    public McMMOPlayerNotificationEvent(@NotNull Player who, NotificationType notificationType, Component notificationTextComponent, McMMOMessageType chatMessageType, boolean isMessageAlsoBeingSentToChat) {
         super(false);
+        this.who = who;
         this.notificationType = notificationType;
         this.notificationTextComponent = notificationTextComponent;
         this.chatMessageType = chatMessageType;
@@ -97,5 +99,9 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean b) {
         isCancelled = b;
+    }
+
+    public Player getWho() {
+        return who;
     }
 }
