@@ -951,7 +951,7 @@ public class McMMOPlayer implements Identified {
         }
 
         setToolPreparationMode(tool, false);
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType), (long) ticks * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType), ((long) ticks * Misc.TICK_CONVERSION_FACTOR) + 1);
     }
 
     public void processAbilityActivation(@NotNull PrimarySkillType primarySkillType) {

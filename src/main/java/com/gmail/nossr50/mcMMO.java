@@ -654,7 +654,7 @@ public class mcMMO extends JavaPlugin {
         long purgeIntervalTicks = generalConfig.getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (purgeIntervalTicks == 0) {
-            getFoliaLib().getImpl().runLaterAsync(new UserPurgeTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            getFoliaLib().getImpl().runLaterAsync(new UserPurgeTask(), (2 * Misc.TICK_CONVERSION_FACTOR) + 1); // Start 2 seconds after startup.
         }
         else if (purgeIntervalTicks > 0) {
             getFoliaLib().getImpl().runTimerAsync(new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
@@ -664,7 +664,7 @@ public class mcMMO extends JavaPlugin {
         long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (kickIntervalTicks == 0) {
-            getFoliaLib().getImpl().runLater(new PartyAutoKickTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            getFoliaLib().getImpl().runLater(new PartyAutoKickTask(), (2 * Misc.TICK_CONVERSION_FACTOR) + 1); // Start 2 seconds after startup.
         }
         else if (kickIntervalTicks > 0) {
             getFoliaLib().getImpl().runTimer(new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);

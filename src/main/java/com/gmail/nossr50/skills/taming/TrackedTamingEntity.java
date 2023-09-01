@@ -22,7 +22,7 @@ public class TrackedTamingEntity extends CancellableRunnable {
 
         if (tamingCOTWLength > 0) {
             int length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;
-            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(livingEntity, this, length);
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(livingEntity, this, length + 1);
         }
     }
 

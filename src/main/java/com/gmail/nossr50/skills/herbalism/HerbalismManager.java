@@ -741,7 +741,7 @@ public class HerbalismManager extends SkillManager {
      */
     private void startReplantTask(int desiredCropAge, BlockBreakEvent blockBreakEvent, BlockState cropState, boolean isImmature) {
         //Mark the plant as recently replanted to avoid accidental breakage
-        mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(blockBreakEvent.getBlock().getLocation(), new DelayedCropReplant(blockBreakEvent, cropState, desiredCropAge, isImmature), 2 * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(blockBreakEvent.getBlock().getLocation(), new DelayedCropReplant(blockBreakEvent, cropState, desiredCropAge, isImmature), (2 * Misc.TICK_CONVERSION_FACTOR) + 1);
         blockBreakEvent.getBlock().setMetadata(MetadataConstants.METADATA_KEY_REPLANT, new RecentlyReplantedCropMeta(mcMMO.p, true));
     }
 

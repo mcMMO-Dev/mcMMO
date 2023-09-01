@@ -104,7 +104,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
 
                 if (mcMMO.p.getGeneralConfig().getShowStatsAfterLogin()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
-                    mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new McScoreboardKeepTask(player), Misc.TICK_CONVERSION_FACTOR);
+                    mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new McScoreboardKeepTask(player), Misc.TICK_CONVERSION_FACTOR + 1);
                 }
             }
 

@@ -71,11 +71,11 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
                 case HttpURLConnection.HTTP_BAD_REQUEST:
                 case HttpURLConnection.HTTP_FORBIDDEN:
                     // Rejected, probably rate limit, just wait it out
-                    this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * HARD_LIMIT_PERIOD);
+                    this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * HARD_LIMIT_PERIOD + 1);
                     return;
                 default:
                     // Unknown failure
-                    this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * RETRY_PERIOD);
+                    this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * RETRY_PERIOD + 1);
                     return;
             }
 
@@ -90,7 +90,7 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
         } catch (IOException e) {
             // failure
             plugin.getLogger().log(Level.SEVERE, "Unable to contact mojang API!", e);
-            this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * RETRY_PERIOD);
+            this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * RETRY_PERIOD + 1);
             return;
         }
 
@@ -105,12 +105,12 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
             awaiter.countDown();
             plugin.getLogger().info("UUID checks completed");
         } else
-            this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * DELAY_PERIOD); // Schedule next batch
+            this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * DELAY_PERIOD + 1); // Schedule next batch
     }
 
     // Bukkit runnables don't let themselves reschedule themselves, so we are a pseudo bukkit runnable.
     private void runTaskLaterAsynchronously(mcMMO plugin, int delay) {
-        plugin.getFoliaLib().getImpl().runLaterAsync(this, delay);
+        plugin.getFoliaLib().getImpl().runLaterAsync(this, delay + 1);
     }
 
     public void start() {

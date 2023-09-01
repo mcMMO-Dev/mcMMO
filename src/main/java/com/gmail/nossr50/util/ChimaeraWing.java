@@ -112,7 +112,7 @@ public final class ChimaeraWing {
 
         if (warmup > 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
-            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ChimaeraWingWarmup(mcMMOPlayer), 20 * warmup);
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ChimaeraWingWarmup(mcMMOPlayer), 1 + (20 * warmup));
         }
         else {
             chimaeraExecuteTeleport();

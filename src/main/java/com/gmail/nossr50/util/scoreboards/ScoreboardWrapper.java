@@ -131,7 +131,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(), 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(), (5 * Misc.TICK_CONVERSION_FACTOR) + 1, (5 * Misc.TICK_CONVERSION_FACTOR) + 1);
         }
     }
 
@@ -214,7 +214,7 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardChangeTask(), ticks);
+        revertTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardChangeTask(), ticks + 1);
 
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
