@@ -1,0 +1,30 @@
+name: Build and Release JAR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+
+      - name: Build JAR
+        run: |
+          ./mvnw clean package
+
+      - name: Publish JAR
+        run: |
+          mv ./target/your-jar-file.jar ./your-jar-file.jar
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh release create v1.0.0 ./your-jar-file.jar
+
