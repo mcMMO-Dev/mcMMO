@@ -1,3 +1,9 @@
+Version 2.1.224
+    Fishing Shake has 8 ranks again
+
+    NOTES:
+    At some point Shake got reduced to 1 rank, this didn't really make sense as it was meant to be a skill that ranked up and got better over time.
+    It now has 8 ranks again, you may need to updated advanced.yml and skillranks.yml to get the new ranks.
 Version 2.1.223
     Folia Support added (Thanks to HSGamer, TechnicallyCoded, Rockyers, and Yomamaeatstoes)
 
