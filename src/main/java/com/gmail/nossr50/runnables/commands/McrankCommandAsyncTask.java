@@ -32,7 +32,18 @@ public class McrankCommandAsyncTask extends CancellableRunnable {
     public void run() {
         Map<PrimarySkillType, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
 
-        mcMMO.p.getFoliaLib().getImpl().runNextTick(new McrankCommandDisplayTask(skills, sender, playerName, useBoard, useChat));
+        // If the sender is a player, actions on the player will be taken. Under folia, this needs to run on the
+        // entity's scheduler.
+        if (sender instanceof Player player) {
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(
+                    player,
+                    new McrankCommandDisplayTask(skills, player, playerName, useBoard, useChat),
+                    1
+            );
+        } else {
+            McrankCommandDisplayTask task = new McrankCommandDisplayTask(skills, sender, playerName, useBoard, useChat);
+            mcMMO.p.getFoliaLib().getImpl().runNextTick(task);
+        }
     }
 }
 

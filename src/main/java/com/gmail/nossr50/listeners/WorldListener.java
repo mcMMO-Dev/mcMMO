@@ -11,6 +11,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
+import java.util.List;
+
 public class WorldListener implements Listener {
     private final mcMMO plugin;
 
@@ -29,9 +31,16 @@ public class WorldListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
-        // Using 50 ms later as I do not know of a way to run one tick later (safely)
-        plugin.getFoliaLib().getImpl().runLater(() -> {
-            for (BlockState blockState : event.getBlocks()) {
+        // Under Folia, any two loaded and adjacent chunks will be in the same ticking region. To avoid scheduling many
+        // tasks, we will use this assumption.
+        // Therefore, we will schedule the task such that all blocks in the event are handled from the ticking region of
+        // the first block in the event.
+        // Without folia, this will run on the main tick.
+        List<BlockState> blocks = event.getBlocks();
+        BlockState referenceBlock = blocks.get(0);
+        plugin.getFoliaLib().getImpl().runAtLocationLater(referenceBlock.getLocation(), () -> {
+            for (BlockState blockState : blocks) {
+                // The HashChunkManager is thread-safe, we can safely call it from a non-single-threaded environment
                 mcMMO.getPlaceStore().setFalse(blockState);
             }
         }, 1);

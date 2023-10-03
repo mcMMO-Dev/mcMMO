@@ -130,8 +130,11 @@ public class HerbalismManager extends SkillManager {
             if(blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
                 if(blockState.getBlockData() instanceof Ageable ageable) {
 
-                    if(ageable.getAge() <= 1) {
-                        applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
+                    if (ageable.getAge() <= 1) {
+                        // Is using Player properties, run this on the Player's Scheduler if under Folia
+                        mcMMO.p.getFoliaLib().getImpl().runAtEntity(
+                                mmoPlayer.getPlayer(),
+                                (task) -> applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF));
                     }
                 }
             }
@@ -310,7 +313,8 @@ public class HerbalismManager extends SkillManager {
             DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(mmoPlayer, delayedChorusBlocks);
 
             //Large delay because the tree takes a while to break
-            mcMMO.p.getFoliaLib().getImpl().runAtEntity(mmoPlayer.getPlayer(), delayedHerbalismXPCheckTask); //Calculate Chorus XP + Bonus Drops 1 tick later
+            Location referenceLocation = delayedChorusBlocks.get(0).getBlockRef().getLocation();
+            mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(referenceLocation, delayedHerbalismXPCheckTask, 1); //Calculate Chorus XP + Bonus Drops 1 tick later
         }
     }
 
@@ -741,7 +745,10 @@ public class HerbalismManager extends SkillManager {
      */
     private void startReplantTask(int desiredCropAge, BlockBreakEvent blockBreakEvent, BlockState cropState, boolean isImmature) {
         //Mark the plant as recently replanted to avoid accidental breakage
-        mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(blockBreakEvent.getBlock().getLocation(), new DelayedCropReplant(blockBreakEvent, cropState, desiredCropAge, isImmature), 2 * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(
+                blockBreakEvent.getBlock().getLocation(),
+                new DelayedCropReplant(blockBreakEvent, cropState, desiredCropAge, isImmature),
+                2 * Misc.TICK_CONVERSION_FACTOR);
         blockBreakEvent.getBlock().setMetadata(MetadataConstants.METADATA_KEY_REPLANT, new RecentlyReplantedCropMeta(mcMMO.p, true));
     }
 

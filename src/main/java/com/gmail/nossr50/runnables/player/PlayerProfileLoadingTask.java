@@ -37,7 +37,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
         }
 
         // Quit if they logged out
-        if (!player.isOnline()) {
+        if (!player.isOnline()) { // TODO TECH CHECK - is thread safe? We are running this async
             LogUtils.debug(mcMMO.p.getLogger(), "Aborting profile loading recovery for " + player.getName() + " - player logged out");
             return;
         }

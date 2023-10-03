@@ -49,6 +49,7 @@ public class PtpAcceptCommand implements CommandExecutor {
         }
 
         if (mcMMO.p.getGeneralConfig().getPTPCommandWorldPermissions()) {
+            // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 
@@ -64,6 +65,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             }
         }
 
+        // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
         PtpCommand.handleTeleportWarmup(target, player);
         return true;
     }

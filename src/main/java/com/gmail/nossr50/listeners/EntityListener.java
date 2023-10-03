@@ -242,7 +242,7 @@ public class EntityListener implements Listener {
 
                 entity.setMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, MetadataConstants.MCMMO_METADATA_VALUE);
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity, pluginRef);
-                mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(entity, metaCleanupTask, 20, 20*60); //6000 ticks is 5 minutes
+                mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(entity, metaCleanupTask, 20, 20*60); // 20*60 ticks is 1 minute
             }
             else if (isTracked) {
                 BlockUtils.setUnnaturalBlock(block);

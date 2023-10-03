@@ -981,6 +981,6 @@ public final class CombatUtils {
      * @param entity the projectile
      */
     public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
-        mcMMO.p.getFoliaLib().getImpl().runLater(() -> cleanupArrowMetadata(entity), 20*60);
+        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(entity, () -> cleanupArrowMetadata(entity), 20*60);
     }
 }

@@ -354,12 +354,14 @@ public final class EventUtils {
         return !damageEvent.isCancelled() && !fakeBlockBreakEvent.isCancelled();
     }
 
+    // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
 
         if(mcMMOPlayer == null)
             return;
 
+        // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -367,7 +369,7 @@ public final class EventUtils {
             return;
         }
 
-//        teleportingPlayer.teleport(targetPlayer);
+        // TODO TECH CHECK - getting location of target from another thread
         mcMMO.p.getFoliaLib().getImpl().teleportAsync(teleportingPlayer, targetPlayer.getLocation());
 
         teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));

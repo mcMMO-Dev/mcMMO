@@ -228,6 +228,7 @@ public class PtpCommand implements TabExecutor {
         return true;
     }
 
+    // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
         if(UserManager.getPlayer(targetPlayer) == null)
         {
@@ -250,9 +251,11 @@ public class PtpCommand implements TabExecutor {
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
+            // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
             mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(teleportingPlayer, new TeleportationWarmup(mcMMOPlayer, mcMMOTarget), 20 * warmup);
         }
         else {
+            // TODO TECH CHECK - running operations on teleporting player and target player without the proper thread
             EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }
     }
