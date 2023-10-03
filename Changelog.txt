@@ -1,4 +1,6 @@
 Version 2.1.224
+    Updated to a new build of ACF to fix NoSuchFieldException locale
+    Improved Folia Support (Thanks HSGamer)
     Fishing Shake has 8 ranks again
 
     NOTES:
