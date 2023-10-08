@@ -245,7 +245,7 @@ public class TamingManager extends SkillManager {
 
             if(jumpAttribute != null) {
                 double jumpStrength = jumpAttribute.getValue();
-                // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
+                // Taken from https://minecraft.wiki/w/Horse#Jump_strength
                 jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
                 message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horseLikeCreature.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
                         .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
