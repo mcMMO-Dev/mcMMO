@@ -259,8 +259,9 @@ public final class AlchemyPotionBrewer {
     }
 
     public static void scheduleCheck(Player player, BrewingStand brewingStand) {
-        // TODO TECH CHECK - should be runAtLocation? We are using block data AND player data. Must resolve correctly
-        mcMMO.p.getFoliaLib().getImpl().runAtEntity(player, new AlchemyBrewCheckTask(player, brewingStand));
+        // TODO FOLIA - Player thread safety is needed. Opted to use the brewing stand location since world data is
+        //  probably more sensitive.
+        mcMMO.p.getFoliaLib().getImpl().runAtLocation(brewingStand.getLocation(), new AlchemyBrewCheckTask(player, brewingStand));
     }
 
     public static void scheduleUpdate(Inventory inventory) {
