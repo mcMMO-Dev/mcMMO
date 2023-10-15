@@ -1,5 +1,5 @@
 Version 2.1.225
-    Fixed various bugs with ability text
+    Fixed text from mcMMO not being sent or displayed to the player
     Updated Adventure dependencies
     Added new API McMMOPlayerNotificationEvent.getPlayer
 
