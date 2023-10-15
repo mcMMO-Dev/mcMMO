@@ -1,3 +1,8 @@
+Version 2.1.225
+    Fixed various bugs with ability text
+    Updated Adventure dependencies
+    Added new API McMMOPlayerNotificationEvent.getPlayer
+
 Version 2.1.224
     Updated to a new build of ACF to fix NoSuchFieldException locale
     Improved Folia Support (Thanks HSGamer)

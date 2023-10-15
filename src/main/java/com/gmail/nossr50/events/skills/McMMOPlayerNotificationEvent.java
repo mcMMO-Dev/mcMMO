@@ -27,8 +27,13 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
     protected Component notificationTextComponent;
     protected final NotificationType notificationType;
 
-    public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, Component notificationTextComponent, McMMOMessageType chatMessageType, boolean isMessageAlsoBeingSentToChat) {
+    protected final Player player;
+
+    public McMMOPlayerNotificationEvent(Player player, NotificationType notificationType,
+                                        Component notificationTextComponent, McMMOMessageType chatMessageType,
+                                        boolean isMessageAlsoBeingSentToChat) {
         super(false);
+        this.player = player;
         this.notificationType = notificationType;
         this.notificationTextComponent = notificationTextComponent;
         this.chatMessageType = chatMessageType;
@@ -46,6 +51,10 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
 
     public void setMessageAlsoBeingSentToChat(boolean messageAlsoBeingSentToChat) {
         isMessageAlsoBeingSentToChat = messageAlsoBeingSentToChat;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public Component getNotificationTextComponent() {
