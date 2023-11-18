@@ -23,6 +23,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -57,7 +58,7 @@ public class RepairManager extends SkillManager {
         }
 
         if (mcMMO.p.getGeneralConfig().getRepairAnvilPlaceSoundsEnabled()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
+            SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ANVIL, SoundCategory.BLOCKS);
         }
 
         togglePlacedAnvil();
@@ -160,7 +161,7 @@ public class RepairManager extends SkillManager {
                 toRemove = possibleMaterial.get().clone();
             }
         }
-        
+
         // Call event
         if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
             return;
@@ -184,8 +185,8 @@ public class RepairManager extends SkillManager {
 
         // BWONG BWONG BWONG
         if (mcMMO.p.getGeneralConfig().getRepairAnvilUseSoundsEnabled()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
+            SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ANVIL, SoundCategory.BLOCKS);
+            SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ITEM_BREAK, SoundCategory.PLAYERS);
         }
 
         // Repair the item!
