@@ -22,6 +22,9 @@ import java.util.HashSet;
 
 public final class BlockUtils {
 
+    public static final String SHORT_GRASS = "SHORT_GRASS";
+    public static final String GRASS = "GRASS";
+
     private BlockUtils() {
     }
 
@@ -36,6 +39,21 @@ public final class BlockUtils {
             blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(2, mcMMO.p));
         else
             blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(1, mcMMO.p));
+    }
+
+    /**
+     * Util method for compatibility across Minecraft versions, grabs the {@link Material} enum for short_grass
+     *
+     * @return the {@link Material} enum for short_grass
+     */
+    public static Material getShortGrass() {
+        if (Material.getMaterial(SHORT_GRASS) != null) {
+            return Material.getMaterial(SHORT_GRASS);
+        } else if (Material.getMaterial(GRASS) != null) {
+            return Material.getMaterial(GRASS);
+        } else {
+            throw new UnsupportedOperationException("Unable to find short grass material");
+        }
     }
 
     /**

@@ -204,7 +204,7 @@ public class McImportCommand implements CommandExecutor {
             else if (materialName.contains("LOG") || materialName.contains("LEAVES")) {
                 skillName = "Woodcutting";
             }
-            else if (materialName.contains("GRASS") || materialName.contains("FLOWER") || materialName.contains("CROP")) {
+            else if (materialName.contains("GRASS") || materialName.contains("SHORT_GRASS") || materialName.contains("FLOWER") || materialName.contains("CROP")) {
                 skillName = "Herbalism";
             }
             else if (materialName.contains("DIRT") || materialName.contains("SAND")) {
