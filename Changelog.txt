@@ -1,3 +1,8 @@
+Version 2.1.227
+    Optimized mcMMO onChunkUnload(ChunkUnloadEvent)
+
+    NOTES:
+    This update should greatly improve impact on TPS from mcMMO in the ChunkUnloadEvent, thanks to M_G_P and Epicurious for testing.
 Version 2.1.226
     Added Short_Grass to experience.yml for Herbalism
     Updated Hylian Treasures "Bushes" alias to use short_grass when playing on new Minecraft versions
