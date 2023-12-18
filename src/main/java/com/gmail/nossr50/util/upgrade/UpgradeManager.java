@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.upgrade;
 import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -41,7 +42,7 @@ public class UpgradeManager extends BukkitConfig {
             return;
         }
 
-        mcMMO.p.debug("Saving upgrade status for type " + type.toString() + "...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Saving upgrade status for type " + type.toString() + "...");
 
         config.set("Upgrades_Finished." + type.toString(), true);
 
@@ -61,6 +62,6 @@ public class UpgradeManager extends BukkitConfig {
             }
         }
 
-        mcMMO.p.debug("Needed upgrades: " + Arrays.toString(setNeededUpgrades.toArray(new UpgradeType[setNeededUpgrades.size()])));
+        LogUtils.debug(mcMMO.p.getLogger(), "Needed upgrades: " + Arrays.toString(setNeededUpgrades.toArray(new UpgradeType[setNeededUpgrades.size()])));
     }
 }

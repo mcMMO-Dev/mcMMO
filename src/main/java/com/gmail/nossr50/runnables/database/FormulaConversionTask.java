@@ -8,13 +8,14 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class FormulaConversionTask extends BukkitRunnable {
+public class FormulaConversionTask extends CancellableRunnable {
     private final CommandSender sender;
     private final FormulaType formulaType;
 
@@ -36,7 +37,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
                 if (!profile.isLoaded()) {
-                    mcMMO.p.debug("Profile not loaded.");
+                    LogUtils.debug(mcMMO.p.getLogger(), "Profile not loaded.");
                     continue;
                 }
 
@@ -57,8 +58,8 @@ public class FormulaConversionTask extends BukkitRunnable {
     }
 
     private void editValues(PlayerProfile profile) {
-        mcMMO.p.debug("========================================================================");
-        mcMMO.p.debug("Conversion report for " + profile.getPlayerName() + ":");
+        LogUtils.debug(mcMMO.p.getLogger(), "========================================================================");
+        LogUtils.debug(mcMMO.p.getLogger(), "Conversion report for " + profile.getPlayerName() + ":");
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             int oldLevel = profile.getSkillLevel(primarySkillType);
             int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
@@ -72,17 +73,17 @@ public class FormulaConversionTask extends BukkitRunnable {
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 
-            mcMMO.p.debug("  Skill: " + primarySkillType.toString());
+            LogUtils.debug(mcMMO.p.getLogger(), "  Skill: " + primarySkillType.toString());
 
-            mcMMO.p.debug("    OLD:");
-            mcMMO.p.debug("      Level: " + oldLevel);
-            mcMMO.p.debug("      XP " + oldXPLevel);
-            mcMMO.p.debug("      Total XP " + totalOldXP);
+            LogUtils.debug(mcMMO.p.getLogger(), "    OLD:");
+            LogUtils.debug(mcMMO.p.getLogger(), "      Level: " + oldLevel);
+            LogUtils.debug(mcMMO.p.getLogger(), "      XP " + oldXPLevel);
+            LogUtils.debug(mcMMO.p.getLogger(), "      Total XP " + totalOldXP);
 
-            mcMMO.p.debug("    NEW:");
-            mcMMO.p.debug("      Level " + newLevel);
-            mcMMO.p.debug("      XP " + newXPlevel);
-            mcMMO.p.debug("------------------------------------------------------------------------");
+            LogUtils.debug(mcMMO.p.getLogger(), "    NEW:");
+            LogUtils.debug(mcMMO.p.getLogger(), "      Level " + newLevel);
+            LogUtils.debug(mcMMO.p.getLogger(), "      XP " + newXPlevel);
+            LogUtils.debug(mcMMO.p.getLogger(), "------------------------------------------------------------------------");
 
             profile.modifySkill(primarySkillType, newLevel);
             profile.setSkillXpLevel(primarySkillType, newXPlevel);

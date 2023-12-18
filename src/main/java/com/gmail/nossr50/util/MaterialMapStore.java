@@ -490,6 +490,7 @@ public class MaterialMapStore {
         tools.addAll(tridents);
         tools.addAll(stringTools);
         tools.addAll(bows);
+        tools.addAll(crossbows);
     }
 
     private void fillBows() {
@@ -999,8 +1000,8 @@ public class MaterialMapStore {
     private void fillShroomyWhiteList()
     {
         canMakeShroomyWhiteList.add("dirt");
-        canMakeShroomyWhiteList.add("grass");
-        canMakeShroomyWhiteList.add("grass_path");
+        canMakeShroomyWhiteList.add("grass_block");
+        canMakeShroomyWhiteList.add("dirt_path");
     }
 
     private void fillBlockCrackerWhiteList()
@@ -1013,8 +1014,8 @@ public class MaterialMapStore {
     private void fillHerbalismAbilityBlackList()
     {
         herbalismAbilityBlackList.add("dirt");
-        herbalismAbilityBlackList.add("grass");
-        herbalismAbilityBlackList.add("grass_path");
+        herbalismAbilityBlackList.add("grass_block");
+        herbalismAbilityBlackList.add("dirt_path");
         herbalismAbilityBlackList.add("farmland");
     }
 

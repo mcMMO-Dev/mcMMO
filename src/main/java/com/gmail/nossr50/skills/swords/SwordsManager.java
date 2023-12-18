@@ -95,7 +95,7 @@ public class SwordsManager extends SkillManager {
 
             RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
 
-            ruptureTask.runTaskTimer(mcMMO.p, 0, 1);
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(mmoPlayer.getPlayer(), ruptureTask, 1, 1);
             target.setMetadata(MetadataConstants.METADATA_KEY_RUPTURE, ruptureTaskMeta);
 
 //            if (mmoPlayer.useChatNotifications()) {

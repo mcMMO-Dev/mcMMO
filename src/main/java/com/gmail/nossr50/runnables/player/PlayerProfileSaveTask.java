@@ -1,9 +1,9 @@
 package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.util.CancellableRunnable;
 
-public class PlayerProfileSaveTask extends BukkitRunnable {
+public class PlayerProfileSaveTask extends CancellableRunnable {
     private final PlayerProfile playerProfile;
     private final boolean isSync;
 

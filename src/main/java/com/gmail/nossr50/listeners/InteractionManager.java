@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class InteractionManager {
         //Register in name map
         subSkillNameMap.putIfAbsent(lowerCaseName, abstractSubSkill);
 
-        mcMMO.p.getLogger().info("Registered subskill: "+ abstractSubSkill.getConfigKeyName());
+        LogUtils.debug(mcMMO.p.getLogger(), "Registered subskill: "+ abstractSubSkill.getConfigKeyName());
     }
 
     /**

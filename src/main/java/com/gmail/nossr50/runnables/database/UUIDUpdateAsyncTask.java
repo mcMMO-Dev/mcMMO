@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.database;
 
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.Misc;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
@@ -20,7 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 
-public class UUIDUpdateAsyncTask implements Runnable {
+public class UUIDUpdateAsyncTask extends CancellableRunnable {
     private static final Gson GSON = new Gson();
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
 
@@ -109,11 +110,11 @@ public class UUIDUpdateAsyncTask implements Runnable {
 
     // Bukkit runnables don't let themselves reschedule themselves, so we are a pseudo bukkit runnable.
     private void runTaskLaterAsynchronously(mcMMO plugin, int delay) {
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, this, delay);
+        plugin.getFoliaLib().getImpl().runLaterAsync(this, delay);
     }
 
     public void start() {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this);
+        plugin.getFoliaLib().getImpl().runAsync(this);
     }
 
     private static UUID toUUID(String id) {

@@ -8,7 +8,7 @@ import java.io.*;
 public class FixSpellingNetheriteUtil {
 
     public static void processFileCheck(mcMMO pluginRef, String fileName, UpgradeType upgradeType) {
-        pluginRef.getLogger().info("Checking " + fileName + " config material names...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Checking " + fileName + " config material names...");
 
         File configFile = new File(pluginRef.getDataFolder(), fileName);
         if(configFile.exists()) {

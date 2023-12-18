@@ -14,8 +14,9 @@ author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking, electronicboy, kashike]
 website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
-softdepend: [WorldGuard, CombatTag, HealthBar]
+softdepend: [WorldGuard, CombatTag, HealthBar, PlaceholderAPI]
 load: POSTWORLD
+folia-supported: true
 api-version: 1.13
 
 commands:

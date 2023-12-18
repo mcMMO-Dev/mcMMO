@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.OfflinePlayer;
@@ -121,7 +122,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public int purgePowerlessUsers() {
         int purgedUsers = 0;
 
-        logger.info("Purging powerless users...");
+        LogUtils.debug(logger, "Purging powerless users...");
 
         BufferedReader in = null;
         FileWriter out = null;
@@ -189,7 +190,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         int removedPlayers = 0;
         long currentTime = System.currentTimeMillis();
 
-        logger.info("Purging old users...");
+        LogUtils.debug(logger, "Purging old users...");
 
         BufferedReader in = null;
         FileWriter out = null;
@@ -203,7 +204,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    String name = character[USERNAME_INDEX];
+                    String uuidString = character[UUID_INDEX];
+                    UUID uuid = UUID.fromString(uuidString);
                     long lastPlayed = 0;
                     boolean rewrite = false;
 
@@ -214,7 +216,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     }
 
                     if (lastPlayed == -1) {
-                        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(name);
+                        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(uuid);
 
                         if(player.getLastPlayed() != 0) {
                             lastPlayed = player.getLastPlayed();
@@ -222,7 +224,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         }
                     }
 
-                    if (lastPlayed != -1 && lastPlayed != 0 && currentTime - lastPlayed > purgeTime) {
+                    if (lastPlayed < 1 && (currentTime - lastPlayed > purgeTime)) {
                         removedPlayers++;
                     } else {
                         if (rewrite) {
@@ -723,7 +725,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             boolean matchingName = dbPlayerName.equalsIgnoreCase(playerName);
 
                             if (!matchingName) {
-                                logger.info("When loading user: "+playerName +" with UUID of (" + uuid.toString()
+                                logger.warning("When loading user: "+playerName +" with UUID of (" + uuid.toString()
                                         +") we found a mismatched name, the name in the DB will be replaced (DB name: "+dbPlayerName+")");
                                 //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                                 rawSplitData[USERNAME_INDEX] = playerName;
@@ -848,7 +850,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
-                logger.info(i + " entries written while saving UUID for " + userName);
+                LogUtils.debug(logger, i + " entries written while saving UUID for " + userName);
                 if (in != null) {
                     try {
                         in.close();
@@ -906,7 +908,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 logger.severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e);
             }
             finally {
-                logger.info(i + " entries written while saving UUID batch");
+                LogUtils.debug(logger, i + " entries written while saving UUID batch");
                 if (in != null) {
                     try {
                         in.close();
@@ -1108,7 +1110,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
         ArrayList<FlatFileDataFlag> flagsFound = null;
-        logger.info("(" + usersFile.getPath() + ") Validating database file..");
+        LogUtils.debug(logger, "(" + usersFile.getPath() + ") Validating database file..");
         FlatFileDataProcessor dataProcessor = null;
 
         if (usersFile.exists()) {
@@ -1143,7 +1145,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     //Only update the file if needed
                     if(dataProcessor.getFlatFileDataFlags().size() > 0) {
                         flagsFound = new ArrayList<>(dataProcessor.getFlatFileDataFlags());
-                        logger.info("Saving the updated and or repaired FlatFile Database...");
+                        logger.info("Updating FlatFile Database...");
                         fileWriter = new FileWriter(usersFilePath);
                         //Write data to file
                         if(dbCommentDate != null)

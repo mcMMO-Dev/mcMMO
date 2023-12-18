@@ -12,6 +12,7 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -644,7 +645,7 @@ public final class PartyManager {
                 }
             }
 
-            mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+            LogUtils.debug(mcMMO.p.getLogger(), "Loaded (" + parties.size() + ") Parties...");
 
             for (Party party : hasAlly) {
                 party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
@@ -660,7 +661,7 @@ public final class PartyManager {
      * Save party file.
      */
     public static void saveParties() {
-        mcMMO.p.debug("[Party Data] Saving...");
+        LogUtils.debug(mcMMO.p.getLogger(), "[Party Data] Saving...");
 
         if (partyFile.exists()) {
             if (!partyFile.delete()) {
@@ -768,7 +769,7 @@ public final class PartyManager {
 //            parties.add(party);
 //        }
 //
-//        mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+//        LogUtils.debug(mcMMO.p.getLogger(), "Loaded (" + parties.size() + ") Parties...");
 //
 //        for (Party party : hasAlly) {
 //            party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));

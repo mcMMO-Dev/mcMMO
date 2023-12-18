@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +47,7 @@ public abstract class LegacyConfigLoader {
 
     protected void loadFile() {
         if (!configFile.exists()) {
-            mcMMO.p.getLogger().info("Creating mcMMO " + fileName + " File...");
+            LogUtils.debug(mcMMO.p.getLogger(), "Creating mcMMO " + fileName + " File...");
 
             try {
                 mcMMO.p.saveResource(fileName, false); // Normal files
@@ -54,7 +55,7 @@ public abstract class LegacyConfigLoader {
                 mcMMO.p.saveResource(configFile.getParentFile().getName() + File.separator + fileName, false); // Mod files
             }
         } else {
-            mcMMO.p.getLogger().info("Loading mcMMO " + fileName + " File...");
+            LogUtils.debug(mcMMO.p.getLogger(), "Loading mcMMO " + fileName + " File...");
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
@@ -76,7 +77,7 @@ public abstract class LegacyConfigLoader {
 
     protected void validate() {
         if (validateKeys()) {
-            mcMMO.p.debug("No errors found in " + fileName + "!");
+            LogUtils.debug(mcMMO.p.getLogger(), "No errors found in " + fileName + "!");
         } else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);

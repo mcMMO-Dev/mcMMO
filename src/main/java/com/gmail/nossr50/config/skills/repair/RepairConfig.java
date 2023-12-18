@@ -7,6 +7,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -48,7 +49,7 @@ public class RepairConfig extends BukkitConfig {
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
-                //mcMMO.p.getLogger().info("No support for repair item "+key+ " in this version of Minecraft, skipping.");
+                //LogUtils.debug(mcMMO.p.getLogger(), "No support for repair item "+key+ " in this version of Minecraft, skipping.");
                 notSupported.add(key); //Collect names of unsupported items
                 continue;
             }
@@ -160,8 +161,8 @@ public class RepairConfig extends BukkitConfig {
                 }
             }
 
-            mcMMO.p.getLogger().info(stringBuilder.toString());
-            mcMMO.p.getLogger().info("Items using materials that are not supported will simply be skipped.");
+            LogUtils.debug(mcMMO.p.getLogger(), stringBuilder.toString());
+            LogUtils.debug(mcMMO.p.getLogger(), "Items using materials that are not supported will simply be skipped.");
         }
     }
 

@@ -56,10 +56,41 @@ Version 2.2.000
     New Power Level Command
     This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
 
+Version 2.1.226
+    Added Short_Grass to experience.yml for Herbalism
+    Updated Hylian Treasures "Bushes" alias to use short_grass when playing on new Minecraft versions
+    Fixed dirt_path and grass_block not being correctly whitelisted for herbalism abilities
+Version 2.1.225
+    Fixed text from mcMMO not being sent or displayed to the player
+    Updated Adventure dependencies
+    Added new API McMMOPlayerNotificationEvent.getPlayer
+
+Version 2.1.224
+    Updated to a new build of ACF to fix NoSuchFieldException locale
+    Improved Folia Support (Thanks HSGamer)
+    Fishing Shake has 8 ranks again
+
+    NOTES:
+    At some point Shake got reduced to 1 rank, this didn't really make sense as it was meant to be a skill that ranked up and got better over time.
+    It now has 8 ranks again, you may need to update advanced.yml and skillranks.yml to get the new ranks.
+Version 2.1.223
+    Folia Support added (Thanks to HSGamer, TechnicallyCoded, Rockyers, and Yomamaeatstoes)
+
+    NOTES: This update brings mcMMO to Folia, not all features are guaranteed to work but from limited testing it appears to be working well.
+Version 2.1.222
+    Fixed dupe exploit
+    Glow Lichen default XP changed from 200 to 5
+    A lot of mcMMO logging was moved from INFO to DEBUG, this should reduce the amount of noise in your logs and console
+
+    NOTES: If you want to see all logging messages, modify config.yml and set General.Verbose_Logging to true
+    You will have to adjust experience.yml to get the balance changes, or delete it to generate a new one
 Version 2.1.221
+    PAPI Support is now built into mcMMO and loads when mcMMO loads (as long as you have PAPI running)
     Fixed blast mining bonus drops not working (Thanks warriiorrrr)
     Added fail safes to prevent bonus drops metadata from lingering on blocks
 
+    NOTES: Placeholders were brought in from electroniccat's original work on a PAPI expansion for mcMMO, the placeholders are the same as a result
+    I will be adding a leaderboard placeholder in the next patch (most likely). Feel free to share details of what functionality you'd want from additional placeholders on discord.
 Version 2.1.220
     (API) Added TreeFellerBlockBreakEvent class which extends FakeBlockBreakEvent (see notes), this is sent out during Tree Feller processing to allow other plugins to differentiate between Tree Feller and other fake block break events
     Config files update automatically again

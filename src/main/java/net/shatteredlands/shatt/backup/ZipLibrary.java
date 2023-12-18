@@ -1,6 +1,7 @@
 package net.shatteredlands.shatt.backup;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,13 +28,13 @@ public class ZipLibrary {
 
     public static void mcMMOBackup() throws IOException {
         if (mcMMO.p.getGeneralConfig().getUseMySQL()) {
-            mcMMO.p.debug("This server is running in SQL Mode.");
-            mcMMO.p.debug("Only config files will be backed up.");
+            LogUtils.debug(mcMMO.p.getLogger(), "This server is running in SQL Mode.");
+            LogUtils.debug(mcMMO.p.getLogger(), "Only config files will be backed up.");
         }
 
         try {
             if (BACKUP_DIR.mkdir()) {
-                mcMMO.p.debug("Created Backup Directory.");
+                LogUtils.debug(mcMMO.p.getLogger(), "Created Backup Directory.");
             }
         }
         catch (Exception e) {
@@ -60,7 +61,7 @@ public class ZipLibrary {
         }
 
         // Actually do something
-        mcMMO.p.debug("Backing up your mcMMO Configuration... ");
+        LogUtils.debug(mcMMO.p.getLogger(), "Backing up your mcMMO Configuration... ");
 
         packZip(fileZip, sources);
     }
@@ -80,7 +81,7 @@ public class ZipLibrary {
 
         zipOut.flush();
         zipOut.close();
-        mcMMO.p.debug("Backup Completed.");
+        LogUtils.debug(mcMMO.p.getLogger(), "Backup Completed.");
     }
 
     private static String buildPath(String path, String file) {

@@ -186,14 +186,14 @@
 //
 //        for (File file : toDelete) {
 //            if (file.delete()) {
-//                mcMMO.p.debug("Deleted: " + file.getName());
+//                LogUtils.debug(mcMMO.p.getLogger(), "Deleted: " + file.getName());
 //            }
 //        }
 //    }
 //
 //    // This gets called onDisable
 //    public void saveAnniversaryFiles() {
-//        mcMMO.p.debug("Saving anniversary files...");
+//        LogUtils.debug(mcMMO.p.getLogger(), "Saving anniversary files...");
 //        String anniversaryFilePath = mcMMO.getFlatFileDirectory() + "anniversary." + currentYear + ".yml";
 //
 //        try {

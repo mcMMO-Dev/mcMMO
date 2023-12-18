@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -332,7 +333,7 @@ public class FishingTreasureConfig extends BukkitConfig {
             }
 
             if (!foundMatch) {
-                mcMMO.p.getLogger().info("[Fishing Treasure Init] Could not find any enchantments which matched the user defined enchantment named: " + str);
+                LogUtils.debug(mcMMO.p.getLogger(), "[Fishing Treasure Init] Could not find any enchantments which matched the user defined enchantment named: " + str);
             }
         }
     }

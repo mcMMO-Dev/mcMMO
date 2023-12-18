@@ -7,6 +7,7 @@ import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerCatalysisEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
+import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -15,9 +16,8 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class AlchemyBrewTask extends BukkitRunnable {
+public class AlchemyBrewTask extends CancellableRunnable {
     private static final double DEFAULT_BREW_SPEED = 1.0;
     private static final int    DEFAULT_BREW_TICKS = 400;
 
@@ -62,7 +62,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
             fuel--;
 
         Alchemy.brewingStandMap.put(location, this);
-        this.runTaskTimer(mcMMO.p, 1, 1);
+        mcMMO.p.getFoliaLib().getImpl().runAtLocationTimer(location, this, 1, 1);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.skills.alchemy;
 import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -100,7 +101,7 @@ public class PotionConfig extends LegacyConfigLoader {
             }
         }
 
-        mcMMO.p.debug("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
+        LogUtils.debug(mcMMO.p.getLogger(), "Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
     }
 
     /**

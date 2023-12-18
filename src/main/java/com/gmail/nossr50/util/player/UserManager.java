@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
@@ -85,7 +86,7 @@ public final class UserManager {
         for (McMMOPlayer playerData : trackedSyncData) {
             try
             {
-                mcMMO.p.getLogger().info("Saving data for player: "+playerData.getPlayerName());
+                LogUtils.debug(mcMMO.p.getLogger(), "Saving data for player: "+playerData.getPlayerName());
                 playerData.getProfile().save(true);
             }
             catch (Exception e)

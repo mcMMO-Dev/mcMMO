@@ -134,14 +134,16 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockFace direction = event.getDirection();
-        Block movedBlock;
-        for (Block block : event.getBlocks()) {
-            movedBlock = block.getRelative(direction);
+        final BlockFace direction = event.getDirection();
 
-            if(BlockUtils.isWithinWorldBounds(movedBlock)) {
-                BlockUtils.setUnnaturalBlock(block);
-            }
+        for (final Block block : event.getBlocks()) {
+            mcMMO.p.getFoliaLib().getImpl().runAtLocation(block.getLocation(), t -> {
+                final Block movedBlock = block.getRelative(direction);
+
+                if (BlockUtils.isWithinWorldBounds(movedBlock)) {
+                    BlockUtils.setUnnaturalBlock(movedBlock);
+                }
+            });
         }
     }
 

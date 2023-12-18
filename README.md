@@ -29,6 +29,12 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 #### Classic Maintainer
 [![t00thpick1](http://www.gravatar.com/avatar/ee23c7794a0c40120c3474287c7bce06.png)](https://github.com/t00thpick1)
 
+#### Folia Inquisitors
+[<img src="https://github.com/HSGamer.png" width=80 alt="HSGamer">](https://github.com/HSGamer)
+[<img src="https://github.com/TechnicallyCoded.png" width=80 alt="TechnicallyCoded">](https://github.com/TechnicallyCoded)
+[<img src="https://github.com/Yomamaeatstoes.png" width=80 alt="Yomamaeatstoes">](https://github.com/Yomamaeatstoes)
+[<img src="https://github.com/Rockyers.png" width=80 alt="Rockyers">](https://github.com/Rockyers)
+
 ## Former Team Members
 
 ### Former Lead & Awesome guy

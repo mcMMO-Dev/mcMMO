@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -224,7 +225,7 @@ public class FormulaManager {
      * Save formula file.
      */
     public void saveFormula() {
-        mcMMO.p.debug("Saving previous XP formula type...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Saving previous XP formula type...");
         YamlConfiguration formulasFile = new YamlConfiguration();
         formulasFile.set("Previous_Formula", previousFormula.toString());
 

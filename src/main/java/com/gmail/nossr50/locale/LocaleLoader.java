@@ -1,6 +1,7 @@
 package com.gmail.nossr50.locale;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.text.TextUtils;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
@@ -192,7 +193,7 @@ public final class LocaleLoader {
             //Use the new locale file
             if (Files.exists(overridePath) && Files.isRegularFile(overridePath)) {
                 try (Reader localeReader = Files.newBufferedReader(overridePath)) {
-                    mcMMO.p.getLogger().log(Level.INFO, "Loading locale from {0}", overridePath);
+                    LogUtils.debug(mcMMO.p.getLogger(), "Loading locale from " + overridePath.toString());
                     filesystemBundle = new PropertyResourceBundle(localeReader);
                 } catch (IOException e) {
                     mcMMO.p.getLogger().log(Level.WARNING, "Failed to load locale from " + overridePath, e);

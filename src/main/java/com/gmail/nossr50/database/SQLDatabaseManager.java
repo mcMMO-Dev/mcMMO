@@ -11,13 +11,13 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -1013,7 +1013,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
-            mcMMO.p.debug("Skipping " + upgrade.name() + " upgrade (unneeded)");
+            LogUtils.debug(mcMMO.p.getLogger(), "Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
         }
 
@@ -1355,7 +1355,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
 
-                new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
+                mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new GetUUIDUpdatesRequired(), 100); // wait until after first purge
             }
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
@@ -1368,7 +1368,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private class GetUUIDUpdatesRequired extends BukkitRunnable {
+    private class GetUUIDUpdatesRequired implements Runnable {
         public void run() {
             massUpdateLock.lock();
             List<String> names = new ArrayList<>();
@@ -1577,7 +1577,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() {
-        mcMMO.p.debug("Releasing connection pool resource...");
+        LogUtils.debug(mcMMO.p.getLogger(), "Releasing connection pool resource...");
         miscPool.close();
         loadPool.close();
         savePool.close();

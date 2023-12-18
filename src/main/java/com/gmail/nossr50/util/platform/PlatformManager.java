@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.platform;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,7 @@ public class PlatformManager {
     private @NotNull MinecraftGameVersion determineGameVersion(String platformVersionString) {
         int major = 0, minor = 0, patch = 0;
 
-        mcMMO.p.getLogger().info("Platform String: " + platformVersionString);
+        LogUtils.debug(mcMMO.p.getLogger(), "Platform String: " + platformVersionString);
 
         // Gets two numbers separated by . and optional third number after next dot. Must end with - or _
         Matcher versionMatch = Pattern.compile("(\\d+)\\.(\\d+)(?:\\.(\\d+))?[-_].*").matcher(platformVersionString);
@@ -61,7 +62,7 @@ public class PlatformManager {
             }
         }
 
-        mcMMO.p.getLogger().info("Minecraft version determined to be - "
+        LogUtils.debug(mcMMO.p.getLogger(), "Minecraft version determined to be - "
                 + major + "."
                 + minor + "."
                 + patch);
