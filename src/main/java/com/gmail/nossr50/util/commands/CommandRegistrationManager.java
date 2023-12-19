@@ -101,7 +101,7 @@ public final class CommandRegistrationManager {
                     command.setExecutor(new TamingCommand());
                     break;
                 case TRIDENTS:
-                    // TODO: Implement
+                    command.setExecutor(new TridentsCommand());
                     break;
 
                 case UNARMED:

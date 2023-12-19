@@ -1,5 +1,4 @@
 Version 2.2.000
-    TODO: Configs are not adding new keys and this needs to be fixed, this affects config.yml, experience.yml, etc
     TODO: Add Xbows/Tridents to salvage/repair
     TODO: Add unit test for combat XP values
     TODO: Add unit test to determine crossbow or bow skill
