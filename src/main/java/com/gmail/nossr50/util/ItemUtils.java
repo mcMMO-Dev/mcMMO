@@ -36,14 +36,33 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a bow, false otherwise
      */
+    // TODO: Unit tests
     public static boolean isBow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
     }
 
+    // TODO: Unit tests
     public static boolean isCrossbow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
     }
 
+    // TODO: Unit tests
+    public static boolean isBowOrCrossbow(@NotNull ItemStack item) {
+        return isBow(item) || isCrossbow(item);
+    }
+
+    // TODO: Unit tests
+    public static BowType getBowType(@NotNull ItemStack item) {
+        if (isBow(item)) {
+            return BowType.BOW;
+        } else if (isCrossbow(item)) {
+            return BowType.CROSSBOW;
+        }
+
+        throw new IllegalArgumentException(item + " is not a bow or crossbow");
+    }
+
+    // TODO: Unit tests
     public static boolean isTrident(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
     }

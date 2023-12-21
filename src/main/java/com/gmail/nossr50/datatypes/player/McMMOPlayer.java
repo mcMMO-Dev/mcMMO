@@ -22,6 +22,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -389,6 +390,7 @@ public class McMMOPlayer implements Identified {
      * @param isActive True if the ability is active, false otherwise
      */
     public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
+        // TODO: This should reject "one and done" type abilities
         abilityMode.put(ability, isActive);
     }
 
@@ -958,6 +960,67 @@ public class McMMOPlayer implements Identified {
 
         setToolPreparationMode(tool, false);
         mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType), (long) ticks * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    /**
+     * Check to see if an ability can be activated.
+     *
+     * @param bowType The type of bow (crossbow, bow)
+     */
+    public void checkAbilityActivationProjectiles(BowType bowType) {
+        PrimarySkillType primarySkillType = bowType == BowType.CROSSBOW ? PrimarySkillType.CROSSBOWS : PrimarySkillType.ARCHERY;
+
+        // TODO: Refactor this crappy logic
+        ToolType tool = bowType == BowType.CROSSBOW ? ToolType.CROSSBOW : ToolType.BOW;
+        SuperAbilityType superAbilityType = bowType == BowType.CROSSBOW ? SuperAbilityType.SUPER_SHOTGUN : SuperAbilityType.EXPLOSIVE_SHOT;
+        SubSkillType subSkillType = superAbilityType.getSubSkillTypeDefinition();
+
+        if (getAbilityMode(superAbilityType) || !superAbilityType.getPermissions(player)) {
+            return;
+        }
+
+        //TODO: This is hacky and temporary solution until skills are move to the new system
+        //Potential problems with this include skills with two super abilities (ie mining)
+        if(!RankUtils.hasUnlockedSubskill(player, subSkillType))
+        {
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(superAbilityType) - getSkillLevel(primarySkillType);
+
+            //Inform the player they are not yet skilled enough
+            NotificationManager.sendPlayerInformation(player,
+                    NotificationType.ABILITY_COOLDOWN,
+                    "Skills.AbilityGateRequirementFail",
+                    String.valueOf(diff),
+                    mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
+            return;
+        }
+
+        // Call the event
+        if (EventUtils.callPlayerAbilityActivateEvent(player, primarySkillType).isCancelled()) {
+            return;
+        }
+
+        if (useChatNotifications()) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, superAbilityType.getAbilityOn());
+        }
+
+        if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
+            SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, superAbilityType.getAbilityPlayer());
+        }
+
+        //Sounds
+        SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+
+        // TODO: Fire the ability
+        profile.setAbilityDATS(superAbilityType, System.currentTimeMillis());
+        setAbilityMode(superAbilityType, true);
+        setToolPreparationMode(tool, false);
+
+        if(!mcMMO.isServerShutdownExecuted()) {
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(
+                    player,
+                    new AbilityCooldownTask(this, superAbilityType),
+                    (long) PerksUtils.handleCooldownPerks(player, superAbilityType.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        }
     }
 
     public void processAbilityActivation(@NotNull PrimarySkillType primarySkillType) {

@@ -49,6 +49,14 @@ public final class CombatUtils {
         return mcMMO.getMetadataService().getMobMetadataService();
     }
 
+    // TODO: Unit tests
+    public static void processProjectileSkillSuperAbilityActivation(McMMOPlayer mmoPlayer, ItemStack heldItem) {
+        if (heldItem != null && mmoPlayer != null) {
+            if (ItemUtils.isBowOrCrossbow(heldItem))
+                mmoPlayer.checkAbilityActivationProjectiles(ItemUtils.getBowType(heldItem));
+        }
+    }
+
     //Likely.. because who knows what plugins are throwing around
     public static boolean isDamageLikelyFromNormalCombat(@NotNull DamageCause damageCause) {
         return switch (damageCause) {

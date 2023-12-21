@@ -24,6 +24,7 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -913,6 +914,12 @@ public class PlayerListener implements Listener {
 
                 if (!player.isSneaking()) {
                     break;
+                }
+
+                // Projectile Skills
+                // Check if the player is holding a bow or crossbow
+                if (ItemUtils.isCrossbow(heldItem) || ItemUtils.isBow(heldItem)) {
+                    CombatUtils.processProjectileSkillSuperAbilityActivation(mcMMOPlayer, heldItem);
                 }
 
                 /* CALL OF THE WILD CHECKS */

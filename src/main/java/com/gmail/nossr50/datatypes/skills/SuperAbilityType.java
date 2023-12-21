@@ -102,6 +102,7 @@ public enum SuperAbilityType {
      * Defining their associated SubSkillType definitions
      * This is a bit of a band-aid fix until the new skill system is in place
      */
+    // TODO: This is stupid
     static {
         BERSERK.subSkillTypeDefinition              = SubSkillType.UNARMED_BERSERK;
         SUPER_BREAKER.subSkillTypeDefinition        = SubSkillType.MINING_SUPER_BREAKER;
@@ -111,6 +112,8 @@ public enum SuperAbilityType {
         TREE_FELLER.subSkillTypeDefinition          = SubSkillType.WOODCUTTING_TREE_FELLER;
         SERRATED_STRIKES.subSkillTypeDefinition     = SubSkillType.SWORDS_SERRATED_STRIKES;
         BLAST_MINING.subSkillTypeDefinition         = SubSkillType.MINING_BLAST_MINING;
+        TRIDENTS_SUPER_ABILITY.subSkillTypeDefinition = SubSkillType.TRIDENTS_TRIDENTS_SUPER_ABILITY;
+        SUPER_SHOTGUN.subSkillTypeDefinition = SubSkillType.CROSSBOWS_SUPER_SHOTGUN;
     }
 
     private final String abilityOn;
@@ -193,6 +196,8 @@ public enum SuperAbilityType {
      * @param player Player to check permissions for
      * @return true if the player has permissions, false otherwise
      */
+    // TODO: Add unit tests
+    // TODO: This is stupid
     public boolean getPermissions(Player player) {
         return switch (this) {
             case BERSERK -> Permissions.berserk(player);
