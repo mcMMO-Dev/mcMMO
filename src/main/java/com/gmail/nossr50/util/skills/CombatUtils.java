@@ -481,17 +481,23 @@ public final class CombatUtils {
             Projectile arrow = (Projectile) painSource;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource instanceof Player player && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
-                // TODO: Add metadata to projectiles to determine source weapon to process combat skills
+            if (projectileSource instanceof Player player) {
+                BowType bowType = getBowTypeFromMetadata(arrow);
 
-                if (!Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.ARCHERY)) {
-                    processArcheryCombat(target, player, event, arrow);
+                if (!Misc.isNPCEntityExcludingVillagers(player)) {
+                    if(bowType == BowType.BOW && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
+                        processArcheryCombat(target, player, event, arrow);
+                    } else if(bowType == BowType.CROSSBOW && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.CROSSBOWS, target)) {
+                        processCrossbowsCombat(target, player, event, arrow);
+                    }
                 } else {
                     //Cleanup Arrow
                     cleanupArrowMetadata(arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TAMING)) {
+                if (target.getType() != EntityType.CREEPER
+                        && !Misc.isNPCEntityExcludingVillagers(player)
+                        && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TAMING)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                     if(mcMMOPlayer == null)
@@ -502,7 +508,18 @@ public final class CombatUtils {
                 }
             }
         }
+    }
 
+    private static BowType getBowTypeFromMetadata(Projectile projectile) {
+        // Return the BowType from the metadata, or default to BOW
+        if (projectile.hasMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE)) {
+            List<MetadataValue> metadataValue = projectile.getMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE);
+
+            if (!metadataValue.isEmpty()) {
+                return (BowType) metadataValue.get(0).value();
+            }
+        }
+        throw new IllegalStateException("BowType metadata is empty");
     }
 
     /**

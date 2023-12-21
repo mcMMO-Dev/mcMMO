@@ -72,9 +72,9 @@ class WoodcuttingTest extends MMOTestEnvironment {
         woodcuttingManager.processBonusDropCheck(blockState);
 
         // verify bonus drops were spawned
+        // TODO: Can fail if triple drops happen, need to update test
         Mockito.verify(woodcuttingManager, Mockito.times(1)).spawnHarvestLumberBonusDrops(blockState);
     }
-
 
     @Test
     void harvestLumberShouldNotDoubleDrop() {

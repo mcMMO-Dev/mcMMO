@@ -14,6 +14,7 @@ public class MetadataConstants {
      * Take great care if you ever modify the value of these keys
      */
     public static final @NotNull String METADATA_KEY_REPLANT = "mcMMO: Recently Replanted";
+    public static final @NotNull String METADATA_KEY_BOW_TYPE = "mcMMO: Bow Type";
     public static final @NotNull String METADATA_KEY_EXPLOSION_FROM_RUPTURE = "mcMMO: Rupture Explosion";
     public static final @NotNull String METADATA_KEY_FISH_HOOK_REF = "mcMMO: Fish Hook Tracker";
     public static final @NotNull String METADATA_KEY_DODGE_TRACKER = "mcMMO: Dodge Tracker";

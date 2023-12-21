@@ -128,13 +128,21 @@ public class EntityListener implements Listener {
 
             ItemStack bow = event.getBow();
 
-            if (bow != null
-                    && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+            if (bow == null)
+                return;
+
+            // determine if bow or crossbow
+            BowType bowType = ItemUtils.isCrossbow(bow) ? BowType.CROSSBOW : BowType.BOW;
+
+            if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
                 projectile.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
             }
 
+            // Set BowType, Force, and Distance metadata
+            projectile.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE, new FixedMetadataValue(pluginRef, bowType));
             projectile.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * mcMMO.p.getAdvancedConfig().getForceMultiplier(), 1.0)));
             projectile.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+
             //Cleanup metadata in 1 minute in case normal collection falls through
             CombatUtils.delayArrowMetaCleanup((Projectile) projectile);
         }
