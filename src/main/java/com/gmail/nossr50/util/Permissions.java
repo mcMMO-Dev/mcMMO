@@ -180,6 +180,7 @@ public final class Permissions {
     public static boolean concoctions(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.alchemy.concoctions"); }
 
     /* ARCHERY */
+    public static boolean explosiveShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.explosiveshot"); }
     public static boolean arrowRetrieval(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.trackarrows"); }
     public static boolean daze(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.daze"); }
 

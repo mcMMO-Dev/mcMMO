@@ -31,6 +31,11 @@ Alchemy:
             Rank_7: 900
             Rank_8: 1000
 Archery:
+    ExplosiveShot:
+        Standard:
+            Rank_1: 5
+        RetroMode:
+            Rank_1: 50
     ArcheryLimitBreak:
         Standard:
             Rank_1: 10

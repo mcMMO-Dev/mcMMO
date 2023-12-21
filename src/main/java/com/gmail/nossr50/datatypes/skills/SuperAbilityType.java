@@ -10,6 +10,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 public enum SuperAbilityType {
+    EXPLOSIVE_SHOT("Archery.Skills.ExplosiveShot.On",
+            "Archery.Skills.ExplosiveShot.Off",
+            "Archery.Skills.ExplosiveShot.Other.On",
+            "Archery.Skills.ExplosiveShot.Refresh",
+            "Archery.Skills.ExplosiveShot.Other.Off",
+            "Archery.SubSkill.ExplosiveShot.Name"),
     BERSERK(
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
@@ -190,6 +196,7 @@ public enum SuperAbilityType {
     public boolean getPermissions(Player player) {
         return switch (this) {
             case BERSERK -> Permissions.berserk(player);
+            case EXPLOSIVE_SHOT -> Permissions.explosiveShot(player);
             case BLAST_MINING -> Permissions.remoteDetonation(player);
             case GIGA_DRILL_BREAKER -> Permissions.gigaDrillBreaker(player);
             case GREEN_TERRA -> Permissions.greenTerra(player);
@@ -211,25 +218,15 @@ public enum SuperAbilityType {
      * @return true if the block is affected by this ability, false otherwise
      */
     public boolean blockCheck(BlockState blockState) {
-        switch (this) {
-            case BERSERK:
-                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || mcMMO.getMaterialMapStore().isGlass(blockState.getType()));
-
-            case GIGA_DRILL_BREAKER:
-                return BlockUtils.affectedByGigaDrillBreaker(blockState);
-
-            case GREEN_TERRA:
-                return BlockUtils.canMakeMossy(blockState);
-
-            case SUPER_BREAKER:
-                return BlockUtils.affectedBySuperBreaker(blockState);
-
-            case TREE_FELLER:
-                return BlockUtils.hasWoodcuttingXP(blockState);
-
-            default:
-                return false;
-        }
+        return switch (this) {
+            case BERSERK ->
+                    (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || mcMMO.getMaterialMapStore().isGlass(blockState.getType()));
+            case GIGA_DRILL_BREAKER -> BlockUtils.affectedByGigaDrillBreaker(blockState);
+            case GREEN_TERRA -> BlockUtils.canMakeMossy(blockState);
+            case SUPER_BREAKER -> BlockUtils.affectedBySuperBreaker(blockState);
+            case TREE_FELLER -> BlockUtils.hasWoodcuttingXP(blockState);
+            default -> false;
+        };
     }
 
     /**

@@ -22,6 +22,7 @@ public enum SubSkillType {
     ARCHERY_DAZE,
     ARCHERY_SKILL_SHOT(20),
     ARCHERY_ARCHERY_LIMIT_BREAK(10),
+    ARCHERY_EXPLOSIVE_SHOT(1),
 
     /* Axes */
     AXES_ARMOR_IMPACT(20),

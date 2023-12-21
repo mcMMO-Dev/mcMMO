@@ -290,10 +290,13 @@ permissions:
     mcmmo.ability.archery.all:
         description: Allows access to all Archery abilities
         children:
+            mcmmo.ability.archery.explosiveshot: true
             mcmmo.ability.archery.skillshot: true
             mcmmo.ability.archery.daze: true
             mcmmo.ability.archery.arrowretrieval: true
             mcmmo.ability.archery.archerylimitbreak: true
+    mcmmo.ability.archery.explosiveshot:
+        description: Allows access to the Explosive Shot super ability for Archery
     mcmmo.ability.archery.archerylimitbreak:
         description: Adds damage to bows
     mcmmo.ability.archery.skillshot:

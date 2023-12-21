@@ -11,7 +11,8 @@ public enum ToolType {
     PICKAXE("Mining.Ability.Lower", "Mining.Ability.Ready"),
     SHOVEL("Excavation.Ability.Lower", "Excavation.Ability.Ready"),
     SWORD("Swords.Ability.Lower", "Swords.Ability.Ready"),
-    CROSSBOWS("Crossbows.Ability.Lower", "Crossbows.Ability.Ready"),
+    CROSSBOW("Crossbows.Ability.Lower", "Crossbows.Ability.Ready"),
+    BOW("Archery.Ability.Lower", "Archery.Ability.Ready"),
     TRIDENTS("Tridents.Ability.Lower", "Tridents.Ability.Ready");
 
     private final String lowerTool;
@@ -40,7 +41,7 @@ public enum ToolType {
         switch (this) {
             case AXE:
                 return ItemUtils.isAxe(itemStack);
-            case CROSSBOWS:
+            case CROSSBOW:
                 return ItemUtils.isCrossbow(itemStack);
             case TRIDENTS:
                 return ItemUtils.isTrident(itemStack);
