@@ -1,37 +1,30 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.any;
 
-public abstract class MMOTestEnvironment {
+public abstract class MMOMinimalPluginMock {
     protected MockedStatic<mcMMO> mockedMcMMO;
     protected MockedStatic<ChatConfig> mockedChatConfig;
     protected MockedStatic<ExperienceConfig> experienceConfig;
@@ -39,31 +32,19 @@ public abstract class MMOTestEnvironment {
     protected MockedStatic<RankUtils> mockedRankUtils;
     protected MockedStatic<UserManager> mockedUserManager;
     protected MockedStatic<Misc> mockedMisc;
-    protected MockedStatic<SkillTools> mockedSkillTools;
     protected MockedStatic<EventUtils> mockedEventUtils;
     protected TransientEntityTracker transientEntityTracker;
     protected AdvancedConfig advancedConfig;
     protected GeneralConfig generalConfig;
     protected RankConfig rankConfig;
-    protected SkillTools skillTools;
     protected Server server;
     protected PluginManager pluginManager;
     protected World world;
 
     /* Mocks */
-    protected Player player;
-
-    protected UUID playerUUID = UUID.randomUUID();
-    protected ItemStack itemInMainHand;
-
-    protected PlayerInventory playerInventory;
-    protected PlayerProfile playerProfile;
-    protected McMMOPlayer mmoPlayer;
-    protected String playerName = "testPlayer";
-
     protected ChunkManager chunkManager;
 
-    protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
+    protected void mockEnvironment(Logger logger) {
         mockedMcMMO = Mockito.mockStatic(mcMMO.class);
         mcMMO.p = Mockito.mock(mcMMO.class);
         Mockito.when(mcMMO.p.getLogger()).thenReturn(logger);
@@ -92,10 +73,6 @@ public abstract class MMOTestEnvironment {
         // wire experience config
         mockExperienceConfig();
 
-        // wire skill tools
-        this.skillTools = new SkillTools(mcMMO.p);
-        Mockito.when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
-
         this.transientEntityTracker = new TransientEntityTracker();
         Mockito.when(mcMMO.getTransientEntityTracker()).thenReturn(transientEntityTracker);
 
@@ -118,21 +95,8 @@ public abstract class MMOTestEnvironment {
         this.mockedMisc = Mockito.mockStatic(Misc.class);
         Mockito.when(Misc.getBlockCenter(any())).thenReturn(new Location(world, 0, 0, 0));
 
-        // setup player and player related mocks after everything else
-        this.player = Mockito.mock(Player.class);
-        Mockito.when(player.getUniqueId()).thenReturn(playerUUID);
-
-        // wire inventory
-        this.playerInventory = Mockito.mock(PlayerInventory.class);
-        Mockito.when(player.getInventory()).thenReturn(playerInventory);
-
-        // PlayerProfile and McMMOPlayer are partially mocked
-        playerProfile = new PlayerProfile("testPlayer", player.getUniqueId(), 0);
-        mmoPlayer = Mockito.spy(new McMMOPlayer(player, playerProfile));
-
         // wire user manager
         this.mockedUserManager = Mockito.mockStatic(UserManager.class);
-        Mockito.when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
     }
 
     private void mockPermissions() {
@@ -141,7 +105,6 @@ public abstract class MMOTestEnvironment {
         Mockito.when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
         Mockito.when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
         Mockito.when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        Mockito.when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(false); // player is not lucky
     }
 
     private void mockRankConfig() {

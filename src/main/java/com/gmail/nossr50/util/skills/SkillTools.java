@@ -52,7 +52,7 @@ public class SkillTools {
         NON_CHILD_SKILLS = ImmutableList.copyOf(tempNonChildSkills);
     }
 
-    public SkillTools(@NotNull mcMMO pluginRef) {
+    public SkillTools(@NotNull mcMMO pluginRef) throws InvalidSkillException {
         this.pluginRef = pluginRef;
 
         /*
@@ -198,8 +198,7 @@ public class SkillTools {
             case GIGA_DRILL_BREAKER -> PrimarySkillType.EXCAVATION;
             case SUPER_SHOTGUN -> PrimarySkillType.CROSSBOWS;
             case TRIDENTS_SUPER_ABILITY -> PrimarySkillType.TRIDENTS;
-            default ->
-                    throw new InvalidSkillException("No parent defined for super ability! " + superAbilityType.toString());
+            case EXPLOSIVE_SHOT -> PrimarySkillType.ARCHERY;
         };
     }
 
@@ -340,14 +339,10 @@ public class SkillTools {
 
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public static boolean isChildSkill(PrimarySkillType primarySkillType) {
-        switch (primarySkillType) {
-            case SALVAGE:
-            case SMELTING:
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (primarySkillType) {
+            case SALVAGE, SMELTING -> true;
+            default -> false;
+        };
     }
 
     /**
@@ -412,34 +407,7 @@ public class SkillTools {
      * @return true if the player has permissions, false otherwise
      */
     public boolean superAbilityPermissionCheck(SuperAbilityType superAbilityType, Player player) {
-        switch (superAbilityType) {
-            case BERSERK:
-                return Permissions.berserk(player);
-
-            case BLAST_MINING:
-                return Permissions.remoteDetonation(player);
-
-            case GIGA_DRILL_BREAKER:
-                return Permissions.gigaDrillBreaker(player);
-
-            case GREEN_TERRA:
-                return Permissions.greenTerra(player);
-
-            case SERRATED_STRIKES:
-                return Permissions.serratedStrikes(player);
-
-            case SKULL_SPLITTER:
-                return Permissions.skullSplitter(player);
-
-            case SUPER_BREAKER:
-                return Permissions.superBreaker(player);
-
-            case TREE_FELLER:
-                return Permissions.treeFeller(player);
-
-            default:
-                return false;
-        }
+        return superAbilityType.getPermissions(player);
     }
 
     public @NotNull List<PrimarySkillType> getChildSkills() {

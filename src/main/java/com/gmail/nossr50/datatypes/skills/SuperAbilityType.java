@@ -211,8 +211,6 @@ public enum SuperAbilityType {
             case SUPER_SHOTGUN -> Permissions.superShotgun(player);
             case TREE_FELLER -> Permissions.treeFeller(player);
             case TRIDENTS_SUPER_ABILITY -> Permissions.tridentsSuper(player);
-            default ->
-                    throw new RuntimeException("Unhandled SuperAbilityType in getPermissions(), devs need to add definition for " + this + "!");
         };
     }
 

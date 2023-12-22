@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.tridents;
 
 import com.gmail.nossr50.MMOTestEnvironment;
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,8 +16,8 @@ class TridentsTest extends MMOTestEnvironment {
     TridentsManager tridentsManager;
     ItemStack trident;
     @BeforeEach
-    void setUp() {
-        mockBaseEnvironment();
+    void setUp() throws InvalidSkillException {
+        mockBaseEnvironment(logger);
 
         // setup player and player related mocks after everything else
         this.player = Mockito.mock(Player.class);
