@@ -94,6 +94,7 @@ public class FlatFileDataUtil {
             case COOLDOWN_BLAST_MINING:
             case COOLDOWN_SUPER_SHOTGUN:
             case COOLDOWN_TRIDENTS:
+            case COOLDOWN_ARCHERY:
             case SCOREBOARD_TIPS:
             case COOLDOWN_CHIMAERA_WING:
             case EXP_MINING:

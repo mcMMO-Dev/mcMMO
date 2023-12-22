@@ -290,6 +290,7 @@ public class FlatFileDataProcessor {
             case COOLDOWN_CHIMAERA_WING:
             case COOLDOWN_SUPER_SHOTGUN:
             case COOLDOWN_TRIDENTS:
+            case COOLDOWN_ARCHERY:
                 return ExpectedType.INTEGER;
             case EXP_MINING:
             case EXP_WOODCUTTING:

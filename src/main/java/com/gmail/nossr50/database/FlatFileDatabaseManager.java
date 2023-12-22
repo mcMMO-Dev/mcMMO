@@ -86,10 +86,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final int SKILLS_TRIDENTS = 48;
     public static final int COOLDOWN_SUPER_SHOTGUN = 49;
     public static final int COOLDOWN_TRIDENTS = 50;
+    public static final int COOLDOWN_ARCHERY = 51;
+    //Update this everytime new data is added
+    public static final int DATA_ENTRY_COUNT = COOLDOWN_ARCHERY + 1;
 
-    public static final int DATA_ENTRY_COUNT = COOLDOWN_TRIDENTS + 1; //Update this everytime new data is added
-
-    protected FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime, int startingLevel, boolean testing) {
+    FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime, int startingLevel, boolean testing) {
         this.usersFile = usersFile;
         this.usersFilePath = usersFile.getPath();
         this.logger = logger;
@@ -105,7 +106,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
 
             if(flatFileDataFlags != null) {
-                if(flatFileDataFlags.size() > 0) {
+                if(!flatFileDataFlags.isEmpty()) {
                     logger.info("Detected "+flatFileDataFlags.size() + " data entries which need correction.");
                 }
             }
@@ -114,7 +115,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    protected FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
+    FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
         this(new File(usersFilePath), logger, purgeTime, startingLevel, false);
     }
 
@@ -243,7 +244,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.write(writer.toString());
 
                 if(testing) {
-                    System.out.println(writer.toString());
+                    System.out.println(writer);
                 }
             }
             catch (IOException e) {
@@ -575,16 +576,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
      * @return a profile with the targets data or an unloaded profile if no data was found
      */
     private @NotNull PlayerProfile processUserQuery(@NotNull UserQuery userQuery) throws RuntimeException {
-        switch(userQuery.getType()) {
-            case UUID_AND_NAME:
-                return queryByUUIDAndName((UserQueryFull) userQuery);
-            case UUID:
-                return queryByUUID((UserQueryUUID) userQuery);
-            case NAME:
-                return queryByName((UserQueryNameImpl) userQuery);
-            default:
-                throw new RuntimeException("No case for this UserQueryType!");
-        }
+        return switch (userQuery.getType()) {
+            case UUID_AND_NAME -> queryByUUIDAndName((UserQueryFull) userQuery);
+            case UUID -> queryByUUID((UserQueryUUID) userQuery);
+            case NAME -> queryByName((UserQueryNameImpl) userQuery);
+        };
     }
 
     private @NotNull PlayerProfile queryByName(@NotNull UserQueryName userQuery) {
@@ -690,7 +686,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
          * No match was found in the file
          */
 
-        return grabUnloadedProfile(uuid, "Player-Not-Found="+uuid.toString());
+        return grabUnloadedProfile(uuid, "Player-Not-Found="+ uuid);
     }
 
     private @NotNull PlayerProfile queryByUUIDAndName(@NotNull UserQueryFull userQuery) {
@@ -725,7 +721,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             boolean matchingName = dbPlayerName.equalsIgnoreCase(playerName);
 
                             if (!matchingName) {
-                                logger.warning("When loading user: "+playerName +" with UUID of (" + uuid.toString()
+                                logger.warning("When loading user: "+playerName +" with UUID of (" + uuid
                                         +") we found a mismatched name, the name in the DB will be replaced (DB name: "+dbPlayerName+")");
                                 //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                                 rawSplitData[USERNAME_INDEX] = playerName;
@@ -1111,7 +1107,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
         ArrayList<FlatFileDataFlag> flagsFound = null;
         LogUtils.debug(logger, "(" + usersFile.getPath() + ") Validating database file..");
-        FlatFileDataProcessor dataProcessor = null;
+        FlatFileDataProcessor dataProcessor;
 
         if (usersFile.exists()) {
             BufferedReader bufferedReader = null;
@@ -1143,7 +1139,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     }
 
                     //Only update the file if needed
-                    if(dataProcessor.getFlatFileDataFlags().size() > 0) {
+                    if(!dataProcessor.getFlatFileDataFlags().isEmpty()) {
                         flagsFound = new ArrayList<>(dataProcessor.getFlatFileDataFlags());
                         logger.info("Updating FlatFile Database...");
                         fileWriter = new FileWriter(usersFilePath);
@@ -1161,7 +1157,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
-        if(flagsFound == null || flagsFound.size() == 0) {
+        if(flagsFound == null || flagsFound.isEmpty()) {
             return null;
         } else {
             return flagsFound;
@@ -1251,7 +1247,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BERSERK, COOLDOWN_BERSERK, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.GREEN_TERRA, COOLDOWN_GREEN_TERRA, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.GIGA_DRILL_BREAKER, COOLDOWN_GIGA_DRILL_BREAKER, username);
-        // Archery - Unused
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.EXPLOSIVE_SHOT, COOLDOWN_ARCHERY, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SERRATED_STRIKES, COOLDOWN_SERRATED_STRIKES, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SKULL_SPLITTER, COOLDOWN_SKULL_SPLITTER, username);
         // Acrobatics - Unused
