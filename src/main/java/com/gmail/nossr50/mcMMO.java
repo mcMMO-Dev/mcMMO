@@ -98,7 +98,7 @@ public class mcMMO extends JavaPlugin {
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
 
-    private @NotNull SkillTools skillTools;
+    private SkillTools skillTools;
 
     private static boolean serverShutdownExecuted = false;
 

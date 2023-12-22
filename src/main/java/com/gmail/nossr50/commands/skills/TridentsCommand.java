@@ -2,11 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -31,7 +27,7 @@ public class TridentsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        if (canUseSubskill(player, SubSkillType.TRIDENTS_TRIDENTS_SUPER_ABILITY)) {
+        if (canUseSubskill(player, SubSkillType.TRIDENTS_SUPER)) {
             messages.add("Tridents Super Ability");
             //TODO: Implement Tridents Super
         }

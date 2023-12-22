@@ -27,10 +27,7 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -48,6 +45,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class EntityListener implements Listener {
@@ -1111,5 +1109,50 @@ public class EntityListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onProjectileHitEvent(ProjectileHitEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+            return;
 
+        if(event.getEntity() instanceof Arrow originalArrow && event.getHitBlock() != null) {
+            if (originalArrow.getShooter() instanceof Player) {
+                // Avoid infinite spawning of arrows
+                if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
+                    return;
+                }
+
+                // Spawn a new arrow shooting in a random direction
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation());
+            }
+        }
+    }
+
+    private void spawnArrow(Arrow originalArrow, Location origin) {
+        // TODO: Add an event for this for plugins to hook into
+        // Spawn a new arrow shooting in a random direction
+        ProjectileSource originalArrowShooter = originalArrow.getShooter();
+        Arrow arrow = originalArrow.getWorld().spawnArrow(origin,
+                new Vector(
+                        // TODO: Spawn arrow away from surface
+                        Math.random() * 2 - 1,
+                        Math.random() * 2 - 1,
+                        Math.random() * 2 - 1), 1, 1);
+        arrow.setShooter(originalArrowShooter);
+        arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
+                new FixedMetadataValue(pluginRef, originalArrowShooter));
+        arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE,
+                new FixedMetadataValue(pluginRef, originalArrow.getMetadata(
+                        MetadataConstants.METADATA_KEY_BOW_TYPE).get(0)));
+    }
 }
