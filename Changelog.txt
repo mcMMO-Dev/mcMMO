@@ -1,4 +1,6 @@
 Version 2.2.000
+    TODO: SQL DB update
+    TODO: SQL unit tests
     TODO: com/gmail/nossr50/database/FlatFileDatabaseManager.java:109 reporting data entries that need correction on each launch
     TODO: Add Xbows/Tridents to salvage/repair
     TODO: Add unit test for combat XP values
