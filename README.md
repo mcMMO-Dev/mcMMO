@@ -11,7 +11,10 @@ Spigot Resource: https://spigot.mcmmo.org
 I plan to post links to our new wiki (its still under development), downloads, and dev blogs there.
 
 ### Builds
-Currently, you can obtain our builds via the Spigot resource page: http://spigot.mcmmo.org or Polymart: https://polymart.org/resource/mcmmo.727
+Currently, you can obtain our builds via the Spigot or Polymart:
+
+http://spigot.mcmmo.org
+https://polymart.org/resource/mcmmo.727
 
 ### Brief Description
 The goal of mcMMO is to take core Minecraft game mechanics and expand them into an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds fourteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
@@ -21,7 +24,7 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 #### Project Lead & Founder
 [![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
 
-#### mcMMO Devs
+#### Current mcMMO Devs
 [![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
 
 ### Former team members
@@ -37,7 +40,7 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 [![riking](https://1.gravatar.com/avatar/aca9f37e569ac3a63929920035a91ba4.png)](https://github.com/riking)
 [![TheYeti](https://i.imgur.com/tzFrxdo.png)](https://github.com/TheYeti)
 
-#### Folia Inquisitors
+#### Folia Contributors
 [<img src="https://github.com/HSGamer.png" width=80 alt="HSGamer">](https://github.com/HSGamer)
 [<img src="https://github.com/TechnicallyCoded.png" width=80 alt="TechnicallyCoded">](https://github.com/TechnicallyCoded)
 [<img src="https://github.com/Yomamaeatstoes.png" width=80 alt="Yomamaeatstoes">](https://github.com/Yomamaeatstoes)
@@ -51,6 +54,7 @@ The typical command used to build mcMMO is: `mvn clean install`
 
 https://spigot.mcmmo.org for more up to date information.
 
-Resource Page
+Downloads:
 
-https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/ 
+https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/
+https://polymart.org/resource/mcmmo.727
