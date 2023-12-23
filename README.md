@@ -13,7 +13,9 @@ I plan to post links to our new wiki (its still under development), downloads, a
 ### Builds
 Currently, you can obtain our builds via the Spigot or Polymart:
 
+
 http://spigot.mcmmo.org
+
 https://polymart.org/resource/mcmmo.727
 
 ### Brief Description
@@ -56,5 +58,7 @@ https://spigot.mcmmo.org for more up to date information.
 
 Downloads:
 
+
 https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/
+
 https://polymart.org/resource/mcmmo.727
