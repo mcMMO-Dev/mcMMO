@@ -30,6 +30,7 @@ import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
@@ -1115,7 +1116,7 @@ public class EntityListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if(event.getEntity() instanceof Arrow originalArrow && event.getHitBlock() != null) {
+        if(event.getEntity() instanceof Arrow originalArrow && event.getHitBlock() != null && event.getHitBlockFace() != null) {
             if (originalArrow.getShooter() instanceof Player) {
                 // Avoid infinite spawning of arrows
                 if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
@@ -1123,34 +1124,36 @@ public class EntityListener implements Listener {
                 }
 
                 // Spawn a new arrow shooting in a random direction
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
-                spawnArrow(originalArrow, originalArrow.getLocation());
+                spawnArrow(originalArrow, originalArrow.getLocation(), getNormal(event.getHitBlockFace()));
             }
         }
     }
 
-    private void spawnArrow(Arrow originalArrow, Location origin) {
+    private Vector getNormal(BlockFace blockFace) {
+        return switch (blockFace) {
+            case UP -> new Vector(0, 1, 0);
+            case DOWN -> new Vector(0, -1, 0);
+            case NORTH -> new Vector(0, 0, -1);
+            case SOUTH -> new Vector(0, 0, 1);
+            case EAST -> new Vector(1, 0, 0);
+            case WEST -> new Vector(-1, 0, 0);
+            default -> new Vector(0, 0, 0);
+        };
+    }
+
+    private void spawnArrow(Arrow originalArrow, Location origin, Vector normal) {
         // TODO: Add an event for this for plugins to hook into
-        // Spawn a new arrow shooting in a random direction
         ProjectileSource originalArrowShooter = originalArrow.getShooter();
+        Vector incomingDirection = originalArrow.getVelocity();
+        Vector reflectedDirection = incomingDirection.subtract(normal.multiply(2 * incomingDirection.dot(normal)));
+
+        // Spawn new arrow with the reflected direction
         Arrow arrow = originalArrow.getWorld().spawnArrow(origin,
-                new Vector(
-                        // TODO: Spawn arrow away from surface
-                        Math.random() * 2 - 1,
-                        Math.random() * 2 - 1,
-                        Math.random() * 2 - 1), 1, 1);
+                reflectedDirection, 1, 1);
         arrow.setShooter(originalArrowShooter);
         arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
+        // TODO: This metadata needs to get cleaned up at some point
         arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE,
                 new FixedMetadataValue(pluginRef, originalArrow.getMetadata(
                         MetadataConstants.METADATA_KEY_BOW_TYPE).get(0)));
