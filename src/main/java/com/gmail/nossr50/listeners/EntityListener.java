@@ -25,12 +25,12 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
@@ -46,8 +46,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+
+import static com.gmail.nossr50.util.skills.ProjectileUtils.getNormal;
+import static com.gmail.nossr50.util.skills.ProjectileUtils.spawnReflectedArrow;
 
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
@@ -1123,39 +1125,10 @@ public class EntityListener implements Listener {
                     return;
                 }
 
-                // Spawn a new arrow shooting in a random direction
-                spawnArrow(originalArrow, originalArrow.getLocation(), getNormal(event.getHitBlockFace()));
+                // Spawn a new arrow shooting in the reflected direction
+                spawnReflectedArrow(pluginRef, originalArrow, originalArrow.getLocation(),
+                        getNormal(event.getHitBlockFace()));
             }
         }
-    }
-
-    private Vector getNormal(BlockFace blockFace) {
-        return switch (blockFace) {
-            case UP -> new Vector(0, 1, 0);
-            case DOWN -> new Vector(0, -1, 0);
-            case NORTH -> new Vector(0, 0, -1);
-            case SOUTH -> new Vector(0, 0, 1);
-            case EAST -> new Vector(1, 0, 0);
-            case WEST -> new Vector(-1, 0, 0);
-            default -> new Vector(0, 0, 0);
-        };
-    }
-
-    private void spawnArrow(Arrow originalArrow, Location origin, Vector normal) {
-        // TODO: Add an event for this for plugins to hook into
-        ProjectileSource originalArrowShooter = originalArrow.getShooter();
-        Vector incomingDirection = originalArrow.getVelocity();
-        Vector reflectedDirection = incomingDirection.subtract(normal.multiply(2 * incomingDirection.dot(normal)));
-
-        // Spawn new arrow with the reflected direction
-        Arrow arrow = originalArrow.getWorld().spawnArrow(origin,
-                reflectedDirection, 1, 1);
-        arrow.setShooter(originalArrowShooter);
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
-                new FixedMetadataValue(pluginRef, originalArrowShooter));
-        // TODO: This metadata needs to get cleaned up at some point
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE,
-                new FixedMetadataValue(pluginRef, originalArrow.getMetadata(
-                        MetadataConstants.METADATA_KEY_BOW_TYPE).get(0)));
     }
 }
