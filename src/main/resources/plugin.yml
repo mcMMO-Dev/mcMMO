@@ -339,11 +339,14 @@ permissions:
             description: Allows access to all Crossbows abilities
             children:
                 mcmmo.ability.crossbows.supershotgun: true
+                mcmmo.ability.crossbows.trickshot: true
                 mcmmo.ability.crossbows.crossbowslimitbreak: true
     mcmmo.ability.crossbows.supershotgun:
-            description: Allows access to the Super Shotgun ability
+            description: Allows access to the Super Shotgun super ability
     mcmmo.ability.crossbows.crossbowslimitbreak:
             description: Adds damage to crossbows
+    mcmmo.ability.crossbows.trickshot:
+            description: Allows access to the Trick Shot ability
     mcmmo.ability.excavation.*:
         default: false
         description: Allows access to all Excavation abilities

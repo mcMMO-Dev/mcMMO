@@ -207,6 +207,15 @@ Axes:
             Rank_3: 150
             Rank_4: 200
 Crossbows:
+    TrickShot:
+        Standard:
+            Rank_1: 5
+            Rank_2: 20
+            Rank_3: 40
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 200
+            Rank_3: 400
     CrossbowsLimitBreak:
         Standard:
             Rank_1: 10
