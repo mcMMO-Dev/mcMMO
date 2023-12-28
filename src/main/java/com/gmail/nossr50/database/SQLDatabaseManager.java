@@ -33,6 +33,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final String USER_VARCHAR = "VARCHAR(40)";
     public static final int CHILD_SKILLS_SIZE = 2;
     public static final String LEGACY_DRIVER_PATH = "com.mysql.jdbc.Driver";
+    public static final int MAGIC_NUMBER = 44;
     private final String tablePrefix = mcMMO.p.getGeneralConfig().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
@@ -128,6 +129,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         loadPool = new DataSource(poolProperties);
 
         checkStructure();
+
     }
 
     @NotNull
@@ -151,6 +153,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return connectionString;
     }
 
+    // TODO: unit tests
     public int purgePowerlessUsers() {
         massUpdateLock.lock();
         logger.info("Purging powerless users...");
@@ -167,7 +170,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "taming = 0 AND mining = 0 AND woodcutting = 0 AND repair = 0 "
                     + "AND unarmed = 0 AND herbalism = 0 AND excavation = 0 AND "
                     + "archery = 0 AND swords = 0 AND axes = 0 AND acrobatics = 0 "
-                    + "AND fishing = 0 AND alchemy = 0;");
+                    + "AND fishing = 0 AND alchemy = 0 AND crossbows = 0 AND tridents = 0;");
 
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "experience`.`user_id` = `s`.`user_id`)");
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "huds`.`user_id` = `s`.`user_id`)");
@@ -564,15 +567,20 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             statement = connection.prepareStatement(
                     "UPDATE `" + tablePrefix + "users` "
-                            + "SET user = ? "
-                            + "WHERE user = ?");
+                            + "SET \"USER\" = ? "
+                            + "WHERE \"USER\" = ?");
             statement.setString(1, "_INVALID_OLD_USERNAME_");
             statement.setString(2, playerName);
             statement.executeUpdate();
             statement.close();
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())", Statement.RETURN_GENERATED_KEYS);
+
+            long currentTimeMillis = System.currentTimeMillis();
+
+            String sql = "INSERT INTO " + tablePrefix + "users (`user`, uuid, lastlogin) VALUES (?, ?, ?)";
+            statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
             statement.setString(2, uuid != null ? uuid.toString() : null);
+            statement.setLong(3, currentTimeMillis);
             statement.executeUpdate();
 
             resultSet = statement.getGeneratedKeys();
@@ -640,17 +648,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
             writeMissingRows(connection, id);
 
             statement = connection.prepareStatement(
-                    "SELECT "
-                            + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
-                            + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, "
-                            + "h.mobhealthbar, h.scoreboardtips, u.uuid, u.user "
-                            + "FROM " + tablePrefix + "users u "
-                            + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
-                            + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
-                            + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
-                            + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.id = ?");
+                    "SELECT " +
+                            "S.TAMING, S.MINING, S.REPAIR, S.WOODCUTTING, S.UNARMED, S.HERBALISM, S.EXCAVATION, S.ARCHERY, S.SWORDS, S.AXES, S.ACROBATICS, S.FISHING, S.ALCHEMY, S.CROSSBOWS, S.TRIDENTS, " +
+                            "E.TAMING, E.MINING, E.REPAIR, E.WOODCUTTING, E.UNARMED, E.HERBALISM, E.EXCAVATION, E.ARCHERY, E.SWORDS, E.AXES, E.ACROBATICS, E.FISHING, E.ALCHEMY, S.CROSSBOWS, S.TRIDENTS, " +
+                            "C.TAMING, C.MINING, C.REPAIR, C.WOODCUTTING, C.UNARMED, C.HERBALISM, C.EXCAVATION, C.ARCHERY, C.SWORDS, C.AXES, C.ACROBATICS, C.BLAST_MINING, C.CHIMAERA_WING, C.CROSSBOWS, C.TRIDENTS, " +
+                            "H.MOBHEALTHBAR, H.SCOREBOARDTIPS, U.UUID, U.\"USER\" " +
+                            "FROM " + tablePrefix + "USERS U " +
+                            "JOIN " + tablePrefix + "SKILLS S ON U.ID = S.USER_ID " +
+                            "JOIN " + tablePrefix + "EXPERIENCE E ON U.ID = E.USER_ID " +
+                            "JOIN " + tablePrefix + "COOLDOWNS C ON U.ID = C.USER_ID " +
+                            "JOIN " + tablePrefix + "HUDS H ON U.ID = H.USER_ID " +
+                            "WHERE U.ID = ?"
+            );
             statement.setInt(1, id);
 
             resultSet = statement.executeQuery();
@@ -658,7 +667,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (resultSet.next()) {
                 try {
                     PlayerProfile profile = loadFromResult(playerName, resultSet);
-                    String name = resultSet.getString(42); // TODO: Magic Number, make sure it stays updated
+                    String name = resultSet.getString(MAGIC_NUMBER); // TODO: Magic Number, make sure it stays updated
                     resultSet.close();
                     statement.close();
 
@@ -668,15 +677,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             && uuid != null) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET user = ? "
-                                        + "WHERE user = ?");
+                                        + "SET \"USER\" = ? "
+                                        + "WHERE \"USER\" = ?");
                         statement.setString(1, "_INVALID_OLD_USERNAME_");
                         statement.setString(2, name);
                         statement.executeUpdate();
                         statement.close();
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET user = ?, uuid = ? "
+                                        + "SET \"USER\" = ?, uuid = ? "
                                         + "WHERE id = ?");
                         statement.setString(1, playerName);
                         statement.setString(2, uuid.toString());
@@ -913,6 +922,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`crossbows` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`tridents` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
@@ -939,6 +950,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`acrobatics` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`fishing` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`crossbows` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`tridents` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`total` int(10) unsigned NOT NULL DEFAULT "+totalLevel+","
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
@@ -964,6 +977,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`crossbows` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`tridents` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
@@ -986,7 +1001,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
 
-            logger.info("Killing orphans");
+            // TODO: refactor
+            LogUtils.debug(logger, "Killing orphans");
             createStatement = connection.createStatement();
             createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
             createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
@@ -1016,7 +1032,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    Connection getConnection(PoolIdentifier identifier) throws SQLException {
+    protected Connection getConnection(PoolIdentifier identifier) throws SQLException {
         Connection connection = null;
         switch (identifier) {
             case LOAD:
@@ -1161,9 +1177,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query
         // changes (a new skill is added)
-        final int OFFSET_XP = 13;
-        final int OFFSET_DATS = 26;
-        final int OFFSET_OTHER = 39;
+        final int OFFSET_XP = 15;
+        final int OFFSET_DATS = 28;
+        final int OFFSET_OTHER = 41;
 
         skills.put(PrimarySkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
         skills.put(PrimarySkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
@@ -1178,6 +1194,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skills.put(PrimarySkillType.ACROBATICS, result.getInt(OFFSET_SKILLS + 11));
         skills.put(PrimarySkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
         skills.put(PrimarySkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
+        skills.put(PrimarySkillType.CROSSBOWS, result.getInt(OFFSET_SKILLS + 14));
+        skills.put(PrimarySkillType.TRIDENTS, result.getInt(OFFSET_SKILLS + 15));
 
         skillsXp.put(PrimarySkillType.TAMING, result.getFloat(OFFSET_XP + 1));
         skillsXp.put(PrimarySkillType.MINING, result.getFloat(OFFSET_XP + 2));
@@ -1192,6 +1210,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsXp.put(PrimarySkillType.ACROBATICS, result.getFloat(OFFSET_XP + 11));
         skillsXp.put(PrimarySkillType.FISHING, result.getFloat(OFFSET_XP + 12));
         skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
+        skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_XP + 14));
+        skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_XP + 15));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
         skillsDATS.put(SuperAbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
@@ -1206,6 +1226,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
         skillsDATS.put(SuperAbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
         uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS, result.getInt(OFFSET_DATS + 13));
+        skillsDATS.put(SuperAbilityType.SUPER_SHOTGUN, result.getInt(OFFSET_DATS + 14));
+        skillsDATS.put(SuperAbilityType.TRIDENTS_SUPER_ABILITY, result.getInt(OFFSET_DATS + 15));
 
         try {
             scoreboardTipsShown = result.getInt(OFFSET_OTHER + 2);
@@ -1708,5 +1730,29 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 "    " + MOBHEALTHBAR_VARCHAR + "\n" +
                 "    CHARACTER SET utf8mb4\n" +
                 "    COLLATE utf8mb4_unicode_ci;";
+    }
+
+    public void printAllTablesWithColumns(Connection connection) {
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+            String[] types = {"TABLE"};
+            ResultSet tables = metaData.getTables(null, null, "%", types);
+
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                System.out.println("Table: " + tableName);
+
+                ResultSet columns = metaData.getColumns(null, null, tableName, "%");
+                while (columns.next()) {
+                    String columnName = columns.getString("COLUMN_NAME");
+                    String columnType = columns.getString("TYPE_NAME");
+                    System.out.println("  Column: " + columnName + " Type: " + columnType);
+                }
+                columns.close();
+            }
+            tables.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,9 +7,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
-import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillTools;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -363,7 +363,7 @@ public class PlayerProfile {
         markProfileDirty();
 
         if (SkillTools.isChildSkill(skill)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
             float dividedXP = (xp / parentSkills.size());
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -431,8 +431,12 @@ public class PlayerProfile {
         return mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType);
     }
 
-    private int getChildSkillLevel(PrimarySkillType primarySkillType) {
-        Set<PrimarySkillType> parents = FamilyTree.getParents(primarySkillType);
+    private int getChildSkillLevel(@NotNull PrimarySkillType primarySkillType) throws IllegalArgumentException {
+        if (!SkillTools.isChildSkill(primarySkillType)) {
+            throw new IllegalArgumentException(primarySkillType + " is not a child skill!");
+        }
+
+        ImmutableList<PrimarySkillType> parents = mcMMO.p.getSkillTools().getChildSkillParents(primarySkillType);
         int sum = 0;
 
         for (PrimarySkillType parent : parents) {

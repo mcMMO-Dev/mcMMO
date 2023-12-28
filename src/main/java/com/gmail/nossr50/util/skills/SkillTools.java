@@ -30,6 +30,8 @@ public class SkillTools {
     public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
     public final @NotNull ImmutableList<PrimarySkillType> CHILD_SKILLS;
     public final static @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
+    public final static @NotNull ImmutableList<PrimarySkillType> SALVAGE_PARENTS;
+    public final static @NotNull ImmutableList<PrimarySkillType> SMELTING_PARENTS;
     public final @NotNull ImmutableList<PrimarySkillType> COMBAT_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> GATHERING_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> MISC_SKILLS;
@@ -50,6 +52,8 @@ public class SkillTools {
         }
 
         NON_CHILD_SKILLS = ImmutableList.copyOf(tempNonChildSkills);
+        SALVAGE_PARENTS = ImmutableList.of(PrimarySkillType.REPAIR, PrimarySkillType.FISHING);
+        SMELTING_PARENTS = ImmutableList.of(PrimarySkillType.MINING, PrimarySkillType.REPAIR);
     }
 
     public SkillTools(@NotNull mcMMO pluginRef) throws InvalidSkillException {
@@ -140,18 +144,13 @@ public class SkillTools {
          */
 
         List<PrimarySkillType> childSkills = new ArrayList<>();
-//        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if (isChildSkill(primarySkillType))
                 childSkills.add(primarySkillType);
-//            } {
-//                nonChildSkills.add(primarySkillType);
-//            }
         }
 
         CHILD_SKILLS = ImmutableList.copyOf(childSkills);
-//        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
 
         /*
          * Build categorized skill lists
@@ -329,7 +328,6 @@ public class SkillTools {
     }
 
     public Set<SubSkillType> getSubSkills(PrimarySkillType primarySkillType) {
-        //TODO: Cache this!
         return primarySkillChildrenMap.get(primarySkillType);
     }
 
@@ -428,5 +426,18 @@ public class SkillTools {
 
     public @NotNull ImmutableList<PrimarySkillType> getMiscSkills() {
         return MISC_SKILLS;
+    }
+
+    public @NotNull ImmutableList<PrimarySkillType> getChildSkillParents(PrimarySkillType childSkill)
+            throws IllegalArgumentException {
+        switch (childSkill) {
+            case SALVAGE -> {
+                return SALVAGE_PARENTS;
+            }
+            case SMELTING -> {
+                return SMELTING_PARENTS;
+            }
+            default -> throw new IllegalArgumentException("Skill " + childSkill + " is not a child skill");
+        }
     }
 }

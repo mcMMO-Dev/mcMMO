@@ -2,22 +2,27 @@ package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.GeneralConfig;
+import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.platform.version.SimpleNumericVersion;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.sql.*;
+import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,6 +37,7 @@ class SQLDatabaseManagerTest {
     static AdvancedConfig advancedConfig;
     static UpgradeManager upgradeManager;
     static CompatibilityManager compatibilityManager;
+    static SkillTools skillTools;
 
     @BeforeAll
     static void setUpAll() {
@@ -49,6 +55,10 @@ class SQLDatabaseManagerTest {
 
         // starting level
         when(mcMMO.p.getAdvancedConfig().getStartingLevel()).thenReturn(0);
+
+        // wire skill tools
+        skillTools = new SkillTools(mcMMO.p);
+        when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
 
         // compatibility manager mock
         compatibilityManager = Mockito.mock(CompatibilityManager.class);
@@ -107,6 +117,9 @@ class SQLDatabaseManagerTest {
 
         // host
         when(mcMMO.p.getGeneralConfig().getMySQLServerName()).thenReturn("localhost");
+
+        // unused mob health bar thingy
+        when(mcMMO.p.getGeneralConfig().getMobHealthbarDefault()).thenReturn(MobHealthbarType.HEARTS);
     }
 
     @BeforeEach
@@ -118,6 +131,11 @@ class SQLDatabaseManagerTest {
     @AfterEach
     void tearDown() {
         sqlDatabaseManager = null;
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        mockedMcMMO.close();
     }
 
     @Test
@@ -141,5 +159,17 @@ class SQLDatabaseManagerTest {
         when(player.getUniqueId()).thenReturn(java.util.UUID.randomUUID());
         when(player.getName()).thenReturn("nossr50");
         sqlDatabaseManager.newUser(player);
+    }
+
+    @Test
+    void testNewUserGetSkillLevel() {
+        Player player = Mockito.mock(Player.class);
+        when(player.getUniqueId()).thenReturn(java.util.UUID.randomUUID());
+        when(player.getName()).thenReturn("nossr50");
+        PlayerProfile playerProfile = sqlDatabaseManager.newUser(player);
+
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            assertEquals(0, playerProfile.getSkillLevel(primarySkillType));
+        }
     }
 }
