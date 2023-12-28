@@ -15,6 +15,7 @@ import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.TravelingBlockMetaCleanup;
 import com.gmail.nossr50.skills.archery.Archery;
+import com.gmail.nossr50.skills.crossbows.Crossbows;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
@@ -28,7 +29,10 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -47,9 +51,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
-
-import static com.gmail.nossr50.util.skills.ProjectileUtils.getNormal;
-import static com.gmail.nossr50.util.skills.ProjectileUtils.spawnReflectedArrow;
 
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
@@ -411,7 +412,7 @@ public class EntityListener implements Listener {
         }
 
         if(entityDamageEvent.getDamager() instanceof Projectile) {
-            CombatUtils.cleanupArrowMetadata((Projectile) entityDamageEvent.getDamager());
+            ProjectileUtils.cleanupProjectileMetadata((Projectile) entityDamageEvent.getDamager());
         }
 
         if(entityDamageEvent.getEntity() instanceof Player player && entityDamageEvent.getDamager() instanceof Player) {
@@ -1118,17 +1119,6 @@ public class EntityListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if(event.getEntity() instanceof Arrow originalArrow && event.getHitBlock() != null && event.getHitBlockFace() != null) {
-            if (originalArrow.getShooter() instanceof Player) {
-                // Avoid infinite spawning of arrows
-                if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
-                    return;
-                }
-
-                // Spawn a new arrow shooting in the reflected direction
-                spawnReflectedArrow(pluginRef, originalArrow, originalArrow.getLocation(),
-                        getNormal(event.getHitBlockFace()));
-            }
-        }
+        Crossbows.processCrossbows(event, pluginRef);
     }
 }

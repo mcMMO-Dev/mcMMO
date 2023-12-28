@@ -1,4 +1,6 @@
 Version 2.2.000
+    TODO: Trickshot: locale, multiple bounces, does not hurt yourself or allies, reduced damage per bounce?
+    TODO: Add metadata cleanup unit tests
     TODO: Cleanup new arrow metadatas
     TODO: SQL DB update
     TODO: SQL unit tests

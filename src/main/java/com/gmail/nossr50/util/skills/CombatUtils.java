@@ -161,15 +161,9 @@ public final class CombatUtils {
 
         //Make sure the profiles been loaded
         if(mcMMOPlayer == null) {
-            cleanupArrowMetadata(arrow);
+            ProjectileUtils.cleanupProjectileMetadata(arrow);
             return;
         }
-
-        // CrossbowsManager crossbowsManager = mcMMOPlayer.getCrossbowsManager();
-
-//        if (crossbowsManager.canActivateAbility()) {
-//            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.CROSSBOWS);
-//        }
 
         double boostedDamage = event.getDamage();
 
@@ -190,7 +184,7 @@ public final class CombatUtils {
                 "Final Damage: "+boostedDamage);
 
         //Clean data
-        cleanupArrowMetadata(arrow);
+        ProjectileUtils.cleanupProjectileMetadata(arrow);
     }
 
     private static void processAxeCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
@@ -327,7 +321,7 @@ public final class CombatUtils {
 
         //Make sure the profiles been loaded
         if(mcMMOPlayer == null) {
-            cleanupArrowMetadata(arrow);
+            ProjectileUtils.cleanupProjectileMetadata(arrow);
             return;
         }
 
@@ -368,7 +362,7 @@ public final class CombatUtils {
                 "Initial Damage: "+initialDamage,
                 "Final Damage: "+boostedDamage);
         //Clean data
-        cleanupArrowMetadata(arrow);
+        ProjectileUtils.cleanupProjectileMetadata(arrow);
     }
 
     /**
@@ -500,7 +494,7 @@ public final class CombatUtils {
                     }
                 } else {
                     //Cleanup Arrow
-                    cleanupArrowMetadata(arrow);
+                    ProjectileUtils.cleanupProjectileMetadata(arrow);
                 }
 
                 if (target.getType() != EntityType.CREEPER
@@ -733,35 +727,6 @@ public final class CombatUtils {
         }
 
         dealNoInvulnerabilityTickDamage(target, damage, attacker);
-
-//        //IFrame storage
-////        int noDamageTicks = target.getNoDamageTicks();
-//
-////        String debug = "BLEED DMG RESULT: INC DMG:"+damage+", HP-Before:"+target.getHealth()+", HP-After:";
-//
-////        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
-//
-////        double newHealth = Math.max(0, target.getHealth() - incDmg);
-//
-//        //Don't kill things with a stone or wooden weapon
-////        if(toolTier < 3 && newHealth == 0)
-////            return;
-//
-//        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
-//
-//        if(newHealth == 0 && !(target instanceof Player))
-//        {
-//            target.damage(99999, attacker);
-//        }
-//        else
-//        {
-////            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
-//            target.damage(damage, attacker);
-////            debug+=target.getHealth();
-//            Bukkit.broadcastMessage(debug);
-////            target.setNoDamageTicks(noDamageTicks); //Do not add additional IFrames
-////            target.setVelocity(beforeRuptureVec);
-//        }
     }
 
     /**
@@ -1063,30 +1028,11 @@ public final class CombatUtils {
     }
 
     /**
-     * Clean up metadata from a projectile
-     *
-     * @param entity projectile
-     */
-    public static void cleanupArrowMetadata(@NotNull Projectile entity) {
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
-        }
-
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
-        }
-
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
-        }
-    }
-
-    /**
      * Clean up metadata from a projectile after a minute has passed
      *
      * @param entity the projectile
      */
     public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
-        mcMMO.p.getFoliaLib().getImpl().runLater(() -> cleanupArrowMetadata(entity), 20*60);
+        mcMMO.p.getFoliaLib().getImpl().runLater(() -> ProjectileUtils.cleanupProjectileMetadata(entity), 20*60);
     }
 }

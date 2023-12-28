@@ -1,13 +1,11 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
-import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Arrow;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class ProjectileUtils {
     public static Vector getNormal(BlockFace blockFace) {
@@ -22,21 +20,31 @@ public class ProjectileUtils {
         };
     }
 
-    public static void spawnReflectedArrow(Plugin pluginRef, Arrow originalArrow, Location origin, Vector normal) {
-        // TODO: Add an event for this for plugins to hook into
-        ProjectileSource originalArrowShooter = originalArrow.getShooter();
-        Vector incomingDirection = originalArrow.getVelocity();
-        Vector reflectedDirection = incomingDirection.subtract(normal.multiply(2 * incomingDirection.dot(normal)));
+    /**
+     * Clean up all possible mcMMO related metadata for a projectile
+     *
+     * @param entity projectile
+     */
+    // TODO: Add test
+    public static void cleanupProjectileMetadata(@NotNull Projectile entity) {
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
+        }
 
-        // Spawn new arrow with the reflected direction
-        Arrow arrow = originalArrow.getWorld().spawnArrow(origin,
-                reflectedDirection, 1, 1);
-        arrow.setShooter(originalArrowShooter);
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
-                new FixedMetadataValue(pluginRef, originalArrowShooter));
-        // TODO: This metadata needs to get cleaned up at some point
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE,
-                new FixedMetadataValue(pluginRef, originalArrow.getMetadata(
-                        MetadataConstants.METADATA_KEY_BOW_TYPE).get(0)));
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE, mcMMO.p);
+        }
+
+        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
+            entity.removeMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW, mcMMO.p);
+        }
     }
 }
