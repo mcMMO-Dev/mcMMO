@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
@@ -45,23 +46,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private final ReentrantLock massUpdateLock = new ReentrantLock();
 
     private final String CHARSET_SQL = "utf8mb4"; //This is compliant with UTF-8 while "utf8" is not, confusing but this is how it is.
-    private String driverPath = "com.mysql.cj.jdbc.Driver"; //modern driver
+    private final Logger logger;
+    private final boolean h2;
 
-    protected SQLDatabaseManager() {
-        String connectionString = "jdbc:mysql://" + mcMMO.p.getGeneralConfig().getMySQLServerName()
-                + ":" + mcMMO.p.getGeneralConfig().getMySQLServerPort() + "/" + mcMMO.p.getGeneralConfig().getMySQLDatabaseName();
+    SQLDatabaseManager(Logger logger, String driverPath) {
+        this(logger, driverPath, false);
+    }
 
-        if(!mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 17, 0) //Temporary hack for SQL and 1.17 support
-                && mcMMO.p.getGeneralConfig().getMySQLSSL())
-            connectionString +=
-                    "?verifyServerCertificate=false"+
-                    "&useSSL=true"+
-                    "&requireSSL=true";
-        else
-            connectionString+=
-                    "?useSSL=false";
+    SQLDatabaseManager(Logger logger, String driverPath, boolean h2) {
+        this.logger = logger;
+        this.h2 = h2;
+        String connectionString = getConnectionString(h2);
 
-        if(mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
+        if(!h2 && mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
             connectionString+=
                     "&allowPublicKeyRetrieval=true";
         }
@@ -76,7 +73,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             } catch (ClassNotFoundException ex) {
                 e.printStackTrace();
                 ex.printStackTrace();
-                mcMMO.p.getLogger().severe("Neither driver found");
+                logger.severe("Neither driver found");
                 return;
             }
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
@@ -133,9 +130,30 @@ public final class SQLDatabaseManager implements DatabaseManager {
         checkStructure();
     }
 
+    @NotNull
+    private static String getConnectionString(boolean h2) {
+        if (h2) {
+            return "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL";
+        }
+
+        String connectionString = "jdbc:mysql://" + mcMMO.p.getGeneralConfig().getMySQLServerName()
+                + ":" + mcMMO.p.getGeneralConfig().getMySQLServerPort() + "/" + mcMMO.p.getGeneralConfig().getMySQLDatabaseName();
+
+        if(!mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 17, 0) //Temporary hack for SQL and 1.17 support
+                && mcMMO.p.getGeneralConfig().getMySQLSSL())
+            connectionString +=
+                    "?verifyServerCertificate=false"+
+                    "&useSSL=true"+
+                    "&requireSSL=true";
+        else
+            connectionString+=
+                    "?useSSL=false";
+        return connectionString;
+    }
+
     public int purgePowerlessUsers() {
         massUpdateLock.lock();
-        mcMMO.p.getLogger().info("Purging powerless users...");
+        logger.info("Purging powerless users...");
 
         Connection connection = null;
         Statement statement = null;
@@ -165,13 +183,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
             massUpdateLock.unlock();
         }
 
-        mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
+        logger.info("Purged " + purged + " users from the database.");
         return purged;
     }
 
     public void purgeOldUsers() {
         massUpdateLock.lock();
-        mcMMO.p.getLogger().info("Purging inactive users older than " + (mcMMO.p.getPurgeTime() / 2630000000L) + " months...");
+        logger.info("Purging inactive users older than " + (mcMMO.p.getPurgeTime() / 2630000000L) + " months...");
 
         Connection connection = null;
         Statement statement = null;
@@ -196,7 +214,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             massUpdateLock.unlock();
         }
 
-        mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
+        logger.info("Purged " + purged + " users from the database.");
     }
 
     public boolean removeUser(String playerName, UUID uuid) {
@@ -253,7 +271,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (id == -1) {
                 id = newUser(connection, profile.getPlayerName(), profile.getUniqueId());
                 if (id == -1) {
-                    mcMMO.p.getLogger().severe("Failed to create new account for " + profile.getPlayerName());
+                    logger.severe("Failed to create new account for " + profile.getPlayerName());
                     return false;
                 }
             }
@@ -263,7 +281,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success &= (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
-                mcMMO.p.getLogger().severe("Failed to update last login for " + profile.getPlayerName());
+                logger.severe("Failed to update last login for " + profile.getPlayerName());
                 return false;
             }
 
@@ -293,7 +311,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success &= (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
-                mcMMO.p.getLogger().severe("Failed to update skills for " + profile.getPlayerName());
+                logger.severe("Failed to update skills for " + profile.getPlayerName());
                 return false;
             }
 
@@ -319,7 +337,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success &= (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
-                mcMMO.p.getLogger().severe("Failed to update experience for " + profile.getPlayerName());
+                logger.severe("Failed to update experience for " + profile.getPlayerName());
                 return false;
             }
 
@@ -340,7 +358,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success = (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
-                mcMMO.p.getLogger().severe("Failed to update cooldowns for " + profile.getPlayerName());
+                logger.severe("Failed to update cooldowns for " + profile.getPlayerName());
                 return false;
             }
 
@@ -351,7 +369,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success = (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
-                mcMMO.p.getLogger().severe("Failed to update hud settings for " + profile.getPlayerName());
+                logger.severe("Failed to update hud settings for " + profile.getPlayerName());
                 return false;
             }
         }
@@ -371,7 +389,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         //Fix for a plugin that people are using that is throwing SQL errors
         if(skill != null && SkillTools.isChildSkill(skill)) {
-            mcMMO.p.getLogger().severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
+            logger.severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
 
@@ -560,7 +578,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.getGeneratedKeys();
 
             if (!resultSet.next()) {
-                mcMMO.p.getLogger().severe("Unable to create new user account in DB");
+                logger.severe("Unable to create new user account in DB");
                 return -1;
             }
 
@@ -840,27 +858,30 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            statement = connection.prepareStatement("SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
-                    + " WHERE table_schema = ?"
-                    + " AND table_name = ?");
-            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "users");
+            String schemaQuery = this.h2 ? "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_name = ?"
+                    : "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ? AND table_name = ?";
+
+            statement = connection.prepareStatement(schemaQuery);
+
+            setStatementQuery(statement, "users");
+
             resultSet = statement.executeQuery();
+
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
-                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
-                    + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
-                    + "`user` varchar(40) NOT NULL,"
-                    + "`uuid` varchar(36) NULL DEFAULT NULL,"
-                    + "`lastlogin` int(32) unsigned NOT NULL,"
-                    + "PRIMARY KEY (`id`),"
-                    + "INDEX(`user`(20) ASC),"
-                    + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=" + CHARSET_SQL + " AUTO_INCREMENT=1;");
+                String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` (" +
+                        "`id` int AUTO_INCREMENT," +
+                        "`user` varchar(40) NOT NULL," +
+                        "`uuid` varchar(36)," +
+                        "`lastlogin` bigint NOT NULL," +
+                        "PRIMARY KEY (`id`)," +
+                        "INDEX `user_index`(`user`)," +
+                        "UNIQUE(`uuid`))";
+                createStatement.executeUpdate(sql);
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "huds");
+            setStatementQuery(statement, "huds");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
@@ -873,8 +894,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "cooldowns");
+            setStatementQuery(statement, "cooldowns");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
@@ -898,8 +918,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "skills");
+            setStatementQuery(statement, "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
@@ -926,8 +945,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "experience");
+            setStatementQuery(statement, "experience");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
@@ -968,7 +986,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
 
-            mcMMO.p.getLogger().info("Killing orphans");
+            logger.info("Killing orphans");
             createStatement = connection.createStatement();
             createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
             createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
@@ -987,7 +1005,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     }
 
-    private Connection getConnection(PoolIdentifier identifier) throws SQLException {
+    private void setStatementQuery(PreparedStatement statement, String tableName) throws SQLException {
+        if (!this.h2) {
+            // Set schema name for MySQL
+            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + tableName);
+        } else {
+            // For H2, the schema parameter is not needed
+            statement.setString(1, tablePrefix + tableName);
+        }
+    }
+
+    Connection getConnection(PoolIdentifier identifier) throws SQLException {
         Connection connection = null;
         switch (identifier) {
             case LOAD:
@@ -1013,7 +1042,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
-            LogUtils.debug(mcMMO.p.getLogger(), "Skipping " + upgrade.name() + " upgrade (unneeded)");
+            LogUtils.debug(logger, "Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
         }
 
@@ -1196,16 +1225,26 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
-        if (debug) {
+        if (debug || h2) {
             ex.printStackTrace();
+        } else {
+            for (StackTraceElement element : ex.getStackTrace()) {
+                logger.severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
+            }
         }
 
-        StackTraceElement element = ex.getStackTrace()[0];
-        mcMMO.p.getLogger().severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
-        mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
-        mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());
-        mcMMO.p.getLogger().severe("VendorError: " + ex.getErrorCode());
+        // logger.severe("SQLException: " + ex.getMessage());
+        logger.severe("SQLState: " + ex.getSQLState());
+        logger.severe("VendorError: " + ex.getErrorCode());
+
+        // Handling SQLException chain
+        SQLException nextException = ex.getNextException();
+        while (nextException != null) {
+            logger.severe("Caused by: " + nextException.getMessage());
+            nextException = nextException.getNextException();
+        }
     }
+
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.SQL;
@@ -1222,7 +1261,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return;
             }
             resultSet.close();
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables to drop name uniqueness...");
+            logger.info("Updating mcMMO MySQL tables to drop name uniqueness...");
             statement.execute("ALTER TABLE `" + tablePrefix + "users` " 
                     + "DROP INDEX `user`,"
                     + "ADD INDEX `user` (`user`(20) ASC)");
@@ -1240,7 +1279,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);
         }
         catch (SQLException ex) {
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
+            logger.info("Updating mcMMO MySQL tables for Alchemy...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
         }
@@ -1252,7 +1291,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_BLAST_MINING_COOLDOWN);
         }
         catch (SQLException ex) {
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
+            logger.info("Updating mcMMO MySQL tables for Blast Mining...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0'");
         }
     }
@@ -1263,7 +1302,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UNIQUE_PLAYER_DATA);
         }
         catch (SQLException ex) {
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Chimaera Wing...");
+            logger.info("Updating mcMMO MySQL tables for Chimaera Wing...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `chimaera_wing` int(32) NOT NULL DEFAULT '0'");
         }
     }
@@ -1274,7 +1313,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FISHING);
         }
         catch (SQLException ex) {
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
+            logger.info("Updating mcMMO MySQL tables for Fishing...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
         }
@@ -1286,7 +1325,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_MOB_HEALTHBARS);
         }
         catch (SQLException ex) {
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
+            logger.info("Updating mcMMO MySQL tables for mob healthbars...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + mcMMO.p.getGeneralConfig().getMobHealthbarDefault() + "'");
         }
     }
@@ -1297,7 +1336,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SCOREBOARD_TIPS);
         }
         catch (SQLException ex) {
-            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for scoreboard tips...");
+            logger.info("Updating mcMMO MySQL tables for scoreboard tips...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `scoreboardtips` int(10) NOT NULL DEFAULT '0' ;");
         }
     }
@@ -1310,7 +1349,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet.last();
 
             if (resultSet.getRow() != SkillTools.NON_CHILD_SKILLS.size()) {
-                mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
+                logger.info("Indexing tables, this may take a while on larger databases");
 
                 for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
                     String skill_name = skill.name().toLowerCase(Locale.ENGLISH);
@@ -1351,7 +1390,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             if (!column_exists) {
-                mcMMO.p.getLogger().info("Adding UUIDs to mcMMO MySQL user table...");
+                logger.info("Adding UUIDs to mcMMO MySQL user table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
 
@@ -1420,7 +1459,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             if (column_exists) {
-                mcMMO.p.getLogger().info("Removing party name from users table...");
+                logger.info("Removing party name from users table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party`");
             }
 
@@ -1454,7 +1493,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             if (!column_exists) {
-                mcMMO.p.getLogger().info("Adding skill total column to skills table...");
+                logger.info("Adding skill total column to skills table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD COLUMN `total` int NOT NULL DEFAULT '0'");
                 statement.executeUpdate("UPDATE `" + tablePrefix + "skills` SET `total` = (taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy)");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_total` (`total`) USING BTREE");
@@ -1490,7 +1529,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             if (column_exists) {
-                mcMMO.p.getLogger().info("Removing Spout HUD type from huds table...");
+                logger.info("Removing Spout HUD type from huds table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype`");
             }
 
@@ -1577,7 +1616,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() {
-        LogUtils.debug(mcMMO.p.getLogger(), "Releasing connection pool resource...");
+        LogUtils.debug(logger, "Releasing connection pool resource...");
         miscPool.close();
         loadPool.close();
         savePool.close();
@@ -1619,19 +1658,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
          */
 
         //Alter users table
-        mcMMO.p.getLogger().info("SQL Converting tables from latin1 to utf8mb4");
+        logger.info("SQL Converting tables from latin1 to utf8mb4");
 
         //Update "user" column
         try {
-        mcMMO.p.getLogger().info("Updating user column to new encoding");
+        logger.info("Updating user column to new encoding");
         statement.executeUpdate(getUpdateUserInUsersTableSQLQuery());
 
         //Update "uuid" column
-        mcMMO.p.getLogger().info("Updating user column to new encoding");
+        logger.info("Updating user column to new encoding");
         statement.executeUpdate(getUpdateUUIDInUsersTableSQLQuery());
 
         //Update "mobhealthbar" column
-        mcMMO.p.getLogger().info("Updating mobhealthbar column to new encoding");
+        logger.info("Updating mobhealthbar column to new encoding");
         statement.executeUpdate(getUpdateMobHealthBarInHudsTableSQLQuery());
 
         mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.SQL_CHARSET_UTF8MB4);

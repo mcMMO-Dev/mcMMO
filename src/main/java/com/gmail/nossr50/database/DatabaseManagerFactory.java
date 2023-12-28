@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 public class DatabaseManagerFactory {
     private static Class<? extends DatabaseManager> customManager = null;
+    public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     public static DatabaseManager getDatabaseManager(@NotNull String userFilePath, @NotNull Logger logger, long purgeTime, int startingLevel) {
         if (customManager != null) {
@@ -27,7 +28,7 @@ public class DatabaseManagerFactory {
             LogUtils.debug(mcMMO.p.getLogger(), "Falling back on " + (mcMMO.p.getGeneralConfig().getUseMySQL() ? "SQL" : "Flatfile") + " database");
         }
 
-        return mcMMO.p.getGeneralConfig().getUseMySQL() ? new SQLDatabaseManager() : new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
+        return mcMMO.p.getGeneralConfig().getUseMySQL() ? new SQLDatabaseManager(logger, MYSQL_DRIVER) : new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
     }
 
     /**
@@ -68,7 +69,7 @@ public class DatabaseManagerFactory {
 
             case SQL:
                 LogUtils.debug(mcMMO.p.getLogger(), "Using SQL Database");
-                return new SQLDatabaseManager();
+                return new SQLDatabaseManager(logger, "com.mysql.cj.jdbc.Driver");
 
             case CUSTOM:
                 try {
