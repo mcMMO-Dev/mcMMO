@@ -1,3 +1,13 @@
+Version 2.1.227
+    Fixed bug where some text would not be displayed to players (Adventure dependency update)
+    Repair sound effect from mcMMO can now be adjusted in Minecraft sound options (Thanks MithicSpirit)
+    Korean locale updated (Thanks Pindang2)
+    Simplified Chinese locale updated (Thanks YuanYuanOwO)
+
+    NOTES:
+    For those curious, mcMMO uses Adventure to do a lot of the message sending to players.
+    It typically needs updating when new versions of MC come out, sorry for the delay on my part.
+
 Version 2.1.226
     Added Short_Grass to experience.yml for Herbalism
     Updated Hylian Treasures "Bushes" alias to use short_grass when playing on new Minecraft versions
