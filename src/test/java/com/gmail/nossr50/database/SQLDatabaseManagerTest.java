@@ -3,26 +3,19 @@ package com.gmail.nossr50.database;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
-import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
-import com.gmail.nossr50.util.platform.version.SimpleNumericVersion;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.sql.*;
-import java.util.Locale;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -170,6 +163,83 @@ class SQLDatabaseManagerTest {
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             assertEquals(0, playerProfile.getSkillLevel(primarySkillType));
+        }
+    }
+
+    @Test
+    void testNewUserGetSkillXpLevel() {
+        Player player = Mockito.mock(Player.class);
+        when(player.getUniqueId()).thenReturn(java.util.UUID.randomUUID());
+        when(player.getName()).thenReturn("nossr50");
+        PlayerProfile playerProfile = sqlDatabaseManager.newUser(player);
+
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            assertEquals(0, playerProfile.getSkillXpLevel(primarySkillType));
+        }
+    }
+
+    @Test
+    void testSaveSkillLevelValues() {
+        Player player = Mockito.mock(Player.class);
+        when(player.getUniqueId()).thenReturn(java.util.UUID.randomUUID());
+        when(player.getName()).thenReturn("nossr50");
+        PlayerProfile playerProfile = sqlDatabaseManager.newUser(player);
+
+        // Validate values are starting from zero
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            assertEquals(0, playerProfile.getSkillXpLevel(primarySkillType));
+        }
+
+        // Change values
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            playerProfile.modifySkill(primarySkillType, 1 + primarySkillType.ordinal());
+        }
+
+        boolean saveSuccess = sqlDatabaseManager.saveUser(playerProfile);
+        assertTrue(saveSuccess);
+
+        PlayerProfile retrievedUser = sqlDatabaseManager.loadPlayerProfile(player.getName());
+
+        // Check that values got saved
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (primarySkillType == PrimarySkillType.SALVAGE || primarySkillType == PrimarySkillType.SMELTING) {
+                // Child skills are not saved, but calculated
+                continue;
+            }
+
+            assertEquals(1 + primarySkillType.ordinal(), retrievedUser.getSkillLevel(primarySkillType));
+        }
+    }
+
+    @Test
+    void testSaveSkillXpValues() {
+        Player player = Mockito.mock(Player.class);
+        when(player.getUniqueId()).thenReturn(java.util.UUID.randomUUID());
+        when(player.getName()).thenReturn("nossr50");
+        PlayerProfile playerProfile = sqlDatabaseManager.newUser(player);
+
+        // Validate values are starting from zero
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            assertEquals(0, playerProfile.getSkillXpLevel(primarySkillType));
+        }
+
+        // Change values
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            playerProfile.setSkillXpLevel(primarySkillType, 1 + primarySkillType.ordinal());
+        }
+
+        sqlDatabaseManager.saveUser(playerProfile);
+
+        PlayerProfile retrievedUser = sqlDatabaseManager.loadPlayerProfile(player.getName());
+
+        // Check that values got saved
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (primarySkillType == PrimarySkillType.SALVAGE || primarySkillType == PrimarySkillType.SMELTING) {
+                // Child skills are not saved, but calculated
+                continue;
+            }
+
+            assertEquals(1 + primarySkillType.ordinal(), retrievedUser.getSkillXpLevel(primarySkillType));
         }
     }
 }
