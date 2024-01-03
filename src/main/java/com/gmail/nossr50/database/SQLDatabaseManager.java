@@ -567,8 +567,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             statement = connection.prepareStatement(
                     "UPDATE `" + tablePrefix + "users` "
-                            + "SET \"USER\" = ? "
-                            + "WHERE \"USER\" = ?");
+                            + "SET `USER` = ? "
+                            + "WHERE `USER` = ?");
             statement.setString(1, "_INVALID_OLD_USERNAME_");
             statement.setString(2, playerName);
             statement.executeUpdate();
@@ -650,9 +650,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement = connection.prepareStatement(
                     "SELECT " +
                             "S.TAMING, S.MINING, S.REPAIR, S.WOODCUTTING, S.UNARMED, S.HERBALISM, S.EXCAVATION, S.ARCHERY, S.SWORDS, S.AXES, S.ACROBATICS, S.FISHING, S.ALCHEMY, S.CROSSBOWS, S.TRIDENTS, " +
-                            "E.TAMING, E.MINING, E.REPAIR, E.WOODCUTTING, E.UNARMED, E.HERBALISM, E.EXCAVATION, E.ARCHERY, E.SWORDS, E.AXES, E.ACROBATICS, E.FISHING, E.ALCHEMY, S.CROSSBOWS, S.TRIDENTS, " +
+                            "E.TAMING, E.MINING, E.REPAIR, E.WOODCUTTING, E.UNARMED, E.HERBALISM, E.EXCAVATION, E.ARCHERY, E.SWORDS, E.AXES, E.ACROBATICS, E.FISHING, E.ALCHEMY, E.CROSSBOWS, E.TRIDENTS, " +
                             "C.TAMING, C.MINING, C.REPAIR, C.WOODCUTTING, C.UNARMED, C.HERBALISM, C.EXCAVATION, C.ARCHERY, C.SWORDS, C.AXES, C.ACROBATICS, C.BLAST_MINING, C.CHIMAERA_WING, C.CROSSBOWS, C.TRIDENTS, " +
-                            "H.MOBHEALTHBAR, H.SCOREBOARDTIPS, U.UUID, U.\"USER\" " +
+                            "H.MOBHEALTHBAR, H.SCOREBOARDTIPS, U.UUID, U.`USER` " +
                             "FROM " + tablePrefix + "USERS U " +
                             "JOIN " + tablePrefix + "SKILLS S ON U.ID = S.USER_ID " +
                             "JOIN " + tablePrefix + "EXPERIENCE E ON U.ID = E.USER_ID " +
@@ -663,6 +663,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(1, id);
 
             resultSet = statement.executeQuery();
+
 
             if (resultSet.next()) {
                 try {
@@ -677,15 +678,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             && uuid != null) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET \"USER\" = ? "
-                                        + "WHERE \"USER\" = ?");
+                                        + "SET `USER` = ? "
+                                        + "WHERE `USER` = ?");
                         statement.setString(1, "_INVALID_OLD_USERNAME_");
                         statement.setString(2, name);
                         statement.executeUpdate();
                         statement.close();
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET \"USER\" = ?, uuid = ? "
+                                        + "SET `USER` = ?, uuid = ? "
                                         + "WHERE id = ?");
                         statement.setString(1, playerName);
                         statement.setString(2, uuid.toString());
@@ -859,7 +860,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Checks that the database structure is present and correct
      */
     private void checkStructure() {
-
         PreparedStatement statement = null;
         Statement createStatement = null;
         ResultSet resultSet = null;
@@ -1019,6 +1019,68 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(connection);
         }
 
+        updateStructure("SKILLS", "CROSSBOWS", String.valueOf(32));
+        updateStructure("SKILLS", "TRIDENTS", String.valueOf(32));
+
+        updateStructure("EXPERIENCE", "CROSSBOWS", String.valueOf(10));
+        updateStructure("EXPERIENCE", "TRIDENTS", String.valueOf(10));
+
+        updateStructure("COOLDOWNS", "CROSSBOWS", String.valueOf(10));
+        updateStructure("COOLDOWNS", "TRIDENTS", String.valueOf(10));
+    }
+
+    private void updateStructure(String tableName, String columnName, String columnSize) {
+        boolean columnExists = false;
+        DatabaseMetaData metaData = null;
+
+        try(Connection connection = getConnection(PoolIdentifier.MISC)) {
+            metaData = connection.getMetaData();
+            ResultSet rs = null;
+
+            try {
+                // Replace "YOUR_SCHEMA" with your database schema name if necessary, or use null to not filter by schema.
+                // Replace "YOUR_TABLE" with the actual table name, and "YOUR_COLUMN" with the column you're checking for.
+                rs = metaData.getColumns(null, null, tablePrefix + tableName, columnName);
+
+                if (rs.next()) {
+                    // If the result set is not empty, the column exists
+                    columnExists = true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            } finally {
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace(); // Handle the exception appropriately
+                    }
+                }
+            }
+
+            if (!columnExists) {
+                // Alter the table to add the column
+                Statement createStatement = null;
+                try {
+                    createStatement = connection.createStatement();
+                    String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
+                    createStatement.executeUpdate("ALTER TABLE `" + tablePrefix + tableName + "` "
+                            + "ADD COLUMN `" + columnName + "` int(" + columnSize + ") unsigned NOT NULL DEFAULT " + startingLevel);
+                } catch (SQLException e) {
+                    e.printStackTrace(); // Handle the exception appropriately
+                } finally {
+                    if (createStatement != null) {
+                        try {
+                            createStatement.close();
+                        } catch (SQLException e) {
+                            e.printStackTrace(); // Handle the exception appropriately
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setStatementQuery(PreparedStatement statement, String tableName) throws SQLException {
@@ -1032,19 +1094,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    protected Connection getConnection(PoolIdentifier identifier) throws SQLException {
-        Connection connection = null;
-        switch (identifier) {
-            case LOAD:
-                connection = loadPool.getConnection();
-                break;
-            case MISC:
-                connection = miscPool.getConnection();
-                break;
-            case SAVE:
-                connection = savePool.getConnection();
-                break;
-        }
+    Connection getConnection(PoolIdentifier identifier) throws SQLException {
+        Connection connection = switch (identifier) {
+            case LOAD -> loadPool.getConnection();
+            case MISC -> miscPool.getConnection();
+            case SAVE -> savePool.getConnection();
+        };
         if (connection == null) {
             throw new RuntimeException("getConnection() for " + identifier.name().toLowerCase(Locale.ENGLISH) + " pool timed out.  Increase max connections settings.");
         }
