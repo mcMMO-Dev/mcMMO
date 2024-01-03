@@ -4,10 +4,12 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.BowType;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -39,9 +41,13 @@ public class CrossbowsManager extends SkillManager {
 
         if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
             bounceCount = originalArrow.getMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT).get(0).asInt();
+            Bukkit.broadcastMessage("Bounce count: " + bounceCount);
             if (bounceCount >= getTrickShotMaxBounceCount()) {
+                Bukkit.broadcastMessage("No more bounces.");
                 return;
             }
+        } else {
+            Bukkit.broadcastMessage("No bounce count metadata");
         }
 
         final ProjectileSource originalArrowShooter = originalArrow.getShooter();
@@ -51,8 +57,12 @@ public class CrossbowsManager extends SkillManager {
 
 
         // check the angle of the arrow against the inverse normal to see if the angle was too shallow
-        if (arrowInBlockVector.angle(inverseNormal) < Math.PI / 4) {
+        // only checks angle on the first bounce
+        if (bounceCount == 0 && arrowInBlockVector.angle(inverseNormal) < Math.PI / 4) {
+            Bukkit.broadcastMessage("No bouncing.");
             return;
+        } else {
+            Bukkit.broadcastMessage("Bouncing.");
         }
 
         // Spawn new arrow with the reflected direction
@@ -64,8 +74,7 @@ public class CrossbowsManager extends SkillManager {
         arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
         arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE,
-                new FixedMetadataValue(pluginRef, originalArrow.getMetadata(
-                        MetadataConstants.METADATA_KEY_BOW_TYPE).get(0)));
+                new FixedMetadataValue(pluginRef, BowType.CROSSBOW));
 
         originalArrow.remove();
     }

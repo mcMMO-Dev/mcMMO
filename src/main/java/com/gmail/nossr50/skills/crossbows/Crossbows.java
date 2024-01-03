@@ -17,11 +17,6 @@ public class Crossbows {
     public static void processCrossbows(ProjectileHitEvent event, Plugin pluginRef) {
         if(event.getEntity() instanceof Arrow originalArrow && event.getHitBlock() != null && event.getHitBlockFace() != null) {
             if (originalArrow.getShooter() instanceof Player) {
-                // Avoid infinite spawning of arrows
-                if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
-                    return;
-                }
-
                 McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) originalArrow.getShooter());
                 if (mmoPlayer != null) {
                     mmoPlayer.getCrossbowsManager().handleRicochet(
