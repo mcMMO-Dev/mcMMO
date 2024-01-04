@@ -11,7 +11,6 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -29,7 +28,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public abstract class SkillCommand implements TabExecutor {
     protected PrimarySkillType skill;
@@ -294,14 +292,4 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected abstract List<Component> getTextComponents(Player player);
 
-    /**
-     * Checks if a player can use a skill
-     * @param player target player
-     * @param subSkillType target subskill
-     * @return true if the player has permission and has the skill unlocked
-     */
-    protected boolean canUseSubskill(Player player, SubSkillType subSkillType)
-    {
-        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
-    }
 }

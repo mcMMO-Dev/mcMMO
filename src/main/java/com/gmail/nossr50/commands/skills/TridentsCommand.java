@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -27,12 +28,12 @@ public class TridentsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        if (canUseSubskill(player, SubSkillType.TRIDENTS_SUPER)) {
+        if (SkillUtils.canUseSubskill(player, SubSkillType.TRIDENTS_SUPER)) {
             messages.add("Tridents Super Ability");
             //TODO: Implement Tridents Super
         }
 
-        if(canUseSubskill(player, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
+        if(SkillUtils.canUseSubskill(player, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK, 1000))));
         }

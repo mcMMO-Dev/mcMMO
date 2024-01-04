@@ -144,8 +144,12 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.TRIDENTS);
         }
 
+        if (SkillUtils.canUseSubskill(player, SubSkillType.TRIDENTS_IMPALE)) {
+            boostedDamage += (tridentsManager.impaleDamageBonus() * mcMMOPlayer.getAttackStrength());
+        }
+
         if(canUseLimitBreak(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
-            boostedDamage+=(getLimitBreakDamage(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
+            boostedDamage += (getLimitBreakDamage(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
         }
 
         event.setDamage(boostedDamage);
@@ -154,7 +158,8 @@ public final class CombatUtils {
         printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-    private static void processCrossbowsCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
+    private static void processCrossbowsCombat(@NotNull LivingEntity target, @NotNull Player player,
+                                               @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
@@ -166,6 +171,11 @@ public final class CombatUtils {
         }
 
         double boostedDamage = event.getDamage();
+
+        if (SkillUtils.canUseSubskill(player, SubSkillType.CROSSBOWS_POWERED_SHOT)) {
+            //Not Additive
+            boostedDamage = mcMMOPlayer.getCrossbowsManager().poweredShot(initialDamage);
+        }
 
         if(canUseLimitBreak(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
             boostedDamage+=getLimitBreakDamage(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK);

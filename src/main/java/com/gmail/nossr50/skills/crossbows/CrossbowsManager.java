@@ -3,7 +3,9 @@ package com.gmail.nossr50.skills.crossbows;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.BowType;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
@@ -12,6 +14,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
@@ -41,13 +44,9 @@ public class CrossbowsManager extends SkillManager {
 
         if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
             bounceCount = originalArrow.getMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT).get(0).asInt();
-            Bukkit.broadcastMessage("Bounce count: " + bounceCount);
             if (bounceCount >= getTrickShotMaxBounceCount()) {
-                Bukkit.broadcastMessage("No more bounces.");
                 return;
             }
-        } else {
-            Bukkit.broadcastMessage("No bounce count metadata");
         }
 
         final ProjectileSource originalArrowShooter = originalArrow.getShooter();
@@ -59,10 +58,7 @@ public class CrossbowsManager extends SkillManager {
         // check the angle of the arrow against the inverse normal to see if the angle was too shallow
         // only checks angle on the first bounce
         if (bounceCount == 0 && arrowInBlockVector.angle(inverseNormal) < Math.PI / 4) {
-            Bukkit.broadcastMessage("No bouncing.");
             return;
-        } else {
-            Bukkit.broadcastMessage("Bouncing.");
         }
 
         // Spawn new arrow with the reflected direction
@@ -81,5 +77,24 @@ public class CrossbowsManager extends SkillManager {
 
     public int getTrickShotMaxBounceCount() {
         return RankUtils.getRank(mmoPlayer, SubSkillType.CROSSBOWS_TRICK_SHOT);
+    }
+
+    public double getPoweredShotBonusDamage(Player player, double oldDamage)
+    {
+        double damageBonusPercent = getDamageBonusPercent(player);
+        double newDamage = oldDamage + (oldDamage * damageBonusPercent);
+        return Math.min(newDamage, (oldDamage + mcMMO.p.getAdvancedConfig().getPoweredShotDamageMax()));
+    }
+
+    public double getDamageBonusPercent(Player player) {
+        return ((RankUtils.getRank(player, SubSkillType.CROSSBOWS_POWERED_SHOT)) * (mcMMO.p.getAdvancedConfig().getPoweredShotRankDamageMultiplier()) / 100.0D);
+    }
+
+    public double poweredShot(double oldDamage) {
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.CROSSBOWS_POWERED_SHOT, getPlayer())) {
+            return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
+        } else {
+            return oldDamage;
+        }
     }
 }
