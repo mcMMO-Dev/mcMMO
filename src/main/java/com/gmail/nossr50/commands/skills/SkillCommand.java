@@ -62,6 +62,12 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
+        // Tridents skill is not ready yet
+        if (skill == PrimarySkillType.TRIDENTS) {
+            sender.sendMessage(ChatColor.RED + "Tridents will come in a future version!");
+            return true;
+        }
+
         if (args.length == 0) {
             boolean isLucky = Permissions.lucky(player, skill);
             boolean hasEndurance = PerksUtils.handleActivationPerks(player, 0, 0) != 0;

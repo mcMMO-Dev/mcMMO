@@ -24,6 +24,8 @@ public class HerbalismCommand extends SkillCommand {
     private int farmersDietRank;
     private String doubleDropChance;
     private String doubleDropChanceLucky;
+    private String tripleDropChance;
+    private String tripleDropChanceLucky;
     private String hylianLuckChance;
     private String hylianLuckChanceLucky;
     private String shroomThumbChance;
@@ -54,8 +56,8 @@ public class HerbalismCommand extends SkillCommand {
 
         if (canTripleDrop) {
             String[] tripleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_VERDANT_BOUNTY);
-            doubleDropChance = tripleDropStrings[0];
-            doubleDropChanceLucky = tripleDropStrings[1];
+            tripleDropChance = tripleDropStrings[0];
+            tripleDropChanceLucky = tripleDropStrings[1];
         }
         
         // FARMERS DIET
@@ -113,11 +115,16 @@ public class HerbalismCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
-        
+
+        if (canTripleDrop) {
+            messages.add(getStatMessage(SubSkillType.HERBALISM_VERDANT_BOUNTY, tripleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
+        }
+
         if (canFarmersDiet) {
             messages.add(getStatMessage(false, true, SubSkillType.HERBALISM_FARMERS_DIET, String.valueOf(farmersDietRank)));
         }
-        
+
         if (canGreenTerra) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_GREEN_TERRA, greenTerraLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));

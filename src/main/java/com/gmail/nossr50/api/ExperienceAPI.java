@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.UUID;
 
 public final class ExperienceAPI {

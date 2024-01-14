@@ -11,7 +11,6 @@ import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -20,8 +19,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
-import static com.gmail.nossr50.util.random.ProbabilityUtil.isStaticSkillRNGSuccessful;
 
 public class CrossbowsManager extends SkillManager {
     public CrossbowsManager(McMMOPlayer mmoPlayer) {

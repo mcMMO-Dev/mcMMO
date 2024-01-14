@@ -84,11 +84,10 @@ public class ProbabilityUtil {
 
                 if (player != null) {
                     McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-                    if(mmoPlayer != null) {
-                        xPos = mmoPlayer.getSkillLevel(subSkillType.getParentSkill());
-                    } else {
-                        xPos = 0;
+                    if (mmoPlayer == null) {
+                        return Probability.ofPercent(0);
                     }
+                    xPos = mmoPlayer.getSkillLevel(subSkillType.getParentSkill());
                 } else {
                     xPos = 0;
                 }

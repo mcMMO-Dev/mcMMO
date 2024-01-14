@@ -2,26 +2,24 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
+
 public class CrossbowsCommand extends SkillCommand {
     private boolean canSSG;
     private boolean canTrickShot;
     private boolean canPoweredShot;
-    private int bounceCount;
 
     public CrossbowsCommand() {
         super(PrimarySkillType.CROSSBOWS);
@@ -34,13 +32,13 @@ public class CrossbowsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSSG = RankUtils.hasUnlockedSubskill(player, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)
-                && Permissions.superShotgun(player);
+//        canSSG = RankUtils.hasUnlockedSubskill(player, CROSSBOWS_SUPER_SHOTGUN)
+//                && Permissions.superShotgun(player);
 
-        canTrickShot = RankUtils.hasUnlockedSubskill(player, SubSkillType.CROSSBOWS_TRICK_SHOT)
+        canTrickShot = RankUtils.hasUnlockedSubskill(player, CROSSBOWS_TRICK_SHOT)
                 && Permissions.trickShot(player);
 
-        canPoweredShot = RankUtils.hasUnlockedSubskill(player, SubSkillType.CROSSBOWS_POWERED_SHOT)
+        canPoweredShot = RankUtils.hasUnlockedSubskill(player, CROSSBOWS_POWERED_SHOT)
                 && Permissions.poweredShot(player);
     }
 
@@ -53,23 +51,26 @@ public class CrossbowsCommand extends SkillCommand {
             return messages;
         }
 
+        messages.add(ChatColor.DARK_AQUA + "Reminder: " + ChatColor.GOLD + "This is a BETA version of mcMMO, please report any bugs you find!");
+        messages.add(ChatColor.GOLD + "Crossbows is a " + ChatColor.RED + "WIP" +ChatColor.GOLD + " skill that is still being developed, please leave feedback in our discord!");
+
         if (canPoweredShot) {
-            messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, percent.format(mmoPlayer.getCrossbowsManager().getDamageBonusPercent(player))));
+            messages.add(getStatMessage(ARCHERY_SKILL_SHOT, percent.format(mmoPlayer.getCrossbowsManager().getDamageBonusPercent(player))));
         }
 
-        if (canSSG) {
-            messages.add("Super Shotgun");
-            //TODO: Implement SSG
-        }
+//        if (canSSG) {
+//            messages.add("Super Shotgun");
+//            //TODO: Implement SSG
+//        }
 
         if (canTrickShot) {
-            messages.add(getStatMessage(SubSkillType.CROSSBOWS_TRICK_SHOT,
+            messages.add(getStatMessage(CROSSBOWS_TRICK_SHOT,
                     String.valueOf(mmoPlayer.getCrossbowsManager().getTrickShotMaxBounceCount())));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
-            messages.add(getStatMessage(SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
+        if(Permissions.canUseSubSkill(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
+            messages.add(getStatMessage(CROSSBOWS_CROSSBOWS_LIMIT_BREAK,
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
         }
 
         return messages;

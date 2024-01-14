@@ -1,7 +1,7 @@
 Version 2.2.000
+    TODO: Add check to archery arrow retrieval to not work for crossbows
     TODO: More SQL unit tests
     TODO: Test mysql/mariadb changes
-    TODO: Trickshot: locale, multiple bounces, does not hurt yourself or allies, reduced damage per bounce?
     TODO: Add metadata cleanup unit tests
     TODO: Cleanup new arrow metadatas
     TODO: com/gmail/nossr50/database/FlatFileDatabaseManager.java:109 reporting data entries that need correction on each launch
@@ -10,57 +10,45 @@ Version 2.2.000
     TODO: Add unit test to determine crossbow or bow skill
     TODO: Add unit test for trident xp processing
     TODO: Add missing entries to changelog
-    child.yml is gone now, its better this way
     Replaced 'Experience_Formula.Modifier' in experience.yml with 'Experience_Formula.Skill_Multiplier' which is easier to understand and less prone to divide by zero bugs
-    (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console
-    Added a set of "mastery" subskills meant for end game progression
-    Added the mastery subskill 'Mother Lode' to Mining
-    Added the mastery subskill 'Clean Cuts' to Woodcutting
-    Added the mastery subskill 'Verdant Bounty' to Herbalism
-    All new skills have had settings added to advanced.yml
+    Added a set of "triple drop" sub skills to a few gathering skills, this is meant for "end game" progression
+    Added the end game oriented subskill 'Mother Lode' to Mining
+    Added the end game oriented subskill 'Clean Cuts' to Woodcutting
+    Added the end game oriented subskill 'Verdant Bounty' to Herbalism
+    Added Crossbows Skill and various sub skills
+    Updated advanced.yml with entries for the new skills
+    (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Added /mmopower command (aliases /mmopowerlevel /powerlevel)
     Added 'mcmmo.commands.mmopower' permission node
     Added 'mcmmo.ability.herbalism.verdantbounty' permission node
     Added 'mcmmo.ability.mining.motherlode' permission node
     Added 'mcmmo.ability.woodcutting.cleancuts' permission node
-    Added 'Mining.SubSkill.MotherLode.Name' to locale
-    Added 'Mining.SubSkill.MotherLode.Stat' to locale
-    Added 'Mining.SubSkill.MotherLode.Description' to locale
-    Added 'Woodcutting.SubSkill.CleanCuts.Name' to locale
-    Added 'Woodcutting.SubSkill.CleanCuts.Stat' to locale
-    Added 'Woodcutting.SubSkill.CleanCuts.Description' to locale
-    Added 'Herbalism.SubSkill.VerdantBounty.Name' to locale
-    Added 'Herbalism.SubSkill.VerdantBounty.Stat' to locale
-    Added 'Herbalism.SubSkill.VerdantBounty.Description' to locale
-    (Codebase) Major rewrite for how random chance was handled in the code
-
-    Added 'General.PowerLevel.Skill_Mastery.Enabled' to config.yml which is used to enable or disable the mastery skills wholesale (will also disable the new power level command)
+    Added 'mcmmo.commands.crossbows' permission node
+    Added 'mcmmo.ability.crossbows.supershotgun' permission node
+    Added 'mcmmo.ability.crossbows.trickshot' permission node
+    Added 'mcmmo.ability.crossbows.crossbowslimitbreak' permission node
+    Added 'mcmmo.commands.mmopower' permission node
+    Added locale entries for motherlode, cleancuts, and verdant bounty
+    Major rewrite for how random chance was handled in the code
+    child.yml is gone now, its better this way
 
     NOTES:
-    The goal of this update is to provide a small benefit to each skill and a reason to grind past the "maximum", ideally for a long while.
-    Most skills have a mastery sub-skill, this mastery subskill provides a small benefit that scales to level 10,000 (or 1,000 for standard) and does not have ranks (other than the initial rank to unlock it)
-    Mastery skills unlock at level 1000 for RetroMode (the default setting), and 100 for Standard, you can edit this via skillranks.yml
-    Mastery skills are meant to provide an "end-game" to skills, a reason to continue leveling a skill past its "max".
+    Crossbows is a WIP skill, and I will add to it in future updates.
+    Tridents is not ready for this update, so its been disabled for now.
+    The goal of this update is to provide a small benefit to some skills and a reason to grind past the "maximum", ideally for a long while.
+    Most skills have an end game oriented sub-skill, these new subskills provide a small benefit that grows and scales up to level 10,000 (or 1,000 for Standard mode which no one uses) and does not have ranks (other than the initial rank to unlock it)
+    These end game sub skills unlock at level 1000 for RetroMode (the default setting), and 100 for Standard, you can edit this via skillranks.yml
+    These new sub skills are meant to provide an "end-game" to skills, a reason to continue leveling a skill past its "max".
     This system is brand new, it is entirely possible I will completely change, remove, or add more mastery skills in the future.
 
-    The section below assumes RetroMode, if you are using Standard mode (1-100) just divide level examples by 10.
+    More info for Mother Lode, Clean Cuts, Verdant Bounty:
+    These skill respects double drop settings from config.yml just like the Double Drop skills do
+    Double Drops and Triple Drops do not stack, mcMMO checks for triple drops first, then double drops
+    New Power Level Command, for now this skill just shows you your current power level. This might be removed later.
+    Currently these skills scale up to a maximum 50% chance if a player has 10,000 skill, you can adjust this in advanced.yml
 
-    Mastery Skills
-    Mining / Mother Lode: With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops while mining (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
-    This skill respects double drop settings from the config files.
-    Double drops will only get checked if the Triple Drops fail for players that have Mother Lode unlocked, these two skills do not stack.
-
-    Woodcutting / Clean Cuts: With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops while woodcutting or using Tree Feller (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
-    This skill respects double drop settings from the config files.
-    Double Drops (Harvest Lumber) will only get checked if the Triple Drops fail for players that have Clean Cuts unlocked, these two skills do not stack.
-
-    Herbalism / Verdant Bounty: With default settings, when players hit level 1,000 they will unlock this sub-skill, it will add a 1% chance to get triple drops when harvesting crops (this can be edited in advanced.yml), this skill maxes out at 10.0% chance at level 10,000.
-    This skill respects double drop settings from the config files.
-    Double Drops only occur if the Triple Drops fail, these two skills do not stack.
-    New Power Level Command
-    This power level command gives you a view of all your current masteries, it also provides a summary of your power level.
 
 Version 2.1.227
     Fixed bug where some text would not be displayed to players (Adventure dependency update)

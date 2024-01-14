@@ -166,7 +166,14 @@ public final class Permissions {
      * SKILLS
      */
 
-    public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH)); }
+    public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {
+        // hack to disable tridents for now
+        if (skill == PrimarySkillType.TRIDENTS)
+            return false;
+
+        return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH));
+    }
+
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase(Locale.ENGLISH) + ".vanillaxpboost"); }
     public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) {
         // hack to disable supers that aren't coded yet
@@ -286,6 +293,10 @@ public final class Permissions {
      * @return true if the player has permission and has the skill unlocked
      */
     public static boolean canUseSubSkill(@NotNull Player player, @NotNull SubSkillType subSkillType) {
+        // Hack to disable tridents for now
+        if (subSkillType.getParentSkill() == PrimarySkillType.TRIDENTS)
+            return false;
+
         return isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }
