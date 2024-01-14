@@ -34,6 +34,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
+import static java.util.Objects.requireNonNull;
+
 public final class SkillUtils {
     /**
      * This is a static utility class, therefore we don't want any instances of
@@ -362,6 +364,11 @@ public final class SkillUtils {
      */
     public static boolean canUseSubskill(Player player, SubSkillType subSkillType)
     {
+        requireNonNull(subSkillType, "subSkillType cannot be null");
+        // hack to disable supers that aren't coded yet
+        if(subSkillType == SubSkillType.TRIDENTS_SUPER || subSkillType == SubSkillType.CROSSBOWS_SUPER_SHOTGUN)
+            return false;
+
         return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

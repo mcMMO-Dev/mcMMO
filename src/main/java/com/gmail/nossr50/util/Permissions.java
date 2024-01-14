@@ -168,7 +168,12 @@ public final class Permissions {
 
     public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH)); }
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase(Locale.ENGLISH) + ".vanillaxpboost"); }
-    public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) { return permissible.hasPermission(subSkillType.getPermissionNodeAddress()); }
+    public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) {
+        // hack to disable supers that aren't coded yet
+        if(subSkillType == SubSkillType.TRIDENTS_SUPER || subSkillType == SubSkillType.CROSSBOWS_SUPER_SHOTGUN)
+            return false;
+        return permissible.hasPermission(subSkillType.getPermissionNodeAddress());
+    }
 
     /* ACROBATICS */
     public static boolean dodge(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.acrobatics.dodge"); }
@@ -227,12 +232,18 @@ public final class Permissions {
     /* WOODCUTTING */
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
     /* CROSSBOWS */
-    public static boolean superShotgun(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun"); }
+    public static boolean superShotgun(Permissible permissible) {
+        return false;
+        // return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun");
+    }
     public static boolean trickShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.trickshot"); }
     public static boolean poweredShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.poweredshot"); }
 
     /* TRIDENTS */
-    public static boolean tridentsSuper(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.tridents.superability"); }
+    public static boolean tridentsSuper(Permissible permissible) {
+        return false;
+        // return permissible.hasPermission("mcmmo.ability.tridents.superability");
+    }
     public static boolean tridentsLimitBreak(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.tridents.superability"); }
 
     /*
