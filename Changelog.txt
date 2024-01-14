@@ -44,7 +44,7 @@ Version 2.2.000
     This system is brand new, it is entirely possible I will completely change, remove, or add more mastery skills in the future.
 
     More info for Mother Lode, Clean Cuts, Verdant Bounty:
-    These skill respects double drop settings from config.yml just like the Double Drop skills do
+    These skills respect double drop settings from config.yml just like the Double Drop skills do
     Double Drops and Triple Drops do not stack, mcMMO checks for triple drops first, then double drops
     New Power Level Command, for now this skill just shows you your current power level. This might be removed later.
     Currently these skills scale up to a maximum 50% chance if a player has 10,000 skill, you can adjust this in advanced.yml
