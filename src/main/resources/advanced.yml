@@ -265,7 +265,7 @@ Skills:
                 Standard: 100
                 RetroMode: 1000
         VerdantBounty:
-            ChanceMax: 15.0
+            ChanceMax: 50.0
             MaxBonusLevel:
                 Standard: 1000
                 RetroMode: 10000
@@ -293,7 +293,7 @@ Skills:
             MaxBonusLevel:
                 Standard: 1000
                 RetroMode: 10000
-            ChanceMax: 15.0
+            ChanceMax: 50.0
         SuperBreaker:
             AllowTripleDrops: true
         DoubleDrops:
@@ -621,8 +621,8 @@ Skills:
         # Triple Drops
         CleanCuts:
             # ChanceMax: Maximum chance of receiving triple drops (100 = 100%)
-            # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-            ChanceMax: 15.0
+            # MaxBonusLevel: Level when the maximum chance of receiving triple drops is reached
+            ChanceMax: 50.0
             MaxBonusLevel:
                 Standard: 1000
                 RetroMode: 10000
