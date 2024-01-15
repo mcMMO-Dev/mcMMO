@@ -233,7 +233,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                    "WHERE u.`USER` = ?");
+                    "WHERE u.`user` = ?");
 
             statement.setString(1, playerName);
 
@@ -402,7 +402,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
 
-
         String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase(Locale.ENGLISH);
         ResultSet resultSet = null;
         PreparedStatement statement = null;
@@ -410,7 +409,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            statement = connection.prepareStatement("SELECT " + query + ", `USER` FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 AND NOT `USER` = '\\_INVALID\\_OLD\\_USERNAME\\_' ORDER BY " + query + " DESC, `USER` LIMIT ?, ?");
+            statement = connection.prepareStatement("SELECT " + query + ", `user` FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 AND NOT `user` = '\\_INVALID\\_OLD\\_USERNAME\\_' ORDER BY " + query + " DESC, `user` LIMIT ?, ?");
             statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
             statement.setInt(2, statsPerPage);
             resultSet = statement.executeQuery();
@@ -451,7 +450,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                        "WHERE `USER` = ?)";
+                        "WHERE `user` = ?)";
 
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, playerName);
@@ -464,7 +463,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 // Ties are settled by alphabetical order
                 sql = "SELECT user, " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " = (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                        "WHERE `USER` = '" + playerName + "') ORDER BY user";
+                        "WHERE `user` = '" + playerName + "') ORDER BY user";
 
                 resultSet.close();
                 statement.close();
@@ -487,7 +486,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "WHERE " + ALL_QUERY_VERSION + " > 0 " +
                     "AND " + ALL_QUERY_VERSION + " > " +
                     "(SELECT " + ALL_QUERY_VERSION + " " +
-                    "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE `USER` = ?)";
+                    "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE `user` = ?)";
 
             statement = connection.prepareStatement(sql);
             statement.setString(1, playerName);
@@ -505,7 +504,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "WHERE " + ALL_QUERY_VERSION + " > 0 " +
                     "AND " + ALL_QUERY_VERSION + " = " +
                     "(SELECT " + ALL_QUERY_VERSION + " " +
-                    "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE `USER` = ?) ORDER BY user";
+                    "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE `user` = ?) ORDER BY user";
 
             statement = connection.prepareStatement(sql);
             statement.setString(1, playerName);
@@ -573,8 +572,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             statement = connection.prepareStatement(
                     "UPDATE `" + tablePrefix + "users` "
-                            + "SET `USER` = ? "
-                            + "WHERE `USER` = ?");
+                            + "SET `user` = ? "
+                            + "WHERE `user` = ?");
             statement.setString(1, "_INVALID_OLD_USERNAME_");
             statement.setString(2, playerName);
             statement.executeUpdate();
@@ -632,7 +631,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return loadPlayerFromDB(uuid, null);
     }
 
-
     private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName) throws RuntimeException {
         if(uuid == null && playerName == null) {
             throw new RuntimeException("Error looking up player, both UUID and playerName are null and one must not be.");
@@ -655,21 +653,20 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement = connection.prepareStatement(
                     "SELECT " +
-                            "S.TAMING, S.MINING, S.REPAIR, S.WOODCUTTING, S.UNARMED, S.HERBALISM, S.EXCAVATION, S.ARCHERY, S.SWORDS, S.AXES, S.ACROBATICS, S.FISHING, S.ALCHEMY, S.CROSSBOWS, S.TRIDENTS, " +
-                            "E.TAMING, E.MINING, E.REPAIR, E.WOODCUTTING, E.UNARMED, E.HERBALISM, E.EXCAVATION, E.ARCHERY, E.SWORDS, E.AXES, E.ACROBATICS, E.FISHING, E.ALCHEMY, E.CROSSBOWS, E.TRIDENTS, " +
-                            "C.TAMING, C.MINING, C.REPAIR, C.WOODCUTTING, C.UNARMED, C.HERBALISM, C.EXCAVATION, C.ARCHERY, C.SWORDS, C.AXES, C.ACROBATICS, C.BLAST_MINING, C.CHIMAERA_WING, C.CROSSBOWS, C.TRIDENTS, " +
-                            "H.MOBHEALTHBAR, H.SCOREBOARDTIPS, U.UUID, U.`USER` " +
-                            "FROM " + tablePrefix + "USERS U " +
-                            "JOIN " + tablePrefix + "SKILLS S ON U.ID = S.USER_ID " +
-                            "JOIN " + tablePrefix + "EXPERIENCE E ON U.ID = E.USER_ID " +
-                            "JOIN " + tablePrefix + "COOLDOWNS C ON U.ID = C.USER_ID " +
-                            "JOIN " + tablePrefix + "HUDS H ON U.ID = H.USER_ID " +
-                            "WHERE U.ID = ?"
+                            "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, s.crossbows, s.tridents, " +
+                            "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, e.crossbows, e.tridents, " +
+                            "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, c.crossbows, c.tridents, " +
+                            "h.mobhealthbar, h.scoreboardtips, u.uuid, u.`user` "
+                            + "FROM " + tablePrefix + "users u "
+                            + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
+                            + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
+                            + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
+                            + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
+                            + "WHERE u.id = ?"
             );
             statement.setInt(1, id);
 
             resultSet = statement.executeQuery();
-
 
             if (resultSet.next()) {
                 try {
@@ -684,15 +681,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             && uuid != null) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET `USER` = ? "
-                                        + "WHERE `USER` = ?");
+                                        + "SET `user` = ? "
+                                        + "WHERE `user` = ?");
                         statement.setString(1, "_INVALID_OLD_USERNAME_");
                         statement.setString(2, name);
                         statement.executeUpdate();
                         statement.close();
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET `USER` = ?, uuid = ? "
+                                        + "SET `user` = ?, uuid = ? "
                                         + "WHERE id = ?");
                         statement.setString(1, playerName);
                         statement.setString(2, uuid.toString());
@@ -740,7 +737,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
                             + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.`USER` = ?");
+                            + "WHERE u.`user` = ?");
             List<String> usernames = getStoredUsers();
             int convertedUsers = 0;
             long startMillis = System.currentTimeMillis();
@@ -779,7 +776,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.prepareStatement(
                     "UPDATE `" + tablePrefix + "users` SET "
-                            + "  uuid = ? WHERE `USER` = ?");
+                            + "  uuid = ? WHERE `user` = ?");
             statement.setString(1, uuid.toString());
             statement.setString(2, userName);
             statement.execute();
@@ -803,7 +800,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE `USER` = ?");
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE `user` = ?");
 
             for (Map.Entry<String, UUID> entry : fetchedUUIDs.entrySet()) {
                 statement.setString(1, entry.getValue().toString());
@@ -845,7 +842,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT `USER` FROM " + tablePrefix + "users");
+            resultSet = statement.executeQuery("SELECT `user` FROM " + tablePrefix + "users");
             while (resultSet.next()) {
                 users.add(resultSet.getString("user"));
             }
@@ -1604,7 +1601,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id, `USER` FROM " + tablePrefix + "users WHERE uuid = ? OR (uuid IS NULL AND `USER` = ?)");
+            statement = connection.prepareStatement("SELECT id, `user` FROM " + tablePrefix + "users WHERE uuid = ? OR (uuid IS NULL AND `user` = ?)");
             statement.setString(1, uuid.toString());
             statement.setString(2, playerName);
             resultSet = statement.executeQuery();
@@ -1633,7 +1630,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id, `USER` FROM " + tablePrefix + "users WHERE `USER` = ?");
+            statement = connection.prepareStatement("SELECT id, `user` FROM " + tablePrefix + "users WHERE `user` = ?");
             statement.setString(1, playerName);
             resultSet = statement.executeQuery();
 
@@ -1734,7 +1731,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private String getUpdateUserInUsersTableSQLQuery() {
         return "ALTER TABLE\n" +
                 "    " + tablePrefix + "users\n" +
-                "    CHANGE `USER` user\n" +
+                "    CHANGE `user` user\n" +
                 "    " + USER_VARCHAR + "\n" +
                 "    CHARACTER SET utf8mb4\n" +
                 "    COLLATE utf8mb4_unicode_ci;";

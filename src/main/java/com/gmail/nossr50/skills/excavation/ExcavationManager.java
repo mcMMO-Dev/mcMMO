@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.excavation;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -16,8 +17,12 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 public class ExcavationManager extends SkillManager {
     public ExcavationManager(McMMOPlayer mcMMOPlayer) {
@@ -30,10 +35,9 @@ public class ExcavationManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void excavationBlockCheck(BlockState blockState) {
-        int xp = Excavation.getBlockXP(blockState);
-
+        requireNonNull(blockState, "excavationBlockCheck: blockState cannot be null");
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
+            List<ExcavationTreasure> treasures = getTreasures(blockState);
 
             if (!treasures.isEmpty()) {
                 int skillLevel = getSkillLevel();
@@ -42,20 +46,31 @@ public class ExcavationManager extends SkillManager {
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
                             && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), treasure.getDropProbability())) {
-
-                        //Spawn Vanilla XP orbs if a dice roll succeeds
-                        if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
-                            Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
-                        }
-
-                        xp += treasure.getXp();
-                        Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
+                        processExcavationBonusesOnBlock(blockState, treasure, location);
                     }
                 }
             }
         }
+    }
 
-        applyXpGain(xp, XPGainReason.PVE);
+    @VisibleForTesting
+    public List<ExcavationTreasure> getTreasures(@NotNull BlockState blockState) {
+        requireNonNull(blockState, "blockState cannot be null");
+        return Excavation.getTreasures(blockState);
+    }
+
+    @VisibleForTesting
+    public void processExcavationBonusesOnBlock(BlockState blockState, ExcavationTreasure treasure, Location location) {
+        int xp = Excavation.getBlockXP(blockState);
+
+        //Spawn Vanilla XP orbs if a dice roll succeeds
+        if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
+            Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
+        }
+
+        xp += treasure.getXp();
+        Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
+        applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
     }
 
     public int getExperienceOrbsReward() {

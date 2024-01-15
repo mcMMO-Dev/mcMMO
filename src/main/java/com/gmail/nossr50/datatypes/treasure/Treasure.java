@@ -16,7 +16,7 @@ public abstract class Treasure {
         this.drop = drop;
         this.xp = xp;
         this.dropChance = dropChance;
-        this.dropProbability = Probability.ofPercent(dropChance / 100);
+        this.dropProbability = Probability.ofPercent(dropChance);
         this.dropLevel = dropLevel;
     }
 
@@ -46,7 +46,7 @@ public abstract class Treasure {
 
     public void setDropChance(double dropChance) {
         this.dropChance = dropChance;
-        this.dropProbability = Probability.ofPercent(dropChance / 100);
+        this.dropProbability = Probability.ofPercent(dropChance);
     }
 
     public int getDropLevel() {
