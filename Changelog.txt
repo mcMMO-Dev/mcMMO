@@ -10,6 +10,7 @@ Version 2.2.000
     TODO: Add unit test to determine crossbow or bow skill
     TODO: Add unit test for trident xp processing
     TODO: Add missing entries to changelog
+    Tree Feller now drops 90% less non-wood blocks (leaves/etc) on average
     Replaced 'Experience_Formula.Modifier' in experience.yml with 'Experience_Formula.Skill_Multiplier' which is easier to understand and less prone to divide by zero bugs
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console

@@ -30,6 +30,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public abstract class MMOTestEnvironment {
     protected MockedStatic<mcMMO> mockedMcMMO;
@@ -62,23 +63,24 @@ public abstract class MMOTestEnvironment {
     protected String playerName = "testPlayer";
 
     protected ChunkManager chunkManager;
+    protected MaterialMapStore materialMapStore;
 
     protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
         mockedMcMMO = Mockito.mockStatic(mcMMO.class);
         mcMMO.p = Mockito.mock(mcMMO.class);
-        Mockito.when(mcMMO.p.getLogger()).thenReturn(logger);
+        when(mcMMO.p.getLogger()).thenReturn(logger);
 
         // place store
         chunkManager = Mockito.mock(ChunkManager.class);
-        Mockito.when(mcMMO.getPlaceStore()).thenReturn(chunkManager);
+        when(mcMMO.getPlaceStore()).thenReturn(chunkManager);
 
         // shut off mod manager for woodcutting
-        Mockito.when(mcMMO.getModManager()).thenReturn(Mockito.mock(ModManager.class));
-        Mockito.when(mcMMO.getModManager().isCustomLog(any())).thenReturn(false);
+        when(mcMMO.getModManager()).thenReturn(Mockito.mock(ModManager.class));
+        when(mcMMO.getModManager().isCustomLog(any())).thenReturn(false);
 
         // chat config
         mockedChatConfig = Mockito.mockStatic(ChatConfig.class);
-        Mockito.when(ChatConfig.getInstance()).thenReturn(Mockito.mock(ChatConfig.class));
+        when(ChatConfig.getInstance()).thenReturn(Mockito.mock(ChatConfig.class));
 
         // general config
         mockGeneralConfig();
@@ -94,10 +96,10 @@ public abstract class MMOTestEnvironment {
 
         // wire skill tools
         this.skillTools = new SkillTools(mcMMO.p);
-        Mockito.when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
+        when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
 
         this.transientEntityTracker = new TransientEntityTracker();
-        Mockito.when(mcMMO.getTransientEntityTracker()).thenReturn(transientEntityTracker);
+        when(mcMMO.getTransientEntityTracker()).thenReturn(transientEntityTracker);
 
         mockPermissions();
 
@@ -105,26 +107,26 @@ public abstract class MMOTestEnvironment {
 
         // wire server
         this.server = Mockito.mock(Server.class);
-        Mockito.when(mcMMO.p.getServer()).thenReturn(server);
+        when(mcMMO.p.getServer()).thenReturn(server);
 
         // wire plugin manager
         this.pluginManager = Mockito.mock(PluginManager.class);
-        Mockito.when(server.getPluginManager()).thenReturn(pluginManager);
+        when(server.getPluginManager()).thenReturn(pluginManager);
 
         // wire world
         this.world = Mockito.mock(World.class);
 
         // wire Misc
         this.mockedMisc = Mockito.mockStatic(Misc.class);
-        Mockito.when(Misc.getBlockCenter(any())).thenReturn(new Location(world, 0, 0, 0));
+        when(Misc.getBlockCenter(any())).thenReturn(new Location(world, 0, 0, 0));
 
         // setup player and player related mocks after everything else
         this.player = Mockito.mock(Player.class);
-        Mockito.when(player.getUniqueId()).thenReturn(playerUUID);
+        when(player.getUniqueId()).thenReturn(playerUUID);
 
         // wire inventory
         this.playerInventory = Mockito.mock(PlayerInventory.class);
-        Mockito.when(player.getInventory()).thenReturn(playerInventory);
+        when(player.getInventory()).thenReturn(playerInventory);
 
         // PlayerProfile and McMMOPlayer are partially mocked
         playerProfile = new PlayerProfile("testPlayer", player.getUniqueId(), 0);
@@ -132,16 +134,19 @@ public abstract class MMOTestEnvironment {
 
         // wire user manager
         this.mockedUserManager = Mockito.mockStatic(UserManager.class);
-        Mockito.when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
+        when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
+
+        this.materialMapStore = new MaterialMapStore();
+        when(mcMMO.getMaterialMapStore()).thenReturn(materialMapStore);
     }
 
     private void mockPermissions() {
         mockedPermissions = Mockito.mockStatic(Permissions.class);
-        Mockito.when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        Mockito.when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        Mockito.when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        Mockito.when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        Mockito.when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(false); // player is not lucky
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
+        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
+        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
+        when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(false); // player is not lucky
     }
 
     private void mockRankConfig() {
@@ -150,24 +155,24 @@ public abstract class MMOTestEnvironment {
 
     private void mockAdvancedConfig() {
         this.advancedConfig = Mockito.mock(AdvancedConfig.class);
-        Mockito.when(mcMMO.p.getAdvancedConfig()).thenReturn(advancedConfig);
+        when(mcMMO.p.getAdvancedConfig()).thenReturn(advancedConfig);
     }
 
     private void mockGeneralConfig() {
         generalConfig = Mockito.mock(GeneralConfig.class);
-        Mockito.when(generalConfig.getTreeFellerThreshold()).thenReturn(100);
-        Mockito.when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, Material.OAK_LOG)).thenReturn(true);
-        Mockito.when(generalConfig.getLocale()).thenReturn("en_US");
-        Mockito.when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
+        when(generalConfig.getTreeFellerThreshold()).thenReturn(100);
+        when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, Material.OAK_LOG)).thenReturn(true);
+        when(generalConfig.getLocale()).thenReturn("en_US");
+        when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
     }
 
     private void mockExperienceConfig() {
         experienceConfig = Mockito.mockStatic(ExperienceConfig.class);
 
-        Mockito.when(ExperienceConfig.getInstance()).thenReturn(Mockito.mock(ExperienceConfig.class));
+        when(ExperienceConfig.getInstance()).thenReturn(Mockito.mock(ExperienceConfig.class));
 
         // Combat
-        Mockito.when(ExperienceConfig.getInstance().getCombatXP("Cow")).thenReturn(1D);
+        when(ExperienceConfig.getInstance().getCombatXP("Cow")).thenReturn(1D);
     }
 
     protected void cleanupBaseEnvironment() {
