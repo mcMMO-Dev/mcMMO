@@ -129,7 +129,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         loadPool = new DataSource(poolProperties);
 
         checkStructure();
-
     }
 
     @NotNull
@@ -1272,13 +1271,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
-        if (debug || h2) {
-            ex.printStackTrace();
-        } else {
-            for (StackTraceElement element : ex.getStackTrace()) {
-                logger.severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
-            }
-        }
+        ex.printStackTrace();
 
         // logger.severe("SQLException: " + ex.getMessage());
         logger.severe("SQLState: " + ex.getSQLState());
