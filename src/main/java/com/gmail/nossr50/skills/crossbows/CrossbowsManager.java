@@ -5,8 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.archery.Archery;
-import com.gmail.nossr50.util.BowType;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
@@ -25,17 +23,20 @@ public class CrossbowsManager extends SkillManager {
         super(mmoPlayer, PrimarySkillType.CROSSBOWS);
     }
 
-    public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow originalArrow, @NotNull Vector hitBlockNormal) {
+    public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow, @NotNull Vector hitBlockNormal) {
+        if(!arrow.isShotFromCrossbow())
+            return;
+
         // Check player permission
         if (!Permissions.trickShot(mmoPlayer.getPlayer())) {
             return;
         }
 
         // TODO: Add an event for this for plugins to hook into
-        spawnReflectedArrow(pluginRef, originalArrow, originalArrow.getLocation(), hitBlockNormal);
+        spawnReflectedArrow(pluginRef, arrow, arrow.getLocation(), hitBlockNormal);
     }
 
-    public void spawnReflectedArrow(@NotNull Plugin pluginRef, @NotNull Arrow originalArrow,
+    private void spawnReflectedArrow(@NotNull Plugin pluginRef, @NotNull Arrow originalArrow,
                                     @NotNull Location origin, @NotNull Vector normal) {
         int bounceCount = 0;
 
@@ -66,8 +67,6 @@ public class CrossbowsManager extends SkillManager {
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
         arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE,
-                new FixedMetadataValue(pluginRef, BowType.CROSSBOW));
 
         originalArrow.remove();
     }
@@ -89,7 +88,7 @@ public class CrossbowsManager extends SkillManager {
 
     public double poweredShot(double oldDamage) {
         if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.CROSSBOWS_POWERED_SHOT, getPlayer())) {
-            return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
+            return getPoweredShotBonusDamage(getPlayer(), oldDamage);
         } else {
             return oldDamage;
         }

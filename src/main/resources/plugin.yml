@@ -859,6 +859,8 @@ permissions:
             mcmmo.commands.alchemy: true
             mcmmo.commands.archery: true
             mcmmo.commands.axes: true
+            mcmmo.commands.crossbows: true
+            mcmmo.commands.tridents: true
             mcmmo.commands.excavation: true
             mcmmo.commands.fishing: true
             mcmmo.commands.herbalism: true
@@ -2212,6 +2214,8 @@ permissions:
             mcmmo.skills.taming: true
             mcmmo.skills.unarmed: true
             mcmmo.skills.woodcutting: true
+            mcmmo.skills.crossbows: true
+            mcmmo.skills.tridents: true
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
         children:

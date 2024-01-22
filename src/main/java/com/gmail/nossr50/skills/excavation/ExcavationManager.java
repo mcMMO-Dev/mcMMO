@@ -35,6 +35,7 @@ public class ExcavationManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void excavationBlockCheck(BlockState blockState) {
+        int xp = Excavation.getBlockXP(blockState);
         requireNonNull(blockState, "excavationBlockCheck: blockState cannot be null");
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = getTreasures(blockState);
@@ -51,6 +52,8 @@ public class ExcavationManager extends SkillManager {
                 }
             }
         }
+
+        applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
     }
 
     @VisibleForTesting
@@ -61,16 +64,17 @@ public class ExcavationManager extends SkillManager {
 
     @VisibleForTesting
     public void processExcavationBonusesOnBlock(BlockState blockState, ExcavationTreasure treasure, Location location) {
-        int xp = Excavation.getBlockXP(blockState);
-
         //Spawn Vanilla XP orbs if a dice roll succeeds
         if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
             Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
         }
 
+        int xp = 0;
         xp += treasure.getXp();
         Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
-        applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
+        if (xp > 0) {
+            applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
+        }
     }
 
     public int getExperienceOrbsReward() {

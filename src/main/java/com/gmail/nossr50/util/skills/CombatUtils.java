@@ -52,8 +52,10 @@ public final class CombatUtils {
     // TODO: Unit tests
     public static void processProjectileSkillSuperAbilityActivation(McMMOPlayer mmoPlayer, ItemStack heldItem) {
         if (heldItem != null && mmoPlayer != null) {
-            if (ItemUtils.isBowOrCrossbow(heldItem))
-                mmoPlayer.checkAbilityActivationProjectiles(ItemUtils.getBowType(heldItem));
+            if (ItemUtils.isBowOrCrossbow(heldItem)) {
+                boolean isCrossbow = ItemUtils.isCrossbow(heldItem);
+                mmoPlayer.checkAbilityActivationProjectiles(isCrossbow);
+            }
         }
     }
 
@@ -159,14 +161,14 @@ public final class CombatUtils {
     }
 
     private static void processCrossbowsCombat(@NotNull LivingEntity target, @NotNull Player player,
-                                               @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
+                                               @NotNull EntityDamageByEntityEvent event, @NotNull Arrow arrow) {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Make sure the profiles been loaded
         if(mcMMOPlayer == null) {
-            ProjectileUtils.cleanupProjectileMetadata(arrow);
+            delayArrowMetaCleanup(arrow);
             return;
         }
 
@@ -194,7 +196,7 @@ public final class CombatUtils {
                 "Final Damage: "+boostedDamage);
 
         //Clean data
-        ProjectileUtils.cleanupProjectileMetadata(arrow);
+        delayArrowMetaCleanup(arrow);
     }
 
     private static void processAxeCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
@@ -324,14 +326,15 @@ public final class CombatUtils {
 
     }
 
-    private static void processArcheryCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull Projectile arrow) {
+    private static void processArcheryCombat(@NotNull LivingEntity target, @NotNull Player player,
+                                             @NotNull EntityDamageByEntityEvent event, @NotNull Arrow arrow) {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Make sure the profiles been loaded
         if(mcMMOPlayer == null) {
-            ProjectileUtils.cleanupProjectileMetadata(arrow);
+            delayArrowMetaCleanup(arrow);
             return;
         }
 
@@ -372,7 +375,7 @@ public final class CombatUtils {
                 "Initial Damage: "+initialDamage,
                 "Final Damage: "+boostedDamage);
         //Clean data
-        ProjectileUtils.cleanupProjectileMetadata(arrow);
+        delayArrowMetaCleanup(arrow);
     }
 
     /**
@@ -489,22 +492,20 @@ public final class CombatUtils {
                 }
             }
         }
-        else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
-            Projectile arrow = (Projectile) painSource;
+        else if (painSource instanceof Arrow arrow) {
             ProjectileSource projectileSource = arrow.getShooter();
-
+            boolean isCrossbow = arrow.isShotFromCrossbow();
             if (projectileSource instanceof Player player) {
-                BowType bowType = getBowTypeFromMetadata(arrow);
 
                 if (!Misc.isNPCEntityExcludingVillagers(player)) {
-                    if(bowType == BowType.BOW && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
+                    if(!isCrossbow && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
                         processArcheryCombat(target, player, event, arrow);
-                    } else if(bowType == BowType.CROSSBOW && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.CROSSBOWS, target)) {
+                    } else if(isCrossbow && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.CROSSBOWS, target)) {
                         processCrossbowsCombat(target, player, event, arrow);
                     }
                 } else {
                     //Cleanup Arrow
-                    ProjectileUtils.cleanupProjectileMetadata(arrow);
+                    delayArrowMetaCleanup(arrow);
                 }
 
                 if (target.getType() != EntityType.CREEPER
@@ -520,18 +521,6 @@ public final class CombatUtils {
                 }
             }
         }
-    }
-
-    private static BowType getBowTypeFromMetadata(Projectile projectile) {
-        // Return the BowType from the metadata, or default to BOW
-        if (projectile.hasMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE)) {
-            List<MetadataValue> metadataValue = projectile.getMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE);
-
-            if (!metadataValue.isEmpty()) {
-                return (BowType) metadataValue.get(0).value();
-            }
-        }
-        throw new IllegalStateException("BowType metadata is empty");
     }
 
     /**
@@ -728,7 +717,7 @@ public final class CombatUtils {
     }
 
     public static boolean hasIgnoreDamageMetadata(@NotNull LivingEntity target) {
-        return target.getMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE).size() != 0;
+        return target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE);
     }
 
     public static void dealNoInvulnerabilityTickDamageRupture(@NotNull LivingEntity target, double damage, Entity attacker, int toolTier) {
@@ -1040,9 +1029,9 @@ public final class CombatUtils {
     /**
      * Clean up metadata from a projectile after a minute has passed
      *
-     * @param entity the projectile
+     * @param arrow the projectile
      */
-    public static void delayArrowMetaCleanup(@NotNull Projectile entity) {
-        mcMMO.p.getFoliaLib().getImpl().runLater(() -> ProjectileUtils.cleanupProjectileMetadata(entity), 20*60);
+    public static void delayArrowMetaCleanup(@NotNull Arrow arrow) {
+        mcMMO.p.getFoliaLib().getImpl().runLater(() -> ProjectileUtils.cleanupProjectileMetadata(arrow), 20*120);
     }
 }

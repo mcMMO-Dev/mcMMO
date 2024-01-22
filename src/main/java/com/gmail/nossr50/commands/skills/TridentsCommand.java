@@ -2,20 +2,19 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Cat;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.TRIDENTS_IMPALE;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK;
 
 public class TridentsCommand extends SkillCommand {
 

@@ -963,14 +963,14 @@ public class McMMOPlayer implements Identified {
     /**
      * Check to see if an ability can be activated.
      *
-     * @param bowType The type of bow (crossbow, bow)
+     * @param isCrossbow true for crossbow, false for bow
      */
-    public void checkAbilityActivationProjectiles(BowType bowType) {
-        PrimarySkillType primarySkillType = bowType == BowType.CROSSBOW ? PrimarySkillType.CROSSBOWS : PrimarySkillType.ARCHERY;
+    public void checkAbilityActivationProjectiles(boolean isCrossbow) {
+        PrimarySkillType primarySkillType = isCrossbow ? PrimarySkillType.CROSSBOWS : PrimarySkillType.ARCHERY;
 
         // TODO: Refactor this crappy logic
-        ToolType tool = bowType == BowType.CROSSBOW ? ToolType.CROSSBOW : ToolType.BOW;
-        SuperAbilityType superAbilityType = bowType == BowType.CROSSBOW ? SuperAbilityType.SUPER_SHOTGUN : SuperAbilityType.EXPLOSIVE_SHOT;
+        ToolType tool = isCrossbow ? ToolType.CROSSBOW : ToolType.BOW;
+        SuperAbilityType superAbilityType = isCrossbow ? SuperAbilityType.SUPER_SHOTGUN : SuperAbilityType.EXPLOSIVE_SHOT;
         SubSkillType subSkillType = superAbilityType.getSubSkillTypeDefinition();
 
         if (getAbilityMode(superAbilityType) || !superAbilityType.getPermissions(player)) {

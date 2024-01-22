@@ -52,17 +52,6 @@ public final class ItemUtils {
     }
 
     // TODO: Unit tests
-    public static BowType getBowType(@NotNull ItemStack item) {
-        if (isBow(item)) {
-            return BowType.BOW;
-        } else if (isCrossbow(item)) {
-            return BowType.CROSSBOW;
-        }
-
-        throw new IllegalArgumentException(item + " is not a bow or crossbow");
-    }
-
-    // TODO: Unit tests
     public static boolean isTrident(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
     }

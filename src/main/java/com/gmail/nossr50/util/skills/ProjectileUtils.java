@@ -3,7 +3,7 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Arrow;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,28 +23,24 @@ public class ProjectileUtils {
     /**
      * Clean up all possible mcMMO related metadata for a projectile
      *
-     * @param entity projectile
+     * @param arrow projectile
      */
     // TODO: Add test
-    public static void cleanupProjectileMetadata(@NotNull Projectile entity) {
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
+    public static void cleanupProjectileMetadata(@NotNull Arrow arrow) {
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
         }
 
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
         }
 
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
         }
 
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_BOW_TYPE, mcMMO.p);
-        }
-
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
-            entity.removeMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW, mcMMO.p);
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW, mcMMO.p);
         }
     }
 }

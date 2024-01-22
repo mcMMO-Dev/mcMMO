@@ -13,14 +13,14 @@ import static com.gmail.nossr50.util.skills.ProjectileUtils.getNormal;
  * Util class for crossbows.
  */
 public class Crossbows {
-    public static void processCrossbows(ProjectileHitEvent event, Plugin pluginRef) {
-        if(event.getEntity() instanceof Arrow originalArrow && event.getHitBlock() != null && event.getHitBlockFace() != null) {
-            if (originalArrow.getShooter() instanceof Player) {
-                McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) originalArrow.getShooter());
+    public static void processCrossbows(ProjectileHitEvent event, Plugin pluginRef, Arrow arrow) {
+        if(event.getHitBlock() != null && event.getHitBlockFace() != null) {
+            if (arrow.getShooter() instanceof Player) {
+                McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) arrow.getShooter());
                 if (mmoPlayer != null) {
                     mmoPlayer.getCrossbowsManager().handleRicochet(
                             pluginRef,
-                            originalArrow,
+                            arrow,
                             getNormal(event.getHitBlockFace()));
                 }
             }
