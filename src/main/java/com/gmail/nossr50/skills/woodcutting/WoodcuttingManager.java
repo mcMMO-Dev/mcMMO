@@ -323,22 +323,21 @@ public class WoodcuttingManager extends SkillManager {
                 //Bonus Drops / Harvest lumber checks
                 processBonusDropCheck(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
+                // 90% of the time do not drop leaf blocks
+                if (ThreadLocalRandom.current().nextInt(100) > 90) {
+                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                }
+
                 //Drop displaced non-woodcutting XP blocks
                 if(RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
-                            //TODO: Test the results of this RNG, should be 10%
                             if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, player, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }
                         }
                     }
-                }
-
-                // 90% of the time do not drop leaf blocks
-                if (ThreadLocalRandom.current().nextInt(100) > 90) {
-                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
                 }
             }
 
