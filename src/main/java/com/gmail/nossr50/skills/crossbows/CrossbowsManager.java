@@ -8,8 +8,10 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
+import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -17,6 +19,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+
+import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
 
 public class CrossbowsManager extends SkillManager {
     public CrossbowsManager(McMMOPlayer mmoPlayer) {
@@ -52,7 +56,6 @@ public class CrossbowsManager extends SkillManager {
         final Vector reflectedDirection = arrowInBlockVector.subtract(normal.multiply(2 * arrowInBlockVector.dot(normal)));
         final Vector inverseNormal = normal.multiply(-1);
 
-
         // check the angle of the arrow against the inverse normal to see if the angle was too shallow
         // only checks angle on the first bounce
         if (bounceCount == 0 && arrowInBlockVector.angle(inverseNormal) < Math.PI / 4) {
@@ -60,15 +63,24 @@ public class CrossbowsManager extends SkillManager {
         }
 
         // Spawn new arrow with the reflected direction
-        Arrow arrow = originalArrow.getWorld().spawnArrow(origin,
-                reflectedDirection, 1, 1);
-        arrow.setShooter(originalArrowShooter);
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT,
+        Arrow spawnedArrow = originalArrow.getWorld().spawnArrow(origin, reflectedDirection, 1, 1);
+        ProjectileUtils.copyArrowMetadata(pluginRef, originalArrow, spawnedArrow);
+        originalArrow.remove();
+        // copy metadata from old arrow
+        spawnedArrow.setShooter(originalArrowShooter);
+        spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT,
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
-        arrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
+        spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
 
-        originalArrow.remove();
+        // Don't allow multi-shot or infinite arrows to be picked up
+        if (spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)
+                || spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+            spawnedArrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+        }
+
+        // Schedule cleanup of metadata in case metadata cleanup fails
+        delayArrowMetaCleanup(spawnedArrow);
     }
 
     public int getTrickShotMaxBounceCount() {

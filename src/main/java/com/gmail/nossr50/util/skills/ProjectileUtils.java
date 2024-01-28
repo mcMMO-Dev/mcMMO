@@ -4,6 +4,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Arrow;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +43,38 @@ public class ProjectileUtils {
 
         if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW, mcMMO.p);
+        }
+
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW, mcMMO.p);
+        }
+    }
+
+    public static void copyArrowMetadata(@NotNull Plugin pluginRef, @NotNull Arrow arrowToCopy, @NotNull Arrow newArrow) {
+        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+            newArrow.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW,
+                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_INF_ARROW).get(0));
+        }
+
+        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+            newArrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE,
+                    new FixedMetadataValue(pluginRef,
+                            arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE).get(0).asDouble()));
+        }
+
+        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+            newArrow.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE,
+                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE).get(0));
+        }
+
+        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
+            newArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
+                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW).get(0));
+        }
+
+        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
+            newArrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW,
+                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW).get(0));
         }
     }
 }

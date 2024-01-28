@@ -152,17 +152,20 @@ public class EntityListener implements Listener {
                     return;
             }
 
-            Projectile projectile = event.getEntity();
-            EntityType entityType = projectile.getType();
+            if(event.getEntity() instanceof Arrow arrow) {
+                // Delayed metadata cleanup in case other cleanup hooks fail
+                CombatUtils.delayArrowMetaCleanup(arrow);
 
-            if(projectile instanceof Arrow arrow) {
-                CombatUtils.delayArrowMetaCleanup(arrow); //Cleans up metadata 1 minute from now in case other collection methods fall through
+                // If fired from an item with multi-shot, we need to track
+                if(ItemUtils.doesPlayerHaveEnchantmentInHands(player, "multishot")) {
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
+                }
 
-                if(!projectile.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
-                    projectile.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, new FixedMetadataValue(pluginRef, 1.0));
+                if(!arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, new FixedMetadataValue(pluginRef, 1.0));
 
-                if(!projectile.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE))
-                    projectile.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, arrow.getLocation()));
+                if(!arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE))
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, arrow.getLocation()));
 
                 //Check both hands
                 if(ItemUtils.doesPlayerHaveEnchantmentInHands(player, "piercing")) {
@@ -170,7 +173,7 @@ public class EntityListener implements Listener {
                 }
 
                 if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
-                    projectile.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
                 }
             }
         }
