@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
@@ -228,7 +229,7 @@ public class TreasureConfig extends BukkitConfig {
                     for (String dropper : dropList) {
                         if (dropper.equals("Bushes")) {
                             AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FERN), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.TALL_GRASS), hylianTreasure);
+                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(BlockUtils.getShortGrass()), hylianTreasure);
                             for (Material species : Tag.SAPLINGS.getValues())
                                 AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
 

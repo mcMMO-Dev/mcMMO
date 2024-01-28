@@ -406,8 +406,22 @@ Fishing:
     Shake:
         Standard:
             Rank_1: 15
+            Rank_2: 20
+            Rank_3: 25
+            Rank_4: 30
+            Rank_5: 40
+            Rank_6: 50
+            Rank_7: 60
+            Rank_8: 70
         RetroMode:
             Rank_1: 150
+            Rank_2: 200
+            Rank_3: 250
+            Rank_4: 300
+            Rank_5: 400
+            Rank_6: 500
+            Rank_7: 600
+            Rank_8: 700
     MasterAngler:
         Standard:
             Rank_1: 1

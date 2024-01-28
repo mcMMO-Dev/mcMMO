@@ -1,3 +1,30 @@
+Version 2.1.227
+    Fixed bug where some text would not be displayed to players (Adventure dependency update)
+    Repair sound effect from mcMMO can now be adjusted in Minecraft sound options (Thanks MithicSpirit)
+    Korean locale updated (Thanks Pindang2)
+    Simplified Chinese locale updated (Thanks YuanYuanOwO)
+
+    NOTES:
+    For those curious, mcMMO uses Adventure to do a lot of the message sending to players.
+    It typically needs updating when new versions of MC come out, sorry for the delay on my part.
+
+Version 2.1.226
+    Added Short_Grass to experience.yml for Herbalism
+    Updated Hylian Treasures "Bushes" alias to use short_grass when playing on new Minecraft versions
+    Fixed dirt_path and grass_block not being correctly whitelisted for herbalism abilities
+Version 2.1.225
+    Fixed text from mcMMO not being sent or displayed to the player
+    Updated Adventure dependencies
+    Added new API McMMOPlayerNotificationEvent.getPlayer
+
+Version 2.1.224
+    Updated to a new build of ACF to fix NoSuchFieldException locale
+    Improved Folia Support (Thanks HSGamer)
+    Fishing Shake has 8 ranks again
+
+    NOTES:
+    At some point Shake got reduced to 1 rank, this didn't really make sense as it was meant to be a skill that ranked up and got better over time.
+    It now has 8 ranks again, you may need to update advanced.yml and skillranks.yml to get the new ranks.
 Version 2.1.223
     Folia Support added (Thanks to HSGamer, TechnicallyCoded, Rockyers, and Yomamaeatstoes)
 

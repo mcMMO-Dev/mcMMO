@@ -363,7 +363,7 @@ public class HerbalismManager extends SkillManager {
                  *
                  */
 
-                //If its a Crop we need to reward XP when its fully grown
+                //If it's a Crop we need to reward XP when its fully grown
                 if(isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
                     //Add metadata to mark this block for double or triple drops
                     markForBonusDrops(brokenPlantState);
@@ -373,21 +373,17 @@ public class HerbalismManager extends SkillManager {
     }
 
     /**
-     * Checks if BlockData is ageable and we can trust that age for Herbalism rewards/XP reasons
+     * Checks if BlockData is bizarre ageable, and we cannot trust that age for Herbalism rewards/XP reasons
      * @param blockData target BlockData
-     * @return returns true if the ageable is trustworthy for Herbalism XP / Rewards
+     * @return returns true if the BlockData is a bizarre ageable for Herbalism XP / Rewards
      */
     public boolean isBizarreAgeable(BlockData blockData) {
         if(blockData instanceof Ageable) {
             //Catcus and Sugar Canes cannot be trusted
-            switch(blockData.getMaterial()) {
-                case CACTUS:
-                case KELP:
-                case SUGAR_CANE:
-                    return true;
-                default:
-                    return false;
-            }
+            return switch (blockData.getMaterial()) {
+                case CACTUS, KELP, SUGAR_CANE, BAMBOO -> true;
+                default -> false;
+            };
         }
 
         return false;

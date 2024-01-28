@@ -291,30 +291,12 @@ public class RankUtils {
         subSkillRanks.computeIfAbsent(s, k -> new HashMap<>());
     }
 
-/*    public static int getSubSkillUnlockRequirement(SubSkillType subSkillType)
-    {
-        String skillName = subSkillType.toString();
-        int numRanks = subSkillType.getNumRanks();
-
-        if(subSkillRanks == null)
-            subSkillRanks = new HashMap<>();
-
-        if(numRanks == 0)
-            return -1; //-1 Means the skill doesn't have ranks
-
-        if(subSkillRanks.get(skillName) == null && numRanks > 0)
-            addRanks(subSkillType);
-
-        return subSkillRanks.get(subSkillType.toString()).get(1);
-    }*/
-
     /**
      * Gets the unlock level for a specific rank in a subskill
      * @param subSkillType The target subskill
      * @param rank The target rank
      * @return The level at which this rank unlocks
      */
-    @Deprecated
     public static int getRankUnlockLevel(SubSkillType subSkillType, int rank)
     {
         return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, rank);

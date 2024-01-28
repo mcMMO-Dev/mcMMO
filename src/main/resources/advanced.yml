@@ -209,7 +209,14 @@ Skills:
     Fishing:
 
         ShakeChance:
-            Rank_1: 30
+            Rank_1: 15.0
+            Rank_2: 20.0
+            Rank_3: 25.0
+            Rank_4: 35.0
+            Rank_5: 45.0
+            Rank_6: 55.0
+            Rank_7: 65.0
+            Rank_8: 75.0
 
         # VanillaXPMultiplier: Vanilla XP gained from fishing is multiplied by these values.
         VanillaXPMultiplier:
