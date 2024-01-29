@@ -1,6 +1,9 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.commands.levelup.LevelUpCommand;
+import com.gmail.nossr50.commands.levelup.PowerLevelUpCommand;
+import com.gmail.nossr50.commands.levelup.PowerLevelUpCommandBuilder;
+import com.gmail.nossr50.commands.levelup.SkillLevelUpCommand;
+import com.gmail.nossr50.commands.levelup.SkillLevelUpCommandBuilder;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
@@ -22,6 +25,7 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
     public static final String CONDITION_SECTION = "condition";
     public static final String ENABLED = "enabled";
     public static final String COMMANDS = "commands";
+    public static final String POWER_LEVEL_SECTION = "power_level";
 
     public CommandOnLevelUpConfig(@NotNull File dataFolder) {
         super("levelupcommands.yml", dataFolder);
@@ -44,20 +48,26 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
                 continue;
             }
 
-            LevelUpCommand levelUpCommand = buildCommand(commandSection);
-            if (levelUpCommand == null) {
+            SkillLevelUpCommand skillLevelUpCommand = buildSkillLevelUpCommand(commandSection);
+            PowerLevelUpCommand powerLevelUpCommand = buildPowerLevelUpCommand(commandSection);
+
+            if (skillLevelUpCommand == null && powerLevelUpCommand == null) {
                 mcMMO.p.getLogger().severe("Invalid command format for key: " + key);
-                continue;
             } else {
-                mcMMO.p.getLogger().info("Command successfully loaded from config for key: " + key);
-                mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+                if(skillLevelUpCommand != null) {
+                    mcMMO.p.getLevelUpCommandManager().registerCommand(skillLevelUpCommand);
+                    mcMMO.p.getLogger().info("Skill Level up command successfully loaded from config for key: " + key);
+                }
+                if(powerLevelUpCommand != null) {
+                    mcMMO.p.getLevelUpCommandManager().registerCommand(powerLevelUpCommand);
+                    mcMMO.p.getLogger().info("Power Level up command successfully loaded from config for key: " + key);
+                }
             }
         }
     }
 
-    @Nullable
-    private LevelUpCommand buildCommand(final ConfigurationSection commandSection) {
-        LevelUpCommand.LevelUpCommandBuilder builder = new LevelUpCommand.LevelUpCommandBuilder();
+    private @NotNull SkillLevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
+        SkillLevelUpCommandBuilder builder = new SkillLevelUpCommandBuilder();
         // check if command is enabled
         if (!commandSection.getBoolean(ENABLED, true)) {
             return null;
@@ -119,6 +129,60 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
             List<String> commands = commandSection.getStringList(COMMANDS);
             if (commands.isEmpty()) {
                 mcMMO.p.getLogger().severe("No commands defined for command named "
+                        + commandSection.getName());
+                return null;
+            } else {
+                builder.commands(commands);
+            }
+        }
+
+        return builder.build();
+    }
+
+    private @Nullable PowerLevelUpCommand buildPowerLevelUpCommand(final ConfigurationSection commandSection) {
+        PowerLevelUpCommandBuilder builder = new PowerLevelUpCommandBuilder();
+        // check if command is enabled
+        if (!commandSection.getBoolean(ENABLED, true)) {
+            return null;
+        }
+
+        /* Condition Section */
+        ConfigurationSection condition = commandSection.getConfigurationSection(CONDITION_SECTION);
+        if (condition == null) {
+            mcMMO.p.getLogger().severe("No condition section found for command named " + commandSection.getName());
+            return null;
+        }
+
+        // No power level condition
+        if (!condition.contains(POWER_LEVEL_SECTION)) {
+            return null;
+        }
+
+        // for now only simple condition is supported
+        if (!condition.contains(LEVELS_SECTION)) {
+            mcMMO.p.getLogger().severe("No condition.levels section found for power level command named "
+                    + commandSection.getName());
+            return null;
+        }
+
+        Collection<Integer> levels = condition.getIntegerList(LEVELS_SECTION);
+        if (levels.isEmpty()) {
+            mcMMO.p.getLogger().severe("No valid levels found in condition.levels for power level command named "
+                    + commandSection.getName());
+            return null;
+        }
+        builder.withLevels(levels);
+
+        // commands
+        if (commandSection.isString(COMMANDS)) {
+            String command = commandSection.getString(COMMANDS);
+            if (command != null) {
+                builder.command(command);
+            }
+        } else {
+            List<String> commands = commandSection.getStringList(COMMANDS);
+            if (commands.isEmpty()) {
+                mcMMO.p.getLogger().severe("No commands defined for power level command named "
                         + commandSection.getName());
                 return null;
             } else {

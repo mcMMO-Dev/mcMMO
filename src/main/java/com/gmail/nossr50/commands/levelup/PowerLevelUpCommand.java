@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.levelup;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.Bukkit;
@@ -10,48 +9,47 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
-public class LevelUpCommandImpl implements LevelUpCommand {
-    private final BiPredicate<PrimarySkillType, Integer> predicate;
+public class PowerLevelUpCommand implements CommandsOnLevel {
+    private final Predicate<Integer> predicate;
     private final boolean logInfo;
     private final @NotNull LinkedList<String> commands;
 
-    public LevelUpCommandImpl(@NotNull BiPredicate<PrimarySkillType, Integer> predicate, @NotNull String command, boolean logInfo) {
+    public PowerLevelUpCommand(@NotNull Predicate<Integer> predicate, @NotNull String command, boolean logInfo) {
         this.predicate = predicate;
         this.commands = new LinkedList<>();
         this.commands.add(command);
         this.logInfo = logInfo;
     }
 
-    public LevelUpCommandImpl(@NotNull BiPredicate<PrimarySkillType, Integer> predicate, @NotNull LinkedList<String> commands, boolean logInfo) {
+    public PowerLevelUpCommand(@NotNull Predicate<Integer> predicate, @NotNull LinkedList<String> commands, boolean logInfo) {
         this.predicate = predicate;
         this.commands = commands;
         this.logInfo = logInfo;
     }
 
-    @Override
-    public void process(McMMOPlayer player, PrimarySkillType primarySkillType, Set<Integer> levelsGained) {
+    public void process(McMMOPlayer player, Set<Integer> levelsGained) {
         for (int i : levelsGained) {
-            if (predicate.test(primarySkillType, i)) {
+            if (predicate.test(i)) {
                 // execute command via server console in Bukkit
                 if(logInfo) {
                     mcMMO.p.getLogger().info("Executing command: " + commands);
                 } else {
                     LogUtils.debug(mcMMO.p.getLogger(), "Executing command: " + commands);
                 }
-                executeCommand(player, primarySkillType, i);
+                executeCommand(player, i);
             }
         }
     }
 
-    public void executeCommand(McMMOPlayer player, PrimarySkillType primarySkillType, int level) {
+    public void executeCommand(McMMOPlayer player,  int level) {
         // TODO: Change this to debug later
         mcMMO.p.getLogger().info("Executing commands for level up: " + commands);
         for (String command : commands) {
             // TODO: Change this to debug later
             mcMMO.p.getLogger().info("Executing command: " + command);
-            String injectedCommand = injectedCommand(command, player, primarySkillType, level);
+            String injectedCommand = injectedCommand(command, player, level);
             // TODO: Remove verbose logging later
             if (!injectedCommand.equalsIgnoreCase(command)) {
                 mcMMO.p.getLogger().info(("Command has been injected with new values: " + injectedCommand));
@@ -60,10 +58,10 @@ public class LevelUpCommandImpl implements LevelUpCommand {
         }
     }
 
-    private String injectedCommand(String command, McMMOPlayer player, PrimarySkillType primarySkillType, int level) {
+    private String injectedCommand(String command, McMMOPlayer player, int level) {
         // replace %player% with player name, %skill% with skill name, and %level% with level
         command = safeReplace(command, "%player%", player.getPlayer().getName());
-        command = safeReplace(command, "%skill%", primarySkillType.getName());
+        command = safeReplace(command, "%skill%", "power level");
         command = safeReplace(command, "%level%", String.valueOf(level));
         return command;
     }
@@ -80,7 +78,7 @@ public class LevelUpCommandImpl implements LevelUpCommand {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LevelUpCommandImpl that = (LevelUpCommandImpl) o;
+        PowerLevelUpCommand that = (PowerLevelUpCommand) o;
         return logInfo == that.logInfo && Objects.equals(predicate, that.predicate) && Objects.equals(commands, that.commands);
     }
 
@@ -91,10 +89,10 @@ public class LevelUpCommandImpl implements LevelUpCommand {
 
     @Override
     public String toString() {
-        return "LevelUpCommandImpl{" +
+        return "PowerLevelUpCommand{" +
                 "predicate=" + predicate +
                 ", logInfo=" + logInfo +
-                ", commandStr='" + commands + '\'' +
+                ", commands=" + commands +
                 '}';
     }
 }

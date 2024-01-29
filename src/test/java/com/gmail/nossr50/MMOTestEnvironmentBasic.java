@@ -24,17 +24,14 @@ import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Not;
 
 import java.util.UUID;
-import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -67,15 +64,7 @@ public abstract class MMOTestEnvironmentBasic {
     private FormulaManager formulaManager;
 
     /* Mocks */
-    protected Player player;
-
-    protected UUID playerUUID = UUID.randomUUID();
-    protected ItemStack itemInMainHand;
-
     protected PlayerInventory playerInventory;
-    protected PlayerProfile playerProfile;
-    protected McMMOPlayer mmoPlayer;
-    protected String playerName = "testPlayer";
 
     protected ChunkManager chunkManager;
 
@@ -163,28 +152,11 @@ public abstract class MMOTestEnvironmentBasic {
         this.mockedMisc = Mockito.mockStatic(Misc.class);
         // Mockito.when(Misc.getBlockCenter(any())).thenReturn(new Location(world, 0, 0, 0));
 
-        // setup player and player related mocks after everything else
-        this.player = mock(Player.class);
-        when(player.getUniqueId()).thenReturn(playerUUID);
-
-        // wire inventory
-        this.playerInventory = mock(PlayerInventory.class);
-        when(player.getInventory()).thenReturn(playerInventory);
-
-        // PlayerProfile and McMMOPlayer are partially mocked
-        playerProfile = Mockito.spy(new PlayerProfile("testPlayer", player.getUniqueId(), 0));
-        when(playerProfile.isLoaded()).thenReturn(true);
-        mmoPlayer = Mockito.spy(new McMMOPlayer(player, playerProfile));
-
         // wire user manager
         this.mockedUserManager = Mockito.mockStatic(UserManager.class);
-        when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
 
         // Self listener
         selfListener = Mockito.spy(new SelfListener(mcMMO.p));
-
-        // Player online status
-        when(player.isOnline()).thenReturn(true);
 
         // Console command sender
         consoleCommandSender = mock(ConsoleCommandSender.class);
@@ -278,5 +250,33 @@ public abstract class MMOTestEnvironmentBasic {
         if (mockedNotificationManager != null) {
             mockedNotificationManager.close();
         }
+    }
+
+    protected McMMOPlayer getMMOPlayer(UUID playerUUID, String playerName, int startingLevel) {
+        Player player = mock(Player.class);
+        // Player UUID
+        when(player.getUniqueId()).thenReturn(playerUUID);
+        // Player name
+        when(player.getName()).thenReturn(playerName);
+
+        // Player Inventory
+        this.playerInventory = mock(PlayerInventory.class);
+        when(player.getInventory()).thenReturn(playerInventory);
+
+        // Player Profile
+        PlayerProfile playerProfile = Mockito.spy(new PlayerProfile(playerName, player.getUniqueId(), startingLevel));
+        when(playerProfile.isLoaded()).thenReturn(true);
+        // McMMOPlayer
+        McMMOPlayer mmoPlayer = Mockito.spy(new McMMOPlayer(player, playerProfile));
+        // Wire UserManager
+        when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
+        // Player is online
+        when(player.isOnline()).thenReturn(true);
+
+        return mmoPlayer;
+    }
+
+    protected McMMOPlayer getMMOPlayer(UUID playerUUID, String playerName) {
+        return getMMOPlayer(playerUUID, playerName, 0);
     }
 }

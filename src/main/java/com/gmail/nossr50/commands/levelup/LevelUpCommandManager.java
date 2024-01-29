@@ -9,26 +9,32 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Manages commands to be executed on level up
  */
 public class LevelUpCommandManager {
-    private final @NotNull Set<LevelUpCommand> commands;
+    private final @NotNull Set<SkillLevelUpCommand> skillLevelCommands;
+    private final @NotNull Set<PowerLevelUpCommand> powerLevelUpCommands;
     private final @NotNull mcMMO plugin;
 
     public LevelUpCommandManager(@NotNull mcMMO plugin) {
-        this.plugin = plugin;
-        this.commands = new HashSet<>();
+        this.plugin = requireNonNull(plugin, "plugin cannot be null");
+        this.skillLevelCommands = new HashSet<>();
+        this.powerLevelUpCommands = new HashSet<>();
     }
 
-    /**
-     * Register a level up command to be executed on level up
-     *
-     * @param levelUpCommand the levelUpCommand
-     */
-    public void registerCommand(@NotNull LevelUpCommand levelUpCommand) {
-        commands.add(levelUpCommand);
-        mcMMO.p.getLogger().info("Registered levelUpCommand on level up: " + levelUpCommand);
+    public void registerCommand(@NotNull SkillLevelUpCommand skillLevelUpCommand) {
+        requireNonNull(skillLevelUpCommand, "skillLevelUpCommand cannot be null");
+        skillLevelCommands.add(skillLevelUpCommand);
+        mcMMO.p.getLogger().info("Registered level up command - SkillLevelUpCommand: " + skillLevelUpCommand);
+    }
+
+    public void registerCommand(@NotNull PowerLevelUpCommand powerLevelUpCommand) {
+        requireNonNull(powerLevelUpCommand, "powerLevelUpCommand cannot be null");
+        powerLevelUpCommands.add(powerLevelUpCommand);
+        mcMMO.p.getLogger().info("Registered level up command - PowerLevelUpCommand: " + powerLevelUpCommand);
     }
 
     /**
@@ -38,14 +44,32 @@ public class LevelUpCommandManager {
      * @param primarySkillType  the skill type
      * @param levelsGained      the levels gained
      */
-    public void apply(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, Set<Integer> levelsGained) {
+    public void applySkillLevelUp(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType, Set<Integer> levelsGained) {
         if (!mmoPlayer.getPlayer().isOnline()) {
             return;
         }
 
-        for (LevelUpCommand command : commands) {
+        for (SkillLevelUpCommand command : skillLevelCommands) {
             command.process(mmoPlayer, primarySkillType, levelsGained);
         }
+    }
+
+    public void applyPowerLevelUp(@NotNull McMMOPlayer mmoPlayer, Set<Integer> levelsGained) {
+        if (!mmoPlayer.getPlayer().isOnline()) {
+            return;
+        }
+
+        for (PowerLevelUpCommand command : powerLevelUpCommands) {
+            command.process(mmoPlayer, levelsGained);
+        }
+    }
+
+    public @NotNull Set<SkillLevelUpCommand> getSkillLevelCommands() {
+        return skillLevelCommands;
+    }
+
+    public @NotNull Set<PowerLevelUpCommand> getPowerLevelUpCommands() {
+        return powerLevelUpCommands;
     }
 
     /**
@@ -53,14 +77,8 @@ public class LevelUpCommandManager {
      */
     public void clear() {
         mcMMO.p.getLogger().info("Clearing registered commands on level up");
-        commands.clear();
-    }
-
-    /**
-     * @return true if there are no registered commands
-     */
-    public boolean isEmpty() {
-        return commands.isEmpty();
+        skillLevelCommands.clear();
+        powerLevelUpCommands.clear();
     }
 
     @Override
@@ -68,18 +86,19 @@ public class LevelUpCommandManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LevelUpCommandManager that = (LevelUpCommandManager) o;
-        return Objects.equals(commands, that.commands) && Objects.equals(plugin, that.plugin);
+        return Objects.equals(skillLevelCommands, that.skillLevelCommands) && Objects.equals(powerLevelUpCommands, that.powerLevelUpCommands) && Objects.equals(plugin, that.plugin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commands, plugin);
+        return Objects.hash(skillLevelCommands, powerLevelUpCommands, plugin);
     }
 
     @Override
     public String toString() {
         return "LevelUpCommandManager{" +
-                "commands=" + commands +
+                "skillLevelCommands=" + skillLevelCommands +
+                ", powerLevelUpCommands=" + powerLevelUpCommands +
                 ", plugin=" + plugin +
                 '}';
     }

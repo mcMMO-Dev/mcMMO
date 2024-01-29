@@ -60,11 +60,18 @@ public class SelfListener implements Listener {
         }
 
         final Set<Integer> levelsAchieved = new LinkedHashSet<>();
+        final Set<Integer> powerLevelsAchieved = new LinkedHashSet<>();
         int startingLevel = event.getSkillLevel() - event.getLevelsGained();
+        int startingPowerLevel = mcMMOPlayer.getPowerLevel() - event.getLevelsGained();
         for (int i = 0; i < event.getLevelsGained(); i++) {
             levelsAchieved.add(startingLevel + (i + 1));
         }
-        plugin.getLevelUpCommandManager().apply(mcMMOPlayer, skill, levelsAchieved);
+        for (int i = 0; i < event.getLevelsGained(); i++) {
+            powerLevelsAchieved.add(startingPowerLevel + (i + 1));
+        }
+
+        plugin.getLevelUpCommandManager().applySkillLevelUp(mcMMOPlayer, skill, levelsAchieved);
+        plugin.getLevelUpCommandManager().applyPowerLevelUp(mcMMOPlayer, powerLevelsAchieved);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
