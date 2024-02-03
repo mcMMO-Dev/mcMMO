@@ -177,7 +177,7 @@ public final class Permissions {
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase(Locale.ENGLISH) + ".vanillaxpboost"); }
     public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) {
         // hack to disable supers that aren't coded yet
-        if(subSkillType == SubSkillType.TRIDENTS_SUPER || subSkillType == SubSkillType.CROSSBOWS_SUPER_SHOTGUN)
+        if(subSkillType == SubSkillType.TRIDENTS_SUPER)
             return false;
         return permissible.hasPermission(subSkillType.getPermissionNodeAddress());
     }
@@ -238,10 +238,10 @@ public final class Permissions {
 
     /* WOODCUTTING */
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
+
     /* CROSSBOWS */
     public static boolean superShotgun(Permissible permissible) {
-        return false;
-        // return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun");
+        return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun");
     }
     public static boolean trickShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.trickshot"); }
     public static boolean poweredShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.poweredshot"); }
