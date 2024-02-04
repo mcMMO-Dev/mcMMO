@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.AlternateFiringSuperSkill;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
@@ -22,10 +23,14 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
 
-public class CrossbowsManager extends SkillManager {
+public class CrossbowsManager extends SkillManager implements AlternateFiringSuperSkill {
     public CrossbowsManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.CROSSBOWS);
     }
+
+    private long lastChargeTime = 0;
+
+    private int crossbowSuperWindupState = 0;
 
     public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow, @NotNull Vector hitBlockNormal) {
         if(!arrow.isShotFromCrossbow())
@@ -104,5 +109,39 @@ public class CrossbowsManager extends SkillManager {
         } else {
             return oldDamage;
         }
+    }
+
+    @Override
+    public int chargeSuper() {
+        if (lastChargeTime < System.currentTimeMillis() - 2000) {
+            crossbowSuperWindupState = 0;
+        }
+
+        if (crossbowSuperWindupState < 3) {
+            crossbowSuperWindupState++;
+        }
+
+        lastChargeTime = System.currentTimeMillis();
+        return crossbowSuperWindupState;
+    }
+
+    @Override
+    public void fireSuper() {
+        // TODO: Impl
+    }
+
+    @Override
+    public void resetCharge() {
+        crossbowSuperWindupState = 0;
+    }
+
+    @Override
+    public boolean isReadyToFire() {
+        return crossbowSuperWindupState == 3;
+    }
+
+    @Override
+    public long lastChargeTime() {
+        return lastChargeTime;
     }
 }

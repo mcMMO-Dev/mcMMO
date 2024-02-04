@@ -788,6 +788,9 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (mcMMOPlayer == null)
+            return;
+
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
@@ -823,6 +826,11 @@ public class PlayerListener implements Listener {
                     if (mcMMO.p.getGeneralConfig().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
+                        }
+
+                        // Projectile Skills
+                        if (ItemUtils.isCrossbow(heldItem) || ItemUtils.isBow(heldItem)) {
+                            CombatUtils.processProjectileSkillSuperAbilityActivation(mcMMOPlayer, heldItem);
                         }
 
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
@@ -896,6 +904,11 @@ public class PlayerListener implements Listener {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.SWORDS);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.UNARMED);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
+
+                    // Projectile Skills
+                    if (ItemUtils.isCrossbow(heldItem) || ItemUtils.isBow(heldItem)) {
+                        CombatUtils.processProjectileSkillSuperAbilityActivation(mcMMOPlayer, heldItem);
+                    }
                 }
 
                 /* ITEM CHECKS */
@@ -916,10 +929,9 @@ public class PlayerListener implements Listener {
                     break;
                 }
 
-                // Projectile Skills
-                // Check if the player is holding a bow or crossbow
-                if (ItemUtils.isCrossbow(heldItem) || ItemUtils.isBow(heldItem)) {
-                    CombatUtils.processProjectileSkillSuperAbilityActivation(mcMMOPlayer, heldItem);
+                // Check charge up supers (crossbows, etc...)
+                if (ItemUtils.isCrossbow(heldItem)) {
+                    mcMMOPlayer.chargeCrossbowSuper();
                 }
 
                 /* CALL OF THE WILD CHECKS */

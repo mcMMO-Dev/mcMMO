@@ -25,6 +25,7 @@ import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
+import com.gmail.nossr50.skills.AlternateFiringSuperSkill;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -960,20 +961,15 @@ public class McMMOPlayer implements Identified {
         mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType), (long) ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 
-    /**
-     * Check to see if an ability can be activated.
-     *
-     * @param isCrossbow true for crossbow, false for bow
-     */
-    public void checkAbilityActivationProjectiles(boolean isCrossbow) {
-        PrimarySkillType primarySkillType = isCrossbow ? PrimarySkillType.CROSSBOWS : PrimarySkillType.ARCHERY;
+    public void checkCrossbowAbilityActivation() {
+        PrimarySkillType primarySkillType = PrimarySkillType.CROSSBOWS;
+        ToolType tool = ToolType.CROSSBOW;
+        SuperAbilityType superAbilityType = SuperAbilityType.SUPER_SHOTGUN;
+        SubSkillType subSkillType = SubSkillType.CROSSBOWS_SUPER_SHOTGUN;
+        AlternateFiringSuperSkill skillManager = getCrossbowsManager();
 
-        // TODO: Refactor this crappy logic
-        ToolType tool = isCrossbow ? ToolType.CROSSBOW : ToolType.BOW;
-        SuperAbilityType superAbilityType = isCrossbow ? SuperAbilityType.SUPER_SHOTGUN : SuperAbilityType.EXPLOSIVE_SHOT;
-        SubSkillType subSkillType = superAbilityType.getSubSkillTypeDefinition();
-
-        if (getAbilityMode(superAbilityType) || !superAbilityType.getPermissions(player)) {
+        // Check permission
+        if (!superAbilityType.getPermissions(player)) {
             return;
         }
 
@@ -997,6 +993,11 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
+        // Check if we can fire the ability
+        if (!skillManager.isReadyToFire()) {
+            return;
+        }
+
         if (useChatNotifications()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, superAbilityType.getAbilityOn());
         }
@@ -1010,8 +1011,9 @@ public class McMMOPlayer implements Identified {
 
         // TODO: Fire the ability
         profile.setAbilityDATS(superAbilityType, System.currentTimeMillis());
-        setAbilityMode(superAbilityType, true);
         setToolPreparationMode(tool, false);
+        skillManager.resetCharge();
+        skillManager.fireSuper();
 
         if(!mcMMO.isServerShutdownExecuted()) {
             mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(
@@ -1019,6 +1021,10 @@ public class McMMOPlayer implements Identified {
                     new AbilityCooldownTask(this, superAbilityType),
                     (long) PerksUtils.handleCooldownPerks(player, superAbilityType.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
         }
+    }
+
+    public void chargeCrossbowSuper() {
+        getCrossbowsManager().chargeSuper();
     }
 
     public void processAbilityActivation(@NotNull PrimarySkillType primarySkillType) {

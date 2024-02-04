@@ -51,10 +51,10 @@ public final class CombatUtils {
 
     // TODO: Unit tests
     public static void processProjectileSkillSuperAbilityActivation(McMMOPlayer mmoPlayer, ItemStack heldItem) {
+        // TODO: Support archery super as well
         if (heldItem != null && mmoPlayer != null) {
-            if (ItemUtils.isBowOrCrossbow(heldItem)) {
-                boolean isCrossbow = ItemUtils.isCrossbow(heldItem);
-                mmoPlayer.checkAbilityActivationProjectiles(isCrossbow);
+            if (ItemUtils.isCrossbow(heldItem)) {
+                mmoPlayer.checkCrossbowAbilityActivation();
             }
         }
     }
