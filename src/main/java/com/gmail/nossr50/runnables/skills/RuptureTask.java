@@ -1,7 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
@@ -83,18 +82,14 @@ public class RuptureTask extends CancellableRunnable {
 
         //Ensure victim has health
         if (healthBeforeRuptureIsApplied > 0.01) {
-            //Send a fake damage event
-            McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
+            // TODO: Needs updating for new spigot API
+            double damage = calculateAdjustedTickDamage(); //Use raw damage for Rupture
 
-            //Ensure the event wasn't cancelled and damage is still greater than 0
-            double damage = event.getDamage(); //Use raw damage for Rupture
-
-            if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
+            if (damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0) {
                 return true;
+            }
 
             double damagedHealth = healthBeforeRuptureIsApplied - damage;
-
             targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
         }
 
