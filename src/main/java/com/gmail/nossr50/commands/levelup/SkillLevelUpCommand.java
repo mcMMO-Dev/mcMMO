@@ -45,15 +45,12 @@ public class SkillLevelUpCommand implements CommandsOnLevel {
     }
 
     public void executeCommand(McMMOPlayer player, PrimarySkillType primarySkillType, int level) {
-        // TODO: Change this to debug later
-        mcMMO.p.getLogger().info("Executing commands for level up: " + commands);
+        LogUtils.debug(mcMMO.p.getLogger(), "Executing commands for level up: " + commands);
         for (String command : commands) {
-            // TODO: Change this to debug later
-            mcMMO.p.getLogger().info("Executing command: " + command);
+            LogUtils.debug(mcMMO.p.getLogger(), "Executing command: " + command);
             String injectedCommand = injectedCommand(command, player, primarySkillType, level);
-            // TODO: Remove verbose logging later
             if (!injectedCommand.equalsIgnoreCase(command)) {
-                mcMMO.p.getLogger().info(("Command has been injected with new values: " + injectedCommand));
+                LogUtils.debug(mcMMO.p.getLogger(), ("Command has been injected with new values: " + injectedCommand));
             }
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), injectedCommand);
         }

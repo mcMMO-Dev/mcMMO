@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.levelup;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -28,13 +29,13 @@ public class LevelUpCommandManager {
     public void registerCommand(@NotNull SkillLevelUpCommand skillLevelUpCommand) {
         requireNonNull(skillLevelUpCommand, "skillLevelUpCommand cannot be null");
         skillLevelCommands.add(skillLevelUpCommand);
-        mcMMO.p.getLogger().info("Registered level up command - SkillLevelUpCommand: " + skillLevelUpCommand);
+        LogUtils.debug(mcMMO.p.getLogger(), "Registered level up command - SkillLevelUpCommand: " + skillLevelUpCommand);
     }
 
     public void registerCommand(@NotNull PowerLevelUpCommand powerLevelUpCommand) {
         requireNonNull(powerLevelUpCommand, "powerLevelUpCommand cannot be null");
         powerLevelUpCommands.add(powerLevelUpCommand);
-        mcMMO.p.getLogger().info("Registered level up command - PowerLevelUpCommand: " + powerLevelUpCommand);
+        LogUtils.debug(mcMMO.p.getLogger(), "Registered level up command - PowerLevelUpCommand: " + powerLevelUpCommand);
     }
 
     /**

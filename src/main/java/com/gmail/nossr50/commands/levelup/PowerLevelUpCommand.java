@@ -44,15 +44,12 @@ public class PowerLevelUpCommand implements CommandsOnLevel {
     }
 
     public void executeCommand(McMMOPlayer player,  int level) {
-        // TODO: Change this to debug later
-        mcMMO.p.getLogger().info("Executing commands for level up: " + commands);
+        LogUtils.debug(mcMMO.p.getLogger(), "Executing commands for level up: " + commands);
         for (String command : commands) {
-            // TODO: Change this to debug later
-            mcMMO.p.getLogger().info("Executing command: " + command);
+            LogUtils.debug(mcMMO.p.getLogger(), "Executing command: " + command);
             String injectedCommand = injectedCommand(command, player, level);
-            // TODO: Remove verbose logging later
             if (!injectedCommand.equalsIgnoreCase(command)) {
-                mcMMO.p.getLogger().info(("Command has been injected with new values: " + injectedCommand));
+                LogUtils.debug(mcMMO.p.getLogger(), ("Command has been injected with new values: " + injectedCommand));
             }
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), injectedCommand);
         }
@@ -61,6 +58,7 @@ public class PowerLevelUpCommand implements CommandsOnLevel {
     private String injectedCommand(String command, McMMOPlayer player, int level) {
         // replace %player% with player name, %skill% with skill name, and %level% with level
         command = safeReplace(command, "%player%", player.getPlayer().getName());
+        command = safeReplace(command, "%power_level%", "power level");
         command = safeReplace(command, "%skill%", "power level");
         command = safeReplace(command, "%level%", String.valueOf(level));
         return command;
