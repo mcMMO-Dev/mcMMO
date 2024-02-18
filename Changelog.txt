@@ -1,3 +1,11 @@
+Version 2.1.228
+    Fixed a stack trace due to Spigot API break on EntityDamageEvent and EntityDamageByEntity event
+    (API) - Removed FakeEntityDamageEvent and FakeEntityDamageByEntityEvent
+    (API) - Reworked McMMOEntityDamageByRuptureEvent, this no longer extends EntityDamageByEntityEvent, instead it extends EntityEvent
+
+    Notes:
+    Some care went into keeping mcMMO compatible with older versions despite a big API break from Spigot, this may introduce some new bugs, so please report them if you run into any.
+
 Version 2.1.227
     Fixed bug where some text would not be displayed to players (Adventure dependency update)
     Repair sound effect from mcMMO can now be adjusted in Minecraft sound options (Thanks MithicSpirit)

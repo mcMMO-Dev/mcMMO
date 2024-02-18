@@ -5,10 +5,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
-import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
-import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
-import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.metadata.MobMetadataService;
@@ -286,8 +283,10 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent || event instanceof McMMOEntityDamageByRuptureEvent) {
-            return;
+        if (event.getEntity() instanceof LivingEntity livingEntity) {
+            if (CombatUtils.hasIgnoreDamageMetadata(livingEntity)) {
+                return;
+            }
         }
 
         double damage = event.getFinalDamage();
@@ -447,14 +446,6 @@ public class EntityListener implements Listener {
 
                     player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
 
-                    if(entityDamageEvent instanceof FakeEntityDamageByEntityEvent) {
-                        player.sendMessage("This report is for a fake damage event used by mcMMO to test a players permission to hurt another");
-                    }
-
-                    if(entityDamageEvent instanceof McMMOEntityDamageByRuptureEvent) {
-                        player.sendMessage("This report is for a Rupture damage event, which is sent out by mcMMO");
-                    }
-
                     if(entityDamageEvent.isCancelled()) {
                         player.sendMessage("Event was cancelled, which means no damage should be done.");
                     }
@@ -480,14 +471,6 @@ public class EntityListener implements Listener {
                     player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
                     player.sendMessage("Target players max health: "+otherPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                     player.sendMessage("Target players current health: "+otherPlayer.getHealth());
-
-                    if(entityDamageEvent instanceof FakeEntityDamageByEntityEvent) {
-                        player.sendMessage("This report is for a fake damage event used by mcMMO to test a players permission to hurt another");
-                    }
-
-                    if(entityDamageEvent instanceof McMMOEntityDamageByRuptureEvent) {
-                        player.sendMessage("This report is for a Rupture damage event, which is sent out by mcMMO");
-                    }
 
                     if(entityDamageEvent.isCancelled()) {
                         player.sendMessage("Event was cancelled, which means no damage should be done.");
@@ -558,8 +541,10 @@ public class EntityListener implements Listener {
          * Old code
          */
 
-        if (event instanceof FakeEntityDamageEvent) {
-            return;
+        if (event.getEntity() instanceof LivingEntity livingEntity) {
+            if (CombatUtils.hasIgnoreDamageMetadata(livingEntity)) {
+                return;
+            }
         }
 
         double damage = event.getFinalDamage();
