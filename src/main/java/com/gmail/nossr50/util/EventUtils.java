@@ -15,7 +15,10 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
-import com.gmail.nossr50.events.fake.*;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.events.fake.FakeEvent;
+import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerPreDeathPenaltyEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerStatLossEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
@@ -81,17 +84,6 @@ public final class EventUtils {
      */
     public static boolean isFakeEvent(@NotNull Event event) {
         return event instanceof FakeEvent;
-    }
-
-    /**
-     * Checks to see if damage is from natural sources
-     * This cannot be used to determine if damage is from vanilla MC, it just checks to see if the damage is from a complex behaviour in mcMMO such as bleed.
-     *
-     * @param event this event
-     * @return true if damage is NOT from an unnatural mcMMO skill (such as bleed DOTs)
-     */
-    public static boolean isDamageFromMcMMOComplexBehaviour(@NotNull Event event) {
-        return event instanceof FakeEntityDamageEvent;
     }
 
     /**

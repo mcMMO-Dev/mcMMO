@@ -39,7 +39,7 @@ public final class MobHealthbarUtils {
             return;
         }
 
-        if (isBoss(target)) {
+        if (isBoss(target) || target instanceof Player) {
             return;
         }
 

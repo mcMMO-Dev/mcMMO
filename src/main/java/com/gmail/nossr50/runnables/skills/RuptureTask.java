@@ -1,10 +1,12 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
+import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
 import org.bukkit.entity.LivingEntity;
@@ -84,7 +86,8 @@ public class RuptureTask extends CancellableRunnable {
         //Ensure victim has health
         if (healthBeforeRuptureIsApplied > 0.01) {
             //Send a fake damage event
-            McMMOEntityDamageByRuptureEvent event = new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
+            McMMOEntityDamageByRuptureEvent event =
+                    new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
             mcMMO.p.getServer().getPluginManager().callEvent(event);
 
             //Ensure the event wasn't cancelled and damage is still greater than 0
@@ -96,6 +99,7 @@ public class RuptureTask extends CancellableRunnable {
             double damagedHealth = healthBeforeRuptureIsApplied - damage;
 
             targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
+            MobHealthbarUtils.handleMobHealthbars(targetEntity, damage, mcMMO.p);
         }
 
         return false;
