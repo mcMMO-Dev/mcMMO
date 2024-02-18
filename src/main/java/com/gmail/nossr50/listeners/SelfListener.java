@@ -20,6 +20,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class SelfListener implements Listener {
     //Used in task scheduling and other things
     private final mcMMO plugin;
@@ -31,10 +34,10 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
-        Player player = event.getPlayer();
-        PrimarySkillType skill = event.getSkill();
+        final Player player = event.getPlayer();
+        final PrimarySkillType skill = event.getSkill();
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //TODO: Handle proper validation at the event level
         if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
@@ -55,6 +58,19 @@ public class SelfListener implements Listener {
             if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
                 ScoreboardManager.handleLevelUp(player, skill);
         }
+
+        final Set<Integer> levelsAchieved = new LinkedHashSet<>();
+        final Set<Integer> powerLevelsAchieved = new LinkedHashSet<>();
+        int startingLevel = event.getSkillLevel() - event.getLevelsGained();
+        int startingPowerLevel = mcMMOPlayer.getPowerLevel() - event.getLevelsGained();
+        for (int i = 0; i < event.getLevelsGained(); i++) {
+            levelsAchieved.add(startingLevel + (i + 1));
+        }
+        for (int i = 0; i < event.getLevelsGained(); i++) {
+            powerLevelsAchieved.add(startingPowerLevel + (i + 1));
+        }
+
+        plugin.getLevelUpCommandManager().applySkillLevelUp(mcMMOPlayer, skill, levelsAchieved, powerLevelsAchieved);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

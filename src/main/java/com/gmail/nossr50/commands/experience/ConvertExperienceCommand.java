@@ -18,7 +18,7 @@ public class ConvertExperienceCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
-            FormulaType previousType = mcMMO.getFormulaManager().getPreviousFormulaType();
+            FormulaType previousType = mcMMO.p.getFormulaManager().getPreviousFormulaType();
             FormulaType newType = FormulaType.getFormulaType(args[1].toUpperCase(Locale.ENGLISH));
 
             if (newType == FormulaType.UNKNOWN) {
