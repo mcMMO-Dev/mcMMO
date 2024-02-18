@@ -66,7 +66,7 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
         }
     }
 
-    private @NotNull SkillLevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
+    private @Nullable SkillLevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
         SkillLevelUpCommandBuilder builder = new SkillLevelUpCommandBuilder();
         // check if command is enabled
         if (!commandSection.getBoolean(ENABLED, true)) {
@@ -171,6 +171,7 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
                     + commandSection.getName());
             return null;
         }
+
         builder.withLevels(levels);
 
         // commands
