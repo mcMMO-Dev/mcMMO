@@ -1,9 +1,7 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.commands.levelup.PowerLevelUpCommand;
-import com.gmail.nossr50.commands.levelup.PowerLevelUpCommandBuilder;
-import com.gmail.nossr50.commands.levelup.SkillLevelUpCommand;
-import com.gmail.nossr50.commands.levelup.SkillLevelUpCommandBuilder;
+import com.gmail.nossr50.commands.levelup.LevelUpCommand;
+import com.gmail.nossr50.commands.levelup.LevelUpCommandBuilder;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
@@ -48,153 +46,89 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
                 continue;
             }
 
-            SkillLevelUpCommand skillLevelUpCommand = buildSkillLevelUpCommand(commandSection);
-            PowerLevelUpCommand powerLevelUpCommand = buildPowerLevelUpCommand(commandSection);
+            LevelUpCommand levelUpCommand = buildSkillLevelUpCommand(commandSection);
 
-            if (skillLevelUpCommand == null && powerLevelUpCommand == null) {
+            if (levelUpCommand == null) {
                 mcMMO.p.getLogger().severe("Invalid command format for key: " + key);
             } else {
-                if(skillLevelUpCommand != null) {
-                    mcMMO.p.getLevelUpCommandManager().registerCommand(skillLevelUpCommand);
-                    mcMMO.p.getLogger().info("Skill Level up command successfully loaded from config for key: " + key);
-                }
-                if(powerLevelUpCommand != null) {
-                    mcMMO.p.getLevelUpCommandManager().registerCommand(powerLevelUpCommand);
-                    mcMMO.p.getLogger().info("Power Level up command successfully loaded from config for key: " + key);
-                }
+                mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+                mcMMO.p.getLogger().info("Level up command successfully loaded from config for key: " + key);
             }
         }
     }
 
-    private @Nullable SkillLevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
-        SkillLevelUpCommandBuilder builder = new SkillLevelUpCommandBuilder();
-        // check if command is enabled
-        if (!commandSection.getBoolean(ENABLED, true)) {
-            return null;
-        }
-        /* Condition Section */
-        ConfigurationSection condition = commandSection.getConfigurationSection(CONDITION_SECTION);
-        if (condition == null) {
-            mcMMO.p.getLogger().severe("No condition section found for command named " + commandSection.getName());
-            return null;
-        }
-
-        // Skill Filter
-        // check if skills is string or configuration section
-        if (condition.contains(SKILLS_SECTION)) {
-            if (condition.isString(SKILLS_SECTION)) {
-                String skillName = condition.getString(SKILLS_SECTION);
-                if (skillName != null) {
-                    PrimarySkillType primarySkillType = mcMMO.p.getSkillTools().matchSkill(skillName);
-                    if (primarySkillType != null) {
-                        builder.withSkillFilter(getSkillsFromFilter(new HashSet<>(Set.of(skillName))));
-                    }
-                }
-            } else {
-                ConfigurationSection skillsSection = condition.getConfigurationSection(SKILLS_SECTION);
-                if (skillsSection != null) {
-                    Set<String> skillNames = skillsSection.getKeys(false);
-                    Set<PrimarySkillType> skillsFromFilter = getSkillsFromFilter(skillNames);
-                    if (skillsFromFilter.isEmpty()) {
-                        LogUtils.debug(mcMMO.p.getLogger(), "No valid skills found for command named "
-                                + commandSection.getName() + "for condition section named " + skillsSection.getName());
-                    } else {
-                        builder.withSkillFilter(skillsFromFilter);
-                    }
-                }
-            }
-        }
-
-        // for now only simple condition is supported
-        if (!condition.contains(LEVELS_SECTION)) {
-            mcMMO.p.getLogger().severe("No condition.levels section found for command named " + commandSection.getName());
-            return null;
-        }
-
-        Collection<Integer> levels = condition.getIntegerList(LEVELS_SECTION);
-        if (levels.isEmpty()) {
-            mcMMO.p.getLogger().severe("No valid levels found in condition.levels for command named "
-                    + commandSection.getName());
-            return null;
-        }
-        builder.withLevels(levels);
-
-        // commands
-        if (commandSection.isString(COMMANDS)) {
-            String command = commandSection.getString(COMMANDS);
-            if (command != null) {
-                builder.command(command);
-            }
-        } else {
-            List<String> commands = commandSection.getStringList(COMMANDS);
-            if (commands.isEmpty()) {
-                mcMMO.p.getLogger().severe("No commands defined for command named "
-                        + commandSection.getName());
-                return null;
-            } else {
-                builder.commands(commands);
-            }
-        }
-
-        return builder.build();
-    }
-
-    private @Nullable PowerLevelUpCommand buildPowerLevelUpCommand(final ConfigurationSection commandSection) {
-        PowerLevelUpCommandBuilder builder = new PowerLevelUpCommandBuilder();
-        // check if command is enabled
-        if (!commandSection.getBoolean(ENABLED, true)) {
-            return null;
-        }
-
-        /* Condition Section */
-        ConfigurationSection condition = commandSection.getConfigurationSection(CONDITION_SECTION);
-        if (condition == null) {
-            mcMMO.p.getLogger().severe("No condition section found for command named " + commandSection.getName());
-            return null;
-        }
-
-        // No power level condition
-        if (!condition.contains(POWER_LEVEL_SECTION)) {
-            return null;
-        }
-
-        // for now only simple condition is supported
-        if (!condition.contains(LEVELS_SECTION)) {
-            mcMMO.p.getLogger().severe("No condition.levels section found for power level command named "
-                    + commandSection.getName());
-            return null;
-        }
-
-        Collection<Integer> levels = condition.getIntegerList(LEVELS_SECTION);
-        if (levels.isEmpty()) {
-            mcMMO.p.getLogger().severe("No valid levels found in condition.levels for power level command named "
-                    + commandSection.getName());
-            return null;
-        }
-
-        builder.withLevels(levels);
-
-        // commands
-        if (commandSection.isString(COMMANDS)) {
-            String command = commandSection.getString(COMMANDS);
-            if (command != null) {
-                builder.command(command);
-            }
-        } else {
-            List<String> commands = commandSection.getStringList(COMMANDS);
-            if (commands.isEmpty()) {
-                mcMMO.p.getLogger().severe("No commands defined for power level command named "
-                        + commandSection.getName());
-                return null;
-            } else {
-                builder.commands(commands);
-            }
-        }
-
-        return builder.build();
-    }
-
-    private Set<PrimarySkillType> getSkillsFromFilter(Set<String> skillFilter) {
-        return mcMMO.p.getSkillTools().matchSkills(skillFilter);
+    private @Nullable LevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
+        // TODO: Rework
+        return null;
+//        LevelUpCommandBuilder builder = new LevelUpCommandBuilder();
+//        // check if command is enabled
+//        if (!commandSection.getBoolean(ENABLED, true)) {
+//            return null;
+//        }
+//        /* Condition Section */
+//        ConfigurationSection condition = commandSection.getConfigurationSection(CONDITION_SECTION);
+//        if (condition == null) {
+//            mcMMO.p.getLogger().severe("No condition section found for command named " + commandSection.getName());
+//            return null;
+//        }
+//
+//        // Skill Filter
+//        // check if skills is string or configuration section
+//        if (condition.contains(SKILLS_SECTION)) {
+//            if (condition.isString(SKILLS_SECTION)) {
+//                String skillName = condition.getString(SKILLS_SECTION);
+//                if (skillName != null) {
+//                    PrimarySkillType primarySkillType = mcMMO.p.getSkillTools().matchSkill(skillName);
+//                    if (primarySkillType != null) {
+//                        builder.withSkillFilter(getSkillsFromFilter(new HashSet<>(Set.of(skillName))));
+//                    }
+//                }
+//            } else {
+//                ConfigurationSection skillsSection = condition.getConfigurationSection(SKILLS_SECTION);
+//                if (skillsSection != null) {
+//                    Set<String> skillNames = skillsSection.getKeys(false);
+//                    Set<PrimarySkillType> skillsFromFilter = getSkillsFromFilter(skillNames);
+//                    if (skillsFromFilter.isEmpty()) {
+//                        LogUtils.debug(mcMMO.p.getLogger(), "No valid skills found for command named "
+//                                + commandSection.getName() + "for condition section named " + skillsSection.getName());
+//                    } else {
+//                        builder.withSkillFilter(skillsFromFilter);
+//                    }
+//                }
+//            }
+//        }
+//
+//        // for now only simple condition is supported
+//        if (!condition.contains(LEVELS_SECTION)) {
+//            mcMMO.p.getLogger().severe("No condition.levels section found for command named " + commandSection.getName());
+//            return null;
+//        }
+//
+//        Collection<Integer> levels = condition.getIntegerList(LEVELS_SECTION);
+//        if (levels.isEmpty()) {
+//            mcMMO.p.getLogger().severe("No valid levels found in condition.levels for command named "
+//                    + commandSection.getName());
+//            return null;
+//        }
+//        builder.withLevels(levels);
+//
+//        // commands
+//        if (commandSection.isString(COMMANDS)) {
+//            String command = commandSection.getString(COMMANDS);
+//            if (command != null) {
+//                builder.command(command);
+//            }
+//        } else {
+//            List<String> commands = commandSection.getStringList(COMMANDS);
+//            if (commands.isEmpty()) {
+//                mcMMO.p.getLogger().severe("No commands defined for command named "
+//                        + commandSection.getName());
+//                return null;
+//            } else {
+//                builder.commands(commands);
+//            }
+//        }
+//
+//        return builder.build();
     }
 }

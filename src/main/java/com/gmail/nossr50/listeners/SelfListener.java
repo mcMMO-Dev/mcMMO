@@ -70,8 +70,7 @@ public class SelfListener implements Listener {
             powerLevelsAchieved.add(startingPowerLevel + (i + 1));
         }
 
-        plugin.getLevelUpCommandManager().applySkillLevelUp(mcMMOPlayer, skill, levelsAchieved);
-        plugin.getLevelUpCommandManager().applyPowerLevelUp(mcMMOPlayer, powerLevelsAchieved);
+        plugin.getLevelUpCommandManager().applySkillLevelUp(mcMMOPlayer, skill, levelsAchieved, powerLevelsAchieved);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

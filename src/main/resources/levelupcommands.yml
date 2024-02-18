@@ -1,32 +1,23 @@
 level_up_commands:
-    unique_id_here:
+    woodcutting_and_swords_command:
         enabled: true
         condition:
-            skills:
-                - 'Swords'
-                - 'Axes'
-            levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            swords:
+                levels: [10, 100]
+            woodcutting:
+                levels: [10, 100]
         commands:
-            - "say %player% reached level %level%!"
+            - "say {@player} reached level {@swords_level} in swords, and {@woodcutting_level} in woodcutting!"
             - "say Isn't that nice?"
         run_command_as: 'CONSOLE'
         log_level: 'INFO'
-    other_unique_id_here:
-        enabled: true
-        condition:
-            levels: [1, 2, 3, 4, 5]
-        commands:
-            - "say this command should execute for all skills, %player%!"
-            - "say Isn't that fun?"
-        run_command_as: 'CONSOLE'
-        log_level: 'DEBUG'
     power_level_milestones:
         enabled: true
         condition:
-            power_level: true
-            levels: [ 10, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 10000, 20000 ]
+            power_level:
+                levels: [ 1000, 2000, 3000, 4000, 5000 ]
         commands:
-            - "say %player% has reached a power level milestone!"
-            - "say %player% is now at power level %level%!"
+            - "say {@player} has reached a power level milestone!"
+            - "say {@player} is now at power level {@power_level}!"
         run_command_as: 'CONSOLE'
         log_level: 'DEBUG'
