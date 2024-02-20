@@ -47,7 +47,7 @@ public class CommandManager {
             if(ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.ADMIN)) {
                 bukkitCommandManager.registerCommand(new AdminChatCommand(pluginRef));
             }
-            if(ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.PARTY)) {
+            if(pluginRef.getPartyConfig().isPartyEnabled() && ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.PARTY)) {
                 bukkitCommandManager.registerCommand(new PartyChatCommand(pluginRef));
             }
         }
@@ -105,7 +105,7 @@ public class CommandManager {
     public void validatePlayerParty(@NotNull Player player) {
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        if(mmoPlayer.getParty() == null) {
+        if(!pluginRef.getPartyConfig().isPartyEnabled() || mmoPlayer.getParty() == null) {
             throw new ConditionFailedException(LocaleLoader.getString("Commands.Party.None"));
         }
     }

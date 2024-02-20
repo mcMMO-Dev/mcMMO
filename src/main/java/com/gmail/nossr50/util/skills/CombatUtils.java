@@ -741,7 +741,7 @@ public final class CombatUtils {
         XPGainReason xpGainReason;
 
         if (target instanceof Player defender) {
-            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled() || PartyManager.inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
+            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled() || mcMMO.p.getPartyManager().inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
                 return;
             }
 
@@ -828,7 +828,7 @@ public final class CombatUtils {
                 return false;
             }
 
-            if ((PartyManager.inSameParty(player, defender) || PartyManager.areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+            if ((mcMMO.p.getPartyManager().inSameParty(player, defender) || mcMMO.p.getPartyManager().areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
                 return false;
             }
 
@@ -879,7 +879,7 @@ public final class CombatUtils {
 
             if (tamer instanceof Player owner) {
 
-                return (owner == attacker || PartyManager.inSameParty(attacker, owner) || PartyManager.areAllies(attacker, owner));
+                return (owner == attacker || mcMMO.p.getPartyManager().inSameParty(attacker, owner) || mcMMO.p.getPartyManager().areAllies(attacker, owner));
             }
         }
 

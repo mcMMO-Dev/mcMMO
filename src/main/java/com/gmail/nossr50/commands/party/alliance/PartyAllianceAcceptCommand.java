@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.party.alliance;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
@@ -31,7 +32,7 @@ public class PartyAllianceAcceptCommand implements CommandExecutor {
                 return true;
             }
 
-            PartyManager.acceptAllianceInvite(mcMMOPlayer);
+            mcMMO.p.getPartyManager().acceptAllianceInvite(mcMMOPlayer);
             return true;
         }
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "accept"));

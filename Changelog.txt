@@ -1,3 +1,16 @@
+Version 2.1.229
+    Added new party.yml config, which lets admins disable the party system entirely without having to use permissions
+    Fixed error caused by missing API in McMMOEntityDamageByRuptureEvent
+    (API) Major API changes to PartyManager
+    (API) PartyManager is no longer a static singleton class, use mcMMO.getPartyManager() to get the PartyManager
+    (API) Added com.gmail.nossr50.mcMMO.isPartySystemEnabled to check if the party system is enabled
+    (API) Added com.gmail.nossr50.api.PartyAPI.isPartySystemEnabled as an alternative, to check if the party system is enabled
+    (API) Added missing com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent.getHandlerList
+
+    NOTES:
+    Admins can now enable/disable the whole party system with a setting in the new party.yml config
+    You'll have to start your server one time to generate the config, then change the setting and reboot your server.
+
 Version 2.1.228
     Fixed a stack trace due to Spigot API break on EntityDamageEvent and EntityDamageByEntity event
     (API) - Removed FakeEntityDamageEvent and FakeEntityDamageByEntityEvent

@@ -495,8 +495,8 @@ public class EntityListener implements Listener {
 
         //Party Friendly Fire
         if(!mcMMO.p.getGeneralConfig().getPartyFriendlyFire())
-            if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
-                    || PartyManager.areAllies(defendingPlayer, attackingPlayer))
+            if ((mcMMO.p.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
+                    || mcMMO.p.getPartyManager().areAllies(defendingPlayer, attackingPlayer))
                     && !(Permissions.friendlyFire(attackingPlayer)
                     && Permissions.friendlyFire(defendingPlayer))) {
                 event.setCancelled(true);
