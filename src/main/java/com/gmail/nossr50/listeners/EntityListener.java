@@ -365,7 +365,7 @@ public class EntityListener implements Listener {
             if(attacker instanceof Projectile projectile) {
                 if(projectile.getShooter() instanceof Player attackingPlayer && !attackingPlayer.equals(defendingPlayer)) {
                     //Check for party friendly fire and cancel the event
-                    if (checkParties(event, defendingPlayer, attackingPlayer)) {
+                    if (mcMMO.p.getPartyConfig().isPartyEnabled() && checkParties(event, defendingPlayer, attackingPlayer)) {
                         return;
                     }
                 }
@@ -383,7 +383,7 @@ public class EntityListener implements Listener {
                     }
                 }
             } else if (attacker instanceof Player attackingPlayer){
-                if (checkParties(event, defendingPlayer, attackingPlayer))
+                if (mcMMO.p.getPartyConfig().isPartyEnabled() && checkParties(event, defendingPlayer, attackingPlayer))
                     return;
             }
         }
