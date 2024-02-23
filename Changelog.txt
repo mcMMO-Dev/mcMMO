@@ -1,3 +1,7 @@
+Version 2.1.230
+    Fixed an error that could happen when mcMMO was saving when parties were disabled by party.yml (thanks IAISI & L4BORG)
+    Fixed several exceptions when checking PVP damage when parties were disabled by party.yml (thanks IAISI & L4BORG)
+
 Version 2.1.229
     Added new party.yml config, which lets admins disable the party system entirely without having to use permissions
     Fixed error caused by missing API in McMMOEntityDamageByRuptureEvent

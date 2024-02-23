@@ -671,13 +671,14 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        if(partyConfig.isPartyEnabled()) {
+            long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
-        if (kickIntervalTicks == 0) {
-            getFoliaLib().getImpl().runLater(new PartyAutoKickTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
-        }
-        else if (kickIntervalTicks > 0) {
-            getFoliaLib().getImpl().runTimer(new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            if (kickIntervalTicks == 0) {
+                getFoliaLib().getImpl().runLater(new PartyAutoKickTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            } else if (kickIntervalTicks > 0) {
+                getFoliaLib().getImpl().runTimer(new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            }
         }
 
         // Update power level tag scoreboards
