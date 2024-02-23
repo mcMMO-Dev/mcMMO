@@ -259,7 +259,7 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {
         //Prevent players from setting fire to each other if they are in the same party
-        if(event.getEntity() instanceof Player defender) {
+        if(mcMMO.p.getPartyConfig().isPartyEnabled() && event.getEntity() instanceof Player defender) {
 
             if(event.getCombuster() instanceof Projectile projectile) {
                 if(projectile.getShooter() instanceof Player attacker) {
@@ -365,7 +365,7 @@ public class EntityListener implements Listener {
             if(attacker instanceof Projectile projectile) {
                 if(projectile.getShooter() instanceof Player attackingPlayer && !attackingPlayer.equals(defendingPlayer)) {
                     //Check for party friendly fire and cancel the event
-                    if (checkParties(event, defendingPlayer, attackingPlayer)) {
+                    if (mcMMO.p.getPartyConfig().isPartyEnabled() && checkParties(event, defendingPlayer, attackingPlayer)) {
                         return;
                     }
                 }
@@ -383,7 +383,7 @@ public class EntityListener implements Listener {
                     }
                 }
             } else if (attacker instanceof Player attackingPlayer){
-                if (checkParties(event, defendingPlayer, attackingPlayer))
+                if (mcMMO.p.getPartyConfig().isPartyEnabled() && checkParties(event, defendingPlayer, attackingPlayer))
                     return;
             }
         }
