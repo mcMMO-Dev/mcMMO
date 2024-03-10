@@ -1,3 +1,8 @@
+Version 2.1.231
+    Fixed a bug preventing parties from being made without passwords (Thanks Momshroom)
+    Updated korean locale (thanks mangchi57)
+    Added some unit tests for party creation
+
 Version 2.1.230
     Fixed an error that could happen when mcMMO was saving when parties were disabled by party.yml (thanks IAISI & L4BORG)
     Fixed several exceptions when checking PVP damage when parties were disabled by party.yml (thanks IAISI & L4BORG)
