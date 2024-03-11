@@ -177,7 +177,7 @@ public class mcMMO extends JavaPlugin {
 
             //Folia lib plugin instance
             foliaLib = new FoliaLib(this);
-            InvalidTickDelayNotifier.disableNotifications = true;
+            foliaLib.disableInvalidTickValueWarning();
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools

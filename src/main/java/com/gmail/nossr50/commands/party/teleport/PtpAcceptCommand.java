@@ -49,6 +49,7 @@ public class PtpAcceptCommand implements CommandExecutor {
         }
 
         if (mcMMO.p.getGeneralConfig().getPTPCommandWorldPermissions()) {
+            // TODO FOLIA - target is not on the same thread as sender/player - unsafe
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 
@@ -64,6 +65,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             }
         }
 
+        // TODO FOLIA - target is not on the same thread as sender/player - unsafe
         PtpCommand.handleTeleportWarmup(target, player);
         return true;
     }

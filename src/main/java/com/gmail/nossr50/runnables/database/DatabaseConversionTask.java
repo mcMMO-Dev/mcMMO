@@ -21,6 +21,6 @@ public class DatabaseConversionTask extends CancellableRunnable {
     public void run() {
         sourceDatabase.convertUsers(mcMMO.getDatabaseManager());
 
-        mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> sender.sendMessage(message));
+        mcMMO.p.getFoliaLib().getImpl().runLaterAsync(t -> sender.sendMessage(message), 1);
     }
 }

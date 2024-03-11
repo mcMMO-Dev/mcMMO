@@ -229,6 +229,7 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
+        // TODO FOLIA - target is not on the same thread as sender/player - unsafe
         if(UserManager.getPlayer(targetPlayer) == null)
         {
             targetPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -250,9 +251,11 @@ public class PtpCommand implements TabExecutor {
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
+            // TODO FOLIA - target is not on the same thread as sender/player - unsafe
             mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(teleportingPlayer, new TeleportationWarmup(mcMMOPlayer, mcMMOTarget), 20 * warmup);
         }
         else {
+            // TODO FOLIA - target is not on the same thread as sender/player - unsafe
             EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }
     }

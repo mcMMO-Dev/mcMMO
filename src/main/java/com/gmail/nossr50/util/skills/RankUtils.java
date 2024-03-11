@@ -48,7 +48,9 @@ public class RankUtils {
             {
                 SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
 
-                mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(mcMMOPlayer.getPlayer(), skillUnlockNotificationTask, (count * 100L));
+                long tickDelay = count * 100L; // Delay for this skill's notification
+                if (tickDelay == 0) tickDelay = 1; // Ensure delay always > 0
+                mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(mcMMOPlayer.getPlayer(), skillUnlockNotificationTask, tickDelay);
 
                 count++;
             }

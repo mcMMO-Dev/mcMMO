@@ -131,7 +131,8 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(), 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(),
+                    5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 

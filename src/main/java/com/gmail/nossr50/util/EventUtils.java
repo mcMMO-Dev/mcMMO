@@ -352,6 +352,7 @@ public final class EventUtils {
         if(mcMMOPlayer == null)
             return;
 
+        // TODO FOLIA - target is not on the same thread as sender/player - unsafe
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -359,7 +360,7 @@ public final class EventUtils {
             return;
         }
 
-//        teleportingPlayer.teleport(targetPlayer);
+        // TODO FOLIA - target is not on the same thread as sender/player - unsafe
         mcMMO.p.getFoliaLib().getImpl().teleportAsync(teleportingPlayer, targetPlayer.getLocation());
 
         teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
