@@ -1,3 +1,9 @@
+Version 2.1.232
+    Added new setting to experience.yml 'ExploitFix.PreventArmorStandInteraction' can be turned to false to enable mcMMO abilities on armor stands again
+
+    NOTES:
+    The new setting simply prevents mcMMO abilities from activating when attacking an armor stand, this prevents some exploits
+
 Version 2.1.231
     Fixed a bug preventing parties from being made without passwords (Thanks Momshroom)
     Updated korean locale (thanks mangchi57)

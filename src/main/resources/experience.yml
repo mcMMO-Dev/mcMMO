@@ -39,6 +39,7 @@ ExploitFix:
     TreeFellerReducedXP: true
     PistonCheating: true
     SnowGolemExcavation: true
+    PreventArmorStandInteraction: true
     # This include NPCs from stuff like Citizens, this is not a setting for Vanilla Minecraft Villagers (Which can be considered NPCs)
     # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
     # Of course, mcMMO doesn't know for sure whether something is an NPC, it checks a few known things, see our source code to see how

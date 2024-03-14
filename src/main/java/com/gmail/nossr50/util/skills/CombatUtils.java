@@ -300,6 +300,10 @@ public final class CombatUtils {
         Entity painSource = event.getDamager();
         EntityType entityType = painSource.getType();
 
+        if (target instanceof ArmorStand) {
+            return;
+        }
+
         if (target instanceof Player player) {
             if(ExperienceConfig.getInstance().isNPCInteractionPrevented()) {
                 if (Misc.isNPCEntityExcludingVillagers(target)) {
