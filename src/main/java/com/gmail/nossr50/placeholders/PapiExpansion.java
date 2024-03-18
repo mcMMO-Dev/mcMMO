@@ -15,14 +15,26 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.TreeMap;
 
 public class PapiExpansion extends PlaceholderExpansion {
-    private final Map<String, Placeholder> placeholders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+  
+    public static final String SKILL_LEVEL = "level_";
+    public static final String SKILL_EXP_NEEDED = "xp_needed_";
+    public static final String SKILL_EXP_REMAINING = "xp_remaining_";
+    public static final String SKILL_EXP = "xp_";
+    public static final String SKILL_RANK = "rank_";
+    public static final String SKILL_EXP_RATE = "xprate_";
+    public static final String POWER_LEVEL = "power_level";
+    public static final String POWER_LEVEL_CAP = "power_level_cap";
+    public static final String IN_PARTY = "in_party";
+    public static final String PARTY_NAME = "party_name";
+    public static final String IS_PARTY_LEADER = "is_party_leader";
+    public static final String PARTY_LEADER = "party_leader";
+    public static final String PARTY_SIZE = "party_size";
+    public static final String EXP_RATE = "xprate";
+    public static final String IS_EXP_EVENT_ACTIVE = "is_xp_event_active";
 
     public PapiExpansion() {
-        init();
     }
 
     @Override
@@ -37,8 +49,7 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        //grab version from pom.xml
-        return "1.0,0";
+        return mcMMO.p.getDescription().getVersion();
     }
 
     @Override
@@ -49,105 +60,41 @@ public class PapiExpansion extends PlaceholderExpansion {
     @Override
     @Nullable
     public String onPlaceholderRequest(final Player player, @NotNull final String params) {
-        String token;
-        String data = null;
-        int dataPosition = params.indexOf(":");
-
-        if (dataPosition != -1) {
-            token = params.substring(0, dataPosition);
-            data = params.substring(dataPosition + 1);
-        } else {
-            token = params;
-        }
-
-        Placeholder placeholder = placeholders.get(token);
-
-        if (placeholder != null) {
-            return placeholder.process(player, data);
-        } else {
-            return null;
-        }
-    }
-
-    public Integer getSkillLevel(PrimarySkillType skill, Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        return user.getSkillLevel(skill);
-    }
-
-    public Integer getExpNeeded(PrimarySkillType skill, Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        return user.getXpToLevel(skill);
-    }
-
-    public Integer getExp(PrimarySkillType skill, Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-
-        return user.getSkillXpLevel(skill);
-    }
-
-
-    public Integer getExpRemaining(PrimarySkillType skill, Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        int current = user.getSkillXpLevel(skill);
-        int needed = user.getXpToLevel(skill);
-
-        return needed - current;
-    }
-
-    public Integer getRank(PrimarySkillType skill, Player player) {
-        try {
-            return ExperienceAPI.getPlayerRankSkill(player.getUniqueId(), StringUtils.getCapitalized(skill.toString()));
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public Integer getPowerLevel(Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        return user.getPowerLevel();
-    }
-
-    public Integer getPowerCap(Player player) {
-        return mcMMO.p.getGeneralConfig().getPowerLevelCap();
-    }
-
-    public String getPartyName(Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        final Party party = user.getParty();
-
-        return (party == null) ? null : party.getName();
-    }
-
-    public String getPartyLeader(Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        final Party party = user.getParty();
-        return (party == null) ? null : party.getLeader().getPlayerName();
-    }
-
-    public Integer getPartySize(Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-        final Party party = user.getParty();
-        return (party == null) ? null : party.getMembers().size();
-    }
-
-    public String getXpRate(Player player) {
+      
+      // Non player-specific placeholders
+      if (params.equalsIgnoreCase(IS_EXP_EVENT_ACTIVE)) {
+        return mcMMO.p.isXPEventEnabled() ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
+      } else if (params.equalsIgnoreCase(EXP_RATE)) {
         return String.valueOf(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-    }
-
-    public String getSkillXpRate(PrimarySkillType skill, Player player) {
-        final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
-
+      } else if (params.equalsIgnoreCase(POWER_LEVEL_CAP)) {
+        return String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap());
+      }
+      
+      final McMMOPlayer user = UserManager.getPlayer(player);
+      if (user == null) return null;
+      
+      if (params.startsWith(SKILL_LEVEL)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_LEVEL.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getSkillLevel(skill));
+      } else if (params.startsWith(SKILL_EXP_NEEDED)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP_NEEDED.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getXpToLevel(skill));
+      } else if (params.startsWith(SKILL_EXP_REMAINING)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP_REMAINING.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getXpToLevel(skill) - user.getSkillXpLevel(skill));
+      } else if (params.startsWith(SKILL_EXP)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP.length()).toUpperCase());
+        return skill == null ? null : String.valueOf(user.getSkillXpLevel(skill));
+      } else if (params.startsWith(SKILL_RANK)) {
+        try {
+          return String.valueOf(ExperienceAPI.getPlayerRankSkill(player.getUniqueId(), StringUtils.getCapitalized(params.substring(SKILL_RANK.length()))));
+        } catch (Exception ex) {
+          return null;
+        }
+      } else if (params.startsWith(SKILL_EXP_RATE)) {
+        PrimarySkillType skill = PrimarySkillType.valueOf(params.substring(SKILL_EXP_RATE.length()).toUpperCase());
+        if (skill == null) return null;
         double modifier = 1.0F;
-
         if (Permissions.customXpBoost(player, skill))
             modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
         else if (Permissions.quadrupleXp(player, skill))
@@ -162,69 +109,29 @@ public class PapiExpansion extends PlaceholderExpansion {
             modifier = 1.5;
         else if (Permissions.oneAndOneTenthXp(player, skill))
             modifier = 1.1;
-
         return String.valueOf(modifier);
+      } else if (params.equalsIgnoreCase(POWER_LEVEL)) {
+        return String.valueOf(user.getPowerLevel());
+      }
+      
+      
+      //Party placeholders
+      final Party party = user.getParty();
+      
+      if (params.equalsIgnoreCase(IN_PARTY)) {
+        return (party==null) ? PlaceholderAPIPlugin.booleanFalse() : PlaceholderAPIPlugin.booleanTrue();
+      } else if (params.equalsIgnoreCase(PARTY_NAME)) {
+        return (party == null) ? "" : party.getName();
+      } else if (params.equalsIgnoreCase(IS_PARTY_LEADER)) {
+        if (party == null) return "";
+        return party.getLeader().getPlayerName().equals(player.getName()) ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
+      } else if (params.equalsIgnoreCase(PARTY_LEADER)) {
+        return (party == null) ? "" : party.getLeader().getPlayerName();
+      } else if (params.equalsIgnoreCase(PARTY_SIZE)) {
+        return (party == null) ? "" : String.valueOf(party.getMembers().size());
+      }
+      
+      return null;
     }
 
-    public String isExpEventActive(Player player) {
-        return mcMMO.p.isXPEventEnabled() ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
-    }
-
-    public void registerPlaceholder(Placeholder placeholder) {
-        final Placeholder registered = placeholders.get(placeholder.getName());
-        if (registered != null)
-            throw new IllegalStateException("Placeholder " + placeholder.getName() + " is already registered!");
-
-        placeholders.put(placeholder.getName(), placeholder);
-    }
-
-    protected void init() {
-
-        for (PrimarySkillType skill : PrimarySkillType.values()) {
-            // %mcmmo_level_<skillname>%
-            registerPlaceholder(new SkillLevelPlaceholder(this, skill));
-
-            //%mcmmo_xp_needed_<skillname>%
-            registerPlaceholder(new SkillExpNeededPlaceholder(this, skill));
-
-            //%mcmmo_xp_<skillname>%
-            registerPlaceholder(new SkillExpPlaceholder(this, skill));
-
-            //%mcmmo_xp_remaining_<skillname>%
-            registerPlaceholder(new SkillExpRemainingPlaceholder(this, skill));
-
-            //%mcmmo_rank_<skillname>%
-            registerPlaceholder(new SkillRankPlaceholder(this, skill));
-
-            //%mcmmo_xprate_<skillname>%
-            registerPlaceholder(new SkillXpRatePlaceholder(this, skill));
-        }
-
-
-        //%mcmmo_power_level%
-        registerPlaceholder(new PowerLevelPlaceholder(this));
-
-        // %mcmmo_power_level_cap%
-        registerPlaceholder(new PowerLevelCapPlaceholder(this));
-
-        // %mcmmo_in_party%
-        registerPlaceholder(new PartyIsMemberPlaceholder(this));
-
-        /// %mcmmo_party_name%
-        registerPlaceholder(new PartyNamePlaceholder(this));
-
-        // %mcmmo_is_party_leader%
-        registerPlaceholder(new PartyIsLeaderPlaceholder(this));
-
-        // %mcmmo_party_leader%
-        registerPlaceholder(new PartyLeaderPlaceholder(this));
-
-        // %mcmmo_party_size%
-        registerPlaceholder(new PartySizePlaceholder(this));
-
-        // %mcmmo_is_xp_event_active%
-        registerPlaceholder(new XpEventActivePlaceholder(this));
-        // %mcmmo_xprate%
-        registerPlaceholder(new XpRatePlaceholder(this));
-    };
 }
