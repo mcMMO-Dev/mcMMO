@@ -23,11 +23,45 @@ import java.util.Collections;
 import java.util.List;
 
 public class PartyCommand implements TabExecutor {
-    private static final List<String> PARTY_SUBCOMMANDS;
-    private static final List<String> XPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
-    private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
+    private final List<String> PARTY_SUBCOMMANDS;
+    private final List<String> XPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
+    private final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
+    private final CommandExecutor partyJoinCommand;
+    private final CommandExecutor partyAcceptCommand;
+    private final CommandExecutor partyCreateCommand;
+    private final CommandExecutor partyQuitCommand;
+    private final CommandExecutor partyXpShareCommand;
+    private final CommandExecutor partyItemShareCommand;
+    private final CommandExecutor partyInviteCommand;
+    private final CommandExecutor partyKickCommand;
+    private final CommandExecutor partyDisbandCommand;
+    private final CommandExecutor partyChangeOwnerCommand;
+    private final CommandExecutor partyLockCommand;
+    private final CommandExecutor partyChangePasswordCommand;
+    private final CommandExecutor partyRenameCommand;
+    private final CommandExecutor partyInfoCommand;
+    private final CommandExecutor partyHelpCommand;
+    private final CommandExecutor partyTeleportCommand;
+    private final CommandExecutor partyAllianceCommand;
+    public PartyCommand() {
+        partyJoinCommand           = new PartyJoinCommand();
+        partyAcceptCommand         = new PartyAcceptCommand();
+        partyCreateCommand         = new PartyCreateCommand();
+        partyQuitCommand           = new PartyQuitCommand();
+        partyXpShareCommand        = new PartyXpShareCommand();
+        partyItemShareCommand      = new PartyItemShareCommand();
+        partyInviteCommand         = new PartyInviteCommand();
+        partyKickCommand           = new PartyKickCommand();
+        partyDisbandCommand        = new PartyDisbandCommand();
+        partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
+        partyLockCommand           = new PartyLockCommand();
+        partyChangePasswordCommand = new PartyChangePasswordCommand();
+        partyRenameCommand         = new PartyRenameCommand();
+        partyInfoCommand           = new PartyInfoCommand();
+        partyHelpCommand           = new PartyHelpCommand();
+        partyTeleportCommand       = new PtpCommand();
+        partyAllianceCommand       = new PartyAllianceCommand();
 
-    static {
         ArrayList<String> subcommands = new ArrayList<>();
 
         for (PartySubcommandType subcommand : PartySubcommandType.values()) {
@@ -37,24 +71,6 @@ public class PartyCommand implements TabExecutor {
         Collections.sort(subcommands);
         PARTY_SUBCOMMANDS = ImmutableList.copyOf(subcommands);
     }
-
-    private final CommandExecutor partyJoinCommand           = new PartyJoinCommand();
-    private final CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
-    private final CommandExecutor partyCreateCommand         = new PartyCreateCommand();
-    private final CommandExecutor partyQuitCommand           = new PartyQuitCommand();
-    private final CommandExecutor partyXpShareCommand        = new PartyXpShareCommand();
-    private final CommandExecutor partyItemShareCommand      = new PartyItemShareCommand();
-    private final CommandExecutor partyInviteCommand         = new PartyInviteCommand();
-    private final CommandExecutor partyKickCommand           = new PartyKickCommand();
-    private final CommandExecutor partyDisbandCommand        = new PartyDisbandCommand();
-    private final CommandExecutor partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
-    private final CommandExecutor partyLockCommand           = new PartyLockCommand();
-    private final CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
-    private final CommandExecutor partyRenameCommand         = new PartyRenameCommand();
-    private final CommandExecutor partyInfoCommand           = new PartyInfoCommand();
-    private final CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private final CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private final CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -73,13 +89,13 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer(player) == null)
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if(mcMMOPlayer == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (args.length < 1) {
             if (!mcMMOPlayer.inParty()) {
@@ -140,31 +156,18 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        switch (subcommand) {
-            case XPSHARE:
-                return partyXpShareCommand.onCommand(sender, command, label, args);
-            case ITEMSHARE:
-                return partyItemShareCommand.onCommand(sender, command, label, args);
-            case KICK:
-                return partyKickCommand.onCommand(sender, command, label, args);
-            case DISBAND:
-                return partyDisbandCommand.onCommand(sender, command, label, args);
-            case OWNER:
-                return partyChangeOwnerCommand.onCommand(sender, command, label, args);
-            case LOCK:
-            case UNLOCK:
-                return partyLockCommand.onCommand(sender, command, label, args);
-            case PASSWORD:
-                return partyChangePasswordCommand.onCommand(sender, command, label, args);
-            case RENAME:
-                return partyRenameCommand.onCommand(sender, command, label, args);
-            case ALLIANCE:
-                return partyAllianceCommand.onCommand(sender, command, label, args);
-            default:
-                break;
-        }
-
-        return true;
+        return switch (subcommand) {
+            case XPSHARE -> partyXpShareCommand.onCommand(sender, command, label, args);
+            case ITEMSHARE -> partyItemShareCommand.onCommand(sender, command, label, args);
+            case KICK -> partyKickCommand.onCommand(sender, command, label, args);
+            case DISBAND -> partyDisbandCommand.onCommand(sender, command, label, args);
+            case OWNER -> partyChangeOwnerCommand.onCommand(sender, command, label, args);
+            case LOCK, UNLOCK -> partyLockCommand.onCommand(sender, command, label, args);
+            case PASSWORD -> partyChangePasswordCommand.onCommand(sender, command, label, args);
+            case RENAME -> partyRenameCommand.onCommand(sender, command, label, args);
+            case ALLIANCE -> partyAllianceCommand.onCommand(sender, command, label, args);
+            default -> true;
+        };
     }
 
     @Override
@@ -179,12 +182,13 @@ public class PartyCommand implements TabExecutor {
                     return ImmutableList.of();
                 }
 
+                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+
                 switch (subcommand) {
                     case JOIN:
                     case INVITE:
                     case KICK:
                     case OWNER:
-                        List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                         return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));
                     case XPSHARE:
                         return StringUtil.copyPartialMatches(args[1], XPSHARE_COMPLETIONS, new ArrayList<>(XPSHARE_COMPLETIONS.size()));
@@ -198,7 +202,7 @@ public class PartyCommand implements TabExecutor {
                     case TELEPORT:
                         List<String> matches = StringUtil.copyPartialMatches(args[1], PtpCommand.TELEPORT_SUBCOMMANDS, new ArrayList<>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
 
-                        if (matches.size() == 0) {
+                        if (matches.isEmpty()) {
                             Player player = (Player) sender;
                             final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 

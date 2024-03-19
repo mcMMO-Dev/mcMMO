@@ -8,6 +8,7 @@ import com.gmail.nossr50.config.mods.ArmorConfigManager;
 import com.gmail.nossr50.config.mods.BlockConfigManager;
 import com.gmail.nossr50.config.mods.EntityConfigManager;
 import com.gmail.nossr50.config.mods.ToolConfigManager;
+import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
 import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
@@ -138,8 +139,10 @@ public class mcMMO extends JavaPlugin {
 
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
+    private PartyConfig partyConfig;
 
     private FoliaLib foliaLib;
+    private PartyManager partyManager;
 
 //    private RepairConfig repairConfig;
 //    private SalvageConfig salvageConfig;
@@ -181,6 +184,7 @@ public class mcMMO extends JavaPlugin {
 
             //Init configs
             advancedConfig = new AdvancedConfig(getDataFolder());
+            partyConfig = new PartyConfig(getDataFolder());
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = generalConfig.getIsRetroMode();
@@ -258,7 +262,10 @@ public class mcMMO extends JavaPlugin {
                 registerCoreSkills();
                 registerCustomRecipes();
 
-                PartyManager.loadParties();
+                if (partyConfig.isPartyEnabled()) {
+                    partyManager = new PartyManager(this);
+                    partyManager.loadParties();
+                }
 
                 formulaManager = new FormulaManager();
 
@@ -376,7 +383,8 @@ public class mcMMO extends JavaPlugin {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
-            PartyManager.saveParties(); // Save our parties
+            if(partyConfig.isPartyEnabled())
+                getPartyManager().saveParties(); // Save our parties
 
             //TODO: Needed?
             if(generalConfig.getScoreboardsEnabled())
@@ -660,13 +668,14 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        if(partyConfig.isPartyEnabled()) {
+            long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
-        if (kickIntervalTicks == 0) {
-            getFoliaLib().getImpl().runLater(new PartyAutoKickTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
-        }
-        else if (kickIntervalTicks > 0) {
-            getFoliaLib().getImpl().runTimer(new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            if (kickIntervalTicks == 0) {
+                getFoliaLib().getImpl().runLater(new PartyAutoKickTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            } else if (kickIntervalTicks > 0) {
+                getFoliaLib().getImpl().runTimer(new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            }
         }
 
         // Update power level tag scoreboards
@@ -778,6 +787,23 @@ public class mcMMO extends JavaPlugin {
 
     public @NotNull AdvancedConfig getAdvancedConfig() {
         return advancedConfig;
+    }
+
+    public @NotNull PartyConfig getPartyConfig() {
+        return partyConfig;
+    }
+
+    /**
+     * Check if the party system is enabled
+     *
+     * @return true if the party system is enabled, false otherwise
+     */
+    public boolean isPartySystemEnabled() {
+        return partyConfig.isPartyEnabled();
+    }
+
+    public PartyManager getPartyManager() {
+        return partyManager;
     }
 
     public @NotNull FoliaLib getFoliaLib() {

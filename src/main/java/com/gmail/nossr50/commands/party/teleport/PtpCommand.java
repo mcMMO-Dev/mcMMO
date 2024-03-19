@@ -210,7 +210,7 @@ public class PtpCommand implements TabExecutor {
             return false;
         }
 
-        if (!PartyManager.inSameParty(player, target)) {
+        if (!mcMMO.p.getPartyManager().inSameParty(player, target)) {
             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
             return false;
         }

@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.party.alliance;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -44,7 +45,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
                 return true;
             }
 
-            if (PartyManager.inSameParty(player, target)) {
+            if (mcMMO.p.getPartyManager().inSameParty(player, target)) {
                 sender.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", targetName));
                 return true;
             }

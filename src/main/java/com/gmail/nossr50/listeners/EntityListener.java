@@ -9,7 +9,6 @@ import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.metadata.MobMetadataService;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.TravelingBlockMetaCleanup;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.crossbows.Crossbows;
@@ -238,12 +237,12 @@ public class EntityListener implements Listener {
 
             if(event.getCombuster() instanceof Projectile projectile) {
                 if(projectile.getShooter() instanceof Player attacker) {
-                    if(checkParties(event, defender, attacker)) {
+                    if(checkIfInPartyOrSamePlayer(event, defender, attacker)) {
                         event.setCancelled(true);
                     }
                 }
             } else if(event.getCombuster() instanceof Player attacker) {
-                if(checkParties(event, defender, attacker)) {
+                if(checkIfInPartyOrSamePlayer(event, defender, attacker)) {
                     event.setCancelled(true);
                 }
             }
@@ -339,8 +338,8 @@ public class EntityListener implements Listener {
             //If the attacker is a Player or a projectile belonging to a player
             if(attacker instanceof Projectile projectile) {
                 if(projectile.getShooter() instanceof Player attackingPlayer && !attackingPlayer.equals(defendingPlayer)) {
-                    //Check for party friendly fire and cancel the event
-                    if (checkParties(event, defendingPlayer, attackingPlayer)) {
+                    //Check for friendly fire and cancel the event
+                    if (checkIfInPartyOrSamePlayer(event, defendingPlayer, attackingPlayer)) {
                         return;
                     }
                 }
@@ -358,7 +357,7 @@ public class EntityListener implements Listener {
                     }
                 }
             } else if (attacker instanceof Player attackingPlayer){
-                if (checkParties(event, defendingPlayer, attackingPlayer))
+                if (checkIfInPartyOrSamePlayer(event, defendingPlayer, attackingPlayer))
                     return;
             }
         }
@@ -457,21 +456,24 @@ public class EntityListener implements Listener {
         }
     }
 
-    public boolean checkParties(Cancellable event, Player defendingPlayer, Player attackingPlayer) {
-        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
+    public boolean checkIfInPartyOrSamePlayer(Cancellable event, Player defendingPlayer, Player attackingPlayer) {
+        // This check is probably necessary outside of the party system
+        if (defendingPlayer.equals(attackingPlayer)) {
             return true;
         }
 
-        // We want to make sure we're not gaining XP or applying abilities
-        // when we hit ourselves
-        if (defendingPlayer.equals(attackingPlayer)) {
+        if(!pluginRef.isPartySystemEnabled()) {
+            return false;
+        }
+
+        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
             return true;
         }
 
         //Party Friendly Fire
         if(!mcMMO.p.getGeneralConfig().getPartyFriendlyFire())
-            if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
-                    || PartyManager.areAllies(defendingPlayer, attackingPlayer))
+            if ((mcMMO.p.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
+                    || mcMMO.p.getPartyManager().areAllies(defendingPlayer, attackingPlayer))
                     && !(Permissions.friendlyFire(attackingPlayer)
                     && Permissions.friendlyFire(defendingPlayer))) {
                 event.setCancelled(true);

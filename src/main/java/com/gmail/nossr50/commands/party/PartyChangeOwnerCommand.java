@@ -31,7 +31,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
                 return true;
             }
 
-            PartyManager.setPartyLeader(target.getUniqueId(), playerParty);
+            mcMMO.p.getPartyManager().setPartyLeader(target.getUniqueId(), playerParty);
             return true;
         }
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));

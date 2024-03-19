@@ -32,7 +32,7 @@ public class TeleportationWarmup extends CancellableRunnable {
 
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
-        if (!PartyManager.inSameParty(teleportingPlayer, targetPlayer)) {
+        if (!mcMMO.p.getPartyManager().inSameParty(teleportingPlayer, targetPlayer)) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetPlayer.getName()));
             return;
         }

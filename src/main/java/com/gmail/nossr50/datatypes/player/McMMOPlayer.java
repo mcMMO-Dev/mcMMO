@@ -67,6 +67,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -649,11 +650,11 @@ public class McMMOPlayer implements Identified {
 
         applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
 
-        if (party == null || party.hasReachedLevelCap()) {
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || party == null || party.hasReachedLevelCap()) {
             return;
         }
 
-        if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
+        if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !mcMMO.p.getPartyManager().getNearMembers(this).isEmpty()) {
             party.applyXpGain(modifyXpGain(skill, xp));
         }
     }
@@ -753,11 +754,13 @@ public class McMMOPlayer implements Identified {
      */
 
     public void setupPartyData() {
-        party = PartyManager.getPlayerParty(player.getName(), player.getUniqueId());
-        ptpRecord = new PartyTeleportRecord();
+        if (mcMMO.p.isPartySystemEnabled()) {
+            party = mcMMO.p.getPartyManager().getPlayerParty(player.getName(), player.getUniqueId());
+            ptpRecord = new PartyTeleportRecord();
 
-        if (inParty()) {
-            loginParty();
+            if (inParty()) {
+                loginParty();
+            }
         }
     }
 
@@ -777,7 +780,7 @@ public class McMMOPlayer implements Identified {
         this.party = party;
     }
 
-    public Party getParty() {
+    public @Nullable Party getParty() {
         return party;
     }
 
@@ -793,7 +796,7 @@ public class McMMOPlayer implements Identified {
         invite = null;
     }
 
-    public PartyTeleportRecord getPartyTeleportRecord() {
+    public @Nullable PartyTeleportRecord getPartyTeleportRecord() {
         return ptpRecord;
     }
 

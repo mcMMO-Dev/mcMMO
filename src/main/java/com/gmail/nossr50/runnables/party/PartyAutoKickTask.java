@@ -22,7 +22,7 @@ public class PartyAutoKickTask extends CancellableRunnable {
 
         long currentTime = System.currentTimeMillis();
 
-        for (Party party : PartyManager.getParties()) {
+        for (Party party : mcMMO.p.getPartyManager().getParties()) {
             for (UUID memberUniqueId : party.getMembers().keySet()) {
                 OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
                 boolean isProcessed = processedPlayers.contains(memberUniqueId);
@@ -38,7 +38,7 @@ public class PartyAutoKickTask extends CancellableRunnable {
         }
 
         for (Entry<OfflinePlayer, Party> entry : toRemove.entrySet()) {
-            PartyManager.removeFromParty(entry.getKey(), entry.getValue());
+            mcMMO.p.getPartyManager().removeFromParty(entry.getKey(), entry.getValue());
         }
     }
 }

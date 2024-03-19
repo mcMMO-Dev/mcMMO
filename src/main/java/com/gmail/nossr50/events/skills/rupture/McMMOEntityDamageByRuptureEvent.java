@@ -54,4 +54,8 @@ public class McMMOEntityDamageByRuptureEvent extends EntityEvent implements Canc
     public HandlerList getHandlers() {
         return handlers;
     }
+
+    public static @NotNull HandlerList getHandlerList() {
+        return handlers;
+    }
 }

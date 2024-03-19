@@ -253,7 +253,7 @@ public class Party {
                 }
             }
         } else {
-            PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
+            mcMMO.p.getPartyManager().informPartyMembersLevelUp(this, levelsGained, getLevel());
         }
 
     }
