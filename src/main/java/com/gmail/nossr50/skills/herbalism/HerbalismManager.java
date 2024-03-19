@@ -20,10 +20,8 @@ import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -650,7 +648,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
@@ -665,7 +663,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
             return false;
         }
 
@@ -684,7 +682,7 @@ public class HerbalismManager extends SkillManager {
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel()
-                    && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(treasure.getDropChance(), getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM, player, treasure.getDropChance())) {
                 if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player)) {
                     return false;
                 }
@@ -721,7 +719,7 @@ public class HerbalismManager extends SkillManager {
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
         player.updateInventory();
 
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
@@ -805,7 +803,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (!greenTerra && !RandomChanceUtil.checkRandomChanceExecutionSuccess(player, SubSkillType.HERBALISM_GREEN_THUMB, true)) {
+        if (!greenTerra && !ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, player)) {
             return false;
         }
 

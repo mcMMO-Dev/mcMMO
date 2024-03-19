@@ -22,6 +22,7 @@ public enum SubSkillType {
     ARCHERY_DAZE,
     ARCHERY_SKILL_SHOT(20),
     ARCHERY_ARCHERY_LIMIT_BREAK(10),
+    ARCHERY_EXPLOSIVE_SHOT(1),
 
     /* Axes */
     AXES_ARMOR_IMPACT(20),
@@ -30,6 +31,12 @@ public enum SubSkillType {
     AXES_CRITICAL_STRIKES(1),
     AXES_GREATER_IMPACT(1),
     AXES_SKULL_SPLITTER(1),
+
+    /* CROSSBOWS */
+    CROSSBOWS_SUPER_SHOTGUN(1),
+    CROSSBOWS_CROSSBOWS_LIMIT_BREAK(10),
+    CROSSBOWS_TRICK_SHOT(3),
+    CROSSBOWS_POWERED_SHOT(20),
 
     /* Excavation */
     EXCAVATION_ARCHAEOLOGY(8),
@@ -45,6 +52,7 @@ public enum SubSkillType {
 
     /* Herbalism */
     HERBALISM_DOUBLE_DROPS(1),
+    HERBALISM_VERDANT_BOUNTY(1),
     HERBALISM_FARMERS_DIET(5),
     HERBALISM_GREEN_TERRA(1),
     HERBALISM_GREEN_THUMB(4),
@@ -57,6 +65,7 @@ public enum SubSkillType {
     MINING_DEMOLITIONS_EXPERTISE(1),
     MINING_DOUBLE_DROPS(1),
     MINING_SUPER_BREAKER(1),
+    MINING_MOTHER_LODE(1),
 
     /* Repair */
     REPAIR_ARCANE_FORGING(8),
@@ -91,6 +100,11 @@ public enum SubSkillType {
     TAMING_SHOCK_PROOF(1),
     TAMING_THICK_FUR(1),
 
+    /* Tridents */
+    TRIDENTS_SUPER(1),
+    TRIDENTS_IMPALE(10),
+    TRIDENTS_TRIDENTS_LIMIT_BREAK(10),
+
     /* Unarmed */
     UNARMED_ARROW_DEFLECT(1),
     UNARMED_BERSERK(1),
@@ -101,13 +115,11 @@ public enum SubSkillType {
     UNARMED_UNARMED_LIMIT_BREAK(10),
 
     /* Woodcutting */
-/*    WOODCUTTING_BARK_SURGEON(3),*/
     WOODCUTTING_KNOCK_ON_WOOD(2),
     WOODCUTTING_HARVEST_LUMBER(1),
     WOODCUTTING_LEAF_BLOWER(1),
-/*    WOODCUTTING_NATURES_BOUNTY(3),
-    WOODCUTTING_SPLINTER(3),*/
-    WOODCUTTING_TREE_FELLER(1);
+    WOODCUTTING_TREE_FELLER(1),
+    WOODCUTTING_CLEAN_CUTS(1);
 
     private final int numRanks;
     //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.
@@ -134,7 +146,7 @@ public enum SubSkillType {
     /**
      * !!! This relies on the immutable lists in PrimarySkillType being populated !!!
      * If we add skills, those immutable lists need to be updated
-     * @return
+     * @return the parent skill of this subskill
      */
     public PrimarySkillType getParentSkill() { return mcMMO.p.getSkillTools().getPrimarySkillBySubSkill(this); }
 

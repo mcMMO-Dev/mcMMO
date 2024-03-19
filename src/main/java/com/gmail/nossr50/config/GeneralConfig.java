@@ -1009,4 +1009,6 @@ public class GeneralConfig extends BukkitConfig {
     public boolean useVerboseLogging() {
         return config.getBoolean("General.Verbose_Logging", false);
     }
+
+    public boolean isMasterySystemEnabled() { return config.getBoolean( "General.PowerLevel.Skill_Mastery.Enabled"); }
 }

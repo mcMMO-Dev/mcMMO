@@ -22,14 +22,16 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
+import com.gmail.nossr50.skills.AlternateFiringSuperSkill;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -39,6 +41,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.*;
@@ -68,7 +71,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class McMMOPlayer implements Identified {
@@ -181,6 +183,9 @@ public class McMMOPlayer implements Identified {
             case AXES:
                 skillManagers.put(primarySkillType, new AxesManager(this));
                 break;
+            case CROSSBOWS:
+                skillManagers.put(primarySkillType, new CrossbowsManager(this));
+                break;
             case EXCAVATION:
                 skillManagers.put(primarySkillType, new ExcavationManager(this));
                 break;
@@ -208,6 +213,9 @@ public class McMMOPlayer implements Identified {
             case TAMING:
                 skillManagers.put(primarySkillType, new TamingManager(this));
                 break;
+            case TRIDENTS:
+                skillManagers.put(primarySkillType, new TridentsManager(this));
+                break;
             case UNARMED:
                 skillManagers.put(primarySkillType, new UnarmedManager(this));
                 break;
@@ -226,15 +234,6 @@ public class McMMOPlayer implements Identified {
     public double getAttackStrength() {
         return attackStrength;
     }
-
-//    public void setAttackStrength(double attackStrength) {
-//        this.attackStrength = attackStrength;
-//    }
-
-    /*public void hideXpBar(PrimarySkillType primarySkillType)
-    {
-        experienceBarManager.hideExperienceBar(primarySkillType);
-    }*/
 
     public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
         return lastSkillShownScoreboard;
@@ -307,6 +306,13 @@ public class McMMOPlayer implements Identified {
 
     public AxesManager getAxesManager() {
         return (AxesManager) skillManagers.get(PrimarySkillType.AXES);
+    }
+    public CrossbowsManager getCrossbowsManager() {
+        return (CrossbowsManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
+    }
+
+    public TridentsManager getTridentsManager() {
+        return (TridentsManager) skillManagers.get(PrimarySkillType.TRIDENTS);
     }
 
     public ExcavationManager getExcavationManager() {
@@ -384,6 +390,7 @@ public class McMMOPlayer implements Identified {
      * @param isActive True if the ability is active, false otherwise
      */
     public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
+        // TODO: This should reject "one and done" type abilities
         abilityMode.put(ability, isActive);
     }
 
@@ -611,7 +618,7 @@ public class McMMOPlayer implements Identified {
         }
 
         if (SkillTools.isChildSkill(skill)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
             float splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -668,7 +675,7 @@ public class McMMOPlayer implements Identified {
         xp = mcMMOPlayerPreXpGainEvent.getXpGained();
 
         if (SkillTools.isChildSkill(primarySkillType)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
@@ -843,7 +850,7 @@ public class McMMOPlayer implements Identified {
             return 0;
         }
 
-        xp = (float) (xp / ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) (xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
@@ -955,6 +962,72 @@ public class McMMOPlayer implements Identified {
 
         setToolPreparationMode(tool, false);
         mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType), (long) ticks * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    public void checkCrossbowAbilityActivation() {
+        PrimarySkillType primarySkillType = PrimarySkillType.CROSSBOWS;
+        ToolType tool = ToolType.CROSSBOW;
+        SuperAbilityType superAbilityType = SuperAbilityType.SUPER_SHOTGUN;
+        SubSkillType subSkillType = SubSkillType.CROSSBOWS_SUPER_SHOTGUN;
+        AlternateFiringSuperSkill skillManager = getCrossbowsManager();
+
+        // Check permission
+        if (!superAbilityType.getPermissions(player)) {
+            return;
+        }
+
+        //TODO: This is hacky and temporary solution until skills are move to the new system
+        //Potential problems with this include skills with two super abilities (ie mining)
+        if(!RankUtils.hasUnlockedSubskill(player, subSkillType))
+        {
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(superAbilityType) - getSkillLevel(primarySkillType);
+
+            //Inform the player they are not yet skilled enough
+            NotificationManager.sendPlayerInformation(player,
+                    NotificationType.ABILITY_COOLDOWN,
+                    "Skills.AbilityGateRequirementFail",
+                    String.valueOf(diff),
+                    mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
+            return;
+        }
+
+        // Call the event
+        if (EventUtils.callPlayerAbilityActivateEvent(player, primarySkillType).isCancelled()) {
+            return;
+        }
+
+        // Check if we can fire the ability
+        if (!skillManager.isReadyToFire()) {
+            return;
+        }
+
+        if (useChatNotifications()) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, superAbilityType.getAbilityOn());
+        }
+
+        if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
+            SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, superAbilityType.getAbilityPlayer());
+        }
+
+        //Sounds
+        SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+
+        // TODO: Fire the ability
+        profile.setAbilityDATS(superAbilityType, System.currentTimeMillis());
+        setToolPreparationMode(tool, false);
+        skillManager.resetCharge();
+        skillManager.fireSuper();
+
+        if(!mcMMO.isServerShutdownExecuted()) {
+            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(
+                    player,
+                    new AbilityCooldownTask(this, superAbilityType),
+                    (long) PerksUtils.handleCooldownPerks(player, superAbilityType.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        }
+    }
+
+    public void chargeCrossbowSuper() {
+        getCrossbowsManager().chargeSuper();
     }
 
     public void processAbilityActivation(@NotNull PrimarySkillType primarySkillType) {

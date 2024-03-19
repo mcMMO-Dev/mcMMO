@@ -264,6 +264,11 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
+        VerdantBounty:
+            ChanceMax: 50.0
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
 
         HylianLuck:
             # ChanceMax: Maximum chance of Hylian Luck when on <MaxBonusLevel> or higher
@@ -284,6 +289,11 @@ Skills:
     #  Settings for Mining
     ###
     Mining:
+        MotherLode:
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
+            ChanceMax: 50.0
         SuperBreaker:
             AllowTripleDrops: true
         DoubleDrops:
@@ -608,9 +618,16 @@ Skills:
             Knock_On_Wood:
                 Add_XP_Orbs_To_Drops: true
 
+        # Triple Drops
+        CleanCuts:
+            # ChanceMax: Maximum chance of receiving triple drops (100 = 100%)
+            # MaxBonusLevel: Level when the maximum chance of receiving triple drops is reached
+            ChanceMax: 50.0
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
         # Double Drops
         HarvestLumber:
-            # ChanceMax & MaxBonusLevel are only used for Classic, I'll make that more clear in the future.
             # ChanceMax: Maximum chance of receiving double drops (100 = 100%)
             # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
             ChanceMax: 100.0

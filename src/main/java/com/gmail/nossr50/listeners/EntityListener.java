@@ -11,6 +11,7 @@ import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.runnables.TravelingBlockMetaCleanup;
 import com.gmail.nossr50.skills.archery.Archery;
+import com.gmail.nossr50.skills.crossbows.Crossbows;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
@@ -19,9 +20,8 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.ChatColor;
@@ -62,30 +62,6 @@ public class EntityListener implements Listener {
         mobMetadataService = mcMMO.getMetadataService().getMobMetadataService();
     }
 
-//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-//    public void onBlockDropItemEvent(EntityDropItemEvent event) {
-//        if(event.getEntity() instanceof Block) {
-//            Block itemDispensingBlock = (Block) event.getEntity();
-//
-//            //Is it a berry bush?
-//            if(itemDispensingBlock.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
-//                //Berry Bush Time!
-//                if (event.getEntity().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
-//                    Bukkit.broadcastMessage("Pop pop!");
-//                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getEntity().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
-//                    int bonusCount = bonusDropMeta.asInt();
-//
-//                    for (int i = 0; i < bonusCount; i++) {
-//                        Misc.spawnItemNaturally(event.getEntity().getLocation(), event.getItemDrop().getItemStack(), ItemSpawnReason.BONUS_DROPS);
-//                    }
-//                }
-//            }
-//
-//            if(event.getEntity().hasMetadata(mcMMO.BONUS_DROPS_METAKEY))
-//                event.getEntity().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, pluginRef);
-//        }
-//    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityTransform(EntityTransformEvent event) {
         if(event.getEntity() instanceof LivingEntity livingEntity) {
@@ -124,7 +100,7 @@ public class EntityListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onEntityShootBow(EntityShootBowEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
@@ -132,32 +108,28 @@ public class EntityListener implements Listener {
 
         if(event.getEntity() instanceof Player player)
         {
-
-            /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
-                    return;
-            }
-
             Entity projectile = event.getProjectile();
 
             //Should be noted that there are API changes regarding Arrow from 1.13.2 to current versions of the game
-            if (!(projectile instanceof Arrow)) {
+            if (!(projectile instanceof Arrow arrow)) {
                 return;
             }
 
             ItemStack bow = event.getBow();
 
-            if (bow != null
-                    && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+            if (bow == null)
+                return;
+
+            if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
                 projectile.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
             }
 
+            // Set BowType, Force, and Distance metadata
             projectile.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * mcMMO.p.getAdvancedConfig().getForceMultiplier(), 1.0)));
-            projectile.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+            projectile.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, arrow.getLocation()));
+
             //Cleanup metadata in 1 minute in case normal collection falls through
-            CombatUtils.delayArrowMetaCleanup((Projectile) projectile);
+            CombatUtils.delayArrowMetaCleanup(arrow);
         }
     }
 
@@ -176,25 +148,28 @@ public class EntityListener implements Listener {
                     return;
             }
 
-            Projectile projectile = event.getEntity();
-            EntityType entityType = projectile.getType();
+            if(event.getEntity() instanceof Arrow arrow) {
+                // Delayed metadata cleanup in case other cleanup hooks fail
+                CombatUtils.delayArrowMetaCleanup(arrow);
 
-            if(entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
-                CombatUtils.delayArrowMetaCleanup(projectile); //Cleans up metadata 1 minute from now in case other collection methods fall through
+                // If fired from an item with multi-shot, we need to track
+                if(ItemUtils.doesPlayerHaveEnchantmentInHands(player, "multishot")) {
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
+                }
 
-                if(!projectile.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
-                    projectile.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, new FixedMetadataValue(pluginRef, 1.0));
+                if(!arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE))
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, new FixedMetadataValue(pluginRef, 1.0));
 
-                if(!projectile.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE))
-                    projectile.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+                if(!arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE))
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, new FixedMetadataValue(pluginRef, arrow.getLocation()));
 
                 //Check both hands
                 if(ItemUtils.doesPlayerHaveEnchantmentInHands(player, "piercing")) {
                     return;
                 }
 
-                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
-                    projectile.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
+                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                    arrow.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
                 }
             }
         }
@@ -424,8 +399,8 @@ public class EntityListener implements Listener {
             }
         }
 
-        if(entityDamageEvent.getDamager() instanceof Projectile) {
-            CombatUtils.cleanupArrowMetadata((Projectile) entityDamageEvent.getDamager());
+        if(entityDamageEvent.getDamager() instanceof Arrow arrow) {
+            CombatUtils.delayArrowMetaCleanup(arrow);
         }
 
         if(entityDamageEvent.getEntity() instanceof Player player && entityDamageEvent.getDamager() instanceof Player) {
@@ -1115,5 +1090,16 @@ public class EntityListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onProjectileHitEvent(ProjectileHitEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+            return;
 
+        if(event.getEntity() instanceof Arrow arrow) {
+            if(arrow.isShotFromCrossbow()) {
+                Crossbows.processCrossbows(event, pluginRef, arrow);
+            }
+        }
+    }
 }

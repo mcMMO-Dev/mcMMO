@@ -8,10 +8,12 @@ Chat:
             Enable: true
             # Whether to use the current display name of a player
             Use_Display_Names: true
+            Send_To_Console: true
             Spies:
                 # Whether players with the chat spy permission join the server with chat spying toggled on
                 Automatically_Enable_Spying: false
         Admin:
+            Send_To_Console: true
             # Enable or disable admin chat
             Enable: true
             # Whether to use the current display name of a player

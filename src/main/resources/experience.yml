@@ -77,6 +77,10 @@ Experience_Bars:
         Enable: true
         Color: BLUE
         BarStyle: SEGMENTED_6
+    Crossbows:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
     Excavation:
         Enable: true
         Color: YELLOW
@@ -112,6 +116,10 @@ Experience_Bars:
     Taming:
         Enable: true
         Color: RED
+        BarStyle: SEGMENTED_6
+    Tridents:
+        Enable: true
+        Color: BLUE
         BarStyle: SEGMENTED_6
     Unarmed:
         Enable: true
@@ -159,8 +167,10 @@ Experience_Formula:
     Breeding:
         Multiplier: 1.0
 
-    # Experience gained will get divided by these values. 1.0 by default, 2.0 means two times less XP gained.
-    Modifier:
+    # Experience gained will get multiplied by these values. 1.0 by default, 0.5 means half XP gained. This happens right before multiplying the XP by the global multiplier.
+    Skill_Multiplier:
+        Crossbows: 1.0
+        Tridents: 1.0
         Swords: 1.0
         Taming: 1.0
         Acrobatics: 1.0

@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -39,14 +39,14 @@ public class SmeltingCommand extends SkillCommand {
 
         // FLUX MINING
         /*if (canFluxMine) {
-            String[] fluxMiningStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_FLUX_MINING);
+            String[] fluxMiningStrings = getRNGDisplayValues(player, SubSkillType.SMELTING_FLUX_MINING);
             str_fluxMiningChance = fluxMiningStrings[0];
             str_fluxMiningChanceLucky = fluxMiningStrings[1];
         }*/
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -54,8 +54,8 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canFuelEfficiency = canUseSubskill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
-        canSecondSmelt = canUseSubskill(player, SubSkillType.SMELTING_SECOND_SMELT);
+        canFuelEfficiency = Permissions.canUseSubSkill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
+        canSecondSmelt = Permissions.canUseSubSkill(player, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
         canUnderstandTheArt = Permissions.vanillaXpBoost(player, skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }

@@ -11,7 +11,6 @@ import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.events.scoreboard.ScoreboardObjectiveEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -495,7 +494,7 @@ public class ScoreboardWrapper {
                     sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mcMMOPlayer.getXpToLevel(targetSkill) - currentXP);
                 }
                 else {
-                    for (PrimarySkillType parentSkill : FamilyTree.getParents(targetSkill)) {
+                    for (PrimarySkillType parentSkill : mcMMO.p.getSkillTools().getChildSkillParents(targetSkill)) {
                         sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mcMMOPlayer.getSkillLevel(parentSkill));
                     }
                 }

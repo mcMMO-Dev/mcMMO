@@ -14,10 +14,8 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -322,7 +320,7 @@ public class RepairManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
         }
@@ -373,10 +371,10 @@ public class RepairManager extends SkillManager {
 
             Enchantment enchantment = enchant.getKey();
 
-            if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getKeepEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING))) {
+            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), getKeepEnchantChance())) {
 
                 if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1
-                        && (!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(100 - getDowngradeEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING)))) {
+                        && (!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), 100 - getDowngradeEnchantChance()))) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }

@@ -21,9 +21,7 @@ public class AbilityCooldownTask extends CancellableRunnable {
             return;
         }
 
-        mcMMOPlayer.setAbilityInformed(ability, true);
-
+        mcMMOPlayer.setAbilityInformed(ability, true); // TODO: ?? What does this do again?
         NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
-        //mcMMOPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());
     }
 }

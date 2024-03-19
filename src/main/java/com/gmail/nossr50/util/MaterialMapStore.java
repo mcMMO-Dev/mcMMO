@@ -10,9 +10,6 @@ import java.util.Locale;
 /**
  * Stores hash tables for item and block names
  * This allows for better support across multiple versions of Minecraft
- *
- * This is a temporary class, mcMMO is spaghetti and I'l clean it up later
- *
  */
 public class MaterialMapStore {
 
@@ -52,7 +49,6 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> bows;
     private final @NotNull HashSet<String> crossbows;
     private final @NotNull HashSet<String> tools;
-
     private final @NotNull HashSet<String> enchantables;
 
     private final @NotNull HashSet<String> ores;
@@ -818,6 +814,14 @@ public class MaterialMapStore {
 
     public boolean isCrossbow(@NotNull String id) {
         return crossbows.contains(id);
+    }
+
+    public boolean isTrident(@NotNull Material material) {
+        return isTrident(material.getKey().getKey());
+    }
+
+    public boolean isTrident(@NotNull String id) {
+        return tridents.contains(id);
     }
 
     public boolean isLeatherArmor(@NotNull Material material) {

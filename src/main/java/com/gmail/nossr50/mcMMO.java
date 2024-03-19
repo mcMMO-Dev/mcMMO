@@ -31,7 +31,6 @@ import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
@@ -99,7 +98,7 @@ public class mcMMO extends JavaPlugin {
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
 
-    private @NotNull SkillTools skillTools;
+    private SkillTools skillTools;
 
     private static boolean serverShutdownExecuted = false;
 
@@ -570,8 +569,6 @@ public class mcMMO extends JavaPlugin {
         CoreSkillsConfig.getInstance();
         SoundConfig.getInstance();
         RankConfig.getInstance();
-
-        new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<>();
 

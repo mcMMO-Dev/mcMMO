@@ -16,6 +16,7 @@ public enum PrimarySkillType {
     ALCHEMY,
     ARCHERY,
     AXES,
+    CROSSBOWS,
     EXCAVATION,
     FISHING,
     HERBALISM,
@@ -25,6 +26,7 @@ public enum PrimarySkillType {
     SMELTING,
     SWORDS,
     TAMING,
+    TRIDENTS,
     UNARMED,
     WOODCUTTING;
 

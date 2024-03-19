@@ -1,6 +1,7 @@
 package com.gmail.nossr50.chat.message;
 
 import com.gmail.nossr50.chat.author.Author;
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -51,7 +52,8 @@ public class PartyChatMessage extends AbstractChatMessage {
         messagePartyChatSpies(spyMessage);
 
         //Console message
-        mcMMO.p.getChatManager().sendConsoleMessage(author, spyMessage);
+        if(ChatConfig.getInstance().isConsoleIncludedInAudience(ChatChannel.PARTY))
+            mcMMO.p.getChatManager().sendConsoleMessage(author, spyMessage);
     }
 
     /**

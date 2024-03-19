@@ -61,6 +61,9 @@ public final class CommandRegistrationManager {
                 case AXES:
                     command.setExecutor(new AxesCommand());
                     break;
+                case CROSSBOWS:
+                    command.setExecutor(new CrossbowsCommand());
+                    break;
 
                 case EXCAVATION:
                     command.setExecutor(new ExcavationCommand());
@@ -96,6 +99,9 @@ public final class CommandRegistrationManager {
 
                 case TAMING:
                     command.setExecutor(new TamingCommand());
+                    break;
+                case TRIDENTS:
+                    command.setExecutor(new TridentsCommand());
                     break;
 
                 case UNARMED:
