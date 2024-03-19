@@ -627,7 +627,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* ALCHEMY */
     public int getCatalysisMaxBonusLevel() {
-        return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000);
+        if (mcMMO.isRetroModeEnabled()) {
+            return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel.RetroMode", 1000);
+        } else {
+            return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel.Standard", 100);
+        }
     }
 
     public double getCatalysisMinSpeed() {
