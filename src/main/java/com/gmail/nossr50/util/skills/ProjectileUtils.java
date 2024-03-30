@@ -48,6 +48,10 @@ public class ProjectileUtils {
         if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW, mcMMO.p);
         }
+
+        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT, mcMMO.p);
+        }
     }
 
     public static void copyArrowMetadata(@NotNull Plugin pluginRef, @NotNull Arrow arrowToCopy, @NotNull Arrow newArrow) {

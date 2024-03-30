@@ -1,9 +1,6 @@
 Version 2.2.000
     TODO: Add check to archery arrow retrieval to not work for crossbows
-    TODO: More SQL unit tests
-    TODO: Test mysql/mariadb changes
     TODO: Add metadata cleanup unit tests
-    TODO: Cleanup new arrow metadatas
     TODO: com/gmail/nossr50/database/FlatFileDatabaseManager.java:109 reporting data entries that need correction on each launch
     TODO: Add Xbows/Tridents to salvage/repair
     TODO: Add unit test for combat XP values
