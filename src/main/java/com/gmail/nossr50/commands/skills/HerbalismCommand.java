@@ -104,6 +104,7 @@ public class HerbalismCommand extends SkillCommand {
         canGreenThumbBlocks = RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLESTONE_WALL) || Permissions.greenThumbBlock(player, Material.STONE_BRICKS));
         canFarmersDiet = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_FARMERS_DIET);
         canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill);
+        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_VERDANT_BOUNTY) && !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill);
         canShroomThumb = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_SHROOM_THUMB);
     }
 
