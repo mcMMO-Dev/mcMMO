@@ -1,3 +1,6 @@
+Version 2.2.001
+    Fixed Crossbow's Powered shot showing the text for the wrong skill from the locale when using /crossbows command
+
 Version 2.2.000
     General
     Added Crossbows Skill, this skill is an early preview / WIP and feedback on discord is appreciated

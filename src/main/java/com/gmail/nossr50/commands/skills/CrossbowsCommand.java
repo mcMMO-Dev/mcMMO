@@ -48,7 +48,8 @@ public class CrossbowsCommand extends SkillCommand {
         }
 
         if (canPoweredShot) {
-            messages.add(getStatMessage(ARCHERY_SKILL_SHOT, percent.format(mmoPlayer.getCrossbowsManager().getDamageBonusPercent(player))));
+            messages.add(getStatMessage(CROSSBOWS_POWERED_SHOT,
+                    percent.format(mmoPlayer.getCrossbowsManager().getDamageBonusPercent(player))));
         }
 
         if (canTrickShot) {
