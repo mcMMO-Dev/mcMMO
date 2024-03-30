@@ -30,7 +30,8 @@ Version 2.2.000
     Locale
     Added locale entries for motherlode, cleancuts, and verdant bounty
 
-    Codebase
+    Codebase / Misc
+    PAPI's '/papi reload' command will no longer unload mcMMO (thanks gecko10000)
     Major rewrite for how random chance was handled in the code
     Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     A lot of new unit tests were added to help keep mcMMO stable as part of this update, of course, more could always be added.
