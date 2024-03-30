@@ -37,14 +37,6 @@ public class TridentsCommand extends SkillCommand {
             return messages;
         }
 
-        messages.add(ChatColor.DARK_AQUA + "Reminder: " + ChatColor.GOLD + "This is a BETA version of mcMMO, please report any bugs you find!");
-        messages.add(ChatColor.GOLD + "Tridents is a " + ChatColor.RED + "WIP" +ChatColor.GOLD + " skill that is still being developed, please leave feedback in our discord!");
-
-//        if (SkillUtils.canUseSubskill(player, TRIDENTS_SUPER)) {
-//            messages.add("Tridents Super Ability");
-//            //TODO: Implement Tridents Super
-//        }
-
         if(SkillUtils.canUseSubskill(player, TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
             messages.add(getStatMessage(TRIDENTS_TRIDENTS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, TRIDENTS_TRIDENTS_LIMIT_BREAK, 1000))));
@@ -55,6 +47,7 @@ public class TridentsCommand extends SkillCommand {
                     String.valueOf(mmoPlayer.getTridentsManager().impaleDamageBonus())));
         }
 
+        messages.add(ChatColor.GRAY + "The Tridents skill is a work in progress and is still being developed, feedback would be appreciated in the mcMMO discord server.");
         return messages;
     }
 

@@ -47,9 +47,6 @@ public class CrossbowsCommand extends SkillCommand {
             return messages;
         }
 
-        messages.add(ChatColor.DARK_AQUA + "Reminder: " + ChatColor.GOLD + "This is a BETA version of mcMMO, please report any bugs you find!");
-        messages.add(ChatColor.GOLD + "Crossbows is a " + ChatColor.RED + "WIP" +ChatColor.GOLD + " skill that is still being developed, please leave feedback in our discord!");
-
         if (canPoweredShot) {
             messages.add(getStatMessage(ARCHERY_SKILL_SHOT, percent.format(mmoPlayer.getCrossbowsManager().getDamageBonusPercent(player))));
         }
@@ -63,6 +60,8 @@ public class CrossbowsCommand extends SkillCommand {
             messages.add(getStatMessage(CROSSBOWS_CROSSBOWS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
         }
+
+        messages.add(ChatColor.GRAY + "The Crossbows skill is a work in progress and is still being developed, feedback would be appreciated in the mcMMO discord server.");
 
         return messages;
     }
