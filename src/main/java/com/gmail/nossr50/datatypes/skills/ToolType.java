@@ -10,7 +10,10 @@ public enum ToolType {
     HOE("Herbalism.Ability.Lower", "Herbalism.Ability.Ready"),
     PICKAXE("Mining.Ability.Lower", "Mining.Ability.Ready"),
     SHOVEL("Excavation.Ability.Lower", "Excavation.Ability.Ready"),
-    SWORD("Swords.Ability.Lower", "Swords.Ability.Ready");
+    SWORD("Swords.Ability.Lower", "Swords.Ability.Ready"),
+    CROSSBOW("Crossbows.Ability.Lower", "Crossbows.Ability.Ready"),
+    BOW("Archery.Ability.Lower", "Archery.Ability.Ready"),
+    TRIDENTS("Tridents.Ability.Lower", "Tridents.Ability.Ready");
 
     private final String lowerTool;
     private final String raiseTool;
@@ -38,6 +41,10 @@ public enum ToolType {
         switch (this) {
             case AXE:
                 return ItemUtils.isAxe(itemStack);
+            case CROSSBOW:
+                return ItemUtils.isCrossbow(itemStack);
+            case TRIDENTS:
+                return ItemUtils.isTrident(itemStack);
 
             case FISTS:
                 return itemStack.getType() == Material.AIR;

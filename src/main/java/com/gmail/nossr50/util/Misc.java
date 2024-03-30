@@ -343,4 +343,26 @@ public final class Misc {
             experienceOrb.setExperience(orbExpValue);
         }
     }
+
+//    public static void hackyUnitTest(@NotNull McMMOPlayer normalPlayer) {
+//        mcMMO.p.getLogger().info("Starting hacky unit test...");
+//        int iterations = 1000000;
+//        double ratioDivisor = 10000; //10000 because we run the test 1,000,000 times
+//        double expectedFailRate = 100.0D - RandomChanceUtil.getRandomChanceExecutionSuccess(normalPlayer.getPlayer(), SubSkillType.MINING_MOTHER_LODE, true);
+//
+//        double win = 0, loss = 0;
+//        for(int x = 0; x < iterations; x++) {
+//            if(RandomChanceUtil.checkRandomChanceExecutionSuccess(normalPlayer.getPlayer(), SubSkillType.MINING_MOTHER_LODE, true)) {
+//                win++;
+//            } else {
+//                loss++;
+//            }
+//        }
+//
+//        double lossRatio = (loss / ratioDivisor);
+//        mcMMO.p.getLogger().info("Expected Fail Rate: "+expectedFailRate);
+//        mcMMO.p.getLogger().info("Loss Ratio for hacky test: "+lossRatio);
+////        Assert.assertEquals(lossRatio, expectedFailRate, 0.01D);
+//    }
+
 }

@@ -1,45 +1,46 @@
 package com.gmail.nossr50.party;
 
+import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-class PartyManagerTest {
+class PartyManagerTest extends MMOTestEnvironment {
+    private static final Logger logger = Logger.getLogger(PartyManagerTest.class.getName());
 
-    static mcMMO mockMcMMO;
+    @BeforeEach
+    public void setUp() {
+        mockBaseEnvironment(logger);
 
-    @BeforeAll
-    public static void setup() {
-        // create a static stub for LocaleLoader.class
-        mockStatic(LocaleLoader.class);
-        when(LocaleLoader.getString(anyString())).thenReturn("");
+        // currently unnecessary, but may be needed for future tests
+        Mockito.when(partyConfig.isPartyEnabled()).thenReturn(true);
+    }
 
-        mockMcMMO = mock(mcMMO.class);
-        final Server mockServer = mock(Server.class);
-        when(mockMcMMO.getServer()).thenReturn(mockServer);
-        when(mockServer.getPluginManager()).thenReturn(mock(PluginManager.class));
+    @AfterEach
+    public void tearDown() {
+        cleanupBaseEnvironment();
 
-        // TODO: Add cleanup for static mock
+        // disable parties in config for other tests
+        Mockito.when(partyConfig.isPartyEnabled()).thenReturn(false);
     }
 
     @Test
     public void createPartyWithoutPasswordShouldSucceed() {
         // Given
-        PartyManager partyManager = new PartyManager(mockMcMMO);
+        PartyManager partyManager = new PartyManager(mcMMO.p);
         String partyName = "TestParty";
 
-        // TODO: Update this with utils from the other dev branches in the future
         Player player = mock(Player.class);
         McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
         when(mmoPlayer.getPlayer()).thenReturn(player);
@@ -52,11 +53,10 @@ class PartyManagerTest {
     @Test
     public void createPartyWithPasswordShouldSucceed() {
         // Given
-        PartyManager partyManager = new PartyManager(mockMcMMO);
+        PartyManager partyManager = new PartyManager(mcMMO.p);
         String partyName = "TestParty";
         String partyPassword = "somePassword";
 
-        // TODO: Update this with utils from the other dev branches in the future
         Player player = mock(Player.class);
         McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
         when(mmoPlayer.getPlayer()).thenReturn(player);
@@ -69,10 +69,9 @@ class PartyManagerTest {
     @Test
     public void createPartyWithoutNameShouldFail() {
         // Given
-        PartyManager partyManager = new PartyManager(mockMcMMO);
+        PartyManager partyManager = new PartyManager(mcMMO.p);
         String partyPassword = "somePassword";
 
-        // TODO: Update this with utils from the other dev branches in the future
         Player player = mock(Player.class);
         McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
         when(mmoPlayer.getPlayer()).thenReturn(player);
@@ -86,7 +85,7 @@ class PartyManagerTest {
     @Test
     public void createPartyWithoutPlayerShouldFail() {
         // Given
-        PartyManager partyManager = new PartyManager(mockMcMMO);
+        PartyManager partyManager = new PartyManager(mcMMO.p);
         String partyName = "TestParty";
         String partyPassword = "somePassword";
 

@@ -6,9 +6,10 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class SwordsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_COUNTER_ATTACK);
+            String[] counterStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.SWORDS_COUNTER_ATTACK);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -69,8 +70,8 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canRupture = canUseSubskill(player, SubSkillType.SWORDS_RUPTURE);
-        canCounter = canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
+        canRupture = SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_RUPTURE);
+        canCounter = SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
         canSerratedStrike = RankUtils.hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
     }
 
@@ -101,13 +102,13 @@ public class SwordsCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.SWORDS_STAB))
+        if(SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_STAB))
         {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
                     String.valueOf(UserManager.getPlayer(player).getSwordsManager().getStabDamage())));
         }
 
-        if(canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
+        if(SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK, 1000))));
         }

@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -24,6 +24,8 @@ public class HerbalismCommand extends SkillCommand {
     private int farmersDietRank;
     private String doubleDropChance;
     private String doubleDropChanceLucky;
+    private String tripleDropChance;
+    private String tripleDropChanceLucky;
     private String hylianLuckChance;
     private String hylianLuckChanceLucky;
     private String shroomThumbChance;
@@ -35,6 +37,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canGreenThumbBlocks;
     private boolean canFarmersDiet;
     private boolean canDoubleDrop;
+    private boolean canTripleDrop;
     private boolean canShroomThumb;
 
     public HerbalismCommand() {
@@ -46,9 +49,15 @@ public class HerbalismCommand extends SkillCommand {
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.HERBALISM_DOUBLE_DROPS);
+            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
+        }
+
+        if (canTripleDrop) {
+            String[] tripleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_VERDANT_BOUNTY);
+            tripleDropChance = tripleDropStrings[0];
+            tripleDropChanceLucky = tripleDropStrings[1];
         }
         
         // FARMERS DIET
@@ -67,21 +76,21 @@ public class HerbalismCommand extends SkillCommand {
         if (canGreenThumbBlocks || canGreenThumbPlants) {
             greenThumbStage = RankUtils.getRank(player, SubSkillType.HERBALISM_GREEN_THUMB);
 
-            String[] greenThumbStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.HERBALISM_GREEN_THUMB);
+            String[] greenThumbStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_GREEN_THUMB);
             greenThumbChance = greenThumbStrings[0];
             greenThumbChanceLucky = greenThumbStrings[1];
         }
 
         // HYLIAN LUCK
         if (hasHylianLuck) {
-            String[] hylianLuckStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.HERBALISM_HYLIAN_LUCK);
+            String[] hylianLuckStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
             hylianLuckChance = hylianLuckStrings[0];
             hylianLuckChanceLucky = hylianLuckStrings[1];
         }
 
         // SHROOM THUMB
         if (canShroomThumb) {
-            String[] shroomThumbStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.HERBALISM_SHROOM_THUMB);
+            String[] shroomThumbStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.HERBALISM_SHROOM_THUMB);
             shroomThumbChance = shroomThumbStrings[0];
             shroomThumbChanceLucky = shroomThumbStrings[1];
         }
@@ -89,13 +98,14 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        hasHylianLuck = canUseSubskill(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
+        hasHylianLuck = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
         canGreenTerra = Permissions.greenTerra(player);
         canGreenThumbPlants = RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbPlant(player, Material.WHEAT) || Permissions.greenThumbPlant(player, Material.CARROT) || Permissions.greenThumbPlant(player, Material.POTATO) || Permissions.greenThumbPlant(player, Material.BEETROOTS) || Permissions.greenThumbPlant(player, Material.NETHER_WART) || Permissions.greenThumbPlant(player, Material.COCOA));
         canGreenThumbBlocks = RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLESTONE_WALL) || Permissions.greenThumbBlock(player, Material.STONE_BRICKS));
-        canFarmersDiet = canUseSubskill(player, SubSkillType.HERBALISM_FARMERS_DIET);
-        canDoubleDrop = canUseSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill);
-        canShroomThumb = canUseSubskill(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+        canFarmersDiet = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_FARMERS_DIET);
+        canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill);
+        canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_VERDANT_BOUNTY) && !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill);
+        canShroomThumb = Permissions.canUseSubSkill(player, SubSkillType.HERBALISM_SHROOM_THUMB);
     }
 
     @Override
@@ -106,11 +116,16 @@ public class HerbalismCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
-        
+
+        if (canTripleDrop) {
+            messages.add(getStatMessage(SubSkillType.HERBALISM_VERDANT_BOUNTY, tripleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
+        }
+
         if (canFarmersDiet) {
             messages.add(getStatMessage(false, true, SubSkillType.HERBALISM_FARMERS_DIET, String.valueOf(farmersDietRank)));
         }
-        
+
         if (canGreenTerra) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_GREEN_TERRA, greenTerraLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));

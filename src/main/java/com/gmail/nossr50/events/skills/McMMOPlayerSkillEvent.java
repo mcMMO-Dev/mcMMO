@@ -11,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
  * Generic event for mcMMO skill handling.
  */
 public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
-    protected PrimarySkillType skill;
+    protected @NotNull PrimarySkillType skill;
     protected int skillLevel;
 
-    protected McMMOPlayerSkillEvent(Player player, PrimarySkillType skill) {
+    protected McMMOPlayerSkillEvent(@NotNull Player player, @NotNull PrimarySkillType skill) {
         super(player);
         this.skill = skill;
         this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
@@ -23,7 +23,7 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
     /**
      * @return The skill involved in this event
      */
-    public PrimarySkillType getSkill() {
+    public @NotNull PrimarySkillType getSkill() {
         return skill;
     }
 

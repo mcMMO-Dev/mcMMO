@@ -1,8 +1,54 @@
-Version 2.1.232
-    Added new setting to experience.yml 'ExploitFix.PreventArmorStandInteraction' can be turned to false to enable mcMMO abilities on armor stands again
+Version 2.2.000
+    General
+    Added Crossbows Skill, this skill is a WIP and feedback on discord is appreciated
+    Added Tridents Skill, this skill is a WIP and feedback on discord is appreciated
+    Added the "endgame" triple drop subskill 'Mother Lode' to Mining
+    Added the "endgame" triple drop subskill 'Clean Cuts' to Woodcutting
+    Added the "endgame" triple drop subskill 'Verdant Bounty' to Herbalism
+    Added /mmopower command which simply shows your power level (aliases /mmopowerlevel /powerlevel)
+
+    Config
+    Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console
+    Replaced 'Experience_Formula.Modifier' in experience.yml with 'Experience_Formula.Skill_Multiplier' which is easier to understand and less prone to divide by zero bugs
+    child.yml config is gone now, feel free to delete it
+    Added ExploitFix.PreventArmorStandInteraction to experience.yml to prevent players from triggering mcMMO abilities off armor stands
+
+    Tweaks
+    Tree Feller now drops 90% less non-wood block rewards (leaves/etc) on average from Knock on Wood.
+    Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
+    Updated advanced.yml with entries for the new skills
+
+    Permission nodes
+    Added 'mcmmo.commands.mmopower' permission node for the new /mmopower command
+    Added 'mcmmo.commands.crossbows' permission node
+    Added 'mcmmo.ability.crossbows.crossbowslimitbreak' permission node
+    Added 'mcmmo.ability.crossbows.trickshot' permission node
+    Added 'mcmmo.ability.herbalism.verdantbounty' permission node
+    Added 'mcmmo.ability.mining.motherlode' permission node
+    Added 'mcmmo.ability.woodcutting.cleancuts' permission node
+
+    Locale
+    Added locale entries for motherlode, cleancuts, and verdant bounty
+
+    Codebase
+    Major rewrite for how random chance was handled in the code
+    Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
+    A lot of new unit tests were added to help keep mcMMO stable as part of this update, of course, more could always be added.
 
     NOTES:
-    The new setting simply prevents mcMMO abilities from activating when attacking an armor stand, this prevents some exploits
+    One feature of this update is to provide a endgame benefits to some skills that you can grind for a long time, ideally for a long while. I will likely expand upon this idea in future updates.
+    A few skills have these endgame oriented subskills, these new subskills provide a small benefit at first that grows and scales up to level 10,000 (or 1,000 for Standard mode which no one uses) and does not have ranks (other than the initial rank to unlock it).
+    These endgame sub skills unlock at level 1000 for users with default mcMMO settings, or 100 for those using the optional Standard scaling.
+    You can tweak the benefits of these skills in advanced.yml, the default settings are meant to be a good starting point.
+
+    Crossbows and Tridents are WIP skills, I would like feedback on discord about them.
+
+    More info on the new Triple Drop skills (Mother Lode, Clean Cuts, Verdant Bounty):
+    Currently these start at about 5%  chance and can reach a maximum 50% chance if a player acquired 10,000 skill, you can adjust this in advanced.yml
+    These skills respect double drop settings from config.yml just like the corresponding Double Drop skills do, if a double drop is disabled for an item, then its disabled for triple drops too.
+    I added a new Power Level Command, for now this just shows you your current power level. If I ever add features based on power level, this command will likely display output related to those features.
+
+    Regarding Maces, I will likely add that as a WIP skill when the next Minecraft update drops.
 
 Version 2.1.231
     Fixed a bug preventing parties from being made without passwords (Thanks Momshroom)
@@ -1337,7 +1383,7 @@ Version 2.1.128
     Fixed a bug where certain types of ore did not receive bonuses from Blast Mining
     Fixed a few locale errors with commands
     (API) Added ExperienceAPI::addCombatXP for adding combat XP to players, signature may change so its deprecated for now
-    mcMMO now logs whether or not its using FlatFile or SQL database on load
+    mcMMO now logs whether its using FlatFile or SQL database on load
     (1.16) Strider added to combat experience with a value of 1.2
 
     NOTES: A more thorough look at Unarmed balance will happen in the future, the intention of this nerf is to make Unarmed less rewarding until it is leveled quite a bit.
@@ -1357,7 +1403,7 @@ Version 2.1.127
 Version 2.1.126
     mcMMO now relies on NMS for some of its features, if NMS cannot properly be wired up when initializing mcMMO behaviours relying on NMS will either be partially supported or disabled
     mcMMO now has a compatibility mode, any features that require specific versions of Minecraft for full functionality will be disabled if your server is not running a compatible version, mcMMO will still function in compatibility mode, but either the feature will be modified or disabled depending on the version of the server software
-    New command /mmocompat - Shows information about whether or not mcMMO is fully functional or if some features are disabled due to the server software not being fully supported. Can be used by players or console.
+    New command /mmocompat - Shows information about whether mcMMO is fully functional or if some features are disabled due to the server software not being fully supported. Can be used by players or console.
     New command /mmoxpbar (alias /xpbarsettings) - Players can choose to always show XP bars or to never show XP bars on a per skill basis
     XPBars now last for 3 seconds before hiding instead of 2 seconds
     Fixed an exploit involving fishing rods
@@ -1993,7 +2039,7 @@ Version 2.1.68
     Fixed a bug where consuming food in the off hand did not trigger the Diet abilities
 
 Version 2.1.67
-    The XP bar now reflects whether or not the player is receiving the early game boost
+    The XP bar now reflects whether the player is receiving the early game boost
     Players who are receiving an early game boost will be shown "Learning a skill..." as the title of the XP bar while gaining XP
     New locale string 'XPBar.Template.EarlyGameBoost'
 
@@ -2042,7 +2088,7 @@ Version 2.1.63
 Version 2.1.62
     Added a new admin notification system, sensitive commands will print chat messages to "admins" (players with either Operator status or admin chat permission)
     Added a setting to disable the new admin notifications to config.yml 'General.AdminNotifications' (this will be more configurable in 2.2)
-    OPs and players with the admin chat permission will now see details about XP rate event commands regardless of whether or not the XP rate event messages are enabled
+    OPs and players with the admin chat permission will now see details about XP rate event commands regardless of whether the XP rate event messages are enabled
     Updated hu_HU locale (thanks andris155)
     Added XP for mining Magma_Block (default 30 XP - Update your config, see notes)
     Diamond tools & armor in the repair config now have a minimum level of 0 (Update your config, temporary hotfix, 2.2 addresses this issue, see notes)
@@ -2050,9 +2096,9 @@ Version 2.1.62
     New locale string - 'Server.ConsoleName' the name of the server console, this will be used in place of player names when sending admin notifications out if the command was used from console
     New locale string - 'Notifications.Admin.Format.Others' style formatting + prefix for admin notifications used in the other new strings below
     New locale string - 'Notifications.Admin.Format.Self' style formatting + prefix for admin command confirmations sent to the user who executed the command
-    New locale string - 'Notifications.Admin.XPRate.Start.Self' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
+    New locale string - 'Notifications.Admin.XPRate.Start.Self' sent to the user who modifies the XP rate regardless of whether messages for the event are enabled
     New locale string - 'Notifications.Admin.XPRate.Start.Others' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
-    New locale string - 'Notifications.Admin.XPRate.End.Self' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
+    New locale string - 'Notifications.Admin.XPRate.End.Self' sent to the user who ended the XP rate event regardless of whether messages for the event are enabled
     New locale string - 'Notifications.Admin.XPRate.End.Others' details of who ended an XP rate event are sent to players who have Operator status or admin chat permission when the command to end the event has been issued
 
     NOTES:
@@ -2323,7 +2369,7 @@ Version 2.1.26
 
     Notes:
     The new Limit Break subskills are intended to make Prot IV players less tanky and for you to feel more powerful for having high skill level.
-    Limit Break has 10 ranks, each rank gives 1 extra RAW damage, this is damage before reductions from armor and enchantments. The net result is you deal about 50% more damage with an end game skill compared to before.
+    Limit Break has 10 ranks, each rank gives 1 extra RAW damage, this is damage before reductions from armor and enchantments. The net result is you deal about 50% more damage with an endgame skill compared to before.
     With these new changes, most skills can 2 shot normal diamond armor, and it takes about 5 hits to kill someone in Prot IV Diamond Armor.
     I'm not sure everyone will like these changes, the net result is players are a lot easier to kill now, whereas before you could take quite a beating before getting killed.
     I collected several sets of data before making these changes, including damage to player with and without prot 4 diamond armor, damage to those players with and without enchanted weapons, damage with and without leveling your skills, and combinations of the previously mentioned things.
@@ -4024,7 +4070,7 @@ Removed performance debugging
 Removed some useless settings from the config file
 
 Version 1.0.34
-Fixed the PVP setting determining whether or not you would hurt yourself from AoE Abilities
+Fixed the PVP setting determining whether you would hurt yourself from AoE Abilities
 Added Dutch (nl) language support
 Super Breaker now gives the correct XP as determined by config.yml
 Sand Stone XP is now configurable and no longer shares the 'stone' node
@@ -4034,7 +4080,7 @@ Version 1.0.33
 Fixed the toggle for the Excavation drop 'Cocoa Beans'
 Fixed bug where Unarmed users could disarm without being bare handed
 Cocoa Beans now have an XP modifier in config.yml
-You can now toggle whether or not Mobspawners will give XP (in config.yml)
+You can now toggle whether Mobspawners will give XP (in config.yml)
 MySQL version now makes requests to the MySQL server less frequently (should help performance)
 Fixed bug with Skull Splitter hitting the user
 

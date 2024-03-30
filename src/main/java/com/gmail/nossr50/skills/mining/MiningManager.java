@@ -13,7 +13,7 @@ import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -35,7 +35,7 @@ public class MiningManager extends SkillManager {
 
     public static final String BUDDING_AMETHYST = "budding_amethyst";
 
-    public MiningManager(McMMOPlayer mcMMOPlayer) {
+    public MiningManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.MINING);
     }
 
@@ -70,6 +70,11 @@ public class MiningManager extends SkillManager {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
     }
 
+    public boolean canMotherLode() {
+        return Permissions.canUseSubSkill(getPlayer(), SubSkillType.MINING_MOTHER_LODE);
+    }
+
+
     /**
      * Process double drops & XP gain for Mining.
      *
@@ -96,9 +101,32 @@ public class MiningManager extends SkillManager {
         if(silkTouch && !mcMMO.p.getAdvancedConfig().getDoubleDropSilkTouchEnabled())
             return;
 
+        //Mining mastery allows for a chance of triple drops
+        if(canMotherLode()) {
+            //Triple Drops failed so do a normal double drops check
+            if(!processTripleDrops(blockState)) {
+                processDoubleDrops(blockState);
+            }
+        } else {
+            //If the user has no mastery, proceed with normal double drop routine
+            processDoubleDrops(blockState);
+        }
+    }
+
+    private boolean processTripleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            boolean useTriple = mmoPlayer.getAbilityMode(mcMMO.p.getSkillTools().getSuperAbility(skill)) && mcMMO.p.getAdvancedConfig().getAllowMiningTripleDrops();
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.MINING_MOTHER_LODE, getPlayer())) {
+            BlockUtils.markDropsAsBonus(blockState, 2);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void processDoubleDrops(@NotNull BlockState blockState) {
+        //TODO: Make this readable
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.MINING_DOUBLE_DROPS, getPlayer())) {
+            boolean useTriple = mmoPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) && mcMMO.p.getAdvancedConfig().getAllowMiningTripleDrops();
             BlockUtils.markDropsAsBonus(blockState, useTriple);
         }
     }

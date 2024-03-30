@@ -11,8 +11,11 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.*;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -66,11 +69,11 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
-            return 0;
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
+            return Axes.getAxeMasteryBonusDamage(getPlayer());
         }
 
-        return Axes.getAxeMasteryBonusDamage(getPlayer());
+        return 0;
     }
 
     /**
@@ -80,7 +83,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.AXES_CRITICAL_STRIKES, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_CRITICAL_STRIKES, getPlayer())) {
             return 0;
         }
 
@@ -115,7 +118,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
-                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
+                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
                     SkillUtils.handleArmorDurabilityChange(armor, durabilityDamage, 1);
                 }
             }
@@ -133,7 +136,7 @@ public class AxesManager extends SkillManager {
      */
     public double greaterImpact(@NotNull LivingEntity target) {
         //static chance (3rd param)
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_GREATER_IMPACT, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_GREATER_IMPACT, getPlayer())) {
             return 0;
         }
 

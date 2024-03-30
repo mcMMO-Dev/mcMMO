@@ -79,6 +79,8 @@ public class FlatFileDataUtil {
             case SKILLS_TAMING:
             case SKILLS_FISHING:
             case SKILLS_ALCHEMY:
+            case SKILLS_CROSSBOWS:
+            case SKILLS_TRIDENTS:
                 return String.valueOf(startingLevel);
             case OVERHAUL_LAST_LOGIN:
                 return String.valueOf(-1L);
@@ -90,6 +92,9 @@ public class FlatFileDataUtil {
             case COOLDOWN_SKULL_SPLITTER:
             case COOLDOWN_SUPER_BREAKER:
             case COOLDOWN_BLAST_MINING:
+            case COOLDOWN_SUPER_SHOTGUN:
+            case COOLDOWN_TRIDENTS:
+            case COOLDOWN_ARCHERY:
             case SCOREBOARD_TIPS:
             case COOLDOWN_CHIMAERA_WING:
             case EXP_MINING:
@@ -105,6 +110,8 @@ public class FlatFileDataUtil {
             case EXP_TAMING:
             case EXP_FISHING:
             case EXP_ALCHEMY:
+            case EXP_CROSSBOWS:
+            case EXP_TRIDENTS:
                 return "0";
             case UUID_INDEX:
                 throw new IndexOutOfBoundsException(); //TODO: Add UUID recovery? Might not even be worth it.

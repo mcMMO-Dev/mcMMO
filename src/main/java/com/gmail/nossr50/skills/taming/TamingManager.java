@@ -15,11 +15,9 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -145,7 +143,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(@NotNull Wolf wolf, double damage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
 
@@ -165,12 +163,6 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(@NotNull LivingEntity target, double damage) {
-//        if (target instanceof Player) {
-//            NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
-//        }
-//
-//        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
-
         damage = (damage * Taming.goreModifier) - damage;
 
         return damage;
@@ -270,7 +262,7 @@ public class TamingManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if(!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(mcMMO.p.getAdvancedConfig().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
+        if(!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, getPlayer(), mcMMO.p.getAdvancedConfig().getPummelChance()))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);
@@ -380,17 +372,12 @@ public class TamingManager extends SkillManager {
     }
 
     private void spawnCOTWEntity(CallOfTheWildType callOfTheWildType, Location spawnLocation, EntityType entityType) {
-        switch(callOfTheWildType) {
-            case CAT:
+        switch (callOfTheWildType) {
+            case CAT ->
                 //Entity type is needed for cats because in 1.13 and below we spawn ocelots, in 1.14 and above we spawn cats
-                spawnCat(spawnLocation, entityType);
-                break;
-            case HORSE:
-                spawnHorse(spawnLocation);
-                break;
-            case WOLF:
-                spawnWolf(spawnLocation);
-                break;
+                    spawnCat(spawnLocation, entityType);
+            case HORSE -> spawnHorse(spawnLocation);
+            case WOLF -> spawnWolf(spawnLocation);
         }
     }
 

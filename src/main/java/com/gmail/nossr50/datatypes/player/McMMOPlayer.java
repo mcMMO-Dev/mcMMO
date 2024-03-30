@@ -20,7 +20,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.experience.McMMOPlayerPreXpGainEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
@@ -29,7 +28,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -39,6 +38,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.*;
@@ -68,7 +68,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class McMMOPlayer implements Identified {
@@ -181,6 +180,9 @@ public class McMMOPlayer implements Identified {
             case AXES:
                 skillManagers.put(primarySkillType, new AxesManager(this));
                 break;
+            case CROSSBOWS:
+                skillManagers.put(primarySkillType, new CrossbowsManager(this));
+                break;
             case EXCAVATION:
                 skillManagers.put(primarySkillType, new ExcavationManager(this));
                 break;
@@ -208,6 +210,9 @@ public class McMMOPlayer implements Identified {
             case TAMING:
                 skillManagers.put(primarySkillType, new TamingManager(this));
                 break;
+            case TRIDENTS:
+                skillManagers.put(primarySkillType, new TridentsManager(this));
+                break;
             case UNARMED:
                 skillManagers.put(primarySkillType, new UnarmedManager(this));
                 break;
@@ -226,15 +231,6 @@ public class McMMOPlayer implements Identified {
     public double getAttackStrength() {
         return attackStrength;
     }
-
-//    public void setAttackStrength(double attackStrength) {
-//        this.attackStrength = attackStrength;
-//    }
-
-    /*public void hideXpBar(PrimarySkillType primarySkillType)
-    {
-        experienceBarManager.hideExperienceBar(primarySkillType);
-    }*/
 
     public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
         return lastSkillShownScoreboard;
@@ -307,6 +303,13 @@ public class McMMOPlayer implements Identified {
 
     public AxesManager getAxesManager() {
         return (AxesManager) skillManagers.get(PrimarySkillType.AXES);
+    }
+    public CrossbowsManager getCrossbowsManager() {
+        return (CrossbowsManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
+    }
+
+    public TridentsManager getTridentsManager() {
+        return (TridentsManager) skillManagers.get(PrimarySkillType.TRIDENTS);
     }
 
     public ExcavationManager getExcavationManager() {
@@ -384,6 +387,7 @@ public class McMMOPlayer implements Identified {
      * @param isActive True if the ability is active, false otherwise
      */
     public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
+        // TODO: This should reject "one and done" type abilities
         abilityMode.put(ability, isActive);
     }
 
@@ -611,7 +615,7 @@ public class McMMOPlayer implements Identified {
         }
 
         if (SkillTools.isChildSkill(skill)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
             float splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -668,7 +672,7 @@ public class McMMOPlayer implements Identified {
         xp = mcMMOPlayerPreXpGainEvent.getXpGained();
 
         if (SkillTools.isChildSkill(primarySkillType)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
@@ -843,7 +847,7 @@ public class McMMOPlayer implements Identified {
             return 0;
         }
 
-        xp = (float) (xp / ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) (xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());

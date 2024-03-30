@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.OfflinePlayer;
 

@@ -697,6 +697,15 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D);
     }
 
+    /* CROSSBOWS */
+    public double getPoweredShotRankDamageMultiplier() {
+        return config.getDouble("Skills.Crossbows.PoweredShot.RankDamageMultiplier", 10.0D);
+    }
+
+    public double getPoweredShotDamageMax() {
+        return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D);
+    }
+
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
 
