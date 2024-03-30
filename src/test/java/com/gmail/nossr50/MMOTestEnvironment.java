@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -44,6 +45,7 @@ public abstract class MMOTestEnvironment {
     protected MockedStatic<EventUtils> mockedEventUtils;
     protected TransientEntityTracker transientEntityTracker;
     protected AdvancedConfig advancedConfig;
+    protected PartyConfig partyConfig;
     protected GeneralConfig generalConfig;
     protected RankConfig rankConfig;
     protected SkillTools skillTools;
@@ -84,6 +86,9 @@ public abstract class MMOTestEnvironment {
 
         // general config
         mockGeneralConfig();
+
+        // party config
+        mockPartyConfig();
 
         // rank config
         mockRankConfig();
@@ -164,6 +169,12 @@ public abstract class MMOTestEnvironment {
         when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, Material.OAK_LOG)).thenReturn(true);
         when(generalConfig.getLocale()).thenReturn("en_US");
         when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
+    }
+
+    private void mockPartyConfig() {
+        partyConfig = Mockito.mock(PartyConfig.class);
+        when(partyConfig.isPartyEnabled()).thenReturn(false);
+        when(mcMMO.p.getPartyConfig()).thenReturn(partyConfig);
     }
 
     private void mockExperienceConfig() {
