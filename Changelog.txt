@@ -1,11 +1,12 @@
 Version 2.2.000
     General
-    Added Crossbows Skill, this skill is a WIP and feedback on discord is appreciated
-    Added Tridents Skill, this skill is a WIP and feedback on discord is appreciated
+    Added Crossbows Skill, this skill is an early preview / WIP and feedback on discord is appreciated
+    Added Tridents Skill, this skill is an early preview / WIP and feedback on discord is appreciated
     Added the "endgame" triple drop subskill 'Mother Lode' to Mining
     Added the "endgame" triple drop subskill 'Clean Cuts' to Woodcutting
     Added the "endgame" triple drop subskill 'Verdant Bounty' to Herbalism
     Added /mmopower command which simply shows your power level (aliases /mmopowerlevel /powerlevel)
+    Quite a few misc bugs were patched relating to random chance, some involving perk permissions
 
     Config
     Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console
