@@ -5,16 +5,18 @@ import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -164,10 +166,14 @@ public final class Permissions {
      * SKILLS
      */
 
-    public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH)); }
+    public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {
+        return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH));
+    }
+
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase(Locale.ENGLISH) + ".vanillaxpboost"); }
-    public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) { return permissible.hasPermission(subSkillType.getPermissionNodeAddress()); }
-    public static boolean isSubSkillEnabled(Permissible permissible, AbstractSubSkill abstractSubSkill) { return permissible.hasPermission(abstractSubSkill.getPermissionNode()); }
+    public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) {
+        return permissible.hasPermission(subSkillType.getPermissionNodeAddress());
+    }
 
     /* ACROBATICS */
     public static boolean dodge(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.acrobatics.dodge"); }
@@ -179,6 +185,7 @@ public final class Permissions {
     public static boolean concoctions(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.alchemy.concoctions"); }
 
     /* ARCHERY */
+    public static boolean explosiveShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.explosiveshot"); }
     public static boolean arrowRetrieval(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.trackarrows"); }
     public static boolean daze(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.daze"); }
 
@@ -225,6 +232,20 @@ public final class Permissions {
     /* WOODCUTTING */
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
 
+    /* CROSSBOWS */
+    public static boolean superShotgun(Permissible permissible) {
+        return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun");
+    }
+    public static boolean trickShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.trickshot"); }
+    public static boolean poweredShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.poweredshot"); }
+
+    /* TRIDENTS */
+    public static boolean tridentsSuper(Permissible permissible) {
+        return false;
+        // return permissible.hasPermission("mcmmo.ability.tridents.superability");
+    }
+    public static boolean tridentsLimitBreak(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.tridents.superability"); }
+
     /*
      * PARTY
      */
@@ -255,5 +276,16 @@ public final class Permissions {
         Permission permission = new Permission(permissionName);
         permission.setDefault(permissionDefault);
         pluginManager.addPermission(permission);
+    }
+
+    /**
+     * Checks if a player can use a skill
+     *
+     * @param player target player
+     * @param subSkillType target subskill
+     * @return true if the player has permission and has the skill unlocked
+     */
+    public static boolean canUseSubSkill(@NotNull Player player, @NotNull SubSkillType subSkillType) {
+        return isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

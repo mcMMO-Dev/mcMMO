@@ -24,7 +24,7 @@ public class RankUtils {
      *
      * @param plugin plugin instance ref
      * @param mcMMOPlayer target player
-     * @param primarySkillType
+     * @param primarySkillType the skill to check
      * @param newLevel the new level of this skill
      */
     public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel)
@@ -55,6 +55,9 @@ public class RankUtils {
         }
     }
 
+    /**
+     * Reset the interval between skill unlock notifications
+     */
     public static void resetUnlockDelayTimer()
     {
         count = 0;

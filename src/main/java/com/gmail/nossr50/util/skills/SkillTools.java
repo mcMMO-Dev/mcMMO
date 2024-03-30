@@ -30,6 +30,8 @@ public class SkillTools {
     public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
     public final @NotNull ImmutableList<PrimarySkillType> CHILD_SKILLS;
     public final static @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
+    public final static @NotNull ImmutableList<PrimarySkillType> SALVAGE_PARENTS;
+    public final static @NotNull ImmutableList<PrimarySkillType> SMELTING_PARENTS;
     public final @NotNull ImmutableList<PrimarySkillType> COMBAT_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> GATHERING_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> MISC_SKILLS;
@@ -50,9 +52,11 @@ public class SkillTools {
         }
 
         NON_CHILD_SKILLS = ImmutableList.copyOf(tempNonChildSkills);
+        SALVAGE_PARENTS = ImmutableList.of(PrimarySkillType.REPAIR, PrimarySkillType.FISHING);
+        SMELTING_PARENTS = ImmutableList.of(PrimarySkillType.MINING, PrimarySkillType.REPAIR);
     }
 
-    public SkillTools(@NotNull mcMMO pluginRef) {
+    public SkillTools(@NotNull mcMMO pluginRef) throws InvalidSkillException {
         this.pluginRef = pluginRef;
 
         /*
@@ -140,26 +144,38 @@ public class SkillTools {
          */
 
         List<PrimarySkillType> childSkills = new ArrayList<>();
-//        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if (isChildSkill(primarySkillType))
                 childSkills.add(primarySkillType);
-//            } {
-//                nonChildSkills.add(primarySkillType);
-//            }
         }
 
         CHILD_SKILLS = ImmutableList.copyOf(childSkills);
-//        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
 
         /*
          * Build categorized skill lists
          */
 
-        COMBAT_SKILLS = ImmutableList.of(PrimarySkillType.ARCHERY, PrimarySkillType.AXES, PrimarySkillType.SWORDS, PrimarySkillType.TAMING, PrimarySkillType.UNARMED);
-        GATHERING_SKILLS = ImmutableList.of(PrimarySkillType.EXCAVATION, PrimarySkillType.FISHING, PrimarySkillType.HERBALISM, PrimarySkillType.MINING, PrimarySkillType.WOODCUTTING);
-        MISC_SKILLS = ImmutableList.of(PrimarySkillType.ACROBATICS, PrimarySkillType.ALCHEMY, PrimarySkillType.REPAIR, PrimarySkillType.SALVAGE, PrimarySkillType.SMELTING);
+        COMBAT_SKILLS = ImmutableList.of(
+                PrimarySkillType.ARCHERY,
+                PrimarySkillType.AXES,
+                PrimarySkillType.CROSSBOWS,
+                PrimarySkillType.SWORDS,
+                PrimarySkillType.TAMING,
+                PrimarySkillType.TRIDENTS,
+                PrimarySkillType.UNARMED);
+        GATHERING_SKILLS = ImmutableList.of(
+                PrimarySkillType.EXCAVATION,
+                PrimarySkillType.FISHING,
+                PrimarySkillType.HERBALISM,
+                PrimarySkillType.MINING,
+                PrimarySkillType.WOODCUTTING);
+        MISC_SKILLS = ImmutableList.of(
+                PrimarySkillType.ACROBATICS,
+                PrimarySkillType.ALCHEMY,
+                PrimarySkillType.REPAIR,
+                PrimarySkillType.SALVAGE,
+                PrimarySkillType.SMELTING);
 
         /*
          * Build formatted/localized/etc string lists
@@ -171,25 +187,18 @@ public class SkillTools {
     }
 
     private @NotNull PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType) throws InvalidSkillException {
-        switch(superAbilityType) {
-            case BERSERK:
-                return PrimarySkillType.UNARMED;
-            case GREEN_TERRA:
-                return PrimarySkillType.HERBALISM;
-            case TREE_FELLER:
-                return PrimarySkillType.WOODCUTTING;
-            case SUPER_BREAKER:
-            case BLAST_MINING:
-                return PrimarySkillType.MINING;
-            case SKULL_SPLITTER:
-                return PrimarySkillType.AXES;
-            case SERRATED_STRIKES:
-                return PrimarySkillType.SWORDS;
-            case GIGA_DRILL_BREAKER:
-                return PrimarySkillType.EXCAVATION;
-            default:
-                throw new InvalidSkillException("No parent defined for super ability! "+superAbilityType.toString());
-        }
+        return switch (superAbilityType) {
+            case BERSERK -> PrimarySkillType.UNARMED;
+            case GREEN_TERRA -> PrimarySkillType.HERBALISM;
+            case TREE_FELLER -> PrimarySkillType.WOODCUTTING;
+            case SUPER_BREAKER, BLAST_MINING -> PrimarySkillType.MINING;
+            case SKULL_SPLITTER -> PrimarySkillType.AXES;
+            case SERRATED_STRIKES -> PrimarySkillType.SWORDS;
+            case GIGA_DRILL_BREAKER -> PrimarySkillType.EXCAVATION;
+            case SUPER_SHOTGUN -> PrimarySkillType.CROSSBOWS;
+            case TRIDENTS_SUPER_ABILITY -> PrimarySkillType.TRIDENTS;
+            case EXPLOSIVE_SHOT -> PrimarySkillType.ARCHERY;
+        };
     }
 
     /**
@@ -319,7 +328,6 @@ public class SkillTools {
     }
 
     public Set<SubSkillType> getSubSkills(PrimarySkillType primarySkillType) {
-        //TODO: Cache this!
         return primarySkillChildrenMap.get(primarySkillType);
     }
 
@@ -329,14 +337,10 @@ public class SkillTools {
 
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public static boolean isChildSkill(PrimarySkillType primarySkillType) {
-        switch (primarySkillType) {
-            case SALVAGE:
-            case SMELTING:
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (primarySkillType) {
+            case SALVAGE, SMELTING -> true;
+            default -> false;
+        };
     }
 
     /**
@@ -401,34 +405,7 @@ public class SkillTools {
      * @return true if the player has permissions, false otherwise
      */
     public boolean superAbilityPermissionCheck(SuperAbilityType superAbilityType, Player player) {
-        switch (superAbilityType) {
-            case BERSERK:
-                return Permissions.berserk(player);
-
-            case BLAST_MINING:
-                return Permissions.remoteDetonation(player);
-
-            case GIGA_DRILL_BREAKER:
-                return Permissions.gigaDrillBreaker(player);
-
-            case GREEN_TERRA:
-                return Permissions.greenTerra(player);
-
-            case SERRATED_STRIKES:
-                return Permissions.serratedStrikes(player);
-
-            case SKULL_SPLITTER:
-                return Permissions.skullSplitter(player);
-
-            case SUPER_BREAKER:
-                return Permissions.superBreaker(player);
-
-            case TREE_FELLER:
-                return Permissions.treeFeller(player);
-
-            default:
-                return false;
-        }
+        return superAbilityType.getPermissions(player);
     }
 
     public @NotNull List<PrimarySkillType> getChildSkills() {
@@ -449,5 +426,18 @@ public class SkillTools {
 
     public @NotNull ImmutableList<PrimarySkillType> getMiscSkills() {
         return MISC_SKILLS;
+    }
+
+    public @NotNull ImmutableList<PrimarySkillType> getChildSkillParents(PrimarySkillType childSkill)
+            throws IllegalArgumentException {
+        switch (childSkill) {
+            case SALVAGE -> {
+                return SALVAGE_PARENTS;
+            }
+            case SMELTING -> {
+                return SMELTING_PARENTS;
+            }
+            default -> throw new IllegalArgumentException("Skill " + childSkill + " is not a child skill");
+        }
     }
 }

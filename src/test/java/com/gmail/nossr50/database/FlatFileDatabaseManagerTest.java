@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-//This class uses JUnit5/Jupiter
 class FlatFileDatabaseManagerTest {
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
@@ -39,7 +38,7 @@ class FlatFileDatabaseManagerTest {
     public static final @NotNull String BAD_DATA_FILE_LINE_TWENTY_THREE = "nossr51:baddata:::baddata:baddata:640:baddata:1000:1000:1000:baddata:baddata:baddata:baddata:16:0:500:20273:0:0:0:0::1000:0:0:baddata:1593543012:0:0:0:0::1000:0:0:baddata:IGNORED:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1:0:";
     public static final @NotNull String DB_BADDATA = "baddatadb.users";
     public static final @NotNull String DB_HEALTHY = "healthydb.users";
-    public static final @NotNull String HEALTHY_DB_LINE_1 = "nossr50:1:IGNORED:IGNORED:10:2:20:3:4:5:6:7:8:9:10:30:40:50:60:70:80:90:100:IGNORED:11:110:111:222:333:444:555:666:777:IGNORED:12:120:888:IGNORED:HEARTS:13:130:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1111:999:2020:";
+    public static final @NotNull String HEALTHY_DB_LINE_1 = "nossr50:1:IGNORED:IGNORED:10:2:20:3:4:5:6:7:8:9:10:30:40:50:60:70:80:90:100:IGNORED:11:110:111:222:333:444:555:666:777:IGNORED:12:120:888:IGNORED:HEARTS:13:130:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1111:999:2020:140:14:150:15:1111:2222:3333";
     public static final @NotNull String HEALTHY_DB_LINE_ONE_UUID_STR = "588fe472-1c82-4c4e-9aa1-7eefccb277e3";
     public static final String DB_MISSING_LAST_LOGIN = "missinglastlogin.users";
     public static final String LINE_TWO_FROM_MISSING_DB = "nossr50:1:IGNORED:IGNORED:10:2:20:3:4:5:6:7:8:9:10:30:40:50:60:70:80:90:100:IGNORED:11:110:111:222:333:444:555:666:777:IGNORED:12:120:888:0:HEARTS:13:130:588fe472-1c82-4c4e-9aa1-7eefccb277e3:1111:999:";
@@ -52,16 +51,19 @@ class FlatFileDatabaseManagerTest {
     int expectedLvlMining = 1, expectedLvlWoodcutting = 2, expectedLvlRepair = 3,
             expectedLvlUnarmed = 4, expectedLvlHerbalism = 5, expectedLvlExcavation = 6,
             expectedLvlArchery = 7, expectedLvlSwords = 8, expectedLvlAxes = 9, expectedLvlAcrobatics = 10,
-            expectedLvlTaming = 11, expectedLvlFishing = 12, expectedLvlAlchemy = 13;
+            expectedLvlTaming = 11, expectedLvlFishing = 12, expectedLvlAlchemy = 13, expectedLvlCrossbows = 14,
+            expectedLvlTridents = 15;
 
     float expectedExpMining = 10, expectedExpWoodcutting = 20, expectedExpRepair = 30,
             expectedExpUnarmed = 40, expectedExpHerbalism = 50, expectedExpExcavation = 60,
             expectedExpArchery = 70, expectedExpSwords = 80, expectedExpAxes = 90, expectedExpAcrobatics = 100,
-            expectedExpTaming = 110, expectedExpFishing = 120, expectedExpAlchemy = 130;
+            expectedExpTaming = 110, expectedExpFishing = 120, expectedExpAlchemy = 130, expectedExpCrossbows = 140,
+            expectedExpTridents = 150;
 
     long expectedBerserkCd = 111, expectedGigaDrillBreakerCd = 222, expectedTreeFellerCd = 333,
             expectedGreenTerraCd = 444, expectedSerratedStrikesCd = 555, expectedSkullSplitterCd = 666,
-            expectedSuperBreakerCd = 777, expectedBlastMiningCd = 888, expectedChimaeraWingCd = 999;
+            expectedSuperBreakerCd = 777, expectedBlastMiningCd = 888, expectedChimaeraWingCd = 999,
+            expectedSuperShotgunCd = 1111, expectedTridentSuperCd = 2222, expectedExplosiveShotCd = 3333;
 
     int expectedScoreboardTips = 1111;
     Long expectedLastLogin = 2020L;
@@ -226,7 +228,6 @@ class FlatFileDatabaseManagerTest {
         logger.info("File Path: "+healthyDB.getAbsolutePath());
         assertArrayEquals(HEALTHY_DB_LINE_1.split(":"), dataFromFile.get(0));
         assertEquals(dataFromFile.get(0)[FlatFileDatabaseManager.UUID_INDEX], HEALTHY_DB_LINE_ONE_UUID_STR);
-        UUID healthDBEntryOneUUID = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR);
 
         db = new FlatFileDatabaseManager(healthyDB, logger, PURGE_TIME, 0, true);
         List<FlatFileDataFlag> flagsFound = db.checkFileHealthAndStructure();
@@ -451,14 +452,13 @@ class FlatFileDatabaseManagerTest {
             if(SkillTools.isChildSkill(primarySkillType))
                 continue;
 
-//            logger.info("Checking expected values for: "+primarySkillType);
-//            logger.info("Profile Level Value: "+profile.getSkillLevel(primarySkillType));
-//            logger.info("Expected Lvl Value: "+getExpectedLevelHealthyDBEntryOne(primarySkillType));
-//            logger.info("Profile Exp Value: "+profile.getSkillXpLevelRaw(primarySkillType));
-//            logger.info("Expected Exp Value: "+getExpectedExperienceHealthyDBEntryOne(primarySkillType));
+            int expectedLevelHealthyDBEntryOne = getExpectedLevelHealthyDBEntryOne(primarySkillType);
+            int skillLevel = profile.getSkillLevel(primarySkillType);
+            assertEquals(expectedLevelHealthyDBEntryOne, skillLevel);
 
-            assertEquals(getExpectedLevelHealthyDBEntryOne(primarySkillType), profile.getSkillLevel(primarySkillType));
-            assertEquals(getExpectedExperienceHealthyDBEntryOne(primarySkillType), profile.getSkillXpLevelRaw(primarySkillType), 0);
+            float expectedExperienceHealthyDBEntryOne = getExpectedExperienceHealthyDBEntryOne(primarySkillType);
+            float skillXpLevelRaw = profile.getSkillXpLevelRaw(primarySkillType);
+            assertEquals(expectedExperienceHealthyDBEntryOne, skillXpLevelRaw, 0);
         }
 
         //Check the other things
@@ -472,29 +472,24 @@ class FlatFileDatabaseManagerTest {
     }
 
     private long getExpectedSuperAbilityDATS(@NotNull SuperAbilityType superAbilityType) {
-        switch(superAbilityType) {
-            case BERSERK:
-                return expectedBerserkCd;
-            case SUPER_BREAKER:
-                return expectedSuperBreakerCd;
-            case GIGA_DRILL_BREAKER:
-                return expectedGigaDrillBreakerCd;
-            case GREEN_TERRA:
-                return expectedGreenTerraCd;
-            case SKULL_SPLITTER:
-                return expectedSkullSplitterCd;
-            case TREE_FELLER:
-                return expectedTreeFellerCd;
-            case SERRATED_STRIKES:
-                return expectedSerratedStrikesCd;
-            case BLAST_MINING:
-                return expectedBlastMiningCd;
-        }
+        return switch (superAbilityType) {
+            case BERSERK -> expectedBerserkCd;
+            case SUPER_BREAKER -> expectedSuperBreakerCd;
+            case GIGA_DRILL_BREAKER -> expectedGigaDrillBreakerCd;
+            case GREEN_TERRA -> expectedGreenTerraCd;
+            case SKULL_SPLITTER -> expectedSkullSplitterCd;
+            case SUPER_SHOTGUN -> expectedSuperShotgunCd;
+            case TREE_FELLER -> expectedTreeFellerCd;
+            case SERRATED_STRIKES -> expectedSerratedStrikesCd;
+            case BLAST_MINING -> expectedBlastMiningCd;
+            case TRIDENTS_SUPER_ABILITY -> expectedTridentSuperCd;
+            case EXPLOSIVE_SHOT -> expectedExplosiveShotCd;
+            default -> throw new RuntimeException("Values not defined for super ability please add " +
+                    "values for " + superAbilityType.toString() + " to the test");
+        };
 
-        return -1;
     }
 
-    //TODO: Why is this stuff a float?
     private float getExpectedExperienceHealthyDBEntryOne(@NotNull PrimarySkillType primarySkillType) {
         switch(primarySkillType) {
             case ACROBATICS:
@@ -505,6 +500,8 @@ class FlatFileDatabaseManagerTest {
                 return expectedExpArchery;
             case AXES:
                 return expectedExpAxes;
+            case CROSSBOWS:
+                return expectedExpCrossbows;
             case EXCAVATION:
                 return expectedExpExcavation;
             case FISHING:
@@ -522,13 +519,15 @@ class FlatFileDatabaseManagerTest {
                 return expectedExpSwords;
             case TAMING:
                 return expectedExpTaming;
+            case TRIDENTS:
+                return expectedExpTridents;
             case UNARMED:
                 return expectedExpUnarmed;
             case WOODCUTTING:
                 return expectedExpWoodcutting;
         }
 
-        return -1;
+        throw new RuntimeException("Values for skill not defined, please add values for " + primarySkillType.toString() + " to the test");
     }
 
     private int getExpectedLevelHealthyDBEntryOne(@NotNull PrimarySkillType primarySkillType) {
@@ -541,6 +540,8 @@ class FlatFileDatabaseManagerTest {
                 return expectedLvlArchery;
             case AXES:
                 return expectedLvlAxes;
+            case CROSSBOWS:
+                return expectedLvlCrossbows;
             case EXCAVATION:
                 return expectedLvlExcavation;
             case FISHING:
@@ -558,13 +559,15 @@ class FlatFileDatabaseManagerTest {
                 return expectedLvlSwords;
             case TAMING:
                 return expectedLvlTaming;
+            case TRIDENTS:
+                return expectedLvlTridents;
             case UNARMED:
                 return expectedLvlUnarmed;
             case WOODCUTTING:
                 return expectedLvlWoodcutting;
         }
 
-        return -1;
+        throw new RuntimeException("Values for skill not defined, please add values for " + primarySkillType.toString() + " to the test");
     }
 
     @Test

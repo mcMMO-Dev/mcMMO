@@ -5,7 +5,7 @@
 #  For advanced users only! There is no need to change anything here.
 #
 #  You can customize almost every aspect of every skill here.
-#  Its mainly here if you've customized the experience formula.
+#  It's mainly here if you've customized the experience formula.
 #  Configure at what level you get better with certain abilities.
 #
 #####
@@ -20,7 +20,7 @@ Feedback:
     PlayerTips: true
     SkillCommand:
         BlankLinesAboveHeader: true
-    # If sendtitles is true messages will be sent using the title api (BIG TEXT ON SCREEN)
+    # If sendtitles is true, messages will be sent using the title api (BIG TEXT ON SCREEN)
     Events:
         XP:
             SendTitles: true
@@ -264,6 +264,11 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
+        VerdantBounty:
+            ChanceMax: 50.0
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
 
         HylianLuck:
             # ChanceMax: Maximum chance of Hylian Luck when on <MaxBonusLevel> or higher
@@ -284,6 +289,11 @@ Skills:
     #  Settings for Mining
     ###
     Mining:
+        MotherLode:
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
+            ChanceMax: 50.0
         SuperBreaker:
             AllowTripleDrops: true
         DoubleDrops:
@@ -608,9 +618,16 @@ Skills:
             Knock_On_Wood:
                 Add_XP_Orbs_To_Drops: true
 
+        # Triple Drops
+        CleanCuts:
+            # ChanceMax: Maximum chance of receiving triple drops (100 = 100%)
+            # MaxBonusLevel: Level when the maximum chance of receiving triple drops is reached
+            ChanceMax: 50.0
+            MaxBonusLevel:
+                Standard: 1000
+                RetroMode: 10000
         # Double Drops
         HarvestLumber:
-            # ChanceMax & MaxBonusLevel are only used for Classic, I'll make that more clear in the future.
             # ChanceMax: Maximum chance of receiving double drops (100 = 100%)
             # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
             ChanceMax: 100.0

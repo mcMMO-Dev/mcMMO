@@ -183,8 +183,7 @@ public final class EventUtils {
      * @param subSkillType target subskill
      * @return the event after it has been fired
      */
-    @Deprecated
-    public static @NotNull SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType) {
+    public static @NotNull SubSkillEvent callSubSkillEvent(@NotNull Player player, @NotNull SubSkillType subSkillType) {
         SubSkillEvent event = new SubSkillEvent(player, subSkillType);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -399,7 +398,7 @@ public final class EventUtils {
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
         if(mmoPlayer == null)
             return true;
-        
+
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
