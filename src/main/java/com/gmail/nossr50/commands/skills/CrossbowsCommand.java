@@ -17,7 +17,6 @@ import java.util.List;
 import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
 
 public class CrossbowsCommand extends SkillCommand {
-    private boolean canSSG;
     private boolean canTrickShot;
     private boolean canPoweredShot;
 
@@ -32,9 +31,6 @@ public class CrossbowsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-//        canSSG = RankUtils.hasUnlockedSubskill(player, CROSSBOWS_SUPER_SHOTGUN)
-//                && Permissions.superShotgun(player);
-
         canTrickShot = RankUtils.hasUnlockedSubskill(player, CROSSBOWS_TRICK_SHOT)
                 && Permissions.trickShot(player);
 
@@ -57,11 +53,6 @@ public class CrossbowsCommand extends SkillCommand {
         if (canPoweredShot) {
             messages.add(getStatMessage(ARCHERY_SKILL_SHOT, percent.format(mmoPlayer.getCrossbowsManager().getDamageBonusPercent(player))));
         }
-
-//        if (canSSG) {
-//            messages.add("Super Shotgun");
-//            //TODO: Implement SSG
-//        }
 
         if (canTrickShot) {
             messages.add(getStatMessage(CROSSBOWS_TRICK_SHOT,
