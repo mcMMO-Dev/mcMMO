@@ -33,7 +33,7 @@ Version 2.2.000
     Added 'mcmmo.ability.woodcutting.cleancuts' permission node
 
     Locale
-    Added locale entries for motherlode, cleancuts, and verdant bounty
+    Added locale entries for all the new skills/subskills
 
     Codebase / Misc
     PAPI's '/papi reload' command will no longer unload mcMMO (thanks gecko10000)
