@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.metadata.MobMetadataService;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -46,17 +45,6 @@ public final class CombatUtils {
         return mcMMO.getMetadataService().getMobMetadataService();
     }
 
-    // TODO: Unit tests
-    public static void processProjectileSkillSuperAbilityActivation(McMMOPlayer mmoPlayer, ItemStack heldItem) {
-        // TODO: Support archery super as well
-        if (heldItem != null && mmoPlayer != null) {
-            if (ItemUtils.isCrossbow(heldItem)) {
-                mmoPlayer.checkCrossbowAbilityActivation();
-            }
-        }
-    }
-
-    //Likely.. because who knows what plugins are throwing around
     public static boolean isDamageLikelyFromNormalCombat(@NotNull DamageCause damageCause) {
         return switch (damageCause) {
             case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE -> true;

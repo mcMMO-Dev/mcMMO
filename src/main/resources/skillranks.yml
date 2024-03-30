@@ -31,11 +31,6 @@ Alchemy:
             Rank_7: 900
             Rank_8: 1000
 Archery:
-    ExplosiveShot:
-        Standard:
-            Rank_1: 5
-        RetroMode:
-            Rank_1: 50
     ArcheryLimitBreak:
         Standard:
             Rank_1: 10
@@ -282,11 +277,6 @@ Crossbows:
             Rank_8: 800
             Rank_9: 900
             Rank_10: 1000
-    SuperShotgun:
-        Standard:
-            Rank_1: 5
-        RetroMode:
-            Rank_1: 50
 Tridents:
     TridentsLimitBreak:
         Standard:
@@ -311,11 +301,6 @@ Tridents:
             Rank_8: 800
             Rank_9: 900
             Rank_10: 1000
-    TridentsSuperAbility:
-        Standard:
-            Rank_1: 5
-        RetroMode:
-            Rank_1: 50
     Impale:
         Standard:
             Rank_1: 5

@@ -24,7 +24,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -828,11 +827,6 @@ public class PlayerListener implements Listener {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
 
-                        // Projectile Skills
-                        if (ItemUtils.isCrossbow(heldItem) || ItemUtils.isBow(heldItem)) {
-                            CombatUtils.processProjectileSkillSuperAbilityActivation(mcMMOPlayer, heldItem);
-                        }
-
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.MINING);
@@ -904,11 +898,6 @@ public class PlayerListener implements Listener {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.SWORDS);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.UNARMED);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
-
-                    // Projectile Skills
-                    if (ItemUtils.isCrossbow(heldItem) || ItemUtils.isBow(heldItem)) {
-                        CombatUtils.processProjectileSkillSuperAbilityActivation(mcMMOPlayer, heldItem);
-                    }
                 }
 
                 /* ITEM CHECKS */
@@ -927,11 +916,6 @@ public class PlayerListener implements Listener {
 
                 if (!player.isSneaking()) {
                     break;
-                }
-
-                // Check charge up supers (crossbows, etc...)
-                if (ItemUtils.isCrossbow(heldItem)) {
-                    mcMMOPlayer.chargeCrossbowSuper();
                 }
 
                 /* CALL OF THE WILD CHECKS */

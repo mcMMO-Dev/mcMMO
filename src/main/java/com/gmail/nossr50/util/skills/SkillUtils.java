@@ -362,13 +362,7 @@ public final class SkillUtils {
      * @param subSkillType target subskill
      * @return true if the player has permission and has the skill unlocked
      */
-    public static boolean canUseSubskill(Player player, SubSkillType subSkillType)
-    {
-        requireNonNull(subSkillType, "subSkillType cannot be null");
-        // hack to disable supers that aren't coded yet
-        if(subSkillType == SubSkillType.TRIDENTS_SUPER || subSkillType == SubSkillType.CROSSBOWS_SUPER_SHOTGUN)
-            return false;
-
+    public static boolean canUseSubskill(Player player, @NotNull SubSkillType subSkillType) {
         return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

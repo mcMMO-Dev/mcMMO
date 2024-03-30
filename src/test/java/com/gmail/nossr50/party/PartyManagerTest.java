@@ -78,7 +78,7 @@ class PartyManagerTest extends MMOTestEnvironment {
         when(player.getUniqueId()).thenReturn(new UUID(0, 0));
 
         // When & Then
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> partyManager.createParty(mmoPlayer, null, partyPassword));
     }
 
@@ -90,7 +90,7 @@ class PartyManagerTest extends MMOTestEnvironment {
         String partyPassword = "somePassword";
 
         // When & Then
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(NullPointerException.class,
                 () -> partyManager.createParty(null, partyName, partyPassword));
     }
 

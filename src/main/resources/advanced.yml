@@ -5,7 +5,7 @@
 #  For advanced users only! There is no need to change anything here.
 #
 #  You can customize almost every aspect of every skill here.
-#  Its mainly here if you've customized the experience formula.
+#  It's mainly here if you've customized the experience formula.
 #  Configure at what level you get better with certain abilities.
 #
 #####
@@ -20,7 +20,7 @@ Feedback:
     PlayerTips: true
     SkillCommand:
         BlankLinesAboveHeader: true
-    # If sendtitles is true messages will be sent using the title api (BIG TEXT ON SCREEN)
+    # If sendtitles is true, messages will be sent using the title api (BIG TEXT ON SCREEN)
     Events:
         XP:
             SendTitles: true

@@ -112,8 +112,6 @@ public enum SuperAbilityType {
         TREE_FELLER.subSkillTypeDefinition          = SubSkillType.WOODCUTTING_TREE_FELLER;
         SERRATED_STRIKES.subSkillTypeDefinition     = SubSkillType.SWORDS_SERRATED_STRIKES;
         BLAST_MINING.subSkillTypeDefinition         = SubSkillType.MINING_BLAST_MINING;
-        TRIDENTS_SUPER_ABILITY.subSkillTypeDefinition = SubSkillType.TRIDENTS_SUPER;
-        SUPER_SHOTGUN.subSkillTypeDefinition = SubSkillType.CROSSBOWS_SUPER_SHOTGUN;
     }
 
     private final String abilityOn;
