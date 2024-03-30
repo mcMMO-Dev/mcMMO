@@ -1,21 +1,19 @@
 Version 2.2.000
-    TODO: Add check to archery arrow retrieval to not work for crossbows
-    TODO: Add metadata cleanup unit tests
-    TODO: com/gmail/nossr50/database/FlatFileDatabaseManager.java:109 reporting data entries that need correction on each launch
-    TODO: Add Xbows/Tridents to salvage/repair
-    TODO: Add unit test for combat XP values
-    TODO: Add unit test to determine crossbow or bow skill
-    TODO: Add unit test for trident xp processing
-    TODO: Add missing entries to changelog
-    Tree Feller now drops 90% less non-wood blocks (leaves/etc) on average
+    New Things
+    Added Crossbows Skill, this skill is a WIP and feedback on discord is appreciated
+    Added Tridents Skill, this skill is a WIP and feedback on discord is appreciated
+
+    Config Changes
     Replaced 'Experience_Formula.Modifier' in experience.yml with 'Experience_Formula.Skill_Multiplier' which is easier to understand and less prone to divide by zero bugs
+
+    Balance Changes
+    Tree Feller now drops 90% less non-wood blocks (leaves/etc) on average
     Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console
     Added a set of "triple drop" sub skills to a few gathering skills, this is meant for "end game" progression
     Added the end game oriented subskill 'Mother Lode' to Mining
     Added the end game oriented subskill 'Clean Cuts' to Woodcutting
     Added the end game oriented subskill 'Verdant Bounty' to Herbalism
-    Added Crossbows Skill and various sub skills
     Updated advanced.yml with entries for the new skills
     (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
     Added /mmopower command (aliases /mmopowerlevel /powerlevel)
