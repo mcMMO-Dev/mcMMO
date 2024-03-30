@@ -2,9 +2,9 @@ Version 2.2.000
     General
     Added Crossbows Skill, this skill is an early preview / WIP and feedback on discord is appreciated
     Added Tridents Skill, this skill is an early preview / WIP and feedback on discord is appreciated
-    Added the "endgame" triple drop subskill 'Mother Lode' to Mining
-    Added the "endgame" triple drop subskill 'Clean Cuts' to Woodcutting
-    Added the "endgame" triple drop subskill 'Verdant Bounty' to Herbalism
+    Added an "endgame" triple drop subskill 'Mother Lode' to Mining
+    Added an "endgame" triple drop subskill 'Clean Cuts' to Woodcutting
+    Added an "endgame" triple drop subskill 'Verdant Bounty' to Herbalism
     Added /mmopower command which simply shows your power level (aliases /mmopowerlevel /powerlevel)
     Quite a few misc bugs were patched relating to random chance, some involving perk permissions
 
@@ -24,6 +24,10 @@ Version 2.2.000
     Added 'mcmmo.commands.crossbows' permission node
     Added 'mcmmo.ability.crossbows.crossbowslimitbreak' permission node
     Added 'mcmmo.ability.crossbows.trickshot' permission node
+    Added 'mcmmo.ability.crossbows.poweredshot' permission node
+    Added 'mcmmo.commands.tridents' permission node
+    Added 'mcmmo.ability.tridents.tridentslimitbreak' permission node
+    Added 'mcmmo.ability.tridents.impale' permission node
     Added 'mcmmo.ability.herbalism.verdantbounty' permission node
     Added 'mcmmo.ability.mining.motherlode' permission node
     Added 'mcmmo.ability.woodcutting.cleancuts' permission node
