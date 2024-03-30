@@ -35,15 +35,6 @@ public class PowerLevelCommand extends BaseCommand {
 
         int powerLevel = mmoPlayer.getPowerLevel();
 
-        //TODO: impl
-        mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Your " + ChatColor.GOLD + "[mcMMO]" + ChatColor.DARK_AQUA + " power level is: " + ChatColor.GREEN + powerLevel); //This is not gonna stay, just to show that the command executes in debug
-
-        //Send the players a few blank lines to make finding the top of the skill command easier
-        if (mcMMO.p.getAdvancedConfig().doesSkillCommandSendBlankLines()) {
-            for (int i = 0; i < 1; i++) {
-                player.sendMessage("");
-            }
-        }
-
+        mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Your " + ChatColor.GOLD + "[mcMMO]" + ChatColor.DARK_AQUA + " power level is: " + ChatColor.GREEN + powerLevel);
     }
 }

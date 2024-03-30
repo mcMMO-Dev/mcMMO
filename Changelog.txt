@@ -1,50 +1,53 @@
 Version 2.2.000
-    New Things
+    General
     Added Crossbows Skill, this skill is a WIP and feedback on discord is appreciated
     Added Tridents Skill, this skill is a WIP and feedback on discord is appreciated
+    Added the "endgame" triple drop subskill 'Mother Lode' to Mining
+    Added the "endgame" triple drop subskill 'Clean Cuts' to Woodcutting
+    Added the "endgame" triple drop subskill 'Verdant Bounty' to Herbalism
+    Added /mmopower command which simply shows your power level (aliases /mmopowerlevel /powerlevel)
 
-    Config Changes
-    Replaced 'Experience_Formula.Modifier' in experience.yml with 'Experience_Formula.Skill_Multiplier' which is easier to understand and less prone to divide by zero bugs
-
-    Balance Changes
-    Tree Feller now drops 90% less non-wood blocks (leaves/etc) on average
-    Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
+    Config
     Added 'Send_To_Console' settings to chat.yml to toggle sending party or admin chat messages to console
-    Added a set of "triple drop" sub skills to a few gathering skills, this is meant for "end game" progression
-    Added the end game oriented subskill 'Mother Lode' to Mining
-    Added the end game oriented subskill 'Clean Cuts' to Woodcutting
-    Added the end game oriented subskill 'Verdant Bounty' to Herbalism
+    Replaced 'Experience_Formula.Modifier' in experience.yml with 'Experience_Formula.Skill_Multiplier' which is easier to understand and less prone to divide by zero bugs
+    child.yml config is gone now, feel free to delete it
+
+    Tweaks
+    Tree Feller now drops 90% less non-wood block rewards (leaves/etc) on average from Knock on Wood.
+    Treasure drop rate from Shake, Fishing, Hylian, and Excavation now benefit from the Luck perk
     Updated advanced.yml with entries for the new skills
-    (API) Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
-    Added /mmopower command (aliases /mmopowerlevel /powerlevel)
-    Added 'mcmmo.commands.mmopower' permission node
+
+    Permission nodes
+    Added 'mcmmo.commands.mmopower' permission node for the new /mmopower command
+    Added 'mcmmo.commands.crossbows' permission node
+    Added 'mcmmo.ability.crossbows.crossbowslimitbreak' permission node
+    Added 'mcmmo.ability.crossbows.trickshot' permission node
     Added 'mcmmo.ability.herbalism.verdantbounty' permission node
     Added 'mcmmo.ability.mining.motherlode' permission node
     Added 'mcmmo.ability.woodcutting.cleancuts' permission node
-    Added 'mcmmo.commands.crossbows' permission node
-    Added 'mcmmo.ability.crossbows.supershotgun' permission node
-    Added 'mcmmo.ability.crossbows.trickshot' permission node
-    Added 'mcmmo.ability.crossbows.crossbowslimitbreak' permission node
-    Added 'mcmmo.commands.mmopower' permission node
+
+    Locale
     Added locale entries for motherlode, cleancuts, and verdant bounty
+
+    Codebase
     Major rewrite for how random chance was handled in the code
-    child.yml is gone now, its better this way
+    Many skills with RNG elements now send out a SubSkillEvent (which can be used to modify probability or cancel the results), some skills without RNG still send out this event when activated, this event is cancellable so it can be used to make a skill fail
+    A lot of new unit tests were added to help keep mcMMO stable as part of this update, of course, more could always be added.
 
     NOTES:
-    Crossbows is a WIP skill, and I will add to it in future updates.
-    Tridents is not ready for this update, so its been disabled for now.
-    The goal of this update is to provide a small benefit to some skills and a reason to grind past the "maximum", ideally for a long while.
-    Most skills have an end game oriented sub-skill, these new subskills provide a small benefit that grows and scales up to level 10,000 (or 1,000 for Standard mode which no one uses) and does not have ranks (other than the initial rank to unlock it)
-    These end game sub skills unlock at level 1000 for RetroMode (the default setting), and 100 for Standard, you can edit this via skillranks.yml
-    These new sub skills are meant to provide an "end-game" to skills, a reason to continue leveling a skill past its "max".
-    This system is brand new, it is entirely possible I will completely change, remove, or add more mastery skills in the future.
+    One feature of this update is to provide a endgame benefits to some skills that you can grind for a long time, ideally for a long while. I will likely expand upon this idea in future updates.
+    A few skills have these endgame oriented subskills, these new subskills provide a small benefit at first that grows and scales up to level 10,000 (or 1,000 for Standard mode which no one uses) and does not have ranks (other than the initial rank to unlock it).
+    These endgame sub skills unlock at level 1000 for users with default mcMMO settings, or 100 for those using the optional Standard scaling.
+    You can tweak the benefits of these skills in advanced.yml, the default settings are meant to be a good starting point.
 
-    More info for Mother Lode, Clean Cuts, Verdant Bounty:
-    These skills respect double drop settings from config.yml just like the Double Drop skills do
-    Double Drops and Triple Drops do not stack, mcMMO checks for triple drops first, then double drops
-    New Power Level Command, for now this skill just shows you your current power level. This might be removed later.
-    Currently these skills scale up to a maximum 50% chance if a player has 10,000 skill, you can adjust this in advanced.yml
+    Crossbows and Tridents are WIP skills, I would like feedback on discord about them.
 
+    More info on the new Triple Drop skills (Mother Lode, Clean Cuts, Verdant Bounty):
+    Currently these start at about 5%  chance and can reach a maximum 50% chance if a player acquired 10,000 skill, you can adjust this in advanced.yml
+    These skills respect double drop settings from config.yml just like the corresponding Double Drop skills do, if a double drop is disabled for an item, then its disabled for triple drops too.
+    I added a new Power Level Command, for now this just shows you your current power level. If I ever add features based on power level, this command will likely display output related to those features.
+
+    Regarding Maces, I will likely add that as a WIP skill when the next Minecraft update drops.
 
 Version 2.1.231
     Fixed a bug preventing parties from being made without passwords (Thanks Momshroom)
@@ -2365,7 +2368,7 @@ Version 2.1.26
 
     Notes:
     The new Limit Break subskills are intended to make Prot IV players less tanky and for you to feel more powerful for having high skill level.
-    Limit Break has 10 ranks, each rank gives 1 extra RAW damage, this is damage before reductions from armor and enchantments. The net result is you deal about 50% more damage with an end game skill compared to before.
+    Limit Break has 10 ranks, each rank gives 1 extra RAW damage, this is damage before reductions from armor and enchantments. The net result is you deal about 50% more damage with an endgame skill compared to before.
     With these new changes, most skills can 2 shot normal diamond armor, and it takes about 5 hits to kill someone in Prot IV Diamond Armor.
     I'm not sure everyone will like these changes, the net result is players are a lot easier to kill now, whereas before you could take quite a beating before getting killed.
     I collected several sets of data before making these changes, including damage to player with and without prot 4 diamond armor, damage to those players with and without enchanted weapons, damage with and without leveling your skills, and combinations of the previously mentioned things.
