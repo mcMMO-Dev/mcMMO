@@ -42,6 +42,7 @@ Version 2.2.000
     You can tweak the benefits of these skills in advanced.yml, the default settings are meant to be a good starting point.
 
     Crossbows and Tridents are WIP skills, I would like feedback on discord about them.
+    Tridents especially is very early, I have some ideas but I want to hear what you think about it.
 
     More info on the new Triple Drop skills (Mother Lode, Clean Cuts, Verdant Bounty):
     Currently these start at about 5%  chance and can reach a maximum 50% chance if a player acquired 10,000 skill, you can adjust this in advanced.yml
