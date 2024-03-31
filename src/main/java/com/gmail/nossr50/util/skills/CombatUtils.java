@@ -111,7 +111,7 @@ public final class CombatUtils {
             }
         }
     }
-    private static void processTridentCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
+    private static void processTridentCombatMelee(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
@@ -127,9 +127,39 @@ public final class CombatUtils {
 
         TridentsManager tridentsManager = mcMMOPlayer.getTridentsManager();
 
-        if (tridentsManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.TRIDENTS);
+//        if (tridentsManager.canActivateAbility()) {
+//            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.TRIDENTS);
+//        }
+
+        if (SkillUtils.canUseSubskill(player, SubSkillType.TRIDENTS_IMPALE)) {
+            boostedDamage += (tridentsManager.impaleDamageBonus() * mcMMOPlayer.getAttackStrength());
         }
+
+        if(canUseLimitBreak(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
+            boostedDamage += (getLimitBreakDamage(player, target, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
+        }
+
+        event.setDamage(boostedDamage);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.TRIDENTS);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
+    }
+
+    private static void processTridentCombatRanged(@NotNull Trident trident, @NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
+        if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+
+        double boostedDamage = event.getDamage();
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
+        TridentsManager tridentsManager = mcMMOPlayer.getTridentsManager();
 
         if (SkillUtils.canUseSubskill(player, SubSkillType.TRIDENTS_IMPALE)) {
             boostedDamage += (tridentsManager.impaleDamageBonus() * mcMMOPlayer.getAttackStrength());
@@ -465,7 +495,7 @@ public final class CombatUtils {
                 }
 
                 if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TRIDENTS)) {
-                    processTridentCombat(target, player, event);
+                    processTridentCombatMelee(target, player, event);
                 }
             }
         }
@@ -478,6 +508,17 @@ public final class CombatUtils {
 
                 if (!Misc.isNPCEntityExcludingVillagers(master) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(master, PrimarySkillType.TAMING)) {
                     processTamingCombat(target, master, wolf, event);
+                }
+            }
+        }
+        else if (painSource instanceof Trident trident) {
+            ProjectileSource projectileSource = trident.getShooter();
+
+            if (projectileSource instanceof Player player) {
+                if (!Misc.isNPCEntityExcludingVillagers(player)) {
+                    if(mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.TRIDENTS, target)) {
+                        processTridentCombatRanged(trident, target, player, event);
+                    }
                 }
             }
         }
