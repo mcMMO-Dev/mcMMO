@@ -578,13 +578,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.executeUpdate();
             statement.close();
 
-            long currentTimeMillis = System.currentTimeMillis();
-
-            String sql = "INSERT INTO " + tablePrefix + "users (`user`, uuid, lastlogin) VALUES (?, ?, ?)";
-            statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
             statement.setString(2, uuid != null ? uuid.toString() : null);
-            statement.setLong(3, currentTimeMillis);
             statement.executeUpdate();
 
             resultSet = statement.getGeneratedKeys();

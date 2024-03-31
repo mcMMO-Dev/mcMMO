@@ -1,3 +1,6 @@
+Version 2.2.003
+    (SQLDB) Fixed a bug where lastlogin was using a value that was too large
+
 Version 2.2.002
     Fixed bug where thrown tridents did not grant XP or benefit from subskills
     Fixed bug where trickshot marked bounced arrows as being shot from a bow instead of being shot from a crossbow
