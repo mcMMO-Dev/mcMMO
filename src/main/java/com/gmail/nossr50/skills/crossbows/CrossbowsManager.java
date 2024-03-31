@@ -72,6 +72,7 @@ public class CrossbowsManager extends SkillManager {
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
         spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
+        spawnedArrow.setShotFromCrossbow(true);
 
         // Don't allow multi-shot or infinite arrows to be picked up
         if (spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)

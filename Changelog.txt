@@ -1,5 +1,6 @@
 Version 2.2.002
     Fixed bug where thrown tridents did not grant XP or benefit from subskills
+    Fixed bug where trickshot marked bounced arrows as being shot from a bow instead of being shot from a crossbow
 
 Version 2.2.001
     Fixed Crossbow's Powered shot showing the text for the wrong skill from the locale when using /crossbows command
