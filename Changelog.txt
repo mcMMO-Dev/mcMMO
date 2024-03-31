@@ -1,5 +1,6 @@
 Version 2.2.003
     (SQLDB) Fixed a bug where lastlogin was using a value that was too large
+    (SQLDB) Fixed bug where crossbows was not getting added to SQL schema for some users
 
 Version 2.2.002
     Fixed bug where thrown tridents did not grant XP or benefit from subskills

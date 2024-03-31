@@ -1034,18 +1034,40 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void updateStructure(String tableName, String columnName, String columnSize) {
-        try (Connection connection = getConnection(PoolIdentifier.MISC);
-             Statement createStatement = connection.createStatement()) {
-
-            String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
-            createStatement.executeUpdate("ALTER TABLE `" + tablePrefix + tableName + "` "
-                    + "ADD COLUMN IF NOT EXISTS `" + columnName + "` int(" + columnSize + ") unsigned NOT NULL DEFAULT " + startingLevel);
-
+        try (Connection connection = getConnection(PoolIdentifier.MISC)) {
+            if (!columnExists(connection, mcMMO.p.getGeneralConfig().getMySQLDatabaseName(), tablePrefix+tableName, columnName)) {
+                try (Statement createStatement = connection.createStatement()) {
+                    logger.info("[SQLDB Check] Adding column '" + columnName + "' to table '" + tablePrefix + tableName + "'...");
+                    String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
+                    createStatement.executeUpdate("ALTER TABLE `" + tablePrefix + tableName + "` "
+                            + "ADD COLUMN `" + columnName + "` int(" + columnSize + ") unsigned NOT NULL DEFAULT " + startingLevel);
+                }
+            } else {
+                logger.info("[SQLDB Check] Column '" + columnName + "' already exists in table '" + tablePrefix + tableName + "', looks good!");
+            }
         } catch (SQLException e) {
             e.printStackTrace(); // Consider more robust logging
             throw new RuntimeException(e);
         }
     }
+
+    private boolean columnExists(Connection connection, String database, String tableName, String columnName) throws SQLException {
+        logger.info("[SQLDB Check] Checking if column '" + columnName + "' exists in table '" + tableName + "'");
+        try (Statement createStatement = connection.createStatement()) {
+            String sql = "SELECT `COLUMN_NAME`\n" +
+                    "FROM `INFORMATION_SCHEMA`.`COLUMNS`\n" +
+                    "WHERE `TABLE_SCHEMA`='" + database + "'\n" +
+                    "  AND `TABLE_NAME`='" + tableName + "'\n" +
+                    "  AND `COLUMN_NAME`='" + columnName + "'";
+            var resultSet = createStatement.executeQuery(sql);
+            return resultSet.next();
+        } catch (SQLException e) {
+            logger.info("Failed to check if column exists in table " + tableName + " for column " + columnName);
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 
     private void setStatementQuery(PreparedStatement statement, String tableName) throws SQLException {
         if (!this.h2) {
