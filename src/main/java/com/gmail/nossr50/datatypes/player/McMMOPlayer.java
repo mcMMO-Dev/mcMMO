@@ -65,6 +65,7 @@ import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -840,14 +841,15 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to process
      * @return Modified experience
      */
-    private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
+    @VisibleForTesting
+    float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
         //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
         if ((mcMMO.p.getSkillTools().getLevelCap(primarySkillType) <= getSkillLevel(primarySkillType))
                 || (mcMMO.p.getGeneralConfig().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
-        xp = (float) (xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) ((xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType)) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());

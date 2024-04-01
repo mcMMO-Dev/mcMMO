@@ -1,3 +1,6 @@
+Version 2.2.004
+    Fixed bug where values from Experience_Formula.Skill_Multiplier were not being used
+
 Version 2.2.003
     (SQLDB) Fixed a bug where lastlogin was using a value that was too large
     (SQLDB) Fixed bug where crossbows was not getting added to SQL schema for some users

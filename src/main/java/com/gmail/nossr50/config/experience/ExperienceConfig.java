@@ -260,7 +260,7 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(PrimarySkillType skill) {
-        return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString()), 1);
+        return config.getDouble("Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(skill.toString()), 1);
     }
 
     /* Custom XP perk */

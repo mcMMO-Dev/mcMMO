@@ -331,7 +331,7 @@ public class SkillTools {
         return primarySkillChildrenMap.get(primarySkillType);
     }
 
-    public double getXpModifier(PrimarySkillType primarySkillType) {
+    public double getXpMultiplier(PrimarySkillType primarySkillType) {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType);
     }
 
