@@ -1,5 +1,8 @@
 Version 2.2.004
-    Fixed bug where values from Experience_Formula.Skill_Multiplier were not being used
+    Fixed bug where values from Experience_Formula.Skill_Multiplier were not functioning
+
+    NOTES:
+    A reminder that these values are multipliers and no longer divisors, if you want 10x lower XP, a value of .1 would do the job.
 
 Version 2.2.003
     (SQLDB) Fixed a bug where lastlogin was using a value that was too large
