@@ -65,10 +65,19 @@ public class RepairManager extends SkillManager {
     public void handleRepair(ItemStack item) {
         Player player = getPlayer();
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
+        if (item.getItemMeta() != null) {
+            if(item.getItemMeta().hasCustomModelData()) {
+                if(!mcMMO.p.getCustomItemSupportConfig().isCustomRepairAllowed()) {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED,
+                            "Anvil.Repair.Reject.CustomModelData");
+                    return;
+                }
+            }
 
-        if (item.getItemMeta().isUnbreakable()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
-            return;
+            if (item.getItemMeta().isUnbreakable()) {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
+                return;
+            }
         }
 
         // Permissions checks on material and item types

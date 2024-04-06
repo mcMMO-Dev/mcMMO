@@ -1,3 +1,15 @@
+Version 2.2.006
+    Added new config custom_item_support.yml
+    Added setting to disable repair on items with custom models, this is not on by default
+    Added new locale entry 'Anvil.Repair.Reject.CustomModelData'
+    Added new locale entry 'Anvil.Salvage.Reject.CustomModelData'
+
+    NOTES:
+    Let me know in detail what kind of support you'd like to see in mcMMO regarding custom items, I'm open to suggestions.
+    This update adds a new config file to allow server owners to disable repair or salvage on items with custom models,
+    This prevention mechanism is not enabled by default, change the settings in custom_item_support.yml if you want to enable it.
+    This feature is off by default for now to keep compatibility with existing servers, but it may be enabled by default in the future if feedback suggests it should be.
+
 Version 2.2.005
     Fixed a bug where certain skills such as Dodge/Arrow Deflect had no skill cap and would continue improving forever
     Reduced messages on startup for SQL DB

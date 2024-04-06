@@ -140,6 +140,7 @@ public class mcMMO extends JavaPlugin {
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
     private PartyConfig partyConfig;
+    private CustomItemSupportConfig customItemSupportConfig;
 
     private FoliaLib foliaLib;
     private PartyManager partyManager;
@@ -185,6 +186,7 @@ public class mcMMO extends JavaPlugin {
             //Init configs
             advancedConfig = new AdvancedConfig(getDataFolder());
             partyConfig = new PartyConfig(getDataFolder());
+            customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = generalConfig.getIsRetroMode();
@@ -804,6 +806,10 @@ public class mcMMO extends JavaPlugin {
 
     public PartyManager getPartyManager() {
         return partyManager;
+    }
+
+    public CustomItemSupportConfig getCustomItemSupportConfig() {
+        return customItemSupportConfig;
     }
 
     public @NotNull FoliaLib getFoliaLib() {

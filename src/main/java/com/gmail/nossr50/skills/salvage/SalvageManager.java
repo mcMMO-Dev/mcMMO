@@ -62,14 +62,19 @@ public class SalvageManager extends SkillManager {
     }
 
     public void handleSalvage(Location location, ItemStack item) {
-        Player player = getPlayer();
+        final Player player = getPlayer();
 
-        Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
-        ItemMeta meta = item.getItemMeta();
-        
-        if (meta != null && meta.isUnbreakable()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
-            return;
+        final Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
+        final ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            if (meta.hasCustomModelData() && !mcMMO.p.getCustomItemSupportConfig().isCustomSalvageAllowed()) {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Salvage.Reject.CustomModelData");
+                return;
+            }
+            if (meta.isUnbreakable()) {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
+                return;
+            }
         }
 
         // Permissions checks on material and item types
@@ -189,30 +194,6 @@ public class SalvageManager extends SkillManager {
     public int getArcaneSalvageRank() {
         return RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
-
-    /*public double getExtractFullEnchantChance() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getExtractFullEnchantChance();
-            }
-        }
-
-        return 0;
-    }
-
-    public double getExtractPartialEnchantChance() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getExtractPartialEnchantChance();
-            }
-        }
-
-        return 0;
-    }*/
 
     public double getExtractFullEnchantChance() {
         if(Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
