@@ -34,8 +34,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
-import static java.util.Objects.requireNonNull;
-
 public final class SkillUtils {
     /**
      * This is a static utility class, therefore we don't want any instances of

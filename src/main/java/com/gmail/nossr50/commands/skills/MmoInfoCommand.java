@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -29,14 +28,11 @@ public class MmoInfoCommand implements TabExecutor {
          */
         if(commandSender instanceof Player player)
         {
-            if(args.length < 1)
+            if(args == null || args.length < 1 || args[0] == null || args[0].isEmpty())
                 return false;
 
             if(Permissions.mmoinfo(player))
             {
-                if(args == null || args[0] == null)
-                    return false;
-
                 if(args[0].equalsIgnoreCase( "???"))
                 {
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
@@ -44,19 +40,30 @@ public class MmoInfoCommand implements TabExecutor {
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mystery"));
                     return true;
-                } else if(InteractionManager.getAbstractByName(args[0]) != null || mcMMO.p.getSkillTools().EXACT_SUBSKILL_NAMES.contains(args[0]))
-                {
-                    displayInfo(player, args[0]);
-                    return true;
                 }
 
-                //Not a real skill
-                player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.NoMatch"));
+                final SubSkillType subSkillType = matchSubSkill(args[0]);
+                if  (subSkillType != null) {
+                    displayInfo(player, subSkillType);
+                } else {
+                    //Not a real skill
+                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.NoMatch"));
+                }
                 return true;
             }
         }
 
         return false;
+    }
+
+    public SubSkillType matchSubSkill(String name) {
+        for(SubSkillType subSkillType : SubSkillType.values())
+        {
+            if(subSkillType.getNiceNameNoSpaces(subSkillType).equalsIgnoreCase(name)
+                    || subSkillType.name().equalsIgnoreCase(name))
+                return subSkillType;
+        }
+        return null;
     }
 
     @Override
@@ -67,20 +74,13 @@ public class MmoInfoCommand implements TabExecutor {
         return ImmutableList.of();
     }
 
-    private void displayInfo(Player player, String subSkillName)
+    private void displayInfo(Player player, SubSkillType subSkillType)
     {
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillType.getLocaleName()));
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
-        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.OldSkill"));
-
-        for(SubSkillType subSkillType : SubSkillType.values())
-        {
-            if(subSkillType.getNiceNameNoSpaces(subSkillType).equalsIgnoreCase(subSkillName))
-                subSkillName = subSkillType.getWikiName(subSkillType.toString());
-        }
 
         //Send Player Wiki Link
-        TextComponentFactory.sendPlayerSubSkillWikiLink(player, subSkillName);
+        TextComponentFactory.sendPlayerSubSkillWikiLink(player, subSkillType.getLocaleName(), subSkillType);
     }
 }

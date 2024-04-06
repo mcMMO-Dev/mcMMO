@@ -56,18 +56,23 @@ public class TextComponentFactory {
         return Component.text(text);
     }
 
-    public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted) {
+    public static String getSubSkillWikiLink(SubSkillType subSkillType) {
+        return "https://wiki.mcmmo.org/en/skills/"
+                + subSkillType.getParentSkill().toString().toLowerCase(Locale.ENGLISH) + "#"
+                + subSkillType.getWikiUrl().toLowerCase(Locale.ENGLISH);
+    }
+
+    public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted, SubSkillType subSkillType) {
         if (!mcMMO.p.getGeneralConfig().getUrlLinksEnabled())
             return;
 
         TextComponent.Builder wikiLinkComponent = Component.text().content(LocaleLoader.getString("Overhaul.mcMMO.MmoInfo.Wiki"));
         wikiLinkComponent.decoration(TextDecoration.UNDERLINED, true);
 
-        String wikiUrl = "https://wiki.mcmmo.org/" + subskillformatted;
+        final String subSkillWikiLink = getSubSkillWikiLink(subSkillType);
+        wikiLinkComponent.clickEvent(ClickEvent.openUrl(subSkillWikiLink));
 
-        wikiLinkComponent.clickEvent(ClickEvent.openUrl(wikiUrl));
-
-        TextComponent.Builder componentBuilder = Component.text().content(subskillformatted).append(Component.newline()).append(Component.text(wikiUrl)).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, true);
+        TextComponent.Builder componentBuilder = Component.text().content(subskillformatted).append(Component.newline()).append(Component.text(subSkillWikiLink)).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, true);
 
         wikiLinkComponent.hoverEvent(HoverEvent.showText(componentBuilder.build()));
 

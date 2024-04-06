@@ -213,35 +213,12 @@ public enum SubSkillType {
         return endResult.toString();
     }
 
-    public String getWikiName(String subSkillName) {
-        /*
-         * Find where to begin our substring (after the prefix)
-         */
-        StringBuilder endResult = new StringBuilder();
-        int subStringIndex = getSubStringIndex(subSkillName);
-
-        /*
-         * Split the string up so we can capitalize each part
-         */
-        String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
-        if(subskillNameWithoutPrefix.contains("_"))
-        {
-            String[] splitStrings = subskillNameWithoutPrefix.split("_");
-
-            for(int i = 0; i < splitStrings.length; i++)
-            {
-                if(i+1 >= splitStrings.length)
-                    endResult.append(StringUtils.getCapitalized(splitStrings[i]));
-                else {
-                    endResult.append(StringUtils.getCapitalized(splitStrings[i]));
-                    endResult.append("_");
-                }
-            }
-        } else {
-            endResult.append(StringUtils.getCapitalized(subskillNameWithoutPrefix));
-        }
-
-        return endResult.toString();
+    public String getWikiUrl() {
+        // remove the text before the first underscore
+        int subStringIndex = getSubStringIndex(name());
+        String afterPrefix = name().substring(subStringIndex);
+        // replace _ or spaces with -
+        return afterPrefix.replace("_", "-").replace(" ", "-").toLowerCase(Locale.ENGLISH);
     }
 
     /**

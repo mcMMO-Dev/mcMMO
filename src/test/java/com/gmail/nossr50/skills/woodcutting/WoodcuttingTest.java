@@ -17,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -74,8 +73,9 @@ class WoodcuttingTest extends MMOTestEnvironment {
         woodcuttingManager.processBonusDropCheck(blockState);
 
         // verify bonus drops were spawned
-        // TODO: Can fail if triple drops happen, need to update test
-        Mockito.verify(woodcuttingManager, Mockito.times(1)).spawnHarvestLumberBonusDrops(blockState);
+        // TODO: using at least once since triple drops can also happen
+        // TODO: Change the test env to disallow triple drop in the future
+        Mockito.verify(woodcuttingManager, Mockito.atLeastOnce()).spawnHarvestLumberBonusDrops(blockState);
     }
 
     @Test
