@@ -1,3 +1,10 @@
+Version 2.2.005
+    Fixed a bug where certain skills such as Dodge/Arrow Deflect had no skill cap and would continue improving forever
+    Reduced messages on startup for SQL DB
+    (API) Constructor for ProbabilityImpl now takes a raw value between 0 and 1 instead of an inflated percentage
+    (API) Added some convenience methods to Probability, and ProbabilityUtil classes
+    (Codebase) Added more unit tests revolving around Probability/RNG
+
 Version 2.2.004
     Fixed bug where values from Experience_Formula.Skill_Multiplier were not functioning
 

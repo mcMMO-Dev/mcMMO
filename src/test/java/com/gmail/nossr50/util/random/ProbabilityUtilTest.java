@@ -1,37 +1,42 @@
 package com.gmail.nossr50.util.random;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
+import static com.gmail.nossr50.util.random.ProbabilityTestUtils.assertProbabilityExpectations;
+import static com.gmail.nossr50.util.random.ProbabilityUtil.calculateCurrentSkillProbability;
+import static java.util.logging.Logger.getLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ProbabilityUtilTest {
-    mcMMO mmoInstance;
-    AdvancedConfig advancedConfig;
+class ProbabilityUtilTest extends MMOTestEnvironment {
+    private static final Logger logger = getLogger(ProbabilityUtilTest.class.getName());
 
     final static double impactChance = 11D;
     final static double greaterImpactChance = 0.007D;
     final static double fastFoodChance = 45.5D;
 
     @BeforeEach
-    public void setupMocks() throws NoSuchFieldException, IllegalAccessException {
-        this.mmoInstance = mock(mcMMO.class);
-        mcMMO.class.getField("p").set(null, mmoInstance);
-        this.advancedConfig = mock(AdvancedConfig.class);
-        when(mmoInstance.getAdvancedConfig()).thenReturn(advancedConfig);
+    public void setupMocks() {
+        mockBaseEnvironment(logger);
         when(advancedConfig.getImpactChance()).thenReturn(impactChance);
         when(advancedConfig.getGreaterImpactChance()).thenReturn(greaterImpactChance);
         when(advancedConfig.getFastFoodChance()).thenReturn(fastFoodChance);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        cleanupBaseEnvironment();
     }
 
     private static Stream<Arguments> staticChanceSkills() {
@@ -45,22 +50,26 @@ class ProbabilityUtilTest {
 
     @ParameterizedTest
     @MethodSource("staticChanceSkills")
-    void testStaticChanceSkills(SubSkillType subSkillType, double expectedWinPercent) throws InvalidStaticChance {
+    void staticChanceSkillsShouldSucceedAsExpected(SubSkillType subSkillType, double expectedWinPercent)
+            throws InvalidStaticChance {
         Probability staticRandomChance = ProbabilityUtil.getStaticRandomChance(subSkillType);
         assertProbabilityExpectations(expectedWinPercent, staticRandomChance);
     }
 
-    private static void assertProbabilityExpectations(double expectedWinPercent, Probability probability) {
-        double iterations = 2.0e7;
-        double winCount = 0;
-        for (int i = 0; i < iterations; i++) {
-            if(probability.evaluate()) {
-                winCount++;
-            }
-        }
+    @Test
+    public void isSkillRNGSuccessfulShouldBehaveAsExpected() {
+        // Given
+        when(advancedConfig.getMaximumProbability(UNARMED_ARROW_DEFLECT)).thenReturn(20D);
+        when(advancedConfig.getMaxBonusLevel(UNARMED_ARROW_DEFLECT)).thenReturn(0);
 
-        double successPercent = (winCount / iterations) * 100;
-        System.out.println(successPercent + ", " + expectedWinPercent);
-        assertEquals(expectedWinPercent, successPercent, 0.05D);
+        final Probability probability = ProbabilityUtil.getSkillProbability(UNARMED_ARROW_DEFLECT, player);
+        assertEquals(0.2D, probability.getValue());
+        assertProbabilityExpectations(20, probability);
+    }
+
+    @Test
+    public void calculateCurrentSkillProbabilityShouldBeTwenty() {
+        final Probability probability = calculateCurrentSkillProbability(1000, 0, 20, 1000);
+        assertEquals(0.2D, probability.getValue());
     }
 }

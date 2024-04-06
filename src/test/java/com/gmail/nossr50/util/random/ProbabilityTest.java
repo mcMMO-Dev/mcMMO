@@ -14,19 +14,19 @@ class ProbabilityTest {
     private static Stream<Arguments> provideProbabilitiesForWithinExpectations() {
         return Stream.of(
                 // static probability, % of time for success
-                Arguments.of(new ProbabilityImpl(5), 5),
-                Arguments.of(new ProbabilityImpl(10), 10),
-                Arguments.of(new ProbabilityImpl(15), 15),
-                Arguments.of(new ProbabilityImpl(20), 20),
-                Arguments.of(new ProbabilityImpl(25), 25),
-                Arguments.of(new ProbabilityImpl(50), 50),
-                Arguments.of(new ProbabilityImpl(75), 75),
-                Arguments.of(new ProbabilityImpl(90), 90),
-                Arguments.of(new ProbabilityImpl(99.9), 99.9),
-                Arguments.of(new ProbabilityImpl(0.05), 0.05),
-                Arguments.of(new ProbabilityImpl(0.1), 0.1),
-                Arguments.of(new ProbabilityImpl(500), 100),
-                Arguments.of(new ProbabilityImpl(1000), 100)
+                Arguments.of(new ProbabilityImpl(.05), 5),
+                Arguments.of(new ProbabilityImpl(.10), 10),
+                Arguments.of(new ProbabilityImpl(.15), 15),
+                Arguments.of(new ProbabilityImpl(.20), 20),
+                Arguments.of(new ProbabilityImpl(.25), 25),
+                Arguments.of(new ProbabilityImpl(.50), 50),
+                Arguments.of(new ProbabilityImpl(.75), 75),
+                Arguments.of(new ProbabilityImpl(.90), 90),
+                Arguments.of(new ProbabilityImpl(.999), 99.9),
+                Arguments.of(new ProbabilityImpl(0.0005), 0.05),
+                Arguments.of(new ProbabilityImpl(0.001), 0.1),
+                Arguments.of(new ProbabilityImpl(50.0), 100),
+                Arguments.of(new ProbabilityImpl(100.0), 100)
         );
     }
 

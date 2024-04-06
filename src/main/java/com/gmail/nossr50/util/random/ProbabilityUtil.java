@@ -79,24 +79,24 @@ public class ProbabilityUtil {
         switch (getProbabilityType(subSkillType)) {
             case DYNAMIC_CONFIGURABLE:
                 double probabilityCeiling;
-                double xCeiling;
-                double xPos;
+                double skillLevel;
+                double maxBonusLevel; // If a skill level is equal to the cap, it has the full probability
 
                 if (player != null) {
                     McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
                     if (mmoPlayer == null) {
                         return Probability.ofPercent(0);
                     }
-                    xPos = mmoPlayer.getSkillLevel(subSkillType.getParentSkill());
+                    skillLevel = mmoPlayer.getSkillLevel(subSkillType.getParentSkill());
                 } else {
-                    xPos = 0;
+                    skillLevel = 0;
                 }
 
                 //Probability ceiling is configurable in this type
                 probabilityCeiling = mcMMO.p.getAdvancedConfig().getMaximumProbability(subSkillType);
                 //The xCeiling is configurable in this type
-                xCeiling = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(subSkillType);
-                return new ProbabilityImpl(xPos, xCeiling, probabilityCeiling);
+                maxBonusLevel = mcMMO.p.getAdvancedConfig().getMaxBonusLevel(subSkillType);
+                return calculateCurrentSkillProbability(skillLevel, 0, probabilityCeiling, maxBonusLevel);
             case STATIC_CONFIGURABLE:
                 try {
                     return getStaticRandomChance(subSkillType);
@@ -127,22 +127,7 @@ public class ProbabilityUtil {
      * @return true if the Skill RNG succeeds, false if it fails
      */
     public static boolean isSkillRNGSuccessful(@NotNull SubSkillType subSkillType, @NotNull Player player) {
-        //Process probability
-        Probability probability = getSubSkillProbability(subSkillType, player);
-
-        //Send out event
-        SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(player, subSkillType);
-
-        if(subSkillEvent.isCancelled()) {
-            return false; //Event got cancelled so this doesn't succeed
-        }
-
-        //Result modifier
-        double resultModifier = subSkillEvent.getResultModifier();
-
-        //Mutate probability
-        if(resultModifier != 1.0D)
-            probability = Probability.ofPercent(probability.getValue() * resultModifier);
+        final Probability probability = getSkillProbability(subSkillType, player);
 
         //Luck
         boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
@@ -155,11 +140,41 @@ public class ProbabilityUtil {
     }
 
     /**
+     * Returns the {@link Probability} for a specific {@link SubSkillType} for a specific {@link Player}.
+     * This does not take into account perks such as lucky for the player.
+     * This is affected by other plugins who can listen to the {@link SubSkillEvent} and cancel it or mutate it.
+     *
+     * @param subSkillType the target subskill
+     * @param player the target player
+     * @return the probability for this skill
+     */
+    public static Probability getSkillProbability(@NotNull SubSkillType subSkillType, @NotNull Player player) {
+        //Process probability
+        Probability probability = getSubSkillProbability(subSkillType, player);
+
+        //Send out event
+        SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(player, subSkillType);
+
+        if(subSkillEvent.isCancelled()) {
+            return Probability.ALWAYS_FAILS;
+        }
+
+        //Result modifier
+        double resultModifier = subSkillEvent.getResultModifier();
+
+        //Mutate probability
+        if(resultModifier != 1.0D)
+            probability = Probability.ofPercent(probability.getValue() * resultModifier);
+
+        return probability;
+    }
+
+    /**
      * This is one of several Skill RNG check methods
      * This helper method is specific to static value RNG, which can be influenced by a player's Luck
      *
      * @param primarySkillType the related primary skill
-     * @param player the target player, can be null (null players have the worst odds)
+     * @param player the target player can be null (null players have the worst odds)
      * @param probabilityPercentage the probability of this player succeeding in "percentage" format (0-100 inclusive)
      * @return true if the RNG succeeds, false if it fails
      */
@@ -222,5 +237,32 @@ public class ProbabilityUtil {
         double secondValue = chanceOfSuccessPercentage(probability, true);
 
         return new String[]{percent.format(firstValue), percent.format(secondValue)};
+    }
+
+    /**
+     * Helper function to calculate what probability a given skill has at a certain level
+     * @param skillLevel the skill level currently between the floor and the ceiling
+     * @param floor the minimum odds this skill can have
+     * @param ceiling the maximum odds this skill can have
+     * @param maxBonusLevel the maximum level this skill can have to reach the ceiling
+     *
+     * @return the probability of success for this skill at this level
+     */
+    public static Probability calculateCurrentSkillProbability(double skillLevel, double floor,
+                                                               double ceiling, double maxBonusLevel) {
+        // The odds of success are between the value of the floor and the value of the ceiling.
+        // If the skill has a maxBonusLevel of 500 on this skill, then at skill level 500 you would have the full odds,
+        // at skill level 250 it would be half odds.
+
+        if (skillLevel >= maxBonusLevel || maxBonusLevel <= 0) {
+            // Avoid divide by zero bugs
+            // Max benefit has been reached, should always succeed
+            return Probability.ofPercent(ceiling);
+        }
+
+        double odds = (skillLevel / maxBonusLevel) * 100D;
+
+        // make sure the odds aren't lower or higher than the floor or ceiling
+        return Probability.ofPercent(Math.min(Math.max(floor, odds), ceiling));
     }
 }
