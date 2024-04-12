@@ -704,7 +704,7 @@ public class HerbalismManager extends SkillManager {
     public boolean processShroomThumb(BlockState blockState) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        
+
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
@@ -747,7 +747,7 @@ public class HerbalismManager extends SkillManager {
      */
     private boolean processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
         if (!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
-            && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
+                && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
             return false;
         }
 
@@ -757,37 +757,29 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        //If the ageable is NOT mature and the player is NOT using a hoe, abort
-
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
         Material seed;
 
         switch (blockState.getType().getKey().getKey().toLowerCase(Locale.ROOT)) {
             case "carrots":
-                seed = Material.matchMaterial("CARROT");
+                seed = Material.CARROT;
                 break;
-
             case "wheat":
-                seed = Material.matchMaterial("WHEAT_SEEDS");
+                seed = Material.WHEAT_SEEDS;
                 break;
-
             case "nether_wart":
-                seed = Material.getMaterial("NETHER_WART");
+                seed = Material.NETHER_WART;
                 break;
-
             case "potatoes":
-                seed = Material.matchMaterial("POTATO");
+                seed = Material.POTATO;
                 break;
-
             case "beetroots":
-                seed = Material.matchMaterial("BEETROOT_SEEDS");
+                seed = Material.BEETROOT_SEEDS;
                 break;
-
             case "cocoa":
-                seed = Material.matchMaterial("COCOA_BEANS");
+                seed = Material.COCOA_BEANS;
                 break;
-
             case "torchflower":
                 seed = Material.matchMaterial("TORCHFLOWER_SEEDS");
                 break;
@@ -795,11 +787,10 @@ public class HerbalismManager extends SkillManager {
                 return false;
         }
 
-
         ItemStack seedStack = new ItemStack(seed);
 
         if (ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
-        && blockState.getType() != Material.COCOA) {
+                && blockState.getType() != Material.COCOA) {
             return false;
         }
 
@@ -807,19 +798,28 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (!playerInventory.containsAtLeast(seedStack, 1)) {
+        // Check for seeds in both the main hand and off-hand
+        if (!(playerInventory.containsAtLeast(seedStack, 1) || playerInventory.getItemInOffHand().getType() == seed)) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(seed));
             return false;
         }
+
+        // Remove seed from the appropriate inventory slot (main hand or off-hand)
+        if (playerInventory.getItemInMainHand().getType() == seed) {
+            playerInventory.removeItem(new ItemStack(seed, 1));
+        } else if (playerInventory.getItemInOffHand().getType() == seed) {
+            playerInventory.getItemInOffHand().setAmount(playerInventory.getItemInOffHand().getAmount() - 1);
+        }
+
+        player.updateInventory(); // Needed until replacement available
 
         if (!processGrowingPlants(blockState, ageable, blockBreakEvent, greenTerra)) {
             return false;
         }
 
-        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
+        if (EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
             return false;
         } else {
-            playerInventory.removeItem(seedStack);
-            player.updateInventory(); // Needed until replacement available
             //Play sound
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
             return true;
@@ -852,7 +852,7 @@ public class HerbalismManager extends SkillManager {
             case "carrots":
             case "wheat":
 
-                    finalAge = getGreenThumbStage(greenTerra);
+                finalAge = getGreenThumbStage(greenTerra);
                 break;
 
             case "beetroots":
