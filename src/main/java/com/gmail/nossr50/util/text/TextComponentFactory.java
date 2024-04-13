@@ -19,6 +19,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -235,8 +236,8 @@ public class TextComponentFactory {
     }
 
     private static Component getSubSkillTextComponent(Player player, SubSkillType subSkillType) {
-        //Get skill name
-        final String skillName = subSkillType.getLocaleName();
+        //Get skill name and strip it of color
+        final String skillName = ChatColor.stripColor(subSkillType.getLocaleName());
 
         boolean skillUnlocked = RankUtils.hasUnlockedSubskill(player, subSkillType);
 
@@ -290,11 +291,6 @@ public class TextComponentFactory {
         return textComponent;
     }
 
-    private static TextComponent.Builder detectLegacyColors(String msg) {
-        // TODO: Impl
-        return null;
-    }
-
     private static Component getSubSkillHoverComponent(Player player, AbstractSubSkill abstractSubSkill) {
         return getSubSkillHoverEventJSON(abstractSubSkill, player);
     }
@@ -311,7 +307,7 @@ public class TextComponentFactory {
      * @return the hover basecomponent object for this subskill
      */
     private static Component getSubSkillHoverEventJSON(AbstractSubSkill abstractSubSkill, Player player) {
-        String skillName = abstractSubSkill.getNiceName();
+        String skillName = ChatColor.stripColor(abstractSubSkill.getNiceName());
 
         /*
          * Hover Event BaseComponent color table
@@ -404,7 +400,8 @@ public class TextComponentFactory {
     }
 
     private static Component getSubSkillHoverEventJSON(SubSkillType subSkillType, Player player) {
-        String skillName = subSkillType.getLocaleName();
+        // Get skill name and strip it of color
+        String skillName = ChatColor.stripColor(subSkillType.getLocaleName());
 
         /*
          * Hover Event BaseComponent color table
@@ -438,11 +435,9 @@ public class TextComponentFactory {
             }
 
             componentBuilder.append(Component.newline());
-            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.DescriptionHeader")));
-            componentBuilder.color(ccDescriptionHeader);
+            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.DescriptionHeader")).color(ccDescriptionHeader));
             componentBuilder.append(Component.newline());
-            componentBuilder.append(Component.text(subSkillType.getLocaleDescription()));
-            componentBuilder.color(ccDescription);
+            componentBuilder.append(Component.text(ChatColor.stripColor(subSkillType.getLocaleDescription())).color(ccDescription));
         }
 
         return componentBuilder.build();
