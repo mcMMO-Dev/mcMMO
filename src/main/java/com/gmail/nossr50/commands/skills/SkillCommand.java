@@ -31,7 +31,6 @@ import java.util.Locale;
 
 public abstract class SkillCommand implements TabExecutor {
     protected PrimarySkillType skill;
-    private final String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
@@ -40,7 +39,6 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(PrimarySkillType skill) {
         this.skill = skill;
-        skillName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill);
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -76,7 +74,8 @@ public abstract class SkillCommand implements TabExecutor {
             permissionsCheck(player);
             dataCalculations(player, skillValue);
 
-            sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
+            sendSkillCommandHeader(mcMMO.p.getSkillTools().getLocalizedSkillName(skill),
+                    player, mcMMOPlayer, (int) skillValue);
 
             //Make JSON text components
             List<Component> subskillTextComponents = getTextComponents(player);
@@ -139,15 +138,14 @@ public abstract class SkillCommand implements TabExecutor {
             }
         }
 
-        player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
+        final String skillName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill);
+        player.sendMessage(LocaleLoader.getString("Guides.Available",
+                skillName,
+                skillName.toLowerCase(Locale.ENGLISH)));
     }
 
-    private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
-        ChatColor hd1 = ChatColor.DARK_AQUA;
-        ChatColor c1 = ChatColor.GOLD;
-        ChatColor c2 = ChatColor.RED;
-
-
+    private void sendSkillCommandHeader(String skillName, Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
+        // send header
         player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
         if(!SkillTools.isChildSkill(skill))

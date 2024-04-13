@@ -349,8 +349,7 @@ public class SkillTools {
      * @return the localized name for a {@link PrimarySkillType}
      */
     public String getLocalizedSkillName(PrimarySkillType primarySkillType) {
-        //TODO: Replace with current impl
-        return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(primarySkillType.toString()) + ".SkillName"));
+        return LocaleLoader.getString(StringUtils.getCapitalized(primarySkillType.toString()) + ".SkillName");
     }
 
     public boolean doesPlayerHaveSkillPermission(Player player, PrimarySkillType primarySkillType) {

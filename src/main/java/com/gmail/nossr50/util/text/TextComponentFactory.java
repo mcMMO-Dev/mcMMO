@@ -236,7 +236,7 @@ public class TextComponentFactory {
 
     private static Component getSubSkillTextComponent(Player player, SubSkillType subSkillType) {
         //Get skill name
-        String skillName = subSkillType.getLocaleName();
+        final String skillName = subSkillType.getLocaleName();
 
         boolean skillUnlocked = RankUtils.hasUnlockedSubskill(player, subSkillType);
 
@@ -288,6 +288,11 @@ public class TextComponentFactory {
             textComponent.clickEvent(ClickEvent.runCommand("/mmoinfo ???"));
         }
         return textComponent;
+    }
+
+    private static TextComponent.Builder detectLegacyColors(String msg) {
+        // TODO: Impl
+        return null;
     }
 
     private static Component getSubSkillHoverComponent(Player player, AbstractSubSkill abstractSubSkill) {
