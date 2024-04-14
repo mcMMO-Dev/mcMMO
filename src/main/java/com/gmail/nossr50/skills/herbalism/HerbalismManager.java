@@ -798,8 +798,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        // Check for seeds in both the main hand and off-hand
-        if (!(playerInventory.containsAtLeast(seedStack, 1) || playerInventory.getItemInOffHand().getType() == seed)) {
+        if (!playerInventory.contains(seedStack)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(seed));
             return false;
         }
@@ -808,20 +807,13 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        // Check the SubSkillEvent before removing items
         if (EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
             return false;
         } else {
-            // Remove seed from the appropriate inventory slot (main hand or off-hand)
-            if (playerInventory.getItemInMainHand().getType() == seed) {
-                playerInventory.removeItem(new ItemStack(seed, 1));
-            } else if (playerInventory.getItemInOffHand().getType() == seed) {
-                playerInventory.getItemInOffHand().setAmount(playerInventory.getItemInOffHand().getAmount() - 1);
-            }
+            playerInventory.removeItem(new ItemStack(seed, 1));
 
-            player.updateInventory(); // Needed until replacement available
+            player.updateInventory();
 
-            // Play sound
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
             return true;
         }
