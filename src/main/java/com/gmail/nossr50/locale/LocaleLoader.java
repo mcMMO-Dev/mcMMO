@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
@@ -24,6 +26,9 @@ public final class LocaleLoader {
     private static ResourceBundle bundle = null;
     private static ResourceBundle filesystemBundle = null;
     private static ResourceBundle enBundle = null;
+    // Matches the pattern &#RRGGBB
+    private static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
+    private static final Pattern minecraftHexPattern = Pattern.compile("§x(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])");
 
     private LocaleLoader() {}
 
@@ -47,8 +52,6 @@ public final class LocaleLoader {
         String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
         return formatString(rawMessage, messageArguments);
     }
-
-    //TODO: Remove this hacky crap with something better later
 
     /**
      * Gets the appropriate TextComponent representation of a formatted string from the Locale files.
@@ -258,9 +261,14 @@ public final class LocaleLoader {
     @NotNull
     private static String getExamples() {
         return """
-                This.Is.An.Example.Put.Locale.Keys.Here.One=&aExample text using hex color codes
+                This.Is.An.Example.Put.Locale.Keys.Here.One=&aExample text using simplified minecraft color codes
                 This.Is.An.Example.Put.Locale.Keys.Here.Two=[[DARK_AQUA]]Example text using our own color codes
                 This.Is.An.Example.Put.Locale.Keys.Here.Three=Example text with no colors
+                This.Is.An.Example.Put.Locale.Keys.Here.Four=&#FF0000Example text with red color hex code
+                This.Is.An.Example.Put.Locale.Keys.Here.Five=&#00FF00Example text with green color hex code
+                This.Is.An.Example.Put.Locale.Keys.Here.Six=&#0000FFExample text with blue color hex code
+                This.Is.An.Example.Put.Locale.Keys.Here.Seven=&#FFFF00Example text with yellow color hex code
+                This.Is.An.Example.Put.Locale.Keys.Here.Eight=&lExample text with bold using simplified minecraft color codes
                 """;
     }
 
@@ -304,6 +312,10 @@ public final class LocaleLoader {
     }
 
     public static String addColors(String input) {
+        // First check for hex color codes and insert them
+        input = translateHexColorCodes(input);
+
+        // Then check for our own color codes
         input = input.replaceAll("\\Q[[BLACK]]\\E", ChatColor.BLACK.toString());
         input = input.replaceAll("\\Q[[DARK_BLUE]]\\E", ChatColor.DARK_BLUE.toString());
         input = input.replaceAll("\\Q[[DARK_GREEN]]\\E", ChatColor.DARK_GREEN.toString());
@@ -327,6 +339,7 @@ public final class LocaleLoader {
         input = input.replaceAll("\\Q[[MAGIC]]\\E", ChatColor.MAGIC.toString());
         input = input.replaceAll("\\Q[[RESET]]\\E", ChatColor.RESET.toString());
 
+        // Then check for the typical color codes
         input = input.replaceAll("\\Q&0\\E", ChatColor.BLACK.toString());
         input = input.replaceAll("\\Q&1\\E", ChatColor.DARK_BLUE.toString());
         input = input.replaceAll("\\Q&2\\E", ChatColor.DARK_GREEN.toString());
@@ -351,5 +364,53 @@ public final class LocaleLoader {
         input = input.replaceAll("\\Q&r\\E", ChatColor.RESET.toString());
 
         return input;
+    }
+
+    /**
+     * Translates hex color codes to the appropriate Minecraft color codes.
+     * <p>
+     *     Hex color codes are in the format of &#RRGGBB
+     *     Minecraft color codes are in the format of §x§R§R§G§G§B§B
+     *     Where R, G, and B are the red, green, and blue values respectively.
+     *     The §x is a special character that tells Minecraft to use the following color codes as hex values.
+     *     The §R§R is the red value, the §G§G is the green value, and the §B§B is the blue value.
+     *     Example: §x§R§R§G§G§B§B is the equivalent of the hex color code &#RRGGBB
+     * </p>
+     * @param messageWithHex The message with hex color codes to translate
+     * @return The message with the hex color codes translated to Minecraft color codes
+     */
+    public static String translateHexColorCodes(String messageWithHex) {
+        if(messageWithHex == null) {
+            return null;
+        }
+
+        final Matcher matcher = hexPattern.matcher(messageWithHex);
+        final StringBuilder buffer = new StringBuilder(messageWithHex.length() + 4 * 8);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            String hexEquivalent = "§x" +
+                    "§" + group.charAt(0) + "§" + group.charAt(1) +
+                    "§" + group.charAt(2) + "§" + group.charAt(3) +
+                    "§" + group.charAt(4) + "§" + group.charAt(5);
+            matcher.appendReplacement(buffer, hexEquivalent);
+        }
+        return matcher.appendTail(buffer).toString();
+    }
+
+    // Method to reverse the transformation from Minecraft color codes to hex codes
+    public static String reverseTranslateHexColorCodes(String minecraftColorString) {
+        // Matches the Minecraft color pattern: §x§R§R§G§G§B§B
+        Matcher matcher = minecraftHexPattern.matcher(minecraftColorString);
+        StringBuilder buffer = new StringBuilder();
+
+        while (matcher.find()) {
+            String hexColor = "#" +
+                    matcher.group(1).substring(1) + matcher.group(2).substring(1) +
+                    matcher.group(3).substring(1) + matcher.group(4).substring(1) +
+                    matcher.group(5).substring(1) + matcher.group(6).substring(1);
+            matcher.appendReplacement(buffer, "&" + hexColor);
+        }
+        matcher.appendTail(buffer);
+        return buffer.toString();
     }
 }

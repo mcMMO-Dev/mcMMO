@@ -42,8 +42,8 @@ public final class CommandRegistrationManager {
             command.setDescription(LocaleLoader.getString("Commands.Description.Skill", StringUtils.getCapitalized(localizedName)));
             command.setPermission("mcmmo.commands." + commandName);
             command.setPermissionMessage(permissionsMessage);
-            command.setUsage(LocaleLoader.getString("Commands.Usage.0", localizedName));
-            command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", localizedName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
+            command.setUsage(LocaleLoader.getString("Commands.Usage.0", commandName));
+            command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", commandName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
 
             switch (skill) {
                 case ACROBATICS:

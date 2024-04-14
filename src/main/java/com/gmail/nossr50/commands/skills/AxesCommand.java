@@ -106,7 +106,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected List<Component> getTextComponents(Player player) {
-        List<Component> textComponents = new ArrayList<>();
+        final List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.AXES);
 

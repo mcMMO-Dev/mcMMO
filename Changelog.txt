@@ -1,12 +1,25 @@
 Version 2.2.006
+    Added new config custom_item_support.yml
+    Added support for hex color codes in the locale file, uses the format &#RRGGBB (see notes)
+    Added setting to disable repair on items with custom models, this is not on by default
+    Fixed a bug where sometimes the locale name of a skill would get lowercased
+    Fixed a bug where JSON text components did not get colored properly some of the time
+    Fixed en_US locale string 'Commands.Skill.Leaderboard' not being colored properly
+    Fixed skill commands incorrectly telling you to use their locale name, this isn't currently possible
     Updated outdated wiki URLs in commands to point to the new wiki
     Removed the msg about skills being migrated to a new system when using /mmoinfo command
-    Added new config custom_item_support.yml
-    Added setting to disable repair on items with custom models, this is not on by default
     Added new locale entry 'Anvil.Repair.Reject.CustomModelData'
     Added new locale entry 'Anvil.Salvage.Reject.CustomModelData'
+    Updated en_US locale entry 'JSON.DescriptionHeader'
+    (API/Codebase) Added some util methods and basic unit tests for LocaleLoader
 
     NOTES:
+    Hex Color support in locale files is here!
+    The hex color code format for the locale files is &#RRGGBB
+    An example entry applying yellow as a hex color code would look like this:
+    Axes.SkillName=&#FFFF00Axes
+    In general, JSON locale entries will either not work with hex color codes or will have the color code stripped out, in the future I will add support for the JSON components to use hex colors from the locale
+
     Let me know in detail what kind of support you'd like to see in mcMMO regarding custom items, I'm open to suggestions.
     This update adds a new config file to allow server owners to disable repair or salvage on items with custom models,
     This prevention mechanism is not enabled by default, change the settings in custom_item_support.yml if you want to enable it.
