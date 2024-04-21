@@ -814,20 +814,36 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
+        // Check if the event should be cancelled based on the sub-skill block event
+        if (EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
             return false;
         } else {
-            // Remove seed from the appropriate inventory slot (main hand or off-hand)
-            if (playerInventory.getItemInMainHand().getType() == seed) {
-                playerInventory.removeItem(new ItemStack(seed, 1));
-            } else if (playerInventory.getItemInOffHand().getType() == seed) {
-                playerInventory.getItemInOffHand().setAmount(playerInventory.getItemInOffHand().getAmount() - 1);
+            boolean seedFound = false;
+            // Retrieve all contents from the player's inventory
+            ItemStack[] inventoryContents = player.getInventory().getContents();
+
+            // Iterate through each item in the inventory to find the seed
+            for (ItemStack item : inventoryContents) {
+                if (item != null && item.getType() == seed) {
+                    item.setAmount(item.getAmount() - 1); // Decrement the amount of the seed
+                    if (item.getAmount() <= 0) {
+                        item.setType(Material.AIR); // Completely remove the item if the count goes to zero
+                    }
+                    seedFound = true;
+                    break; // Stop the loop once the seed is found and modified
+                }
             }
 
-            player.updateInventory(); // Needed until replacement available
-            //Play sound
+            if (!seedFound) {
+                return false; // Return false if the seed was not found in the inventory
+            }
+
+            player.updateInventory(); // Update the player's inventory to reflect changes
+
+            // Play a sound effect to indicate the item was consumed
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
-            return true;
+
+            return true; // Return true to indicate the operation was successful
         }
     }
 
