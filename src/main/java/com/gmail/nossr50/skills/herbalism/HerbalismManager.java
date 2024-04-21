@@ -765,21 +765,27 @@ public class HerbalismManager extends SkillManager {
             case "carrots":
                 seed = Material.matchMaterial("CARROT");
                 break;
+
             case "wheat":
                 seed = Material.matchMaterial("WHEAT_SEEDS");
                 break;
+
             case "nether_wart":
-                seed = Material.matchMaterial("NETHER_WART");
+                seed = Material.getMaterial("NETHER_WART");
                 break;
+
             case "potatoes":
                 seed = Material.matchMaterial("POTATO");
                 break;
+
             case "beetroots":
                 seed = Material.matchMaterial("BEETROOT_SEEDS");
                 break;
+
             case "cocoa":
                 seed = Material.matchMaterial("COCOA_BEANS");
                 break;
+
             case "torchflower":
                 seed = Material.matchMaterial("TORCHFLOWER_SEEDS");
                 break;
@@ -798,7 +804,8 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (!playerInventory.contains(seedStack)) {
+        // Check for seeds in both the main hand and off-hand
+        if (!(playerInventory.containsAtLeast(seedStack, 1) || playerInventory.getItemInOffHand().getType() == seed)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(seed));
             return false;
         }
@@ -807,19 +814,23 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
+        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
             return false;
         } else {
-            playerInventory.removeItem(new ItemStack(seed, 1));
+            // Remove seed from the appropriate inventory slot (main hand or off-hand)
+            if (playerInventory.getItemInMainHand().getType() == seed) {
+                playerInventory.removeItem(new ItemStack(seed, 1));
+            } else if (playerInventory.getItemInOffHand().getType() == seed) {
+                playerInventory.getItemInOffHand().setAmount(playerInventory.getItemInOffHand().getAmount() - 1);
+            }
 
-            player.updateInventory();
-
+            player.updateInventory(); // Needed until replacement available
+            //Play sound
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
             return true;
         }
-
-//        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
+
 
     private boolean processGrowingPlants(BlockState blockState, Ageable ageable, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
         //This check is needed
