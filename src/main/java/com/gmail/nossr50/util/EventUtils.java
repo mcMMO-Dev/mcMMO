@@ -197,7 +197,6 @@ public final class EventUtils {
      * @param block associated block
      * @return the event after it has been fired
      */
-    @Deprecated
     public static @NotNull SubSkillBlockEvent callSubSkillBlockEvent(@NotNull Player player, @NotNull SubSkillType subSkillType, @NotNull Block block) {
         SubSkillBlockEvent event = new SubSkillBlockEvent(player, subSkillType, block);
         mcMMO.p.getServer().getPluginManager().callEvent(event);

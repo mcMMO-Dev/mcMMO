@@ -41,6 +41,50 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
     }
 
+    /**
+     * Checks if a player has an item in their inventory or offhand.
+     *
+     * @param player Player to check
+     * @param material Material to check for
+     * @return true if the player has the item in their inventory or offhand, false otherwise
+     */
+    public static boolean hasItemIncludingOffHand(Player player, Material material) {
+        // Checks main inventory / item bar
+        boolean containsInMain = player.getInventory().contains(material);
+
+        if (containsInMain) {
+            return true;
+        }
+
+        return player.getInventory().getItemInOffHand().getType() == material;
+    }
+
+    /**
+     * Removes an item from a player's inventory, including their offhand.
+     *
+     * @param player Player to remove the item from
+     * @param material Material to remove
+     * @param amount Amount of the material to remove
+     */
+    public static void removeItemIncludingOffHand(@NotNull Player player, @NotNull Material material, int amount) {
+        // Checks main inventory / item bar
+        if (player.getInventory().contains(material)) {
+            player.getInventory().removeItem(new ItemStack(material, amount));
+            return;
+        }
+
+        // Check off-hand
+        final ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        if (offHandItem.getType() == material) {
+            int newAmount = offHandItem.getAmount() - amount;
+            if (newAmount > 0) {
+                offHandItem.setAmount(newAmount);
+            } else {
+                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+            }
+        }
+    }
+
     // TODO: Unit tests
     public static boolean isCrossbow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
