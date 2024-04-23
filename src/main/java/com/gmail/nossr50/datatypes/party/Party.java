@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.sounds.SoundManager;

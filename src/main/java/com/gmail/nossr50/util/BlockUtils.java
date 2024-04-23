@@ -7,8 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
-import com.gmail.nossr50.util.random.RandomChanceSkill;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -98,7 +97,7 @@ public final class BlockUtils {
      */
     public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType skillType, SubSkillType subSkillType) {
         if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
-            return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
+            return ProbabilityUtil.isSkillRNGSuccessful(subSkillType, player);
         }
 
         return false;
@@ -231,22 +230,22 @@ public final class BlockUtils {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(material);
     }
 
-    /**
-     * Determine if a given block should be affected by Flux Mining
-     *
-     * @param blockState The {@link BlockState} of the block to check
-     * @return true if the block should affected by Flux Mining, false otherwise
-     */
-    public static boolean affectedByFluxMining(BlockState blockState) {
-        switch (blockState.getType()) {
-            case IRON_ORE:
-            case GOLD_ORE:
-                return true;
-
-            default:
-                return false;
-        }
-    }
+//    /**
+//     * Determine if a given block should be affected by Flux Mining
+//     *
+//     * @param blockState The {@link BlockState} of the block to check
+//     * @return true if the block should affected by Flux Mining, false otherwise
+//     */
+//    public static boolean affectedByFluxMining(BlockState blockState) {
+//        switch (blockState.getType()) {
+//            case IRON_ORE:
+//            case GOLD_ORE:
+//                return true;
+//
+//            default:
+//                return false;
+//        }
+//    }
 
     /**
      * Determine if a given block can activate Herbalism abilities

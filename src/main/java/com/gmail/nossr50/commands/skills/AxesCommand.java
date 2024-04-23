@@ -6,9 +6,9 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -48,7 +48,7 @@ public class AxesCommand extends SkillCommand {
         
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.AXES_CRITICAL_STRIKES);
+            String[] criticalHitStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.AXES_CRITICAL_STRIKES);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
@@ -64,10 +64,10 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canSkullSplitter = Permissions.skullSplitter(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
-        canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
-        canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
-        canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
-        canGreaterImpact = canUseSubskill(player, SubSkillType.AXES_GREATER_IMPACT);
+        canCritical = Permissions.canUseSubSkill(player, SubSkillType.AXES_CRITICAL_STRIKES);
+        canAxeMastery = Permissions.canUseSubSkill(player, SubSkillType.AXES_AXE_MASTERY);
+        canImpact = Permissions.canUseSubSkill(player, SubSkillType.AXES_ARMOR_IMPACT);
+        canGreaterImpact = Permissions.canUseSubSkill(player, SubSkillType.AXES_GREATER_IMPACT);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class AxesCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
+        if(Permissions.canUseSubSkill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
         }
@@ -106,7 +106,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected List<Component> getTextComponents(Player player) {
-        List<Component> textComponents = new ArrayList<>();
+        final List<Component> textComponents = new ArrayList<>();
 
         TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.AXES);
 

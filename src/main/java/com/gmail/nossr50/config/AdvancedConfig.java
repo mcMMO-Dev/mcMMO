@@ -627,7 +627,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* ALCHEMY */
     public int getCatalysisMaxBonusLevel() {
-        return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000);
+        if (mcMMO.isRetroModeEnabled()) {
+            return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel.RetroMode", 1000);
+        } else {
+            return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel.Standard", 100);
+        }
     }
 
     public double getCatalysisMinSpeed() {
@@ -691,6 +695,15 @@ public class AdvancedConfig extends BukkitConfig {
 
     public double getSkullSplitterModifier() {
         return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D);
+    }
+
+    /* CROSSBOWS */
+    public double getPoweredShotRankDamageMultiplier() {
+        return config.getDouble("Skills.Crossbows.PoweredShot.RankDamageMultiplier", 10.0D);
+    }
+
+    public double getPoweredShotDamageMax() {
+        return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D);
     }
 
     /* EXCAVATION */

@@ -177,6 +177,10 @@ public class ExperienceConfig extends BukkitConfig {
         return config.getBoolean("ExploitFix.PreventPluginNPCInteraction", true);
     }
 
+    public boolean isArmorStandInteractionPrevented() {
+        return config.getBoolean("ExploitFix.PreventArmorStandInteraction", true);
+    }
+
     public boolean isFishingExploitingPrevented() {
         return config.getBoolean("ExploitFix.Fishing", true);
     }
@@ -256,7 +260,7 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(PrimarySkillType skill) {
-        return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString()));
+        return config.getDouble("Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(skill.toString()), 1);
     }
 
     /* Custom XP perk */
@@ -296,6 +300,10 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     /* Combat XP Multipliers */
+    public double getCombatXP(String entity) {
+        return config.getDouble("Experience_Values.Combat.Multiplier." + entity);
+    }
+
     public double getCombatXP(EntityType entity) {
         return config.getDouble("Experience_Values.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"));
     }
@@ -314,95 +322,72 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Materials  */
     public int getXp(PrimarySkillType skill, Material material) {
-        //TODO: Temporary measure to fix an exploit caused by a yet to be fixed Spigot bug (as of 7/3/2020)
-        if (material.toString().equalsIgnoreCase("LILY_PAD"))
-            return 0;
-
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(material);
-        if (config.contains(explicitString))
-            return config.getInt(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(material);
-        if (config.contains(friendlyString))
-            return config.getInt(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(material);
-        if (config.contains(wildcardString))
-            return config.getInt(wildcardString);
-        return 0;
+        return getXpHelper(skill, StringUtils.getExplicitConfigMaterialString(material),
+                StringUtils.getFriendlyConfigMaterialString(material),
+                StringUtils.getWildcardConfigMaterialString(material));
     }
 
-    /* Materials  */
     public int getXp(PrimarySkillType skill, BlockState blockState) {
-        Material data = blockState.getType();
-
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
-        if (config.contains(explicitString))
-            return config.getInt(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
-        if (config.contains(friendlyString))
-            return config.getInt(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
-        if (config.contains(wildcardString))
-            return config.getInt(wildcardString);
-        return 0;
+        Material material = blockState.getType();
+        return getXp(skill, material);
     }
 
-    /* Materials  */
     public int getXp(PrimarySkillType skill, Block block) {
-        Material data = block.getType();
-
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
-        if (config.contains(explicitString))
-            return config.getInt(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
-        if (config.contains(friendlyString))
-            return config.getInt(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
-        if (config.contains(wildcardString))
-            return config.getInt(wildcardString);
-        return 0;
+        Material material = block.getType();
+        return getXp(skill, material);
     }
 
-    /* Materials  */
     public int getXp(PrimarySkillType skill, BlockData data) {
+        return getXpHelper(skill, StringUtils.getExplicitConfigBlockDataString(data),
+                StringUtils.getFriendlyConfigBlockDataString(data),
+                StringUtils.getWildcardConfigBlockDataString(data));
+    }
+
+    private int getXpHelper(PrimarySkillType skill, String explicitString, String friendlyString, String wildcardString) {
+        if (explicitString.equalsIgnoreCase("LILY_PAD")) {
+            return 0;
+        }
+
         String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
-        if (config.contains(explicitString))
-            return config.getInt(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
-        if (config.contains(friendlyString))
-            return config.getInt(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
-        if (config.contains(wildcardString))
-            return config.getInt(wildcardString);
+        String[] configStrings = {explicitString, friendlyString, wildcardString};
+
+        for (String configString : configStrings) {
+            String fullPath = baseString + configString;
+            if (config.contains(fullPath)) {
+                return config.getInt(fullPath);
+            }
+        }
+
         return 0;
     }
 
-    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material data) {
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
-        if (config.contains(explicitString))
-            return true;
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
-        if (config.contains(friendlyString))
-            return true;
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
-        return config.contains(wildcardString);
+
+    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material material) {
+        return doesBlockGiveSkillXPHelper(skill, StringUtils.getExplicitConfigMaterialString(material),
+                StringUtils.getFriendlyConfigMaterialString(material),
+                StringUtils.getWildcardConfigMaterialString(material));
     }
 
     public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockData data) {
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
-        if (config.contains(explicitString))
-            return true;
-        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
-        if (config.contains(friendlyString))
-            return true;
-        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
-        return config.contains(wildcardString);
+        return doesBlockGiveSkillXPHelper(skill, StringUtils.getExplicitConfigBlockDataString(data),
+                StringUtils.getFriendlyConfigBlockDataString(data),
+                StringUtils.getWildcardConfigBlockDataString(data));
     }
+
+    private boolean doesBlockGiveSkillXPHelper(PrimarySkillType skill, String explicitString, String friendlyString, String wildcardString) {
+        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
+        String[] configStrings = {explicitString, friendlyString, wildcardString};
+
+        for (String configString : configStrings) {
+            String fullPath = baseString + configString;
+            if (config.contains(fullPath)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /*
      * Experience Bar Stuff

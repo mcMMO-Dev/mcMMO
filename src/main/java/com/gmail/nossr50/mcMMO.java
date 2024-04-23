@@ -31,7 +31,6 @@ import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
@@ -99,7 +98,7 @@ public class mcMMO extends JavaPlugin {
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
 
-    private @NotNull SkillTools skillTools;
+    private SkillTools skillTools;
 
     private static boolean serverShutdownExecuted = false;
 
@@ -141,6 +140,7 @@ public class mcMMO extends JavaPlugin {
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
     private PartyConfig partyConfig;
+    private CustomItemSupportConfig customItemSupportConfig;
 
     private FoliaLib foliaLib;
     private PartyManager partyManager;
@@ -186,6 +186,7 @@ public class mcMMO extends JavaPlugin {
             //Init configs
             advancedConfig = new AdvancedConfig(getDataFolder());
             partyConfig = new PartyConfig(getDataFolder());
+            customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = generalConfig.getIsRetroMode();
@@ -571,8 +572,6 @@ public class mcMMO extends JavaPlugin {
         SoundConfig.getInstance();
         RankConfig.getInstance();
 
-        new ChildConfig();
-
         List<Repairable> repairables = new ArrayList<>();
 
         if (generalConfig.getToolModsEnabled()) {
@@ -807,6 +806,10 @@ public class mcMMO extends JavaPlugin {
 
     public PartyManager getPartyManager() {
         return partyManager;
+    }
+
+    public CustomItemSupportConfig getCustomItemSupportConfig() {
+        return customItemSupportConfig;
     }
 
     public @NotNull FoliaLib getFoliaLib() {

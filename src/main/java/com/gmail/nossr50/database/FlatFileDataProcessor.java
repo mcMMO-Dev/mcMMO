@@ -276,6 +276,8 @@ public class FlatFileDataProcessor {
             case SKILLS_TAMING:
             case SKILLS_FISHING:
             case SKILLS_ALCHEMY:
+            case SKILLS_CROSSBOWS:
+            case SKILLS_TRIDENTS:
             case COOLDOWN_BERSERK:
             case COOLDOWN_GIGA_DRILL_BREAKER:
             case COOLDOWN_TREE_FELLER:
@@ -286,6 +288,9 @@ public class FlatFileDataProcessor {
             case COOLDOWN_BLAST_MINING:
             case SCOREBOARD_TIPS:
             case COOLDOWN_CHIMAERA_WING:
+            case COOLDOWN_SUPER_SHOTGUN:
+            case COOLDOWN_TRIDENTS:
+            case COOLDOWN_ARCHERY:
                 return ExpectedType.INTEGER;
             case EXP_MINING:
             case EXP_WOODCUTTING:
@@ -300,6 +305,8 @@ public class FlatFileDataProcessor {
             case EXP_TAMING:
             case EXP_FISHING:
             case EXP_ALCHEMY:
+            case EXP_CROSSBOWS:
+            case EXP_TRIDENTS:
                 return ExpectedType.FLOAT;
             case UUID_INDEX:
                 return ExpectedType.UUID;

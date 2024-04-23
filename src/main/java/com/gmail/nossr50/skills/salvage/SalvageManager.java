@@ -14,8 +14,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -63,14 +62,19 @@ public class SalvageManager extends SkillManager {
     }
 
     public void handleSalvage(Location location, ItemStack item) {
-        Player player = getPlayer();
+        final Player player = getPlayer();
 
-        Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
-        ItemMeta meta = item.getItemMeta();
-        
-        if (meta != null && meta.isUnbreakable()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
-            return;
+        final Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
+        final ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            if (meta.hasCustomModelData() && !mcMMO.p.getCustomItemSupportConfig().isCustomSalvageAllowed()) {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Salvage.Reject.CustomModelData");
+                return;
+            }
+            if (meta.isUnbreakable()) {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
+                return;
+            }
         }
 
         // Permissions checks on material and item types
@@ -121,7 +125,7 @@ public class SalvageManager extends SkillManager {
 
         for(int x = 0; x < potentialSalvageYield-1; x++) {
 
-            if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
+            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, chanceOfSuccess)) {
                 chanceOfSuccess-=3;
                 chanceOfSuccess = Math.max(chanceOfSuccess, 90);
 
@@ -191,30 +195,6 @@ public class SalvageManager extends SkillManager {
         return RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
-    /*public double getExtractFullEnchantChance() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getExtractFullEnchantChance();
-            }
-        }
-
-        return 0;
-    }
-
-    public double getExtractPartialEnchantChance() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getExtractPartialEnchantChance();
-            }
-        }
-
-        return 0;
-    }*/
-
     public double getExtractFullEnchantChance() {
         if(Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
             return 100.0D;
@@ -252,12 +232,12 @@ public class SalvageManager extends SkillManager {
 
             if (!Salvage.arcaneSalvageEnchantLoss
                     || Permissions.hasSalvageEnchantBypassPerk(player)
-                    || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
+                    || ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractFullEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
             else if (enchantLevel > 1
                     && Salvage.arcaneSalvageDowngrades
-                    && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractPartialEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {

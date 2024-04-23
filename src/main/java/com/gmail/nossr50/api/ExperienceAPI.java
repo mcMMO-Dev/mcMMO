@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
@@ -20,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.UUID;
 
 public final class ExperienceAPI {
@@ -706,7 +704,7 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getSkillType(skillType);
 
         if (SkillTools.isChildSkill(skill)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 profile.addLevels(parentSkill, (levels / parentSkills.size()));
@@ -737,7 +735,7 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getSkillType(skillType);
 
         if (SkillTools.isChildSkill(skill)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 profile.addLevels(parentSkill, (levels / parentSkills.size()));

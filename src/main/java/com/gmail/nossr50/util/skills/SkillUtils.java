@@ -13,6 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.ItemMetadataService;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -264,8 +265,8 @@ public final class SkillUtils {
 
         return false;
     }
-    
-    
+
+
     /**
      * Modify the durability of an ItemStack, using Armor specific formula for unbreaking enchant damage reduction
      *
@@ -351,5 +352,15 @@ public final class SkillUtils {
         }
 
         return quantity;
+    }
+
+    /**
+     * Checks if a player can use a skill
+     * @param player target player
+     * @param subSkillType target subskill
+     * @return true if the player has permission and has the skill unlocked
+     */
+    public static boolean canUseSubskill(Player player, @NotNull SubSkillType subSkillType) {
+        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

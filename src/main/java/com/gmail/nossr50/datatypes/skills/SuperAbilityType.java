@@ -10,6 +10,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 public enum SuperAbilityType {
+    EXPLOSIVE_SHOT("Archery.Skills.ExplosiveShot.On",
+            "Archery.Skills.ExplosiveShot.Off",
+            "Archery.Skills.ExplosiveShot.Other.On",
+            "Archery.Skills.ExplosiveShot.Refresh",
+            "Archery.Skills.ExplosiveShot.Other.Off",
+            "Archery.SubSkill.ExplosiveShot.Name"),
     BERSERK(
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
@@ -65,6 +71,20 @@ public enum SuperAbilityType {
             "Swords.Skills.SS.Refresh",
             "Swords.Skills.SS.Other.Off",
             "Swords.SubSkill.SerratedStrikes.Name"),
+    SUPER_SHOTGUN(
+            null,
+            null,
+            "Crossbows.Skills.SSG.Other.On",
+            "Crossbows.Skills.SSG.Refresh",
+            null,
+            "Crossbows.SubSkill.SuperShotgun.Name"),
+    TRIDENTS_SUPER_ABILITY(
+            "Tridents.Skills.TA.On",
+            "Tridents.Skills.TA.Off",
+            "Tridents.Skills.TA.Other.On",
+            "Tridents.Skills.TA.Refresh",
+            "Tridents.Skills.TA.Other.Off",
+            "Tridents.SubSkill.TridentAbility.Name"),
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
@@ -82,6 +102,7 @@ public enum SuperAbilityType {
      * Defining their associated SubSkillType definitions
      * This is a bit of a band-aid fix until the new skill system is in place
      */
+    // TODO: This is stupid
     static {
         BERSERK.subSkillTypeDefinition              = SubSkillType.UNARMED_BERSERK;
         SUPER_BREAKER.subSkillTypeDefinition        = SubSkillType.MINING_SUPER_BREAKER;
@@ -173,35 +194,22 @@ public enum SuperAbilityType {
      * @param player Player to check permissions for
      * @return true if the player has permissions, false otherwise
      */
+    // TODO: Add unit tests
+    // TODO: This is stupid
     public boolean getPermissions(Player player) {
-        switch (this) {
-            case BERSERK:
-                return Permissions.berserk(player);
-
-            case BLAST_MINING:
-                return Permissions.remoteDetonation(player);
-
-            case GIGA_DRILL_BREAKER:
-                return Permissions.gigaDrillBreaker(player);
-
-            case GREEN_TERRA:
-                return Permissions.greenTerra(player);
-
-            case SERRATED_STRIKES:
-                return Permissions.serratedStrikes(player);
-
-            case SKULL_SPLITTER:
-                return Permissions.skullSplitter(player);
-
-            case SUPER_BREAKER:
-                return Permissions.superBreaker(player);
-
-            case TREE_FELLER:
-                return Permissions.treeFeller(player);
-
-            default:
-                return false;
-        }
+        return switch (this) {
+            case BERSERK -> Permissions.berserk(player);
+            case EXPLOSIVE_SHOT -> Permissions.explosiveShot(player);
+            case BLAST_MINING -> Permissions.remoteDetonation(player);
+            case GIGA_DRILL_BREAKER -> Permissions.gigaDrillBreaker(player);
+            case GREEN_TERRA -> Permissions.greenTerra(player);
+            case SERRATED_STRIKES -> Permissions.serratedStrikes(player);
+            case SKULL_SPLITTER -> Permissions.skullSplitter(player);
+            case SUPER_BREAKER -> Permissions.superBreaker(player);
+            case SUPER_SHOTGUN -> Permissions.superShotgun(player);
+            case TREE_FELLER -> Permissions.treeFeller(player);
+            case TRIDENTS_SUPER_ABILITY -> Permissions.tridentsSuper(player);
+        };
     }
 
     /**
@@ -211,25 +219,15 @@ public enum SuperAbilityType {
      * @return true if the block is affected by this ability, false otherwise
      */
     public boolean blockCheck(BlockState blockState) {
-        switch (this) {
-            case BERSERK:
-                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || mcMMO.getMaterialMapStore().isGlass(blockState.getType()));
-
-            case GIGA_DRILL_BREAKER:
-                return BlockUtils.affectedByGigaDrillBreaker(blockState);
-
-            case GREEN_TERRA:
-                return BlockUtils.canMakeMossy(blockState);
-
-            case SUPER_BREAKER:
-                return BlockUtils.affectedBySuperBreaker(blockState);
-
-            case TREE_FELLER:
-                return BlockUtils.hasWoodcuttingXP(blockState);
-
-            default:
-                return false;
-        }
+        return switch (this) {
+            case BERSERK ->
+                    (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || mcMMO.getMaterialMapStore().isGlass(blockState.getType()));
+            case GIGA_DRILL_BREAKER -> BlockUtils.affectedByGigaDrillBreaker(blockState);
+            case GREEN_TERRA -> BlockUtils.canMakeMossy(blockState);
+            case SUPER_BREAKER -> BlockUtils.affectedBySuperBreaker(blockState);
+            case TREE_FELLER -> BlockUtils.hasWoodcuttingXP(blockState);
+            default -> false;
+        };
     }
 
     /**

@@ -201,6 +201,129 @@ Axes:
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
+Crossbows:
+    TrickShot:
+        Standard:
+            Rank_1: 5
+            Rank_2: 20
+            Rank_3: 40
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 200
+            Rank_3: 400
+    PoweredShot:
+        Standard:
+            Rank_1: 1
+            Rank_2: 10
+            Rank_3: 15
+            Rank_4: 20
+            Rank_5: 25
+            Rank_6: 30
+            Rank_7: 35
+            Rank_8: 40
+            Rank_9: 45
+            Rank_10: 50
+            Rank_11: 55
+            Rank_12: 60
+            Rank_13: 65
+            Rank_14: 70
+            Rank_15: 75
+            Rank_16: 80
+            Rank_17: 85
+            Rank_18: 90
+            Rank_19: 95
+            Rank_20: 100
+        RetroMode:
+            Rank_1: 1
+            Rank_2: 100
+            Rank_3: 150
+            Rank_4: 200
+            Rank_5: 250
+            Rank_6: 300
+            Rank_7: 350
+            Rank_8: 400
+            Rank_9: 450
+            Rank_10: 500
+            Rank_11: 550
+            Rank_12: 600
+            Rank_13: 650
+            Rank_14: 700
+            Rank_15: 750
+            Rank_16: 800
+            Rank_17: 850
+            Rank_18: 900
+            Rank_19: 950
+            Rank_20: 1000
+    CrossbowsLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
+Tridents:
+    TridentsLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
+    Impale:
+        Standard:
+            Rank_1: 5
+            Rank_2: 15
+            Rank_3: 25
+            Rank_4: 35
+            Rank_5: 45
+            Rank_6: 55
+            Rank_7: 65
+            Rank_8: 75
+            Rank_9: 85
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 150
+            Rank_3: 250
+            Rank_4: 350
+            Rank_5: 450
+            Rank_6: 550
+            Rank_7: 650
+            Rank_8: 750
+            Rank_9: 850
+            Rank_10: 1000
 Taming:
     BeastLore:
         Standard:
@@ -321,6 +444,11 @@ Salvage:
             Rank_7: 850
             Rank_8: 1000
 Mining:
+    MotherLode:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     DoubleDrops:
         Standard:
             Rank_1: 1
@@ -368,6 +496,11 @@ Herbalism:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
+    VerdantBounty:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     GreenTerra:
         Standard:
             Rank_1: 5
@@ -398,6 +531,11 @@ Herbalism:
             Rank_4: 800
             Rank_5: 1000
 Fishing:
+    Mastery:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     MagicHunter:
         Standard:
             Rank_1: 20
@@ -637,6 +775,11 @@ Woodcutting:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
+    CleanCuts:
+        Standard:
+            Rank_1: 100
+        RetroMode:
+            Rank_1: 1000
     KnockOnWood:
         Standard:
             Rank_1: 30

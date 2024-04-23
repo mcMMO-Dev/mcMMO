@@ -10,6 +10,22 @@ Spigot Resource: https://spigot.mcmmo.org
 
 I plan to post links to our new wiki (its still under development), downloads, and dev blogs there.
 
+## API
+If you are using maven, you can add mcMMO API to your plugin by adding it to pom.xml like so...
+
+```
+<repository>
+    <id>neetgames</id>
+    <url>https://nexus.neetgames.com/repository/maven-releases/</url>
+</repository>
+```
+```
+<dependency>
+    <groupId>com.gmail.nossr50.mcMMO</groupId>
+    <artifactId>mcMMO</artifactId>
+    <version>2.2.004</version>
+</dependency>
+```
 ### Builds
 Currently, you can obtain our builds via the Spigot or Polymart:
 

@@ -787,6 +787,9 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (mcMMOPlayer == null)
+            return;
+
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection

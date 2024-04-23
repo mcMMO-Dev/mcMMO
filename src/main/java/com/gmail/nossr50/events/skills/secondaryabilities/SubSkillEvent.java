@@ -16,9 +16,7 @@ public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable 
      * Only skills using the old system will fire this event
      * @param player target player
      * @param subSkillType target subskill
-     * @Deprecated Skills will be using a new system stemming from the AbstractSubSkill class so make sure you check for both events, this event will be removed eventually.
      */
-    @Deprecated
     public SubSkillEvent(Player player, SubSkillType subSkillType) {
         super(player, mcMMO.p.getSkillTools().getPrimarySkillBySubSkill(subSkillType));
         this.subSkillType = subSkillType;
@@ -29,9 +27,7 @@ public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable 
      * @param player target player
      * @param subSkillType target subskill
      * @param resultModifier a value multiplied against the final result of the dice roll, typically between 0-1.0
-     * @Deprecated Skills will be using a new system stemming from the AbstractSubSkill class so make sure you check for both events, this event will be removed eventually.
      */
-    @Deprecated
     public SubSkillEvent(Player player, SubSkillType subSkillType, double resultModifier) {
         super(player, mcMMO.p.getSkillTools().getPrimarySkillBySubSkill(subSkillType));
         this.subSkillType = subSkillType;

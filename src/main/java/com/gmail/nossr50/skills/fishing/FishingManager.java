@@ -18,8 +18,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -61,11 +60,14 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
+        return target instanceof LivingEntity && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE)
+                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
     }
 
     public boolean canMasterAngler() {
-        return mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
+        return mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null
+                && getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER)
+                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
 //    public void setFishingRodCastTimestamp()
@@ -477,8 +479,8 @@ public class FishingManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} affected by the ability
      */
-    public void shakeCheck(LivingEntity target) {
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getShakeChance(), getPlayer(), SubSkillType.FISHING_SHAKE))) {
+    public void shakeCheck(@NotNull LivingEntity target) {
+        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.FISHING, getPlayer(), getShakeChance())) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 
             if (possibleDrops == null || possibleDrops.isEmpty()) {

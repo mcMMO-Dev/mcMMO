@@ -42,6 +42,11 @@ public class PapiExpansion extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     public String getRequiredPlugin() {
         return "mcMMO";
     }

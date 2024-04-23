@@ -20,10 +20,8 @@ import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -35,6 +33,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +41,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static com.gmail.nossr50.util.ItemUtils.hasItemIncludingOffHand;
+import static com.gmail.nossr50.util.ItemUtils.removeItemIncludingOffHand;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
@@ -650,7 +652,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
@@ -665,7 +667,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
             return false;
         }
 
@@ -684,7 +686,7 @@ public class HerbalismManager extends SkillManager {
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel()
-                    && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(treasure.getDropChance(), getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM, player, treasure.getDropChance())) {
                 if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player)) {
                     return false;
                 }
@@ -721,7 +723,7 @@ public class HerbalismManager extends SkillManager {
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
         player.updateInventory();
 
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
@@ -747,13 +749,14 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
-    private boolean processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
+    private boolean processGreenThumbPlants(@NotNull BlockState blockState, @NotNull BlockBreakEvent blockBreakEvent,
+                                            boolean greenTerra) {
         if (!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
             && !ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
             return false;
         }
 
-        BlockData blockData = blockState.getBlockData();
+        final BlockData blockData = blockState.getBlockData();
 
         if (!(blockData instanceof Ageable ageable)) {
             return false;
@@ -761,73 +764,54 @@ public class HerbalismManager extends SkillManager {
 
         //If the ageable is NOT mature and the player is NOT using a hoe, abort
 
-        Player player = getPlayer();
-        PlayerInventory playerInventory = player.getInventory();
-        Material seed;
+        final Player player = getPlayer();
+        final Material replantMaterial;
 
-        switch (blockState.getType().getKey().getKey().toLowerCase(Locale.ROOT)) {
-            case "carrots":
-                seed = Material.matchMaterial("CARROT");
-                break;
-
-            case "wheat":
-                seed = Material.matchMaterial("WHEAT_SEEDS");
-                break;
-
-            case "nether_wart":
-                seed = Material.getMaterial("NETHER_WART");
-                break;
-
-            case "potatoes":
-                seed = Material.matchMaterial("POTATO");
-                break;
-
-            case "beetroots":
-                seed = Material.matchMaterial("BEETROOT_SEEDS");
-                break;
-
-            case "cocoa":
-                seed = Material.matchMaterial("COCOA_BEANS");
-                break;
-
-            case "torchflower":
-                seed = Material.matchMaterial("TORCHFLOWER_SEEDS");
-                break;
-            default:
+        switch (blockState.getType().getKey().getKey().toLowerCase(Locale.ENGLISH)) {
+            case "carrots" -> replantMaterial = Material.matchMaterial("CARROT");
+            case "wheat" -> replantMaterial = Material.matchMaterial("WHEAT_SEEDS");
+            case "nether_wart" -> replantMaterial = Material.getMaterial("NETHER_WART");
+            case "potatoes" -> replantMaterial = Material.matchMaterial("POTATO");
+            case "beetroots" -> replantMaterial = Material.matchMaterial("BEETROOT_SEEDS");
+            case "cocoa" -> replantMaterial = Material.matchMaterial("COCOA_BEANS");
+            case "torchflower" -> replantMaterial = Material.matchMaterial("TORCHFLOWER_SEEDS");
+            default -> {
                 return false;
+            }
         }
 
-
-        ItemStack seedStack = new ItemStack(seed);
+        if (replantMaterial == null) {
+            return false;
+        }
 
         if (ItemUtils.isAxe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())
-        && blockState.getType() != Material.COCOA) {
+                && blockState.getType() != Material.COCOA) {
             return false;
         }
 
-        if (!greenTerra && !RandomChanceUtil.checkRandomChanceExecutionSuccess(player, SubSkillType.HERBALISM_GREEN_THUMB, true)) {
+        if (!greenTerra && !ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, player)) {
             return false;
         }
 
-        if (!playerInventory.containsAtLeast(seedStack, 1)) {
+        if (!hasItemIncludingOffHand(player, replantMaterial)) {
             return false;
         }
 
-        if (!processGrowingPlants(blockState, ageable, blockBreakEvent, greenTerra)) {
-            return false;
-        }
-
-        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock()).isCancelled()) {
+        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock())
+                .isCancelled()) {
             return false;
         } else {
-            playerInventory.removeItem(seedStack);
-            player.updateInventory(); // Needed until replacement available
+            if (!processGrowingPlants(blockState, ageable, blockBreakEvent, greenTerra)) {
+                return false;
+            }
+            // remove the item from the player's inventory
+            removeItemIncludingOffHand(player, replantMaterial, 1);
+            // player.updateInventory(); // Needed until replacement available
+
             //Play sound
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
             return true;
         }
-
-//        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
 
     private boolean processGrowingPlants(BlockState blockState, Ageable ageable, BlockBreakEvent blockBreakEvent, boolean greenTerra) {

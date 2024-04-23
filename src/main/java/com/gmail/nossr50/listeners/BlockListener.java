@@ -417,7 +417,7 @@ public class BlockListener implements Listener {
                 woodcuttingManager.processWoodcuttingBlockXP(blockState);
 
                 //Check for bonus drops
-                woodcuttingManager.processHarvestLumber(blockState);
+                woodcuttingManager.processBonusDropCheck(blockState);
             }
         }
 
