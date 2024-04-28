@@ -130,7 +130,6 @@ public class PotionConfig extends LegacyConfigLoader {
                 ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
                 data = new PotionData(PotionType.valueOf(potionData.getString("PotionType", "WATER")), potionData.getBoolean("Extended", false), potionData.getBoolean("Upgraded", false));
             }
-
             Material material = Material.POTION;
             String mat = potion_section.getString("Material", null);
             if (mat != null) {
@@ -181,7 +180,7 @@ public class PotionConfig extends LegacyConfigLoader {
             }
 
             return new AlchemyPotion(material, data, name, lore, effects, color, children);
-        } catch (Exception e) {
+        } catch (Exception | NoClassDefFoundError e) {
             mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getName());
             return null;
         }

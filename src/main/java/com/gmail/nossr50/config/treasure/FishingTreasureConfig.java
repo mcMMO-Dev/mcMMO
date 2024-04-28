@@ -224,7 +224,9 @@ public class FishingTreasureConfig extends BukkitConfig {
                     }
                     boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
                     boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
-                    itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
+                    try {
+                        itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
+                    } catch (Exception | NoClassDefFoundError ignore){}
 
                     if (customName != null) {
                         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
