@@ -17,8 +17,11 @@ public class EnchantmentUtils {
         enchants.put("BLAST_PROTECTION", Enchantment.PROTECTION_EXPLOSIONS);
         enchants.put("PROJECTILE_PROTECTION", Enchantment.PROTECTION_PROJECTILE);
         enchants.put("RESPIRATION", Enchantment.OXYGEN);
-        enchants.put("INFINITY", Enchantment.getByName("INFINITE"));
-        //enchants.put("INFINITY", Enchantment.ARROW_INFINITE);
+        try {
+            enchants.put("INFINITY", Enchantment.ARROW_INFINITE);
+        } catch (Exception | NoClassDefFoundError ignore){
+            enchants.put("INFINITY", Enchantment.getByName("INFINITE"));
+        }
         enchants.put("AQUA_AFFINITY", Enchantment.WATER_WORKER);
         enchants.put("UNBREAKING", Enchantment.DURABILITY);
         enchants.put("SMITE", Enchantment.DAMAGE_UNDEAD);
