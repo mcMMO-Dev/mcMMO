@@ -19,7 +19,7 @@ public class EnchantmentUtils {
         enchants.put("RESPIRATION", Enchantment.OXYGEN);
         try {
             enchants.put("INFINITY", Enchantment.ARROW_INFINITE);
-        } catch (Exception | NoClassDefFoundError ignore){
+        } catch (Exception | NoSuchFieldError ignore){
             enchants.put("INFINITY", Enchantment.getByName("INFINITE"));
         }
         enchants.put("AQUA_AFFINITY", Enchantment.WATER_WORKER);
