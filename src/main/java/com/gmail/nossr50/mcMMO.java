@@ -78,8 +78,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mcMMO extends JavaPlugin {
-
-
     /* Managers & Services */
     private static PlatformManager platformManager;
     private static MetadataService metadataService;
@@ -140,20 +138,13 @@ public class mcMMO extends JavaPlugin {
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
     private PartyConfig partyConfig;
+    private PotionConfig potionConfig;
     private CustomItemSupportConfig customItemSupportConfig;
+    private EnchantmentMapper enchantmentMapper;
+    private AttributeMapper attributeMapper;
 
     private FoliaLib foliaLib;
     private PartyManager partyManager;
-
-//    private RepairConfig repairConfig;
-//    private SalvageConfig salvageConfig;
-//    private PersistentDataConfig persistentDataConfig;
-//    private ChatConfig chatConfig;
-//    private CoreSkillsConfig coreSkillsConfig;
-//    private RankConfig rankConfig;
-//    private TreasureConfig treasureConfig;
-//    private FishingTreasureConfig fishingTreasureConfig;
-//    private SoundConfig soundConfig;
 
     public mcMMO() {
         p = this;
@@ -207,8 +198,11 @@ public class mcMMO extends JavaPlugin {
 
             modManager = new ModManager();
 
-            //Init Material Maps
+            // Init Material Maps
             materialMapStore = new MaterialMapStore();
+            // Init compatibility mappers
+            enchantmentMapper = new EnchantmentMapper(this);
+            attributeMapper = new AttributeMapper(this);
 
             loadConfigFiles();
 
@@ -567,7 +561,11 @@ public class mcMMO extends JavaPlugin {
         FishingTreasureConfig.getInstance();
         HiddenConfig.getInstance();
         mcMMO.p.getAdvancedConfig();
-        PotionConfig.getInstance();
+
+        // init potion config
+        potionConfig = new PotionConfig();
+        potionConfig.loadPotions();
+
         CoreSkillsConfig.getInstance();
         SoundConfig.getInstance();
         RankConfig.getInstance();
@@ -810,6 +808,18 @@ public class mcMMO extends JavaPlugin {
 
     public CustomItemSupportConfig getCustomItemSupportConfig() {
         return customItemSupportConfig;
+    }
+
+    public PotionConfig getPotionConfig() {
+        return potionConfig;
+    }
+
+    public EnchantmentMapper getEnchantmentMapper() {
+        return enchantmentMapper;
+    }
+
+    public AttributeMapper getAttributeMapper() {
+        return attributeMapper;
     }
 
     public @NotNull FoliaLib getFoliaLib() {

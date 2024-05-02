@@ -26,7 +26,6 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -317,7 +316,7 @@ public class Roll extends AcrobaticsSubSkill {
         ItemStack boots = player.getInventory().getBoots();
         float xp = (float) (damage * (isRoll ? ExperienceConfig.getInstance().getRollXPModifier() : ExperienceConfig.getInstance().getFallXPModifier()));
 
-        if (boots != null && boots.containsEnchantment(Enchantment.PROTECTION_FALL)) {
+        if (boots != null && boots.containsEnchantment(mcMMO.p.getEnchantmentMapper().getFeatherFalling())) {
             xp *= ExperienceConfig.getInstance().getFeatherFallXPModifier();
         }
 

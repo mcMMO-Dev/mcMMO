@@ -87,8 +87,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final int COOLDOWN_SUPER_SHOTGUN = 49;
     public static final int COOLDOWN_TRIDENTS = 50;
     public static final int COOLDOWN_ARCHERY = 51;
+    public static final int EXP_MACES = 52;
+    public static final int SKILLS_MACES = 53;
+    public static final int COOLDOWN_MACES = 54;
     //Update this everytime new data is added
-    public static final int DATA_ENTRY_COUNT = COOLDOWN_ARCHERY + 1;
+    public static final int DATA_ENTRY_COUNT = COOLDOWN_MACES + 1;
 
     FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime, int startingLevel, boolean testing) {
         this.usersFile = usersFile;
@@ -478,6 +481,18 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.CROSSBOWS))).append(":");
         appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TRIDENTS))).append(":");
         appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TRIDENTS))).append(":");
+        //     public static final int COOLDOWN_SUPER_SHOTGUN = 49;
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SUPER_SHOTGUN))).append(":");
+        //    public static final int COOLDOWN_TRIDENTS = 50;
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.TRIDENTS_SUPER_ABILITY))).append(":");
+        //    public static final int COOLDOWN_ARCHERY = 51;
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.EXPLOSIVE_SHOT))).append(":");
+        //    public static final int EXP_MACES = 52;
+        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.MACES))).append(":");
+        //    public static final int SKILLS_MACES = 53;
+        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MACES))).append(":");
+        //    public static final int COOLDOWN_MACES = 54;
+        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.MACES_SUPER_ABILITY))).append(":");
         appendable.append("\r\n");
     }
 
@@ -987,6 +1002,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         List<PlayerStat> alchemy = new ArrayList<>();
         List<PlayerStat> crossbows = new ArrayList<>();
         List<PlayerStat> tridents = new ArrayList<>();
+        List<PlayerStat> maces = new ArrayList<>();
 
         BufferedReader in = null;
         String playerName = null;
@@ -1022,6 +1038,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.WOODCUTTING));
                     powerLevel += putStat(crossbows, playerName, skills.get(PrimarySkillType.CROSSBOWS));
                     powerLevel += putStat(tridents, playerName, skills.get(PrimarySkillType.TRIDENTS));
+                    powerLevel += putStat(maces, playerName, skills.get(PrimarySkillType.MACES));
 
                     putStat(powerLevels, playerName, powerLevel);
                 }
@@ -1059,6 +1076,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         alchemy.sort(c);
         crossbows.sort(c);
         tridents.sort(c);
+        maces.sort(c);
         powerLevels.sort(c);
 
         playerStatHash.put(PrimarySkillType.MINING, mining);
@@ -1076,6 +1094,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
         playerStatHash.put(PrimarySkillType.CROSSBOWS, crossbows);
         playerStatHash.put(PrimarySkillType.TRIDENTS, tridents);
+        playerStatHash.put(PrimarySkillType.MACES, maces);
 
         return LeaderboardStatus.UPDATED;
     }
@@ -1239,6 +1258,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ALCHEMY, EXP_ALCHEMY, username);
         tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.CROSSBOWS, EXP_CROSSBOWS, username);
         tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.TRIDENTS, EXP_TRIDENTS, username);
+        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.MACES, EXP_MACES, username);
 
         // Taming - Unused
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_BREAKER, COOLDOWN_SUPER_BREAKER, username);
@@ -1254,6 +1274,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_SHOTGUN, COOLDOWN_SUPER_SHOTGUN, username);
         tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.TRIDENTS_SUPER_ABILITY, COOLDOWN_TRIDENTS, username);
+        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.MACES_SUPER_ABILITY, COOLDOWN_MACES, username);
 
         UUID uuid;
         try {
@@ -1343,6 +1364,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ALCHEMY, SKILLS_ALCHEMY, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.CROSSBOWS, SKILLS_CROSSBOWS, username);
         tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.TRIDENTS, SKILLS_TRIDENTS, username);
+        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.MACES, SKILLS_MACES, username);
 
         return skills;
     }

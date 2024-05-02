@@ -253,68 +253,26 @@ public class FlatFileDataProcessor {
     }
 
     public static @NotNull ExpectedType getExpectedValueType(int dataIndex) throws IndexOutOfBoundsException {
-        switch(dataIndex) {
-            case USERNAME_INDEX:
-                return ExpectedType.STRING;
-            case 2: //Assumption: Used to be for something, no longer used
-            case 3: //Assumption: Used to be for something, no longer used
-            case 23: //Assumption: Used to be used for something, no longer used
-            case 33: //Assumption: Used to be used for something, no longer used
-            case HEALTHBAR:
-            case LEGACY_LAST_LOGIN:
-                return ExpectedType.IGNORED;
-            case SKILLS_MINING:
-            case SKILLS_REPAIR:
-            case SKILLS_UNARMED:
-            case SKILLS_HERBALISM:
-            case SKILLS_EXCAVATION:
-            case SKILLS_ARCHERY:
-            case SKILLS_SWORDS:
-            case SKILLS_AXES:
-            case SKILLS_WOODCUTTING:
-            case SKILLS_ACROBATICS:
-            case SKILLS_TAMING:
-            case SKILLS_FISHING:
-            case SKILLS_ALCHEMY:
-            case SKILLS_CROSSBOWS:
-            case SKILLS_TRIDENTS:
-            case COOLDOWN_BERSERK:
-            case COOLDOWN_GIGA_DRILL_BREAKER:
-            case COOLDOWN_TREE_FELLER:
-            case COOLDOWN_GREEN_TERRA:
-            case COOLDOWN_SERRATED_STRIKES:
-            case COOLDOWN_SKULL_SPLITTER:
-            case COOLDOWN_SUPER_BREAKER:
-            case COOLDOWN_BLAST_MINING:
-            case SCOREBOARD_TIPS:
-            case COOLDOWN_CHIMAERA_WING:
-            case COOLDOWN_SUPER_SHOTGUN:
-            case COOLDOWN_TRIDENTS:
-            case COOLDOWN_ARCHERY:
-                return ExpectedType.INTEGER;
-            case EXP_MINING:
-            case EXP_WOODCUTTING:
-            case EXP_REPAIR:
-            case EXP_UNARMED:
-            case EXP_HERBALISM:
-            case EXP_EXCAVATION:
-            case EXP_ARCHERY:
-            case EXP_SWORDS:
-            case EXP_AXES:
-            case EXP_ACROBATICS:
-            case EXP_TAMING:
-            case EXP_FISHING:
-            case EXP_ALCHEMY:
-            case EXP_CROSSBOWS:
-            case EXP_TRIDENTS:
-                return ExpectedType.FLOAT;
-            case UUID_INDEX:
-                return ExpectedType.UUID;
-            case OVERHAUL_LAST_LOGIN:
-                return ExpectedType.LONG;
-        }
-
-        throw new IndexOutOfBoundsException();
+        return switch (dataIndex) {
+            case USERNAME_INDEX -> ExpectedType.STRING; //Assumption: Used to be for something, no longer used
+            //Assumption: Used to be for something, no longer used
+            //Assumption: Used to be used for something, no longer used
+            //Assumption: Used to be used for something, no longer used
+            case 2, 3, 23, 33, HEALTHBAR, LEGACY_LAST_LOGIN -> ExpectedType.IGNORED;
+            case SKILLS_MINING, SKILLS_REPAIR, SKILLS_UNARMED, SKILLS_HERBALISM, SKILLS_EXCAVATION, SKILLS_ARCHERY,
+                 SKILLS_SWORDS, SKILLS_AXES, SKILLS_WOODCUTTING, SKILLS_ACROBATICS, SKILLS_TAMING, SKILLS_FISHING,
+                 SKILLS_ALCHEMY, SKILLS_CROSSBOWS, SKILLS_TRIDENTS, SKILLS_MACES, COOLDOWN_BERSERK,
+                 COOLDOWN_GIGA_DRILL_BREAKER, COOLDOWN_TREE_FELLER, COOLDOWN_GREEN_TERRA, COOLDOWN_SERRATED_STRIKES,
+                 COOLDOWN_SKULL_SPLITTER, COOLDOWN_SUPER_BREAKER, COOLDOWN_BLAST_MINING, SCOREBOARD_TIPS,
+                 COOLDOWN_CHIMAERA_WING, COOLDOWN_SUPER_SHOTGUN, COOLDOWN_TRIDENTS, COOLDOWN_ARCHERY, COOLDOWN_MACES ->
+                    ExpectedType.INTEGER;
+            case EXP_MINING, EXP_WOODCUTTING, EXP_REPAIR, EXP_UNARMED, EXP_HERBALISM, EXP_EXCAVATION, EXP_ARCHERY,
+                 EXP_SWORDS, EXP_AXES, EXP_ACROBATICS, EXP_TAMING, EXP_FISHING, EXP_ALCHEMY, EXP_CROSSBOWS,
+                 EXP_TRIDENTS, EXP_MACES -> ExpectedType.FLOAT;
+            case UUID_INDEX -> ExpectedType.UUID;
+            case OVERHAUL_LAST_LOGIN -> ExpectedType.LONG;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     public @NotNull List<FlatFileDataContainer> getFlatFileDataContainers() {

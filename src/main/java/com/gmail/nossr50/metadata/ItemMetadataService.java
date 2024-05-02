@@ -1,7 +1,6 @@
 package com.gmail.nossr50.metadata;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -74,12 +73,12 @@ public class ItemMetadataService {
 
         if(itemMeta != null) {
             //TODO: can be optimized
-            if (itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
-                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+            if (itemMeta.hasEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency())) {
+                itemMeta.removeEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency());
             }
 
             if (originalSpeed > 0) {
-                itemMeta.addEnchant(Enchantment.DIG_SPEED, originalSpeed, true);
+                itemMeta.addEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency(), originalSpeed, true);
             }
 
             PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();

@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.LogUtils;
+import com.gmail.nossr50.util.PotionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,11 +14,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
 
 public class FishingTreasureConfig extends BukkitConfig {
 
@@ -204,30 +206,40 @@ public class FishingTreasureConfig extends BukkitConfig {
             }
 
             if (materialName.contains("POTION")) {
+                // Update for 1.20.5
+
                 Material mat = Material.matchMaterial(materialName);
                 if (mat == null) {
                     reason.add("Potion format for " + FILENAME + " has changed");
+                    continue;
                 } else {
                     item = new ItemStack(mat, amount, data);
-                    PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
+                    PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
 
-                    if (itemMeta == null) {
-                        mcMMO.p.getLogger().severe("Item meta when adding potion to fishing treasure was null, contact the mcMMO devs!");
+                    if (potionMeta == null) {
+                        mcMMO.p.getLogger().severe("FishingConfig: Item meta when adding potion to fishing treasure was null," +
+                                " contact the mcMMO devs!");
+                        reason.add("FishingConfig: Item meta when adding potion to fishing treasure was null");
                         continue;
                     }
 
-                    PotionType potionType = null;
-                    try {
-                        potionType = PotionType.valueOf(config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
-                    } catch (IllegalArgumentException ex) {
-                        reason.add("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
-                    }
+                    String potionTypeStr;
+                    potionTypeStr = config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER");
                     boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
                     boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
-                    itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
+                    final PotionType potionType = matchPotionType(potionTypeStr, extended, upgraded);
+
+                    if (potionType == null) {
+                        reason.add("FishingConfig: Could not derive potion type from: " + potionTypeStr +", " + extended + ", " + upgraded);
+                        continue;
+                    }
+
+                    // Set the base potion type
+                    // NOTE: Upgraded/Extended are ignored in 1.20.5 and later
+                    PotionUtil.setBasePotionType(potionMeta, potionType, upgraded, extended);
 
                     if (customName != null) {
-                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
+                        potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
                     }
 
                     if (config.contains(type + "." + treasureName + ".Lore")) {
@@ -235,9 +247,9 @@ public class FishingTreasureConfig extends BukkitConfig {
                         for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
                             lore.add(ChatColor.translateAlternateColorCodes('&', s));
                         }
-                        itemMeta.setLore(lore);
+                        potionMeta.setLore(lore);
                     }
-                    item.setItemMeta(itemMeta);
+                    item.setItemMeta(potionMeta);
                 }
             } else if (material == Material.ENCHANTED_BOOK) {
                 //If any whitelisted enchants exist we use whitelist-based matching
@@ -355,7 +367,8 @@ public class FishingTreasureConfig extends BukkitConfig {
                 Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
                 if (enchantment == null) {
-                    mcMMO.p.getLogger().warning("Skipping invalid enchantment in " + FILENAME + ": " + enchantmentName);
+                    mcMMO.p.getLogger().info("Skipping invalid enchantment in '" + FILENAME + "', named:"
+                            + enchantmentName);
                     continue;
                 }
 

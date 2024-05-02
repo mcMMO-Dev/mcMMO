@@ -13,7 +13,8 @@ public enum ToolType {
     SWORD("Swords.Ability.Lower", "Swords.Ability.Ready"),
     CROSSBOW("Crossbows.Ability.Lower", "Crossbows.Ability.Ready"),
     BOW("Archery.Ability.Lower", "Archery.Ability.Ready"),
-    TRIDENTS("Tridents.Ability.Lower", "Tridents.Ability.Ready");
+    TRIDENTS("Tridents.Ability.Lower", "Tridents.Ability.Ready"),
+    MACES("Maces.Ability.Lower", "Maces.Ability.Ready");
 
     private final String lowerTool;
     private final String raiseTool;
@@ -45,6 +46,8 @@ public enum ToolType {
                 return ItemUtils.isCrossbow(itemStack);
             case TRIDENTS:
                 return ItemUtils.isTrident(itemStack);
+            case MACES:
+                return ItemUtils.isMace(itemStack);
 
             case FISTS:
                 return itemStack.getType() == Material.AIR;

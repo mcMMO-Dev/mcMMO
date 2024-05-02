@@ -4,27 +4,36 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.File;
 import java.util.List;
 
 @Deprecated
 public abstract class LegacyConfigLoader {
-    protected final File configFile;
+    protected final @NotNull File configFile;
     protected final @NotNull File dataFolder;
-    protected String fileName;
+    protected @NotNull String fileName;
     protected YamlConfiguration config;
 
-    public LegacyConfigLoader(String relativePath, String fileName, @NotNull File dataFolder) {
+    public LegacyConfigLoader(@NotNull String relativePath, @NotNull String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
         this.dataFolder = dataFolder;
         configFile = new File(dataFolder, relativePath + File.separator + fileName);
         loadFile();
     }
 
-    public LegacyConfigLoader(String fileName, @NotNull File dataFolder) {
+    public LegacyConfigLoader(@NotNull String fileName, @NotNull File dataFolder) {
         this.fileName = fileName;
         this.dataFolder = dataFolder;
+        configFile = new File(dataFolder, fileName);
+        loadFile();
+    }
+
+    @VisibleForTesting
+    public LegacyConfigLoader(@NotNull File file) {
+        this.fileName = file.getName();
+        this.dataFolder = file.getParentFile();
         configFile = new File(dataFolder, fileName);
         loadFile();
     }

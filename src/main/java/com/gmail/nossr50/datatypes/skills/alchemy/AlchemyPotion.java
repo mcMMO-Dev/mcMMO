@@ -1,167 +1,120 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import org.bukkit.Color;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+
+import static com.gmail.nossr50.util.PotionUtil.samePotionType;
+import static java.util.Objects.requireNonNull;
 
 public class AlchemyPotion {
-    private final Material material;
-    private PotionData data;
-    private String name;
-    private List<String> lore;
-    private List<PotionEffect> effects;
-    private Color color;
-    private Map<ItemStack, String> children;
+    private final ItemStack potion;
+    private final Map<ItemStack, String> alchemyPotionChildren;
 
-    public AlchemyPotion(Material material, PotionData data, String name, List<String> lore, List<PotionEffect> effects, Color color, Map<ItemStack, String> children) {
-        this.material = material;
-        this.data = data;
-        this.lore = lore;
-        this.name = name;
-        this.effects = effects;
-        this.children = children;
-        this.color = color;
+    public AlchemyPotion(ItemStack potion, Map<ItemStack, String> alchemyPotionChildren) {
+        this.potion = requireNonNull(potion, "potion cannot be null");
+        this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
     }
 
-    public String toString() {
-        return "AlchemyPotion{" + data + ", " + name + ", Effects[" + effects.size() + "], Children[" + children.size() + "]}";
-    }
-
-    public ItemStack toItemStack(int amount) {
-        ItemStack potion = new ItemStack(material, amount);
-        PotionMeta meta = (PotionMeta) potion.getItemMeta();
-
-        meta.setBasePotionData(data);
-        if (this.getName() != null) {
-            meta.setDisplayName(this.getName());
-        }
-
-        if (this.getLore() != null && !this.getLore().isEmpty()) {
-            meta.setLore(this.getLore());
-        }
-
-        if (!this.getEffects().isEmpty()) {
-            for (PotionEffect effect : this.getEffects()) {
-                meta.addCustomEffect(effect, true);
-            }
-        }
-        
-        if (this.getColor() != null) {
-            meta.setColor(this.getColor());
-        }
-
-        potion.setItemMeta(meta);
+    public @NotNull ItemStack toItemStack(int amount) {
+        final ItemStack potion = new ItemStack(this.potion);
+        potion.setAmount(Math.max(1, amount));
         return potion;
     }
 
-    public Material getMaterial() {
-        return material;
+    public Map<ItemStack, String> getAlchemyPotionChildren() {
+        return alchemyPotionChildren;
     }
 
-    public Potion toPotion(int amount) {
-        return Potion.fromItemStack(this.toItemStack(amount));
-    }
-
-    public PotionData getData() {
-        return data;
-    }
-
-    public void setData(PotionData data) {
-        this.data = data;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<String> getLore() {
-        return lore;
-    }
-
-    public void setLore(List<String> lore) {
-        this.lore = lore;
-    }
-
-    public List<PotionEffect> getEffects() {
-        return effects;
-    }
-
-    public void setEffects(List<PotionEffect> effects) {
-        this.effects = effects;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-    
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    
-    public Map<ItemStack, String> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Map<ItemStack, String> children) {
-        this.children = children;
-    }
-
-    public AlchemyPotion getChild(ItemStack ingredient) {
-        if (!children.isEmpty()) {
-            for (Entry<ItemStack, String> child : children.entrySet()) {
+    public @Nullable AlchemyPotion getChild(@NotNull ItemStack ingredient) {
+        if (!alchemyPotionChildren.isEmpty()) {
+            for (Entry<ItemStack, String> child : alchemyPotionChildren.entrySet()) {
                 if (ingredient.isSimilar(child.getKey())) {
-                    return PotionConfig.getInstance().getPotion(child.getValue());
+                    return mcMMO.p.getPotionConfig().getPotion(child.getValue());
                 }
             }
         }
         return null;
     }
 
-    public boolean isSimilar(ItemStack item) {
-        if (item.getType() != material) {
+    public boolean isSimilarPotion(@NotNull ItemStack otherPotion) {
+        requireNonNull(otherPotion, "otherPotion cannot be null");
+        // TODO: Investigate?
+        // We currently don't compare base potion effects, likely because they are derived from the potion type
+        if (otherPotion.getType() != potion.getType() || !otherPotion.hasItemMeta()) {
             return false;
         }
-        if (!item.hasItemMeta()) {
-            return false;
-        }
-        PotionMeta meta = (PotionMeta) item.getItemMeta();
-        PotionData that = meta.getBasePotionData();
-        if (data.getType() != that.getType()) {
-            return false;
-        }
-        if (data.isExtended() != that.isExtended()) {
-            return false;
-        }
-        if (data.isUpgraded() != that.isUpgraded()) {
-            return false;
-        }
-        for (PotionEffect effect : effects) {
-            if (!meta.hasCustomEffect(effect.getType())) {
+
+        final PotionMeta otherPotionMeta = (PotionMeta) otherPotion.getItemMeta();
+
+        // all custom effects must be present
+        for (var effect : getAlchemyPotionMeta().getCustomEffects()) {
+            if (!otherPotionMeta.hasCustomEffect(effect.getType())) {
                 return false;
             }
         }
-        if (!meta.hasLore() && !lore.isEmpty()) {
+
+        if (!samePotionType(getAlchemyPotionMeta(), otherPotionMeta)) {
             return false;
         }
-        if (!(lore.isEmpty() && !meta.hasLore()) && !meta.getLore().equals(lore)) {
+
+        if (!otherPotionMeta.hasLore() && getAlchemyPotionMeta().hasLore()
+                || !getAlchemyPotionMeta().hasLore() && otherPotionMeta.hasLore()) {
             return false;
         }
-        if (!meta.hasDisplayName() && name != null) {
+
+        if (otherPotionMeta.hasLore() && getAlchemyPotionMeta().hasLore()
+                && !otherPotionMeta.getLore().equals(getAlchemyPotionMeta().getLore())) {
             return false;
         }
-        return (name == null && !meta.hasDisplayName()) || meta.getDisplayName().equals(name);
+
+        if (!otherPotionMeta.hasDisplayName() && getAlchemyPotionMeta().hasDisplayName()) {
+            return false;
+        }
+
+        var alchemyPotionName = getAlchemyPotionMeta().hasDisplayName() ? getAlchemyPotionMeta().getDisplayName() : null;
+
+        return (alchemyPotionName == null && !otherPotionMeta.hasDisplayName()) || otherPotionMeta.getDisplayName().equals(alchemyPotionName);
+    }
+
+    public PotionMeta getAlchemyPotionMeta() {
+        return (PotionMeta) potion.getItemMeta();
+    }
+
+    public boolean isSplash() {
+        return potion.getType() == Material.SPLASH_POTION;
+    }
+
+    public boolean isLingering() {
+        return potion.getType() == Material.LINGERING_POTION;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlchemyPotion that = (AlchemyPotion) o;
+        return Objects.equals(potion, that.potion) && Objects.equals(alchemyPotionChildren, that.alchemyPotionChildren);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(potion, alchemyPotionChildren);
+    }
+
+    @Override
+    public String toString() {
+        return "AlchemyPotion{" +
+                "potion=" + potion +
+                ", alchemyPotionChildren=" + alchemyPotionChildren +
+                '}';
     }
 }

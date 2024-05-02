@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 public final class ItemUtils {
     /**
      * This is a static utility class, therefore we don't want any instances of
@@ -39,6 +41,37 @@ public final class ItemUtils {
     // TODO: Unit tests
     public static boolean isBow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Exhaustive lookup for a Material by name.
+     * <p>
+     *     This method will first try a normal lookup, then a legacy lookup, then a lookup by ENUM name,
+     *      and finally a lookup by ENUM name with legacy name.
+     * @param materialName The name of the material to lookup
+     * @return The Material if found, or null if not found
+     */
+    public static @Nullable Material exhaustiveMaterialLookup(@NotNull String materialName) {
+        requireNonNull(materialName, "materialName cannot be null");
+
+        // First try a normal lookup
+        Material material = Material.matchMaterial(materialName);
+
+        // If that fails, try a legacy lookup
+        if (material == null) {
+            material = Material.matchMaterial(materialName, true);
+        }
+
+        // try to match to Material ENUM
+        if (material == null) {
+            material = Material.getMaterial(materialName.toUpperCase());
+        }
+
+        // try to match to Material ENUM with legacy name
+        if (material == null) {
+            material = Material.getMaterial(materialName.toUpperCase(), true);
+        }
+        return material;
     }
 
     /**
@@ -98,6 +131,10 @@ public final class ItemUtils {
     // TODO: Unit tests
     public static boolean isTrident(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
+    }
+
+    public static boolean isMace(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isMace(item.getType().getKey().getKey());
     }
 
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {
@@ -681,7 +718,8 @@ public final class ItemUtils {
         if(itemMeta == null)
             return;
 
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + mcMMO.p.getAdvancedConfig().getEnchantBuff(), true);
+        itemMeta.addEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency(),
+                existingEnchantLevel + mcMMO.p.getAdvancedConfig().getEnchantBuff(), true);
         itemStack.setItemMeta(itemMeta);
     }
 

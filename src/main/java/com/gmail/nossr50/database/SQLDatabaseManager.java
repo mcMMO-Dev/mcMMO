@@ -169,7 +169,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "taming = 0 AND mining = 0 AND woodcutting = 0 AND repair = 0 "
                     + "AND unarmed = 0 AND herbalism = 0 AND excavation = 0 AND "
                     + "archery = 0 AND swords = 0 AND axes = 0 AND acrobatics = 0 "
-                    + "AND fishing = 0 AND alchemy = 0 AND crossbows = 0 AND tridents = 0;");
+                    + "AND fishing = 0 AND alchemy = 0 AND crossbows = 0 AND tridents = 0 AND maces = 0;");
 
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "experience`.`user_id` = `s`.`user_id`)");
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "huds`.`user_id` = `s`.`user_id`)");
@@ -291,7 +291,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, total = ? WHERE user_id = ?");
+                    + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, maces = ?, total = ? WHERE user_id = ?");
             statement.setInt(1, profile.getSkillLevel(PrimarySkillType.TAMING));
             statement.setInt(2, profile.getSkillLevel(PrimarySkillType.MINING));
             statement.setInt(3, profile.getSkillLevel(PrimarySkillType.REPAIR));
@@ -307,11 +307,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(13, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
             statement.setInt(14, profile.getSkillLevel(PrimarySkillType.CROSSBOWS));
             statement.setInt(15, profile.getSkillLevel(PrimarySkillType.TRIDENTS));
+            statement.setInt(16, profile.getSkillLevel(PrimarySkillType.MACES));
             int total = 0;
             for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS)
                 total += profile.getSkillLevel(primarySkillType);
-            statement.setInt(16, total);
-            statement.setInt(17, id);
+            statement.setInt(17, total);
+            statement.setInt(18, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
@@ -323,7 +324,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ? WHERE user_id = ?");
+                    + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, maces = ? WHERE user_id = ?");
             statement.setInt(1, profile.getSkillXpLevel(PrimarySkillType.TAMING));
             statement.setInt(2, profile.getSkillXpLevel(PrimarySkillType.MINING));
             statement.setInt(3, profile.getSkillXpLevel(PrimarySkillType.REPAIR));
@@ -339,7 +340,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(13, profile.getSkillXpLevel(PrimarySkillType.ALCHEMY));
             statement.setInt(14, profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS));
             statement.setInt(15, profile.getSkillXpLevel(PrimarySkillType.TRIDENTS));
-            statement.setInt(16, id);
+            statement.setInt(16, profile.getSkillXpLevel(PrimarySkillType.MACES));
+            statement.setInt(17, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
@@ -350,7 +352,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
-                    + ", axes = ?, blast_mining = ?, chimaera_wing = ?, crossbows = ?, tridents = ? WHERE user_id = ?");
+                    + ", axes = ?, blast_mining = ?, chimaera_wing = ?, crossbows = ?"
+                    + ", tridents = ?, maces = ? WHERE user_id = ?");
             statement.setLong(1, profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER));
             statement.setLong(2, profile.getAbilityDATS(SuperAbilityType.TREE_FELLER));
             statement.setLong(3, profile.getAbilityDATS(SuperAbilityType.BERSERK));
@@ -362,7 +365,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(9, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
             statement.setLong(10, profile.getAbilityDATS(SuperAbilityType.SUPER_SHOTGUN));
             statement.setLong(11, profile.getAbilityDATS(SuperAbilityType.TRIDENTS_SUPER_ABILITY));
-            statement.setInt(12, id);
+            statement.setLong(12, profile.getAbilityDATS(SuperAbilityType.MACES_SUPER_ABILITY));
+            statement.setInt(13, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
@@ -648,9 +652,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement = connection.prepareStatement(
                     "SELECT " +
-                            "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, s.crossbows, s.tridents, " +
-                            "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, e.crossbows, e.tridents, " +
-                            "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, c.crossbows, c.tridents, " +
+                            "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, s.crossbows, s.tridents, s.maces, " +
+                            "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, e.crossbows, e.tridents, e.maces, " +
+                            "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, c.crossbows, c.tridents, c.maces, " +
                             "h.mobhealthbar, h.scoreboardtips, u.uuid, u.`user` "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
@@ -922,6 +926,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`crossbows` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`tridents` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`maces` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
                 tryClose(createStatement);
@@ -950,6 +955,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`crossbows` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`tridents` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`maces` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
                         + "`total` int(10) unsigned NOT NULL DEFAULT "+totalLevel+","
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
@@ -1017,20 +1023,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(connection);
         }
 
-        String skills = "skills";
-        String crossbows = "crossbows";
-        String tridents = "tridents";
-        String experience = "experience";
-        String cooldowns = "cooldowns";
+        final String skills = "skills";
+        final String crossbows = "crossbows";
+        final String tridents = "tridents";
+        final String maces = "maces";
+        final String experience = "experience";
+        final String cooldowns = "cooldowns";
 
         updateStructure(skills, crossbows, String.valueOf(32));
         updateStructure(skills, tridents, String.valueOf(32));
+        updateStructure(skills, maces, String.valueOf(32));
 
         updateStructure(experience, crossbows, String.valueOf(10));
         updateStructure(experience, tridents, String.valueOf(10));
+        updateStructure(experience, maces, String.valueOf(10));
 
         updateStructure(cooldowns, crossbows, String.valueOf(10));
         updateStructure(cooldowns, tridents, String.valueOf(10));
+        updateStructure(cooldowns, maces, String.valueOf(10));
     }
 
     private void updateStructure(String tableName, String columnName, String columnSize) {
@@ -1213,15 +1223,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class); // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
-        MobHealthbarType mobHealthbarType;
         UUID uuid;
         int scoreboardTipsShown;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query
         // changes (a new skill is added)
-        final int OFFSET_XP = 15;
-        final int OFFSET_DATS = 28;
-        final int OFFSET_OTHER = 41;
+        final int OFFSET_XP = 16;
+        final int OFFSET_DATS = 29;
+        final int OFFSET_OTHER = 42;
 
         skills.put(PrimarySkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
         skills.put(PrimarySkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
@@ -1238,6 +1247,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skills.put(PrimarySkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
         skills.put(PrimarySkillType.CROSSBOWS, result.getInt(OFFSET_SKILLS + 14));
         skills.put(PrimarySkillType.TRIDENTS, result.getInt(OFFSET_SKILLS + 15));
+        skills.put(PrimarySkillType.MACES, result.getInt(OFFSET_SKILLS + 16));
 
         skillsXp.put(PrimarySkillType.TAMING, result.getFloat(OFFSET_XP + 1));
         skillsXp.put(PrimarySkillType.MINING, result.getFloat(OFFSET_XP + 2));
@@ -1254,6 +1264,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
         skillsXp.put(PrimarySkillType.CROSSBOWS, result.getFloat(OFFSET_XP + 14));
         skillsXp.put(PrimarySkillType.TRIDENTS, result.getFloat(OFFSET_XP + 15));
+        skillsXp.put(PrimarySkillType.MACES, result.getFloat(OFFSET_XP + 16));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
         skillsDATS.put(SuperAbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
@@ -1270,6 +1281,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS, result.getInt(OFFSET_DATS + 13));
         skillsDATS.put(SuperAbilityType.SUPER_SHOTGUN, result.getInt(OFFSET_DATS + 14));
         skillsDATS.put(SuperAbilityType.TRIDENTS_SUPER_ABILITY, result.getInt(OFFSET_DATS + 15));
+        skillsDATS.put(SuperAbilityType.MACES_SUPER_ABILITY, result.getInt(OFFSET_DATS + 16));
 
         try {
             scoreboardTipsShown = result.getInt(OFFSET_OTHER + 2);

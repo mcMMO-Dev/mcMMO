@@ -120,7 +120,7 @@ public class EntityListener implements Listener {
             if (bow == null)
                 return;
 
-            if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+            if (bow.containsEnchantment(mcMMO.p.getEnchantmentMapper().getInfinity())) {
                 projectile.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
             }
 

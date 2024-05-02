@@ -23,7 +23,6 @@ import java.util.HashMap;
  * In 2.2 we are switching to modules and that will clean things up significantly
  *
  */
-//TODO: I need to delete this crap
 public class CompatibilityManager {
     private @NotNull HashMap<CompatibilityType, Boolean> supportedLayers;
     private boolean isFullyCompatibleServerSoftware = true; //true if all compatibility layers load successfully
@@ -159,7 +158,7 @@ public class CompatibilityManager {
         return masterAnglerCompatibility;
     }
 
-    public @Nullable MinecraftGameVersion getMinecraftGameVersion() {
+    public @NotNull MinecraftGameVersion getMinecraftGameVersion() {
         return minecraftGameVersion;
     }
 }

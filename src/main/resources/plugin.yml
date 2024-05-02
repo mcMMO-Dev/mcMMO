@@ -154,6 +154,9 @@ commands:
     salvage:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.salvage
+    maces:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.maces
     mmopower:
         description: Shows skill mastery and power level info
         permission: mcmmo.commands.mmopower

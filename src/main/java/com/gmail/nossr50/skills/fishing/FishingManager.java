@@ -573,11 +573,13 @@ public class FishingManager extends SkillManager {
         int luck;
 
         if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
-            luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
+            luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(
+                    mcMMO.p.getEnchantmentMapper().getLuckOfTheSea());
         }
         else {
             // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
-            luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
+            luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(
+                    mcMMO.p.getEnchantmentMapper().getLuckOfTheSea());
         }
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.

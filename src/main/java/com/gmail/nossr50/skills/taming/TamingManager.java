@@ -233,7 +233,7 @@ public class TamingManager extends SkillManager {
 
         // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
         if (beast instanceof AbstractHorse horseLikeCreature && !(beast instanceof Llama)) {
-            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(Attribute.HORSE_JUMP_STRENGTH);
+            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(mcMMO.p.getAttributeMapper().getHorseJumpStrength());
 
             if(jumpAttribute != null) {
                 double jumpStrength = jumpAttribute.getValue();

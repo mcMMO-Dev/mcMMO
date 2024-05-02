@@ -1,6 +1,13 @@
 Version 2.2.007
+    Compatibility with the 1.20.5 MC Update
+    Alchemy now has more warning/errors that will print out to help debug
     Fixed bug where Green Thumb did not replant if seed was in the off hand
 
+    NOTES:
+    I did my best to keep mcMMO compatible with older versions of Minecraft for this update.
+    This update to MC was quite large, with breaking changes to a lot of code relating to Alchemy, and some other things.
+    I expect there to be bugs, please report them on GitHub or Discord, but preferably GitHub.
+    I will be working on fixing these bugs as they come in, so please be patient.
 Version 2.2.006
     Added new config custom_item_support.yml
     Added support for hex color codes in the locale file, uses the format &#RRGGBB (see notes)

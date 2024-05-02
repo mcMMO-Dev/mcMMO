@@ -33,6 +33,9 @@ public final class CommandRegistrationManager {
 
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
+            if (skill == PrimarySkillType.MACES)
+                continue;
+
             String commandName = skill.toString().toLowerCase(Locale.ENGLISH);
             String localizedName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill).toLowerCase(Locale.ENGLISH);
 
@@ -77,6 +80,10 @@ public final class CommandRegistrationManager {
                     command.setExecutor(new HerbalismCommand());
                     break;
 
+                case MACES:
+                    // command.setExecutor(new MacesCommand());
+                    break;
+
                 case MINING:
                     command.setExecutor(new MiningCommand());
                     break;
@@ -113,7 +120,7 @@ public final class CommandRegistrationManager {
                     break;
 
                 default:
-                    break;
+                    throw new IllegalStateException("Unexpected value: " + skill);
             }
         }
     }

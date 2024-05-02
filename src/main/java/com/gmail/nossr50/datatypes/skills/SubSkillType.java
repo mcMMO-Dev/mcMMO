@@ -57,6 +57,9 @@ public enum SubSkillType {
     HERBALISM_HYLIAN_LUCK,
     HERBALISM_SHROOM_THUMB,
 
+    /* Maces */
+    MACES_MACES_LIMIT_BREAK(10),
+
     /* Mining */
     MINING_BIGGER_BOMBS(1),
     MINING_BLAST_MINING(8),

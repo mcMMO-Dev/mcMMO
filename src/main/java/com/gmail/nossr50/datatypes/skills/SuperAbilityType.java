@@ -72,19 +72,26 @@ public enum SuperAbilityType {
             "Swords.Skills.SS.Other.Off",
             "Swords.SubSkill.SerratedStrikes.Name"),
     SUPER_SHOTGUN(
-            null,
-            null,
-            "Crossbows.Skills.SSG.Other.On",
-            "Crossbows.Skills.SSG.Refresh",
-            null,
-            "Crossbows.SubSkill.SuperShotgun.Name"),
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
     TRIDENTS_SUPER_ABILITY(
-            "Tridents.Skills.TA.On",
-            "Tridents.Skills.TA.Off",
-            "Tridents.Skills.TA.Other.On",
-            "Tridents.Skills.TA.Refresh",
-            "Tridents.Skills.TA.Other.Off",
-            "Tridents.SubSkill.TridentAbility.Name"),
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
+    MACES_SUPER_ABILITY(
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
@@ -209,6 +216,7 @@ public enum SuperAbilityType {
             case SUPER_SHOTGUN -> Permissions.superShotgun(player);
             case TREE_FELLER -> Permissions.treeFeller(player);
             case TRIDENTS_SUPER_ABILITY -> Permissions.tridentsSuper(player);
+            case MACES_SUPER_ABILITY -> Permissions.macesSuper(player);
         };
     }
 

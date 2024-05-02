@@ -246,6 +246,14 @@ public final class Permissions {
     }
     public static boolean tridentsLimitBreak(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.tridents.superability"); }
 
+    /* MACES */
+    public static boolean macesSuper(Permissible permissible) {
+        // TODO: When a super is added, change this
+        return false;
+    }
+
+    public static boolean macesLimitBreak(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.maces.limitbreak"); }
+
     /*
      * PARTY
      */

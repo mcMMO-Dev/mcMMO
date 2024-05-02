@@ -1,39 +1,34 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.enchantments.Enchantment;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
 public class EnchantmentUtils {
 
-    private static final HashMap<String, Enchantment> enchants = new HashMap<>();
+    private static final HashMap<String, Enchantment> legacyEnchantments = new HashMap<>();
 
     static {
-        enchants.put("SHARPNESS", Enchantment.DAMAGE_ALL);
-        enchants.put("POWER", Enchantment.ARROW_DAMAGE);
-        enchants.put("FIRE_PROTECTION", Enchantment.PROTECTION_FIRE);
-        enchants.put("FEATHER_FALLING", Enchantment.PROTECTION_FALL);
-        enchants.put("PROTECTION", Enchantment.PROTECTION_ENVIRONMENTAL);
-        enchants.put("BLAST_PROTECTION", Enchantment.PROTECTION_EXPLOSIONS);
-        enchants.put("PROJECTILE_PROTECTION", Enchantment.PROTECTION_PROJECTILE);
-        enchants.put("RESPIRATION", Enchantment.OXYGEN);
-        enchants.put("INFINITY", Enchantment.ARROW_INFINITE);
-        enchants.put("AQUA_AFFINITY", Enchantment.WATER_WORKER);
-        enchants.put("UNBREAKING", Enchantment.DURABILITY);
-        enchants.put("SMITE", Enchantment.DAMAGE_UNDEAD);
-        enchants.put("BANE_OF_ARTHROPODS", Enchantment.DAMAGE_ARTHROPODS);
-        enchants.put("EFFICIENCY", Enchantment.DIG_SPEED);
-        enchants.put("FIRE_ASPECT", Enchantment.FIRE_ASPECT);
-        enchants.put("SILK_TOUCH", Enchantment.SILK_TOUCH);
-        enchants.put("FORTUNE", Enchantment.LOOT_BONUS_BLOCKS);
-        enchants.put("LOOTING", Enchantment.LOOT_BONUS_MOBS);
-        enchants.put("PUNCH", Enchantment.ARROW_KNOCKBACK);
-        enchants.put("FLAME", Enchantment.ARROW_FIRE);
-        enchants.put("KNOCKBACK", Enchantment.KNOCKBACK);
-        enchants.put("THORNS", Enchantment.THORNS);
-        enchants.put("MENDING", Enchantment.MENDING);
-        enchants.put("DEPTH_STRIDER", Enchantment.DEPTH_STRIDER);
-        enchants.put("FROST_WALKER", Enchantment.FROST_WALKER);
+        // backwards compatibility for looking up legacy bukkit enums
+        addLegacyEnchantmentLookup("SHARPNESS", "DAMAGE_ALL");
+        addLegacyEnchantmentLookup("POWER", "ARROW_DAMAGE");
+        addLegacyEnchantmentLookup("FIRE_PROTECTION", "PROTECTION_FIRE");
+        addLegacyEnchantmentLookup("FEATHER_FALLING", "PROTECTION_FALL");
+        addLegacyEnchantmentLookup("PROTECTION", "PROTECTION_ENVIRONMENTAL");
+        addLegacyEnchantmentLookup("BLAST_PROTECTION", "PROTECTION_EXPLOSIONS");
+        addLegacyEnchantmentLookup("PROJECTILE_PROTECTION", "PROTECTION_PROJECTILE");
+        addLegacyEnchantmentLookup("RESPIRATION", "OXYGEN");
+        addLegacyEnchantmentLookup("INFINITY", "ARROW_INFINITE");
+        addLegacyEnchantmentLookup("AQUA_AFFINITY", "WATER_WORKER");
+        addLegacyEnchantmentLookup("UNBREAKING", "DURABILITY");
+        addLegacyEnchantmentLookup("SMITE", "DAMAGE_UNDEAD");
+        addLegacyEnchantmentLookup("BANE_OF_ARTHROPODS", "DAMAGE_ARTHROPODS");
+        addLegacyEnchantmentLookup("EFFICIENCY", "DIG_SPEED");
+        addLegacyEnchantmentLookup("FORTUNE", "LOOT_BONUS_BLOCKS");
+        addLegacyEnchantmentLookup("LOOTING", "LOOT_BONUS_MOBS");
+        addLegacyEnchantmentLookup("PUNCH", "ARROW_KNOCKBACK");
+        addLegacyEnchantmentLookup("FLAME", "ARROW_FIRE");
     }
 
     /**
@@ -43,11 +38,19 @@ public class EnchantmentUtils {
      *
      * @return Enchantment or null if no enchantment was found
      */
-    public static Enchantment getByName(String enchantmentName) {
-        if (enchants.containsKey(enchantmentName)) {
-            return enchants.get(enchantmentName);
+    @SuppressWarnings("deprecation")
+    public static @Nullable Enchantment getByName(String enchantmentName) {
+        if (legacyEnchantments.containsKey(enchantmentName)) {
+            return legacyEnchantments.get(enchantmentName);
         }
 
         return Enchantment.getByName(enchantmentName);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void addLegacyEnchantmentLookup(String enchantmentName, String legacyBukkitName) {
+        if (Enchantment.getByName(legacyBukkitName) != null) {
+            legacyEnchantments.put(enchantmentName, Enchantment.getByName(legacyBukkitName));
+        }
     }
 }

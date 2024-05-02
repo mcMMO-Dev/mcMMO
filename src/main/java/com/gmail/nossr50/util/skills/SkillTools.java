@@ -198,6 +198,7 @@ public class SkillTools {
             case SUPER_SHOTGUN -> PrimarySkillType.CROSSBOWS;
             case TRIDENTS_SUPER_ABILITY -> PrimarySkillType.TRIDENTS;
             case EXPLOSIVE_SHOT -> PrimarySkillType.ARCHERY;
+            case MACES_SUPER_ABILITY -> PrimarySkillType.MACES;
         };
     }
 

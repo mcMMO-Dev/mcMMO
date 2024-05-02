@@ -32,6 +32,7 @@ import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
+import com.gmail.nossr50.skills.maces.MacesManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
@@ -220,6 +221,9 @@ public class McMMOPlayer implements Identified {
             case WOODCUTTING:
                 skillManagers.put(primarySkillType, new WoodcuttingManager(this));
                 break;
+            case MACES:
+                skillManagers.put(primarySkillType, new MacesManager(this));
+                break;
             default:
                 throw new InvalidSkillException("The skill named has no manager! Contact the devs!");
         }
@@ -311,6 +315,10 @@ public class McMMOPlayer implements Identified {
 
     public TridentsManager getTridentsManager() {
         return (TridentsManager) skillManagers.get(PrimarySkillType.TRIDENTS);
+    }
+
+    public MacesManager getMacesManager() {
+        return (MacesManager) skillManagers.get(PrimarySkillType.MACES);
     }
 
     public ExcavationManager getExcavationManager() {
