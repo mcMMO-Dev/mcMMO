@@ -580,6 +580,7 @@ Experience_Values:
     Combat:
         Multiplier:
             Animals: 1.0
+            Armadillo: 1.1
             Creeper: 4.0
             Skeleton: 3.0
             Spider: 2.0
