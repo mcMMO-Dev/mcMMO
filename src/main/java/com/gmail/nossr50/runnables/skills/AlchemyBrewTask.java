@@ -11,6 +11,7 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -67,32 +68,64 @@ public class AlchemyBrewTask extends CancellableRunnable {
 
     @Override
     public void run() {
-        if (player == null || !player.isValid() || brewingStand == null || brewingStand.getType() != Material.BREWING_STAND || !AlchemyPotionBrewer.isValidIngredient(player, ((BrewingStand) brewingStand).getInventory().getContents()[Alchemy.INGREDIENT_SLOT])) {
+        // Check if preconditions for brewing are not met
+        if (shouldCancelBrewing()) {
             if (Alchemy.brewingStandMap.containsKey(location)) {
                 Alchemy.brewingStandMap.remove(location);
             }
-
             this.cancel();
-
             return;
         }
 
+        // Initialize the brewing stand on the first run
+        initializeBrewing();
+
+        // Update the brewing process timer
+        brewTimer -= brewSpeed;
+
+        // Check if the brewing process should finish
+        if (isBrewingComplete()) {
+            this.cancel();
+            finish();
+        } else {
+            updateBrewingTime();
+        }
+    }
+
+    private boolean shouldCancelBrewing() {
+        if (player == null) {
+            return true;
+        }
+        if (!player.isValid()) {
+            return true;
+        }
+        if (brewingStand == null) {
+            return true;
+        }
+        if (brewingStand.getType() != Material.BREWING_STAND) {
+            return true;
+        }
+        if (!AlchemyPotionBrewer.isValidIngredient(player, ((BrewingStand) brewingStand).getInventory().getContents()[Alchemy.INGREDIENT_SLOT])) {
+            return true;
+        }
+        return false;
+    }
+
+    private void initializeBrewing() {
         if (firstRun) {
             firstRun = false;
             ((BrewingStand) brewingStand).setFuelLevel(fuel);
         }
-
-        brewTimer -= brewSpeed;
-
-        // Vanilla potion brewing completes when BrewingTime == 1
-        if (brewTimer < Math.max(brewSpeed, 2)) {
-            this.cancel();
-            finish();
-        }
-        else {
-            ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
-        }
     }
+
+    private boolean isBrewingComplete() {
+        return brewTimer < Math.max(brewSpeed, 2);
+    }
+
+    private void updateBrewingTime() {
+        ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
+    }
+
 
     private void finish() {
         McMMOPlayerBrewEvent event = new McMMOPlayerBrewEvent(player, brewingStand);

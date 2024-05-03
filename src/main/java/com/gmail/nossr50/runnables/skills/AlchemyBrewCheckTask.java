@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.CancellableRunnable;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
@@ -31,8 +32,7 @@ public class AlchemyBrewCheckTask extends CancellableRunnable {
             if (oldInventory[Alchemy.INGREDIENT_SLOT] == null || newInventory[Alchemy.INGREDIENT_SLOT] == null || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT]) || !validBrew) {
                 Alchemy.brewingStandMap.get(location).cancelBrew();
             }
-        }
-        else if (validBrew) {
+        } else if (validBrew) {
             Alchemy.brewingStandMap.put(location, new AlchemyBrewTask(brewingStand, player));
         }
     }

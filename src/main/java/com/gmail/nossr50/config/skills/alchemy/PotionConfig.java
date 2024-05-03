@@ -15,15 +15,14 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.gmail.nossr50.util.PotionUtil.*;
+import static com.gmail.nossr50.util.text.StringUtils.convertKeyToName;
 
 public class PotionConfig extends LegacyConfigLoader {
 
@@ -130,7 +129,7 @@ public class PotionConfig extends LegacyConfigLoader {
             final String key = potion_section.getName();
             final String displayName = potion_section.getString("Name") != null
                     ? LocaleLoader.addColors(potion_section.getString("Name"))
-                    : null;
+                    : convertKeyToName(key);
 
             final ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
             boolean extended = false;
@@ -165,12 +164,16 @@ public class PotionConfig extends LegacyConfigLoader {
                 return null;
             }
 
+            // Set the name of the potion
+            potionMeta.setDisplayName(displayName);
+
             // extended and upgraded seem to be mutually exclusive
             if (extended && upgraded) {
                 mcMMO.p.getLogger().warning("Potion " + key + " has both Extended and Upgraded set to true," +
                         " defaulting to Extended.");
                 upgraded = false;
             }
+
             String potionTypeStr = potionData.getString("PotionType", null);
             if (potionTypeStr == null) {
                 mcMMO.p.getLogger().severe("PotionConfig: Missing PotionType for " + displayName + ", from configuration section:" +
@@ -186,7 +189,9 @@ public class PotionConfig extends LegacyConfigLoader {
             }
 
             if (potionType == null) {
-                mcMMO.p.getLogger().severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr);
+                mcMMO.p.getLogger().severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr
+                        + ", upgraded: " + upgraded + ", extended: " + extended + " for potion " + displayName
+                        + ", from configuration section: " + potion_section);
                 return null;
             }
 
@@ -357,5 +362,4 @@ public class PotionConfig extends LegacyConfigLoader {
         }
         return Color.fromRGB(red / colors.size(), green / colors.size(), blue / colors.size());
     }
-
 }

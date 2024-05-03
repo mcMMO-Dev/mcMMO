@@ -136,7 +136,7 @@ public class Roll extends AcrobaticsSubSkill {
          * Graceful is double the odds of a normal roll
          */
         Probability probability = getRollProbability(player);
-        Probability gracefulProbability = Probability.ofPercent(probability.getValue() * 2);
+        Probability gracefulProbability = Probability.ofValue(probability.getValue() * 2);
         String[] gracefulRollStrings = ProbabilityUtil.getRNGDisplayValues(gracefulProbability);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
@@ -274,7 +274,7 @@ public class Roll extends AcrobaticsSubSkill {
     @NotNull
     public static Probability getGracefulProbability(Player player) {
         double gracefulOdds = ProbabilityUtil.getSubSkillProbability(SubSkillType.ACROBATICS_ROLL, player).getValue() * 2;
-        return Probability.ofPercent(gracefulOdds);
+        return Probability.ofValue(gracefulOdds);
     }
 
     /**

@@ -7,7 +7,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -16,18 +15,18 @@ import static com.gmail.nossr50.util.PotionUtil.samePotionType;
 import static java.util.Objects.requireNonNull;
 
 public class AlchemyPotion {
-    private final ItemStack potion;
-    private final Map<ItemStack, String> alchemyPotionChildren;
+    private final @NotNull ItemStack potionItemstack;
+    private final @NotNull Map<ItemStack, String> alchemyPotionChildren;
 
-    public AlchemyPotion(ItemStack potion, Map<ItemStack, String> alchemyPotionChildren) {
-        this.potion = requireNonNull(potion, "potion cannot be null");
+    public AlchemyPotion(@NotNull ItemStack potionItemStack, @NotNull Map<ItemStack, String> alchemyPotionChildren) {
+        this.potionItemstack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
         this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
     }
 
     public @NotNull ItemStack toItemStack(int amount) {
-        final ItemStack potion = new ItemStack(this.potion);
-        potion.setAmount(Math.max(1, amount));
-        return potion;
+        final ItemStack clone = potionItemstack.clone();
+        clone.setAmount(Math.max(1, amount));
+        return clone;
     }
 
     public Map<ItemStack, String> getAlchemyPotionChildren() {
@@ -49,7 +48,7 @@ public class AlchemyPotion {
         requireNonNull(otherPotion, "otherPotion cannot be null");
         // TODO: Investigate?
         // We currently don't compare base potion effects, likely because they are derived from the potion type
-        if (otherPotion.getType() != potion.getType() || !otherPotion.hasItemMeta()) {
+        if (otherPotion.getType() != potionItemstack.getType() || !otherPotion.hasItemMeta()) {
             return false;
         }
 
@@ -76,25 +75,19 @@ public class AlchemyPotion {
             return false;
         }
 
-        if (!otherPotionMeta.hasDisplayName() && getAlchemyPotionMeta().hasDisplayName()) {
-            return false;
-        }
-
-        var alchemyPotionName = getAlchemyPotionMeta().hasDisplayName() ? getAlchemyPotionMeta().getDisplayName() : null;
-
-        return (alchemyPotionName == null && !otherPotionMeta.hasDisplayName()) || otherPotionMeta.getDisplayName().equals(alchemyPotionName);
+        return true;
     }
 
     public PotionMeta getAlchemyPotionMeta() {
-        return (PotionMeta) potion.getItemMeta();
+        return (PotionMeta) potionItemstack.getItemMeta();
     }
 
     public boolean isSplash() {
-        return potion.getType() == Material.SPLASH_POTION;
+        return potionItemstack.getType() == Material.SPLASH_POTION;
     }
 
     public boolean isLingering() {
-        return potion.getType() == Material.LINGERING_POTION;
+        return potionItemstack.getType() == Material.LINGERING_POTION;
     }
 
     @Override
@@ -102,18 +95,18 @@ public class AlchemyPotion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlchemyPotion that = (AlchemyPotion) o;
-        return Objects.equals(potion, that.potion) && Objects.equals(alchemyPotionChildren, that.alchemyPotionChildren);
+        return Objects.equals(potionItemstack, that.potionItemstack) && Objects.equals(alchemyPotionChildren, that.alchemyPotionChildren);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(potion, alchemyPotionChildren);
+        return Objects.hash(potionItemstack, alchemyPotionChildren);
     }
 
     @Override
     public String toString() {
         return "AlchemyPotion{" +
-                "potion=" + potion +
+                "potion=" + potionItemstack +
                 ", alchemyPotionChildren=" + alchemyPotionChildren +
                 '}';
     }

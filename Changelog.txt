@@ -1,8 +1,8 @@
 Version 2.2.007
     Compatibility with the 1.20.5 / 1.20.6 MC Update
-    Added armadillo to combat experience in experience.yml
     Fixed bug where Alchemy was not brewing certain potions (haste, etc)
-    Alchemy now has more warning/errors that will print out to help debug
+    Fixed bug where the probability of success of Graceful Roll was not being calculated correctly
+    Added armadillo to combat experience in experience.yml
     Fixed bug where Green Thumb did not replant if seed was in the off hand
 
     NOTES:

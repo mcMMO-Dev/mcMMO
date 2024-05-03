@@ -39,6 +39,7 @@ public class PotionUtil {
     static {
         // We used to use uncraftable as the potion type
         // this type isn't available anymore, so water will do
+        potionDataClass = getPotionDataClass();
         legacyPotionTypes.put("UNCRAFTABLE", "WATER");
         legacyPotionTypes.put("JUMP", "LEAPING");
         legacyPotionTypes.put("SPEED", "SWIFTNESS");
@@ -55,9 +56,8 @@ public class PotionUtil {
         methodPotionTypeGetEffectType = getPotionTypeEffectType();
         methodPotionTypeGetPotionEffects = getPotionTypeGetPotionEffects();
         methodSetBasePotionData = getSetBasePotionData();
-        potionDataClass = getPotionDataClass();
 
-        if (methodPotionMetaGetBasePotionData != null) {
+        if (potionDataClass != null) {
             COMPATIBILITY_MODE = PotionCompatibilityType.PRE_1_20_5;
         } else {
             COMPATIBILITY_MODE = PotionCompatibilityType.POST_1_20_5;
@@ -161,7 +161,7 @@ public class PotionUtil {
      */
     private static @Nullable Method getBasePotionData() {
         try {
-            return PotionType.class.getMethod("getBasePotionData");
+            return PotionMeta.class.getMethod("getBasePotionData");
         } catch (NoSuchMethodException e) {
             return null;
         }
@@ -419,7 +419,7 @@ public class PotionUtil {
      * @param upgraded true if the potion is upgraded
      */
     public static void setBasePotionType(PotionMeta potionMeta, PotionType potionType, boolean extended, boolean upgraded) {
-        if (COMPATIBILITY_MODE == PotionCompatibilityType.PRE_1_20_5) {
+        if (methodPotionMetaSetBasePotionType == null) {
             setBasePotionTypeLegacy(potionMeta, potionType, extended, upgraded);
         } else {
             setBasePotionTypeModern(potionMeta, potionType);
