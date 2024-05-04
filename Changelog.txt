@@ -1,11 +1,16 @@
 Version 2.2.007
     Compatibility with the 1.20.5 / 1.20.6 MC Update
     Fixed bug where Alchemy was not brewing certain potions (haste, etc)
+    Tree Feller no longer restricts how many saplings can drop
+    Tree Feller now drops leaves 25% of the time (up from 10%)
+    Alchemy XP has been DRAMATICALLY increased, it was extremely grindy by default
+    Alchemy experience values in experience.yml are now found under 'Experience_Values.Alchemy.Potion_Brewing'
     Fixed bug where the probability of success of Graceful Roll was not being calculated correctly
-    Added armadillo to combat experience in experience.yml
     Fixed bug where Green Thumb did not replant if seed was in the off hand
+    Added armadillo to combat experience in experience.yml
 
     NOTES:
+    While fixing various Alchemy bugs, I noticed Alchemy leveled SUPER slow, I have increased it dramatically. Feel free to change it back by modifying the new values in experience.yml
     I did my best to keep mcMMO compatible with older versions of Minecraft for this update.
     This update to MC was quite large, with breaking changes to a lot of code relating to Alchemy, and some other things.
     I expect there to be bugs, please report them on GitHub or Discord, but preferably GitHub.

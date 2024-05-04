@@ -95,6 +95,7 @@ public class mcMMO extends JavaPlugin {
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
+//    private static ProtocolLibManager protocolLibManager;
 
     private SkillTools skillTools;
 
@@ -364,6 +365,9 @@ public class mcMMO extends JavaPlugin {
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
             WorldGuardManager.getInstance().registerFlags();
         }
+
+        // ProtocolLib
+        // protocolLibManager = new ProtocolLibManager(this);
     }
 
     /**
@@ -825,4 +829,8 @@ public class mcMMO extends JavaPlugin {
     public @NotNull FoliaLib getFoliaLib() {
         return foliaLib;
     }
+
+//    public ProtocolLibManager getProtocolLibManager() {
+//        return protocolLibManager;
+//    }
 }

@@ -178,7 +178,7 @@ public final class AlchemyPotionBrewer {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);
 
                 // Update player alchemy skills or effects based on brewing success
-                if (UserManager.hasPlayerDataKey(player)) {
+                if (UserManager.getPlayer(player) != null) {
                     UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }
             }

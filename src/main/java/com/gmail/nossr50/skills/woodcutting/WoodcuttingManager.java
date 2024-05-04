@@ -323,9 +323,13 @@ public class WoodcuttingManager extends SkillManager {
                 //Bonus Drops / Harvest lumber checks
                 processBonusDropCheck(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
-                // 90% of the time do not drop leaf blocks
-                if (ThreadLocalRandom.current().nextInt(100) > 90) {
-                    Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                // 75% of the time do not drop leaf blocks
+                if (blockState.getType().getKey().getKey().toLowerCase().contains("sapling")
+                        || ThreadLocalRandom.current().nextInt(100) > 75) {
+                    Misc.spawnItemsFromCollection(getPlayer(),
+                            Misc.getBlockCenter(blockState),
+                            block.getDrops(itemStack),
+                            ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
                 }
 
                 //Drop displaced non-woodcutting XP blocks

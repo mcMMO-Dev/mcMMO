@@ -467,7 +467,7 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Alchemy */
     public double getPotionXP(PotionStage stage) {
-        return config.getDouble("Experience_Values.Alchemy.Potion_Stage_" + stage.toNumerical(), 10D);
+        return config.getDouble("Experience_Values.Alchemy.Potion_Brewing.Stage_" + stage.toNumerical(), 10D);
     }
 
     /* Archery */

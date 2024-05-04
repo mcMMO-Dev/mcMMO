@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -404,7 +405,7 @@ public class PotionUtil {
         try {
             PotionType potionType = (PotionType) methodPotionMetaGetBasePotionType.invoke(potionMeta);
             List<PotionEffectType> potionEffectTypeList = (List<PotionEffectType>) methodPotionTypeGetPotionEffects.invoke(potionType);
-            return potionEffectTypeList != null || !potionEffectTypeList.isEmpty();
+            return potionEffectTypeList != null && !potionEffectTypeList.isEmpty();
         } catch (IllegalAccessException | InvocationTargetException ex) {
             throw new RuntimeException(ex);
         }
