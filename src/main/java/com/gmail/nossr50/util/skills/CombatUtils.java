@@ -968,8 +968,10 @@ public final class CombatUtils {
                 return false;
             }
 
-            if ((mcMMO.p.getPartyManager().inSameParty(player, defender) || mcMMO.p.getPartyManager().areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
-                return false;
+            if(mcMMO.p.getPartyConfig().isPartyEnabled()) {
+                if ((mcMMO.p.getPartyManager().inSameParty(player, defender) || mcMMO.p.getPartyManager().areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+                    return false;
+                }
             }
 
             // Vanished players should not be able to get hit by AoE effects
@@ -1019,7 +1021,7 @@ public final class CombatUtils {
 
             if (tamer instanceof Player owner) {
 
-                return (owner == attacker || mcMMO.p.getPartyManager().inSameParty(attacker, owner) || mcMMO.p.getPartyManager().areAllies(attacker, owner));
+                return (owner == attacker || (mcMMO.p.getPartyConfig().isPartyEnabled() && (mcMMO.p.getPartyManager().inSameParty(attacker, owner) || mcMMO.p.getPartyManager().areAllies(attacker, owner))));
             }
         }
 
