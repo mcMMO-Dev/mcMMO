@@ -140,23 +140,22 @@
                             <include>org.bstats:bstats-base</include>
                             <include>org.bstats:bstats-bukkit</include>
                             <include>net.kyori:adventure-api</include>
-                            <include>net.kyori:adventure-text-serializer-gson</include>
-                            <include>net.kyori:adventure-platform-bukkit</include>
-                            <include>net.kyori:adventure-platform-api</include>
-                            <include>net.kyori:adventure-platform-viaversion</include>
-                            <include>net.kyori:adventure-platform-facet</include>
-                            <include>net.kyori:adventure-nbt</include>
                             <include>net.kyori:adventure-key</include>
+                            <include>net.kyori:adventure-nbt</include>
+                            <include>net.kyori:adventure-platform-api</include>
+                            <include>net.kyori:adventure-platform-bukkit</include>
+                            <include>net.kyori:adventure-platform-facet</include>
+                            <include>net.kyori:adventure-platform-viaversion</include>
+                            <include>net.kyori:adventure-text-serializer-bungeecord</include>
+                            <include>net.kyori:adventure-text-serializer-gson</include>
+                            <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
+                            <include>net.kyori:adventure-text-serializer-json</include>
+                            <include>net.kyori:adventure-text-serializer-json-legacy-impl</include>
+                            <include>net.kyori:adventure-text-serializer-legacy</include>
                             <include>net.kyori:examination-api</include>
                             <include>net.kyori:examination-string</include>
-                            <include>net.kyori:adventure-text-serializer-legacy</include>
-                            <include>net.kyori:adventure-text-serializer-gson</include>
-                            <include>net.kyori:adventure-text-serializer-json</include>
-                            <include>net.kyori:adventure-text-serializer-bungeecord</include>
-                            <include>net.kyori:adventure-text-serializer-craftbukkit</include>
-                            <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
-                            <include>net.kyori:adventure-text-serializer-json-legacy-impl</include>
                             <include>net.kyori:option</include>
+                            <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>co.aikar:acf-bukkit</include>
                             <include>com.tcoded:FoliaLib</include>
                         </includes>
@@ -344,7 +343,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.2</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>

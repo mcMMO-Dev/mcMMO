@@ -1,6 +1,7 @@
 Version 2.2.008
     Fixed alchemy potions not upgrading correctly (This will only affect new potions made, see notes)
     Fixed a bug where alchemy potions had italicized names
+    Fixed a bug where messages were not being sent to the action bar in 1.20.6
     Fixed some exceptions that could happen with parties disabled (thanks IAISI)
 
     NOTES:

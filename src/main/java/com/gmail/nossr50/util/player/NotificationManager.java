@@ -121,14 +121,13 @@ public class NotificationManager {
 
         final Audience audience = mcMMO.getAudiences().player(player);
 
-        //If the message is being sent to the action bar we need to check if the copy if a copy is sent to the chat system
+
         Component notificationTextComponent = customEvent.getNotificationTextComponent();
-        if(customEvent.getChatMessageType() == McMMOMessageType.ACTION_BAR)
-        {
+        if(customEvent.getChatMessageType() == McMMOMessageType.ACTION_BAR) {
             audience.sendActionBar(notificationTextComponent);
 
-            if(customEvent.isMessageAlsoBeingSentToChat())
-            {
+            // If the message is being sent to the action bar we need to check if a copy is also sent to the chat system
+            if(customEvent.isMessageAlsoBeingSentToChat()) {
                 //Send copy to chat system
                 audience.sendMessage(notificationTextComponent);
             }
