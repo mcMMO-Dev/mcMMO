@@ -1273,6 +1273,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsDATS.put(SuperAbilityType.BERSERK, result.getInt(OFFSET_DATS + 5));
         skillsDATS.put(SuperAbilityType.GREEN_TERRA, result.getInt(OFFSET_DATS + 6));
         skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER, result.getInt(OFFSET_DATS + 7));
+        skillsDATS.put(SuperAbilityType.EXPLOSIVE_SHOT, result.getInt(OFFSET_DATS + 8));
         // Archery - Unused - result.getInt(OFFSET_DATS + 8)
         skillsDATS.put(SuperAbilityType.SERRATED_STRIKES, result.getInt(OFFSET_DATS + 9));
         skillsDATS.put(SuperAbilityType.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
