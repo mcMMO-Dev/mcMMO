@@ -29,7 +29,10 @@ public class AlchemyBrewCheckTask extends CancellableRunnable {
         boolean validBrew = brewingStand.getFuelLevel() > 0 && AlchemyPotionBrewer.isValidBrew(player, newInventory);
 
         if (Alchemy.brewingStandMap.containsKey(location)) {
-            if (oldInventory[Alchemy.INGREDIENT_SLOT] == null || newInventory[Alchemy.INGREDIENT_SLOT] == null || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT]) || !validBrew) {
+            if (oldInventory[Alchemy.INGREDIENT_SLOT] == null
+                    || newInventory[Alchemy.INGREDIENT_SLOT] == null
+                    || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT])
+                    || !validBrew) {
                 Alchemy.brewingStandMap.get(location).cancelBrew();
             }
         } else if (validBrew) {

@@ -52,6 +52,11 @@ public class AlchemyManager extends SkillManager {
         return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS)) / (Alchemy.catalysisMaxBonusLevel - RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS))) * (isLucky ? LUCKY_MODIFIER : 1.0);
     }
 
+    /**
+     * Handle the XP gain for a successful potion brew.
+     * @param potionStage The potion stage, this is used to determine the XP gain.
+     * @param amount The amount of potions brewed.
+     */
     public void handlePotionBrewSuccesses(PotionStage potionStage, int amount) {
         applyXpGain((float) (ExperienceConfig.getInstance().getPotionXP(potionStage) * amount), XPGainReason.PVE, XPGainSource.PASSIVE);
     }

@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.events.fake.FakeEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
@@ -28,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BrewingStartEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 
@@ -343,12 +345,23 @@ public class InventoryListener implements Listener {
 
         if (event instanceof FakeBrewEvent)
             return;
+
         Location location = event.getBlock().getLocation();
         if (Alchemy.brewingStandMap.containsKey(location)) {
             Alchemy.brewingStandMap.get(location).finishImmediately();
             event.setCancelled(true);
         }
     }
+
+//    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+//    public void onBrewStart(BrewingStartEvent event) {
+//        /* WORLD BLACKLIST CHECK */
+//        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+//            return;
+//
+//        if (event instanceof FakeEvent)
+//            return;
+//    }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {

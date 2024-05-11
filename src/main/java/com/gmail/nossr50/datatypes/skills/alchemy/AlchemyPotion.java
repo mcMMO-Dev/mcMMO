@@ -53,12 +53,11 @@ public class AlchemyPotion {
         }
 
         final PotionMeta otherPotionMeta = (PotionMeta) otherPotion.getItemMeta();
-
-        // all custom effects must be present
-        for (var effect : getAlchemyPotionMeta().getCustomEffects()) {
-            if (!otherPotionMeta.hasCustomEffect(effect.getType())) {
-                return false;
-            }
+        // compare custom effects on both potions, this has to be done in two traversals
+        // comparing thisPotionMeta -> otherPotionMeta and otherPotionMeta -> thisPotionMeta
+        if (hasDifferingCustomEffects(getAlchemyPotionMeta(), otherPotionMeta)
+                || hasDifferingCustomEffects(otherPotionMeta, getAlchemyPotionMeta())) {
+            return false;
         }
 
         if (!samePotionType(getAlchemyPotionMeta(), otherPotionMeta)) {
@@ -76,6 +75,25 @@ public class AlchemyPotion {
         }
 
         return true;
+    }
+
+    private boolean hasDifferingCustomEffects(PotionMeta potionMeta, PotionMeta otherPotionMeta) {
+        for (int i = 0; i < potionMeta.getCustomEffects().size(); i++) {
+            var effect = potionMeta.getCustomEffects().get(i);
+
+            // One has an effect the other does not, they are not the same potion
+            if (!otherPotionMeta.hasCustomEffect(effect.getType())) {
+                return true;
+            }
+
+            var otherEffect = otherPotionMeta.getCustomEffects().get(i);
+            // Amplifier or duration are not equal, they are not the same potion
+            if (effect.getAmplifier() != otherEffect.getAmplifier()
+                    || effect.getDuration() != otherEffect.getDuration()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public PotionMeta getAlchemyPotionMeta() {

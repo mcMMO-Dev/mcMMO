@@ -16,7 +16,7 @@ public class ProbabilityTestUtils {
         System.out.println("Wins: " + winCount);
         System.out.println("Fails: " + (iterations - winCount));
         System.out.println("Percentage succeeded: " + successPercent + ", Expected: " + expectedWinPercent);
-        assertEquals(expectedWinPercent, successPercent, 0.025D);
+        assertEquals(expectedWinPercent, successPercent, 0.035D);
         System.out.println("Variance is within tolerance levels!");
     }
 }

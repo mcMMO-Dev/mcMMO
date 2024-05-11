@@ -1,3 +1,9 @@
+Version 2.2.008
+    Fixed alchemy potions not upgrading correctly (See notes)
+
+    NOTES:
+    Alchemy potions will now be brewed as type "Mundane" behind the scenes, this used to be Uncraftable/Water. This led to some issues. So I've changed it to be Mundane.
+
 Version 2.2.007
     Compatibility with the 1.20.5 / 1.20.6 MC Update
     Fixed bug where Alchemy was not brewing certain potions (haste, etc)

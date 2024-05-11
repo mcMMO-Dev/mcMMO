@@ -38,7 +38,8 @@ public final class AlchemyPotionBrewer {
                 continue;
             }
 
-            if (getChildPotion(mcMMO.p.getPotionConfig().getPotion(contents[i]), contents[Alchemy.INGREDIENT_SLOT]) != null) {
+            final AlchemyPotion potion = mcMMO.p.getPotionConfig().getPotion(contents[i]);
+            if (getChildPotion(potion, contents[Alchemy.INGREDIENT_SLOT]) != null) {
                 return true;
             }
         }

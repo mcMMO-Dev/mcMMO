@@ -30,6 +30,6 @@ class PotionUtilTest {
     void testConvertLegacyNames() {
         final String potionTypeStr = "UNCRAFTABLE";
         final String converted = convertLegacyNames(potionTypeStr);
-        assertEquals("WATER", converted);
+        assertEquals("MUNDANE", converted);
     }
 }

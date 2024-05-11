@@ -34,12 +34,13 @@ public enum PotionStage {
     }
 
     public static PotionStage getPotionStage(AlchemyPotion input, AlchemyPotion output) {
-        PotionStage potionStage = getPotionStage(output);
-        if (!isWaterBottle(input) && getPotionStage(input) == potionStage) {
-            potionStage = PotionStage.FIVE;
+        PotionStage outputPotionStage = getPotionStage(output);
+        PotionStage inputPotionStage = getPotionStage(input);
+        if (!isWaterBottle(input) && inputPotionStage == outputPotionStage) {
+            outputPotionStage = PotionStage.FIVE;
         }
 
-        return potionStage;
+        return outputPotionStage;
     }
 
     private static boolean isWaterBottle(AlchemyPotion alchemyPotion) {
