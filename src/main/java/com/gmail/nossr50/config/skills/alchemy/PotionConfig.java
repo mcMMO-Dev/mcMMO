@@ -259,18 +259,17 @@ public class PotionConfig extends LegacyConfigLoader {
     private void setPotionDisplayName(ConfigurationSection section, PotionMeta potionMeta) {
         String configuredName = section.getString("Name", null);
         if (configuredName != null) {
-            potionMeta.setDisplayName(configuredName);
-            return;
+            potionMeta.setItemName(configuredName);
         }
-
-        // Potion is water, but has effects
-        if (isPotionTypeWater(potionMeta)
-                && (PotionUtil.hasBasePotionEffects(potionMeta) || !potionMeta.getCustomEffects().isEmpty())) {
-            // If we don't set a name for these potions, they will simply be called "Water Potion"
-            final String name = section.getName().toUpperCase().replace("_", " ");
-            potionMeta.setDisplayName(name);
-            System.out.println("DEBUG: Renaming potion to " + name);
-        }
+//
+//        // Potion is water, but has effects
+//        if (isPotionTypeWater(potionMeta)
+//                && (PotionUtil.hasBasePotionEffects(potionMeta) || !potionMeta.getCustomEffects().isEmpty())) {
+//            // If we don't set a name for these potions, they will simply be called "Water Potion"
+//            final String name = section.getName().toUpperCase().replace("_", " ");
+//            potionMeta.setDisplayName(name);
+//            System.out.println("DEBUG: Renaming potion to " + name);
+//        }
     }
 
     /**

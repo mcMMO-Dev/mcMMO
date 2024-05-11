@@ -1,8 +1,10 @@
 Version 2.2.008
-    Fixed alchemy potions not upgrading correctly (See notes)
+    Fixed alchemy potions not upgrading correctly (This will only affect new potions made, see notes)
+    Fixed a bug where alchemy potions had italicized names
     Fixed some exceptions that could happen with parties disabled (thanks IAISI)
 
     NOTES:
+    mcMMO-exclusive Potions (haste, etc) made on version 2.2.007 of mcMMO will not upgrade correctly, you'll just have to make new ones. Sorry for the inconvenience.
     Alchemy potions will now be brewed as type "Mundane" behind the scenes, this used to be Uncraftable/Water. This led to some issues. So I've changed it to be Mundane.
 
 Version 2.2.007
