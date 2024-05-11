@@ -206,17 +206,15 @@ public enum SuperAbilityType {
     public boolean getPermissions(Player player) {
         return switch (this) {
             case BERSERK -> Permissions.berserk(player);
-            case EXPLOSIVE_SHOT -> Permissions.explosiveShot(player);
             case BLAST_MINING -> Permissions.remoteDetonation(player);
             case GIGA_DRILL_BREAKER -> Permissions.gigaDrillBreaker(player);
             case GREEN_TERRA -> Permissions.greenTerra(player);
             case SERRATED_STRIKES -> Permissions.serratedStrikes(player);
             case SKULL_SPLITTER -> Permissions.skullSplitter(player);
             case SUPER_BREAKER -> Permissions.superBreaker(player);
-            case SUPER_SHOTGUN -> Permissions.superShotgun(player);
             case TREE_FELLER -> Permissions.treeFeller(player);
-            case TRIDENTS_SUPER_ABILITY -> Permissions.tridentsSuper(player);
-            case MACES_SUPER_ABILITY -> Permissions.macesSuper(player);
+            // TODO: once implemented, return permissions for the following abilities
+            case EXPLOSIVE_SHOT, TRIDENTS_SUPER_ABILITY, SUPER_SHOTGUN, MACES_SUPER_ABILITY -> false;
         };
     }
 

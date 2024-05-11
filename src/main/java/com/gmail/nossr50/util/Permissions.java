@@ -185,7 +185,6 @@ public final class Permissions {
     public static boolean concoctions(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.alchemy.concoctions"); }
 
     /* ARCHERY */
-    public static boolean explosiveShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.explosiveshot"); }
     public static boolean arrowRetrieval(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.trackarrows"); }
     public static boolean daze(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.daze"); }
 
@@ -233,25 +232,13 @@ public final class Permissions {
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
 
     /* CROSSBOWS */
-    public static boolean superShotgun(Permissible permissible) {
-        return permissible.hasPermission("mcmmo.ability.crossbows.supershotgun");
-    }
     public static boolean trickShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.trickshot"); }
     public static boolean poweredShot(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.crossbows.poweredshot"); }
 
     /* TRIDENTS */
-    public static boolean tridentsSuper(Permissible permissible) {
-        return false;
-        // return permissible.hasPermission("mcmmo.ability.tridents.superability");
-    }
     public static boolean tridentsLimitBreak(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.tridents.superability"); }
 
     /* MACES */
-    public static boolean macesSuper(Permissible permissible) {
-        // TODO: When a super is added, change this
-        return false;
-    }
-
     public static boolean macesLimitBreak(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.maces.limitbreak"); }
 
     /*

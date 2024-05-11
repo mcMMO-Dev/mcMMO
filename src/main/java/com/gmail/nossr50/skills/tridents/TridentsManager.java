@@ -13,14 +13,6 @@ public class TridentsManager extends SkillManager {
         super(mmoPlayer, PrimarySkillType.TRIDENTS);
     }
 
-    /**
-     * Checks if the player can activate the Super Ability for Tridents
-     * @return true if the player can activate the Super Ability, false otherwise
-     */
-    public boolean canActivateAbility() {
-        return mmoPlayer.getToolPreparationMode(ToolType.TRIDENTS) && Permissions.tridentsSuper(getPlayer());
-    }
-
     public double impaleDamageBonus() {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.TRIDENTS_IMPALE);
 

@@ -10,12 +10,4 @@ public class MacesManager extends SkillManager {
     public MacesManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.MACES);
     }
-
-    /**
-     * Checks if the player can activate the Super Ability for Maces
-     * @return true if the player can activate the Super Ability, false otherwise
-     */
-    public boolean canActivateAbility() {
-        return mmoPlayer.getToolPreparationMode(ToolType.MACES) && Permissions.macesSuper(getPlayer());
-    }
 }
