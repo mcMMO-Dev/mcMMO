@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.skills.alchemy;
 
 import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.PotionUtil;
@@ -21,6 +20,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 import java.io.File;
 import java.util.*;
 
+import static com.gmail.nossr50.util.ItemUtils.setItemName;
 import static com.gmail.nossr50.util.PotionUtil.*;
 import static com.gmail.nossr50.util.text.StringUtils.convertKeyToName;
 
@@ -257,19 +257,15 @@ public class PotionConfig extends LegacyConfigLoader {
     }
 
     private void setPotionDisplayName(ConfigurationSection section, PotionMeta potionMeta) {
-        String configuredName = section.getString("Name", null);
-        if (configuredName != null) {
-            potionMeta.setItemName(configuredName);
+        // If a potion doesn't have any custom effects, there is no reason to override the vanilla name
+        if (potionMeta.getCustomEffects().isEmpty()) {
+            return;
         }
-//
-//        // Potion is water, but has effects
-//        if (isPotionTypeWater(potionMeta)
-//                && (PotionUtil.hasBasePotionEffects(potionMeta) || !potionMeta.getCustomEffects().isEmpty())) {
-//            // If we don't set a name for these potions, they will simply be called "Water Potion"
-//            final String name = section.getName().toUpperCase().replace("_", " ");
-//            potionMeta.setDisplayName(name);
-//            System.out.println("DEBUG: Renaming potion to " + name);
-//        }
+
+        final String configuredName = section.getString("Name", null);
+        if (configuredName != null) {
+            setItemName(potionMeta, configuredName);
+        }
     }
 
     /**

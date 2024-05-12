@@ -246,10 +246,10 @@ Experience_Values:
             # Stage_3 represents a base potion with one ingredient and one amplifier
             # Stage_4 represents a base potion with one ingredient and two amplifiers
             # Stage_5 represents a base potion with one ingredient where the amplifiers are swapped
-            Stage_1: 120
-            Stage_2: 240
-            Stage_3: 480
-            Stage_4: 960
+            Stage_1: 666
+            Stage_2: 1111
+            Stage_3: 1750
+            Stage_4: 2250
             Stage_5: 0
     Archery:
         Distance_Multiplier: 0.025

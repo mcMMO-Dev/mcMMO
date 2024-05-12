@@ -1,3 +1,17 @@
+Version 2.2.009
+    Fixed a bug that prevented mcMMO from loading on MC versions older than 1.20.6
+    Dramatically increased the base XP for Alchemy again (see notes)
+
+    NOTES:
+    Alchemy leveling still felt too slow, so I've increased it again. You can either delete experience.yml to get the new values or adjust them manually.
+    If you haven't updated mcMMO since 2.2.006 or older you don't need to do anything to get these new values.
+    The new default values are...
+            Potion_Brewing:
+                Stage_1: 666
+                Stage_2: 1111
+                Stage_3: 1750
+                Stage_4: 2250
+
 Version 2.2.008
     Fixed alchemy potions not upgrading correctly (This will only affect new potions made, see notes)
     Fixed a bug where alchemy potions had italicized names

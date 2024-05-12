@@ -20,6 +20,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +33,43 @@ public final class ItemUtils {
      * this class. Making the constructor private prevents accidents like that.
      */
     private ItemUtils() {}
+
+    private static final Method setItemName;
+
+    static {
+        setItemName = getSetItemName();
+    }
+
+    private static Method getSetItemName() {
+        try {
+            return ItemMeta.class.getMethod("setItemName", String.class);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the item name using the new API if available
+     * or falls back to the old API.
+     * @param itemMeta The item meta to set the name on
+     * @param name The name to set
+     */
+    public static void setItemName(ItemMeta itemMeta, String name) {
+        if (setItemName != null) {
+            setItemNameModern(itemMeta, name);
+        } else {
+            itemMeta.setDisplayName(ChatColor.RESET + name);
+        }
+    }
+
+    private static void setItemNameModern(ItemMeta itemMeta, String name) {
+        try {
+            setItemName.invoke(itemMeta, name);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            mcMMO.p.getLogger().severe("Failed to set item name: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Checks if the item is a bow.
