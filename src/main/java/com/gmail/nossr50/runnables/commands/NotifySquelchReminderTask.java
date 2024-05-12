@@ -11,9 +11,9 @@ public class NotifySquelchReminderTask extends CancellableRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if(UserManager.getPlayer(player) != null)
+            if (UserManager.getPlayer(player) != null)
             {
-                if(!UserManager.getPlayer(player).useChatNotifications())
+                if (!UserManager.getPlayer(player).useChatNotifications())
                 {
                     player.sendMessage(LocaleLoader.getString("Reminder.Squelched"));
                 }

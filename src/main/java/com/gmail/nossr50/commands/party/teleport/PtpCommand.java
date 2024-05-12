@@ -45,21 +45,21 @@ public class PtpCommand implements TabExecutor {
         Player player = (Player) sender;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
+        if (WorldGuardUtils.isWorldGuardLoaded())
         {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return true;
         }
 
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(player.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(player.getWorld()))
             return true;
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
+        if (UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
@@ -228,13 +228,13 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
-        if(UserManager.getPlayer(targetPlayer) == null)
+        if (UserManager.getPlayer(targetPlayer) == null)
         {
             targetPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
 
-        if(UserManager.getPlayer(teleportingPlayer) == null)
+        if (UserManager.getPlayer(teleportingPlayer) == null)
         {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;

@@ -66,7 +66,7 @@ public class CompatibilityManager {
     }
 
     private void initMasterAnglerLayer() {
-        if(minecraftGameVersion.isAtLeast(1, 16, 3)) {
+        if (minecraftGameVersion.isAtLeast(1, 16, 3)) {
             masterAnglerCompatibility = new MasterAnglerCompatibilityLayer();
         } else {
             masterAnglerCompatibility = null;
@@ -74,7 +74,7 @@ public class CompatibilityManager {
     }
 
     private void initBungeeSerializerLayer() {
-        if(minecraftGameVersion.isAtLeast(1, 16, 0)) {
+        if (minecraftGameVersion.isAtLeast(1, 16, 0)) {
             bungeeSerializerCompatibilityLayer = new BungeeModernSerializerCompatibilityLayer();
         } else {
             bungeeSerializerCompatibilityLayer = new BungeeLegacySerializerCompatibilityLayer();
@@ -85,13 +85,13 @@ public class CompatibilityManager {
 
     //TODO: move to text manager
     public void reportCompatibilityStatus(@NotNull CommandSender commandSender) {
-        if(isFullyCompatibleServerSoftware) {
+        if (isFullyCompatibleServerSoftware) {
             commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
                     "mcMMO is fully compatible with the currently running server software."));
         } else {
             //TODO: Better messages for each incompatible layer
             for(CompatibilityType compatibilityType : CompatibilityType.values()) {
-                if(!supportedLayers.get(compatibilityType)) {
+                if (!supportedLayers.get(compatibilityType)) {
                     commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
                             LocaleLoader.getString("Compatibility.Layer.Unsupported",  StringUtils.getCapitalized(compatibilityType.toString()))));
                 }
@@ -115,7 +115,7 @@ public class CompatibilityManager {
 
     private @NotNull NMSVersion determineNMSVersion() {
         //This bit here helps prevent mcMMO breaking if it isn't updated but the game continues to update
-        if(minecraftGameVersion.isAtLeast(1, 17, 0)) {
+        if (minecraftGameVersion.isAtLeast(1, 17, 0)) {
             return NMSVersion.NMS_1_17;
         }
 
@@ -133,13 +133,13 @@ public class CompatibilityManager {
                 case 16:
                     if (minecraftGameVersion.getPatchVersion().asInt() == 1) {
                         return NMSVersion.NMS_1_16_1;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 2) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() == 2) {
                         return NMSVersion.NMS_1_16_2;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 3) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() == 3) {
                         return NMSVersion.NMS_1_16_3;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 4) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() == 4) {
                         return NMSVersion.NMS_1_16_4;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() >= 5) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() >= 5) {
                         return NMSVersion.NMS_1_16_5;
                     }
                 case 17:

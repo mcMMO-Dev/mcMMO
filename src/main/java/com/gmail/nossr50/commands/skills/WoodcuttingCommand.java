@@ -40,7 +40,7 @@ public class WoodcuttingCommand extends SkillCommand {
         }
 
         //Clean Cuts
-        if(canTripleDrop) {
+        if (canTripleDrop) {
             String[] tripleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.WOODCUTTING_CLEAN_CUTS);
             tripleDropChance = tripleDropStrings[0];
             tripleDropChanceLucky = tripleDropStrings[1];
@@ -80,7 +80,7 @@ public class WoodcuttingCommand extends SkillCommand {
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
-        if(canTripleDrop) {
+        if (canTripleDrop) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_CLEAN_CUTS, tripleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
         }
@@ -89,7 +89,7 @@ public class WoodcuttingCommand extends SkillCommand {
         if (canKnockOnWood) {
             String lootNote;
 
-            if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+            if (RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                 lootNote = LocaleLoader.getString("Woodcutting.SubSkill.KnockOnWood.Loot.Rank2");
             } else {
                 lootNote = LocaleLoader.getString("Woodcutting.SubSkill.KnockOnWood.Loot.Normal");

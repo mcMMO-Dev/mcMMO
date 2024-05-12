@@ -19,13 +19,13 @@ public class InteractionManager {
 
     public static void initMaps() {
         /* INIT MAPS */
-        if(interactRegister == null)
+        if (interactRegister == null)
             interactRegister = new HashMap<>();
 
-        if(subSkillList == null)
+        if (subSkillList == null)
             subSkillList = new ArrayList<>();
 
-        if(subSkillNameMap == null)
+        if (subSkillNameMap == null)
             subSkillNameMap = new HashMap<>();
     }
 
@@ -36,7 +36,7 @@ public class InteractionManager {
     public static void registerSubSkill(AbstractSubSkill abstractSubSkill)
     {
         //Store a unique copy of each subskill
-        if(!subSkillList.contains(abstractSubSkill))
+        if (!subSkillList.contains(abstractSubSkill))
             subSkillList.add(abstractSubSkill);
 
         //Init ArrayList
@@ -75,7 +75,7 @@ public class InteractionManager {
      */
     public static void processEvent(Event event, mcMMO plugin, InteractType curInteractType)
     {
-        if(interactRegister.get(curInteractType) == null)
+        if (interactRegister.get(curInteractType) == null)
             return;
 
         for(Interaction interaction : interactRegister.get(curInteractType))

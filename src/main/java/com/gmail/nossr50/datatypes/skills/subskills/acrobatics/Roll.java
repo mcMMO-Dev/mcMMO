@@ -61,7 +61,7 @@ public class Roll extends AcrobaticsSubSkill {
         EntityDamageEvent entityDamageEvent = (EntityDamageEvent) event;
 
         //Make sure a real player was damaged in this event
-        if(!EventUtils.isRealPlayerDamaged(entityDamageEvent))
+        if (!EventUtils.isRealPlayerDamaged(entityDamageEvent))
             return false;
 
         if (entityDamageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) {//Grab the player
@@ -81,7 +81,7 @@ public class Roll extends AcrobaticsSubSkill {
                     entityDamageEvent.setCancelled(true);
                     return true;
                 }
-            } else if(mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(mmoPlayer.getPlayer(), PrimarySkillType.ACROBATICS)) {
+            } else if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(mmoPlayer.getPlayer(), PrimarySkillType.ACROBATICS)) {
                 //Give XP Anyways
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, ((EntityDamageEvent) event).getFinalDamage(), false), XPGainReason.PVE);
             }
@@ -156,7 +156,7 @@ public class Roll extends AcrobaticsSubSkill {
         //Advanced
 
         //Lucky Notice
-        if(isLucky)
+        if (isLucky)
         {
             componentBuilder.append(Component.text(LocaleLoader.getString("JSON.JWrapper.Perks.Header")));
             componentBuilder.append(Component.newline());
@@ -213,7 +213,7 @@ public class Roll extends AcrobaticsSubSkill {
             //mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
 
             //if (!SkillUtils.cooldownExpired((long) mcMMOmmoPlayer.getPlayer().getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, damage, true), XPGainReason.PVE);
             //}
 
@@ -222,7 +222,7 @@ public class Roll extends AcrobaticsSubSkill {
         }
         else if (!isFatal(mmoPlayer, damage)) {
             //if (!SkillUtils.cooldownExpired((long) mmoPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, damage, false), XPGainReason.PVE);
             //}
         }
@@ -252,14 +252,14 @@ public class Roll extends AcrobaticsSubSkill {
         {
             NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
-            if(!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, damage, true), XPGainReason.PVE);
 
             addFallLocation(mmoPlayer);
             return modifiedDamage;
         }
         else if (!isFatal(mmoPlayer, damage)) {
-            if(!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
+            if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, damage, false), XPGainReason.PVE);
             
             addFallLocation(mmoPlayer);
@@ -286,15 +286,15 @@ public class Roll extends AcrobaticsSubSkill {
         }
 
         if (ItemUtils.hasItemInEitherHand(mmoPlayer.getPlayer(), Material.ENDER_PEARL) || mmoPlayer.getPlayer().isInsideVehicle()) {
-            if(mmoPlayer.isDebugMode()) {
+            if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
             }
             return true;
         }
 
-        if(mmoPlayer.getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(mmoPlayer)))
+        if (mmoPlayer.getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(mmoPlayer)))
         {
-            if(mmoPlayer.isDebugMode()) {
+            if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
             }
 

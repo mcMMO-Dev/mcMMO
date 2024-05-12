@@ -36,7 +36,7 @@ public class TamingSummon {
                 entityType = EntityType.HORSE;
                 break;
             case CAT:
-                if(shouldSpawnCatInsteadOfOcelot()) {
+                if (shouldSpawnCatInsteadOfOcelot()) {
                     //Server is on 1.14 or above
                     entityType = EntityType.CAT;
                 } else {

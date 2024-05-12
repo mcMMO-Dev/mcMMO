@@ -19,7 +19,7 @@ public class PlayerLevelUtils {
 //            int levelCap = Config.getInstance().getLevelCap(primarySkillType);
 //            int cap;
 //
-//            if(levelCap == Integer.MAX_VALUE || levelCap <= 0)
+//            if (levelCap == Integer.MAX_VALUE || levelCap <= 0)
 //            {
 //                cap = Config.getInstance().getIsRetroMode() ? 50 : 5;
 //            } else {

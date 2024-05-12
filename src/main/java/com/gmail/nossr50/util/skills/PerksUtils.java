@@ -54,7 +54,7 @@ public final class PerksUtils {
         double modifier = 1.0F;
 
         if (Permissions.customXpBoost(player, skill)) {
-            if(UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
+            if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
                 player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY + "XP Perk Multiplier IS CUSTOM! ");
             }
 
@@ -84,7 +84,7 @@ public final class PerksUtils {
 
         float modifiedXP = (float) (xp * modifier);
 
-        if(UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
+        if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
             player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP Perk Multiplier - " + ChatColor.GOLD + modifier);
             player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "Original XP before perk boosts " + ChatColor.RED + (double) xp);
             player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP AFTER PERKS " + ChatColor.DARK_RED + modifiedXP);

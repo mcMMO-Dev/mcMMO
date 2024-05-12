@@ -23,12 +23,12 @@ public class McscoreboardCommand implements TabExecutor {
             return true;
         }
 
-        if(!mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
+        if (!mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Scoreboard.Disabled"));
             return true;
         }
 
-        if(!ScoreboardManager.isPlayerBoardSetup(sender.getName())) {
+        if (!ScoreboardManager.isPlayerBoardSetup(sender.getName())) {
             sender.sendMessage(LocaleLoader.getString("Scoreboard.NotSetupYet"));
             return true;
         }

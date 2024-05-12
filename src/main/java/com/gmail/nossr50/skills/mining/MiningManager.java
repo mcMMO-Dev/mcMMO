@@ -40,7 +40,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseDemolitionsExpertise() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
             return false;
 
         return getSkillLevel() >= BlastMining.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
@@ -60,7 +60,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseBiggerBombs() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
             return false;
 
         return getSkillLevel() >= BlastMining.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
@@ -93,18 +93,18 @@ public class MiningManager extends SkillManager {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), mcMMO.p.getGeneralConfig().getAbilityToolDamage());
         }
 
-        if(!mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType()) || !canDoubleDrop())
+        if (!mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType()) || !canDoubleDrop())
             return;
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
-        if(silkTouch && !mcMMO.p.getAdvancedConfig().getDoubleDropSilkTouchEnabled())
+        if (silkTouch && !mcMMO.p.getAdvancedConfig().getDoubleDropSilkTouchEnabled())
             return;
 
         //Mining mastery allows for a chance of triple drops
-        if(canMotherLode()) {
+        if (canMotherLode()) {
             //Triple Drops failed so do a normal double drops check
-            if(!processTripleDrops(blockState)) {
+            if (!processTripleDrops(blockState)) {
                 processDoubleDrops(blockState);
             }
         } else {
@@ -182,7 +182,7 @@ public class MiningManager extends SkillManager {
             if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0
                     && !(targetBlock instanceof Container)
                     && !mcMMO.getPlaceStore().isTrue(targetBlock)) {
-                if(BlockUtils.isOre(blockState)) {
+                if (BlockUtils.isOre(blockState)) {
                     ores.add(blockState);
                 } else {
                     notOres.add(blockState);
@@ -199,16 +199,16 @@ public class MiningManager extends SkillManager {
 
         //Drop "debris" based on skill modifiers
         for(BlockState blockState : notOres) {
-            if(isDropIllegal(blockState.getType()))
+            if (isDropIllegal(blockState.getType()))
                 continue;
 
-            if(RandomUtils.nextFloat() < debrisYield) {
+            if (RandomUtils.nextFloat() < debrisYield) {
                 Misc.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
             }
         }
 
         for (BlockState blockState : ores) {
-            if(isDropIllegal(blockState.getType()))
+            if (isDropIllegal(blockState.getType()))
                 continue;
 
             if (RandomUtils.nextFloat() < (yield + oreBonus)) {

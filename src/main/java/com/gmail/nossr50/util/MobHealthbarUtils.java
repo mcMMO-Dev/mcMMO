@@ -54,7 +54,7 @@ public final class MobHealthbarUtils {
         /*
          * Store the name in metadata
          */
-        if(target.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY).size() <= 0)
+        if (target.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY).size() <= 0)
             target.setMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY, new OldName(originalName, plugin));
 
         if (oldName == null) {

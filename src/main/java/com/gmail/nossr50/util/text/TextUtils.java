@@ -31,15 +31,15 @@ public class TextUtils {
         TextComponent.Builder componentBuilder = Component.text();
 
         for(Component component : componentsArray) {
-            if(component == null) //Individual elements can be null
+            if (component == null) //Individual elements can be null
                 continue;
 
-            if(prefixComponent != null)
+            if (prefixComponent != null)
                 componentBuilder.append(prefixComponent);
 
             componentBuilder.append(component);
 
-            if(suffixComponent != null)
+            if (suffixComponent != null)
                 componentBuilder.append(suffixComponent);
 
         }
@@ -68,14 +68,14 @@ public class TextUtils {
                 int indexOfPotentialMember = i + (groupsFinished * 3); //Groups don't always fill all members neatly
 
                 //Some groups won't have entirely non-null elements
-                if(indexOfPotentialMember > components.size()-1) {
+                if (indexOfPotentialMember > components.size()-1) {
                     break;
                 }
 
                 Component potentialMember = components.get(indexOfPotentialMember);
 
                 //Make sure the potential member exists because of rounding
-                if(potentialMember != null) {
+                if (potentialMember != null) {
                     splitGroups[groupsFinished][i] = potentialMember;
                 }
             }
@@ -113,7 +113,7 @@ public class TextUtils {
     }
 
     public static @NotNull TextComponent colorizeText(@NotNull String rawtext) {
-        if(customLegacySerializer == null) {
+        if (customLegacySerializer == null) {
             customLegacySerializer = getSerializer();
         }
 
@@ -139,7 +139,7 @@ public class TextUtils {
     }
 
     public static @NotNull String sanitizeForSerializer(@NotNull String string) {
-        if(customLegacySerializer == null) {
+        if (customLegacySerializer == null) {
             customLegacySerializer = getSerializer();
         }
 

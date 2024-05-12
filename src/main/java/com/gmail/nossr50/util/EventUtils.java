@@ -123,7 +123,7 @@ public final class EventUtils {
         Entity entity = entityDamageEvent.getEntity();
 
         //Check to make sure the entity is not an NPC
-        if(Misc.isNPCEntityExcludingVillagers(entity))
+        if (Misc.isNPCEntityExcludingVillagers(entity))
             return false;
 
         if (!entity.isValid() || !(entity instanceof LivingEntity livingEntity)) {
@@ -143,7 +143,7 @@ public final class EventUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            if(mcMMOPlayer == null)
+            if (mcMMOPlayer == null)
             {
                 return true;
             }
@@ -350,7 +350,7 @@ public final class EventUtils {
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
 
-        if(mcMMOPlayer == null)
+        if (mcMMOPlayer == null)
             return;
 
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
@@ -398,7 +398,7 @@ public final class EventUtils {
 
     public static boolean handleXpGainEvent(Player player, PrimarySkillType skill, float xpGained, XPGainReason xpGainReason) {
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-        if(mmoPlayer == null)
+        if (mmoPlayer == null)
             return true;
 
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
@@ -415,7 +415,7 @@ public final class EventUtils {
     }
 
     public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return true;
 
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
@@ -432,7 +432,7 @@ public final class EventUtils {
                 String skillName = primarySkillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
                 int threshold = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyLevelThreshold();
-                if(playerSkillLevel > threshold) {
+                if (playerSkillLevel > threshold) {
                     playerProfile.modifySkill(primarySkillType, Math.max(threshold, playerSkillLevel - levelChanged.get(skillName)));
                     playerProfile.removeXp(primarySkillType, experienceChanged.get(skillName));
 
@@ -468,11 +468,11 @@ public final class EventUtils {
             McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
 
             //Not loaded
-            if(killerPlayer == null)
+            if (killerPlayer == null)
                 return true;
 
             //Not loaded
-            if(UserManager.getPlayer(victim) == null)
+            if (UserManager.getPlayer(victim) == null)
                 return true;
 
             PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();

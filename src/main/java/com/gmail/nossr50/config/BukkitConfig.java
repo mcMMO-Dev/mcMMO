@@ -52,7 +52,7 @@ public abstract class BukkitConfig {
         try {
             config.save(configFile);
 
-            if(copyDefaults && !savedDefaults) {
+            if (copyDefaults && !savedDefaults) {
                 copyMissingDefaultsFromResource();
                 savedDefaults = true;
             }
@@ -84,7 +84,7 @@ public abstract class BukkitConfig {
     YamlConfiguration saveDefaultConfigToDisk() {
         LogUtils.debug(mcMMO.p.getLogger(), "Copying default config to disk: " + fileName + " to defaults/" + fileName);
         try(InputStream inputStream = mcMMO.p.getResource(fileName)) {
-            if(inputStream == null) {
+            if (inputStream == null) {
                 mcMMO.p.getLogger().severe("Unable to copy default config: " + fileName);
                 return null;
             }

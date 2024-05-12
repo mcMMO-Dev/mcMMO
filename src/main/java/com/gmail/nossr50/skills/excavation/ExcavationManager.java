@@ -66,7 +66,7 @@ public class ExcavationManager extends SkillManager {
     @VisibleForTesting
     public void processExcavationBonusesOnBlock(BlockState blockState, ExcavationTreasure treasure, Location location) {
         //Spawn Vanilla XP orbs if a dice roll succeeds
-        if(ProbabilityUtil.isStaticSkillRNGSuccessful(
+        if (ProbabilityUtil.isStaticSkillRNGSuccessful(
                 PrimarySkillType.EXCAVATION, mmoPlayer, getArchaelogyExperienceOrbChance())) {
             Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
         }

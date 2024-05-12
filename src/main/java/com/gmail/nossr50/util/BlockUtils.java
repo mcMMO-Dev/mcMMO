@@ -68,7 +68,7 @@ public final class BlockUtils {
         mcMMO.getPlaceStore().setTrue(block);
 
         // Failsafe against lingering metadata
-        if(block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
+        if (block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
             block.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
     }
 
@@ -78,7 +78,7 @@ public final class BlockUtils {
      * @param block target block
      */
     public static void cleanupBlockMetadata(Block block) {
-        if(block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
+        if (block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
             block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
         }
 
@@ -207,7 +207,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedBySuperBreaker(BlockState blockState) {
-        if(mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
+        if (mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
             return true;
 
         if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, blockState.getBlockData()))

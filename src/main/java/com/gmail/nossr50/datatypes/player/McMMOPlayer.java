@@ -157,7 +157,7 @@ public class McMMOPlayer implements Identified {
 
         this.chatChannel = ChatChannel.NONE;
 
-        if(ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
+        if (ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
             chatSpy = true;
         }
     }
@@ -253,20 +253,20 @@ public class McMMOPlayer implements Identified {
     public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
     {
         //Check if they've reached the power level cap just now
-        if(hasReachedPowerLevelCap()) {
+        if (hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
-        } else if(hasReachedLevelCap(primarySkillType)) {
+        } else if (hasReachedLevelCap(primarySkillType)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill",
                     String.valueOf(mcMMO.p.getSkillTools().getLevelCap(primarySkillType)),
                     mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
         }
 
         //Updates from Party sources
-        if(xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
             return;
 
         //Updates from passive sources (Alchemy, Smelting, etc...)
-        if(xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
             return;
 
         updateXPBar(primarySkillType, plugin);
@@ -285,7 +285,7 @@ public class McMMOPlayer implements Identified {
 
     public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
     {
-        if(SkillTools.isChildSkill(primarySkillType)) {
+        if (SkillTools.isChildSkill(primarySkillType)) {
             return 1.0D;
         }
 
@@ -602,7 +602,7 @@ public class McMMOPlayer implements Identified {
      * @return
      */
     public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
-        if(hasReachedPowerLevelCap())
+        if (hasReachedPowerLevelCap())
             return true;
 
         return getSkillLevel(primarySkillType) >= mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
@@ -624,7 +624,7 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to process
      */
     public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(xp <= 0) {
+        if (xp <= 0) {
             return;
         }
 
@@ -656,7 +656,7 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to process
      */
     public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(player.getGameMode() == GameMode.CREATIVE)
+        if (player.getGameMode() == GameMode.CREATIVE)
             return;
 
         applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
@@ -709,7 +709,7 @@ public class McMMOPlayer implements Identified {
      * @param primarySkillType The skill to check
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(hasReachedLevelCap(primarySkillType))
+        if (hasReachedLevelCap(primarySkillType))
             return;
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
@@ -906,7 +906,7 @@ public class McMMOPlayer implements Identified {
 
         //TODO: This is hacky and temporary solution until skills are move to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
-        if(!RankUtils.hasUnlockedSubskill(player, subSkillType))
+        if (!RankUtils.hasUnlockedSubskill(player, subSkillType))
         {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(superAbilityType) - getSkillLevel(primarySkillType);
 
@@ -941,7 +941,7 @@ public class McMMOPlayer implements Identified {
         int ticks;
 
         //Ability cap of 0 or below means no cap
-        if(abilityLengthCap > 0)
+        if (abilityLengthCap > 0)
         {
             ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, getSkillLevel(primarySkillType)) / abilityLengthVar), superAbilityType.getMaxLength());
         } else {
@@ -1024,7 +1024,7 @@ public class McMMOPlayer implements Identified {
                  * IF THE TOOL IS AN AXE
                  *
                  */
-                if(tool == ToolType.AXE) {
+                if (tool == ToolType.AXE) {
                     processAxeToolMessages();
                 } else {
                     NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
@@ -1045,20 +1045,20 @@ public class McMMOPlayer implements Identified {
         /*
          * IF BOTH TREE FELLER & SKULL SPLITTER ARE ON CD
          */
-        if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+        if (isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
             tooTiredMultiple(PrimarySkillType.WOODCUTTING, SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER, SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
         /*
          * IF TREE FELLER IS ON CD
          * AND PLAYER IS LOOKING AT TREE
          */
-        } else if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
+        } else if (isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
                 && BlockUtils.isPartOfTree(rayCast)) {
             raiseToolWithCooldowns(SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER);
 
         /*
          * IF SKULL SPLITTER IS ON CD
          */
-        } else if(isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+        } else if (isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
             raiseToolWithCooldowns(SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
         } else {
             NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, ToolType.AXE.getRaiseTool());
@@ -1156,7 +1156,7 @@ public class McMMOPlayer implements Identified {
      */
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
-        if(getPlayer().hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
+        if (getPlayer().hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
             RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(MetadataConstants.METADATA_KEY_RUPTURE).get(0);
 
             //Punish a logout
@@ -1175,7 +1175,7 @@ public class McMMOPlayer implements Identified {
 
         UserManager.remove(thisPlayer);
 
-        if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+        if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
             ScoreboardManager.teardownPlayer(thisPlayer);
 
         if (inParty()) {

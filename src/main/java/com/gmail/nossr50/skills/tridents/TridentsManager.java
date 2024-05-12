@@ -14,9 +14,9 @@ public class TridentsManager extends SkillManager {
     public double impaleDamageBonus() {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.TRIDENTS_IMPALE);
 
-        if(rank > 1) {
+        if (rank > 1) {
             return (1.0D + (rank * .5D));
-        } else if(rank == 1) {
+        } else if (rank == 1) {
             return 1.0D;
         }
 

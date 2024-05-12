@@ -37,15 +37,15 @@
 //    public PlayerAttackCooldownToolLayer(@NotNull NMSVersion nmsVersion) {
 //        super(nmsVersion);
 //        mcMMO.p.getLogger().info("Loading Compatibility Layer... (Player Attack Cooldown Exploit Prevention)");
-//        if(!isCompatibleWithMinecraftVersion(nmsVersion)) {
+//        if (!isCompatibleWithMinecraftVersion(nmsVersion)) {
 //            mcMMO.p.getLogger().severe("this version of mcMMO does not support NMS for this version of Minecraft, try updating mcMMO or updating Minecraft. Not all versions of Minecraft will have NMS support built into mcMMO.");
 //            cbNMSVersionPath = "";
 //        } else {
-//            if(NMSConstants.getCraftBukkitVersionPath(nmsVersion) != null) {
+//            if (NMSConstants.getCraftBukkitVersionPath(nmsVersion) != null) {
 //                cbNMSVersionPath = NMSConstants.getCraftBukkitVersionPath(nmsVersion);
 //                noErrorsOnInitialize = initializeLayer();
 //
-//                if(noErrorsOnInitialize) {
+//                if (noErrorsOnInitialize) {
 //                    mcMMO.p.getLogger().info("Successfully Loaded Compatibility Layer! (Player Attack Cooldown Exploit Prevention)");
 //                }
 //            } else {

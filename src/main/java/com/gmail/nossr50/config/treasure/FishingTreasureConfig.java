@@ -50,7 +50,7 @@ public class FishingTreasureConfig extends BukkitConfig {
         List<String> reason = new ArrayList<>();
         ConfigurationSection enchantment_drop_rates = config.getConfigurationSection("Enchantment_Drop_Rates");
 
-        if(enchantment_drop_rates != null) {
+        if (enchantment_drop_rates != null) {
             for (String tier : enchantment_drop_rates.getKeys(false)) {
                 double totalEnchantDropRate = 0;
                 double totalItemDropRate = 0;

@@ -30,7 +30,7 @@ public class ExperienceBarHideTask extends CancellableRunnable {
      */
     @Override
     public void run() {
-        if(experienceBarManagerRef == null || mcMMOPlayer == null)
+        if (experienceBarManagerRef == null || mcMMOPlayer == null)
             return;
 
         experienceBarManagerRef.hideExperienceBar(primarySkillType);

@@ -20,12 +20,12 @@ public class SamePartyPredicate<T extends CommandSender> implements Predicate<T>
     @Override
     public boolean test(T t) {
         //Include the console in the audience
-        if(t instanceof ConsoleCommandSender) {
+        if (t instanceof ConsoleCommandSender) {
             return false; //Party audiences are special, we exclude console from them to avoid double messaging since we send a more verbose version to consoles
         } else {
-            if(t instanceof Player player) {
+            if (t instanceof Player player) {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-                if(mcMMOPlayer != null) {
+                if (mcMMOPlayer != null) {
                     return mcMMOPlayer.getParty() == party;
                 }
             }

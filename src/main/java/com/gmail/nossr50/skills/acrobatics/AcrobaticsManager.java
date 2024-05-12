@@ -51,10 +51,10 @@ public class AcrobaticsManager extends SkillManager {
 
     public boolean canGainRollXP()
     {
-        if(!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
+        if (!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
             return true;
 
-        if(System.currentTimeMillis() >= rollXPCooldown)
+        if (System.currentTimeMillis() >= rollXPCooldown)
         {
             rollXPCooldown = System.currentTimeMillis() + rollXPInterval;
             rollXPIntervalLengthen = (1000 * 10); //5 Seconds
@@ -67,10 +67,10 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canDodge(Entity damager) {
-        if(getPlayer().isBlocking())
+        if (getPlayer().isBlocking())
             return false;
 
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
 
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
@@ -103,14 +103,14 @@ public class AcrobaticsManager extends SkillManager {
             }
 
             if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                if(attacker instanceof Mob mob) {
+                if (attacker instanceof Mob mob) {
                     //Check to see how many dodge XP rewards this mob has handed out
-                    if(mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
+                    if (mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
                         //If Dodge XP has been handed out 5 times then consider it being exploited
                         MetadataValue metadataValue = mob.getMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER).get(0);
                         int count = metadataValue.asInt();
 
-                        if(count <= 5) {
+                        if (count <= 5) {
                             applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
                             mob.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
                             MobDodgeMetaCleanup metaCleanupTask = new MobDodgeMetaCleanup(mob, mcMMO.p);

@@ -35,7 +35,7 @@ public class DelayedCropReplant extends CancellableRunnable {
     public DelayedCropReplant(BlockBreakEvent blockBreakEvent, BlockState cropState, int desiredCropAge, boolean wasImmaturePlant) {
         BlockData cropData = cropState.getBlockData();
 
-        if(cropData instanceof Directional cropDir) {
+        if (cropData instanceof Directional cropDir) {
             cropFace = cropDir.getFacing();
         }
 
@@ -56,13 +56,13 @@ public class DelayedCropReplant extends CancellableRunnable {
         //Remove the metadata marking the block as recently replanted
         mcMMO.p.getFoliaLib().getImpl().runAtLocationLater(blockBreakEvent.getBlock().getLocation(), new markPlantAsOld(blockBreakEvent.getBlock().getLocation()), 10);
 
-        if(blockBreakEvent.isCancelled()) {
+        if (blockBreakEvent.isCancelled()) {
             wasImmaturePlant = true;
         }
 
         //Two kinds of air in Minecraft
-        if(currentState.getType().equals(cropMaterial) || currentState.getType().equals(Material.AIR) || currentState.getType().equals(Material.CAVE_AIR)) {
-//            if(currentState.getBlock().getRelative(BlockFace.DOWN))
+        if (currentState.getType().equals(cropMaterial) || currentState.getType().equals(Material.AIR) || currentState.getType().equals(Material.CAVE_AIR)) {
+//            if (currentState.getBlock().getRelative(BlockFace.DOWN))
             //The space is not currently occupied by a block so we can fill it
             cropBlock.setType(cropMaterial);
 
@@ -74,19 +74,19 @@ public class DelayedCropReplant extends CancellableRunnable {
             int age = 0;
 
             //Crop age should always be 0 if the plant was immature
-            if(!wasImmaturePlant) {
+            if (!wasImmaturePlant) {
                 age = desiredCropAge;
                 //Otherwise make the plant the desired age
             }
 
-            if(newData instanceof Directional) {
+            if (newData instanceof Directional) {
                 //Cocoa Version
                 Directional directional = (Directional) newState.getBlockData();
                 directional.setFacing(cropFace);
 
                 newState.setBlockData(directional);
 
-                if(newData instanceof Cocoa) {
+                if (newData instanceof Cocoa) {
                     plantAnchorType = PlantAnchorType.COCOA;
                 }
             }
@@ -119,7 +119,7 @@ public class DelayedCropReplant extends CancellableRunnable {
             this.plantBlock = plantBlock;
             this.plantAnchorType = plantAnchorType;
 
-            if(plantFace != null) {
+            if (plantFace != null) {
                 this.plantFace = plantFace;
             }
         }
@@ -140,8 +140,8 @@ public class DelayedCropReplant extends CancellableRunnable {
         private void checkPlantIntegrity(@NotNull BlockFace blockFace) {
             Block neighbor = plantBlock.getRelative(blockFace);
 
-            if(plantAnchorType == PlantAnchorType.COCOA) {
-                if(!neighbor.getType().toString().toLowerCase().contains("jungle")) {
+            if (plantAnchorType == PlantAnchorType.COCOA) {
+                if (!neighbor.getType().toString().toLowerCase().contains("jungle")) {
                     plantBlock.breakNaturally();
                 }
             } else {
@@ -171,7 +171,7 @@ public class DelayedCropReplant extends CancellableRunnable {
         @Override
         public void run() {
             Block cropBlock = cropLoc.getBlock();
-            if(cropBlock.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() > 0)
+            if (cropBlock.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() > 0)
                 cropBlock.setMetadata(MetadataConstants.METADATA_KEY_REPLANT, new RecentlyReplantedCropMeta(mcMMO.p, false));
         }
     }

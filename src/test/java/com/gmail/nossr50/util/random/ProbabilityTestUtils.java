@@ -7,7 +7,7 @@ public class ProbabilityTestUtils {
         double iterations = 2.0e7; //20 million
         double winCount = 0;
         for (int i = 0; i < iterations; i++) {
-            if(probability.evaluate()) {
+            if (probability.evaluate()) {
                 winCount++;
             }
         }

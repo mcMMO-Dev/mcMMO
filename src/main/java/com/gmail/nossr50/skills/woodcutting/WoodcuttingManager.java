@@ -90,22 +90,22 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processBonusDropCheck(@NotNull BlockState blockState) {
         //TODO: Why isn't this using the item drop event? Potentially because of Tree Feller? This should be adjusted either way.
-        if(mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
             //Mastery enabled for player
-            if(Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
-                if(checkCleanCutsActivation(blockState.getType())) {
+            if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
+                if (checkCleanCutsActivation(blockState.getType())) {
                     //Triple drops
                     spawnHarvestLumberBonusDrops(blockState);
                     spawnHarvestLumberBonusDrops(blockState);
                 } else {
                     //Harvest Lumber Check
-                    if(checkHarvestLumberActivation(blockState.getType())) {
+                    if (checkHarvestLumberActivation(blockState.getType())) {
                         spawnHarvestLumberBonusDrops(blockState);
                     }
                 }
             //No Mastery (no Clean Cuts)
             } else if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
-                if(checkHarvestLumberActivation(blockState.getType())) {
+                if (checkHarvestLumberActivation(blockState.getType())) {
                     spawnHarvestLumberBonusDrops(blockState);
                 }
             }
@@ -113,7 +113,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public void processWoodcuttingBlockXP(@NotNull BlockState blockState) {
-        if(mcMMO.getPlaceStore().isTrue(blockState))
+        if (mcMMO.getPlaceStore().isTrue(blockState))
             return;
 
         int xp = getExperienceFromLog(blockState);
@@ -333,10 +333,10 @@ public class WoodcuttingManager extends SkillManager {
                 }
 
                 //Drop displaced non-woodcutting XP blocks
-                if(RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                        if(mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
-                            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
+                if (RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                    if (RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                        if (mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
+                            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }
@@ -356,7 +356,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     private int updateProcessedLogCount(int xp, int processedLogCount, int beforeXP) {
-        if(beforeXP != xp)
+        if (beforeXP != xp)
             processedLogCount+=1;
 
         return processedLogCount;
@@ -373,15 +373,15 @@ public class WoodcuttingManager extends SkillManager {
      * @return Amount of experience
      */
     private static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
-        if(mcMMO.getPlaceStore().isTrue(blockState))
+        if (mcMMO.getPlaceStore().isTrue(blockState))
             return 0;
 
         int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
 
-        if(rawXP <= 0)
+        if (rawXP <= 0)
             return 0;
 
-        if(ExperienceConfig.getInstance().isTreeFellerXPReduced()) {
+        if (ExperienceConfig.getInstance().isTreeFellerXPReduced()) {
             int reducedXP = rawXP - (woodCount * 5);
             rawXP = Math.max(1, reducedXP);
             return rawXP;

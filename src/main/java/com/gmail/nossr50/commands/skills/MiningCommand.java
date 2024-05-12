@@ -111,7 +111,7 @@ public class MiningCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
-        if(canTripleDrop) {
+        if (canTripleDrop) {
             messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, tripleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
         }

@@ -19,7 +19,7 @@ public class WorldGuardManager {
     private WorldGuardPlugin worldGuardPluginRef;
 
     public static WorldGuardManager getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new WorldGuardManager();
 
         return instance;
@@ -27,7 +27,7 @@ public class WorldGuardManager {
 
     public boolean hasMainFlag(Player player)
     {
-        if(player == null)
+        if (player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -43,7 +43,7 @@ public class WorldGuardManager {
 
     public boolean hasXPFlag(Player player)
     {
-        if(player == null)
+        if (player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -59,7 +59,7 @@ public class WorldGuardManager {
 
     public boolean hasHardcoreFlag(Player player)
     {
-        if(player == null)
+        if (player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);

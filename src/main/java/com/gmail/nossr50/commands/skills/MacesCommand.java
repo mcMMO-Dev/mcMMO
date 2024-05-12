@@ -31,7 +31,7 @@
 //    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
 //        List<String> messages = new ArrayList<>();
 //
-//        if(SkillUtils.canUseSubskill(player, MACES_MACES_LIMIT_BREAK)) {
+//        if (SkillUtils.canUseSubskill(player, MACES_MACES_LIMIT_BREAK)) {
 //            messages.add(getStatMessage(MACES_MACES_LIMIT_BREAK,
 //                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, MACES_MACES_LIMIT_BREAK, 1000))));
 //        }

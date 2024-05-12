@@ -54,7 +54,7 @@ public final class ChimaeraWing {
         mcMMOPlayer = UserManager.getPlayer(player);
 
         //Not loaded
-        if(mcMMOPlayer == null)
+        if (mcMMOPlayer == null)
             return;
 
         if (mcMMOPlayer.getTeleportCommenceLocation() != null) {

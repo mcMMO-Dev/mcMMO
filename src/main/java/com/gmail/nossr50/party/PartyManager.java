@@ -243,7 +243,7 @@ public final class PartyManager {
         }
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-        if(mmoPlayer == null)
+        if (mmoPlayer == null)
             return null;
 
         return mmoPlayer.getParty();

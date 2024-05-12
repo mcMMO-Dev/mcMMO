@@ -31,12 +31,12 @@ public class TridentsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        if(SkillUtils.canUseSubskill(player, TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
+        if (SkillUtils.canUseSubskill(player, TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
             messages.add(getStatMessage(TRIDENTS_TRIDENTS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, TRIDENTS_TRIDENTS_LIMIT_BREAK, 1000))));
         }
 
-        if(SkillUtils.canUseSubskill(player, TRIDENTS_IMPALE)) {
+        if (SkillUtils.canUseSubskill(player, TRIDENTS_IMPALE)) {
             messages.add(getStatMessage(TRIDENTS_IMPALE,
                     String.valueOf(mmoPlayer.getTridentsManager().impaleDamageBonus())));
         }

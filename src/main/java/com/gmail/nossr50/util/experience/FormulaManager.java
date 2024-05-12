@@ -135,7 +135,7 @@ public class FormulaManager {
      * @param formulaType target formulaType
      */
     private int processXPToNextLevel(int level, FormulaType formulaType) {
-        if(mcMMO.isRetroModeEnabled())
+        if (mcMMO.isRetroModeEnabled())
         {
             return processXPRetroToNextLevel(level, formulaType);
         } else {
@@ -151,7 +151,7 @@ public class FormulaManager {
     private int processStandardXPToNextLevel(int level, FormulaType formulaType) {
         Map<Integer, Integer> experienceMapRef = formulaType == FormulaType.LINEAR ? experienceNeededStandardLinear : experienceNeededStandardExponential;
 
-        if(!experienceMapRef.containsKey(level)) {
+        if (!experienceMapRef.containsKey(level)) {
             int experienceSum = 0;
             int retroIndex = (level * 10) + 1;
 

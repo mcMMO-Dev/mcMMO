@@ -46,7 +46,7 @@ public class ProbabilityUtil {
         double percentageValue = probability.getValue(); //Doesn't need to be scaled
 
         //Apply lucky modifier
-        if(isLucky) {
+        if (isLucky) {
             percentageValue *= LUCKY_MODIFIER;
         }
 
@@ -65,7 +65,7 @@ public class ProbabilityUtil {
         double percentageValue = probability.getValue();
 
         //Apply lucky modifier
-        if(isLucky) {
+        if (isLucky) {
             percentageValue *= LUCKY_MODIFIER;
         }
 
@@ -85,7 +85,7 @@ public class ProbabilityUtil {
     static SkillProbabilityType getProbabilityType(@NotNull SubSkillType subSkillType) {
         SkillProbabilityType skillProbabilityType = SkillProbabilityType.DYNAMIC_CONFIGURABLE;
 
-        if(subSkillType == SubSkillType.TAMING_FAST_FOOD_SERVICE
+        if (subSkillType == SubSkillType.TAMING_FAST_FOOD_SERVICE
                 || subSkillType == SubSkillType.AXES_ARMOR_IMPACT
                 || subSkillType == SubSkillType.AXES_GREATER_IMPACT)
             skillProbabilityType = SkillProbabilityType.STATIC_CONFIGURABLE;
@@ -181,7 +181,7 @@ public class ProbabilityUtil {
         //Luck
         boolean isLucky = mmoPlayer != null && Permissions.lucky(mmoPlayer.getPlayer(), subSkillType.getParentSkill());
 
-        if(isLucky) {
+        if (isLucky) {
             return probability.evaluate(LUCKY_MODIFIER);
         } else {
             return probability.evaluate();
@@ -224,7 +224,7 @@ public class ProbabilityUtil {
         if (mmoPlayer != null) {
             SubSkillEvent subSkillEvent = EventUtils.callSubSkillEvent(mmoPlayer, subSkillType);
 
-            if(subSkillEvent.isCancelled()) {
+            if (subSkillEvent.isCancelled()) {
                 return Probability.ALWAYS_FAILS;
             }
 
@@ -232,7 +232,7 @@ public class ProbabilityUtil {
             double resultModifier = subSkillEvent.getResultModifier();
 
             // Mutate probability
-            if(resultModifier != 1.0D)
+            if (resultModifier != 1.0D)
                 probability = Probability.ofPercent(probability.getValue() * resultModifier);
         }
 
@@ -303,7 +303,7 @@ public class ProbabilityUtil {
                                                      @Nullable McMMOPlayer mmoPlayer, @NotNull Probability probability) {
         boolean isLucky = mmoPlayer != null && Permissions.lucky(mmoPlayer.getPlayer(), primarySkillType);
 
-        if(isLucky) {
+        if (isLucky) {
             return probability.evaluate(LUCKY_MODIFIER);
         } else {
             return probability.evaluate();

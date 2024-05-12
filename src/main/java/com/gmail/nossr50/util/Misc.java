@@ -223,7 +223,7 @@ public final class Misc {
         Location spawnLocation = fromLocation.clone();
         Location targetLocation = toLocation.clone();
 
-        if(spawnLocation.getWorld() == null)
+        if (spawnLocation.getWorld() == null)
             return null;
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
@@ -318,7 +318,7 @@ public final class Misc {
 //    }
 
     public static void spawnExperienceOrb(@NotNull Location location, int experienceValue) {
-        if(location.getWorld() == null)
+        if (location.getWorld() == null)
             return;
 
         ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
@@ -336,7 +336,7 @@ public final class Misc {
 
         @Override
         public void run() {
-            if(location == null || location.getWorld() == null)
+            if (location == null || location.getWorld() == null)
                 return;
 
             ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
@@ -352,7 +352,7 @@ public final class Misc {
 //
 //        double win = 0, loss = 0;
 //        for(int x = 0; x < iterations; x++) {
-//            if(RandomChanceUtil.checkRandomChanceExecutionSuccess(normalPlayer.getPlayer(), SubSkillType.MINING_MOTHER_LODE, true)) {
+//            if (RandomChanceUtil.checkRandomChanceExecutionSuccess(normalPlayer.getPlayer(), SubSkillType.MINING_MOTHER_LODE, true)) {
 //                win++;
 //            } else {
 //                loss++;

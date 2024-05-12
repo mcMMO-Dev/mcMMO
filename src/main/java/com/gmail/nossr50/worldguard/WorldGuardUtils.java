@@ -43,7 +43,7 @@ public class WorldGuardUtils {
 
     public static boolean isWorldGuardLoaded()
     {
-        if(detectedIncompatibleWG)
+        if (detectedIncompatibleWG)
             return false;
 
         worldGuardPluginRef = getWorldGuard();
@@ -59,21 +59,21 @@ public class WorldGuardUtils {
     private static WorldGuardPlugin getWorldGuard()
     {
         //WG plugin reference is already cached so just return it
-        if(isLoaded)
+        if (isLoaded)
             return worldGuardPluginRef;
 
         //Grab WG if it exists
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
-        if(plugin == null) {
+        if (plugin == null) {
             //WG is not present
             detectedIncompatibleWG = true;
             LogUtils.debug(mcMMO.p.getLogger(), "WorldGuard was not detected.");
         } else {
             //Check that its actually of class WorldGuardPlugin
-            if(plugin instanceof WorldGuardPlugin)
+            if (plugin instanceof WorldGuardPlugin)
             {
-                if(isCompatibleVersion(plugin))
+                if (isCompatibleVersion(plugin))
                 {
                     worldGuardPluginRef = (WorldGuardPlugin) plugin;
                     isLoaded = true;
@@ -119,8 +119,8 @@ public class WorldGuardUtils {
              * If WG appears to have all of its classes we can then check to see if its been initialized properly
              */
             try {
-                if(allClassesFound) {
-                    if(!((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).isInitialized()) {
+                if (allClassesFound) {
+                    if (!((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).isInitialized()) {
                         markWGIncompatible();
                         mcMMO.p.getLogger().severe("WG did not initialize properly, this can cause errors with mcMMO so mcMMO is disabling certain features.");
                     }

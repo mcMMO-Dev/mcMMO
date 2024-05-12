@@ -28,7 +28,7 @@ public class CrossbowsManager extends SkillManager {
     }
 
     public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow, @NotNull Vector hitBlockNormal) {
-        if(!arrow.isShotFromCrossbow())
+        if (!arrow.isShotFromCrossbow())
             return;
 
         // Check player permission

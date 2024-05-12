@@ -36,7 +36,7 @@ public class PartyChatMailer extends AbstractChatMailer {
         McMMOChatEvent chatEvent = new McMMOPartyChatEvent(pluginRef, chatMessage, party, isAsync);
         Bukkit.getPluginManager().callEvent(chatEvent);
 
-        if(!chatEvent.isCancelled()) {
+        if (!chatEvent.isCancelled()) {
             sendMail(chatMessage);
         }
     }
@@ -60,14 +60,14 @@ public class PartyChatMailer extends AbstractChatMailer {
      * @return the styled string, based on a locale entry
      */
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor, boolean isLeader) {
-        if(canColor) {
-            if(isLeader) {
+        if (canColor) {
+            if (isLeader) {
                 return LocaleLoader.getTextComponent("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message);
             } else {
                 return LocaleLoader.getTextComponent("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message);
             }
         } else {
-            if(isLeader) {
+            if (isLeader) {
                 return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message));
             } else {
                 return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message));

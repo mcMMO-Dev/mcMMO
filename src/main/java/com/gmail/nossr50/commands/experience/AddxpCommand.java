@@ -26,7 +26,7 @@ public class AddxpCommand extends ExperienceCommand {
     protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         if (player != null) {
             //Check if player profile is loaded
-            if(UserManager.getPlayer(player) == null)
+            if (UserManager.getPlayer(player) == null)
                 return;
 
             UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
@@ -39,7 +39,7 @@ public class AddxpCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageAll(Player player, int value, boolean isSilent) {
-        if(isSilent)
+        if (isSilent)
             return;
 
         player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", value));
@@ -47,7 +47,7 @@ public class AddxpCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
-        if(isSilent)
+        if (isSilent)
             return;
 
         player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));

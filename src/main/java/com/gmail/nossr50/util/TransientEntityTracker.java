@@ -147,7 +147,7 @@ public class TransientEntityTracker {
     private synchronized @Nullable HashSet<TrackedTamingEntity> getTrackedEntities(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
         HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>> playerEntityMap = getPlayerTrackedEntityMap(playerUUID);
 
-        if(playerEntityMap == null)
+        if (playerEntityMap == null)
             return null;
 
         return playerEntityMap.get(callOfTheWildType);
@@ -196,12 +196,12 @@ public class TransientEntityTracker {
 
                 HashSet<TrackedTamingEntity> trackedEntities = getTrackedEntities(uuid, callOfTheWildType);
 
-                if(trackedEntities == null)
+                if (trackedEntities == null)
                     continue;
 
                 Iterator<TrackedTamingEntity> iterator = trackedEntities.iterator();
                 while (iterator.hasNext()) {
-                    if(iterator.next().getLivingEntity().equals(livingEntity)) {
+                    if (iterator.next().getLivingEntity().equals(livingEntity)) {
                         iterator.remove();
                         return;
                     }
@@ -220,7 +220,7 @@ public class TransientEntityTracker {
         ArrayList<LivingEntity> matchingEntities = new ArrayList<>();
 
         for(LivingEntity livingEntity : getChunkLookupCache()) {
-            if(livingEntity.getLocation().getChunk().equals(chunk)) {
+            if (livingEntity.getLocation().getChunk().equals(chunk)) {
                 matchingEntities.add(livingEntity);
             }
         }
@@ -238,7 +238,7 @@ public class TransientEntityTracker {
     public synchronized int getAmountCurrentlySummoned(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
         HashSet<TrackedTamingEntity> trackedEntities = getTrackedEntities(playerUUID, callOfTheWildType);
 
-        if(trackedEntities == null)
+        if (trackedEntities == null)
             return 0;
 
         return trackedEntities.size();
@@ -253,7 +253,7 @@ public class TransientEntityTracker {
      */
     public synchronized void removeSummon(@NotNull LivingEntity livingEntity, @Nullable Player player, boolean timeExpired) {
         //Kill the summon & remove it
-        if(livingEntity.isValid()) {
+        if (livingEntity.isValid()) {
             livingEntity.setHealth(0); //Should trigger entity death events
             livingEntity.remove();
 
@@ -265,8 +265,8 @@ public class TransientEntityTracker {
             }
 
             //Inform player of summon death
-            if(player != null && player.isOnline()) {
-                if(timeExpired) {
+            if (player != null && player.isOnline()) {
+                if (timeExpired) {
                     NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.TimeExpired", StringUtils.getPrettyEntityTypeString(livingEntity.getType()));
                 } else {
                     NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.Removed", StringUtils.getPrettyEntityTypeString(livingEntity.getType()));
@@ -302,7 +302,7 @@ public class TransientEntityTracker {
         for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
             HashSet<TrackedTamingEntity> trackedEntities = getTrackedEntities(playerUUID, callOfTheWildType);
 
-            if(trackedEntities == null) {
+            if (trackedEntities == null) {
                 continue;
             }
 

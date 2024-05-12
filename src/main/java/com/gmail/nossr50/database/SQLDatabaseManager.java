@@ -59,7 +59,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         this.h2 = h2;
         String connectionString = getConnectionString(h2);
 
-        if(!h2 && mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
+        if (!h2 && mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
             connectionString+=
                     "&allowPublicKeyRetrieval=true";
         }
@@ -140,7 +140,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         String connectionString = "jdbc:mysql://" + mcMMO.p.getGeneralConfig().getMySQLServerName()
                 + ":" + mcMMO.p.getGeneralConfig().getMySQLServerPort() + "/" + mcMMO.p.getGeneralConfig().getMySQLDatabaseName();
 
-        if(!mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 17, 0) //Temporary hack for SQL and 1.17 support
+        if (!mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 17, 0) //Temporary hack for SQL and 1.17 support
                 && mcMMO.p.getGeneralConfig().getMySQLSSL())
             connectionString +=
                     "?verifyServerCertificate=false"+
@@ -247,7 +247,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         if (success) {
-            if(uuid != null)
+            if (uuid != null)
                 cleanupUser(uuid);
 
             Misc.profileCleanup(playerName);
@@ -400,7 +400,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         List<PlayerStat> stats = new ArrayList<>();
 
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(skill != null && SkillTools.isChildSkill(skill)) {
+        if (skill != null && SkillTools.isChildSkill(skill)) {
             logger.severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
@@ -631,7 +631,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName) throws RuntimeException {
-        if(uuid == null && playerName == null) {
+        if (uuid == null && playerName == null) {
             throw new RuntimeException("Error looking up player, both UUID and playerName are null and one must not be.");
         }
 

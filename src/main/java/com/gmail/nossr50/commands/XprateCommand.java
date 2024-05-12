@@ -37,7 +37,7 @@ public class XprateCommand implements TabExecutor {
 
                 if (mcMMO.p.isXPEventEnabled()) {
 
-                    if(mcMMO.p.getAdvancedConfig().useTitlesForXPEvent())
+                    if (mcMMO.p.getAdvancedConfig().useTitlesForXPEvent())
                     {
                         NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                                 LocaleLoader.getString("Commands.Event.Stop"),
@@ -45,7 +45,7 @@ public class XprateCommand implements TabExecutor {
                                 10, 10*20, 20);
                     }
 
-                    if(mcMMO.p.getGeneralConfig().broadcastEventMessages())
+                    if (mcMMO.p.getGeneralConfig().broadcastEventMessages())
                     {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
@@ -82,7 +82,7 @@ public class XprateCommand implements TabExecutor {
 
                 int newXpRate = Integer.parseInt(args[0]);
 
-                if(newXpRate < 0)
+                if (newXpRate < 0)
                 {
                     sender.sendMessage(ChatColor.RED+LocaleLoader.getString("Commands.NegativeNumberWarn"));
                     return true;
@@ -90,7 +90,7 @@ public class XprateCommand implements TabExecutor {
 
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
-                if(mcMMO.p.getAdvancedConfig().useTitlesForXPEvent())
+                if (mcMMO.p.getAdvancedConfig().useTitlesForXPEvent())
                 {
                     NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                             LocaleLoader.getString("Commands.Event.Start"),
@@ -98,7 +98,7 @@ public class XprateCommand implements TabExecutor {
                             10, 10*20, 20);
                 }
 
-                if(mcMMO.p.getGeneralConfig().broadcastEventMessages())
+                if (mcMMO.p.getGeneralConfig().broadcastEventMessages())
                 {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));

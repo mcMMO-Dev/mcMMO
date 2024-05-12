@@ -293,7 +293,7 @@ class FlatFileDatabaseManagerTest {
     private void checkNewUserValues(@NotNull PlayerProfile playerProfile, int startingLevel) {
         //Checking a new user for being zero initialized
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(SkillTools.isChildSkill(primarySkillType))
+            if (SkillTools.isChildSkill(primarySkillType))
                 continue;
 
             assertEquals(startingLevel, playerProfile.getSkillLevel(primarySkillType));
@@ -369,7 +369,7 @@ class FlatFileDatabaseManagerTest {
         assertNotNull(resourceFileURI);
         File copyOfFile = new File(tempDir.getPath() + File.separator + dbFileName);
 
-        if(copyOfFile.exists()) {
+        if (copyOfFile.exists()) {
             //noinspection ResultOfMethodCallIgnored
             copyOfFile.delete();
         }
@@ -397,7 +397,7 @@ class FlatFileDatabaseManagerTest {
          */
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(SkillTools.isChildSkill(primarySkillType))
+            if (SkillTools.isChildSkill(primarySkillType))
                 continue;
 
             int expectedLevelHealthyDBEntryOne = getExpectedLevelHealthyDBEntryOne(primarySkillType);
@@ -594,7 +594,7 @@ class FlatFileDatabaseManagerTest {
         Map<PrimarySkillType, Integer> rankBoyPositions = flatFileDatabaseManager.readRank(rankBoyName);
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(primarySkillType.isChildSkill()) {
+            if (primarySkillType.isChildSkill()) {
                 assertNull(rankBoyPositions.get(primarySkillType));
                 assertNull(rankGirlPositions.get(primarySkillType));
             } else {
@@ -623,7 +623,7 @@ class FlatFileDatabaseManagerTest {
         assertNotNull(resourceFileURI);
         File copyOfFile = new File(tempDir.getPath() + File.separator + DB_BADDATA);
 
-        if(copyOfFile.exists()) {
+        if (copyOfFile.exists()) {
             copyOfFile.delete();
         }
 
@@ -683,7 +683,7 @@ class FlatFileDatabaseManagerTest {
         assertEquals(uuid, leveledProfile.getUniqueId());
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(SkillTools.isChildSkill(primarySkillType))
+            if (SkillTools.isChildSkill(primarySkillType))
                 continue;
 
             leveledProfile.modifySkill(primarySkillType, levels); //TODO: This method also resets XP, not cool
@@ -693,7 +693,7 @@ class FlatFileDatabaseManagerTest {
         leveledProfile = flatFileDatabaseManager.loadPlayerProfile(uuid);
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(SkillTools.isChildSkill(primarySkillType)) {
+            if (SkillTools.isChildSkill(primarySkillType)) {
                 continue;
             }
 

@@ -85,7 +85,7 @@ public final class AlchemyPotionBrewer {
     }
 
     private static void removeIngredient(BrewerInventory inventory, Player player) {
-        if(inventory.getIngredient() == null)
+        if (inventory.getIngredient() == null)
             return;
 
         ItemStack ingredient = inventory.getIngredient().clone();
@@ -137,7 +137,7 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(@Nullable McMMOPlayer mmoPlayer) {
-        if(mmoPlayer == null) {
+        if (mmoPlayer == null) {
             return mcMMO.p.getPotionConfig().getIngredients(1);
         }
 
@@ -202,7 +202,7 @@ public final class AlchemyPotionBrewer {
 
         // Update the brewing inventory with the new potions
         for (int i = 0; i < 3; i++) {
-            if(outputList.get(i) != null) {
+            if (outputList.get(i) != null) {
                 inventory.setItem(i, outputList.get(i));
             }
         }

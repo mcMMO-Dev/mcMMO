@@ -66,8 +66,8 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
         if (item.getItemMeta() != null) {
-            if(item.getItemMeta().hasCustomModelData()) {
-                if(!mcMMO.p.getCustomItemSupportConfig().isCustomRepairAllowed()) {
+            if (item.getItemMeta().hasCustomModelData()) {
+                if (!mcMMO.p.getCustomItemSupportConfig().isCustomRepairAllowed()) {
                     NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED,
                             "Anvil.Repair.Reject.CustomModelData");
                     return;
@@ -326,7 +326,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
         if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, mmoPlayer)) {
@@ -370,8 +370,8 @@ public class RepairManager extends SkillManager {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             int enchantLevel = enchant.getValue();
 
-            if(!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
-                if(enchantLevel > enchant.getKey().getMaxLevel()) {
+            if (!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
+                if (enchantLevel > enchant.getKey().getMaxLevel()) {
                     enchantLevel = enchant.getKey().getMaxLevel();
 
                     item.addEnchantment(enchant.getKey(), enchantLevel);

@@ -149,7 +149,7 @@ public abstract class SkillCommand implements TabExecutor {
         // send header
         player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
-        if(!SkillTools.isChildSkill(skill))
+        if (!SkillTools.isChildSkill(skill))
         {
             /*
              * NON-CHILD SKILLS
@@ -177,7 +177,7 @@ public abstract class SkillCommand implements TabExecutor {
 
             for(int i = 0; i < parentList.size(); i++)
             {
-                if(i+1 < parentList.size())
+                if (i+1 < parentList.size())
                 {
                     parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", mcMMO.p.getSkillTools().getLocalizedSkillName(parentList.get(i)), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY).append(", ");
@@ -237,7 +237,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         int length;
 
-        if(abilityLengthCap <= 0)
+        if (abilityLengthCap <= 0)
         {
             length = 2 + (int) (skillValue / abilityLengthVar);
         }
@@ -264,7 +264,7 @@ public abstract class SkillCommand implements TabExecutor {
         String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
         String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
 
-        if(isCustom)
+        if (isCustom)
             return LocaleLoader.getString(templateKey, LocaleLoader.getString(statDescriptionKey, vars));
         else
         {
@@ -274,7 +274,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String getLimitBreakDescriptionParameter() {
-        if(mcMMO.p.getAdvancedConfig().canApplyLimitBreakPVE()) {
+        if (mcMMO.p.getAdvancedConfig().canApplyLimitBreakPVE()) {
             return "(PVP/PVE)";
         } else {
             return "(PVP)";

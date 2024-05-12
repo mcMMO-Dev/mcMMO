@@ -195,10 +195,10 @@ public class PotionConfig extends LegacyConfigLoader {
             PotionUtil.setBasePotionType(potionMeta, potionType, extended, upgraded);
 
 //            // Use the name of the potion to indicate upgrade status if not set in PotionData
-//            if(convertPotionConfigName(key).toUpperCase().contains("STRONG"))
+//            if (convertPotionConfigName(key).toUpperCase().contains("STRONG"))
 //                upgraded = true;
 //
-//            if(convertPotionConfigName(key).toUpperCase().contains("LONG"))
+//            if (convertPotionConfigName(key).toUpperCase().contains("LONG"))
 //                extended = true;
 
             List<String> lore = new ArrayList<>();

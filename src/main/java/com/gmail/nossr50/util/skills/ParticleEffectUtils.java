@@ -82,7 +82,7 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        if(location.getWorld() == null)
+        if (location.getWorld() == null)
             return;
 
         location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
@@ -91,7 +91,7 @@ public final class ParticleEffectUtils {
     public static void playSmokeEffect(Location location) {
         World world = location.getWorld();
 
-        if(world == null)
+        if (world == null)
             return;
 
         // Have to do it this way, because not all block directions are valid for smoke

@@ -85,7 +85,7 @@ public class McrankCommand implements TabExecutor {
         if (sender instanceof Player) {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
-            if(mcMMOPlayer == null)
+            if (mcMMOPlayer == null)
             {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return;

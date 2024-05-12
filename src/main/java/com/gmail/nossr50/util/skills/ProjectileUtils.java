@@ -29,54 +29,54 @@ public class ProjectileUtils {
      */
     // TODO: Add test
     public static void cleanupProjectileMetadata(@NotNull Arrow arrow) {
-        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
         }
 
-        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
         }
 
-        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
         }
 
-        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW, mcMMO.p);
         }
 
-        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW, mcMMO.p);
         }
 
-        if(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT, mcMMO.p);
         }
     }
 
     public static void copyArrowMetadata(@NotNull Plugin pluginRef, @NotNull Arrow arrowToCopy, @NotNull Arrow newArrow) {
-        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
             newArrow.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW,
                     arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_INF_ARROW).get(0));
         }
 
-        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
             newArrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE,
                     new FixedMetadataValue(pluginRef,
                             arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE).get(0).asDouble()));
         }
 
-        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
+        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
             newArrow.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE,
                     arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE).get(0));
         }
 
-        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
+        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
             newArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                     arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW).get(0));
         }
 
-        if(arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
+        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
             newArrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW,
                     arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW).get(0));
         }

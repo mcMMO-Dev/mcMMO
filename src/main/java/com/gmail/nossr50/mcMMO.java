@@ -207,7 +207,7 @@ public class mcMMO extends JavaPlugin {
                 checkModConfigs();
             }
 
-            if(projectKorraEnabled) {
+            if (projectKorraEnabled) {
                 getLogger().info("ProjectKorra was detected, this can cause some issues with weakness potions and combat skills for mcMMO");
             }
 
@@ -228,7 +228,7 @@ public class mcMMO extends JavaPlugin {
             //Check for the newer API and tell them what to do if its missing
             checkForOutdatedAPI();
 
-            if(serverAPIOutdated)
+            if (serverAPIOutdated)
             {
                 foliaLib
                         .getImpl()
@@ -237,7 +237,7 @@ public class mcMMO extends JavaPlugin {
                                 20, 20*60*30
                         );
 
-                if(platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT)
+                if (platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT)
                 {
                     foliaLib
                             .getImpl()
@@ -280,11 +280,11 @@ public class mcMMO extends JavaPlugin {
             //If anonymous statistics are enabled then use them
             Metrics metrics;
 
-            if(generalConfig.getIsMetricsEnabled()) {
+            if (generalConfig.getIsMetricsEnabled()) {
                 metrics = new Metrics(this, 3894);
                 metrics.addCustomChart(new SimplePie("version", () -> getDescription().getVersion()));
 
-                if(generalConfig.getIsRetroMode())
+                if (generalConfig.getIsRetroMode())
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Retro"));
                 else
                     metrics.addCustomChart(new SimplePie("leveling_system", () -> "Standard"));
@@ -323,7 +323,7 @@ public class mcMMO extends JavaPlugin {
         transientEntityTracker = new TransientEntityTracker();
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
 
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PapiExpansion().register();
         }
     }
@@ -351,7 +351,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onLoad()
     {
-        if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+        if (getServer().getPluginManager().getPlugin("WorldGuard") != null) {
             WorldGuardManager.getInstance().registerFlags();
         }
 
@@ -372,11 +372,11 @@ public class mcMMO extends JavaPlugin {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
-            if(partyConfig.isPartyEnabled())
+            if (partyConfig.isPartyEnabled())
                 getPartyManager().saveParties(); // Save our parties
 
             //TODO: Needed?
-            if(generalConfig.getScoreboardsEnabled())
+            if (generalConfig.getScoreboardsEnabled())
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
@@ -615,7 +615,7 @@ public class mcMMO extends JavaPlugin {
 
         InteractionManager.initMaps(); //Init maps
 
-        if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
+        if (CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
             LogUtils.debug(mcMMO.p.getLogger(), "Enabling Acrobatics Skills");
 
@@ -657,7 +657,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        if(partyConfig.isPartyEnabled()) {
+        if (partyConfig.isPartyEnabled()) {
             long kickIntervalTicks = generalConfig.getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
             if (kickIntervalTicks == 0) {
@@ -675,7 +675,7 @@ public class mcMMO extends JavaPlugin {
             getFoliaLib().getImpl().runTimer(new ClearRegisteredXPGainTask(), 60, 60);
         }
 
-        if(mcMMO.p.getAdvancedConfig().allowPlayerTips())
+        if (mcMMO.p.getAdvancedConfig().allowPlayerTips())
         {
             getFoliaLib().getImpl().runTimer(new NotifySquelchReminderTask(), 60, ((20 * 60) * 60));
         }

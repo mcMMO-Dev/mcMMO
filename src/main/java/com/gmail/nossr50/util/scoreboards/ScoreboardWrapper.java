@@ -62,7 +62,7 @@ public class ScoreboardWrapper {
 
     private void initBoard() {
         sidebarType = SidebarType.NONE;
-        if(registered) {
+        if (registered) {
             //Make sure our references are pointed at the right things
             sidebarObjective = scoreboard.getObjective(ScoreboardManager.SIDEBAR_OBJECTIVE);
             powerObjective = scoreboard.getObjective(ScoreboardManager.POWER_OBJECTIVE);
@@ -175,7 +175,7 @@ public class ScoreboardWrapper {
         if (previousBoard == scoreboard) { // Already displaying it
             if (this.oldBoard == null) {
                 // (Shouldn't happen) Use failsafe value - we're already displaying our board, but we don't have the one we should revert to
-                if(mcMMO.p.getServer().getScoreboardManager() != null)
+                if (mcMMO.p.getServer().getScoreboardManager() != null)
                     this.oldBoard = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
             }
         }
@@ -218,7 +218,7 @@ public class ScoreboardWrapper {
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
 
-        if(UserManager.getPlayer(playerName) == null)
+        if (UserManager.getPlayer(playerName) == null)
             return;
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
@@ -411,7 +411,7 @@ public class ScoreboardWrapper {
     protected void loadObjective(String displayName) {
         //Unregister objective
         McMMOScoreboardObjectiveEvent unregisterEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.UNREGISTER_THIS_OBJECTIVE);
-        if(!unregisterEvent.isCancelled()) {
+        if (!unregisterEvent.isCancelled()) {
             try {
                 sidebarObjective.unregister();
             } catch (IllegalStateException e) {
@@ -419,7 +419,7 @@ public class ScoreboardWrapper {
 
                 LogUtils.debug(mcMMO.p.getLogger(), "Recovering scoreboard for player: " + player.getName());
 
-                if(mmoPlayer.isDebugMode())
+                if (mmoPlayer.isDebugMode())
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
 
                 initBoard(); //Start over
@@ -429,7 +429,7 @@ public class ScoreboardWrapper {
 
         //Register objective
         McMMOScoreboardObjectiveEvent registerEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.REGISTER_NEW_OBJECTIVE);
-        if(!registerEvent.isCancelled())
+        if (!registerEvent.isCancelled())
             sidebarObjective = registerEvent.getTargetBoard().registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
 
         if (displayName.length() > 32) {
@@ -453,7 +453,7 @@ public class ScoreboardWrapper {
      * Load new values into the sidebar.
      */
     private void updateSidebar() {
-        if(updateTask != null) {
+        if (updateTask != null) {
             try {
                 updateTask.cancel();
             } catch (Exception e) {
@@ -477,7 +477,7 @@ public class ScoreboardWrapper {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if(mcMMOPlayer == null)
+        if (mcMMOPlayer == null)
             return;
 
         switch (sidebarType) {

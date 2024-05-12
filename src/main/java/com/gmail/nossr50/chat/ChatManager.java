@@ -125,7 +125,7 @@ public class ChatManager {
      * @param targetChatChannel target chat channel
      */
     public void setOrToggleChatChannel(@NotNull McMMOPlayer mmoPlayer, @NotNull ChatChannel targetChatChannel) {
-        if(targetChatChannel == mmoPlayer.getChatChannel()) {
+        if (targetChatChannel == mmoPlayer.getChatChannel()) {
             //Disabled message
             mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Chat.Channel.Off", StringUtils.getCapitalized(targetChatChannel.toString())));
             mmoPlayer.setChatMode(ChatChannel.NONE);
@@ -144,7 +144,7 @@ public class ChatManager {
         StringBuilder stringBuilder = new StringBuilder();
 
         for(int i = 0; i < args.length; i++) {
-            if(i + 1 >= args.length) {
+            if (i + 1 >= args.length) {
                 stringBuilder.append(args[i]);
             } else {
                 stringBuilder.append(args[i]).append(" ");
@@ -162,12 +162,12 @@ public class ChatManager {
     public boolean isMessageAllowed(@NotNull McMMOPlayer mmoPlayer) {
         switch (mmoPlayer.getChatChannel()) {
             case ADMIN:
-                if(mmoPlayer.getPlayer().isOp() || Permissions.adminChat(mmoPlayer.getPlayer())) {
+                if (mmoPlayer.getPlayer().isOp() || Permissions.adminChat(mmoPlayer.getPlayer())) {
                     return true;
                 }
                 break;
             case PARTY:
-                if(mmoPlayer.getParty() != null && Permissions.partyChat(mmoPlayer.getPlayer())) {
+                if (mmoPlayer.getParty() != null && Permissions.partyChat(mmoPlayer.getPlayer())) {
                     return true;
                 }
                 break;
@@ -206,7 +206,7 @@ public class ChatManager {
      * @return true if the chat channel is enabled
      */
     public boolean isChatChannelEnabled(@NotNull ChatChannel chatChannel) {
-        if(!isChatEnabled) {
+        if (!isChatEnabled) {
             return false;
         } else {
             switch(chatChannel) {

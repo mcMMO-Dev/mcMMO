@@ -113,7 +113,7 @@ public class UnarmedCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
+        if (Permissions.canUseSubSkill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.UNARMED_UNARMED_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, 1000))));
         }

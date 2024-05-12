@@ -69,7 +69,7 @@ public class SkillTools {
             for(SubSkillType subSkillType : SubSkillType.values()) {
                 String[] splitSubSkillName = subSkillType.toString().split("_");
 
-                if(primarySkillType1.toString().equalsIgnoreCase(splitSubSkillName[0])) {
+                if (primarySkillType1.toString().equalsIgnoreCase(splitSubSkillName[0])) {
                     //Parent Skill Found
                     tempSubParentMap.put(subSkillType, primarySkillType1);
                 }
@@ -127,7 +127,7 @@ public class SkillTools {
                 PrimarySkillType parent = getSuperAbilityParent(superAbilityType);
                 tempAbilityParentRelationshipMap.put(superAbilityType, parent);
 
-                if(superAbilityType != SuperAbilityType.BLAST_MINING) {
+                if (superAbilityType != SuperAbilityType.BLAST_MINING) {
                     //This map is used only for abilities that have a tool readying phase, so blast mining is ignored
                     tempMainActivatedAbilityChildMap.put(parent, superAbilityType);
                 }
@@ -296,7 +296,7 @@ public class SkillTools {
     }
 
     public SuperAbilityType getSuperAbility(PrimarySkillType primarySkillType) {
-        if(mainActivatedAbilityChildMap.get(primarySkillType) == null)
+        if (mainActivatedAbilityChildMap.get(primarySkillType) == null)
             return null;
 
         return mainActivatedAbilityChildMap.get(primarySkillType);

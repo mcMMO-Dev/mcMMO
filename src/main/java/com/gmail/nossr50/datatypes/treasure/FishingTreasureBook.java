@@ -30,7 +30,7 @@ public class FishingTreasureBook extends FishingTreasure {
         LogUtils.debug(mcMMO.p.getLogger(), "Registering enchantments for Fishing Book...");
 
         for(Enchantment enchantment : Enchantment.values()) {
-            if(isEnchantAllowed(enchantment)) {
+            if (isEnchantAllowed(enchantment)) {
                 addAllLegalEnchants(enchantment);
             }
         }
@@ -66,9 +66,9 @@ public class FishingTreasureBook extends FishingTreasure {
     }
 
     private boolean isEnchantAllowed(@NotNull Enchantment enchantment) {
-        if(whiteListedEnchantments != null && !whiteListedEnchantments.isEmpty()) {
+        if (whiteListedEnchantments != null && !whiteListedEnchantments.isEmpty()) {
             return whiteListedEnchantments.contains(enchantment);
-        } else if(blackListedEnchantments != null && !blackListedEnchantments.isEmpty()) {
+        } else if (blackListedEnchantments != null && !blackListedEnchantments.isEmpty()) {
             return !blackListedEnchantments.contains(enchantment);
         } else {
             return true;

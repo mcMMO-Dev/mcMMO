@@ -55,7 +55,7 @@ public class PartyLockCommand implements CommandExecutor {
     }
 
     private void togglePartyLock(CommandSender sender, boolean lock) {
-        if(UserManager.getPlayer((Player) sender) == null)
+        if (UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;

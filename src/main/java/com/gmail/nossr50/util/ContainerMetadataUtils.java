@@ -38,7 +38,7 @@ public class ContainerMetadataUtils {
     }
 
     public static void printOwnershipGainDebug(@NotNull BlockState blockState, @Nullable McMMOPlayer mmoPlayer) {
-        if(mmoPlayer != null && mmoPlayer.isDebugMode()) {
+        if (mmoPlayer != null && mmoPlayer.isDebugMode()) {
             mmoPlayer.getPlayer().sendMessage("Container ownership " +
                     ChatColor.GREEN +"gained " + ChatColor.RESET +
                     "at location: " + blockState.getLocation().toString());
@@ -48,11 +48,11 @@ public class ContainerMetadataUtils {
     public static void printOwnershipLossDebug(BlockState blockState) {
         OfflinePlayer containerOwner = getContainerOwner(blockState);
 
-        if(containerOwner != null && containerOwner.isOnline()) {
+        if (containerOwner != null && containerOwner.isOnline()) {
             final McMMOPlayer mmoContainerOwner = UserManager.getPlayer(containerOwner.getPlayer());
 
-            if(mmoContainerOwner != null) {
-                if(mmoContainerOwner.isDebugMode()) {
+            if (mmoContainerOwner != null) {
+                if (mmoContainerOwner.isDebugMode()) {
                     mmoContainerOwner.getPlayer().sendMessage("Container ownership " +
                             ChatColor.RED + "lost " + ChatColor.RESET +
                             "at location: " + blockState.getLocation().toString());
@@ -65,7 +65,7 @@ public class ContainerMetadataUtils {
         if (container instanceof PersistentDataHolder persistentDataHolder) {
             final UUID uuid = getOwner(persistentDataHolder);
 
-            if(uuid != null) {
+            if (uuid != null) {
                 return Bukkit.getOfflinePlayer(uuid);
             }
         }
@@ -79,11 +79,11 @@ public class ContainerMetadataUtils {
     }
 
     public static void processContainerOwnership(BlockState blockState, Player player) {
-        if(!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SMELTING))
+        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SMELTING))
             return;
 
-        if(getContainerOwner(blockState) != null) {
-            if(getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId()))
+        if (getContainerOwner(blockState) != null) {
+            if (getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId()))
                 return;
         }
 

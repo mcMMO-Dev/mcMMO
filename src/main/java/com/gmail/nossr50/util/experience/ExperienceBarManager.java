@@ -46,13 +46,13 @@ public class ExperienceBarManager {
 
     public void updateExperienceBar(PrimarySkillType primarySkillType, Plugin plugin)
     {
-        if(disabledBars.contains(primarySkillType)
+        if (disabledBars.contains(primarySkillType)
                 || !ExperienceConfig.getInstance().isExperienceBarsEnabled()
                 || !ExperienceConfig.getInstance().isExperienceBarEnabled(primarySkillType))
             return;
 
         //Init Bar
-        if(experienceBars.get(primarySkillType) == null)
+        if (experienceBars.get(primarySkillType) == null)
             experienceBars.put(primarySkillType, new ExperienceBarWrapper(primarySkillType, mcMMOPlayer));
 
         //Get Bar
@@ -65,7 +65,7 @@ public class ExperienceBarManager {
         experienceBarWrapper.showExperienceBar();
 
         //Setup Hide Bar Task
-        if(experienceBarHideTaskHashMap.get(primarySkillType) != null)
+        if (experienceBarHideTaskHashMap.get(primarySkillType) != null)
         {
             experienceBarHideTaskHashMap.get(primarySkillType).cancel();
         }
@@ -74,7 +74,7 @@ public class ExperienceBarManager {
     }
 
     private void scheduleHideTask(PrimarySkillType primarySkillType, Plugin plugin) {
-        if(alwaysVisible.contains(primarySkillType))
+        if (alwaysVisible.contains(primarySkillType))
             return;
 
         ExperienceBarHideTask experienceBarHideTask = new ExperienceBarHideTask(this, mcMMOPlayer, primarySkillType);
@@ -84,7 +84,7 @@ public class ExperienceBarManager {
 
     public void hideExperienceBar(PrimarySkillType primarySkillType)
     {
-        if(experienceBars.containsKey(primarySkillType))
+        if (experienceBars.containsKey(primarySkillType))
             experienceBars.get(primarySkillType).hideExperienceBar();
     }
 
@@ -108,7 +108,7 @@ public class ExperienceBarManager {
                 alwaysVisible.add(skillType);
 
                 //Remove lingering tasks
-                if(experienceBarHideTaskHashMap.containsKey(skillType)) {
+                if (experienceBarHideTaskHashMap.containsKey(skillType)) {
                     experienceBarHideTaskHashMap.get(skillType).cancel();
                 }
 
@@ -119,7 +119,7 @@ public class ExperienceBarManager {
                 disabledBars.add(skillType);
 
                 //Remove lingering tasks
-                if(experienceBarHideTaskHashMap.containsKey(skillType)) {
+                if (experienceBarHideTaskHashMap.containsKey(skillType)) {
                     experienceBarHideTaskHashMap.get(skillType).cancel();
                 }
 
@@ -149,7 +149,7 @@ public class ExperienceBarManager {
 
     private void informPlayer(@NotNull ExperienceBarManager.@NotNull XPBarSettingTarget settingTarget, @Nullable PrimarySkillType primarySkillType) {
         //Inform player of setting change
-        if(settingTarget != XPBarSettingTarget.RESET) {
+        if (settingTarget != XPBarSettingTarget.RESET) {
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.XPBar.SettingChanged", mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType), settingTarget.toString());
         } else {
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.XPBar.Reset");

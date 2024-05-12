@@ -44,7 +44,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
 
         PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player);
 
-        if(!profile.isLoaded()) {
+        if (!profile.isLoaded()) {
             LogUtils.debug(mcMMO.p.getLogger(), "Creating new data for player: "+player.getName());
             //Profile isn't loaded so add as new user
             profile = mcMMO.getDatabaseManager().newUser(player);

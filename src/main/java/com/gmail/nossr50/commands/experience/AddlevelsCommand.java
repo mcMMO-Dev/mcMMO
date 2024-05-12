@@ -35,7 +35,7 @@ public class AddlevelsCommand extends ExperienceCommand {
 
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        if(mmoPlayer == null) {
+        if (mmoPlayer == null) {
             EventUtils.tryLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
         } else {
             EventUtils.tryLevelChangeEvent(mmoPlayer, skill, value, xpRemoved, true, XPGainReason.COMMAND);
@@ -45,7 +45,7 @@ public class AddlevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageAll(Player player, int value, boolean isSilent) {
-        if(isSilent)
+        if (isSilent)
             return;
 
         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", value));
@@ -53,7 +53,7 @@ public class AddlevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
-        if(isSilent)
+        if (isSilent)
             return;
 
         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));

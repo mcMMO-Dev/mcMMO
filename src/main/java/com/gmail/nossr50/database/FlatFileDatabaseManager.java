@@ -101,15 +101,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         this.startingLevel = startingLevel;
         this.testing = testing;
 
-        if(!usersFile.exists()) {
+        if (!usersFile.exists()) {
             initEmptyDB();
         }
 
-        if(!testing) {
+        if (!testing) {
             List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
 
-            if(flatFileDataFlags != null) {
-                if(!flatFileDataFlags.isEmpty()) {
+            if (flatFileDataFlags != null) {
+                if (!flatFileDataFlags.isEmpty()) {
                     logger.info("Detected "+flatFileDataFlags.size() + " data entries which need correction.");
                 }
             }
@@ -222,7 +222,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     if (lastPlayed == -1) {
                         OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(uuid);
 
-                        if(player.getLastPlayed() != 0) {
+                        if (player.getLastPlayed() != 0) {
                             lastPlayed = player.getLastPlayed();
                             rewrite = true;
                         }
@@ -246,7 +246,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
 
-                if(testing) {
+                if (testing) {
                     System.out.println(writer);
                 }
             }
@@ -354,15 +354,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 boolean wroteUser = false;
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
-                    if(line.startsWith("#")) {
+                    if (line.startsWith("#")) {
                         writer.append(line).append("\r\n");
                         continue;
                     }
 
                     //Check for incomplete or corrupted data
-                    if(!line.contains(":")) {
+                    if (!line.contains(":")) {
 
-                        if(!corruptDataFound) {
+                        if (!corruptDataFound) {
                             logger.severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
                             corruptDataFound = true;
                         }
@@ -373,9 +373,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     String[] splitData = line.split(":");
 
                     //This would be rare, but check the splitData for having enough entries to contain a UUID
-                    if(splitData.length < UUID_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
+                    if (splitData.length < UUID_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
 
-                        if(!corruptDataFound) {
+                        if (!corruptDataFound) {
                             logger.severe("mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
                             corruptDataFound = true;
                         }
@@ -397,7 +397,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 /*
                  * If we couldn't find the user in the DB we need to add him
                  */
-                if(!wroteUser) {
+                if (!wroteUser) {
                     writeUserToLine(profile, writer);
                 }
 
@@ -498,7 +498,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType, int pageNumber, int statsPerPage) throws InvalidSkillException {
         //Fix for a plugin that people are using that is throwing SQL errors
-        if(primarySkillType != null && SkillTools.isChildSkill(primarySkillType)) {
+        if (primarySkillType != null && SkillTools.isChildSkill(primarySkillType)) {
             logger.severe("A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException("A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
@@ -572,11 +572,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     private @NotNull UserQuery getUserQuery(@Nullable UUID uuid, @Nullable String playerName) throws NullPointerException {
         boolean hasName = playerName != null && !playerName.equalsIgnoreCase("null");
 
-        if(hasName && uuid != null) {
+        if (hasName && uuid != null) {
             return new UserQueryFull(playerName, uuid);
         } else if (uuid != null) {
             return new UserQueryUUIDImpl(uuid);
-        } else if(hasName) {
+        } else if (hasName) {
             return new UserQueryNameImpl(playerName);
         } else {
             throw new NullPointerException("Both name and UUID cannot be null, at least one must be non-null!");
@@ -610,7 +610,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
 
                 while ((line = in.readLine()) != null) {
-                    if(line.startsWith("#")) {
+                    if (line.startsWith("#")) {
                         continue;
                     }
 
@@ -620,12 +620,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
 
                     /* Don't read corrupt data */
-                    if(rawSplitData.length < (USERNAME_INDEX + 1)) {
+                    if (rawSplitData.length < (USERNAME_INDEX + 1)) {
                         continue;
                     }
 
                     // we found the player
-                    if(playerName.equalsIgnoreCase(rawSplitData[USERNAME_INDEX])) {
+                    if (playerName.equalsIgnoreCase(rawSplitData[USERNAME_INDEX])) {
                         return loadFromLine(rawSplitData);
                     }
                 }
@@ -660,24 +660,24 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
-                    if(line.startsWith("#")) {
+                    if (line.startsWith("#")) {
                         continue;
                     }
                     // Find if the line contains the player we want.
                     String[] rawSplitData = line.split(":");
 
                     /* Don't read corrupt data */
-                    if(rawSplitData.length < (UUID_INDEX + 1)) {
+                    if (rawSplitData.length < (UUID_INDEX + 1)) {
                         continue;
                     }
 
                     try {
                         UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
-                        if(fromDataUUID.equals(uuid)) {
+                        if (fromDataUUID.equals(uuid)) {
                             return loadFromLine(rawSplitData);
                         }
                     } catch (Exception e) {
-                        if(testing) {
+                        if (testing) {
                             e.printStackTrace();
                         }
                     }
@@ -716,20 +716,20 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
-                    if(line.startsWith("#")) {
+                    if (line.startsWith("#")) {
                         continue;
                     }
                     // Find if the line contains the player we want.
                     String[] rawSplitData = line.split(":");
 
                     /* Don't read corrupt data */
-                    if(rawSplitData.length < (UUID_INDEX + 1)) {
+                    if (rawSplitData.length < (UUID_INDEX + 1)) {
                         continue;
                     }
 
                     try {
                         UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
-                        if(fromDataUUID.equals(uuid)) {
+                        if (fromDataUUID.equals(uuid)) {
                             //Matched UUID, now check if name matches
                             String dbPlayerName = rawSplitData[USERNAME_INDEX];
 
@@ -746,7 +746,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             return loadFromLine(rawSplitData);
                         }
                     } catch (Exception e) {
-                        if(testing) {
+                        if (testing) {
                             e.printStackTrace();
                         }
                     }
@@ -774,7 +774,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid, @Nullable String playerName) {
-        if(playerName == null) {
+        if (playerName == null) {
             playerName = ""; //No name for you boy!
         }
 
@@ -793,7 +793,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
-                    if(line.startsWith("#")) {
+                    if (line.startsWith("#")) {
                         continue;
                     }
 
@@ -1014,7 +1014,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
 
-                    if(line.startsWith("#"))
+                    if (line.startsWith("#"))
                         continue;
 
                     String[] data = line.split(":");
@@ -1145,12 +1145,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     //Analyze the data
                     while ((currentLine = bufferedReader.readLine()) != null) {
                         //Commented lines
-                        if(currentLine.startsWith("#") && dbCommentDate == null) { //The first commented line in the file is likely to be our note about when the file was created
+                        if (currentLine.startsWith("#") && dbCommentDate == null) { //The first commented line in the file is likely to be our note about when the file was created
                             dbCommentDate = currentLine;
                             continue;
                         }
 
-                        if(currentLine.isEmpty())
+                        if (currentLine.isEmpty())
                             continue;
 
                         //TODO: We are never passing empty lines, should we remove the flag for them?
@@ -1158,12 +1158,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     }
 
                     //Only update the file if needed
-                    if(!dataProcessor.getFlatFileDataFlags().isEmpty()) {
+                    if (!dataProcessor.getFlatFileDataFlags().isEmpty()) {
                         flagsFound = new ArrayList<>(dataProcessor.getFlatFileDataFlags());
                         logger.info("Updating FlatFile Database...");
                         fileWriter = new FileWriter(usersFilePath);
                         //Write data to file
-                        if(dbCommentDate != null)
+                        if (dbCommentDate != null)
                             fileWriter.write(dbCommentDate + "\r\n");
 
                         fileWriter.write(dataProcessor.processDataForSave().toString());
@@ -1176,7 +1176,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
-        if(flagsFound == null || flagsFound.isEmpty()) {
+        if (flagsFound == null || flagsFound.isEmpty()) {
             return null;
         } else {
             return flagsFound;
@@ -1184,7 +1184,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     private void closeResources(BufferedReader bufferedReader, FileWriter fileWriter) {
-        if(bufferedReader != null) {
+        if (bufferedReader != null) {
             try {
                 bufferedReader.close();
             }

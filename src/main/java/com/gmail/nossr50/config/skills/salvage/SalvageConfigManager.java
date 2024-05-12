@@ -21,7 +21,7 @@ public class SalvageConfigManager {
         salvageables.addAll(mainSalvageConfig.getLoadedSalvageables());
 
         for (String fileName : dataFolder.list()) {
-            if(fileName.equals(SALVAGE_VANILLA_YML))
+            if (fileName.equals(SALVAGE_VANILLA_YML))
                 continue;
 
             if (!pattern.matcher(fileName).matches()) {

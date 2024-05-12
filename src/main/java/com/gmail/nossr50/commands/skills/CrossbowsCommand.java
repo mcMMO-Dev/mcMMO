@@ -54,7 +54,7 @@ public class CrossbowsCommand extends SkillCommand {
                     String.valueOf(mmoPlayer.getCrossbowsManager().getTrickShotMaxBounceCount())));
         }
 
-        if(Permissions.canUseSubSkill(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
+        if (Permissions.canUseSubSkill(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
             messages.add(getStatMessage(CROSSBOWS_CROSSBOWS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
         }

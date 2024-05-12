@@ -23,11 +23,11 @@ public class Axes {
     public static double skullSplitterModifier = mcMMO.p.getAdvancedConfig().getSkullSplitterModifier();
 
     protected static boolean hasArmor(LivingEntity target) {
-        if(target == null || !target.isValid() || target.getEquipment() == null)
+        if (target == null || !target.isValid() || target.getEquipment() == null)
             return false;
 
         for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
-            if(itemStack == null)
+            if (itemStack == null)
                 continue;
 
             if (ItemUtils.isArmor(itemStack)) {

@@ -76,7 +76,7 @@ public class ArcheryCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
+        if (Permissions.canUseSubSkill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK,
                 String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK, 1000))));
         }

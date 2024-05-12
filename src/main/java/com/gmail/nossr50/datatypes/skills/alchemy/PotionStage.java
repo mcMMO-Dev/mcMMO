@@ -64,7 +64,7 @@ public enum PotionStage {
             stage++;
         } else if (!potionMeta.getCustomEffects().isEmpty()) {
             for (PotionEffect effect : potionMeta.getCustomEffects()){
-                if(effect.getAmplifier() > 0){
+                if (effect.getAmplifier() > 0){
                     stage++;
                     break;
                 }

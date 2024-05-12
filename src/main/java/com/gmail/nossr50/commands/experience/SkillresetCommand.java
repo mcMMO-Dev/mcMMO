@@ -87,7 +87,7 @@ public class SkillresetCommand implements TabExecutor {
                         profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
                         //Check if it was present in DB
-                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                        if (CommandUtils.unloadedProfile(sender, profile)) {
                             return true;
                         }
                     }

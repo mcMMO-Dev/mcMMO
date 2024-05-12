@@ -10,14 +10,14 @@ import static com.gmail.nossr50.database.FlatFileDatabaseManager.*;
 public class FlatFileDataUtil {
 
     public static @Nullable String[] getPreparedSaveDataLine(@NotNull FlatFileDataContainer dataContainer) {
-        if(dataContainer.getDataFlags() == null) {
+        if (dataContainer.getDataFlags() == null) {
             return dataContainer.getSplitData();
         }
 
         //Data of this type is not salvageable
         //TODO: Test that we ignore the things we are supposed to ignore
         //TODO: Should we even keep track of the bad data or just not even build data containers for it? Making containers for it is only really useful for debugging.. well I suppose operations are typically async so it shouldn't matter
-        if(dataContainer.getDataFlags().contains(FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE)
+        if (dataContainer.getDataFlags().contains(FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE)
                 || dataContainer.getDataFlags().contains(FlatFileDataFlag.DUPLICATE_UUID) //For now we will not try to fix any issues with UUIDs
                 || dataContainer.getDataFlags().contains(FlatFileDataFlag.BAD_UUID_DATA) //For now we will not try to fix any issues with UUIDs
                 || dataContainer.getDataFlags().contains(FlatFileDataFlag.TOO_INCOMPLETE)) {
@@ -29,7 +29,7 @@ public class FlatFileDataUtil {
         /*
          * First fix the bad data values if they exist
          */
-        if(dataContainer instanceof BadCategorizedFlatFileData badData) {
+        if (dataContainer instanceof BadCategorizedFlatFileData badData) {
             splitData = repairBadData(dataContainer.getSplitData(), badData.getBadDataIndexes());
         } else {
             splitData = dataContainer.getSplitData();
@@ -42,7 +42,7 @@ public class FlatFileDataUtil {
 
     public static @NotNull String[] repairBadData(@NotNull String[] splitData, boolean[] badDataValues) {
         for(int i = 0; i < FlatFileDatabaseManager.DATA_ENTRY_COUNT; i++) {
-            if(badDataValues[i]) {
+            if (badDataValues[i]) {
                 //This data value was marked as bad so we zero initialize it
                 splitData[i] = getZeroInitialisedData(i, 0);
             }

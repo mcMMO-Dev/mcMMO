@@ -71,7 +71,7 @@ public class StringUtils {
         StringBuilder trimMessage = new StringBuilder();
 
         for (int i = index; i < args.length; i++) {
-            if(i + 1 >= args.length)
+            if (i + 1 >= args.length)
                 trimMessage.append(args[i]);
             else
                 trimMessage.append(args[i]).append(" ");

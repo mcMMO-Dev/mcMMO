@@ -70,7 +70,7 @@ public final class ItemMetadataUtils {
         int originalSpeed = getSuperAbilityToolOriginalDigSpeed(itemStack);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(itemMeta != null) {
+        if (itemMeta != null) {
             //TODO: can be optimized
             if (itemMeta.hasEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency())) {
                 itemMeta.removeEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency());

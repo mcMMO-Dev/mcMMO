@@ -57,9 +57,9 @@ public class ExperienceBarWrapper {
     private String getTitleTemplate() {
         //If they are using extra details
 
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if (ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
                 return LocaleLoader.getString("XPBar.Template.EarlyGameBoost");
-        } else if(ExperienceConfig.getInstance().getAddExtraDetails())
+        } else if (ExperienceConfig.getInstance().getAddExtraDetails())
             return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
 
         return LocaleLoader.getString("XPBar."+niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
@@ -99,23 +99,23 @@ public class ExperienceBarWrapper {
 
     public void setProgress(double v) {
         //Clamp Values
-        if(v < 0)
+        if (v < 0)
             bossBar.setProgress(0.0D);
 
-        else if(v > 1)
+        else if (v > 1)
             bossBar.setProgress(1.0D);
         else
             bossBar.setProgress(v);
 
         //Check player level
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if (ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
            setColor(BarColor.YELLOW);
         } else {
             setColor(ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType));
         }
 
         //Every time progress updates we need to check for a title update
-        if(getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle())
+        if (getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle())
         {
             updateTitle();
             lastLevelUpdated = getLevel();

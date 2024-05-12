@@ -21,7 +21,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
+        if (UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;

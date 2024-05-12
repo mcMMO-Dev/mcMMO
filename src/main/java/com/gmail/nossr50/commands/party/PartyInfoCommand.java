@@ -23,7 +23,7 @@ public class PartyInfoCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
             case 1:
-                if(UserManager.getPlayer((Player) sender) == null)
+                if (UserManager.getPlayer((Player) sender) == null)
                 {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;

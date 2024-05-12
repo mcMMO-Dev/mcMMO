@@ -17,8 +17,8 @@
 //public class DropTreasureCommand implements CommandExecutor {
 //    @Override
 //    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-//        if(sender instanceof Player) {
-//            if(!sender.isOp()) {
+//        if (sender instanceof Player) {
+//            if (!sender.isOp()) {
 //                sender.sendMessage("This command is for Operators only");
 //                return false;
 //            }
@@ -27,13 +27,13 @@
 //            Location location = player.getLocation();
 //            McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 //
-//            if(mmoPlayer == null) {
+//            if (mmoPlayer == null) {
 //                //TODO: Localize
 //                player.sendMessage("Your player data is not loaded yet");
 //                return false;
 //            }
 //
-//            if(args.length == 0) {
+//            if (args.length == 0) {
 //                mcMMO.p.getLogger().info(player.toString() +" is dropping all mcMMO treasures via admin command at location "+location.toString());
 //                for(Rarity rarity : FishingTreasureConfig.getInstance().fishingRewards.keySet()) {
 //                    for(FishingTreasure fishingTreasure : FishingTreasureConfig.getInstance().fishingRewards.get(rarity)) {

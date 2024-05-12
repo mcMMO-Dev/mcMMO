@@ -27,7 +27,7 @@ public class TransientMetadataTools {
         }
 
         //Gets assigned to endermen, potentially doesn't get cleared before this point
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK)) {
+        if (entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK)) {
             entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
         }
 
@@ -36,7 +36,7 @@ public class TransientMetadataTools {
 
         //TODO: This loop has some redundancy, this whole method needs to be rewritten
         for(String key : MetadataConstants.MOB_METADATA_KEYS) {
-            if(entity.hasMetadata(key)) {
+            if (entity.hasMetadata(key)) {
                 entity.removeMetadata(key, pluginRef);
             }
         }

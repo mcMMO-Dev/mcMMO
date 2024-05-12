@@ -125,7 +125,7 @@ public class SalvageManager extends SkillManager {
 
         for(int x = 0; x < potentialSalvageYield-1; x++) {
 
-            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, mmoPlayer, chanceOfSuccess)) {
+            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, mmoPlayer, chanceOfSuccess)) {
                 chanceOfSuccess-=3;
                 chanceOfSuccess = Math.max(chanceOfSuccess, 90);
 
@@ -196,7 +196,7 @@ public class SalvageManager extends SkillManager {
     }
 
     public double getExtractFullEnchantChance() {
-        if(Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
+        if (Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
             return 100.0D;
 
         return mcMMO.p.getAdvancedConfig().getArcaneSalvageExtractFullEnchantsChance(getArcaneSalvageRank());
@@ -224,8 +224,8 @@ public class SalvageManager extends SkillManager {
 
             int enchantLevel = enchant.getValue();
 
-            if(!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
-                if(enchantLevel > enchant.getKey().getMaxLevel()) {
+            if (!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
+                if (enchantLevel > enchant.getKey().getMaxLevel()) {
                     enchantLevel = enchant.getKey().getMaxLevel();
                 }
             }
@@ -247,11 +247,11 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        if(failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
+        if (failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
         {
             NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcaneFailed");
             return null;
-        } else if(downgraded)
+        } else if (downgraded)
         {
             NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcanePartial");
         }

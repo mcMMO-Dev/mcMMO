@@ -73,7 +73,7 @@ public class SmeltingManager extends SkillManager {
         FurnaceInventory furnaceInventory = furnace.getInventory();
         ItemStack furnaceResult = furnaceInventory.getResult();
 
-        if(furnaceResult == null)
+        if (furnaceResult == null)
             return true; //This actually means there is nothing yet in the resulting item slot, which means it should always be okay to double smelt
 
         int resultAmount = furnaceResult.getAmount(); //Amount before double smelt

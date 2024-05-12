@@ -45,14 +45,14 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
         if (sender instanceof Player) {
             ((Player) sender).removeMetadata(MetadataConstants.METADATA_KEY_DATABASE_COMMAND, mcMMO.p);
         }
-        if(sender instanceof Player)
+        if (sender instanceof Player)
             sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
     private void displayChat() {
 
         if (skill == null) {
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
             }
             else {
@@ -60,7 +60,7 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
             }
         }
         else {
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
             }
             else {
@@ -74,7 +74,7 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
             // Format:
             // 01. Playername - skill value
             // 12. Playername - skill value
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
             }
             else {

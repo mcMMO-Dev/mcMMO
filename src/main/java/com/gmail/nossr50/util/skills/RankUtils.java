@@ -36,15 +36,15 @@ public class RankUtils {
             HashMap<Integer, Integer> innerMap = subSkillRanks.get(subSkillType.toString());
 
             //If the skill doesn't have registered ranks gtfo
-            if(innerMap == null || innerMap.get(playerRankInSkill) == null)
+            if (innerMap == null || innerMap.get(playerRankInSkill) == null)
                 continue;
 
             //Don't send notifications if the player lacks the permission node
-            if(!Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
+            if (!Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
                 continue;
 
             //The players level is the exact level requirement for this skill
-            if(newLevel == innerMap.get(playerRankInSkill))
+            if (newLevel == innerMap.get(playerRankInSkill))
             {
                 SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
 
@@ -180,19 +180,19 @@ public class RankUtils {
         String skillName = subSkillType.toString();
         int numRanks = subSkillType.getNumRanks();
 
-        if(subSkillRanks == null)
+        if (subSkillRanks == null)
             subSkillRanks = new HashMap<>();
 
-        if(numRanks == 0)
+        if (numRanks == 0)
             return -1; //-1 Means the skill doesn't have ranks
 
-        if(subSkillRanks.get(skillName) == null && numRanks > 0)
+        if (subSkillRanks.get(skillName) == null && numRanks > 0)
             addRanks(subSkillType);
 
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return 0;
 
         //Skill level of parent skill
@@ -205,11 +205,11 @@ public class RankUtils {
             int unlockLevel = getRankUnlockLevel(subSkillType, rank);
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
-            if(rank == 0)
+            if (rank == 0)
                 return 0;
 
             //True if our skill level can unlock the current rank
-            if(currentSkillLevel >= unlockLevel)
+            if (currentSkillLevel >= unlockLevel)
                 return rank;
         }
 
@@ -227,19 +227,19 @@ public class RankUtils {
         String skillName = abstractSubSkill.getConfigKeyName();
         int numRanks = abstractSubSkill.getNumRanks();
 
-        if(subSkillRanks == null)
+        if (subSkillRanks == null)
             subSkillRanks = new HashMap<>();
 
-        if(numRanks == 0)
+        if (numRanks == 0)
             return -1; //-1 Means the skill doesn't have ranks
 
-        if(subSkillRanks.get(skillName) == null && numRanks > 0)
+        if (subSkillRanks.get(skillName) == null && numRanks > 0)
             addRanks(abstractSubSkill);
 
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return 0;
 
         //Skill level of parent skill
@@ -252,11 +252,11 @@ public class RankUtils {
             int unlockLevel = getRankUnlockLevel(abstractSubSkill, rank);
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
-            if(rank == 0)
+            if (rank == 0)
                 return 0;
 
             //True if our skill level can unlock the current rank
-            if(currentSkillLevel >= unlockLevel)
+            if (currentSkillLevel >= unlockLevel)
                 return rank;
         }
 

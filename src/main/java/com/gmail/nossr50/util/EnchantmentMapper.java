@@ -63,7 +63,7 @@ public class EnchantmentMapper {
     }
 
     private Enchantment initInfinity() {
-//        if(Registry.ENCHANTMENT.match("infinity") != null) {
+//        if (Registry.ENCHANTMENT.match("infinity") != null) {
 //            return Registry.ENCHANTMENT.match("infinity");
 //        }
 

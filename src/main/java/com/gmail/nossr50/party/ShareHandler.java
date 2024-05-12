@@ -51,7 +51,7 @@ public final class ShareHandler {
 
         for (Player member : nearMembers) {
             //Profile not loaded
-            if(UserManager.getPlayer(member) == null)
+            if (UserManager.getPlayer(member) == null)
             {
                 continue;
             }
@@ -115,7 +115,7 @@ public final class ShareHandler {
                         McMMOPlayer mcMMOMember = UserManager.getPlayer(member);
 
                         //Profile not loaded
-                        if(UserManager.getPlayer(member) == null)
+                        if (UserManager.getPlayer(member) == null)
                         {
                             continue;
                         }

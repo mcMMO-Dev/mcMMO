@@ -15,13 +15,13 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType)
     {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory)
     {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
@@ -29,18 +29,18 @@ public class SoundManager {
     {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType)
     {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if (SoundConfig.getInstance().getIsEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
     public static void worldSendSoundMaxPitch(World world, Location location, SoundType soundType) {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if (SoundConfig.getInstance().getIsEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), 2.0F);
     }
 
@@ -56,7 +56,7 @@ public class SoundManager {
 
     private static float getPitch(SoundType soundType)
     {
-        if(soundType == SoundType.FIZZ)
+        if (soundType == SoundType.FIZZ)
             return getFizzPitch();
         else if (soundType == SoundType.POP)
             return getPopPitch();

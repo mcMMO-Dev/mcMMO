@@ -24,16 +24,16 @@ public abstract class ExperienceCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         PrimarySkillType skill;
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             return false;
         } else {
-            if(args.length == 2 && !isSilent(args) || args.length == 3 && isSilent(args)) {
+            if (args.length == 2 && !isSilent(args) || args.length == 3 && isSilent(args)) {
                 if (CommandUtils.noConsoleUsage(sender)) {
                     return true;
                 }
 
                 if (!permissionsCheckSelf(sender)) {
-                    if(command.getPermissionMessage() != null)
+                    if (command.getPermissionMessage() != null)
                         sender.sendMessage(command.getPermissionMessage());
                     sender.sendMessage("(mcMMO) No permission!");
                     return true;
@@ -56,7 +56,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 //Profile not loaded
-                if(UserManager.getPlayer(sender.getName()) == null)
+                if (UserManager.getPlayer(sender.getName()) == null)
                 {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
@@ -65,7 +65,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]), isSilent(args));
                 return true;
-            } else if((args.length == 3 && !isSilent(args))
+            } else if ((args.length == 3 && !isSilent(args))
                     || (args.length == 4 && isSilent(args))) {
                 if (!permissionsCheckOthers(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
@@ -104,7 +104,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                         //Check loading by name
                         profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
-                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                        if (CommandUtils.unloadedProfile(sender, profile)) {
                             return true;
                         }
                     }
@@ -126,7 +126,7 @@ public abstract class ExperienceCommand implements TabExecutor {
     private boolean isSilent(String[] args) {
         int length = args.length;
 
-        if(length == 0)
+        if (length == 0)
             return false;
 
         return args[length-1].equalsIgnoreCase("-s");

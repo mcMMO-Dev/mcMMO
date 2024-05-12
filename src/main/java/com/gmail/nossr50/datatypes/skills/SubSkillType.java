@@ -201,7 +201,7 @@ public enum SubSkillType {
          * Split the string up so we can capitalize each part
          */
         String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
-        if(subskillNameWithoutPrefix.contains("_"))
+        if (subskillNameWithoutPrefix.contains("_"))
         {
             String[] splitStrings = subskillNameWithoutPrefix.split("_");
 
