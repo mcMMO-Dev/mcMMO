@@ -4,6 +4,8 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.removeMobFlags;
+
 public class TransientMetadataTools {
     private final mcMMO pluginRef;
 
@@ -30,7 +32,7 @@ public class TransientMetadataTools {
         }
 
         //Cleanup mob metadata
-        mcMMO.getMetadataService().getMobMetadataService().removeMobFlags(entity);
+        removeMobFlags(entity);
 
         //TODO: This loop has some redundancy, this whole method needs to be rewritten
         for(String key : MetadataConstants.MOB_METADATA_KEYS) {

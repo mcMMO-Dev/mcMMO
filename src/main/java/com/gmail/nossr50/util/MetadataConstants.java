@@ -34,8 +34,9 @@ public class MetadataConstants {
     public static final @NotNull String METADATA_KEY_DISARMED_ITEM = "mcMMO: Disarmed Item";
     public static final @NotNull String METADATA_KEY_PLAYER_DATA = "mcMMO: Player Data";
     public static final @NotNull String METADATA_KEY_DATABASE_COMMAND = "mcMMO: Processing Database Command";
-    public static final @NotNull String METADATA_KEY_FURNACE_UUID_MOST_SIG = "furnace_uuid_most_sig";
-    public static final @NotNull String METADATA_KEY_FURNACE_UUID_LEAST_SIG = "furnace_uuid_least_sig";
+    // the value of these two keys have "furnace" to keep supporting legacy data
+    public static final @NotNull String METADATA_KEY_CONTAINER_UUID_MOST_SIG = "furnace_uuid_most_sig";
+    public static final @NotNull String METADATA_KEY_CONTAINER_UUID_LEAST_SIG = "furnace_uuid_least_sig";
     public static final @NotNull String METADATA_KEY_SUPER_ABILITY_BOOSTED_ITEM = "super_ability_boosted";
     public static final @NotNull String METADATA_KEY_MOB_SPAWNER_MOB = "mcmmo_mob_spawner_mob";
     public static final @NotNull String METADATA_KEY_EGG_MOB = "mcmmo_egg_mob";

@@ -30,10 +30,6 @@
 //    @Override
 //    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
 //        List<String> messages = new ArrayList<>();
-//        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-//        if (mmoPlayer == null) {
-//            return messages;
-//        }
 //
 //        if(SkillUtils.canUseSubskill(player, MACES_MACES_LIMIT_BREAK)) {
 //            messages.add(getStatMessage(MACES_MACES_LIMIT_BREAK,

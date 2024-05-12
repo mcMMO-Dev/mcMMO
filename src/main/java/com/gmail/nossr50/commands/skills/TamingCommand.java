@@ -35,7 +35,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue) {
         if (canGore) {
-            String[] goreStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.TAMING_GORE);
+            String[] goreStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.TAMING_GORE);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }

@@ -34,6 +34,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
+    protected McMMOPlayer mmoPlayer;
 
     private final CommandExecutor skillGuideCommand;
 
@@ -53,9 +54,9 @@ public abstract class SkillCommand implements TabExecutor {
         }
 
         Player player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        mmoPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer == null) {
+        if (mmoPlayer == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -63,7 +64,7 @@ public abstract class SkillCommand implements TabExecutor {
         if (args.length == 0) {
             boolean isLucky = Permissions.lucky(player, skill);
             boolean hasEndurance = PerksUtils.handleActivationPerks(player, 0, 0) != 0;
-            float skillValue = mcMMOPlayer.getSkillLevel(skill);
+            float skillValue = mmoPlayer.getSkillLevel(skill);
 
             //Send the players a few blank lines to make finding the top of the skill command easier
             if (mcMMO.p.getAdvancedConfig().doesSkillCommandSendBlankLines())
@@ -75,7 +76,7 @@ public abstract class SkillCommand implements TabExecutor {
             dataCalculations(player, skillValue);
 
             sendSkillCommandHeader(mcMMO.p.getSkillTools().getLocalizedSkillName(skill),
-                    player, mcMMOPlayer, (int) skillValue);
+                    player, mmoPlayer, (int) skillValue);
 
             //Make JSON text components
             List<Component> subskillTextComponents = getTextComponents(player);

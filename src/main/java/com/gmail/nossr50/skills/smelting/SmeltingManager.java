@@ -24,7 +24,7 @@ public class SmeltingManager extends SkillManager {
 
     public boolean isSecondSmeltSuccessful() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SMELTING_SECOND_SMELT, mmoPlayer);
     }
 
     /**

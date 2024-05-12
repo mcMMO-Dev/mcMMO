@@ -10,7 +10,6 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -68,7 +67,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.REPAIR_SUPER_REPAIR);
+            String[] superRepairStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -94,7 +93,7 @@ public class RepairCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {
-            RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+            RepairManager repairManager = mmoPlayer.getRepairManager();
 
             messages.add(getStatMessage(false, true,
                     SubSkillType.REPAIR_ARCANE_FORGING,

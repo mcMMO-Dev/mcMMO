@@ -10,6 +10,7 @@ import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -345,7 +346,8 @@ public class TextComponentFactory {
             componentBuilder.append(Component.newline());
 
             //Finally, add details to the tooltip
-            abstractSubSkill.addStats(componentBuilder, player);
+            // TODO: pass in McMMOPlayer instead
+            abstractSubSkill.addStats(componentBuilder, UserManager.getPlayer(player));
         }
 
         return componentBuilder.build();

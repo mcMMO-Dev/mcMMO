@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,7 +70,7 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.AXES_AXE_MASTERY, mmoPlayer)) {
             return Axes.getAxeMasteryBonusDamage(getPlayer());
         }
 
@@ -83,7 +84,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_CRITICAL_STRIKES, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_CRITICAL_STRIKES, mmoPlayer)) {
             return 0;
         }
 
@@ -115,10 +116,15 @@ public class AxesManager extends SkillManager {
      */
     public void impactCheck(@NotNull LivingEntity target) {
         double durabilityDamage = getImpactDurabilityDamage();
+        final EntityEquipment equipment = target.getEquipment();
 
-        for (ItemStack armor : target.getEquipment().getArmorContents()) {
+        if (equipment == null) {
+            return;
+        }
+
+        for (ItemStack armor : equipment.getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
-                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
+                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, mmoPlayer)) {
                     SkillUtils.handleArmorDurabilityChange(armor, durabilityDamage, 1);
                 }
             }
@@ -136,7 +142,7 @@ public class AxesManager extends SkillManager {
      */
     public double greaterImpact(@NotNull LivingEntity target) {
         //static chance (3rd param)
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_GREATER_IMPACT, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.AXES_GREATER_IMPACT, mmoPlayer)) {
             return 0;
         }
 

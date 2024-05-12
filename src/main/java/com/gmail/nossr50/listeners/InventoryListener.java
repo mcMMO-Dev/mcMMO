@@ -5,11 +5,11 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
-import com.gmail.nossr50.events.fake.FakeEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
+import com.gmail.nossr50.util.ContainerMetadataUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
@@ -29,7 +29,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BrewingStartEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 
@@ -55,7 +54,7 @@ public class InventoryListener implements Listener {
         }
 
         Furnace furnace = (Furnace) furnaceState;
-        OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
+        OfflinePlayer offlinePlayer = ContainerMetadataUtils.getContainerOwner(furnace);
         Player player;
 
         if(offlinePlayer != null && offlinePlayer.isOnline() && offlinePlayer instanceof Player) {
@@ -101,7 +100,7 @@ public class InventoryListener implements Listener {
         }
 
         if(blockState instanceof Furnace furnace) {
-            OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
+            OfflinePlayer offlinePlayer = ContainerMetadataUtils.getContainerOwner(furnace);
 
             if(offlinePlayer != null) {
 
@@ -167,16 +166,16 @@ public class InventoryListener implements Listener {
         Inventory inventory = event.getInventory();
 
         Player player = ((Player) event.getWhoClicked()).getPlayer();
+        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        if(event.getInventory() instanceof FurnaceInventory)
-        {
-            Furnace furnace = mcMMO.getSmeltingTracker().getFurnaceFromInventory(event.getInventory());
+        if(event.getInventory() instanceof FurnaceInventory furnaceInventory) {
+            //Switch owners
+            ContainerMetadataUtils.processContainerOwnership(furnaceInventory.getHolder(), player);
+        }
 
-            if (furnace != null)
-            {
-                //Switch owners
-                mcMMO.getSmeltingTracker().processFurnaceOwnership(furnace, player);
-            }
+        if(event.getInventory() instanceof BrewerInventory brewerInventory) {
+            // switch owners
+            ContainerMetadataUtils.processContainerOwnership(brewerInventory.getHolder(), player);
         }
 
         if (!(inventory instanceof BrewerInventory)) {
@@ -191,10 +190,11 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        if (mmoPlayer == null || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 
+        // TODO: Investigate why this WG check is all the way down here?
         /* WORLD GUARD MAIN FLAG CHECK */
         if(WorldGuardUtils.isWorldGuardLoaded())
         {
@@ -202,11 +202,16 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        ItemStack clicked = event.getCurrentItem();
-        ItemStack cursor = event.getCursor();
+        final ItemStack clicked = event.getCurrentItem();
+        final ItemStack cursor = event.getCursor();
 
-        if ((clicked != null && (clicked.getType() == Material.POTION || clicked.getType() == Material.SPLASH_POTION || clicked.getType() == Material.LINGERING_POTION)) || (cursor != null && (cursor.getType() == Material.POTION || cursor.getType() == Material.SPLASH_POTION || cursor.getType() == Material.LINGERING_POTION))) {
-            AlchemyPotionBrewer.scheduleCheck(player, stand);
+        if ((clicked != null && (clicked.getType() == Material.POTION
+                || clicked.getType() == Material.SPLASH_POTION
+                || clicked.getType() == Material.LINGERING_POTION))
+                || (cursor != null && (cursor.getType() == Material.POTION
+                        || cursor.getType() == Material.SPLASH_POTION
+                        || cursor.getType() == Material.LINGERING_POTION))) {
+            AlchemyPotionBrewer.scheduleCheck(stand);
             return;
         }
 
@@ -216,11 +221,11 @@ public class InventoryListener implements Listener {
         if (click.isShiftClick()) {
             switch (slot) {
                 case FUEL:
-                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    AlchemyPotionBrewer.scheduleCheck(stand);
                     return;
                 case CONTAINER:
                 case QUICKBAR:
-                    if (!AlchemyPotionBrewer.isValidIngredient(player, clicked)) {
+                    if (!AlchemyPotionBrewer.isValidIngredientByPlayer(player, clicked)) {
                         return;
                     }
 
@@ -230,7 +235,7 @@ public class InventoryListener implements Listener {
 
                     event.setCancelled(true);
                     AlchemyPotionBrewer.scheduleUpdate(inventory);
-                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    AlchemyPotionBrewer.scheduleCheck(stand);
                     return;
                 default:
             }
@@ -240,14 +245,14 @@ public class InventoryListener implements Listener {
 
             if (AlchemyPotionBrewer.isEmpty(cursor)) {
                 if (emptyClicked && click == ClickType.NUMBER_KEY) {
-                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    AlchemyPotionBrewer.scheduleCheck(stand);
                     return;
                 }
 
-                AlchemyPotionBrewer.scheduleCheck(player, stand);
+                AlchemyPotionBrewer.scheduleCheck(stand);
             }
             else if (emptyClicked) {
-                if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
+                if (AlchemyPotionBrewer.isValidIngredientByPlayer(player, cursor)) {
                     int amount = cursor.getAmount();
 
                     if (click == ClickType.LEFT || (click == ClickType.RIGHT && amount == 1)) {
@@ -256,7 +261,7 @@ public class InventoryListener implements Listener {
                         event.setCursor(null);
 
                         AlchemyPotionBrewer.scheduleUpdate(inventory);
-                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+                        AlchemyPotionBrewer.scheduleCheck(stand);
                     }
                     else if (click == ClickType.RIGHT) {
                         event.setCancelled(true);
@@ -271,7 +276,7 @@ public class InventoryListener implements Listener {
                         event.setCursor(rest);
 
                         AlchemyPotionBrewer.scheduleUpdate(inventory);
-                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+                        AlchemyPotionBrewer.scheduleCheck(stand);
                     }
                 }
             }
@@ -324,9 +329,9 @@ public class InventoryListener implements Listener {
                     return;
             }
 
-            if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
+            if (AlchemyPotionBrewer.isValidIngredientByPlayer(player, cursor)) {
                 // Not handled: dragging custom ingredients over ingredient slot (does not trigger any event)
-                AlchemyPotionBrewer.scheduleCheck(player, (BrewingStand) holder);
+                AlchemyPotionBrewer.scheduleCheck((BrewingStand) holder);
                 return;
             }
 
@@ -371,32 +376,41 @@ public class InventoryListener implements Listener {
             if(WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
                 return;
 
-        Inventory inventory = event.getDestination();
+        final Inventory inventory = event.getDestination();
 
         if (!(inventory instanceof BrewerInventory)) {
             return;
         }
 
-        InventoryHolder holder = inventory.getHolder();
+        final InventoryHolder holder = inventory.getHolder();
 
-        if (!(holder instanceof BrewingStand)) {
-            return;
-        }
+        if (holder instanceof BrewingStand brewingStand) {
 
-        ItemStack item = event.getItem();
+            ItemStack item = event.getItem();
 
-        if (mcMMO.p.getGeneralConfig().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
-            event.setCancelled(true);
-            return;
-        }
+            if (mcMMO.p.getGeneralConfig().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
+                event.setCancelled(true);
+                return;
+            }
 
-        if (mcMMO.p.getGeneralConfig().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
-            event.setCancelled(true);
-            return;
-        }
+            if (mcMMO.p.getGeneralConfig().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
+                event.setCancelled(true);
+                return;
+            }
+            int ingredientLevel = 1;
 
-        if (mcMMO.p.getGeneralConfig().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
-            AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);
+            OfflinePlayer offlinePlayer = ContainerMetadataUtils.getContainerOwner(brewingStand);
+            if (offlinePlayer != null && offlinePlayer.isOnline()) {
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(offlinePlayer.getPlayer());
+                if (mmoPlayer != null) {
+                    ingredientLevel = mmoPlayer.getAlchemyManager().getTier();
+                }
+            }
+
+            if (mcMMO.p.getGeneralConfig().getEnabledForHoppers()
+                    && AlchemyPotionBrewer.isValidIngredientByLevel(ingredientLevel, item)) {
+                AlchemyPotionBrewer.scheduleCheck(brewingStand);
+            }
         }
     }
 

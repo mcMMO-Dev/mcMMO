@@ -1,8 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -32,10 +30,6 @@ public class TridentsCommand extends SkillCommand {
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-        if (mmoPlayer == null) {
-            return messages;
-        }
 
         if(SkillUtils.canUseSubskill(player, TRIDENTS_TRIDENTS_LIMIT_BREAK)) {
             messages.add(getStatMessage(TRIDENTS_TRIDENTS_LIMIT_BREAK,

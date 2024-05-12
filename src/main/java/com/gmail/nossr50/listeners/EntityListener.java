@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
-import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.runnables.TravelingBlockMetaCleanup;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.crossbows.Crossbows;
@@ -47,9 +46,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.*;
+
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
-    private final @NotNull MobMetadataService mobMetadataService;
 
     /**
      * We can use this {@link NamespacedKey} for {@link Enchantment} comparisons to
@@ -59,7 +59,6 @@ public class EntityListener implements Listener {
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
-        mobMetadataService = mcMMO.getMetadataService().getMobMetadataService();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -67,10 +66,10 @@ public class EntityListener implements Listener {
         if(event.getEntity() instanceof LivingEntity livingEntity) {
 
             //Transfer metadata keys from mob-spawned mobs to new mobs
-            if(mobMetadataService.hasMobFlags(livingEntity)) {
+            if(hasMobFlags(livingEntity)) {
                 for(Entity entity : event.getTransformedEntities()) {
                     if(entity instanceof LivingEntity transformedEntity) {
-                        mobMetadataService.addMobFlags(livingEntity, transformedEntity);
+                        addMobFlags(livingEntity, transformedEntity);
                     }
                 }
             }
@@ -93,8 +92,8 @@ public class EntityListener implements Listener {
         {
             if(event.getEntity() instanceof Enderman enderman) {
 
-                if(!mobMetadataService.hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman)) {
-                    mobMetadataService.flagMetadata(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman);
+                if(!hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman)) {
+                    flagMetadata(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman);
                 }
             }
         }
@@ -168,7 +167,7 @@ public class EntityListener implements Listener {
                     return;
                 }
 
-                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL, UserManager.getPlayer(player))) {
                     arrow.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW, MetadataConstants.MCMMO_METADATA_VALUE);
                 }
             }
@@ -730,11 +729,11 @@ public class EntityListener implements Listener {
     }
 
     private void trackSpawnedAndPassengers(LivingEntity livingEntity, MobMetaFlagType mobMetaFlagType) {
-        mobMetadataService.flagMetadata(mobMetaFlagType, livingEntity);
+        flagMetadata(mobMetaFlagType, livingEntity);
 
         for(Entity passenger : livingEntity.getPassengers()) {
             if(passenger != null) {
-                mobMetadataService.flagMetadata(mobMetaFlagType, livingEntity);
+                flagMetadata(mobMetaFlagType, livingEntity);
             }
         }
     }
@@ -742,7 +741,7 @@ public class EntityListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityBreed(EntityBreedEvent event) {
         if(ExperienceConfig.getInstance().isCOTWBreedingPrevented()) {
-            if(mobMetadataService.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getFather()) || mobMetadataService.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getMother())) {
+            if(hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getFather()) || hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getMother())) {
                 event.setCancelled(true);
                 Animals mom = (Animals) event.getMother();
                 Animals father = (Animals) event.getFather();
@@ -1005,12 +1004,12 @@ public class EntityListener implements Listener {
 
         if (!UserManager.hasPlayerDataKey(player)
                 || (ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(livingEntity))
-                || mobMetadataService.hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
-                || mobMetadataService.hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
+                || hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
+                || hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
             return;
         }
 
-        mobMetadataService.flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
+        flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
         //Profile not loaded
         if(UserManager.getPlayer(player) == null)

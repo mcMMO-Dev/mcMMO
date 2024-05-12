@@ -62,7 +62,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         when(advancedConfig.getMaximumProbability(UNARMED_ARROW_DEFLECT)).thenReturn(20D);
         when(advancedConfig.getMaxBonusLevel(UNARMED_ARROW_DEFLECT)).thenReturn(0);
 
-        final Probability probability = ProbabilityUtil.getSkillProbability(UNARMED_ARROW_DEFLECT, player);
+        @SuppressWarnings("all")
+        final Probability probability = ProbabilityUtil.getSkillProbability(UNARMED_ARROW_DEFLECT, mmoPlayer);
         assertEquals(0.2D, probability.getValue());
         assertProbabilityExpectations(20, probability);
     }

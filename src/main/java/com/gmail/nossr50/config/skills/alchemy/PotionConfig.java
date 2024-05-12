@@ -14,15 +14,16 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.gmail.nossr50.util.ItemUtils.setItemName;
-import static com.gmail.nossr50.util.PotionUtil.*;
-import static com.gmail.nossr50.util.text.StringUtils.convertKeyToName;
+import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
 
 public class PotionConfig extends LegacyConfigLoader {
 

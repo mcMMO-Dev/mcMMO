@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.SkillActivationPerkEvent;
 import com.gmail.nossr50.util.Permissions;
@@ -101,6 +102,21 @@ public final class PerksUtils {
      */
     public static int handleLuckyPerks(Player player, PrimarySkillType skill) {
         if (Permissions.lucky(player, skill)) {
+            return LUCKY_SKILL_ACTIVATION_CHANCE;
+        }
+
+        return NORMAL_SKILL_ACTIVATION_CHANCE;
+    }
+
+    /**
+     * Calculate activation chance for a skill.
+     *
+     * @param mmoPlayer Player to check the activation chance for
+     * @param skill PrimarySkillType to check the activation chance of
+     * @return the activation chance with "lucky perk" accounted for
+     */
+    public static int handleLuckyPerks(McMMOPlayer mmoPlayer, PrimarySkillType skill) {
+        if (Permissions.lucky(mmoPlayer.getPlayer(), skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;
         }
 

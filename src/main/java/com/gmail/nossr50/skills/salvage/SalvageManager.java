@@ -125,7 +125,7 @@ public class SalvageManager extends SkillManager {
 
         for(int x = 0; x < potentialSalvageYield-1; x++) {
 
-            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, chanceOfSuccess)) {
+            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, mmoPlayer, chanceOfSuccess)) {
                 chanceOfSuccess-=3;
                 chanceOfSuccess = Math.max(chanceOfSuccess, 90);
 
@@ -232,12 +232,14 @@ public class SalvageManager extends SkillManager {
 
             if (!Salvage.arcaneSalvageEnchantLoss
                     || Permissions.hasSalvageEnchantBypassPerk(player)
-                    || ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractFullEnchantChance())) {
+                    || ProbabilityUtil.isStaticSkillRNGSuccessful(
+                            PrimarySkillType.SALVAGE, mmoPlayer, getExtractFullEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
             else if (enchantLevel > 1
                     && Salvage.arcaneSalvageDowngrades
-                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, player, getExtractPartialEnchantChance())) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(
+                            PrimarySkillType.SALVAGE, mmoPlayer, getExtractPartialEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {

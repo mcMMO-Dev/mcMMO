@@ -18,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.removeMobFlags;
+
 public class TransientEntityTracker {
     //These two are updated in step with each other
     private final @NotNull HashMap<UUID, HashMap<CallOfTheWildType, HashSet<TrackedTamingEntity>>> perPlayerTransientEntityMap;
@@ -273,7 +275,7 @@ public class TransientEntityTracker {
         }
 
         //Remove our metadata
-        mcMMO.getMetadataService().getMobMetadataService().removeMobFlags(livingEntity);
+        removeMobFlags(livingEntity);
 
         //Clean from trackers
         unregisterEntity(livingEntity);

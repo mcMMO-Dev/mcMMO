@@ -89,7 +89,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_DAZE, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_DAZE, mmoPlayer)) {
             return 0;
         }
 
@@ -116,7 +116,7 @@ public class ArcheryManager extends SkillManager {
      * @param oldDamage The raw damage value of this arrow before we modify it
      */
     public double skillShot(double oldDamage) {
-        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.ARCHERY_SKILL_SHOT, getPlayer())) {
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.ARCHERY_SKILL_SHOT, mmoPlayer)) {
             return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
         } else {
             return oldDamage;

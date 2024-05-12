@@ -412,13 +412,13 @@ public class FishingManager extends SkillManager {
                     enchants.putAll(treasureDrop.getItemMeta().getEnchants());
                 }
 
-                event = EventUtils.callFishingTreasureEvent(player, treasureDrop, treasure.getXp(), enchants);
+                event = EventUtils.callFishingTreasureEvent(mmoPlayer, treasureDrop, treasure.getXp(), enchants);
             } else {
                 if (isMagicHunterEnabled() && ItemUtils.isEnchantable(treasureDrop)) {
                     enchants = processMagicHunter(treasureDrop);
                 }
 
-                event = EventUtils.callFishingTreasureEvent(player, treasureDrop, treasure.getXp(), enchants);
+                event = EventUtils.callFishingTreasureEvent(mmoPlayer, treasureDrop, treasure.getXp(), enchants);
             }
 
             if (!event.isCancelled()) {
@@ -480,7 +480,7 @@ public class FishingManager extends SkillManager {
      * @param target The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(@NotNull LivingEntity target) {
-        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.FISHING, getPlayer(), getShakeChance())) {
+        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.FISHING, mmoPlayer, getShakeChance())) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 
             if (possibleDrops == null || possibleDrops.isEmpty()) {

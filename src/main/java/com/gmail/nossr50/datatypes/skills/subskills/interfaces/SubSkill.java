@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.subskills.interfaces;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
@@ -19,10 +20,10 @@ public interface SubSkill extends Skill {
 
     /**
      * Get an array of various stats for a player
-     * @param player target player
+     * @param mmoPlayer target player
      * @return stat array for target player for this skill
      */
-    Double[] getStats(Player player);
+    Double[] getStats(McMMOPlayer mmoPlayer);
 
     /**
      * Checks if a player has permission to use this skill
@@ -59,9 +60,9 @@ public interface SubSkill extends Skill {
     /**
      * Adds detailed stats specific to this skill
      * @param componentBuilder target component builder
-     * @param player owner of this skill
+     * @param mmoPlayer owner of this skill
      */
-    void addStats(TextComponent.Builder componentBuilder, Player player);
+    void addStats(TextComponent.Builder componentBuilder, McMMOPlayer mmoPlayer);
 
     /**
      * Whether this subskill is enabled
@@ -71,7 +72,7 @@ public interface SubSkill extends Skill {
 
     /**
      * Prints detailed info about this subskill to the player
-     * @param player the target player
+     * @param mmoPlayer the target player
      */
-    void printInfo(Player player);
+    void printInfo(McMMOPlayer mmoPlayer);
 }

@@ -33,7 +33,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +43,7 @@ import java.util.*;
 
 import static com.gmail.nossr50.util.ItemUtils.hasItemIncludingOffHand;
 import static com.gmail.nossr50.util.ItemUtils.removeItemIncludingOffHand;
+import static java.util.Objects.requireNonNull;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
@@ -637,12 +637,13 @@ public class HerbalismManager extends SkillManager {
 
     /**
      * Check for success on herbalism double drops
+     *
      * @param blockState target block state
-     * @return true if double drop succeeds
+     * @return true if the double drop succeeds
      */
-    private boolean checkDoubleDrop(BlockState blockState)
-    {
-        return BlockUtils.checkDoubleDrops(getPlayer(), blockState, skill, SubSkillType.HERBALISM_DOUBLE_DROPS);
+    private boolean checkDoubleDrop(@NotNull BlockState blockState) {
+        requireNonNull(blockState, "BlockState cannot be null");
+        return BlockUtils.checkDoubleDrops(mmoPlayer, blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
     }
 
     /**
@@ -652,7 +653,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
@@ -667,7 +668,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, mmoPlayer)) {
             return false;
         }
 
@@ -676,7 +677,6 @@ public class HerbalismManager extends SkillManager {
             return false;
         List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
 
-        Player player = getPlayer();
 
         if (treasures.isEmpty()) {
             return false;
@@ -686,13 +686,13 @@ public class HerbalismManager extends SkillManager {
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel()
-                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM, player, treasure.getDropChance())) {
-                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player)) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM, mmoPlayer, treasure.getDropChance())) {
+                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), mmoPlayer.getPlayer())) {
                     return false;
                 }
                 blockState.setType(Material.AIR);
                 Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.HYLIAN_LUCK_TREASURE);
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
+                NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }
         }
@@ -706,25 +706,24 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processShroomThumb(BlockState blockState) {
-        Player player = getPlayer();
-        PlayerInventory playerInventory = player.getInventory();
+        PlayerInventory playerInventory = getPlayer().getInventory();
         
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
         }
 
         if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
             return false;
         }
 
         playerInventory.removeItem(new ItemStack(Material.BROWN_MUSHROOM));
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
-        player.updateInventory();
+        getPlayer().updateInventory();
 
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, mmoPlayer)) {
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
 
@@ -789,7 +788,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (!greenTerra && !ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, player)) {
+        if (!greenTerra && !ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, mmoPlayer)) {
             return false;
         }
 

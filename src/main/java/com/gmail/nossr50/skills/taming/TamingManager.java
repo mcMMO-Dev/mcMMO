@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.flagMetadata;
+
 public class TamingManager extends SkillManager {
     //TODO: Temporary static cache, will be changed in 2.2
     private static HashMap<Material, CallOfTheWildType> summoningItems;
@@ -143,7 +145,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(@NotNull Wolf wolf, double damage) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.TAMING_FAST_FOOD_SERVICE, mmoPlayer)) {
             return;
         }
 
@@ -262,7 +264,7 @@ public class TamingManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if(!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, getPlayer(), mcMMO.p.getAdvancedConfig().getPummelChance()))
+        if(!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.TAMING, mmoPlayer, mcMMO.p.getAdvancedConfig().getPummelChance()))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);
@@ -459,7 +461,7 @@ public class TamingManager extends SkillManager {
 
     private void applyMetaDataToCOTWEntity(LivingEntity summonedEntity) {
         //This helps identify the entity as being summoned by COTW
-        mcMMO.getMetadataService().getMobMetadataService().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
+        flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
     }
 
     /**

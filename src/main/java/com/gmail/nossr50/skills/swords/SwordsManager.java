@@ -76,7 +76,7 @@ public class SwordsManager extends SkillManager {
         }
 
         double ruptureOdds = mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank());
-        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, this.getPlayer(), ruptureOdds)) {
+        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, mmoPlayer, ruptureOdds)) {
 
             if (target instanceof Player defender) {
 
@@ -142,7 +142,7 @@ public class SwordsManager extends SkillManager {
      */
     public void counterAttackChecks(@NotNull LivingEntity attacker, double damage) {
 
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SWORDS_COUNTER_ATTACK, mmoPlayer)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");

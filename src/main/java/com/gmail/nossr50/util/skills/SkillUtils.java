@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.metadata.ItemMetadataService;
+import com.gmail.nossr50.util.ItemMetadataUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
+import static com.gmail.nossr50.util.ItemMetadataUtils.*;
 import static com.gmail.nossr50.util.PotionEffectMapper.getHaste;
 
 public final class SkillUtils {
@@ -152,7 +153,7 @@ public final class SkillUtils {
             ItemUtils.addDigSpeedToItem(heldItem, heldItem.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getEfficiency()));
 
             //1.13.2+ will have persistent metadata for this item
-            mcMMO.getMetadataService().getItemMetadataService().setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
+            ItemMetadataUtils.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
         } else {
             int duration = 0;
             int amplifier = 0;
@@ -209,9 +210,7 @@ public final class SkillUtils {
 
 
         //1.13.2+ will have persistent metadata for this itemStack
-        ItemMetadataService itemMetadataService = mcMMO.getMetadataService().getItemMetadataService();
-
-        if(itemMetadataService.isLegacyAbilityTool(itemStack)) {
+        if(isLegacyAbilityTool(itemStack)) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
             if(itemMeta != null) {
@@ -223,8 +222,8 @@ public final class SkillUtils {
             }
         }
 
-        if(itemMetadataService.isSuperAbilityBoosted(itemStack)) {
-            itemMetadataService.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
+        if(isSuperAbilityBoosted(itemStack)) {
+            removeBonusDigSpeedOnSuperAbilityTool(itemStack);
         }
     }
 

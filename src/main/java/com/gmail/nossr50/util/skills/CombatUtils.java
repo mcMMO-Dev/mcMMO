@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
-import com.gmail.nossr50.metadata.MobMetadataService;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -37,13 +36,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
+
 public final class CombatUtils {
 
     private CombatUtils() {}
-
-    private static @NotNull MobMetadataService getMobMetadataService() {
-        return mcMMO.getMetadataService().getMobMetadataService();
-    }
 
     public static boolean isDamageLikelyFromNormalCombat(@NotNull DamageCause damageCause) {
         return switch (damageCause) {
@@ -926,17 +923,17 @@ public final class CombatUtils {
                 }
             }
 
-            if(getMobMetadataService().hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
+            if(hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
                 baseXP = 0;
-            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata("ES")) {
+            } else if(hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata("ES")) {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
-            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
+            } else if(hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getNetherPortalXpMultiplier();
-            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
+            } else if(hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
-            } else if (getMobMetadataService().hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
+            } else if (hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
-            } else if(getMobMetadataService().hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
+            } else if(hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getTamedMobXpMultiplier();
             }
 

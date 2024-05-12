@@ -329,7 +329,7 @@ public class RepairManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
         }
@@ -380,10 +380,10 @@ public class RepairManager extends SkillManager {
 
             Enchantment enchantment = enchant.getKey();
 
-            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), getKeepEnchantChance())) {
+            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, mmoPlayer, getKeepEnchantChance())) {
 
                 if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1
-                        && (!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), 100 - getDowngradeEnchantChance()))) {
+                        && (!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, mmoPlayer, 100 - getDowngradeEnchantChance()))) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }

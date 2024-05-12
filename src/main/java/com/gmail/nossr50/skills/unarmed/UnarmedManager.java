@@ -67,7 +67,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean blockCrackerCheck(@NotNull BlockState blockState) {
-        if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER, getPlayer())) {
+        if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER, mmoPlayer)) {
             return false;
         }
 
@@ -98,7 +98,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(@NotNull Player defender) {
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, getPlayer()) && !hasIronGrip(defender)) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, mmoPlayer) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -121,7 +121,7 @@ public class UnarmedManager extends SkillManager {
      * Check for arrow deflection.
      */
     public boolean deflectCheck() {
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_ARROW_DEFLECT, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_ARROW_DEFLECT, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.ArrowDeflect");
             return true;
         }
@@ -144,7 +144,7 @@ public class UnarmedManager extends SkillManager {
      * Handle the effects of the Iron Arm ability
      */
     public double calculateSteelArmStyleDamage() {
-        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_STEEL_ARM_STYLE, getPlayer())) {
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_STEEL_ARM_STYLE, mmoPlayer)) {
             return getSteelArmStyleDamage();
         }
 
@@ -178,7 +178,7 @@ public class UnarmedManager extends SkillManager {
     private boolean hasIronGrip(@NotNull Player defender) {
         if (!Misc.isNPCEntityExcludingVillagers(defender)
                 && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_IRON_GRIP, defender)) {
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_IRON_GRIP, UserManager.getPlayer(defender))) {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
 

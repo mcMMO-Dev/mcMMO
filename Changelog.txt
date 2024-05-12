@@ -1,3 +1,42 @@
+Version 2.2.010
+    Fixed rare NPE in mcMMO events when player data was unable to be retrieved
+    Fixed a NPE that could happen when damaging armor with Axes
+    Fixed a bug where Alchemy brewing would be cancelled if the player died
+    (API) Added getMcMMOPlayer() to McMMOPlayerSkillEvent
+    (API) Added new ctor McMMOPlayerSkillEvent(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType)
+    (API) Deprecated ctor McMMOPlayerSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added ctor McMMOPlayerAbilityEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerAbilityEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerAbilityActivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added ctor McMMOPlayerAbilityActivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerCatalysisEvent(org.bukkit.entity.Player, double)
+    (API) Added ctor McMMOPlayerCatalysisEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, double)
+    (API) Deprecated util method EventUtils.callPlayerAbilityActivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added util method EventUtils.callPlayerAbilityActivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerFishingEvent(org.bukkit.entity.Player)
+    (API) Added ctor McMMOPlayerFishingEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer)
+    (API) Deprecated ctor McMMOPlayerFishingTreasureEvent.McMMOPlayerFishingTreasureEvent(org.bukkit.entity.Player, org.bukkit.inventory.ItemStack, int)
+    (API) Added ctor McMMOPlayerFishingTreasureEvent.McMMOPlayerFishingTreasureEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, org.bukkit.inventory.ItemStack, int)
+    (API) Deprecated ctor McMMOPlayerMagicHunterEvent(org.bukkit.entity.Player, org.bukkit.inventory.ItemStack, int, java.util.Map<org.bukkit.enchantments.Enchantment,java.lang.Integer>)
+    (API) Added ctor McMMOPlayerMagicHunterEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, org.bukkit.inventory.ItemStack, int, java.util.Map<org.bukkit.enchantments.Enchantment,java.lang.Integer>)
+    (API) Deprecated ctor McMMOPlayerAbilityDeactivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added ctor McMMOPlayerAbilityDeactivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated util method EventUtils.callAbilityDeactivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SuperAbilityType)
+    (API) Added util method EventUtils.callAbilityDeactivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SuperAbilityType)
+    (API) Deprecated util EventUtils.callSubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Added util EventUtils.callSubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Deprecated ctor SubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Added ctor SubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Deprecated ctor SubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SubSkillType, double)
+    (API) Added ctor SubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SubSkillType, double)
+    (API) Deprecated ctor SubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill)
+    (API) Added ctor SubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill)
+    (API) Deprecated ctor AlchemyBrewCheckTask(org.bukkit.entity.Player, org.bukkit.block.BrewingStand)
+    (API) Added ctor AlchemyBrewCheckTask(org.bukkit.block.BrewingStand)
+
+    NOTES:
+    This is not an exhaustive list of API changes in this update, but most of them should be documented here.
+
 Version 2.2.009
     Fixed a bug that prevented mcMMO from loading on MC versions older than 1.20.6
     Dramatically increased the base XP for Alchemy again (see notes)

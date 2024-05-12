@@ -46,7 +46,8 @@ public class ExcavationManager extends SkillManager {
 
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
-                            && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), treasure.getDropProbability())) {
+                            && ProbabilityUtil.isStaticSkillRNGSuccessful(
+                                    PrimarySkillType.EXCAVATION, mmoPlayer, treasure.getDropProbability())) {
                         processExcavationBonusesOnBlock(blockState, treasure, location);
                     }
                 }
@@ -65,7 +66,8 @@ public class ExcavationManager extends SkillManager {
     @VisibleForTesting
     public void processExcavationBonusesOnBlock(BlockState blockState, ExcavationTreasure treasure, Location location) {
         //Spawn Vanilla XP orbs if a dice roll succeeds
-        if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.EXCAVATION, getPlayer(), getArchaelogyExperienceOrbChance())) {
+        if(ProbabilityUtil.isStaticSkillRNGSuccessful(
+                PrimarySkillType.EXCAVATION, mmoPlayer, getArchaelogyExperienceOrbChance())) {
             Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
         }
 

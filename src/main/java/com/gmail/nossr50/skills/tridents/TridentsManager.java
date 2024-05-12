@@ -3,9 +3,7 @@ package com.gmail.nossr50.skills.tridents;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 
 public class TridentsManager extends SkillManager {

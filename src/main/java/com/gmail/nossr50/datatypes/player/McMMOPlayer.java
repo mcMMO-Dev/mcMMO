@@ -72,6 +72,9 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.gmail.nossr50.util.EventUtils.callPlayerAbilityActivateEvent;
+import static java.util.Objects.requireNonNull;
+
 public class McMMOPlayer implements Identified {
     private final @NotNull Identity identity;
 
@@ -120,6 +123,8 @@ public class McMMOPlayer implements Identified {
     private PrimarySkillType lastSkillShownScoreboard = PrimarySkillType.values()[0];
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
+        requireNonNull(player, "player cannot be null");
+        requireNonNull(profile, "profile cannot be null");
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
         identity = Identity.identity(uuid);
@@ -747,11 +752,11 @@ public class McMMOPlayer implements Identified {
      * Players & Profiles
      */
 
-    public Player getPlayer() {
+    public @NotNull Player getPlayer() {
         return player;
     }
 
-    public PlayerProfile getProfile() {
+    public @NotNull PlayerProfile getProfile() {
         return profile;
     }
 
@@ -925,7 +930,7 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (EventUtils.callPlayerAbilityActivateEvent(player, primarySkillType).isCancelled()) {
+        if (callPlayerAbilityActivateEvent(this, primarySkillType).isCancelled()) {
             return;
         }
 

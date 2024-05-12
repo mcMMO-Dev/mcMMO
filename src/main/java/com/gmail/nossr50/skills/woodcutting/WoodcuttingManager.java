@@ -72,14 +72,14 @@ public class WoodcuttingManager extends SkillManager {
     private boolean checkHarvestLumberActivation(Material material) {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer())
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_HARVEST_LUMBER, mmoPlayer)
                 && mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
     }
 
     private boolean checkCleanCutsActivation(Material material) {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, getPlayer())
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.WOODCUTTING_CLEAN_CUTS, mmoPlayer)
                 && mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material);
     }
 
@@ -336,7 +336,7 @@ public class WoodcuttingManager extends SkillManager {
                 if(RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                     if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                         if(mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
-                            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, player, 10)) {
+                            if(ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
                                 Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
                             }

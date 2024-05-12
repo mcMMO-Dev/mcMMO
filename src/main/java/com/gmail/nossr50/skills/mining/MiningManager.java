@@ -115,7 +115,7 @@ public class MiningManager extends SkillManager {
 
     private boolean processTripleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.MINING_MOTHER_LODE, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.MINING_MOTHER_LODE, mmoPlayer)) {
             BlockUtils.markDropsAsBonus(blockState, 2);
             return true;
         } else {
@@ -125,7 +125,7 @@ public class MiningManager extends SkillManager {
 
     private void processDoubleDrops(@NotNull BlockState blockState) {
         //TODO: Make this readable
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.MINING_DOUBLE_DROPS, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.MINING_DOUBLE_DROPS, mmoPlayer)) {
             boolean useTriple = mmoPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) && mcMMO.p.getAdvancedConfig().getAllowMiningTripleDrops();
             BlockUtils.markDropsAsBonus(blockState, useTriple);
         }

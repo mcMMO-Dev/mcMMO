@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -17,6 +18,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -171,8 +173,17 @@ public final class Permissions {
     }
 
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase(Locale.ENGLISH) + ".vanillaxpboost"); }
-    public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) {
+    public static boolean isSubSkillEnabled(@Nullable Permissible permissible, @NotNull SubSkillType subSkillType) {
+        if (permissible == null)
+            return false;
         return permissible.hasPermission(subSkillType.getPermissionNodeAddress());
+    }
+
+    public static boolean isSubSkillEnabled(@Nullable McMMOPlayer permissible, @NotNull SubSkillType subSkillType) {
+        if (permissible == null)
+            return false;
+
+        return isSubSkillEnabled(permissible.getPlayer(), subSkillType);
     }
 
     /* ACROBATICS */

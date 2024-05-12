@@ -6,7 +6,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
@@ -38,7 +37,7 @@ public class SalvageCommand extends SkillCommand {
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
-        SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
+        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
 
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,

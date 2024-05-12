@@ -708,19 +708,16 @@ public class BlockListener implements Listener {
                     player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");
             }
 
-            if(blockState instanceof Furnace furnace)
-            {
-                if(mcMMO.getSmeltingTracker().isFurnaceOwned(furnace))
-                {
-                    player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
-                    OfflinePlayer furnacePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
-                    if(furnacePlayer != null)
-                    {
-                        player.sendMessage("[mcMMO DEBUG] This furnace is owned by player "+furnacePlayer.getName());
+            if(blockState instanceof Furnace || blockState instanceof BrewingStand) {
+                if(ContainerMetadataUtils.isContainerOwned(blockState)) {
+                    player.sendMessage("[mcMMO DEBUG] This container has a registered owner");
+                    final OfflinePlayer furnacePlayer = ContainerMetadataUtils.getContainerOwner(blockState);
+                    if(furnacePlayer != null) {
+                        player.sendMessage("[mcMMO DEBUG] This container is owned by player "+furnacePlayer.getName());
                     }
                 }
                 else
-                    player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
+                    player.sendMessage("[mcMMO DEBUG] This container does not have a registered owner");
             }
 
             if(ExperienceConfig.getInstance().isExperienceBarsEnabled())

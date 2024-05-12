@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -39,7 +38,7 @@ public class SwordsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.SWORDS_COUNTER_ATTACK);
+            String[] counterStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.SWORDS_COUNTER_ATTACK);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -105,7 +104,7 @@ public class SwordsCommand extends SkillCommand {
         if(SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_STAB))
         {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
-                    String.valueOf(UserManager.getPlayer(player).getSwordsManager().getStabDamage())));
+                    String.valueOf(mmoPlayer.getSwordsManager().getStabDamage())));
         }
 
         if(SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {

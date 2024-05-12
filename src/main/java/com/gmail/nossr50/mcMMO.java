@@ -19,7 +19,6 @@ import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
-import com.gmail.nossr50.metadata.MetadataService;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.placeholders.PapiExpansion;
 import com.gmail.nossr50.runnables.SaveTimerTask;
@@ -50,7 +49,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
-import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.tcoded.folialib.FoliaLib;
@@ -80,7 +78,6 @@ import java.util.List;
 public class mcMMO extends JavaPlugin {
     /* Managers & Services */
     private static PlatformManager platformManager;
-    private static MetadataService metadataService;
     private static ChunkManager       placeStore;
     private static RepairableManager  repairableManager;
     private static SalvageableManager salvageableManager;
@@ -90,12 +87,10 @@ public class mcMMO extends JavaPlugin {
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
-    private static SmeltingTracker smeltingTracker;
     private static TransientMetadataTools transientMetadataTools;
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
-//    private static ProtocolLibManager protocolLibManager;
 
     private SkillTools skillTools;
 
@@ -185,9 +180,6 @@ public class mcMMO extends JavaPlugin {
 
             //Platform Manager
             platformManager = new PlatformManager();
-
-            //metadata service
-            metadataService = new MetadataService(this);
 
             MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
 
@@ -318,9 +310,6 @@ public class mcMMO extends JavaPlugin {
 
         //Init the blacklist
         worldBlacklist = new WorldBlacklist(this);
-
-        //Init smelting tracker
-        smeltingTracker = new SmeltingTracker();
 
         //Set up Adventure's audiences
         audiences = BukkitAudiences.create(this);
@@ -480,10 +469,6 @@ public class mcMMO extends JavaPlugin {
 
     public static @Nullable CompatibilityManager getCompatibilityManager() {
         return platformManager.getCompatibilityManager();
-    }
-
-    public static MetadataService getMetadataService() {
-        return metadataService;
     }
 
     @Deprecated
@@ -739,10 +724,6 @@ public class mcMMO extends JavaPlugin {
 
     public static PlatformManager getPlatformManager() {
         return platformManager;
-    }
-
-    public static SmeltingTracker getSmeltingTracker() {
-        return smeltingTracker;
     }
 
     public static BukkitAudiences getAudiences() {

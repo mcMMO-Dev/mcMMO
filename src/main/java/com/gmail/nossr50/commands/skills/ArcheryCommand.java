@@ -33,14 +33,14 @@ public class ArcheryCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // ARCHERY_ARROW_RETRIEVAL
         if (canRetrieve) {
-            String[] retrieveStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
+            String[] retrieveStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
         
         // ARCHERY_DAZE
         if (canDaze) {
-            String[] dazeStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ARCHERY_DAZE);
+            String[] dazeStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.ARCHERY_DAZE);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
