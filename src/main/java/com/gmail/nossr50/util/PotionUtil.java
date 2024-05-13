@@ -71,10 +71,10 @@ public class PotionUtil {
      * @return The potion type
      */
     public static PotionType matchPotionType(String partialName, boolean isUpgraded, boolean isExtended) {
+        String updatedName = convertLegacyNames(partialName).toUpperCase();
         if (COMPATIBILITY_MODE == PotionCompatibilityType.PRE_1_20_5) {
-            return matchLegacyPotionType(partialName);
+            return matchLegacyPotionType(updatedName);
         } else {
-            String updatedName = convertLegacyNames(partialName);
             return Arrays.stream(PotionType.values())
                     .filter(potionType -> getKeyGetKey(potionType).toUpperCase().contains(partialName)
                                 || getKeyGetKey(potionType).toUpperCase().contains(convertLegacyNames(updatedName)))
@@ -82,6 +82,21 @@ public class PotionUtil {
                     .filter(potionType -> !isExtended || potionType.name().toUpperCase().contains(LONG))
                     .findAny().orElse(null);
         }
+    }
+
+    /**
+     * Legacy matching for {@link PotionType}
+     *
+     * @param name The partial name of the potion
+     * @return The potion type
+     */
+    private static PotionType matchLegacyPotionType(String name) {
+        return Arrays.stream(PotionType.values())
+                .filter(potionType -> getKeyGetKey(potionType).equalsIgnoreCase(name)
+                        || getKeyGetKey(potionType).equalsIgnoreCase(convertLegacyNames(name))
+                        || potionType.name().equalsIgnoreCase(name)
+                        || potionType.name().equalsIgnoreCase(convertLegacyNames(name)))
+                .findAny().orElse(null);
     }
 
     public static String getKeyGetKey(PotionType potionType) {
@@ -199,23 +214,6 @@ public class PotionUtil {
         } catch (NoSuchMethodException e) {
             return null;
         }
-    }
-
-    /**
-     * Legacy matching for {@link PotionType}
-     *
-     * @param partialName The partial name of the potion
-     * @return The potion type
-     */
-    private static PotionType matchLegacyPotionType(String partialName) {
-        String updatedName = convertLegacyNames(partialName);
-
-        return Arrays.stream(PotionType.values())
-                .filter(potionType -> getKeyGetKey(potionType).equalsIgnoreCase(partialName)
-                        || getKeyGetKey(potionType).equalsIgnoreCase(convertLegacyNames(updatedName))
-                        || potionType.name().equalsIgnoreCase(partialName)
-                        || potionType.name().equalsIgnoreCase(convertLegacyNames(updatedName)))
-                .findAny().orElse(null);
     }
 
     public static String convertPotionConfigName(String legacyName) {
