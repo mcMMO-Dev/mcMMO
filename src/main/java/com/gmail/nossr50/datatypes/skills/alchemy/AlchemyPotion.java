@@ -15,16 +15,19 @@ import static com.gmail.nossr50.util.PotionUtil.samePotionType;
 import static java.util.Objects.requireNonNull;
 
 public class AlchemyPotion {
-    private final @NotNull ItemStack potionItemstack;
+    private final @NotNull String potionConfigName;
+    private final @NotNull ItemStack potionItemStack;
     private final @NotNull Map<ItemStack, String> alchemyPotionChildren;
 
-    public AlchemyPotion(@NotNull ItemStack potionItemStack, @NotNull Map<ItemStack, String> alchemyPotionChildren) {
-        this.potionItemstack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
+    public AlchemyPotion(@NotNull String potionConfigName, @NotNull ItemStack potionItemStack, @NotNull Map<ItemStack, String> alchemyPotionChildren) {
+        this.potionConfigName = requireNonNull(potionConfigName, "potionConfigName cannot be null");
+        this.potionItemStack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
         this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
+        // mcMMO.p.getLogger().info("AlchemyPotion created: " + potionConfigName + ", with children: " + alchemyPotionChildren);
     }
 
     public @NotNull ItemStack toItemStack(int amount) {
-        final ItemStack clone = potionItemstack.clone();
+        final ItemStack clone = potionItemStack.clone();
         clone.setAmount(Math.max(1, amount));
         return clone;
     }
@@ -46,9 +49,12 @@ public class AlchemyPotion {
 
     public boolean isSimilarPotion(@NotNull ItemStack otherPotion) {
         requireNonNull(otherPotion, "otherPotion cannot be null");
-        // TODO: Investigate?
-        // We currently don't compare base potion effects, likely because they are derived from the potion type
-        if (otherPotion.getType() != potionItemstack.getType() || !otherPotion.hasItemMeta()) {
+        if (otherPotion.getType() != potionItemStack.getType()) {
+            return false;
+        }
+
+        // no potion meta, no match
+        if (!otherPotion.hasItemMeta()) {
             return false;
         }
 
@@ -97,15 +103,15 @@ public class AlchemyPotion {
     }
 
     public PotionMeta getAlchemyPotionMeta() {
-        return (PotionMeta) potionItemstack.getItemMeta();
+        return (PotionMeta) potionItemStack.getItemMeta();
     }
 
     public boolean isSplash() {
-        return potionItemstack.getType() == Material.SPLASH_POTION;
+        return potionItemStack.getType() == Material.SPLASH_POTION;
     }
 
     public boolean isLingering() {
-        return potionItemstack.getType() == Material.LINGERING_POTION;
+        return potionItemStack.getType() == Material.LINGERING_POTION;
     }
 
     @Override
@@ -113,18 +119,19 @@ public class AlchemyPotion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlchemyPotion that = (AlchemyPotion) o;
-        return Objects.equals(potionItemstack, that.potionItemstack) && Objects.equals(alchemyPotionChildren, that.alchemyPotionChildren);
+        return Objects.equals(potionConfigName, that.potionConfigName) && Objects.equals(potionItemStack, that.potionItemStack) && Objects.equals(alchemyPotionChildren, that.alchemyPotionChildren);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(potionItemstack, alchemyPotionChildren);
+        return Objects.hash(potionConfigName, potionItemStack, alchemyPotionChildren);
     }
 
     @Override
     public String toString() {
         return "AlchemyPotion{" +
-                "potion=" + potionItemstack +
+                "potionConfigName='" + potionConfigName + '\'' +
+                ", potionItemStack=" + potionItemStack +
                 ", alchemyPotionChildren=" + alchemyPotionChildren +
                 '}';
     }

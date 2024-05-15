@@ -1,8 +1,7 @@
 Version 2.2.010
-    # TODO: Fix not moving mcMMO custom ingredients from hopper -> brewing stand
-    # TODO: Fix some potions are not rewarding XP ( strength 2, etc )
     Fixed being unable to load REGEN potion type on new versions of Paper/Spigot 1.20.6
-    BrewingStand now remember who owns them, this persists across restarts (see notes)
+    Fixed some potions not gaining XP when brewed (Level 2 potions, etc)
+    BrewingStands will now remember who owns them, this persists across restarts (see notes)
     Fixed rare NPE in mcMMO events when player data was unable to be retrieved
     Fixed a NPE that could happen when damaging armor with Axes
     Fixed a bug where Alchemy brewing would be cancelled if the player died
@@ -40,6 +39,7 @@ Version 2.2.010
 
     NOTES:
     You can now use hoppers and brewing stands and not have to worry about having to re-interact with the brewing stand over and over again
+    Ownership of a brewing stand is whoever last interacted with it, this persists across restarts
     This is not an exhaustive list of API changes in this update, but most of the important ones should be documented here.
 
 Version 2.2.009

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.gmail.nossr50.util.ItemUtils.setItemName;
 import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
@@ -39,7 +40,7 @@ public class PotionConfig extends LegacyConfigLoader {
     /**
      * Map of potion names to AlchemyPotion objects.
      */
-    private final Map<String, AlchemyPotion> loadedPotions = new HashMap<>();
+    private final Map<String, AlchemyPotion> alchemyPotions = new HashMap<>();
 
     public PotionConfig() {
         super("potions.yml");
@@ -106,7 +107,7 @@ public class PotionConfig extends LegacyConfigLoader {
             AlchemyPotion potion = loadPotion(potionSection.getConfigurationSection(potionName));
 
             if (potion != null) {
-                loadedPotions.put(potionName, potion);
+                alchemyPotions.put(potionName, potion);
                 potionsLoaded++;
             } else {
                 failures++;
@@ -250,7 +251,7 @@ public class PotionConfig extends LegacyConfigLoader {
 
             // TODO: Might not need to .setItemMeta
             itemStack.setItemMeta(potionMeta);
-            return new AlchemyPotion(itemStack, children);
+            return new AlchemyPotion(potion_section.getName(), itemStack, children);
         } catch (Exception e) {
             mcMMO.p.getLogger().warning("PotionConfig: Failed to load Alchemy potion: " + potion_section.getName());
             return null;
@@ -325,7 +326,7 @@ public class PotionConfig extends LegacyConfigLoader {
      * @return AlchemyPotion that corresponds to the given name.
      */
     public AlchemyPotion getPotion(String name) {
-        return loadedPotions.get(name);
+        return alchemyPotions.get(name);
     }
 
     /**
@@ -336,12 +337,15 @@ public class PotionConfig extends LegacyConfigLoader {
      * @return AlchemyPotion that corresponds to the given ItemStack.
      */
     public AlchemyPotion getPotion(ItemStack item) {
-        for (AlchemyPotion potion : loadedPotions.values()) {
-            if (potion.isSimilarPotion(item)) {
-                return potion;
-            }
+        final List<AlchemyPotion> potionList = alchemyPotions.values()
+                .stream()
+                .filter(potion -> potion.isSimilarPotion(item))
+                .toList();
+        if(potionList.size() > 1) {
+            mcMMO.p.getLogger().severe("Multiple child potions matched for item, when there should only be one: " + item);
         }
-        return null;
+
+        return potionList.isEmpty() ? null : potionList.get(0);
     }
 
     public Color generateColor(List<PotionEffect> effects) {

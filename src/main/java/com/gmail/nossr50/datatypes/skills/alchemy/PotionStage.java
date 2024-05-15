@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
 import com.gmail.nossr50.util.PotionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 

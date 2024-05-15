@@ -58,10 +58,11 @@ public class PotionUtil {
         methodPotionTypeGetPotionEffects = getPotionTypeGetPotionEffects();
         methodSetBasePotionData = getSetBasePotionData();
 
-        if (potionDataClass != null) {
+        if (potionDataClass != null
+                && !mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 20, 5)) {
             COMPATIBILITY_MODE = PotionCompatibilityType.PRE_1_20_5;
         } else {
-            COMPATIBILITY_MODE = PotionCompatibilityType.POST_1_20_5;
+            COMPATIBILITY_MODE = PotionCompatibilityType.POST_1_20_6;
         }
     }
 
@@ -71,13 +72,13 @@ public class PotionUtil {
      * @return The potion type
      */
     public static PotionType matchPotionType(String partialName, boolean isUpgraded, boolean isExtended) {
-        String updatedName = convertLegacyNames(partialName).toUpperCase();
+        // updatedName = convertUpgradedOrExtended(updatedName, isUpgraded, isExtended);
         if (COMPATIBILITY_MODE == PotionCompatibilityType.PRE_1_20_5) {
-            return matchLegacyPotionType(updatedName);
+            return matchLegacyPotionType(partialName);
         } else {
+            String updatedName = convertLegacyNames(partialName).toUpperCase();
             return Arrays.stream(PotionType.values())
-                    .filter(potionType -> getKeyGetKey(potionType).toUpperCase().contains(partialName)
-                                || getKeyGetKey(potionType).toUpperCase().contains(convertLegacyNames(updatedName)))
+                    .filter(potionType -> getKeyGetKey(potionType).toUpperCase().contains(updatedName))
                     .filter(potionType -> !isUpgraded || potionType.name().toUpperCase().contains(STRONG))
                     .filter(potionType -> !isExtended || potionType.name().toUpperCase().contains(LONG))
                     .findAny().orElse(null);
@@ -97,6 +98,16 @@ public class PotionUtil {
                         || potionType.name().equalsIgnoreCase(name)
                         || potionType.name().equalsIgnoreCase(convertLegacyNames(name)))
                 .findAny().orElse(null);
+    }
+
+    private static String convertUpgradedOrExtended(String potionType, boolean isUpgraded, boolean isExtended) {
+        if (isUpgraded) {
+            potionType = STRONG + "_" + potionType;
+        }
+        if (isExtended) {
+            potionType = LONG + "_" + potionType;
+        }
+        return potionType;
     }
 
     public static String getKeyGetKey(PotionType potionType) {
