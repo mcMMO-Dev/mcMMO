@@ -19,11 +19,11 @@ public class AlchemyPotion {
     private final @NotNull ItemStack potionItemStack;
     private final @NotNull Map<ItemStack, String> alchemyPotionChildren;
 
-    public AlchemyPotion(@NotNull String potionConfigName, @NotNull ItemStack potionItemStack, @NotNull Map<ItemStack, String> alchemyPotionChildren) {
+    public AlchemyPotion(@NotNull String potionConfigName, @NotNull ItemStack potionItemStack,
+                         @NotNull Map<ItemStack, String> alchemyPotionChildren) {
         this.potionConfigName = requireNonNull(potionConfigName, "potionConfigName cannot be null");
         this.potionItemStack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
         this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
-        // mcMMO.p.getLogger().info("AlchemyPotion created: " + potionConfigName + ", with children: " + alchemyPotionChildren);
     }
 
     public @NotNull ItemStack toItemStack(int amount) {
@@ -32,7 +32,7 @@ public class AlchemyPotion {
         return clone;
     }
 
-    public Map<ItemStack, String> getAlchemyPotionChildren() {
+    public @NotNull Map<ItemStack, String> getAlchemyPotionChildren() {
         return alchemyPotionChildren;
     }
 
@@ -58,6 +58,10 @@ public class AlchemyPotion {
             return false;
         }
 
+        /*
+         * Compare custom effects on both potions.
+         */
+
         final PotionMeta otherPotionMeta = (PotionMeta) otherPotion.getItemMeta();
         // compare custom effects on both potions, this has to be done in two traversals
         // comparing thisPotionMeta -> otherPotionMeta and otherPotionMeta -> thisPotionMeta
@@ -70,17 +74,18 @@ public class AlchemyPotion {
             return false;
         }
 
+        /*
+         * If one potion has lore and the other does not, then they are not the same potion.
+         * If both have lore, compare the lore.
+         * If neither have lore, they may be the same potion.
+         */
         if (!otherPotionMeta.hasLore() && getAlchemyPotionMeta().hasLore()
                 || !getAlchemyPotionMeta().hasLore() && otherPotionMeta.hasLore()) {
             return false;
         }
 
-        if (otherPotionMeta.hasLore() && getAlchemyPotionMeta().hasLore()
-                && !otherPotionMeta.getLore().equals(getAlchemyPotionMeta().getLore())) {
-            return false;
-        }
-
-        return true;
+        return !otherPotionMeta.hasLore() || !getAlchemyPotionMeta().hasLore()
+                || otherPotionMeta.getLore().equals(getAlchemyPotionMeta().getLore());
     }
 
     private boolean hasDifferingCustomEffects(PotionMeta potionMeta, PotionMeta otherPotionMeta) {

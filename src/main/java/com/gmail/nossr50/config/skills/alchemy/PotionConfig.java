@@ -342,7 +342,11 @@ public class PotionConfig extends LegacyConfigLoader {
                 .filter(potion -> potion.isSimilarPotion(item))
                 .toList();
         if(potionList.size() > 1) {
-            mcMMO.p.getLogger().severe("Multiple child potions matched for item, when there should only be one: " + item);
+            mcMMO.p.getLogger().severe("Multiple potions defined in config have match this potion, for mcMMO to behave" +
+                    " properly there should only be one match found.");
+            mcMMO.p.getLogger().severe("Potion ItemStack:" + item.toString());
+            mcMMO.p.getLogger().severe("Alchemy Potions from config matching this item: "
+                    + potionList.stream().map(AlchemyPotion::toString).collect(Collectors.joining(", ")));
         }
 
         return potionList.isEmpty() ? null : potionList.get(0);
