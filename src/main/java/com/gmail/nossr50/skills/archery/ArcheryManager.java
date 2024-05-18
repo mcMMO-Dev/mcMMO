@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.potion.PotionEffect;
 
-import static com.gmail.nossr50.util.PotionEffectMapper.getNausea;
+import static com.gmail.nossr50.util.PotionEffectUtil.getNauseaPotionEffectType;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager(McMMOPlayer mcMMOPlayer) {
@@ -97,7 +97,7 @@ public class ArcheryManager extends SkillManager {
         dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
 
         mcMMO.p.getFoliaLib().getImpl().teleportAsync(defender, dazedLocation);
-        defender.addPotionEffect(new PotionEffect(getNausea(), 20 * 10, 10));
+        defender.addPotionEffect(new PotionEffect(getNauseaPotionEffectType(), 20 * 10, 10));
 
         if (NotificationManager.doesPlayerUseNotifications(defender)) {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");

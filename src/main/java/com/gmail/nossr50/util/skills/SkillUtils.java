@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 
 import static com.gmail.nossr50.util.ItemMetadataUtils.*;
-import static com.gmail.nossr50.util.PotionEffectMapper.getHaste;
+import static com.gmail.nossr50.util.PotionEffectUtil.getHastePotionEffectType;
 
 public final class SkillUtils {
     /**
@@ -158,9 +158,9 @@ public final class SkillUtils {
             int duration = 0;
             int amplifier = 0;
 
-            if (player.hasPotionEffect(getHaste())) {
+            if (player.hasPotionEffect(getHastePotionEffectType())) {
                 for (PotionEffect effect : player.getActivePotionEffects()) {
-                    if (effect.getType() == getHaste()) {
+                    if (effect.getType() == getHastePotionEffectType()) {
                         duration = effect.getDuration();
                         amplifier = effect.getAmplifier();
                         break;
@@ -190,7 +190,7 @@ public final class SkillUtils {
                         mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             }
 
-            PotionEffect abilityBuff = new PotionEffect(getHaste(), duration + ticks, amplifier + 10);
+            PotionEffect abilityBuff = new PotionEffect(getHastePotionEffectType(), duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);
         }
     }
