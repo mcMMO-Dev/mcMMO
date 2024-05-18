@@ -25,9 +25,9 @@ public class PotionUtil {
     private static final Method methodPotionDataIsExtended;
     private static final Method methodPotionDataGetType;
     private static final Method methodPotionMetaGetBasePotionData;
+    private static final Method methodPotionMetaSetBasePotionData;
     private static final Method methodPotionMetaGetBasePotionType;
     private static final Method methodPotionMetaSetBasePotionType;
-    private static final Method methodSetBasePotionData;
     private static final Class<?> potionDataClass;
 
     public static final String STRONG = "STRONG";
@@ -49,20 +49,20 @@ public class PotionUtil {
         legacyPotionTypes.put("REGEN", "REGENERATION");
         methodPotionTypeGetKey = getKeyMethod();
         methodPotionDataIsUpgraded = getPotionDataIsUpgraded();
-        methodPotionDataIsExtended = getIsExtended();
-        methodPotionMetaGetBasePotionData = getBasePotionData();
-        methodPotionMetaGetBasePotionType = getBasePotionType();
+        methodPotionDataIsExtended = getPotionDataIsExtended();
+        methodPotionMetaGetBasePotionData = getGetBasePotionDataMethod();
+        methodPotionMetaGetBasePotionType = getGetBasePotionTypeMethod();
         methodPotionMetaSetBasePotionType = getMethodPotionMetaSetBasePotionType();
-        methodPotionDataGetType = getPotionDataGetType();
-        methodPotionTypeGetEffectType = getPotionTypeEffectType();
-        methodPotionTypeGetPotionEffects = getPotionTypeGetPotionEffects();
-        methodSetBasePotionData = getSetBasePotionData();
+        methodPotionDataGetType = getPotionDataGetTypeMethod();
+        methodPotionTypeGetEffectType = getPotionTypeEffectTypeMethod();
+        methodPotionTypeGetPotionEffects = getPotionTypeGetPotionEffectsMethod();
+        methodPotionMetaSetBasePotionData = setBasePotionData();
 
         if (potionDataClass != null
                 && !mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 20, 5)) {
             COMPATIBILITY_MODE = PotionCompatibilityType.PRE_1_20_5;
         } else {
-            COMPATIBILITY_MODE = PotionCompatibilityType.POST_1_20_6;
+            COMPATIBILITY_MODE = PotionCompatibilityType.MODERN;
         }
     }
 
@@ -145,6 +145,14 @@ public class PotionUtil {
         }
     }
 
+    private static @Nullable Method setBasePotionData() {
+        try {
+            return PotionMeta.class.getMethod("setBasePotionData", potionDataClass);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
     private static Method getMethodPotionMetaSetBasePotionType() {
         try {
             return PotionMeta.class.getMethod("setBasePotionType", PotionType.class);
@@ -171,7 +179,7 @@ public class PotionUtil {
         }
     }
 
-    private static @Nullable Method getIsExtended() {
+    private static @Nullable Method getPotionDataIsExtended() {
         try {
             // TODO: <?> Needed?
             final Class<?> clazz = Class.forName("org.bukkit.potion.PotionData");
@@ -186,7 +194,7 @@ public class PotionUtil {
      *
      * @return the getBasePotionData method, or null if it does not exist
      */
-    private static @Nullable Method getBasePotionData() {
+    private static @Nullable Method getGetBasePotionDataMethod() {
         try {
             return PotionMeta.class.getMethod("getBasePotionData");
         } catch (NoSuchMethodException e) {
@@ -194,7 +202,7 @@ public class PotionUtil {
         }
     }
 
-    private static Method getBasePotionType() {
+    private static Method getGetBasePotionTypeMethod() {
         try {
             return PotionMeta.class.getMethod("getBasePotionType");
         } catch (NoSuchMethodException e) {
@@ -202,7 +210,7 @@ public class PotionUtil {
         }
     }
 
-    private static Method getPotionDataGetType() {
+    private static Method getPotionDataGetTypeMethod() {
         try {
             final Class<?> clazz = Class.forName("org.bukkit.potion.PotionData");
             return clazz.getMethod("getType");
@@ -211,7 +219,7 @@ public class PotionUtil {
         }
     }
 
-    private static Method getPotionTypeEffectType() {
+    private static Method getPotionTypeEffectTypeMethod() {
         try {
             return PotionType.class.getMethod("getEffectType");
         } catch (NoSuchMethodException e) {
@@ -219,7 +227,7 @@ public class PotionUtil {
         }
     }
 
-    private static Method getPotionTypeGetPotionEffects() {
+    private static Method getPotionTypeGetPotionEffectsMethod() {
         try {
             return PotionType.class.getMethod("getPotionEffects");
         } catch (NoSuchMethodException e) {
@@ -474,12 +482,28 @@ public class PotionUtil {
         }
     }
 
+    public static void setUpgradedAndExtendedProperties(PotionType potionType, PotionMeta potionMeta,
+                                                        boolean isUpgraded, boolean isExtended) {
+        if (potionDataClass == null || mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 20, 5)) {
+            return;
+        }
+
+        try {
+            final Object potionData = potionDataClass.getConstructor(PotionType.class, boolean.class, boolean.class)
+                    .newInstance(potionType, isExtended, isUpgraded);
+            methodPotionMetaSetBasePotionData.invoke(potionMeta, potionData);
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException
+                 | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     private static void setBasePotionTypeLegacy(PotionMeta potionMeta, PotionType potionType, boolean extended,
                                                 boolean upgraded) {
         try {
             Object potionData = potionDataClass.getConstructor(PotionType.class, boolean.class, boolean.class)
                     .newInstance(potionType, extended, upgraded);
-            methodSetBasePotionData.invoke(potionMeta, potionData);
+            methodPotionMetaSetBasePotionData.invoke(potionMeta, potionData);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }
@@ -490,6 +514,31 @@ public class PotionUtil {
             methodPotionMetaSetBasePotionType.invoke(potionMeta, potionType);
         } catch (IllegalAccessException | InvocationTargetException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public static boolean isPotionDataEqual(PotionMeta potionMeta, PotionMeta otherPotionMeta) {
+        if (COMPATIBILITY_MODE == PotionCompatibilityType.MODERN) {
+            return true; // we don't compare data on newer versions
+        } else {
+            try {
+                final Object potionData = methodPotionMetaGetBasePotionData.invoke(potionMeta);
+                final Object otherPotionData = methodPotionMetaGetBasePotionData.invoke(otherPotionMeta);
+                final PotionType potionType = (PotionType) methodPotionDataGetType.invoke(potionData);
+                final PotionType otherPotionType = (PotionType) methodPotionDataGetType.invoke(otherPotionData);
+                if (potionType != otherPotionType) {
+                    return false;
+                }
+                if (methodPotionDataIsExtended.invoke(potionData) != methodPotionDataIsExtended.invoke(otherPotionData)) {
+                    return false;
+                }
+                if (methodPotionDataIsUpgraded.invoke(potionData) != methodPotionDataIsUpgraded.invoke(otherPotionData)) {
+                    return false;
+                }
+                return true;
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

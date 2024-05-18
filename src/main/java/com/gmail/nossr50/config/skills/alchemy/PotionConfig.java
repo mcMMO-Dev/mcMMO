@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.gmail.nossr50.util.ItemUtils.setItemName;
-import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
+import static com.gmail.nossr50.util.PotionUtil.*;
 
 public class PotionConfig extends LegacyConfigLoader {
 
@@ -177,32 +177,14 @@ public class PotionConfig extends LegacyConfigLoader {
                 return null;
             }
 
-            PotionType potionType = matchPotionType(potionTypeStr, upgraded, extended);
-            if (potionType == null) {
-                // try matching to key
-                mcMMO.p.getLogger().warning("Failed to match potion type, trying to match with config key...");
-                matchPotionType(key, upgraded, extended);
-            }
-
-            if (potionType == null) {
-                mcMMO.p.getLogger().severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr
-                        + ", upgraded: " + upgraded + ", extended: " + extended + " for potion " + key
-                        + ", from configuration section: " + potion_section);
+            // This works via side effects
+            // TODO: Redesign later, side effects are stupid
+            if(!setPotionType(potionMeta, potionTypeStr, upgraded, extended)) {
+                mcMMO.p.getLogger().severe("PotionConfig: Failed to set parameters of potion for " + key + ": " + potionTypeStr);
                 return null;
             }
 
-            // Set base potion type
-            // NOTE: extended/ignored are effectively ignored here on 1.20.5 and later
-            PotionUtil.setBasePotionType(potionMeta, potionType, extended, upgraded);
-
-//            // Use the name of the potion to indicate upgrade status if not set in PotionData
-//            if (convertPotionConfigName(key).toUpperCase().contains("STRONG"))
-//                upgraded = true;
-//
-//            if (convertPotionConfigName(key).toUpperCase().contains("LONG"))
-//                extended = true;
-
-            List<String> lore = new ArrayList<>();
+            final List<String> lore = new ArrayList<>();
             if (potion_section.contains("Lore")) {
                 for (String line : potion_section.getStringList("Lore")) {
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
@@ -245,7 +227,6 @@ public class PotionConfig extends LegacyConfigLoader {
                     }
                 }
             }
-
             // Set the name of the potion
             setPotionDisplayName(potion_section, potionMeta);
 
@@ -254,8 +235,25 @@ public class PotionConfig extends LegacyConfigLoader {
             return new AlchemyPotion(potion_section.getName(), itemStack, children);
         } catch (Exception e) {
             mcMMO.p.getLogger().warning("PotionConfig: Failed to load Alchemy potion: " + potion_section.getName());
+            e.printStackTrace();
             return null;
         }
+    }
+
+    private boolean setPotionType(PotionMeta potionMeta, String potionTypeStr, boolean upgraded, boolean extended) {
+        final PotionType potionType = matchPotionType(potionTypeStr, upgraded, extended);
+
+        if (potionType == null) {
+            mcMMO.p.getLogger().severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr);
+            return false;
+        }
+
+        // set base
+        setBasePotionType(potionMeta, potionType, extended, upgraded);
+
+        // Legacy only
+        setUpgradedAndExtendedProperties(potionType, potionMeta, upgraded, extended);
+        return true;
     }
 
     private void setPotionDisplayName(ConfigurationSection section, PotionMeta potionMeta) {
@@ -342,7 +340,7 @@ public class PotionConfig extends LegacyConfigLoader {
                 .filter(potion -> potion.isSimilarPotion(item))
                 .toList();
         if(potionList.size() > 1) {
-            mcMMO.p.getLogger().severe("Multiple potions defined in config have match this potion, for mcMMO to behave" +
+            mcMMO.p.getLogger().severe("Multiple potions defined in config have matched this potion, for mcMMO to behave" +
                     " properly there should only be one match found.");
             mcMMO.p.getLogger().severe("Potion ItemStack:" + item.toString());
             mcMMO.p.getLogger().severe("Alchemy Potions from config matching this item: "

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.PotionUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -71,6 +72,11 @@ public class AlchemyPotion {
         }
 
         if (!samePotionType(getAlchemyPotionMeta(), otherPotionMeta)) {
+            return false;
+        }
+
+        // Legacy only comparison, compare PotionData
+        if (!PotionUtil.isPotionDataEqual(getAlchemyPotionMeta(), otherPotionMeta)) {
             return false;
         }
 
