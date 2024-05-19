@@ -80,12 +80,12 @@ public class mcMMO extends JavaPlugin {
     /* Managers & Services */
     private static PlatformManager platformManager;
     private static ChunkManager chunkManager;
-    private static RepairableManager  repairableManager;
+    private static RepairableManager repairableManager;
     private static SalvageableManager salvageableManager;
-    private static ModManager         modManager;
-    private static DatabaseManager    databaseManager;
-    private static FormulaManager     formulaManager;
-    private static UpgradeManager     upgradeManager;
+    private static ModManager modManager;
+    private static DatabaseManager databaseManager;
+    private static FormulaManager formulaManager;
+    private static UpgradeManager upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static TransientMetadataTools transientMetadataTools;
