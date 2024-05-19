@@ -65,7 +65,7 @@ public final class BlockUtils {
      * @param block target block
      */
     public static void setUnnaturalBlock(@NotNull Block block) {
-        mcMMO.getPlaceStore().setIneligible(block);
+        mcMMO.getUserBlockTracker().setIneligible(block);
 
         // Failsafe against lingering metadata
         if (block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
@@ -82,7 +82,7 @@ public final class BlockUtils {
             block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
         }
 
-        mcMMO.getPlaceStore().setEligible(block);
+        mcMMO.getUserBlockTracker().setEligible(block);
     }
 
     /**

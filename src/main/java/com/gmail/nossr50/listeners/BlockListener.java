@@ -310,7 +310,7 @@ public class BlockListener implements Listener {
 
         // Minecraft is dumb, the events still throw when a plant "grows" higher than the max block height.  Even though no new block is created
         if (BlockUtils.isWithinWorldBounds(block)) {
-            mcMMO.getPlaceStore().setEligible(block);
+            mcMMO.getUserBlockTracker().setEligible(block);
         }
     }
 
@@ -400,14 +400,14 @@ public class BlockListener implements Listener {
         else if (BlockUtils.affectedBySuperBreaker(blockState)
                 && (ItemUtils.isPickaxe(heldItem) || ItemUtils.isHoe(heldItem))
                 && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.MINING)
-                && !mcMMO.getPlaceStore().isIneligible(blockState)) {
+                && !mcMMO.getUserBlockTracker().isIneligible(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
 
         /* WOOD CUTTING */
         else if (BlockUtils.hasWoodcuttingXP(blockState) && ItemUtils.isAxe(heldItem)
-                && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isIneligible(blockState)) {
+                && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.WOODCUTTING) && !mcMMO.getUserBlockTracker().isIneligible(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);
@@ -422,7 +422,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.EXCAVATION) && !mcMMO.getPlaceStore().isIneligible(blockState)) {
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.EXCAVATION) && !mcMMO.getUserBlockTracker().isIneligible(blockState)) {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
@@ -687,7 +687,7 @@ public class BlockListener implements Listener {
 
         if (UserManager.getPlayer(player).isDebugMode())
         {
-            if (mcMMO.getPlaceStore().isIneligible(blockState))
+            if (mcMMO.getUserBlockTracker().isIneligible(blockState))
                 player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
             else
             {

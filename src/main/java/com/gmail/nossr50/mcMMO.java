@@ -39,6 +39,7 @@ import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.ChunkManagerFactory;
+import com.gmail.nossr50.util.blockmeta.UserBlockTracker;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
@@ -443,6 +444,28 @@ public class mcMMO extends JavaPlugin {
         return formulaManager;
     }
 
+    /**
+     * Get the {@link UserBlockTracker}.
+     * @return the {@link UserBlockTracker}
+     */
+    public static UserBlockTracker getUserBlockTracker() {
+        return placeStore;
+    }
+
+    /**
+     * Get the chunk manager.
+     * @return the chunk manager
+     */
+    public static ChunkManager getChunkManager() {
+        return placeStore;
+    }
+
+    /**
+     * Get the chunk manager.
+     * @deprecated Use {@link #getChunkManager()} or {@link #getUserBlockTracker()} instead.
+     * @return the chunk manager
+     */
+    @Deprecated(since = "2.2.013", forRemoval = true)
     public static ChunkManager getPlaceStore() {
         return placeStore;
     }

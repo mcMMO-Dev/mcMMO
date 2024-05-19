@@ -32,7 +32,7 @@ public class WorldListener implements Listener {
         // Using 50 ms later as I do not know of a way to run one tick later (safely)
         plugin.getFoliaLib().getImpl().runLater(() -> {
             for (BlockState blockState : event.getBlocks()) {
-                mcMMO.getPlaceStore().setEligible(blockState);
+                mcMMO.getUserBlockTracker().setEligible(blockState);
             }
         }, 1);
     }
@@ -48,7 +48,7 @@ public class WorldListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
-        mcMMO.getPlaceStore().unloadWorld(event.getWorld());
+        mcMMO.getChunkManager().unloadWorld(event.getWorld());
     }
 
     /**
@@ -64,6 +64,6 @@ public class WorldListener implements Listener {
 
         Chunk chunk = event.getChunk();
 
-        mcMMO.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
+        mcMMO.getChunkManager().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
     }
 }

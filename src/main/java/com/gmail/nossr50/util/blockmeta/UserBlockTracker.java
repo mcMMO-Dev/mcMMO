@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Contains blockstore methods that are safe for external plugins to access.
- * An instance can be retrieved via {@link mcMMO#getPlaceStore() mcMMO.getPlaceStore()}
+ * An instance can be retrieved via {@link mcMMO#getUserBlockTracker() mcMMO.getPlaceStore()}
  */
 public interface UserBlockTracker {
     /**

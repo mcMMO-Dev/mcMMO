@@ -74,7 +74,7 @@ public abstract class MMOTestEnvironment {
 
         // place store
         chunkManager = mock(ChunkManager.class);
-        when(mcMMO.getPlaceStore()).thenReturn(chunkManager);
+        when(mcMMO.getUserBlockTracker()).thenReturn(chunkManager);
 
         // shut off mod manager for woodcutting
         when(mcMMO.getModManager()).thenReturn(mock(ModManager.class));
