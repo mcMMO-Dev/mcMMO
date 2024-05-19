@@ -79,7 +79,7 @@ import java.util.List;
 public class mcMMO extends JavaPlugin {
     /* Managers & Services */
     private static PlatformManager platformManager;
-    private static ChunkManager       placeStore;
+    private static ChunkManager chunkManager;
     private static RepairableManager  repairableManager;
     private static SalvageableManager salvageableManager;
     private static ModManager         modManager;
@@ -268,7 +268,7 @@ public class mcMMO extends JavaPlugin {
                 scheduleTasks();
                 CommandRegistrationManager.registerCommands();
 
-                placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+                chunkManager = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
                 if (generalConfig.getPTPCommandWorldPermissions()) {
                     Permissions.generateWorldTeleportPermissions();
@@ -381,7 +381,7 @@ public class mcMMO extends JavaPlugin {
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
-            placeStore.closeAll();
+            chunkManager.closeAll();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -449,7 +449,7 @@ public class mcMMO extends JavaPlugin {
      * @return the {@link UserBlockTracker}
      */
     public static UserBlockTracker getUserBlockTracker() {
-        return placeStore;
+        return chunkManager;
     }
 
     /**
@@ -457,7 +457,7 @@ public class mcMMO extends JavaPlugin {
      * @return the chunk manager
      */
     public static ChunkManager getChunkManager() {
-        return placeStore;
+        return chunkManager;
     }
 
     /**
@@ -467,7 +467,7 @@ public class mcMMO extends JavaPlugin {
      */
     @Deprecated(since = "2.2.013", forRemoval = true)
     public static ChunkManager getPlaceStore() {
-        return placeStore;
+        return chunkManager;
     }
 
     public static RepairableManager getRepairableManager() {
