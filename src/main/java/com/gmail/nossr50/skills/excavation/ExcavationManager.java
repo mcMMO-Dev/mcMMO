@@ -91,8 +91,7 @@ public class ExcavationManager extends SkillManager {
         return RankUtils.getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 
-    public void printExcavationDebug(Player player, BlockState blockState)
-    {
+    public void printExcavationDebug(Player player, BlockState blockState) {
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 

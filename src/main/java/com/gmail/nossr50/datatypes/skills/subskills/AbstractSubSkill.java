@@ -18,8 +18,7 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     protected String configKeyPrimary;
     protected SubSkillType subSkillType;
 
-    public AbstractSubSkill(String configKeySubSkill, String configKeyPrimary, SubSkillType subSkillType)
-    {
+    public AbstractSubSkill(String configKeySubSkill, String configKeyPrimary, SubSkillType subSkillType) {
         this.configKeySubSkill = configKeySubSkill;
         this.configKeyPrimary = configKeyPrimary;
         this.subSkillType = subSkillType;

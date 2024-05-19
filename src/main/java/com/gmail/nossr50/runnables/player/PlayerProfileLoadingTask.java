@@ -58,8 +58,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
         }
 
         // Print errors to console/logs if we're failing at least 2 times in a row to load the profile
-        if (attempt >= 3)
-        {
+        if (attempt >= 3) {
             //Log the error
             mcMMO.p.getLogger().severe(LocaleLoader.getString("Profile.Loading.FailureNotice",
                     player.getName(), String.valueOf(attempt)));

@@ -155,8 +155,7 @@ public class ScoreboardManager {
     private static String formatAbility(ChatColor color, String abilityName) {
         if (mcMMO.p.getGeneralConfig().getShowAbilityNames()) {
             return getShortenedName(color + abilityName);
-        }
-        else {
+        } else {
             return color + LocaleLoader.getString("Scoreboard.Misc.Ability");
         }
     }
@@ -553,8 +552,7 @@ public class ScoreboardManager {
     public static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
-        }
-        else {
+        } else {
             wrapper.showBoardAndScheduleRevert(displayTime * Misc.TICK_CONVERSION_FACTOR);
         }
     }

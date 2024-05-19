@@ -101,8 +101,7 @@ public class AxesManager extends SkillManager {
             }
 
             damage = (damage * Axes.criticalHitPVPModifier) - damage;
-        }
-        else {
+        } else {
             damage = (damage * Axes.criticalHitPVEModifier) - damage;
         }
 

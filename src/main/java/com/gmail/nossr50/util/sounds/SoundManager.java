@@ -13,28 +13,24 @@ public class SoundManager {
      * Sends a sound to the player
      * @param soundType the type of sound
      */
-    public static void sendSound(Player player, Location location, SoundType soundType)
-    {
+    public static void sendSound(Player player, Location location, SoundType soundType) {
         if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
-    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory)
-    {
+    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory) {
         if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
-    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier)
-    {
+    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier) {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
         if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
-    public static void worldSendSound(World world, Location location, SoundType soundType)
-    {
+    public static void worldSendSound(World world, Location location, SoundType soundType) {
         if (SoundConfig.getInstance().getIsEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
@@ -49,13 +45,11 @@ public class SoundManager {
      * @param soundType target soundtype
      * @return the volume for this soundtype
      */
-    private static float getVolume(SoundType soundType)
-    {
+    private static float getVolume(SoundType soundType) {
         return SoundConfig.getInstance().getVolume(soundType) * SoundConfig.getInstance().getMasterVolume();
     }
 
-    private static float getPitch(SoundType soundType)
-    {
+    private static float getPitch(SoundType soundType) {
         if (soundType == SoundType.FIZZ)
             return getFizzPitch();
         else if (soundType == SoundType.POP)
@@ -64,8 +58,7 @@ public class SoundManager {
             return SoundConfig.getInstance().getPitch(soundType);
     }
 
-    private static Sound getSound(SoundType soundType)
-    {
+    private static Sound getSound(SoundType soundType) {
         return switch (soundType) {
             case ANVIL -> Sound.BLOCK_ANVIL_PLACE;
             case ITEM_BREAK -> Sound.ENTITY_ITEM_BREAK;

@@ -49,15 +49,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
-                if (skill != null && SkillTools.isChildSkill(skill))
-                {
+                if (skill != null && SkillTools.isChildSkill(skill)) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
 
                 //Profile not loaded
-                if (UserManager.getPlayer(sender.getName()) == null)
-                {
+                if (UserManager.getPlayer(sender.getName()) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
@@ -82,8 +80,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
-                if (skill != null && SkillTools.isChildSkill(skill))
-                {
+                if (skill != null && SkillTools.isChildSkill(skill)) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
@@ -110,8 +107,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     }
 
                     editValues(null, profile, skill, value, isSilent(args));
-                }
-                else {
+                } else {
                     editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value, isSilent(args));
                 }
 
@@ -159,8 +155,7 @@ public abstract class ExperienceCommand implements TabExecutor {
     protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
-        }
-        else {
+        } else {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), playerName));
         }
     }
@@ -174,8 +169,7 @@ public abstract class ExperienceCommand implements TabExecutor {
             if (player != null) {
                 handlePlayerMessageAll(player, value, isSilent);
             }
-        }
-        else {
+        } else {
             handleCommand(player, profile, skill, value);
 
             if (player != null) {

@@ -36,8 +36,7 @@ public class SmeltingManager extends SkillManager {
         return Math.min(Short.MAX_VALUE, Math.max(1, burnTime * getFuelEfficiencyMultiplier()));
     }
 
-    public int getFuelEfficiencyMultiplier()
-    {
+    public int getFuelEfficiencyMultiplier() {
         return switch (RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             case 1 -> 2;
             case 2 -> 3;

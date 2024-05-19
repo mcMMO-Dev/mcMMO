@@ -191,8 +191,7 @@ public class WoodcuttingManager extends SkillManager {
                     return;
                 }
             }
-        }
-        else {
+        } else {
             // Cover DOWN
             processTreeFellerTargetBlock(blockState.getBlock().getRelative(BlockFace.DOWN).getState(), futureCenterBlocks, treeFellerBlocks);
             // Search in a cube
@@ -282,8 +281,7 @@ public class WoodcuttingManager extends SkillManager {
             treeFellerBlocks.add(blockState);
             futureCenterBlocks.add(blockState);
             return true;
-        }
-        else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
+        } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
             treeFellerBlocks.add(blockState);
             return false;
         }

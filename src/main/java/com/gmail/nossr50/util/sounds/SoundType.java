@@ -18,8 +18,7 @@ public enum SoundType {
     ITEM_CONSUMED,
     TIRED;
 
-    public boolean usesCustomPitch()
-    {
+    public boolean usesCustomPitch() {
         switch(this){
             case POP:
             case FIZZ:

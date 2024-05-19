@@ -24,8 +24,7 @@ public class SelfListener implements Listener {
     //Used in task scheduling and other things
     private final mcMMO plugin;
 
-    public SelfListener(mcMMO plugin)
-    {
+    public SelfListener(mcMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -42,8 +41,7 @@ public class SelfListener implements Listener {
 
         if (player.isOnline()) {
             //Players can gain multiple levels especially during xprate events
-            for(int i = 0; i < event.getLevelsGained(); i++)
-            {
+            for(int i = 0; i < event.getLevelsGained(); i++) {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
                 UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
@@ -96,12 +94,9 @@ public class SelfListener implements Listener {
         if (event.getXpGainReason() == XPGainReason.PVE ||
                 event.getXpGainReason() == XPGainReason.PVP ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
-                event.getXpGainReason() == XPGainReason.SHARED_PVP)
-        {
-            if (WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if (!WorldGuardManager.getInstance().hasXPFlag(player))
-                {
+                event.getXpGainReason() == XPGainReason.SHARED_PVP) {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
 
@@ -112,19 +107,16 @@ public class SelfListener implements Listener {
             }
         }
 
-        if (event.getXpGainReason() == XPGainReason.COMMAND)
-        {
+        if (event.getXpGainReason() == XPGainReason.COMMAND) {
             return;
         }
 
-        if (ExperienceConfig.getInstance().isEarlyGameBoostEnabled())
-        {
+        if (ExperienceConfig.getInstance().isEarlyGameBoostEnabled()) {
 
             int earlyGameBonusXP = 0;
 
             //Give some bonus XP for low levels
-            if (PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType))
-            {
+            if (PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
                 earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
             }
@@ -167,12 +159,10 @@ public class SelfListener implements Listener {
              * Make sure players get a guaranteed minimum of XP
              */
             //If there is no guaranteed minimum proceed, otherwise only proceed if newValue would be higher than our guaranteed minimum
-            if (guaranteedMinimum <= 0 || newValue > guaranteedMinimum)
-            {
+            if (guaranteedMinimum <= 0 || newValue > guaranteedMinimum) {
                 if (newValue > 0) {
                     event.setRawXpGained(newValue);
-                }
-                else {
+                } else {
                     event.setCancelled(true);
                 }
             } else {

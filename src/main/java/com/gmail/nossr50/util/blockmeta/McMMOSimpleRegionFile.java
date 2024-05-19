@@ -181,8 +181,7 @@ public class McMMOSimpleRegionFile {
         int end = start + chunkNumSegments[index];
 
         // If we are writing, assert we don't write over any in-use segments
-        if (inUse)
-        {
+        if (inUse) {
             int nextSetBit = segments.nextSetBit(start);
             if (nextSetBit != -1 && nextSetBit < end)
                 throw new IllegalStateException("Attempting to overwrite an in-use segment");

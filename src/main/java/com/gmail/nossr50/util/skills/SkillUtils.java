@@ -61,8 +61,7 @@ public final class SkillUtils {
 
         int length;
 
-        if (abilityLengthCap > 0)
-        {
+        if (abilityLengthCap > 0) {
             length =     (int) Math.min(abilityLengthCap, 2 + (skillValue / abilityLengthVar));
         } else {
             length = 2 + (int) (skillValue / abilityLengthVar);
@@ -181,8 +180,7 @@ public final class SkillUtils {
 
             int ticks;
 
-            if (abilityLengthCap > 0)
-            {
+            if (abilityLengthCap > 0) {
                 ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
                         mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill))) * Misc.TICK_CONVERSION_FACTOR;
             } else {
@@ -284,26 +282,19 @@ public final class SkillUtils {
     public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
-        }
-        else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
+        } else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
             return Material.GOLD_INGOT;
-        }
-        else if (ItemUtils.isIronTool(inHand) || ItemUtils.isIronArmor(inHand)) {
+        } else if (ItemUtils.isIronTool(inHand) || ItemUtils.isIronArmor(inHand)) {
             return Material.IRON_INGOT;
-        }
-        else if (ItemUtils.isStoneTool(inHand)) {
+        } else if (ItemUtils.isStoneTool(inHand)) {
             return Material.COBBLESTONE;
-        }
-        else if (ItemUtils.isWoodTool(inHand)) {
+        } else if (ItemUtils.isWoodTool(inHand)) {
             return Material.OAK_WOOD;
-        }
-        else if (ItemUtils.isLeatherArmor(inHand)) {
+        } else if (ItemUtils.isLeatherArmor(inHand)) {
             return Material.LEATHER;
-        }
-        else if (ItemUtils.isStringTool(inHand)) {
+        } else if (ItemUtils.isStringTool(inHand)) {
             return Material.STRING;
-        }
-        else {
+        } else {
             return null;
         }
     }

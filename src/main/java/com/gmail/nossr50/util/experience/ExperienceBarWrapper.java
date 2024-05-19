@@ -29,8 +29,7 @@ public class ExperienceBarWrapper {
     protected String niceSkillName;
     protected String title;
 
-    public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer)
-    {
+    public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.primarySkillType = primarySkillType;
         title = "";
@@ -43,8 +42,7 @@ public class ExperienceBarWrapper {
         initBar();
     }
 
-    private void initBar()
-    {
+    private void initBar() {
         title = getTitleTemplate();
         createBossBar();
     }
@@ -115,8 +113,7 @@ public class ExperienceBarWrapper {
         }
 
         //Every time progress updates we need to check for a title update
-        if (getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle())
-        {
+        if (getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle()) {
             updateTitle();
             lastLevelUpdated = getLevel();
         }
@@ -134,23 +131,19 @@ public class ExperienceBarWrapper {
         return bossBar.isVisible();
     }
 
-    public void hideExperienceBar()
-    {
+    public void hideExperienceBar() {
         bossBar.setVisible(false);
     }
 
-    public void showExperienceBar()
-    {
+    public void showExperienceBar() {
         bossBar.setVisible(true);
     }
 
-    /*public NamespacedKey getKey()
-    {
+    /*public NamespacedKey getKey() {
         return bossBar
     }*/
 
-    private void createBossBar()
-    {
+    private void createBossBar() {
         bossBar = mcMMOPlayer.getPlayer().getServer().createBossBar(
                 title,
                 ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType),

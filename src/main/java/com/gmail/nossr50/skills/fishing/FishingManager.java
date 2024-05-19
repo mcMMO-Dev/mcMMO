@@ -101,8 +101,7 @@ public class FishingManager extends SkillManager {
 //        fishingRodCastTimestamp = System.currentTimeMillis();
 //    }
 
-    public void setFishHookReference(FishHook fishHook)
-    {
+    public void setFishHookReference(FishHook fishHook) {
         if (fishHook.getMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF).size() > 0)
             return;
 
@@ -113,14 +112,12 @@ public class FishingManager extends SkillManager {
 
     }
 
-    public boolean isFishingTooOften()
-    {
+    public boolean isFishingTooOften() {
         long currentTime = System.currentTimeMillis();
         long fishHookSpawnCD = fishHookSpawnTimestamp + 1000;
         boolean hasFished = (currentTime < fishHookSpawnCD);
 
-        if (hasFished && (lastWarned + (1000) < currentTime))
-        {
+        if (hasFished && (lastWarned + (1000) < currentTime)) {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
             lastWarned = System.currentTimeMillis();
         }
@@ -134,8 +131,7 @@ public class FishingManager extends SkillManager {
 
         if (this.sameTarget) {
             fishCaughtCounter++;
-        }
-        else {
+        } else {
             fishCaughtCounter = 1;
         }
 
@@ -520,8 +516,7 @@ public class FishingManager extends SkillManager {
 
                                 if (FishingTreasureConfig.getInstance().getInventoryStealStacks()) {
                                     inventory.setItem(slot, null);
-                                }
-                                else {
+                                } else {
                                     inventory.setItem(slot, (drop.getAmount() > 1) ? new ItemStack(drop.getType(), drop.getAmount() - 1) : null);
                                     drop.setAmount(1);
                                 }
@@ -575,8 +570,7 @@ public class FishingManager extends SkillManager {
         if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
             luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(
                     mcMMO.p.getEnchantmentMapper().getLuckOfTheSea());
-        }
-        else {
+        } else {
             // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
             luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(
                     mcMMO.p.getEnchantmentMapper().getLuckOfTheSea());

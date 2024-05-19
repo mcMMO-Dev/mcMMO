@@ -250,8 +250,7 @@ public class McMMOPlayer implements Identified {
         this.lastSkillShownScoreboard = primarySkillType;
     }
 
-    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
-    {
+    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource) {
         //Check if they've reached the power level cap just now
         if (hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
@@ -272,19 +271,16 @@ public class McMMOPlayer implements Identified {
         updateXPBar(primarySkillType, plugin);
     }
 
-    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel)
-    {
+    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel) {
         RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, skillLevel);
     }
 
-    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
-    {
+    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
         //XP BAR UPDATES
         experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }
 
-    public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
-    {
+    public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType) {
         if (SkillTools.isChildSkill(primarySkillType)) {
             return 1.0D;
         }
@@ -906,8 +902,7 @@ public class McMMOPlayer implements Identified {
 
         //TODO: This is hacky and temporary solution until skills are move to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
-        if (!RankUtils.hasUnlockedSubskill(player, subSkillType))
-        {
+        if (!RankUtils.hasUnlockedSubskill(player, subSkillType)) {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(superAbilityType) - getSkillLevel(primarySkillType);
 
             //Inform the player they are not yet skilled enough
@@ -941,8 +936,7 @@ public class McMMOPlayer implements Identified {
         int ticks;
 
         //Ability cap of 0 or below means no cap
-        if (abilityLengthCap > 0)
-        {
+        if (abilityLengthCap > 0) {
             ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, getSkillLevel(primarySkillType)) / abilityLengthVar), superAbilityType.getMaxLength());
         } else {
             ticks = PerksUtils.handleActivationPerks(player, 2 + (getSkillLevel(primarySkillType) / abilityLengthVar), superAbilityType.getMaxLength());

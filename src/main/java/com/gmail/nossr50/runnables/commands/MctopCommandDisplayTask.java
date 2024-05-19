@@ -54,16 +54,13 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
         if (skill == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.PowerLevel.Leaderboard")));
             }
-        }
-        else {
+        } else {
             if (sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill))));
             }
         }
@@ -76,8 +73,7 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
             // 12. Playername - skill value
             if (sender instanceof Player) {
                 sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
-            }
-            else {
+            } else {
                 sender.sendMessage(String.format("%2d. %s - %s", place, stat.name, stat.statVal));
             }
             
@@ -88,8 +84,7 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
     private void displayBoard() {
         if (skill == null) {
             ScoreboardManager.showTopPowerScoreboard((Player) sender, page, userStats);
-        }
-        else {
+        } else {
             ScoreboardManager.showTopScoreboard((Player) sender, skill, page, userStats);
         }
     }

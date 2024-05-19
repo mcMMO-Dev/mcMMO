@@ -19,11 +19,9 @@ public final class PerksUtils {
     public static int handleCooldownPerks(Player player, int cooldown) {
         if (Permissions.halvedCooldowns(player)) {
             cooldown *= 0.5;
-        }
-        else if (Permissions.thirdedCooldowns(player)) {
+        } else if (Permissions.thirdedCooldowns(player)) {
             cooldown *= (2.0 / 3.0);
-        }
-        else if (Permissions.quarteredCooldowns(player)) {
+        } else if (Permissions.quarteredCooldowns(player)) {
             cooldown *= 0.75;
         }
 
@@ -37,11 +35,9 @@ public final class PerksUtils {
 
         if (Permissions.twelveSecondActivationBoost(player)) {
             ticks += 12;
-        }
-        else if (Permissions.eightSecondActivationBoost(player)) {
+        } else if (Permissions.eightSecondActivationBoost(player)) {
             ticks += 8;
-        }
-        else if (Permissions.fourSecondActivationBoost(player)) {
+        } else if (Permissions.fourSecondActivationBoost(player)) {
             ticks += 4;
         }
 
@@ -59,26 +55,19 @@ public final class PerksUtils {
             }
 
              modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
-        }
-        else if (Permissions.quadrupleXp(player, skill)) {
+        } else if (Permissions.quadrupleXp(player, skill)) {
             modifier = 4;
-        }
-        else if (Permissions.tripleXp(player, skill)) {
+        } else if (Permissions.tripleXp(player, skill)) {
             modifier = 3;
-        }
-        else if (Permissions.doubleAndOneHalfXp(player, skill)) {
+        } else if (Permissions.doubleAndOneHalfXp(player, skill)) {
             modifier = 2.5;
-        }
-        else if (Permissions.doubleXp(player, skill)) {
+        } else if (Permissions.doubleXp(player, skill)) {
             modifier = 2;
-        }
-        else if (Permissions.oneAndOneHalfXp(player, skill)) {
+        } else if (Permissions.oneAndOneHalfXp(player, skill)) {
             modifier = 1.5;
-        }
-        else if (Permissions.oneAndAQuarterXp(player, skill)) {
+        } else if (Permissions.oneAndAQuarterXp(player, skill)) {
             modifier = 1.25;
-        }
-        else if (Permissions.oneAndOneTenthXp(player, skill)) {
+        } else if (Permissions.oneAndOneTenthXp(player, skill)) {
             modifier = 1.1;
         }
 

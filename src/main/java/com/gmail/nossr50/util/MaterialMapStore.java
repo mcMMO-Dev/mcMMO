@@ -59,8 +59,7 @@ public class MaterialMapStore {
     private final @NotNull HashMap<String, Integer> tierValue;
 
 
-    public MaterialMapStore()
-    {
+    public MaterialMapStore() {
         abilityBlackList = new HashSet<>();
         toolBlackList = new HashSet<>();
         mossyWhiteList = new HashSet<>();
@@ -133,8 +132,7 @@ public class MaterialMapStore {
         fillTierMap();
     }
 
-    public boolean isMultiBlockPlant(@NotNull Material material)
-    {
+    public boolean isMultiBlockPlant(@NotNull Material material) {
         return multiBlockPlant.contains(material.getKey().getKey());
     }
 
@@ -142,38 +140,31 @@ public class MaterialMapStore {
         return multiBlockHangingPlant.contains(material.getKey().getKey());
     }
 
-    public boolean isAbilityActivationBlackListed(@NotNull Material material)
-    {
+    public boolean isAbilityActivationBlackListed(@NotNull Material material) {
         return abilityBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isToolActivationBlackListed(@NotNull Material material)
-    {
+    public boolean isToolActivationBlackListed(@NotNull Material material) {
         return toolBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isMossyWhiteListed(@NotNull Material material)
-    {
+    public boolean isMossyWhiteListed(@NotNull Material material) {
         return mossyWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isTreeFellerDestructible(@NotNull Material material)
-    {
+    public boolean isTreeFellerDestructible(@NotNull Material material) {
         return treeFellerDestructibleWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isHerbalismAbilityWhiteListed(@NotNull Material material)
-    {
+    public boolean isHerbalismAbilityWhiteListed(@NotNull Material material) {
         return herbalismAbilityBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isBlockCrackerWhiteListed(@NotNull Material material)
-    {
+    public boolean isBlockCrackerWhiteListed(@NotNull Material material) {
         return blockCrackerWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isShroomyWhiteListed(@NotNull Material material)
-    {
+    public boolean isShroomyWhiteListed(@NotNull Material material) {
         return canMakeShroomyWhiteList.contains(material.getKey().getKey());
     }
 
@@ -993,8 +984,7 @@ public class MaterialMapStore {
         return foodItemWhiteList.contains(material.getKey().getKey());
     }
 
-    private void fillMultiBlockPlantSet()
-    {
+    private void fillMultiBlockPlantSet() {
         //Multi-Block Plants
         multiBlockPlant.add("cactus");
         multiBlockPlant.add("chorus_plant");
@@ -1014,30 +1004,26 @@ public class MaterialMapStore {
         multiBlockHangingPlant.add("cave_vines_plant");
     }
 
-    private void fillShroomyWhiteList()
-    {
+    private void fillShroomyWhiteList() {
         canMakeShroomyWhiteList.add("dirt");
         canMakeShroomyWhiteList.add("grass_block");
         canMakeShroomyWhiteList.add("dirt_path");
     }
 
-    private void fillBlockCrackerWhiteList()
-    {
+    private void fillBlockCrackerWhiteList() {
         blockCrackerWhiteList.add("stone_bricks");
         blockCrackerWhiteList.add("infested_stone_bricks");
 
     }
 
-    private void fillHerbalismAbilityBlackList()
-    {
+    private void fillHerbalismAbilityBlackList() {
         herbalismAbilityBlackList.add("dirt");
         herbalismAbilityBlackList.add("grass_block");
         herbalismAbilityBlackList.add("dirt_path");
         herbalismAbilityBlackList.add("farmland");
     }
 
-    private void fillTreeFellerDestructibleWhiteList()
-    {
+    private void fillTreeFellerDestructibleWhiteList() {
         treeFellerDestructibleWhiteList.add("oak_leaves");
         treeFellerDestructibleWhiteList.add("cherry_leaves");
         treeFellerDestructibleWhiteList.add("acacia_leaves");
@@ -1055,8 +1041,7 @@ public class MaterialMapStore {
         treeFellerDestructibleWhiteList.add("red_mushroom_block");
     }
 
-    private void fillMossyWhiteList()
-    {
+    private void fillMossyWhiteList() {
         mossyWhiteList.add("cobblestone");
         mossyWhiteList.add("dirt");
         mossyWhiteList.add("grass_path");
@@ -1064,8 +1049,7 @@ public class MaterialMapStore {
         mossyWhiteList.add("cobblestone_wall");
     }
 
-    private void fillAbilityBlackList()
-    {
+    private void fillAbilityBlackList() {
         abilityBlackList.add("warped_fence_gate");
         abilityBlackList.add("crimson_fence_gate");
         abilityBlackList.add("warped_pressure_plate");
@@ -1192,8 +1176,7 @@ public class MaterialMapStore {
         abilityBlackList.add("respawn_anchor");
     }
     
-    private void fillToolBlackList()
-    {
+    private void fillToolBlackList() {
         toolBlackList.add("chiseled_bookshelf");
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
@@ -1371,8 +1354,7 @@ public class MaterialMapStore {
         return tierValue.getOrDefault(id, 1); //1 for unknown items
     }
 
-    private void addToHashSet(@NotNull String string, @NotNull HashSet<String> stringHashSet)
-    {
+    private void addToHashSet(@NotNull String string, @NotNull HashSet<String> stringHashSet) {
         stringHashSet.add(string.toLowerCase(Locale.ENGLISH));
     }
 }

@@ -80,15 +80,12 @@ public class PlatformManager {
             return ServerSoftwareType.CRAFT_BUKKIT;
     }
 
-    public ServerSoftwareType getServerSoftware()
-    {
+    public ServerSoftwareType getServerSoftware() {
         return platform.getServerSoftwareType();
     }
 
-    public String getServerSoftwareStr()
-    {
-        switch(getServerSoftware())
-        {
+    public String getServerSoftwareStr() {
+        switch(getServerSoftware()) {
             case PAPER:
                 return "Paper";
             case SPIGOT:

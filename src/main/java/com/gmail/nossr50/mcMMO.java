@@ -148,8 +148,7 @@ public class mcMMO extends JavaPlugin {
     }
 
 
-    protected mcMMO(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
-    {
+    protected mcMMO(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
     }
 
@@ -229,8 +228,7 @@ public class mcMMO extends JavaPlugin {
             //Check for the newer API and tell them what to do if its missing
             checkForOutdatedAPI();
 
-            if (serverAPIOutdated)
-            {
+            if (serverAPIOutdated) {
                 foliaLib
                         .getImpl()
                         .runTimer(
@@ -238,8 +236,7 @@ public class mcMMO extends JavaPlugin {
                                 20, 20*60*30
                         );
 
-                if (platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT)
-                {
+                if (platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT) {
                     foliaLib
                             .getImpl()
                             .runTimer(
@@ -295,8 +292,7 @@ public class mcMMO extends JavaPlugin {
 
             if (!(t instanceof ExceptionInInitializerError)) {
                 t.printStackTrace();
-            }
-            else {
+            } else {
                 getLogger().info("Please do not replace the mcMMO jar while the server is running.");
             }
 
@@ -350,8 +346,7 @@ public class mcMMO extends JavaPlugin {
     }
 
     @Override
-    public void onLoad()
-    {
+    public void onLoad() {
         if (getServer().getPluginManager().getPlugin("WorldGuard") != null) {
             WorldGuardManager.getInstance().registerFlags();
         }
@@ -638,8 +633,7 @@ public class mcMMO extends JavaPlugin {
 
         InteractionManager.initMaps(); //Init maps
 
-        if (CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
-        {
+        if (CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS)) {
             LogUtils.debug(mcMMO.p.getLogger(), "Enabling Acrobatics Skills");
 
             //TODO: Should do this differently
@@ -674,8 +668,7 @@ public class mcMMO extends JavaPlugin {
 
         if (purgeIntervalTicks == 0) {
             getFoliaLib().getImpl().runLaterAsync(new UserPurgeTask(), 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
-        }
-        else if (purgeIntervalTicks > 0) {
+        } else if (purgeIntervalTicks > 0) {
             getFoliaLib().getImpl().runTimerAsync(new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
         }
 
@@ -698,8 +691,7 @@ public class mcMMO extends JavaPlugin {
             getFoliaLib().getImpl().runTimer(new ClearRegisteredXPGainTask(), 60, 60);
         }
 
-        if (mcMMO.p.getAdvancedConfig().allowPlayerTips())
-        {
+        if (mcMMO.p.getAdvancedConfig().allowPlayerTips()) {
             getFoliaLib().getImpl().runTimer(new NotifySquelchReminderTask(), 60, ((20 * 60) * 60));
         }
     }

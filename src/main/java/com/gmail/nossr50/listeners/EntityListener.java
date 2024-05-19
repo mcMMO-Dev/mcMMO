@@ -81,14 +81,12 @@ public class EntityListener implements Listener {
             return;
 
         //It's rare but targets can be null sometimes
-        if (event.getTarget() == null)
-        {
+        if (event.getTarget() == null) {
             return;
         }
 
         //Prevent entities from giving XP if they target endermite
-        if (event.getTarget() instanceof Endermite)
-        {
+        if (event.getTarget() instanceof Endermite) {
             if (event.getEntity() instanceof Enderman enderman) {
 
                 if (!hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman)) {
@@ -104,8 +102,7 @@ public class EntityListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if (event.getEntity() instanceof Player player)
-        {
+        if (event.getEntity() instanceof Player player) {
             Entity projectile = event.getProjectile();
 
             //Should be noted that there are API changes regarding Arrow from 1.13.2 to current versions of the game
@@ -137,8 +134,7 @@ public class EntityListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if (event.getEntity().getShooter() instanceof Player player)
-        {
+        if (event.getEntity().getShooter() instanceof Player player) {
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
@@ -212,15 +208,13 @@ public class EntityListener implements Listener {
                 entity.setMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, MetadataConstants.MCMMO_METADATA_VALUE);
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity, pluginRef);
                 mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(entity, metaCleanupTask, 20, 20*60); //6000 ticks is 5 minutes
-            }
-            else if (isTracked) {
+            } else if (isTracked) {
                 BlockUtils.setUnnaturalBlock(block);
                 entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE || block.getType().getKey().getKey().equalsIgnoreCase("deepslate_redstone_ore"))) {
             //Redstone ore fire this event and should be ignored
-        }
-        else {
+        } else {
             if (mcMMO.getUserBlockTracker().isIneligible(block)) {
                 mcMMO.getUserBlockTracker().setEligible(block);
             }
@@ -265,8 +259,7 @@ public class EntityListener implements Listener {
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
 
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (attacker instanceof Player) {
 
                 if (!WorldGuardManager.getInstance().hasMainFlag((Player) attacker)) {
@@ -324,8 +317,7 @@ public class EntityListener implements Listener {
             if (animalTamer != null && ((OfflinePlayer) animalTamer).isOnline()) {
                 attacker = (Entity) animalTamer;
             }
-        }
-        else if (attacker instanceof TNTPrimed && defender instanceof Player) {
+        } else if (attacker instanceof TNTPrimed && defender instanceof Player) {
             if (BlastMining.processBlastMiningExplosion(event, (TNTPrimed) attacker, (Player) defender)) {
                 return;
             }
@@ -496,11 +488,9 @@ public class EntityListener implements Listener {
             event.getEntity().removeMetadata(MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE, mcMMO.p);
         }
 
-        if (event.getEntity() instanceof Player player)
-        {
+        if (event.getEntity() instanceof Player player) {
             /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded())
-            {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
                 if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
@@ -576,11 +566,9 @@ public class EntityListener implements Listener {
         else if (livingEntity instanceof Tameable pet) {
             AnimalTamer owner = pet.getOwner();
 
-            if (owner instanceof Player player)
-            {
+            if (owner instanceof Player player) {
                 /* WORLD GUARD MAIN FLAG CHECK */
-                if (WorldGuardUtils.isWorldGuardLoaded())
-                {
+                if (WorldGuardUtils.isWorldGuardLoaded()) {
                     if (!WorldGuardManager.getInstance().hasMainFlag(player))
                         return;
                 }
@@ -591,8 +579,7 @@ public class EntityListener implements Listener {
                 Wolf wolf = (Wolf) pet;
 
                 //Profile not loaded
-                if (UserManager.getPlayer(player) == null)
-                {
+                if (UserManager.getPlayer(player) == null) {
                     return;
                 }
 
@@ -784,14 +771,12 @@ public class EntityListener implements Listener {
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
@@ -830,15 +815,13 @@ public class EntityListener implements Listener {
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
@@ -869,14 +852,12 @@ public class EntityListener implements Listener {
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
@@ -993,8 +974,7 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getOwner();
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
@@ -1011,8 +991,7 @@ public class EntityListener implements Listener {
         flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
@@ -1039,8 +1018,7 @@ public class EntityListener implements Listener {
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }

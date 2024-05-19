@@ -30,8 +30,7 @@ public class AddxpCommand extends ExperienceCommand {
                 return;
 
             UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
-        }
-        else {
+        } else {
             profile.addXp(skill, value);
             profile.scheduleAsyncSave();
         }

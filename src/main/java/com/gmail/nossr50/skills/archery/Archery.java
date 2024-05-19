@@ -64,8 +64,7 @@ public class Archery {
         }
     }
 
-    public static double getSkillShotBonusDamage(Player player, double oldDamage)
-    {
+    public static double getSkillShotBonusDamage(Player player, double oldDamage) {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
         return Math.min(newDamage, (oldDamage + Archery.skillShotMaxBonusDamage));

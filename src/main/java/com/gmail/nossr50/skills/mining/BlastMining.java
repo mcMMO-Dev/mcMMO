@@ -62,8 +62,7 @@ public class BlastMining {
             return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
         }*/
 
-        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++)
-        {
+        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++) {
             if (getBlastDamageDecrease(i+1) > 0)
                 return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
         }
@@ -81,8 +80,7 @@ public class BlastMining {
             return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
         }*/
 
-        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++)
-        {
+        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++) {
             if (getBlastRadiusModifier(i+1) > 0)
                 return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
         }
@@ -102,8 +100,7 @@ public class BlastMining {
             return false;
         }
 
-        if (UserManager.getPlayer(defender) == null)
-        {
+        if (UserManager.getPlayer(defender) == null) {
             return false;
         }
 

@@ -215,8 +215,7 @@ public class ModManager {
             catch (Exception e) {
                 if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
                     customEntity = customEntityClassMap.get(entity.getClass().getName());
-                }
-                else {
+                } else {
                     e.printStackTrace();
                 }
             }
@@ -256,8 +255,7 @@ public class ModManager {
         catch (Exception e) {
             if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
                 className = entity.getClass().getName();
-            }
-            else {
+            } else {
                 e.printStackTrace();
             }
         }

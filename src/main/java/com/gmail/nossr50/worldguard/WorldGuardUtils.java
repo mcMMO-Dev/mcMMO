@@ -41,8 +41,7 @@ public class WorldGuardUtils {
         WGClassList.add("com.sk89q.worldguard.protection.regions.RegionQuery");
     }
 
-    public static boolean isWorldGuardLoaded()
-    {
+    public static boolean isWorldGuardLoaded() {
         if (detectedIncompatibleWG)
             return false;
 
@@ -56,8 +55,7 @@ public class WorldGuardUtils {
      * Results are cached
      * @return the instance of WG plugin, null if its not compatible or isn't present
      */
-    private static WorldGuardPlugin getWorldGuard()
-    {
+    private static WorldGuardPlugin getWorldGuard() {
         //WG plugin reference is already cached so just return it
         if (isLoaded)
             return worldGuardPluginRef;
@@ -71,10 +69,8 @@ public class WorldGuardUtils {
             LogUtils.debug(mcMMO.p.getLogger(), "WorldGuard was not detected.");
         } else {
             //Check that its actually of class WorldGuardPlugin
-            if (plugin instanceof WorldGuardPlugin)
-            {
-                if (isCompatibleVersion(plugin))
-                {
+            if (plugin instanceof WorldGuardPlugin) {
+                if (isCompatibleVersion(plugin)) {
                     worldGuardPluginRef = (WorldGuardPlugin) plugin;
                     isLoaded = true;
                 }

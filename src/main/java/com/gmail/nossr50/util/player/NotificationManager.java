@@ -43,8 +43,7 @@ public class NotificationManager {
      * @param notificationType notifications defined type
      * @param key the locale key for the notifications defined message
      */
-    public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
-    {
+    public static void sendPlayerInformation(Player player, NotificationType notificationType, String key) {
         if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
@@ -59,8 +58,7 @@ public class NotificationManager {
     }
 
 
-    public static boolean doesPlayerUseNotifications(Player player)
-    {
+    public static boolean doesPlayerUseNotifications(Player player) {
         if (UserManager.getPlayer(player) == null)
             return false;
         else
@@ -77,13 +75,11 @@ public class NotificationManager {
      * @param values values to be injected into the locale string
      */
     public static void sendNearbyPlayersInformation(Player targetPlayer, NotificationType notificationType, String key,
-                                                    String... values)
-    {
+                                                    String... values) {
         sendPlayerInformation(targetPlayer, notificationType, key, values);
     }
 
-    public static void sendPlayerInformationChatOnly(Player player, String key, String... values)
-    {
+    public static void sendPlayerInformationChatOnly(Player player, String key, String... values) {
         if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
@@ -91,8 +87,7 @@ public class NotificationManager {
         player.sendMessage(preColoredString);
     }
 
-    public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values)
-    {
+    public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values) {
         if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
@@ -102,8 +97,7 @@ public class NotificationManager {
     }
 
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key,
-                                             String... values)
-    {
+                                             String... values) {
         if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
@@ -156,8 +150,7 @@ public class NotificationManager {
      * @param newLevel new level of that skill
      */
     public static void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkillType skillName,
-                                                     int levelsGained, int newLevel)
-    {
+                                                     int levelsGained, int newLevel) {
         if (!mcMMOPlayer.useChatNotifications())
             return;
 
@@ -176,16 +169,13 @@ public class NotificationManager {
         sendNotification(mcMMOPlayer.getPlayer(), customEvent);
     }
 
-    public static void broadcastTitle(Server server, String title, String subtitle, int i1, int i2, int i3)
-    {
-        for(Player player : server.getOnlinePlayers())
-        {
+    public static void broadcastTitle(Server server, String title, String subtitle, int i1, int i2, int i3) {
+        for(Player player : server.getOnlinePlayers()) {
             player.sendTitle(title, subtitle, i1, i2, i3);
         }
     }
 
-    public static void sendPlayerUnlockNotification(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType)
-    {
+    public static void sendPlayerUnlockNotification(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType) {
         if (!mcMMOPlayer.useChatNotifications())
             return;
 
@@ -208,10 +198,8 @@ public class NotificationManager {
         if (!mcMMO.p.getGeneralConfig().adminNotifications())
             return;
 
-        for(Player player : Bukkit.getServer().getOnlinePlayers())
-        {
-            if (player.isOp() || Permissions.adminChat(player))
-            {
+        for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+            if (player.isOp() || Permissions.adminChat(player)) {
                 player.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
             }
         }
@@ -241,15 +229,13 @@ public class NotificationManager {
          */
         String senderName = LocaleLoader.getString("Server.ConsoleName");
 
-        if (commandSender instanceof Player)
-        {
+        if (commandSender instanceof Player) {
             senderName = ((Player) commandSender).getDisplayName()
                     + ChatColor.RESET + "-" + ((Player) commandSender).getUniqueId();
         }
 
         //Send the notification
-        switch(sensitiveCommandType)
-        {
+        switch(sensitiveCommandType) {
             case XPRATE_MODIFY:
                 sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others",
                         addItemToFirstPositionOfArray(senderName, args)));

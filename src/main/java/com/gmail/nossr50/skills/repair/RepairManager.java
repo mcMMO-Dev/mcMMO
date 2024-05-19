@@ -387,8 +387,7 @@ public class RepairManager extends SkillManager {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }
-            }
-            else {
+            } else {
                 item.removeEnchantment(enchantment);
             }
         }
@@ -397,11 +396,9 @@ public class RepairManager extends SkillManager {
 
         if (newEnchants.isEmpty()) {
             NotificationManager.sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Fail");
-        }
-        else if (downgraded || newEnchants.size() < enchants.size()) {
+        } else if (downgraded || newEnchants.size() < enchants.size()) {
             NotificationManager.sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Downgrade");
-        }
-        else {
+        } else {
             NotificationManager.sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Perfect");
         }
     }

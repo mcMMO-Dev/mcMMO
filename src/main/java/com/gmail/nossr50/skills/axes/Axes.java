@@ -43,8 +43,7 @@ public class Axes {
      * @param player The target player
      * @return The axe mastery bonus damage which will be added to their attack
      */
-    public static double getAxeMasteryBonusDamage(Player player)
-    {
+    public static double getAxeMasteryBonusDamage(Player player) {
         return RankUtils.getRank(player, SubSkillType.AXES_AXE_MASTERY) * Axes.axeMasteryRankDamageMultiplier;
     }
 }

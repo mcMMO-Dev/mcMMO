@@ -93,8 +93,7 @@ public final class EventUtils {
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
-    public static McMMOPlayer getMcMMOPlayer(@NotNull Entity entity)
-    {
+    public static McMMOPlayer getMcMMOPlayer(@NotNull Entity entity) {
         return UserManager.getPlayer((Player)entity);
     }
 
@@ -111,8 +110,7 @@ public final class EventUtils {
      * @param entityDamageEvent
      * @return
      */
-    public static boolean isRealPlayerDamaged(@NotNull EntityDamageEvent entityDamageEvent)
-    {
+    public static boolean isRealPlayerDamaged(@NotNull EntityDamageEvent entityDamageEvent) {
         //Make sure the damage is above 0
         double damage = entityDamageEvent.getFinalDamage();
 
@@ -143,8 +141,7 @@ public final class EventUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            if (mcMMOPlayer == null)
-            {
+            if (mcMMOPlayer == null) {
                 return true;
             }
 

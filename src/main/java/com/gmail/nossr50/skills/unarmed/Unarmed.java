@@ -19,8 +19,7 @@ public class Unarmed {
         int amount = itemDrop.getAmount();
         boolean grabbedItem = false;
 
-        for(int i = 0; i <= storageContents.length-1; i++)
-        {
+        for(int i = 0; i <= storageContents.length-1; i++) {
             if (amount <= 0)
                 break;
 
@@ -28,18 +27,14 @@ public class Unarmed {
                 continue;
 
             //EMPTY SLOT!
-            if (storageContents[i] == null)
-            {
+            if (storageContents[i] == null) {
                 player.getInventory().setItem(i, itemDrop);
                 amount = 0;
                 grabbedItem = true;
                 break;
-            }
-            else if (itemDrop.isSimilar(storageContents[i]) && storageContents[i].getAmount() < storageContents[i].getMaxStackSize())
-            {
+            } else if (itemDrop.isSimilar(storageContents[i]) && storageContents[i].getAmount() < storageContents[i].getMaxStackSize()) {
                 //If we can fit this whole itemstack into this item
-                if (amount + storageContents[i].getAmount() <= storageContents[i].getMaxStackSize())
-                {
+                if (amount + storageContents[i].getAmount() <= storageContents[i].getMaxStackSize()) {
                     ItemStack modifiedAmount = storageContents[i];
                     modifiedAmount.setAmount(amount + storageContents[i].getAmount());
 
@@ -68,8 +63,7 @@ public class Unarmed {
 
         event.setCancelled(true);
 
-        if (grabbedItem)
-        {
+        if (grabbedItem) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
             player.updateInventory();
         }

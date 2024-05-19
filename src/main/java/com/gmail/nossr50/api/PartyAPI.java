@@ -109,8 +109,7 @@ public final class PartyAPI {
         if (party == null) {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
         } else {
-            if (mcMMO.p.getPartyManager().isPartyFull(player, party))
-            {
+            if (mcMMO.p.getPartyManager().isPartyFull(player, party)) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
                 return;
             }
@@ -124,8 +123,7 @@ public final class PartyAPI {
      * 0 or less for no size limit
      * @return the max party size on this server
      */
-    public static int getMaxPartySize()
-    {
+    public static int getMaxPartySize() {
         return mcMMO.p.getGeneralConfig().getPartyMaxSize();
     }
 

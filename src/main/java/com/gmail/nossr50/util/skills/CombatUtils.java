@@ -77,8 +77,7 @@ public final class CombatUtils {
         }
 
         //Add Stab Damage
-        if (swordsManager.canUseStab())
-        {
+        if (swordsManager.canUseStab()) {
             boostedDamage += (swordsManager.getStabDamage() * mcMMOPlayer.getAttackStrength());
         }
 
@@ -86,8 +85,7 @@ public final class CombatUtils {
             swordsManager.serratedStrikes(target, event.getDamage());
         }
 
-        if (canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
-        {
+        if (canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             boostedDamage += (getLimitBreakDamage(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
         }
 
@@ -264,8 +262,7 @@ public final class CombatUtils {
 
         if (axesManager.canImpact(target)) {
             axesManager.impactCheck(target);
-        }
-        else if (axesManager.canGreaterImpact(target)) {
+        } else if (axesManager.canGreaterImpact(target)) {
             boostedDamage+=axesManager.greaterImpact(target);
         }
 
@@ -277,8 +274,7 @@ public final class CombatUtils {
             boostedDamage+=(axesManager.criticalHit(target, boostedDamage) * mcMMOPlayer.getAttackStrength());
         }
 
-        if (canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
-        {
+        if (canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             boostedDamage+=(getLimitBreakDamage(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
         }
 
@@ -320,8 +316,7 @@ public final class CombatUtils {
             unarmedManager.disarmCheck((Player) target);
         }
 
-        if (canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
-        {
+        if (canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             boostedDamage+=(getLimitBreakDamage(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
         }
 
@@ -394,8 +389,7 @@ public final class CombatUtils {
             archeryManager.retrieveArrows(target, arrow);
         }
 
-        if (canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
-        {
+        if (canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
             boostedDamage+=getLimitBreakDamage(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
 
@@ -494,8 +488,7 @@ public final class CombatUtils {
                     processSwordCombat(target, player, event);
 
                 }
-            }
-            else if (ItemUtils.isAxe(heldItem)) {
+            } else if (ItemUtils.isAxe(heldItem)) {
                 if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.AXES, target)) {
                     return;
                 }
@@ -503,8 +496,7 @@ public final class CombatUtils {
                 if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.AXES)) {
                     processAxeCombat(target, player, event);
                 }
-            }
-            else if (ItemUtils.isUnarmed(heldItem)) {
+            } else if (ItemUtils.isUnarmed(heldItem)) {
                 if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.UNARMED, target)) {
                     return;
                 }
@@ -512,8 +504,7 @@ public final class CombatUtils {
                 if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.UNARMED)) {
                     processUnarmedCombat(target, player, event);
                 }
-            }
-            else if (ItemUtils.isTrident(heldItem)) {
+            } else if (ItemUtils.isTrident(heldItem)) {
                 if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.TRIDENTS, target)) {
                     return;
                 }
@@ -521,8 +512,7 @@ public final class CombatUtils {
                 if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.TRIDENTS)) {
                     processTridentCombatMelee(target, player, event);
                 }
-            }
-            else if (ItemUtils.isMace(heldItem)) {
+            } else if (ItemUtils.isMace(heldItem)) {
                 if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.MACES, target)) {
                     return;
                 }
@@ -543,8 +533,7 @@ public final class CombatUtils {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
-        }
-        else if (painSource instanceof Trident trident) {
+        } else if (painSource instanceof Trident trident) {
             ProjectileSource projectileSource = trident.getShooter();
 
             if (projectileSource instanceof Player player) {
@@ -554,8 +543,7 @@ public final class CombatUtils {
                     }
                 }
             }
-        }
-        else if (painSource instanceof Arrow arrow) {
+        } else if (painSource instanceof Arrow arrow) {
             ProjectileSource projectileSource = arrow.getShooter();
             boolean isCrossbow = arrow.isShotFromCrossbow();
             if (projectileSource instanceof Player player) {
@@ -590,8 +578,7 @@ public final class CombatUtils {
      * This cleans up names from displaying in chat as hearts
      * @param entity target entity
      */
-    public static void fixNames(@NotNull LivingEntity entity)
-    {
+    public static void fixNames(@NotNull LivingEntity entity) {
         List<MetadataValue> metadataValue = entity.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY);
 
         if (metadataValue.size() <= 0)
@@ -887,37 +874,27 @@ public final class CombatUtils {
                     && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 baseXP = 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
             }
-        }
-        else {
+        } else {
             if (mcMMO.getModManager().isCustomEntity(target)) {
                 baseXP = mcMMO.getModManager().getEntity(target).getXpMultiplier();
-            }
-            else if (target instanceof Animals) {
+            } else if (target instanceof Animals) {
                 EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
-            }
-            else if (target instanceof Monster)
-            {
+            } else if (target instanceof Monster) {
                 EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-            }
-            else {
+            } else {
                 EntityType type = target.getType();
 
                 if (ExperienceConfig.getInstance().hasCombatXP(type)) {
-                    if (type == EntityType.IRON_GOLEM)
-                    {
+                    if (type == EntityType.IRON_GOLEM) {
                         if (!((IronGolem) target).isPlayerCreated()) {
                             baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                     }
-                }
-                else
-                {
+                } else {
                     baseXP = 1.0;
                     mcMMO.getModManager().addCustomEntity(target);
                 }
@@ -1036,22 +1013,17 @@ public final class CombatUtils {
 
         if (ItemUtils.isWoodTool(inHand)) {
             tier = 1;
-        }
-        else if (ItemUtils.isStoneTool(inHand)) {
+        } else if (ItemUtils.isStoneTool(inHand)) {
             tier = 2;
-        }
-        else if (ItemUtils.isIronTool(inHand)) {
+        } else if (ItemUtils.isIronTool(inHand)) {
             tier = 3;
-        }
-        else if (ItemUtils.isGoldTool(inHand)) {
+        } else if (ItemUtils.isGoldTool(inHand)) {
             tier = 1;
-        }
-        else if (ItemUtils.isDiamondTool(inHand)) {
+        } else if (ItemUtils.isDiamondTool(inHand)) {
             tier = 4;
         } else if (ItemUtils.isNetheriteTool(inHand)) {
             tier = 5;
-        }
-        else if (mcMMO.getModManager().isCustomTool(inHand)) {
+        } else if (mcMMO.getModManager().isCustomTool(inHand)) {
             tier = mcMMO.getModManager().getTool(inHand).getTier();
         }
 

@@ -39,23 +39,19 @@ public class AcrobaticsManager extends SkillManager {
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
     private final BlockLocationHistory fallLocationMap;
 
-    public boolean hasFallenInLocationBefore(Location location)
-    {
+    public boolean hasFallenInLocationBefore(Location location) {
         return fallLocationMap.contains(location);
     }
 
-    public void addLocationToFallMap(Location location)
-    {
+    public void addLocationToFallMap(Location location) {
         fallLocationMap.add(location);
     }
 
-    public boolean canGainRollXP()
-    {
+    public boolean canGainRollXP() {
         if (!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
             return true;
 
-        if (System.currentTimeMillis() >= rollXPCooldown)
-        {
+        if (System.currentTimeMillis() >= rollXPCooldown) {
             rollXPCooldown = System.currentTimeMillis() + rollXPInterval;
             rollXPIntervalLengthen = (1000 * 10); //5 Seconds
             return true;

@@ -135,8 +135,7 @@ public class PlayerProfile {
                         + " resulted in failure. "+saveAttempts+" have been made so far.");
             }
 
-            if (saveAttempts < 10)
-            {
+            if (saveAttempts < 10) {
                 saveAttempts++;
 
                 //Back out of async saving if we detect a server shutdown, this is not always going to be caught
@@ -372,8 +371,7 @@ public class PlayerProfile {
             for (PrimarySkillType parentSkill : parentSkills) {
                 skillsXp.put(parentSkill, skillsXp.get(parentSkill) + dividedXP);
             }
-        }
-        else {
+        } else {
             skillsXp.put(skill, skillsXp.get(skill) + xp);
         }
     }

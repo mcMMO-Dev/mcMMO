@@ -235,8 +235,7 @@ public class SalvageManager extends SkillManager {
                     || ProbabilityUtil.isStaticSkillRNGSuccessful(
                             PrimarySkillType.SALVAGE, mmoPlayer, getExtractFullEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
-            }
-            else if (enchantLevel > 1
+            } else if (enchantLevel > 1
                     && Salvage.arcaneSalvageDowngrades
                     && ProbabilityUtil.isStaticSkillRNGSuccessful(
                             PrimarySkillType.SALVAGE, mmoPlayer, getExtractPartialEnchantChance())) {
@@ -247,12 +246,10 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        if (failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
-        {
+        if (failedAllEnchants(arcaneFailureCount, enchants.entrySet().size())) {
             NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcaneFailed");
             return null;
-        } else if (downgraded)
-        {
+        } else if (downgraded) {
             NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcanePartial");
         }
 

@@ -64,8 +64,7 @@ public class McrankCommandDisplayTask extends CancellableRunnable {
     public void displayBoard() {
         if (sender.getName().equalsIgnoreCase(playerName)) {
             ScoreboardManager.showPlayerRankScoreboard((Player) sender, skills);
-        }
-        else {
+        } else {
             ScoreboardManager.showPlayerRankScoreboardOthers((Player) sender, playerName, skills);
         }
     }

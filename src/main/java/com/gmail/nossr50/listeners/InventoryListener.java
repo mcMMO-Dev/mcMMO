@@ -131,8 +131,7 @@ public class InventoryListener implements Listener {
 
         if (furnaceBlock instanceof Furnace) {
             /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded())
-            {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
                 if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
@@ -142,8 +141,7 @@ public class InventoryListener implements Listener {
             }
 
             //Profile not loaded
-            if (UserManager.getPlayer(player) == null)
-            {
+            if (UserManager.getPlayer(player) == null) {
                 return;
             }
 
@@ -196,8 +194,7 @@ public class InventoryListener implements Listener {
 
         // TODO: Investigate why this WG check is all the way down here?
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
@@ -239,8 +236,7 @@ public class InventoryListener implements Listener {
                     return;
                 default:
             }
-        }
-        else if (slot == InventoryType.SlotType.FUEL) {
+        } else if (slot == InventoryType.SlotType.FUEL) {
             boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
 
             if (AlchemyPotionBrewer.isEmpty(cursor)) {
@@ -250,8 +246,7 @@ public class InventoryListener implements Listener {
                 }
 
                 AlchemyPotionBrewer.scheduleCheck(stand);
-            }
-            else if (emptyClicked) {
+            } else if (emptyClicked) {
                 if (AlchemyPotionBrewer.isValidIngredientByPlayer(player, cursor)) {
                     int amount = cursor.getAmount();
 
@@ -262,8 +257,7 @@ public class InventoryListener implements Listener {
 
                         AlchemyPotionBrewer.scheduleUpdate(inventory);
                         AlchemyPotionBrewer.scheduleCheck(stand);
-                    }
-                    else if (click == ClickType.RIGHT) {
+                    } else if (click == ClickType.RIGHT) {
                         event.setCancelled(true);
 
                         ItemStack one = cursor.clone();
@@ -323,8 +317,7 @@ public class InventoryListener implements Listener {
             Player player = (Player) whoClicked;
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded())
-            {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
                 if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
@@ -342,8 +335,7 @@ public class InventoryListener implements Listener {
 
     // Apparently sometimes vanilla brewing beats our task listener to the actual brew. We handle this by cancelling the vanilla event and finishing our brew ourselves.
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBrew(BrewEvent event)
-    {
+    public void onBrew(BrewEvent event) {
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
@@ -460,8 +452,7 @@ public class InventoryListener implements Listener {
         Player player = (Player) whoClicked;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded())
-        {
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }

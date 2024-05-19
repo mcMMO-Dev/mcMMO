@@ -152,8 +152,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     // If they're still around, rewrite them to the file.
                     if (!powerless) {
                         writer.append(line).append("\r\n");
-                    }
-                    else {
+                    } else {
                         purgedUsers++;
                     }
                 }

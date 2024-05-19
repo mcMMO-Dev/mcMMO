@@ -21,8 +21,7 @@ public class HashChunkManager implements ChunkManager {
     @Override
     public synchronized void closeAll() {
         // Save all dirty chunkstores
-        for (ChunkStore chunkStore : chunkMap.values())
-        {
+        for (ChunkStore chunkStore : chunkMap.values()) {
             if (!chunkStore.isDirty())
                 continue;
             World world = Bukkit.getWorld(chunkStore.getWorldId());
@@ -113,8 +112,8 @@ public class HashChunkManager implements ChunkManager {
         CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
         HashSet<CoordinateKey> chunkKeys = chunkUsageMap.get(regionKey);
         chunkKeys.remove(chunkKey); // remove from region file in-use set
-        if (chunkKeys.isEmpty()) // If it was last chunk in region, close the region file and remove it from memory
-        {
+        // If it was last chunk in region, close the region file and remove it from memory
+        if (chunkKeys.isEmpty()) {
             chunkUsageMap.remove(regionKey);
             regionMap.remove(regionKey).close();
         }
@@ -224,8 +223,7 @@ public class HashChunkManager implements ChunkManager {
         ChunkStore cStore = chunkMap.computeIfAbsent(chunkKey, k -> {
             // Load from file
             ChunkStore loaded = loadChunk(chunkKey.x, chunkKey.z, world);
-            if (loaded != null)
-            {
+            if (loaded != null) {
                 chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
                 return loaded;
             }

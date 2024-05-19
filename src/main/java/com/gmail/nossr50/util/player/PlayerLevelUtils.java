@@ -30,8 +30,7 @@ public class PlayerLevelUtils {
 //        }
 //    }
 
-    public int getEarlyGameCutoff(PrimarySkillType primarySkillType)
-    {
+    public int getEarlyGameCutoff(PrimarySkillType primarySkillType) {
         return 1;
     }
 

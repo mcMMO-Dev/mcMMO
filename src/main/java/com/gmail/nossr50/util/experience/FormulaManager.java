@@ -135,8 +135,7 @@ public class FormulaManager {
      * @param formulaType target formulaType
      */
     private int processXPToNextLevel(int level, FormulaType formulaType) {
-        if (mcMMO.isRetroModeEnabled())
-        {
+        if (mcMMO.isRetroModeEnabled()) {
             return processXPRetroToNextLevel(level, formulaType);
         } else {
             return processStandardXPToNextLevel(level, formulaType);

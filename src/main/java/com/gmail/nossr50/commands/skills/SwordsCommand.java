@@ -101,8 +101,7 @@ public class SwordsCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
-        if (SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_STAB))
-        {
+        if (SkillUtils.canUseSubskill(player, SubSkillType.SWORDS_STAB)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
                     String.valueOf(mmoPlayer.getSwordsManager().getStabDamage())));
         }

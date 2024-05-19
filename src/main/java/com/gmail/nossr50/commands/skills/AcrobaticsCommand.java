@@ -54,8 +54,7 @@ public class AcrobaticsCommand extends SkillCommand {
 
             AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName("Roll");
 
-            if (abstractSubSkill != null)
-            {
+            if (abstractSubSkill != null) {
                 String[] rollStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.ACROBATICS_ROLL);
 
                 messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, rollStrings[0])

@@ -845,11 +845,9 @@ public class HerbalismManager extends SkillManager {
 
                 if (greenTerra || greenThumbStage > 2) {
                     finalAge = 2;
-                }
-                else if (greenThumbStage == 2) {
+                } else if (greenThumbStage == 2) {
                     finalAge = 1;
-                }
-                else {
+                } else {
                     finalAge = 0;
                 }
                 break;
@@ -858,8 +856,7 @@ public class HerbalismManager extends SkillManager {
 
                 if (getGreenThumbStage(greenTerra) >= 2) {
                     finalAge = 1;
-                }
-                else {
+                } else {
                     finalAge = 0;
                 }
                 break;

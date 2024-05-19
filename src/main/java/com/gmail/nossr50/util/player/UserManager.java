@@ -84,13 +84,11 @@ public final class UserManager {
         mcMMO.p.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
 
         for (McMMOPlayer playerData : trackedSyncData) {
-            try
-            {
+            try {
                 LogUtils.debug(mcMMO.p.getLogger(), "Saving data for player: "+playerData.getPlayerName());
                 playerData.getProfile().save(true);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + playerData.getPlayerName());
             }
         }

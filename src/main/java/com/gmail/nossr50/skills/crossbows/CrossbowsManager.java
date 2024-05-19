@@ -88,8 +88,7 @@ public class CrossbowsManager extends SkillManager {
         return RankUtils.getRank(mmoPlayer, SubSkillType.CROSSBOWS_TRICK_SHOT);
     }
 
-    public double getPoweredShotBonusDamage(Player player, double oldDamage)
-    {
+    public double getPoweredShotBonusDamage(Player player, double oldDamage) {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
         return Math.min(newDamage, (oldDamage + mcMMO.p.getAdvancedConfig().getPoweredShotDamageMax()));

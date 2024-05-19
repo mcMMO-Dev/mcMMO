@@ -75,8 +75,7 @@ public final class MobHealthbarUtils {
             if (updateName) {
                 target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, new FixedMetadataValue(mcMMO.p, oldName));
                 target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
-            }
-            else if (!target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME)) {
+            } else if (!target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME)) {
                 target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_NAME, new FixedMetadataValue(mcMMO.p, ""));
                 target.setMetadata(MetadataConstants.METADATA_KEY_NAME_VISIBILITY, new FixedMetadataValue(mcMMO.p, false));
             }
@@ -106,20 +105,15 @@ public final class MobHealthbarUtils {
 
                 if (healthPercentage >= 85) {
                     color = ChatColor.DARK_GREEN;
-                }
-                else if (healthPercentage >= 70) {
+                } else if (healthPercentage >= 70) {
                     color = ChatColor.GREEN;
-                }
-                else if (healthPercentage >= 55) {
+                } else if (healthPercentage >= 55) {
                     color = ChatColor.GOLD;
-                }
-                else if (healthPercentage >= 40) {
+                } else if (healthPercentage >= 40) {
                     color = ChatColor.YELLOW;
-                }
-                else if (healthPercentage >= 25) {
+                } else if (healthPercentage >= 25) {
                     color = ChatColor.RED;
-                }
-                else if (healthPercentage >= 0) {
+                } else if (healthPercentage >= 0) {
                     color = ChatColor.DARK_RED;
                 }
 

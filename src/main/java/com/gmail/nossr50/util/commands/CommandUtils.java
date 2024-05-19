@@ -265,8 +265,7 @@ public final class CommandUtils {
             if (matches.size() == 1) {
                 partialName = matches.get(0);
             }
-        }
-        else {
+        } else {
             Player player = mcMMO.p.getServer().getPlayer(partialName);
 
             if (player != null) {

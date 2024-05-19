@@ -108,20 +108,17 @@ public class SwordsManager extends SkillManager {
         return RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
-    public double getStabDamage()
-    {
+    public double getStabDamage() {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_STAB);
 
-        if (rank > 0)
-        {
+        if (rank > 0) {
             return (1.0D + (rank * 1.5));
         }
 
         return 0;
     }
 
-    public int getToolTier(@NotNull ItemStack itemStack)
-    {
+    public int getToolTier(@NotNull ItemStack itemStack) {
         if (ItemUtils.isNetheriteTool(itemStack))
             return 5;
         if (ItemUtils.isDiamondTool(itemStack))

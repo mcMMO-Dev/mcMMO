@@ -10,8 +10,7 @@ public class ExperienceBarHideTask extends CancellableRunnable {
     public final PrimarySkillType primarySkillType;
     public final ExperienceBarManager experienceBarManagerRef;
 
-    public ExperienceBarHideTask(ExperienceBarManager experienceBarManagerRef, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType)
-    {
+    public ExperienceBarHideTask(ExperienceBarManager experienceBarManagerRef, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
         this.experienceBarManagerRef = experienceBarManagerRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.primarySkillType = primarySkillType;

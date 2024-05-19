@@ -156,8 +156,7 @@ public class Roll extends AcrobaticsSubSkill {
         //Advanced
 
         //Lucky Notice
-        if (isLucky)
-        {
+        if (isLucky) {
             componentBuilder.append(Component.text(LocaleLoader.getString("JSON.JWrapper.Perks.Header")));
             componentBuilder.append(Component.newline());
             componentBuilder.append(Component.text(LocaleLoader.getString("JSON.JWrapper.Perks.Lucky", "33")));
@@ -219,8 +218,7 @@ public class Roll extends AcrobaticsSubSkill {
 
             addFallLocation(mmoPlayer);
             return modifiedDamage;
-        }
-        else if (!isFatal(mmoPlayer, damage)) {
+        } else if (!isFatal(mmoPlayer, damage)) {
             //if (!SkillUtils.cooldownExpired((long) mmoPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
             if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, damage, false), XPGainReason.PVE);
@@ -248,8 +246,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         if (!isFatal(mmoPlayer, modifiedDamage)
                 //TODO: Graceful isn't sending out an event
-                && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.ACROBATICS, mmoPlayer, gracefulProbability))
-        {
+                && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.ACROBATICS, mmoPlayer, gracefulProbability)) {
             NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
             if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
@@ -257,8 +254,7 @@ public class Roll extends AcrobaticsSubSkill {
 
             addFallLocation(mmoPlayer);
             return modifiedDamage;
-        }
-        else if (!isFatal(mmoPlayer, damage)) {
+        } else if (!isFatal(mmoPlayer, damage)) {
             if (!isExploiting(mmoPlayer) && mmoPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mmoPlayer, getPrimarySkill(), calculateRollXP(mmoPlayer, damage, false), XPGainReason.PVE);
             
@@ -292,8 +288,7 @@ public class Roll extends AcrobaticsSubSkill {
             return true;
         }
 
-        if (mmoPlayer.getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(mmoPlayer)))
-        {
+        if (mmoPlayer.getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(mmoPlayer))) {
             if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
             }
@@ -369,8 +364,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return stat array for target player for this skill
      */
     @Override
-    public Double[] getStats(McMMOPlayer mmoPlayer)
-    {
+    public Double[] getStats(McMMOPlayer mmoPlayer) {
         double playerChanceRoll = ProbabilityUtil.getSubSkillProbability(subSkillType, mmoPlayer).getValue();
         double playerChanceGrace = playerChanceRoll * 2;
 

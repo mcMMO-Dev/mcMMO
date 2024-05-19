@@ -30,20 +30,15 @@ public enum PartySubcommandType {
 
         if (commandName.equalsIgnoreCase("?")) {
             return HELP;
-        }
-        else if (commandName.equalsIgnoreCase("q") || commandName.equalsIgnoreCase("leave")) {
+        } else if (commandName.equalsIgnoreCase("q") || commandName.equalsIgnoreCase("leave")) {
             return QUIT;
-        }
-        else if (commandName.equalsIgnoreCase("leader")) {
+        } else if (commandName.equalsIgnoreCase("leader")) {
             return OWNER;
-        }
-        else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase("shareexp") || commandName.equalsIgnoreCase("sharexp")) {
+        } else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase("shareexp") || commandName.equalsIgnoreCase("sharexp")) {
             return XPSHARE;
-        }
-        else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase("shareitems")) {
+        } else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase("shareitems")) {
             return ITEMSHARE;
-        }
-        else if (commandName.equalsIgnoreCase("ally")) {
+        } else if (commandName.equalsIgnoreCase("ally")) {
             return ALLIANCE;
         }
 
