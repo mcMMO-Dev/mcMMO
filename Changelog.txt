@@ -1,5 +1,6 @@
 Version 2.2.013
     mcMMO now requires Java 21 (see notes)
+    Modified the RNG for dropping non-ore blocks from Blast Mining to yield about 50% of what was destroyed
     (API) Deprecated com.gmail.nossr50.mcMMO.getPlaceStore
     (API) Added com.gmail.nossr50.mcMMO.getUserBlockTracker
     (API) Added com.gmail.nossr50.mcMMO.getChunkManager

@@ -3,7 +3,6 @@ package com.gmail.nossr50.config.mods;
 import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.mcMMO;
-import org.apache.commons.lang.ClassUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,7 +29,7 @@ public class CustomEntityLegacyConfig extends LegacyConfigLoader {
             String className = config.getString(entityName + ".Class", "");
 
             try {
-                clazz = ClassUtils.getClass(className);
+                clazz = Class.forName(className);
             } catch (ClassNotFoundException e) {
                 mcMMO.p.getLogger().warning("Invalid class (" + className + ") detected for " + entityName + ".");
                 mcMMO.p.getLogger().warning("This custom entity may not function properly.");

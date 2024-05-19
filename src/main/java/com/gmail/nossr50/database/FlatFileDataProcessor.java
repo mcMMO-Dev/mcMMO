@@ -300,7 +300,7 @@ public class FlatFileDataProcessor {
 
             //We add a trailing : as it is needed for some reason (is it?)
             //TODO: Is the trailing ":" actually necessary?
-            String fromSplit = org.apache.commons.lang.StringUtils.join(splitData, ":") + ":";
+            String fromSplit = org.apache.commons.lang3.StringUtils.join(splitData, ":") + ":";
             stringBuilder.append(fromSplit).append("\r\n");
         }
 

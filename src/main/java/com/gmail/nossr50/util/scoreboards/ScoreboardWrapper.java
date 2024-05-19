@@ -18,7 +18,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
-import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -29,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Objects.requireNonNull;
 
 public class ScoreboardWrapper {
     public static final String SIDE_OBJECTIVE = "mcMMO_sideObjective";
@@ -485,7 +486,7 @@ public class ScoreboardWrapper {
                 break;
 
             case SKILL_BOARD:
-                Validate.notNull(targetSkill);
+                requireNonNull(targetSkill);
 
                 if (!SkillTools.isChildSkill(targetSkill)) {
                     int currentXP = mcMMOPlayer.getSkillXpLevel(targetSkill);

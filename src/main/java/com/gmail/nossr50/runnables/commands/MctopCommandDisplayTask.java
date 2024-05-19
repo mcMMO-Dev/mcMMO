@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * Display the results of {@link MctopCommandAsyncTask} to the sender.
+ * Display the results of {@link McTopCommandAsyncTask} to the sender.
  */
 public class MctopCommandDisplayTask extends CancellableRunnable {
     private final List<PlayerStat> userStats;
