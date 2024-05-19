@@ -1,5 +1,4 @@
 Version 2.2.013
-    mcMMO now requires Java 21 (see notes)
     Modified the RNG for dropping non-ore blocks from Blast Mining to yield about 50% of what was destroyed
     (API) Deprecated com.gmail.nossr50.mcMMO.getPlaceStore
     (API) Added com.gmail.nossr50.mcMMO.getUserBlockTracker
@@ -9,8 +8,6 @@ Version 2.2.013
     (Codebase) Cleaned up and organized unit tests relating to UserBlockTracker
 
     NOTES:
-    mcMMO is now compiled for Java 21, Java 21 will be requires to run mcMMO.
-    This should not pose an issue as there are Java 21 server JARs for the versions of MC that mcMMO currently supports.
     Not planning to delete the deprecated methods in UserBlockTracker anytime soon, as nothing has really changed other than the names
 
 Version 2.2.012
