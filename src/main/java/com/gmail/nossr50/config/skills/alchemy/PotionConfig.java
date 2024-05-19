@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.PotionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;

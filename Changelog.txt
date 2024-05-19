@@ -1,3 +1,11 @@
+Version 2.2.013
+    (API) Added new methods to com.gmail.nossr50.util.blockmeta.UserBlockTracker for easier readability
+    (API) Deprecated the old poorly named methods in UserBlockTracker
+    (Codebase) Cleaned up and organized unit tests relating to UserBlockTracker
+
+    NOTES:
+    Not planning to delete the deprecated methods in UserBlockTracker anytime soon, as nothing has really changed other than the names
+
 Version 2.2.012
     Fixed a bug where Daze would cause an exception in older game versions (1.20.4 and older)
 

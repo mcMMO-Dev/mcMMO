@@ -113,7 +113,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public void processWoodcuttingBlockXP(@NotNull BlockState blockState) {
-        if (mcMMO.getPlaceStore().isTrue(blockState))
+        if (mcMMO.getPlaceStore().isIneligible(blockState))
             return;
 
         int xp = getExperienceFromLog(blockState);
@@ -269,7 +269,7 @@ public class WoodcuttingManager extends SkillManager {
      *     in treeFellerBlocks.
      */
     private boolean processTreeFellerTargetBlock(@NotNull BlockState blockState, @NotNull List<BlockState> futureCenterBlocks, @NotNull Set<BlockState> treeFellerBlocks) {
-        if (treeFellerBlocks.contains(blockState) || mcMMO.getPlaceStore().isTrue(blockState)) {
+        if (treeFellerBlocks.contains(blockState) || mcMMO.getPlaceStore().isIneligible(blockState)) {
             return false;
         }
 
@@ -373,7 +373,7 @@ public class WoodcuttingManager extends SkillManager {
      * @return Amount of experience
      */
     private static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
-        if (mcMMO.getPlaceStore().isTrue(blockState))
+        if (mcMMO.getPlaceStore().isIneligible(blockState))
             return 0;
 
         int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());

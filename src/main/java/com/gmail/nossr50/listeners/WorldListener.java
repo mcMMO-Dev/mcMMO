@@ -32,7 +32,7 @@ public class WorldListener implements Listener {
         // Using 50 ms later as I do not know of a way to run one tick later (safely)
         plugin.getFoliaLib().getImpl().runLater(() -> {
             for (BlockState blockState : event.getBlocks()) {
-                mcMMO.getPlaceStore().setFalse(blockState);
+                mcMMO.getPlaceStore().setEligible(blockState);
             }
         }, 1);
     }

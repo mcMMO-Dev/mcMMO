@@ -852,7 +852,7 @@ public class PlayerListener implements Listener {
                             case "NETHER_WART_BLOCK":
                             case "POTATO":
                             case "MANGROVE_PROPAGULE":
-                                mcMMO.getPlaceStore().setFalse(blockState);
+                                mcMMO.getPlaceStore().setEligible(blockState);
                                 break;
                         }
                     }

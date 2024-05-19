@@ -44,7 +44,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
-import org.jetbrains.annotations.NotNull;
 
 import static com.gmail.nossr50.util.MobMetadataUtils.*;
 
@@ -207,8 +206,8 @@ public class EntityListener implements Listener {
         if (entity instanceof FallingBlock || entity instanceof Enderman) {
             boolean isTracked = entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK);
 
-            if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
-                mcMMO.getPlaceStore().setFalse(block);
+            if (mcMMO.getPlaceStore().isIneligible(block) && !isTracked) {
+                mcMMO.getPlaceStore().setEligible(block);
 
                 entity.setMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, MetadataConstants.MCMMO_METADATA_VALUE);
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity, pluginRef);
@@ -222,8 +221,8 @@ public class EntityListener implements Listener {
             //Redstone ore fire this event and should be ignored
         }
         else {
-            if (mcMMO.getPlaceStore().isTrue(block)) {
-                mcMMO.getPlaceStore().setFalse(block);
+            if (mcMMO.getPlaceStore().isIneligible(block)) {
+                mcMMO.getPlaceStore().setEligible(block);
             }
         }
     }

@@ -13,9 +13,8 @@ import org.mockito.MockedStatic;
 import static com.gmail.nossr50.util.PotionEffectUtil.getNauseaPotionEffectType;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 class PotionEffectUtilTest {
     private MockedStatic<mcMMO> mockedStaticMcMMO;

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.taming.TrackedTamingEntity;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;

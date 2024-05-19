@@ -181,7 +181,7 @@ public class MiningManager extends SkillManager {
             //Containers usually have 0 XP unless someone edited their config in a very strange way
             if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0
                     && !(targetBlock instanceof Container)
-                    && !mcMMO.getPlaceStore().isTrue(targetBlock)) {
+                    && !mcMMO.getPlaceStore().isIneligible(targetBlock)) {
                 if (BlockUtils.isOre(blockState)) {
                     ores.add(blockState);
                 } else {
@@ -216,7 +216,7 @@ public class MiningManager extends SkillManager {
 
                 Misc.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES); // Initial block that would have been dropped
 
-                if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled() && !mcMMO.getPlaceStore().isTrue(blockState)) {
+                if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled() && !mcMMO.getPlaceStore().isIneligible(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
 //                        Bukkit.broadcastMessage("Bonus Drop on Ore: "+blockState.getType().toString());
                         Misc.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP); // Initial block that would have been dropped

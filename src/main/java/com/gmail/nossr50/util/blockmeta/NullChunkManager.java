@@ -17,24 +17,34 @@ public class NullChunkManager implements ChunkManager {
     public void unloadWorld(@NotNull World world) {}
 
     @Override
-    public boolean isTrue(@NotNull Block block) {
+    public boolean isIneligible(@NotNull Block block) {
         return false;
     }
 
     @Override
-    public boolean isTrue(@NotNull BlockState blockState) {
+    public boolean isIneligible(@NotNull BlockState blockState) {
         return false;
     }
 
     @Override
-    public void setTrue(@NotNull Block block) {}
+    public boolean isEligible(@NotNull Block block) {
+        return false;
+    }
 
     @Override
-    public void setTrue(@NotNull BlockState blockState) {}
+    public boolean isEligible(@NotNull BlockState blockState) {
+        return false;
+    }
 
     @Override
-    public void setFalse(@NotNull Block block) {}
+    public void setIneligible(@NotNull Block block) {}
 
     @Override
-    public void setFalse(@NotNull BlockState blockState) {}
+    public void setIneligible(@NotNull BlockState blockState) {}
+
+    @Override
+    public void setEligible(@NotNull Block block) {}
+
+    @Override
+    public void setEligible(@NotNull BlockState blockState) {}
 }

@@ -152,7 +152,7 @@ public class HashChunkManager implements ChunkManager {
         }
     }
 
-    private synchronized boolean isTrue(int x, int y, int z, @NotNull World world) {
+    private synchronized boolean isIneligible(int x, int y, int z, @NotNull World world) {
         CoordinateKey chunkKey = blockCoordinateToChunkKey(world.getUID(), x, y, z);
 
         // Get chunk, load from file if necessary
@@ -178,32 +178,42 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(@NotNull Block block) {
-        return isTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
+    public synchronized boolean isIneligible(@NotNull Block block) {
+        return isIneligible(block.getX(), block.getY(), block.getZ(), block.getWorld());
     }
 
     @Override
-    public synchronized boolean isTrue(@NotNull BlockState blockState) {
-        return isTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+    public synchronized boolean isIneligible(@NotNull BlockState blockState) {
+        return isIneligible(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
     }
 
     @Override
-    public synchronized void setTrue(@NotNull Block block) {
+    public synchronized boolean isEligible(@NotNull Block block) {
+        return !isIneligible(block);
+    }
+
+    @Override
+    public synchronized boolean isEligible(@NotNull BlockState blockState) {
+        return !isIneligible(blockState);
+    }
+
+    @Override
+    public synchronized void setIneligible(@NotNull Block block) {
         set(block.getX(), block.getY(), block.getZ(), block.getWorld(), true);
     }
 
     @Override
-    public synchronized void setTrue(@NotNull BlockState blockState) {
+    public synchronized void setIneligible(@NotNull BlockState blockState) {
         set(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld(), true);
     }
 
     @Override
-    public synchronized void setFalse(@NotNull Block block) {
+    public synchronized void setEligible(@NotNull Block block) {
         set(block.getX(), block.getY(), block.getZ(), block.getWorld(), false);
     }
 
     @Override
-    public synchronized void setFalse(@NotNull BlockState blockState) {
+    public synchronized void setEligible(@NotNull BlockState blockState) {
         set(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld(), false);
     }
 
