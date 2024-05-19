@@ -31,13 +31,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # 2. Setup Java 17 JDK (Adopt)
-    - name: Java 17 setup
+    # 2. Setup Java 21 JDK (Adopt)
+    - name: Java 21 setup
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
         java-package: jdk
-        java-version: '17'
+        java-version: '21'
 
     # 3. Setup local Maven package cache to speed up building
     - name: Cache Maven packages
