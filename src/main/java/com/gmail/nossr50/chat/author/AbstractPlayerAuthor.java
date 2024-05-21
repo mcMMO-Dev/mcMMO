@@ -48,15 +48,15 @@ public abstract class AbstractPlayerAuthor implements Author {
      */
     protected @NotNull String getSanitizedName(@NotNull ChatChannel chatChannel, boolean useDisplayName) {
         //Already in cache
-        if(sanitizedNameCache.containsKey(chatChannel)) {
+        if (sanitizedNameCache.containsKey(chatChannel)) {
             //Update cache
-            if(useDisplayName && hasPlayerDisplayNameChanged()) {
+            if (useDisplayName && hasPlayerDisplayNameChanged()) {
                 updateLastKnownDisplayName();
                 updateSanitizedNameCache(chatChannel, true);
             }
         } else {
             //Update last known display name
-            if(useDisplayName && hasPlayerDisplayNameChanged()) {
+            if (useDisplayName && hasPlayerDisplayNameChanged()) {
                 updateLastKnownDisplayName();
             }
 
@@ -76,7 +76,7 @@ public abstract class AbstractPlayerAuthor implements Author {
      * @param useDisplayName whether to use this authors display name
      */
     private void updateSanitizedNameCache(@NotNull ChatChannel chatChannel, boolean useDisplayName) {
-        if(useDisplayName) {
+        if (useDisplayName) {
             sanitizedNameCache.put(chatChannel, TextUtils.sanitizeForSerializer(player.getDisplayName()));
         } else {
             //No need to sanitize a basic String

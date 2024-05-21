@@ -200,14 +200,11 @@ public class McImportCommand implements CommandExecutor {
             String skillName = "UNIDENTIFIED";
             if (materialName.contains("ORE")) {
                 skillName = "Mining";
-            }
-            else if (materialName.contains("LOG") || materialName.contains("LEAVES")) {
+            } else if (materialName.contains("LOG") || materialName.contains("LEAVES")) {
                 skillName = "Woodcutting";
-            }
-            else if (materialName.contains("GRASS") || materialName.contains("SHORT_GRASS") || materialName.contains("FLOWER") || materialName.contains("CROP")) {
+            } else if (materialName.contains("GRASS") || materialName.contains("SHORT_GRASS") || materialName.contains("FLOWER") || materialName.contains("CROP")) {
                 skillName = "Herbalism";
-            }
-            else if (materialName.contains("DIRT") || materialName.contains("SAND")) {
+            } else if (materialName.contains("DIRT") || materialName.contains("SAND")) {
                 skillName = "Excavation";
             }
 
@@ -222,8 +219,7 @@ public class McImportCommand implements CommandExecutor {
 
             if (skillName.equals("Mining")) {
                 skillContents.add("    " + "    " + "Smelting_XP_Gain: 9");
-            }
-            else if (skillName.equals("Woodcutting")) {
+            } else if (skillName.equals("Woodcutting")) {
                 skillContents.add("    " + "    " + "Is_Log: " + materialName.contains("LOG"));
             }
         }
@@ -239,20 +235,15 @@ public class McImportCommand implements CommandExecutor {
             String toolType = "UNIDENTIFIED";
             if (materialName.contains("PICKAXE")) {
                 toolType = "Pickaxes";
-            }
-            else if (materialName.contains("AXE")) {
+            } else if (materialName.contains("AXE")) {
                 toolType = "Axes";
-            }
-            else if (materialName.contains("BOW")) {
+            } else if (materialName.contains("BOW")) {
                 toolType = "Bows";
-            }
-            else if (materialName.contains("HOE")) {
+            } else if (materialName.contains("HOE")) {
                 toolType = "Hoes";
-            }
-            else if (materialName.contains("SHOVEL") || materialName.contains("SPADE")) {
+            } else if (materialName.contains("SHOVEL") || materialName.contains("SPADE")) {
                 toolType = "Shovels";
-            }
-            else if (materialName.contains("SWORD")) {
+            } else if (materialName.contains("SWORD")) {
                 toolType = "Swords";
             }
 
@@ -279,14 +270,11 @@ public class McImportCommand implements CommandExecutor {
             String toolType = "UNIDENTIFIED";
             if (materialName.contains("BOOT") || materialName.contains("SHOE")) {
                 toolType = "Boots";
-            }
-            else if (materialName.contains("CHESTPLATE") || materialName.contains("CHEST")) {
+            } else if (materialName.contains("CHESTPLATE") || materialName.contains("CHEST")) {
                 toolType = "Chestplates";
-            }
-            else if (materialName.contains("HELM") || materialName.contains("HAT")) {
+            } else if (materialName.contains("HELM") || materialName.contains("HAT")) {
                 toolType = "Helmets";
-            }
-            else if (materialName.contains("LEGGINGS") || materialName.contains("LEGS") || materialName.contains("PANTS")) {
+            } else if (materialName.contains("LEGGINGS") || materialName.contains("LEGS") || materialName.contains("PANTS")) {
                 toolType = "Leggings";
             }
 

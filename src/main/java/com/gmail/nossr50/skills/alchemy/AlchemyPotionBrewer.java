@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.alchemy;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
@@ -20,23 +20,51 @@ import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: Update to use McMMOPlayer
 public final class AlchemyPotionBrewer {
+    @Deprecated(forRemoval = true, since = "2.2.010")
     public static boolean isValidBrew(Player player, ItemStack[] contents) {
-        if (!isValidIngredient(player, contents[Alchemy.INGREDIENT_SLOT])) {
+        if (!isValidIngredientByPlayer(player, contents[Alchemy.INGREDIENT_SLOT])) {
             return false;
         }
 
         for (int i = 0; i < 3; i++) {
-            if (contents[i] == null || contents[i].getType() != Material.POTION && contents[i].getType() != Material.SPLASH_POTION && contents[i].getType() != Material.LINGERING_POTION) {
+            if (contents[i] == null || contents[i].getType() != Material.POTION
+                    && contents[i].getType() != Material.SPLASH_POTION
+                    && contents[i].getType() != Material.LINGERING_POTION) {
                 continue;
             }
 
-            if (getChildPotion(PotionConfig.getInstance().getPotion(contents[i]), contents[Alchemy.INGREDIENT_SLOT]) != null) {
+            final AlchemyPotion potion = mcMMO.p.getPotionConfig().getPotion(contents[i]);
+            if (getChildPotion(potion, contents[Alchemy.INGREDIENT_SLOT]) != null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isValidBrew(int ingredientLevel, ItemStack[] contents) {
+        if (!isValidIngredientByLevel(ingredientLevel, contents[Alchemy.INGREDIENT_SLOT])) {
+            return false;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (contents[i] == null || contents[i].getType() != Material.POTION
+                    && contents[i].getType() != Material.SPLASH_POTION
+                    && contents[i].getType() != Material.LINGERING_POTION) {
+                continue;
+            }
+
+            final AlchemyPotion potion = mcMMO.p.getPotionConfig().getPotion(contents[i]);
+            if (getChildPotion(potion, contents[Alchemy.INGREDIENT_SLOT]) != null) {
                 return true;
             }
         }
@@ -57,16 +85,15 @@ public final class AlchemyPotionBrewer {
     }
 
     private static void removeIngredient(BrewerInventory inventory, Player player) {
-        if(inventory.getIngredient() == null)
+        if (inventory.getIngredient() == null)
             return;
 
         ItemStack ingredient = inventory.getIngredient().clone();
 
-        if (!isEmpty(ingredient) && isValidIngredient(player, ingredient)) {
+        if (!isEmpty(ingredient) && isValidIngredientByPlayer(player, ingredient)) {
             if (ingredient.getAmount() <= 1) {
                 inventory.setIngredient(null);
-            }
-            else {
+            } else {
                 ingredient.setAmount(ingredient.getAmount() - 1);
                 inventory.setIngredient(ingredient);
             }
@@ -76,15 +103,15 @@ public final class AlchemyPotionBrewer {
     private static boolean hasIngredient(BrewerInventory inventory, Player player) {
         ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
-        return !isEmpty(ingredient) && isValidIngredient(player, ingredient);
+        return !isEmpty(ingredient) && isValidIngredientByPlayer(player, ingredient);
     }
 
-    public static boolean isValidIngredient(Player player, ItemStack item) {
+    public static boolean isValidIngredientByPlayer(Player player, ItemStack item) {
         if (isEmpty(item)) {
             return false;
         }
 
-        for (ItemStack ingredient : getValidIngredients(player)) {
+        for (ItemStack ingredient : getValidIngredients(UserManager.getPlayer(player))) {
             if (item.isSimilar(ingredient)) {
                 return true;
             }
@@ -93,62 +120,96 @@ public final class AlchemyPotionBrewer {
         return false;
     }
 
-    private static List<ItemStack> getValidIngredients(Player player) {
-        if(player == null || UserManager.getPlayer(player) == null)
-        {
-            return PotionConfig.getInstance().getIngredients(1);
+    public static boolean isValidIngredientByLevel(int ingredientLevel, ItemStack item) {
+        if (isEmpty(item)) {
+            return false;
         }
 
-        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+        // TODO: Update this when we fix loading from hoppers
+        for (ItemStack ingredient : mcMMO.p.getPotionConfig().getIngredients(ingredientLevel)) {
+            if (item.isSimilar(ingredient)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static List<ItemStack> getValidIngredients(@Nullable McMMOPlayer mmoPlayer) {
+        if (mmoPlayer == null) {
+            return mcMMO.p.getPotionConfig().getIngredients(1);
+        }
+
+        return mcMMO.p.getPotionConfig().getIngredients(!Permissions.isSubSkillEnabled(mmoPlayer, SubSkillType.ALCHEMY_CONCOCTIONS)
+                ? 1 : mmoPlayer.getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
+        // Check if the brewing stand block state is an actual brewing stand
         if (!(brewingStand instanceof BrewingStand)) {
             return;
         }
 
-        BrewerInventory inventory = ((BrewingStand) brewingStand).getInventory();
-        ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
+        // Retrieve the inventory of the brewing stand and clone the current ingredient for safe manipulation
+        final BrewerInventory inventory = ((BrewingStand) brewingStand).getInventory();
+        final ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
+        // Check if the brewing stand has a valid ingredient; if not, exit the method
         if (!hasIngredient(inventory, player)) {
+            // debug
             return;
         }
 
+        // Initialize lists to hold the potions before and after brewing, initially setting them to null
         List<AlchemyPotion> inputList = new ArrayList<>(Collections.nCopies(3, null));
         List<ItemStack> outputList = new ArrayList<>(Collections.nCopies(3, null));
 
+        // Process each of the three slots in the brewing stand
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
 
-            if (isEmpty(item) || item.getType() == Material.GLASS_BOTTLE || !PotionConfig.getInstance().isValidPotion(item)) {
+            // Skip the slot if it's empty, contains a glass bottle, or holds an invalid potion
+            if (isEmpty(item)
+                    || item.getType() == Material.GLASS_BOTTLE
+                    || !mcMMO.p.getPotionConfig().isValidPotion(item)) {
+                // debug
                 continue;
             }
 
-            AlchemyPotion input = PotionConfig.getInstance().getPotion(item);
+            // Retrieve the potion configurations for the input and resulting output potion
+            AlchemyPotion input = mcMMO.p.getPotionConfig().getPotion(item);
             AlchemyPotion output = input.getChild(ingredient);
 
+            // Update the input list with the current potion
             inputList.set(i, input);
 
+            // If there is a valid output potion, add it to the output list
             if (output != null) {
                 outputList.set(i, output.toItemStack(item.getAmount()).clone());
             }
         }
 
+        // Create a fake brewing event and pass it to the plugin's event system
         FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, outputList, ((BrewingStand) brewingStand).getFuelLevel());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
+        // If the event is cancelled or there are no potions processed, exit the method
         if (event.isCancelled() || inputList.isEmpty()) {
+            // debug
             return;
         }
 
+        // Update the brewing inventory with the new potions
         for (int i = 0; i < 3; i++) {
-            if(outputList.get(i) != null) {
+            if (outputList.get(i) != null) {
                 inventory.setItem(i, outputList.get(i));
             }
         }
 
+        // Remove the used ingredient from the brewing inventory
         removeIngredient(inventory, player);
 
+        // Handle potion brewing success and related effects for each potion processed
         for (AlchemyPotion input : inputList) {
             if (input == null) continue;
 
@@ -157,13 +218,14 @@ public final class AlchemyPotionBrewer {
             if (output != null && player != null) {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);
 
-                //TODO: hmm
-                if (UserManager.hasPlayerDataKey(player)) {
+                // Update player alchemy skills or effects based on brewing success
+                if (UserManager.getPlayer(player) != null) {
                     UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }
             }
         }
 
+        // If the brewing was not forced by external conditions, schedule a new update
         if (!forced) {
             scheduleUpdate(inventory);
         }
@@ -174,8 +236,7 @@ public final class AlchemyPotionBrewer {
 
         if (click.isLeftClick()) {
             success = transferItems(view, fromSlot);
-        }
-        else if (click.isRightClick()) {
+        } else if (click.isRightClick()) {
             success = transferOneItem(view, fromSlot);
         }
 
@@ -195,13 +256,11 @@ public final class AlchemyPotionBrewer {
 
         if (!emptyTo && fromAmount >= from.getType().getMaxStackSize()) {
             return false;
-        }
-        else if (emptyTo || from.isSimilar(to)) {
+        } else if (emptyTo || from.isSimilar(to)) {
             if (emptyTo) {
                 to = from.clone();
                 to.setAmount(1);
-            }
-            else {
+            } else {
                 to.setAmount(to.getAmount() + 1);
             }
 
@@ -224,14 +283,12 @@ public final class AlchemyPotionBrewer {
 
         if (isEmpty(from)) {
             return false;
-        }
-        else if (isEmpty(to)) {
+        } else if (isEmpty(to)) {
             view.setItem(Alchemy.INGREDIENT_SLOT, from);
             view.setItem(fromSlot, null);
 
             return true;
-        }
-        else if (from.isSimilar(to)) {
+        } else if (from.isSimilar(to)) {
             int fromAmount = from.getAmount();
             int toAmount = to.getAmount();
             int maxSize = to.getType().getMaxStackSize();
@@ -258,8 +315,9 @@ public final class AlchemyPotionBrewer {
         return false;
     }
 
-    public static void scheduleCheck(Player player, BrewingStand brewingStand) {
-        mcMMO.p.getFoliaLib().getImpl().runAtEntity(player, new AlchemyBrewCheckTask(player, brewingStand));
+    public static void scheduleCheck(@NotNull BrewingStand brewingStand) {
+        mcMMO.p.getFoliaLib().getImpl().runAtLocation(
+                brewingStand.getLocation(), new AlchemyBrewCheckTask(brewingStand));
     }
 
     public static void scheduleUpdate(Inventory inventory) {

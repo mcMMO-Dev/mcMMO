@@ -38,21 +38,21 @@ public class MinecraftGameVersion extends MajorMinorPatchVersion {
     public boolean isAtLeast(int majorVerNumber, int minorVerNumber, int patchVerNumber) {
         //First check if the major version is higher, if it is we have no need to check minor version or patch version
 
-        if(getMajorVersion().asInt() > majorVerNumber) {
+        if (getMajorVersion().asInt() > majorVerNumber) {
             return true; //Major version is one higher and hierarchically more important than the other versions
         }
 
-        if(getMajorVersion().asInt() < majorVerNumber) {
+        if (getMajorVersion().asInt() < majorVerNumber) {
             return false; //Major version is below, so return false
         }
 
         //Major version meets the requirement, check minor version
 
-        if(getMinorVersion().asInt() > minorVerNumber) {
+        if (getMinorVersion().asInt() > minorVerNumber) {
             return true; //Minor version is one higher and hierarchically more important than patch version, so exit here
         }
 
-        if(getMinorVersion().asInt() < minorVerNumber) {
+        if (getMinorVersion().asInt() < minorVerNumber) {
             return false; //Minor version is at least one version behind, return false
         }
 

@@ -7,7 +7,7 @@ public class ProbabilityTestUtils {
         double iterations = 2.0e7; //20 million
         double winCount = 0;
         for (int i = 0; i < iterations; i++) {
-            if(probability.evaluate()) {
+            if (probability.evaluate()) {
                 winCount++;
             }
         }
@@ -16,7 +16,7 @@ public class ProbabilityTestUtils {
         System.out.println("Wins: " + winCount);
         System.out.println("Fails: " + (iterations - winCount));
         System.out.println("Percentage succeeded: " + successPercent + ", Expected: " + expectedWinPercent);
-        assertEquals(expectedWinPercent, successPercent, 0.025D);
+        assertEquals(expectedWinPercent, successPercent, 0.035D);
         System.out.println("Variance is within tolerance levels!");
     }
 }

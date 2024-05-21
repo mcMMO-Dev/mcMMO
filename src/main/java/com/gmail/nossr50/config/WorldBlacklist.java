@@ -73,7 +73,7 @@ public class WorldBlacklist {
             closeRead(fileReader);
         }
 
-        if(blacklist.size() > 0)
+        if (blacklist.size() > 0)
             plugin.getLogger().info(blacklist.size() + " entries in mcMMO World Blacklist");
     }
 

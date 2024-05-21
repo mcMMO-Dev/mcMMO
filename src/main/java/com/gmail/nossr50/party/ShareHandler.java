@@ -51,8 +51,7 @@ public final class ShareHandler {
 
         for (Player member : nearMembers) {
             //Profile not loaded
-            if(UserManager.getPlayer(member) == null)
-            {
+            if (UserManager.getPlayer(member) == null) {
                 continue;
             }
 
@@ -115,8 +114,7 @@ public final class ShareHandler {
                         McMMOPlayer mcMMOMember = UserManager.getPlayer(member);
 
                         //Profile not loaded
-                        if(UserManager.getPlayer(member) == null)
-                        {
+                        if (UserManager.getPlayer(member) == null) {
                             continue;
                         }
 
@@ -161,11 +159,9 @@ public final class ShareHandler {
     public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
         if (xpGainReason == XPGainReason.PVE) {
             return XPGainReason.SHARED_PVE;
-        }
-        else if (xpGainReason == XPGainReason.PVP) {
+        } else if (xpGainReason == XPGainReason.PVP) {
             return XPGainReason.SHARED_PVP;
-        }
-        else {
+        } else {
             return xpGainReason;
         }
     }

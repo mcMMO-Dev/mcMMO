@@ -42,15 +42,15 @@ public class RuptureTask extends CancellableRunnable {
     @Override
     public void run() {
         //Check validity
-        if(targetEntity.isValid()) {
+        if (targetEntity.isValid()) {
             ruptureTick += 1; //Advance rupture tick by 1.
             damageTickTracker += 1; //Increment damage tick tracker
 
             //TODO: Clean this code up, applyRupture() is a confusing name for something that returns boolean
             //Rupture hasn't ended yet
-            if(ruptureTick < expireTick) {
+            if (ruptureTick < expireTick) {
                 //Is it time to damage?
-                if(damageTickTracker >= DAMAGE_TICK_INTERVAL) {
+                if (damageTickTracker >= DAMAGE_TICK_INTERVAL) {
 
                     damageTickTracker = 0; //Reset timer
                     if (applyRupture()) return;
@@ -58,7 +58,7 @@ public class RuptureTask extends CancellableRunnable {
                     playAnimation();
                 }
             } else {
-                if(!applyRupture()) {
+                if (!applyRupture()) {
                     playAnimation();
                 }
 
@@ -71,7 +71,7 @@ public class RuptureTask extends CancellableRunnable {
     }
 
     private void playAnimation() {
-        if(animationTick >= ANIMATION_TICK_INTERVAL) {
+        if (animationTick >= ANIMATION_TICK_INTERVAL) {
             ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
             animationTick = 0;
         } else {
@@ -114,7 +114,7 @@ public class RuptureTask extends CancellableRunnable {
 //
 //        ParticleEffectUtils.playGreaterImpactEffect(targetEntity); //Animate
 //
-//        if(ruptureSource.getPlayer() != null && ruptureSource.getPlayer().isValid()) {
+//        if (ruptureSource.getPlayer() != null && ruptureSource.getPlayer().isValid()) {
 //            targetEntity.damage(getExplosionDamage(), ruptureSource.getPlayer());
 //        } else {
 //            targetEntity.damage(getExplosionDamage(), null);
@@ -129,10 +129,10 @@ public class RuptureTask extends CancellableRunnable {
     private double calculateAdjustedTickDamage() {
         double tickDamage = pureTickDamage;
 
-        if(targetEntity.getHealth() <= tickDamage) {
+        if (targetEntity.getHealth() <= tickDamage) {
             tickDamage = targetEntity.getHealth() - 0.01;
 
-            if(tickDamage <= 0) {
+            if (tickDamage <= 0) {
                 tickDamage = 0;
             }
         }

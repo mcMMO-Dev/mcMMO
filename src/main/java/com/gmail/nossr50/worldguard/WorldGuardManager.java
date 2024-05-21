@@ -19,15 +19,14 @@ public class WorldGuardManager {
     private WorldGuardPlugin worldGuardPluginRef;
 
     public static WorldGuardManager getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new WorldGuardManager();
 
         return instance;
     }
 
-    public boolean hasMainFlag(Player player)
-    {
-        if(player == null)
+    public boolean hasMainFlag(Player player) {
+        if (player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -41,9 +40,8 @@ public class WorldGuardManager {
         return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
     }
 
-    public boolean hasXPFlag(Player player)
-    {
-        if(player == null)
+    public boolean hasXPFlag(Player player) {
+        if (player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -57,9 +55,8 @@ public class WorldGuardManager {
         return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_XP_WG_FLAG);
     }
 
-    public boolean hasHardcoreFlag(Player player)
-    {
-        if(player == null)
+    public boolean hasHardcoreFlag(Player player) {
+        if (player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
@@ -85,8 +82,7 @@ public class WorldGuardManager {
         return worldGuardPluginRef;
     }
 
-    public void registerFlags()
-    {
+    public void registerFlags() {
         try {
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
 

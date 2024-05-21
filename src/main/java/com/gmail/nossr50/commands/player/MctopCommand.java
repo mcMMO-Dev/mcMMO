@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
+import com.gmail.nossr50.runnables.commands.McTopCommandAsyncTask;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -115,7 +115,7 @@ public class MctopCommand implements TabExecutor {
         boolean useBoard = (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getTopUseBoard());
         boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getTopUseChat();
 
-        mcMMO.p.getFoliaLib().getImpl().runAsync(new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getImpl().runAsync(new McTopCommandAsyncTask(page, skill, sender, useBoard, useChat));
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {

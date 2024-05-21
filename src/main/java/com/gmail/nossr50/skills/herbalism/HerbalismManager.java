@@ -33,7 +33,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +43,7 @@ import java.util.*;
 
 import static com.gmail.nossr50.util.ItemUtils.hasItemIncludingOffHand;
 import static com.gmail.nossr50.util.ItemUtils.removeItemIncludingOffHand;
+import static java.util.Objects.requireNonNull;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
@@ -51,7 +51,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
             return false;
 
         Player player = getPlayer();
@@ -61,11 +61,11 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
-        if(!BlockUtils.canMakeShroomy(blockState)) {
+        if (!BlockUtils.canMakeShroomy(blockState)) {
             return false;
         }
 
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
             return false;
 
         Player player = getPlayer();
@@ -81,29 +81,29 @@ public class HerbalismManager extends SkillManager {
 
     public void processBerryBushHarvesting(@NotNull BlockState blockState) {
         /* Check if the player is harvesting a berry bush */
-        if(blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
-            if(mmoPlayer.isDebugMode()) {
+        if (blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+            if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Processing sweet berry bush rewards");
             }
             //Check the age
-            if(blockState.getBlockData() instanceof Ageable ageable) {
+            if (blockState.getBlockData() instanceof Ageable ageable) {
                 int rewardByAge = 0;
 
-                if(ageable.getAge() == 2) {
+                if (ageable.getAge() == 2) {
                     rewardByAge = 1; //Normal XP
-                } else if(ageable.getAge() == 3) {
+                } else if (ageable.getAge() == 3) {
                     rewardByAge = 2; //Double XP
                 } else {
                     return; //Not old enough, back out of processing
                 }
 
-                if(mmoPlayer.isDebugMode()) {
+                if (mmoPlayer.isDebugMode()) {
                     mmoPlayer.getPlayer().sendMessage("Bush Reward Multiplier: " + rewardByAge);
                 }
 
                 int xpReward = ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, blockState) * rewardByAge;
 
-                if(mmoPlayer.isDebugMode()) {
+                if (mmoPlayer.isDebugMode()) {
                     mmoPlayer.getPlayer().sendMessage("Bush XP: " + xpReward);
                 }
 
@@ -129,10 +129,10 @@ public class HerbalismManager extends SkillManager {
         public void run() {
             BlockState blockState = block.getState();
 
-            if(blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
-                if(blockState.getBlockData() instanceof Ageable ageable) {
+            if (blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+                if (blockState.getBlockData() instanceof Ageable ageable) {
 
-                    if(ageable.getAge() <= 1) {
+                    if (ageable.getAge() <= 1) {
                         applyXpGain(xpReward, XPGainReason.PVE, XPGainSource.SELF);
                     }
                 }
@@ -142,7 +142,7 @@ public class HerbalismManager extends SkillManager {
 
 
     public boolean canUseHylianLuck() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK);
@@ -207,17 +207,17 @@ public class HerbalismManager extends SkillManager {
         Block block = blockBreakEvent.getBlock();
 
         if (mcMMO.p.getGeneralConfig().getHerbalismPreventAFK() && player.isInsideVehicle()) {
-            if(block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
+            if (block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
                 block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
             }
             return;
         }
 
         //Check if the plant was recently replanted
-        if(block.getBlockData() instanceof Ageable ageableCrop) {
-            if(block.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() >= 1) {
-                if(block.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).get(0).asBoolean()) {
-                    if(isAgeableMature(ageableCrop)) {
+        if (block.getBlockData() instanceof Ageable ageableCrop) {
+            if (block.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).size() >= 1) {
+                if (block.getMetadata(MetadataConstants.METADATA_KEY_REPLANT).get(0).asBoolean()) {
+                    if (isAgeableMature(ageableCrop)) {
                         block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
                     } else {
                         //Crop is recently replanted to back out of destroying it
@@ -236,7 +236,7 @@ public class HerbalismManager extends SkillManager {
         //Grab all broken blocks
         HashSet<Block> brokenBlocks = getBrokenHerbalismBlocks(blockBreakEvent);
 
-        if(brokenBlocks.size() == 0)
+        if (brokenBlocks.size() == 0)
             return;
 
         //Handle rewards, xp, ability interactions, etc
@@ -249,16 +249,16 @@ public class HerbalismManager extends SkillManager {
      * @param brokenPlants plant blocks to process
      */
     private void processHerbalismOnBlocksBroken(BlockBreakEvent blockBreakEvent, HashSet<Block> brokenPlants) {
-        if(blockBreakEvent.isCancelled())
+        if (blockBreakEvent.isCancelled())
             return;
 
         BlockState originalBreak = blockBreakEvent.getBlock().getState();
         boolean greenThumbActivated = false;
 
         //TODO: The design of Green Terra needs to change, this is a mess
-        if(Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
-            if(mcMMO.p.getGeneralConfig().isGreenThumbReplantableCrop(originalBreak.getType())) {
-                if(!getPlayer().isSneaking()) {
+        if (Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
+            if (mcMMO.p.getGeneralConfig().isGreenThumbReplantableCrop(originalBreak.getType())) {
+                if (!getPlayer().isSneaking()) {
                     greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
                 }
             }
@@ -279,21 +279,21 @@ public class HerbalismManager extends SkillManager {
             /*
              * This check is to make XP bars appear to work properly with Chorus Trees by giving XP for the originalBreak immediately instead of later
              */
-            if(brokenPlant.getLocation().equals(originalBreak.getBlock().getLocation())) {
+            if (brokenPlant.getLocation().equals(originalBreak.getBlock().getLocation())) {
                 //If its the same block as the original, we are going to directly check it for being a valid XP gain and add it to the nonChorusBlocks list even if its a chorus block
                 //This stops a delay from happening when bringing up the XP bar for chorus trees
-                if(!mcMMO.getPlaceStore().isTrue(originalBreak)) {
+                if (!mcMMO.getUserBlockTracker().isIneligible(originalBreak)) {
                     //Even if its a chorus block, the original break will be moved to nonChorusBlocks for immediate XP rewards
                     noDelayPlantBlocks.add(brokenPlant);
                 } else {
-                    if(isChorusTree(brokenPlant.getType())) {
+                    if (isChorusTree(brokenPlant.getType())) {
                         //If its a chorus tree AND it was marked as true in the placestore then we add this block to the list of chorus blocks
                         delayedChorusBlocks.add(new BlockSnapshot(brokenPlant.getType(), brokenPlant));
                     } else {
                         noDelayPlantBlocks.add(brokenPlant); //If its not a chorus plant that was marked as unnatural but it was marked unnatural, put it in the nodelay list to be handled
                     }
                 }
-            } else if(isChorusTree(brokenPlant.getType())) {
+            } else if (isChorusTree(brokenPlant.getType())) {
                 //Chorus Blocks get checked for XP several ticks later to avoid expensive calculations
                 delayedChorusBlocks.add(new BlockSnapshot(brokenPlant.getType(), brokenPlant));
             } else {
@@ -302,12 +302,12 @@ public class HerbalismManager extends SkillManager {
         }
 
         //Give out XP to the non-chorus blocks
-        if(noDelayPlantBlocks.size() > 0) {
+        if (noDelayPlantBlocks.size() > 0) {
             //Note: Will contain 1 chorus block if the original block was a chorus block, this is to prevent delays for the XP bar
             awardXPForPlantBlocks(noDelayPlantBlocks);
         }
 
-        if(delayedChorusBlocks.size() > 0) {
+        if (delayedChorusBlocks.size() > 0) {
             //Check XP for chorus blocks
             DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(mmoPlayer, delayedChorusBlocks);
 
@@ -335,7 +335,7 @@ public class HerbalismManager extends SkillManager {
             BlockData plantData = brokenPlantState.getBlockData();
 
             //Check for double drops
-            if(!mcMMO.getPlaceStore().isTrue(brokenPlant)) {
+            if (!mcMMO.getUserBlockTracker().isIneligible(brokenPlant)) {
 
                 /*
                  *
@@ -346,14 +346,14 @@ public class HerbalismManager extends SkillManager {
                  */
 
                 //Not all things that are natural should give double drops, make sure its fully mature as well
-                if(plantData instanceof Ageable ageable) {
+                if (plantData instanceof Ageable ageable) {
 
-                    if(isAgeableMature(ageable) || isBizarreAgeable(plantData)) {
-                        if(checkDoubleDrop(brokenPlantState)) {
+                    if (isAgeableMature(ageable) || isBizarreAgeable(plantData)) {
+                        if (checkDoubleDrop(brokenPlantState)) {
                             markForBonusDrops(brokenPlantState);
                         }
                     }
-                } else if(checkDoubleDrop(brokenPlantState)) {
+                } else if (checkDoubleDrop(brokenPlantState)) {
                     //Add metadata to mark this block for double or triple drops
                     markForBonusDrops(brokenPlantState);
                 }
@@ -366,7 +366,7 @@ public class HerbalismManager extends SkillManager {
                  */
 
                 //If it's a Crop we need to reward XP when its fully grown
-                if(isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
+                if (isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
                     //Add metadata to mark this block for double or triple drops
                     markForBonusDrops(brokenPlantState);
                 }
@@ -380,7 +380,7 @@ public class HerbalismManager extends SkillManager {
      * @return returns true if the BlockData is a bizarre ageable for Herbalism XP / Rewards
      */
     public boolean isBizarreAgeable(BlockData blockData) {
-        if(blockData instanceof Ageable) {
+        if (blockData instanceof Ageable) {
             //Catcus and Sugar Canes cannot be trusted
             return switch (blockData.getMaterial()) {
                 case CACTUS, KELP, SUGAR_CANE, BAMBOO -> true;
@@ -413,7 +413,7 @@ public class HerbalismManager extends SkillManager {
             BlockState brokenBlockNewState = brokenPlantBlock.getState();
             BlockData plantData = brokenBlockNewState.getBlockData();
 
-            if(mcMMO.getPlaceStore().isTrue(brokenBlockNewState)) {
+            if (mcMMO.getUserBlockTracker().isIneligible(brokenBlockNewState)) {
                 /*
                  *
                  * Unnatural Blocks
@@ -422,12 +422,12 @@ public class HerbalismManager extends SkillManager {
                  */
 
                 //If its a Crop we need to reward XP when its fully grown
-                if(isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
+                if (isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
                     xpToReward += ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
                 }
 
                 //Mark it as natural again as it is being broken
-                mcMMO.getPlaceStore().setFalse(brokenBlockNewState);
+                mcMMO.getUserBlockTracker().setEligible(brokenBlockNewState);
             } else {
                 /*
                  *
@@ -437,9 +437,9 @@ public class HerbalismManager extends SkillManager {
                  */
 
                 //Calculate XP
-                if(plantData instanceof Ageable plantAgeable) {
+                if (plantData instanceof Ageable plantAgeable) {
 
-                    if(isAgeableMature(plantAgeable) || isBizarreAgeable(plantData)) {
+                    if (isAgeableMature(plantAgeable) || isBizarreAgeable(plantData)) {
                         xpToReward += ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
                     }
 
@@ -449,12 +449,12 @@ public class HerbalismManager extends SkillManager {
             }
         }
 
-        if(mmoPlayer.isDebugMode()) {
+        if (mmoPlayer.isDebugMode()) {
             mmoPlayer.getPlayer().sendMessage("Plants processed: "+brokenPlants.size());
         }
 
         //Reward XP
-        if(xpToReward > 0) {
+        if (xpToReward > 0) {
             applyXpGain(xpToReward, XPGainReason.PVE, XPGainSource.SELF);
         }
     }
@@ -480,18 +480,18 @@ public class HerbalismManager extends SkillManager {
             BlockState brokenBlockNewState = blockSnapshot.getBlockRef().getState();
 
             //Remove metadata from the snapshot of blocks
-            if(brokenBlockNewState.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS)) {
+            if (brokenBlockNewState.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS)) {
                 brokenBlockNewState.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
             }
 
             //If the block is not AIR that means it wasn't broken
-            if(brokenBlockNewState.getType() != Material.AIR) {
+            if (brokenBlockNewState.getType() != Material.AIR) {
                 continue;
             }
 
-            if(mcMMO.getPlaceStore().isTrue(brokenBlockNewState)) {
+            if (mcMMO.getUserBlockTracker().isIneligible(brokenBlockNewState)) {
                 //Mark it as natural again as it is being broken
-                mcMMO.getPlaceStore().setFalse(brokenBlockNewState);
+                mcMMO.getUserBlockTracker().setEligible(brokenBlockNewState);
             } else {
                 //TODO: Do we care about chorus flower age?
                 //Calculate XP for the old type
@@ -500,13 +500,13 @@ public class HerbalismManager extends SkillManager {
             }
         }
 
-        if(mmoPlayer.isDebugMode()) {
+        if (mmoPlayer.isDebugMode()) {
             mmoPlayer.getPlayer().sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
             mmoPlayer.getPlayer().sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
         }
 
         //Reward XP
-        if(xpToReward > 0) {
+        if (xpToReward > 0) {
             applyXpGain(xpToReward, XPGainReason.PVE, XPGainSource.SELF);
         }
     }
@@ -525,7 +525,7 @@ public class HerbalismManager extends SkillManager {
         //Add the initial block
         blocksBroken.add(originBlockState.getBlock());
 
-        if(!isOneBlockPlant(originBlockMaterial)) {
+        if (!isOneBlockPlant(originBlockMaterial)) {
             //If the block is a multi-block structure, capture a set of all blocks broken and return that
             blocksBroken = getBrokenBlocksMultiBlockPlants(originBlockState);
         }
@@ -602,7 +602,7 @@ public class HerbalismManager extends SkillManager {
         Block block = originBlock.getBlock();
 
         //Add the initial block to the set
-        if(inclusive)
+        if (inclusive)
             brokenBlocks.add(block);
 
         //Limit our search
@@ -637,12 +637,13 @@ public class HerbalismManager extends SkillManager {
 
     /**
      * Check for success on herbalism double drops
+     *
      * @param blockState target block state
-     * @return true if double drop succeeds
+     * @return true if the double drop succeeds
      */
-    private boolean checkDoubleDrop(BlockState blockState)
-    {
-        return BlockUtils.checkDoubleDrops(getPlayer(), blockState, skill, SubSkillType.HERBALISM_DOUBLE_DROPS);
+    private boolean checkDoubleDrop(@NotNull BlockState blockState) {
+        requireNonNull(blockState, "BlockState cannot be null");
+        return BlockUtils.checkDoubleDrops(mmoPlayer, blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
     }
 
     /**
@@ -652,7 +653,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
@@ -667,7 +668,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_HYLIAN_LUCK, mmoPlayer)) {
             return false;
         }
 
@@ -676,7 +677,6 @@ public class HerbalismManager extends SkillManager {
             return false;
         List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
 
-        Player player = getPlayer();
 
         if (treasures.isEmpty()) {
             return false;
@@ -686,13 +686,13 @@ public class HerbalismManager extends SkillManager {
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel()
-                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM, player, treasure.getDropChance())) {
-                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player)) {
+                    && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM, mmoPlayer, treasure.getDropChance())) {
+                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), mmoPlayer.getPlayer())) {
                     return false;
                 }
                 blockState.setType(Material.AIR);
                 Misc.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.HYLIAN_LUCK_TREASURE);
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
+                NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }
         }
@@ -706,25 +706,24 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processShroomThumb(BlockState blockState) {
-        Player player = getPlayer();
-        PlayerInventory playerInventory = player.getInventory();
+        PlayerInventory playerInventory = getPlayer().getInventory();
         
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
         }
 
         if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
             return false;
         }
 
         playerInventory.removeItem(new ItemStack(Material.BROWN_MUSHROOM));
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
-        player.updateInventory();
+        getPlayer().updateInventory();
 
-        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
+        if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, mmoPlayer)) {
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
 
@@ -789,7 +788,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (!greenTerra && !ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, player)) {
+        if (!greenTerra && !ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_GREEN_THUMB, mmoPlayer)) {
             return false;
         }
 
@@ -797,7 +796,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if(EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock())
+        if (EventUtils.callSubSkillBlockEvent(player, SubSkillType.HERBALISM_GREEN_THUMB, blockState.getBlock())
                 .isCancelled()) {
             return false;
         } else {
@@ -816,7 +815,7 @@ public class HerbalismManager extends SkillManager {
 
     private boolean processGrowingPlants(BlockState blockState, Ageable ageable, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
         //This check is needed
-        if(isBizarreAgeable(ageable)) {
+        if (isBizarreAgeable(ageable)) {
             return false;
         }
 
@@ -824,7 +823,7 @@ public class HerbalismManager extends SkillManager {
         int greenThumbStage = getGreenThumbStage(greenTerra);
 
         //Immature plants will start over at 0
-        if(!isAgeableMature(ageable)) {
+        if (!isAgeableMature(ageable)) {
 //            blockBreakEvent.setCancelled(true);
             startReplantTask(0, blockBreakEvent, blockState, true);
 //            blockState.setType(Material.AIR);
@@ -846,11 +845,9 @@ public class HerbalismManager extends SkillManager {
 
                 if (greenTerra || greenThumbStage > 2) {
                     finalAge = 2;
-                }
-                else if (greenThumbStage == 2) {
+                } else if (greenThumbStage == 2) {
                     finalAge = 1;
-                }
-                else {
+                } else {
                     finalAge = 0;
                 }
                 break;
@@ -859,8 +856,7 @@ public class HerbalismManager extends SkillManager {
 
                 if (getGreenThumbStage(greenTerra) >= 2) {
                     finalAge = 1;
-                }
-                else {
+                } else {
                     finalAge = 0;
                 }
                 break;
@@ -876,7 +872,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     private int getGreenThumbStage(boolean greenTerraActive) {
-        if(greenTerraActive)
+        if (greenTerraActive)
             return Math.min(RankUtils.getHighestRank(SubSkillType.HERBALISM_GREEN_THUMB),
                     RankUtils.getRank(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB) + 1);
 

@@ -40,7 +40,7 @@ public class AwardCombatXpTask extends CancellableRunnable {
             damage += health;
         }
 
-        if(ExperienceConfig.getInstance().useCombatHPCeiling()) {
+        if (ExperienceConfig.getInstance().useCombatHPCeiling()) {
             damage = Math.min(damage, ExperienceConfig.getInstance().getCombatHPCeiling());
         }
 

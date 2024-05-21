@@ -36,7 +36,7 @@ public final class CommandUtils {
     }
 
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
-        if(!target.isOnline() && !hasPermission) {
+        if (!target.isOnline() && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
             return true;
         } else if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), mcMMO.p.getGeneralConfig().getInspectDistance()) && !hasPermission) {
@@ -217,7 +217,7 @@ public final class CommandUtils {
     }
 
     private static void printGroupedSkillData(Player inspectTarget, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if(UserManager.getPlayer(inspectTarget) == null)
+        if (UserManager.getPlayer(inspectTarget) == null)
             return;
 
         PlayerProfile profile = UserManager.getPlayer(inspectTarget).getProfile();
@@ -265,8 +265,7 @@ public final class CommandUtils {
             if (matches.size() == 1) {
                 partialName = matches.get(0);
             }
-        }
-        else {
+        } else {
             Player player = mcMMO.p.getServer().getPlayer(partialName);
 
             if (player != null) {

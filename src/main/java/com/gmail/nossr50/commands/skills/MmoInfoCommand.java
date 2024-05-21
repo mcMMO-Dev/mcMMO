@@ -26,15 +26,12 @@ public class MmoInfoCommand implements TabExecutor {
         /*
          * Only allow players to use this command
          */
-        if(commandSender instanceof Player player)
-        {
-            if(args == null || args.length < 1 || args[0] == null || args[0].isEmpty())
+        if (commandSender instanceof Player player) {
+            if (args == null || args.length < 1 || args[0] == null || args[0].isEmpty())
                 return false;
 
-            if(Permissions.mmoinfo(player))
-            {
-                if(args[0].equalsIgnoreCase( "???"))
-                {
+            if (Permissions.mmoinfo(player)) {
+                if (args[0].equalsIgnoreCase( "???")) {
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", "???"));
                     player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
@@ -57,9 +54,8 @@ public class MmoInfoCommand implements TabExecutor {
     }
 
     public SubSkillType matchSubSkill(String name) {
-        for(SubSkillType subSkillType : SubSkillType.values())
-        {
-            if(subSkillType.getNiceNameNoSpaces(subSkillType).equalsIgnoreCase(name)
+        for(SubSkillType subSkillType : SubSkillType.values()) {
+            if (subSkillType.getNiceNameNoSpaces(subSkillType).equalsIgnoreCase(name)
                     || subSkillType.name().equalsIgnoreCase(name))
                 return subSkillType;
         }
@@ -74,8 +70,7 @@ public class MmoInfoCommand implements TabExecutor {
         return ImmutableList.of();
     }
 
-    private void displayInfo(Player player, SubSkillType subSkillType)
-    {
+    private void displayInfo(Player player, SubSkillType subSkillType) {
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillType.getLocaleName()));
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));

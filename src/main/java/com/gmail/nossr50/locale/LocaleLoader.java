@@ -380,7 +380,7 @@ public final class LocaleLoader {
      * @return The message with the hex color codes translated to Minecraft color codes
      */
     public static String translateHexColorCodes(String messageWithHex) {
-        if(messageWithHex == null) {
+        if (messageWithHex == null) {
             return null;
         }
 

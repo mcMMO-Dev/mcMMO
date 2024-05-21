@@ -2,11 +2,13 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,8 +18,11 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+
+import static java.util.Objects.requireNonNull;
 
 public final class BlockUtils {
 
@@ -60,10 +65,10 @@ public final class BlockUtils {
      * @param block target block
      */
     public static void setUnnaturalBlock(@NotNull Block block) {
-        mcMMO.getPlaceStore().setTrue(block);
+        mcMMO.getUserBlockTracker().setIneligible(block);
 
         // Failsafe against lingering metadata
-        if(block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
+        if (block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS))
             block.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
     }
 
@@ -73,11 +78,11 @@ public final class BlockUtils {
      * @param block target block
      */
     public static void cleanupBlockMetadata(Block block) {
-        if(block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
+        if (block.hasMetadata(MetadataConstants.METADATA_KEY_REPLANT)) {
             block.removeMetadata(MetadataConstants.METADATA_KEY_REPLANT, mcMMO.p);
         }
 
-        mcMMO.getPlaceStore().setFalse(block);
+        mcMMO.getUserBlockTracker().setEligible(block);
     }
 
     /**
@@ -94,10 +99,28 @@ public final class BlockUtils {
      *
      * @param blockState the blockstate
      * @return true if the player succeeded in the check
+     * @deprecated Use {@link #checkDoubleDrops(McMMOPlayer, BlockState, SubSkillType)} instead
      */
-    public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType skillType, SubSkillType subSkillType) {
-        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
-            return ProbabilityUtil.isSkillRNGSuccessful(subSkillType, player);
+    @Deprecated(forRemoval = true, since = "2.2.010")
+    public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType ignored, SubSkillType subSkillType) {
+        return checkDoubleDrops(UserManager.getPlayer(player), blockState, subSkillType);
+    }
+
+    /**
+     * Checks if a player successfully passed the double drop check
+     *
+     * @param mmoPlayer    the player involved in the check
+     * @param blockState   the blockstate of the block
+     * @param subSkillType the subskill involved
+     * @return true if the player succeeded in the check
+     */
+    public static boolean checkDoubleDrops(@Nullable McMMOPlayer mmoPlayer, @NotNull BlockState blockState,
+                                           @NotNull SubSkillType subSkillType) {
+        requireNonNull(blockState, "blockState cannot be null");
+        requireNonNull(subSkillType, "subSkillType cannot be null");
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(subSkillType.getParentSkill(), blockState.getType())
+                && Permissions.isSubSkillEnabled(mmoPlayer, subSkillType)) {
+            return ProbabilityUtil.isSkillRNGSuccessful(subSkillType, mmoPlayer);
         }
 
         return false;
@@ -184,7 +207,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedBySuperBreaker(BlockState blockState) {
-        if(mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
+        if (mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
             return true;
 
         if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, blockState.getBlockData()))

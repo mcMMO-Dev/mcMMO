@@ -11,7 +11,7 @@ public class FixSpellingNetheriteUtil {
         LogUtils.debug(mcMMO.p.getLogger(), "Checking " + fileName + " config material names...");
 
         File configFile = new File(pluginRef.getDataFolder(), fileName);
-        if(configFile.exists()) {
+        if (configFile.exists()) {
             BufferedReader bufferedReader = null;
             FileWriter fileWriter = null;
             try {
@@ -35,14 +35,14 @@ public class FixSpellingNetheriteUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if(bufferedReader != null) {
+                if (bufferedReader != null) {
                     try {
                         bufferedReader.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    if(fileWriter != null) {
+                    if (fileWriter != null) {
                         try {
                             fileWriter.close();
                         } catch (IOException e) {

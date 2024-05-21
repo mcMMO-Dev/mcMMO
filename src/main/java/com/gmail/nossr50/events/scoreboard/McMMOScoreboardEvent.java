@@ -18,8 +18,7 @@ abstract public class McMMOScoreboardEvent extends Event {
 
     private final ScoreboardEventReason scoreboardEventReason;
 
-    public McMMOScoreboardEvent(Scoreboard targetBoard, Scoreboard currentBoard, Player targetPlayer, ScoreboardEventReason scoreboardEventReason)
-    {
+    public McMMOScoreboardEvent(Scoreboard targetBoard, Scoreboard currentBoard, Player targetPlayer, ScoreboardEventReason scoreboardEventReason) {
         this.scoreboardEventReason = scoreboardEventReason;
         this.targetBoard = targetBoard;
         this.currentBoard = currentBoard;

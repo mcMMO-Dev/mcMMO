@@ -11,40 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public final class Alchemy {
-    /*public enum Tier {
-        EIGHT(8),
-        SEVEN(7),
-        SIX(6),
-        FIVE(5),
-        FOUR(4),
-        THREE(3),
-        TWO(2),
-        ONE(1);
-
-        int numerical;
-
-        private Tier(int numerical) {
-            this.numerical = numerical;
-        }
-
-        public int toNumerical() {
-            return numerical;
-        }
-
-        public static Tier fromNumerical(int numerical) {
-            for (Tier tier : Tier.values()) {
-                if (tier.toNumerical() == numerical) {
-                    return tier;
-                }
-            }
-            return null;
-        }
-
-        protected int getLevel() {
-            return mcMMO.p.getAdvancedConfig().getConcoctionsTierLevel(this);
-        }
-    }*/
-
     public static final int INGREDIENT_SLOT = 3;
 
     public static int    catalysisMaxBonusLevel = mcMMO.p.getAdvancedConfig().getCatalysisMaxBonusLevel();

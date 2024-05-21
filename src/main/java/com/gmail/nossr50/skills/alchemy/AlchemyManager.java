@@ -1,13 +1,13 @@
 package com.gmail.nossr50.skills.alchemy;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -27,7 +27,7 @@ public class AlchemyManager extends SkillManager {
     }
 
     public List<ItemStack> getIngredients() {
-        return PotionConfig.getInstance().getIngredients(getTier());
+        return mcMMO.p.getPotionConfig().getIngredients(getTier());
     }
 
     public String getIngredientList() {
@@ -52,6 +52,11 @@ public class AlchemyManager extends SkillManager {
         return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS)) / (Alchemy.catalysisMaxBonusLevel - RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS))) * (isLucky ? LUCKY_MODIFIER : 1.0);
     }
 
+    /**
+     * Handle the XP gain for a successful potion brew.
+     * @param potionStage The potion stage, this is used to determine the XP gain.
+     * @param amount The amount of potions brewed.
+     */
     public void handlePotionBrewSuccesses(PotionStage potionStage, int amount) {
         applyXpGain((float) (ExperienceConfig.getInstance().getPotionXP(potionStage) * amount), XPGainReason.PVE, XPGainSource.PASSIVE);
     }

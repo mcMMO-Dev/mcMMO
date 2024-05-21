@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * Display the results of {@link MctopCommandAsyncTask} to the sender.
+ * Display the results of {@link McTopCommandAsyncTask} to the sender.
  */
 public class MctopCommandDisplayTask extends CancellableRunnable {
     private final List<PlayerStat> userStats;
@@ -45,25 +45,22 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
         if (sender instanceof Player) {
             ((Player) sender).removeMetadata(MetadataConstants.METADATA_KEY_DATABASE_COMMAND, mcMMO.p);
         }
-        if(sender instanceof Player)
+        if (sender instanceof Player)
             sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
     private void displayChat() {
 
         if (skill == null) {
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.PowerLevel.Leaderboard")));
             }
-        }
-        else {
-            if(sender instanceof Player) {
+        } else {
+            if (sender instanceof Player) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill)));
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", mcMMO.p.getSkillTools().getLocalizedSkillName(skill))));
             }
         }
@@ -74,10 +71,9 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
             // Format:
             // 01. Playername - skill value
             // 12. Playername - skill value
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
-            }
-            else {
+            } else {
                 sender.sendMessage(String.format("%2d. %s - %s", place, stat.name, stat.statVal));
             }
             
@@ -88,8 +84,7 @@ public class MctopCommandDisplayTask extends CancellableRunnable {
     private void displayBoard() {
         if (skill == null) {
             ScoreboardManager.showTopPowerScoreboard((Player) sender, page, userStats);
-        }
-        else {
+        } else {
             ScoreboardManager.showTopScoreboard((Player) sender, skill, page, userStats);
         }
     }

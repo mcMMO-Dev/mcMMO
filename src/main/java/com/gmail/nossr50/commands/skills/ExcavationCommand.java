@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
@@ -45,7 +44,7 @@ public class ExcavationCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
+        ExcavationManager excavationManager = mmoPlayer.getExcavationManager();
 
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)
@@ -54,7 +53,7 @@ public class ExcavationCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+        if (Permissions.canUseSubSkill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             messages.add(getStatMessage(false, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,
                     percent.format(excavationManager.getArchaelogyExperienceOrbChance() / 100.0D)));
             messages.add(getStatMessage(true, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,

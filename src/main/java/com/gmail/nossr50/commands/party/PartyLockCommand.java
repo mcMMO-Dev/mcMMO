@@ -18,8 +18,7 @@ public class PartyLockCommand implements CommandExecutor {
             case 1:
                 if (args[0].equalsIgnoreCase("lock")) {
                     togglePartyLock(sender, true);
-                }
-                else if (args[0].equalsIgnoreCase("unlock")) {
+                } else if (args[0].equalsIgnoreCase("unlock")) {
                     togglePartyLock(sender, false);
                 }
 
@@ -33,11 +32,9 @@ public class PartyLockCommand implements CommandExecutor {
 
                 if (CommandUtils.shouldEnableToggle(args[1])) {
                     togglePartyLock(sender, true);
-                }
-                else if (CommandUtils.shouldDisableToggle(args[1])) {
+                } else if (CommandUtils.shouldDisableToggle(args[1])) {
                     togglePartyLock(sender, false);
-                }
-                else {
+                } else {
                     sendUsageStrings(sender);
                 }
 
@@ -55,8 +52,7 @@ public class PartyLockCommand implements CommandExecutor {
     }
 
     private void togglePartyLock(CommandSender sender, boolean lock) {
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }

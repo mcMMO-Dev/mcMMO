@@ -57,7 +57,7 @@ public class AdminChatMailer extends AbstractChatMailer {
      * @return the styled string, based on a locale entry
      */
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor) {
-        if(canColor) {
+        if (canColor) {
             return LocaleLoader.getTextComponent("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message);
         } else {
             return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message));
@@ -83,7 +83,7 @@ public class AdminChatMailer extends AbstractChatMailer {
         McMMOChatEvent chatEvent = new McMMOAdminChatEvent(pluginRef, chatMessage, isAsync);
         Bukkit.getPluginManager().callEvent(chatEvent);
 
-        if(!chatEvent.isCancelled()) {
+        if (!chatEvent.isCancelled()) {
             sendMail(chatMessage);
         }
     }

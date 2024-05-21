@@ -4,6 +4,8 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.removeMobFlags;
+
 public class TransientMetadataTools {
     private final mcMMO pluginRef;
 
@@ -25,16 +27,16 @@ public class TransientMetadataTools {
         }
 
         //Gets assigned to endermen, potentially doesn't get cleared before this point
-        if(entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK)) {
+        if (entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK)) {
             entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
         }
 
         //Cleanup mob metadata
-        mcMMO.getMetadataService().getMobMetadataService().removeMobFlags(entity);
+        removeMobFlags(entity);
 
         //TODO: This loop has some redundancy, this whole method needs to be rewritten
         for(String key : MetadataConstants.MOB_METADATA_KEYS) {
-            if(entity.hasMetadata(key)) {
+            if (entity.hasMetadata(key)) {
                 entity.removeMetadata(key, pluginRef);
             }
         }

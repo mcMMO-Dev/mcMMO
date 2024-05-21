@@ -43,7 +43,7 @@
 ////            debugMessage+="RemainingTicks=["+containerEntry.getValue().bleedTicks+"], ";
 //
 //            if (containerEntry.getValue().bleedTicks <= 0 || !target.isValid()) {
-//                if(target instanceof Player)
+//                if (target instanceof Player)
 //                {
 //                    NotificationManager.sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
 //                }
@@ -96,7 +96,7 @@
 //
 ////            debugMessage+="FullArmor=["+String.valueOf(armorCount > 3)+"], ";
 //
-//            if(armorCount > 3)
+//            if (armorCount > 3)
 //            {
 //                damage = damage * .75;
 //            }
@@ -104,13 +104,13 @@
 ////            debugMessage+="AfterRankAndArmorChecks["+damage+"], ";
 //
 //            //Weapons below Diamond get damage cut in half
-//            if(toolTier < 4)
+//            if (toolTier < 4)
 //                damage = damage / 2;
 //
 ////            debugMessage+="AfterDiamondCheck=["+String.valueOf(damage)+"], ";
 //
 //            //Wood weapons get damage cut in half again
-//            if(toolTier < 2)
+//            if (toolTier < 2)
 //                damage = damage / 2;
 //
 ////            debugMessage+="AfterWoodenCheck=["+String.valueOf(damage)+"], ";
@@ -129,7 +129,7 @@
 //
 ////            debugMessage+="TargetHealthAfterDMG=["+String.valueOf(target.getHealth())+"], ";
 //
-//            if(victimHealthAftermath <= 0 || victimHealth != victimHealthAftermath)
+//            if (victimHealthAftermath <= 0 || victimHealth != victimHealthAftermath)
 //            {
 //                //Play Bleed Sound
 //                SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
@@ -187,7 +187,7 @@
 //            throw new IllegalStateException("Cannot add bleed task async!");
 //        }
 //
-//        if(isIterating) {
+//        if (isIterating) {
 //            //Used to throw an error here, but in reality all we are really doing is preventing concurrency issues from other plugins being naughty and its not really needed
 //            //I'm not really a fan of silent errors, but I'm sick of seeing people using crazy enchantments come in and report this "bug"
 //            return;
@@ -195,7 +195,7 @@
 //
 ////        if (isIterating) throw new IllegalStateException("Cannot add task while iterating timers!");
 //
-//        if(toolTier < 4)
+//        if (toolTier < 4)
 //            ticks = Math.max(1, (ticks / 3));
 //
 //        ticks+=1;

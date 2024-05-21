@@ -30,7 +30,7 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
         super(player);
         this.skill = skill;
 
-        if(UserManager.getPlayer(player) != null) {
+        if (UserManager.getPlayer(player) != null) {
             this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
         } else {
             this.skillLevel = 0;

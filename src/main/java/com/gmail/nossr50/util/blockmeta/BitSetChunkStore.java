@@ -118,8 +118,7 @@ public class BitSetChunkStore implements ChunkStore {
         return world.getMinHeight();
     }
 
-    private static int getWorldMax(@NotNull UUID worldUid)
-    {
+    private static int getWorldMax(@NotNull UUID worldUid) {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
@@ -181,8 +180,7 @@ public class BitSetChunkStore implements ChunkStore {
         if (currentWorldMin > worldMin)
             stored = stored.get(currentWorldMin, stored.length()); // Because BitSet's aren't fixed size, a "substring" operation is equivalent to a left shift
         // Right shift store if world min has expanded
-        if (currentWorldMin < worldMin)
-        {
+        if (currentWorldMin < worldMin) {
             int offset = (worldMin - currentWorldMin) * 16 * 16; // We are adding this many bits to the front
             // This isn't the most efficient way to do this, however, its a rare case to occur, and in the grand scheme of things, the small performance we could gain would cost us significant reduced readability of the code
             BitSet shifted = new BitSet();
@@ -207,13 +205,12 @@ public class BitSetChunkStore implements ChunkStore {
                 inputStream.mark(2);
             short magicNumber = inputStream.readShort();
 
-            if (magicNumber == ObjectStreamConstants.STREAM_MAGIC) // Java serializable, use legacy serialization
-            {
+            // Java serializable, use legacy serialization
+            if (magicNumber == ObjectStreamConstants.STREAM_MAGIC) {
                 // "Un-read" the magic number for Serializables, they need it to still be in the stream
-                if (inputStream.markSupported())
+                if (inputStream.markSupported()) {
                     inputStream.reset(); // Pretend we never read those bytes
-                else
-                {
+                } else {
                     // Creates a new stream with the two magic number bytes and then the rest of the original stream...   Java is so dumb.  I just wanted to look at two bytes.
                     PushbackInputStream pushbackInputStream = new PushbackInputStream(inputStream, 2);
                     pushbackInputStream.unread((magicNumber) & 0xFF);
@@ -221,9 +218,8 @@ public class BitSetChunkStore implements ChunkStore {
                     inputStream = new DataInputStream(pushbackInputStream);
                 }
                 return new LegacyDeserializationInputStream(inputStream).readLegacyChunkStore();
-            }
-            else if (magicNumber == STREAM_MAGIC) // Pure bytes format
-            {
+            } else if (magicNumber == STREAM_MAGIC) {
+                // Pure bytes format
                 return BitSetChunkStore.deserialize(inputStream);
             }
             throw new IOException("Bad Data Format");
@@ -238,8 +234,7 @@ public class BitSetChunkStore implements ChunkStore {
 
         // Handles loading the old serialized class
         private static class LegacyDeserializationInputStream extends ObjectInputStream {
-            private static class LegacyChunkStoreDeserializer implements Serializable
-            {
+            private static class LegacyChunkStoreDeserializer implements Serializable {
                 private static final long serialVersionUID = -1L;
 
                 private int cx;
@@ -270,8 +265,7 @@ public class BitSetChunkStore implements ChunkStore {
                     worldMax = store[0][0].length;
                 }
 
-                public @NotNull BitSetChunkStore convert()
-                {
+                public @NotNull BitSetChunkStore convert() {
                     int currentWorldMin = getWorldMin(worldUid);
                     int currentWorldMax = getWorldMax(worldUid);
 

@@ -21,8 +21,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -56,8 +55,7 @@ public class PtpAcceptCommand implements CommandExecutor {
                 if (!Permissions.partyTeleportWorld(target, targetWorld)) {
                     target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return true;
-                }
-                else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
+                } else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
                     target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", playerWorld.getName()));
                     return true;
                 }

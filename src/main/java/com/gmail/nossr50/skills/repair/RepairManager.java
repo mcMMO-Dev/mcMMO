@@ -66,8 +66,8 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
         if (item.getItemMeta() != null) {
-            if(item.getItemMeta().hasCustomModelData()) {
-                if(!mcMMO.p.getCustomItemSupportConfig().isCustomRepairAllowed()) {
+            if (item.getItemMeta().hasCustomModelData()) {
+                if (!mcMMO.p.getCustomItemSupportConfig().isCustomRepairAllowed()) {
                     NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED,
                             "Anvil.Repair.Reject.CustomModelData");
                     return;
@@ -326,10 +326,10 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.REPAIR_SUPER_REPAIR, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
         }
@@ -370,8 +370,8 @@ public class RepairManager extends SkillManager {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             int enchantLevel = enchant.getValue();
 
-            if(!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
-                if(enchantLevel > enchant.getKey().getMaxLevel()) {
+            if (!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
+                if (enchantLevel > enchant.getKey().getMaxLevel()) {
                     enchantLevel = enchant.getKey().getMaxLevel();
 
                     item.addEnchantment(enchant.getKey(), enchantLevel);
@@ -380,15 +380,14 @@ public class RepairManager extends SkillManager {
 
             Enchantment enchantment = enchant.getKey();
 
-            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), getKeepEnchantChance())) {
+            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, mmoPlayer, getKeepEnchantChance())) {
 
                 if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1
-                        && (!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, getPlayer(), 100 - getDowngradeEnchantChance()))) {
+                        && (!ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.REPAIR, mmoPlayer, 100 - getDowngradeEnchantChance()))) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }
-            }
-            else {
+            } else {
                 item.removeEnchantment(enchantment);
             }
         }
@@ -397,11 +396,9 @@ public class RepairManager extends SkillManager {
 
         if (newEnchants.isEmpty()) {
             NotificationManager.sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Fail");
-        }
-        else if (downgraded || newEnchants.size() < enchants.size()) {
+        } else if (downgraded || newEnchants.size() < enchants.size()) {
             NotificationManager.sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Downgrade");
-        }
-        else {
+        } else {
             NotificationManager.sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Perfect");
         }
     }

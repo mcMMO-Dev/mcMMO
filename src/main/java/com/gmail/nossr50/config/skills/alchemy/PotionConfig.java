@@ -3,21 +3,29 @@ package com.gmail.nossr50.config.skills.alchemy;
 import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.LogUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.*;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.VisibleForTesting;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.gmail.nossr50.util.ItemUtils.setItemName;
+import static com.gmail.nossr50.util.PotionUtil.*;
 
 public class PotionConfig extends LegacyConfigLoader {
-    private static PotionConfig instance;
 
     private final List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<>();
     private final List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<>();
@@ -28,30 +36,34 @@ public class PotionConfig extends LegacyConfigLoader {
     private final List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<>();
     private final List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<>();
 
-    private final Map<String, AlchemyPotion> potionMap = new HashMap<>();
+    /**
+     * Map of potion names to AlchemyPotion objects.
+     */
+    private final Map<String, AlchemyPotion> alchemyPotions = new HashMap<>();
 
-    private PotionConfig() {
+    public PotionConfig() {
         super("potions.yml");
-        loadKeys();
     }
 
-    public static PotionConfig getInstance() {
-        if (instance == null) {
-            instance = new PotionConfig();
-        }
-
-        return instance;
+    @VisibleForTesting
+    PotionConfig(File file) {
+        super(file);
     }
 
     @Override
     protected void loadKeys() {
+    }
+
+    public void loadPotions() {
         loadConcoctions();
         loadPotionMap();
     }
 
-    private void loadConcoctions() {
-        ConfigurationSection concoctionSection = config.getConfigurationSection("Concoctions");
+    @VisibleForTesting
+    void loadConcoctions() {
+        final ConfigurationSection concoctionSection = config.getConfigurationSection("Concoctions");
 
+        // Load the ingredients for each tier
         loadConcoctionsTier(concoctionsIngredientsTierOne, concoctionSection.getStringList("Tier_One_Ingredients"));
         loadConcoctionsTier(concoctionsIngredientsTierTwo, concoctionSection.getStringList("Tier_Two_Ingredients"));
         loadConcoctionsTier(concoctionsIngredientsTierThree, concoctionSection.getStringList("Tier_Three_Ingredients"));
@@ -71,7 +83,7 @@ public class PotionConfig extends LegacyConfigLoader {
     }
 
     private void loadConcoctionsTier(List<ItemStack> ingredientList, List<String> ingredientStrings) {
-        if (ingredientStrings != null && ingredientStrings.size() > 0) {
+        if (ingredientStrings != null && !ingredientStrings.isEmpty()) {
             for (String ingredientString : ingredientStrings) {
                 ItemStack ingredient = loadIngredient(ingredientString);
 
@@ -85,23 +97,24 @@ public class PotionConfig extends LegacyConfigLoader {
     /**
      * Find the Potions configuration section and load all defined potions.
      */
-    private void loadPotionMap() {
+    int loadPotionMap() {
         ConfigurationSection potionSection = config.getConfigurationSection("Potions");
-        int pass = 0;
-        int fail = 0;
+        int potionsLoaded = 0;
+        int failures = 0;
 
         for (String potionName : potionSection.getKeys(false)) {
             AlchemyPotion potion = loadPotion(potionSection.getConfigurationSection(potionName));
 
             if (potion != null) {
-                potionMap.put(potionName, potion);
-                pass++;
+                alchemyPotions.put(potionName, potion);
+                potionsLoaded++;
             } else {
-                fail++;
+                failures++;
             }
         }
 
-        LogUtils.debug(mcMMO.p.getLogger(), "Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
+        mcMMO.p.getLogger().info("Loaded " + potionsLoaded + " Alchemy potions, skipped " + failures + ".");
+        return potionsLoaded;
     }
 
     /**
@@ -114,37 +127,70 @@ public class PotionConfig extends LegacyConfigLoader {
      */
     private AlchemyPotion loadPotion(ConfigurationSection potion_section) {
         try {
+            final String key = potion_section.getName();
 
+            final ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
+            boolean extended = false;
+            boolean upgraded = false;
 
-            String name = potion_section.getString("Name");
-            if (name != null) {
-                name = ChatColor.translateAlternateColorCodes('&', name);
+            if (potionData != null) {
+                extended = potionData.getBoolean("Extended", false);
+                upgraded = potionData.getBoolean("Upgraded", false);
             }
 
-            PotionData data;
-            if (!potion_section.contains("PotionData")) { // Backwards config compatability
-                short dataValue = Short.parseShort(potion_section.getName());
-                Potion potion = Potion.fromDamage(dataValue);
-                data = new PotionData(potion.getType(), potion.hasExtendedDuration(), potion.getLevel() == 2);
+            Material material;
+            final String materialString = potion_section.getString("Material", null);
+            if (materialString != null) {
+                material = ItemUtils.exhaustiveMaterialLookup(materialString);
+                if (material == null) {
+                    mcMMO.p.getLogger().warning("PotionConfig: Failed to parse material for potion " + key + ": " + materialString);
+                    mcMMO.p.getLogger().warning("PotionConfig: Defaulting to POTION");
+                    material = Material.POTION;
+                }
             } else {
-                ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
-                data = new PotionData(PotionType.valueOf(potionData.getString("PotionType", "WATER")), potionData.getBoolean("Extended", false), potionData.getBoolean("Upgraded", false));
+                mcMMO.p.getLogger().warning("PotionConfig: Missing Material config entry for potion " + key + "," +
+                        " from configuration section: " + potion_section + ", defaulting to POTION");
+                material = Material.POTION;
             }
 
-            Material material = Material.POTION;
-            String mat = potion_section.getString("Material", null);
-            if (mat != null) {
-                material = Material.valueOf(mat);
+            final ItemStack itemStack = new ItemStack(material, 1);
+            final PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+
+            if (potionMeta == null) {
+                mcMMO.p.getLogger().severe("PotionConfig: Failed to get PotionMeta for " + key + ", from configuration section:" +
+                        " " + potion_section);
+                return null;
             }
 
-            List<String> lore = new ArrayList<>();
+            // extended and upgraded seem to be mutually exclusive
+            if (extended && upgraded) {
+                mcMMO.p.getLogger().warning("Potion " + key + " has both Extended and Upgraded set to true," +
+                        " defaulting to Extended.");
+                upgraded = false;
+            }
+
+            String potionTypeStr = potionData.getString("PotionType", null);
+            if (potionTypeStr == null) {
+                mcMMO.p.getLogger().severe("PotionConfig: Missing PotionType for " + key + ", from configuration section:" +
+                        " " + potion_section);
+                return null;
+            }
+
+            // This works via side effects
+            // TODO: Redesign later, side effects are stupid
+            if(!setPotionType(potionMeta, potionTypeStr, upgraded, extended)) {
+                mcMMO.p.getLogger().severe("PotionConfig: Failed to set parameters of potion for " + key + ": " + potionTypeStr);
+                return null;
+            }
+
+            final List<String> lore = new ArrayList<>();
             if (potion_section.contains("Lore")) {
                 for (String line : potion_section.getStringList("Lore")) {
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
+            potionMeta.setLore(lore);
 
-            List<PotionEffect> effects = new ArrayList<>();
             if (potion_section.contains("Effects")) {
                 for (String effect : potion_section.getStringList("Effects")) {
                     String[] parts = effect.split(" ");
@@ -154,9 +200,9 @@ public class PotionConfig extends LegacyConfigLoader {
                     int duration = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
 
                     if (type != null) {
-                        effects.add(new PotionEffect(type, duration, amplifier));
+                        potionMeta.addCustomEffect(new PotionEffect(type, duration, amplifier), true);
                     } else {
-                        mcMMO.p.getLogger().warning("Failed to parse effect for potion " + name + ": " + effect);
+                        mcMMO.p.getLogger().severe("PotionConfig: Failed to parse effect for potion " + key + ": " + effect);
                     }
                 }
             }
@@ -165,25 +211,59 @@ public class PotionConfig extends LegacyConfigLoader {
             if (potion_section.contains("Color")) {
                 color = Color.fromRGB(potion_section.getInt("Color"));
             } else {
-                color = this.generateColor(effects);
+                color = this.generateColor(potionMeta.getCustomEffects());
             }
+            potionMeta.setColor(color);
 
-            Map<ItemStack, String> children = new HashMap<>();
+            final Map<ItemStack, String> children = new HashMap<>();
             if (potion_section.contains("Children")) {
                 for (String child : potion_section.getConfigurationSection("Children").getKeys(false)) {
                     ItemStack ingredient = loadIngredient(child);
                     if (ingredient != null) {
                         children.put(ingredient, potion_section.getConfigurationSection("Children").getString(child));
                     } else {
-                        mcMMO.p.getLogger().warning("Failed to parse child for potion " + name + ": " + child);
+                        mcMMO.p.getLogger().severe("PotionConfig: Failed to parse child for potion " + key + ": " + child);
                     }
                 }
             }
+            // Set the name of the potion
+            setPotionDisplayName(potion_section, potionMeta);
 
-            return new AlchemyPotion(material, data, name, lore, effects, color, children);
+            // TODO: Might not need to .setItemMeta
+            itemStack.setItemMeta(potionMeta);
+            return new AlchemyPotion(potion_section.getName(), itemStack, children);
         } catch (Exception e) {
-            mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getName());
+            mcMMO.p.getLogger().warning("PotionConfig: Failed to load Alchemy potion: " + potion_section.getName());
+            e.printStackTrace();
             return null;
+        }
+    }
+
+    private boolean setPotionType(PotionMeta potionMeta, String potionTypeStr, boolean upgraded, boolean extended) {
+        final PotionType potionType = matchPotionType(potionTypeStr, upgraded, extended);
+
+        if (potionType == null) {
+            mcMMO.p.getLogger().severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr);
+            return false;
+        }
+
+        // set base
+        setBasePotionType(potionMeta, potionType, extended, upgraded);
+
+        // Legacy only
+        setUpgradedAndExtendedProperties(potionType, potionMeta, upgraded, extended);
+        return true;
+    }
+
+    private void setPotionDisplayName(ConfigurationSection section, PotionMeta potionMeta) {
+        // If a potion doesn't have any custom effects, there is no reason to override the vanilla name
+        if (potionMeta.getCustomEffects().isEmpty()) {
+            return;
+        }
+
+        final String configuredName = section.getString("Name", null);
+        if (configuredName != null) {
+            setItemName(potionMeta, configuredName);
         }
     }
 
@@ -210,43 +290,63 @@ public class PotionConfig extends LegacyConfigLoader {
         return null;
     }
 
+    /**
+     * Get the ingredients for the given tier.
+     * @param tier Tier to get ingredients for.
+     * @return List of ingredients for the given tier.
+     */
     public List<ItemStack> getIngredients(int tier) {
-        switch (tier) {
-            case 8:
-                return concoctionsIngredientsTierEight;
-            case 7:
-                return concoctionsIngredientsTierSeven;
-            case 6:
-                return concoctionsIngredientsTierSix;
-            case 5:
-                return concoctionsIngredientsTierFive;
-            case 4:
-                return concoctionsIngredientsTierFour;
-            case 3:
-                return concoctionsIngredientsTierThree;
-            case 2:
-                return concoctionsIngredientsTierTwo;
-            case 1:
-            default:
-                return concoctionsIngredientsTierOne;
-        }
+        return switch (tier) {
+            case 8 -> concoctionsIngredientsTierEight;
+            case 7 -> concoctionsIngredientsTierSeven;
+            case 6 -> concoctionsIngredientsTierSix;
+            case 5 -> concoctionsIngredientsTierFive;
+            case 4 -> concoctionsIngredientsTierFour;
+            case 3 -> concoctionsIngredientsTierThree;
+            case 2 -> concoctionsIngredientsTierTwo;
+            default -> concoctionsIngredientsTierOne;
+        };
     }
 
+    /**
+     * Check if the given ItemStack is a valid potion.
+     * @param item ItemStack to be checked.
+     * @return True if the given ItemStack is a valid potion, false otherwise.
+     */
     public boolean isValidPotion(ItemStack item) {
         return getPotion(item) != null;
     }
 
+    /**
+     * Get the AlchemyPotion that corresponds to the given name.
+     * @param name Name of the potion to be checked.
+     * @return AlchemyPotion that corresponds to the given name.
+     */
     public AlchemyPotion getPotion(String name) {
-        return potionMap.get(name);
+        return alchemyPotions.get(name);
     }
 
+    /**
+     * Get the AlchemyPotion that corresponds to the given ItemStack.
+     *
+     * @param item ItemStack to be checked.
+     *
+     * @return AlchemyPotion that corresponds to the given ItemStack.
+     */
     public AlchemyPotion getPotion(ItemStack item) {
-        for (AlchemyPotion potion : potionMap.values()) {
-            if (potion.isSimilar(item)) {
-                return potion;
-            }
+        final List<AlchemyPotion> potionList = alchemyPotions.values()
+                .stream()
+                .filter(potion -> potion.isSimilarPotion(item))
+                .toList();
+        if(potionList.size() > 1) {
+            mcMMO.p.getLogger().severe("Multiple potions defined in config have matched this potion, for mcMMO to behave" +
+                    " properly there should only be one match found.");
+            mcMMO.p.getLogger().severe("Potion ItemStack:" + item.toString());
+            mcMMO.p.getLogger().severe("Alchemy Potions from config matching this item: "
+                    + potionList.stream().map(AlchemyPotion::toString).collect(Collectors.joining(", ")));
         }
-        return null;
+
+        return potionList.isEmpty() ? null : potionList.get(0);
     }
 
     public Color generateColor(List<PotionEffect> effects) {
@@ -278,5 +378,4 @@ public class PotionConfig extends LegacyConfigLoader {
         }
         return Color.fromRGB(red / colors.size(), green / colors.size(), blue / colors.size());
     }
-
 }

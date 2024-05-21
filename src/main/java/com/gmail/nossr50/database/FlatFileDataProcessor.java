@@ -33,7 +33,7 @@ public class FlatFileDataProcessor {
         assert !lineData.isEmpty();
 
         //Make sure the data line is "correct"
-        if(lineData.charAt(lineData.length() - 1) != ':') {
+        if (lineData.charAt(lineData.length() - 1) != ':') {
             // Length checks depend on last rawSplitData being ':'
             // We add it here if it is missing
             lineData = lineData.concat(":");
@@ -48,9 +48,9 @@ public class FlatFileDataProcessor {
         boolean anyBadData = false;
 
         //This is the minimum size of the split array needed to be considered proper data
-        if(splitDataLine.length < getMinimumSplitDataLength()) {
+        if (splitDataLine.length < getMinimumSplitDataLength()) {
             //Data is considered junk
-            if(!corruptDataFound) {
+            if (!corruptDataFound) {
                 logger.severe("Some corrupt data was found in mcmmo.users and has been repaired, it is possible that some player data has been lost in this process.");
                 corruptDataFound = true;
             }
@@ -59,9 +59,9 @@ public class FlatFileDataProcessor {
             builder.appendFlag(FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE);
 
             //TODO: This block here is probably pointless
-            if(splitDataLine.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
+            if (splitDataLine.length >= 10 //The value here is kind of arbitrary, it shouldn't be too low to avoid false positives, but also we aren't really going to correctly identify when player data has been corrupted or not with 100% accuracy ever
                     && splitDataLine[0] != null && !splitDataLine[0].isEmpty()) {
-                if(splitDataLine[0].length() <= 16 && splitDataLine[0].length() >= 3) {
+                if (splitDataLine[0].length() <= 16 && splitDataLine[0].length() >= 3) {
                     logger.severe("Not enough data found to recover corrupted player data for user: "+splitDataLine[0]);
                     registerData(builder.appendFlag(FlatFileDataFlag.TOO_INCOMPLETE));
                     return;
@@ -81,14 +81,14 @@ public class FlatFileDataProcessor {
         String name = splitDataLine[USERNAME_INDEX];
         String strOfUUID = splitDataLine[UUID_INDEX];
 
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             reportBadDataLine("No name found for data", "[MISSING NAME]", lineData);
             builder.appendFlag(FlatFileDataFlag.MISSING_NAME);
             anyBadData = true;
             badDataValues[USERNAME_INDEX] = true;
         }
 
-        if(strOfUUID.isEmpty() || strOfUUID.equalsIgnoreCase("NULL")) {
+        if (strOfUUID.isEmpty() || strOfUUID.equalsIgnoreCase("NULL")) {
             invalidUUID = true;
             badDataValues[UUID_INDEX] = true;
             reportBadDataLine("Empty/null UUID for user", "Empty/null", lineData);
@@ -110,20 +110,20 @@ public class FlatFileDataProcessor {
         }
 
         //Duplicate UUID is no good, reject them
-        if(!invalidUUID && uuid != null && uuids.contains(uuid)) {
+        if (!invalidUUID && uuid != null && uuids.contains(uuid)) {
             registerData(builder.appendFlag(FlatFileDataFlag.DUPLICATE_UUID));
             return;
         }
 
         uuids.add(uuid);
 
-        if(names.contains(name)) {
+        if (names.contains(name)) {
             builder.appendFlag(FlatFileDataFlag.DUPLICATE_NAME);
             anyBadData = true;
             badDataValues[USERNAME_INDEX] = true;
         }
 
-        if(!name.isEmpty())
+        if (!name.isEmpty())
             names.add(name);
 
         //Make sure the data is up to date schema wise, if it isn't we adjust it to the correct size and flag it for repair
@@ -136,9 +136,9 @@ public class FlatFileDataProcessor {
 
         //Check each data for bad values
         for(int i = 0; i < DATA_ENTRY_COUNT; i++) {
-            if(shouldNotBeEmpty(splitDataLine[i], i)) {
+            if (shouldNotBeEmpty(splitDataLine[i], i)) {
 
-                if(i == OVERHAUL_LAST_LOGIN) {
+                if (i == OVERHAUL_LAST_LOGIN) {
                     builder.appendFlag(FlatFileDataFlag.LAST_LOGIN_SCHEMA_UPGRADE);
                 }
 
@@ -149,13 +149,13 @@ public class FlatFileDataProcessor {
 
             boolean isCorrectType = isOfExpectedType(splitDataLine[i], getExpectedValueType(i));
 
-            if(!isCorrectType) {
+            if (!isCorrectType) {
                 anyBadData = true;
                 badDataValues[i] = true;
             }
         }
 
-        if(anyBadData) {
+        if (anyBadData) {
             builder.appendFlag(FlatFileDataFlag.BAD_VALUES);
             builder.appendBadDataValues(badDataValues);
         }
@@ -166,7 +166,7 @@ public class FlatFileDataProcessor {
     public @NotNull String[] isDataSchemaUpToDate(@NotNull String[] splitDataLine, @NotNull FlatFileDataBuilder builder, boolean[] badDataValues) {
         assert splitDataLine.length <= DATA_ENTRY_COUNT; //should NEVER be higher
 
-        if(splitDataLine.length < DATA_ENTRY_COUNT) {
+        if (splitDataLine.length < DATA_ENTRY_COUNT) {
             int oldLength = splitDataLine.length;
             splitDataLine = Arrays.copyOf(splitDataLine, DATA_ENTRY_COUNT);
             int newLength = splitDataLine.length;
@@ -184,7 +184,7 @@ public class FlatFileDataProcessor {
 
 
     public boolean shouldNotBeEmpty(@Nullable String data, int index) {
-        if(getExpectedValueType(index) == ExpectedType.IGNORED) {
+        if (getExpectedValueType(index) == ExpectedType.IGNORED) {
             return false;
         } else {
             return data == null || data.isEmpty();
@@ -248,73 +248,31 @@ public class FlatFileDataProcessor {
         FlatFileDataContainer flatFileDataContainer = builder.build();
         flatFileDataContainers.add(flatFileDataContainer);
 
-        if(flatFileDataContainer.getDataFlags() != null)
+        if (flatFileDataContainer.getDataFlags() != null)
             flatFileDataFlags.addAll(flatFileDataContainer.getDataFlags());
     }
 
     public static @NotNull ExpectedType getExpectedValueType(int dataIndex) throws IndexOutOfBoundsException {
-        switch(dataIndex) {
-            case USERNAME_INDEX:
-                return ExpectedType.STRING;
-            case 2: //Assumption: Used to be for something, no longer used
-            case 3: //Assumption: Used to be for something, no longer used
-            case 23: //Assumption: Used to be used for something, no longer used
-            case 33: //Assumption: Used to be used for something, no longer used
-            case HEALTHBAR:
-            case LEGACY_LAST_LOGIN:
-                return ExpectedType.IGNORED;
-            case SKILLS_MINING:
-            case SKILLS_REPAIR:
-            case SKILLS_UNARMED:
-            case SKILLS_HERBALISM:
-            case SKILLS_EXCAVATION:
-            case SKILLS_ARCHERY:
-            case SKILLS_SWORDS:
-            case SKILLS_AXES:
-            case SKILLS_WOODCUTTING:
-            case SKILLS_ACROBATICS:
-            case SKILLS_TAMING:
-            case SKILLS_FISHING:
-            case SKILLS_ALCHEMY:
-            case SKILLS_CROSSBOWS:
-            case SKILLS_TRIDENTS:
-            case COOLDOWN_BERSERK:
-            case COOLDOWN_GIGA_DRILL_BREAKER:
-            case COOLDOWN_TREE_FELLER:
-            case COOLDOWN_GREEN_TERRA:
-            case COOLDOWN_SERRATED_STRIKES:
-            case COOLDOWN_SKULL_SPLITTER:
-            case COOLDOWN_SUPER_BREAKER:
-            case COOLDOWN_BLAST_MINING:
-            case SCOREBOARD_TIPS:
-            case COOLDOWN_CHIMAERA_WING:
-            case COOLDOWN_SUPER_SHOTGUN:
-            case COOLDOWN_TRIDENTS:
-            case COOLDOWN_ARCHERY:
-                return ExpectedType.INTEGER;
-            case EXP_MINING:
-            case EXP_WOODCUTTING:
-            case EXP_REPAIR:
-            case EXP_UNARMED:
-            case EXP_HERBALISM:
-            case EXP_EXCAVATION:
-            case EXP_ARCHERY:
-            case EXP_SWORDS:
-            case EXP_AXES:
-            case EXP_ACROBATICS:
-            case EXP_TAMING:
-            case EXP_FISHING:
-            case EXP_ALCHEMY:
-            case EXP_CROSSBOWS:
-            case EXP_TRIDENTS:
-                return ExpectedType.FLOAT;
-            case UUID_INDEX:
-                return ExpectedType.UUID;
-            case OVERHAUL_LAST_LOGIN:
-                return ExpectedType.LONG;
-        }
-
-        throw new IndexOutOfBoundsException();
+        return switch (dataIndex) {
+            case USERNAME_INDEX -> ExpectedType.STRING; //Assumption: Used to be for something, no longer used
+            //Assumption: Used to be for something, no longer used
+            //Assumption: Used to be used for something, no longer used
+            //Assumption: Used to be used for something, no longer used
+            case 2, 3, 23, 33, HEALTHBAR, LEGACY_LAST_LOGIN -> ExpectedType.IGNORED;
+            case SKILLS_MINING, SKILLS_REPAIR, SKILLS_UNARMED, SKILLS_HERBALISM, SKILLS_EXCAVATION, SKILLS_ARCHERY,
+                 SKILLS_SWORDS, SKILLS_AXES, SKILLS_WOODCUTTING, SKILLS_ACROBATICS, SKILLS_TAMING, SKILLS_FISHING,
+                 SKILLS_ALCHEMY, SKILLS_CROSSBOWS, SKILLS_TRIDENTS, SKILLS_MACES, COOLDOWN_BERSERK,
+                 COOLDOWN_GIGA_DRILL_BREAKER, COOLDOWN_TREE_FELLER, COOLDOWN_GREEN_TERRA, COOLDOWN_SERRATED_STRIKES,
+                 COOLDOWN_SKULL_SPLITTER, COOLDOWN_SUPER_BREAKER, COOLDOWN_BLAST_MINING, SCOREBOARD_TIPS,
+                 COOLDOWN_CHIMAERA_WING, COOLDOWN_SUPER_SHOTGUN, COOLDOWN_TRIDENTS, COOLDOWN_ARCHERY, COOLDOWN_MACES ->
+                    ExpectedType.INTEGER;
+            case EXP_MINING, EXP_WOODCUTTING, EXP_REPAIR, EXP_UNARMED, EXP_HERBALISM, EXP_EXCAVATION, EXP_ARCHERY,
+                 EXP_SWORDS, EXP_AXES, EXP_ACROBATICS, EXP_TAMING, EXP_FISHING, EXP_ALCHEMY, EXP_CROSSBOWS,
+                 EXP_TRIDENTS, EXP_MACES -> ExpectedType.FLOAT;
+            case UUID_INDEX -> ExpectedType.UUID;
+            case OVERHAUL_LAST_LOGIN -> ExpectedType.LONG;
+            default -> throw new IndexOutOfBoundsException();
+        };
     }
 
     public @NotNull List<FlatFileDataContainer> getFlatFileDataContainers() {
@@ -337,12 +295,12 @@ public class FlatFileDataProcessor {
         for(FlatFileDataContainer dataContainer : flatFileDataContainers) {
             String[] splitData = FlatFileDataUtil.getPreparedSaveDataLine(dataContainer);
 
-            if(splitData == null)
+            if (splitData == null)
                 continue;
 
             //We add a trailing : as it is needed for some reason (is it?)
             //TODO: Is the trailing ":" actually necessary?
-            String fromSplit = org.apache.commons.lang.StringUtils.join(splitData, ":") + ":";
+            String fromSplit = org.apache.commons.lang3.StringUtils.join(splitData, ":") + ":";
             stringBuilder.append(fromSplit).append("\r\n");
         }
 

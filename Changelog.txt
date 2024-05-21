@@ -1,6 +1,112 @@
-Version 2.2.007
-    Fixed bug where Green Thumb did not replant if seed was in the off hand
+Version 2.2.013
+    Modified the RNG for dropping non-ore blocks from Blast Mining to yield about 50% of what was destroyed
+    (API) Deprecated com.gmail.nossr50.mcMMO.getPlaceStore
+    (API) Added com.gmail.nossr50.mcMMO.getUserBlockTracker
+    (API) Added com.gmail.nossr50.mcMMO.getChunkManager
+    (API) Added new methods to com.gmail.nossr50.util.blockmeta.UserBlockTracker for easier readability
+    (API) Deprecated the old poorly named methods in UserBlockTracker
+    (Codebase) Cleaned up and organized unit tests relating to UserBlockTracker
 
+    NOTES:
+    Not planning to delete the deprecated methods in UserBlockTracker anytime soon, as nothing has really changed other than the names
+
+Version 2.2.012
+    Fixed a bug where Daze would cause an exception in older game versions (1.20.4 and older)
+
+Version 2.2.011
+    Fixed bug where some potions on older versions (1.20.4 and older) were not brewable (night vision extended, etc)
+    Improved logging for Alchemy potion look up (see notes)
+
+NOTES:
+    Added detailed logging when multiple configured potions match an ItemStack.
+    This will help identify issues with potion configuration.
+
+Version 2.2.010
+    Fixed being unable to load REGEN potion type on new versions of Paper/Spigot 1.20.6
+    Fixed some potions not gaining XP when brewed (Level 2 potions, etc)
+    BrewingStands will now remember who owns them, this persists across restarts (see notes)
+    Fixed rare NPE in mcMMO events when player data was unable to be retrieved
+    Fixed a NPE that could happen when damaging armor with Axes
+    Fixed a bug where Alchemy brewing would be cancelled if the player died
+    (API) Added getMcMMOPlayer() to McMMOPlayerSkillEvent
+    (API) Added new ctor McMMOPlayerSkillEvent(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType)
+    (API) Deprecated ctor McMMOPlayerSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added ctor McMMOPlayerAbilityEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerAbilityEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerAbilityActivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added ctor McMMOPlayerAbilityActivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerCatalysisEvent(org.bukkit.entity.Player, double)
+    (API) Added ctor McMMOPlayerCatalysisEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, double)
+    (API) Deprecated util method EventUtils.callPlayerAbilityActivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added util method EventUtils.callPlayerAbilityActivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated ctor McMMOPlayerFishingEvent(org.bukkit.entity.Player)
+    (API) Added ctor McMMOPlayerFishingEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer)
+    (API) Deprecated ctor McMMOPlayerFishingTreasureEvent.McMMOPlayerFishingTreasureEvent(org.bukkit.entity.Player, org.bukkit.inventory.ItemStack, int)
+    (API) Added ctor McMMOPlayerFishingTreasureEvent.McMMOPlayerFishingTreasureEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, org.bukkit.inventory.ItemStack, int)
+    (API) Deprecated ctor McMMOPlayerMagicHunterEvent(org.bukkit.entity.Player, org.bukkit.inventory.ItemStack, int, java.util.Map<org.bukkit.enchantments.Enchantment,java.lang.Integer>)
+    (API) Added ctor McMMOPlayerMagicHunterEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, org.bukkit.inventory.ItemStack, int, java.util.Map<org.bukkit.enchantments.Enchantment,java.lang.Integer>)
+    (API) Deprecated ctor McMMOPlayerAbilityDeactivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Added ctor McMMOPlayerAbilityDeactivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+    (API) Deprecated util method EventUtils.callAbilityDeactivateEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SuperAbilityType)
+    (API) Added util method EventUtils.callAbilityDeactivateEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SuperAbilityType)
+    (API) Deprecated util EventUtils.callSubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Added util EventUtils.callSubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Deprecated ctor SubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Added ctor SubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SubSkillType)
+    (API) Deprecated ctor SubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.SubSkillType, double)
+    (API) Added ctor SubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.SubSkillType, double)
+    (API) Deprecated ctor SubSkillEvent(org.bukkit.entity.Player, com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill)
+    (API) Added ctor SubSkillEvent(com.gmail.nossr50.datatypes.player.McMMOPlayer, com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill)
+    (API) Deprecated ctor AlchemyBrewCheckTask(org.bukkit.entity.Player, org.bukkit.block.BrewingStand)
+    (API) Added ctor AlchemyBrewCheckTask(org.bukkit.block.BrewingStand)
+
+    NOTES:
+    You can now use hoppers and brewing stands and not have to worry about having to re-interact with the brewing stand over and over again
+    Ownership of a brewing stand is whoever last interacted with it, this persists across restarts
+    This is not an exhaustive list of API changes in this update, but most of the important ones should be documented here.
+
+Version 2.2.009
+    Fixed a bug that prevented mcMMO from loading on MC versions older than 1.20.6
+    Dramatically increased the base XP for Alchemy again (see notes)
+
+    NOTES:
+    Alchemy leveling still felt too slow, so I've increased it again. You can either delete experience.yml to get the new values or adjust them manually.
+    If you haven't updated mcMMO since 2.2.006 or older you don't need to do anything to get these new values.
+    The new default values are...
+            Potion_Brewing:
+                Stage_1: 666
+                Stage_2: 1111
+                Stage_3: 1750
+                Stage_4: 2250
+
+Version 2.2.008
+    Fixed alchemy potions not upgrading correctly (This will only affect new potions made, see notes)
+    Fixed a bug where alchemy potions had italicized names
+    Fixed a bug where messages were not being sent to the action bar in 1.20.6
+    (SQL) Fixed bug that broke /mccooldowns and /archery in some circumstances
+    Fixed some exceptions that could happen with parties disabled (thanks IAISI)
+
+    NOTES:
+    mcMMO-exclusive Potions (haste, etc) made on version 2.2.007 of mcMMO will not upgrade correctly, you'll just have to make new ones. Sorry for the inconvenience.
+    Alchemy potions will now be brewed as type "Mundane" behind the scenes, this used to be Uncraftable/Water. This led to some issues. So I've changed it to be Mundane.
+
+Version 2.2.007
+    Compatibility with the 1.20.5 / 1.20.6 MC Update
+    Fixed bug where Alchemy was not brewing certain potions (haste, etc)
+    Tree Feller no longer restricts how many saplings can drop
+    Tree Feller now drops leaves 25% of the time (up from 10%)
+    Alchemy XP has been DRAMATICALLY increased, it was extremely grindy by default
+    Alchemy experience values in experience.yml are now found under 'Experience_Values.Alchemy.Potion_Brewing'
+    Fixed bug where the probability of success of Graceful Roll was not being calculated correctly
+    Fixed bug where Green Thumb did not replant if seed was in the off hand
+    Added armadillo to combat experience in experience.yml
+
+    NOTES:
+    While fixing various Alchemy bugs, I noticed Alchemy leveled SUPER slow, I have increased it dramatically. Feel free to change it back by modifying the new values in experience.yml
+    I did my best to keep mcMMO compatible with older versions of Minecraft for this update.
+    This update to MC was quite large, with breaking changes to a lot of code relating to Alchemy, and some other things.
+    I expect there to be bugs, please report them on GitHub or Discord, but preferably GitHub.
+    I will be working on fixing these bugs as they come in, so please be patient.
 Version 2.2.006
     Added new config custom_item_support.yml
     Added support for hex color codes in the locale file, uses the format &#RRGGBB (see notes)

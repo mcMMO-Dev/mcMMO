@@ -93,7 +93,7 @@ class ProbabilityTest {
         double winCount = 0;
 
         for (int i = 0; i < iterations; i++) {
-            if(probability.evaluate()) {
+            if (probability.evaluate()) {
                 winCount++;
             }
         }

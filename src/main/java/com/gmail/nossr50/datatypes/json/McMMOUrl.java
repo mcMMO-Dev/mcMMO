@@ -8,10 +8,8 @@ public class McMMOUrl {
     public static final String urlSpigot    = "https://spigot.mcmmo.org";
     public static final String urlTranslate = "https://translate.mcmmo.org/";
 
-    public static String getUrl(McMMOWebLinks webLinks)
-    {
-        switch(webLinks)
-        {
+    public static String getUrl(McMMOWebLinks webLinks) {
+        switch(webLinks) {
             case WIKI:
                 return urlWiki;
             case PATREON:

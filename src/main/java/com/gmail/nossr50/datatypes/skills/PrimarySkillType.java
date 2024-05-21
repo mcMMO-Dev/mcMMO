@@ -20,6 +20,7 @@ public enum PrimarySkillType {
     EXCAVATION,
     FISHING,
     HERBALISM,
+    MACES,
     MINING,
     REPAIR,
     SALVAGE,

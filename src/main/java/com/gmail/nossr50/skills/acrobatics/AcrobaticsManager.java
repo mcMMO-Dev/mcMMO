@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -38,23 +39,19 @@ public class AcrobaticsManager extends SkillManager {
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
     private final BlockLocationHistory fallLocationMap;
 
-    public boolean hasFallenInLocationBefore(Location location)
-    {
+    public boolean hasFallenInLocationBefore(Location location) {
         return fallLocationMap.contains(location);
     }
 
-    public void addLocationToFallMap(Location location)
-    {
+    public void addLocationToFallMap(Location location) {
         fallLocationMap.add(location);
     }
 
-    public boolean canGainRollXP()
-    {
-        if(!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
+    public boolean canGainRollXP() {
+        if (!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
             return true;
 
-        if(System.currentTimeMillis() >= rollXPCooldown)
-        {
+        if (System.currentTimeMillis() >= rollXPCooldown) {
             rollXPCooldown = System.currentTimeMillis() + rollXPInterval;
             rollXPIntervalLengthen = (1000 * 10); //5 Seconds
             return true;
@@ -66,10 +63,10 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canDodge(Entity damager) {
-        if(getPlayer().isBlocking())
+        if (getPlayer().isBlocking())
             return false;
 
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
 
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
@@ -94,7 +91,7 @@ public class AcrobaticsManager extends SkillManager {
         Player player = getPlayer();
 
         if (!isFatal(modifiedDamage)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ACROBATICS_DODGE, player)) {
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ACROBATICS_DODGE, UserManager.getPlayer(player))) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mmoPlayer.useChatNotifications()) {
@@ -102,14 +99,14 @@ public class AcrobaticsManager extends SkillManager {
             }
 
             if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                if(attacker instanceof Mob mob) {
+                if (attacker instanceof Mob mob) {
                     //Check to see how many dodge XP rewards this mob has handed out
-                    if(mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
+                    if (mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
                         //If Dodge XP has been handed out 5 times then consider it being exploited
                         MetadataValue metadataValue = mob.getMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER).get(0);
                         int count = metadataValue.asInt();
 
-                        if(count <= 5) {
+                        if (count <= 5) {
                             applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
                             mob.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
                             MobDodgeMetaCleanup metaCleanupTask = new MobDodgeMetaCleanup(mob, mcMMO.p);

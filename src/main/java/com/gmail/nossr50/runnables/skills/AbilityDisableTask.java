@@ -62,7 +62,7 @@ public class AbilityDisableTask extends CancellableRunnable {
         if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
             SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         }
-        if(!mcMMO.isServerShutdownExecuted()) {
+        if (!mcMMO.isServerShutdownExecuted()) {
             mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityCooldownTask(mcMMOPlayer, ability), (long) PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
         }
     }

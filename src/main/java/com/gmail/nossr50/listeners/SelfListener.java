@@ -24,8 +24,7 @@ public class SelfListener implements Listener {
     //Used in task scheduling and other things
     private final mcMMO plugin;
 
-    public SelfListener(mcMMO plugin)
-    {
+    public SelfListener(mcMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -37,13 +36,12 @@ public class SelfListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //TODO: Handle proper validation at the event level
-        if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
+        if (mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
             return;
 
-        if(player.isOnline()) {
+        if (player.isOnline()) {
             //Players can gain multiple levels especially during xprate events
-            for(int i = 0; i < event.getLevelsGained(); i++)
-            {
+            for(int i = 0; i < event.getLevelsGained(); i++) {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
                 UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
@@ -52,7 +50,7 @@ public class SelfListener implements Listener {
             //Reset the delay timer
             RankUtils.resetUnlockDelayTimer();
 
-            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
                 ScoreboardManager.handleLevelUp(player, skill);
         }
     }
@@ -61,8 +59,8 @@ public class SelfListener implements Listener {
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
 
-        if(player.isOnline()) {
-            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+        if (player.isOnline()) {
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
                 ScoreboardManager.handleXp(player, event.getSkill());
         }
     }
@@ -70,8 +68,8 @@ public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
         Player player = event.getPlayer();
-        if(player.isOnline()) {
-            if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+        if (player.isOnline()) {
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
                 ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
         }
     }
@@ -82,49 +80,43 @@ public class SelfListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //TODO: Handle proper validation at the event level
-        if(mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
+        if (mcMMOPlayer == null || !mcMMOPlayer.getProfile().isLoaded())
             return;
 
         PrimarySkillType primarySkillType = event.getSkill();
 
-        if(mcMMOPlayer.isDebugMode()) {
+        if (mcMMOPlayer.isDebugMode()) {
             mcMMOPlayer.getPlayer().sendMessage(event.getSkill().toString() + " XP Gained");
             mcMMOPlayer.getPlayer().sendMessage("Incoming Raw XP: "+event.getRawXpGained());
         }
 
         //WorldGuard XP Check
-        if(event.getXpGainReason() == XPGainReason.PVE ||
+        if (event.getXpGainReason() == XPGainReason.PVE ||
                 event.getXpGainReason() == XPGainReason.PVP ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
-                event.getXpGainReason() == XPGainReason.SHARED_PVP)
-        {
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasXPFlag(player))
-                {
+                event.getXpGainReason() == XPGainReason.SHARED_PVP) {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
 
-                    if(mcMMOPlayer.isDebugMode()) {
+                    if (mcMMOPlayer.isDebugMode()) {
                         mcMMOPlayer.getPlayer().sendMessage("No WG XP Flag - New Raw XP: "+event.getRawXpGained());
                     }
                 }
             }
         }
 
-        if (event.getXpGainReason() == XPGainReason.COMMAND)
-        {
+        if (event.getXpGainReason() == XPGainReason.COMMAND) {
             return;
         }
 
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled())
-        {
+        if (ExperienceConfig.getInstance().isEarlyGameBoostEnabled()) {
 
             int earlyGameBonusXP = 0;
 
             //Give some bonus XP for low levels
-            if(PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType))
-            {
+            if (PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
                 earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
             }
@@ -133,7 +125,7 @@ public class SelfListener implements Listener {
         int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
 
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
-            if(mcMMOPlayer.isDebugMode()) {
+            if (mcMMOPlayer.isDebugMode()) {
                 mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
             }
             // Diminished returns is turned off
@@ -167,12 +159,10 @@ public class SelfListener implements Listener {
              * Make sure players get a guaranteed minimum of XP
              */
             //If there is no guaranteed minimum proceed, otherwise only proceed if newValue would be higher than our guaranteed minimum
-            if(guaranteedMinimum <= 0 || newValue > guaranteedMinimum)
-            {
+            if (guaranteedMinimum <= 0 || newValue > guaranteedMinimum) {
                 if (newValue > 0) {
                     event.setRawXpGained(newValue);
-                }
-                else {
+                } else {
                     event.setCancelled(true);
                 }
             } else {
@@ -181,7 +171,7 @@ public class SelfListener implements Listener {
 
         }
 
-        if(mcMMOPlayer.isDebugMode()) {
+        if (mcMMOPlayer.isDebugMode()) {
             mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
         }
     }

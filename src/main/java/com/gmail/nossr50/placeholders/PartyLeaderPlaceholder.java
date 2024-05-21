@@ -1,6 +1,6 @@
 package com.gmail.nossr50.placeholders;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
 public class PartyLeaderPlaceholder implements Placeholder {
@@ -12,7 +12,7 @@ public class PartyLeaderPlaceholder implements Placeholder {
 
     @Override
     public String process(Player player, String params) {
-        return StringUtils.stripToEmpty(papiExpansion.getPartyLeader(player));
+        return StringUtils.trimToEmpty(papiExpansion.getPartyLeader(player));
     }
 
     @Override

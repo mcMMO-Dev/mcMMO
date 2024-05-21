@@ -29,7 +29,7 @@ public class AcrobaticsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // ACROBATICS_DODGE
         if (canDodge) {
-            String[] dodgeStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ACROBATICS_DODGE);
+            final String[] dodgeStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.ACROBATICS_DODGE);
             dodgeChance = dodgeStrings[0];
             dodgeChanceLucky = dodgeStrings[1];
         }
@@ -54,9 +54,8 @@ public class AcrobaticsCommand extends SkillCommand {
 
             AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName("Roll");
 
-            if(abstractSubSkill != null)
-            {
-                String[] rollStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
+            if (abstractSubSkill != null) {
+                String[] rollStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.ACROBATICS_ROLL);
 
                 messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, rollStrings[0])
                         + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollStrings[1]) : ""));

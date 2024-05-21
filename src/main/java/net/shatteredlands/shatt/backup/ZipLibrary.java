@@ -73,8 +73,7 @@ public class ZipLibrary {
         for (File source : sources) {
             if (source.isDirectory()) {
                 zipDir(zipOut, "", source);
-            }
-            else {
+            } else {
                 zipFile(zipOut, "", source);
             }
         }
@@ -104,8 +103,7 @@ public class ZipLibrary {
         for (File source : files) {
             if (source.isDirectory()) {
                 zipDir(zos, path, source);
-            }
-            else {
+            } else {
                 zipFile(zos, path, source);
             }
         }

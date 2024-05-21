@@ -11,20 +11,16 @@ public enum McMMOWebLinks {
     HELP_TRANSLATE,
     WIKI;
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return McMMOUrl.getUrl(this);
     }
 
-    public String getNiceTitle()
-    {
+    public String getNiceTitle() {
         return StringUtils.getCapitalized(toString());
     }
 
-    public String getLocaleDescription()
-    {
-        switch (this)
-        {
+    public String getLocaleDescription() {
+        switch (this) {
             case WEBSITE:
                 return LocaleLoader.getString( "JSON.URL.Website");
             case DISCORD:

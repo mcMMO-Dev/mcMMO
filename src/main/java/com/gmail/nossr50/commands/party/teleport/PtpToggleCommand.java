@@ -21,8 +21,7 @@ public class PtpToggleCommand implements CommandExecutor {
 
         if (ptpRecord.isEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));
-        }
-        else {
+        } else {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.Enabled"));
         }
 

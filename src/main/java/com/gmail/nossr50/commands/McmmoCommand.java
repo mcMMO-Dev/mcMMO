@@ -72,7 +72,7 @@ public class McmmoCommand implements CommandExecutor {
 
     private void displayOtherCommands(CommandSender sender) {
         //Don't show them this category if they have none of the permissions
-        if(!Permissions.skillreset(sender) && !Permissions.mmoedit(sender) && !Permissions.adminChat(sender) && !Permissions.mcgod(sender))
+        if (!Permissions.skillreset(sender) && !Permissions.mmoedit(sender) && !Permissions.adminChat(sender) && !Permissions.mcgod(sender))
             return;
 
         sender.sendMessage(LocaleLoader.getString("Commands.Other"));

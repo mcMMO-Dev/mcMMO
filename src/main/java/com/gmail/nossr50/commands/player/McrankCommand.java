@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
+import com.gmail.nossr50.runnables.commands.McRankCommandAsyncTask;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -85,8 +85,7 @@ public class McrankCommand implements TabExecutor {
         if (sender instanceof Player) {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
-            if(mcMMOPlayer == null)
-            {
+            if (mcMMOPlayer == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return;
             }
@@ -111,7 +110,7 @@ public class McrankCommand implements TabExecutor {
         boolean useBoard = mcMMO.p.getGeneralConfig().getScoreboardsEnabled() && (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getRankUseBoard());
         boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getRankUseChat();
 
-        mcMMO.p.getFoliaLib().getImpl().runAsync(new McrankCommandAsyncTask(playerName, sender, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getImpl().runAsync(new McRankCommandAsyncTask(playerName, sender, useBoard, useChat));
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {

@@ -17,7 +17,7 @@ public class MobDodgeMetaCleanup extends CancellableRunnable {
 
     @Override
     public void run() {
-        if(!mob.isValid() || mob.getTarget() == null) {
+        if (!mob.isValid() || mob.getTarget() == null) {
             mob.removeMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER, pluginRef);
             this.cancel();
         } else if (!mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER)) {

@@ -71,7 +71,7 @@ public class StringUtils {
         StringBuilder trimMessage = new StringBuilder();
 
         for (int i = index; i < args.length; i++) {
-            if(i + 1 >= args.length)
+            if (i + 1 >= args.length)
                 trimMessage.append(args[i]);
             else
                 trimMessage.append(args[i]).append(" ");
@@ -186,4 +186,9 @@ public class StringUtils {
         }
     }
 
+    public static String convertKeyToName(@NotNull String key) {
+        // used when no display name is given for a potion
+        final String noUnderscores = key.replace("_", " ").toLowerCase(Locale.ENGLISH);
+        return org.codehaus.plexus.util.StringUtils.capitalise(noUnderscores);
+    }
 }

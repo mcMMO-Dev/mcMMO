@@ -33,8 +33,7 @@ public class SkillXpGain implements Delayed {
     public int compareTo(SkillXpGain other) {
         if (this.expiryTime < other.expiryTime) {
             return -1;
-        }
-        else if (this.expiryTime > other.expiryTime) {
+        } else if (this.expiryTime > other.expiryTime) {
             return 1;
         }
         return 0;

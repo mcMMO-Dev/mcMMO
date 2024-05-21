@@ -48,8 +48,7 @@ public class SkillresetCommand implements TabExecutor {
 
                 if (args[0].equalsIgnoreCase("all")) {
                     skill = null;
-                }
-                else {
+                } else {
                     skill = mcMMO.p.getSkillTools().matchSkill(args[0]);
                 }
 
@@ -68,8 +67,7 @@ public class SkillresetCommand implements TabExecutor {
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
-                }
-                else {
+                } else {
                     skill = mcMMO.p.getSkillTools().matchSkill(args[1]);
                 }
 
@@ -87,14 +85,13 @@ public class SkillresetCommand implements TabExecutor {
                         profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
                         //Check if it was present in DB
-                        if(CommandUtils.unloadedProfile(sender, profile)) {
+                        if (CommandUtils.unloadedProfile(sender, profile)) {
                             return true;
                         }
                     }
 
                     editValues(null, profile, skill);
-                }
-                else {
+                } else {
                     editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill);
                 }
 
@@ -156,8 +153,7 @@ public class SkillresetCommand implements TabExecutor {
     protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
-        }
-        else {
+        } else {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), playerName));
         }
     }
@@ -171,8 +167,7 @@ public class SkillresetCommand implements TabExecutor {
             if (player != null) {
                 handlePlayerMessageAll(player);
             }
-        }
-        else {
+        } else {
             handleCommand(player, profile, skill);
 
             if (player != null) {

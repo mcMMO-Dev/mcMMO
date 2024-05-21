@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -45,7 +44,7 @@ public class MiningCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // BLAST MINING
         if (canBlast || canDemoExpert || canBiggerBombs) {
-            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+            MiningManager miningManager = mmoPlayer.getMiningManager();
 
             blastMiningRank = miningManager.getBlastMiningTier();
             bonusTNTDrops = miningManager.getDropMultiplier();
@@ -57,14 +56,14 @@ public class MiningCommand extends SkillCommand {
 
         // Mastery TRIPLE DROPS
         if (canTripleDrop) {
-            String[] masteryTripleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.MINING_MOTHER_LODE);
+            String[] masteryTripleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.MINING_MOTHER_LODE);
             tripleDropChance = masteryTripleDropStrings[0];
             tripleDropChanceLucky = masteryTripleDropStrings[1];
         }
         
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -112,7 +111,7 @@ public class MiningCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
-        if(canTripleDrop) {
+        if (canTripleDrop) {
             messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, tripleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
         }

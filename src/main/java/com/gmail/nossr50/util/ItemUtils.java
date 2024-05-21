@@ -20,8 +20,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 public final class ItemUtils {
     /**
@@ -29,6 +33,43 @@ public final class ItemUtils {
      * this class. Making the constructor private prevents accidents like that.
      */
     private ItemUtils() {}
+
+    private static final Method setItemName;
+
+    static {
+        setItemName = getSetItemName();
+    }
+
+    private static Method getSetItemName() {
+        try {
+            return ItemMeta.class.getMethod("setItemName", String.class);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the item name using the new API if available
+     * or falls back to the old API.
+     * @param itemMeta The item meta to set the name on
+     * @param name The name to set
+     */
+    public static void setItemName(ItemMeta itemMeta, String name) {
+        if (setItemName != null) {
+            setItemNameModern(itemMeta, name);
+        } else {
+            itemMeta.setDisplayName(ChatColor.RESET + name);
+        }
+    }
+
+    private static void setItemNameModern(ItemMeta itemMeta, String name) {
+        try {
+            setItemName.invoke(itemMeta, name);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            mcMMO.p.getLogger().severe("Failed to set item name: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Checks if the item is a bow.
@@ -39,6 +80,37 @@ public final class ItemUtils {
     // TODO: Unit tests
     public static boolean isBow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Exhaustive lookup for a Material by name.
+     * <p>
+     *     This method will first try a normal lookup, then a legacy lookup, then a lookup by ENUM name,
+     *      and finally a lookup by ENUM name with legacy name.
+     * @param materialName The name of the material to lookup
+     * @return The Material if found, or null if not found
+     */
+    public static @Nullable Material exhaustiveMaterialLookup(@NotNull String materialName) {
+        requireNonNull(materialName, "materialName cannot be null");
+
+        // First try a normal lookup
+        Material material = Material.matchMaterial(materialName);
+
+        // If that fails, try a legacy lookup
+        if (material == null) {
+            material = Material.matchMaterial(materialName, true);
+        }
+
+        // try to match to Material ENUM
+        if (material == null) {
+            material = Material.getMaterial(materialName.toUpperCase());
+        }
+
+        // try to match to Material ENUM with legacy name
+        if (material == null) {
+            material = Material.getMaterial(materialName.toUpperCase(), true);
+        }
+        return material;
     }
 
     /**
@@ -100,6 +172,10 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
     }
 
+    public static boolean isMace(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isMace(item.getType().getKey().getKey());
+    }
+
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {
         return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
     }
@@ -107,7 +183,7 @@ public final class ItemUtils {
     public static boolean doesPlayerHaveEnchantmentOnArmor(@NotNull Player player, @NotNull String enchantmentByName) {
         Enchantment enchantment = getEnchantment(enchantmentByName);
 
-        if(enchantment == null)
+        if (enchantment == null)
             return false;
 
         return doesPlayerHaveEnchantmentOnArmor(player, enchantment);
@@ -115,8 +191,8 @@ public final class ItemUtils {
 
     public static boolean doesPlayerHaveEnchantmentOnArmor(@NotNull Player player, @NotNull Enchantment enchantment) {
         for(ItemStack itemStack : player.getInventory().getArmorContents()) {
-            if(itemStack != null) {
-                if(hasEnchantment(itemStack, enchantment))
+            if (itemStack != null) {
+                if (hasEnchantment(itemStack, enchantment))
                     return true;
             }
         }
@@ -127,17 +203,17 @@ public final class ItemUtils {
     public static boolean doesPlayerHaveEnchantmentOnArmorOrHands(@NotNull Player player, @NotNull String enchantmentName) {
         Enchantment enchantment = getEnchantment(enchantmentName);
 
-        if(enchantment == null)
+        if (enchantment == null)
             return false;
 
         return doesPlayerHaveEnchantmentOnArmorOrHands(player, enchantment);
     }
 
     public static boolean doesPlayerHaveEnchantmentOnArmorOrHands(@NotNull Player player, @NotNull Enchantment enchantment) {
-        if(doesPlayerHaveEnchantmentOnArmor(player, enchantment))
+        if (doesPlayerHaveEnchantmentOnArmor(player, enchantment))
             return true;
 
-        if(doesPlayerHaveEnchantmentInHands(player, enchantment))
+        if (doesPlayerHaveEnchantmentInHands(player, enchantment))
             return true;
 
         return false;
@@ -146,7 +222,7 @@ public final class ItemUtils {
     public static boolean doesPlayerHaveEnchantmentInHands(@NotNull Player player, @NotNull NamespacedKey enchantmentNameKey) {
         Enchantment enchantment = Enchantment.getByKey(enchantmentNameKey);
 
-        if(enchantment == null)
+        if (enchantment == null)
             return false;
 
         return doesPlayerHaveEnchantmentInHands(player, enchantment);
@@ -155,7 +231,7 @@ public final class ItemUtils {
     public static boolean doesPlayerHaveEnchantmentInHands(@NotNull Player player, @NotNull String enchantmentName) {
         Enchantment enchantment = getEnchantment(enchantmentName);
 
-        if(enchantment == null)
+        if (enchantment == null)
             return false;
 
         return doesPlayerHaveEnchantmentInHands(player, enchantment);
@@ -167,7 +243,7 @@ public final class ItemUtils {
     }
 
     public static boolean hasEnchantment(@NotNull ItemStack itemStack, @NotNull Enchantment enchantment) {
-        if(itemStack.getItemMeta() != null) {
+        if (itemStack.getItemMeta() != null) {
             return itemStack.getItemMeta().hasEnchant(enchantment);
         }
 
@@ -176,7 +252,7 @@ public final class ItemUtils {
 
     public static @Nullable Enchantment getEnchantment(@NotNull String enchantmentName) {
         for(Enchantment enchantment : Enchantment.values()) {
-            if(enchantment.getKey().getKey().equalsIgnoreCase(enchantmentName)) {
+            if (enchantment.getKey().getKey().equalsIgnoreCase(enchantmentName)) {
                 return enchantment;
             }
         }
@@ -619,7 +695,7 @@ public final class ItemUtils {
 
         ItemMeta itemMeta = item.getItemMeta();
 
-        if(itemMeta == null)
+        if (itemMeta == null)
             return false;
 
         return itemMeta.getLore() != null
@@ -633,7 +709,7 @@ public final class ItemUtils {
 
         ItemMeta itemMeta = item.getItemMeta();
 
-        if(itemMeta == null)
+        if (itemMeta == null)
             return false;
 
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
@@ -643,7 +719,7 @@ public final class ItemUtils {
 //        ItemMeta itemMeta = itemStack.getItemMeta();
 //        List<String> itemLore = new ArrayList<>();
 //
-//        if(itemMeta == null)
+//        if (itemMeta == null)
 //            return;
 //
 //        if (itemMeta.hasLore()) {
@@ -659,13 +735,13 @@ public final class ItemUtils {
     public static void removeAbilityLore(@NotNull ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(itemMeta == null)
+        if (itemMeta == null)
             return;
 
         if (itemMeta.hasLore()) {
             List<String> itemLore = itemMeta.getLore();
 
-            if(itemLore == null)
+            if (itemLore == null)
                 return;
 
             if (itemLore.remove("mcMMO Ability Tool")) {
@@ -678,10 +754,11 @@ public final class ItemUtils {
     public static void addDigSpeedToItem(@NotNull ItemStack itemStack, int existingEnchantLevel) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(itemMeta == null)
+        if (itemMeta == null)
             return;
 
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + mcMMO.p.getAdvancedConfig().getEnchantBuff(), true);
+        itemMeta.addEnchant(mcMMO.p.getEnchantmentMapper().getEfficiency(),
+                existingEnchantLevel + mcMMO.p.getAdvancedConfig().getEnchantBuff(), true);
         itemStack.setItemMeta(itemMeta);
     }
 
@@ -694,7 +771,7 @@ public final class ItemUtils {
         EnchantmentWrapper enchantmentWrapper = getRandomEnchantment(fishingTreasureBook.getLegalEnchantments());
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(itemMeta == null) {
+        if (itemMeta == null) {
             return itemStack;
         }
 

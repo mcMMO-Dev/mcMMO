@@ -72,19 +72,26 @@ public enum SuperAbilityType {
             "Swords.Skills.SS.Other.Off",
             "Swords.SubSkill.SerratedStrikes.Name"),
     SUPER_SHOTGUN(
-            null,
-            null,
-            "Crossbows.Skills.SSG.Other.On",
-            "Crossbows.Skills.SSG.Refresh",
-            null,
-            "Crossbows.SubSkill.SuperShotgun.Name"),
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
     TRIDENTS_SUPER_ABILITY(
-            "Tridents.Skills.TA.On",
-            "Tridents.Skills.TA.Off",
-            "Tridents.Skills.TA.Other.On",
-            "Tridents.Skills.TA.Refresh",
-            "Tridents.Skills.TA.Other.Off",
-            "Tridents.SubSkill.TridentAbility.Name"),
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
+    MACES_SUPER_ABILITY(
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
@@ -199,16 +206,15 @@ public enum SuperAbilityType {
     public boolean getPermissions(Player player) {
         return switch (this) {
             case BERSERK -> Permissions.berserk(player);
-            case EXPLOSIVE_SHOT -> Permissions.explosiveShot(player);
             case BLAST_MINING -> Permissions.remoteDetonation(player);
             case GIGA_DRILL_BREAKER -> Permissions.gigaDrillBreaker(player);
             case GREEN_TERRA -> Permissions.greenTerra(player);
             case SERRATED_STRIKES -> Permissions.serratedStrikes(player);
             case SKULL_SPLITTER -> Permissions.skullSplitter(player);
             case SUPER_BREAKER -> Permissions.superBreaker(player);
-            case SUPER_SHOTGUN -> Permissions.superShotgun(player);
             case TREE_FELLER -> Permissions.treeFeller(player);
-            case TRIDENTS_SUPER_ABILITY -> Permissions.tridentsSuper(player);
+            // TODO: once implemented, return permissions for the following abilities
+            case EXPLOSIVE_SHOT, TRIDENTS_SUPER_ABILITY, SUPER_SHOTGUN, MACES_SUPER_ABILITY -> false;
         };
     }
 

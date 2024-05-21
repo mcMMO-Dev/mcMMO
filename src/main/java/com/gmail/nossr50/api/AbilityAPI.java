@@ -83,8 +83,8 @@ public final class AbilityAPI {
     }
 
     public static boolean isBleeding(LivingEntity entity) {
-        if(entity.isValid()) {
-            if(entity.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
+        if (entity.isValid()) {
+            if (entity.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
                 return true;
             }
         }

@@ -41,7 +41,7 @@ public class MmoeditCommand extends ExperienceCommand {
 
         McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        if(mmoPlayer != null) {
+        if (mmoPlayer != null) {
             EventUtils.tryLevelEditEvent(mmoPlayer, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
         } else {
             EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
@@ -51,7 +51,7 @@ public class MmoeditCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageAll(Player player, int value, boolean isSilent) {
-        if(isSilent)
+        if (isSilent)
             return;
 
         player.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", value));
@@ -59,7 +59,7 @@ public class MmoeditCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
-        if(isSilent)
+        if (isSilent)
             return;
 
         player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), value));

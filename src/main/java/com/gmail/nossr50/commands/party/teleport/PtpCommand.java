@@ -45,22 +45,20 @@ public class PtpCommand implements TabExecutor {
         Player player = (Player) sender;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return true;
         }
 
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(player.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(player.getWorld()))
             return true;
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -171,8 +169,7 @@ public class PtpCommand implements TabExecutor {
                 if (!Permissions.partyTeleportWorld(target, targetWorld)) {
                     player.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return;
-                }
-                else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(player, targetWorld)) {
+                } else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(player, targetWorld)) {
                     player.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return;
                 }
@@ -228,14 +225,12 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
-        if(UserManager.getPlayer(targetPlayer) == null)
-        {
+        if (UserManager.getPlayer(targetPlayer) == null) {
             targetPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
 
-        if(UserManager.getPlayer(teleportingPlayer) == null)
-        {
+        if (UserManager.getPlayer(teleportingPlayer) == null) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return;
         }
@@ -250,8 +245,7 @@ public class PtpCommand implements TabExecutor {
         if (warmup > 0) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
             mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(teleportingPlayer, new TeleportationWarmup(mcMMOPlayer, mcMMOTarget), 20 * warmup);
-        }
-        else {
+        } else {
             EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }
     }

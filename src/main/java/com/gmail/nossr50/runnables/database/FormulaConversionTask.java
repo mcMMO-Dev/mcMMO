@@ -44,8 +44,7 @@ public class FormulaConversionTask extends CancellableRunnable {
                 editValues(profile);
                 // Since this is a temporary profile, we save it here.
                 profile.scheduleAsyncSave();
-            }
-            else {
+            } else {
                 profile = mcMMOPlayer.getProfile();
                 editValues(profile);
             }

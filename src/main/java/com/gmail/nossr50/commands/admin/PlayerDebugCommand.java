@@ -13,7 +13,7 @@ public class PlayerDebugCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
             mcMMOPlayer.toggleDebugMode(); //Toggle debug mode
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));

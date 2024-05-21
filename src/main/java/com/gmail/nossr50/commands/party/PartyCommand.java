@@ -90,8 +90,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        if(mcMMOPlayer == null)
-        {
+        if (mcMMOPlayer == null) {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -207,8 +206,7 @@ public class PartyCommand implements TabExecutor {
                             final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                             //Not Loaded
-                            if(mcMMOPlayer == null)
-                            {
+                            if (mcMMOPlayer == null) {
                                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }

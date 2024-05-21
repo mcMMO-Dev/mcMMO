@@ -31,7 +31,7 @@ public class Crossbows {
     }
 
     private static void processTrickShot(ProjectileHitEvent event, Plugin pluginRef, Arrow arrow, McMMOPlayer mmoPlayer) {
-        if(event.getHitBlock() != null && event.getHitBlockFace() != null) {
+        if (event.getHitBlock() != null && event.getHitBlockFace() != null) {
             mmoPlayer.getCrossbowsManager().handleRicochet(
                     pluginRef,
                     arrow,

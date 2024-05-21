@@ -18,15 +18,15 @@ public final class HardcoreManager {
 
     public static void invokeStatPenalty(Player player) {
 
-        if(WorldGuardUtils.isWorldGuardLoaded()) {
-            if(!WorldGuardManager.getInstance().hasHardcoreFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasHardcoreFlag(player))
                 return;
         }
 
         double statLossPercentage = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyLevelThreshold();
 
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return;
 
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
@@ -69,15 +69,15 @@ public final class HardcoreManager {
 
     public static void invokeVampirism(Player killer, Player victim) {
 
-        if(WorldGuardUtils.isWorldGuardLoaded()) {
-            if(!WorldGuardManager.getInstance().hasHardcoreFlag(killer) || !WorldGuardManager.getInstance().hasHardcoreFlag(victim))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasHardcoreFlag(killer) || !WorldGuardManager.getInstance().hasHardcoreFlag(victim))
                 return;
         }
 
         double vampirismStatLeechPercentage = mcMMO.p.getGeneralConfig().getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = mcMMO.p.getGeneralConfig().getHardcoreVampirismLevelThreshold();
 
-        if(UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
+        if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
             return;
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
@@ -121,8 +121,7 @@ public final class HardcoreManager {
         if (totalLevelsStolen > 0) {
             NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Success", String.valueOf(totalLevelsStolen), victim.getName());
             NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Success", killer.getName(), String.valueOf(totalLevelsStolen));
-        }
-        else {
+        } else {
             NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Failure", victim.getName());
             NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Failure", killer.getName());
         }

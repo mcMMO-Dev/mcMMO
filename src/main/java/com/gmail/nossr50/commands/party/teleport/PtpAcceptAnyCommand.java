@@ -21,8 +21,7 @@ public class PtpAcceptAnyCommand implements CommandExecutor {
 
         if (ptpRecord.isConfirmRequired()) {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));
-        }
-        else {
+        } else {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Enabled"));
         }
 

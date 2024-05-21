@@ -19,7 +19,7 @@ public class SaveTimerTask extends CancellableRunnable {
             count++;
         }
 
-        if(mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (mcMMO.p.getPartyConfig().isPartyEnabled())
             mcMMO.p.getPartyManager().saveParties();
     }
 }

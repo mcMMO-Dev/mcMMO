@@ -14,7 +14,7 @@ author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking, electronicboy, kashike]
 website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
-softdepend: [WorldGuard, CombatTag, HealthBar, PlaceholderAPI]
+softdepend: [WorldGuard, CombatTag, HealthBar, PlaceholderAPI, ProtocolLib]
 load: POSTWORLD
 folia-supported: true
 api-version: 1.13
@@ -154,6 +154,9 @@ commands:
     salvage:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.salvage
+    maces:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.maces
     mmopower:
         description: Shows skill mastery and power level info
         permission: mcmmo.commands.mmopower

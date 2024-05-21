@@ -41,14 +41,14 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
             return false;
 
         return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
         return mmoPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
@@ -60,13 +60,13 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void processRupture(@NotNull LivingEntity target) {
-        if(!canUseRupture())
+        if (!canUseRupture())
             return;
 
-        if(target.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
+        if (target.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
             RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(MetadataConstants.METADATA_KEY_RUPTURE).get(0);
 
-            if(mmoPlayer.isDebugMode()) {
+            if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Rupture task ongoing for target " + target.toString());
                 mmoPlayer.getPlayer().sendMessage(ruptureTaskMeta.getRuptureTimerTask().toString());
             }
@@ -76,12 +76,12 @@ public class SwordsManager extends SkillManager {
         }
 
         double ruptureOdds = mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank());
-        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, this.getPlayer(), ruptureOdds)) {
+        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, mmoPlayer, ruptureOdds)) {
 
             if (target instanceof Player defender) {
 
                 //Don't start or add to a bleed if they are blocking
-                if(defender.isBlocking())
+                if (defender.isBlocking())
                     return;
 
                 if (NotificationManager.doesPlayerUseNotifications(defender)) {
@@ -108,27 +108,24 @@ public class SwordsManager extends SkillManager {
         return RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
-    public double getStabDamage()
-    {
+    public double getStabDamage() {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_STAB);
 
-        if(rank > 0)
-        {
+        if (rank > 0) {
             return (1.0D + (rank * 1.5));
         }
 
         return 0;
     }
 
-    public int getToolTier(@NotNull ItemStack itemStack)
-    {
-        if(ItemUtils.isNetheriteTool(itemStack))
+    public int getToolTier(@NotNull ItemStack itemStack) {
+        if (ItemUtils.isNetheriteTool(itemStack))
             return 5;
-        if(ItemUtils.isDiamondTool(itemStack))
+        if (ItemUtils.isDiamondTool(itemStack))
             return 4;
-        else if(ItemUtils.isIronTool(itemStack) || ItemUtils.isGoldTool(itemStack))
+        else if (ItemUtils.isIronTool(itemStack) || ItemUtils.isGoldTool(itemStack))
             return 3;
-        else if(ItemUtils.isStoneTool(itemStack))
+        else if (ItemUtils.isStoneTool(itemStack))
             return 2;
         else
             return 1;
@@ -142,7 +139,7 @@ public class SwordsManager extends SkillManager {
      */
     public void counterAttackChecks(@NotNull LivingEntity attacker, double damage) {
 
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
+        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SWORDS_COUNTER_ATTACK, mmoPlayer)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");

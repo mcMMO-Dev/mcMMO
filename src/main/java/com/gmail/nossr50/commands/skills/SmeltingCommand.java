@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
@@ -34,7 +33,7 @@ public class SmeltingCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
-            burnTimeModifier = String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getFuelEfficiencyMultiplier());
+            burnTimeModifier = String.valueOf(mmoPlayer.getSmeltingManager().getFuelEfficiencyMultiplier());
         }
 
         // FLUX MINING
@@ -46,7 +45,7 @@ public class SmeltingCommand extends SkillCommand {
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.SMELTING_SECOND_SMELT);
+            String[] secondSmeltStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
             str_secondSmeltChance = secondSmeltStrings[0];
             str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -81,7 +80,7 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canUnderstandTheArt) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_UNDERSTANDING_THE_ART,
-                    String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier())));
+                    String.valueOf(mmoPlayer.getSmeltingManager().getVanillaXpMultiplier())));
         }
 
         return messages;

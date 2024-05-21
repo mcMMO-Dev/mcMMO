@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.LogUtils;
+import com.gmail.nossr50.util.PotionUtil;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,7 +15,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 import java.io.IOException;
@@ -165,22 +165,33 @@ public class TreasureConfig extends BukkitConfig {
                 Material mat = Material.matchMaterial(materialName);
                 if (mat == null) {
                     reason.add("Potion format for " + FILENAME + " has changed");
+                    continue;
                 } else {
                     item = new ItemStack(mat, amount, data);
-                    PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
-
-                    PotionType potionType = null;
-                    try {
-                        potionType = PotionType.valueOf(config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
-                    } catch (IllegalArgumentException ex) {
-                        reason.add("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
+                    PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+                    if (potionMeta == null) {
+                        mcMMO.p.getLogger().severe("Item meta when adding potion to treasure was null, contact the mcMMO devs!");
+                        reason.add("Item meta when adding potion to treasure was null, contact the mcMMO devs!");
+                        continue;
                     }
+
+                    String potionTypeStr;
+                    potionTypeStr = config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER");
                     boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
                     boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
-                    itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
+                    PotionType potionType = PotionUtil.matchPotionType(potionTypeStr, extended, upgraded);
+
+                    if (potionType == null) {
+                        reason.add("Could not derive potion type from: " + potionTypeStr +", " + extended + ", " + upgraded);
+                        continue;
+                    }
+
+                    // Set the base potion type
+                    // NOTE: extended/upgraded are ignored in 1.20.5 and later
+                    PotionUtil.setBasePotionType(potionMeta, potionType, extended, upgraded);
 
                     if (config.contains(type + "." + treasureName + ".Custom_Name")) {
-                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
+                        potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
                     }
 
                     if (config.contains(type + "." + treasureName + ".Lore")) {
@@ -188,9 +199,9 @@ public class TreasureConfig extends BukkitConfig {
                         for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
                             lore.add(ChatColor.translateAlternateColorCodes('&', s));
                         }
-                        itemMeta.setLore(lore);
+                        potionMeta.setLore(lore);
                     }
-                    item.setItemMeta(itemMeta);
+                    item.setItemMeta(potionMeta);
                 }
             } else if (material != null) {
                 item = new ItemStack(material, amount, data);

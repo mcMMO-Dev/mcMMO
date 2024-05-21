@@ -28,7 +28,7 @@ public class FlatFileDataBuilder {
     }
 
     public @NotNull FlatFileDataContainer build() {
-        if(dataFlags.contains(FlatFileDataFlag.BAD_VALUES)) {
+        if (dataFlags.contains(FlatFileDataFlag.BAD_VALUES)) {
             return new BadCategorizedFlatFileData(uniqueProcessingId, dataFlags, splitStringData, badDataValues);
         }
 

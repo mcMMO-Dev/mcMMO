@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -40,7 +39,7 @@ public class UnarmedCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.UNARMED_ARROW_DEFLECT);
+            String[] deflectStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -54,19 +53,19 @@ public class UnarmedCommand extends SkillCommand {
 
         // UNARMED_DISARM
         if (canDisarm) {
-            String[] disarmStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.UNARMED_DISARM);
+            String[] disarmStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.UNARMED_DISARM);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getSteelArmStyleDamage();
+            ironArmBonus = mmoPlayer.getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = ProbabilityUtil.getRNGDisplayValues(player, SubSkillType.UNARMED_IRON_GRIP);
+            String[] ironGripStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.UNARMED_IRON_GRIP);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }
@@ -114,7 +113,7 @@ public class UnarmedCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
-        if(Permissions.canUseSubSkill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
+        if (Permissions.canUseSubSkill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.UNARMED_UNARMED_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, 1000))));
         }

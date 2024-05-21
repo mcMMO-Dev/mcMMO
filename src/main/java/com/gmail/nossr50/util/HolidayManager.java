@@ -313,7 +313,7 @@
 //    }
 //
 //    public boolean isAprilFirst() {
-//        if(!Config.getInstance().isAprilFoolsAllowed())
+//        if (!Config.getInstance().isAprilFoolsAllowed())
 //            return false;
 //
 //        GregorianCalendar aprilFirst = new GregorianCalendar(currentYear, Calendar.APRIL, 1);
@@ -323,7 +323,7 @@
 //    }
 //
 //    public boolean nearingAprilFirst() {
-//        if(!Config.getInstance().isAprilFoolsAllowed())
+//        if (!Config.getInstance().isAprilFoolsAllowed())
 //            return false;
 //
 //        GregorianCalendar start = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.MARCH, 28);
@@ -366,7 +366,7 @@
 //    }
 //
 //    public void levelUpApril(Player player, FakeSkillType fakeSkillType) {
-//        if(!Config.getInstance().isAprilFoolsAllowed())
+//        if (!Config.getInstance().isAprilFoolsAllowed())
 //            return;
 //
 //        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
@@ -379,7 +379,7 @@
 //    }
 //
 //    public void registerAprilCommand() {
-//        if(!Config.getInstance().isAprilFoolsAllowed())
+//        if (!Config.getInstance().isAprilFoolsAllowed())
 //            return;
 //
 //        PluginCommand command = mcMMO.p.getCommand("crafting");

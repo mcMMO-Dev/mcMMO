@@ -25,9 +25,9 @@ public class AdminChatCommand extends BaseCommand {
     @Default @Conditions(CommandManager.ADMIN_CONDITION)
     public void processCommand(String[] args) {
         BukkitCommandIssuer bukkitCommandIssuer = (BukkitCommandIssuer) getCurrentCommandIssuer();
-        if(args == null || args.length == 0) {
+        if (args == null || args.length == 0) {
             //Process with no arguments
-            if(bukkitCommandIssuer.isPlayer()) {
+            if (bukkitCommandIssuer.isPlayer()) {
                 McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
                 pluginRef.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.ADMIN);
             } else {
@@ -35,10 +35,10 @@ public class AdminChatCommand extends BaseCommand {
                 mcMMO.p.getLogger().info("You cannot switch chat channels as console, please provide full arguments.");
             }
         } else {
-            if(bukkitCommandIssuer.isPlayer()) {
+            if (bukkitCommandIssuer.isPlayer()) {
                 McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
 
-                if(mmoPlayer == null)
+                if (mmoPlayer == null)
                     return;
 
                 //Message contains the original command so it needs to be passed to this method to trim it

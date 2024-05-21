@@ -77,8 +77,7 @@ public class SkillGuideCommand implements CommandExecutor {
         while (allStrings.size() < 9) {
             if (pageIndexStart + allStrings.size() > guide.size()) {
                 allStrings.add("");
-            }
-            else {
+            } else {
                 allStrings.add(guide.get(pageIndexStart + (allStrings.size() - 1)));
             }
         }
