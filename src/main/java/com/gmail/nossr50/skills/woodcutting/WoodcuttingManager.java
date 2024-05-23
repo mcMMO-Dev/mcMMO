@@ -316,22 +316,22 @@ public class WoodcuttingManager extends SkillManager {
                 xp += processTreeFellerXPGains(blockState, processedLogCount);
 
                 //Drop displaced block
-                Misc.spawnItemsFromCollection(getPlayer(), Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                Misc.spawnItemsFromCollection(player, Misc.getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
                 processBonusDropCheck(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
                 // 75% of the time do not drop leaf blocks
                 if (ThreadLocalRandom.current().nextInt(100) > 75) {
-                    Misc.spawnItemsFromCollection(getPlayer(),
+                    Misc.spawnItemsFromCollection(player,
                             Misc.getBlockCenter(blockState),
                             block.getDrops(itemStack),
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
                 }
-                // drop saplings as occur in rest if Knock on Wood unlocked.
+                // if KnockOnWood is unlocked, then drop any saplings from the remaining blocks
                 else if (RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    Misc.spawnItemIfSapling(getPlayer(), Misc.getBlockCenter(blockState),
-                            block.getDrops(itemStack),ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);;
+                    Misc.spawnItemIfSapling(player, Misc.getBlockCenter(blockState),
+                            block.getDrops(itemStack),ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
                 }
 
                 //Drop displaced non-woodcutting XP blocks

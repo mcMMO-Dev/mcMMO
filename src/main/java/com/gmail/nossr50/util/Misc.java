@@ -132,12 +132,12 @@ public final class Misc {
      * Drops the item from the item stack only if it is a sapling (or equivalent)
      * Needed for TreeFeller
      */
-    public static void spawnItemIfSapling(@NotNull Player player, @NotNull Location location, @NotNull Collection < ItemStack > drops, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItemIfSapling(@NotNull Player player, @NotNull Location spawnLocation, @NotNull Collection <ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
         String dropString;
         for (ItemStack drop : drops) {
             dropString = drop.getType().getKey().getKey();
             if (dropString.contains("sapling") || dropString.contains("propagule")) {
-                Misc.spawnItem(player, location, drop, itemSpawnReason);
+                spawnItem(player, spawnLocation, drop, itemSpawnReason);
             }
         }
     }
