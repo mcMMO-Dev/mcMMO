@@ -130,14 +130,42 @@ public final class Misc {
     }
 
     /**
-     * Drops the item from the item stack only if it is a sapling (or equivalent)
-     * Needed for TreeFeller
+     * Spawn items form a collection if conditions are met.
+     * Each item is tested against the condition and spawned if it passes.
+     *
+     * @param potentialItemDrops The collection of items to iterate over, each one is tested and spawned if the
+     *                       predicate is true
+     * @param itemSpawnReason The reason for the item drop
+     * @param spawnLocation   The location to spawn the item at
+     * @param predicate       The predicate to test the item against
+     * @param player          The player to spawn the item for
      */
-    public static void conditionallySpawn(@NotNull Predicate<String> predicate, @NotNull Player player, @NotNull Location spawnLocation, @NotNull Collection <ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
-        for (ItemStack drop : drops) {
-            if (predicate.test(drop.getType().getKey().getKey())) {
-                spawnItem(player, spawnLocation, drop, itemSpawnReason);
-            }
+    public static void spawnItem(@NotNull Collection <ItemStack> potentialItemDrops,
+                                 @NotNull ItemSpawnReason itemSpawnReason,
+                                 @NotNull Location spawnLocation,
+                                 @NotNull Predicate<String> predicate,
+                                 @NotNull Player player) {
+        for (ItemStack drop : potentialItemDrops) {
+            spawnItem(drop, itemSpawnReason, spawnLocation, predicate, player);
+        }
+    }
+
+    /**
+     * Spawn item if conditions are met.
+     *
+     * @param potentialItemSpawn The item to spawn if conditions are met
+     * @param itemSpawnReason The reason for the item drop
+     * @param spawnLocation   The location to spawn the item at
+     * @param predicate       The predicate to test the item against
+     * @param player          The player to spawn the item for
+     */
+    public static void spawnItem(@NotNull ItemStack potentialItemSpawn,
+                                 @NotNull ItemSpawnReason itemSpawnReason,
+                                 @NotNull Location spawnLocation,
+                                 @NotNull Predicate<String> predicate,
+                                 @NotNull Player player) {
+        if (predicate.test(potentialItemSpawn.getType().getKey().getKey())) {
+            spawnItem(player, spawnLocation, potentialItemSpawn, itemSpawnReason);
         }
     }
 
