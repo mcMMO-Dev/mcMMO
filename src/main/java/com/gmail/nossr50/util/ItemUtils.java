@@ -35,15 +35,15 @@ import java.util.function.Predicate;
 import static java.util.Objects.requireNonNull;
 
 public final class ItemUtils {
-    private ItemUtils() {
-        // private constructor
-    }
-
     // Reflection for setItemName only available in newer APIs
     private static final Method setItemName;
 
     static {
         setItemName = getSetItemName();
+    }
+
+    private ItemUtils() {
+        // private constructor
     }
 
     private static Method getSetItemName() {
@@ -57,8 +57,9 @@ public final class ItemUtils {
     /**
      * Sets the item name using the new API if available
      * or falls back to the old API.
+     *
      * @param itemMeta The item meta to set the name on
-     * @param name The name to set
+     * @param name     The name to set
      */
     public static void setItemName(ItemMeta itemMeta, String name) {
         if (setItemName != null) {
@@ -91,8 +92,9 @@ public final class ItemUtils {
     /**
      * Exhaustive lookup for a Material by name.
      * <p>
-     *     This method will first try a normal lookup, then a legacy lookup, then a lookup by ENUM name,
-     *      and finally a lookup by ENUM name with legacy name.
+     * This method will first try a normal lookup, then a legacy lookup, then a lookup by ENUM name,
+     * and finally a lookup by ENUM name with legacy name.
+     *
      * @param materialName The name of the material to lookup
      * @return The Material if found, or null if not found
      */
@@ -122,7 +124,7 @@ public final class ItemUtils {
     /**
      * Checks if a player has an item in their inventory or offhand.
      *
-     * @param player Player to check
+     * @param player   Player to check
      * @param material Material to check for
      * @return true if the player has the item in their inventory or offhand, false otherwise
      */
@@ -140,9 +142,9 @@ public final class ItemUtils {
     /**
      * Removes an item from a player's inventory, including their offhand.
      *
-     * @param player Player to remove the item from
+     * @param player   Player to remove the item from
      * @param material Material to remove
-     * @param amount Amount of the material to remove
+     * @param amount   Amount of the material to remove
      */
     public static void removeItemIncludingOffHand(@NotNull Player player, @NotNull Material material, int amount) {
         // Checks main inventory / item bar
@@ -169,11 +171,6 @@ public final class ItemUtils {
     }
 
     // TODO: Unit tests
-    public static boolean isBowOrCrossbow(@NotNull ItemStack item) {
-        return isBow(item) || isCrossbow(item);
-    }
-
-    // TODO: Unit tests
     public static boolean isTrident(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
     }
@@ -183,7 +180,8 @@ public final class ItemUtils {
     }
 
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {
-        return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
+        return player.getInventory().getItemInMainHand().getType() == material
+                || player.getInventory().getItemInOffHand().getType() == material;
     }
 
     public static boolean doesPlayerHaveEnchantmentOnArmor(@NotNull Player player, @NotNull String enchantmentByName) {
@@ -196,7 +194,7 @@ public final class ItemUtils {
     }
 
     public static boolean doesPlayerHaveEnchantmentOnArmor(@NotNull Player player, @NotNull Enchantment enchantment) {
-        for(ItemStack itemStack : player.getInventory().getArmorContents()) {
+        for (ItemStack itemStack : player.getInventory().getArmorContents()) {
             if (itemStack != null) {
                 if (hasEnchantment(itemStack, enchantment))
                     return true;
@@ -245,7 +243,7 @@ public final class ItemUtils {
 
     public static boolean doesPlayerHaveEnchantmentInHands(@NotNull Player player, @NotNull Enchantment enchantment) {
         return hasEnchantment(player.getInventory().getItemInMainHand(), enchantment) ||
-            hasEnchantment(player.getInventory().getItemInOffHand(), enchantment);
+                hasEnchantment(player.getInventory().getItemInOffHand(), enchantment);
     }
 
     public static boolean hasEnchantment(@NotNull ItemStack itemStack, @NotNull Enchantment enchantment) {
@@ -257,7 +255,7 @@ public final class ItemUtils {
     }
 
     public static @Nullable Enchantment getEnchantment(@NotNull String enchantmentName) {
-        for(Enchantment enchantment : Enchantment.values()) {
+        for (Enchantment enchantment : Enchantment.values()) {
             if (enchantment.getKey().getKey().equalsIgnoreCase(enchantmentName)) {
                 return enchantment;
             }
@@ -509,7 +507,11 @@ public final class ItemUtils {
             return false;
         }
 
-        return isMiningDrop(item) || isWoodcuttingDrop(item) || isMobDrop(item) || isHerbalismDrop(item) || isMiscDrop(item);
+        return isMiningDrop(item)
+                || isWoodcuttingDrop(item)
+                || isMobDrop(item)
+                || isHerbalismDrop(item)
+                || isMiscDrop(item);
     }
 
     /**
@@ -520,27 +522,12 @@ public final class ItemUtils {
      */
     public static boolean isMiningDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
-        switch (item.getType()) {
-            case COAL:
-            case COAL_ORE:
-            case DIAMOND:
-            case DIAMOND_ORE:
-            case EMERALD:
-            case EMERALD_ORE:
-            case GOLD_ORE:
-            case IRON_ORE:
-            case LAPIS_ORE:
-            case REDSTONE_ORE: // Should we also have Glowing Redstone Ore here?
-            case REDSTONE:
-            case GLOWSTONE_DUST: // Should we also have Glowstone here?
-            case QUARTZ:
-            case NETHER_QUARTZ_ORE:
-            case LAPIS_LAZULI:
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (item.getType()) { // Should we also have Glowing Redstone Ore here?
+            // Should we also have Glowstone here?
+            case COAL, COAL_ORE, DIAMOND, DIAMOND_ORE, EMERALD, EMERALD_ORE, GOLD_ORE, IRON_ORE, LAPIS_ORE,
+                 REDSTONE_ORE, REDSTONE, GLOWSTONE_DUST, QUARTZ, NETHER_QUARTZ_ORE, LAPIS_LAZULI -> true;
+            default -> false;
+        };
     }
 
     /**
@@ -551,36 +538,13 @@ public final class ItemUtils {
      */
     public static boolean isHerbalismDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
-        switch (item.getType().getKey().getKey().toLowerCase()) {
-            case "wheat":
-            case "wheat_seeds":
-            case "carrot":
-            case "chorus_fruit":
-            case "chorus_flower":
-            case "potato":
-            case "beetroot":
-            case "beetroots":
-            case "beetroot_seeds":
-            case "nether_wart":
-            case "brown_mushroom":
-            case "red_mushroom":
-            case "rose_bush":
-            case "dandelion":
-            case "cactus":
-            case "sugar_cane":
-            case "melon":
-            case "melon_seeds":
-            case "pumpkin":
-            case "pumpkin_seeds":
-            case "lily_pad":
-            case "vine":
-            case "tall_grass":
-            case "cocoa_beans":
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (item.getType().getKey().getKey().toLowerCase()) {
+            case "wheat", "wheat_seeds", "carrot", "chorus_fruit", "chorus_flower", "potato", "beetroot", "beetroots",
+                 "beetroot_seeds", "nether_wart", "brown_mushroom", "red_mushroom", "rose_bush", "dandelion", "cactus",
+                 "sugar_cane", "melon", "melon_seeds", "pumpkin", "pumpkin_seeds", "lily_pad", "vine", "tall_grass",
+                 "cocoa_beans" -> true;
+            default -> false;
+        };
     }
 
 
@@ -592,54 +556,14 @@ public final class ItemUtils {
      */
     public static boolean isMobDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
-        switch (item.getType()) {
-            case STRING:
-            case FEATHER:
-            case CHICKEN:
-            case COOKED_CHICKEN:
-            case LEATHER:
-            case BEEF:
-            case COOKED_BEEF:
-            case PORKCHOP:
-            case COOKED_PORKCHOP:
-            case WHITE_WOOL:
-            case BLACK_WOOL:
-            case BLUE_WOOL:
-            case BROWN_WOOL:
-            case CYAN_WOOL:
-            case GRAY_WOOL:
-            case GREEN_WOOL:
-            case LIGHT_BLUE_WOOL:
-            case LIGHT_GRAY_WOOL:
-            case LIME_WOOL:
-            case MAGENTA_WOOL:
-            case ORANGE_WOOL:
-            case PINK_WOOL:
-            case PURPLE_WOOL:
-            case RED_WOOL:
-            case YELLOW_WOOL:
-            case IRON_INGOT:
-            case SNOWBALL:
-            case BLAZE_ROD:
-            case SPIDER_EYE:
-            case GUNPOWDER:
-            case ENDER_PEARL:
-            case GHAST_TEAR:
-            case MAGMA_CREAM:
-            case BONE:
-            case ARROW:
-            case SLIME_BALL:
-            case NETHER_STAR:
-            case ROTTEN_FLESH:
-            case GOLD_NUGGET:
-            case EGG:
-            case ROSE_BUSH:
-            case COAL:
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (item.getType()) {
+            case STRING, FEATHER, CHICKEN, COOKED_CHICKEN, LEATHER, BEEF, COOKED_BEEF, PORKCHOP, COOKED_PORKCHOP,
+                 WHITE_WOOL, BLACK_WOOL, BLUE_WOOL, BROWN_WOOL, CYAN_WOOL, GRAY_WOOL, GREEN_WOOL, LIGHT_BLUE_WOOL,
+                 LIGHT_GRAY_WOOL, LIME_WOOL, MAGENTA_WOOL, ORANGE_WOOL, PINK_WOOL, PURPLE_WOOL, RED_WOOL, YELLOW_WOOL,
+                 IRON_INGOT, SNOWBALL, BLAZE_ROD, SPIDER_EYE, GUNPOWDER, ENDER_PEARL, GHAST_TEAR, MAGMA_CREAM, BONE,
+                 ARROW, SLIME_BALL, NETHER_STAR, ROTTEN_FLESH, GOLD_NUGGET, EGG, ROSE_BUSH, COAL -> true;
+            default -> false;
+        };
     }
 
     /**
@@ -649,39 +573,14 @@ public final class ItemUtils {
      * @return true if the item is a woodcutting drop, false otherwise
      */
     public static boolean isWoodcuttingDrop(ItemStack item) {
-        switch (item.getType().toString()) {
-            case "ACACIA_LOG":
-            case "BIRCH_LOG":
-            case "DARK_OAK_LOG":
-            case "JUNGLE_LOG":
-            case "OAK_LOG":
-            case "SPRUCE_LOG":
-            case "STRIPPED_ACACIA_LOG":
-            case "STRIPPED_BIRCH_LOG":
-            case "STRIPPED_DARK_OAK_LOG":
-            case "STRIPPED_JUNGLE_LOG":
-            case "STRIPPED_OAK_LOG":
-            case "STRIPPED_SPRUCE_LOG":
-            case "STRIPPED_MANGROVE_LOG":
-            case "ACACIA_SAPLING":
-            case "SPRUCE_SAPLING":
-            case "BIRCH_SAPLING":
-            case "DARK_OAK_SAPLING":
-            case "JUNGLE_SAPLING":
-            case "OAK_SAPLING":
-            case "ACACIA_LEAVES":
-            case "BIRCH_LEAVES":
-            case "DARK_OAK_LEAVES":
-            case "JUNGLE_LEAVES":
-            case "OAK_LEAVES":
-            case "SPRUCE_LEAVES":
-            case "BEE_NEST":
-            case "APPLE":
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (item.getType().toString()) {
+            case "ACACIA_LOG", "BIRCH_LOG", "DARK_OAK_LOG", "JUNGLE_LOG", "OAK_LOG", "SPRUCE_LOG",
+                 "STRIPPED_ACACIA_LOG", "STRIPPED_BIRCH_LOG", "STRIPPED_DARK_OAK_LOG", "STRIPPED_JUNGLE_LOG",
+                 "STRIPPED_OAK_LOG", "STRIPPED_SPRUCE_LOG", "STRIPPED_MANGROVE_LOG", "ACACIA_SAPLING", "SPRUCE_SAPLING",
+                 "BIRCH_SAPLING", "DARK_OAK_SAPLING", "JUNGLE_SAPLING", "OAK_SAPLING", "ACACIA_LEAVES", "BIRCH_LEAVES",
+                 "DARK_OAK_LEAVES", "JUNGLE_LEAVES", "OAK_LEAVES", "SPRUCE_LEAVES", "BEE_NEST", "APPLE" -> true;
+            default -> false;
+        };
     }
 
     /**
@@ -721,23 +620,6 @@ public final class ItemUtils {
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
     }
 
-//    public static void addAbilityLore(@NotNull ItemStack itemStack) {
-//        ItemMeta itemMeta = itemStack.getItemMeta();
-//        List<String> itemLore = new ArrayList<>();
-//
-//        if (itemMeta == null)
-//            return;
-//
-//        if (itemMeta.hasLore()) {
-//            itemLore = itemMeta.getLore();
-//        }
-//
-//        itemLore.add("mcMMO Ability Tool");
-//
-//        itemMeta.setLore(itemLore);
-//        itemStack.setItemMeta(itemMeta);
-//    }
-
     public static void removeAbilityLore(@NotNull ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -757,7 +639,8 @@ public final class ItemUtils {
         }
     }
 
-    public static void addDigSpeedToItem(@NotNull ItemStack itemStack, int existingEnchantLevel) {
+    public static void addDigSpeedToItem(@NotNull ItemStack itemStack,
+                                         int existingEnchantLevel) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         if (itemMeta == null)
@@ -782,12 +665,16 @@ public final class ItemUtils {
         }
 
         EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemMeta;
-        enchantmentStorageMeta.addStoredEnchant(enchantmentWrapper.getEnchantment(), enchantmentWrapper.getEnchantmentLevel(), ExperienceConfig.getInstance().allowUnsafeEnchantments());
+        enchantmentStorageMeta.addStoredEnchant(
+                enchantmentWrapper.getEnchantment(),
+                enchantmentWrapper.getEnchantmentLevel(),
+                ExperienceConfig.getInstance().allowUnsafeEnchantments());
         itemStack.setItemMeta(enchantmentStorageMeta);
         return itemStack;
     }
 
-    public static @NotNull EnchantmentWrapper getRandomEnchantment(@NotNull List<EnchantmentWrapper> enchantmentWrappers) {
+    public static @NotNull EnchantmentWrapper getRandomEnchantment(
+            @NotNull List<EnchantmentWrapper> enchantmentWrappers) {
         Collections.shuffle(enchantmentWrappers, Misc.getRandom());
 
         int randomIndex = Misc.getRandom().nextInt(enchantmentWrappers.size());
@@ -798,10 +685,10 @@ public final class ItemUtils {
      * Spawn item if conditions are met.
      *
      * @param potentialItemSpawn The item to spawn if conditions are met
-     * @param itemSpawnReason The reason for the item drop
-     * @param spawnLocation   The location to spawn the item at
-     * @param predicate       The predicate to test the item against
-     * @param player          The player to spawn the item for
+     * @param itemSpawnReason    The reason for the item drop
+     * @param spawnLocation      The location to spawn the item at
+     * @param predicate          The predicate to test the item against
+     * @param player             The player to spawn the item for
      */
     public static void spawnItem(@NotNull ItemStack potentialItemSpawn,
                                  @NotNull ItemSpawnReason itemSpawnReason,
@@ -817,10 +704,14 @@ public final class ItemUtils {
      * Drop items at a given location.
      *
      * @param location The location to drop the items at
-     * @param is The items to drop
+     * @param is       The items to drop
      * @param quantity The amount of items to drop
      */
-    public static void spawnItems(@Nullable Player player, @NotNull Location location, @NotNull ItemStack is, int quantity, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItems(@Nullable Player player,
+                                  @NotNull Location location,
+                                  @NotNull ItemStack is,
+                                  int quantity,
+                                  @NotNull ItemSpawnReason itemSpawnReason) {
         for (int i = 0; i < quantity; i++) {
             spawnItem(player, location, is, itemSpawnReason);
         }
@@ -829,12 +720,15 @@ public final class ItemUtils {
     /**
      * Drop an item at a given location.
      *
-     * @param location The location to drop the item at
-     * @param itemStack The item to drop
+     * @param location        The location to drop the item at
+     * @param itemStack       The item to drop
      * @param itemSpawnReason the reason for the item drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static @Nullable Item spawnItem(@Nullable Player player, @NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static @Nullable Item spawnItem(@Nullable Player player,
+                                           @NotNull Location location,
+                                           @NotNull ItemStack itemStack,
+                                           @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
@@ -853,12 +747,15 @@ public final class ItemUtils {
     /**
      * Drop an item at a given location.
      *
-     * @param location The location to drop the item at
-     * @param itemStack The item to drop
+     * @param location        The location to drop the item at
+     * @param itemStack       The item to drop
      * @param itemSpawnReason the reason for the item drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static @Nullable Item spawnItemNaturally(@Nullable Player player, @NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static @Nullable Item spawnItemNaturally(@Nullable Player player,
+                                                    @NotNull Location location,
+                                                    @NotNull ItemStack itemStack,
+                                                    @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
@@ -878,11 +775,17 @@ public final class ItemUtils {
      * Drop items at a given location.
      *
      * @param fromLocation The location to drop the items at
-     * @param is The items to drop
-     * @param speed the speed that the item should travel
-     * @param quantity The amount of items to drop
+     * @param is           The items to drop
+     * @param speed        the speed that the item should travel
+     * @param quantity     The amount of items to drop
      */
-    public static void spawnItemsTowardsLocation(@Nullable Player player, @NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack is, int quantity, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItemsTowardsLocation(@Nullable Player player,
+                                                 @NotNull Location fromLocation,
+                                                 @NotNull Location toLocation,
+                                                 @NotNull ItemStack is,
+                                                 int quantity,
+                                                 double speed,
+                                                 @NotNull ItemSpawnReason itemSpawnReason) {
         for (int i = 0; i < quantity; i++) {
             spawnItemTowardsLocation(player, fromLocation, toLocation, is, speed, itemSpawnReason);
         }
@@ -893,9 +796,9 @@ public final class ItemUtils {
      * This method is fairly expensive as it creates clones of everything passed to itself since they are mutable objects
      *
      * @param fromLocation The location to drop the item at
-     * @param toLocation The location the item will travel towards
-     * @param itemToSpawn The item to spawn
-     * @param speed the speed that the item should travel
+     * @param toLocation   The location the item will travel towards
+     * @param itemToSpawn  The item to spawn
+     * @param speed        the speed that the item should travel
      * @return Dropped Item entity or null if invalid or cancelled
      */
     public static @Nullable Item spawnItemTowardsLocation(@Nullable Player player,
@@ -943,6 +846,7 @@ public final class ItemUtils {
                                                 @NotNull Location location,
                                                 @NotNull Collection<ItemStack> drops,
                                                 @NotNull ItemSpawnReason itemSpawnReason) {
+        requireNonNull(drops, "drops cannot be null");
         for (ItemStack drop : drops) {
             spawnItem(player, location, drop, itemSpawnReason);
         }
@@ -952,8 +856,8 @@ public final class ItemUtils {
      * Drops only the first n items in a collection
      * Size should always be a positive integer above 0
      *
-     * @param location target drop location
-     * @param drops collection to iterate over
+     * @param location  target drop location
+     * @param drops     collection to iterate over
      * @param sizeLimit the number of drops to process
      */
     public static void spawnItemsFromCollection(@Nullable Player player,
@@ -961,9 +865,10 @@ public final class ItemUtils {
                                                 @NotNull Collection<ItemStack> drops,
                                                 @NotNull ItemSpawnReason itemSpawnReason,
                                                 int sizeLimit) {
-        ItemStack[] arrayDrops = drops.toArray(new ItemStack[0]);
+        // TODO: This doesn't make much sense, unit test time?
+        final ItemStack[] arrayDrops = drops.toArray(new ItemStack[0]);
 
-        for(int i = 0; i < sizeLimit-1; i++) {
+        for (int i = 0; i < sizeLimit - 1; i++) {
             spawnItem(player, location, arrayDrops[i], itemSpawnReason);
         }
     }
@@ -973,13 +878,13 @@ public final class ItemUtils {
      * Each item is tested against the condition and spawned if it passes.
      *
      * @param potentialItemDrops The collection of items to iterate over, each one is tested and spawned if the
-     *                       predicate is true
-     * @param itemSpawnReason The reason for the item drop
-     * @param spawnLocation   The location to spawn the item at
-     * @param predicate       The predicate to test the item against
-     * @param player          The player to spawn the item for
+     *                           predicate is true
+     * @param itemSpawnReason    The reason for the item drop
+     * @param spawnLocation      The location to spawn the item at
+     * @param predicate          The predicate to test the item against
+     * @param player             The player to spawn the item for
      */
-    public static void spawnItem(@NotNull Collection <ItemStack> potentialItemDrops,
+    public static void spawnItem(@NotNull Collection<ItemStack> potentialItemDrops,
                                  @NotNull ItemSpawnReason itemSpawnReason,
                                  @NotNull Location spawnLocation,
                                  @NotNull Predicate<String> predicate,
