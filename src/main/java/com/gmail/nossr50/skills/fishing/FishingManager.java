@@ -446,7 +446,7 @@ public class FishingManager extends SkillManager {
 
         if (fishingSucceeds) {
             if (mcMMO.p.getGeneralConfig().getFishingExtraFish()) {
-                Misc.spawnItem(getPlayer(), player.getEyeLocation(), fishingCatch.getItemStack(), ItemSpawnReason.FISHING_EXTRA_FISH);
+                ItemUtils.spawnItem(getPlayer(), player.getEyeLocation(), fishingCatch.getItemStack(), ItemSpawnReason.FISHING_EXTRA_FISH);
             }
 
             fishingCatch.setItemStack(treasureDrop);
@@ -552,7 +552,7 @@ public class FishingManager extends SkillManager {
                 return;
             }
 
-            Misc.spawnItem(getPlayer(), target.getLocation(), drop, ItemSpawnReason.FISHING_SHAKE_TREASURE);
+            ItemUtils.spawnItem(getPlayer(), target.getLocation(), drop, ItemSpawnReason.FISHING_SHAKE_TREASURE);
             CombatUtils.dealDamage(target, Math.min(Math.max(target.getMaxHealth() / 4, 1), 10), EntityDamageEvent.DamageCause.CUSTOM, getPlayer()); // Make it so you can shake a mob no more than 4 times.
             applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
         }

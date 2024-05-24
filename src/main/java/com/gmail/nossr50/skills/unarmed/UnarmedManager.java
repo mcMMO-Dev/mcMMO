@@ -106,7 +106,7 @@ public class UnarmedManager extends SkillManager {
             if (UserManager.getPlayer(defender) == null)
                 return;
 
-            Item item = Misc.spawnItem(getPlayer(), defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
+            Item item = ItemUtils.spawnItem(getPlayer(), defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
 
             if (item != null && mcMMO.p.getAdvancedConfig().getDisarmProtected()) {
                 item.setMetadata(MetadataConstants.METADATA_KEY_DISARMED_ITEM, UserManager.getPlayer(defender).getPlayerMetadata());

@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.gmail.nossr50.util.Misc.getBlockCenter;
-import static com.gmail.nossr50.util.Misc.spawnItem;
+import static com.gmail.nossr50.util.ItemUtils.spawnItem;
 import static com.gmail.nossr50.util.skills.RankUtils.hasUnlockedSubskill;
 
 //TODO: Seems to not be using the item drop event for bonus drops, may want to change that.. or may not be able to be changed?
@@ -322,14 +322,14 @@ public class WoodcuttingManager extends SkillManager {
                 xp += processTreeFellerXPGains(blockState, processedLogCount);
 
                 //Drop displaced block
-                Misc.spawnItemsFromCollection(player, getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                ItemUtils.spawnItemsFromCollection(player, getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
                 processBonusDropCheck(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
                 // 75% of the time do not drop leaf blocks
                 if (ThreadLocalRandom.current().nextInt(100) > 75) {
-                    Misc.spawnItemsFromCollection(player,
+                    ItemUtils.spawnItemsFromCollection(player,
                             getBlockCenter(blockState),
                             block.getDrops(itemStack),
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
@@ -422,7 +422,7 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     protected void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
-        Misc.spawnItemsFromCollection(
+        ItemUtils.spawnItemsFromCollection(
                 getPlayer(),
                 getBlockCenter(blockState),
                 blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()),

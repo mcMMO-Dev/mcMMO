@@ -4,7 +4,7 @@ import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -57,7 +57,7 @@ public class Archery {
             TrackedEntity trackedEntity = entityIterator.next();
 
             if (trackedEntity.getID() == livingEntity.getUniqueId()) {
-                Misc.spawnItems(null, livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
+                ItemUtils.spawnItems(null, livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
                 entityIterator.remove();
                 return;
             }

@@ -107,7 +107,7 @@ public class BlockListener implements Listener {
                     int bonusCount = bonusDropMeta.asInt();
 
                     for (int i = 0; i < bonusCount; i++) {
-                        Misc.spawnItemNaturally(event.getPlayer(), event.getBlockState().getLocation(), is, ItemSpawnReason.BONUS_DROPS);
+                        ItemUtils.spawnItemNaturally(event.getPlayer(), event.getBlockState().getLocation(), is, ItemSpawnReason.BONUS_DROPS);
                     }
                 }
             }
