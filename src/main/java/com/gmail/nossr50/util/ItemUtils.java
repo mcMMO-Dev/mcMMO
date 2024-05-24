@@ -35,12 +35,11 @@ import java.util.function.Predicate;
 import static java.util.Objects.requireNonNull;
 
 public final class ItemUtils {
-    /**
-     * This is a static utility class, therefore we don't want any instances of
-     * this class. Making the constructor private prevents accidents like that.
-     */
-    private ItemUtils() {}
+    private ItemUtils() {
+        // private constructor
+    }
 
+    // Reflection for setItemName only available in newer APIs
     private static final Method setItemName;
 
     static {
@@ -899,7 +898,12 @@ public final class ItemUtils {
      * @param speed the speed that the item should travel
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static @Nullable Item spawnItemTowardsLocation(@Nullable Player player, @NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack itemToSpawn, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static @Nullable Item spawnItemTowardsLocation(@Nullable Player player,
+                                                          @NotNull Location fromLocation,
+                                                          @NotNull Location toLocation,
+                                                          @NotNull ItemStack itemToSpawn,
+                                                          double speed,
+                                                          @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemToSpawn.getType() == Material.AIR) {
             return null;
         }
@@ -935,7 +939,10 @@ public final class ItemUtils {
         return spawnedItem;
     }
 
-    public static void spawnItemsFromCollection(@NotNull Player player, @NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
+    public static void spawnItemsFromCollection(@NotNull Player player,
+                                                @NotNull Location location,
+                                                @NotNull Collection<ItemStack> drops,
+                                                @NotNull ItemSpawnReason itemSpawnReason) {
         for (ItemStack drop : drops) {
             spawnItem(player, location, drop, itemSpawnReason);
         }
@@ -949,7 +956,11 @@ public final class ItemUtils {
      * @param drops collection to iterate over
      * @param sizeLimit the number of drops to process
      */
-    public static void spawnItemsFromCollection(@Nullable Player player, @NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason, int sizeLimit) {
+    public static void spawnItemsFromCollection(@Nullable Player player,
+                                                @NotNull Location location,
+                                                @NotNull Collection<ItemStack> drops,
+                                                @NotNull ItemSpawnReason itemSpawnReason,
+                                                int sizeLimit) {
         ItemStack[] arrayDrops = drops.toArray(new ItemStack[0]);
 
         for(int i = 0; i < sizeLimit-1; i++) {

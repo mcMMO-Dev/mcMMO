@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.gmail.nossr50.util.ItemUtils.spawnItemsFromCollection;
 import static com.gmail.nossr50.util.Misc.getBlockCenter;
 import static com.gmail.nossr50.util.ItemUtils.spawnItem;
 import static com.gmail.nossr50.util.skills.RankUtils.hasUnlockedSubskill;
@@ -322,14 +323,14 @@ public class WoodcuttingManager extends SkillManager {
                 xp += processTreeFellerXPGains(blockState, processedLogCount);
 
                 //Drop displaced block
-                ItemUtils.spawnItemsFromCollection(player, getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                spawnItemsFromCollection(player, getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
                 processBonusDropCheck(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
                 // 75% of the time do not drop leaf blocks
                 if (ThreadLocalRandom.current().nextInt(100) > 75) {
-                    ItemUtils.spawnItemsFromCollection(player,
+                    spawnItemsFromCollection(player,
                             getBlockCenter(blockState),
                             block.getDrops(itemStack),
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
@@ -421,8 +422,8 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param blockState Block being broken
      */
-    protected void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
-        ItemUtils.spawnItemsFromCollection(
+    void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
+        spawnItemsFromCollection(
                 getPlayer(),
                 getBlockCenter(blockState),
                 blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()),
