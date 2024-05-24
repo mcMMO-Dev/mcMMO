@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public final class Misc {
     private static final @NotNull Random random = new Random();
@@ -132,11 +133,9 @@ public final class Misc {
      * Drops the item from the item stack only if it is a sapling (or equivalent)
      * Needed for TreeFeller
      */
-    public static void spawnItemIfSapling(@NotNull Player player, @NotNull Location spawnLocation, @NotNull Collection <ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
-        String dropString;
+    public static void conditionallySpawn(@NotNull Predicate<String> predicate, @NotNull Player player, @NotNull Location spawnLocation, @NotNull Collection <ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
         for (ItemStack drop : drops) {
-            dropString = drop.getType().getKey().getKey();
-            if (dropString.contains("sapling") || dropString.contains("propagule")) {
+            if (predicate.test(drop.getType().getKey().getKey())) {
                 spawnItem(player, spawnLocation, drop, itemSpawnReason);
             }
         }

@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 //TODO: Seems to not be using the item drop event for bonus drops, may want to change that.. or may not be able to be changed?
 public class WoodcuttingManager extends SkillManager {
@@ -330,8 +331,9 @@ public class WoodcuttingManager extends SkillManager {
                 }
                 // if KnockOnWood is unlocked, then drop any saplings from the remaining blocks
                 else if (RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    Misc.spawnItemIfSapling(player, Misc.getBlockCenter(blockState),
-                            block.getDrops(itemStack),ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                    Predicate<String> isSapling = p -> p.contains("sapling") || p.contains("propagule");
+                    Misc.conditionallySpawn(isSapling, player, Misc.getBlockCenter(blockState),
+                            block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
                 }
 
                 //Drop displaced non-woodcutting XP blocks
