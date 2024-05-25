@@ -682,25 +682,6 @@ public final class ItemUtils {
     }
 
     /**
-     * Spawn item if conditions are met.
-     *
-     * @param potentialItemSpawn The item to spawn if conditions are met
-     * @param itemSpawnReason    The reason for the item drop
-     * @param spawnLocation      The location to spawn the item at
-     * @param predicate          The predicate to test the item against
-     * @param player             The player to spawn the item for
-     */
-    public static void spawnItem(@NotNull ItemStack potentialItemSpawn,
-                                 @NotNull ItemSpawnReason itemSpawnReason,
-                                 @NotNull Location spawnLocation,
-                                 @NotNull Predicate<String> predicate,
-                                 @NotNull Player player) {
-        if (predicate.test(potentialItemSpawn.getType().getKey().getKey())) {
-            spawnItem(player, spawnLocation, potentialItemSpawn, itemSpawnReason);
-        }
-    }
-
-    /**
      * Drop items at a given location.
      *
      * @param location The location to drop the items at
@@ -879,18 +860,18 @@ public final class ItemUtils {
      *
      * @param potentialItemDrops The collection of items to iterate over, each one is tested and spawned if the
      *                           predicate is true
+     * @param predicate          The predicate to test the item against
      * @param itemSpawnReason    The reason for the item drop
      * @param spawnLocation      The location to spawn the item at
-     * @param predicate          The predicate to test the item against
      * @param player             The player to spawn the item for
      */
-    public static void spawnItem(@NotNull Collection<ItemStack> potentialItemDrops,
-                                 @NotNull ItemSpawnReason itemSpawnReason,
-                                 @NotNull Location spawnLocation,
-                                 @NotNull Predicate<String> predicate,
-                                 @NotNull Player player) {
-        for (ItemStack drop : potentialItemDrops) {
-            spawnItem(drop, itemSpawnReason, spawnLocation, predicate, player);
-        }
+    public static void spawnItemsConditionally(@NotNull Collection<ItemStack> potentialItemDrops,
+                                               @NotNull Predicate<ItemStack> predicate,
+                                               @NotNull ItemSpawnReason itemSpawnReason,
+                                               @NotNull Location spawnLocation,
+                                               @NotNull Player player) {
+        potentialItemDrops.stream()
+                .filter(predicate)
+                .forEach(itemStack -> spawnItem(player, spawnLocation, itemStack, itemSpawnReason));
     }
 }

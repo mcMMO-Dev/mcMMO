@@ -35,18 +35,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 import static com.gmail.nossr50.util.ItemUtils.spawnItemsFromCollection;
 import static com.gmail.nossr50.util.Misc.getBlockCenter;
-import static com.gmail.nossr50.util.ItemUtils.spawnItem;
 import static com.gmail.nossr50.util.skills.RankUtils.hasUnlockedSubskill;
 
-//TODO: Seems to not be using the item drop event for bonus drops, may want to change that.. or may not be able to be changed?
 public class WoodcuttingManager extends SkillManager {
     public static final String SAPLING = "sapling";
     public static final String PROPAGULE = "propagule";
+    private static final Predicate<ItemStack> IS_SAPLING_OR_PROPAGULE =
+            p -> p.getType().getKey().getKey().toLowerCase().contains(SAPLING)
+                    || p.getType().getKey().getKey().toLowerCase().contains(PROPAGULE);
     private boolean treeFellerReachedThreshold = false;
-    private static int treeFellerThreshold; //TODO: Shared setting, will be removed in 2.2
+    private static int treeFellerThreshold;
 
     /**
      * The x/y differences to the blocks in a flat cylinder around the center
@@ -336,11 +338,11 @@ public class WoodcuttingManager extends SkillManager {
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
                 } else if (hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                     // if KnockOnWood is unlocked, then drop any saplings from the remaining blocks
-                    spawnItem(block.getDrops(itemStack),
+                    ItemUtils.spawnItemsConditionally(block.getDrops(itemStack),
+                            IS_SAPLING_OR_PROPAGULE,
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK,
                             getBlockCenter(blockState),
                             // only spawn saplings
-                            p -> p.toLowerCase().contains(SAPLING) || p.toLowerCase().contains(PROPAGULE),
                             player
                     );
                 }
