@@ -1,10 +1,12 @@
 Version 2.2.013
+    (Locale) Updates to zh_TW (thanks chunkiuu)
+    (Locale) Updates to zh_CN (thanks haha44444)
     Modified the RNG for dropping non-ore blocks from Blast Mining to yield about 50% of what was destroyed
     (API) Deprecated com.gmail.nossr50.mcMMO.getPlaceStore
     (API) Added com.gmail.nossr50.mcMMO.getUserBlockTracker
     (API) Added com.gmail.nossr50.mcMMO.getChunkManager
     (API) Added new methods to com.gmail.nossr50.util.blockmeta.UserBlockTracker for easier readability
-    (API) Deprecated the old poorly named methods in UserBlockTracker
+    (API) Deprecated many poorly named methods in UserBlockTracker (see notes)
     (Codebase) Cleaned up and organized unit tests relating to UserBlockTracker
 
     NOTES:
