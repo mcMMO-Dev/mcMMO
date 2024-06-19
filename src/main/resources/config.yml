@@ -226,6 +226,9 @@ Hardcore:
             Taming: false
             Unarmed: false
             Woodcutting: false
+            Tridents: false
+            Crossbows: false
+            Maces: false
     Vampirism:
         Leech_Percentage: 5.0
         Level_Threshold: 0
@@ -243,6 +246,9 @@ Hardcore:
             Taming: false
             Unarmed: false
             Woodcutting: false
+            Tridents: false
+            Crossbows: false
+            Maces: false
 
 #
 #  Settings for SMP Mods
@@ -406,6 +412,18 @@ Skills:
     Smelting:
         Level_Cap: 0
     Swords:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
+        Level_Cap: 0
+    Tridents:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
+        Level_Cap: 0
+    Crossbows:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
+        Level_Cap: 0
+    Maces:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
