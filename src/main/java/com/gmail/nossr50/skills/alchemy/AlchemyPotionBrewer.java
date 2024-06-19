@@ -144,7 +144,7 @@ public final class AlchemyPotionBrewer {
                 ? 1 : mmoPlayer.getAlchemyManager().getTier());
     }
 
-    public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
+    public static void finishBrewing(BlockState brewingStand, @Nullable McMMOPlayer mmoPlayer, boolean forced) {
         // Check if the brewing stand block state is an actual brewing stand
         if (!(brewingStand instanceof BrewingStand)) {
             return;
@@ -153,9 +153,15 @@ public final class AlchemyPotionBrewer {
         // Retrieve the inventory of the brewing stand and clone the current ingredient for safe manipulation
         final BrewerInventory inventory = ((BrewingStand) brewingStand).getInventory();
         final ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
+        Player player = mmoPlayer != null ? mmoPlayer.getPlayer() : null;
+
+        if (ingredient == null) {
+            return;
+        }
 
         // Check if the brewing stand has a valid ingredient; if not, exit the method
-        if (!hasIngredient(inventory, player)) {
+        if (player == null
+                || !hasIngredient(inventory, player)) {
             // debug
             return;
         }
