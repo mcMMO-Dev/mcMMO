@@ -14,8 +14,10 @@ Version 2.2.013
 
     NOTES:
     Some settings such as Hardcore.Death_Stat_Loss.Enabled were missing entries for the new skills, I have added them to the default config.
-    They should be added to your config upon start up. mcMMO will use default values when a config entry is not found in most cases.
-    Not planning to delete the deprecated methods in UserBlockTracker anytime soon, as nothing has really changed other than the names
+    Missing entries does not mean these things wouldn't work without them present, as default values will be used when config entries are not present.
+    These missing entries should be added to your config upon start up with this update.
+    Regarding the API changes, not planning to delete the deprecated methods in UserBlockTracker anytime soon, as nothing has really changed other than the names.
+    For anyone consuming mcMMO API, I would still recommend switching off these deprecated methods as soon as you can, just for future-proofing.
 
 Version 2.2.012
     Fixed a bug where Daze would cause an exception in older game versions (1.20.4 and older)
