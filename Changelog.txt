@@ -1,3 +1,6 @@
+Version 2.2.014
+    Fixed a bug where Luck Of The Sea was being applied for Super Breaker (and other abilities)
+
 Version 2.2.013
     Added Breeze to experience.yml
     Added Bogged to experience.yml
