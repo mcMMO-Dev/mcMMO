@@ -9,6 +9,15 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class SoundManager {
+    public static Sound CRIPPLE_SOUND;
+    static {
+        try {
+            CRIPPLE_SOUND = Sound.valueOf("ITEM_MACE_SMASH_GROUND");
+        } catch (IllegalArgumentException e) {
+            CRIPPLE_SOUND = Sound.BLOCK_ANVIL_PLACE;
+        }
+    }
+
     /**
      * Sends a sound to the player
      * @param soundType the type of sound
@@ -74,6 +83,7 @@ public class SoundManager {
             case DEFLECT_ARROWS, BLEED -> Sound.ENTITY_ENDER_EYE_DEATH;
             case GLASS -> Sound.BLOCK_GLASS_BREAK;
             case ITEM_CONSUMED -> Sound.ITEM_BOTTLE_EMPTY;
+            case CRIPPLE -> CRIPPLE_SOUND;
         };
     }
 

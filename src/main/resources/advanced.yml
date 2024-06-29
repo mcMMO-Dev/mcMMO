@@ -634,3 +634,10 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
+    Maces:
+        Cripple:
+            Chance_To_Apply_On_Hit:
+                Rank_1: 10
+                Rank_2: 15
+                Rank_3: 20
+                Rank_4: 33

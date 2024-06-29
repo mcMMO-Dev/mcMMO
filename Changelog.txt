@@ -1,3 +1,14 @@
+# TODO: Add Maces to repair
+# TODO: Add subskills
+# TODO: Add Maces to combat utils
+# TODO: Skill ideas... Base DMG buff, Base Smash Buff, Momentum
+# TODO: Maces guide command
+# TODO: Maces Locale entries
+# TODO: Audit CombatUtils and make sure attack strength is being used
+Version 2.2.015
+    Added Maces skill
+    Fixed a bug where a player's attack cooldown was not being taken into account when adding bonus DMG
+
 Version 2.2.014
     Fixed a bug where Luck Of The Sea was being applied for Super Breaker (and other abilities)
 

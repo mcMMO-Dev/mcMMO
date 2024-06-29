@@ -13,6 +13,7 @@ import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
+import com.gmail.nossr50.skills.maces.MacesManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.tridents.TridentsManager;
@@ -20,6 +21,7 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -72,10 +74,6 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.SWORDS);
         }
 
-        if (target.getHealth() - event.getFinalDamage() > 0) {
-            swordsManager.processRupture(target);
-        }
-
         //Add Stab Damage
         if (swordsManager.canUseStab()) {
             boostedDamage += (swordsManager.getStabDamage() * mcMMOPlayer.getAttackStrength());
@@ -90,6 +88,11 @@ public final class CombatUtils {
         }
 
         event.setDamage(boostedDamage);
+
+        if (target.getHealth() - event.getFinalDamage() > 0) {
+            swordsManager.processRupture(target);
+        }
+
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.SWORDS);
 
         printFinalDamageDebug(player, event, mcMMOPlayer);
@@ -210,29 +213,40 @@ public final class CombatUtils {
         delayArrowMetaCleanup(arrow);
     }
 
-    private static void processMacesCombat(@NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
+    private static void processMacesCombat(@NotNull LivingEntity target,
+                                           @NotNull Player player,
+                                           @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
 
         double boostedDamage = event.getDamage();
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Make sure the profiles been loaded
         if (mcMMOPlayer == null) {
             return;
         }
 
-        // MacesManager macesManager = mcMMOPlayer.getMacesManager();
+        final MacesManager macesManager = mcMMOPlayer.getMacesManager();
 
+        // Apply Limit Break DMG
         if (canUseLimitBreak(player, target, SubSkillType.MACES_MACES_LIMIT_BREAK)) {
             boostedDamage += (getLimitBreakDamage(player, target, SubSkillType.MACES_MACES_LIMIT_BREAK) * mcMMOPlayer.getAttackStrength());
         }
 
-        event.setDamage(boostedDamage);
-        processCombatXP(mcMMOPlayer, target, PrimarySkillType.MACES);
+        // Apply Crush
+        boostedDamage += (macesManager.getCrushDamage() * mcMMOPlayer.getAttackStrength());
 
+        event.setDamage(boostedDamage);
+
+        // Apply Cripple
+        if (target.getHealth() - event.getFinalDamage() > 0) {
+            macesManager.processCripple(target);
+        }
+
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.MACES);
         printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
@@ -416,7 +430,9 @@ public final class CombatUtils {
      *
      * @param event The event to run the combat checks on.
      */
-    public static void processCombatAttack(@NotNull EntityDamageByEntityEvent event, @NotNull Entity painSourceRoot, @NotNull LivingEntity target) {
+    public static void processCombatAttack(@NotNull EntityDamageByEntityEvent event,
+                                           @NotNull Entity painSourceRoot,
+                                           @NotNull LivingEntity target) {
         Entity painSource = event.getDamager();
         EntityType entityType = painSource.getType();
 
@@ -456,6 +472,11 @@ public final class CombatUtils {
         }
 
         if (painSourceRoot instanceof Player player && entityType == EntityType.PLAYER) {
+//            final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+//            if (mcMMOPlayer != null) {
+//                Bukkit.broadcastMessage("DEBUG: AttackStrength of painSource: " + mcMMOPlayer.getAttackStrength());
+//                System.out.println("DEBUG: AttackStrength of painSource: " + mcMMOPlayer.getAttackStrength());
+//            }
 
             if (!UserManager.hasPlayerDataKey(player)) {
                 return;
