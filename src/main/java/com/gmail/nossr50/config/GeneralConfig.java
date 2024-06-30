@@ -547,6 +547,10 @@ public class GeneralConfig extends BukkitConfig {
         return config.getBoolean("Particles.Bleed", true);
     }
 
+    public boolean getCrippleEffectEnabled() {
+        return config.getBoolean("Particles.Cripple", true);
+    }
+
     public boolean getDodgeEffectEnabled() {
         return config.getBoolean("Particles.Dodge", true);
     }

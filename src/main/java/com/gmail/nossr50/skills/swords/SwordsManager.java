@@ -75,7 +75,8 @@ public class SwordsManager extends SkillManager {
             return; //Don't apply bleed
         }
 
-        double ruptureOdds = mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank());
+        double ruptureOdds = mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank())
+                * mmoPlayer.getAttackStrength();
         if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, mmoPlayer, ruptureOdds)) {
 
             if (target instanceof Player defender) {

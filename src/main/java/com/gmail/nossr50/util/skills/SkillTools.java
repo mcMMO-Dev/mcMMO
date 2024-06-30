@@ -23,8 +23,8 @@ import java.util.*;
 
 public class SkillTools {
     private final mcMMO pluginRef;
-
-    //TODO: Figure out which ones we don't need, this was copy pasted from a diff branch
+    // TODO: Java has immutable types now, switch to those
+    // TODO: Figure out which ones we don't need, this was copy pasted from a diff branch
     public final @NotNull ImmutableList<String> LOCALIZED_SKILL_NAMES;
     public final @NotNull ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
     public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
@@ -156,14 +156,28 @@ public class SkillTools {
          * Build categorized skill lists
          */
 
-        COMBAT_SKILLS = ImmutableList.of(
-                PrimarySkillType.ARCHERY,
-                PrimarySkillType.AXES,
-                PrimarySkillType.CROSSBOWS,
-                PrimarySkillType.SWORDS,
-                PrimarySkillType.TAMING,
-                PrimarySkillType.TRIDENTS,
-                PrimarySkillType.UNARMED);
+        // We are in a game version with Maces
+        if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+            COMBAT_SKILLS = ImmutableList.of(
+                    PrimarySkillType.ARCHERY,
+                    PrimarySkillType.AXES,
+                    PrimarySkillType.CROSSBOWS,
+                    PrimarySkillType.MACES,
+                    PrimarySkillType.SWORDS,
+                    PrimarySkillType.TAMING,
+                    PrimarySkillType.TRIDENTS,
+                    PrimarySkillType.UNARMED);
+        } else {
+            // No Maces in this version
+            COMBAT_SKILLS = ImmutableList.of(
+                    PrimarySkillType.ARCHERY,
+                    PrimarySkillType.AXES,
+                    PrimarySkillType.CROSSBOWS,
+                    PrimarySkillType.SWORDS,
+                    PrimarySkillType.TAMING,
+                    PrimarySkillType.TRIDENTS,
+                    PrimarySkillType.UNARMED);
+        }
         GATHERING_SKILLS = ImmutableList.of(
                 PrimarySkillType.EXCAVATION,
                 PrimarySkillType.FISHING,

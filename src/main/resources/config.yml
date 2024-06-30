@@ -694,6 +694,7 @@ Particles:
     Flux: true
     Greater_Impact: true
     Call_of_the_Wild: true
+    Cripple: true
 
     # These settings determine if fireworks should get launched when a player levels-up,
     # this will happen by default for every 100 levels.

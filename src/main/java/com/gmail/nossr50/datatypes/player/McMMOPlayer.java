@@ -112,7 +112,6 @@ public class McMMOPlayer implements Identified {
     private int respawnATS;
     private int teleportATS;
     private long databaseATS;
-    private double attackStrength; //captured during arm swing events
     //private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -151,7 +150,6 @@ public class McMMOPlayer implements Identified {
         experienceBarManager = new ExperienceBarManager(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
-        attackStrength = 1.0D;
 
         this.playerAuthor = new PlayerAuthor(player);
 
@@ -227,7 +225,9 @@ public class McMMOPlayer implements Identified {
                 skillManagers.put(primarySkillType, new WoodcuttingManager(this));
                 break;
             case MACES:
-                skillManagers.put(primarySkillType, new MacesManager(this));
+                if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                    skillManagers.put(primarySkillType, new MacesManager(this));
+                }
                 break;
             default:
                 throw new InvalidSkillException("The skill named has no manager! Contact the devs!");
@@ -239,7 +239,7 @@ public class McMMOPlayer implements Identified {
     }
 
     public double getAttackStrength() {
-        return attackStrength;
+        return player.getAttackCooldown();
     }
 
     public @NotNull PrimarySkillType getLastSkillShownScoreboard() {

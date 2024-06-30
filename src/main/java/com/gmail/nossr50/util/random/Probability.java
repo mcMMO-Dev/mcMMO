@@ -94,4 +94,17 @@ public interface Probability {
         double probabilityValue = getValue() * probabilityMultiplier;
         return isSuccessfulRoll(probabilityValue);
     }
+
+    /**
+     * Modify and then Simulate an outcome on a probability and return true or false for the result of that outcome.
+     *
+     * @param probabilityMultiplier probability will be multiplied by this before success is checked
+     * @param finalProbabilityMultiplier probability will be multiplied by this after the first multiplier,
+     *                                  should be between 0 and 1
+     * @return true if the probability succeeded, false if it failed
+     */
+    default boolean evaluate(double probabilityMultiplier, double finalProbabilityMultiplier) {
+        double probabilityValue = getValue() * probabilityMultiplier;
+        return isSuccessfulRoll(probabilityValue * finalProbabilityMultiplier);
+    }
 }

@@ -162,6 +162,9 @@ public class mcMMO extends JavaPlugin {
             //Filter out any debug messages (if debug/verbose logging is not enabled)
             getLogger().setFilter(new LogFilter(this));
 
+            //Platform Manager
+            platformManager = new PlatformManager();
+
             //Folia lib plugin instance
             foliaLib = new FoliaLib(this);
             InvalidTickDelayNotifier.disableNotifications = true;
@@ -177,9 +180,6 @@ public class mcMMO extends JavaPlugin {
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = generalConfig.getIsRetroMode();
-
-            //Platform Manager
-            platformManager = new PlatformManager();
 
             MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
 

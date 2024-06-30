@@ -1,3 +1,19 @@
+Version 2.2.015
+    Added Maces skill
+    Added Mace to repair.vanilla.yml (see notes)
+    Fixed a bug where spamming attacks would still apply full bonus dmg and full chance to proc abilities (see notes)
+    Fixed some misc missing permissions for crossbows/tridents
+
+    NOTES:
+    You shouldn't need to update repair.vanilla.yml, it should update automatically
+    Maces is a new skill that is in early development, feedback is appreciated.
+    Some ideas I had for the Maces are on hold as they are lacking proper API from Spigot.
+    This is mostly pertaining to smash attacks, I had some ideas for enhancing them but without the proper API I will hold off for now.
+    While working on Maces, I noticed a bug where spamming attacks would still apply full bonus damage and full chance to proc abilities, this has been fixed.
+    When you swing your weapon in Minecraft, you gain an "Attack Strength" value, which is relative to your cooldown, mcMMO was supposed to be making use of this value, but at some point in the past this was broken.
+    I have fixed this and now mcMMO will use the attack strength value to determine the bonus damage and chance to proc abilities.
+    For servers modifying Minecraft combat to not have this "cooldown", mcMMO should behave as you would expect, with full damage and full chance to proc abilities.
+
 Version 2.2.014
     Fixed a bug where Luck Of The Sea was being applied for Super Breaker (and other abilities)
 

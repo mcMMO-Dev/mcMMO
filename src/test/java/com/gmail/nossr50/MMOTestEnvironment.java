@@ -13,6 +13,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
+import com.gmail.nossr50.util.compat.CompatibilityManager;
+import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
@@ -67,8 +69,16 @@ public abstract class MMOTestEnvironment {
     protected ChunkManager chunkManager;
     protected MaterialMapStore materialMapStore;
 
+    protected CompatibilityManager compatibilityManager;
+
     protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
+        compatibilityManager = mock(CompatibilityManager.class);
+        final MinecraftGameVersion minecraftGameVersion = mock(MinecraftGameVersion.class);
+        when(compatibilityManager.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
+        // TODO: We should change minecraftGameVersion to be a passed in parameter instead of always returning true
+        when(minecraftGameVersion.isAtLeast(anyInt(), anyInt(), anyInt())).thenReturn(true);
         mockedMcMMO = mockStatic(mcMMO.class);
+        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
         mcMMO.p = mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
 
