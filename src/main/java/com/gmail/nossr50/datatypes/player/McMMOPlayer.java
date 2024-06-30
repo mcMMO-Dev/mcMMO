@@ -225,7 +225,9 @@ public class McMMOPlayer implements Identified {
                 skillManagers.put(primarySkillType, new WoodcuttingManager(this));
                 break;
             case MACES:
-                skillManagers.put(primarySkillType, new MacesManager(this));
+                if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                    skillManagers.put(primarySkillType, new MacesManager(this));
+                }
                 break;
             default:
                 throw new InvalidSkillException("The skill named has no manager! Contact the devs!");

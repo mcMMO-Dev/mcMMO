@@ -24,15 +24,39 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType) {
         if (SoundConfig.getInstance().getIsEnabled(soundType))
-            player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
+            player.playSound(location, getSound(soundType),
+                    SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
-    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory) {
+    public static void sendCategorizedSound(Location location, SoundType soundType, SoundCategory soundCategory) {
+        if (SoundConfig.getInstance().getIsEnabled(soundType)) {
+            final World world = location.getWorld();
+            if (world != null) {
+                world.playSound(location, getSound(soundType), soundCategory,
+                        getVolume(soundType), getPitch(soundType));
+            }
+        }
+    }
+
+    public static void sendCategorizedSound(Location location, SoundType soundType, SoundCategory soundCategory,
+                                            float pitchModifier) {
+        if (SoundConfig.getInstance().getIsEnabled(soundType)) {
+            final World world = location.getWorld();
+            if (world != null) {
+                float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
+                world.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
+            }
+        }
+    }
+
+    public static void sendCategorizedSound(Player player, Location location,
+                                            SoundType soundType, SoundCategory soundCategory) {
         if (SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
-    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier) {
+    public static void sendCategorizedSound(Player player, Location location,
+                                            SoundType soundType, SoundCategory soundCategory, float pitchModifier) {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
         if (SoundConfig.getInstance().getIsEnabled(soundType))

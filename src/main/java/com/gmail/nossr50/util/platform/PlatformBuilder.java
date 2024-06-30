@@ -28,15 +28,10 @@ public class PlatformBuilder {
     }
 
     public @Nullable Platform build() {
-        switch(serverSoftwareType) {
-
-            case PAPER:
-            case SPIGOT:
-            case CRAFT_BUKKIT:
-                return createBukkitPlatform();
-            default:
-                return null;
-        }
+        return switch (serverSoftwareType) {
+            case PAPER, SPIGOT, CRAFT_BUKKIT -> createBukkitPlatform();
+            default -> null;
+        };
     }
 
     private BukkitPlatform createBukkitPlatform() {

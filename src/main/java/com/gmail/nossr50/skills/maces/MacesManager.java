@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.maces;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -8,18 +9,30 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.SoundCategory;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.potion.PotionEffect;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
 
 public class MacesManager extends SkillManager {
+    private static @Nullable PotionEffectType slowEffectType;
+
     public MacesManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.MACES);
+    }
+
+    private static @Nullable PotionEffectType mockSpigotMatch(@NotNull String input) {
+        // Replicates match() behaviour for older versions lacking this API
+        final String filtered = input.toLowerCase(Locale.ROOT).replaceAll("\\s+", "_");
+        final NamespacedKey namespacedKey = NamespacedKey.fromString(filtered);
+        return (namespacedKey != null) ? Registry.EFFECT.get(namespacedKey) : null;
     }
 
     /**
@@ -34,7 +47,7 @@ public class MacesManager extends SkillManager {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.MACES_CRUSH);
 
         if (rank > 0) {
-            return (1.0D + (rank * 0.5D));
+            return (0.5D + (rank * 1.D));
         }
 
         return 0;
@@ -46,8 +59,20 @@ public class MacesManager extends SkillManager {
      * @param target The defending entity
      */
     public void processCripple(@NotNull LivingEntity target) {
+        // Lazy initialized to avoid some backwards compatibility issues
+        if (slowEffectType == null) {
+            if (mockSpigotMatch("slowness") == null) {
+                mcMMO.p.getLogger().severe("Unable to find the Slowness PotionEffectType, " +
+                        "mcMMO will not function properly.");
+                throw new IllegalStateException("Unable to find the Slowness PotionEffectType!");
+            } else {
+                slowEffectType = mockSpigotMatch("slowness");
+            }
+        }
+
+        boolean isPlayerTarget = target instanceof Player;
         // Don't apply Cripple if the target is already Slowed
-        if (target.getPotionEffect(PotionEffectType.SLOWNESS) != null) {
+        if (slowEffectType == null || target.getPotionEffect(slowEffectType) != null) {
             return;
         }
 
@@ -60,15 +85,30 @@ public class MacesManager extends SkillManager {
                 * mmoPlayer.getAttackStrength());
 
         if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.MACES, mmoPlayer, crippleOdds)) {
+            if (mmoPlayer.useChatNotifications()) {
+                NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(),
+                        NotificationType.SUBSKILL_MESSAGE, "Maces.SubSkill.Cripple.Activated");
+            }
+
             // Cripple is success, Cripple the target
-            target.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(getCrippleTickDuration(), 1));
-            // TODO: Play some kind of Smash effect / sound
-            SoundManager.sendCategorizedSound(getPlayer(), target.getLocation(), SoundType.CRIPPLE, SoundCategory.PLAYERS);
+            target.addPotionEffect(slowEffectType.createEffect(
+                    getCrippleTickDuration(isPlayerTarget),
+                    getCrippleStrength(isPlayerTarget)));
+            ParticleEffectUtils.playCrippleEffect(target);
         }
     }
 
-    public int getCrippleTickDuration() {
+    public static int getCrippleTickDuration(boolean isPlayerTarget) {
         // TODO: Make configurable
-        return 20 * 5;
+        if (isPlayerTarget) {
+            return 20;
+        } else {
+            return 30;
+        }
+    }
+
+    public static int getCrippleStrength(boolean isPlayerTarget) {
+        // TODO: Make configurable
+        return isPlayerTarget ? 1 : 2;
     }
 }

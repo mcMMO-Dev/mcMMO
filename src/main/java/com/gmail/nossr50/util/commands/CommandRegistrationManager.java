@@ -215,7 +215,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcrank;mcmmo.commands.mcrank.others;mcmmo.commands.mcrank.others.far;mcmmo.commands.mcrank.others.offline");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrank", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McrankCommand());
+        command.setExecutor(new McRankCommand());
     }
 
     private static void registerMcstatsCommand() {
@@ -233,7 +233,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mctop"); // Only need the main one, not the individual skill ones
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
-        command.setExecutor(new MctopCommand());
+        command.setExecutor(new McTopCommand());
     }
 
     private static void registerMcpurgeCommand() {

@@ -68,3 +68,7 @@ Sounds:
         Enable: true
         Volume: 2.0
         Pitch: 2.0
+    CRIPPLE:
+        Enable: true
+        Volume: 1.0
+        Pitch: 0.5

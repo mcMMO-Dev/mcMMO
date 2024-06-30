@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.maces.MacesManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -30,8 +31,8 @@ public class MacesCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         if (SkillUtils.canUseSubskill(player, MACES_CRIPPLE)) {
             int crippleRank = RankUtils.getRank(player, MACES_CRIPPLE);
-            crippleLengthAgainstPlayers = String.valueOf("INSERT VALUE HERE");
-            crippleLengthAgainstMobs = String.valueOf("INSERT VALUE HERE");
+            crippleLengthAgainstPlayers = String.valueOf(MacesManager.getCrippleTickDuration(true) / 20.0D);
+            crippleLengthAgainstMobs = String.valueOf(MacesManager.getCrippleTickDuration(false) / 20.0D);
 
             crippleChanceToApply = String.valueOf(mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank) + "%");
             crippleChanceToApplyLucky = String.valueOf(mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank) * 1.33);
