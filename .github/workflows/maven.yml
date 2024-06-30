@@ -4,7 +4,6 @@
 name: Compile and test
 
 on:
-  workflow_dispatch:
   # We run our tests whenever the pom or a source file was touched.
   # There is no need to run Maven when only the changelog was touched.
   # We may also want to re-run this workflow when the workflow file itself
