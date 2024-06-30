@@ -2,6 +2,7 @@ Version 2.2.015
     Added Maces skill
     Added Mace to repair.vanilla.yml (see notes)
     Fixed a bug where spamming attacks would still apply full bonus dmg and full chance to proc abilities (see notes)
+    Fixed some misc missing permissions for crossbows/tridents
 
     NOTES:
     You shouldn't need to update repair.vanilla.yml, it should update automatically
