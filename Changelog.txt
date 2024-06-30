@@ -1,10 +1,3 @@
-# TODO: Add Maces to repair
-# TODO: Add subskills
-# TODO: Add Maces to combat utils
-# TODO: Skill ideas... Base DMG buff, Base Smash Buff, Momentum
-# TODO: Maces guide command
-# TODO: Maces Locale entries
-# TODO: Audit CombatUtils and make sure attack strength is being used
 Version 2.2.015
     Added Maces skill
     Added Mace to repair.vanilla.yml (see notes)
