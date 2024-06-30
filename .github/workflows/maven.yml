@@ -4,6 +4,7 @@
 name: Compile and test
 
 on:
+  workflow_dispatch:
   # We run our tests whenever the pom or a source file was touched.
   # There is no need to run Maven when only the changelog was touched.
   # We may also want to re-run this workflow when the workflow file itself
@@ -50,3 +51,10 @@ jobs:
     # 4. Build via Maven 
     - name: Build via Maven
       run: mvn verify -B --file pom.xml -DdisableXmlReport=true
+
+    # 5. Upload Artifact
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+          name: mcMMO
+          path: target/mcMMO.jar
