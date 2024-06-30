@@ -12,7 +12,7 @@ Version 2.2.015
     While working on Maces, I noticed a bug where spamming attacks would still apply full bonus damage and full chance to proc abilities, this has been fixed.
     When you swing your weapon in Minecraft, you gain an "Attack Strength" value, which is relative to your cooldown, mcMMO was supposed to be making use of this value, but at some point in the past this was broken.
     I have fixed this and now mcMMO will use the attack strength value to determine the bonus damage and chance to proc abilities.
-    For servers modifying Minecraft combat to not have this "cooldown", mcMMO should behave as you would expect, with full damage and full chance to proc abilities.
+    For servers modifying Minecraft combat to not have this "cooldown", mcMMO should behave as you would expect, with full damage and full chance to proc abilities even when spamming attacks.
 
 Version 2.2.014
     Fixed a bug where Luck Of The Sea was being applied for Super Breaker (and other abilities)
