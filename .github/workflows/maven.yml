@@ -50,3 +50,10 @@ jobs:
     # 4. Build via Maven 
     - name: Build via Maven
       run: mvn verify -B --file pom.xml -DdisableXmlReport=true
+
+    # 5. Upload Artifact
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+          name: mcMMO
+          path: target/*
