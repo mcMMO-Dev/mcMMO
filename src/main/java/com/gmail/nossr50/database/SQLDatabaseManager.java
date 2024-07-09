@@ -1219,18 +1219,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class); // Skill & Level
-        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class); // Skill & XP
-        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
-        Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
+        final Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class); // Skill & Level
+        final Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class); // Skill & XP
+        final Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
+        final Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
         UUID uuid;
         int scoreboardTipsShown;
 
-        final int OFFSET_SKILLS = 0; // TODO update these numbers when the query
-        // changes (a new skill is added)
-        final int OFFSET_XP = 16;
-        final int OFFSET_DATS = 29;
-        final int OFFSET_OTHER = 42;
+        final int SKILL_COLUMNS = 16;
+        final int OFFSET_SKILLS = 0;
+        final int OFFSET_XP = SKILL_COLUMNS;
+        final int OFFSET_DATS = OFFSET_XP + SKILL_COLUMNS;
+        final int OFFSET_OTHER = OFFSET_DATS + SKILL_COLUMNS;
 
         skills.put(PrimarySkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
         skills.put(PrimarySkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
@@ -1284,17 +1284,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsDATS.put(SuperAbilityType.TRIDENTS_SUPER_ABILITY, result.getInt(OFFSET_DATS + 15));
         skillsDATS.put(SuperAbilityType.MACES_SUPER_ABILITY, result.getInt(OFFSET_DATS + 16));
 
+        // ORDER IS AS FOLLOWS
+        // MOB HEALTH BAR
+        // SCOREBOARD TIPS
+        // UUID
+        // USER
+
         try {
+            // Mob Health bar is unused, so we add two
+            // TODO: Why even SELECT the mob health bar?
+            //  Refactor later.
             scoreboardTipsShown = result.getInt(OFFSET_OTHER + 2);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             scoreboardTipsShown = 0;
         }
 
         try {
             uuid = UUID.fromString(result.getString(OFFSET_OTHER + 3));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             uuid = null;
         }
 

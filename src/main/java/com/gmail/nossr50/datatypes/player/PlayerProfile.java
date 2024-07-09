@@ -88,7 +88,10 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(@NotNull String playerName, @Nullable UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
+    public PlayerProfile(@NotNull String playerName, @Nullable UUID uuid,
+                         Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData,
+                         Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown,
+                         Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.scoreboardTipsShown = scoreboardTipsShown;

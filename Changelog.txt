@@ -1,3 +1,6 @@
+Version 2.2.016
+    (SQL) Fixed a bug where skill cooldowns were being loaded for players incorrectly
+
 Version 2.2.015
     Added Maces skill
     Added Mace to repair.vanilla.yml (see notes)
