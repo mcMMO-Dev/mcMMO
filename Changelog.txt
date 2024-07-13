@@ -12,7 +12,7 @@ Version 2.2.017
     NOTES:
     If Mace skills weren't working for your players before and you were scratching your head wondering why, this should fix it (thanks SrBedrock).
     Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown is a new setting in advanced.yml that will allow you to ignore attack cooldowns for the combat skills.
-    When a player spams an attack, have a reduced amount of bonus damage from mcMMO and reduced chance for chance-on-hit subskills to activate.
+    When a player spams an attack, they have a reduced amount of bonus damage from mcMMO and reduced chance for chance-on-hit subskills to activate.
     You can have mcMMO ignore this value and apply full bonus damage and full chance to proc abilities by setting this to false.
 
 Version 2.2.016
