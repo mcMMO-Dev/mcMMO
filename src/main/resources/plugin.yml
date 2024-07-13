@@ -2264,7 +2264,7 @@ permissions:
             mcmmo.skills.excavation: true
             mcmmo.skills.fishing: true
             mcmmo.skills.herbalism: true
-            mcmmo.skill.maces: true
+            mcmmo.skills.maces: true
             mcmmo.skills.mining: true
             mcmmo.skills.repair: true
             mcmmo.skills.salvage: true
