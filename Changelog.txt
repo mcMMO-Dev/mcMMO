@@ -1,3 +1,8 @@
+Version 2.2.017
+    Fixed a bug with Mace permissions (thanks SrBedrock)
+    Updated zh_CN locale (thanks libook)
+    Updated pt_BR locale (thanks JesusRuescas)
+    Updated fr locale (thanks Ted-18)
 Version 2.2.016
     (SQL) Fixed a bug where skill cooldowns were being loaded for players incorrectly
 
