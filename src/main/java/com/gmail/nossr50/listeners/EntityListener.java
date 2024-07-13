@@ -756,7 +756,7 @@ public class EntityListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        Entity entity = event.getEntity();
+        final Entity entity = event.getEntity();
 
         if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT)) {
             return;
@@ -764,13 +764,14 @@ public class EntityListener implements Listener {
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        final Player player = pluginRef.getServer().getPlayerExact(
+                entity.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
-        //Profile not loaded
+        // Profile is not loaded
         if (UserManager.getPlayer(player) == null) {
             return;
         }
@@ -781,7 +782,7 @@ public class EntityListener implements Listener {
                 return;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        final MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
         if (miningManager.canUseBiggerBombs()) {
             event.setRadius(miningManager.biggerBombs(event.getRadius()));

@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.random.Probability;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -30,7 +29,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
 
 public class MiningManager extends SkillManager {
 
@@ -51,7 +53,7 @@ public class MiningManager extends SkillManager {
         Player player = getPlayer();
 
         return canUseBlastMining() && player.isSneaking()
-                && (ItemUtils.isPickaxe(getPlayer().getInventory().getItemInMainHand()) || player.getInventory().getItemInMainHand().getType() == mcMMO.p.getGeneralConfig().getDetonatorItem())
+                && (isPickaxe(getPlayer().getInventory().getItemInMainHand()) || player.getInventory().getItemInMainHand().getType() == mcMMO.p.getGeneralConfig().getDetonatorItem())
                 && Permissions.remoteDetonation(player);
     }
 
@@ -168,69 +170,76 @@ public class MiningManager extends SkillManager {
      * @param yield The % of blocks to drop
      * @param event The {@link EntityExplodeEvent}
      */
-    //TODO: Rewrite this garbage
     public void blastMiningDropProcessing(float yield, EntityExplodeEvent event) {
         if (yield == 0)
             return;
 
-        //Strip out only stuff that gives mining XP
+        var increasedYieldFromBonuses = yield + (yield * getOreBonus());
+        // Strip out only stuff that gives mining XP
         List<BlockState> ores = new ArrayList<>();
-
         List<BlockState> notOres = new ArrayList<>();
         for (Block targetBlock : event.blockList()) {
             BlockState blockState = targetBlock.getState();
-            //Containers usually have 0 XP unless someone edited their config in a very strange way
-            if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0
-                    && !(targetBlock instanceof Container)
-                    && !mcMMO.getUserBlockTracker().isIneligible(targetBlock)) {
-                if (BlockUtils.isOre(blockState)) {
+
+            if(mcMMO.getUserBlockTracker().isIneligible(targetBlock))
+                continue;
+
+            if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0) {
+                if (BlockUtils.isOre(blockState) && !(targetBlock instanceof Container)) {
                     ores.add(blockState);
-                } else {
-                    notOres.add(blockState);
                 }
+            } else {
+                notOres.add(blockState);
             }
         }
 
         int xp = 0;
-
-        float oreBonus = (float) (getOreBonus() / 100);
-        float debrisReduction = (float) (getDebrisReduction() / 100);
         int dropMultiplier = getDropMultiplier();
-        float debrisYield = yield - debrisReduction;
 
-        //Drop "debris" based on skill modifiers
         for(BlockState blockState : notOres) {
             if (isDropIllegal(blockState.getType()))
                 continue;
 
             if (Probability.ofPercent(50).evaluate()) {
-                ItemUtils.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
+                ItemUtils.spawnItem(getPlayer(),
+                        Misc.getBlockCenter(blockState),
+                        new ItemStack(blockState.getType()),
+                        ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
             }
         }
-
         for (BlockState blockState : ores) {
-            if (isDropIllegal(blockState.getType()))
+            // currentOreYield only used for drop calculations for ores
+            float currentOreYield = increasedYieldFromBonuses;
+
+            if (isDropIllegal(blockState.getType())) {
                 continue;
+            }
 
-            if (RandomUtils.nextFloat() < (yield + oreBonus)) {
-                xp += Mining.getBlockXp(blockState);
+            // Always give XP for every ore destroyed
+            xp += Mining.getBlockXp(blockState);
+            while(currentOreYield > 0) {
+                if (Probability.ofValue(currentOreYield).evaluate()) {
+                    Collection<ItemStack> oreDrops = isPickaxe(mmoPlayer.getPlayer().getInventory().getItemInMainHand())
+                            ? blockState.getBlock().getDrops(mmoPlayer.getPlayer().getInventory().getItemInMainHand())
+                            : List.of(new ItemStack(blockState.getType()));
+                    ItemUtils.spawnItems(getPlayer(), Misc.getBlockCenter(blockState),
+                            oreDrops, ItemSpawnReason.BLAST_MINING_ORES);
 
-                ItemUtils.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES); // Initial block that would have been dropped
-
-                if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled() && !mcMMO.getUserBlockTracker().isIneligible(blockState)) {
-                    for (int i = 1; i < dropMultiplier; i++) {
-//                        Bukkit.broadcastMessage("Bonus Drop on Ore: "+blockState.getType().toString());
-                        ItemUtils.spawnItem(getPlayer(), Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()), ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP); // Initial block that would have been dropped
+                    if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
+                        for (int i = 1; i < dropMultiplier; i++) {
+                            ItemUtils.spawnItems(getPlayer(),
+                                    Misc.getBlockCenter(blockState),
+                                    oreDrops,
+                                    ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP);
+                        }
                     }
                 }
+                currentOreYield = Math.max(currentOreYield - 1, 0);
             }
         }
 
-        //Replace the event blocklist with the newYield list
+        // Replace the event blocklist with the newYield list
         event.setYield(0F);
-//        event.blockList().clear();
-//        event.blockList().addAll(notOres);
-
         applyXpGain(xp, XPGainReason.PVE);
     }
 
@@ -273,10 +282,11 @@ public class MiningManager extends SkillManager {
      *
      * @return the Blast Mining tier
      */
-    public double getOreBonus() {
-        return getOreBonus(getBlastMiningTier());
+    public float getOreBonus() {
+        return (float) (mcMMO.p.getAdvancedConfig().getOreBonus(getBlastMiningTier()) / 100F);
     }
 
+    @Deprecated(since = "2.2.017", forRemoval = true)
     public static double getOreBonus(int rank) {
         return mcMMO.p.getAdvancedConfig().getOreBonus(rank);
     }
