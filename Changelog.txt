@@ -1,15 +1,16 @@
 Version 2.2.017
+    Fixed a bug with default Mace permissions (thanks SrBedrock)
     Fixed Blast Mining being almost completely broken
     Reworked Blast Mining to drop non-mining related blocks too
     Reworked Blast Mining to use your pickaxe when determining drops (will apply Silk Touch)
     Fixed shift-clicking ingredients into the brewing stand not working on older versions of Minecraft
     Added a setting in advanced.yml to ignore attack cooldowns (see notes)
-    Fixed a bug with Mace permissions (thanks SrBedrock)
     Updated zh_CN locale (thanks libook)
     Updated pt_BR locale (thanks JesusRuescas)
     Updated fr locale (thanks Ted-18)
 
     NOTES:
+    If Mace skills weren't working for your players before and you were scratching your head wondering why, this should fix it (thanks SrBedrock).
     Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown is a new setting in advanced.yml that will allow you to ignore attack cooldowns for the combat skills.
     When a player spams an attack, have a reduced amount of bonus damage from mcMMO and reduced chance for chance-on-hit subskills to activate.
     You can have mcMMO ignore this value and apply full bonus damage and full chance to proc abilities by setting this to false.
