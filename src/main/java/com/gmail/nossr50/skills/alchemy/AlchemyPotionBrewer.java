@@ -23,12 +23,29 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 // TODO: Update to use McMMOPlayer
 public final class AlchemyPotionBrewer {
+    /*
+     * Compatibility with older versions where InventoryView used to be an abstract class and became an interface.
+     * This was introduced in Minecraft 1.21 if we drop support for versions older than 1.21 this can be removed.
+     */
+    private static final Method getItem, setItem;
+    static {
+        try {
+            final Class<?> clazz = Class.forName("org.bukkit.inventory.InventoryView");
+            getItem = clazz.getDeclaredMethod("getItem", int.class);
+            setItem = clazz.getDeclaredMethod("setItem", int.class, ItemStack.class);
+        } catch (NoSuchMethodException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Deprecated(forRemoval = true, since = "2.2.010")
     public static boolean isValidBrew(Player player, ItemStack[] contents) {
         if (!isValidIngredientByPlayer(player, contents[Alchemy.INGREDIENT_SLOT])) {
@@ -240,18 +257,23 @@ public final class AlchemyPotionBrewer {
     public static boolean transferItems(InventoryView view, int fromSlot, ClickType click) {
         boolean success = false;
 
-        if (click.isLeftClick()) {
-            success = transferItems(view, fromSlot);
-        } else if (click.isRightClick()) {
-            success = transferOneItem(view, fromSlot);
+        try {
+            if (click.isLeftClick()) {
+                success = transferItems(view, fromSlot);
+            } else if (click.isRightClick()) {
+                success = transferOneItem(view, fromSlot);
+            }
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
 
         return success;
     }
 
-    private static boolean transferOneItem(InventoryView view, int fromSlot) {
-        ItemStack from = view.getItem(fromSlot).clone();
-        ItemStack to = view.getItem(Alchemy.INGREDIENT_SLOT).clone();
+    private static boolean transferOneItem(InventoryView view, int fromSlot)
+            throws InvocationTargetException, IllegalAccessException {
+        final ItemStack from = ((ItemStack) getItem.invoke(view, fromSlot)).clone();
+        ItemStack to = ((ItemStack) getItem.invoke(view, Alchemy.INGREDIENT_SLOT)).clone();
 
         if (isEmpty(from)) {
             return false;
@@ -271,8 +293,8 @@ public final class AlchemyPotionBrewer {
             }
 
             from.setAmount(fromAmount - 1);
-            view.setItem(Alchemy.INGREDIENT_SLOT, to);
-            view.setItem(fromSlot, from);
+            setItem.invoke(view, Alchemy.INGREDIENT_SLOT, to);
+            setItem.invoke(view, fromSlot, from);
 
             return true;
         }
@@ -283,16 +305,15 @@ public final class AlchemyPotionBrewer {
     /**
      * Transfer items between two ItemStacks, returning the leftover status
      */
-    private static boolean transferItems(InventoryView view, int fromSlot) {
-        ItemStack from = view.getItem(fromSlot).clone();
-        ItemStack to = view.getItem(Alchemy.INGREDIENT_SLOT).clone();
-
+    private static boolean transferItems(InventoryView view, int fromSlot)
+            throws InvocationTargetException, IllegalAccessException {
+        final ItemStack from = ((ItemStack) getItem.invoke(view, fromSlot)).clone();
+        final ItemStack to = ((ItemStack) getItem.invoke(view, Alchemy.INGREDIENT_SLOT)).clone();
         if (isEmpty(from)) {
             return false;
         } else if (isEmpty(to)) {
-            view.setItem(Alchemy.INGREDIENT_SLOT, from);
-            view.setItem(fromSlot, null);
-
+            setItem.invoke(view, Alchemy.INGREDIENT_SLOT, from);
+            setItem.invoke(view, fromSlot, null);
             return true;
         } else if (from.isSimilar(to)) {
             int fromAmount = from.getAmount();
@@ -303,17 +324,17 @@ public final class AlchemyPotionBrewer {
                 int left = fromAmount + toAmount - maxSize;
 
                 to.setAmount(maxSize);
-                view.setItem(Alchemy.INGREDIENT_SLOT, to);
+                setItem.invoke(view, Alchemy.INGREDIENT_SLOT, to);
 
                 from.setAmount(left);
-                view.setItem(fromSlot, from);
+                setItem.invoke(view, fromSlot, from);
 
                 return true;
             }
 
             to.setAmount(fromAmount + toAmount);
-            view.setItem(fromSlot, null);
-            view.setItem(Alchemy.INGREDIENT_SLOT, to);
+            setItem.invoke(view, fromSlot, null);
+            setItem.invoke(view, Alchemy.INGREDIENT_SLOT, to);
 
             return true;
         }

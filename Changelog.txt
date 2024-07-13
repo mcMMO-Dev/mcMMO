@@ -1,4 +1,5 @@
 Version 2.2.017
+    Fixed shift-clicking ingredients into the brewing stand not working on older versions of Minecraft
     Added a setting in advanced.yml to ignore attack cooldowns (see notes)
     Fixed a bug with Mace permissions (thanks SrBedrock)
     Updated zh_CN locale (thanks libook)
