@@ -409,6 +409,10 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* GENERAL */
 
+    public boolean useAttackCooldown() {
+        return config.getBoolean("Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown", true);
+    }
+
     public boolean canApplyLimitBreakPVE() {
         return config.getBoolean("Skills.General.LimitBreak.AllowPVE", false);
     }

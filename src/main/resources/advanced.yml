@@ -83,6 +83,11 @@ Feedback:
             SendCopyOfMessageToChat: false
 Skills:
     General:
+        # Attack Cooldown refers to the strength of attacks in Minecraft.
+        # If an attack is spammed, it will have less bonus damage and RNG for skills to activate from mcMMO.
+        # If you want, you can turn this behavior off by setting it to false.
+        Attack_Cooldown:
+            Adjust_Skills_For_Attack_Cooldown: true
         LimitBreak:
             AllowPVE: false
         StartingLevel: 0
