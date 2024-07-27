@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Locale;
 
 public abstract class SkillCommand implements TabExecutor {
+    public static final String ABILITY_GENERIC_TEMPLATE_CUSTOM = "Ability.Generic.Template.Custom";
+    public static final String ABILITY_GENERIC_TEMPLATE = "Ability.Generic.Template";
     protected PrimarySkillType skill;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
@@ -163,8 +165,6 @@ public abstract class SkillCommand implements TabExecutor {
             /*
              * CHILD SKILLS
              */
-
-
             var parents = mcMMO.p.getSkillTools().getChildSkillParents(skill);
 
             //TODO: Add JSON here
@@ -186,28 +186,7 @@ public abstract class SkillCommand implements TabExecutor {
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
             player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
-            //LEVEL
-            //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
-
         }
-        /*
-        if (!SkillTools.isChildSkill(skill)) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
-        } else {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
-            player.sendMessage(LocaleLoader.getString("Effects.Child", skillValue));
-
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
-            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
-
-            for (PrimarySkillType parent : parents) {
-                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
-            }
-        }
-        */
     }
 
     @Override
@@ -221,10 +200,6 @@ public abstract class SkillCommand implements TabExecutor {
     protected int calculateRank(float skillValue, int maxLevel, int rankChangeLevel) {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
-
-//    protected String[] getAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkill) {
-//        return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, player, subSkill);
-//    }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
         int maxLength = mcMMO.p.getSkillTools().getSuperAbilityMaxLength(mcMMO.p.getSkillTools().getSuperAbility(skill));
@@ -252,14 +227,19 @@ public abstract class SkillCommand implements TabExecutor {
         return getStatMessage(false, false, subSkillType, vars);
     }
 
-    protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars) {
-        String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
-        String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
+    protected String getStatMessage(boolean isExtra, boolean isCustom,
+                                    @NotNull SubSkillType subSkillType, String... vars) {
+        final String templateKey = isCustom ? ABILITY_GENERIC_TEMPLATE_CUSTOM : ABILITY_GENERIC_TEMPLATE;
+        final String statDescriptionKey = !isExtra
+                ? subSkillType.getLocaleKeyStatDescription()
+                : subSkillType.getLocaleKeyStatExtraDescription();
 
-        if (isCustom)
+        if (isCustom) {
             return LocaleLoader.getString(templateKey, LocaleLoader.getString(statDescriptionKey, vars));
-        else {
-            String[] mergedList = NotificationManager.addItemToFirstPositionOfArray(LocaleLoader.getString(statDescriptionKey), vars);
+        } else {
+            final String[] mergedList
+                    = NotificationManager.addItemToFirstPositionOfArray(
+                            LocaleLoader.getString(statDescriptionKey), vars);
             return LocaleLoader.getString(templateKey, mergedList);
         }
     }
@@ -275,8 +255,6 @@ public abstract class SkillCommand implements TabExecutor {
     protected abstract void dataCalculations(Player player, float skillValue);
 
     protected abstract void permissionsCheck(Player player);
-
-    //protected abstract List<String> effectsDisplay();
 
     protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
 

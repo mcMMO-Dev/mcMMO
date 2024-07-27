@@ -1,3 +1,10 @@
+Version 2.2.018
+    Fixed a probability bug where certain skills would max out in chance to succeed well before they were supposed to (such as Dodge)
+    (Codebase) Added more unit tests for Probability and RNG
+
+    NOTES:
+    This probability bug was a big oopsie and showed a gap in unit test coverage, I've added that coverage and a bug like this in theory shouldn't happen again.
+
 Version 2.2.017
     Fixed a bug with default Mace permissions (thanks SrBedrock)
     Fixed Blast Mining being almost completely broken
