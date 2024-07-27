@@ -31,13 +31,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
 
 public class MiningManager extends SkillManager {
 
     public static final String BUDDING_AMETHYST = "budding_amethyst";
-    public static final Collection<Material> BLAST_MINING_BLACKLIST = List.of(Material.SPAWNER);
+    public static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER);
 
     public MiningManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.MINING);
