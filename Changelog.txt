@@ -2,11 +2,13 @@ Version 2.2.018
     Fixed a probability bug where certain skills would max out in chance to succeed well before they were supposed to (such as Dodge)
     Blast Mining will no longer drop mob spawners (see notes)
     (Codebase) Added more unit tests for Probability and RNG
+    The Herbalism XP gained when breaking certain plants that can grow unnaturally tall vertically (bamboo, kelp) is now capped to the most it could give when naturally grown, this can be disabled in experience.yml
+    Added 'ExploitFix.LimitTallPlantFarming' to experience.yml
 
     NOTES:
     This probability bug was a big oopsie and showed a gap in unit test coverage, I've added that coverage and a bug like this in theory shouldn't happen again.
     In a future version I will add configuration for admins to control what blocks are not allowed to be dropped by blast mining.
-
+    A setting has been added to disable player-created super tall plants from giving full XP, this is on by default, you can tun it off in experience.yml via 'ExploitFix.LimitTallPlantFarming'
 Version 2.2.017
     Fixed a bug with default Mace permissions (thanks SrBedrock)
     Fixed Blast Mining being almost completely broken

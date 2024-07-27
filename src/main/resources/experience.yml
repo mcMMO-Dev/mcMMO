@@ -34,6 +34,8 @@ ExploitFix:
     # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
     # Of course, mcMMO doesn't know for sure whether something is an NPC, it checks a few known things, see our source code to see how
     PreventPluginNPCInteraction: true
+    # This will limit XP gained from unnaturally tall plants, like those created by Bone Meal
+    LimitTallPlantFarming: true
 Fishing_ExploitFix_Options:
     MoveRange: 3
     OverFishLimit: 10

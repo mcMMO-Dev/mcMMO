@@ -496,4 +496,8 @@ public class ExperienceConfig extends BukkitConfig {
     public boolean preventStoneLavaFarming() {
         return config.getBoolean("ExploitFix.LavaStoneAndCobbleFarming", true);
     }
+
+    public boolean limitXPOnTallPlants() {
+        return config.getBoolean("ExploitFix.LimitTallPlantFarming", true);
+    }
 }
