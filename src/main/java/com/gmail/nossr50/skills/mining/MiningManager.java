@@ -142,7 +142,9 @@ public class MiningManager extends SkillManager {
         Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
         //Blast mining cooldown check needs to be first so the player can be messaged
-        if (!blastMiningCooldownOver() || targetBlock.getType() != Material.TNT || !EventUtils.simulateBlockBreak(targetBlock, player)) {
+        if (!blastMiningCooldownOver()
+                || targetBlock.getType() != Material.TNT
+                || !EventUtils.simulateBlockBreak(targetBlock, player)) {
             return;
         }
 
