@@ -37,6 +37,7 @@ import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
 public class MiningManager extends SkillManager {
 
     public static final String BUDDING_AMETHYST = "budding_amethyst";
+    public static final Collection<Material> BLAST_MINING_BLACKLIST = List.of(Material.SPAWNER);
 
     public MiningManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.MINING);
@@ -225,13 +226,14 @@ public class MiningManager extends SkillManager {
                             ? blockState.getBlock().getDrops(mmoPlayer.getPlayer().getInventory().getItemInMainHand())
                             : List.of(new ItemStack(blockState.getType()));
                     ItemUtils.spawnItems(getPlayer(), Misc.getBlockCenter(blockState),
-                            oreDrops, ItemSpawnReason.BLAST_MINING_ORES);
+                            oreDrops, BLAST_MINING_BLACKLIST, ItemSpawnReason.BLAST_MINING_ORES);
 
                     if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
                         for (int i = 1; i < dropMultiplier; i++) {
                             ItemUtils.spawnItems(getPlayer(),
                                     Misc.getBlockCenter(blockState),
                                     oreDrops,
+                                    BLAST_MINING_BLACKLIST,
                                     ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP);
                         }
                     }

@@ -699,6 +699,29 @@ public final class ItemUtils {
     /**
      * Drop items at a given location.
      *
+     * @param player player to drop the items for
+     * @param location The location to drop the items at
+     * @param itemStacks The items to drop
+     * @param blackList The items to skip
+     * @param itemSpawnReason the reason for the item drop
+     */
+    public static void spawnItems(@Nullable Player player,
+                                  @NotNull Location location,
+                                  @NotNull Collection<ItemStack> itemStacks,
+                                  @NotNull Collection<Material> blackList,
+                                  @NotNull ItemSpawnReason itemSpawnReason) {
+        for (ItemStack is : itemStacks) {
+            // Skip blacklisted items
+            if(blackList.contains(is.getType())) {
+                continue;
+            }
+            spawnItem(player, location, is, itemSpawnReason);
+        }
+    }
+
+    /**
+     * Drop items at a given location.
+     *
      * @param location The location to drop the items at
      * @param is       The items to drop
      * @param quantity The amount of items to drop
