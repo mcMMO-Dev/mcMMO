@@ -287,6 +287,9 @@ public class TamingManager extends SkillManager {
         double range = 5;
         Player player = getPlayer();
 
+        if (!target.getWorld().equals(player.getWorld()))
+            return;
+
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (entity.getType() != EntityType.WOLF) {
                 continue;
