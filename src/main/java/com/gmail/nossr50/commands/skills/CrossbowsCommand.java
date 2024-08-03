@@ -59,8 +59,6 @@ public class CrossbowsCommand extends SkillCommand {
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
         }
 
-        messages.add(ChatColor.GRAY + "The Crossbows skill is a work in progress and is still being developed, feedback would be appreciated in the mcMMO discord server.");
-
         return messages;
     }
 

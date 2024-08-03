@@ -65,8 +65,6 @@ public class MacesCommand extends SkillCommand {
                     String.valueOf(mmoPlayer.getMacesManager().getCrushDamage())));
         }
 
-        messages.add(ChatColor.GRAY + "The Maces skill is a work in progress and is still being developed," +
-                " feedback would be appreciated in the mcMMO discord server.");
         return messages;
     }
 

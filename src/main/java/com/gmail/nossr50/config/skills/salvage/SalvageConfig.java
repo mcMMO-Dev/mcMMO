@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
+import static com.gmail.nossr50.util.skills.SkillUtils.getRepairAndSalvageQuantities;
+
 public class SalvageConfig extends BukkitConfig {
     private final HashSet<String> notSupported;
     private Set<Salvageable> salvageables;
@@ -143,7 +145,9 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             // Maximum Quantity
-            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(itemMaterial, salvageMaterial) : config.getInt("Salvageables." + key + ".MaximumQuantity", 1));
+            int maximumQuantity = itemMaterial != null
+                    ? getRepairAndSalvageQuantities(itemMaterial, salvageMaterial)
+                    : config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
                 maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
