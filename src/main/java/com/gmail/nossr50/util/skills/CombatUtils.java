@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
 
 public final class CombatUtils {
@@ -891,7 +892,7 @@ public final class CombatUtils {
                 return;
             }
 
-            xpGainReason = XPGainReason.PVP;
+            xpGainReason = PVP;
 
             if (defender.isOnline()
                     && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {

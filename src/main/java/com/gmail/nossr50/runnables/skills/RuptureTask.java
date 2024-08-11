@@ -8,9 +8,12 @@ import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.base.Objects;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import static org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH;
 
 public class RuptureTask extends CancellableRunnable {
 
@@ -82,20 +85,36 @@ public class RuptureTask extends CancellableRunnable {
     private boolean applyRupture() {
         double healthBeforeRuptureIsApplied = targetEntity.getHealth();
 
-        //Ensure victim has health
+        // Ensure victim has health
         if (healthBeforeRuptureIsApplied > 0.01) {
             //Send a fake damage event
             McMMOEntityDamageByRuptureEvent event =
                     new McMMOEntityDamageByRuptureEvent(ruptureSource, targetEntity, calculateAdjustedTickDamage());
             mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-            //Ensure the event wasn't cancelled and damage is still greater than 0
+            //Ensure the event wasn't canceled and damage is still greater than 0
             double damage = event.getDamage(); //Use raw damage for Rupture
 
             if (event.isCancelled() || damage <= 0 || healthBeforeRuptureIsApplied - damage <= 0)
                 return true;
 
-            double damagedHealth = healthBeforeRuptureIsApplied - damage;
+            final double damagedHealth = healthBeforeRuptureIsApplied - damage;
+
+            final AttributeInstance maxHealthAttribute = targetEntity.getAttribute(GENERIC_MAX_HEALTH);
+            if (maxHealthAttribute == null) {
+                // Can't remove health if max health is null
+                mcMMO.p.getLogger().info("RuptureTask: Target entity has an illegal state for its health." +
+                        " Cancelling Rupture. Target has null " + GENERIC_MAX_HEALTH + " attribute.");
+                return true;
+            }
+
+            if (damagedHealth > maxHealthAttribute.getValue()) {
+                // Something went very wrong here, target has an illegal state for its health
+                mcMMO.p.getLogger().info("RuptureTask: Target entity has an illegal state for its health." +
+                        " Cancelling Rupture. Target has " + targetEntity.getHealth() + " health," +
+                        " but max health is " + maxHealthAttribute.getValue());
+                return true;
+            }
 
             targetEntity.setHealth(damagedHealth); //Hurt entity without the unwanted side effects of damage()}
             MobHealthbarUtils.handleMobHealthbars(targetEntity, damage, mcMMO.p);
