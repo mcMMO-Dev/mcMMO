@@ -19,6 +19,8 @@ Concoctions:
         - WATER_LILY
         - PUFFERFISH
         - DRAGON_BREATH
+        - STONE
+        - SLIME_BLOCK
     Tier_Two_Ingredients:
         - CARROT
         - SLIME_BALL
@@ -79,6 +81,8 @@ Potions:
             BLAZE_POWDER: POTION_OF_MUNDANE
             REDSTONE: POTION_OF_MUNDANE
             RABBIT_FOOT: POTION_OF_MUNDANE
+            STONE: POTION_OF_MUNDANE
+            SLIME_BLOCK: POTION_OF_MUNDANE
     POTION_OF_WATER_UNCRAFTABLE:
         Material: POTION
         PotionData:
@@ -96,6 +100,8 @@ Potions:
             BLAZE_POWDER: POTION_OF_MUNDANE
             REDSTONE: POTION_OF_MUNDANE
             RABBIT_FOOT: POTION_OF_MUNDANE
+            STONE: POTION_OF_MUNDANE
+            SLIME_BLOCK: POTION_OF_MUNDANE
     POTION_OF_MUNDANE:
         Material: POTION
         PotionData:
@@ -135,6 +141,8 @@ Potions:
             GHAST_TEAR: POTION_OF_REGENERATION
             TURTLE_HELMET: POTION_OF_TURTLE_MASTER
             RABBIT_FOOT: POTION_OF_LEAPING
+            STONE: POTION_OF_INFESTATION
+            SLIME_BLOCK: POTION_OF_OOZING
     POTION_OF_NIGHT_VISION:
         Material: POTION
         PotionData:
@@ -421,6 +429,18 @@ Potions:
             Extended: true
         Children:
             GUNPOWDER: SPLASH_POTION_OF_SLOW_FALLING_EXTENDED
+    POTION_OF_INFESTATION:
+        Material: POTION
+        PotionData:
+            PotionType: INFESTED
+        Children:
+            GUNPOWDER: SPLASH_POTION_OF_INFESTATION
+    POTION_OF_OOZING:
+        Material: POTION
+        PotionData:
+            PotionType: OOZING
+        Children:
+            GUNPOWDER: SPLASH_POTION_OF_OOZING
     POTION_OF_ABSORPTION:
         Name: Potion Of Absorption
         Material: POTION
@@ -704,6 +724,8 @@ Potions:
             SPIDER_EYE: SPLASH_POTION_OF_MUNDANE
             REDSTONE: SPLASH_POTION_OF_MUNDANE
             MAGMA_CREAM: SPLASH_POTION_OF_MUNDANE
+            STONE: SPLASH_POTION_OF_MUNDANE
+            SLIME_BLOCK: SPLASH_POTION_OF_MUNDANE
     SPLASH_POTION_OF_MUNDANE:
         Material: SPLASH_POTION
         PotionData:
@@ -743,6 +765,8 @@ Potions:
             SPIDER_EYE: SPLASH_POTION_OF_POISON
             INK_SAC: SPLASH_POTION_OF_BLINDNESS
             PUFFERFISH: SPLASH_POTION_OF_WATER_BREATHING
+            STONE: SPLASH_POTION_OF_INFESTATION
+            SLIME_BLOCK: SPLASH_POTION_OF_OOZING
     SPLASH_POTION_OF_NIGHT_VISION:
         Material: SPLASH_POTION
         PotionData:
@@ -1029,6 +1053,18 @@ Potions:
             Extended: true
         Children:
             DRAGON_BREATH: LINGERING_POTION_OF_SLOW_FALLING_EXTENDED
+    SPLASH_POTION_OF_INFESTATION:
+        Material: SPLASH_POTION
+        PotionData:
+            PotionType: INFESTED
+        Children:
+            DRAGON_BREATH: LINGERING_POTION_OF_INFESTATION
+    SPLASH_POTION_OF_OOZING:
+        Material: SPLASH_POTION
+        PotionData:
+            PotionType: OOZING
+        Children:
+            DRAGON_BREATH: LINGERING_POTION_OF_OOZING
     SPLASH_POTION_OF_ABSORPTION:
         Name: Splash Potion Of Absorption
         Material: SPLASH_POTION
@@ -1309,6 +1345,8 @@ Potions:
             SUGAR: LINGERING_POTION_OF_MUNDANE
             SPIDER_EYE: LINGERING_POTION_OF_MUNDANE
             MAGMA_CREAM: LINGERING_POTION_OF_MUNDANE
+            STONE: LINGERING_POTION_OF_MUNDANE
+            SLIME_BLOCK: LINGERING_POTION_OF_MUNDANE
     LINGERING_POTION_OF_MUNDANE:
         Material: LINGERING_POTION
         PotionData:
@@ -1343,6 +1381,8 @@ Potions:
             ROTTEN_FLESH: LINGERING_POTION_OF_HUNGER
             MAGMA_CREAM: LINGERING_POTION_OF_FIRE_RESISTANCE
             PUFFERFISH: LINGERING_POTION_OF_WATER_BREATHING
+            STONE: LINGERING_POTION_OF_INFESTATION
+            SLIME_BLOCK: LINGERING_POTION_OF_OOZING
     LINGERING_POTION_OF_NIGHT_VISION:
         Material: LINGERING_POTION
         PotionData:
@@ -1576,6 +1616,14 @@ Potions:
         PotionData:
             PotionType: SLOW_FALLING
             Extended: true
+    LINGERING_POTION_OF_INFESTATION:
+        Material: LINGERING_POTION
+        PotionData:
+            PotionType: INFESTED
+    LINGERING_POTION_OF_OOZING:
+        Material: LINGERING_POTION
+        PotionData:
+            PotionType: OOZING
     LINGERING_POTION_OF_ABSORPTION:
         Name: Lingering Potion Of Absorption
         Material: LINGERING_POTION

@@ -104,6 +104,8 @@ public class PotionConfigGenerator {
                 case WEAKNESS :
                 case TURTLE_MASTER:
                 case SLOW_FALLING:
+                case INFESTED:
+                case OOZING:
                     return type.name();
                 default :
                     return "";
@@ -310,6 +312,24 @@ public class PotionConfigGenerator {
                 return "CONDUIT_POWER";
             case 30:
                 return "DOLPHINS_GRACE";
+            case 31:
+                return "BAD_OMEN";
+            case 32:
+                return "HERO_OF_THE_VILLAGE";
+            case 33:
+                return "DARKNESS";
+            case 34:
+                return "TRIAL_OMEN";
+            case 35:
+                return "RAID_OMEN";
+            case 36:
+                return "WIND_CHARGED";
+            case 37:
+                return "WEAVING";
+            case 38:
+                return "OOZING";
+            case 39:
+                return "INFESTED";
             default :
                 return "UNKNOWN_EFFECT_TYPE_" + type.getId();
         }
@@ -362,6 +382,8 @@ public class PotionConfigGenerator {
                 children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(current.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.STONE), new WriteablePotion(current.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.SLIME_BLOCK), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 return;
             case AWKWARD :
                 assert(!current.data.isExtended());
@@ -377,6 +399,8 @@ public class PotionConfigGenerator {
                 children.put(new Ingredient(Material.BLAZE_POWDER), new WriteablePotion(current.mat, PotionType.STRENGTH));
                 children.put(new Ingredient(Material.TURTLE_HELMET), new WriteablePotion(current.mat, PotionType.TURTLE_MASTER));
                 children.put(new Ingredient(Material.PHANTOM_MEMBRANE), new WriteablePotion(current.mat, PotionType.SLOW_FALLING));
+                children.put(new Ingredient(Material.STONE), new WriteablePotion(current.mat, PotionType.INFESTATION));
+                children.put(new Ingredient(Material.SLIME_BLOCK), new WriteablePotion(current.mat, PotionType.OOZING));
                 // mcMMO custom potions
                 double mod = 1;
                 if (current.mat == Material.SPLASH_POTION) {
@@ -503,6 +527,8 @@ public class PotionConfigGenerator {
                     children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
                 }
                 return;
+            case INFESTATION :
+            case OOZING :
             case LUCK :
             case MUNDANE :
             case THICK :
