@@ -130,13 +130,15 @@ public final class ItemUtils {
      */
     public static boolean hasItemIncludingOffHand(Player player, Material material) {
         // Checks main inventory / item bar
-        boolean containsInMain = player.getInventory().contains(material);
-
-        if (containsInMain) {
-            return true;
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack != null && itemStack.getType() == material) {
+                return true;
+            }
         }
 
-        return player.getInventory().getItemInOffHand().getType() == material;
+        // Check off-hand
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        return offHandItem != null && offHandItem.getType() == material;
     }
 
     /**
@@ -147,18 +149,29 @@ public final class ItemUtils {
      * @param amount   Amount of the material to remove
      */
     public static void removeItemIncludingOffHand(@NotNull Player player, @NotNull Material material, int amount) {
-        // Checks main inventory / item bar
-        if (player.getInventory().contains(material)) {
-            player.getInventory().removeItem(new ItemStack(material, amount));
-            return;
+        // Remove from main inventory
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack != null && itemStack.getType() == material) {
+                int stackAmount = itemStack.getAmount();
+                if (stackAmount > amount) {
+                    itemStack.setAmount(stackAmount - amount);
+                    return;
+                } else {
+                    player.getInventory().removeItem(itemStack);
+                    amount -= stackAmount;
+                    if (amount <= 0) {
+                        return;
+                    }
+                }
+            }
         }
 
-        // Check off-hand
-        final ItemStack offHandItem = player.getInventory().getItemInOffHand();
-        if (offHandItem.getType() == material) {
-            int newAmount = offHandItem.getAmount() - amount;
-            if (newAmount > 0) {
-                offHandItem.setAmount(newAmount);
+        // Remove from off-hand
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        if (offHandItem != null && offHandItem.getType() == material) {
+            int stackAmount = offHandItem.getAmount();
+            if (stackAmount > amount) {
+                offHandItem.setAmount(stackAmount - amount);
             } else {
                 player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
             }
