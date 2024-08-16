@@ -23,10 +23,7 @@ import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerItemMendEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
