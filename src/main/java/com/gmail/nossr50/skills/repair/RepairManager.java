@@ -23,7 +23,10 @@ import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerItemMendEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -197,7 +200,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Repair the item!
-        item.setDurability(newDurability);
+        SkillUtils.applyDurabilityChange(player, item, newDurability);
     }
 
     private float getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {

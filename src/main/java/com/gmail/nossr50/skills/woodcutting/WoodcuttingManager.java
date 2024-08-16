@@ -18,13 +18,11 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -250,16 +248,7 @@ public class WoodcuttingManager extends SkillManager {
             }
         }
 
-        // Call PlayerItemDamageEvent first to make sure it's not cancelled
-        //TODO: Put this event stuff in handleDurabilityChange
-        final PlayerItemDamageEvent event = new PlayerItemDamageEvent(player, inHand, durabilityLoss);
-        Bukkit.getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return true;
-        }
-
-        SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
+        SkillUtils.handleDurabilityChange(player, inHand, durabilityLoss);
         int durability = meta instanceof Damageable ? ((Damageable) meta).getDamage(): 0;
         return (durability < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
     }
