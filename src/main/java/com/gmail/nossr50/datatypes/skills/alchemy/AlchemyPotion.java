@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 public class AlchemyPotion {
     private final @NotNull String potionConfigName;
     private final @NotNull ItemStack potionItemStack;
+    private final @NotNull ItemMeta potionItemMeta;
     private final @NotNull Map<ItemStack, String> alchemyPotionChildren;
 
     public AlchemyPotion(@NotNull String potionConfigName, @NotNull ItemStack potionItemStack,
@@ -26,6 +27,7 @@ public class AlchemyPotion {
         this.potionConfigName = requireNonNull(potionConfigName, "potionConfigName cannot be null");
         this.potionItemStack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
         this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
+        this.potionItemMeta = potionItemStack.getItemMeta(); // The potion item meta should never be null because it is a potion
     }
 
     public @NotNull ItemStack toItemStack(int amount) {
@@ -120,7 +122,7 @@ public class AlchemyPotion {
     }
 
     public PotionMeta getAlchemyPotionMeta() {
-        return (PotionMeta) potionItemStack.getItemMeta();
+        return (PotionMeta) potionItemMeta;
     }
 
     public boolean isSplash() {
