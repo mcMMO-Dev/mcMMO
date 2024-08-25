@@ -335,6 +335,10 @@ public class PotionConfig extends LegacyConfigLoader {
      * @return AlchemyPotion that corresponds to the given ItemStack.
      */
     public AlchemyPotion getPotion(ItemStack item) {
+        // Fast return if the item does not have any item meta to avoid initializing an unnecessary ItemMeta instance
+        if (!item.hasItemMeta())
+            return null;
+
         ItemMeta itemMeta = item.getItemMeta();
         final List<AlchemyPotion> potionList = alchemyPotions.values()
                 .stream()
