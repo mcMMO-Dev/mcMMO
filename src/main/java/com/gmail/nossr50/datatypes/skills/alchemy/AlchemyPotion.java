@@ -4,6 +4,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.PotionUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,13 +50,18 @@ public class AlchemyPotion {
     }
 
     public boolean isSimilarPotion(@NotNull ItemStack otherPotion) {
+        return isSimilarPotion(otherPotion, otherPotion.getItemMeta());
+    }
+
+    public boolean isSimilarPotion(@NotNull ItemStack otherPotion, @Nullable ItemMeta otherMeta) {
         requireNonNull(otherPotion, "otherPotion cannot be null");
+
         if (otherPotion.getType() != potionItemStack.getType()) {
             return false;
         }
 
         // no potion meta, no match
-        if (!otherPotion.hasItemMeta()) {
+        if (otherMeta == null) {
             return false;
         }
 
@@ -63,7 +69,7 @@ public class AlchemyPotion {
          * Compare custom effects on both potions.
          */
 
-        final PotionMeta otherPotionMeta = (PotionMeta) otherPotion.getItemMeta();
+        final PotionMeta otherPotionMeta = (PotionMeta) otherMeta;
         // compare custom effects on both potions, this has to be done in two traversals
         // comparing thisPotionMeta -> otherPotionMeta and otherPotionMeta -> thisPotionMeta
         if (hasDifferingCustomEffects(getAlchemyPotionMeta(), otherPotionMeta)
