@@ -27,7 +27,7 @@ public class AlchemyPotion {
         this.potionConfigName = requireNonNull(potionConfigName, "potionConfigName cannot be null");
         this.potionItemStack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
         this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
-        this.potionItemMeta = potionItemStack.getItemMeta(); // The potion item meta should never be null because it is a potion
+        this.potionItemMeta = requireNonNull(potionItemStack.getItemMeta(), "potionItemMeta cannot be null"); // The potion item meta should never be null because it is a potion, but if it is null, then something went terribly wrong
     }
 
     public @NotNull ItemStack toItemStack(int amount) {
