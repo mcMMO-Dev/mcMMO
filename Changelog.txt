@@ -1,10 +1,13 @@
 Version 2.2.019
+    Optimized Alchemy code (thanks MrPowerGamerBR)
+    Fixed an exception that could occur when shooting entities through worlds (thanks Wariorrrr)
+    Fixes to en_US locale (thanks BlockMasters617)
     Maces, Crossbows, and Tridents skill commands don't warn you that they are work in progress anymore.
     Fixed IllegalArgumentException when Rupture would trigger on an entity with illegal state
 
     NOTES:
-    Maces, Crossbows, and Tridents are still in development, the change to remove that info from the skill command was to reduce the visual noise.
-    I think at this point users will get it, they are still going to have changes, you don't need to see that message everytime you use the skill command.
+    Maces, Crossbows, and Tridents are still in development, the change to remove the message from the skill command was to reduce the visual noise.
+
 Version 2.2.018
     Fixed a probability bug where certain skills would max out in chance to succeed well before they were supposed to (such as Dodge)
     Blast Mining will no longer drop mob spawners (see notes)
