@@ -945,7 +945,7 @@ public final class CombatUtils {
         baseXP *= multiplier;
 
         if (baseXP > 0) {
-            mcMMO.p.getFoliaLib().getImpl().runAtEntity(mcMMOPlayer.getPlayer(), new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXP, target, xpGainReason));
+            mcMMO.p.getFoliaLib().getImpl().runAtEntity(target, new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXP, target, xpGainReason));
         }
     }
 
