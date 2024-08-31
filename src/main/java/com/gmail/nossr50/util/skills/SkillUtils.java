@@ -260,6 +260,7 @@ public final class SkillUtils {
             ExperienceOrb auxOrb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
             auxOrb.setExperience(damage / 2);
             PlayerItemMendEvent event = new PlayerItemMendEvent(player, itemStack, itemStack.getType().getEquipmentSlot(), auxOrb, damage);
+            Bukkit.getPluginManager().callEvent(event);
             if (!event.isCancelled() && event.getRepairAmount() != 0) {
                 itemStack.setDurability((short) (itemStack.getDurability() - event.getRepairAmount()));
             }
