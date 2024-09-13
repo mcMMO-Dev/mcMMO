@@ -152,11 +152,13 @@ public class AlchemyBrewTask extends CancellableRunnable {
 
 
     private void finish() {
-        final McMMOPlayerBrewEvent event = new McMMOPlayerBrewEvent(mmoPlayer, brewingStand);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
+        if(mmoPlayer != null) {
+            final McMMOPlayerBrewEvent event = new McMMOPlayerBrewEvent(mmoPlayer, brewingStand);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        if (!event.isCancelled()) {
-            AlchemyPotionBrewer.finishBrewing(brewingStand, mmoPlayer, false);
+            if (!event.isCancelled()) {
+                AlchemyPotionBrewer.finishBrewing(brewingStand, mmoPlayer, false);
+            }
         }
 
         Alchemy.brewingStandMap.remove(brewingStand.getLocation());
