@@ -1,6 +1,7 @@
 Version 2.2.020
     (Codebase) Reworked Roll implementation (See notes)
     (Codebase) Added unit test coverage for Roll
+    Fixed blast mining trying to drop non-items (thanks IAISI)
     Fixed error spam in mcMMO potion matching logic (see notes)
     Fixed a bug where Roll was modifying damage unnecessarily
 

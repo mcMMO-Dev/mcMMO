@@ -204,7 +204,7 @@ public class MiningManager extends SkillManager {
             if (isDropIllegal(blockState.getType()))
                 continue;
 
-            if (Probability.ofPercent(50).evaluate()) {
+            if (blockState.getType().isItem() && Probability.ofPercent(50).evaluate()) {
                 ItemUtils.spawnItem(getPlayer(),
                         Misc.getBlockCenter(blockState),
                         new ItemStack(blockState.getType()),
