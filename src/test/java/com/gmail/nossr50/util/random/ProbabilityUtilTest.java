@@ -38,7 +38,7 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
 
     @AfterEach
     public void tearDown() {
-        cleanupBaseEnvironment();
+        cleanUpStaticMocks();
     }
 
     private static Stream<Arguments> staticChanceSkills() {

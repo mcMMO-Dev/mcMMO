@@ -11,21 +11,23 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Collections;
+import java.util.logging.Logger;
 
+import static java.util.logging.Logger.getLogger;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 class WoodcuttingTest extends MMOTestEnvironment {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WoodcuttingTest.class.getName());
+    private static final Logger logger = getLogger(WoodcuttingTest.class.getName());
 
-    WoodcuttingManager woodcuttingManager;
+    private WoodcuttingManager woodcuttingManager;
+
     @BeforeEach
     void setUp() throws InvalidSkillException {
         mockBaseEnvironment(logger);
@@ -42,12 +44,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         Mockito.when(RankUtils.hasReachedRank(eq(1), any(Player.class), eq(SubSkillType.WOODCUTTING_HARVEST_LUMBER))).thenReturn(true);
         Mockito.when(RankUtils.hasReachedRank(eq(1), any(Player.class), eq(SubSkillType.WOODCUTTING_CLEAN_CUTS))).thenReturn(true);
 
-        // setup player and player related mocks after everything else
-        this.player = Mockito.mock(Player.class);
-        Mockito.when(player.getUniqueId()).thenReturn(playerUUID);
-
         // wire inventory
-        this.playerInventory = Mockito.mock(PlayerInventory.class);
         this.itemInMainHand = new ItemStack(Material.DIAMOND_AXE);
         Mockito.when(player.getInventory()).thenReturn(playerInventory);
         Mockito.when(playerInventory.getItemInMainHand()).thenReturn(itemInMainHand);
@@ -58,7 +55,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @AfterEach
     void tearDown() {
-        cleanupBaseEnvironment();
+        cleanUpStaticMocks();
     }
 
     @Test

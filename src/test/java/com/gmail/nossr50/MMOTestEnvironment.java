@@ -15,11 +15,16 @@ import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
+import com.gmail.nossr50.util.sounds.SoundManager;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -44,6 +49,8 @@ public abstract class MMOTestEnvironment {
     protected MockedStatic<Misc> mockedMisc;
     protected MockedStatic<SkillTools> mockedSkillTools;
     protected MockedStatic<EventUtils> mockedEventUtils;
+    protected MockedStatic<NotificationManager> notificationManager;
+    protected MockedStatic<SoundManager> mockedSoundManager;
     protected TransientEntityTracker transientEntityTracker;
     protected AdvancedConfig advancedConfig;
     protected PartyConfig partyConfig;
@@ -63,7 +70,6 @@ public abstract class MMOTestEnvironment {
     protected PlayerInventory playerInventory;
     protected PlayerProfile playerProfile;
     protected McMMOPlayer mmoPlayer;
-    protected String playerName = "testPlayer";
     protected ItemFactory itemFactory;
 
     protected ChunkManager chunkManager;
@@ -124,14 +130,25 @@ public abstract class MMOTestEnvironment {
         this.server = mock(Server.class);
         when(mcMMO.p.getServer()).thenReturn(server);
 
+        // wire Bukkit
         mockedBukkit = mockStatic(Bukkit.class);
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         itemFactory = mock(ItemFactory.class);
-        // when(itemFactory.getItemMeta(any())).thenReturn(mock(ItemMeta.class));
+
+        // wire Bukkit call to get server
+        when(Bukkit.getServer()).thenReturn(server);
 
         // wire plugin manager
         this.pluginManager = mock(PluginManager.class);
+        // wire server -> plugin manager
         when(server.getPluginManager()).thenReturn(pluginManager);
+        // wire Bukkit -> plugin manager
+        when(Bukkit.getPluginManager()).thenReturn(pluginManager);
+        // return the argument provided when call event is invoked on plugin manager mock
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return args[0];
+        }).when(pluginManager).callEvent(any(Event.class));
 
         // wire world
         this.world = mock(World.class);
@@ -143,10 +160,19 @@ public abstract class MMOTestEnvironment {
         // setup player and player related mocks after everything else
         this.player = mock(Player.class);
         when(player.getUniqueId()).thenReturn(playerUUID);
-
+        when(player.isValid()).thenReturn(true);
+        when(player.isOnline()).thenReturn(true);
+        // health
+        when(player.getHealth()).thenReturn(20D);
         // wire inventory
         this.playerInventory = mock(PlayerInventory.class);
         when(player.getInventory()).thenReturn(playerInventory);
+        // player location
+        Location playerLocation = mock(Location.class);
+        Block playerLocationBlock = mock(Block.class);
+        when(player.getLocation()).thenReturn(playerLocation);
+        when(playerLocation.getBlock()).thenReturn(playerLocationBlock);
+        // when(playerLocationBlock.getType()).thenReturn(Material.AIR);
 
         // PlayerProfile and McMMOPlayer are partially mocked
         playerProfile = new PlayerProfile("testPlayer", player.getUniqueId(), 0);
@@ -158,6 +184,12 @@ public abstract class MMOTestEnvironment {
 
         this.materialMapStore = new MaterialMapStore();
         when(mcMMO.getMaterialMapStore()).thenReturn(materialMapStore);
+
+        // wire notification manager
+        notificationManager = mockStatic(NotificationManager.class);
+
+        // wire sound manager
+        mockedSoundManager = mockStatic(SoundManager.class);
     }
 
     private void mockPermissions() {
@@ -201,7 +233,7 @@ public abstract class MMOTestEnvironment {
         when(ExperienceConfig.getInstance().getCombatXP("Cow")).thenReturn(1D);
     }
 
-    protected void cleanupBaseEnvironment() {
+    protected void cleanUpStaticMocks() {
         // Clean up resources here if needed.
         if (mockedMcMMO != null) {
             mockedMcMMO.close();
@@ -229,6 +261,12 @@ public abstract class MMOTestEnvironment {
         }
         if (mockedBukkit != null) {
             mockedBukkit.close();
+        }
+        if (notificationManager != null) {
+            notificationManager.close();
+        }
+        if (mockedSoundManager != null) {
+            mockedSoundManager.close();
         }
     }
 }

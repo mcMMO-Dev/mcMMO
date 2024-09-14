@@ -12,12 +12,13 @@ import org.mockito.Mockito;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static java.util.logging.Logger.getLogger;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PartyManagerTest extends MMOTestEnvironment {
-    private static final Logger logger = Logger.getLogger(PartyManagerTest.class.getName());
+    private static final Logger logger = getLogger(PartyManagerTest.class.getName());
 
     @BeforeEach
     public void setUp() {
@@ -29,7 +30,7 @@ class PartyManagerTest extends MMOTestEnvironment {
 
     @AfterEach
     public void tearDown() {
-        cleanupBaseEnvironment();
+        cleanUpStaticMocks();
 
         // disable parties in config for other tests
         Mockito.when(partyConfig.isPartyEnabled()).thenReturn(false);
