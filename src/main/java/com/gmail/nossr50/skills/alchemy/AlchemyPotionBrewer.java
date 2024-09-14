@@ -189,18 +189,18 @@ public final class AlchemyPotionBrewer {
 
         // Process each of the three slots in the brewing stand
         for (int i = 0; i < 3; i++) {
-            ItemStack item = inventory.getItem(i);
+            final ItemStack potionInBrewStandInputSlot = inventory.getItem(i);
 
             // Skip the slot if it's empty, contains a glass bottle, or holds an invalid potion
-            if (isEmpty(item)
-                    || item.getType() == Material.GLASS_BOTTLE
-                    || !mcMMO.p.getPotionConfig().isValidPotion(item)) {
+            if (isEmpty(potionInBrewStandInputSlot)
+                    || potionInBrewStandInputSlot.getType() == Material.GLASS_BOTTLE
+                    || !mcMMO.p.getPotionConfig().isValidPotion(potionInBrewStandInputSlot)) {
                 // debug
                 continue;
             }
 
             // Retrieve the potion configurations for the input and resulting output potion
-            AlchemyPotion input = mcMMO.p.getPotionConfig().getPotion(item);
+            AlchemyPotion input = mcMMO.p.getPotionConfig().getPotion(potionInBrewStandInputSlot);
             AlchemyPotion output = input.getChild(ingredient);
 
             // Update the input list with the current potion
@@ -208,7 +208,7 @@ public final class AlchemyPotionBrewer {
 
             // If there is a valid output potion, add it to the output list
             if (output != null) {
-                outputList.set(i, output.toItemStack(item.getAmount()).clone());
+                outputList.set(i, output.toItemStack(potionInBrewStandInputSlot.getAmount()).clone());
             }
         }
 

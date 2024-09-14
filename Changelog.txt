@@ -1,9 +1,11 @@
 Version 2.2.020
     (Codebase) Reworked Roll implementation (See notes)
     (Codebase) Added unit test coverage for Roll
+    Fixed error spam in mcMMO potion matching logic (see notes)
     Fixed a bug where Roll was modifying damage unnecessarily
 
     NOTES:
+    I'll need to rework Alchemy a bit further to address some issues I've found, for now mcMMO will ignore harmless matching errors in the potion matching logic.
     The code for Roll was a bit of a mess, I've rewritten a good chunk of it and added some unit test coverage.
     I will likely put out another update for Acrobatics in general, as the code for Acrobatics is whack.
     This would be a good time to suggest changes to Acrobatics on discord.
