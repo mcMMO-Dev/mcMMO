@@ -45,6 +45,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.Arrays;
+
 import static com.gmail.nossr50.util.MobMetadataUtils.*;
 
 public class EntityListener implements Listener {
@@ -71,6 +73,11 @@ public class EntityListener implements Listener {
                         addMobFlags(livingEntity, transformedEntity);
                     }
                 }
+            }
+
+            // Clear the original slime/magma cubes metadata - it's dead.
+            if (Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE).contains(livingEntity.getType())) {
+                mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(livingEntity);
             }
         }
     }
@@ -652,7 +659,14 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
-        mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(event.getEntity());
+        LivingEntity entity = event.getEntity();
+
+        // Clear metadata for Slimes/Magma Cubes after transformation events take place, otherwise small spawned slimes will not have any tags
+        if (Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE).contains(entity.getType())) {
+            return;
+        }
+
+        mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(entity);
     }
 
     /**
