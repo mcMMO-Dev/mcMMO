@@ -76,7 +76,12 @@ public class Roll extends AcrobaticsSubSkill {
                     // no-op - fall was fatal or otherwise did not get processed
                     return false;
                 }
-                entityDamageEvent.setDamage(rollResult.getModifiedDamage());
+
+                // Clear out the damage from falling so that way our modified damage doesn't get re-reduced by protection/feather falling
+                entityDamageEvent.setDamage(0);
+                // Send the damage is MAGIC so that it cuts through all resistances
+                // This is fine because we considered protection/featherfalling in the rollCheck method
+                entityDamageEvent.setDamage(EntityDamageEvent.DamageModifier.MAGIC, rollResult.getModifiedDamage());
 
                 if (entityDamageEvent.getFinalDamage() == 0) {
                     entityDamageEvent.setCancelled(true);
@@ -216,7 +221,7 @@ public class Roll extends AcrobaticsSubSkill {
      */
     @VisibleForTesting
     public RollResult rollCheck(McMMOPlayer mmoPlayer, EntityDamageEvent entityDamageEvent) {
-        double baseDamage = entityDamageEvent.getDamage();
+        double baseDamage = entityDamageEvent.getFinalDamage();
         final boolean isGraceful = mmoPlayer.getPlayer().isSneaking();
         final RollResult.Builder rollResultBuilder
                 = new RollResult.Builder(entityDamageEvent, isGraceful);
