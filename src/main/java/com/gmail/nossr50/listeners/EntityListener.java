@@ -46,6 +46,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.gmail.nossr50.util.MobMetadataUtils.*;
 
@@ -57,6 +58,7 @@ public class EntityListener implements Listener {
      * check if a {@link Player} has a {@link Trident} enchanted with "Piercing".
      */
     private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft("piercing");
+    private final List<EntityType> transformableEntities = Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE);
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -76,7 +78,7 @@ public class EntityListener implements Listener {
             }
 
             // Clear the original slime/magma cubes metadata - it's dead.
-            if (Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE).contains(livingEntity.getType())) {
+            if (transformableEntities.contains(livingEntity.getType())) {
                 mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(livingEntity);
             }
         }
@@ -662,7 +664,7 @@ public class EntityListener implements Listener {
         LivingEntity entity = event.getEntity();
 
         // Clear metadata for Slimes/Magma Cubes after transformation events take place, otherwise small spawned slimes will not have any tags
-        if (Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE).contains(entity.getType())) {
+        if (transformableEntities.contains(entity.getType())) {
             return;
         }
 
