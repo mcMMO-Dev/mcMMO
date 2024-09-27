@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.SkillActivationPerkEvent;
@@ -47,28 +46,17 @@ public final class PerksUtils {
     }
 
     public static float handleXpPerks(Player player, float xp, PrimarySkillType skill) {
-        double modifier = 1.0F;
+        double modifier = XPBoostAmount.NONE;
 
-        if (Permissions.customXpBoost(player, skill)) {
-            if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
-                player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY + "XP Perk Multiplier IS CUSTOM! ");
+        for (XPBoostAmount xpBoostAmount : XPBoostAmount.getByHighestMultiplier()) {
+            if (xpBoostAmount.hasBoostPermission(player, skill)) {
+                modifier = xpBoostAmount.getMultiplier();
+
+                if (xpBoostAmount == XPBoostAmount.CUSTOM && UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
+                    player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY + "XP perk multiplier is custom!");
+                }
+                break;
             }
-
-             modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
-        } else if (Permissions.quadrupleXp(player, skill)) {
-            modifier = 4;
-        } else if (Permissions.tripleXp(player, skill)) {
-            modifier = 3;
-        } else if (Permissions.doubleAndOneHalfXp(player, skill)) {
-            modifier = 2.5;
-        } else if (Permissions.doubleXp(player, skill)) {
-            modifier = 2;
-        } else if (Permissions.oneAndOneHalfXp(player, skill)) {
-            modifier = 1.5;
-        } else if (Permissions.oneAndAQuarterXp(player, skill)) {
-            modifier = 1.25;
-        } else if (Permissions.oneAndOneTenthXp(player, skill)) {
-            modifier = 1.1;
         }
 
         float modifiedXP = (float) (xp * modifier);
