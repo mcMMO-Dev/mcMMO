@@ -1,7 +1,7 @@
 Version 2.2.022
     Fixed a bug where Roll was always reducing damage (thanks Ineusia)
     Fix COTW errors on older versions (thanks Warriorrrr)
-    Fixed Slime Spawner not marking divided cubes as being from a mob spawner (thanks Ineusia).
+    Fixed slimes spawning from slime division not inheriting tags. (thanks Ineusia)
 
 
 Version 2.2.021
