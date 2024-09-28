@@ -77,18 +77,18 @@ public class Roll extends AcrobaticsSubSkill {
                     return false;
                 }
 
-                // Clear out the damage from falling so that way our modified damage doesn't get re-reduced by protection/feather falling
-                entityDamageEvent.setDamage(0);
-                // Send the damage is MAGIC so that it cuts through all resistances
-                // This is fine because we considered protection/featherfalling in the rollCheck method
-                entityDamageEvent.setDamage(EntityDamageEvent.DamageModifier.MAGIC, rollResult.getModifiedDamage());
-
-                if (entityDamageEvent.getFinalDamage() == 0) {
-                    entityDamageEvent.setCancelled(true);
-                }
-
-                // Roll happened, send messages and XP
+                // Roll happened, reduce damage, send messages and XP
                 if (rollResult.isRollSuccess()) {
+                    // Clear out the damage from falling so that way our modified damage doesn't get re-reduced by protection/feather falling
+                    entityDamageEvent.setDamage(0);
+                    // Send the damage is MAGIC so that it cuts through all resistances
+                    // This is fine because we considered protection/featherfalling in the rollCheck method
+                    entityDamageEvent.setDamage(EntityDamageEvent.DamageModifier.MAGIC, rollResult.getModifiedDamage());
+
+                    if (entityDamageEvent.getFinalDamage() == 0) {
+                        entityDamageEvent.setCancelled(true);
+                    }
+
                     final String key
                             = rollResult.isGraceful() ? GRACEFUL_ROLL_ACTIVATED_LOCALE_STR_KEY : ROLL_ACTIVATED_LOCALE_KEY;
                     sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.SUBSKILL_MESSAGE, key);
