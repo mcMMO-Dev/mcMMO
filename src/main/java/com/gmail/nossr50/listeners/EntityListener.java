@@ -47,6 +47,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static com.gmail.nossr50.util.MobMetadataUtils.*;
 
@@ -58,7 +59,8 @@ public class EntityListener implements Listener {
      * check if a {@link Player} has a {@link Trident} enchanted with "Piercing".
      */
     private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft("piercing");
-    private final static List<EntityType> TRANSFORMABLE_ENTITIES = Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE);
+    private final static Set<EntityType> TRANSFORMABLE_ENTITIES
+            = Set.of(EntityType.SLIME, EntityType.MAGMA_CUBE);
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
