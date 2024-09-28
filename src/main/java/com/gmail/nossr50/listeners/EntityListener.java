@@ -45,6 +45,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.gmail.nossr50.util.MobMetadataUtils.*;
 
 public class EntityListener implements Listener {
@@ -55,6 +58,7 @@ public class EntityListener implements Listener {
      * check if a {@link Player} has a {@link Trident} enchanted with "Piercing".
      */
     private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft("piercing");
+    private final List<EntityType> transformableEntities = Arrays.asList(EntityType.SLIME, EntityType.MAGMA_CUBE);
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -71,6 +75,11 @@ public class EntityListener implements Listener {
                         addMobFlags(livingEntity, transformedEntity);
                     }
                 }
+            }
+
+            // Clear the original slime/magma cubes metadata - it's dead.
+            if (transformableEntities.contains(livingEntity.getType())) {
+                mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(livingEntity);
             }
         }
     }
@@ -652,7 +661,14 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
-        mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(event.getEntity());
+        LivingEntity entity = event.getEntity();
+
+        // Clear metadata for Slimes/Magma Cubes after transformation events take place, otherwise small spawned slimes will not have any tags
+        if (transformableEntities.contains(entity.getType())) {
+            return;
+        }
+
+        mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(entity);
     }
 
     /**
