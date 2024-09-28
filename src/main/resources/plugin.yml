@@ -23,11 +23,14 @@ commands:
     mmoxpbar:
         aliases: xpbarsettings
         description: Change XP bar settings
+        permission: mcmmo.commands.mmoxpbar
     mmocompat:
         description: Information about the server and whether its considered fully compatible or running in compatibility mode
+        permission: mcmmo.commands.mmocompat
     mmodebug:
         aliases: [mcmmodebugmode]
         description: Toggles a debug mode which will print useful information to chat
+        permission: mcmmo.commands.mmodebug
     mmoinfo:
         aliases: [mcinfo]
         description: Info pages for mcMMO
@@ -869,6 +872,9 @@ permissions:
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
+            mcmmo.commands.mmodebug: true
+            mcmmo.commands.mmocompat: true
+            mcmmo.commands.mmoxpbar: true
             mcmmo.commands.mmoinfo: true
             mcmmo.commands.acrobatics: true
             mcmmo.commands.alchemy: true
