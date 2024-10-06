@@ -15,7 +15,6 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
@@ -127,7 +126,7 @@ public class AxesManager extends SkillManager {
         for (ItemStack armor : equipment.getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
                 if (isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, mmoPlayer, mmoPlayer.getAttackStrength())) {
-                    handleArmorDurabilityChange(armor, durabilityDamage, 1);
+                    handleArmorDurabilityChange(target, armor, durabilityDamage, 1);
                 }
             }
         }

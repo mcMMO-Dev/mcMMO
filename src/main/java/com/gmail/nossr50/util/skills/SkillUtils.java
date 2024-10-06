@@ -20,7 +20,12 @@ import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerItemMendEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -225,8 +230,8 @@ public final class SkillUtils {
         }
     }
 
-    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
-        handleDurabilityChange(itemStack, durabilityModifier, 1.0);
+    public static void handleDurabilityChange(LivingEntity holder, ItemStack itemStack, int durabilityModifier) {
+        handleDurabilityChange(holder, itemStack, durabilityModifier, 1.0, false);
     }
 
     /**
@@ -236,16 +241,51 @@ public final class SkillUtils {
      * @param durabilityModifier the amount to modify the durability by
      * @param maxDamageModifier the amount to adjust the max damage by
      */
-    public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+    public static void handleDurabilityChange(LivingEntity holder, ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+        handleDurabilityChange(holder, itemStack, durabilityModifier, maxDamageModifier, false);
+    }
+
+    public static void applyDurabilityChange(Player player, ItemStack itemStack, int finalDurability) {
+        int damage = finalDurability - itemStack.getDurability();
+
+        // Call PlayerItemDamageEvent first to make sure it's not cancelled
+        if (damage > 0) {  // Damaged item
+            PlayerItemDamageEvent event = new PlayerItemDamageEvent(player, itemStack, finalDurability);
+            Bukkit.getPluginManager().callEvent(event);
+            if (!event.isCancelled() && event.getDamage() != 0) {
+                itemStack.setDurability((short) (itemStack.getDurability() + event.getDamage()));
+            }
+        } else if (damage < 0) {  // Repaired item
+            damage = -damage;
+            ExperienceOrb auxOrb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
+            auxOrb.setExperience(damage / 2);
+            PlayerItemMendEvent event = new PlayerItemMendEvent(player, itemStack, itemStack.getType().getEquipmentSlot(), auxOrb, damage);
+            Bukkit.getPluginManager().callEvent(event);
+            if (!event.isCancelled() && event.getRepairAmount() != 0) {
+                itemStack.setDurability((short) (itemStack.getDurability() - event.getRepairAmount()));
+            }
+            // Cleanup
+            auxOrb.remove();
+        }
+    }
+
+    private static void handleDurabilityChange(LivingEntity holder, ItemStack itemStack, double durabilityModifier, double maxDamageModifier, boolean isArmor) {
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
 
         Material type = itemStack.getType();
         short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
-        durabilityModifier = (int) Math.min(durabilityModifier / (itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1), maxDurability * maxDamageModifier);
+        durabilityModifier = durabilityModifier * ((isArmor ? 0.6 : 0) + ((isArmor ? 0.4 : 1) / (itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1)));
+        durabilityModifier = (int) Math.min(durabilityModifier, maxDurability * maxDamageModifier);
 
-        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
+        short finalDurability = (short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability);
+        if (holder instanceof Player player) {
+            applyDurabilityChange(player, itemStack, finalDurability);
+        }
+        else {
+            itemStack.setDurability(finalDurability);
+        }
     }
 
     private static boolean isLocalizedSkill(String skillName) {
@@ -266,16 +306,8 @@ public final class SkillUtils {
      * @param durabilityModifier the amount to modify the durability by
      * @param maxDamageModifier the amount to adjust the max damage by
      */
-    public static void handleArmorDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if (itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
-            return;
-        }
-
-        Material type = itemStack.getType();
-        short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
-        durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4/ (itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1)), maxDurability * maxDamageModifier);
-
-        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
+    public static void handleArmorDurabilityChange(LivingEntity holder, ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
+        handleDurabilityChange(holder, itemStack, durabilityModifier, maxDamageModifier, true);
     }
 
     @Nullable

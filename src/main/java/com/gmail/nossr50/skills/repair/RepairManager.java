@@ -197,7 +197,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Repair the item!
-        item.setDurability(newDurability);
+        SkillUtils.applyDurabilityChange(player, item, newDurability);
     }
 
     private float getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {
