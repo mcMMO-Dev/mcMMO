@@ -312,7 +312,7 @@ public class PlayerListener implements Listener {
 
                         ItemStack replacementCatch = new ItemStack(Material.SALMON, 1);
 
-                        McMMOReplaceVanillaTreasureEvent replaceVanillaTreasureEvent = new McMMOReplaceVanillaTreasureEvent(fishingCatch, replacementCatch);
+                        McMMOReplaceVanillaTreasureEvent replaceVanillaTreasureEvent = new McMMOReplaceVanillaTreasureEvent(fishingCatch, replacementCatch, player);
                         Bukkit.getPluginManager().callEvent(replaceVanillaTreasureEvent);
 
                         //Replace
