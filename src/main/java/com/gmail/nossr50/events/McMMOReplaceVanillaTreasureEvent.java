@@ -11,11 +11,10 @@ import org.jetbrains.annotations.Nullable;
 public class McMMOReplaceVanillaTreasureEvent extends Event {
     private @NotNull ItemStack replacementItemStack;
     private final @NotNull Item originalItem;
-    private @Nullable Player causingPlayer;
+    private final @Nullable Player causingPlayer;
 
     public McMMOReplaceVanillaTreasureEvent(@NotNull Item originalItem, @NotNull ItemStack replacementItemStack) {
-        this.originalItem = originalItem;
-        this.replacementItemStack = replacementItemStack;
+        this(originalItem, replacementItemStack, null);
     }
 
     public McMMOReplaceVanillaTreasureEvent(@NotNull Item originalItem, @NotNull ItemStack replacementItemStack, @Nullable Player causingPlayer) {
