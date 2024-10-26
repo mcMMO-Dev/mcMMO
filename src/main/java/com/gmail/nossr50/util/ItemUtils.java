@@ -760,7 +760,7 @@ public final class ItemUtils {
             return null;
         }
 
-        return location.getWorld().dropItem(location, itemStack);
+        return location.getWorld().dropItem(location, event.getItemStack());
     }
 
     /**
@@ -787,7 +787,7 @@ public final class ItemUtils {
             return null;
         }
 
-        return location.getWorld().dropItemNaturally(location, itemStack);
+        return location.getWorld().dropItemNaturally(location, event.getItemStack());
     }
 
     /**
@@ -841,6 +841,7 @@ public final class ItemUtils {
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
+        clonedItem = event.getItemStack();
 
         //Something cancelled the event so back out
         if (event.isCancelled()) {
