@@ -42,7 +42,7 @@ In December 2018, the original author and creator of mcMMO (nossr50) returned an
 #### Project Lead & Founder
 [![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
 
-#### Current mcMMO Devs
+#### Current mcMMO Dev
 [![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
 
 ### Former team members
