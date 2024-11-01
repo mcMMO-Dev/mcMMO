@@ -1,5 +1,10 @@
 Version 2.2.023
     Compatibility with Minecraft 1.21.3
+    (API) add causingPlayer to McMMOReplaceVanillaTreasureEvent and update Fish Event to use it (thanks bobcat4848 and Jacob Cuomo)
+
+    Notes:
+    Tested this version of mcMMO against 1.21.3, 1.21.1, and 1.19.4, which should be full coverage for all the changes, but it is possible you will run into things I didn't catch.
+    Please report any errors or bugs to GitHub if you find them.
 
 Version 2.2.022
     Fixed a bug where Roll was always reducing damage (thanks Ineusia)
