@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MAX_HEALTH;
 import static com.gmail.nossr50.util.MobMetadataUtils.*;
 
 public class EntityListener implements Listener {
@@ -411,7 +412,7 @@ public class EntityListener implements Listener {
                     player.sendMessage(ChatColor.GOLD + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
                     player.sendMessage("You are being damaged by another player in this event");
                     player.sendMessage("Raw Damage: " + entityDamageEvent.getDamage());
-                    player.sendMessage("Your max health: "+player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    player.sendMessage("Your max health: "+player.getAttribute(MAPPED_MAX_HEALTH).getValue());
                     player.sendMessage("Your current health: "+player.getHealth());
 
                     player.sendMessage(ChatColor.GREEN + "Damage Modifiers (final damage)");
@@ -444,7 +445,7 @@ public class EntityListener implements Listener {
                     }
 
                     player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
-                    player.sendMessage("Target players max health: "+otherPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    player.sendMessage("Target players max health: "+otherPlayer.getAttribute(MAPPED_MAX_HEALTH).getValue());
                     player.sendMessage("Target players current health: "+otherPlayer.getHealth());
 
                     if (entityDamageEvent.isCancelled()) {

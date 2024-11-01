@@ -13,7 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH;
+import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MAX_HEALTH;
 
 public class RuptureTask extends CancellableRunnable {
 
@@ -28,9 +28,16 @@ public class RuptureTask extends CancellableRunnable {
     private int damageTickTracker;
     private int animationTick;
     private final double pureTickDamage;
-    private final double explosionDamage;
 
-    public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity, double pureTickDamage, double explosionDamage) {
+    /**
+     * Constructor for the RuptureTask class.
+     *
+     * @param ruptureSource The McMMOPlayer who is the source of the rupture.
+     * @param targetEntity The LivingEntity that is the target of the rupture.
+     * @param pureTickDamage The amount of damage to be applied per tick.
+     */
+    public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity,
+                       double pureTickDamage) {
         this.ruptureSource = ruptureSource;
         this.targetEntity = targetEntity;
         this.expireTick = mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(targetEntity instanceof Player) * 20;
@@ -39,7 +46,24 @@ public class RuptureTask extends CancellableRunnable {
         this.damageTickTracker = 0;
         this.animationTick = ANIMATION_TICK_INTERVAL; //Play an animation right away
         this.pureTickDamage = pureTickDamage;
-        this.explosionDamage = explosionDamage;
+    }
+
+    /**
+     * Deprecated constructor for the RuptureTask class.
+     *
+     * @deprecated This constructor is deprecated and will be removed in future versions.
+     * Use {@link #RuptureTask(McMMOPlayer, LivingEntity, double)} instead.
+     *
+     * @param ruptureSource The McMMOPlayer who is the source of the rupture.
+     * @param targetEntity The LivingEntity that is the target of the rupture.
+     * @param pureTickDamage The amount of damage to be applied per tick.
+     * @param ignored This parameter is ignored and should not be used.
+     * @since 2.2.023
+     */
+    @Deprecated(forRemoval = true, since = "2.2.023")
+    public RuptureTask(@NotNull McMMOPlayer ruptureSource, @NotNull LivingEntity targetEntity,
+                       double pureTickDamage, double ignored) {
+        this(ruptureSource, targetEntity, pureTickDamage);
     }
 
     @Override
@@ -100,11 +124,11 @@ public class RuptureTask extends CancellableRunnable {
 
             final double damagedHealth = healthBeforeRuptureIsApplied - damage;
 
-            final AttributeInstance maxHealthAttribute = targetEntity.getAttribute(GENERIC_MAX_HEALTH);
+            final AttributeInstance maxHealthAttribute = targetEntity.getAttribute(MAPPED_MAX_HEALTH);
             if (maxHealthAttribute == null) {
                 // Can't remove health if max health is null
                 mcMMO.p.getLogger().info("RuptureTask: Target entity has an illegal state for its health." +
-                        " Cancelling Rupture. Target has null " + GENERIC_MAX_HEALTH + " attribute.");
+                        " Cancelling Rupture. Target has null " + MAPPED_MAX_HEALTH + " attribute.");
                 return true;
             }
 
@@ -129,18 +153,6 @@ public class RuptureTask extends CancellableRunnable {
     }
 
     public void endRupture() {
-//        targetEntity.setMetadata(mcMMO.EXPLOSION_FROM_RUPTURE, new FixedMetadataValue(mcMMO.p, "null"));
-//
-//        ParticleEffectUtils.playGreaterImpactEffect(targetEntity); //Animate
-//
-//        if (ruptureSource.getPlayer() != null && ruptureSource.getPlayer().isValid()) {
-//            targetEntity.damage(getExplosionDamage(), ruptureSource.getPlayer());
-//        } else {
-//            targetEntity.damage(getExplosionDamage(), null);
-//        }
-//
-//        targetEntity.removeMetadata(mcMMO.RUPTURE_META_KEY, mcMMO.p);
-
         targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         this.cancel(); //Task no longer needed
     }
@@ -159,10 +171,6 @@ public class RuptureTask extends CancellableRunnable {
         return tickDamage;
     }
 
-    private double getExplosionDamage() {
-        return explosionDamage;
-    }
-
     @Override
     public String toString() {
         return "RuptureTask{" +
@@ -172,7 +180,6 @@ public class RuptureTask extends CancellableRunnable {
                 ", ruptureTick=" + ruptureTick +
                 ", damageTickTracker=" + damageTickTracker +
                 ", pureTickDamage=" + pureTickDamage +
-                ", explosionDamage=" + explosionDamage +
                 '}';
     }
 
@@ -181,11 +188,16 @@ public class RuptureTask extends CancellableRunnable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RuptureTask that = (RuptureTask) o;
-        return expireTick == that.expireTick && ruptureTick == that.ruptureTick && damageTickTracker == that.damageTickTracker && Double.compare(that.pureTickDamage, pureTickDamage) == 0 && Double.compare(that.explosionDamage, explosionDamage) == 0 && Objects.equal(ruptureSource, that.ruptureSource) && Objects.equal(targetEntity, that.targetEntity);
+        return expireTick == that.expireTick
+                && ruptureTick == that.ruptureTick
+                && damageTickTracker == that.damageTickTracker
+                && Double.compare(that.pureTickDamage, pureTickDamage) == 0
+                && Objects.equal(ruptureSource, that.ruptureSource) && Objects.equal(targetEntity, that.targetEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(ruptureSource, targetEntity, expireTick, ruptureTick, damageTickTracker, pureTickDamage, explosionDamage);
+        return Objects.hashCode(ruptureSource, targetEntity, expireTick,
+                ruptureTick, damageTickTracker, pureTickDamage);
     }
 }

@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
+import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
 
 public final class CombatUtils {
@@ -1071,7 +1072,7 @@ public final class CombatUtils {
     }
 
     public static void modifyMoveSpeed(@NotNull LivingEntity livingEntity, double multiplier) {
-        AttributeInstance attributeInstance = livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        AttributeInstance attributeInstance = livingEntity.getAttribute(MAPPED_MOVEMENT_SPEED);
 
         if (attributeInstance != null) {
             double normalSpeed = attributeInstance.getBaseValue();
