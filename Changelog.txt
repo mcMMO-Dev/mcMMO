@@ -1,3 +1,5 @@
+Version 2.2.024
+
 Version 2.2.023
     Compatibility with Minecraft 1.21.3
     (API) add causingPlayer to McMMOReplaceVanillaTreasureEvent and update Fish Event to use it (thanks bobcat4848 and Jacob Cuomo)
