@@ -35,23 +35,22 @@ public class ExperienceConfig extends BukkitConfig {
     public static ExperienceConfig getInstance() {
         if (instance == null) {
             instance = new ExperienceConfig();
-        }
-
-        for (PrimarySkillType skill : PrimarySkillType.values()) {
-            // Skip child skills
-            if (isChildSkill(skill)) {
-                continue;
-            }
-
-            final Map<Material, Integer> experienceMap = new HashMap<>();
-            for (Material material : Material.values()) {
-                int xp = instance.getConfigXp(skill, material);
-
-                if (xp > 0) {
-                    experienceMap.put(material, xp);
+            for (PrimarySkillType skill : PrimarySkillType.values()) {
+                // Skip child skills
+                if (isChildSkill(skill)) {
+                    continue;
                 }
+
+                final Map<Material, Integer> experienceMap = new HashMap<>();
+                for (Material material : Material.values()) {
+                    int xp = instance.getConfigXp(skill, material);
+
+                    if (xp > 0) {
+                        experienceMap.put(material, xp);
+                    }
+                }
+                instance.blockExperienceMap.put(skill, experienceMap);
             }
-            instance.blockExperienceMap.put(skill, experienceMap);
         }
 
         return instance;
