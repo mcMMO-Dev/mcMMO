@@ -4,10 +4,6 @@ import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.mods.ArmorConfigManager;
-import com.gmail.nossr50.config.mods.BlockConfigManager;
-import com.gmail.nossr50.config.mods.EntityConfigManager;
-import com.gmail.nossr50.config.mods.ToolConfigManager;
 import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
@@ -82,7 +78,6 @@ public class mcMMO extends JavaPlugin {
     private static ChunkManager chunkManager;
     private static RepairableManager repairableManager;
     private static SalvageableManager salvageableManager;
-    private static ModManager modManager;
     private static DatabaseManager databaseManager;
     private static FormulaManager formulaManager;
     private static UpgradeManager upgradeManager;
@@ -187,8 +182,6 @@ public class mcMMO extends JavaPlugin {
             projectKorraEnabled = pluginManager.getPlugin("ProjectKorra") != null;
 
             upgradeManager = new UpgradeManager();
-
-            modManager = new ModManager();
 
             // Init Material Maps
             materialMapStore = new MaterialMapStore();
@@ -474,10 +467,6 @@ public class mcMMO extends JavaPlugin {
         return databaseManager;
     }
 
-    public static ModManager getModManager() {
-        return modManager;
-    }
-
     public static UpgradeManager getUpgradeManager() {
         return upgradeManager;
     }
@@ -576,25 +565,8 @@ public class mcMMO extends JavaPlugin {
 
         List<Repairable> repairables = new ArrayList<>();
 
-        if (generalConfig.getToolModsEnabled()) {
-            new ToolConfigManager(this);
-        }
-
-        if (generalConfig.getArmorModsEnabled()) {
-            new ArmorConfigManager(this);
-        }
-
-        if (generalConfig.getBlockModsEnabled()) {
-            new BlockConfigManager(this);
-        }
-
-        if (generalConfig.getEntityModsEnabled()) {
-            new EntityConfigManager(this);
-        }
-
         // Load repair configs, make manager, and register them at this time
         repairables.addAll(new RepairConfigManager(this).getLoadedRepairables());
-        repairables.addAll(modManager.getLoadedRepairables());
         repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
 

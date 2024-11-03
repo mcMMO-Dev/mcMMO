@@ -6,6 +6,7 @@ import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,10 @@ public final class Misc {
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
     public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always*/
 
-    public static final @NotNull Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
+    public static final @NotNull Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO",
+            "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST",
+            "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS",
+            "MARICULTURE", "MINESTRAPPOLATION");
 
     private Misc() {}
 
@@ -97,7 +101,15 @@ public final class Misc {
      * @return A {@link Location} lying at the center of the block
      */
     public static Location getBlockCenter(BlockState blockState) {
-        return blockState.getLocation().add(0.5, 0.5, 0.5);
+        return getBlockCenter(blockState.getLocation());
+    }
+
+    public static Location getBlockCenter(Block block) {
+        return getBlockCenter(block.getLocation());
+    }
+
+    public static Location getBlockCenter(Location location) {
+        return location.add(0.5, 0.5, 0.5);
     }
 
     public static void profileCleanup(@NotNull String playerName) {
@@ -111,7 +123,9 @@ public final class Misc {
 
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
         if ((convertedUsers % progressInterval) == 0) {
-            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
+            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second",
+                    convertedUsers,
+                    convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
         }
     }
 

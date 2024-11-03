@@ -22,6 +22,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFactory;
@@ -46,7 +47,6 @@ public abstract class MMOTestEnvironment {
     protected MockedStatic<RankUtils> mockedRankUtils;
     protected MockedStatic<UserManager> mockedUserManager;
     protected MockedStatic<Misc> mockedMisc;
-    protected MockedStatic<SkillTools> mockedSkillTools;
     protected MockedStatic<EventUtils> mockedEventUtils;
     protected MockedStatic<NotificationManager> notificationManager;
     protected MockedStatic<SoundManager> mockedSoundManager;
@@ -90,10 +90,6 @@ public abstract class MMOTestEnvironment {
         // place store
         chunkManager = mock(ChunkManager.class);
         when(mcMMO.getUserBlockTracker()).thenReturn(chunkManager);
-
-        // shut off mod manager for woodcutting
-        when(mcMMO.getModManager()).thenReturn(mock(ModManager.class));
-        when(mcMMO.getModManager().isCustomLog(any())).thenReturn(false);
 
         // chat config
         mockedChatConfig = mockStatic(ChatConfig.class);
@@ -154,7 +150,8 @@ public abstract class MMOTestEnvironment {
 
         // wire Misc
         this.mockedMisc = mockStatic(Misc.class);
-        when(Misc.getBlockCenter(any())).thenReturn(new Location(world, 0, 0, 0));
+        when(Misc.getBlockCenter(any(Block.class))).thenReturn(new Location(world, 0, 0, 0));
+        when(Misc.getBlockCenter(any(BlockState.class))).thenReturn(new Location(world, 0, 0, 0));
 
         // setup player and player related mocks after everything else
         this.player = mock(Player.class);

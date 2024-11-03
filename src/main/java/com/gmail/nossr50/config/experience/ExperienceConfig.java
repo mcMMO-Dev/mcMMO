@@ -376,6 +376,7 @@ public class ExperienceConfig extends BukkitConfig {
         return getXp(skill, material) > 0;
     }
 
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockData data) {
         return getXp(skill, data) > 0;
     }

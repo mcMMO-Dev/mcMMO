@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -385,13 +384,14 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Get the mode of an ability.
+     * Get the mode of a superAbilityType.
      *
-     * @param ability The ability to check
-     * @return true if the ability is enabled, false otherwise
+     * @param superAbilityType The superAbilityType to check
+     * @return true if the superAbilityType is enabled, false otherwise
      */
-    public boolean getAbilityMode(SuperAbilityType ability) {
-        return abilityMode.get(ability);
+    public boolean getAbilityMode(@NotNull SuperAbilityType superAbilityType) {
+        requireNonNull(superAbilityType, "superAbilityType cannot be null");
+        return abilityMode.get(superAbilityType);
     }
 
     /**
@@ -864,14 +864,6 @@ public class McMMOPlayer implements Identified {
 
         xp = (float) ((xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType)) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
-        if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
-            CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
-
-            if (tool != null) {
-                xp *= tool.getXpMultiplier();
-            }
-        }
-
         return PerksUtils.handleXpPerks(player, xp, primarySkillType);
     }
 
@@ -984,10 +976,6 @@ public class McMMOPlayer implements Identified {
         }
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
-
-        if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
-            return;
-        }
 
         if (!getAbilityUse()) {
             return;

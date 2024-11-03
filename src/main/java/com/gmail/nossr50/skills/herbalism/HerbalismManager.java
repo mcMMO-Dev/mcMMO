@@ -184,31 +184,36 @@ public class HerbalismManager extends SkillManager {
         return SkillUtils.handleFoodSkills(getPlayer(), eventFoodLevel, SubSkillType.HERBALISM_FARMERS_DIET);
     }
 
-    /**
-     * Process the Green Terra ability.
-     *
-     * @param blockState The {@link BlockState} to check ability activation for
-     * @return true if the ability was successful, false otherwise
-     */
-    public boolean processGreenTerraBlockConversion(BlockState blockState) {
-        Player player = getPlayer();
+    public void processGreenTerraBlockConversion(BlockState blockState) {
+        final Player player = getPlayer();
 
         if (!Permissions.greenThumbBlock(player, blockState.getType())) {
-            return false;
+            return;
         }
 
         PlayerInventory playerInventory = player.getInventory();
         ItemStack seed = new ItemStack(Material.WHEAT_SEEDS);
 
         if (!playerInventory.containsAtLeast(seed, 1)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Herbalism.Ability.GTe.NeedMore");
-            return false;
+            NotificationManager.sendPlayerInformation(player,
+                    NotificationType.REQUIREMENTS_NOT_MET, "Herbalism.Ability.GTe.NeedMore");
+            return;
         }
 
         playerInventory.removeItem(seed);
-        player.updateInventory(); // Needed until replacement available
+        // player.updateInventory();
 
-        return Herbalism.convertGreenTerraBlocks(blockState);
+        Herbalism.convertGreenTerraBlocks(blockState);
+        blockState.update(true);
+    }
+
+    /**
+     * Process the Green Terra ability.
+     *
+     * @param block The {@link Block} to check ability activation for
+     */
+    public void processGreenTerraBlockConversion(Block block) {
+        processGreenTerraBlockConversion(block.getState());
     }
 
     /**
@@ -363,13 +368,13 @@ public class HerbalismManager extends SkillManager {
                 if (plantData instanceof Ageable ageable) {
 
                     if (isAgeableMature(ageable) || isBizarreAgeable(plantData)) {
-                        if (checkDoubleDrop(brokenPlantState)) {
-                            markForBonusDrops(brokenPlantState);
+                        if (checkDoubleDrop(brokenPlant)) {
+                            markForBonusDrops(brokenPlant);
                         }
                     }
-                } else if (checkDoubleDrop(brokenPlantState)) {
+                } else if (checkDoubleDrop(brokenPlant)) {
                     //Add metadata to mark this block for double or triple drops
-                    markForBonusDrops(brokenPlantState);
+                    markForBonusDrops(brokenPlant);
                 }
             } else {
 
@@ -379,10 +384,10 @@ public class HerbalismManager extends SkillManager {
                  *
                  */
 
-                //If it's a Crop we need to reward XP when its fully grown
+                //If it's a crop, we need to reward XP when its fully grown
                 if (isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
                     //Add metadata to mark this block for double or triple drops
-                    markForBonusDrops(brokenPlantState);
+                    markForBonusDrops(brokenPlant);
                 }
             }
         }
@@ -405,10 +410,14 @@ public class HerbalismManager extends SkillManager {
         return false;
     }
 
-    public void markForBonusDrops(BlockState brokenPlantState) {
+    /**
+     * Mark a block for bonus drops.
+     * @param block the block to mark
+     */
+    public void markForBonusDrops(Block block) {
         //Add metadata to mark this block for double or triple drops
         boolean awardTriple = mmoPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA);
-        BlockUtils.markDropsAsBonus(brokenPlantState, awardTriple);
+        BlockUtils.markDropsAsBonus(block, awardTriple);
     }
 
     /**
@@ -681,12 +690,12 @@ public class HerbalismManager extends SkillManager {
     /**
      * Check for success on herbalism double drops
      *
-     * @param blockState target block state
+     * @param block target block state
      * @return true if the double drop succeeds
      */
-    private boolean checkDoubleDrop(@NotNull BlockState blockState) {
-        requireNonNull(blockState, "BlockState cannot be null");
-        return BlockUtils.checkDoubleDrops(mmoPlayer, blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
+    private boolean checkDoubleDrop(@NotNull Block block) {
+        requireNonNull(block, "BlockState cannot be null");
+        return BlockUtils.checkDoubleDrops(mmoPlayer, block, SubSkillType.HERBALISM_DOUBLE_DROPS);
     }
 
     /**
