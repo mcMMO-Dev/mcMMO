@@ -1,12 +1,10 @@
 package com.gmail.nossr50.util.text;
 
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,10 +33,6 @@ class StringUtilsTest {
             java.lang.reflect.Field materialCache = StringUtils.class.getDeclaredField("formattedMaterialStrings");
             materialCache.setAccessible(true);
             ((java.util.Map<?, ?>) materialCache.get(null)).clear();
-
-            java.lang.reflect.Field partyFeatureCache = StringUtils.class.getDeclaredField("prettyPartyFeatureStringCache");
-            partyFeatureCache.setAccessible(true);
-            ((java.util.Map<?, ?>) partyFeatureCache.get(null)).clear();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             fail("Failed to clear caches: " + e.getMessage());
         }
