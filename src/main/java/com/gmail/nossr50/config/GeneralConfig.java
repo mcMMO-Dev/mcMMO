@@ -711,7 +711,7 @@ public class GeneralConfig extends BukkitConfig {
         if (material.toString().equalsIgnoreCase("LILY_PAD"))
             return false;
 
-        return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_"));
+        return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getFormattedMaterialString(material).replace(" ", "_"));
     }
 
     public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
@@ -890,8 +890,9 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     /* Woodcutting */
-    public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) {
-        return config.getBoolean("Bonus_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material));
+    public boolean getWoodcuttingDoubleDropsEnabled(BlockData blockData) {
+        return config.getBoolean("Bonus_Drops.Woodcutting."
+                + StringUtils.getFormattedMaterialString(blockData.getMaterial()));
     }
 
     public boolean getTreeFellerSoundsEnabled() {

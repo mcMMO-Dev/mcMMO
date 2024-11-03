@@ -23,7 +23,6 @@ import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -371,7 +370,7 @@ public class TamingManager extends SkillManager {
             } else {
                 //Player did not have enough of the item in their main hand
                 int difference = tamingSummon.getItemAmountRequired() - itemInMainHand.getAmount();
-                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getPrettyItemString(itemInMainHand.getType()));
+                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getFormattedMaterialString(itemInMainHand.getType()));
             }
         }
     }

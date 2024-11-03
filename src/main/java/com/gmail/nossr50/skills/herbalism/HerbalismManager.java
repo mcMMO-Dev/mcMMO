@@ -113,7 +113,8 @@ public class HerbalismManager extends SkillManager {
                     mmoPlayer.getPlayer().sendMessage("Bush Reward Multiplier: " + rewardByAge);
                 }
 
-                int xpReward = ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, blockState) * rewardByAge;
+                int xpReward = ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, blockState.getType())
+                        * rewardByAge;
 
                 if (mmoPlayer.isDebugMode()) {
                     mmoPlayer.getPlayer().sendMessage("Bush XP: " + xpReward);
@@ -713,11 +714,10 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
+        final String friendly = StringUtils.getFormattedMaterialString(blockState.getBlockData().getMaterial());
         if (!TreasureConfig.getInstance().hylianMap.containsKey(friendly))
             return false;
         List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
-
 
         if (treasures.isEmpty()) {
             return false;
@@ -750,12 +750,12 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory playerInventory = getPlayer().getInventory();
         
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getFormattedMaterialString(Material.BROWN_MUSHROOM));
             return false;
         }
 
         if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getFormattedMaterialString(Material.RED_MUSHROOM));
             return false;
         }
 

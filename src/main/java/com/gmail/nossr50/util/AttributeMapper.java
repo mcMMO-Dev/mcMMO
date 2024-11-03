@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 
 import java.lang.reflect.Field;

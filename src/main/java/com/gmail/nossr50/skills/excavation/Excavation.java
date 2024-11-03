@@ -19,7 +19,7 @@ public class Excavation {
      * @return the list of treasures that could be found
      */
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
-        String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
+        String friendly = StringUtils.getFormattedMaterialString(blockState.getBlockData().getMaterial());
         if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
             return TreasureConfig.getInstance().excavationMap.get(friendly);
         return new ArrayList<>();

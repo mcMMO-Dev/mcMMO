@@ -1,4 +1,5 @@
 Version 2.2.024
+    Significant optimizations to the way mcMMO handles grabbing XP values for blocks
 
 Version 2.2.023
     Compatibility with Minecraft 1.21.3

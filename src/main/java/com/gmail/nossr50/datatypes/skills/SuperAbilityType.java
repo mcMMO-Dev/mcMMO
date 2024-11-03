@@ -167,7 +167,7 @@ public enum SuperAbilityType {
     }
 
     public String getName() {
-        return StringUtils.getPrettyAbilityString(this);
+        return StringUtils.getPrettySuperAbilityString(this);
     }
 
     public String getLocalizedName() {

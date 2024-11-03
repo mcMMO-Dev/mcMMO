@@ -15,10 +15,15 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
 
 public class ExperienceConfig extends BukkitConfig {
     private static ExperienceConfig instance;
+    final private Map<PrimarySkillType, Map<Material, Integer>> blockExperienceMap = new HashMap<>();
 
     private ExperienceConfig() {
         super("experience.yml");
@@ -28,6 +33,23 @@ public class ExperienceConfig extends BukkitConfig {
     public static ExperienceConfig getInstance() {
         if (instance == null) {
             instance = new ExperienceConfig();
+        }
+
+        for (PrimarySkillType skill : PrimarySkillType.values()) {
+            // Skip child skills
+            if (isChildSkill(skill)) {
+                continue;
+            }
+
+            final Map<Material, Integer> experienceMap = new HashMap<>();
+            for (Material material : Material.values()) {
+                int xp = instance.getConfigXp(skill, material);
+
+                if (xp > 0) {
+                    experienceMap.put(material, xp);
+                }
+            }
+            instance.blockExperienceMap.put(skill, experienceMap);
         }
 
         return instance;
@@ -321,15 +343,22 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     /* Materials  */
+    private int getConfigXp(PrimarySkillType skill, Material material) {
+        // prevents exploit
+        if (material == Material.LILY_PAD)
+            return 0;
+
+        final String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
+        final String configPath = baseString + StringUtils.getFormattedMaterialString(material);
+        return config.getInt(configPath, 0);
+    }
+
     public int getXp(PrimarySkillType skill, Material material) {
-        return getXpHelper(skill, StringUtils.getExplicitConfigMaterialString(material),
-                StringUtils.getFriendlyConfigMaterialString(material),
-                StringUtils.getWildcardConfigMaterialString(material));
+        return blockExperienceMap.get(skill).getOrDefault(material, 0);
     }
 
     public int getXp(PrimarySkillType skill, BlockState blockState) {
-        Material material = blockState.getType();
-        return getXp(skill, material);
+        return getXp(skill, blockState.getType());
     }
 
     public int getXp(PrimarySkillType skill, Block block) {
@@ -338,56 +367,16 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public int getXp(PrimarySkillType skill, BlockData data) {
-        return getXpHelper(skill, StringUtils.getExplicitConfigBlockDataString(data),
-                StringUtils.getFriendlyConfigBlockDataString(data),
-                StringUtils.getWildcardConfigBlockDataString(data));
+        return getXp(skill, data.getMaterial());
     }
-
-    private int getXpHelper(PrimarySkillType skill, String explicitString, String friendlyString, String wildcardString) {
-        if (explicitString.equalsIgnoreCase("LILY_PAD")) {
-            return 0;
-        }
-
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String[] configStrings = {explicitString, friendlyString, wildcardString};
-
-        for (String configString : configStrings) {
-            String fullPath = baseString + configString;
-            if (config.contains(fullPath)) {
-                return config.getInt(fullPath);
-            }
-        }
-
-        return 0;
-    }
-
 
     public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material material) {
-        return doesBlockGiveSkillXPHelper(skill, StringUtils.getExplicitConfigMaterialString(material),
-                StringUtils.getFriendlyConfigMaterialString(material),
-                StringUtils.getWildcardConfigMaterialString(material));
+        return getXp(skill, material) > 0;
     }
 
     public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockData data) {
-        return doesBlockGiveSkillXPHelper(skill, StringUtils.getExplicitConfigBlockDataString(data),
-                StringUtils.getFriendlyConfigBlockDataString(data),
-                StringUtils.getWildcardConfigBlockDataString(data));
+        return getXp(skill, data) > 0;
     }
-
-    private boolean doesBlockGiveSkillXPHelper(PrimarySkillType skill, String explicitString, String friendlyString, String wildcardString) {
-        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String[] configStrings = {explicitString, friendlyString, wildcardString};
-
-        for (String configString : configStrings) {
-            String fullPath = baseString + configString;
-            if (config.contains(fullPath)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     /*
      * Experience Bar Stuff

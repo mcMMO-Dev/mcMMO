@@ -34,7 +34,7 @@ public class AlchemyManager extends SkillManager {
         StringBuilder list = new StringBuilder();
 
         for (ItemStack ingredient : getIngredients()) {
-            String string = StringUtils.getPrettyItemString(ingredient.getType());
+            String string = StringUtils.getFormattedMaterialString(ingredient.getType());
 
             list.append(", ").append(string);
         }

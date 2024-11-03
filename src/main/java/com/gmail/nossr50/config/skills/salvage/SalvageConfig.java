@@ -9,7 +9,6 @@ import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.LogUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;

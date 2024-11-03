@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.chat.author.PlayerAuthor;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
