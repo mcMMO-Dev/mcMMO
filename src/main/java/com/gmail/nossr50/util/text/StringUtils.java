@@ -1,16 +1,14 @@
 package com.gmail.nossr50.util.text;
 
-import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
@@ -24,10 +22,9 @@ public class StringUtils {
     protected static final DecimalFormat shortDecimal = new DecimalFormat("##0.0");
 
     // Using concurrent hash maps to avoid concurrency issues (Folia)
-    private static final Map<EntityType, String> formattedEntityStrings = new HashMap<>();
-    private static final Map<SuperAbilityType, String> formattedSuperAbilityStrings = new HashMap<>();
-    private static final Map<Material, String> formattedMaterialStrings = new HashMap<>();
-    private static final Map<PartyFeature, String> prettyPartyFeatureStringCache = new HashMap<>();
+    private static final Map<EntityType, String> formattedEntityStrings = new ConcurrentHashMap<>();
+    private static final Map<SuperAbilityType, String> formattedSuperAbilityStrings = new ConcurrentHashMap<>();
+    private static final Map<Material, String> formattedMaterialStrings = new ConcurrentHashMap<>();
 
     /**
      * Gets a capitalized version of the target string.
@@ -73,7 +70,10 @@ public class StringUtils {
      * @return The "trimmed" string
      */
     public static String buildStringAfterNthElement(@NotNull String @NotNull [] args, int index) {
-        StringBuilder trimMessage = new StringBuilder();
+        if (index < 0)
+            throw new IllegalArgumentException("Index must be greater than or equal to 0");
+
+        final StringBuilder trimMessage = new StringBuilder();
 
         for (int i = index; i < args.length; i++) {
             if (i > index) {
@@ -92,7 +92,7 @@ public class StringUtils {
      * @param material Material to convert
      * @return Pretty string representation of the Material
      */
-    public static String getFormattedMaterialString(Material material) {
+    public static String getPrettyMaterialString(Material material) {
         return formattedMaterialStrings.computeIfAbsent(material, StringUtils::createPrettyString);
     }
 
@@ -105,39 +105,6 @@ public class StringUtils {
      */
     public static String getPrettyEntityTypeString(EntityType entityType) {
         return formattedEntityStrings.computeIfAbsent(entityType, StringUtils::createPrettyString);
-    }
-
-    /**
-     * Gets a wildcard configuration string for BlockData.
-     * Results are cached to improve performance.
-     *
-     * @param blockData BlockData to convert
-     * @return Wildcard configuration string
-     */
-    public static String getWildcardConfigBlockDataString(BlockData blockData) {
-        return getFormattedMaterialString(blockData.getMaterial());
-    }
-
-    /**
-     * Gets an explicit configuration string for BlockData.
-     * Results are cached to improve performance.
-     *
-     * @param data BlockData to convert
-     * @return Explicit configuration string
-     */
-    public static String getExplicitConfigBlockDataString(BlockData data) {
-        return getFormattedMaterialString(data.getMaterial());
-    }
-
-    /**
-     * Gets a pretty string representation of a PartyFeature.
-     * Results are cached to improve performance.
-     *
-     * @param partyFeature PartyFeature to convert
-     * @return Pretty string representation
-     */
-    public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {
-        return prettyPartyFeatureStringCache.computeIfAbsent(partyFeature, StringUtils::createPrettyString);
     }
 
     /**

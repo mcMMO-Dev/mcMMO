@@ -43,6 +43,7 @@ import java.util.*;
 
 import static com.gmail.nossr50.util.ItemUtils.hasItemIncludingOffHand;
 import static com.gmail.nossr50.util.ItemUtils.removeItemIncludingOffHand;
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 import static java.util.Objects.requireNonNull;
 
 public class HerbalismManager extends SkillManager {
@@ -714,10 +715,10 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        final String friendly = StringUtils.getFormattedMaterialString(blockState.getBlockData().getMaterial());
-        if (!TreasureConfig.getInstance().hylianMap.containsKey(friendly))
+        final String materialConfigString = getMaterialConfigString(blockState.getBlockData().getMaterial());
+        if (!TreasureConfig.getInstance().hylianMap.containsKey(materialConfigString))
             return false;
-        List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
+        List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(materialConfigString);
 
         if (treasures.isEmpty()) {
             return false;
@@ -750,12 +751,12 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory playerInventory = getPlayer().getInventory();
         
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getFormattedMaterialString(Material.BROWN_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyMaterialString(Material.BROWN_MUSHROOM));
             return false;
         }
 
         if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getFormattedMaterialString(Material.RED_MUSHROOM));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyMaterialString(Material.RED_MUSHROOM));
             return false;
         }
 

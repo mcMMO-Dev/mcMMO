@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getConfigEntityTypeString;
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
 public class ExperienceConfig extends BukkitConfig {
     private static ExperienceConfig instance;
@@ -327,11 +329,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public double getCombatXP(EntityType entity) {
-        return config.getDouble("Experience_Values.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"));
+        return config.getDouble("Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(" ", "_"));
     }
 
     public double getAnimalsXP(EntityType entity) {
-        return config.getDouble("Experience_Values.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"), getAnimalsXP());
+        return config.getDouble("Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(" ", "_"), getAnimalsXP());
     }
 
     public double getAnimalsXP() {
@@ -339,7 +341,7 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean hasCombatXP(EntityType entity) {
-        return config.contains("Experience_Values.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"));
+        return config.contains("Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(" ", "_"));
     }
 
     /* Materials  */
@@ -349,7 +351,7 @@ public class ExperienceConfig extends BukkitConfig {
             return 0;
 
         final String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        final String configPath = baseString + StringUtils.getFormattedMaterialString(material);
+        final String configPath = baseString + getMaterialConfigString(material);
         return config.getInt(configPath, 0);
     }
 
@@ -479,7 +481,7 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Taming */
     public int getTamingXP(EntityType type) {
-        return config.getInt("Experience_Values.Taming.Animal_Taming." + StringUtils.getPrettyEntityTypeString(type));
+        return config.getInt("Experience_Values.Taming.Animal_Taming." + getConfigEntityTypeString(type));
     }
 
     public boolean preventStoneLavaFarming() {

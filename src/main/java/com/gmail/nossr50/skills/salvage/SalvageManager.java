@@ -96,7 +96,7 @@ public class SalvageManager extends SkillManager {
         if (getSkillLevel() < minimumSalvageableLevel) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET,
                     "Salvage.Skills.Adept.Level",
-                    String.valueOf(minimumSalvageableLevel), StringUtils.getFormattedMaterialString(item.getType()));
+                    String.valueOf(minimumSalvageableLevel), StringUtils.getPrettyMaterialString(item.getType()));
             return;
         }
 
@@ -143,11 +143,11 @@ public class SalvageManager extends SkillManager {
 
         // We only send a confirmation message after processing the event (fixes #4694)
         if (lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getFormattedMaterialString(item.getType()));
+            NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyMaterialString(item.getType()));
         } else if (salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
-            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getFormattedMaterialString(item.getType()));
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyMaterialString(item.getType()));
         } else {
-            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getFormattedMaterialString(item.getType()));
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyMaterialString(item.getType()));
         }
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));

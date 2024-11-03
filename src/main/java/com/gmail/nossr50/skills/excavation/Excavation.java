@@ -5,11 +5,12 @@ import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.block.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
 public class Excavation {
     /**
@@ -19,7 +20,7 @@ public class Excavation {
      * @return the list of treasures that could be found
      */
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
-        String friendly = StringUtils.getFormattedMaterialString(blockState.getBlockData().getMaterial());
+        String friendly = getMaterialConfigString(blockState.getBlockData().getMaterial());
         if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
             return TreasureConfig.getInstance().excavationMap.get(friendly);
         return new ArrayList<>();

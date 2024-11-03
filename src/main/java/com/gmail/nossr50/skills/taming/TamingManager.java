@@ -370,7 +370,7 @@ public class TamingManager extends SkillManager {
             } else {
                 //Player did not have enough of the item in their main hand
                 int difference = tamingSummon.getItemAmountRequired() - itemInMainHand.getAmount();
-                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getFormattedMaterialString(itemInMainHand.getType()));
+                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getPrettyMaterialString(itemInMainHand.getType()));
             }
         }
     }
