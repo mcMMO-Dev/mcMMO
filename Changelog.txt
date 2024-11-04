@@ -1,6 +1,12 @@
 Version 2.2.024
     Fixed a bug where Giga Drill breaker was giving out more drop chance than intended
-    Large optimizations to most block interactions in mcMMO code
+    Significant optimizations made to reading new chunks for mcMMO
+    Significant optimizations to most block interactions in mcMMO code
+
+    Notes:
+    Got a bit carried away and started to optimize stuff.
+    I was able to make Tree Feller way faster with optimizations in this update, I tested with a custom gigantic tree that had over 200,000 blocks felled (huge) and it only took 4 seconds total, in the previous version of mcMMO this would take over 2-3 minutes.
+
 
 Version 2.2.023
     Compatibility with Minecraft 1.21.3

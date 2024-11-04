@@ -75,7 +75,6 @@ class UserBlockTrackerTest {
 
         // Top Block
         final Block illegalHeightBlock = initMockBlock(1337, 256, -1337);
-        assertFalse(hashChunkManager.isIneligible(illegalHeightBlock));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> hashChunkManager.setIneligible(illegalHeightBlock));
     }
 

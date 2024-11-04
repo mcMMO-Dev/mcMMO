@@ -159,16 +159,15 @@ public class HashChunkManager implements ChunkManager {
         ChunkStore check = chunkMap.computeIfAbsent(chunkKey, k -> {
             // Load from file
             ChunkStore loaded = loadChunk(chunkKey.x, chunkKey.z, world);
-            if (loaded == null)
-                return null;
+            if (loaded != null) {
+                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
+                return loaded;
+            }
             // Mark chunk in-use for region tracking
             chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
-            return loaded;
+            // Create a new chunkstore
+            return new BitSetChunkStore(world, chunkKey.x, chunkKey.z);
         });
-
-        // No chunk, return false
-        if (check == null)
-            return false;
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
@@ -227,18 +226,11 @@ public class HashChunkManager implements ChunkManager {
                 chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
                 return loaded;
             }
-            // If setting to false, no need to create an empty chunkstore
-            if (!value)
-                return null;
             // Mark chunk in-use for region tracking
             chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
             // Create a new chunkstore
             return new BitSetChunkStore(world, chunkKey.x, chunkKey.z);
         });
-
-        // Indicates setting false on empty chunkstore
-        if (cStore == null)
-            return;
 
         // Get block offset (offset from chunk corner)
         int ix = Math.abs(x) % 16;
