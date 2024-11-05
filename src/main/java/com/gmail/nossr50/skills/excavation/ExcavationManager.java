@@ -42,7 +42,6 @@ public class ExcavationManager extends SkillManager {
         excavationBlockCheck(blockState.getBlock());
     }
 
-
     public void excavationBlockCheck(Block block) {
         int xp = ExperienceConfig.getInstance().getXp(PrimarySkillType.EXCAVATION, block.getType());
         requireNonNull(block, "excavationBlockCheck: block cannot be null");
@@ -134,6 +133,7 @@ public class ExcavationManager extends SkillManager {
      * @param block The {@link Block} to check ability activation for
      */
     public void gigaDrillBreaker(Block block) {
+        excavationBlockCheck(block);
         excavationBlockCheck(block);
 
         SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(),

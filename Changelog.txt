@@ -1,11 +1,12 @@
 Version 2.2.024
-    Fixed a bug where Giga Drill breaker was giving out more loot than intended
+    Fixed errors when Fishing or using Shake ability
     Significant optimizations made to reading new chunks for mcMMO
     Significant optimizations to most block interactions in mcMMO code
+    Fixed a horrendous edge case where Tree Feller could cause a lot of lag
 
     Notes:
-    Got a bit carried away and started to optimize stuff.
-    I was able to make Tree Feller way faster with optimizations in this update, I tested with a custom gigantic tree that had over 200,000 blocks felled (huge) and it only took 4 seconds total, in the previous version of mcMMO this would take over 2-3 minutes.
+    Part of this update focused on optimization, there's improvements of around 30% in CPU time for most code involving block interactions in mcMMO, which happens to be most code in mcMMO.
+    One of the optimizations made in this update removes an edge case where Tree Feller could cause a lot of lag, but the optimizations really are across the board in regards to any abilities that interact with blocks.
 
 Version 2.2.023
     Compatibility with Minecraft 1.21.3
