@@ -13,6 +13,7 @@
     </scm>
 
     <properties>
+<!--        <spigot.version>1.19-R0.1-SNAPSHOT</spigot.version>-->
         <spigot.version>1.21.3-R0.1-SNAPSHOT</spigot.version>
         <adventure.version>4.3.5-SNAPSHOT</adventure.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
