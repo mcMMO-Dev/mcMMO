@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
 import static com.gmail.nossr50.util.text.ConfigStringUtils.getConfigEntityTypeString;
 import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
@@ -36,12 +35,8 @@ public class ExperienceConfig extends BukkitConfig {
         if (instance == null) {
             instance = new ExperienceConfig();
             for (PrimarySkillType skill : PrimarySkillType.values()) {
-                // Skip child skills
-                if (isChildSkill(skill)) {
-                    continue;
-                }
-
                 final Map<Material, Integer> experienceMap = new HashMap<>();
+                instance.blockExperienceMap.put(skill, experienceMap);
                 for (Material material : Material.values()) {
                     int xp = instance.getConfigXp(skill, material);
 
@@ -49,7 +44,7 @@ public class ExperienceConfig extends BukkitConfig {
                         experienceMap.put(material, xp);
                     }
                 }
-                instance.blockExperienceMap.put(skill, experienceMap);
+
             }
         }
 

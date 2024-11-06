@@ -1,3 +1,6 @@
+Version 2.2.025
+    Fixed NullPointerException spam when processing XP for child skills
+
 Version 2.2.024
     Fixed errors when Fishing or using Shake ability
     Significant optimizations made to reading new chunks for mcMMO
