@@ -1,3 +1,6 @@
+Version 2.2.026
+    Fixed NPE on ChunkUnloadEvent
+
 Version 2.2.025
     Fixed NullPointerException spam when processing XP for child skills
 
