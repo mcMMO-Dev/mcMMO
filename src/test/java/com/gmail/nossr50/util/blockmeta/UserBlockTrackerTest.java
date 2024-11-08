@@ -170,6 +170,27 @@ class UserBlockTrackerTest {
         assertTrue(chunkManager.isIneligible(mockBlockA));
     }
 
+    @Test
+    void testUnload() {
+        final ChunkManager chunkManager = new HashChunkManager();
+        Block mockBlockA = Mockito.mock(Block.class);
+        when(mockBlockA.getX()).thenReturn(15);
+        when(mockBlockA.getZ()).thenReturn(15);
+        when(mockBlockA.getY()).thenReturn(0);
+        when(mockBlockA.getWorld()).thenReturn(mockWorld);
+        Block mockBlockB = Mockito.mock(Block.class);
+        when(mockBlockB.getX()).thenReturn(-15);
+        when(mockBlockB.getZ()).thenReturn(-15);
+        when(mockBlockB.getY()).thenReturn(0);
+        when(mockBlockB.getWorld()).thenReturn(mockWorld);
+
+        chunkManager.setIneligible(mockBlockA);
+        chunkManager.setEligible(mockBlockB);
+        assertTrue(chunkManager.isIneligible(mockBlockA));
+
+        chunkManager.chunkUnloaded(0, 0, mockWorld);
+    }
+
     @NotNull
     private Block initMockBlock(int x, int y, int z) {
         final Block mockBlock = Mockito.mock(Block.class);
