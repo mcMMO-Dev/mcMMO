@@ -1,4 +1,5 @@
 Version 2.2.027
+    Fixed Ricocheted arrows losing some data after a ricochet
     Fixed concurrency issue with Folia regarding locale strings
     Fixed concurrency issue with Folia regarding COTW summons
 

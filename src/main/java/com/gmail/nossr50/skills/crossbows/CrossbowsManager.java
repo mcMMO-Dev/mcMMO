@@ -64,10 +64,17 @@ public class CrossbowsManager extends SkillManager {
 
         // Spawn new arrow with the reflected direction
         Arrow spawnedArrow = originalArrow.getWorld().spawnArrow(origin, reflectedDirection, 1, 1);
+        // copy some properties from the old arrow
+        spawnedArrow.setShooter(originalArrowShooter);
+        spawnedArrow.setCritical(originalArrow.isCritical());
+        spawnedArrow.setPierceLevel(originalArrow.getPierceLevel());
+        spawnedArrow.setPickupStatus(originalArrow.getPickupStatus());
+        spawnedArrow.setKnockbackStrength(originalArrow.getKnockbackStrength());
+
+        // copy metadata from old arrow
         ProjectileUtils.copyArrowMetadata(pluginRef, originalArrow, spawnedArrow);
         originalArrow.remove();
-        // copy metadata from old arrow
-        spawnedArrow.setShooter(originalArrowShooter);
+        // add important metadata to new arrow
         spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT,
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
         spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
