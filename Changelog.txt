@@ -1,5 +1,6 @@
 Version 2.2.027
     Fixed concurrency issue with Folia regarding locale strings
+    Fixed concurrency issue with Folia regarding COTW summons
 
 Version 2.2.026
     Fixed NullPointerException on ChunkUnloadEvent

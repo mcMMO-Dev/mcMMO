@@ -681,7 +681,7 @@ public class EntityListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
-        if (mcMMO.getTransientEntityTracker().isTransientSummon(entity)) {
+        if (mcMMO.getTransientEntityTracker().isTransient(entity)) {
             mcMMO.getTransientEntityTracker().removeSummon(entity, null, false);
         }
 

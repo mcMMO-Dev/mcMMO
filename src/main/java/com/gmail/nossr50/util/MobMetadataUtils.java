@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.api.exceptions.IncompleteNamespacedKeyRegister;
 import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
+import com.google.common.collect.MapMaker;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -12,13 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.HashSet;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static com.gmail.nossr50.util.MetadataService.*;
 
 //TODO: Use SpawnReason where appropriate instead of MobMetaFlagType
 public final class MobMetadataUtils {
-    private static final @NotNull WeakHashMap<Entity, HashSet<MobMetaFlagType>> mobRegistry; //transient data
+    private static final @NotNull ConcurrentMap<Entity, HashSet<MobMetaFlagType>> mobRegistry; //transient data
     private static final @NotNull EnumMap<MobMetaFlagType, NamespacedKey> mobFlagKeyMap; //used for persistent data
     private static boolean isUsingPersistentData = false;
 
@@ -28,7 +29,14 @@ public final class MobMetadataUtils {
 
     static {
         mobFlagKeyMap = new EnumMap<>(MobMetaFlagType.class);
-        mobRegistry = new WeakHashMap<>();
+        // Using Guava for a concurrent weak hash map
+        // IMPORTANT: This type of map uses == for comparison over .equals(),
+        // which is a violation of map contract
+        mobRegistry = new MapMaker()
+                .weakKeys()
+                .concurrencyLevel(4)
+                .makeMap();
+
         initMobFlagKeyMap();
 
         for (MobMetaFlagType metaFlagType : MobMetaFlagType.values()) {
@@ -92,7 +100,7 @@ public final class MobMetadataUtils {
 
             return false;
         } else {
-            return mobRegistry.containsKey(livingEntity) && mobRegistry.get(livingEntity).size() > 0;
+            return mobRegistry.containsKey(livingEntity) && !mobRegistry.get(livingEntity).isEmpty();
         }
     }
 
