@@ -15,7 +15,7 @@ public class ChunkListener implements Listener {
         List<LivingEntity> matchingEntities
                 = mcMMO.getTransientEntityTracker().getAllTransientEntitiesInChunk(event.getChunk());
         for(LivingEntity livingEntity : matchingEntities) {
-            mcMMO.getTransientEntityTracker().removeSummon(livingEntity, null, false);
+            mcMMO.getTransientEntityTracker().killSummonAndCleanMobFlags(livingEntity, null, false);
         }
     }
 }

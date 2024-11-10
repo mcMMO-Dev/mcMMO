@@ -16,23 +16,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.gmail.nossr50.util.MobMetadataUtils.removeMobFlags;
 import static java.util.stream.Collectors.toSet;
 
 public class TransientEntityTracker {
-    private final @NotNull Map<UUID, HashSet<TrackedTamingEntity>>
-            playerSummonedEntityTracker;
+    private final @NotNull Map<UUID, Set<TrackedTamingEntity>> playerSummonedEntityTracker;
 
     public TransientEntityTracker() {
         playerSummonedEntityTracker = new ConcurrentHashMap<>();
     }
 
-    public @Nullable Set<TrackedTamingEntity> getPlayerSummonedEntities(@NotNull UUID playerUUID) {
-        return playerSummonedEntityTracker.get(playerUUID);
-    }
-
     public void initPlayer(@NotNull Player player) {
-        playerSummonedEntityTracker.computeIfAbsent(player.getUniqueId(), __ -> new HashSet<>());
+        playerSummonedEntityTracker.computeIfAbsent(player.getUniqueId(), __ -> ConcurrentHashMap.newKeySet());
     }
 
     public void cleanupPlayer(@NotNull Player player) {
@@ -52,14 +46,14 @@ public class TransientEntityTracker {
     }
 
     public void addSummon(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
-        playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> new HashSet<>())
+        playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> ConcurrentHashMap.newKeySet())
                 .add(trackedTamingEntity);
     }
 
-    public void removeSummon(@NotNull LivingEntity livingEntity, @Nullable Player player, boolean timeExpired) {
-        //Kill the summon & remove it
+    public void killSummonAndCleanMobFlags(@NotNull LivingEntity livingEntity, @Nullable Player player,
+                                           boolean timeExpired) {
         if (livingEntity.isValid()) {
-            livingEntity.setHealth(0); //Should trigger entity death events
+            livingEntity.setHealth(0); // Should trigger entity death events
             livingEntity.remove();
 
             Location location = livingEntity.getLocation();
@@ -69,7 +63,7 @@ public class TransientEntityTracker {
                 ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
             }
 
-            //Inform player of summon death
+            // Inform player of summon death
             if (player != null && player.isOnline()) {
                 if (timeExpired) {
                     NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.TimeExpired",
@@ -80,17 +74,6 @@ public class TransientEntityTracker {
                 }
             }
         }
-
-        //Remove our metadata
-        removeMobFlags(livingEntity);
-
-        //Clean from trackers
-        remove(livingEntity);
-    }
-
-    private void cleanPlayer(@Nullable Player player, @NotNull UUID playerUUID) {
-        cleanupAllSummons(playerUUID, player);
-        playerSummonedEntityTracker.remove(playerUUID);
     }
 
     public boolean isTransient(@NotNull LivingEntity livingEntity) {
@@ -99,35 +82,42 @@ public class TransientEntityTracker {
                         .anyMatch(trackedTamingEntity -> trackedTamingEntity.getLivingEntity().equals(livingEntity)));
     }
 
-
     private @NotNull Set<TrackedTamingEntity> getTrackedEntities(@NotNull UUID playerUUID,
                                                                  @NotNull CallOfTheWildType callOfTheWildType) {
-        final HashSet<TrackedTamingEntity> entities
-                = playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> new HashSet<>());
+        final Set<TrackedTamingEntity> entities =
+                playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> ConcurrentHashMap.newKeySet());
         return entities.stream()
                 .filter(trackedTamingEntity -> trackedTamingEntity.getCallOfTheWildType() == callOfTheWildType)
                 .collect(toSet());
     }
 
-    private void remove(@NotNull LivingEntity livingEntity) {
-        playerSummonedEntityTracker.values().forEach(trackedEntities -> {
-            Iterator<TrackedTamingEntity> iterator = trackedEntities.iterator();
-                while (iterator.hasNext()) {
-                    if (iterator.next().getLivingEntity().equals(livingEntity)) {
-                        iterator.remove();
-                        return;
-                    }
-                }
-            });
+    private void cleanPlayer(@Nullable Player player, @NotNull UUID playerUUID) {
+        killAndCleanAllSummons(playerUUID, player);
+        playerSummonedEntityTracker.remove(playerUUID);
     }
 
-    private void cleanupAllSummons(@NotNull UUID playerUUID, @Nullable Player player) {
-        if (playerSummonedEntityTracker.get(playerUUID) == null) {
+    private void killAndCleanAllSummons(@NotNull UUID playerUUID, @Nullable Player player) {
+        final Set<TrackedTamingEntity> entities = playerSummonedEntityTracker.get(playerUUID);
+        if (entities == null) {
             return;
         }
 
-        playerSummonedEntityTracker.get(playerUUID).forEach(trackedTamingEntity -> {
-            removeSummon(trackedTamingEntity.getLivingEntity(), player, false);
-        });
+        // Copy the set to avoid concurrent modification during iteration
+        final Set<TrackedTamingEntity> playerSummonsToRemove = new HashSet<>(entities);
+
+        // Kill and clean all summons
+        playerSummonsToRemove.forEach(
+                trackedTamingEntity -> killAndCleanSummon(playerUUID, player, trackedTamingEntity));
+    }
+
+    public void killAndCleanSummon(@NotNull UUID playerUUID, @Nullable Player player,
+                                   @NotNull TrackedTamingEntity trackedTamingEntity) {
+        killSummonAndCleanMobFlags(trackedTamingEntity.getLivingEntity(), player, false);
+        removeSummonFromTracker(playerUUID, trackedTamingEntity);
+    }
+
+    public void removeSummonFromTracker(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
+        playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> ConcurrentHashMap.newKeySet())
+                .remove(trackedTamingEntity);
     }
 }
