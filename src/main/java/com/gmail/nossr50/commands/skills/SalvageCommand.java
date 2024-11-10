@@ -42,7 +42,7 @@ public class SalvageCommand extends SkillCommand {
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,
                     SubSkillType.SALVAGE_SCRAP_COLLECTOR,
-                    String.valueOf(RankUtils.getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
+                    String.valueOf(SalvageManager.getSalvageLimit(player)),
                     RankUtils.getHighestRankStr(SubSkillType.SALVAGE_SCRAP_COLLECTOR)));
         }
 

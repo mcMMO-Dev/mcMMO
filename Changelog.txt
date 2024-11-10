@@ -1,9 +1,13 @@
 Version 2.2.027
     Added Tridents / Crossbows to salvage.vanilla.yml config (see notes)
-    Fixed Ricocheted arrows losing some data after a ricochet
     Fixed an issue where Folia could have all of its threads lock up effectively killing the server
     Fixed concurrency issue with Folia regarding locale strings
     Fixed concurrency issue with Folia regarding COTW summons
+    Updated 'Salvage.SubSkill.ScrapCollector.Stat' to no longer mention luck being involved
+    The amount of materials from salvage are no longer luck-based, you will get a deterministic amount based on damage to the item.
+    Fixed Ricocheted arrows losing some data after a ricochet
+    Changed color of locale strings for 'Repair.Listener.Anvil' to be easier to read
+    Changed color of locale strings for 'Salvage.Listener.Anvil' to be easier to read
 
     NOTES:
     Tridents and Crossbows are now in the salvage.vanilla.yml config, you will need to either delete this config file to regenerate it or add the entries manually.
