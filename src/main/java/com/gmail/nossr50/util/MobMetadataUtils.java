@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import static com.gmail.nossr50.util.MetadataService.*;
 
-//TODO: Use SpawnReason where appropriate instead of MobMetaFlagType
 public final class MobMetadataUtils {
     private static final @NotNull ConcurrentMap<Entity, HashSet<MobMetaFlagType>> mobRegistry; //transient data
     private static final @NotNull EnumMap<MobMetaFlagType, NamespacedKey> mobFlagKeyMap; //used for persistent data

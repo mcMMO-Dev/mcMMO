@@ -1,7 +1,13 @@
 Version 2.2.027
+    Added Tridents / Crossbows to salvage.vanilla.yml config (see notes)
     Fixed Ricocheted arrows losing some data after a ricochet
+    Fixed an issue where Folia could have all of its threads lock up effectively killing the server
     Fixed concurrency issue with Folia regarding locale strings
     Fixed concurrency issue with Folia regarding COTW summons
+
+    NOTES:
+    Tridents and Crossbows are now in the salvage.vanilla.yml config, you will need to either delete this config file to regenerate it or add the entries manually.
+    You can check the default config file after running this mcMMO update at least once in the defaults folder at plugins\mcMMO\defaults to see what you would need to add if you want to take the manual approach
 
 Version 2.2.026
     Fixed NullPointerException on ChunkUnloadEvent

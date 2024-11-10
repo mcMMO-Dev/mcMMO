@@ -13,7 +13,8 @@ public class TrackedTamingEntity extends CancellableRunnable {
     private final @NotNull CallOfTheWildType callOfTheWildType;
     private final @NotNull Player player;
 
-    protected TrackedTamingEntity(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType, @NotNull Player player) {
+    public TrackedTamingEntity(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType,
+                               @NotNull Player player) {
         this.player = player;
         this.callOfTheWildType = callOfTheWildType;
         this.livingEntity = livingEntity;

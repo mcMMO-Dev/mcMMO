@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
-    private int     lastClick;
+    private int lastClick;
 
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.SALVAGE);

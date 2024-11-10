@@ -33,6 +33,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> ironArmor;
     private final @NotNull HashSet<String> ironTools;
     private final @NotNull HashSet<String> stringTools;
+    private final @NotNull HashSet<String> prismarineTools;
     private final @NotNull HashSet<String> goldArmor;
     private final @NotNull HashSet<String> goldTools;
     private final @NotNull HashSet<String> chainmailArmor;
@@ -89,6 +90,7 @@ public class MaterialMapStore {
         bows = new HashSet<>();
         crossbows = new HashSet<>();
         stringTools = new HashSet<>();
+        prismarineTools = new HashSet<>();
         tools = new HashSet<>();
 
         swords = new HashSet<>();
@@ -462,7 +464,7 @@ public class MaterialMapStore {
         fillIronToolsWhiteList();
         fillGoldToolsWhiteList();
         fillDiamondToolsWhiteList();
-        fillnetheriteToolsWhiteList();
+        fillNetheriteToolsWhiteList();
 
         fillSwords();
         fillAxes();
@@ -472,6 +474,7 @@ public class MaterialMapStore {
         fillTridents();
         fillMaces();
         fillStringTools();
+        fillPrismarineTools();
         fillBows();
         fillCrossbows();
 
@@ -501,6 +504,11 @@ public class MaterialMapStore {
         stringTools.add("bow");
         stringTools.add("fishing_rod");
         stringTools.add("carrot_on_a_stick");
+        stringTools.add("crossbow");
+    }
+
+    private void fillPrismarineTools() {
+        prismarineTools.add("trident");
     }
 
     private void fillMaces() {
@@ -674,7 +682,7 @@ public class MaterialMapStore {
         diamondTools.add("diamond_shovel");
     }
 
-    private void fillnetheriteToolsWhiteList() {
+    private void fillNetheriteToolsWhiteList() {
         netheriteTools.add("netherite_sword");
         netheriteTools.add("netherite_axe");
         netheriteTools.add("netherite_hoe");
@@ -974,6 +982,14 @@ public class MaterialMapStore {
 
     public boolean isStringTool(@NotNull String id) {
         return stringTools.contains(id);
+    }
+
+    public boolean isPrismarineTool(@NotNull Material material) {
+        return isPrismarineTool(material.getKey().getKey());
+    }
+
+    public boolean isPrismarineTool(@NotNull String id) {
+        return prismarineTools.contains(id);
     }
 
     public boolean isGlass(@NotNull Material material) {

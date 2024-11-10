@@ -436,6 +436,10 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isStringTool(item.getType().getKey().getKey());
     }
 
+    public static boolean isPrismarineTool(ItemStack item) {
+        return mcMMO.getMaterialMapStore().isPrismarineTool(item.getType().getKey().getKey());
+    }
+
     /**
      * Checks to see if an item is a gold tool.
      *
