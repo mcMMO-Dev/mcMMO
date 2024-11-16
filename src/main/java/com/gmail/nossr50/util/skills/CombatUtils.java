@@ -509,7 +509,6 @@ public final class CombatUtils {
 
                 if (mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SWORDS)) {
                     processSwordCombat(target, player, event);
-
                 }
             } else if (ItemUtils.isAxe(heldItem)) {
                 if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.AXES, target)) {
@@ -698,46 +697,17 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      */
     public static void dealDamage(@NotNull LivingEntity target, double damage) {
-        dealDamage(target, damage, DamageCause.CUSTOM, null);
+        dealDamage(target, damage, null);
     }
 
     /**
      * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
      *
-     * @param target LivingEntity which to attempt to damage
+     * @param target the entity to attempt to damage
      * @param damage Amount of damage to attempt to do
-     * @param attacker Player to pass to event as damager
+     * @param attacker the responsible entity (nullable)
      */
-    @Deprecated
-    public static void dealDamage(@NotNull LivingEntity target, double damage, @NotNull LivingEntity attacker) {
-        dealDamage(target, damage, DamageCause.CUSTOM, attacker);
-    }
-
-//    /**
-//     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-//     *
-//     * @param target LivingEntity which to attempt to damage
-//     * @param damage Amount of damage to attempt to do
-//     * @param attacker Player to pass to event as damager
-//     */
-//    public static void dealDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, LivingEntity attacker) {
-//        if (target.isDead()) {
-//            return;
-//        }
-//
-//        // Aren't we applying the damage twice????
-//        target.damage(getFakeDamageFinalResult(attacker, target, damage, modifiers));
-//    }
-
-    /**
-     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-     *
-     * @param target LivingEntity which to attempt to damage
-     * @param damage Amount of damage to attempt to do
-     * @param attacker Player to pass to event as damager
-     */
-    @Deprecated
-    public static void dealDamage(@NotNull LivingEntity target, double damage, @NotNull DamageCause cause, @Nullable Entity attacker) {
+    public static void dealDamage(@NotNull LivingEntity target, double damage, @Nullable Entity attacker) {
         if (target.isDead()) {
             return;
         }
@@ -807,12 +777,13 @@ public final class CombatUtils {
 
     /**
      * Apply Area-of-Effect ability actions.
-     *  @param attacker The attacking player
+     * @param attacker The attacking player
      * @param target The defending entity
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target, double damage, @NotNull PrimarySkillType type) {
+    public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target,
+                                       double damage, @NotNull PrimarySkillType type) {
         int numberOfTargets = getTier(attacker.getInventory().getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
@@ -821,7 +792,8 @@ public final class CombatUtils {
                 break;
             }
 
-            if ((ExperienceConfig.getInstance().isNPCInteractionPrevented() && Misc.isNPCEntityExcludingVillagers(entity))
+            if ((ExperienceConfig.getInstance().isNPCInteractionPrevented()
+                    && Misc.isNPCEntityExcludingVillagers(entity))
                     || !(entity instanceof LivingEntity livingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
@@ -831,7 +803,8 @@ public final class CombatUtils {
             switch (type) {
                 case SWORDS:
                     if (entity instanceof Player) {
-                        NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
+                        NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE,
+                                "Swords.Combat.SS.Struck");
                     }
 
                     final McMMOPlayer mmoAttacker = UserManager.getPlayer(attacker);
@@ -844,9 +817,9 @@ public final class CombatUtils {
 
                 case AXES:
                     if (entity instanceof Player) {
-                        NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.SS.Struck");
+                        NotificationManager.sendPlayerInformation((Player) entity, NotificationType.SUBSKILL_MESSAGE,
+                                "Axes.Combat.SS.Struck");
                     }
-
                     break;
 
                 default:
@@ -963,7 +936,9 @@ public final class CombatUtils {
             }
 
             if (mcMMO.p.getPartyConfig().isPartyEnabled()) {
-                if ((mcMMO.p.getPartyManager().inSameParty(player, defender) || mcMMO.p.getPartyManager().areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+                if ((mcMMO.p.getPartyManager().inSameParty(player, defender)
+                        || mcMMO.p.getPartyManager().areAllies(player, defender))
+                        && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
                     return false;
                 }
             }
@@ -1015,7 +990,9 @@ public final class CombatUtils {
 
             if (tamer instanceof Player owner) {
 
-                return (owner == attacker || (mcMMO.p.getPartyConfig().isPartyEnabled() && (mcMMO.p.getPartyManager().inSameParty(attacker, owner) || mcMMO.p.getPartyManager().areAllies(attacker, owner))));
+                return (owner == attacker || (mcMMO.p.getPartyConfig().isPartyEnabled()
+                        && (mcMMO.p.getPartyManager().inSameParty(attacker, owner)
+                        || mcMMO.p.getPartyManager().areAllies(attacker, owner))));
             }
         }
 
