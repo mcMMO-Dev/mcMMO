@@ -5,7 +5,6 @@ import com.gmail.nossr50.skills.taming.TrackedTamingEntity;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.text.StringUtils;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
@@ -19,10 +18,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.stream.Collectors.toSet;
 
 public class TransientEntityTracker {
-    private final @NotNull Map<UUID, Set<TrackedTamingEntity>> playerSummonedEntityTracker;
+    final @NotNull Map<UUID, Set<TrackedTamingEntity>> playerSummonedEntityTracker;
+    // used for fast lookups during chunk unload events
+    final @NotNull Set<LivingEntity> entityLookupCache;
 
     public TransientEntityTracker() {
-        playerSummonedEntityTracker = new ConcurrentHashMap<>();
+        this.playerSummonedEntityTracker = new ConcurrentHashMap<>();
+        this.entityLookupCache = ConcurrentHashMap.newKeySet();
     }
 
     public void initPlayer(@NotNull Player player) {
@@ -33,14 +35,6 @@ public class TransientEntityTracker {
         cleanPlayer(player, player.getUniqueId());
     }
 
-    public @NotNull List<LivingEntity> getAllTransientEntitiesInChunk(@NotNull Chunk chunk) {
-        return playerSummonedEntityTracker.values().stream()
-                .flatMap(Collection::stream)
-                .map(TrackedTamingEntity::getLivingEntity)
-                .filter(livingEntity -> livingEntity.getLocation().getChunk() == chunk)
-                .toList();
-    }
-
     public int summonCountForPlayerOfType(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
         return getTrackedEntities(playerUUID, callOfTheWildType).size();
     }
@@ -48,6 +42,7 @@ public class TransientEntityTracker {
     public void addSummon(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
         playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> ConcurrentHashMap.newKeySet())
                 .add(trackedTamingEntity);
+        entityLookupCache.add(trackedTamingEntity.getLivingEntity());
     }
 
     public void killSummonAndCleanMobFlags(@NotNull LivingEntity livingEntity, @Nullable Player player,
@@ -77,9 +72,7 @@ public class TransientEntityTracker {
     }
 
     public boolean isTransient(@NotNull LivingEntity livingEntity) {
-        return playerSummonedEntityTracker.values().stream().anyMatch(
-                trackedEntities -> trackedEntities.stream()
-                        .anyMatch(trackedTamingEntity -> trackedTamingEntity.getLivingEntity().equals(livingEntity)));
+        return entityLookupCache.contains(livingEntity);
     }
 
     private @NotNull Set<TrackedTamingEntity> getTrackedEntities(@NotNull UUID playerUUID,
@@ -117,7 +110,29 @@ public class TransientEntityTracker {
     }
 
     public void removeSummonFromTracker(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
-        playerSummonedEntityTracker.computeIfAbsent(playerUUID, __ -> ConcurrentHashMap.newKeySet())
-                .remove(trackedTamingEntity);
+        if (playerSummonedEntityTracker.containsKey(playerUUID)) {
+            playerSummonedEntityTracker.get(playerUUID).remove(trackedTamingEntity);
+            entityLookupCache.remove(trackedTamingEntity.getLivingEntity());
+        }
     }
+
+    public void removeTrackedEntity(@NotNull LivingEntity livingEntity) {
+        // Fail fast if the entity isn't being tracked
+        if (!entityLookupCache.contains(livingEntity)) {
+            return;
+        }
+
+        final List<TrackedTamingEntity> matchingEntities = new ArrayList<>();
+
+        // Collect matching entities without copying each set
+        playerSummonedEntityTracker.values().forEach(trackedEntitiesPerPlayer ->
+                trackedEntitiesPerPlayer.stream()
+                        .filter(trackedTamingEntity -> trackedTamingEntity.getLivingEntity() == livingEntity)
+                        .forEach(matchingEntities::add)
+        );
+
+        // Iterate over the collected list to handle removal and cleanup
+        matchingEntities.forEach(TrackedTamingEntity::run);
+    }
+
 }

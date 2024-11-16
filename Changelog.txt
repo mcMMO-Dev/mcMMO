@@ -1,3 +1,6 @@
+Version 2.2.028
+    Fix stack overflow during ChunkUnloadEvent
+
 Version 2.2.027
     Added Tridents / Crossbows to salvage.vanilla.yml config (see notes)
     Fixed an issue where Folia could have all of its threads lock up effectively killing the server
