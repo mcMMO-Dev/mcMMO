@@ -1,6 +1,7 @@
 Version 2.2.028
-    Fixed a bug where you had to wait to summon another COTW summon if one or more of them had died or otherwise expired before their time limit
     Fixed stack overflow during ChunkUnloadEvent
+    Fixed a bug where you had to wait to summon another COTW summon if one or more of them had died or otherwise expired before their time limit
+    McMMOItemSpawnEvent#setItemStack being ignored (thanks galacticwarrior9)
     (API) Added McMMOPlayerMasterAnglerEvent (thanks bobcat4848)
 
 Version 2.2.027
