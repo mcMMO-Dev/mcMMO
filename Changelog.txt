@@ -1,5 +1,7 @@
 Version 2.2.028
-    Fix stack overflow during ChunkUnloadEvent
+    Fixed a bug where you had to wait to summon another COTW summon if one or more of them had died or otherwise expired before their time limit
+    Fixed stack overflow during ChunkUnloadEvent
+    (API) Added McMMOPlayerMasterAnglerEvent (thanks bobcat4848)
 
 Version 2.2.027
     Added Tridents / Crossbows to salvage.vanilla.yml config (see notes)

@@ -475,7 +475,7 @@ public class TamingManager extends SkillManager {
     }
 
     private int getAmountCurrentlySummoned(@NotNull CallOfTheWildType callOfTheWildType) {
-        return mcMMO.getTransientEntityTracker().summonCountForPlayerOfType(getPlayer().getUniqueId(), callOfTheWildType);
+        return mcMMO.getTransientEntityTracker().getActiveSummonsForPlayerOfType(getPlayer().getUniqueId(), callOfTheWildType);
     }
 
     private void addToTracker(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType) {

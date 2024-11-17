@@ -35,8 +35,11 @@ public class TransientEntityTracker {
         cleanPlayer(player, player.getUniqueId());
     }
 
-    public int summonCountForPlayerOfType(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
-        return getTrackedEntities(playerUUID, callOfTheWildType).size();
+    public int getActiveSummonsForPlayerOfType(@NotNull UUID playerUUID, @NotNull CallOfTheWildType callOfTheWildType) {
+        return getTrackedEntities(playerUUID, callOfTheWildType).stream()
+                .filter(tte -> tte.getLivingEntity().isValid())
+                .mapToInt(tte -> 1)
+                .sum();
     }
 
     public void addSummon(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
@@ -110,9 +113,10 @@ public class TransientEntityTracker {
     }
 
     public void removeSummonFromTracker(@NotNull UUID playerUUID, @NotNull TrackedTamingEntity trackedTamingEntity) {
+        entityLookupCache.remove(trackedTamingEntity.getLivingEntity());
+
         if (playerSummonedEntityTracker.containsKey(playerUUID)) {
             playerSummonedEntityTracker.get(playerUUID).remove(trackedTamingEntity);
-            entityLookupCache.remove(trackedTamingEntity.getLivingEntity());
         }
     }
 
