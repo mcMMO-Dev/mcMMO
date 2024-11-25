@@ -1,3 +1,6 @@
+Version 2.2.029
+    Fixed bug where block checks at world height would throw IndexOutOfBounds exceptions
+
 Version 2.2.028
     Fixed stack overflow during ChunkUnloadEvent
     Fixed a bug where you had to wait to summon another COTW summon if one or more of them had died or otherwise expired before their time limit

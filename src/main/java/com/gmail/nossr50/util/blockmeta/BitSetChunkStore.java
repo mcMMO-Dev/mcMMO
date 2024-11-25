@@ -102,7 +102,7 @@ public class BitSetChunkStore implements ChunkStore {
     }
 
     private static int coordToIndex(int x, int y, int z, int worldMin, int worldMax) {
-        if (x < 0 || x >= 16 || y < worldMin || y >= worldMax || z < 0 || z >= 16)
+        if (x < 0 || x >= 16 || y < worldMin || y > worldMax || z < 0 || z >= 16)
             throw new IndexOutOfBoundsException(String.format("x: %d y: %d z: %d World Min: %d World Max: %d", x, y, z, worldMin, worldMax));
         int yOffset = -worldMin; // Ensures y multiplier remains positive
         return (z * 16 + x) + (256 * (y + yOffset));
