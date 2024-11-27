@@ -1018,6 +1018,7 @@ public class MaterialMapStore {
         multiBlockHangingPlant.add("weeping_vines_plant");
         multiBlockHangingPlant.add("twisted_vines_plant");
         multiBlockHangingPlant.add("cave_vines_plant");
+        multiBlockHangingPlant.add("pale_hanging_moss");
     }
 
     private void fillShroomyWhiteList() {

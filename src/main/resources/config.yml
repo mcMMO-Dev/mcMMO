@@ -483,6 +483,7 @@ Green_Thumb_Replanting_Crops:
 ###
 Bonus_Drops:
     Herbalism:
+        Eyeblossom: true
         Pitcher_Plant: true
         Torchflower: true
         Pink_Petals: true

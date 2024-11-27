@@ -1,10 +1,15 @@
 Version 2.2.029
     Fixed bug where block checks at world height would throw IndexOutOfBounds exceptions
     Added misc compatability for the "The Garden Awakens" Minecraft Update
-    Added Pale_Oak_Log to experience.yml for Woodcutting
-    Added Pale_Oak_Wood to experience.yml for Woodcutting
-    Added Stripped_Pale_Oak_Log to experience.yml for Woodcutting
-    Added Stripped_Pale_Oak_Wood to experience.yml for Woodcutting
+    Added Eyeblossom to experience.yml for Herbalism xp
+    Added Bonus_Drops.Herbalism.Eyeblossom to config.yml to enable double/triple drops for Eyeblossom
+    Added Pale_Hanging_Moss to experience.yml for Herbalism xp
+    Added Pale_Moss_Block to experience.yml for Herbalism xp
+    Added Pale_Moss_Carpet to experience.yml for Herbalism xp
+    Added Pale_Oak_Log to experience.yml for Woodcutting xp
+    Added Pale_Oak_Wood to experience.yml for Woodcutting xp
+    Added Stripped_Pale_Oak_Log to experience.yml for Woodcutting xp
+    Added Stripped_Pale_Oak_Wood to experience.yml for Woodcutting xp
     Added Bonus_Drops.Woodcutting.Pale_Oak_Wood to config.yml to enable double/triple drops for Pale Oak Wood
     Added Bonus_Drops.Woodcutting.Pale_Oak_Log to config.yml to enable double/triple drops for Pale Oak Log
     Temporarily disabled the party item share functionality until it is fixed or potentially removed (see notes)
