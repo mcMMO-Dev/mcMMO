@@ -626,7 +626,9 @@ Bonus_Drops:
         Cherry_Wood: true
         Cherry_Log: true
         Dark_Oak_Wood: true
+        Pale_Oak_Wood: true
         Dark_Oak_Log: true
+        Pale_Oak_Log: true
         Oak_Wood: true
         Oak_Log: true
         Jungle_Wood: true

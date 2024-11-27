@@ -1040,11 +1040,13 @@ public class MaterialMapStore {
     }
 
     private void fillTreeFellerDestructibleWhiteList() {
+        treeFellerDestructibleWhiteList.add("pale_hanging_moss");
         treeFellerDestructibleWhiteList.add("oak_leaves");
         treeFellerDestructibleWhiteList.add("cherry_leaves");
         treeFellerDestructibleWhiteList.add("acacia_leaves");
         treeFellerDestructibleWhiteList.add("birch_leaves");
         treeFellerDestructibleWhiteList.add("dark_oak_leaves");
+        treeFellerDestructibleWhiteList.add("pale_oak_leaves");
         treeFellerDestructibleWhiteList.add("jungle_leaves");
         treeFellerDestructibleWhiteList.add("spruce_leaves");
         treeFellerDestructibleWhiteList.add("azalea_leaves");
@@ -1102,6 +1104,7 @@ public class MaterialMapStore {
         abilityBlackList.add("oak_fence_gate");
         abilityBlackList.add("acacia_fence_gate");
         abilityBlackList.add("dark_oak_fence_gate");
+        abilityBlackList.add("pale_oak_fence_gate");
         abilityBlackList.add("spruce_fence_gate");
         abilityBlackList.add("birch_fence_gate");
         abilityBlackList.add("jungle_fence_gate");
@@ -1114,11 +1117,13 @@ public class MaterialMapStore {
         abilityBlackList.add("birch_button");
         abilityBlackList.add("acacia_button");
         abilityBlackList.add("dark_oak_button");
+        abilityBlackList.add("pale_oak_button");
         abilityBlackList.add("jungle_button");
         abilityBlackList.add("spruce_button");
         abilityBlackList.add("acacia_trapdoor");
         abilityBlackList.add("birch_trapdoor");
         abilityBlackList.add("dark_oak_trapdoor");
+        abilityBlackList.add("pale_oak_trapdoor");
         abilityBlackList.add("jungle_trapdoor");
         abilityBlackList.add("oak_trapdoor");
         abilityBlackList.add("spruce_trapdoor");
@@ -1127,7 +1132,9 @@ public class MaterialMapStore {
         abilityBlackList.add("birch_sign");
         abilityBlackList.add("birch_wall_sign");
         abilityBlackList.add("dark_oak_sign");
+        abilityBlackList.add("pale_oak_sign");
         abilityBlackList.add("dark_oak_wall_sign");
+        abilityBlackList.add("pale_oak_wall_sign");
         abilityBlackList.add("jungle_sign");
         abilityBlackList.add("jungle_wall_sign");
         abilityBlackList.add("spruce_sign");
@@ -1148,9 +1155,11 @@ public class MaterialMapStore {
         abilityBlackList.add("birch_door");
         abilityBlackList.add("jungle_door");
         abilityBlackList.add("dark_oak_door");
+        abilityBlackList.add("pale_oak_door");
         abilityBlackList.add("oak_fence");
         abilityBlackList.add("acacia_fence");
         abilityBlackList.add("dark_oak_fence");
+        abilityBlackList.add("pale_oak_fence");
         abilityBlackList.add("birch_fence");
         abilityBlackList.add("jungle_fence");
         abilityBlackList.add("spruce_fence");
@@ -1220,6 +1229,7 @@ public class MaterialMapStore {
         toolBlackList.add("oak_fence_gate");
         toolBlackList.add("acacia_fence_gate");
         toolBlackList.add("dark_oak_fence_gate");
+        toolBlackList.add("pale_oak_fence_gate");
         toolBlackList.add("spruce_fence_gate");
         toolBlackList.add("birch_fence_gate");
         toolBlackList.add("jungle_fence_gate");
@@ -1232,11 +1242,13 @@ public class MaterialMapStore {
         toolBlackList.add("birch_button");
         toolBlackList.add("acacia_button");
         toolBlackList.add("dark_oak_button");
+        toolBlackList.add("pale_oak_button");
         toolBlackList.add("jungle_button");
         toolBlackList.add("spruce_button");
         toolBlackList.add("acacia_trapdoor");
         toolBlackList.add("birch_trapdoor");
         toolBlackList.add("dark_oak_trapdoor");
+        toolBlackList.add("pale_oak_trapdoor");
         toolBlackList.add("jungle_trapdoor");
         toolBlackList.add("oak_trapdoor");
         toolBlackList.add("spruce_trapdoor");
@@ -1254,9 +1266,11 @@ public class MaterialMapStore {
         toolBlackList.add("birch_door");
         toolBlackList.add("jungle_door");
         toolBlackList.add("dark_oak_door");
+        toolBlackList.add("pale_oak_door");
         toolBlackList.add("oak_fence");
         toolBlackList.add("acacia_fence");
         toolBlackList.add("dark_oak_fence");
+        toolBlackList.add("pale_oak_fence");
         toolBlackList.add("birch_fence");
         toolBlackList.add("jungle_fence");
         toolBlackList.add("spruce_fence");
@@ -1285,8 +1299,11 @@ public class MaterialMapStore {
         toolBlackList.add("birch_hanging_sign");
         toolBlackList.add("birch_wall_sign");
         toolBlackList.add("dark_oak_sign");
+        toolBlackList.add("pale_oak_sign");
         toolBlackList.add("dark_oak_hanging_sign");
+        toolBlackList.add("pale_oak_hanging_sign");
         toolBlackList.add("dark_oak_wall_sign");
+        toolBlackList.add("pale_oak_wall_sign");
         toolBlackList.add("jungle_sign");
         toolBlackList.add("jungle_hanging_sign");
         toolBlackList.add("jungle_wall_sign");
@@ -1306,7 +1323,9 @@ public class MaterialMapStore {
         toolBlackList.add("stripped_birch_log");
         toolBlackList.add("stripped_birch_wood");
         toolBlackList.add("stripped_dark_oak_log");
+        toolBlackList.add("stripped_pale_oak_log");
         toolBlackList.add("stripped_dark_oak_wood");
+        toolBlackList.add("stripped_pale_oak_wood");
         toolBlackList.add("stripped_jungle_log");
         toolBlackList.add("stripped_jungle_wood");
         toolBlackList.add("stripped_oak_log");
@@ -1321,7 +1340,9 @@ public class MaterialMapStore {
         toolBlackList.add("birch_log");
         toolBlackList.add("birch_wood");
         toolBlackList.add("dark_oak_log");
+        toolBlackList.add("pale_oak_log");
         toolBlackList.add("dark_oak_wood");
+        toolBlackList.add("pale_oak_wood");
         toolBlackList.add("jungle_log");
         toolBlackList.add("jungle_wood");
         toolBlackList.add("oak_log");
