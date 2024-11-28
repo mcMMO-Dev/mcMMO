@@ -46,6 +46,7 @@ public final class XPBoostAmount {
 
     public boolean hasBoostPermission(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission(String.format(permissionNode, "all")) ||
+                permissible.hasPermission(String.format(permissionNode, "*")) ||
                 permissible.hasPermission(String.format(permissionNode, skill.toString().toLowerCase(Locale.ENGLISH)));
     }
 
