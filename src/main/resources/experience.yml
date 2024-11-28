@@ -295,6 +295,7 @@ Experience_Values:
         Jungle_Log: 100
         Acacia_Log: 90
         Dark_Oak_Log: 90
+        Pale_Oak_Log: 130
         Stripped_Oak_Log: 70
         Stripped_Cherry_Log: 105
         Stripped_Spruce_Log: 80
@@ -302,6 +303,7 @@ Experience_Values:
         Stripped_Jungle_Log: 100
         Stripped_Acacia_Log: 90
         Stripped_Dark_Oak_Log: 90
+        Stripped_Pale_Oak_Log: 130
         Stripped_Oak_Wood: 70
         Stripped_Cherry_Wood: 70
         Stripped_Spruce_Wood: 80
@@ -309,6 +311,7 @@ Experience_Values:
         Stripped_Jungle_Wood: 100
         Stripped_Acacia_Wood: 90
         Stripped_Dark_Oak_Wood: 90
+        Stripped_Pale_Oak_Wood: 90
         Stripped_Mangrove_Log: 110
         Stripped_Crimson_Stem: 50
         Stripped_Warped_Stem: 50
@@ -319,6 +322,7 @@ Experience_Values:
         Jungle_Wood: 70
         Acacia_Wood: 70
         Dark_Oak_Wood: 70
+        Pale_Oak_Wood: 110
         Mangrove_Wood: 80
         Mangrove_Log: 95
         Mangrove_Roots: 10
@@ -326,12 +330,16 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Eyeblossom: 66
         Pitcher_Plant: 160
         Pink_Petals: 10
         Small_Dripleaf: 140
         Big_Dripleaf: 140
         Cave_Vines: 90
         Cave_Vines_Plant: 90
+        Pale_Hanging_Moss: 150
+        Pale_Moss_Block: 10
+        Pale_Moss_Carpet: 10
         Glow_Lichen: 5
         Moss_Block: 150
         Crimson_Roots: 6

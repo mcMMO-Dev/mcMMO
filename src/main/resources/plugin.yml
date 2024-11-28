@@ -67,9 +67,6 @@ commands:
     mcgod:
         description: Toggle mcMMO god-mode on/off
         permission: mcmmo.commands.mcgod
-    mcimport:
-        description: Import mod config files
-        permission: mcmmo.commands.mcimport
     mcstats:
         aliases: [stats]
         description: Shows your mcMMO stats and xp
@@ -168,14 +165,6 @@ commands:
     mcpurge:
         description: Purge users with 0 powerlevel and/or who haven't connected in several months from the server DB.
         permission: mcmmo.commands.mcpurge
-#    hardcore:
-#        aliases: [mchardcore]
-#        description: Modify the mcMMO hardcore percentage or toggle hardcore mode on/off
-#        permission: mcmmo.commands.hardcore
-#    vampirism:
-#        aliases: [mcvampirism]
-#        description: Modify the mcMMO vampirism percentage or toggle vampirism mode on/off
-#        permission: mcmmo.commands.vampirism
     mcnotify:
         aliases: [notify]
         description: Toggle mcMMO abilities chat display notifications on/off
@@ -184,11 +173,6 @@ commands:
         aliases: [mcsb]
         description: Manage your mcMMO Scoreboard
         permission: mcmmo.commands.mcscoreboard
-    #mcfools:
-    crafting:
-        aliases: [macho, jumping, throwing, wrecking, walking, swimming, falling, climbing, flying, diving, piggy]
-        description: Deploy jokes
-        permission: mcmmo.commands.mcfools
     mcmmoreloadlocale:
         aliases: [mcreloadlocale]
         description: Reloads locale
@@ -917,7 +901,6 @@ permissions:
             mcmmo.commands.mcchatspy.others: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
-            mcmmo.commands.mcimport: true
             mcmmo.commands.mcpurge: true
             mcmmo.commands.mcrank.others.all: true
             mcmmo.commands.mcrefresh: true
@@ -1021,8 +1004,6 @@ permissions:
         description: Allows access to the mcnotify command
     mcmmo.commands.mcpurge:
         description: Allows access to the mcpurge command
-    mcmmo.commands.mcimport:
-        description: Allows access to the mcimport command
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
     mcmmo.commands.mcrank.others.*:

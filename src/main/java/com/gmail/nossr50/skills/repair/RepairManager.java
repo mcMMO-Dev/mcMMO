@@ -96,7 +96,7 @@ public class RepairManager extends SkillManager {
 
         // Level check
         if (skillLevel < minimumRepairableLevel) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.Adept", String.valueOf(minimumRepairableLevel), StringUtils.getPrettyItemString(item.getType()));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.Adept", String.valueOf(minimumRepairableLevel), StringUtils.getPrettyMaterialString(item.getType()));
             return;
         }
 
@@ -115,7 +115,7 @@ public class RepairManager extends SkillManager {
 
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairMaterial)) {
-            String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
+            String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyMaterialString(repairMaterial) : repairable.getRepairMaterialPrettyName();
 
             String materialsNeeded = "";
 
@@ -156,7 +156,7 @@ public class RepairManager extends SkillManager {
 
                 // Fail out with "you need material" if we don't find a suitable alternative.
                 if (possibleMaterial.isEmpty()) {
-                    String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
+                    String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyMaterialString(repairMaterial) : repairable.getRepairMaterialPrettyName();
 
                     String materialsNeeded = "";
 

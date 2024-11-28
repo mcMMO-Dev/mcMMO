@@ -74,9 +74,13 @@ class UserBlockTrackerTest {
         final HashChunkManager hashChunkManager = new HashChunkManager();
 
         // Top Block
-        final Block illegalHeightBlock = initMockBlock(1337, 256, -1337);
-        assertFalse(hashChunkManager.isIneligible(illegalHeightBlock));
+        int illegalMaxHeight = 256 + 1;
+        final Block illegalHeightBlock = initMockBlock(1337, illegalMaxHeight, -1337);
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> hashChunkManager.setIneligible(illegalHeightBlock));
+
+        int illegalMinHeight = -65;
+        final Block otherIllegalHeightBlock = initMockBlock(1337, illegalMinHeight, -1337);
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> hashChunkManager.setIneligible(otherIllegalHeightBlock));
     }
 
     @Test
@@ -86,7 +90,7 @@ class UserBlockTrackerTest {
         int radius = 2; // Could be anything but drastically changes test time
 
         for (int x = -radius; x <= radius; x++) {
-            for (int y = mockWorld.getMinHeight(); y < mockWorld.getMaxHeight(); y++) {
+            for (int y = mockWorld.getMinHeight(); y <= mockWorld.getMaxHeight(); y++) {
                 for (int z = -radius; z <= radius; z++) {
                     final Block testBlock = initMockBlock(x, y, z);
                     // mark ineligible
@@ -148,7 +152,8 @@ class UserBlockTrackerTest {
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, -1, 0));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, 0, -1));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(16, 0, 0));
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, mockWorld.getMaxHeight(), 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, mockWorld.getMaxHeight()+1, 0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, mockWorld.getMinHeight()-1, 0));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> chunkStore.setTrue(0, 0, 16));
     }
 
@@ -169,6 +174,27 @@ class UserBlockTrackerTest {
         chunkManager.setIneligible(mockBlockA);
         chunkManager.setEligible(mockBlockB);
         assertTrue(chunkManager.isIneligible(mockBlockA));
+    }
+
+    @Test
+    void testUnload() {
+        final ChunkManager chunkManager = new HashChunkManager();
+        Block mockBlockA = Mockito.mock(Block.class);
+        when(mockBlockA.getX()).thenReturn(15);
+        when(mockBlockA.getZ()).thenReturn(15);
+        when(mockBlockA.getY()).thenReturn(0);
+        when(mockBlockA.getWorld()).thenReturn(mockWorld);
+        Block mockBlockB = Mockito.mock(Block.class);
+        when(mockBlockB.getX()).thenReturn(-15);
+        when(mockBlockB.getZ()).thenReturn(-15);
+        when(mockBlockB.getY()).thenReturn(0);
+        when(mockBlockB.getWorld()).thenReturn(mockWorld);
+
+        chunkManager.setIneligible(mockBlockA);
+        chunkManager.setEligible(mockBlockB);
+        assertTrue(chunkManager.isIneligible(mockBlockA));
+
+        chunkManager.chunkUnloaded(0, 0, mockWorld);
     }
 
     @NotNull

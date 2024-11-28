@@ -280,7 +280,11 @@ public final class SkillUtils {
 
     @Nullable
     public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
-        if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
+        if (ItemUtils.isPrismarineTool(inHand)) {
+            return Material.PRISMARINE_CRYSTALS;
+        } else if (ItemUtils.isNetheriteTool(inHand) || ItemUtils.isNetheriteArmor(inHand)) {
+            return Material.NETHERITE_SCRAP;
+        } else if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         } else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
             return Material.GOLD_INGOT;
@@ -306,7 +310,12 @@ public final class SkillUtils {
     public static int getRepairAndSalvageQuantities(Material itemMaterial, Material recipeMaterial) {
         int quantity = 0;
 
-        if (mcMMO.getMaterialMapStore().isNetheriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetheriteArmor(itemMaterial)) {
+        if (mcMMO.getMaterialMapStore().isPrismarineTool(itemMaterial)) {
+            return 16;
+        }
+
+        if (mcMMO.getMaterialMapStore().isNetheriteTool(itemMaterial)
+                || mcMMO.getMaterialMapStore().isNetheriteArmor(itemMaterial)) {
             //One netherite bar requires 4 netherite scraps
             return 4;
         }

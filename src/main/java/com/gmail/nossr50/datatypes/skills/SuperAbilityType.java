@@ -6,8 +6,9 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public enum SuperAbilityType {
     EXPLOSIVE_SHOT("Archery.Skills.ExplosiveShot.On",
@@ -167,7 +168,7 @@ public enum SuperAbilityType {
     }
 
     public String getName() {
-        return StringUtils.getPrettyAbilityString(this);
+        return StringUtils.getPrettySuperAbilityString(this);
     }
 
     public String getLocalizedName() {
@@ -218,20 +219,16 @@ public enum SuperAbilityType {
         };
     }
 
-    /**
-     * Check if a block is affected by this ability.
-     *
-     * @param blockState the block to check
-     * @return true if the block is affected by this ability, false otherwise
-     */
-    public boolean blockCheck(BlockState blockState) {
+    public boolean blockCheck(@NotNull Block block) {
         return switch (this) {
             case BERSERK ->
-                    (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || mcMMO.getMaterialMapStore().isGlass(blockState.getType()));
-            case GIGA_DRILL_BREAKER -> BlockUtils.affectedByGigaDrillBreaker(blockState);
-            case GREEN_TERRA -> BlockUtils.canMakeMossy(blockState);
-            case SUPER_BREAKER -> BlockUtils.affectedBySuperBreaker(blockState);
-            case TREE_FELLER -> BlockUtils.hasWoodcuttingXP(blockState);
+                    (BlockUtils.affectedByGigaDrillBreaker(block)
+                            || block.getType() == Material.SNOW
+                            || mcMMO.getMaterialMapStore().isGlass(block.getType()));
+            case GIGA_DRILL_BREAKER -> BlockUtils.affectedByGigaDrillBreaker(block);
+            case GREEN_TERRA -> BlockUtils.canMakeMossy(block);
+            case SUPER_BREAKER -> BlockUtils.affectedBySuperBreaker(block);
+            case TREE_FELLER -> BlockUtils.hasWoodcuttingXP(block);
             default -> false;
         };
     }

@@ -1,8 +1,72 @@
+Version 2.2.029
+    Fixed bug where block checks at world height would throw IndexOutOfBounds exceptions
+    Added misc compatability for the "The Garden Awakens" Minecraft Update
+    Added Eyeblossom to experience.yml for Herbalism xp
+    Added Bonus_Drops.Herbalism.Eyeblossom to config.yml to enable double/triple drops for Eyeblossom
+    Added Pale_Hanging_Moss to experience.yml for Herbalism xp
+    Added Pale_Moss_Block to experience.yml for Herbalism xp
+    Added Pale_Moss_Carpet to experience.yml for Herbalism xp
+    Added Pale_Oak_Log to experience.yml for Woodcutting xp
+    Added Pale_Oak_Wood to experience.yml for Woodcutting xp
+    Added Stripped_Pale_Oak_Log to experience.yml for Woodcutting xp
+    Added Stripped_Pale_Oak_Wood to experience.yml for Woodcutting xp
+    Added Bonus_Drops.Woodcutting.Pale_Oak_Wood to config.yml to enable double/triple drops for Pale Oak Wood
+    Added Bonus_Drops.Woodcutting.Pale_Oak_Log to config.yml to enable double/triple drops for Pale Oak Log
+    Temporarily disabled the party item share functionality until it is fixed or potentially removed (see notes)
+
+    Notes:
+    I noticed some issues with the party item share feature, so I've temporarily disabled it until those issues are addressed.
+    I'm not even sure people like or dislike this feature, I'm personally not a fan.. I'd like to hear what you guys think.
+
+Version 2.2.028
+    Fixed stack overflow during ChunkUnloadEvent
+    Fixed a bug where you had to wait to summon another COTW summon if one or more of them had died or otherwise expired before their time limit
+    McMMOItemSpawnEvent#setItemStack being ignored (thanks galacticwarrior9)
+    (API) Added McMMOPlayerMasterAnglerEvent (thanks bobcat4848)
+
+Version 2.2.027
+    Added Tridents / Crossbows to salvage.vanilla.yml config (see notes)
+    Fixed an issue where Folia could have all of its threads lock up effectively killing the server
+    Fixed concurrency issue with Folia regarding locale strings
+    Fixed concurrency issue with Folia regarding COTW summons
+    Updated 'Salvage.SubSkill.ScrapCollector.Stat' to no longer mention luck being involved
+    The amount of materials from salvage are no longer luck-based, you will get a deterministic amount based on damage to the item.
+    Fixed Ricocheted arrows losing some data after a ricochet
+    Changed color of locale strings for 'Repair.Listener.Anvil' to be easier to read
+    Changed color of locale strings for 'Salvage.Listener.Anvil' to be easier to read
+
+    NOTES:
+    Tridents and Crossbows are now in the salvage.vanilla.yml config, you will need to either delete this config file to regenerate it or add the entries manually.
+    You can check the default config file after running this mcMMO update at least once in the defaults folder at plugins\mcMMO\defaults to see what you would need to add if you want to take the manual approach
+
+Version 2.2.026
+    Fixed NullPointerException on ChunkUnloadEvent
+
+Version 2.2.025
+    Fixed NullPointerException spam when processing XP for child skills
+
+Version 2.2.024
+    Fixed errors when Fishing or using Shake ability
+    Significant optimizations made to reading new chunks for mcMMO
+    Significant optimizations to most block interactions in mcMMO code
+    Fixed a horrendous edge case where Tree Feller could cause a lot of lag
+
+    Notes:
+    Part of this update focused on optimization, there's improvements of around 30% in CPU time for most code involving block interactions in mcMMO, which happens to be most code in mcMMO.
+    One of the optimizations made in this update removes an edge case where Tree Feller could cause a lot of lag, but the optimizations really are across the board in regards to any abilities that interact with blocks.
+
+Version 2.2.023
+    Compatibility with Minecraft 1.21.3
+    (API) add causingPlayer to McMMOReplaceVanillaTreasureEvent and update Fish Event to use it (thanks bobcat4848 and Jacob Cuomo)
+
+    Notes:
+    Tested this version of mcMMO against 1.21.3, 1.21.1, and 1.19.4, which should be full coverage for all the changes, but it is possible you will run into things I didn't catch.
+    Please report any errors or bugs to GitHub if you find them.
+
 Version 2.2.022
     Fixed a bug where Roll was always reducing damage (thanks Ineusia)
     Fix COTW errors on older versions (thanks Warriorrrr)
     Fixed slimes spawning from slime division not inheriting tags. (thanks Ineusia)
-
 
 Version 2.2.021
     Fixed issue where Roll wasn't reducing as much damage as it should have been (thanks Ineusia)
@@ -2553,7 +2617,7 @@ Version 2.1.38
 Version 2.1.37
     Fixed a potential IndexOutOfBoundsException when informing a disconnected player that their Blast Mining was off CD
     Updated hu_HU locale (thanks andris)
-    
+
 Version 2.1.36
     Updated German locale (Thanks OverCrave)
     Fixed a bug preventing Villagers from giving combat XP
@@ -3541,7 +3605,7 @@ Version 1.3.13
  + Added displaying bonus perks on skill commands
  + Added config option to disable gaining Acrobatics XP from dodging lightning
  + Added missing skill guides. They're finally here!
- + Added more localization 
+ + Added more localization
  + Added a very secret easter egg
  = Fix issue with Sand/Gravel tracking
  = Fix possible NPE when using the PartyAPI to add a player to a party that doesn't exist.
@@ -3638,7 +3702,7 @@ Version 1.3.11
  = Fixed bug where mcMMO could throw NPE errors if trees cut down were from a custom mod and had an id of 17
  = Fixed dupe bug where mcMMO would ignore other block-protection plugins for various abilities
  = Fixed NPE with hardcore mode's vampirism
- 
+
 Version 1.3.10
  + Added 1.3.1 compatibility
  + Added permission node for Iron Grip ability (mcmmo.ability.unarmed.irongrip)
@@ -3900,7 +3964,7 @@ Version 1.3.02
 Version 1.3.01
  = Fixed bug where Tree Feller had no cooldown
  = Fixed bug with activating Skull Splitter after using Tree Feller
- 
+
 Version 1.3.00
  + Added ability to customize drops for Excavation skill (treasures.yml)
  + Added ability to customize drops for Fishing skill (treasures.yml)
@@ -3964,7 +4028,7 @@ Version 1.3.00
  - Removed unused settings from config.yml (HP Regen)
  - Removed Nether Brick from Mining XP Tables
  - Removed Stone Brick from Mining XP Tables
- 
+
 Version 1.2.12
  - Fixed issue that caused terrible MySQL performance and negative XP on levelup (Issue #134)
  - Fixed addxp command taking xprate and skill modifiers into account
@@ -4973,7 +5037,7 @@ Version 0.5.9
 Version 0.5.8
 
     Fixed bug where players inventories would dupe during combat
-    
+
 Version 0.5.7
 
     Fixed monsters instant killing players

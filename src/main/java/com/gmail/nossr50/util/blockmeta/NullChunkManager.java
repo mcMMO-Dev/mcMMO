@@ -28,12 +28,12 @@ public class NullChunkManager implements ChunkManager {
 
     @Override
     public boolean isEligible(@NotNull Block block) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEligible(@NotNull BlockState blockState) {
-        return false;
+        return true;
     }
 
     @Override

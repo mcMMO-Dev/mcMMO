@@ -38,11 +38,19 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param triple     marks the block to give triple drops
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public static void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(2, mcMMO.p));
+            blockState.getBlock().setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(2, mcMMO.p));
         else
-            blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(1, mcMMO.p));
+            blockState.getBlock().setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(1, mcMMO.p));
+    }
+
+    public static void markDropsAsBonus(Block block, boolean triple) {
+        if (triple)
+            block.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(2, mcMMO.p));
+        else
+            block.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(1, mcMMO.p));
     }
 
     /**
@@ -90,8 +98,18 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param amount amount of extra items to drop
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public static void markDropsAsBonus(BlockState blockState, int amount) {
             blockState.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(amount, mcMMO.p));
+    }
+
+    /**
+     * Marks a block to drop extra copies of items
+     * @param block target block
+     * @param amount the number of extra items to drop
+     */
+    public static void markDropsAsBonus(Block block, int amount) {
+        block.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, new BonusDropMeta(amount, mcMMO.p));
     }
 
     /**
@@ -114,11 +132,31 @@ public final class BlockUtils {
      * @param subSkillType the subskill involved
      * @return true if the player succeeded in the check
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public static boolean checkDoubleDrops(@Nullable McMMOPlayer mmoPlayer, @NotNull BlockState blockState,
                                            @NotNull SubSkillType subSkillType) {
         requireNonNull(blockState, "blockState cannot be null");
         requireNonNull(subSkillType, "subSkillType cannot be null");
         if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(subSkillType.getParentSkill(), blockState.getType())
+                && Permissions.isSubSkillEnabled(mmoPlayer, subSkillType)) {
+            return ProbabilityUtil.isSkillRNGSuccessful(subSkillType, mmoPlayer);
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a player successfully passed the double drop check
+     * @param mmoPlayer the player involved in the check
+     * @param block the block
+     * @param subSkillType the subskill involved
+     * @return true if the player succeeded in the check
+     */
+    public static boolean checkDoubleDrops(@Nullable McMMOPlayer mmoPlayer, @NotNull Block block,
+                                           @NotNull SubSkillType subSkillType) {
+        requireNonNull(block, "block cannot be null");
+        requireNonNull(subSkillType, "subSkillType cannot be null");
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(subSkillType.getParentSkill(), block.getType())
                 && Permissions.isSubSkillEnabled(mmoPlayer, subSkillType)) {
             return ProbabilityUtil.isSkillRNGSuccessful(subSkillType, mmoPlayer);
         }
@@ -133,11 +171,18 @@ public final class BlockUtils {
      * @return true if the block awards XP, false otherwise
      */
     public static boolean shouldBeWatched(BlockState blockState) {
-        return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || hasWoodcuttingXP(blockState)
-                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType())
-                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, blockState.getType())
-                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())
-                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, blockState.getType());
+        return shouldBeWatched(blockState.getType());
+    }
+
+    public static boolean shouldBeWatched(Material material) {
+        return affectedByGigaDrillBreaker(material)
+                || affectedByGreenTerra(material)
+                || affectedBySuperBreaker(material)
+                || hasWoodcuttingXP(material)
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.MINING, material)
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, material)
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, material)
+                || mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, material);
     }
 
     /**
@@ -147,8 +192,13 @@ public final class BlockUtils {
      * @return true if the block should allow ability activation, false
      * otherwise
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public static boolean canActivateAbilities(BlockState blockState) {
         return !mcMMO.getMaterialMapStore().isAbilityActivationBlackListed(blockState.getType());
+    }
+
+    public static boolean canActivateAbilities(Block block) {
+        return !mcMMO.getMaterialMapStore().isAbilityActivationBlackListed(block.getType());
     }
 
     /**
@@ -172,7 +222,25 @@ public final class BlockUtils {
      * @return true if the block is an ore, false otherwise
      */
     public static boolean isOre(BlockState blockState) {
-        return MaterialUtils.isOre(blockState.getType());
+        return isOre(blockState.getType());
+    }
+
+    /**
+     * Check if a given block is an ore
+     * @param block The {@link Block} to check
+     * @return true if the block is an ore, false otherwise
+     */
+    public static boolean isOre(Block block) {
+        return isOre(block.getType());
+    }
+
+    /**
+     * Check if a given material is an ore
+     * @param material The {@link Material} to check
+     * @return true if the material is an ore, false otherwise
+     */
+    public static boolean isOre(Material material) {
+        return MaterialUtils.isOre(material);
     }
 
     /**
@@ -181,8 +249,13 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block can be made mossy, false otherwise
      */
+    @Deprecated(since = "2.2.024")
     public static boolean canMakeMossy(BlockState blockState) {
         return mcMMO.getMaterialMapStore().isMossyWhiteListed(blockState.getType());
+    }
+
+    public static boolean canMakeMossy(Block block) {
+        return mcMMO.getMaterialMapStore().isMossyWhiteListed(block.getType());
     }
 
     /**
@@ -192,41 +265,56 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.HERBALISM, blockState.getBlockData())) {
-            return true;
-        }
+        return affectedByGreenTerra(blockState.getType());
+    }
 
-        return mcMMO.getModManager().isCustomHerbalismBlock(blockState);
+    public static boolean affectedByGreenTerra(Block block) {
+        return affectedByGreenTerra(block.getType());
+    }
+
+    public static boolean affectedByGreenTerra(Material material) {
+        return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.HERBALISM, material);
+    }
+
+    public static boolean affectedBySuperBreaker(BlockState blockState) {
+        return affectedBySuperBreaker(blockState.getType());
     }
 
     /**
      * Determine if a given block should be affected by Super Breaker
      *
-     * @param blockState The {@link BlockState} of the block to check
+     * @param block The {@link Block} to check
      * @return true if the block should affected by Super Breaker, false
      * otherwise
      */
-    public static boolean affectedBySuperBreaker(BlockState blockState) {
-        if (mcMMO.getMaterialMapStore().isIntendedToolPickaxe(blockState.getType()))
+    public static boolean affectedBySuperBreaker(Block block) {
+        return affectedBySuperBreaker(block.getType());
+    }
+
+    public static boolean affectedBySuperBreaker(Material material) {
+        if (mcMMO.getMaterialMapStore().isIntendedToolPickaxe(material))
             return true;
 
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, blockState.getBlockData()))
-            return true;
-
-        return mcMMO.getModManager().isCustomMiningBlock(blockState);
+        return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, material);
     }
 
     /**
      * Determine if a given block should be affected by Giga Drill Breaker
      *
      * @param blockState The {@link BlockState} of the block to check
-     * @return true if the block should affected by Giga Drill Breaker, false
+     * @return true if the block should be affected by Giga Drill Breaker, false
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(@NotNull BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.EXCAVATION, blockState.getBlockData()))
-            return true;
-        return mcMMO.getModManager().isCustomExcavationBlock(blockState);
+        return affectedByGigaDrillBreaker(blockState.getType());
+    }
+
+    public static boolean affectedByGigaDrillBreaker(@NotNull Block block) {
+        return affectedByGigaDrillBreaker(block.getType());
+    }
+
+    public static boolean affectedByGigaDrillBreaker(@NotNull Material material) {
+        return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.EXCAVATION, material);
     }
 
     /**
@@ -236,7 +324,15 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean hasWoodcuttingXP(@NotNull BlockState blockState) {
-        return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, blockState.getBlockData());
+        return hasWoodcuttingXP(blockState.getType());
+    }
+
+    public static boolean hasWoodcuttingXP(@NotNull Block block) {
+        return hasWoodcuttingXP(block.getType());
+    }
+
+    public static boolean hasWoodcuttingXP(@NotNull Material material) {
+        return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, material);
     }
 
     /**
@@ -246,7 +342,11 @@ public final class BlockUtils {
      * @return true if the block is a leaf, false otherwise
      */
     public static boolean isNonWoodPartOfTree(@NotNull BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isTreeFellerDestructible(blockState.getType());
+        return isNonWoodPartOfTree(blockState.getType());
+    }
+
+    public static boolean isNonWoodPartOfTree(@NotNull Block block) {
+        return isNonWoodPartOfTree(block.getType());
     }
 
     public static boolean isNonWoodPartOfTree(@NotNull Material material) {
@@ -289,7 +389,15 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByBlockCracker(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isBlockCrackerWhiteListed(blockState.getType());
+        return affectedByBlockCracker(blockState.getType());
+    }
+
+    public static boolean affectedByBlockCracker(Block block) {
+        return affectedByBlockCracker(block.getType());
+    }
+
+    public static boolean affectedByBlockCracker(Material material) {
+        return mcMMO.getMaterialMapStore().isBlockCrackerWhiteListed(material);
     }
 
     /**

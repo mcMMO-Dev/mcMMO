@@ -1,9 +1,0 @@
-# Config wrote by M1cr0man
-# Possibly incomplete. Only covers ores
-# Up to date as of Stargate Tech 2 Alpha 0.7.3
-Mining:
-    # Naquadah Ore
-    X1005|0:
-        XP_Gain: 300
-        Double_Drops_Enabled: true
-        Is_Ore: true

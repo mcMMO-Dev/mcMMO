@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +23,8 @@ import java.util.regex.Pattern;
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
     private static final String OVERRIDE_FILE_NAME = "locale_override.properties";
-    private static Map<String, String> bundleCache = new HashMap<>();
+    // Must be concurrent to accomodate Folia
+    private static Map<String, String> bundleCache = new ConcurrentHashMap<>();
     private static ResourceBundle bundle = null;
     private static ResourceBundle filesystemBundle = null;
     private static ResourceBundle enBundle = null;

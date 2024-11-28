@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
-    private int     lastClick;
+    private int lastClick;
 
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.SALVAGE);
@@ -78,17 +78,6 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        // Permissions checks on material and item types
-        if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
-            return;
-        }
-
-        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageMaterialType())) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
-            return;
-        }
-
         /*int skillLevel = getSkillLevel();*/
         int minimumSalvageableLevel = salvageable.getMinimumLevel();
 
@@ -96,7 +85,7 @@ public class SalvageManager extends SkillManager {
         if (getSkillLevel() < minimumSalvageableLevel) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET,
                     "Salvage.Skills.Adept.Level",
-                    String.valueOf(minimumSalvageableLevel), StringUtils.getPrettyItemString(item.getType()));
+                    String.valueOf(minimumSalvageableLevel), StringUtils.getPrettyMaterialString(item.getType()));
             return;
         }
 
@@ -108,7 +97,7 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit()); // Always get at least something back, if you're capable of salvaging it.
+        potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit(getPlayer())); // Always get at least something back, if you're capable of salvaging it.
 
         location.add(0.5, 1, 0.5);
 
@@ -119,36 +108,15 @@ public class SalvageManager extends SkillManager {
             enchantBook = arcaneSalvageCheck(enchants);
         }
 
-        //Lottery on Salvageable Amount
-
-        int lotteryResults = 1;
-        int chanceOfSuccess = 99;
-
-        for(int x = 0; x < potentialSalvageYield-1; x++) {
-
-            if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SALVAGE, mmoPlayer, chanceOfSuccess)) {
-                chanceOfSuccess-=3;
-                chanceOfSuccess = Math.max(chanceOfSuccess, 90);
-
-                lotteryResults+=1;
-            }
-        }
-
-        ItemStack salvageResults = new ItemStack(salvageable.getSalvageMaterial(), lotteryResults);
+        ItemStack salvageResults = new ItemStack(salvageable.getSalvageMaterial(), potentialSalvageYield);
 
         //Call event
         if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
             return;
         }
 
-        // We only send a confirmation message after processing the event (fixes #4694)
-        if (lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else if (salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
-            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else {
-            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        }
+        NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal",
+                String.valueOf(potentialSalvageYield), StringUtils.getPrettyMaterialString(item.getType()));
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 
@@ -183,8 +151,13 @@ public class SalvageManager extends SkillManager {
         return Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
     }*/
 
-    public int getSalvageLimit() {
-        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_SCRAP_COLLECTOR));
+    public static int getSalvageLimit(Player player) {
+        if (RankUtils.getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR) == 1) {
+            return 1;
+        } else {
+            var curRank = RankUtils.getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR);
+            return curRank * 2;
+        }
     }
 
     /**

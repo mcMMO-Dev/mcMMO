@@ -8,13 +8,18 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class TrackedTamingEntity extends CancellableRunnable {
     private final @NotNull LivingEntity livingEntity;
     private final @NotNull CallOfTheWildType callOfTheWildType;
     private final @NotNull Player player;
+    private final @NotNull UUID playerUUID;
 
-    protected TrackedTamingEntity(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType, @NotNull Player player) {
+    public TrackedTamingEntity(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType,
+                               @NotNull Player player) {
         this.player = player;
+        this.playerUUID = player.getUniqueId();
         this.callOfTheWildType = callOfTheWildType;
         this.livingEntity = livingEntity;
 
@@ -28,7 +33,8 @@ public class TrackedTamingEntity extends CancellableRunnable {
 
     @Override
     public void run() {
-        mcMMO.getTransientEntityTracker().removeSummon(this.getLivingEntity(), player, true);
+        mcMMO.getTransientEntityTracker().killSummonAndCleanMobFlags(this.getLivingEntity(), player, true);
+        mcMMO.getTransientEntityTracker().removeSummonFromTracker(playerUUID, this);
         this.cancel();
     }
 
