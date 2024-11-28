@@ -436,6 +436,10 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isStringTool(item.getType().getKey().getKey());
     }
 
+    public static boolean isPrismarineTool(ItemStack item) {
+        return mcMMO.getMaterialMapStore().isPrismarineTool(item.getType().getKey().getKey());
+    }
+
     /**
      * Checks to see if an item is a gold tool.
      *
@@ -574,11 +578,12 @@ public final class ItemUtils {
      */
     public static boolean isWoodcuttingDrop(ItemStack item) {
         return switch (item.getType().toString()) {
-            case "ACACIA_LOG", "BIRCH_LOG", "DARK_OAK_LOG", "JUNGLE_LOG", "OAK_LOG", "SPRUCE_LOG",
-                 "STRIPPED_ACACIA_LOG", "STRIPPED_BIRCH_LOG", "STRIPPED_DARK_OAK_LOG", "STRIPPED_JUNGLE_LOG",
-                 "STRIPPED_OAK_LOG", "STRIPPED_SPRUCE_LOG", "STRIPPED_MANGROVE_LOG", "ACACIA_SAPLING", "SPRUCE_SAPLING",
-                 "BIRCH_SAPLING", "DARK_OAK_SAPLING", "JUNGLE_SAPLING", "OAK_SAPLING", "ACACIA_LEAVES", "BIRCH_LEAVES",
-                 "DARK_OAK_LEAVES", "JUNGLE_LEAVES", "OAK_LEAVES", "SPRUCE_LEAVES", "BEE_NEST", "APPLE" -> true;
+            case "ACACIA_LOG", "BIRCH_LOG", "DARK_OAK_LOG", "PALE_OAK_LOG", "JUNGLE_LOG", "OAK_LOG", "SPRUCE_LOG",
+                 "STRIPPED_ACACIA_LOG", "STRIPPED_BIRCH_LOG", "STRIPPED_DARK_OAK_LOG", "STRIPPED_PALE_OAK_LOG",
+                 "STRIPPED_JUNGLE_LOG", "STRIPPED_OAK_LOG", "STRIPPED_SPRUCE_LOG", "STRIPPED_MANGROVE_LOG",
+                 "ACACIA_SAPLING", "SPRUCE_SAPLING", "BIRCH_SAPLING", "DARK_OAK_SAPLING", "PALE_OAK_SAPLING",
+                 "JUNGLE_SAPLING", "OAK_SAPLING", "ACACIA_LEAVES", "BIRCH_LEAVES", "DARK_OAK_LEAVES", "PALE_OAK_LEAVES",
+                 "JUNGLE_LEAVES", "OAK_LEAVES", "SPRUCE_LEAVES", "BEE_NEST", "APPLE" -> true;
             default -> false;
         };
     }
@@ -593,6 +598,7 @@ public final class ItemUtils {
         return ItemWeightConfig.getInstance().getMiscItems().contains(item.getType());
     }
 
+     // TODO: This is used exclusively for Chimaera Wing... should revisit this sometime
     public static boolean isMcMMOItem(ItemStack item) {
         if (!item.hasItemMeta()) {
             return false;
@@ -760,7 +766,7 @@ public final class ItemUtils {
             return null;
         }
 
-        return location.getWorld().dropItem(location, itemStack);
+        return location.getWorld().dropItem(location, event.getItemStack());
     }
 
     /**
@@ -787,7 +793,7 @@ public final class ItemUtils {
             return null;
         }
 
-        return location.getWorld().dropItemNaturally(location, itemStack);
+        return location.getWorld().dropItemNaturally(location, event.getItemStack());
     }
 
     /**
@@ -841,6 +847,7 @@ public final class ItemUtils {
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
+        clonedItem = event.getItemStack();
 
         //Something cancelled the event so back out
         if (event.isCancelled()) {

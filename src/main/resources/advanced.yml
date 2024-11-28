@@ -541,7 +541,6 @@ Skills:
         FastFoodService:
             # Chance: The chance for wolves to heal hp when inflicting damage
             Chance: 50.0
-        EnvironmentallyAware:
         ThickFur:
             # Modifier: Damage will get divided by this modifier
             Modifier: 2.0

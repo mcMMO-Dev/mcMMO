@@ -387,26 +387,6 @@ public class SkillTools {
         return pluginRef.getGeneralConfig().getMaxLength(superAbilityType);
     }
 
-    public String getSuperAbilityOnLocaleKey(SuperAbilityType superAbilityType) {
-        return "SuperAbility." + StringUtils.getPrettyCamelCaseName(superAbilityType) + ".On";
-    }
-
-    public String getSuperAbilityOffLocaleKey(SuperAbilityType superAbilityType) {
-        return "SuperAbility." + StringUtils.getPrettyCamelCaseName(superAbilityType) + ".Off";
-    }
-
-    public String getSuperAbilityOtherPlayerActivationLocaleKey(SuperAbilityType superAbilityType) {
-        return "SuperAbility." + StringUtils.getPrettyCamelCaseName(superAbilityType) + ".Other.On";
-    }
-
-    public String getSuperAbilityOtherPlayerDeactivationLocaleKey(SuperAbilityType superAbilityType) {
-        return "SuperAbility." + StringUtils.getPrettyCamelCaseName(superAbilityType) + "Other.Off";
-    }
-
-    public String getSuperAbilityRefreshedLocaleKey(SuperAbilityType superAbilityType) {
-        return "SuperAbility." + StringUtils.getPrettyCamelCaseName(superAbilityType) + ".Refresh";
-    }
-
     public int getLevelCap(@NotNull PrimarySkillType primarySkillType) {
         return mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
     }

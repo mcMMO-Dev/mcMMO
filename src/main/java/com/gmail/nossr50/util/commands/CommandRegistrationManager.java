@@ -313,15 +313,6 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McscoreboardCommand());
     }
 
-    private static void registerMcImportCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcimport");
-        command.setDescription("Import mod config files"); //TODO: Localize
-        command.setPermission("mcmmo.commands.mcimport");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcimport"));
-        command.setExecutor(new McImportCommand());
-    }
-
     private static void registerReloadLocaleCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcmmoreloadlocale");
         command.setDescription("Reloads locale"); // TODO: Localize
@@ -351,7 +342,6 @@ public final class CommandRegistrationManager {
         registerXPBarCommand();
         registerMmoInfoCommand();
         registerMmoDebugCommand();
-        registerMcImportCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
         registerMcChatSpyCommand();

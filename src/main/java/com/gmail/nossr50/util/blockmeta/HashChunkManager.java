@@ -39,9 +39,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     private synchronized @Nullable ChunkStore readChunkStore(@NotNull World world, int cx, int cz) throws IOException {
-        McMMOSimpleRegionFile rf = getReadableSimpleRegionFile(world, cx, cz);
-        if (rf == null)
-            return null; // If there is no region file, there can't be a chunk
+        final McMMOSimpleRegionFile rf = getWriteableSimpleRegionFile(world, cx, cz);
         try (DataInputStream in = rf.getInputStream(cx, cz)) { // Get input stream for chunk
             if (in == null)
                 return null; // No chunk
@@ -74,17 +72,6 @@ public class HashChunkManager implements ChunkManager {
         });
     }
 
-    private synchronized @Nullable McMMOSimpleRegionFile getReadableSimpleRegionFile(@NotNull World world, int cx, int cz) {
-        CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
-
-        return regionMap.computeIfAbsent(regionKey, k -> {
-            File regionFile = getRegionFile(world, regionKey);
-            if (!regionFile.exists())
-                return null; // Don't create the file on read-only operations
-            return new McMMOSimpleRegionFile(regionFile, regionKey.x, regionKey.z);
-        });
-    }
-
     private @NotNull File getRegionFile(@NotNull World world, @NotNull CoordinateKey regionKey) {
         if (world.getUID() != regionKey.worldID)
             throw new IllegalArgumentException();
@@ -112,7 +99,7 @@ public class HashChunkManager implements ChunkManager {
         CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
         HashSet<CoordinateKey> chunkKeys = chunkUsageMap.get(regionKey);
         chunkKeys.remove(chunkKey); // remove from region file in-use set
-        // If it was last chunk in region, close the region file and remove it from memory
+        // If it was last chunk in the region, close the region file and remove it from memory
         if (chunkKeys.isEmpty()) {
             chunkUsageMap.remove(regionKey);
             regionMap.remove(regionKey).close();
@@ -159,16 +146,15 @@ public class HashChunkManager implements ChunkManager {
         ChunkStore check = chunkMap.computeIfAbsent(chunkKey, k -> {
             // Load from file
             ChunkStore loaded = loadChunk(chunkKey.x, chunkKey.z, world);
-            if (loaded == null)
-                return null;
+            if (loaded != null) {
+                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
+                return loaded;
+            }
             // Mark chunk in-use for region tracking
             chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
-            return loaded;
+            // Create a new chunkstore
+            return new BitSetChunkStore(world, chunkKey.x, chunkKey.z);
         });
-
-        // No chunk, return false
-        if (check == null)
-            return false;
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
@@ -227,18 +213,11 @@ public class HashChunkManager implements ChunkManager {
                 chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
                 return loaded;
             }
-            // If setting to false, no need to create an empty chunkstore
-            if (!value)
-                return null;
             // Mark chunk in-use for region tracking
             chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z), j -> new HashSet<>()).add(chunkKey);
             // Create a new chunkstore
             return new BitSetChunkStore(world, chunkKey.x, chunkKey.z);
         });
-
-        // Indicates setting false on empty chunkstore
-        if (cStore == null)
-            return;
 
         // Get block offset (offset from chunk corner)
         int ix = Math.abs(x) % 16;

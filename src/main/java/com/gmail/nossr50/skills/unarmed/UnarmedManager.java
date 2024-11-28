@@ -68,29 +68,29 @@ public class UnarmedManager extends SkillManager {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
-    public boolean blockCrackerCheck(@NotNull BlockState blockState) {
+    public void blockCrackerCheck(@NotNull BlockState blockState) {
         if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER, mmoPlayer)) {
-            return false;
+            return;
         }
 
         switch (blockState.getType()) {
             case STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
-                    return false;
+                    return;
                 }
 
                 blockState.getBlock().setType(Material.CRACKED_STONE_BRICKS);
-                return true;
+                blockState.update(true);
+                return;
             case INFESTED_STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
-                    return false;
+                    return;
                 }
 
                 blockState.getBlock().setType(Material.INFESTED_CRACKED_STONE_BRICKS);
-                return true;
-
+                blockState.update(true);
+                return;
             default:
-                return false;
         }
     }
 

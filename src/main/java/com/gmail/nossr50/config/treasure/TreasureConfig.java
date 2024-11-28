@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.PotionUtil;
-import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -21,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
 public class TreasureConfig extends BukkitConfig {
 
@@ -239,29 +240,29 @@ public class TreasureConfig extends BukkitConfig {
 
                     for (String dropper : dropList) {
                         if (dropper.equals("Bushes")) {
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FERN), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(BlockUtils.getShortGrass()), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.FERN), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(BlockUtils.getShortGrass()), hylianTreasure);
                             for (Material species : Tag.SAPLINGS.getValues())
-                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
+                                AddHylianTreasure(getMaterialConfigString(species), hylianTreasure);
 
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DEAD_BUSH), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.DEAD_BUSH), hylianTreasure);
                             continue;
                         }
                         if (dropper.equals("Flowers")) {
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POPPY), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DANDELION), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.BLUE_ORCHID), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.ALLIUM), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.AZURE_BLUET), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.ORANGE_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.PINK_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.RED_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.WHITE_TULIP), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.POPPY), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.DANDELION), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.BLUE_ORCHID), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.ALLIUM), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.AZURE_BLUET), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.ORANGE_TULIP), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.PINK_TULIP), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.RED_TULIP), hylianTreasure);
+                            AddHylianTreasure(getMaterialConfigString(Material.WHITE_TULIP), hylianTreasure);
                             continue;
                         }
                         if (dropper.equals("Pots")) {
                             for (Material species : Tag.FLOWER_POTS.getValues())
-                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
+                                AddHylianTreasure(getMaterialConfigString(species), hylianTreasure);
                             continue;
                         }
                         AddHylianTreasure(dropper, hylianTreasure);

@@ -97,50 +97,60 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param blockState Block being broken
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public void processBonusDropCheck(@NotNull BlockState blockState) {
+        processBonusDropCheck(blockState.getBlock());
+    }
+
+    public void processBonusDropCheck(@NotNull Block block) {
         //TODO: Why isn't this using the item drop event? Potentially because of Tree Feller? This should be adjusted either way.
-        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())) {
+        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, block.getType())) {
             //Mastery enabled for player
             if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
-                if (checkCleanCutsActivation(blockState.getType())) {
+                if (checkCleanCutsActivation(block.getType())) {
                     //Triple drops
-                    spawnHarvestLumberBonusDrops(blockState);
-                    spawnHarvestLumberBonusDrops(blockState);
+                    spawnHarvestLumberBonusDrops(block);
+                    spawnHarvestLumberBonusDrops(block);
                 } else {
                     //Harvest Lumber Check
-                    if (checkHarvestLumberActivation(blockState.getType())) {
-                        spawnHarvestLumberBonusDrops(blockState);
+                    if (checkHarvestLumberActivation(block.getType())) {
+                        spawnHarvestLumberBonusDrops(block);
                     }
                 }
-            //No Mastery (no Clean Cuts)
+                //No Mastery (no Clean Cuts)
             } else if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
-                if (checkHarvestLumberActivation(blockState.getType())) {
-                    spawnHarvestLumberBonusDrops(blockState);
+                if (checkHarvestLumberActivation(block.getType())) {
+                    spawnHarvestLumberBonusDrops(block);
                 }
             }
         }
     }
 
+    @Deprecated(forRemoval = true, since = "2.2.024")
     public void processWoodcuttingBlockXP(@NotNull BlockState blockState) {
-        if (mcMMO.getUserBlockTracker().isIneligible(blockState))
+        processWoodcuttingBlockXP(blockState.getBlock());
+    }
+
+    public void processWoodcuttingBlockXP(@NotNull Block block) {
+        if (mcMMO.getUserBlockTracker().isIneligible(block))
             return;
 
-        int xp = getExperienceFromLog(blockState);
-        applyXpGain(xp, XPGainReason.PVE);
+        int xp = getExperienceFromLog(block);
+        applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
     }
 
     /**
      * Begins Tree Feller
      *
-     * @param blockState Block being broken
+     * @param startingBlock The first startingBlock broken
      */
-    public void processTreeFeller(BlockState blockState) {
-        Player player = getPlayer();
-        Set<BlockState> treeFellerBlocks = new HashSet<>();
+    public void processTreeFeller(Block startingBlock) {
+        final Player player = getPlayer();
+        Set<Block> treeFellerBlocks = new HashSet<>();
 
         treeFellerReachedThreshold = false;
 
-        processTree(blockState, treeFellerBlocks);
+        processTree(startingBlock, treeFellerBlocks);
 
         // If the tool can't sustain the durability loss
         if (!handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand(), player)) {
@@ -160,21 +170,17 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     /**
-     * Processes Tree Feller in a recursive manner
-     *
-     * @param blockState Block being checked
-     * @param treeFellerBlocks List of blocks to be removed
-     */
-    /*
+     * Process the tree feller ability.
+     * <p>
      * Algorithm: An int[][] of X/Z directions is created on static class
      * initialization, representing a cylinder with radius of about 2 - the
      * (0,0) center and all (+-2, +-2) corners are omitted.
-     *
+     * <p>
      * processTreeFellerTargetBlock() returns a boolean, which is used for the sole purpose of
      * switching between these two behaviors:
-     *
+     * <p>
      * (Call blockState "this log" for the below explanation.)
-     *
+     * <p>
      *  [A] There is another log above this log (TRUNK)
      *    Only the flat cylinder in the directions array is searched.
      *  [B] There is not another log above this log (BRANCH AND TOP)
@@ -182,19 +188,19 @@ public class WoodcuttingManager extends SkillManager {
      *    block in the Y-axis, and the block below this log is checked as
      *    well. Due to the fact that the directions array will catch all
      *    blocks on a red mushroom, the special method for it is eliminated.
-     *
+     * <p>
      * This algorithm has been shown to achieve a performance of 2-5
      * milliseconds on regular trees and 10-15 milliseconds on jungle trees
      * once the JIT has optimized the function (use the ability about 4 times
      * before taking measurements).
      */
-    private void processTree(BlockState blockState, Set<BlockState> treeFellerBlocks) {
-        List<BlockState> futureCenterBlocks = new ArrayList<>();
+    private void processTree(Block block, Set<Block> treeFellerBlocks) {
+        List<Block> futureCenterBlocks = new ArrayList<>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
-        if (processTreeFellerTargetBlock(blockState.getBlock().getRelative(BlockFace.UP).getState(), futureCenterBlocks, treeFellerBlocks)) {
+        if (processTreeFellerTargetBlock(block.getRelative(BlockFace.UP), futureCenterBlocks, treeFellerBlocks)) {
             for (int[] dir : directions) {
-                processTreeFellerTargetBlock(blockState.getBlock().getRelative(dir[0], 0, dir[1]).getState(), futureCenterBlocks, treeFellerBlocks);
+                processTreeFellerTargetBlock(block.getRelative(dir[0], 0, dir[1]), futureCenterBlocks, treeFellerBlocks);
 
                 if (treeFellerReachedThreshold) {
                     return;
@@ -202,11 +208,11 @@ public class WoodcuttingManager extends SkillManager {
             }
         } else {
             // Cover DOWN
-            processTreeFellerTargetBlock(blockState.getBlock().getRelative(BlockFace.DOWN).getState(), futureCenterBlocks, treeFellerBlocks);
+            processTreeFellerTargetBlock(block.getRelative(BlockFace.DOWN), futureCenterBlocks, treeFellerBlocks);
             // Search in a cube
             for (int y = -1; y <= 1; y++) {
                 for (int[] dir : directions) {
-                    processTreeFellerTargetBlock(blockState.getBlock().getRelative(dir[0], y, dir[1]).getState(), futureCenterBlocks, treeFellerBlocks);
+                    processTreeFellerTargetBlock(block.getRelative(dir[0], y, dir[1]), futureCenterBlocks, treeFellerBlocks);
 
                     if (treeFellerReachedThreshold) {
                         return;
@@ -216,7 +222,7 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         // Recursive call for each log found
-        for (BlockState futureCenterBlock : futureCenterBlocks) {
+        for (Block futureCenterBlock : futureCenterBlocks) {
             if (treeFellerReachedThreshold) {
                 return;
             }
@@ -233,7 +239,8 @@ public class WoodcuttingManager extends SkillManager {
      * @param player the player holding the item
      * @return True if the tool can sustain the durability loss
      */
-    private static boolean handleDurabilityLoss(@NotNull Set<BlockState> treeFellerBlocks, @NotNull ItemStack inHand, @NotNull Player player) {
+    private static boolean handleDurabilityLoss(@NotNull Set<Block> treeFellerBlocks,
+                                                @NotNull ItemStack inHand, @NotNull Player player) {
         //Treat the NBT tag for unbreakable and the durability enchant differently
         ItemMeta meta = inHand.getItemMeta();
 
@@ -244,8 +251,8 @@ public class WoodcuttingManager extends SkillManager {
         int durabilityLoss = 0;
         Material type = inHand.getType();
 
-        for (BlockState blockState : treeFellerBlocks) {
-            if (BlockUtils.hasWoodcuttingXP(blockState)) {
+        for (Block block : treeFellerBlocks) {
+            if (BlockUtils.hasWoodcuttingXP(block)) {
                 durabilityLoss += mcMMO.p.getGeneralConfig().getAbilityToolDamage();
             }
         }
@@ -261,7 +268,9 @@ public class WoodcuttingManager extends SkillManager {
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
         int durability = meta instanceof Damageable ? ((Damageable) meta).getDamage(): 0;
-        return (durability < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
+        return (durability < (mcMMO.getRepairableManager().isRepairable(type)
+                ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability()
+                : type.getMaxDurability()));
     }
 
     /**
@@ -269,15 +278,17 @@ public class WoodcuttingManager extends SkillManager {
      * list of blocks used for future recursive calls of
      * 'processTree()'
      *
-     * @param blockState Block to be added
+     * @param block Block to be added
      * @param futureCenterBlocks List of blocks that will be used to call
      *     'processTree()'
      * @param treeFellerBlocks List of blocks to be removed
-     * @return true if and only if the given blockState was a Log not already
+     * @return true if and only if the given block was a Log not already
      *     in treeFellerBlocks.
      */
-    private boolean processTreeFellerTargetBlock(@NotNull BlockState blockState, @NotNull List<BlockState> futureCenterBlocks, @NotNull Set<BlockState> treeFellerBlocks) {
-        if (treeFellerBlocks.contains(blockState) || mcMMO.getUserBlockTracker().isIneligible(blockState)) {
+    private boolean processTreeFellerTargetBlock(@NotNull Block block,
+                                                 @NotNull List<Block> futureCenterBlocks,
+                                                 @NotNull Set<Block> treeFellerBlocks) {
+        if (treeFellerBlocks.contains(block) || mcMMO.getUserBlockTracker().isIneligible(block)) {
             return false;
         }
 
@@ -286,12 +297,12 @@ public class WoodcuttingManager extends SkillManager {
             treeFellerReachedThreshold = true;
         }
 
-        if (BlockUtils.hasWoodcuttingXP(blockState)) {
-            treeFellerBlocks.add(blockState);
-            futureCenterBlocks.add(blockState);
+        if (BlockUtils.hasWoodcuttingXP(block)) {
+            treeFellerBlocks.add(block);
+            futureCenterBlocks.add(block);
             return true;
-        } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
-            treeFellerBlocks.add(blockState);
+        } else if (BlockUtils.isNonWoodPartOfTree(block)) {
+            treeFellerBlocks.add(block);
             return false;
         }
         return false;
@@ -302,15 +313,14 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param treeFellerBlocks List of blocks to be dropped
      */
-    private void dropTreeFellerLootFromBlocks(@NotNull Set<BlockState> treeFellerBlocks) {
+    private void dropTreeFellerLootFromBlocks(@NotNull Set<Block> treeFellerBlocks) {
         Player player = getPlayer();
         int xp = 0;
         int processedLogCount = 0;
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        for (BlockState blockState : treeFellerBlocks) {
+        for (Block block : treeFellerBlocks) {
             int beforeXP = xp;
-            Block block = blockState.getBlock();
 
             if (!EventUtils.simulateBlockBreak(block, player, FakeBlockBreakEventType.TREE_FELLER)) {
                 continue;
@@ -320,20 +330,21 @@ public class WoodcuttingManager extends SkillManager {
              * Handle Drops & XP
              */
 
-            if (BlockUtils.hasWoodcuttingXP(blockState)) {
+            if (BlockUtils.hasWoodcuttingXP(block)) {
                 //Add XP
-                xp += processTreeFellerXPGains(blockState, processedLogCount);
+                xp += processTreeFellerXPGains(block, processedLogCount);
 
                 //Drop displaced block
-                spawnItemsFromCollection(player, getBlockCenter(blockState), block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                spawnItemsFromCollection(player, getBlockCenter(block),
+                        block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
 
                 //Bonus Drops / Harvest lumber checks
-                processBonusDropCheck(blockState);
-            } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
+                processBonusDropCheck(block);
+            } else if (BlockUtils.isNonWoodPartOfTree(block)) {
                 // 75% of the time do not drop leaf blocks
                 if (ThreadLocalRandom.current().nextInt(100) > 75) {
                     spawnItemsFromCollection(player,
-                            getBlockCenter(blockState),
+                            getBlockCenter(block),
                             block.getDrops(itemStack),
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
                 } else if (hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
@@ -341,7 +352,7 @@ public class WoodcuttingManager extends SkillManager {
                     ItemUtils.spawnItemsConditionally(block.getDrops(itemStack),
                             IS_SAPLING_OR_PROPAGULE,
                             ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK,
-                            getBlockCenter(blockState),
+                            getBlockCenter(block),
                             // only spawn saplings
                             player
                     );
@@ -353,15 +364,14 @@ public class WoodcuttingManager extends SkillManager {
                         if (mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
                             if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
                                 int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
-                                Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
+                                Misc.spawnExperienceOrb(block.getLocation(), randOrbCount);
                             }
                         }
                     }
                 }
             }
 
-            blockState.setType(Material.AIR);
-            blockState.update(true);
+            block.setType(Material.AIR);
 
             //Update only when XP changes
             processedLogCount = updateProcessedLogCount(xp, processedLogCount, beforeXP);
@@ -383,15 +393,15 @@ public class WoodcuttingManager extends SkillManager {
      * Experience is only reduced if the config option to reduce Tree Feller XP is set
      * Experience per log will not fall below 1 unless the experience for that log is set to 0 in the config
      *
-     * @param blockState Log being broken
+     * @param block Log being broken
      * @param woodCount how many logs have given out XP for this tree feller so far
      * @return Amount of experience
      */
-    private static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
-        if (mcMMO.getUserBlockTracker().isIneligible(blockState))
+    private static int processTreeFellerXPGains(Block block, int woodCount) {
+        if (mcMMO.getUserBlockTracker().isIneligible(block))
             return 0;
 
-        int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
+        int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, block.getType());
 
         if (rawXP <= 0)
             return 0;
@@ -401,7 +411,7 @@ public class WoodcuttingManager extends SkillManager {
             rawXP = Math.max(1, reducedXP);
             return rawXP;
         } else {
-            return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
+            return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, block.getType());
         }
     }
 
@@ -411,12 +421,19 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Log being broken
      * @return Amount of experience
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     protected static int getExperienceFromLog(BlockState blockState) {
-        if (mcMMO.getModManager().isCustomLog(blockState)) {
-            return mcMMO.getModManager().getBlock(blockState).getXpGain();
-        }
+        return getExperienceFromLog(blockState.getBlock());
+    }
 
-        return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
+    /**
+     * Retrieves the experience reward from a log
+     *
+     * @param block Log being broken
+     * @return Amount of experience
+     */
+    protected static int getExperienceFromLog(Block block) {
+        return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, block.getType());
     }
 
     /**
@@ -424,11 +441,16 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param blockState Block being broken
      */
+    @Deprecated(forRemoval = true, since = "2.2.024")
     void spawnHarvestLumberBonusDrops(@NotNull BlockState blockState) {
+        spawnHarvestLumberBonusDrops(blockState.getBlock());
+    }
+
+    void spawnHarvestLumberBonusDrops(@NotNull Block block) {
         spawnItemsFromCollection(
                 getPlayer(),
-                getBlockCenter(blockState),
-                blockState.getBlock().getDrops(getPlayer().getInventory().getItemInMainHand()),
+                getBlockCenter(block),
+                block.getDrops(getPlayer().getInventory().getItemInMainHand()),
                 ItemSpawnReason.BONUS_DROPS);
     }
 }

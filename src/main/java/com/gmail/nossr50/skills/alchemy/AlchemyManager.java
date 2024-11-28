@@ -10,10 +10,11 @@ import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
 public class AlchemyManager extends SkillManager {
     private final double LUCKY_MODIFIER = 4.0 / 3.0;
@@ -34,7 +35,7 @@ public class AlchemyManager extends SkillManager {
         StringBuilder list = new StringBuilder();
 
         for (ItemStack ingredient : getIngredients()) {
-            String string = StringUtils.getPrettyItemString(ingredient.getType());
+            String string = getMaterialConfigString(ingredient.getType());
 
             list.append(", ").append(string);
         }

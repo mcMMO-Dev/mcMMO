@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getConfigPartyFeatureString;
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
+
 public class GeneralConfig extends BukkitConfig {
 
     public GeneralConfig(@NotNull File dataFolder) {
@@ -122,7 +125,7 @@ public class GeneralConfig extends BukkitConfig {
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
             if (getPartyFeatureUnlockLevel(partyFeature) < 0) {
-                reason.add("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
+                reason.add("Party.Leveling." + getConfigPartyFeatureString(partyFeature) + "_UnlockLevel should be at least 0!");
             }
         }
 
@@ -627,7 +630,7 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     public int getPartyFeatureUnlockLevel(PartyFeature partyFeature) {
-        return config.getInt("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel", 0);
+        return config.getInt("Party.Leveling." + getConfigPartyFeatureString(partyFeature) + "_UnlockLevel", 0);
     }
 
     /* Party Teleport Settings */
@@ -711,7 +714,7 @@ public class GeneralConfig extends BukkitConfig {
         if (material.toString().equalsIgnoreCase("LILY_PAD"))
             return false;
 
-        return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_"));
+        return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + getMaterialConfigString(material).replace(" ", "_"));
     }
 
     public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
@@ -890,8 +893,9 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     /* Woodcutting */
-    public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) {
-        return config.getBoolean("Bonus_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material));
+    public boolean getWoodcuttingDoubleDropsEnabled(BlockData blockData) {
+        return config.getBoolean("Bonus_Drops.Woodcutting."
+                + getMaterialConfigString(blockData.getMaterial()));
     }
 
     public boolean getTreeFellerSoundsEnabled() {

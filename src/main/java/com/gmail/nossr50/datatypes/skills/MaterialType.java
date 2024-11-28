@@ -11,6 +11,7 @@ public enum MaterialType {
     GOLD,
     DIAMOND,
     NETHERITE,
+    PRISMARINE,
     OTHER;
 
     public Material getDefaultMaterial() {
@@ -41,6 +42,8 @@ public enum MaterialType {
                     return Material.getMaterial("NETHERITE_SCRAP");
                 else
                     return Material.DIAMOND;
+            case PRISMARINE:
+                return Material.PRISMARINE_CRYSTALS;
 
             case OTHER:
             default:
