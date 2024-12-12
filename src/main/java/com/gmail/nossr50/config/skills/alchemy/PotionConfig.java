@@ -9,6 +9,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.gmail.nossr50.util.ItemUtils.setItemName;
 import static com.gmail.nossr50.util.PotionUtil.*;
@@ -334,17 +334,15 @@ public class PotionConfig extends LegacyConfigLoader {
      * @return AlchemyPotion that corresponds to the given ItemStack.
      */
     public AlchemyPotion getPotion(ItemStack item) {
+        // Fast return if the item does not have any item meta to avoid initializing an unnecessary ItemMeta instance
+        if (!item.hasItemMeta())
+            return null;
+
+        ItemMeta itemMeta = item.getItemMeta();
         final List<AlchemyPotion> potionList = alchemyPotions.values()
                 .stream()
-                .filter(potion -> potion.isSimilarPotion(item))
+                .filter(potion -> potion.isSimilarPotion(item, itemMeta))
                 .toList();
-        if(potionList.size() > 1) {
-            mcMMO.p.getLogger().severe("Multiple potions defined in config have matched this potion, for mcMMO to behave" +
-                    " properly there should only be one match found.");
-            mcMMO.p.getLogger().severe("Potion ItemStack:" + item.toString());
-            mcMMO.p.getLogger().severe("Alchemy Potions from config matching this item: "
-                    + potionList.stream().map(AlchemyPotion::toString).collect(Collectors.joining(", ")));
-        }
 
         return potionList.isEmpty() ? null : potionList.get(0);
     }

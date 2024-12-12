@@ -8,22 +8,25 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Collections;
+import java.util.logging.Logger;
+
+import static java.util.logging.Logger.getLogger;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 class WoodcuttingTest extends MMOTestEnvironment {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WoodcuttingTest.class.getName());
+    private static final Logger logger = getLogger(WoodcuttingTest.class.getName());
 
-    WoodcuttingManager woodcuttingManager;
+    private WoodcuttingManager woodcuttingManager;
+
     @BeforeEach
     void setUp() throws InvalidSkillException {
         mockBaseEnvironment(logger);
@@ -40,12 +43,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         Mockito.when(RankUtils.hasReachedRank(eq(1), any(Player.class), eq(SubSkillType.WOODCUTTING_HARVEST_LUMBER))).thenReturn(true);
         Mockito.when(RankUtils.hasReachedRank(eq(1), any(Player.class), eq(SubSkillType.WOODCUTTING_CLEAN_CUTS))).thenReturn(true);
 
-        // setup player and player related mocks after everything else
-        this.player = Mockito.mock(Player.class);
-        Mockito.when(player.getUniqueId()).thenReturn(playerUUID);
-
         // wire inventory
-        this.playerInventory = Mockito.mock(PlayerInventory.class);
         this.itemInMainHand = new ItemStack(Material.DIAMOND_AXE);
         Mockito.when(player.getInventory()).thenReturn(playerInventory);
         Mockito.when(playerInventory.getItemInMainHand()).thenReturn(itemInMainHand);
@@ -56,48 +54,43 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @AfterEach
     void tearDown() {
-        cleanupBaseEnvironment();
+        cleanUpStaticMocks();
     }
 
     @Test
     void harvestLumberShouldDoubleDrop() {
         mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
 
-        BlockState blockState = Mockito.mock(BlockState.class);
         Block block = Mockito.mock(Block.class);
-        // wire block
-        Mockito.when(blockState.getBlock()).thenReturn(block);
-
-        Mockito.when(blockState.getBlock().getDrops(any())).thenReturn(null);
-        Mockito.when(blockState.getType()).thenReturn(Material.OAK_LOG);
-        woodcuttingManager.processBonusDropCheck(blockState);
+        // return empty collection if ItemStack
+        Mockito.when(block.getDrops(any())).thenReturn(Collections.emptyList());
+        Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+        woodcuttingManager.processBonusDropCheck(block);
 
         // verify bonus drops were spawned
         // TODO: using at least once since triple drops can also happen
         // TODO: Change the test env to disallow triple drop in the future
-        Mockito.verify(woodcuttingManager, Mockito.atLeastOnce()).spawnHarvestLumberBonusDrops(blockState);
+        Mockito.verify(woodcuttingManager, Mockito.atLeastOnce()).spawnHarvestLumberBonusDrops(block);
     }
 
     @Test
     void harvestLumberShouldNotDoubleDrop() {
         mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 0);
 
-        BlockState blockState = Mockito.mock(BlockState.class);
         Block block = Mockito.mock(Block.class);
         // wire block
-        Mockito.when(blockState.getBlock()).thenReturn(block);
 
-        Mockito.when(blockState.getBlock().getDrops(any())).thenReturn(null);
-        Mockito.when(blockState.getType()).thenReturn(Material.OAK_LOG);
-        woodcuttingManager.processBonusDropCheck(blockState);
+        Mockito.when(block.getDrops(any())).thenReturn(null);
+        Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+        woodcuttingManager.processBonusDropCheck(block);
 
         // verify bonus drops were not spawned
-        Mockito.verify(woodcuttingManager, Mockito.times(0)).spawnHarvestLumberBonusDrops(blockState);
+        Mockito.verify(woodcuttingManager, Mockito.times(0)).spawnHarvestLumberBonusDrops(block);
     }
 
     @Test
     void testProcessWoodcuttingBlockXP() {
-        BlockState targetBlock = Mockito.mock(BlockState.class);
+        Block targetBlock = Mockito.mock(Block.class);
         Mockito.when(targetBlock.getType()).thenReturn(Material.OAK_LOG);
         // wire XP
         Mockito.when(ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, Material.OAK_LOG)).thenReturn(5);

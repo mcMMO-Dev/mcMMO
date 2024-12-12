@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -112,7 +111,6 @@ public class McMMOPlayer implements Identified {
     private int respawnATS;
     private int teleportATS;
     private long databaseATS;
-    private double attackStrength; //captured during arm swing events
     //private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -151,7 +149,6 @@ public class McMMOPlayer implements Identified {
         experienceBarManager = new ExperienceBarManager(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
-        attackStrength = 1.0D;
 
         this.playerAuthor = new PlayerAuthor(player);
 
@@ -227,7 +224,9 @@ public class McMMOPlayer implements Identified {
                 skillManagers.put(primarySkillType, new WoodcuttingManager(this));
                 break;
             case MACES:
-                skillManagers.put(primarySkillType, new MacesManager(this));
+                if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                    skillManagers.put(primarySkillType, new MacesManager(this));
+                }
                 break;
             default:
                 throw new InvalidSkillException("The skill named has no manager! Contact the devs!");
@@ -239,7 +238,11 @@ public class McMMOPlayer implements Identified {
     }
 
     public double getAttackStrength() {
-        return attackStrength;
+        if (mcMMO.p.getAdvancedConfig().useAttackCooldown()) {
+            return player.getAttackCooldown();
+        } else {
+            return 1.0D;
+        }
     }
 
     public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
@@ -381,13 +384,14 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Get the mode of an ability.
+     * Get the mode of a superAbilityType.
      *
-     * @param ability The ability to check
-     * @return true if the ability is enabled, false otherwise
+     * @param superAbilityType The superAbilityType to check
+     * @return true if the superAbilityType is enabled, false otherwise
      */
-    public boolean getAbilityMode(SuperAbilityType ability) {
-        return abilityMode.get(ability);
+    public boolean getAbilityMode(@NotNull SuperAbilityType superAbilityType) {
+        requireNonNull(superAbilityType, "superAbilityType cannot be null");
+        return abilityMode.get(superAbilityType);
     }
 
     /**
@@ -860,14 +864,6 @@ public class McMMOPlayer implements Identified {
 
         xp = (float) ((xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType)) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
-        if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
-            CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
-
-            if (tool != null) {
-                xp *= tool.getXpMultiplier();
-            }
-        }
-
         return PerksUtils.handleXpPerks(player, xp, primarySkillType);
     }
 
@@ -981,10 +977,6 @@ public class McMMOPlayer implements Identified {
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
-        if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
-            return;
-        }
-
         if (!getAbilityUse()) {
             return;
         }
@@ -1059,9 +1051,12 @@ public class McMMOPlayer implements Identified {
         }
     }
 
-    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill, SuperAbilityType aSuperAbility, SubSkillType bSubSkill, SuperAbilityType bSuperAbility) {
-        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", aSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(aSuperAbility)));
-        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", bSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(bSuperAbility)));
+    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill,
+                                  SuperAbilityType aSuperAbility, SubSkillType bSubSkill, SuperAbilityType bSuperAbility) {
+        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", aSubSkill.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(aSuperAbility)));
+        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", bSubSkill.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(bSuperAbility)));
         String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
 
         NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",

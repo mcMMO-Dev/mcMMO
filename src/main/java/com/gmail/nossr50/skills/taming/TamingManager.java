@@ -23,7 +23,6 @@ import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +30,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
+import static com.gmail.nossr50.util.AttributeMapper.MAPPED_JUMP_STRENGTH;
+import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
 import static com.gmail.nossr50.util.MobMetadataUtils.flagMetadata;
 
 public class TamingManager extends SkillManager {
@@ -235,13 +236,13 @@ public class TamingManager extends SkillManager {
 
         // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
         if (beast instanceof AbstractHorse horseLikeCreature && !(beast instanceof Llama)) {
-            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(mcMMO.p.getAttributeMapper().getHorseJumpStrength());
+            AttributeInstance jumpAttribute = horseLikeCreature.getAttribute(MAPPED_JUMP_STRENGTH);
 
             if (jumpAttribute != null) {
                 double jumpStrength = jumpAttribute.getValue();
                 // Taken from https://minecraft.wiki/w/Horse#Jump_strength
                 jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
-                message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horseLikeCreature.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
+                message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horseLikeCreature.getAttribute(MAPPED_MOVEMENT_SPEED).getValue() * 43))
                         .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
             }
         }
@@ -286,6 +287,9 @@ public class TamingManager extends SkillManager {
         }
         double range = 5;
         Player player = getPlayer();
+
+        if (!target.getWorld().equals(player.getWorld()))
+            return;
 
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (entity.getType() != EntityType.WOLF) {
@@ -366,7 +370,7 @@ public class TamingManager extends SkillManager {
             } else {
                 //Player did not have enough of the item in their main hand
                 int difference = tamingSummon.getItemAmountRequired() - itemInMainHand.getAmount();
-                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getPrettyItemString(itemInMainHand.getType()));
+                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getPrettyMaterialString(itemInMainHand.getType()));
             }
         }
     }
@@ -399,6 +403,7 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(EntityType.WOLF)));
     }
 
+    @SuppressWarnings("deprecation")
     private void spawnCat(Location spawnLocation, EntityType entityType) {
         LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, entityType);
 
@@ -411,14 +416,12 @@ public class TamingManager extends SkillManager {
 
         //Randomize the cat
         if (callOfWildEntity instanceof Ocelot) {
+            // Ocelot.Type is deprecated, but that's fine since this only runs on 1.13
             int numberOfTypes = Ocelot.Type.values().length;
             ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
-            ((Ocelot) callOfWildEntity).setAdult();
-        } else if (callOfWildEntity instanceof Cat) {
-            int numberOfTypes = Cat.Type.values().length;
-            ((Cat) callOfWildEntity).setCatType(Cat.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
-            ((Cat) callOfWildEntity).setAdult();
         }
+
+        ((Ageable) callOfWildEntity).setAdult();
 
         callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(entityType)));
 
@@ -472,11 +475,12 @@ public class TamingManager extends SkillManager {
     }
 
     private int getAmountCurrentlySummoned(@NotNull CallOfTheWildType callOfTheWildType) {
-        return mcMMO.getTransientEntityTracker().getAmountCurrentlySummoned(getPlayer().getUniqueId(), callOfTheWildType);
+        return mcMMO.getTransientEntityTracker().getActiveSummonsForPlayerOfType(getPlayer().getUniqueId(), callOfTheWildType);
     }
 
     private void addToTracker(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType) {
-        mcMMO.getTransientEntityTracker().registerEntity(getPlayer().getUniqueId(), new TrackedTamingEntity(livingEntity, callOfTheWildType, getPlayer()));
+        mcMMO.getTransientEntityTracker().addSummon(getPlayer().getUniqueId(),
+                new TrackedTamingEntity(livingEntity, callOfTheWildType, getPlayer()));
     }
 
     /**

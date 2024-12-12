@@ -59,9 +59,6 @@ public class AcrobaticsCommand extends SkillCommand {
 
                 messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, rollStrings[0])
                         + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollStrings[1]) : ""));
-
-                /*messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, String.valueOf(graceChance))
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", String.valueOf(graceChanceLucky)) : ""));*/
             }
         }
 

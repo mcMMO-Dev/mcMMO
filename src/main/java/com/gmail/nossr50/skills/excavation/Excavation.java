@@ -1,37 +1,25 @@
 package com.gmail.nossr50.skills.excavation;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.text.StringUtils;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
 public class Excavation {
     /**
      * Get the list of possible {@link ExcavationTreasure|ExcavationTreasures} obtained from a given block.
      *
-     * @param blockState The {@link BlockState} of the block to check.
+     * @param block The {@link Block} to check for treasures
      * @return the list of treasures that could be found
      */
-    protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
-        String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
+    protected static List<ExcavationTreasure> getTreasures(Block block) {
+        String friendly = getMaterialConfigString(block.getBlockData().getMaterial());
         if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
             return TreasureConfig.getInstance().excavationMap.get(friendly);
         return new ArrayList<>();
-    }
-
-    protected static int getBlockXP(BlockState blockState) {
-        int xp = ExperienceConfig.getInstance().getXp(PrimarySkillType.EXCAVATION, blockState.getType());
-
-        if (xp == 0 && mcMMO.getModManager().isCustomExcavationBlock(blockState)) {
-            xp = mcMMO.getModManager().getBlock(blockState).getXpGain();
-        }
-
-        return xp;
     }
 }

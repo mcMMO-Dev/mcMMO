@@ -444,28 +444,51 @@ Salvage:
             Rank_7: 850
             Rank_8: 1000
 Maces:
-    Standard:
-        Rank_1: 10
-        Rank_2: 20
-        Rank_3: 30
-        Rank_4: 40
-        Rank_5: 50
-        Rank_6: 60
-        Rank_7: 70
-        Rank_8: 80
-        Rank_9: 90
-        Rank_10: 100
-    RetroMode:
-        Rank_1: 100
-        Rank_2: 200
-        Rank_3: 300
-        Rank_4: 400
-        Rank_5: 500
-        Rank_6: 600
-        Rank_7: 700
-        Rank_8: 800
-        Rank_9: 900
-        Rank_10: 1000
+    MacesLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
+    Cripple:
+        Standard:
+            Rank_1: 5
+            Rank_2: 20
+            Rank_3: 40
+            Rank_4: 80
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 200
+            Rank_3: 400
+            Rank_4: 800
+    Crush:
+        Standard:
+            Rank_1: 10
+            Rank_2: 25
+            Rank_3: 75
+            Rank_4: 90
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 250
+            Rank_3: 750
+            Rank_4: 900
 Mining:
     MotherLode:
         Standard:

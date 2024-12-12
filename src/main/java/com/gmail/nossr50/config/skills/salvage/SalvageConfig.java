@@ -41,7 +41,6 @@ public class SalvageConfig extends BukkitConfig {
         Set<String> keys = section.getKeys(false);
 
         //Original version of 1.16 support had maximum quantities that were bad, this fixes it
-
         if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES)) {
             mcMMO.p.getLogger().log(Level.INFO, "Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
             for (String namespacedkey : mcMMO.getMaterialMapStore().getNetheriteArmor()) {
@@ -57,7 +56,6 @@ public class SalvageConfig extends BukkitConfig {
                 e.printStackTrace();
             }
         }
-
 
         for (String key : keys) {
             // Validate all the things!
@@ -84,6 +82,8 @@ public class SalvageConfig extends BukkitConfig {
                     salvageMaterialType = MaterialType.STONE;
                 } else if (ItemUtils.isStringTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STRING;
+                } else if (ItemUtils.isPrismarineTool(salvageItem)) {
+                    salvageMaterialType = MaterialType.PRISMARINE;
                 } else if (ItemUtils.isLeatherArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.LEATHER;
                 } else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
@@ -143,7 +143,9 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             // Maximum Quantity
-            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(itemMaterial, salvageMaterial) : config.getInt("Salvageables." + key + ".MaximumQuantity", 1));
+            int maximumQuantity = itemMaterial != null
+                    ? SkillUtils.getRepairAndSalvageQuantities(itemMaterial, salvageMaterial)
+                    : config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
                 maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 1);

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdvancedConfig extends BukkitConfig {
+    int[] defaultCrippleValues = new int[]{10, 15, 20, 25};
 
     public AdvancedConfig(File dataFolder) {
         super("advanced.yml", dataFolder);
@@ -407,6 +408,10 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /* GENERAL */
+
+    public boolean useAttackCooldown() {
+        return config.getBoolean("Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown", true);
+    }
 
     public boolean canApplyLimitBreakPVE() {
         return config.getBoolean("Skills.General.LimitBreak.AllowPVE", false);
@@ -936,5 +941,11 @@ public class AdvancedConfig extends BukkitConfig {
     /* WOODCUTTING */
     public boolean isKnockOnWoodXPOrbEnabled() {
         return config.getBoolean("Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops", true);
+    }
+
+    /* MACES */
+    public double getCrippleChanceToApplyOnHit(int rank) {
+        String root = "Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_";
+        return config.getDouble(root + rank, defaultCrippleValues[rank-1]);
     }
 }

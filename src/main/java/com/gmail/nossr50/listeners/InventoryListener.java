@@ -444,7 +444,7 @@ public class InventoryListener implements Listener {
 
         ItemStack result = event.getRecipe().getResult();
 
-        //TODO: what is the point of this
+        //TODO: Used for Chimaera Wing, but not sure it is still necessary
         if (!ItemUtils.isMcMMOItem(result)) {
             return;
         }

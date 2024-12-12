@@ -1,13 +1,14 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang3.RandomUtils;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
@@ -29,7 +30,26 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity),
+                Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+    }
+
+    public static void playCrippleEffect(@NotNull LivingEntity livingEntity) {
+        if (!mcMMO.p.getGeneralConfig().getCrippleEffectEnabled()) {
+            return;
+        }
+
+        SoundManager.sendCategorizedSound(livingEntity.getLocation(), SoundType.CRIPPLE, SoundCategory.PLAYERS, 0.2F);
+        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity), Effect.ANVIL_BREAK, null, 20);
+
+        if (livingEntity instanceof Player player) {
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            boolean useChatNotification = mmoPlayer == null || mmoPlayer.useChatNotifications();
+            if (useChatNotification) {
+                NotificationManager.sendPlayerInformation(
+                        player, NotificationType.SUBSKILL_MESSAGE, "Maces.SubSkill.Cripple.Proc");
+            }
+        }
     }
 
     private static @NotNull Location getParticleLocation(@NotNull LivingEntity livingEntity) {

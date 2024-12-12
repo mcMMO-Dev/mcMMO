@@ -22,6 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.random.ProbabilityUtil.isSkillRNGSuccessful;
+
 public class UnarmedManager extends SkillManager {
 
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
@@ -66,29 +68,29 @@ public class UnarmedManager extends SkillManager {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
-    public boolean blockCrackerCheck(@NotNull BlockState blockState) {
+    public void blockCrackerCheck(@NotNull BlockState blockState) {
         if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER, mmoPlayer)) {
-            return false;
+            return;
         }
 
         switch (blockState.getType()) {
             case STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
-                    return false;
+                    return;
                 }
 
                 blockState.getBlock().setType(Material.CRACKED_STONE_BRICKS);
-                return true;
+                blockState.update(true);
+                return;
             case INFESTED_STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
-                    return false;
+                    return;
                 }
 
                 blockState.getBlock().setType(Material.INFESTED_CRACKED_STONE_BRICKS);
-                return true;
-
+                blockState.update(true);
+                return;
             default:
-                return false;
         }
     }
 
@@ -98,7 +100,8 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(@NotNull Player defender) {
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, mmoPlayer) && !hasIronGrip(defender)) {
+        if (isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, mmoPlayer, mmoPlayer.getAttackStrength())
+                && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -106,7 +109,7 @@ public class UnarmedManager extends SkillManager {
             if (UserManager.getPlayer(defender) == null)
                 return;
 
-            Item item = Misc.spawnItem(getPlayer(), defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
+            Item item = ItemUtils.spawnItem(getPlayer(), defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
 
             if (item != null && mcMMO.p.getAdvancedConfig().getDisarmProtected()) {
                 item.setMetadata(MetadataConstants.METADATA_KEY_DISARMED_ITEM, UserManager.getPlayer(defender).getPlayerMetadata());
@@ -121,7 +124,7 @@ public class UnarmedManager extends SkillManager {
      * Check for arrow deflection.
      */
     public boolean deflectCheck() {
-        if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_ARROW_DEFLECT, mmoPlayer)) {
+        if (isSkillRNGSuccessful(SubSkillType.UNARMED_ARROW_DEFLECT, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.ArrowDeflect");
             return true;
         }
@@ -178,7 +181,7 @@ public class UnarmedManager extends SkillManager {
     private boolean hasIronGrip(@NotNull Player defender) {
         if (!Misc.isNPCEntityExcludingVillagers(defender)
                 && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.UNARMED_IRON_GRIP, UserManager.getPlayer(defender))) {
+                && isSkillRNGSuccessful(SubSkillType.UNARMED_IRON_GRIP, UserManager.getPlayer(defender))) {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
 

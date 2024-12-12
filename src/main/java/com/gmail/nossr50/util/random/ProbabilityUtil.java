@@ -41,7 +41,7 @@ public class ProbabilityUtil {
     public static double chanceOfSuccessPercentage(@Nullable McMMOPlayer mmoPlayer,
                                                    @NotNull SubSkillType subSkillType,
                                                    boolean isLucky) {
-        Probability probability = getSubSkillProbability(subSkillType, mmoPlayer);
+        final Probability probability = getSubSkillProbability(subSkillType, mmoPlayer);
         //Probability values are on a 0-1 scale and need to be "transformed" into a 1-100 scale
         double percentageValue = probability.getValue(); //Doesn't need to be scaled
 
@@ -183,6 +183,45 @@ public class ProbabilityUtil {
 
         if (isLucky) {
             return probability.evaluate(LUCKY_MODIFIER);
+        } else {
+            return probability.evaluate();
+        }
+    }
+
+    /**
+     * This is one of several Skill RNG evaluation methods.
+     * This one specifically allows for a probability multiplier to be passed in.
+     * This probability multiplier is applied after any lucky modifiers, affecting the final result.
+     * <p>
+     * This helper method is for specific {@link SubSkillType},
+     * which help mcMMO understand where the RNG values used in our calculations come from this {@link SubSkillType}
+     * <p>
+     * 1) Determine where the RNG values come from for the passed {@link SubSkillType}
+     *  NOTE: In the config file, there are values which are static and which are more dynamic,
+     *  this is currently a bit hardcoded and will need to be updated manually
+     * <p>
+     * 2) Determine whether to use Lucky multiplier and influence the outcome
+     * <p>
+     * 3)
+     * Creates a {@link Probability} and pipes it to {@link ProbabilityUtil} which processes the result and returns it
+     * <p>
+     * This also calls a {@link SubSkillEvent} which can be cancelled, if it is cancelled this will return false
+     * The outcome of the probability can also be modified by this event that is called
+     *
+     * @param subSkillType target subskill
+     * @param mmoPlayer target player
+     *                  can be null (null players are given odds equivalent to a player with no levels or luck)
+     * @return true if the Skill RNG succeeds, false if it fails
+     */
+    public static boolean isSkillRNGSuccessful(@NotNull SubSkillType subSkillType, @Nullable McMMOPlayer mmoPlayer,
+                                               double probabilityMultiplier) {
+        final Probability probability = getSkillProbability(subSkillType, mmoPlayer);
+
+        //Luck
+        boolean isLucky = mmoPlayer != null && Permissions.lucky(mmoPlayer.getPlayer(), subSkillType.getParentSkill());
+
+        if (isLucky) {
+            return probability.evaluate(LUCKY_MODIFIER, probabilityMultiplier);
         } else {
             return probability.evaluate();
         }
@@ -398,7 +437,7 @@ public class ProbabilityUtil {
             return Probability.ofPercent(ceiling);
         }
 
-        double odds = (skillLevel / maxBonusLevel) * 100D;
+        double odds = ((skillLevel / maxBonusLevel) * ceiling);
 
         // make sure the odds aren't lower or higher than the floor or ceiling
         return Probability.ofPercent(Math.min(Math.max(floor, odds), ceiling));
