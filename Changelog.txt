@@ -1,6 +1,5 @@
 Version 2.2.029
     Fixed bug where block checks at world height would throw IndexOutOfBounds exceptions
-    Added misc compatability for the "The Garden Awakens" Minecraft Update
     Added Eyeblossom to experience.yml for Herbalism xp
     Added Bonus_Drops.Herbalism.Eyeblossom to config.yml to enable double/triple drops for Eyeblossom
     Added Pale_Hanging_Moss to experience.yml for Herbalism xp
@@ -15,6 +14,7 @@ Version 2.2.029
     Temporarily disabled the party item share functionality until it is fixed or potentially removed (see notes)
 
     Notes:
+    This update adds support for the new stuff added by the "The Garden Awakens" Minecraft Update
     I noticed some issues with the party item share feature, so I've temporarily disabled it until those issues are addressed.
     I'm not even sure people like or dislike this feature, I'm personally not a fan.. I'd like to hear what you guys think.
 
