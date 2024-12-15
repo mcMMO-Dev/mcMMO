@@ -19,6 +19,9 @@ Concoctions:
         - WATER_LILY
         - PUFFERFISH
         - DRAGON_BREATH
+        - STONE
+        - SLIME_BLOCK
+        - COBWEB
     Tier_Two_Ingredients:
         - CARROT
         - SLIME_BALL
@@ -135,6 +138,9 @@ Potions:
             GHAST_TEAR: POTION_OF_REGENERATION
             TURTLE_HELMET: POTION_OF_TURTLE_MASTER
             RABBIT_FOOT: POTION_OF_LEAPING
+            STONE: POTION_OF_INFESTATION
+            SLIME_BLOCK: POTION_OF_OOZING
+            COBWEB: POTION_OF_WEAVING
     POTION_OF_NIGHT_VISION:
         Material: POTION
         PotionData:
@@ -1786,4 +1792,79 @@ Potions:
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SATURATION 1 1"]
-
+    POTION_OF_INFESTATION:
+        Name: Potion of Infestation
+        Material: POTION
+        Color: 0x878787
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["INFESTED 0 3600"]
+        Children:
+            GUNPOWDER: SPLASH_POTION_OF_INFESTATION
+            DRAGON_BREATH: SPLASH_POTION_OF_INFESTATION
+    SPLASH_POTION_OF_INFESTATION:
+        Name: Splash Potion of Infestation
+        Material: SPLASH_POTION
+        Color: 0x878787
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["INFESTED 0 2500"]
+        Children:
+            DRAGON_BREATH: LINGERING_POTION_OF_INFESTATION
+    LINGERING_POTION_OF_INFESTATION:
+        Name: Lingering Potion of Infestation
+        Material: LINGERING_POTION
+        Color: 0x878787
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["INFESTED 0 3000"]
+    POTION_OF_WEAVING:
+        Name: Potion of Weaving
+        Material: POTION
+        Color: 0xC7C7C7
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["WEAVING 0 3600"]
+        Children:
+            GUNPOWDER: SPLASH_POTION_OF_WEAVING
+    SPLASH_POTION_OF_WEAVING:
+        Name: Splash Potion of Weaving
+        Material: SPLASH_POTION
+        Color: 0xC7C7C7
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["WEAVING 0 2500"]
+        Children:
+            DRAGON_BREATH: LINGERING_POTION_OF_WEAVING
+    LINGERING_POTION_OF_WEAVING:
+        Name: Lingering Potion of Weaving
+        Material: LINGERING_POTION
+        Color: 0xC7C7C7
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["WEAVING 0 3000"]
+    POTION_OF_OOZING:
+        Name: Potion of Oozing
+        Material: POTION
+        Color: 0x03FF00
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["OOZING 0 3600"]
+        Children:
+            GUNPOWDER: SPLASH_POTION_OF_OOZING
+    SPLASH_POTION_OF_OOZING:
+        Name: Splash Potion of Oozing
+        Material: SPLASH_POTION
+        Color: 0x03FF00
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["OOZING 0 2500"]
+        Children:
+            DRAGON_BREATH: LINGERING_POTION_OF_OOZING
+    LINGERING_POTION_OF_OOZING:
+        Name: Lingering Potion of Oozing
+        Material: LINGERING_POTION
+        Color: 0x03FF00
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: ["OOZING 0 3000"]
