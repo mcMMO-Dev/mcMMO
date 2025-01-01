@@ -78,6 +78,17 @@ public class SalvageManager extends SkillManager {
             }
         }
 
+        // Permissions checks on material and item types
+        if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+            return;
+        }
+
+        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageMaterialType())) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+            return;
+        }
+
         /*int skillLevel = getSkillLevel();*/
         int minimumSalvageableLevel = salvageable.getMinimumLevel();
 
