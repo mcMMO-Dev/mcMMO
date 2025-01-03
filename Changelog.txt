@@ -1,3 +1,6 @@
+Version 2.2.030
+    Fixed material based salvage permissions not functioning (Thanks Momshroom)
+
 Version 2.2.029
     Fixed bug where block checks at world height would throw IndexOutOfBounds exceptions
     Added Eyeblossom to experience.yml for Herbalism xp
