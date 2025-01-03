@@ -11,9 +11,10 @@ import java.util.Arrays;
 
 public class ChunkListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = org.bukkit.event.EventPriority.MONITOR)
     public void onChunkUnload(ChunkUnloadEvent event) {
         final Chunk unloadingChunk = event.getChunk();
+
         Arrays.stream(unloadingChunk.getEntities())
                 .filter(entity -> entity instanceof LivingEntity)
                 .map(entity -> (LivingEntity) entity)
