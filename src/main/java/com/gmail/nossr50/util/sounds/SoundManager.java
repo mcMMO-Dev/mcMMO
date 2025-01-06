@@ -8,8 +8,17 @@ import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class SoundManager {
     private static Sound CRIPPLE_SOUND;
+
+    private static final String ITEM_MACE_SMASH_GROUND = "ITEM_MACE_SMASH_GROUND";
+
+    private static final String VALUE_OF = "valueOf";
+
+    private static final String ORG_BUKKIT_SOUND = "org.bukkit.Sound";
 
     /**
      * Sends a sound to the player
@@ -110,12 +119,16 @@ public class SoundManager {
         }
 
         try {
-            CRIPPLE_SOUND = Sound.valueOf("ITEM_MACE_SMASH_GROUND");
-            return CRIPPLE_SOUND;
-        } catch (IllegalArgumentException e) {
+            // Spigot changed the class from enum to interface around 1.21.3
+            final Class<?> clazz = Class.forName(ORG_BUKKIT_SOUND);
+            final Method valueOf = clazz.getMethod(VALUE_OF);
+            CRIPPLE_SOUND = (Sound) valueOf.invoke(null, ITEM_MACE_SMASH_GROUND);
+        } catch (IllegalArgumentException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException
+                 | IllegalAccessException e) {
             CRIPPLE_SOUND = Sound.BLOCK_ANVIL_PLACE;
-            return CRIPPLE_SOUND;
         }
+
+        return CRIPPLE_SOUND;
     }
 
     public static float getFizzPitch() {
