@@ -79,9 +79,6 @@ public class ContainerMetadataUtils {
     }
 
     public static void processContainerOwnership(BlockState blockState, Player player) {
-        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, PrimarySkillType.SMELTING))
-            return;
-
         if (getContainerOwner(blockState) != null) {
             if (getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId()))
                 return;
