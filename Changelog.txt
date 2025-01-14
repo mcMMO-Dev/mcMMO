@@ -1,4 +1,5 @@
 Version 2.2.030
+    Fixed bug where rupture task could cause an exception (Thanks Wariorrrr)
     Fixed bug where Smelting permission was needed for Alchemy XP gain
     Fixed material based salvage permissions not functioning (Thanks Momshroom)
 
