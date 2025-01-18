@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public final class Motd {
     public static final String PERK_PREFIX = LocaleLoader.getString("MOTD.PerksPrefix") + " ";
@@ -101,7 +103,7 @@ public final class Motd {
         double cooldownReduction = 1 - (PerksUtils.handleCooldownPerks(player, 12) / 12.0);
 
         if (cooldownReduction > 0.0) {
-            DecimalFormat percent = new DecimalFormat("##0.00%");
+            DecimalFormat percent = new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US));
             player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Cooldowns.Name"), LocaleLoader.getString("Perks.Cooldowns.Desc", percent.format(cooldownReduction))));
         }
     }

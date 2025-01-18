@@ -14,11 +14,13 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import static java.util.Objects.requireNonNull;
 
 public class ProbabilityUtil {
-    public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%");
+    public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US));
     public static final double LUCKY_MODIFIER = 1.333D;
 
     /**
