@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,8 +35,8 @@ public abstract class SkillCommand implements TabExecutor {
     public static final String ABILITY_GENERIC_TEMPLATE = "Ability.Generic.Template";
     protected PrimarySkillType skill;
 
-    protected DecimalFormat percent = new DecimalFormat("##0.00%");
-    protected DecimalFormat decimal = new DecimalFormat("##0.00");
+    protected DecimalFormat percent = new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US));
+    protected DecimalFormat decimal = new DecimalFormat("##0.00", DecimalFormatSymbols.getInstance(Locale.US));
     protected McMMOPlayer mmoPlayer;
 
     private final CommandExecutor skillGuideCommand;

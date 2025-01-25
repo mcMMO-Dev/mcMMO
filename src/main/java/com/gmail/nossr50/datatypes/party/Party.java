@@ -18,13 +18,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.UUID;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class Party {
+
+    private static final DecimalFormat percent = new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US));
+
     private final @NotNull Predicate<CommandSender> samePartyPredicate;
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
     private final List<Player> onlineMembers = new ArrayList<>();
@@ -204,7 +205,6 @@ public class Party {
     }
 
     public String getXpToLevelPercentage() {
-        DecimalFormat percent = new DecimalFormat("##0.00%");
         return percent.format(this.getXp() / getXpToLevel());
     }
 

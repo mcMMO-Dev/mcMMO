@@ -6,6 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,8 +19,8 @@ import static java.util.Objects.requireNonNull;
  */
 public class StringUtils {
 
-    protected static final DecimalFormat percent = new DecimalFormat("##0.00%");
-    protected static final DecimalFormat shortDecimal = new DecimalFormat("##0.0");
+    protected static final DecimalFormat percent = new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US));
+    protected static final DecimalFormat shortDecimal = new DecimalFormat("##0.0", DecimalFormatSymbols.getInstance(Locale.US));
 
     // Using concurrent hash maps to avoid concurrency issues (Folia)
     private static final Map<EntityType, String> formattedEntityStrings = new ConcurrentHashMap<>();
