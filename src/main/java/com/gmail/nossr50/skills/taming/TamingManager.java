@@ -2,12 +2,14 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
+import com.gmail.nossr50.events.skills.taming.McMMOPlayerTameEntityEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
@@ -136,7 +138,13 @@ public class TamingManager extends SkillManager {
      * @param entity The LivingEntity to award XP for
      */
     public void awardTamingXP(@NotNull LivingEntity entity) {
-        applyXpGain(ExperienceConfig.getInstance().getTamingXP(entity.getType()), XPGainReason.PVE);
+        int xp = ExperienceConfig.getInstance().getTamingXP(entity.getType());
+
+        final McMMOPlayerTameEntityEvent event = new McMMOPlayerTameEntityEvent(mmoPlayer, xp, entity);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (!event.isCancelled())
+            applyXpGain(event.getXpGained(), XPGainReason.PVE, XPGainSource.SELF);
     }
 
     /**
