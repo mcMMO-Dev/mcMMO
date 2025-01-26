@@ -140,7 +140,7 @@ public class TamingManager extends SkillManager {
     public void awardTamingXP(@NotNull LivingEntity entity) {
         int xp = ExperienceConfig.getInstance().getTamingXP(entity.getType());
 
-        final McMMOPlayerTameEntityEvent event = new McMMOPlayerTameEntityEvent(getPlayer(), xp, entity);
+        final McMMOPlayerTameEntityEvent event = new McMMOPlayerTameEntityEvent(mmoPlayer, xp, entity);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (!event.isCancelled())

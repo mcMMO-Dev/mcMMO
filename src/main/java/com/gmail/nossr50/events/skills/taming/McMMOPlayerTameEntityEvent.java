@@ -1,13 +1,12 @@
 package com.gmail.nossr50.events.skills.taming;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerExperienceEvent;
 import com.google.common.base.Preconditions;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,14 +15,23 @@ import org.jetbrains.annotations.NotNull;
 public class McMMOPlayerTameEntityEvent extends McMMOPlayerExperienceEvent {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
+    private final McMMOPlayer mmoPlayer;
     private float xpGained;
     private final Entity tamedEntity;
 
-    @ApiStatus.Internal
-    public McMMOPlayerTameEntityEvent(@NotNull Player player, float xp, @NotNull Entity tamedEntity) {
-        super(player, PrimarySkillType.TAMING, XPGainReason.PVE);
+    public McMMOPlayerTameEntityEvent(@NotNull McMMOPlayer mmoPlayer, float xp, @NotNull Entity tamedEntity) {
+        super(mmoPlayer.getPlayer(), PrimarySkillType.TAMING, XPGainReason.PVE);
+        this.mmoPlayer = mmoPlayer;
         this.xpGained = xp;
         this.tamedEntity = tamedEntity;
+    }
+
+    /**
+     * @return The {@link McMMOPlayer} associated with this event.
+     */
+    @NotNull
+    public McMMOPlayer getMcMMOPlayer() {
+        return mmoPlayer;
     }
 
     /**
@@ -35,10 +43,11 @@ public class McMMOPlayerTameEntityEvent extends McMMOPlayerExperienceEvent {
 
     /**
      * @param xpGained The raw experience that the player will receive.
-     * @throws IllegalArgumentException if xpGained is NaN or infinite.
+     * @throws IllegalArgumentException if xpGained is NaN, infinite, or not positive.
      */
     public void setXpGained(float xpGained) {
         Preconditions.checkArgument(Float.isFinite(xpGained), "new gained xp must be a number");
+        Preconditions.checkArgument(xpGained > 0, "new gained xp must be a positive number");
 
         this.xpGained = xpGained;
     }
