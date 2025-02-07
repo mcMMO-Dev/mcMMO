@@ -1,4 +1,5 @@
 Version 2.2.031
+    Fixed potential NPE when player or blockstate is null for Inventory events on Furnaces
     Fixed bug where en_us locale was being set system-wide (thanks BlvckBytes)
     Fixed bug where Decimal format would throw exception on non en_us systems (thanks BlvckBytes)
     (API) Added McMMOPlayerTameEntityEvent event (thanks Warriorrr)
