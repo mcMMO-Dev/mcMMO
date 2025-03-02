@@ -23,9 +23,11 @@ import static java.util.Objects.requireNonNull;
 
 public class ContainerMetadataUtils {
 
-    public static void changeContainerOwnership(@NotNull BlockState blockState, @NotNull Player player) {
-        requireNonNull(blockState, "blockState cannot be null");
-        requireNonNull(player, "Player cannot be null");
+    public static void changeContainerOwnership(@Nullable BlockState blockState, @Nullable Player player) {
+        // no-op when the blockState is null or player is null
+        if (blockState == null || player == null) {
+            return;
+        }
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
@@ -79,6 +81,11 @@ public class ContainerMetadataUtils {
     }
 
     public static void processContainerOwnership(BlockState blockState, Player player) {
+        // no-op when the blockState is null or player is null
+        if (blockState == null || player == null) {
+            return;
+        }
+
         if (getContainerOwner(blockState) != null) {
             if (getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId()))
                 return;

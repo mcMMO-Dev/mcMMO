@@ -109,7 +109,7 @@ public final class LocaleLoader {
 
     public static String formatString(String string, Object... messageArguments) {
         if (messageArguments != null) {
-            MessageFormat formatter = new MessageFormat("");
+            MessageFormat formatter = new MessageFormat("", Locale.US);
             formatter.applyPattern(string.replace("'", "''"));
             string = formatter.format(messageArguments);
         }
@@ -121,7 +121,7 @@ public final class LocaleLoader {
 
     public static @NotNull TextComponent formatComponent(@NotNull String string, Object... messageArguments) {
         if (messageArguments != null) {
-            MessageFormat formatter = new MessageFormat("");
+            MessageFormat formatter = new MessageFormat("", Locale.US);
             formatter.applyPattern(string.replace("'", "''"));
             string = formatter.format(messageArguments);
         }
@@ -138,7 +138,6 @@ public final class LocaleLoader {
 
     private static void initialize() {
         if (bundle == null) {
-            Locale.setDefault(new Locale("en", "US"));
             Locale locale = null;
 
             String[] myLocale = mcMMO.p.getGeneralConfig().getLocale().split("[-_ ]");
