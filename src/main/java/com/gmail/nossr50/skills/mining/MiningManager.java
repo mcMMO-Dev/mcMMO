@@ -35,7 +35,10 @@ import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
 public class MiningManager extends SkillManager {
 
     public static final String BUDDING_AMETHYST = "budding_amethyst";
-    public static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER);
+    public static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER,
+            Material.INFESTED_COBBLESTONE, Material.INFESTED_DEEPSLATE, Material.INFESTED_STONE,
+            Material.INFESTED_STONE_BRICKS, Material.INFESTED_CRACKED_STONE_BRICKS,
+            Material.INFESTED_CHISELED_STONE_BRICKS, Material.INFESTED_MOSSY_STONE_BRICKS);
     private final static Set<String> INFESTED_BLOCKS = Set.of("infested_stone", "infested_cobblestone",
             "infested_stone_bricks", "infested_cracked_stone_bricks", "infested_mossy_stone_bricks",
             "infested_chiseled_stone_bricks", "infested_deepslate");
@@ -158,9 +161,7 @@ public class MiningManager extends SkillManager {
 
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        //SkillUtils.sendSkillMessage(player, SuperAbilityType.BLAST_MINING.getAbilityPlayer(player));
         NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
-        //player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         tnt.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT, mmoPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
@@ -211,7 +212,7 @@ public class MiningManager extends SkillManager {
             if (isDropIllegal(block.getType()))
                 continue;
 
-            if (block.getType().isItem() && Probability.ofPercent(50).evaluate()) {
+            if (block.getType().isItem() && Probability.ofPercent(10).evaluate()) {
                 ItemUtils.spawnItem(getPlayer(),
                         Misc.getBlockCenter(block),
                         new ItemStack(block.getType()),
@@ -220,7 +221,7 @@ public class MiningManager extends SkillManager {
         }
         for (Block block : ores) {
             // currentOreYield only used for drop calculations for ores
-            float currentOreYield = increasedYieldFromBonuses;
+            float currentOreYield = Math.min(increasedYieldFromBonuses, 3F);
 
             if (isDropIllegal(block.getType())) {
                 continue;
@@ -237,12 +238,14 @@ public class MiningManager extends SkillManager {
                             oreDrops, BLAST_MINING_BLACKLIST, ItemSpawnReason.BLAST_MINING_ORES);
 
                     if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
-                        for (int i = 1; i < dropMultiplier; i++) {
-                            ItemUtils.spawnItems(getPlayer(),
-                                    Misc.getBlockCenter(block),
-                                    oreDrops,
-                                    BLAST_MINING_BLACKLIST,
-                                    ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP);
+                        if (Probability.ofValue(0.5F).evaluate()) {
+                            for (int i = 1; i < dropMultiplier; i++) {
+                                ItemUtils.spawnItems(getPlayer(),
+                                        Misc.getBlockCenter(block),
+                                        oreDrops,
+                                        BLAST_MINING_BLACKLIST,
+                                        ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP);
+                            }
                         }
                     }
                 }

@@ -1,5 +1,9 @@
 Version 2.2.032
     Blast Mining no longer drops infested block variants
+    Reduced bonus drops on Blast Mining and randomized results (see notes)
+
+    NOTES:
+    A balance pass for Blast Mining is coming, but for now, I've reduced the total bonus drops and clamped the yield ceiling as Blast Mining is a bit too good.
 
 Version 2.2.031
     Fixed potential NPE when player or blockstate is null for Inventory events on Furnaces
