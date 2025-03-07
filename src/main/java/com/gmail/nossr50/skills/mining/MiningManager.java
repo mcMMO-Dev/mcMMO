@@ -28,10 +28,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
 
@@ -39,6 +36,9 @@ public class MiningManager extends SkillManager {
 
     public static final String BUDDING_AMETHYST = "budding_amethyst";
     public static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER);
+    private final static Set<String> INFESTED_BLOCKS = Set.of("infested_stone", "infested_cobblestone",
+            "infested_stone_bricks", "infested_cracked_stone_bricks", "infested_mossy_stone_bricks",
+            "infested_chiseled_stone_bricks", "infested_deepslate");
 
     public MiningManager(@NotNull McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.MINING);
@@ -164,14 +164,16 @@ public class MiningManager extends SkillManager {
 
         tnt.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT, mmoPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
-        if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 16, 4)) {
-            tnt.setSource(player);
-        }
+        tnt.setSource(player);
         targetBlock.setType(Material.AIR);
 
         mmoPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
         mmoPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
         mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(mmoPlayer.getPlayer(), new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING), (long) SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    private boolean isInfestedBlock(String material) {
+        return INFESTED_BLOCKS.contains(material.toLowerCase(Locale.ENGLISH));
     }
 
     /**
@@ -255,13 +257,14 @@ public class MiningManager extends SkillManager {
 
     /**
      * Checks if it would be illegal (in vanilla) to obtain the block
-     * Certain things should never drop ( such as budding_amethyst )
+     * Certain things should never drop (such as budding_amethyst and infested blocks)
      *
      * @param material target material
-     * @return true if it's not legal to obtain the block through normal gameplay
+     * @return true if it's not legal to get the block through normal gameplay
      */
     public boolean isDropIllegal(@NotNull Material material) {
-        return material.getKey().getKey().equalsIgnoreCase(BUDDING_AMETHYST);
+        return isInfestedBlock(material.getKey().getKey())
+                || material.getKey().getKey().equalsIgnoreCase(BUDDING_AMETHYST);
     }
 
     /**
