@@ -1,4 +1,5 @@
 Version 2.2.032
+    Fixed bug where Roll would throw exceptions with certain CMI interactions
     Blast Mining no longer drops infested block variants
     Reduced bonus drops on Blast Mining and randomized results (see notes)
 
