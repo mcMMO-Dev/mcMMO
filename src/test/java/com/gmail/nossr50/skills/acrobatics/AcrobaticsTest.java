@@ -90,6 +90,7 @@ class AcrobaticsTest extends MMOTestEnvironment {
 
     private @NotNull EntityDamageEvent mockEntityDamageEvent(double damage) {
         final EntityDamageEvent mockEvent = mock(EntityDamageEvent.class);
+        when(mockEvent.isApplicable(any(EntityDamageEvent.DamageModifier.class))).thenReturn(true);
         when(mockEvent.getCause()).thenReturn(EntityDamageEvent.DamageCause.FALL);
         when(mockEvent.getFinalDamage()).thenReturn(damage);
         when(mockEvent.getDamage(any(EntityDamageEvent.DamageModifier.class))).thenReturn(damage);
