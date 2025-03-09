@@ -141,7 +141,8 @@ public class PotionConfig extends LegacyConfigLoader {
 
         int totalPotions = potionsLoaded + incompatible + failures;
 
-        mcMMO.p.getLogger().info("Loaded " + potionsLoaded + "/"  + totalPotions + " Alchemy potions.");
+        mcMMO.p.getLogger().info("Loaded " + potionsLoaded + " of "  + totalPotions + " Alchemy potions.");
+
         if (incompatible > 0) {
             mcMMO.p.getLogger().info("Skipped " + incompatible + " Alchemy potions that require a newer" +
                     " Minecraft game version.");

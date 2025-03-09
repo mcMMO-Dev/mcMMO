@@ -2,6 +2,7 @@ Version 2.2.033
     Added Breeze_Rod entries to potions.yml for Awkward potion (see notes)
     Added missing Wind Charging potion entries to potions.yml (see notes)
     Fixed bug where mcMMO would attempt to load potions that required ingredients or effects from newer versions of Minecraft
+    mcMMO is a little more specific during start up of how many potions it loaded, it will now report on incompatible potions from being on an older game version.
 
     NOTES:
     You will have to update your potions.yml manually to receive these changes, it is highly recommended that if you haven't customized this file that you simply just delete it, mcMMO will generate a new one on the next start up and it will contain all the missing entries.
