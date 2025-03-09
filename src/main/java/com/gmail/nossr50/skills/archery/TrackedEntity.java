@@ -15,7 +15,7 @@ public class TrackedEntity extends CancellableRunnable {
         this.livingEntity = livingEntity;
         this.id = livingEntity.getUniqueId();
 
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(livingEntity, this, 12000, 12000);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(livingEntity, this, 12000, 12000);
     }
 
     @Override

@@ -343,14 +343,14 @@ public final class AlchemyPotionBrewer {
     }
 
     public static void scheduleCheck(@NotNull BrewingStand brewingStand) {
-        mcMMO.p.getFoliaLib().getImpl().runAtLocation(
+        mcMMO.p.getFoliaLib().getScheduler().runAtLocation(
                 brewingStand.getLocation(), new AlchemyBrewCheckTask(brewingStand));
     }
 
     public static void scheduleUpdate(Inventory inventory) {
         for (HumanEntity humanEntity : inventory.getViewers()) {
             if (humanEntity instanceof Player) {
-                mcMMO.p.getFoliaLib().getImpl().runAtEntity(humanEntity, new PlayerUpdateInventoryTask((Player) humanEntity));
+                mcMMO.p.getFoliaLib().getScheduler().runAtEntity(humanEntity, new PlayerUpdateInventoryTask((Player) humanEntity));
             }
         }
     }

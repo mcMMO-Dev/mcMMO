@@ -110,7 +110,7 @@ public class McRankCommand implements TabExecutor {
         boolean useBoard = mcMMO.p.getGeneralConfig().getScoreboardsEnabled() && (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getRankUseBoard());
         boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getRankUseChat();
 
-        mcMMO.p.getFoliaLib().getImpl().runAsync(new McRankCommandAsyncTask(playerName, sender, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getScheduler().runAsync(new McRankCommandAsyncTask(playerName, sender, useBoard, useChat));
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {

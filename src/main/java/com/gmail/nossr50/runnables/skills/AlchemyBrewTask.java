@@ -76,7 +76,7 @@ public class AlchemyBrewTask extends CancellableRunnable {
             fuel--;
 
         Alchemy.brewingStandMap.put(brewingStand.getLocation(), this);
-        mcMMO.p.getFoliaLib().getImpl().runAtLocationTimer(brewingStand.getLocation(), this, 1, 1);
+        mcMMO.p.getFoliaLib().getScheduler().runAtLocationTimer(brewingStand.getLocation(), this, 1, 1);
     }
 
     @Override

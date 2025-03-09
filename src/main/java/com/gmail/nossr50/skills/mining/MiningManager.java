@@ -170,7 +170,7 @@ public class MiningManager extends SkillManager {
 
         mmoPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
         mmoPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(mmoPlayer.getPlayer(), new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING), (long) SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(mmoPlayer.getPlayer(), new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING), (long) SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     private boolean isInfestedBlock(String material) {

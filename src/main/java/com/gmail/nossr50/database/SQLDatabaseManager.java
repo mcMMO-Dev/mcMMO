@@ -1472,7 +1472,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
 
-                mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new GetUUIDUpdatesRequired(), 100); // wait until after first purge
+                mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new GetUUIDUpdatesRequired(), 100); // wait until after first purge
             }
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);

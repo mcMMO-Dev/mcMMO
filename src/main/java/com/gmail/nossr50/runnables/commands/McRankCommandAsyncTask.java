@@ -32,7 +32,7 @@ public class McRankCommandAsyncTask extends CancellableRunnable {
     public void run() {
         Map<PrimarySkillType, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
 
-        mcMMO.p.getFoliaLib().getImpl().runNextTick(new McRankCommandDisplayTask(skills, sender, playerName, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getScheduler().runNextTick(new McRankCommandDisplayTask(skills, sender, playerName, useBoard, useChat));
     }
 }
 

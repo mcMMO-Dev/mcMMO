@@ -75,7 +75,7 @@ public class ExperienceBarManager {
             return;
 
         ExperienceBarHideTask experienceBarHideTask = new ExperienceBarHideTask(this, mcMMOPlayer, primarySkillType);
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(mcMMOPlayer.getPlayer(), experienceBarHideTask, (long) delaySeconds * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(mcMMOPlayer.getPlayer(), experienceBarHideTask, (long) delaySeconds * Misc.TICK_CONVERSION_FACTOR);
         experienceBarHideTaskHashMap.put(primarySkillType, experienceBarHideTask);
     }
 

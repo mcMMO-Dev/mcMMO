@@ -146,7 +146,7 @@ public class PlayerListener implements Listener {
         new MobHealthDisplayUpdaterTask(attacker).run();
 
         // set the name back
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(attacker, () -> MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p), 1);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(attacker, () -> MobHealthbarUtils.handleMobHealthbars(attacker, 0, mcMMO.p), 1);
     }
 
     /**
@@ -575,7 +575,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
-        mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileLoadingTask(player), 60);
+        mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileLoadingTask(player), 60);
 
         if (mcMMO.p.getGeneralConfig().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);

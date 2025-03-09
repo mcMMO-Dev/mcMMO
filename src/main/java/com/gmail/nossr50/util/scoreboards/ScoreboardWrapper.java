@@ -122,7 +122,7 @@ public class ScoreboardWrapper {
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
-            updateTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardQuickUpdate(), 2L);
+            updateTask = mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(player, new ScoreboardQuickUpdate(), 2L);
         }
     }
 
@@ -130,7 +130,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityTimer(player, new ScoreboardCooldownTask(), 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(player, new ScoreboardCooldownTask(), 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -212,7 +212,7 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ScoreboardChangeTask(), ticks);
+        revertTask = mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(player, new ScoreboardChangeTask(), ticks);
 
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
@@ -420,7 +420,7 @@ public class ScoreboardWrapper {
                     NotificationManager.sendPlayerInformationChatOnlyPrefixed(player, "Scoreboard.Recovery");
 
                 initBoard(); //Start over
-                mcMMO.p.getFoliaLib().getImpl().runAtEntity(player, t -> ScoreboardManager.retryLastSkillBoard(player));
+                mcMMO.p.getFoliaLib().getScheduler().runAtEntity(player, t -> ScoreboardManager.retryLastSkillBoard(player));
             }
         }
 

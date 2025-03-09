@@ -127,7 +127,7 @@ public class McTopCommand implements TabExecutor {
         boolean useBoard = (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getTopUseBoard());
         boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getTopUseChat();
 
-        mcMMO.p.getFoliaLib().getImpl().runAsync(new McTopCommandAsyncTask(page, skill, sender, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getScheduler().runAsync(new McTopCommandAsyncTask(page, skill, sender, useBoard, useChat));
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {
