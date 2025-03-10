@@ -23,6 +23,7 @@ Concoctions:
         - STONE
         - SLIME_BLOCK
         - COBWEB
+        - TURTLE_HELMET
     Tier_Two_Ingredients:
         - CARROT
         - SLIME_BALL

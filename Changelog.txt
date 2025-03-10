@@ -1,5 +1,6 @@
 Version 2.2.033
     Added Breeze_Rod entries to potions.yml for Awkward potion (see notes)
+    Added missing TURTLE_HELMET entry to potions.yml for Tier 1 ingredients
     Added missing Wind Charging potion entries to potions.yml (see notes)
     Fixed bug where mcMMO would attempt to load potions that required ingredients or effects from newer versions of Minecraft
     mcMMO is a little more specific during start up of how many potions it loaded, it will now report on incompatible potions from being on an older game version.
