@@ -358,7 +358,7 @@ public final class EventUtils {
         }
 
 //        teleportingPlayer.teleport(targetPlayer);
-        mcMMO.p.getFoliaLib().getImpl().teleportAsync(teleportingPlayer, targetPlayer.getLocation());
+        mcMMO.p.getFoliaLib().getScheduler().teleportAsync(teleportingPlayer, targetPlayer.getLocation());
 
         teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
         targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));

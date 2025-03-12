@@ -56,7 +56,8 @@ public class Roll extends AcrobaticsSubSkill {
         final EntityDamageEvent entityDamageEvent = (EntityDamageEvent) event;
 
         //Make sure a real player was damaged in this event
-        if (!EventUtils.isRealPlayerDamaged(entityDamageEvent))
+        if (!EventUtils.isRealPlayerDamaged(entityDamageEvent)
+                || !entityDamageEvent.isApplicable(EntityDamageEvent.DamageModifier.MAGIC))
             return false;
 
         if (entityDamageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) {

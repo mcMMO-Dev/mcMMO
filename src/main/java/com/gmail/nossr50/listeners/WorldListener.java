@@ -30,7 +30,7 @@ public class WorldListener implements Listener {
             return;
 
         // Using 50 ms later as I do not know of a way to run one tick later (safely)
-        plugin.getFoliaLib().getImpl().runLater(() -> {
+        plugin.getFoliaLib().getScheduler().runLater(() -> {
             for (BlockState blockState : event.getBlocks()) {
                 mcMMO.getUserBlockTracker().setEligible(blockState);
             }

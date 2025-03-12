@@ -1,3 +1,29 @@
+Version 2.2.033
+    Added Breeze_Rod entries to potions.yml for Awkward potion (see notes)
+    Added missing TURTLE_HELMET entry to potions.yml for Tier 1 ingredients
+    Added missing Wind Charging potion entries to potions.yml (see notes)
+    Fixed bug where mcMMO would attempt to load potions that required ingredients or effects from newer versions of Minecraft
+    mcMMO is a little more specific during start up of how many potions it loaded, it will now report on incompatible potions from being on an older game version.
+
+    NOTES:
+    You will have to update your potions.yml manually to receive these changes, it is highly recommended that if you haven't customized this file that you simply just delete it, mcMMO will generate a new one on the next start up and it will contain all the missing entries.
+    If you have customized this file, you can find the "default" version of this file here on the mcMMO github repo: https://github.com/mcMMO-Dev/mcMMO/blob/master/src/main/resources/potions.yml
+    You can use this file to compare it to your own and make the manual changes needed to get the new entries.
+    After making the changes to potions.yml (either via deleting it or not...) mcMMO should now recognize the Wind Charging potion and the Awkward potion created from Breeze Rods
+
+Version 2.2.032
+    Fixed bug where Roll would throw exceptions with certain CMI interactions
+    Blast Mining no longer drops infested block variants
+    Reduced bonus drops on Blast Mining and randomized results (see notes)
+    Added Beetroot to experience.yml for Herbalism
+    Added Open_Eyeblossom to experience.yml for Herbalism
+    Addeed Open_Eyeblossom to config.yml Bonus Drops for Herbalism
+    Added Closed_Eyeblossom to experience.yml for Herbalism
+    Addeed Closed_Eyeblossom to config.yml Bonus Drops for Herbalism
+
+    NOTES:
+    A balance pass for Blast Mining is coming, but for now, I've reduced the total bonus drops and clamped the yield ceiling as Blast Mining is a bit too good.
+
 Version 2.2.031
     Fixed potential NPE when player or blockstate is null for Inventory events on Furnaces
     Fixed bug where en_us locale was being set system-wide (thanks BlvckBytes)

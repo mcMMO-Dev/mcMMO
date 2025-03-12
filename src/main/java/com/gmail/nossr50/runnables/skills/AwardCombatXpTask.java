@@ -46,6 +46,6 @@ public class AwardCombatXpTask extends CancellableRunnable {
         }
 
         final double finalDamage = damage;
-        mcMMO.p.getFoliaLib().getImpl().runAtEntity(mcMMOPlayer.getPlayer(), task -> mcMMOPlayer.beginXpGain(primarySkillType, (int) (finalDamage * baseXp), xpGainReason, XPGainSource.SELF));
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntity(mcMMOPlayer.getPlayer(), task -> mcMMOPlayer.beginXpGain(primarySkillType, (int) (finalDamage * baseXp), xpGainReason, XPGainSource.SELF));
     }
 }

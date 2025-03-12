@@ -252,7 +252,7 @@ public class FishingManager extends SkillManager {
     }
 
     public void masterAngler(@NotNull FishHook hook, int lureLevel) {
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(hook, new MasterAnglerTask(hook, this, lureLevel), 1); //We run later to get the lure bonus applied
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(hook, new MasterAnglerTask(hook, this, lureLevel), 1); //We run later to get the lure bonus applied
     }
 
     /**

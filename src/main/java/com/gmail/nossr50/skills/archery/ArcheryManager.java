@@ -96,7 +96,7 @@ public class ArcheryManager extends SkillManager {
         Location dazedLocation = defender.getLocation();
         dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
 
-        mcMMO.p.getFoliaLib().getImpl().teleportAsync(defender, dazedLocation);
+        mcMMO.p.getFoliaLib().getScheduler().teleportAsync(defender, dazedLocation);
         defender.addPotionEffect(new PotionEffect(getNauseaPotionEffectType(), 20 * 10, 10));
 
         if (NotificationManager.doesPlayerUseNotifications(defender)) {

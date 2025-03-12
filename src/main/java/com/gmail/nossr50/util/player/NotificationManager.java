@@ -305,7 +305,7 @@ public class NotificationManager {
                         .hoverEvent(levelMilestoneHover);
 
                 // TODO: Update system msg API
-                mcMMO.p.getFoliaLib().getImpl().runNextTick(
+                mcMMO.p.getFoliaLib().getScheduler().runNextTick(
                         t -> audience.sendMessage(component));
             }
         }
@@ -341,7 +341,7 @@ public class NotificationManager {
                 String localeMessage = LocaleLoader.getString("Broadcasts.PowerLevelUpMilestone", mmoPlayer.getPlayer().getDisplayName(), powerLevel);
                 Component message = LegacyComponentSerializer.legacySection().deserialize(localeMessage).hoverEvent(levelMilestoneHover);
 
-                mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> audience.sendMessage(message));
+                mcMMO.p.getFoliaLib().getScheduler().runNextTick(t -> audience.sendMessage(message));
             }
         }
     }

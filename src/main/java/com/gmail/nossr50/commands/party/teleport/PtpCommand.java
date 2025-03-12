@@ -244,7 +244,7 @@ public class PtpCommand implements TabExecutor {
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
-            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(teleportingPlayer, new TeleportationWarmup(mcMMOPlayer, mcMMOTarget), 20 * warmup);
+            mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(teleportingPlayer, new TeleportationWarmup(mcMMOPlayer, mcMMOTarget), 20 * warmup);
         } else {
             EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }

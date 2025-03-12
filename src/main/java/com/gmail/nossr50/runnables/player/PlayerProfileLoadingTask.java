@@ -52,7 +52,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
 
         // If successful, schedule the apply
         if (profile.isLoaded()) {
-            mcMMO.p.getFoliaLib().getImpl().runAtEntity(player, new ApplySuccessfulProfile(new McMMOPlayer(player, profile)));
+            mcMMO.p.getFoliaLib().getScheduler().runAtEntity(player, new ApplySuccessfulProfile(new McMMOPlayer(player, profile)));
             EventUtils.callPlayerProfileLoadEvent(player, profile);
             return;
         }
@@ -73,7 +73,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
         // Increment attempt counter and try
         attempt++;
 
-        mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileLoadingTask(player, attempt), (100 + (attempt * 100L)));
+        mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileLoadingTask(player, attempt), (100 + (attempt * 100L)));
     }
 
     private class ApplySuccessfulProfile extends CancellableRunnable {
@@ -103,7 +103,7 @@ public class PlayerProfileLoadingTask extends CancellableRunnable {
 
                 if (mcMMO.p.getGeneralConfig().getShowStatsAfterLogin()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
-                    mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new McScoreboardKeepTask(player), Misc.TICK_CONVERSION_FACTOR);
+                    mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(player, new McScoreboardKeepTask(player), Misc.TICK_CONVERSION_FACTOR);
                 }
             }
 

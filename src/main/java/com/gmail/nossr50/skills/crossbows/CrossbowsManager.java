@@ -63,7 +63,7 @@ public class CrossbowsManager extends SkillManager {
         }
 
         // Spawn new arrow with the reflected direction
-        Arrow spawnedArrow = originalArrow.getWorld().spawnArrow(origin, reflectedDirection, 1, 1);
+        final Arrow spawnedArrow = originalArrow.getWorld().spawnArrow(origin, reflectedDirection, 1, 1);
         // copy some properties from the old arrow
         spawnedArrow.setShooter(originalArrowShooter);
         spawnedArrow.setCritical(originalArrow.isCritical());

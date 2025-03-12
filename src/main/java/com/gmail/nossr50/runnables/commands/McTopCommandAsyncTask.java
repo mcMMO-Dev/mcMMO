@@ -35,6 +35,6 @@ public class McTopCommandAsyncTask extends CancellableRunnable {
     public void run() {
         final List<PlayerStat> userStats = mcMMO.getDatabaseManager().readLeaderboard(skill, page, 10);
 
-        mcMMO.p.getFoliaLib().getImpl().runNextTick(new MctopCommandDisplayTask(userStats, page, skill, sender, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getScheduler().runNextTick(new MctopCommandDisplayTask(userStats, page, skill, sender, useBoard, useChat));
     }
 }
