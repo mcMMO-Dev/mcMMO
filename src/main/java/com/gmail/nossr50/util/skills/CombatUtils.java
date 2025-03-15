@@ -39,6 +39,7 @@ import java.util.List;
 import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
 import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
+import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 public final class CombatUtils {
 
@@ -567,9 +568,8 @@ public final class CombatUtils {
             }
         } else if (painSource instanceof Arrow arrow) {
             ProjectileSource projectileSource = arrow.getShooter();
-            boolean isCrossbow = arrow.isShotFromCrossbow();
+            boolean isCrossbow = isCrossbowProjectile(arrow);
             if (projectileSource instanceof Player player) {
-
                 if (!Misc.isNPCEntityExcludingVillagers(player)) {
                     if (!isCrossbow && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
                         processArcheryCombat(target, player, event, arrow);

@@ -1,4 +1,5 @@
 Version 2.2.034
+    Fixed bug where arrow would award archery xp after a crossbow trickshot bounce
 
 Version 2.2.033
     Added Breeze_Rod entries to potions.yml for Awkward potion (see notes)

@@ -9,6 +9,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
+
 public class ProjectileUtils {
     public static Vector getNormal(BlockFace blockFace) {
         return switch (blockFace) {
@@ -27,7 +29,6 @@ public class ProjectileUtils {
      *
      * @param arrow projectile
      */
-    // TODO: Add test
     public static void cleanupProjectileMetadata(@NotNull Arrow arrow) {
         if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
@@ -51,6 +52,10 @@ public class ProjectileUtils {
 
         if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
             arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT, mcMMO.p);
+        }
+
+        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE)) {
+            arrow.removeMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE, mcMMO.p);
         }
     }
 
@@ -80,5 +85,14 @@ public class ProjectileUtils {
             newArrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW,
                     arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW).get(0));
         }
+
+        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE)) {
+            newArrow.setMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE, MCMMO_METADATA_VALUE);
+        }
+    }
+
+    public static boolean isCrossbowProjectile(@NotNull Arrow arrow) {
+        return arrow.isShotFromCrossbow()
+                || arrow.hasMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE);
     }
 }
