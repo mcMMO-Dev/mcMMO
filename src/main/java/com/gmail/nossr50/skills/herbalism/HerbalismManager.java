@@ -43,6 +43,7 @@ import java.util.*;
 
 import static com.gmail.nossr50.util.ItemUtils.hasItemIncludingOffHand;
 import static com.gmail.nossr50.util.ItemUtils.removeItemIncludingOffHand;
+import static com.gmail.nossr50.util.Misc.getBlockCenter;
 import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 import static java.util.Objects.requireNonNull;
 
@@ -733,7 +734,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
         int skillLevel = getSkillLevel();
-        Location location = Misc.getBlockCenter(blockState);
+        final Location centerOfBlock = getBlockCenter(blockState);
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel()
@@ -742,7 +743,7 @@ public class HerbalismManager extends SkillManager {
                     return false;
                 }
                 blockState.setType(Material.AIR);
-                ItemUtils.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.HYLIAN_LUCK_TREASURE);
+                ItemUtils.spawnItem(getPlayer(), centerOfBlock, treasure.getDrop(), ItemSpawnReason.HYLIAN_LUCK_TREASURE);
                 NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }

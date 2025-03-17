@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
+import static com.gmail.nossr50.util.Misc.getBlockCenter;
 
 public class MiningManager extends SkillManager {
 
@@ -214,7 +215,7 @@ public class MiningManager extends SkillManager {
 
             if (block.getType().isItem() && Probability.ofPercent(10).evaluate()) {
                 ItemUtils.spawnItem(getPlayer(),
-                        Misc.getBlockCenter(block),
+                        getBlockCenter(block),
                         new ItemStack(block.getType()),
                         ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
             }
@@ -234,14 +235,14 @@ public class MiningManager extends SkillManager {
                     Collection<ItemStack> oreDrops = isPickaxe(mmoPlayer.getPlayer().getInventory().getItemInMainHand())
                             ? block.getDrops(mmoPlayer.getPlayer().getInventory().getItemInMainHand())
                             : List.of(new ItemStack(block.getType()));
-                    ItemUtils.spawnItems(getPlayer(), Misc.getBlockCenter(block),
+                    ItemUtils.spawnItems(getPlayer(), getBlockCenter(block),
                             oreDrops, BLAST_MINING_BLACKLIST, ItemSpawnReason.BLAST_MINING_ORES);
 
                     if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
                         if (Probability.ofValue(0.5F).evaluate()) {
                             for (int i = 1; i < dropMultiplier; i++) {
                                 ItemUtils.spawnItems(getPlayer(),
-                                        Misc.getBlockCenter(block),
+                                        getBlockCenter(block),
                                         oreDrops,
                                         BLAST_MINING_BLACKLIST,
                                         ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP);

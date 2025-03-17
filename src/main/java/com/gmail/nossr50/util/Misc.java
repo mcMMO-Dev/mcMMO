@@ -109,7 +109,7 @@ public final class Misc {
     }
 
     public static Location getBlockCenter(Location location) {
-        return location.add(0.5, 0.5, 0.5);
+        return location.clone().add(0.5, 0.5, 0.5);
     }
 
     public static void profileCleanup(@NotNull String playerName) {

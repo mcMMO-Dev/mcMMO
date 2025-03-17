@@ -1,4 +1,5 @@
 Version 2.2.034
+    Fixed bug where mcMMO would drop items in such a way that they get stuck in an adjacent block and float to the surface
     Fixed a rare edge case where null entities during chunk unload would cause a NullPointerException and potentially lead to server instability
     Fixed bug where arrow would award archery xp after a crossbow trickshot bounce
 
