@@ -1,3 +1,11 @@
+Version 2.2.035
+    Swords subskill Stab is now configurable in advanced.yml
+    Added 'Skills.Swords.Stab.Base_Damage' to advanced.yml
+    Added 'Skills.Swords.Stab.Per_Rank_Multiplier' to advanced.yml
+
+    NOTES:
+    The new config settings will be added automatically to advanced.yml
+
 Version 2.2.034
     Fixed bug where mcMMO would drop items in such a way that they get stuck in an adjacent block and float to the surface
     Fixed a rare edge case where null entities during chunk unload would cause a NullPointerException and potentially lead to server instability

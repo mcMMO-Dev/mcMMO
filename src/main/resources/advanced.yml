@@ -473,6 +473,9 @@ Skills:
     #  Settings for Swords
     ###
     Swords:
+        Stab:
+            Base_Damage: 1.0
+            Per_Rank_Multiplier: 1.5
         Rupture:
             Rupture_Mechanics:
                 # This is % chance, 15 would mean 15% percent of the time
