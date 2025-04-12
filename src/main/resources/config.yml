@@ -483,6 +483,13 @@ Green_Thumb_Replanting_Crops:
 ###
 Bonus_Drops:
     Herbalism:
+        Bush: true
+        Cactus_Flower: true
+        Firefly_Bush: true
+        Leaf_Litter: true
+        Short_Dry_Grass: true
+        Tall_Dry_Grass: true
+        Wildflowers: true
         Eyeblossom: true
         Open_Eyeblossom: true
         Closed_Eyeblossom: true

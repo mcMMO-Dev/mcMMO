@@ -1,9 +1,25 @@
 Version 2.2.035
+    Support for new additions from Minecraft 1.21.5
+    Added 'Bush' to experience.yml for Herbalism
+    Added 'Bush' to config.yml Bonus Drops for Herbalism
+    Added 'Cactus_Flower' to experience.yml for Herbalism
+    Added 'Cactus_Flower' to config.yml Bonus Drops for Herbalism
+    Added 'Firefly_Bush' to experience.yml for Herbalism
+    Added 'Firefly_Bush' to config.yml Bonus Drops for Herbalism
+    Added 'Leaf_Litter' to experience.yml for Herbalism
+    Added 'Leaf_Litter' to config.yml Bonus Drops for Herbalism
+    Added 'Short_Dry_Grass' to experience.yml for Herbalism
+    Added 'Short_Dry_Grass' to config.yml Bonus Drops for Herbalism
+    Added 'Tall_Dry_Grass' to experience.yml for Herbalism
+    Added 'Tall_Dry_Grass' to config.yml Bonus Drops for Herbalism
+    Added 'Wildflowers' to experience.yml for Herbalism
+    Added 'Wildflowers' to config.yml Bonus Drops for Herbalism
     Swords subskill Stab is now configurable in advanced.yml
     Added 'Skills.Swords.Stab.Base_Damage' to advanced.yml
     Added 'Skills.Swords.Stab.Per_Rank_Multiplier' to advanced.yml
 
     NOTES:
+    The mob variants will use the "base" mob definition for values for now, such a a warm chicken using chicken values from experience.yml
     The new config settings will be added automatically to advanced.yml
 
 Version 2.2.034
