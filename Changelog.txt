@@ -1,3 +1,6 @@
+Version 2.2.036
+    Fixed a bug where Chimaera Wing could cause an exception when used
+
 Version 2.2.035
     Support for new additions from Minecraft 1.21.5
     Fixed bug where Blast Mining would not drop deep slate
