@@ -58,9 +58,14 @@ public class MiningManager extends SkillManager {
     public boolean canDetonate() {
         Player player = getPlayer();
 
-        return canUseBlastMining() && player.isSneaking()
-                && (isPickaxe(getPlayer().getInventory().getItemInMainHand()) || player.getInventory().getItemInMainHand().getType() == mcMMO.p.getGeneralConfig().getDetonatorItem())
+        return canUseBlastMining()
+                && player.isSneaking()
+                && (isPickaxe(getPlayer().getInventory().getItemInMainHand()) || isDetonatorInHand(player))
                 && Permissions.remoteDetonation(player);
+    }
+
+    private static boolean isDetonatorInHand(Player player) {
+        return player.getInventory().getItemInMainHand().getType() == mcMMO.p.getGeneralConfig().getDetonatorItem();
     }
 
     public boolean canUseBlastMining() {
@@ -76,7 +81,8 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canDoubleDrop() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
+        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS)
+                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
     }
 
     public boolean canMotherLode() {
@@ -171,7 +177,9 @@ public class MiningManager extends SkillManager {
 
         mmoPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
         mmoPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(mmoPlayer.getPlayer(), new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING), (long) SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(mmoPlayer.getPlayer(),
+                new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING),
+                (long) SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     private boolean isInfestedBlock(String material) {
@@ -190,8 +198,8 @@ public class MiningManager extends SkillManager {
 
         var increasedYieldFromBonuses = yield + (yield * getOreBonus());
         // Strip out only stuff that gives mining XP
-        List<Block> ores = new ArrayList<>();
-        List<Block> notOres = new ArrayList<>();
+        final List<Block> ores = new ArrayList<>();
+        final List<Block> notOres = new ArrayList<>();
         for (Block targetBlock : event.blockList()) {
 
             if(mcMMO.getUserBlockTracker().isIneligible(targetBlock))
@@ -200,6 +208,8 @@ public class MiningManager extends SkillManager {
             if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0) {
                 if (BlockUtils.isOre(targetBlock) && !(targetBlock instanceof Container)) {
                     ores.add(targetBlock);
+                } else {
+                    notOres.add(targetBlock);
                 }
             } else {
                 notOres.add(targetBlock);
@@ -220,6 +230,7 @@ public class MiningManager extends SkillManager {
                         ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
             }
         }
+
         for (Block block : ores) {
             // currentOreYield only used for drop calculations for ores
             float currentOreYield = Math.min(increasedYieldFromBonuses, 3F);
