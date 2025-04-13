@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.mining;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -35,8 +36,8 @@ import static com.gmail.nossr50.util.Misc.getBlockCenter;
 
 public class MiningManager extends SkillManager {
 
-    public static final String BUDDING_AMETHYST = "budding_amethyst";
-    public static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER,
+    private static final String BUDDING_AMETHYST = "budding_amethyst";
+    private static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER,
             Material.INFESTED_COBBLESTONE, Material.INFESTED_DEEPSLATE, Material.INFESTED_STONE,
             Material.INFESTED_STONE_BRICKS, Material.INFESTED_CRACKED_STONE_BRICKS,
             Material.INFESTED_CHISELED_STONE_BRICKS, Material.INFESTED_MOSSY_STONE_BRICKS);
@@ -52,7 +53,8 @@ public class MiningManager extends SkillManager {
         if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
             return false;
 
-        return getSkillLevel() >= BlastMining.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
+        return getSkillLevel() >= BlastMining.getDemolitionExpertUnlockLevel()
+                && Permissions.demolitionsExpertise(getPlayer());
     }
 
     public boolean canDetonate() {
@@ -156,8 +158,8 @@ public class MiningManager extends SkillManager {
      * Detonate TNT for Blast Mining
      */
     public void remoteDetonation() {
-        Player player = getPlayer();
-        Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
+        final Player player = getPlayer();
+        final Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
         //Blast mining cooldown check needs to be first so the player can be messaged
         if (!blastMiningCooldownOver()
@@ -166,7 +168,7 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
+        final TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
         NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
 
@@ -267,7 +269,7 @@ public class MiningManager extends SkillManager {
 
         // Replace the event blocklist with the newYield list
         event.setYield(0F);
-        applyXpGain(xp, XPGainReason.PVE);
+        applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
     }
 
     /**
