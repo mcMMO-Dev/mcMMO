@@ -57,16 +57,16 @@ public class McmmoCommand implements CommandExecutor {
     }
 
     private void displayGeneralCommands(CommandSender sender) {
-        sender.sendMessage(ChatColor.DARK_AQUA + " /mcstats " + LocaleLoader.getString("Commands.Stats"));
-        sender.sendMessage(ChatColor.DARK_AQUA + " /<skill>" + LocaleLoader.getString("Commands.SkillInfo"));
-        sender.sendMessage(ChatColor.DARK_AQUA + " /mctop " + LocaleLoader.getString("Commands.Leaderboards"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Stats"));
+        sender.sendMessage(LocaleLoader.getString("Commands.SkillInfo"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Leaderboards"));
 
         if (Permissions.inspect(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /inspect " + LocaleLoader.getString("Commands.Inspect"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Inspect"));
         }
 
         if (Permissions.mcability(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
+            sender.sendMessage(LocaleLoader.getString("Commands.ToggleAbility"));
         }
     }
 
@@ -78,38 +78,38 @@ public class McmmoCommand implements CommandExecutor {
         sender.sendMessage(LocaleLoader.getString("Commands.Other"));
 
         if (Permissions.skillreset(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Reset"));
         }
 
         if (Permissions.mmoedit(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /mmoedit " + LocaleLoader.getString("Commands.mmoedit"));
+            sender.sendMessage(LocaleLoader.getString("Commands.mmoedit"));
         }
 
         if (Permissions.adminChat(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /adminchat " + LocaleLoader.getString("Commands.AdminToggle"));
+            sender.sendMessage(LocaleLoader.getString("Commands.AdminToggle"));
         }
 
         if (Permissions.mcgod(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /mcgod " + LocaleLoader.getString("Commands.mcgod"));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcgod"));
         }
     }
 
     private void displayPartyCommands(CommandSender sender) {
         if (Permissions.party(sender)) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party1"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party2"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party quit " + LocaleLoader.getString("Commands.Party.Quit"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Party1"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Party2"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.Quit"));
 
             if (Permissions.partyChat(sender)) {
-                sender.sendMessage(ChatColor.DARK_AQUA + " /party chat " + LocaleLoader.getString("Commands.Party.Toggle"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.Toggle"));
             }
 
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party invite <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Invite"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party accept " + LocaleLoader.getString("Commands.Party.Accept"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.Invite"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.Accept"));
 
             if (Permissions.partySubcommand(sender, PartySubcommandType.TELEPORT)) {
-                sender.sendMessage(ChatColor.DARK_AQUA + " /party teleport <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Teleport"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.Teleport"));
             }
         }
     }
