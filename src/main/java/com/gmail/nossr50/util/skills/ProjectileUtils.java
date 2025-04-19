@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -32,7 +33,7 @@ public class ProjectileUtils {
      *
      * @param arrow projectile
      */
-    public static void cleanupProjectileMetadata(@NotNull Arrow arrow) {
+    public static void cleanupProjectileMetadata(@NotNull AbstractArrow arrow) {
         ARROW_METADATA_KEYS.stream()
                 .filter(arrow::hasMetadata)
                 .forEach(key -> arrow.removeMetadata(key, mcMMO.p));
@@ -61,7 +62,7 @@ public class ProjectileUtils {
                 });
     }
 
-    public static boolean isCrossbowProjectile(@NotNull Arrow arrow) {
+    public static boolean isCrossbowProjectile(@NotNull AbstractArrow arrow) {
         return arrow.isShotFromCrossbow()
                 || arrow.hasMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE);
     }
