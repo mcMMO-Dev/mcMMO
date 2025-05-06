@@ -1,5 +1,8 @@
 Version 2.2.036
     Fixed a bug where Chimaera Wing could cause an exception when used
+    Fixed bug where Mob Spawners could drop in Blast Mining (thanks TomBock)
+    Fixed Spectral Arrows not granting XP for Archery or Crossbows (thanks broccolai)
+    Added locale strings for /mcmmo help command (thanks Griffeng)
 
 Version 2.2.035
     Support for new additions from Minecraft 1.21.5
