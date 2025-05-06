@@ -274,14 +274,15 @@ public class MiningManager extends SkillManager {
 
     /**
      * Checks if it would be illegal (in vanilla) to obtain the block
-     * Certain things should never drop (such as budding_amethyst and infested blocks)
+     * Certain things should never drop (such as budding_amethyst, infested blocks or spawners)
      *
      * @param material target material
      * @return true if it's not legal to get the block through normal gameplay
      */
     public boolean isDropIllegal(@NotNull Material material) {
         return isInfestedBlock(material.getKey().getKey())
-                || material.getKey().getKey().equalsIgnoreCase(BUDDING_AMETHYST);
+                || material.getKey().getKey().equalsIgnoreCase(BUDDING_AMETHYST)
+                || material == Material.SPAWNER;
     }
 
     /**
