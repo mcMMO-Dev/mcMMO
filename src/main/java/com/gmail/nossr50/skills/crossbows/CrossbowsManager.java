@@ -20,7 +20,10 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
+import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE;
 import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
+import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 public class CrossbowsManager extends SkillManager {
     public CrossbowsManager(McMMOPlayer mmoPlayer) {
@@ -28,7 +31,7 @@ public class CrossbowsManager extends SkillManager {
     }
 
     public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow, @NotNull Vector hitBlockNormal) {
-        if (!arrow.isShotFromCrossbow())
+        if (!isCrossbowProjectile(arrow))
             return;
 
         // Check player permission
@@ -79,6 +82,12 @@ public class CrossbowsManager extends SkillManager {
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
         spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
+        // Easy fix to recognize the arrow as a crossbow projectile
+        // TODO: Replace the hack with the new API for setting weapon on projectiles
+        if (!spawnedArrow.hasMetadata(METADATA_KEY_CROSSBOW_PROJECTILE)) {
+            spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE, MCMMO_METADATA_VALUE);
+        }
+        // There are reasons to keep this despite using the metadata values above
         spawnedArrow.setShotFromCrossbow(true);
 
         // Don't allow multi-shot or infinite arrows to be picked up

@@ -575,35 +575,6 @@ public class AdvancedConfig extends BukkitConfig {
         return ChatColor.WHITE;
     }
 
-    /*public boolean isJSONStatHoverElementBold(StatType statType, boolean isPrefix) {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Bold";
-        return config.getBoolean(keyLocation);
-    }
-
-    public boolean isJSONStatHoverElementItalic(StatType statType, boolean isPrefix) {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Italics";
-        return config.getBoolean(keyLocation);
-    }
-
-    public boolean isJSONStatHoverElementUnderlined(StatType statType, boolean isPrefix) {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Underline";
-        return config.getBoolean(keyLocation);
-    }*/
-
-    /**
-     * Some SubSkills have the ability to retain classic functionality
-     *
-     * @param subSkillType SubSkillType with classic functionality
-     *
-     * @return true if the subskill is in classic mode
-     */
-    public boolean isSubSkillClassic(SubSkillType subSkillType) {
-        return config.getBoolean(subSkillType.getAdvConfigAddress() + ".Classic");
-    }
-
     /* ACROBATICS */
     public double getDodgeDamageModifier() {
         return config.getDouble("Skills.Acrobatics.Dodge.DamageModifier", 2.0D);
@@ -851,6 +822,14 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /* SWORDS */
+    public double getStabBaseDamage() {
+        return config.getDouble("Skills.Swords.Stab.Base_Damage", 1.0D);
+    }
+
+    public double getStabPerRankMultiplier() {
+        return config.getDouble("Skills.Swords.Stab.Per_Rank_Multiplier", 1.5D);
+    }
+
     public double getRuptureTickDamage(boolean isTargetPlayer, int rank) {
         String root = "Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_";
         String targetType = isTargetPlayer ? "Players" : "Mobs";

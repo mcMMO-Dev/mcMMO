@@ -3,13 +3,19 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import static com.gmail.nossr50.util.MetadataConstants.ARROW_METADATA_KEYS;
+import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
+
 public class ProjectileUtils {
+
     public static Vector getNormal(BlockFace blockFace) {
         return switch (blockFace) {
             case UP -> new Vector(0, 1, 0);
@@ -27,58 +33,37 @@ public class ProjectileUtils {
      *
      * @param arrow projectile
      */
-    // TODO: Add test
-    public static void cleanupProjectileMetadata(@NotNull Arrow arrow) {
-        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
-            arrow.removeMetadata(MetadataConstants.METADATA_KEY_INF_ARROW, mcMMO.p);
-        }
-
-        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
-            arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
-        }
-
-        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
-            arrow.removeMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE, mcMMO.p);
-        }
-
-        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
-            arrow.removeMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW, mcMMO.p);
-        }
-
-        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
-            arrow.removeMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW, mcMMO.p);
-        }
-
-        if (arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
-            arrow.removeMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT, mcMMO.p);
-        }
+    public static void cleanupProjectileMetadata(@NotNull AbstractArrow arrow) {
+        ARROW_METADATA_KEYS.stream()
+                .filter(arrow::hasMetadata)
+                .forEach(key -> arrow.removeMetadata(key, mcMMO.p));
     }
 
-    public static void copyArrowMetadata(@NotNull Plugin pluginRef, @NotNull Arrow arrowToCopy, @NotNull Arrow newArrow) {
-        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
-            newArrow.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW,
-                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_INF_ARROW).get(0));
-        }
+    /**
+     * Copies metadata from one arrow to another.
+     *
+     * @param pluginRef mcMMO plugin reference.
+     * @param sourceArrow The arrow from which metadata is copied.
+     * @param targetArrow The arrow to which metadata is copied.
+     */
+    public static void copyArrowMetadata(@NotNull Plugin pluginRef, @NotNull Arrow sourceArrow,
+                                         @NotNull Arrow targetArrow) {
+        ARROW_METADATA_KEYS.stream()
+                .filter(sourceArrow::hasMetadata)
+                .forEach(key -> {
+                    final MetadataValue metadataValue = sourceArrow.getMetadata(key).get(0);
+                    if (key.equals(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
+                        targetArrow.setMetadata(key, new FixedMetadataValue(pluginRef, metadataValue.asDouble()));
+                    } else if (key.equals(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE)) {
+                        targetArrow.setMetadata(key, MCMMO_METADATA_VALUE);
+                    } else {
+                        targetArrow.setMetadata(key, metadataValue);
+                    }
+                });
+    }
 
-        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
-            newArrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE,
-                    new FixedMetadataValue(pluginRef,
-                            arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE).get(0).asDouble()));
-        }
-
-        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE)) {
-            newArrow.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE,
-                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE).get(0));
-        }
-
-        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW)) {
-            newArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
-                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW).get(0));
-        }
-
-        if (arrowToCopy.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)) {
-            newArrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW,
-                    arrowToCopy.getMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW).get(0));
-        }
+    public static boolean isCrossbowProjectile(@NotNull AbstractArrow arrow) {
+        return arrow.isShotFromCrossbow()
+                || arrow.hasMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE);
     }
 }

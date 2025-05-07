@@ -1003,6 +1003,7 @@ public class MaterialMapStore {
     private void fillMultiBlockPlantSet() {
         //Multi-Block Plants
         multiBlockPlant.add("cactus");
+        multiBlockPlant.add("cactus_flower");
         multiBlockPlant.add("chorus_plant");
         multiBlockPlant.add("chorus_flower");
         multiBlockPlant.add("sugar_cane");

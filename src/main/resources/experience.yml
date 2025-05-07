@@ -330,6 +330,13 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Bush: 11
+        Cactus_Flower: 60
+        Firefly_Bush: 15
+        Leaf_Litter: 2
+        Short_Dry_Grass: 6
+        Tall_Dry_Grass: 12
+        Wildflowers: 15
         Eyeblossom: 66
         Open_Eyeblossom: 66
         Closed_Eyeblossom: 66

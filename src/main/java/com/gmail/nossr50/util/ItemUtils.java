@@ -759,7 +759,7 @@ public final class ItemUtils {
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason, player);
+        final McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -786,7 +786,7 @@ public final class ItemUtils {
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason, player);
+        final McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason, player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {

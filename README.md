@@ -1,14 +1,14 @@
 # mcMMO
-## The #1 RPG Mod for Minecraft
+The #1 RPG Mod for Minecraft
 
-## Website
-I'm working on a brand new website for mcMMO
-
-You can check it out here http://www.mcmmo.org
+## Useful URLs
+Website: http://www.mcmmo.org
 
 Spigot Resource: https://spigot.mcmmo.org
 
-I plan to post links to our new wiki (its still under development), downloads, and dev blogs there.
+Polymart Resource: https://polymart.org/product/727/mcmmo
+
+Wiki: https://wiki.mcmmo.org/
 
 ## API
 If you are using maven, you can add mcMMO API to your plugin by adding it to pom.xml like so...
@@ -27,8 +27,7 @@ If you are using maven, you can add mcMMO API to your plugin by adding it to pom
 </dependency>
 ```
 ### Builds
-Currently, you can obtain our builds via the Spigot or Polymart:
-
+Currently, you can obtain our builds via Spigot or Polymart:
 
 http://spigot.mcmmo.org
 
@@ -39,8 +38,6 @@ The goal of mcMMO is to take core Minecraft game mechanics and expand them into 
 
 ## About the Team
 In December 2018, the original author and creator of mcMMO (nossr50) returned and took over the role of project lead once again, to develop and improve mcMMO.
-#### Project Lead & Founder
-[![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
 
 #### Current mcMMO Devs
 [![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
@@ -72,8 +69,7 @@ The typical command used to build mcMMO is: `mvn clean install`
 
 https://spigot.mcmmo.org for more up to date information.
 
-Downloads:
-
+## Downloads
 
 https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/
 

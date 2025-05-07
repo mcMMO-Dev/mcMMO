@@ -39,6 +39,7 @@ import java.util.List;
 import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
 import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
+import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 public final class CombatUtils {
 
@@ -180,7 +181,7 @@ public final class CombatUtils {
     }
 
     private static void processCrossbowsCombat(@NotNull LivingEntity target, @NotNull Player player,
-                                               @NotNull EntityDamageByEntityEvent event, @NotNull Arrow arrow) {
+                                               @NotNull EntityDamageByEntityEvent event, @NotNull AbstractArrow arrow) {
         double initialDamage = event.getDamage();
 
         final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
@@ -383,7 +384,7 @@ public final class CombatUtils {
     }
 
     private static void processArcheryCombat(@NotNull LivingEntity target, @NotNull Player player,
-                                             @NotNull EntityDamageByEntityEvent event, @NotNull Arrow arrow) {
+                                             @NotNull EntityDamageByEntityEvent event, @NotNull AbstractArrow arrow) {
         double initialDamage = event.getDamage();
 
         final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
@@ -565,11 +566,10 @@ public final class CombatUtils {
                     }
                 }
             }
-        } else if (painSource instanceof Arrow arrow) {
+        } else if (painSource instanceof AbstractArrow arrow) {
             ProjectileSource projectileSource = arrow.getShooter();
-            boolean isCrossbow = arrow.isShotFromCrossbow();
+            boolean isCrossbow = isCrossbowProjectile(arrow);
             if (projectileSource instanceof Player player) {
-
                 if (!Misc.isNPCEntityExcludingVillagers(player)) {
                     if (!isCrossbow && mcMMO.p.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
                         processArcheryCombat(target, player, event, arrow);
@@ -1055,7 +1055,7 @@ public final class CombatUtils {
      *
      * @param arrow the projectile
      */
-    public static void delayArrowMetaCleanup(@NotNull Arrow arrow) {
+    public static void delayArrowMetaCleanup(@NotNull AbstractArrow arrow) {
         mcMMO.p.getFoliaLib().getScheduler().runLater(() -> ProjectileUtils.cleanupProjectileMetadata(arrow), 20*120);
     }
 }
