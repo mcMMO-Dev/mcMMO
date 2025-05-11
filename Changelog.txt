@@ -2,6 +2,7 @@ Version 2.2.036
     Fixed a bug where Chimaera Wing could cause an exception when used
     Fixed bug where Mob Spawners could drop in Blast Mining (thanks TomBock)
     Fixed Spectral Arrows not granting XP for Archery or Crossbows (thanks broccolai)
+    Fixed bug where Trickshot arrows would lose their potion or custom effects
     Added locale strings for /mcmmo help command (thanks Griffeng)
 
 Version 2.2.035

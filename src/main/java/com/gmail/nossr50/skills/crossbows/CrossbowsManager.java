@@ -74,6 +74,16 @@ public class CrossbowsManager extends SkillManager {
         spawnedArrow.setPickupStatus(originalArrow.getPickupStatus());
         spawnedArrow.setKnockbackStrength(originalArrow.getKnockbackStrength());
 
+        if (originalArrow.getBasePotionType() != null) {
+            spawnedArrow.setBasePotionType(originalArrow.getBasePotionType());
+        }
+
+        if (originalArrow.hasCustomEffects()) {
+            for (var effect : originalArrow.getCustomEffects()) {
+                spawnedArrow.addCustomEffect(effect, true);
+            }
+        }
+
         // copy metadata from old arrow
         ProjectileUtils.copyArrowMetadata(pluginRef, originalArrow, spawnedArrow);
         originalArrow.remove();
