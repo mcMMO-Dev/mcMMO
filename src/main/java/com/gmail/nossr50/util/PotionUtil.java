@@ -79,8 +79,8 @@ public class PotionUtil {
             String updatedName = convertLegacyNames(partialName).toUpperCase();
             return Arrays.stream(PotionType.values())
                     .filter(potionType -> getKeyGetKey(potionType).toUpperCase().contains(updatedName))
-                    .filter(potionType -> !isUpgraded || potionType.name().toUpperCase().contains(STRONG))
-                    .filter(potionType -> !isExtended || potionType.name().toUpperCase().contains(LONG))
+                    .filter(potionType -> isUpgraded == potionType.name().toUpperCase().startsWith(STRONG + "_"))
+                    .filter(potionType -> isExtended == potionType.name().toUpperCase().startsWith(LONG + "_"))
                     .findAny().orElse(null);
         }
     }
