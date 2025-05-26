@@ -1,3 +1,6 @@
+Version 2.2.038
+    Fix potion match failing for non-english locales
+
 Version 2.2.037
     Fixed bug where Alchemy was not matching potions correctly and producing incorrect results (Thanks TheBentoBox)
 
