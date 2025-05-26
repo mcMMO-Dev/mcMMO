@@ -44,7 +44,7 @@ public class SalvageConfig extends BukkitConfig {
         if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES)) {
             mcMMO.p.getLogger().log(Level.INFO, "Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
             for (String namespacedkey : mcMMO.getMaterialMapStore().getNetheriteArmor()) {
-                config.set("Salvageables." + namespacedkey.toUpperCase() + ".MaximumQuantity", 4); //TODO: Doesn't make sense to default to 4 for everything
+                config.set("Salvageables." + namespacedkey.toUpperCase(Locale.ENGLISH) + ".MaximumQuantity", 4); //TODO: Doesn't make sense to default to 4 for everything
             }
 
             try {
