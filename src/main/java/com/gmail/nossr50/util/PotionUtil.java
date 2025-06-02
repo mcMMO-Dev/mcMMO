@@ -10,10 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PotionUtil {
     // Some of the old potion types got renamed, our configs can still contain these old names
@@ -72,15 +69,17 @@ public class PotionUtil {
      * @return The potion type
      */
     public static PotionType matchPotionType(String partialName, boolean isUpgraded, boolean isExtended) {
-        // updatedName = convertUpgradedOrExtended(updatedName, isUpgraded, isExtended);
         if (COMPATIBILITY_MODE == PotionCompatibilityType.PRE_1_20_5) {
             return matchLegacyPotionType(partialName);
         } else {
-            String updatedName = convertLegacyNames(partialName).toUpperCase();
+            final String updatedName = convertLegacyNames(partialName).toUpperCase(Locale.ENGLISH);
             return Arrays.stream(PotionType.values())
-                    .filter(potionType -> getKeyGetKey(potionType).toUpperCase().contains(updatedName))
-                    .filter(potionType -> !isUpgraded || potionType.name().toUpperCase().contains(STRONG))
-                    .filter(potionType -> !isExtended || potionType.name().toUpperCase().contains(LONG))
+                    .filter(potionType -> getKeyGetKey(potionType)
+                            .toUpperCase(Locale.ENGLISH).contains(updatedName))
+                    .filter(potionType -> isUpgraded == potionType.name()
+                            .toUpperCase(Locale.ENGLISH).startsWith(STRONG + "_"))
+                    .filter(potionType -> isExtended == potionType.name()
+                            .toUpperCase(Locale.ENGLISH).startsWith(LONG + "_"))
                     .findAny().orElse(null);
         }
     }
