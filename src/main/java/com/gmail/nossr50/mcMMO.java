@@ -49,6 +49,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.FoliaImplementation;
 import com.tcoded.folialib.util.InvalidTickDelayNotifier;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -317,17 +318,33 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void foliaPerformanceHack() {
+        // Spigot can't use this optimization
+        if (!hasGlobalRegionScheduler()) {
+            return;
+        }
+
         // Thanks SirSalad
         // https://github.com/CraftYourTown/mcMMO/commit/2cffd64b127678411e20f0b8f9a3e3b87a649ee8
         try {
-            com.tcoded.folialib.impl.FoliaImplementation setScheduler
-                    = new com.tcoded.folialib.impl.FoliaImplementation(foliaLib);
-            java.lang.reflect.Field FoliaLib$scheduler = FoliaLib.class.getDeclaredField("scheduler");
-            FoliaLib$scheduler.setAccessible(true);
-            FoliaLib$scheduler.set(foliaLib, setScheduler);
-            FoliaLib$scheduler.setAccessible(false);
+            final FoliaImplementation setScheduler = new FoliaImplementation(foliaLib);
+            final java.lang.reflect.Field scheduler = FoliaLib.class.getDeclaredField("scheduler");
+            scheduler.setAccessible(true);
+            scheduler.set(foliaLib, setScheduler);
+            scheduler.setAccessible(false);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            getLogger().warning("Unable to apply performance tweaks to FoliaLib");
+            getLogger().warning("Unexpected exception when attempting to apply performance tweaks to FoliaLib");
+        }
+    }
+
+    private static boolean hasGlobalRegionScheduler() {
+        try {
+            // No parameters → empty Class<?> array
+            Bukkit.getServer()
+                    .getClass()
+                    .getMethod("getGlobalRegionScheduler");
+            return true;          // Method is present
+        } catch (NoSuchMethodException ignored) {
+            return false;         // Not running on Paper/Folia
         }
     }
 
