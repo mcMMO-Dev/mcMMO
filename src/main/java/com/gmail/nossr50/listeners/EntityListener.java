@@ -296,10 +296,6 @@ public class EntityListener implements Listener {
         // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
         // properly
 
-        if (CombatUtils.isProcessingNoInvulnDamage()) {
-            return;
-        }
-
         if (event.getEntity() instanceof ArmorStand) {
             return;
         }

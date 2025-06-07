@@ -572,7 +572,8 @@ public class FishingManager extends SkillManager {
 
             ItemUtils.spawnItem(getPlayer(), target.getLocation(), drop, ItemSpawnReason.FISHING_SHAKE_TREASURE);
             // Make it so you can shake a mob no more than 4 times.
-            CombatUtils.dealDamage(target, Math.min(Math.max(target.getMaxHealth() / 4, 1), 10), getPlayer());
+            double dmg = Math.min(Math.max(target.getMaxHealth() / 4, 1), 10);
+            CombatUtils.safeDealDamage(target, dmg, getPlayer());
             applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
         }
     }
