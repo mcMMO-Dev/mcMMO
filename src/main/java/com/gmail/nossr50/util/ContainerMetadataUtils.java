@@ -1,8 +1,6 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +17,6 @@ import java.util.UUID;
 
 import static com.gmail.nossr50.util.MetadataService.NSK_CONTAINER_UUID_LEAST_SIG;
 import static com.gmail.nossr50.util.MetadataService.NSK_CONTAINER_UUID_MOST_SIG;
-import static java.util.Objects.requireNonNull;
 
 public class ContainerMetadataUtils {
 

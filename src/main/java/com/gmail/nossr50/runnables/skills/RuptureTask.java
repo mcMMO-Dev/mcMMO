@@ -28,6 +28,9 @@ public class RuptureTask extends CancellableRunnable {
     private int damageTickTracker;
     private int animationTick;
     private final double pureTickDamage;
+    // failsafe to ensure Rupture always exits and does not run forever
+    private int totalTicks = 0;
+    private final int totalTickCeiling;
 
     /**
      * Constructor for the RuptureTask class.
@@ -41,7 +44,7 @@ public class RuptureTask extends CancellableRunnable {
         this.ruptureSource = ruptureSource;
         this.targetEntity = targetEntity;
         this.expireTick = mcMMO.p.getAdvancedConfig().getRuptureDurationSeconds(targetEntity instanceof Player) * 20;
-
+        this.totalTickCeiling = Math.min(this.expireTick, 200);
         this.ruptureTick = 0;
         this.damageTickTracker = 0;
         this.animationTick = ANIMATION_TICK_INTERVAL; //Play an animation right away
@@ -68,6 +71,14 @@ public class RuptureTask extends CancellableRunnable {
 
     @Override
     public void run() {
+        // always increment the fail-safe
+        totalTicks++;
+
+        if (totalTicks >= totalTickCeiling) {
+            this.cancel();
+            return;
+        }
+
         //Check validity
         if (targetEntity.isValid()) {
             ruptureTick += 1; //Advance rupture tick by 1.
@@ -78,7 +89,6 @@ public class RuptureTask extends CancellableRunnable {
             if (ruptureTick < expireTick) {
                 //Is it time to damage?
                 if (damageTickTracker >= DAMAGE_TICK_INTERVAL) {
-
                     damageTickTracker = 0; //Reset timer
                     if (applyRupture()) return;
 
@@ -92,8 +102,8 @@ public class RuptureTask extends CancellableRunnable {
                 endRupture();
             }
         } else {
-            targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
             this.cancel(); //Task no longer needed
+            targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         }
     }
 
@@ -152,7 +162,7 @@ public class RuptureTask extends CancellableRunnable {
         ruptureTick = 0;
     }
 
-    public void endRupture() {
+    private void endRupture() {
         targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         this.cancel(); //Task no longer needed
     }
@@ -172,6 +182,20 @@ public class RuptureTask extends CancellableRunnable {
     }
 
     @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof RuptureTask that)) return false;
+
+        return ruptureSource.equals(that.ruptureSource) && targetEntity.equals(that.targetEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ruptureSource.hashCode();
+        result = 31 * result + targetEntity.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "RuptureTask{" +
                 "ruptureSource=" + ruptureSource +
@@ -179,25 +203,10 @@ public class RuptureTask extends CancellableRunnable {
                 ", expireTick=" + expireTick +
                 ", ruptureTick=" + ruptureTick +
                 ", damageTickTracker=" + damageTickTracker +
+                ", animationTick=" + animationTick +
                 ", pureTickDamage=" + pureTickDamage +
+                ", totalTicks=" + totalTicks +
+                ", totalTickCeiling=" + totalTickCeiling +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RuptureTask that = (RuptureTask) o;
-        return expireTick == that.expireTick
-                && ruptureTick == that.ruptureTick
-                && damageTickTracker == that.damageTickTracker
-                && Double.compare(that.pureTickDamage, pureTickDamage) == 0
-                && Objects.equal(ruptureSource, that.ruptureSource) && Objects.equal(targetEntity, that.targetEntity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(ruptureSource, targetEntity, expireTick,
-                ruptureTick, damageTickTracker, pureTickDamage);
     }
 }

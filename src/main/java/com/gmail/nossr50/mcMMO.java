@@ -162,6 +162,7 @@ public class mcMMO extends JavaPlugin {
             //Folia lib plugin instance
             foliaLib = new FoliaLib(this);
             InvalidTickDelayNotifier.disableNotifications = true;
+            foliaPerformanceHack();
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
@@ -312,6 +313,21 @@ public class mcMMO extends JavaPlugin {
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PapiExpansion().register();
+        }
+    }
+
+    private void foliaPerformanceHack() {
+        // Thanks SirSalad
+        // https://github.com/CraftYourTown/mcMMO/commit/2cffd64b127678411e20f0b8f9a3e3b87a649ee8
+        try {
+            com.tcoded.folialib.impl.FoliaImplementation setScheduler
+                    = new com.tcoded.folialib.impl.FoliaImplementation(foliaLib);
+            java.lang.reflect.Field FoliaLib$scheduler = FoliaLib.class.getDeclaredField("scheduler");
+            FoliaLib$scheduler.setAccessible(true);
+            FoliaLib$scheduler.set(foliaLib, setScheduler);
+            FoliaLib$scheduler.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            getLogger().warning("Unable to apply performance tweaks to FoliaLib");
         }
     }
 
