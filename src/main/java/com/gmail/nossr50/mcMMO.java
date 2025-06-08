@@ -162,8 +162,11 @@ public class mcMMO extends JavaPlugin {
 
             //Folia lib plugin instance
             foliaLib = new FoliaLib(this);
-            InvalidTickDelayNotifier.disableNotifications = true;
-            foliaPerformanceHack();
+            foliaLib.getOptions().disableNotifications();
+            // Performance optimization
+            // This makes the scheduler behave differently between Spigot/Legacy-Paper & Folia/Modern-Paper
+            foliaLib.getOptions().disableIsValidOnNonFolia();
+
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
@@ -314,37 +317,6 @@ public class mcMMO extends JavaPlugin {
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PapiExpansion().register();
-        }
-    }
-
-    private void foliaPerformanceHack() {
-        // Spigot can't use this optimization
-        if (!hasGlobalRegionScheduler()) {
-            return;
-        }
-
-        // Thanks SirSalad
-        // https://github.com/CraftYourTown/mcMMO/commit/2cffd64b127678411e20f0b8f9a3e3b87a649ee8
-        try {
-            final FoliaImplementation setScheduler = new FoliaImplementation(foliaLib);
-            final java.lang.reflect.Field scheduler = FoliaLib.class.getDeclaredField("scheduler");
-            scheduler.setAccessible(true);
-            scheduler.set(foliaLib, setScheduler);
-            scheduler.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            getLogger().warning("Unexpected exception when attempting to apply performance tweaks to FoliaLib");
-        }
-    }
-
-    private static boolean hasGlobalRegionScheduler() {
-        try {
-            // No parameters → empty Class<?> array
-            Bukkit.getServer()
-                    .getClass()
-                    .getMethod("getGlobalRegionScheduler");
-            return true;          // Method is present
-        } catch (NoSuchMethodException ignored) {
-            return false;         // Not running on Paper/Folia
         }
     }
 
