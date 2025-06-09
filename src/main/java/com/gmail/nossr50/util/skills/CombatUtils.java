@@ -43,8 +43,50 @@ import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile
 
 public final class CombatUtils {
 
+    private static final ThreadLocal<Boolean> IN_MCMO_DAMAGE
+            = ThreadLocal.withInitial(() -> false);
+
+
+    public static void safeDealDamage(@NotNull LivingEntity target, double amount) {
+        safeDealDamage(target, amount, null);
+    }
+
+    /**
+     * Safely deals damage to a target entity, preventing recursive mcMMO damage calls.
+     *
+     * @param target The {@link LivingEntity} to damage.
+     * @param amount The amount of damage to deal.
+     * @param attacker The {@link Entity} responsible for the damage, or null if none.
+     */
+    public static void safeDealDamage(@NotNull LivingEntity target, double amount, @Nullable Entity attacker) {
+        boolean prev = IN_MCMO_DAMAGE.get();
+
+        if (prev || target.isDead()) {
+            return;
+        }
+
+        try {
+            IN_MCMO_DAMAGE.set(true);
+            if (!hasIgnoreDamageMetadata(target)) {
+                applyIgnoreDamageMetadata(target);
+            }
+
+            if (attacker != null) {
+                target.damage(amount, attacker);
+            } else {
+                target.damage(amount);
+            }
+        } finally {
+            IN_MCMO_DAMAGE.set(false);
+            if (hasIgnoreDamageMetadata(target)) {
+                removeIgnoreDamageMetadata(target);
+            }
+        }
+    }
+
     private CombatUtils() {}
 
+    @Deprecated(forRemoval = true, since = "2.2.039")
     public static boolean isDamageLikelyFromNormalCombat(@NotNull DamageCause damageCause) {
         return switch (damageCause) {
             case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE -> true;
@@ -52,6 +94,7 @@ public final class CombatUtils {
         };
     }
 
+    @Deprecated(forRemoval = true, since = "2.2.039")
     public static boolean hasWeakenedDamage(@NotNull LivingEntity livingEntity) {
         return livingEntity.hasPotionEffect(PotionEffectType.WEAKNESS);
     }
@@ -150,7 +193,10 @@ public final class CombatUtils {
         printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-    private static void processTridentCombatRanged(@NotNull Trident trident, @NotNull LivingEntity target, @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
+    private static void processTridentCombatRanged(@NotNull Trident trident,
+                                                   @NotNull LivingEntity target,
+                                                   @NotNull Player player,
+                                                   @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;
         }
@@ -620,7 +666,8 @@ public final class CombatUtils {
      * @param subSkillType the specific limit break skill for calculations
      * @return the RAW damage bonus from Limit Break which is applied before reductions
      */
-    public static int getLimitBreakDamage(@NotNull Player attacker, @NotNull LivingEntity defender, @NotNull SubSkillType subSkillType) {
+    public static int getLimitBreakDamage(@NotNull Player attacker, @NotNull LivingEntity defender,
+                                          @NotNull SubSkillType subSkillType) {
         if (defender instanceof Player playerDefender) {
             return getLimitBreakDamageAgainstQuality(attacker, subSkillType, getArmorQualityLevel(playerDefender));
         } else {
@@ -636,18 +683,20 @@ public final class CombatUtils {
      * @param armorQualityLevel Armor quality level
      * @return the RAW damage boost after its been mutated by armor quality
      */
-    public static int getLimitBreakDamageAgainstQuality(@NotNull Player attacker, @NotNull SubSkillType subSkillType, int armorQualityLevel) {
-        int rawDamageBoost = RankUtils.getRank(attacker, subSkillType);
+    public static int getLimitBreakDamageAgainstQuality(@NotNull Player attacker,
+                                                        @NotNull SubSkillType subSkillType,
+                                                        int armorQualityLevel) {
+        float rawDamageBoost = RankUtils.getRank(attacker, subSkillType);
 
         if (armorQualityLevel <= 4) {
-            rawDamageBoost *= .25; //75% Nerf
+            rawDamageBoost *= .25F; //75% Nerf
         } else if (armorQualityLevel <= 8) {
-            rawDamageBoost *= .50; //50% Nerf
+            rawDamageBoost *= .50F; //50% Nerf
         } else if (armorQualityLevel <= 12) {
-            rawDamageBoost *= .75; //25% Nerf
+            rawDamageBoost *= .75F; //25% Nerf
         }
 
-        return rawDamageBoost;
+        return (int) rawDamageBoost;
     }
 
     /**
@@ -695,9 +744,11 @@ public final class CombatUtils {
      *
      * @param target LivingEntity which to attempt to damage
      * @param damage Amount of damage to attempt to do
+     * @deprecated use {@link #safeDealDamage(LivingEntity, double, Entity)} instead
      */
+    @Deprecated(since = "2.2.039")
     public static void dealDamage(@NotNull LivingEntity target, double damage) {
-        dealDamage(target, damage, null);
+        safeDealDamage(target, damage, null);
     }
 
     /**
@@ -706,53 +757,11 @@ public final class CombatUtils {
      * @param target the entity to attempt to damage
      * @param damage Amount of damage to attempt to do
      * @param attacker the responsible entity (nullable)
+     * @deprecated use {@link #safeDealDamage(LivingEntity, double, Entity)} instead
      */
+    @Deprecated(since = "2.2.039")
     public static void dealDamage(@NotNull LivingEntity target, double damage, @Nullable Entity attacker) {
-        if (target.isDead()) {
-            return;
-        }
-        try {
-            // TODO: Check for Spigot API for DamageSource, if DamageSource is found then send out a damage() with a custom damage source
-            applyIgnoreDamageMetadata(target);
-            if (attacker != null) {
-                target.damage(damage, attacker);
-            } else {
-                target.damage(damage);
-            }
-        } finally {
-            removeIgnoreDamageMetadata(target);
-        }
-    }
-
-    private static boolean processingNoInvulnDamage;
-    public static boolean isProcessingNoInvulnDamage() {
-        return processingNoInvulnDamage;
-    }
-
-    public static void dealNoInvulnerabilityTickDamage(@NotNull LivingEntity target, double damage, @Nullable Entity attacker) {
-        if (target.isDead()) {
-            return;
-        }
-
-        // TODO: This is horrible, but there is no cleaner way to do this without potentially breaking existing code right now
-        // calling damage here is a double edged sword: On one hand, without a call, plugins won't see this properly when the entity dies,
-        // potentially mis-attributing the death cause; calling a fake event would partially fix this, but this and setting the last damage
-        // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
-        // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
-        // Snapshot current state so we can pop up properly
-        boolean wasMetaSet = hasIgnoreDamageMetadata(target);
-        boolean wasProcessing = processingNoInvulnDamage;
-        // set markers
-        processingNoInvulnDamage = true;
-        applyIgnoreDamageMetadata(target);
-        int noDamageTicks = target.getNoDamageTicks();
-        target.setNoDamageTicks(0);
-        target.damage(damage, attacker);
-        target.setNoDamageTicks(noDamageTicks);
-        if (!wasMetaSet)
-            removeIgnoreDamageMetadata(target);
-        if (!wasProcessing)
-            processingNoInvulnDamage = false;
+        safeDealDamage(target, damage, attacker);
     }
 
     public static void removeIgnoreDamageMetadata(@NotNull LivingEntity target) {
@@ -765,14 +774,6 @@ public final class CombatUtils {
 
     public static boolean hasIgnoreDamageMetadata(@NotNull LivingEntity target) {
         return target.hasMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE);
-    }
-
-    public static void dealNoInvulnerabilityTickDamageRupture(@NotNull LivingEntity target, double damage, Entity attacker, int toolTier) {
-        if (target.isDead()) {
-            return;
-        }
-
-        dealNoInvulnerabilityTickDamage(target, damage, attacker);
     }
 
     /**
@@ -826,7 +827,7 @@ public final class CombatUtils {
                     break;
             }
 
-            dealDamage(livingEntity, damageAmount, attacker);
+            safeDealDamage(livingEntity, damageAmount, attacker);
             numberOfTargets--;
         }
     }
@@ -860,7 +861,8 @@ public final class CombatUtils {
         if (target instanceof Player defender) {
             if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()
                     ||
-                    (mcMMO.p.getPartyConfig().isPartyEnabled() && mcMMO.p.getPartyManager().inSameParty(mcMMOPlayer.getPlayer(), (Player) target))) {
+                    (mcMMO.p.getPartyConfig().isPartyEnabled()
+                            && mcMMO.p.getPartyManager().inSameParty(mcMMOPlayer.getPlayer(), (Player) target))) {
                 return;
             }
 
@@ -1041,6 +1043,7 @@ public final class CombatUtils {
         MobHealthbarUtils.handleMobHealthbars(target, damage, plugin);
     }
 
+    @Deprecated(forRemoval = true, since = "2.2.039")
     public static void modifyMoveSpeed(@NotNull LivingEntity livingEntity, double multiplier) {
         AttributeInstance attributeInstance = livingEntity.getAttribute(MAPPED_MOVEMENT_SPEED);
 

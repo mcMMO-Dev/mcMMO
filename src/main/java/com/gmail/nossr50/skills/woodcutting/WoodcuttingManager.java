@@ -159,7 +159,8 @@ public class WoodcuttingManager extends SkillManager {
             double health = player.getHealth();
 
             if (health > 1) {
-                CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (health - 1)));
+                int dmg = Misc.getRandom().nextInt((int) (health - 1));
+                CombatUtils.safeDealDamage(player, dmg);
             }
 
             return;

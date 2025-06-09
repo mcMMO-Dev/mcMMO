@@ -296,10 +296,6 @@ public class EntityListener implements Listener {
         // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
         // properly
 
-        if (CombatUtils.isProcessingNoInvulnDamage()) {
-            return;
-        }
-
         if (event.getEntity() instanceof ArmorStand) {
             return;
         }
@@ -662,7 +658,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
-        LivingEntity entity = event.getEntity();
+        final LivingEntity entity = event.getEntity();
 
         // Clear metadata for Slimes/Magma Cubes after transformation events take place, otherwise small spawned slimes will not have any tags
         if (TRANSFORMABLE_ENTITIES.contains(entity.getType())) {
@@ -680,7 +676,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        LivingEntity entity = event.getEntity();
+        final LivingEntity entity = event.getEntity();
 
         if (mcMMO.getTransientEntityTracker().isTransient(entity)) {
             mcMMO.getTransientEntityTracker().killSummonAndCleanMobFlags(entity, null, false);

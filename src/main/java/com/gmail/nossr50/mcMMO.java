@@ -49,6 +49,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.FoliaImplementation;
 import com.tcoded.folialib.util.InvalidTickDelayNotifier;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -161,7 +162,11 @@ public class mcMMO extends JavaPlugin {
 
             //Folia lib plugin instance
             foliaLib = new FoliaLib(this);
-            InvalidTickDelayNotifier.disableNotifications = true;
+            foliaLib.getOptions().disableNotifications();
+            // Performance optimization
+            // This makes the scheduler behave differently between Spigot/Legacy-Paper & Folia/Modern-Paper
+            foliaLib.getOptions().disableIsValidOnNonFolia();
+
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools

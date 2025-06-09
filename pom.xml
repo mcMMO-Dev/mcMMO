@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>2.2.038-SNAPSHOT</version>
+    <version>2.2.040-SNAPSHOT</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <scm>
@@ -171,7 +171,7 @@
                             <include>net.kyori:option</include>
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>co.aikar:acf-bukkit</include>
-                            <include>com.github.technicallycoded:FoliaLib</include>
+                            <include>com.tcoded:FoliaLib</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -276,6 +276,10 @@
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>tcoded-releases</id>
+            <url>https://repo.tcoded.com/releases/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -462,9 +466,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.technicallycoded</groupId>
+            <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>dev-SNAPSHOT</version>
+            <version>0.5.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
