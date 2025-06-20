@@ -298,7 +298,7 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Diminished Returns */
     public float getDiminishedReturnsCap() {
-        return (float) config.getDouble("Dimished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
+        return (float) config.getDouble("Diminished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
     }
 
     public boolean getDiminishedReturnsEnabled() {
