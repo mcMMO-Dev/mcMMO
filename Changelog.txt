@@ -2,6 +2,8 @@ Version 2.2.040
     (Codebase) Updated Adventure Libs
     Added 'Happy_Ghast' to experience.yml for combat XP
     Added 'Ghastling' to experience.yml for combat XP
+    Updated Japanese (ja_JP) translation (Thanks ryota-abe)
+    Updated Simplified Chinese (zh_CN) locale (Thanks GhostDC)
 
 Version 2.2.039
     Added StackOverflow safeguards for abilities dealing damage in mcMMO
