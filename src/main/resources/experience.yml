@@ -609,6 +609,8 @@ Experience_Values:
             Zombie: 2.0
             Slime: 2.0
             Ghast: 3.0
+            Happy_Ghast: 1.0
+            Ghastling: 0.5
             Pig_Zombie: 3.0
             Enderman: 1.0
             Cave_Spider: 3.0

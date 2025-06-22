@@ -14,8 +14,10 @@
 
     <properties>
 <!--        <spigot.version>1.19-R0.1-SNAPSHOT</spigot.version>-->
-        <spigot.version>1.21.5-R0.1-SNAPSHOT</spigot.version>
-        <adventure.version>4.3.5-SNAPSHOT</adventure.version>
+        <spigot.version>1.21.6-R0.1-SNAPSHOT</spigot.version>
+        <kyori.adventure.version>4.23.0</kyori.adventure.version>
+        <kyori.adventure.platform.version>4.4.1-SNAPSHOT</kyori.adventure.platform.version>
+        <kyori.option.version>1.1.0</kyori.option.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -161,6 +163,7 @@
                             <include>net.kyori:adventure-platform-facet</include>
                             <include>net.kyori:adventure-platform-viaversion</include>
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
+                            <include>net.kyori:adventure-text-serializer-commons</include>
                             <include>net.kyori:adventure-text-serializer-gson</include>
                             <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>net.kyori:adventure-text-serializer-json</include>
@@ -316,67 +319,67 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-bungeecord</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json-legacy-impl</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-key</artifactId>
-            <version>4.19.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-api</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-facet</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-viaversion</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>option</artifactId>
-            <version>1.0.0</version>
+            <version>${kyori.option.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>

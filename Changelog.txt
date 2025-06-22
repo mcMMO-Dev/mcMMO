@@ -1,3 +1,8 @@
+Version 2.2.040
+    (Codebase) Updated Adventure Libs
+    Added 'Happy_Ghast' to experience.yml for combat XP
+    Added 'Ghastling' to experience.yml for combat XP
+
 Version 2.2.039
     Added StackOverflow safeguards for abilities dealing damage in mcMMO
     Improved compatibility with MythicMobs/ModelEngine
