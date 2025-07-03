@@ -162,13 +162,6 @@ public class mcMMO extends JavaPlugin {
         p = this;
     }
 
-
-    protected mcMMO(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder,
-            File file) {
-        super(loader, description, dataFolder, file);
-    }
-
-
     /**
      * Things to be run when the plugin is enabled.
      */
