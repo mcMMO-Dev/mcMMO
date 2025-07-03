@@ -58,7 +58,9 @@ public class PotionConfig extends LegacyConfigLoader {
     }
 
     enum AlchemyPotionConfigResultType {
-        LOADED, INCOMPATIBLE, ERROR
+        LOADED,
+        INCOMPATIBLE,
+        ERROR
     }
 
     /**

@@ -407,6 +407,8 @@ public class TreasureConfig extends BukkitConfig {
     }
 
     private enum DropLevelKeyConversionType {
-        LEGACY, WRONG_KEY_STANDARD, WRONG_KEY_RETRO
+        LEGACY,
+        WRONG_KEY_STANDARD,
+        WRONG_KEY_RETRO
     }
 }

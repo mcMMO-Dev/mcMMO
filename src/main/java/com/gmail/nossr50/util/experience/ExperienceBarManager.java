@@ -167,5 +167,10 @@ public class ExperienceBarManager {
         }
     }
 
-    public enum XPBarSettingTarget {SHOW, HIDE, RESET, DISABLE}
+    public enum XPBarSettingTarget {
+        SHOW,
+        HIDE,
+        RESET,
+        DISABLE
+    }
 }
