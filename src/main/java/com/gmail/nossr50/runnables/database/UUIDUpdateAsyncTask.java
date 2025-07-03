@@ -7,7 +7,6 @@ import com.gmail.nossr50.util.Misc;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,10 +43,13 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
     @Override
     public void run() {
         // First iteration
-        if (position == 0)
-            plugin.getLogger().info("Starting to check and update UUIDs, total amount of users: " + userNames.size());
+        if (position == 0) {
+            plugin.getLogger().info("Starting to check and update UUIDs, total amount of users: "
+                    + userNames.size());
+        }
 
-        List<String> batch = userNames.subList(position, Math.min(userNames.size(), position + BATCH_SIZE));
+        List<String> batch = userNames.subList(position,
+                Math.min(userNames.size(), position + BATCH_SIZE));
 
         Map<String, UUID> fetchedUUIDs = new HashMap<>();
         HttpURLConnection connection;
@@ -71,16 +73,18 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
                 case HttpURLConnection.HTTP_BAD_REQUEST:
                 case HttpURLConnection.HTTP_FORBIDDEN:
                     // Rejected, probably rate limit, just wait it out
-                    this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * HARD_LIMIT_PERIOD);
+                    this.runTaskLaterAsynchronously(plugin,
+                            Misc.TICK_CONVERSION_FACTOR * HARD_LIMIT_PERIOD);
                     return;
                 default:
                     // Unknown failure
-                    this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * RETRY_PERIOD);
+                    this.runTaskLaterAsynchronously(plugin,
+                            Misc.TICK_CONVERSION_FACTOR * RETRY_PERIOD);
                     return;
             }
 
             try (InputStream input = connection.getInputStream();
-                 InputStreamReader reader = new InputStreamReader(input)) {
+                    InputStreamReader reader = new InputStreamReader(input)) {
                 for (JsonObject jsonProfile : GSON.fromJson(reader, JsonObject[].class)) {
                     UUID id = toUUID(jsonProfile.get("id").getAsString());
                     String name = jsonProfile.get("name").getAsString();
@@ -94,18 +98,22 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
             return;
         }
 
-        if (fetchedUUIDs.size() != 0)
+        if (fetchedUUIDs.size() != 0) {
             mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs);
+        }
 
         position += batch.size();
-        plugin.getLogger().info(String.format("Conversion progress: %d/%d users", position, userNames.size()));
+        plugin.getLogger().info(String.format("Conversion progress: %d/%d users", position,
+                userNames.size()));
 
-        if (position +1 >= userNames.size()) {
+        if (position + 1 >= userNames.size()) {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
             awaiter.countDown();
             plugin.getLogger().info("UUID checks completed");
-        } else
-            this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * DELAY_PERIOD); // Schedule next batch
+        } else {
+            this.runTaskLaterAsynchronously(plugin,
+                    Misc.TICK_CONVERSION_FACTOR * DELAY_PERIOD); // Schedule next batch
+        }
     }
 
     // Bukkit runnables don't let themselves reschedule themselves, so we are a pseudo bukkit runnable.
@@ -118,7 +126,9 @@ public class UUIDUpdateAsyncTask extends CancellableRunnable {
     }
 
     private static UUID toUUID(String id) {
-        return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+        return UUID.fromString(
+                id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-"
+                        + id.substring(16, 20) + "-" + id.substring(20, 32));
     }
 
     public void waitUntilFinished() {

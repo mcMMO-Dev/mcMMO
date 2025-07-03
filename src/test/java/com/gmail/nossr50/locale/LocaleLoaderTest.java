@@ -1,15 +1,14 @@
 package com.gmail.nossr50.locale;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class LocaleLoaderTest {
 
@@ -59,7 +58,8 @@ class LocaleLoaderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"&#FF0000Te&#0000FFst", "&#FF0000Te[[RED]]st", "[[BLUE]]Te[[RED]]st", "§9Te§cst"})
+    @ValueSource(strings = {"&#FF0000Te&#0000FFst", "&#FF0000Te[[RED]]st", "[[BLUE]]Te[[RED]]st",
+            "§9Te§cst"})
     void addColorsShouldAddRedAndBlue(String testString) {
         // When
         final String result = LocaleLoader.addColors(testString);

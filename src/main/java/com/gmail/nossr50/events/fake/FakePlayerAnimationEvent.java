@@ -4,7 +4,7 @@
 //import org.bukkit.event.player.PlayerAnimationEvent;
 //import org.bukkit.event.player.PlayerAnimationType;
 //
-///**
+/// **
 // * Called when handling extra drops to avoid issues with NoCheat.
 // */
 //public class FakePlayerAnimationEvent extends PlayerAnimationEvent implements FakeEvent {

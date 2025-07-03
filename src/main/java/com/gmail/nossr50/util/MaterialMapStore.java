@@ -1,15 +1,14 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Stores hash tables for item and block names
- * This allows for better support across multiple versions of Minecraft
+ * Stores hash tables for item and block names This allows for better support across multiple
+ * versions of Minecraft
  */
 public class MaterialMapStore {
 
@@ -171,27 +170,27 @@ public class MaterialMapStore {
     }
 
     private void fillTierMap() {
-        for(String id : leatherArmor) {
+        for (String id : leatherArmor) {
             tierValue.put(id, 1);
         }
 
-        for(String id : ironArmor) {
+        for (String id : ironArmor) {
             tierValue.put(id, 2);
         }
 
-        for(String id : goldArmor) {
+        for (String id : goldArmor) {
             tierValue.put(id, 3);
         }
 
-        for(String id : chainmailArmor) {
+        for (String id : chainmailArmor) {
             tierValue.put(id, 3);
         }
 
-        for(String id : diamondArmor) {
+        for (String id : diamondArmor) {
             tierValue.put(id, 6);
         }
 
-        for(String id : netheriteArmor) {
+        for (String id : netheriteArmor) {
             tierValue.put(id, 12);
         }
     }
@@ -768,6 +767,7 @@ public class MaterialMapStore {
 
     /**
      * Checks if a Material is used for Armor
+     *
      * @param material target material
      * @return true if it is used for armor
      */
@@ -777,6 +777,7 @@ public class MaterialMapStore {
 
     /**
      * Checks if the id provided is used as armor
+     *
      * @param id target item id
      * @return true if the item id matches armor
      */
@@ -1202,7 +1203,7 @@ public class MaterialMapStore {
         abilityBlackList.add("lodestone");
         abilityBlackList.add("respawn_anchor");
     }
-    
+
     private void fillToolBlackList() {
         toolBlackList.add("chiseled_bookshelf");
         toolBlackList.add("black_bed");

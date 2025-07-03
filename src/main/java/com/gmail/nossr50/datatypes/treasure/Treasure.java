@@ -70,10 +70,16 @@ public abstract class Treasure {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Treasure treasure = (Treasure) o;
-        return xp == treasure.xp && Double.compare(treasure.dropChance, dropChance) == 0 && dropLevel == treasure.dropLevel && Objects.equal(dropProbability, treasure.dropProbability) && Objects.equal(drop, treasure.drop);
+        return xp == treasure.xp && Double.compare(treasure.dropChance, dropChance) == 0
+                && dropLevel == treasure.dropLevel && Objects.equal(dropProbability,
+                treasure.dropProbability) && Objects.equal(drop, treasure.drop);
     }
 
     @Override

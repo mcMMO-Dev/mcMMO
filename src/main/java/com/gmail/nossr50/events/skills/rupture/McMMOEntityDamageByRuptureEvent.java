@@ -8,24 +8,25 @@ import org.bukkit.event.entity.EntityEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class McMMOEntityDamageByRuptureEvent extends EntityEvent implements Cancellable {
-	private final McMMOPlayer damager;
+    private final McMMOPlayer damager;
     private final Entity damagee;
     private double damage;
     private boolean isCancelled = false;
     private static final HandlerList handlers = new HandlerList();
 
-	public McMMOEntityDamageByRuptureEvent(@NotNull McMMOPlayer damager, @NotNull Entity damagee, double damage) {
+    public McMMOEntityDamageByRuptureEvent(@NotNull McMMOPlayer damager, @NotNull Entity damagee,
+            double damage) {
         super(damagee);
-		this.damager = damager;
+        this.damager = damager;
         this.damagee = damagee;
         this.damage = damage;
-	}
+    }
 
-	@NotNull
+    @NotNull
     @Deprecated
-	public McMMOPlayer getMcMMODamager() {
-		return damager;
-	}
+    public McMMOPlayer getMcMMODamager() {
+        return damager;
+    }
 
     public McMMOPlayer getDamager() {
         return damager;

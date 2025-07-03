@@ -12,12 +12,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyCreateCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         switch (args.length) {
             case 2:
             case 3:
-                Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                final Player player = (Player) sender;
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
                 if (UserManager.getPlayer(player) == null) {
                     player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -30,15 +31,17 @@ public class PartyCreateCommand implements CommandExecutor {
                 }
 
                 // Changing parties
-                if (!mcMMO.p.getPartyManager().changeOrJoinParty(mcMMOPlayer, args[1])) {
+                if (!mcMMO.p.getPartyManager().changeOrJoinParty(mmoPlayer, args[1])) {
                     return true;
                 }
 
-                mcMMO.p.getPartyManager().createParty(mcMMOPlayer, args[1], getPassword(args));
+                mcMMO.p.getPartyManager().createParty(mmoPlayer, args[1], getPassword(args));
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "create", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "create",
+                        "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">",
+                        "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
                 return true;
         }
     }

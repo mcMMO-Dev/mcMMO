@@ -12,6 +12,5 @@ public enum ItemSpawnReason {
     UNARMED_DISARMED_ITEM, //When you disarm an opponent and they drop their weapon
     SALVAGE_ENCHANTMENT_BOOK, //When you salvage an enchanted item and get the enchantment back in book form
     SALVAGE_MATERIALS, //When you salvage an item and get materials back
-    TREE_FELLER_DISPLACED_BLOCK,
-    BONUS_DROPS, //Can be from Mining, Woodcutting, Herbalism, etc
+    TREE_FELLER_DISPLACED_BLOCK, BONUS_DROPS, //Can be from Mining, Woodcutting, Herbalism, etc
 }

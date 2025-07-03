@@ -1,11 +1,18 @@
 package com.gmail.nossr50.config.experience;
 
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getConfigEntityTypeString;
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
+
 import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.text.StringUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -13,14 +20,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.gmail.nossr50.util.text.ConfigStringUtils.getConfigEntityTypeString;
-import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
 public class ExperienceConfig extends BukkitConfig {
     private static ExperienceConfig instance;
@@ -65,7 +64,8 @@ public class ExperienceConfig extends BukkitConfig {
 
         /* Curve values */
         if (getMultiplier(FormulaType.EXPONENTIAL) <= 0) {
-            reason.add("Experience_Formula.Exponential_Values.multiplier should be greater than 0!");
+            reason.add(
+                    "Experience_Formula.Exponential_Values.multiplier should be greater than 0!");
         }
 
         if (getMultiplier(FormulaType.LINEAR) <= 0) {
@@ -108,7 +108,9 @@ public class ExperienceConfig extends BukkitConfig {
         /* Alchemy */
         for (PotionStage potionStage : PotionStage.values()) {
             if (getPotionXP(potionStage) < 0) {
-                reason.add("Experience_Values.Alchemy.Potion_Stage_" + potionStage.toNumerical() + " should be at least 0!");
+                reason.add(
+                        "Experience_Values.Alchemy.Potion_Stage_" + potionStage.toNumerical()
+                                + " should be at least 0!");
             }
         }
 
@@ -230,15 +232,20 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Curve values */
     public double getMultiplier(FormulaType type) {
-        return config.getDouble("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.multiplier");
+        return config.getDouble(
+                "Experience_Formula." + StringUtils.getCapitalized(type.toString())
+                        + "_Values.multiplier");
     }
 
     public int getBase(FormulaType type) {
-        return config.getInt("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.base");
+        return config.getInt("Experience_Formula." + StringUtils.getCapitalized(type.toString())
+                + "_Values.base");
     }
 
     public double getExponent(FormulaType type) {
-        return config.getDouble("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.exponent");
+        return config.getDouble(
+                "Experience_Formula." + StringUtils.getCapitalized(type.toString())
+                        + "_Values.exponent");
     }
 
     /* Global modifier */
@@ -278,7 +285,10 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(PrimarySkillType skill) {
-        return config.getDouble("Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(skill.toString()), 1);
+        return config.getDouble(
+                "Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(
+                        skill.toString()),
+                1);
     }
 
     /* Custom XP perk */
@@ -296,7 +306,9 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public int getDiminishedReturnsThreshold(PrimarySkillType skill) {
-        return config.getInt("Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()), 20000);
+        return config.getInt(
+                "Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()),
+                20000);
     }
 
     public int getDiminishedReturnsTimeInterval() {
@@ -323,11 +335,16 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public double getCombatXP(EntityType entity) {
-        return config.getDouble("Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(" ", "_"));
+        return config.getDouble(
+                "Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(
+                        " ", "_"));
     }
 
     public double getAnimalsXP(EntityType entity) {
-        return config.getDouble("Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(" ", "_"), getAnimalsXP());
+        return config.getDouble(
+                "Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(
+                        " ", "_"),
+                getAnimalsXP());
     }
 
     public double getAnimalsXP() {
@@ -335,16 +352,20 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean hasCombatXP(EntityType entity) {
-        return config.contains("Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(" ", "_"));
+        return config.contains(
+                "Experience_Values.Combat.Multiplier." + getConfigEntityTypeString(entity).replace(
+                        " ", "_"));
     }
 
     /* Materials  */
     private int getConfigXp(PrimarySkillType skill, Material material) {
         // prevents exploit
-        if (material == Material.LILY_PAD)
+        if (material == Material.LILY_PAD) {
             return 0;
+        }
 
-        final String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
+        final String baseString =
+                "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
         final String configPath = baseString + getMaterialConfigString(material);
         return config.getInt(configPath, 0);
     }
@@ -388,12 +409,17 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean getDoExperienceBarsAlwaysUpdateTitle() {
-        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.Enable", false) || getAddExtraDetails();
+        return config.getBoolean(
+                "Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.Enable",
+                false) || getAddExtraDetails();
     }
 
     public boolean getAddExtraDetails() {
-        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);
+        return config.getBoolean(
+                "Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails",
+                false);
     }
+
     public boolean useCombatHPCeiling() {
         return config.getBoolean("ExploitFix.Combat.XPCeiling.Enabled", true);
     }
@@ -407,15 +433,20 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) {
-        return config.getBoolean("Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString()) + ".Enable", true);
+        return config.getBoolean(
+                "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
+                        + ".Enable", true);
     }
 
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType) {
-        String colorValueFromConfig = config.getString("Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString()) + ".Color");
+        String colorValueFromConfig = config.getString(
+                "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
+                        + ".Color");
 
         for (BarColor barColor : BarColor.values()) {
-            if (barColor.toString().equalsIgnoreCase(colorValueFromConfig))
+            if (barColor.toString().equalsIgnoreCase(colorValueFromConfig)) {
                 return barColor;
+            }
         }
 
         //In case the value is invalid
@@ -423,11 +454,14 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType) {
-        String colorValueFromConfig = config.getString("Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString()) + ".BarStyle");
+        String colorValueFromConfig = config.getString(
+                "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
+                        + ".BarStyle");
 
         for (BarStyle barStyle : BarStyle.values()) {
-            if (barStyle.toString().equalsIgnoreCase(colorValueFromConfig))
+            if (barStyle.toString().equalsIgnoreCase(colorValueFromConfig)) {
                 return barStyle;
+            }
         }
 
         //In case the value is invalid
@@ -453,7 +487,8 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Alchemy */
     public double getPotionXP(PotionStage stage) {
-        return config.getDouble("Experience_Values.Alchemy.Potion_Brewing.Stage_" + stage.toNumerical(), 10D);
+        return config.getDouble(
+                "Experience_Values.Alchemy.Potion_Brewing.Stage_" + stage.toNumerical(), 10D);
     }
 
     /* Archery */
@@ -471,12 +506,15 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public double getRepairXP(MaterialType repairMaterialType) {
-        return config.getDouble("Experience_Values.Repair." + StringUtils.getCapitalized(repairMaterialType.toString()));
+        return config.getDouble(
+                "Experience_Values.Repair." + StringUtils.getCapitalized(
+                        repairMaterialType.toString()));
     }
 
     /* Taming */
     public int getTamingXP(EntityType type) {
-        return config.getInt("Experience_Values.Taming.Animal_Taming." + getConfigEntityTypeString(type));
+        return config.getInt(
+                "Experience_Values.Taming.Animal_Taming." + getConfigEntityTypeString(type));
     }
 
     public boolean preventStoneLavaFarming() {

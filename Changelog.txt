@@ -3252,7 +3252,7 @@ Version 1.5.01
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
- = Fixed bug where player didn't have a mcMMOPlayer object in AsyncPlayerChatEvent
+ = Fixed bug where player didn't have a mmoPlayer object in AsyncPlayerChatEvent
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException

@@ -10,6 +10,14 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.function.Predicate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -17,14 +25,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.*;
-import java.util.function.Predicate;
-
 public class Party {
 
-    private static final DecimalFormat percent = new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US));
+    private static final DecimalFormat percent = new DecimalFormat("##0.00%",
+            DecimalFormatSymbols.getInstance(Locale.US));
 
     private final @NotNull Predicate<CommandSender> samePartyPredicate;
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
@@ -38,14 +42,14 @@ public class Party {
     private int level;
     private float xp;
 
-    private ShareMode xpShareMode   = ShareMode.NONE;
+    private ShareMode xpShareMode = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
 
-    private boolean shareLootDrops        = true;
-    private boolean shareMiningDrops      = true;
-    private boolean shareHerbalismDrops   = true;
+    private boolean shareLootDrops = true;
+    private boolean shareMiningDrops = true;
+    private boolean shareHerbalismDrops = true;
     private boolean shareWoodcuttingDrops = true;
-    private boolean shareMiscDrops        = true;
+    private boolean shareMiscDrops = true;
 
     public Party(String name) {
         this.name = name;
@@ -89,9 +93,10 @@ public class Party {
     public List<Player> getVisibleMembers(Player player) {
         ArrayList<Player> visibleMembers = new ArrayList<>();
 
-        for(Player p : onlineMembers) {
-            if (player.canSee(p))
+        for (Player p : onlineMembers) {
+            if (player.canSee(p)) {
                 visibleMembers.add(p);
+            }
         }
 
         return visibleMembers;
@@ -201,7 +206,8 @@ public class Party {
 
     public int getXpToLevel() {
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getOnlineMembers().size() + mcMMO.p.getGeneralConfig().getPartyXpCurveMultiplier());
+        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (
+                getOnlineMembers().size() + mcMMO.p.getGeneralConfig().getPartyXpCurveMultiplier());
     }
 
     public String getXpToLevelPercentage() {
@@ -243,7 +249,8 @@ public class Party {
             Player leader = mcMMO.p.getServer().getPlayer(this.leader.getUniqueId());
 
             if (leader != null) {
-                leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
+                leader.sendMessage(
+                        LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
                 if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled()) {
                     SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
@@ -332,9 +339,10 @@ public class Party {
     }
 
     /**
-     * Makes a formatted list of party members based on the perspective of a target player
-     * Players that are hidden will be shown as offline (formatted in the same way)
-     * Party leader will be formatted a specific way as well
+     * Makes a formatted list of party members based on the perspective of a target player Players
+     * that are hidden will be shown as offline (formatted in the same way) Party leader will be
+     * formatted a specific way as well
+     *
      * @param player target player to use as POV
      * @return formatted list of party members from the POV of a player
      */
@@ -342,11 +350,12 @@ public class Party {
         StringBuilder memberList = new StringBuilder();
         List<String> coloredNames = new ArrayList<>();
 
-        for(UUID playerUUID : members.keySet()) {
+        for (UUID playerUUID : members.keySet()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
 
             if (offlinePlayer.isOnline() && player.canSee((Player) offlinePlayer)) {
-                ChatColor onlineColor = leader.getUniqueId().equals(playerUUID) ? ChatColor.GOLD : ChatColor.GREEN;
+                ChatColor onlineColor =
+                        leader.getUniqueId().equals(playerUUID) ? ChatColor.GOLD : ChatColor.GREEN;
                 coloredNames.add(onlineColor + offlinePlayer.getName());
             } else {
                 coloredNames.add(ChatColor.DARK_GRAY + members.get(playerUUID));
@@ -358,7 +367,7 @@ public class Party {
     }
 
     private void buildChatMessage(@NotNull StringBuilder stringBuilder, String @NotNull [] names) {
-        for(int i = 0; i < names.length; i++) {
+        for (int i = 0; i < names.length; i++) {
             if (i + 1 >= names.length) {
                 stringBuilder
                         .append(names[i]);
@@ -373,19 +382,20 @@ public class Party {
     /**
      * Get the near party members.
      *
-     * @param mcMMOPlayer The player to check
+     * @param mmoPlayer The player to check
      * @return the near party members
      */
-    public List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
+    public List<Player> getNearMembers(McMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
-        Party party = mcMMOPlayer.getParty();
+        Party party = mmoPlayer.getParty();
 
         if (party != null) {
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mmoPlayer.getPlayer();
             double range = mcMMO.p.getGeneralConfig().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
-                if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(),
+                        member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }

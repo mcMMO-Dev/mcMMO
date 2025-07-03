@@ -1,5 +1,7 @@
 package com.gmail.nossr50.events.skills;
 
+import static java.util.Objects.requireNonNull;
+
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.player.UserManager;
@@ -7,8 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Generic event for mcMMO skill handling.
@@ -21,7 +21,7 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
     @Deprecated(forRemoval = true, since = "2.2.010")
     protected McMMOPlayerSkillEvent(@NotNull Player player, @NotNull PrimarySkillType skill) {
         super(player);
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
         requireNonNull(mmoPlayer, "Player not found in UserManager," +
                 "contact the dev and tell them to use the constructor for" +
                 " McMMOPlayerSkillEvent(McMMOPlayer, PrimarySkillType) instead");
@@ -29,7 +29,8 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
         this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
     }
 
-    protected McMMOPlayerSkillEvent(@NotNull McMMOPlayer mmoPlayer, @NotNull PrimarySkillType primarySkillType) {
+    protected McMMOPlayerSkillEvent(@NotNull McMMOPlayer mmoPlayer,
+            @NotNull PrimarySkillType primarySkillType) {
         super(mmoPlayer.getPlayer());
         requireNonNull(mmoPlayer, "mmoPlayer cannot be null");
         requireNonNull(primarySkillType, "primarySkillType cannot be null");
@@ -51,7 +52,9 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
         return skillLevel;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
     private static final HandlerList handlers = new HandlerList();
 
     /**

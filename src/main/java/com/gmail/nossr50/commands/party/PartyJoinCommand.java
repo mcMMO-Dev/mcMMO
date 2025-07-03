@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyJoinCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         switch (args.length) {
             case 2:
             case 3:
@@ -28,21 +29,23 @@ public class PartyJoinCommand implements CommandExecutor {
                 Player target = mcMMOTarget.getPlayer();
 
                 if (!mcMMOTarget.inParty()) {
-                    sender.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
+                    sender.sendMessage(
+                            LocaleLoader.getString("Party.PlayerNotInParty", targetName));
                     return true;
                 }
 
-                Player player = (Player) sender;
+                final Player player = (Player) sender;
 
                 if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
                 Party targetParty = mcMMOTarget.getParty();
 
-                if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {
+                if (player.equals(target) || (mmoPlayer.inParty() && mmoPlayer.getParty()
+                        .equals(targetParty))) {
                     sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
                     return true;
                 }
@@ -57,21 +60,24 @@ public class PartyJoinCommand implements CommandExecutor {
                 String partyName = targetParty.getName();
 
                 // Changing parties
-                if (!mcMMO.p.getPartyManager().changeOrJoinParty(mcMMOPlayer, partyName)) {
+                if (!mcMMO.p.getPartyManager().changeOrJoinParty(mmoPlayer, partyName)) {
                     return true;
                 }
 
                 if (mcMMO.p.getPartyManager().isPartyFull(player, targetParty)) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull",
+                            targetParty.toString()));
                     return true;
                 }
 
                 player.sendMessage(LocaleLoader.getString("Commands.Party.Join", partyName));
-                mcMMO.p.getPartyManager().addToParty(mcMMOPlayer, targetParty);
+                mcMMO.p.getPartyManager().addToParty(mmoPlayer, targetParty);
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "join", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "join",
+                        "<" + LocaleLoader.getString("Commands.Usage.Player") + ">",
+                        "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
                 return true;
         }
     }

@@ -11,41 +11,42 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
+import java.util.List;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public final class ShareHandler {
-    private ShareHandler() {}
+    private ShareHandler() {
+    }
 
     /**
      * Distribute Xp amongst party members.
      *
      * @param xp Xp without party sharing
-     * @param mcMMOPlayer Player initiating the Xp gain
+     * @param mmoPlayer Player initiating the Xp gain
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
-        Party party = mcMMOPlayer.getParty();
+    public static boolean handleXpShare(float xp, McMMOPlayer mmoPlayer,
+            PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
+        Party party = mmoPlayer.getParty();
 
         if (party.getXpShareMode() != ShareMode.EQUAL) {
             return false;
         }
 
-        List<Player> nearMembers = mcMMO.p.getPartyManager().getNearVisibleMembers(mcMMOPlayer);
+        List<Player> nearMembers = mcMMO.p.getPartyManager().getNearVisibleMembers(mmoPlayer);
 
         if (nearMembers.isEmpty()) {
             return false;
         }
 
-        nearMembers.add(mcMMOPlayer.getPlayer());
+        nearMembers.add(mmoPlayer.getPlayer());
 
         int partySize = nearMembers.size();
         double shareBonus = Math.min(mcMMO.p.getGeneralConfig().getPartyShareBonusBase()
-                + (partySize * mcMMO.p.getGeneralConfig().getPartyShareBonusIncrease()),
+                        + (partySize * mcMMO.p.getGeneralConfig().getPartyShareBonusIncrease()),
                 mcMMO.p.getGeneralConfig().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
@@ -55,7 +56,9 @@ public final class ShareHandler {
                 continue;
             }
 
-            UserManager.getPlayer(member).beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason, XPGainSource.PARTY_MEMBERS);
+            UserManager.getPlayer(member)
+                    .beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason,
+                            XPGainSource.PARTY_MEMBERS);
         }
 
         return true;
@@ -65,10 +68,10 @@ public final class ShareHandler {
      * Distribute Items amongst party members.
      *
      * @param drop Item that will get shared
-     * @param mcMMOPlayer Player who picked up the item
+     * @param mmoPlayer Player who picked up the item
      * @return True if the item has been shared
      */
-    public static boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
+    public static boolean handleItemShare(Item drop, McMMOPlayer mmoPlayer) {
         ItemStack itemStack = drop.getItemStack();
         ItemShareType dropType = ItemShareType.getShareType(itemStack);
 
@@ -76,7 +79,7 @@ public final class ShareHandler {
             return false;
         }
 
-        Party party = mcMMOPlayer.getParty();
+        Party party = mmoPlayer.getParty();
 
         if (!party.sharingDrops(dropType)) {
             return false;
@@ -88,7 +91,7 @@ public final class ShareHandler {
             return false;
         }
 
-        List<Player> nearMembers = mcMMO.p.getPartyManager().getNearMembers(mcMMOPlayer);
+        List<Player> nearMembers = mcMMO.p.getPartyManager().getNearMembers(mmoPlayer);
 
         if (nearMembers.isEmpty()) {
             return false;
@@ -97,7 +100,7 @@ public final class ShareHandler {
         Player winningPlayer = null;
         ItemStack newStack = itemStack.clone();
 
-        nearMembers.add(mcMMOPlayer.getPlayer());
+        nearMembers.add(mmoPlayer.getPlayer());
         int partySize = nearMembers.size();
 
         drop.remove();
@@ -130,14 +133,16 @@ public final class ShareHandler {
 
                         if (winningPlayer != null) {
                             McMMOPlayer mcMMOWinning = UserManager.getPlayer(winningPlayer);
-                            mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
+                            mcMMOWinning.setItemShareModifier(
+                                    mcMMOWinning.getItemShareModifier() + itemWeight);
                         }
 
                         winningPlayer = member;
                     }
 
                     McMMOPlayer mcMMOTarget = UserManager.getPlayer(winningPlayer);
-                    mcMMOTarget.setItemShareModifier(mcMMOTarget.getItemShareModifier() - itemWeight);
+                    mcMMOTarget.setItemShareModifier(
+                            mcMMOTarget.getItemShareModifier() - itemWeight);
                     awardDrop(winningPlayer, newStack);
                 }
 

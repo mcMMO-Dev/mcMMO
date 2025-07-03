@@ -11,41 +11,45 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.HashMap;
 
 public class RankUtils {
     private static HashMap<String, HashMap<Integer, Integer>> subSkillRanks;
     private static int count = 0;
 
     /**
-     *
      * @param plugin plugin instance ref
-     * @param mcMMOPlayer target player
+     * @param mmoPlayer target player
      * @param primarySkillType the skill to check
      * @param newLevel the new level of this skill
      */
-    public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
-        for(SubSkillType subSkillType : mcMMO.p.getSkillTools().getSubSkills(primarySkillType)) {
-            int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
+    public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mmoPlayer,
+            PrimarySkillType primarySkillType, int newLevel) {
+        for (SubSkillType subSkillType : mcMMO.p.getSkillTools().getSubSkills(primarySkillType)) {
+            int playerRankInSkill = getRank(mmoPlayer.getPlayer(), subSkillType);
 
             HashMap<Integer, Integer> innerMap = subSkillRanks.get(subSkillType.toString());
 
             //If the skill doesn't have registered ranks gtfo
-            if (innerMap == null || innerMap.get(playerRankInSkill) == null)
+            if (innerMap == null || innerMap.get(playerRankInSkill) == null) {
                 continue;
+            }
 
             //Don't send notifications if the player lacks the permission node
-            if (!Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
+            if (!Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType)) {
                 continue;
+            }
 
             //The players level is the exact level requirement for this skill
             if (newLevel == innerMap.get(playerRankInSkill)) {
-                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
+                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(
+                        mmoPlayer, subSkillType, newLevel);
 
-                mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(mcMMOPlayer.getPlayer(), skillUnlockNotificationTask, (count * 100L));
+                mcMMO.p.getFoliaLib().getScheduler()
+                        .runAtEntityLater(mmoPlayer.getPlayer(), skillUnlockNotificationTask,
+                                (count * 100L));
 
                 count++;
             }
@@ -62,9 +66,9 @@ public class RankUtils {
     /* NEW SYSTEM */
     private static void addRanks(AbstractSubSkill abstractSubSkill) {
         //Fill out the rank array
-        for(int i = 0; i < abstractSubSkill.getNumRanks(); i++) {
+        for (int i = 0; i < abstractSubSkill.getNumRanks(); i++) {
             //This adds the highest ranks first
-            addRank(abstractSubSkill, abstractSubSkill.getNumRanks()-i);
+            addRank(abstractSubSkill, abstractSubSkill.getNumRanks() - i);
 
             //TODO: Remove debug code
             /*System.out.println("DEBUG: Adding rank "+(numRanks-i)+" to "+subSkillType.toString());*/
@@ -73,9 +77,9 @@ public class RankUtils {
 
     private static void addRanks(SubSkillType subSkillType) {
         //Fill out the rank array
-        for(int i = 0; i < subSkillType.getNumRanks(); i++) {
+        for (int i = 0; i < subSkillType.getNumRanks(); i++) {
             //This adds the highest ranks first
-            addRank(subSkillType, subSkillType.getNumRanks()-i);
+            addRank(subSkillType, subSkillType.getNumRanks() - i);
 
             //TODO: Remove debug code
             /*System.out.println("DEBUG: Adding rank "+(numRanks-i)+" to "+subSkillType.toString());*/
@@ -86,17 +90,18 @@ public class RankUtils {
      * Populates the ranks for every skill we know about
      */
     public static void populateRanks() {
-        for(SubSkillType subSkillType : SubSkillType.values()) {
+        for (SubSkillType subSkillType : SubSkillType.values()) {
             addRanks(subSkillType);
         }
 
-        for(AbstractSubSkill abstractSubSkill : InteractionManager.getSubSkillList()) {
+        for (AbstractSubSkill abstractSubSkill : InteractionManager.getSubSkillList()) {
             addRanks(abstractSubSkill);
         }
     }
 
     /**
      * Returns whether the player has unlocked the first rank in target subskill
+     *
      * @param player the player
      * @param subSkillType the target subskill
      * @return true if the player has at least one rank in the skill
@@ -110,6 +115,7 @@ public class RankUtils {
 
     /**
      * Returns whether the player has unlocked the first rank in target subskill
+     *
      * @param player the player
      * @param abstractSubSkill the target subskill
      * @return true if the player has at least one rank in the skill
@@ -123,6 +129,7 @@ public class RankUtils {
 
     /**
      * Returns whether the player has reached the specified rank in target subskill
+     *
      * @param rank the target rank
      * @param player the player
      * @param subSkillType the target subskill
@@ -134,20 +141,24 @@ public class RankUtils {
 
     /**
      * Returns whether the player has reached the specified rank in target subskill
+     *
      * @param rank the target rank
      * @param player the player
      * @param abstractSubSkill the target subskill
      * @return true if the player is at least that rank in this subskill
      */
-    public static boolean hasReachedRank(int rank, Player player, AbstractSubSkill abstractSubSkill) {
+    public static boolean hasReachedRank(int rank, Player player,
+            AbstractSubSkill abstractSubSkill) {
         return getRank(player, abstractSubSkill) >= rank;
     }
 
     /**
      * Gets the current rank of the subskill for the player
+     *
      * @param mmoPlayer The player in question
      * @param subSkillType Target subskill
-     * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
+     * @return The rank the player currently has achieved in this skill. -1 for skills without
+     * ranks.
      */
     public static int getRank(McMMOPlayer mmoPlayer, SubSkillType subSkillType) {
         return getRank(mmoPlayer.getPlayer(), subSkillType);
@@ -155,44 +166,53 @@ public class RankUtils {
 
     /**
      * Gets the current rank of the subskill for the player
+     *
      * @param player The player in question
      * @param subSkillType Target subskill
-     * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
+     * @return The rank the player currently has achieved in this skill. -1 for skills without
+     * ranks.
      */
     public static int getRank(Player player, SubSkillType subSkillType) {
         String skillName = subSkillType.toString();
         int numRanks = subSkillType.getNumRanks();
 
-        if (subSkillRanks == null)
+        if (subSkillRanks == null) {
             subSkillRanks = new HashMap<>();
+        }
 
-        if (numRanks == 0)
+        if (numRanks == 0) {
             return -1; //-1 Means the skill doesn't have ranks
+        }
 
-        if (subSkillRanks.get(skillName) == null && numRanks > 0)
+        if (subSkillRanks.get(skillName) == null && numRanks > 0) {
             addRanks(subSkillType);
+        }
 
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if (UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null) {
             return 0;
+        }
 
         //Skill level of parent skill
-        int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
+        int currentSkillLevel = UserManager.getPlayer(player)
+                .getSkillLevel(subSkillType.getParentSkill());
 
-        for(int i = 0; i < numRanks; i++) {
+        for (int i = 0; i < numRanks; i++) {
             //Compare against the highest to lowest rank in that order
-            int rank = numRanks-i;
+            int rank = numRanks - i;
             int unlockLevel = getRankUnlockLevel(subSkillType, rank);
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
-            if (rank == 0)
+            if (rank == 0) {
                 return 0;
+            }
 
             //True if our skill level can unlock the current rank
-            if (currentSkillLevel >= unlockLevel)
+            if (currentSkillLevel >= unlockLevel) {
                 return rank;
+            }
         }
 
         return 0; //We should never reach this
@@ -200,44 +220,53 @@ public class RankUtils {
 
     /**
      * Gets the current rank of the subskill for the player
+     *
      * @param player The player in question
      * @param abstractSubSkill Target subskill
-     * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
+     * @return The rank the player currently has achieved in this skill. -1 for skills without
+     * ranks.
      */
     public static int getRank(Player player, AbstractSubSkill abstractSubSkill) {
         String skillName = abstractSubSkill.getConfigKeyName();
         int numRanks = abstractSubSkill.getNumRanks();
 
-        if (subSkillRanks == null)
+        if (subSkillRanks == null) {
             subSkillRanks = new HashMap<>();
+        }
 
-        if (numRanks == 0)
+        if (numRanks == 0) {
             return -1; //-1 Means the skill doesn't have ranks
+        }
 
-        if (subSkillRanks.get(skillName) == null && numRanks > 0)
+        if (subSkillRanks.get(skillName) == null && numRanks > 0) {
             addRanks(abstractSubSkill);
+        }
 
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if (UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null) {
             return 0;
+        }
 
         //Skill level of parent skill
-        int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
+        int currentSkillLevel = UserManager.getPlayer(player)
+                .getSkillLevel(abstractSubSkill.getPrimarySkill());
 
-        for(int i = 0; i < numRanks; i++) {
+        for (int i = 0; i < numRanks; i++) {
             //Compare against the highest to lowest rank in that order
-            int rank = numRanks-i;
+            int rank = numRanks - i;
             int unlockLevel = getRankUnlockLevel(abstractSubSkill, rank);
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
-            if (rank == 0)
+            if (rank == 0) {
                 return 0;
+            }
 
             //True if our skill level can unlock the current rank
-            if (currentSkillLevel >= unlockLevel)
+            if (currentSkillLevel >= unlockLevel) {
                 return rank;
+            }
         }
 
         return 0; //We should never reach this
@@ -245,6 +274,7 @@ public class RankUtils {
 
     /**
      * Adds ranks to our map
+     *
      * @param abstractSubSkill The subskill to add ranks for
      * @param rank The rank to add
      */
@@ -266,14 +296,16 @@ public class RankUtils {
     }
 
     private static void initMaps(String s) {
-        if (subSkillRanks == null)
+        if (subSkillRanks == null) {
             subSkillRanks = new HashMap<>();
+        }
 
         subSkillRanks.computeIfAbsent(s, k -> new HashMap<>());
     }
 
     /**
      * Gets the unlock level for a specific rank in a subskill
+     *
      * @param subSkillType The target subskill
      * @param rank The target rank
      * @return The level at which this rank unlocks
@@ -288,6 +320,7 @@ public class RankUtils {
 
     /**
      * Get the level at which a skill is unlocked for a player (this is the first rank of a skill)
+     *
      * @param subSkillType target subskill
      * @return The unlock requirements for rank 1 in this skill
      */
@@ -297,6 +330,7 @@ public class RankUtils {
 
     /**
      * Get the level at which a skill is unlocked for a player (this is the first rank of a skill)
+     *
      * @param abstractSubSkill target subskill
      * @return The unlock requirements for rank 1 in this skill
      */
@@ -306,6 +340,7 @@ public class RankUtils {
 
     /**
      * Get the highest rank of a subskill
+     *
      * @param subSkillType target subskill
      * @return the last rank of a subskill
      */
@@ -319,6 +354,7 @@ public class RankUtils {
 
     /**
      * Get the highest rank of a subskill
+     *
      * @param abstractSubSkill target subskill
      * @return the last rank of a subskill
      */

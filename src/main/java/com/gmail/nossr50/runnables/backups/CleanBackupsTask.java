@@ -3,15 +3,20 @@ package com.gmail.nossr50.runnables.backups;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.LogUtils;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class CleanBackupsTask extends CancellableRunnable {
-    private static final String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;
+    private static final String BACKUP_DIRECTORY =
+            mcMMO.getMainDirectory() + "backup" + File.separator;
     private static final File BACKUP_DIR = new File(BACKUP_DIRECTORY);
 
     @Override
@@ -38,7 +43,8 @@ public class CleanBackupsTask extends CancellableRunnable {
             Date date = getDate(fileName.split("[.]")[0]);
 
             if (!fileName.contains(".zip") || date == null) {
-                LogUtils.debug(mcMMO.p.getLogger(), "Could not determine date for file: " + fileName);
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "Could not determine date for file: " + fileName);
                 continue;
             }
 
@@ -51,14 +57,17 @@ public class CleanBackupsTask extends CancellableRunnable {
             if (isPast24Hours(date) && mcMMO.p.getGeneralConfig().getKeepLast24Hours()) {
                 // Keep all files from the last 24 hours
                 continue;
-            } else if (isLastWeek(date) && !savedDays.contains(dayOfWeek) && mcMMO.p.getGeneralConfig().getKeepDailyLastWeek()) {
+            } else if (isLastWeek(date) && !savedDays.contains(dayOfWeek)
+                    && mcMMO.p.getGeneralConfig().getKeepDailyLastWeek()) {
                 // Keep daily backups of the past week
                 savedDays.add(dayOfWeek);
                 continue;
             } else {
-                List<Integer> savedWeeks = savedYearsWeeks.computeIfAbsent(year, k -> new ArrayList<>());
+                List<Integer> savedWeeks = savedYearsWeeks.computeIfAbsent(year,
+                        k -> new ArrayList<>());
 
-                if (!savedWeeks.contains(weekOfYear) && mcMMO.p.getGeneralConfig().getKeepWeeklyPastMonth()) {
+                if (!savedWeeks.contains(weekOfYear) && mcMMO.p.getGeneralConfig()
+                        .getKeepWeeklyPastMonth()) {
                     // Keep one backup of each week
                     savedWeeks.add(weekOfYear);
                     continue;
@@ -73,7 +82,9 @@ public class CleanBackupsTask extends CancellableRunnable {
             return;
         }
 
-        LogUtils.debug(mcMMO.p.getLogger(), "Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal + " files.");
+        LogUtils.debug(mcMMO.p.getLogger(),
+                "Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal
+                        + " files.");
 
         for (File file : toDelete) {
             if (file.delete()) {
@@ -86,11 +97,11 @@ public class CleanBackupsTask extends CancellableRunnable {
      * Check if date is within last 24 hours
      *
      * @param date date to check
-     *
      * @return true is date is within last 24 hours, false if otherwise
      */
     private boolean isPast24Hours(Date date) {
-        Date modifiedDate = new Date(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS));
+        Date modifiedDate = new Date(
+                System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS));
         return date.after(modifiedDate);
     }
 
@@ -98,11 +109,11 @@ public class CleanBackupsTask extends CancellableRunnable {
      * Check if date is within the last week
      *
      * @param date date to check
-     *
      * @return true is date is within the last week, false if otherwise
      */
     private boolean isLastWeek(Date date) {
-        Date modifiedDate = new Date(System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(7, TimeUnit.DAYS));
+        Date modifiedDate = new Date(
+                System.currentTimeMillis() - TimeUnit.MILLISECONDS.convert(7, TimeUnit.DAYS));
         return date.after(modifiedDate);
     }
 
@@ -112,8 +123,7 @@ public class CleanBackupsTask extends CancellableRunnable {
 
         try {
             date = dateFormat.parse(fileName);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             return null;
         }
 

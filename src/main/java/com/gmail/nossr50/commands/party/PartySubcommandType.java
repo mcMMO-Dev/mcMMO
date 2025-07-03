@@ -34,9 +34,11 @@ public enum PartySubcommandType {
             return QUIT;
         } else if (commandName.equalsIgnoreCase("leader")) {
             return OWNER;
-        } else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase("shareexp") || commandName.equalsIgnoreCase("sharexp")) {
+        } else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase(
+                "shareexp") || commandName.equalsIgnoreCase("sharexp")) {
             return XPSHARE;
-        } else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase("shareitems")) {
+        } else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase(
+                "shareitems")) {
             return ITEMSHARE;
         } else if (commandName.equalsIgnoreCase("ally")) {
             return ALLIANCE;

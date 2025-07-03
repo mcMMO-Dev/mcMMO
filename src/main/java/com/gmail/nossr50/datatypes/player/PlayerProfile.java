@@ -11,14 +11,13 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.DelayQueue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerProfile {
     private final String playerName;
@@ -33,14 +32,19 @@ public class PlayerProfile {
     private @Nullable Long lastLogin;
 
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
-    private final Map<UniqueDataType, Integer> uniquePlayerData = new EnumMap<>(UniqueDataType.class); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private final Map<PrimarySkillType, Integer> skills = new EnumMap<>(
+            PrimarySkillType.class);   // Skill & Level
+    private final Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(
+            PrimarySkillType.class);     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS = new EnumMap<>(
+            SuperAbilityType.class); // Ability & Cooldown
+    private final Map<UniqueDataType, Integer> uniquePlayerData = new EnumMap<>(
+            UniqueDataType.class); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for diminished returns
     private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
-    private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<>(
+            PrimarySkillType.class);
 
     @Deprecated
     public PlayerProfile(String playerName) {
@@ -89,9 +93,9 @@ public class PlayerProfile {
     }
 
     public PlayerProfile(@NotNull String playerName, @Nullable UUID uuid,
-                         Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData,
-                         Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown,
-                         Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
+            Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData,
+            Map<SuperAbilityType, Integer> cooldownData, int scoreboardTipsShown,
+            Map<UniqueDataType, Integer> uniqueProfileData, @Nullable Long lastLogin) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.scoreboardTipsShown = scoreboardTipsShown;
@@ -103,8 +107,9 @@ public class PlayerProfile {
 
         loaded = true;
 
-        if (lastLogin != null)
+        if (lastLogin != null) {
             this.lastLogin = lastLogin;
+        }
     }
 
     public void scheduleAsyncSave() {
@@ -112,7 +117,8 @@ public class PlayerProfile {
     }
 
     public void scheduleAsyncSaveDelay() {
-        mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileSaveTask(this, false), 20);
+        mcMMO.p.getFoliaLib().getScheduler()
+                .runLaterAsync(new PlayerProfileSaveTask(this, false), 20);
     }
 
     @Deprecated
@@ -127,29 +133,34 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData), lastLogin);
+        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills),
+                ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS),
+                scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData), lastLogin);
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
-            mcMMO.p.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
+            mcMMO.p.getLogger()
+                    .severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
 
             if (saveAttempts > 0) {
-                mcMMO.p.getLogger().severe("Attempted to save profile for player "+getPlayerName()
-                        + " resulted in failure. "+saveAttempts+" have been made so far.");
+                mcMMO.p.getLogger().severe("Attempted to save profile for player " + getPlayerName()
+                        + " resulted in failure. " + saveAttempts + " have been made so far.");
             }
 
             if (saveAttempts < 10) {
                 saveAttempts++;
 
                 //Back out of async saving if we detect a server shutdown, this is not always going to be caught
-                if (mcMMO.isServerShutdownExecuted() || useSync)
-                    mcMMO.p.getFoliaLib().getScheduler().runNextTick(new PlayerProfileSaveTask(this, true));
-                else
+                if (mcMMO.isServerShutdownExecuted() || useSync) {
+                    mcMMO.p.getFoliaLib().getScheduler()
+                            .runNextTick(new PlayerProfileSaveTask(this, true));
+                } else {
                     scheduleAsyncSave();
+                }
 
             } else {
                 mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
-                        +getPlayerName()+" numerous times." +
+                        + getPlayerName() + " numerous times." +
                         " mcMMO will now stop attempting to save this profile." +
                         " Check your console for errors and inspect your DB for issues.");
             }
@@ -160,9 +171,12 @@ public class PlayerProfile {
     }
 
     /**
-     * Get this users last login, will return current java.lang.System#currentTimeMillis() if it doesn't exist
+     * Get this users last login, will return current java.lang.System#currentTimeMillis() if it
+     * doesn't exist
+     *
      * @return the last login
-     * @deprecated This is only function for FlatFileDB atm, and it's only here for unit testing right now
+     * @deprecated This is only function for FlatFileDB atm, and it's only here for unit testing
+     * right now
      */
     public @NotNull Long getLastLogin() {
         return Objects.requireNonNullElse(lastLogin, -1L);
@@ -215,7 +229,9 @@ public class PlayerProfile {
      * Cooldowns
      */
 
-    public int getChimaerWingDATS() { return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);}
+    public int getChimaerWingDATS() {
+        return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);
+    }
 
     protected void setChimaeraWingDATS(int DATS) {
         markProfileDirty();
@@ -227,7 +243,9 @@ public class PlayerProfile {
         uniquePlayerData.put(uniqueDataType, newData);
     }
 
-    public long getUniqueData(UniqueDataType uniqueDataType) { return uniquePlayerData.get(uniqueDataType); }
+    public long getUniqueData(UniqueDataType uniqueDataType) {
+        return uniquePlayerData.get(uniqueDataType);
+    }
 
     /**
      * Get the current deactivation timestamp of an ability.
@@ -341,8 +359,9 @@ public class PlayerProfile {
         markProfileDirty();
 
         //Don't allow levels to be negative
-        if (level < 0)
+        if (level < 0) {
             level = 0;
+        }
 
         skills.put(skill, level);
         skillsXp.put(skill, 0F);
@@ -380,8 +399,7 @@ public class PlayerProfile {
     }
 
     /**
-     * Get the registered amount of experience gained
-     * This is used for diminished XP returns
+     * Get the registered amount of experience gained This is used for diminished XP returns
      *
      * @return xp Experience amount registered
      */
@@ -396,8 +414,7 @@ public class PlayerProfile {
     }
 
     /**
-     * Register an experience gain
-     * This is used for diminished XP returns
+     * Register an experience gain This is used for diminished XP returns
      *
      * @param primarySkillType Skill being used
      * @param xp Experience amount to add
@@ -408,13 +425,13 @@ public class PlayerProfile {
     }
 
     /**
-     * Remove experience gains older than a given time
-     * This is used for diminished XP returns
+     * Remove experience gains older than a given time This is used for diminished XP returns
      */
     public void purgeExpiredXpGains() {
         SkillXpGain gain;
         while ((gain = gainedSkillsXp.poll()) != null) {
-            rollingSkillsXp.put(gain.getSkill(), getRegisteredXpGain(gain.getSkill()) - gain.getXp());
+            rollingSkillsXp.put(gain.getSkill(),
+                    getRegisteredXpGain(gain.getSkill()) - gain.getXp());
         }
     }
 
@@ -429,18 +446,21 @@ public class PlayerProfile {
             return 0;
         }
 
-        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
+        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled())
+                ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
 
         return mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType);
     }
 
-    private int getChildSkillLevel(@NotNull PrimarySkillType primarySkillType) throws IllegalArgumentException {
+    private int getChildSkillLevel(@NotNull PrimarySkillType primarySkillType)
+            throws IllegalArgumentException {
         if (!SkillTools.isChildSkill(primarySkillType)) {
             throw new IllegalArgumentException(primarySkillType + " is not a child skill!");
         }
 
-        ImmutableList<PrimarySkillType> parents = mcMMO.p.getSkillTools().getChildSkillParents(primarySkillType);
+        ImmutableList<PrimarySkillType> parents = mcMMO.p.getSkillTools()
+                .getChildSkillParents(primarySkillType);
         int sum = 0;
 
         for (PrimarySkillType parent : parents) {

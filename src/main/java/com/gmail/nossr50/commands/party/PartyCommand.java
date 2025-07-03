@@ -9,6 +9,10 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,15 +21,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class PartyCommand implements TabExecutor {
     private final List<String> PARTY_SUBCOMMANDS;
     private final List<String> XPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
-    private final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
+    private final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random",
+            "loot", "mining", "herbalism", "woodcutting", "misc");
     private final CommandExecutor partyJoinCommand;
     private final CommandExecutor partyAcceptCommand;
     private final CommandExecutor partyCreateCommand;
@@ -43,24 +43,25 @@ public class PartyCommand implements TabExecutor {
     private final CommandExecutor partyHelpCommand;
     private final CommandExecutor partyTeleportCommand;
     private final CommandExecutor partyAllianceCommand;
+
     public PartyCommand() {
-        partyJoinCommand           = new PartyJoinCommand();
-        partyAcceptCommand         = new PartyAcceptCommand();
-        partyCreateCommand         = new PartyCreateCommand();
-        partyQuitCommand           = new PartyQuitCommand();
-        partyXpShareCommand        = new PartyXpShareCommand();
-        partyItemShareCommand      = new PartyItemShareCommand();
-        partyInviteCommand         = new PartyInviteCommand();
-        partyKickCommand           = new PartyKickCommand();
-        partyDisbandCommand        = new PartyDisbandCommand();
-        partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
-        partyLockCommand           = new PartyLockCommand();
+        partyJoinCommand = new PartyJoinCommand();
+        partyAcceptCommand = new PartyAcceptCommand();
+        partyCreateCommand = new PartyCreateCommand();
+        partyQuitCommand = new PartyQuitCommand();
+        partyXpShareCommand = new PartyXpShareCommand();
+        partyItemShareCommand = new PartyItemShareCommand();
+        partyInviteCommand = new PartyInviteCommand();
+        partyKickCommand = new PartyKickCommand();
+        partyDisbandCommand = new PartyDisbandCommand();
+        partyChangeOwnerCommand = new PartyChangeOwnerCommand();
+        partyLockCommand = new PartyLockCommand();
         partyChangePasswordCommand = new PartyChangePasswordCommand();
-        partyRenameCommand         = new PartyRenameCommand();
-        partyInfoCommand           = new PartyInfoCommand();
-        partyHelpCommand           = new PartyHelpCommand();
-        partyTeleportCommand       = new PtpCommand();
-        partyAllianceCommand       = new PartyAllianceCommand();
+        partyRenameCommand = new PartyRenameCommand();
+        partyInfoCommand = new PartyInfoCommand();
+        partyHelpCommand = new PartyHelpCommand();
+        partyTeleportCommand = new PtpCommand();
+        partyAllianceCommand = new PartyAllianceCommand();
 
         ArrayList<String> subcommands = new ArrayList<>();
 
@@ -73,7 +74,8 @@ public class PartyCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -83,21 +85,20 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
+        final Player player = (Player) sender;
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        if (mcMMOPlayer == null) {
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if (mmoPlayer == null) {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-
         if (args.length < 1) {
-            if (!mcMMOPlayer.inParty()) {
+            if (!mmoPlayer.inParty()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return printUsage(player);
             }
@@ -112,7 +113,8 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Can't use this for lock/unlock since they're handled by the same command
-        if (subcommand != PartySubcommandType.LOCK && subcommand != PartySubcommandType.UNLOCK && !Permissions.partySubcommand(sender, subcommand)) {
+        if (subcommand != PartySubcommandType.LOCK && subcommand != PartySubcommandType.UNLOCK
+                && !Permissions.partySubcommand(sender, subcommand)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
@@ -131,7 +133,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Party member commands
-        if (!mcMMOPlayer.inParty()) {
+        if (!mmoPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return printUsage(player);
         }
@@ -150,7 +152,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Party leader commands
-        if (!mcMMOPlayer.getParty().getLeader().getUniqueId().equals(player.getUniqueId())) {
+        if (!mmoPlayer.getParty().getLeader().getUniqueId().equals(player.getUniqueId())) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }
@@ -170,10 +172,12 @@ public class PartyCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], PARTY_SUBCOMMANDS, new ArrayList<>(PARTY_SUBCOMMANDS.size()));
+                return StringUtil.copyPartialMatches(args[0], PARTY_SUBCOMMANDS,
+                        new ArrayList<>(PARTY_SUBCOMMANDS.size()));
             case 2:
                 PartySubcommandType subcommand = PartySubcommandType.getSubcommand(args[0]);
 
@@ -188,36 +192,46 @@ public class PartyCommand implements TabExecutor {
                     case INVITE:
                     case KICK:
                     case OWNER:
-                        return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));
+                        return StringUtil.copyPartialMatches(args[1], playerNames,
+                                new ArrayList<>(playerNames.size()));
                     case XPSHARE:
-                        return StringUtil.copyPartialMatches(args[1], XPSHARE_COMPLETIONS, new ArrayList<>(XPSHARE_COMPLETIONS.size()));
+                        return StringUtil.copyPartialMatches(args[1], XPSHARE_COMPLETIONS,
+                                new ArrayList<>(XPSHARE_COMPLETIONS.size()));
                     case ITEMSHARE:
-                        return StringUtil.copyPartialMatches(args[1], ITEMSHARE_COMPLETIONS, new ArrayList<>(ITEMSHARE_COMPLETIONS.size()));
+                        return StringUtil.copyPartialMatches(args[1], ITEMSHARE_COMPLETIONS,
+                                new ArrayList<>(ITEMSHARE_COMPLETIONS.size()));
                     case LOCK:
                     case CHAT:
-                        return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                        return StringUtil.copyPartialMatches(args[1],
+                                CommandUtils.TRUE_FALSE_OPTIONS,
+                                new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
                     case PASSWORD:
-                        return StringUtil.copyPartialMatches(args[1], CommandUtils.RESET_OPTIONS, new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
+                        return StringUtil.copyPartialMatches(args[1], CommandUtils.RESET_OPTIONS,
+                                new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
                     case TELEPORT:
-                        List<String> matches = StringUtil.copyPartialMatches(args[1], PtpCommand.TELEPORT_SUBCOMMANDS, new ArrayList<>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
+                        List<String> matches = StringUtil.copyPartialMatches(args[1],
+                                PtpCommand.TELEPORT_SUBCOMMANDS,
+                                new ArrayList<>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
 
                         if (matches.isEmpty()) {
-                            Player player = (Player) sender;
-                            final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                            final Player player = (Player) sender;
+                            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
                             //Not Loaded
-                            if (mcMMOPlayer == null) {
+                            if (mmoPlayer == null) {
                                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }
 
-                            if (mcMMOPlayer.getParty() == null)
+                            if (mmoPlayer.getParty() == null) {
                                 return ImmutableList.of();
+                            }
 
-                            final Party party = mcMMOPlayer.getParty();
+                            final Party party = mmoPlayer.getParty();
 
                             playerNames = party.getOnlinePlayerNames(player);
-                            return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));
+                            return StringUtil.copyPartialMatches(args[1], playerNames,
+                                    new ArrayList<>(playerNames.size()));
                         }
 
                         return matches;
@@ -225,8 +239,10 @@ public class PartyCommand implements TabExecutor {
                         return ImmutableList.of();
                 }
             case 3:
-                if (PartySubcommandType.getSubcommand(args[0]) == PartySubcommandType.ITEMSHARE && isItemShareCategory(args[1])) {
-                    return StringUtil.copyPartialMatches(args[2], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                if (PartySubcommandType.getSubcommand(args[0]) == PartySubcommandType.ITEMSHARE
+                        && isItemShareCategory(args[1])) {
+                    return StringUtil.copyPartialMatches(args[2], CommandUtils.TRUE_FALSE_OPTIONS,
+                            new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
                 }
 
                 return ImmutableList.of();
@@ -247,7 +263,9 @@ public class PartyCommand implements TabExecutor {
     }
 
     private boolean isItemShareCategory(String category) {
-        return category.equalsIgnoreCase("loot") || category.equalsIgnoreCase("mining") || category.equalsIgnoreCase("herbalism") || category.equalsIgnoreCase("woodcutting") || category.equalsIgnoreCase("misc");
+        return category.equalsIgnoreCase("loot") || category.equalsIgnoreCase("mining")
+                || category.equalsIgnoreCase("herbalism") || category.equalsIgnoreCase(
+                "woodcutting") || category.equalsIgnoreCase("misc");
     }
 }
 

@@ -20,7 +20,8 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
     private final ItemSpawnReason itemSpawnReason;
     private final Player player;
 
-    public McMMOItemSpawnEvent(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason, @Nullable Player player) {
+    public McMMOItemSpawnEvent(@NotNull Location location, @NotNull ItemStack itemStack,
+            @NotNull ItemSpawnReason itemSpawnReason, @Nullable Player player) {
         this.location = location;
         this.itemStack = itemStack;
         this.itemSpawnReason = itemSpawnReason;
@@ -29,8 +30,8 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
     }
 
     /**
-     * Get the associated player
-     * This can be null
+     * Get the associated player This can be null
+     *
      * @return the associated player if one exists null otherwise
      */
     public @Nullable Player getPlayer() {
@@ -39,8 +40,9 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
 
     /**
      * The reason an item is being spawned by mcMMO
-     * @see ItemSpawnReason
+     *
      * @return the item drop reason
+     * @see ItemSpawnReason
      */
     public ItemSpawnReason getItemSpawnReason() {
         return itemSpawnReason;
@@ -74,7 +76,9 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
         this.itemStack = itemStack;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -85,7 +89,9 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
     private static final @NotNull HandlerList handlers = new HandlerList();
 
     @Override

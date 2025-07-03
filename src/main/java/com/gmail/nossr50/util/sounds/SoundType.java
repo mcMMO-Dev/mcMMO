@@ -20,7 +20,7 @@ public enum SoundType {
     TIRED;
 
     public boolean usesCustomPitch() {
-        switch(this){
+        switch (this) {
             case POP:
             case FIZZ:
                 return true;

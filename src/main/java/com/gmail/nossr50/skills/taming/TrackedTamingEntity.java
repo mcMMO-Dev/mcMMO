@@ -4,11 +4,10 @@ import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.Misc;
+import java.util.UUID;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 public class TrackedTamingEntity extends CancellableRunnable {
     private final @NotNull LivingEntity livingEntity;
@@ -16,14 +15,16 @@ public class TrackedTamingEntity extends CancellableRunnable {
     private final @NotNull Player player;
     private final @NotNull UUID playerUUID;
 
-    public TrackedTamingEntity(@NotNull LivingEntity livingEntity, @NotNull CallOfTheWildType callOfTheWildType,
-                               @NotNull Player player) {
+    public TrackedTamingEntity(@NotNull LivingEntity livingEntity,
+            @NotNull CallOfTheWildType callOfTheWildType,
+            @NotNull Player player) {
         this.player = player;
         this.playerUUID = player.getUniqueId();
         this.callOfTheWildType = callOfTheWildType;
         this.livingEntity = livingEntity;
 
-        int tamingCOTWLength = mcMMO.p.getGeneralConfig().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
+        int tamingCOTWLength = mcMMO.p.getGeneralConfig()
+                .getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
 
         if (tamingCOTWLength > 0) {
             int length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;
@@ -33,7 +34,8 @@ public class TrackedTamingEntity extends CancellableRunnable {
 
     @Override
     public void run() {
-        mcMMO.getTransientEntityTracker().killSummonAndCleanMobFlags(this.getLivingEntity(), player, true);
+        mcMMO.getTransientEntityTracker()
+                .killSummonAndCleanMobFlags(this.getLivingEntity(), player, true);
         mcMMO.getTransientEntityTracker().removeSummonFromTracker(playerUUID, this);
         this.cancel();
     }

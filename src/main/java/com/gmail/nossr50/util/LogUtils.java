@@ -1,8 +1,7 @@
 package com.gmail.nossr50.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.logging.Logger;
+import org.jetbrains.annotations.NotNull;
 
 public class LogUtils {
 

@@ -37,8 +37,8 @@
 //            LivingEntity target = containerEntry.getKey();
 //            int toolTier = containerEntry.getValue().toolTier;
 //
-////            String debugMessage = "";
-////            debugMessage += ChatColor.GOLD + "Target ["+target.getName()+"]: " + ChatColor.RESET;
+/// /            String debugMessage = ""; /            debugMessage += ChatColor.GOLD + "Target
+/// ["+target.getName()+"]: " + ChatColor.RESET;
 //
 ////            debugMessage+="RemainingTicks=["+containerEntry.getValue().bleedTicks+"], ";
 //
@@ -63,7 +63,7 @@
 //                if (containerEntry.getValue().toolTier >= 4 && containerEntry.getValue().bleedRank >= 3)
 //                    damage = damage * 1.5;
 //
-//                Player player = (Player) target;
+//                final Player player = (Player) target;
 //
 //                if (!player.isOnline()) {
 //                    continue;

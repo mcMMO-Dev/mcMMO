@@ -14,7 +14,8 @@ public final class PerksUtils {
     private static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
     private static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
 
-    private PerksUtils() {}
+    private PerksUtils() {
+    }
 
     public static int handleCooldownPerks(Player player, int cooldown) {
         if (Permissions.halvedCooldowns(player)) {
@@ -41,7 +42,8 @@ public final class PerksUtils {
             ticks += 4;
         }
 
-        final SkillActivationPerkEvent skillActivationPerkEvent = new SkillActivationPerkEvent(player, ticks, maxTicks);
+        final SkillActivationPerkEvent skillActivationPerkEvent = new SkillActivationPerkEvent(
+                player, ticks, maxTicks);
         Bukkit.getPluginManager().callEvent(skillActivationPerkEvent);
         return skillActivationPerkEvent.getTicks();
     }
@@ -50,11 +52,13 @@ public final class PerksUtils {
         double modifier = 1.0F;
 
         if (Permissions.customXpBoost(player, skill)) {
-            if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
-                player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY + "XP Perk Multiplier IS CUSTOM! ");
+            if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player)
+                    .isDebugMode()) {
+                player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY
+                        + "XP Perk Multiplier IS CUSTOM! ");
             }
 
-             modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
+            modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
         } else if (Permissions.quadrupleXp(player, skill)) {
             modifier = 4;
         } else if (Permissions.tripleXp(player, skill)) {
@@ -74,9 +78,13 @@ public final class PerksUtils {
         float modifiedXP = (float) (xp * modifier);
 
         if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
-            player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP Perk Multiplier - " + ChatColor.GOLD + modifier);
-            player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "Original XP before perk boosts " + ChatColor.RED + (double) xp);
-            player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP AFTER PERKS " + ChatColor.DARK_RED + modifiedXP);
+            player.sendMessage(
+                    ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP Perk Multiplier - "
+                            + ChatColor.GOLD + modifier);
+            player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET
+                    + "Original XP before perk boosts " + ChatColor.RED + (double) xp);
+            player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP AFTER PERKS "
+                    + ChatColor.DARK_RED + modifiedXP);
         }
 
         return modifiedXP;

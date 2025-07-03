@@ -1,21 +1,20 @@
 package com.gmail.nossr50.party;
 
+import static java.util.logging.Logger.getLogger;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import java.util.UUID;
+import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.UUID;
-import java.util.logging.Logger;
-
-import static java.util.logging.Logger.getLogger;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class PartyManagerTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(PartyManagerTest.class.getName());
@@ -43,7 +42,7 @@ class PartyManagerTest extends MMOTestEnvironment {
         String partyName = "TestParty";
 
         Player player = mock(Player.class);
-        McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
+        final McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
         when(mmoPlayer.getPlayer()).thenReturn(player);
         when(player.getUniqueId()).thenReturn(new UUID(0, 0));
 
@@ -59,7 +58,7 @@ class PartyManagerTest extends MMOTestEnvironment {
         String partyPassword = "somePassword";
 
         Player player = mock(Player.class);
-        McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
+        final McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
         when(mmoPlayer.getPlayer()).thenReturn(player);
         when(player.getUniqueId()).thenReturn(new UUID(0, 0));
 
@@ -74,7 +73,7 @@ class PartyManagerTest extends MMOTestEnvironment {
         String partyPassword = "somePassword";
 
         Player player = mock(Player.class);
-        McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
+        final McMMOPlayer mmoPlayer = mock(McMMOPlayer.class);
         when(mmoPlayer.getPlayer()).thenReturn(player);
         when(player.getUniqueId()).thenReturn(new UUID(0, 0));
 

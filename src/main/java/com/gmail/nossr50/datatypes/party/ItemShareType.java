@@ -29,6 +29,7 @@ public enum ItemShareType {
     }
 
     public String getLocaleString() {
-        return LocaleLoader.getString("Party.ItemShare.Category." + StringUtils.getCapitalized(this.toString()));
+        return LocaleLoader.getString(
+                "Party.ItemShare.Category." + StringUtils.getCapitalized(this.toString()));
     }
 }

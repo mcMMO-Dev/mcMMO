@@ -1,5 +1,10 @@
 package com.gmail.nossr50.skills.crossbows;
 
+import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
+import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE;
+import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
+import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
+
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -20,19 +25,16 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
-import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE;
-import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
-import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
-
 public class CrossbowsManager extends SkillManager {
     public CrossbowsManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.CROSSBOWS);
     }
 
-    public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow, @NotNull Vector hitBlockNormal) {
-        if (!isCrossbowProjectile(arrow))
+    public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow,
+            @NotNull Vector hitBlockNormal) {
+        if (!isCrossbowProjectile(arrow)) {
             return;
+        }
 
         // Check player permission
         if (!Permissions.trickShot(mmoPlayer.getPlayer())) {
@@ -44,11 +46,12 @@ public class CrossbowsManager extends SkillManager {
     }
 
     private void spawnReflectedArrow(@NotNull Plugin pluginRef, @NotNull Arrow originalArrow,
-                                    @NotNull Location origin, @NotNull Vector normal) {
+            @NotNull Location origin, @NotNull Vector normal) {
         int bounceCount = 0;
 
         if (originalArrow.hasMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)) {
-            bounceCount = originalArrow.getMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT).get(0).asInt();
+            bounceCount = originalArrow.getMetadata(MetadataConstants.METADATA_KEY_BOUNCE_COUNT)
+                    .get(0).asInt();
             if (bounceCount >= getTrickShotMaxBounceCount()) {
                 return;
             }
@@ -56,7 +59,8 @@ public class CrossbowsManager extends SkillManager {
 
         final ProjectileSource originalArrowShooter = originalArrow.getShooter();
         final Vector arrowInBlockVector = originalArrow.getVelocity();
-        final Vector reflectedDirection = arrowInBlockVector.subtract(normal.multiply(2 * arrowInBlockVector.dot(normal)));
+        final Vector reflectedDirection = arrowInBlockVector.subtract(
+                normal.multiply(2 * arrowInBlockVector.dot(normal)));
         final Vector inverseNormal = normal.multiply(-1);
 
         // check the angle of the arrow against the inverse normal to see if the angle was too shallow
@@ -66,7 +70,8 @@ public class CrossbowsManager extends SkillManager {
         }
 
         // Spawn new arrow with the reflected direction
-        final Arrow spawnedArrow = originalArrow.getWorld().spawnArrow(origin, reflectedDirection, 1, 1);
+        final Arrow spawnedArrow = originalArrow.getWorld()
+                .spawnArrow(origin, reflectedDirection, 1, 1);
         // copy some properties from the old arrow
         spawnedArrow.setShooter(originalArrowShooter);
         spawnedArrow.setCritical(originalArrow.isCritical());
@@ -95,7 +100,8 @@ public class CrossbowsManager extends SkillManager {
         // Easy fix to recognize the arrow as a crossbow projectile
         // TODO: Replace the hack with the new API for setting weapon on projectiles
         if (!spawnedArrow.hasMetadata(METADATA_KEY_CROSSBOW_PROJECTILE)) {
-            spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE, MCMMO_METADATA_VALUE);
+            spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE,
+                    MCMMO_METADATA_VALUE);
         }
         // There are reasons to keep this despite using the metadata values above
         spawnedArrow.setShotFromCrossbow(true);
@@ -117,15 +123,18 @@ public class CrossbowsManager extends SkillManager {
     public double getPoweredShotBonusDamage(Player player, double oldDamage) {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
-        return Math.min(newDamage, (oldDamage + mcMMO.p.getAdvancedConfig().getPoweredShotDamageMax()));
+        return Math.min(newDamage,
+                (oldDamage + mcMMO.p.getAdvancedConfig().getPoweredShotDamageMax()));
     }
 
     public double getDamageBonusPercent(Player player) {
-        return ((RankUtils.getRank(player, SubSkillType.CROSSBOWS_POWERED_SHOT)) * (mcMMO.p.getAdvancedConfig().getPoweredShotRankDamageMultiplier()) / 100.0D);
+        return ((RankUtils.getRank(player, SubSkillType.CROSSBOWS_POWERED_SHOT))
+                * (mcMMO.p.getAdvancedConfig().getPoweredShotRankDamageMultiplier()) / 100.0D);
     }
 
     public double poweredShot(double oldDamage) {
-        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.CROSSBOWS_POWERED_SHOT, mmoPlayer)) {
+        if (ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.CROSSBOWS_POWERED_SHOT,
+                mmoPlayer)) {
             return getPoweredShotBonusDamage(getPlayer(), oldDamage);
         } else {
             return oldDamage;

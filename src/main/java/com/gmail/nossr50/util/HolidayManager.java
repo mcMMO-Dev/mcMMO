@@ -110,9 +110,8 @@
 //            }
 //        }
 //
-////        for (DyeColor color : DyeColor.values()) {
-////            colors.add(color.getFireworkColor());
-////        }
+/// /        for (DyeColor color : DyeColor.values()) { /
+/// colors.add(color.getFireworkColor()); /        }
 //
 //        Collections.shuffle(chatColors, Misc.getRandom());
 //        Collections.shuffle(colors, Misc.getRandom());

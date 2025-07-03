@@ -1,5 +1,12 @@
 package com.gmail.nossr50.util;
 
+import static com.gmail.nossr50.util.PotionUtil.convertLegacyNames;
+import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
@@ -8,11 +15,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
-import static com.gmail.nossr50.util.PotionUtil.convertLegacyNames;
-import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 class PotionUtilTest {
 

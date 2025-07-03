@@ -18,13 +18,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class SmeltingManager extends SkillManager {
-    public SmeltingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.SMELTING);
+    public SmeltingManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.SMELTING);
     }
 
     public boolean isSecondSmeltSuccessful() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
-                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SMELTING_SECOND_SMELT, mmoPlayer);
+                && ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.SMELTING_SECOND_SMELT,
+                mmoPlayer);
     }
 
     /**
@@ -45,20 +46,24 @@ public class SmeltingManager extends SkillManager {
         };
     }
 
-    public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull Furnace furnace) {
-        applyXpGain(Smelting.getSmeltXP(furnaceSmeltEvent.getSource()), XPGainReason.PVE, XPGainSource.PASSIVE); //Add XP
+    public void smeltProcessing(@NotNull FurnaceSmeltEvent furnaceSmeltEvent,
+            @NotNull Furnace furnace) {
+        applyXpGain(Smelting.getSmeltXP(furnaceSmeltEvent.getSource()), XPGainReason.PVE,
+                XPGainSource.PASSIVE); //Add XP
 
         processDoubleSmelt(furnaceSmeltEvent, furnace);
     }
 
-    private void processDoubleSmelt(@NotNull FurnaceSmeltEvent furnaceSmeltEvent, @NotNull Furnace furnace) {
+    private void processDoubleSmelt(@NotNull FurnaceSmeltEvent furnaceSmeltEvent,
+            @NotNull Furnace furnace) {
         ItemStack resultItemStack = furnaceSmeltEvent.getResult();
         /*
             doubleSmeltCondition should be equal to the max
          */
 
         //Process double smelt
-        if (mcMMO.p.getGeneralConfig().getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
+        if (mcMMO.p.getGeneralConfig()
+                .getDoubleDropsEnabled(PrimarySkillType.SMELTING, resultItemStack.getType())
                 && canDoubleSmeltItemStack(furnace) //Effectively two less than max stack size
                 && isSecondSmeltSuccessful()) {
 
@@ -72,12 +77,14 @@ public class SmeltingManager extends SkillManager {
         FurnaceInventory furnaceInventory = furnace.getInventory();
         ItemStack furnaceResult = furnaceInventory.getResult();
 
-        if (furnaceResult == null)
+        if (furnaceResult == null) {
             return true; //This actually means there is nothing yet in the resulting item slot, which means it should always be okay to double smelt
+        }
 
         int resultAmount = furnaceResult.getAmount(); //Amount before double smelt
         int itemLimit = furnaceResult.getMaxStackSize();
-        int doubleSmeltCondition = itemLimit - 2; //Don't double smelt if it would cause an illegal stack size
+        int doubleSmeltCondition =
+                itemLimit - 2; //Don't double smelt if it would cause an illegal stack size
 
         return resultAmount <= doubleSmeltCondition;
     }
@@ -92,6 +99,7 @@ public class SmeltingManager extends SkillManager {
      * @return the vanilla XP multiplier
      */
     public int getVanillaXpMultiplier() {
-        return Math.max(1, RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_UNDERSTANDING_THE_ART));
+        return Math.max(1,
+                RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_UNDERSTANDING_THE_ART));
     }
 }

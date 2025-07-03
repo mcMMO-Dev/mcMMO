@@ -1,15 +1,14 @@
 package com.gmail.nossr50.worldguard;
 
+import static org.bukkit.Bukkit.getServer;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
-import org.bukkit.plugin.Plugin;
-
 import java.util.ArrayList;
-
-import static org.bukkit.Bukkit.getServer;
+import org.bukkit.plugin.Plugin;
 
 public class WorldGuardUtils {
     private static WorldGuardPlugin worldGuardPluginRef;
@@ -42,8 +41,9 @@ public class WorldGuardUtils {
     }
 
     public static boolean isWorldGuardLoaded() {
-        if (detectedIncompatibleWG)
+        if (detectedIncompatibleWG) {
             return false;
+        }
 
         worldGuardPluginRef = getWorldGuard();
 
@@ -51,14 +51,15 @@ public class WorldGuardUtils {
     }
 
     /**
-     * Gets the instance of the WG plugin if its compatible
-     * Results are cached
+     * Gets the instance of the WG plugin if its compatible Results are cached
+     *
      * @return the instance of WG plugin, null if its not compatible or isn't present
      */
     private static WorldGuardPlugin getWorldGuard() {
         //WG plugin reference is already cached so just return it
-        if (isLoaded)
+        if (isLoaded) {
             return worldGuardPluginRef;
+        }
 
         //Grab WG if it exists
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
@@ -80,14 +81,14 @@ public class WorldGuardUtils {
             }
         }
 
-
         return worldGuardPluginRef;
     }
 
     /**
-     * Checks to make sure the version of WG installed is compatible
-     * Does this by checking for necessary WG classes via Reflection
-     * This does not guarantee compatibility, but it should help reduce the chance that mcMMO tries to hook into WG and its not compatible
+     * Checks to make sure the version of WG installed is compatible Does this by checking for
+     * necessary WG classes via Reflection This does not guarantee compatibility, but it should help
+     * reduce the chance that mcMMO tries to hook into WG and its not compatible
+     *
      * @return true if the version of WG appears to be compatible
      */
     private static boolean isCompatibleVersion(Plugin plugin) {
@@ -101,12 +102,12 @@ public class WorldGuardUtils {
             markWGIncompatible();
         } else {
             //Use Reflection to check for a class not present in all versions of WG7
-            for(String classString : WGClassList) {
+            for (String classString : WGClassList) {
                 try {
                     Class<?> checkForClass = Class.forName(classString);
                 } catch (ClassNotFoundException | NoClassDefFoundError e) {
                     allClassesFound = false;
-                    mcMMO.p.getLogger().severe("Missing WorldGuard class - "+classString);
+                    mcMMO.p.getLogger().severe("Missing WorldGuard class - " + classString);
                     markWGIncompatible();
                 }
             }
@@ -116,9 +117,11 @@ public class WorldGuardUtils {
              */
             try {
                 if (allClassesFound) {
-                    if (!((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).isInitialized()) {
+                    if (!((SimpleFlagRegistry) WorldGuard.getInstance()
+                            .getFlagRegistry()).isInitialized()) {
                         markWGIncompatible();
-                        mcMMO.p.getLogger().severe("WG did not initialize properly, this can cause errors with mcMMO so mcMMO is disabling certain features.");
+                        mcMMO.p.getLogger()
+                                .severe("WG did not initialize properly, this can cause errors with mcMMO so mcMMO is disabling certain features.");
                     }
                 }
             } catch (Exception e) {
@@ -134,10 +137,13 @@ public class WorldGuardUtils {
      * Mark WG as being incompatible to avoid unnecessary operations
      */
     private static void markWGIncompatible() {
-        mcMMO.p.getLogger().severe("You are using a version of WG that is not compatible with mcMMO, " +
-                "WG features for mcMMO will be disabled. mcMMO requires you to be using a new version of WG7 " +
-                "in order for it to use WG features. Not all versions of WG7 are compatible.");
-        mcMMO.p.getLogger().severe("mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
+        mcMMO.p.getLogger()
+                .severe("You are using a version of WG that is not compatible with mcMMO, " +
+                        "WG features for mcMMO will be disabled. mcMMO requires you to be using a new version of WG7 "
+                        +
+                        "in order for it to use WG features. Not all versions of WG7 are compatible.");
+        mcMMO.p.getLogger()
+                .severe("mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
         detectedIncompatibleWG = true;
     }
 }
