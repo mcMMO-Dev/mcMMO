@@ -43,6 +43,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class WoodcuttingManager extends SkillManager {
     public static final String SAPLING = "sapling";
@@ -206,7 +207,8 @@ public class WoodcuttingManager extends SkillManager {
      * and 10-15 milliseconds on jungle trees once the JIT has optimized the function (use the
      * ability about 4 times before taking measurements).
      */
-    private void processTree(Block block, Set<Block> treeFellerBlocks) {
+    @VisibleForTesting
+    void processTree(Block block, Set<Block> treeFellerBlocks) {
         List<Block> futureCenterBlocks = new ArrayList<>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
