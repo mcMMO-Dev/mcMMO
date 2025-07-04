@@ -373,7 +373,7 @@ public final class EventUtils {
      * @param eventType The type of event to signal to other plugins
      * @return true if the event wasn't cancelled, false otherwise
      */
-    private static boolean simulateBlockBreak(Block block, Player player,
+    public static boolean simulateBlockBreak(Block block, Player player,
             FakeBlockBreakEventType eventType) {
         if (IN_FAKE_BREAK.get()) {
             return true;
