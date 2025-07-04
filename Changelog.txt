@@ -1,4 +1,5 @@
 Version 2.2.040
+    Fixed a bug where EcoEnchants or other similar plugins could cause an infinite loop within mcMMO
     (Codebase) Updated Adventure Libs
     Added 'Happy_Ghast' to experience.yml for combat XP
     Added 'Ghastling' to experience.yml for combat XP
