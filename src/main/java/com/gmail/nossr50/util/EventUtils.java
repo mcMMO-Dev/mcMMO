@@ -65,6 +65,13 @@ import org.jetbrains.annotations.NotNull;
 public final class EventUtils {
 
     /**
+     * True when the current thread is already executing simulateBlockBreak().
+     * Thread-local so parallel Folia regions / async tasks are isolated.
+     */
+    private static final ThreadLocal<Boolean> IN_FAKE_BREAK =
+            ThreadLocal.withInitial(() -> false);
+
+    /**
      * This is a static utility class, therefore we don't want any instances of this class. Making
      * the constructor private prevents accidents like that.
      */
@@ -366,22 +373,31 @@ public final class EventUtils {
      * @param eventType The type of event to signal to other plugins
      * @return true if the event wasn't cancelled, false otherwise
      */
-    public static boolean simulateBlockBreak(Block block, Player player,
+    private static boolean simulateBlockBreak(Block block, Player player,
             FakeBlockBreakEventType eventType) {
-        PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
-
-        FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block,
-                player.getInventory().getItemInMainHand(), true);
-        pluginManager.callEvent(damageEvent);
-
-        BlockBreakEvent fakeBlockBreakEvent = null;
-
-        switch (eventType) {
-            case FAKE -> fakeBlockBreakEvent = new FakeBlockBreakEvent(block, player);
-            case TREE_FELLER -> fakeBlockBreakEvent = new TreeFellerBlockBreakEvent(block, player);
+        if (IN_FAKE_BREAK.get()) {
+            return true;
         }
-        pluginManager.callEvent(fakeBlockBreakEvent);
-        return !damageEvent.isCancelled() && !fakeBlockBreakEvent.isCancelled();
+        IN_FAKE_BREAK.set(true);
+
+        try {
+            final PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
+
+            final FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block,
+                    player.getInventory().getItemInMainHand(), true);
+            pluginManager.callEvent(damageEvent);
+
+            final BlockBreakEvent fakeBlockBreakEvent = switch (eventType) {
+                case FAKE -> new FakeBlockBreakEvent(block, player);
+                case TREE_FELLER -> new TreeFellerBlockBreakEvent(block, player);
+            };
+
+            pluginManager.callEvent(fakeBlockBreakEvent);
+            return !damageEvent.isCancelled() && !fakeBlockBreakEvent.isCancelled();
+        } finally {
+            // always clear the flag
+            IN_FAKE_BREAK.set(false);
+        }
     }
 
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
