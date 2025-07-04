@@ -1,4 +1,5 @@
 Version 2.2.040
+    Fixed bug where a party leader could leave a party and the party would be left without a party leader
     Fixed a bug where EcoEnchants or other similar plugins could cause an infinite loop within mcMMO
     (Codebase) Updated Adventure Libs
     Added 'Happy_Ghast' to experience.yml for combat XP

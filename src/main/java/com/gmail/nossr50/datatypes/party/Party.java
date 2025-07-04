@@ -93,7 +93,7 @@ public class Party {
     public List<Player> getVisibleMembers(Player player) {
         ArrayList<Player> visibleMembers = new ArrayList<>();
 
-        for (Player p : onlineMembers) {
+        for (Player p : getOnlineMembers()) {
             if (player.canSee(p)) {
                 visibleMembers.add(p);
             }
@@ -116,11 +116,11 @@ public class Party {
     }
 
     public boolean addOnlineMember(Player player) {
-        return onlineMembers.add(player);
+        return getOnlineMembers().add(player);
     }
 
     public boolean removeOnlineMember(Player player) {
-        return onlineMembers.remove(player);
+        return getOnlineMembers().remove(player);
     }
 
     public String getName() {

@@ -273,10 +273,25 @@ public final class PartyManager {
         requireNonNull(player, "player cannot be null!");
         requireNonNull(party, "party cannot be null!");
 
-        LinkedHashMap<UUID, String> members = party.getMembers();
-        String playerName = player.getName();
+        final LinkedHashMap<UUID, String> members = party.getMembers();
+        final String playerName = player.getName();
 
-        members.remove(player.getUniqueId());
+        if (party.getLeader().getUniqueId().equals(player.getUniqueId())) {
+            members.remove(player.getUniqueId());
+            if (!members.isEmpty()) {
+                for (Entry<UUID, String> entry : members.entrySet()) {
+                    final UUID memberUUID = entry.getKey();
+                    final String memberName = entry.getValue();
+                    if (!memberUUID.equals(party.getLeader().getUniqueId())) {
+                        party.setLeader(new PartyLeader(memberUUID, memberName));
+                        break;
+                    }
+                }
+            }
+
+        } else {
+            members.remove(player.getUniqueId());
+        }
 
         if (player.isOnline()) {
             party.getOnlineMembers().remove(player.getPlayer());
@@ -285,11 +300,6 @@ public final class PartyManager {
         if (members.isEmpty()) {
             parties.remove(party);
         } else {
-            // If the leaving player was the party leader, appoint a new leader from the party members
-            if (party.getLeader().getUniqueId().equals(player.getUniqueId())) {
-                setPartyLeader(members.keySet().iterator().next(), party);
-            }
-
             informPartyMembersQuit(party, playerName);
         }
     }
