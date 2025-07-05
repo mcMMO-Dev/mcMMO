@@ -961,8 +961,8 @@ public final class CombatUtils {
                 EntityType type = target.getType();
 
                 if (ExperienceConfig.getInstance().hasCombatXP(type)) {
-                    if (type == EntityType.IRON_GOLEM) {
-                        if (!((IronGolem) target).isPlayerCreated()) {
+                    if (type == EntityType.IRON_GOLEM && target instanceof IronGolem ironGolem) {
+                        if (!ironGolem.isPlayerCreated()) {
                             baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         }
                     } else {

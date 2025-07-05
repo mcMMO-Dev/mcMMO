@@ -411,7 +411,7 @@ public class RepairManager extends SkillManager {
                 if (enchantLevel > enchant.getKey().getMaxLevel()) {
                     enchantLevel = enchant.getKey().getMaxLevel();
 
-                    item.addEnchantment(enchant.getKey(), enchantLevel);
+                    item.addUnsafeEnchantment(enchant.getKey(), enchantLevel);
                 }
             }
 
