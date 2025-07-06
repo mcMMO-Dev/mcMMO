@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.OfflinePlayer;
@@ -36,9 +36,9 @@ import org.jetbrains.annotations.Nullable;
 public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final String IGNORED = "IGNORED";
     public static final String LEGACY_INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_'";
-    private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new EnumMap<>(
+    private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> leaderboardMap = new EnumMap<>(
             PrimarySkillType.class);
-    private final @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
+    private @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
     private final @NotNull String usersFilePath;
     private final @NotNull Logger logger;
@@ -562,7 +562,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         updateLeaderboards();
         List<PlayerStat> statsList =
-                primarySkillType == null ? powerLevels : playerStatHash.get(primarySkillType);
+                primarySkillType == null ? powerLevels : leaderboardMap.get(primarySkillType);
         int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
 
         return statsList.subList(Math.min(fromIndex, statsList.size()),
@@ -575,10 +575,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         HashMap<PrimarySkillType, Integer> skills = new HashMap<>();
 
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-            skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
+            skills.put(skill, getPlayerRank(playerName, leaderboardMap.get(skill)));
         }
 
-        //TODO: Gross
         skills.put(null, getPlayerRank(playerName, powerLevels));
 
         return skills;
@@ -1039,25 +1038,24 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         lastUpdate = System.currentTimeMillis(); // Log when the last update was run
-        powerLevels.clear(); // Clear old values from the power levels
 
-        // Initialize lists
-        List<PlayerStat> mining = new ArrayList<>();
-        List<PlayerStat> woodcutting = new ArrayList<>();
-        List<PlayerStat> herbalism = new ArrayList<>();
-        List<PlayerStat> excavation = new ArrayList<>();
-        List<PlayerStat> acrobatics = new ArrayList<>();
-        List<PlayerStat> repair = new ArrayList<>();
-        List<PlayerStat> swords = new ArrayList<>();
-        List<PlayerStat> axes = new ArrayList<>();
-        List<PlayerStat> archery = new ArrayList<>();
-        List<PlayerStat> unarmed = new ArrayList<>();
-        List<PlayerStat> taming = new ArrayList<>();
-        List<PlayerStat> fishing = new ArrayList<>();
-        List<PlayerStat> alchemy = new ArrayList<>();
-        List<PlayerStat> crossbows = new ArrayList<>();
-        List<PlayerStat> tridents = new ArrayList<>();
-        List<PlayerStat> maces = new ArrayList<>();
+        TreeSet<PlayerStat> powerLevelStats = new TreeSet<>();
+        TreeSet<PlayerStat> mining = new TreeSet<>();
+        TreeSet<PlayerStat> woodcutting = new TreeSet<>();
+        TreeSet<PlayerStat> herbalism = new TreeSet<>();
+        TreeSet<PlayerStat> excavation = new TreeSet<>();
+        TreeSet<PlayerStat> acrobatics = new TreeSet<>();
+        TreeSet<PlayerStat> repair = new TreeSet<>();
+        TreeSet<PlayerStat> swords = new TreeSet<>();
+        TreeSet<PlayerStat> axes = new TreeSet<>();
+        TreeSet<PlayerStat> archery = new TreeSet<>();
+        TreeSet<PlayerStat> unarmed = new TreeSet<>();
+        TreeSet<PlayerStat> taming = new TreeSet<>();
+        TreeSet<PlayerStat> fishing = new TreeSet<>();
+        TreeSet<PlayerStat> alchemy = new TreeSet<>();
+        TreeSet<PlayerStat> crossbows = new TreeSet<>();
+        TreeSet<PlayerStat> tridents = new TreeSet<>();
+        TreeSet<PlayerStat> maces = new TreeSet<>();
 
         BufferedReader in = null;
         String playerName = null;
@@ -1106,7 +1104,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             skills.get(PrimarySkillType.TRIDENTS));
                     powerLevel += putStat(maces, playerName, skills.get(PrimarySkillType.MACES));
 
-                    putStat(powerLevels, playerName, powerLevel);
+                    putStat(powerLevelStats, playerName, powerLevel);
                 }
             } catch (Exception e) {
                 logger.severe(
@@ -1125,42 +1123,23 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         }
 
-        SkillComparator c = new SkillComparator();
-
-        mining.sort(c);
-        woodcutting.sort(c);
-        repair.sort(c);
-        unarmed.sort(c);
-        herbalism.sort(c);
-        excavation.sort(c);
-        archery.sort(c);
-        swords.sort(c);
-        axes.sort(c);
-        acrobatics.sort(c);
-        taming.sort(c);
-        fishing.sort(c);
-        alchemy.sort(c);
-        crossbows.sort(c);
-        tridents.sort(c);
-        maces.sort(c);
-        powerLevels.sort(c);
-
-        playerStatHash.put(PrimarySkillType.MINING, mining);
-        playerStatHash.put(PrimarySkillType.WOODCUTTING, woodcutting);
-        playerStatHash.put(PrimarySkillType.REPAIR, repair);
-        playerStatHash.put(PrimarySkillType.UNARMED, unarmed);
-        playerStatHash.put(PrimarySkillType.HERBALISM, herbalism);
-        playerStatHash.put(PrimarySkillType.EXCAVATION, excavation);
-        playerStatHash.put(PrimarySkillType.ARCHERY, archery);
-        playerStatHash.put(PrimarySkillType.SWORDS, swords);
-        playerStatHash.put(PrimarySkillType.AXES, axes);
-        playerStatHash.put(PrimarySkillType.ACROBATICS, acrobatics);
-        playerStatHash.put(PrimarySkillType.TAMING, taming);
-        playerStatHash.put(PrimarySkillType.FISHING, fishing);
-        playerStatHash.put(PrimarySkillType.ALCHEMY, alchemy);
-        playerStatHash.put(PrimarySkillType.CROSSBOWS, crossbows);
-        playerStatHash.put(PrimarySkillType.TRIDENTS, tridents);
-        playerStatHash.put(PrimarySkillType.MACES, maces);
+        powerLevels = List.copyOf(powerLevelStats);
+        leaderboardMap.put(PrimarySkillType.MINING, List.copyOf(mining));
+        leaderboardMap.put(PrimarySkillType.WOODCUTTING, List.copyOf(woodcutting));
+        leaderboardMap.put(PrimarySkillType.REPAIR, List.copyOf(repair));
+        leaderboardMap.put(PrimarySkillType.UNARMED, List.copyOf(unarmed));
+        leaderboardMap.put(PrimarySkillType.HERBALISM, List.copyOf(herbalism));
+        leaderboardMap.put(PrimarySkillType.EXCAVATION, List.copyOf(excavation));
+        leaderboardMap.put(PrimarySkillType.ARCHERY, List.copyOf(archery));
+        leaderboardMap.put(PrimarySkillType.SWORDS, List.copyOf(swords));
+        leaderboardMap.put(PrimarySkillType.AXES, List.copyOf(axes));
+        leaderboardMap.put(PrimarySkillType.ACROBATICS, List.copyOf(acrobatics));
+        leaderboardMap.put(PrimarySkillType.TAMING, List.copyOf(taming));
+        leaderboardMap.put(PrimarySkillType.FISHING, List.copyOf(fishing));
+        leaderboardMap.put(PrimarySkillType.ALCHEMY, List.copyOf(alchemy));
+        leaderboardMap.put(PrimarySkillType.CROSSBOWS, List.copyOf(crossbows));
+        leaderboardMap.put(PrimarySkillType.TRIDENTS, List.copyOf(tridents));
+        leaderboardMap.put(PrimarySkillType.MACES, List.copyOf(maces));
 
         return LeaderboardStatus.UPDATED;
     }
@@ -1280,7 +1259,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         int currentPos = 1;
 
         for (PlayerStat stat : statsList) {
-            if (stat.name.equalsIgnoreCase(playerName)) {
+            if (stat.playerName().equalsIgnoreCase(playerName)) {
                 return currentPos;
             }
 
@@ -1290,16 +1269,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return null;
     }
 
-    private int putStat(List<PlayerStat> statList, String playerName, int statValue) {
+    private int putStat(TreeSet<PlayerStat> statList, String playerName, int statValue) {
         statList.add(new PlayerStat(playerName, statValue));
         return statValue;
-    }
-
-    private static class SkillComparator implements Comparator<PlayerStat> {
-        @Override
-        public int compare(PlayerStat o1, PlayerStat o2) {
-            return (o2.statVal - o1.statVal);
-        }
     }
 
     private PlayerProfile loadFromLine(@NotNull String[] character) {

@@ -1,7 +1,8 @@
 Version 2.2.040
+    Fixed hover component and action bar messages not working for 1.21.6 and 1.21.7
+    Fixed bug where entries of mctop could be duplicated when using FlatFile
     Fixed bug where a party leader could leave a party and the party would be left without a party leader
-    Fixed a bug where EcoEnchants or other similar plugins could cause an infinite loop within mcMMO
-    (Codebase) Updated Adventure Libs
+    Fixed a bug where EcoEnchants and similar plugins could cause an infinite loop within mcMMO during TreeFeller and other abilities
     Added 'Happy_Ghast' to experience.yml for combat XP
     Added 'Ghastling' to experience.yml for combat XP
     Updated Japanese (ja_JP) translation (Thanks ryota-abe)
