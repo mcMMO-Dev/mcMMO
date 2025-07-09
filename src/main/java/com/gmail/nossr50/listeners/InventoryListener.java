@@ -68,7 +68,7 @@ public class InventoryListener implements Listener {
                 furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory()
                         .getSmelting() : null;
 
-        if (!ItemUtils.isSmeltable(smelting)) {
+        if (!ItemUtils.isSmeltable(smelting) || event.getBurnTime() <= 0) {
             return;
         }
 

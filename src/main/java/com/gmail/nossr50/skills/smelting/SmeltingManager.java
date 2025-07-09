@@ -34,6 +34,7 @@ public class SmeltingManager extends SkillManager {
      * @param burnTime The initial burn time from the {@link FurnaceBurnEvent}
      */
     public int fuelEfficiency(int burnTime) {
+        if (burnTime <= 0) return 0;
         return Math.min(Short.MAX_VALUE, Math.max(1, burnTime * getFuelEfficiencyMultiplier()));
     }
 
