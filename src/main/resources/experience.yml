@@ -1,13 +1,3 @@
-#
-#  Experience configuration
-#  Last updated on ${project.version}-b${BUILD_NUMBER}
-#
-#  Configure the experience formula and experience settings here.
-#
-#####
-
-
-
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html
 # These are the only valid colors for Experience Bars, use the exact name found here
 # BLUE, GREEN, PINK, PURPLE, RED, WHITE, YELLOW (As of the time of this update these are the only Bar colors available, this could change in the future so check the BarColor enum to see if it has)
@@ -39,15 +29,18 @@ ExploitFix:
     TreeFellerReducedXP: true
     PistonCheating: true
     SnowGolemExcavation: true
+    PreventArmorStandInteraction: true
     # This include NPCs from stuff like Citizens, this is not a setting for Vanilla Minecraft Villagers (Which can be considered NPCs)
     # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
     # Of course, mcMMO doesn't know for sure whether something is an NPC, it checks a few known things, see our source code to see how
     PreventPluginNPCInteraction: true
+    # This will limit XP gained from unnaturally tall plants, like those created by Bone Meal
+    LimitTallPlantFarming: true
 Fishing_ExploitFix_Options:
     MoveRange: 3
     OverFishLimit: 10
 Experience_Bars:
-    # Turn this to false if you wanna disable XP bars
+    # Turn this to false if you want to disable XP bars
     Enable: true
     Update:
         # XP that you gained from your party but not yourself
@@ -77,6 +70,10 @@ Experience_Bars:
         Enable: true
         Color: BLUE
         BarStyle: SEGMENTED_6
+    Crossbows:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
     Excavation:
         Enable: true
         Color: YELLOW
@@ -92,6 +89,10 @@ Experience_Bars:
     Mining:
         Enable: true
         Color: YELLOW
+        BarStyle: SEGMENTED_6
+    Maces:
+        Enable: true
+        Color: BLUE
         BarStyle: SEGMENTED_6
     Repair:
         Enable: true
@@ -112,6 +113,10 @@ Experience_Bars:
     Taming:
         Enable: true
         Color: RED
+        BarStyle: SEGMENTED_6
+    Tridents:
+        Enable: true
+        Color: BLUE
         BarStyle: SEGMENTED_6
     Unarmed:
         Enable: true
@@ -159,8 +164,11 @@ Experience_Formula:
     Breeding:
         Multiplier: 1.0
 
-    # Experience gained will get divided by these values. 1.0 by default, 2.0 means two times less XP gained.
-    Modifier:
+    # Experience gained will get multiplied by these values. 1.0 by default, 0.5 means half XP gained. This happens right before multiplying the XP by the global multiplier.
+    Skill_Multiplier:
+        Maces: 1.0
+        Crossbows: 1.0
+        Tridents: 1.0
         Swords: 1.0
         Taming: 1.0
         Acrobatics: 1.0
@@ -206,6 +214,9 @@ Diminished_Returns:
         Repair: 20000
         Fishing: 20000
         Alchemy: 20000
+        Crossbows: 20000
+        Tridents: 20000
+        Maces: 20000
 
     Time_Interval: 10
 
@@ -230,17 +241,18 @@ Experience_Values:
         # FeatherFall_Multiplier: Multiply Acrobatics XP by this value when wearing boots with the Feather Fall enchant
         FeatherFall_Multiplier: 2.0
     Alchemy:
-        # Alchemy potion stages are based on the number of ingredients added
-        # Potion_Stage_1 represents a base potion
-        # Potion_Stage_2 represents a base potion with one ingredient
-        # Potion_Stage_3 represents a base potion with one ingredient and one amplifier
-        # Potion_Stage_4 represents a base potion with one ingredient and two amplifiers
-        # Potion_Stage_5 represents a base potion with one ingredient where the amplifiers are swapped
-        Potion_Stage_1: 15
-        Potion_Stage_2: 30
-        Potion_Stage_3: 60
-        Potion_Stage_4: 120
-        Potion_Stage_5: 0
+        Potion_Brewing:
+            # Alchemy potion stages are based on the number of ingredients added
+            # Stage_1 represents a base potion
+            # Stage_2 represents a base potion with one ingredient
+            # Stage_3 represents a base potion with one ingredient and one amplifier
+            # Stage_4 represents a base potion with one ingredient and two amplifiers
+            # Stage_5 represents a base potion with one ingredient where the amplifiers are swapped
+            Stage_1: 666
+            Stage_2: 1111
+            Stage_3: 1750
+            Stage_4: 2250
+            Stage_5: 0
     Archery:
         Distance_Multiplier: 0.025
     Fishing:
@@ -283,6 +295,7 @@ Experience_Values:
         Jungle_Log: 100
         Acacia_Log: 90
         Dark_Oak_Log: 90
+        Pale_Oak_Log: 130
         Stripped_Oak_Log: 70
         Stripped_Cherry_Log: 105
         Stripped_Spruce_Log: 80
@@ -290,6 +303,7 @@ Experience_Values:
         Stripped_Jungle_Log: 100
         Stripped_Acacia_Log: 90
         Stripped_Dark_Oak_Log: 90
+        Stripped_Pale_Oak_Log: 130
         Stripped_Oak_Wood: 70
         Stripped_Cherry_Wood: 70
         Stripped_Spruce_Wood: 80
@@ -297,6 +311,7 @@ Experience_Values:
         Stripped_Jungle_Wood: 100
         Stripped_Acacia_Wood: 90
         Stripped_Dark_Oak_Wood: 90
+        Stripped_Pale_Oak_Wood: 90
         Stripped_Mangrove_Log: 110
         Stripped_Crimson_Stem: 50
         Stripped_Warped_Stem: 50
@@ -307,6 +322,7 @@ Experience_Values:
         Jungle_Wood: 70
         Acacia_Wood: 70
         Dark_Oak_Wood: 70
+        Pale_Oak_Wood: 110
         Mangrove_Wood: 80
         Mangrove_Log: 95
         Mangrove_Roots: 10
@@ -314,12 +330,25 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Bush: 11
+        Cactus_Flower: 60
+        Firefly_Bush: 15
+        Leaf_Litter: 2
+        Short_Dry_Grass: 6
+        Tall_Dry_Grass: 12
+        Wildflowers: 15
+        Eyeblossom: 66
+        Open_Eyeblossom: 66
+        Closed_Eyeblossom: 66
         Pitcher_Plant: 160
         Pink_Petals: 10
         Small_Dripleaf: 140
         Big_Dripleaf: 140
         Cave_Vines: 90
         Cave_Vines_Plant: 90
+        Pale_Hanging_Moss: 150
+        Pale_Moss_Block: 10
+        Pale_Moss_Carpet: 10
         Glow_Lichen: 5
         Moss_Block: 150
         Crimson_Roots: 6
@@ -377,6 +406,7 @@ Experience_Values:
         Cocoa: 30
         Potatoes: 50
         Wheat: 50
+        Beetroot: 50
         Beetroots: 50
         Nether_Wart: 50
         Dead_Bush: 30
@@ -571,6 +601,7 @@ Experience_Values:
     Combat:
         Multiplier:
             Animals: 1.0
+            Armadillo: 1.1
             Creeper: 4.0
             Skeleton: 3.0
             Spider: 2.0
@@ -578,6 +609,8 @@ Experience_Values:
             Zombie: 2.0
             Slime: 2.0
             Ghast: 3.0
+            Happy_Ghast: 1.0
+            Ghastling: 0.5
             Pig_Zombie: 3.0
             Enderman: 1.0
             Cave_Spider: 3.0
@@ -647,3 +680,5 @@ Experience_Values:
             Sniffer: 1.1
             Snifflet: 1.1
             Camel: 1.2
+            Bogged: 2.0
+            Breeze: 4.0

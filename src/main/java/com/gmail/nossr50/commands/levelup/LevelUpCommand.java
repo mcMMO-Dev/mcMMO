@@ -4,17 +4,16 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
-import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.VisibleForTesting;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class LevelUpCommand implements CommandsOnLevel {
     private final @Nullable List<BiPredicate<PrimarySkillType, Integer>> conditions;
@@ -23,24 +22,30 @@ public class LevelUpCommand implements CommandsOnLevel {
     private final @NotNull LinkedList<String> commands;
 
     public LevelUpCommand(@Nullable List<BiPredicate<PrimarySkillType, Integer>> conditions,
-                          @Nullable Predicate<Integer> powerLevelCondition,
-                          @NotNull LinkedList<String> commands, boolean logInfo) {
+            @Nullable Predicate<Integer> powerLevelCondition,
+            @NotNull LinkedList<String> commands, boolean logInfo) {
         this.conditions = conditions;
         this.powerLevelCondition = powerLevelCondition;
-        if (conditions == null && powerLevelCondition == null)
+        if (conditions == null && powerLevelCondition == null) {
             throw new IllegalArgumentException("At least one condition must be set");
+        }
         this.commands = commands;
         this.logInfo = logInfo;
     }
 
-    public void process(@NotNull McMMOPlayer player, @NotNull PrimarySkillType primarySkillType, @NotNull Set<Integer> levelsGained,
-                        @NotNull Set<Integer> powerLevelsGained) {
+    public void process(@NotNull McMMOPlayer player, @NotNull PrimarySkillType primarySkillType,
+            @NotNull Set<Integer> levelsGained,
+            @NotNull Set<Integer> powerLevelsGained) {
         // each predicate has to pass at least once
         // we check the predicates against all levels gained to see if they pass at least once
         // if all predicates pass at least once, we execute the command
-        boolean allConditionsPass = (conditions == null) || conditions.stream().allMatch(predicate -> levelsGained.stream().anyMatch(level -> predicate.test(primarySkillType, level)));
+        boolean allConditionsPass = (conditions == null) || conditions.stream().allMatch(
+                predicate -> levelsGained.stream()
+                        .anyMatch(level -> predicate.test(primarySkillType, level)));
         // we also check the power level predicate to see if it passes at least once, if this predicate is null, we mark it as passed
-        boolean powerLevelConditionPass = (powerLevelCondition == null) || powerLevelsGained.stream().anyMatch(powerLevelCondition);
+        boolean powerLevelConditionPass =
+                (powerLevelCondition == null) || powerLevelsGained.stream()
+                        .anyMatch(powerLevelCondition);
         if (allConditionsPass && powerLevelConditionPass) {
             executeCommand(player);
         }
@@ -53,7 +58,8 @@ public class LevelUpCommand implements CommandsOnLevel {
             LogUtils.debug(mcMMO.p.getLogger(), "Executing command: " + command);
             String injectedCommand = injectedCommand(command, player);
             if (!injectedCommand.equalsIgnoreCase(command)) {
-                LogUtils.debug(mcMMO.p.getLogger(), ("Command has been injected with new values: " + injectedCommand));
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        ("Command has been injected with new values: " + injectedCommand));
             }
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), injectedCommand);
         }
@@ -69,7 +75,8 @@ public class LevelUpCommand implements CommandsOnLevel {
 
         // Replace each skill level
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (primarySkillType == PrimarySkillType.SMELTING || primarySkillType == PrimarySkillType.SALVAGE) {
+            if (primarySkillType == PrimarySkillType.SMELTING
+                    || primarySkillType == PrimarySkillType.SALVAGE) {
                 continue;
             }
             replaceAll(commandBuilder, "{@" + primarySkillType.name().toLowerCase() + "_level}",
@@ -92,10 +99,15 @@ public class LevelUpCommand implements CommandsOnLevel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         LevelUpCommand that = (LevelUpCommand) o;
-        return logInfo == that.logInfo && Objects.equals(conditions, that.conditions) && Objects.equals(commands, that.commands);
+        return logInfo == that.logInfo && Objects.equals(conditions, that.conditions)
+                && Objects.equals(commands, that.commands);
     }
 
     @Override

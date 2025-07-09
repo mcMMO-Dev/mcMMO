@@ -9,8 +9,8 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,14 +21,9 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class ChimaeraWing {
-    private static McMMOPlayer mcMMOPlayer;
-    private static Location location;
-
-    private ChimaeraWing() {}
+    private ChimaeraWing() {
+    }
 
     /**
      * Check for item usage.
@@ -40,114 +35,104 @@ public final class ChimaeraWing {
             return;
         }
 
-        ItemStack inHand = player.getInventory().getItemInMainHand();
+        final ItemStack inHand = player.getInventory().getItemInMainHand();
 
         if (!ItemUtils.isChimaeraWing(inHand)) {
             return;
         }
 
         if (!Permissions.chimaeraWing(player)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION,
+                    "mcMMO.NoPermission");
             return;
         }
 
-        mcMMOPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         //Not loaded
-        if(mcMMOPlayer == null)
-            return;
-
-        if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        int amount = inHand.getAmount();
-
-        if (amount < mcMMO.p.getGeneralConfig().getChimaeraUseCost()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(mcMMO.p.getGeneralConfig().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
+        if (mmoPlayer.getTeleportCommenceLocation() != null) {
             return;
         }
 
-        long lastTeleport = mcMMOPlayer.getChimeraWingLastUse();
+        int amountInHand = inHand.getAmount();
+
+        if (amountInHand < mcMMO.p.getGeneralConfig().getChimaeraUseCost()) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET,
+                    "Item.ChimaeraWing.NotEnough",
+                    String.valueOf(mcMMO.p.getGeneralConfig().getChimaeraUseCost() - amountInHand),
+                    "Item.ChimaeraWing.Name");
+            return;
+        }
+
+        long lastTeleport = mmoPlayer.getChimeraWingLastUse();
         int cooldown = mcMMO.p.getGeneralConfig().getChimaeraCooldown();
 
         if (cooldown > 0) {
-            int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
+            int timeRemaining = SkillUtils.calculateTimeLeft(
+                    lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
 
             if (timeRemaining > 0) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Item.Generic.Wait", String.valueOf(timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN,
+                        "Item.Generic.Wait", String.valueOf(timeRemaining));
                 return;
             }
         }
 
-        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        long recentlyHurt = mmoPlayer.getRecentlyHurt();
         int hurtCooldown = mcMMO.p.getGeneralConfig().getChimaeraRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
-            int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+            int timeRemaining = SkillUtils.calculateTimeLeft(
+                    recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
 
             if (timeRemaining > 0) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.Injured.Wait", String.valueOf(timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE,
+                        "Item.Injured.Wait", String.valueOf(timeRemaining));
                 return;
             }
         }
 
-        location = player.getLocation();
+        final Location playerLocation = player.getLocation();
 
         if (mcMMO.p.getGeneralConfig().getChimaeraPreventUseUnderground()) {
-            if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
-                player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(amount - mcMMO.p.getGeneralConfig().getChimaeraUseCost())));
-                NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
-                player.updateInventory();
+            if (playerLocation.getY() < player.getWorld().getHighestBlockYAt(playerLocation)) {
+                expendChimaeraWing(player, amountInHand, inHand);
+                NotificationManager.sendPlayerInformation(player,
+                        NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.setVelocity(new Vector(0, 0.5D, 0));
-                CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
-                mcMMOPlayer.actualizeChimeraWingLastUse();
+                final int dmg = Misc.getRandom().nextInt((int) (player.getHealth() - 10));
+                CombatUtils.safeDealDamage(player, dmg);
+                mmoPlayer.actualizeChimeraWingLastUse();
                 return;
             }
         }
 
-        mcMMOPlayer.actualizeTeleportCommenceLocation(player);
-
-        long warmup = mcMMO.p.getGeneralConfig().getChimaeraWarmup();
-
-        if (warmup > 0) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
-            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ChimaeraWingWarmup(mcMMOPlayer), 20 * warmup);
-        }
-        else {
-            chimaeraExecuteTeleport();
+        mmoPlayer.actualizeTeleportCommenceLocation(player);
+        long teleportDelay = mcMMO.p.getGeneralConfig().getChimaeraWarmup();
+        if (teleportDelay > 0) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE,
+                    "Teleport.Commencing", String.valueOf(teleportDelay));
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runAtEntityLater(player, new ChimaeraWingWarmup(mmoPlayer, playerLocation),
+                            20 * teleportDelay);
+        } else {
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runAtEntityLater(player, new ChimaeraWingWarmup(mmoPlayer, playerLocation), 0);
         }
     }
 
-    public static void chimaeraExecuteTeleport() {
-        Player player = mcMMOPlayer.getPlayer();
-
-        if (mcMMO.p.getGeneralConfig().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
-//            player.teleport(player.getBedSpawnLocation());
-            mcMMO.p.getFoliaLib().getImpl().teleportAsync(player, player.getBedSpawnLocation());
+    public static void expendChimaeraWing(Player player, int amountInHand, ItemStack inHand) {
+        int amountAfterUse = amountInHand - mcMMO.p.getGeneralConfig().getChimaeraUseCost();
+        if (amountAfterUse >= 1) {
+            inHand.setAmount(amountAfterUse);
+            player.getInventory().setItemInMainHand(inHand);
+        } else {
+            player.getInventory().removeItem(inHand);
         }
-        else {
-            Location spawnLocation = player.getWorld().getSpawnLocation();
-            if (spawnLocation.getBlock().getType() == Material.AIR) {
-//                player.teleport(spawnLocation);
-                mcMMO.p.getFoliaLib().getImpl().teleportAsync(player, spawnLocation);
-            }
-            else {
-//                player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
-                mcMMO.p.getFoliaLib().getImpl().teleportAsync(player, player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
-            }
-        }
-
-        player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(player.getInventory().getItemInMainHand().getAmount() - mcMMO.p.getGeneralConfig().getChimaeraUseCost())));
-        player.updateInventory();
-        mcMMOPlayer.actualizeChimeraWingLastUse();
-        mcMMOPlayer.setTeleportCommenceLocation(null);
-
-        if (mcMMO.p.getGeneralConfig().getChimaeraSoundEnabled()) {
-            SoundManager.sendSound(player, location, SoundType.CHIMAERA_WING);
-        }
-
-        NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.ChimaeraWing.Pass");
     }
 
     public static ItemStack getChimaeraWing(int amount) {
@@ -170,7 +155,8 @@ public final class ChimaeraWing {
         Material ingredient = mcMMO.p.getGeneralConfig().getChimaeraItem();
         int amount = mcMMO.p.getGeneralConfig().getChimaeraRecipeCost();
 
-        ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"), getChimaeraWing(1));
+        ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"),
+                getChimaeraWing(1));
         chimeraWing.addIngredient(amount, ingredient);
         return chimeraWing;
     }

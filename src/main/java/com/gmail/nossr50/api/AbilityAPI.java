@@ -8,7 +8,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public final class AbilityAPI {
-    private AbilityAPI() {}
+    private AbilityAPI() {
+    }
 
     public static boolean berserkEnabled(Player player) {
         return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.BERSERK);
@@ -39,10 +40,10 @@ public final class AbilityAPI {
     }
 
     public static boolean isAnyAbilityEnabled(Player player) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         for (SuperAbilityType ability : SuperAbilityType.values()) {
-            if (mcMMOPlayer.getAbilityMode(ability)) {
+            if (mmoPlayer.getAbilityMode(ability)) {
                 return true;
             }
         }
@@ -83,10 +84,8 @@ public final class AbilityAPI {
     }
 
     public static boolean isBleeding(LivingEntity entity) {
-        if(entity.isValid()) {
-            if(entity.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
-                return true;
-            }
+        if (entity.isValid()) {
+            return entity.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE);
         }
 
         return false;

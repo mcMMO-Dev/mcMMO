@@ -15,19 +15,19 @@ import org.jetbrains.annotations.NotNull;
 
 public class PtpAcceptCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (!Permissions.partyTeleportAccept(sender)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        Player player = (Player) sender;
+        final Player player = (Player) sender;
         PartyTeleportRecord ptpRecord = UserManager.getPlayer(player).getPartyTeleportRecord();
 
         if (!ptpRecord.hasRequest()) {
@@ -35,7 +35,8 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), mcMMO.p.getGeneralConfig().getPTPCommandTimeout())) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(),
+                mcMMO.p.getGeneralConfig().getPTPCommandTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;
@@ -54,11 +55,13 @@ public class PtpAcceptCommand implements CommandExecutor {
 
             if (!Permissions.partyTeleportAllWorlds(target)) {
                 if (!Permissions.partyTeleportWorld(target, targetWorld)) {
-                    target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
+                    target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions",
+                            targetWorld.getName()));
                     return true;
-                }
-                else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
-                    target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", playerWorld.getName()));
+                } else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target,
+                        playerWorld)) {
+                    target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions",
+                            playerWorld.getName()));
                     return true;
                 }
             }

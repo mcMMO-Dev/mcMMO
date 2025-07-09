@@ -1,12 +1,17 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,7 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 public final class ParticleEffectUtils {
 
-    private ParticleEffectUtils() {}
+    private ParticleEffectUtils() {
+    }
 
     public static void playGreenThumbEffect(Location location) {
         World world = location.getWorld();
@@ -29,7 +35,28 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity),
+                Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+    }
+
+    public static void playCrippleEffect(@NotNull LivingEntity livingEntity) {
+        if (!mcMMO.p.getGeneralConfig().getCrippleEffectEnabled()) {
+            return;
+        }
+
+        SoundManager.sendCategorizedSound(livingEntity.getLocation(), SoundType.CRIPPLE,
+                SoundCategory.PLAYERS, 0.2F);
+        livingEntity.getWorld()
+                .playEffect(getParticleLocation(livingEntity), Effect.ANVIL_BREAK, null, 20);
+
+        if (livingEntity instanceof Player player) {
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            boolean useChatNotification = mmoPlayer == null || mmoPlayer.useChatNotifications();
+            if (useChatNotification) {
+                NotificationManager.sendPlayerInformation(
+                        player, NotificationType.SUBSKILL_MESSAGE, "Maces.SubSkill.Cripple.Proc");
+            }
+        }
     }
 
     private static @NotNull Location getParticleLocation(@NotNull LivingEntity livingEntity) {
@@ -42,31 +69,22 @@ public final class ParticleEffectUtils {
 
         double offSetVal = 0.3D;
 
-        switch(RandomUtils.nextInt(10)) {
-
-            case 0:
-                return new Location(world, x - offSetVal, y, z);
-            case 1:
-                return new Location(world, x + offSetVal, y, z);
-            case 2:
-                return new Location(world, x, y + offSetVal, z);
-            case 3:
-                return new Location(world, x, y - offSetVal, z);
-            case 4: Location locE = new Location(world, x, y, z + offSetVal);
-                return new Location(world, x, y, z - offSetVal);
-            case 5:
-                return new Location(world, x + offSetVal, y, z + offSetVal);
-            case 6:
-                return new Location(world, x - offSetVal, y, z - offSetVal);
-            case 7:
-                return new Location(world, x - offSetVal, y - offSetVal, z - offSetVal);
-            case 8:
-                return new Location(world, x + offSetVal, y - offSetVal, z + offSetVal);
-            case 9:
-                return new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
-            default:
-                return new Location(world, x + offSetVal, y + offSetVal, z - offSetVal);
-        }
+        return switch (RandomUtils.nextInt(0, 10)) {
+            case 0 -> new Location(world, x - offSetVal, y, z);
+            case 1 -> new Location(world, x + offSetVal, y, z);
+            case 2 -> new Location(world, x, y + offSetVal, z);
+            case 3 -> new Location(world, x, y - offSetVal, z);
+            case 4 -> {
+                Location locE = new Location(world, x, y, z + offSetVal);
+                yield new Location(world, x, y, z - offSetVal);
+            }
+            case 5 -> new Location(world, x + offSetVal, y, z + offSetVal);
+            case 6 -> new Location(world, x - offSetVal, y, z - offSetVal);
+            case 7 -> new Location(world, x - offSetVal, y - offSetVal, z - offSetVal);
+            case 8 -> new Location(world, x + offSetVal, y - offSetVal, z + offSetVal);
+            case 9 -> new Location(world, x - offSetVal, y + offSetVal, z - offSetVal);
+            default -> new Location(world, x + offSetVal, y + offSetVal, z - offSetVal);
+        };
     }
 
     public static void playDodgeEffect(Player player) {
@@ -82,8 +100,9 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        if(location.getWorld() == null)
+        if (location.getWorld() == null) {
             return;
+        }
 
         location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
     }
@@ -91,8 +110,9 @@ public final class ParticleEffectUtils {
     public static void playSmokeEffect(Location location) {
         World world = location.getWorld();
 
-        if(world == null)
+        if (world == null) {
             return;
+        }
 
         // Have to do it this way, because not all block directions are valid for smoke
         world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_EAST);
@@ -113,7 +133,9 @@ public final class ParticleEffectUtils {
 
         Location location = livingEntity.getEyeLocation();
 
-        livingEntity.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
+        livingEntity.getWorld()
+                .createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false,
+                        false);
     }
 
     public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
@@ -121,7 +143,8 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+        livingEntity.getWorld()
+                .playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
     }
 
     public static void playAbilityDisabledEffect(Player player) {

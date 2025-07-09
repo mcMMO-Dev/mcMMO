@@ -8,8 +8,7 @@ import org.bukkit.metadata.FixedMetadataValue;
  */
 public class OldName extends FixedMetadataValue {
 
-    public OldName(String oldName, mcMMO plugin)
-    {
+    public OldName(String oldName, mcMMO plugin) {
         super(plugin, oldName);
     }
 

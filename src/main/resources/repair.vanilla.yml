@@ -285,3 +285,11 @@ Repairables:
         RepairMaterial: PRISMARINE_CRYSTALS
         MinimumQuantity: 16
         MaximumDurability: 250
+    MACE:
+        MinimumLevel: 0
+        XpMultiplier: 3
+        ItemType: TOOL
+        ItemMaterialCategory: OTHER
+        RepairMaterial: BREEZE_ROD
+        MinimumQuantity: 4
+        MaximumDurability: 250

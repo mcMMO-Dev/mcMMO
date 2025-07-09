@@ -11,19 +11,15 @@ import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLaye
 import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.text.StringUtils;
+import java.util.HashMap;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-
 /**
- *
- * These classes are a band-aid solution for adding NMS support into 2.1.XXX
- * In 2.2 we are switching to modules and that will clean things up significantly
- *
+ * These classes are a band-aid solution for adding NMS support into 2.1.XXX In 2.2 we are switching
+ * to modules and that will clean things up significantly
  */
-//TODO: I need to delete this crap
 public class CompatibilityManager {
     private @NotNull HashMap<CompatibilityType, Boolean> supportedLayers;
     private boolean isFullyCompatibleServerSoftware = true; //true if all compatibility layers load successfully
@@ -50,14 +46,14 @@ public class CompatibilityManager {
     private void initSupportedLayersMap() {
         supportedLayers = new HashMap<>(); //Init map
 
-        for(CompatibilityType compatibilityType : CompatibilityType.values()) {
-            supportedLayers.put(compatibilityType, false); //All layers are set to false when initialized
+        for (CompatibilityType compatibilityType : CompatibilityType.values()) {
+            supportedLayers.put(compatibilityType,
+                    false); //All layers are set to false when initialized
         }
     }
 
     /**
-     * Initialize all necessary compatibility layers
-     * For any unsupported layers, load a dummy layer
+     * Initialize all necessary compatibility layers For any unsupported layers, load a dummy layer
      */
     private void initCompatibilityLayers() {
         initBungeeSerializerLayer();
@@ -67,7 +63,7 @@ public class CompatibilityManager {
     }
 
     private void initMasterAnglerLayer() {
-        if(minecraftGameVersion.isAtLeast(1, 16, 3)) {
+        if (minecraftGameVersion.isAtLeast(1, 16, 3)) {
             masterAnglerCompatibility = new MasterAnglerCompatibilityLayer();
         } else {
             masterAnglerCompatibility = null;
@@ -75,7 +71,7 @@ public class CompatibilityManager {
     }
 
     private void initBungeeSerializerLayer() {
-        if(minecraftGameVersion.isAtLeast(1, 16, 0)) {
+        if (minecraftGameVersion.isAtLeast(1, 16, 0)) {
             bungeeSerializerCompatibilityLayer = new BungeeModernSerializerCompatibilityLayer();
         } else {
             bungeeSerializerCompatibilityLayer = new BungeeLegacySerializerCompatibilityLayer();
@@ -86,20 +82,22 @@ public class CompatibilityManager {
 
     //TODO: move to text manager
     public void reportCompatibilityStatus(@NotNull CommandSender commandSender) {
-        if(isFullyCompatibleServerSoftware) {
+        if (isFullyCompatibleServerSoftware) {
             commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
                     "mcMMO is fully compatible with the currently running server software."));
         } else {
             //TODO: Better messages for each incompatible layer
-            for(CompatibilityType compatibilityType : CompatibilityType.values()) {
-                if(!supportedLayers.get(compatibilityType)) {
+            for (CompatibilityType compatibilityType : CompatibilityType.values()) {
+                if (!supportedLayers.get(compatibilityType)) {
                     commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
-                            LocaleLoader.getString("Compatibility.Layer.Unsupported",  StringUtils.getCapitalized(compatibilityType.toString()))));
+                            LocaleLoader.getString("Compatibility.Layer.Unsupported",
+                                    StringUtils.getCapitalized(compatibilityType.toString()))));
                 }
             }
         }
 
-        commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix", "NMS Status - " + nmsVersion.toString()));
+        commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
+                "NMS Status - " + nmsVersion));
     }
 
     public boolean isCompatibilityLayerOperational(@NotNull CompatibilityType compatibilityType) {
@@ -116,7 +114,7 @@ public class CompatibilityManager {
 
     private @NotNull NMSVersion determineNMSVersion() {
         //This bit here helps prevent mcMMO breaking if it isn't updated but the game continues to update
-        if(minecraftGameVersion.isAtLeast(1, 17, 0)) {
+        if (minecraftGameVersion.isAtLeast(1, 17, 0)) {
             return NMSVersion.NMS_1_17;
         }
 
@@ -134,13 +132,13 @@ public class CompatibilityManager {
                 case 16:
                     if (minecraftGameVersion.getPatchVersion().asInt() == 1) {
                         return NMSVersion.NMS_1_16_1;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 2) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() == 2) {
                         return NMSVersion.NMS_1_16_2;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 3) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() == 3) {
                         return NMSVersion.NMS_1_16_3;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 4) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() == 4) {
                         return NMSVersion.NMS_1_16_4;
-                    } else if(minecraftGameVersion.getPatchVersion().asInt() >= 5) {
+                    } else if (minecraftGameVersion.getPatchVersion().asInt() >= 5) {
                         return NMSVersion.NMS_1_16_5;
                     }
                 case 17:
@@ -159,7 +157,7 @@ public class CompatibilityManager {
         return masterAnglerCompatibility;
     }
 
-    public @Nullable MinecraftGameVersion getMinecraftGameVersion() {
+    public @NotNull MinecraftGameVersion getMinecraftGameVersion() {
         return minecraftGameVersion;
     }
 }

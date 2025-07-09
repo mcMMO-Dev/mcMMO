@@ -11,18 +11,19 @@ import org.jetbrains.annotations.NotNull;
 
 public class PtpAcceptAnyCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (!Permissions.partyTeleportAcceptAll(sender)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
 
-        PartyTeleportRecord ptpRecord = UserManager.getPlayer(sender.getName()).getPartyTeleportRecord();
+        PartyTeleportRecord ptpRecord = UserManager.getPlayer(sender.getName())
+                .getPartyTeleportRecord();
 
         if (ptpRecord.isConfirmRequired()) {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));
-        }
-        else {
+        } else {
             sender.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Enabled"));
         }
 

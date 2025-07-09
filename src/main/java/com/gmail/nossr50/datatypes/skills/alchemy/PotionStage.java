@@ -1,11 +1,12 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import org.bukkit.Material;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionType;
+import static com.gmail.nossr50.util.PotionUtil.isLong;
+import static com.gmail.nossr50.util.PotionUtil.isPotionTypeWater;
+import static com.gmail.nossr50.util.PotionUtil.isStrong;
 
-import java.util.List;
+import com.gmail.nossr50.util.PotionUtil;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 
 public enum PotionStage {
     FIVE(5),
@@ -35,36 +36,37 @@ public enum PotionStage {
     }
 
     public static PotionStage getPotionStage(AlchemyPotion input, AlchemyPotion output) {
-        PotionStage potionStage = getPotionStage(output);
-        if (!isWaterBottle(input) && getPotionStage(input) == potionStage) {
-            potionStage = PotionStage.FIVE;
+        PotionStage outputPotionStage = getPotionStage(output);
+        PotionStage inputPotionStage = getPotionStage(input);
+        if (!isWaterBottle(input) && inputPotionStage == outputPotionStage) {
+            outputPotionStage = PotionStage.FIVE;
         }
 
-        return potionStage;
+        return outputPotionStage;
     }
 
-    private static boolean isWaterBottle(AlchemyPotion input) {
-        return input.getData().getType() == PotionType.WATER;
+    private static boolean isWaterBottle(AlchemyPotion alchemyPotion) {
+        return isPotionTypeWater(alchemyPotion.getAlchemyPotionMeta());
     }
 
     public static PotionStage getPotionStage(AlchemyPotion alchemyPotion) {
-        PotionData data = alchemyPotion.getData();
-        List<PotionEffect> effects = alchemyPotion.getEffects();
+        final PotionMeta potionMeta = alchemyPotion.getAlchemyPotionMeta();
 
         int stage = 1;
 
         // Check if potion has an effect of any sort
-        if (data.getType().getEffectType() != null || !effects.isEmpty()) {
+        if (!potionMeta.getCustomEffects().isEmpty()
+                || PotionUtil.hasBasePotionEffects(potionMeta)) {
             stage++;
         }
 
         // Check if potion has a glowstone dust amplifier
         // Else check if the potion has a custom effect with an amplifier added by mcMMO 
-        if (data.isUpgraded()) {
+        if (isStrong(potionMeta)) {
             stage++;
-        } else if(!effects.isEmpty()) {
-            for (PotionEffect effect : effects){
-                if(effect.getAmplifier() > 0){
+        } else if (!potionMeta.getCustomEffects().isEmpty()) {
+            for (PotionEffect effect : potionMeta.getCustomEffects()) {
+                if (effect.getAmplifier() > 0) {
                     stage++;
                     break;
                 }
@@ -72,12 +74,12 @@ public enum PotionStage {
         }
 
         // Check if potion has a redstone dust amplifier
-        if (data.isExtended()) {
+        if (isLong(potionMeta)) {
             stage++;
         }
 
         // Check if potion has a gunpowder amplifier
-        if (alchemyPotion.getMaterial() == Material.SPLASH_POTION || alchemyPotion.getMaterial() == Material.LINGERING_POTION) {
+        if (alchemyPotion.isSplash() || alchemyPotion.isLingering()) {
             stage++;
         }
 

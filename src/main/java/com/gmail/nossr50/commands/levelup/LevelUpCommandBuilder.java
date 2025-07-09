@@ -1,16 +1,14 @@
 package com.gmail.nossr50.commands.levelup;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import org.jetbrains.annotations.NotNull;
+import static java.util.Objects.requireNonNull;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-
-import static java.util.Objects.requireNonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class LevelUpCommandBuilder {
     private LinkedList<String> commands = null;

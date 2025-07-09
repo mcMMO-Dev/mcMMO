@@ -5,21 +5,19 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class AlchemyCommand extends SkillCommand {
     private String brewSpeed;
     private String brewSpeedLucky;
 
-    private int    tier;
-    private int    ingredientCount;
+    private int tier;
+    private int ingredientCount;
     private String ingredientList;
 
     private boolean canCatalysis;
@@ -30,20 +28,14 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     protected String[] calculateAbilityDisplayValues(Player player) {
-        //TODO: Needed?
-        if(UserManager.getPlayer(player) == null)
-        {
-            player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
-            return new String[] {"DATA NOT LOADED", "DATA NOT LOADED"};
-        }
-
-        AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+        AlchemyManager alchemyManager = mmoPlayer.getAlchemyManager();
         String[] displayValues = new String[2];
 
         boolean isLucky = Permissions.lucky(player, PrimarySkillType.ALCHEMY);
 
         displayValues[0] = decimal.format(alchemyManager.calculateBrewSpeed(false)) + "x";
-        displayValues[1] = isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;
+        displayValues[1] =
+                isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;
 
         return displayValues;
     }
@@ -59,7 +51,7 @@ public class AlchemyCommand extends SkillCommand {
 
         // ALCHEMY_CONCOCTIONS
         if (canConcoctions) {
-            AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+            AlchemyManager alchemyManager = mmoPlayer.getAlchemyManager();
             tier = alchemyManager.getTier();
             ingredientCount = alchemyManager.getIngredients().size();
             ingredientList = alchemyManager.getIngredientList();
@@ -68,12 +60,13 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canCatalysis = canUseSubskill(player, SubSkillType.ALCHEMY_CATALYSIS);
-        canConcoctions = canUseSubskill(player, SubSkillType.ALCHEMY_CONCOCTIONS);
+        canCatalysis = Permissions.canUseSubSkill(player, SubSkillType.ALCHEMY_CATALYSIS);
+        canConcoctions = Permissions.canUseSubSkill(player, SubSkillType.ALCHEMY_CONCOCTIONS);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canCatalysis) {
@@ -82,8 +75,11 @@ public class AlchemyCommand extends SkillCommand {
         }
 
         if (canConcoctions) {
-            messages.add(getStatMessage(false, true, SubSkillType.ALCHEMY_CONCOCTIONS, String.valueOf(tier), String.valueOf(RankUtils.getHighestRank(SubSkillType.ALCHEMY_CONCOCTIONS))));
-            messages.add(getStatMessage(true, true, SubSkillType.ALCHEMY_CONCOCTIONS, String.valueOf(ingredientCount), ingredientList));
+            messages.add(getStatMessage(false, true, SubSkillType.ALCHEMY_CONCOCTIONS,
+                    String.valueOf(tier),
+                    String.valueOf(RankUtils.getHighestRank(SubSkillType.ALCHEMY_CONCOCTIONS))));
+            messages.add(getStatMessage(true, true, SubSkillType.ALCHEMY_CONCOCTIONS,
+                    String.valueOf(ingredientCount), ingredientList));
 
             //messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, RankUtils.getHighestRank(SubSkillType.ALCHEMY_CONCOCTIONS)));
             //messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
@@ -96,7 +92,8 @@ public class AlchemyCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.ALCHEMY);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+                PrimarySkillType.ALCHEMY);
 
         return textComponents;
     }

@@ -4,13 +4,13 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
-import net.md_5.bungee.api.ChatColor;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import net.md_5.bungee.api.ChatColor;
 
 public class AdvancedConfig extends BukkitConfig {
+    int[] defaultCrippleValues = new int[]{10, 15, 20, 25};
 
     public AdvancedConfig(File dataFolder) {
         super("advanced.yml", dataFolder);
@@ -65,7 +65,8 @@ public class AdvancedConfig extends BukkitConfig {
         }
 
         if (getCatalysisMaxSpeed() < getCatalysisMinSpeed()) {
-            reason.add("Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
+            reason.add(
+                    "Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
         }
 
         /* ARCHERY */
@@ -357,7 +358,8 @@ public class AdvancedConfig extends BukkitConfig {
         }
 
         if (getMaxHorseJumpStrength() < 0 || getMaxHorseJumpStrength() > 2) {
-            reason.add("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength should be between 0 and 2!");
+            reason.add(
+                    "Skills.Taming.CallOfTheWild.MaxHorseJumpStrength should be between 0 and 2!");
         }
 
         /* UNARMED */
@@ -408,6 +410,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* GENERAL */
 
+    public boolean useAttackCooldown() {
+        return config.getBoolean("Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown",
+                true);
+    }
+
     public boolean canApplyLimitBreakPVE() {
         return config.getBoolean("Skills.General.LimitBreak.AllowPVE", false);
     }
@@ -421,29 +428,32 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /**
-     * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
-     * It returns a different value depending on whether the server is in retro mode
+     * This returns the maximum level at which superabilities will stop lengthening from scaling
+     * alongside skill level. It returns a different value depending on whether the server is in
+     * retro mode
      *
      * @return the level at which abilities stop increasing in length
      */
     public int getAbilityLengthCap() {
-        if (!mcMMO.isRetroModeEnabled())
+        if (!mcMMO.isRetroModeEnabled()) {
             return config.getInt("Skills.General.Ability.Length.Standard.CapLevel", 50);
-        else
+        } else {
             return config.getInt("Skills.General.Ability.Length.RetroMode.CapLevel", 500);
+        }
     }
 
     /**
-     * This returns the frequency at which abilities will increase in length
-     * It returns a different value depending on whether the server is in retro mode
+     * This returns the frequency at which abilities will increase in length It returns a different
+     * value depending on whether the server is in retro mode
      *
      * @return the number of levels required per ability length increase
      */
     public int getAbilityLength() {
-        if (!mcMMO.isRetroModeEnabled())
+        if (!mcMMO.isRetroModeEnabled()) {
             return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5);
-        else
+        } else {
             return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50);
+        }
     }
 
     public int getEnchantBuff() {
@@ -451,17 +461,19 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /**
-     * Grabs the max bonus level for a skill used in RNG calculations
-     * All max level values in the config are multiplied by 10 if the server is in retro mode as the values in the config are based around the new 1-100 skill system scaling
-     * A value of 10 in the file will be returned as 100 for retro mode servers to accommodate the change in scaling
+     * Grabs the max bonus level for a skill used in RNG calculations All max level values in the
+     * config are multiplied by 10 if the server is in retro mode as the values in the config are
+     * based around the new 1-100 skill system scaling A value of 10 in the file will be returned as
+     * 100 for retro mode servers to accommodate the change in scaling
      *
      * @param subSkillType target subskill
-     *
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
         String keyPath = subSkillType.getAdvConfigAddress() + ".MaxBonusLevel.";
-        return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath + "RetroMode", 1000) : config.getInt(keyPath + "Standard", 100);
+        return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath + "RetroMode", 1000)
+                : config.getInt(
+                        keyPath + "Standard", 100);
     }
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
@@ -484,11 +496,15 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public boolean doesNotificationUseActionBar(NotificationType notificationType) {
-        return config.getBoolean("Feedback.ActionBarNotifications." + notificationType.toString() + ".Enabled", true);
+        return config.getBoolean(
+                "Feedback.ActionBarNotifications." + notificationType.toString() + ".Enabled",
+                true);
     }
 
     public boolean doesNotificationSendCopyToChat(NotificationType notificationType) {
-        return config.getBoolean("Feedback.ActionBarNotifications." + notificationType.toString() + ".SendCopyOfMessageToChat", false);
+        return config.getBoolean(
+                "Feedback.ActionBarNotifications." + notificationType.toString()
+                        + ".SendCopyOfMessageToChat", false);
     }
 
     public boolean useTitlesForXPEvent() {
@@ -496,73 +512,10 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public boolean sendAbilityNotificationToOtherPlayers() {
-        return config.getBoolean("Feedback.Events.AbilityActivation.SendNotificationToOtherPlayers", true);
+        return config.getBoolean("Feedback.Events.AbilityActivation.SendNotificationToOtherPlayers",
+                true);
     }
 
-    /*
-     * JSON Style Settings
-     */
-
-
-    /*public ChatColor getJSONStatHoverElementColor(StatType statType, boolean isPrefix)
-    {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Color";
-
-        return getChatColorFromKey(keyLocation);
-    }*/
-
-    /**
-     * Used to color our details header in our JSON Hover Object tooltips
-     *
-     * @return the ChatColor for this element
-     */
-    /*public ChatColor getJSONStatHoverDetailsColor()
-    {
-        String keyLocation = "Style.JSON.Hover.Details.Header.Color";
-        return getChatColorFromKey(keyLocation);
-    }
-
-    public boolean isJSONDetailsHeaderBold()
-    {
-        return config.getBoolean("Style.JSON.Hover.Details.Header.Bold");
-    }
-
-    public boolean isJSONDetailsHeaderItalic()
-    {
-        return config.getBoolean("Style.JSON.Hover.Details.Header.Italics");
-    }
-
-    public boolean isJSONDetailsHeaderUnderlined()
-    {
-        return config.getBoolean("Style.JSON.Hover.Details.Header.Underlined");
-    }
-
-    public ChatColor getJSONStatHoverDescriptionColor()
-    {
-        String keyLocation = "Style.JSON.Hover.Details.Description.Color";
-        return getChatColorFromKey(keyLocation);
-    }
-
-    public boolean isJSONDetailsDescriptionBold()
-    {
-        return config.getBoolean("Style.JSON.Hover.Details.Description.Bold");
-    }
-
-    public boolean isJSONDetailsDescriptionItalic()
-    {
-        return config.getBoolean("Style.JSON.Hover.Details.Description.Italics");
-    }
-
-    public boolean isJSONDetailsDescriptionUnderlined()
-    {
-        return config.getBoolean("Style.JSON.Hover.Details.Description.Underlined");
-    }
-
-    public ChatColor getJSONActionBarColor(NotificationType notificationType)
-    {
-        return getChatColor(config.getString("Style.JSON.Notification."+notificationType.toString()+".Color"));
-    }*/
     private ChatColor getChatColorFromKey(String keyLocation) {
         String colorName = config.getString(keyLocation);
 
@@ -571,45 +524,14 @@ public class AdvancedConfig extends BukkitConfig {
 
     private ChatColor getChatColor(String configColor) {
         for (ChatColor chatColor : ChatColor.values()) {
-            if (configColor.equalsIgnoreCase(chatColor.getName()))
+            if (configColor.equalsIgnoreCase(chatColor.getName())) {
                 return chatColor;
+            }
         }
 
         //Invalid Color
         mcMMO.p.getLogger().warning(configColor + " is an invalid color value");
         return ChatColor.WHITE;
-    }
-
-    /*public boolean isJSONStatHoverElementBold(StatType statType, boolean isPrefix)
-    {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Bold";
-        return config.getBoolean(keyLocation);
-    }
-
-    public boolean isJSONStatHoverElementItalic(StatType statType, boolean isPrefix)
-    {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Italics";
-        return config.getBoolean(keyLocation);
-    }
-
-    public boolean isJSONStatHoverElementUnderlined(StatType statType, boolean isPrefix)
-    {
-        String keyAddress = isPrefix ? "Prefix" : "Value";
-        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Underline";
-        return config.getBoolean(keyLocation);
-    }*/
-
-    /**
-     * Some SubSkills have the ability to retain classic functionality
-     *
-     * @param subSkillType SubSkillType with classic functionality
-     *
-     * @return true if the subskill is in classic mode
-     */
-    public boolean isSubSkillClassic(SubSkillType subSkillType) {
-        return config.getBoolean(subSkillType.getAdvConfigAddress() + ".Classic");
     }
 
     /* ACROBATICS */
@@ -627,7 +549,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* ALCHEMY */
     public int getCatalysisMaxBonusLevel() {
-        return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000);
+        if (mcMMO.isRetroModeEnabled()) {
+            return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel.RetroMode", 1000);
+        } else {
+            return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel.Standard", 100);
+        }
     }
 
     public double getCatalysisMinSpeed() {
@@ -691,6 +617,15 @@ public class AdvancedConfig extends BukkitConfig {
 
     public double getSkullSplitterModifier() {
         return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D);
+    }
+
+    /* CROSSBOWS */
+    public double getPoweredShotRankDamageMultiplier() {
+        return config.getDouble("Skills.Crossbows.PoweredShot.RankDamageMultiplier", 10.0D);
+    }
+
+    public double getPoweredShotDamageMax() {
+        return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D);
     }
 
     /* EXCAVATION */
@@ -835,10 +770,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* SMELTING */
     public int getBurnModifierMaxLevel() {
-        if (mcMMO.isRetroModeEnabled())
+        if (mcMMO.isRetroModeEnabled()) {
             return config.getInt("Skills.Smelting.FuelEfficiency.RetroMode.MaxBonusLevel", 1000);
-        else
+        } else {
             return config.getInt("Skills.Smelting.FuelEfficiency.Standard.MaxBonusLevel", 100);
+        }
     }
 
     public double getFluxMiningChance() {
@@ -846,6 +782,14 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /* SWORDS */
+    public double getStabBaseDamage() {
+        return config.getDouble("Skills.Swords.Stab.Base_Damage", 1.0D);
+    }
+
+    public double getStabPerRankMultiplier() {
+        return config.getDouble("Skills.Swords.Stab.Per_Rank_Multiplier", 1.5D);
+    }
+
     public double getRuptureTickDamage(boolean isTargetPlayer, int rank) {
         String root = "Skills.Swords.Rupture.Rupture_Mechanics.Tick_Interval_Damage.Against_";
         String targetType = isTargetPlayer ? "Players" : "Mobs";
@@ -919,7 +863,6 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /* UNARMED */
-
     public boolean isSteelArmDamageCustom() {
         return config.getBoolean("Skills.Unarmed.SteelArmStyle.Damage_Override", false);
     }
@@ -935,6 +878,13 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* WOODCUTTING */
     public boolean isKnockOnWoodXPOrbEnabled() {
-        return config.getBoolean("Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops", true);
+        return config.getBoolean("Skills.Woodcutting.TreeFeller.Knock_On_Wood.Add_XP_Orbs_To_Drops",
+                true);
+    }
+
+    /* MACES */
+    public double getCrippleChanceToApplyOnHit(int rank) {
+        String root = "Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_";
+        return config.getDouble(root + rank, defaultCrippleValues[rank - 1]);
     }
 }

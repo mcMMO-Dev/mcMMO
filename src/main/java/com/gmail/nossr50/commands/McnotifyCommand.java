@@ -5,39 +5,41 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class McnotifyCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
 
         if (args.length == 0) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
 
             //Not Loaded yet
-            if (mcMMOPlayer == null) {
+            if (mmoPlayer == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            sender.sendMessage(LocaleLoader.getString("Commands.Notifications." + (mcMMOPlayer.useChatNotifications() ? "Off" : "On")));
-            mcMMOPlayer.toggleChatNotifications();
+            sender.sendMessage(LocaleLoader.getString(
+                    "Commands.Notifications." + (mmoPlayer.useChatNotifications() ? "Off" : "On")));
+            mmoPlayer.toggleChatNotifications();
             return true;
         }
         return false;
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, String[] args) {
         return ImmutableList.of();
     }
 }

@@ -1,13 +1,22 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
+import java.io.ObjectStreamConstants;
+import java.io.PushbackInputStream;
+import java.io.Serializable;
+import java.util.BitSet;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.*;
-import java.util.BitSet;
-import java.util.UUID;
 
 public class BitSetChunkStore implements ChunkStore {
     private static final int CURRENT_VERSION = 9;
@@ -102,8 +111,11 @@ public class BitSetChunkStore implements ChunkStore {
     }
 
     private static int coordToIndex(int x, int y, int z, int worldMin, int worldMax) {
-        if (x < 0 || x >= 16 || y < worldMin || y >= worldMax || z < 0 || z >= 16)
-            throw new IndexOutOfBoundsException(String.format("x: %d y: %d z: %d World Min: %d World Max: %d", x, y, z, worldMin, worldMax));
+        if (x < 0 || x >= 16 || y < worldMin || y > worldMax || z < 0 || z >= 16) {
+            throw new IndexOutOfBoundsException(
+                    String.format("x: %d y: %d z: %d World Min: %d World Max: %d", x, y, z,
+                            worldMin, worldMax));
+        }
         int yOffset = -worldMin; // Ensures y multiplier remains positive
         return (z * 16 + x) + (256 * (y + yOffset));
     }
@@ -112,19 +124,20 @@ public class BitSetChunkStore implements ChunkStore {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
-        if (world == null)
+        if (world == null) {
             throw new RuntimeException("Cannot grab a minimum world height for an unloaded world");
+        }
 
         return world.getMinHeight();
     }
 
-    private static int getWorldMax(@NotNull UUID worldUid)
-    {
+    private static int getWorldMax(@NotNull UUID worldUid) {
         World world = Bukkit.getWorld(worldUid);
 
         // Not sure how this case could come up, but might as well handle it gracefully.  Loading a chunkstore for an unloaded world?
-        if (world == null)
+        if (world == null) {
             throw new RuntimeException("Cannot grab a maximum world height for an unloaded world");
+        }
 
         return world.getMaxHeight();
     }
@@ -148,13 +161,15 @@ public class BitSetChunkStore implements ChunkStore {
         dirty = false;
     }
 
-    private static @NotNull BitSetChunkStore deserialize(@NotNull DataInputStream in) throws IOException {
+    private static @NotNull BitSetChunkStore deserialize(@NotNull DataInputStream in)
+            throws IOException {
         int magic = in.readInt();
         // Can be used to determine the format of the file
         int fileVersionNumber = in.readInt();
 
-        if (magic != MAGIC_NUMBER || fileVersionNumber < 8)
+        if (magic != MAGIC_NUMBER || fileVersionNumber < 8) {
             throw new IOException();
+        }
 
         long lsb = in.readLong();
         long msb = in.readLong();
@@ -163,8 +178,9 @@ public class BitSetChunkStore implements ChunkStore {
         int cz = in.readInt();
 
         int worldMin = 0;
-        if (fileVersionNumber >= 9)
+        if (fileVersionNumber >= 9) {
             worldMin = in.readInt();
+        }
         int worldMax = in.readInt();
         byte[] temp = new byte[in.readInt()];
         in.readFully(temp);
@@ -175,23 +191,29 @@ public class BitSetChunkStore implements ChunkStore {
 
         // The order in which the world height update code occurs here is important, the world max truncate math only holds up if done before adjusting for min changes
         // Lop off extra data if world max has shrunk
-        if (currentWorldMax < worldMax)
-            stored.clear(coordToIndex(16, currentWorldMax, 16, worldMin, worldMax), stored.length());
+        if (currentWorldMax < worldMax) {
+            stored.clear(coordToIndex(16, currentWorldMax, 16, worldMin, worldMax),
+                    stored.length());
+        }
         // Left shift store if world min has shrunk
-        if (currentWorldMin > worldMin)
-            stored = stored.get(currentWorldMin, stored.length()); // Because BitSet's aren't fixed size, a "substring" operation is equivalent to a left shift
+        if (currentWorldMin > worldMin) {
+            stored = stored.get(currentWorldMin,
+                    stored.length()); // Because BitSet's aren't fixed size, a "substring" operation is equivalent to a left shift
+        }
         // Right shift store if world min has expanded
-        if (currentWorldMin < worldMin)
-        {
-            int offset = (worldMin - currentWorldMin) * 16 * 16; // We are adding this many bits to the front
+        if (currentWorldMin < worldMin) {
+            int offset = (worldMin - currentWorldMin) * 16
+                    * 16; // We are adding this many bits to the front
             // This isn't the most efficient way to do this, however, its a rare case to occur, and in the grand scheme of things, the small performance we could gain would cost us significant reduced readability of the code
             BitSet shifted = new BitSet();
-            for (int i = 0; i < stored.length(); i++)
+            for (int i = 0; i < stored.length(); i++) {
                 shifted.set(i + offset, stored.get(i));
+            }
             stored = shifted;
         }
 
-        BitSetChunkStore chunkStore = new BitSetChunkStore(worldUid, currentWorldMin, currentWorldMax, cx, cz);
+        BitSetChunkStore chunkStore = new BitSetChunkStore(worldUid, currentWorldMin,
+                currentWorldMax, cx, cz);
         chunkStore.store.or(stored);
         chunkStore.dirty = currentWorldMin != worldMin || currentWorldMax != worldMax;
 
@@ -200,46 +222,48 @@ public class BitSetChunkStore implements ChunkStore {
 
     public static class Serialization {
 
-        public static final short STREAM_MAGIC = (short)0xACDC; // Rock on
+        public static final short STREAM_MAGIC = (short) 0xACDC; // Rock on
 
-        public static @Nullable ChunkStore readChunkStore(@NotNull DataInputStream inputStream) throws IOException {
-            if (inputStream.markSupported())
+        public static @Nullable ChunkStore readChunkStore(@NotNull DataInputStream inputStream)
+                throws IOException {
+            if (inputStream.markSupported()) {
                 inputStream.mark(2);
+            }
             short magicNumber = inputStream.readShort();
 
-            if (magicNumber == ObjectStreamConstants.STREAM_MAGIC) // Java serializable, use legacy serialization
-            {
+            // Java serializable, use legacy serialization
+            if (magicNumber == ObjectStreamConstants.STREAM_MAGIC) {
                 // "Un-read" the magic number for Serializables, they need it to still be in the stream
-                if (inputStream.markSupported())
+                if (inputStream.markSupported()) {
                     inputStream.reset(); // Pretend we never read those bytes
-                else
-                {
+                } else {
                     // Creates a new stream with the two magic number bytes and then the rest of the original stream...   Java is so dumb.  I just wanted to look at two bytes.
-                    PushbackInputStream pushbackInputStream = new PushbackInputStream(inputStream, 2);
+                    PushbackInputStream pushbackInputStream = new PushbackInputStream(inputStream,
+                            2);
                     pushbackInputStream.unread((magicNumber) & 0xFF);
                     pushbackInputStream.unread((magicNumber >>> 8) & 0xFF);
                     inputStream = new DataInputStream(pushbackInputStream);
                 }
                 return new LegacyDeserializationInputStream(inputStream).readLegacyChunkStore();
-            }
-            else if (magicNumber == STREAM_MAGIC) // Pure bytes format
-            {
+            } else if (magicNumber == STREAM_MAGIC) {
+                // Pure bytes format
                 return BitSetChunkStore.deserialize(inputStream);
             }
             throw new IOException("Bad Data Format");
         }
 
-        public static void writeChunkStore(@NotNull DataOutputStream outputStream, @NotNull ChunkStore chunkStore) throws IOException {
-            if (!(chunkStore instanceof BitSetChunkStore))
+        public static void writeChunkStore(@NotNull DataOutputStream outputStream,
+                @NotNull ChunkStore chunkStore) throws IOException {
+            if (!(chunkStore instanceof BitSetChunkStore)) {
                 throw new InvalidClassException("ChunkStore must be instance of BitSetChunkStore");
+            }
             outputStream.writeShort(STREAM_MAGIC);
-            ((BitSetChunkStore)chunkStore).serialize(outputStream);
+            ((BitSetChunkStore) chunkStore).serialize(outputStream);
         }
 
         // Handles loading the old serialized class
         private static class LegacyDeserializationInputStream extends ObjectInputStream {
-            private static class LegacyChunkStoreDeserializer implements Serializable
-            {
+            private static class LegacyChunkStoreDeserializer implements Serializable {
                 private static final long serialVersionUID = -1L;
 
                 private int cx;
@@ -248,7 +272,8 @@ public class BitSetChunkStore implements ChunkStore {
                 private UUID worldUid;
                 private boolean[][][] store;
 
-                private LegacyChunkStoreDeserializer() {}
+                private LegacyChunkStoreDeserializer() {
+                }
 
                 @Deprecated
                 private void writeObject(@NotNull ObjectOutputStream out) throws IOException {
@@ -256,7 +281,8 @@ public class BitSetChunkStore implements ChunkStore {
                 }
 
                 @Deprecated
-                private void readObject(@NotNull ObjectInputStream in) throws IOException, ClassNotFoundException {
+                private void readObject(@NotNull ObjectInputStream in)
+                        throws IOException, ClassNotFoundException {
                     in.readInt(); // Magic number
                     in.readInt(); // Format version
                     long lsb = in.readLong();
@@ -270,18 +296,19 @@ public class BitSetChunkStore implements ChunkStore {
                     worldMax = store[0][0].length;
                 }
 
-                public @NotNull BitSetChunkStore convert()
-                {
+                public @NotNull BitSetChunkStore convert() {
                     int currentWorldMin = getWorldMin(worldUid);
                     int currentWorldMax = getWorldMax(worldUid);
 
-                    BitSetChunkStore converted = new BitSetChunkStore(worldUid, currentWorldMin, currentWorldMax, cx, cz);
+                    BitSetChunkStore converted = new BitSetChunkStore(worldUid, currentWorldMin,
+                            currentWorldMax, cx, cz);
 
                     // Read old data into new chunkstore
                     for (int x = 0; x < 16; x++) {
                         for (int z = 0; z < 16; z++) {
                             for (int y = 0; y < worldMax && y < currentWorldMax; y++) {
-                                converted.store.set(converted.coordToIndex(x, y, z), store[x][z][y]);
+                                converted.store.set(converted.coordToIndex(x, y, z),
+                                        store[x][z][y]);
                             }
                         }
                     }
@@ -298,16 +325,19 @@ public class BitSetChunkStore implements ChunkStore {
             }
 
             @Override
-            protected @NotNull ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
+            protected @NotNull ObjectStreamClass readClassDescriptor()
+                    throws IOException, ClassNotFoundException {
                 ObjectStreamClass read = super.readClassDescriptor();
-                if (read.getName().contentEquals("com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore"))
+                if (read.getName().contentEquals(
+                        "com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore")) {
                     return ObjectStreamClass.lookup(LegacyChunkStoreDeserializer.class);
+                }
                 return read;
             }
 
-            public @Nullable ChunkStore readLegacyChunkStore(){
+            public @Nullable ChunkStore readLegacyChunkStore() {
                 try {
-                    LegacyChunkStoreDeserializer deserializer = (LegacyChunkStoreDeserializer)readObject();
+                    LegacyChunkStoreDeserializer deserializer = (LegacyChunkStoreDeserializer) readObject();
                     return deserializer.convert();
                 } catch (IOException | ClassNotFoundException e) {
                     return null;

@@ -1,9 +1,0 @@
-# Config wrote by M1cr0man
-# Possibly incomplete. Only covers ores
-# Up to date as of Factorization 0.8.34
-Mining:
-    # Dark Iron Ore
-    X1004|0:
-        XP_Gain: 250
-        Double_Drops_Enabled: true
-        Is_Ore: true

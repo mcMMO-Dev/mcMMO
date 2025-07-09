@@ -1,18 +1,14 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Stores hash tables for item and block names
- * This allows for better support across multiple versions of Minecraft
- *
- * This is a temporary class, mcMMO is spaghetti and I'l clean it up later
- *
+ * Stores hash tables for item and block names This allows for better support across multiple
+ * versions of Minecraft
  */
 public class MaterialMapStore {
 
@@ -36,6 +32,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> ironArmor;
     private final @NotNull HashSet<String> ironTools;
     private final @NotNull HashSet<String> stringTools;
+    private final @NotNull HashSet<String> prismarineTools;
     private final @NotNull HashSet<String> goldArmor;
     private final @NotNull HashSet<String> goldTools;
     private final @NotNull HashSet<String> chainmailArmor;
@@ -52,8 +49,8 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> bows;
     private final @NotNull HashSet<String> crossbows;
     private final @NotNull HashSet<String> tools;
-
     private final @NotNull HashSet<String> enchantables;
+    private final @NotNull HashSet<String> maces;
 
     private final @NotNull HashSet<String> ores;
     private final @NotNull HashSet<String> intendedToolPickAxe;
@@ -62,8 +59,7 @@ public class MaterialMapStore {
     private final @NotNull HashMap<String, Integer> tierValue;
 
 
-    public MaterialMapStore()
-    {
+    public MaterialMapStore() {
         abilityBlackList = new HashSet<>();
         toolBlackList = new HashSet<>();
         mossyWhiteList = new HashSet<>();
@@ -93,6 +89,7 @@ public class MaterialMapStore {
         bows = new HashSet<>();
         crossbows = new HashSet<>();
         stringTools = new HashSet<>();
+        prismarineTools = new HashSet<>();
         tools = new HashSet<>();
 
         swords = new HashSet<>();
@@ -101,6 +98,7 @@ public class MaterialMapStore {
         shovels = new HashSet<>();
         hoes = new HashSet<>();
         tridents = new HashSet<>();
+        maces = new HashSet<>();
 
         enchantables = new HashSet<>();
 
@@ -135,8 +133,7 @@ public class MaterialMapStore {
         fillTierMap();
     }
 
-    public boolean isMultiBlockPlant(@NotNull Material material)
-    {
+    public boolean isMultiBlockPlant(@NotNull Material material) {
         return multiBlockPlant.contains(material.getKey().getKey());
     }
 
@@ -144,63 +141,56 @@ public class MaterialMapStore {
         return multiBlockHangingPlant.contains(material.getKey().getKey());
     }
 
-    public boolean isAbilityActivationBlackListed(@NotNull Material material)
-    {
+    public boolean isAbilityActivationBlackListed(@NotNull Material material) {
         return abilityBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isToolActivationBlackListed(@NotNull Material material)
-    {
+    public boolean isToolActivationBlackListed(@NotNull Material material) {
         return toolBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isMossyWhiteListed(@NotNull Material material)
-    {
+    public boolean isMossyWhiteListed(@NotNull Material material) {
         return mossyWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isTreeFellerDestructible(@NotNull Material material)
-    {
+    public boolean isTreeFellerDestructible(@NotNull Material material) {
         return treeFellerDestructibleWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isHerbalismAbilityWhiteListed(@NotNull Material material)
-    {
+    public boolean isHerbalismAbilityWhiteListed(@NotNull Material material) {
         return herbalismAbilityBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isBlockCrackerWhiteListed(@NotNull Material material)
-    {
+    public boolean isBlockCrackerWhiteListed(@NotNull Material material) {
         return blockCrackerWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isShroomyWhiteListed(@NotNull Material material)
-    {
+    public boolean isShroomyWhiteListed(@NotNull Material material) {
         return canMakeShroomyWhiteList.contains(material.getKey().getKey());
     }
 
     private void fillTierMap() {
-        for(String id : leatherArmor) {
+        for (String id : leatherArmor) {
             tierValue.put(id, 1);
         }
 
-        for(String id : ironArmor) {
+        for (String id : ironArmor) {
             tierValue.put(id, 2);
         }
 
-        for(String id : goldArmor) {
+        for (String id : goldArmor) {
             tierValue.put(id, 3);
         }
 
-        for(String id : chainmailArmor) {
+        for (String id : chainmailArmor) {
             tierValue.put(id, 3);
         }
 
-        for(String id : diamondArmor) {
+        for (String id : diamondArmor) {
             tierValue.put(id, 6);
         }
 
-        for(String id : netheriteArmor) {
+        for (String id : netheriteArmor) {
             tierValue.put(id, 12);
         }
     }
@@ -457,6 +447,7 @@ public class MaterialMapStore {
         enchantables.addAll(tridents);
         enchantables.addAll(bows);
         enchantables.addAll(crossbows);
+        enchantables.addAll(maces);
 
         enchantables.add("shears");
         enchantables.add("fishing_rod");
@@ -472,7 +463,7 @@ public class MaterialMapStore {
         fillIronToolsWhiteList();
         fillGoldToolsWhiteList();
         fillDiamondToolsWhiteList();
-        fillnetheriteToolsWhiteList();
+        fillNetheriteToolsWhiteList();
 
         fillSwords();
         fillAxes();
@@ -480,7 +471,9 @@ public class MaterialMapStore {
         fillHoes();
         fillShovels();
         fillTridents();
+        fillMaces();
         fillStringTools();
+        fillPrismarineTools();
         fillBows();
         fillCrossbows();
 
@@ -495,6 +488,7 @@ public class MaterialMapStore {
         tools.addAll(stringTools);
         tools.addAll(bows);
         tools.addAll(crossbows);
+        tools.addAll(maces);
     }
 
     private void fillBows() {
@@ -509,6 +503,15 @@ public class MaterialMapStore {
         stringTools.add("bow");
         stringTools.add("fishing_rod");
         stringTools.add("carrot_on_a_stick");
+        stringTools.add("crossbow");
+    }
+
+    private void fillPrismarineTools() {
+        prismarineTools.add("trident");
+    }
+
+    private void fillMaces() {
+        maces.add("mace");
     }
 
     private void fillTridents() {
@@ -678,7 +681,7 @@ public class MaterialMapStore {
         diamondTools.add("diamond_shovel");
     }
 
-    private void fillnetheriteToolsWhiteList() {
+    private void fillNetheriteToolsWhiteList() {
         netheriteTools.add("netherite_sword");
         netheriteTools.add("netherite_axe");
         netheriteTools.add("netherite_hoe");
@@ -764,6 +767,7 @@ public class MaterialMapStore {
 
     /**
      * Checks if a Material is used for Armor
+     *
      * @param material target material
      * @return true if it is used for armor
      */
@@ -773,6 +777,7 @@ public class MaterialMapStore {
 
     /**
      * Checks if the id provided is used as armor
+     *
      * @param id target item id
      * @return true if the item id matches armor
      */
@@ -818,6 +823,22 @@ public class MaterialMapStore {
 
     public boolean isCrossbow(@NotNull String id) {
         return crossbows.contains(id);
+    }
+
+    public boolean isTrident(@NotNull Material material) {
+        return isTrident(material.getKey().getKey());
+    }
+
+    public boolean isTrident(@NotNull String id) {
+        return tridents.contains(id);
+    }
+
+    public boolean isMace(@NotNull Material material) {
+        return isMace(material.getKey().getKey());
+    }
+
+    public boolean isMace(@NotNull String id) {
+        return maces.contains(id);
     }
 
     public boolean isLeatherArmor(@NotNull Material material) {
@@ -964,6 +985,14 @@ public class MaterialMapStore {
         return stringTools.contains(id);
     }
 
+    public boolean isPrismarineTool(@NotNull Material material) {
+        return isPrismarineTool(material.getKey().getKey());
+    }
+
+    public boolean isPrismarineTool(@NotNull String id) {
+        return prismarineTools.contains(id);
+    }
+
     public boolean isGlass(@NotNull Material material) {
         return glassBlocks.contains(material.getKey().getKey());
     }
@@ -972,10 +1001,10 @@ public class MaterialMapStore {
         return foodItemWhiteList.contains(material.getKey().getKey());
     }
 
-    private void fillMultiBlockPlantSet()
-    {
+    private void fillMultiBlockPlantSet() {
         //Multi-Block Plants
         multiBlockPlant.add("cactus");
+        multiBlockPlant.add("cactus_flower");
         multiBlockPlant.add("chorus_plant");
         multiBlockPlant.add("chorus_flower");
         multiBlockPlant.add("sugar_cane");
@@ -991,37 +1020,36 @@ public class MaterialMapStore {
         multiBlockHangingPlant.add("weeping_vines_plant");
         multiBlockHangingPlant.add("twisted_vines_plant");
         multiBlockHangingPlant.add("cave_vines_plant");
+        multiBlockHangingPlant.add("pale_hanging_moss");
     }
 
-    private void fillShroomyWhiteList()
-    {
+    private void fillShroomyWhiteList() {
         canMakeShroomyWhiteList.add("dirt");
         canMakeShroomyWhiteList.add("grass_block");
         canMakeShroomyWhiteList.add("dirt_path");
     }
 
-    private void fillBlockCrackerWhiteList()
-    {
+    private void fillBlockCrackerWhiteList() {
         blockCrackerWhiteList.add("stone_bricks");
         blockCrackerWhiteList.add("infested_stone_bricks");
 
     }
 
-    private void fillHerbalismAbilityBlackList()
-    {
+    private void fillHerbalismAbilityBlackList() {
         herbalismAbilityBlackList.add("dirt");
         herbalismAbilityBlackList.add("grass_block");
         herbalismAbilityBlackList.add("dirt_path");
         herbalismAbilityBlackList.add("farmland");
     }
 
-    private void fillTreeFellerDestructibleWhiteList()
-    {
+    private void fillTreeFellerDestructibleWhiteList() {
+        treeFellerDestructibleWhiteList.add("pale_hanging_moss");
         treeFellerDestructibleWhiteList.add("oak_leaves");
         treeFellerDestructibleWhiteList.add("cherry_leaves");
         treeFellerDestructibleWhiteList.add("acacia_leaves");
         treeFellerDestructibleWhiteList.add("birch_leaves");
         treeFellerDestructibleWhiteList.add("dark_oak_leaves");
+        treeFellerDestructibleWhiteList.add("pale_oak_leaves");
         treeFellerDestructibleWhiteList.add("jungle_leaves");
         treeFellerDestructibleWhiteList.add("spruce_leaves");
         treeFellerDestructibleWhiteList.add("azalea_leaves");
@@ -1034,8 +1062,7 @@ public class MaterialMapStore {
         treeFellerDestructibleWhiteList.add("red_mushroom_block");
     }
 
-    private void fillMossyWhiteList()
-    {
+    private void fillMossyWhiteList() {
         mossyWhiteList.add("cobblestone");
         mossyWhiteList.add("dirt");
         mossyWhiteList.add("grass_path");
@@ -1043,8 +1070,7 @@ public class MaterialMapStore {
         mossyWhiteList.add("cobblestone_wall");
     }
 
-    private void fillAbilityBlackList()
-    {
+    private void fillAbilityBlackList() {
         abilityBlackList.add("warped_fence_gate");
         abilityBlackList.add("crimson_fence_gate");
         abilityBlackList.add("warped_pressure_plate");
@@ -1081,6 +1107,7 @@ public class MaterialMapStore {
         abilityBlackList.add("oak_fence_gate");
         abilityBlackList.add("acacia_fence_gate");
         abilityBlackList.add("dark_oak_fence_gate");
+        abilityBlackList.add("pale_oak_fence_gate");
         abilityBlackList.add("spruce_fence_gate");
         abilityBlackList.add("birch_fence_gate");
         abilityBlackList.add("jungle_fence_gate");
@@ -1093,11 +1120,13 @@ public class MaterialMapStore {
         abilityBlackList.add("birch_button");
         abilityBlackList.add("acacia_button");
         abilityBlackList.add("dark_oak_button");
+        abilityBlackList.add("pale_oak_button");
         abilityBlackList.add("jungle_button");
         abilityBlackList.add("spruce_button");
         abilityBlackList.add("acacia_trapdoor");
         abilityBlackList.add("birch_trapdoor");
         abilityBlackList.add("dark_oak_trapdoor");
+        abilityBlackList.add("pale_oak_trapdoor");
         abilityBlackList.add("jungle_trapdoor");
         abilityBlackList.add("oak_trapdoor");
         abilityBlackList.add("spruce_trapdoor");
@@ -1106,7 +1135,9 @@ public class MaterialMapStore {
         abilityBlackList.add("birch_sign");
         abilityBlackList.add("birch_wall_sign");
         abilityBlackList.add("dark_oak_sign");
+        abilityBlackList.add("pale_oak_sign");
         abilityBlackList.add("dark_oak_wall_sign");
+        abilityBlackList.add("pale_oak_wall_sign");
         abilityBlackList.add("jungle_sign");
         abilityBlackList.add("jungle_wall_sign");
         abilityBlackList.add("spruce_sign");
@@ -1127,9 +1158,11 @@ public class MaterialMapStore {
         abilityBlackList.add("birch_door");
         abilityBlackList.add("jungle_door");
         abilityBlackList.add("dark_oak_door");
+        abilityBlackList.add("pale_oak_door");
         abilityBlackList.add("oak_fence");
         abilityBlackList.add("acacia_fence");
         abilityBlackList.add("dark_oak_fence");
+        abilityBlackList.add("pale_oak_fence");
         abilityBlackList.add("birch_fence");
         abilityBlackList.add("jungle_fence");
         abilityBlackList.add("spruce_fence");
@@ -1170,9 +1203,8 @@ public class MaterialMapStore {
         abilityBlackList.add("lodestone");
         abilityBlackList.add("respawn_anchor");
     }
-    
-    private void fillToolBlackList()
-    {
+
+    private void fillToolBlackList() {
         toolBlackList.add("chiseled_bookshelf");
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
@@ -1200,6 +1232,7 @@ public class MaterialMapStore {
         toolBlackList.add("oak_fence_gate");
         toolBlackList.add("acacia_fence_gate");
         toolBlackList.add("dark_oak_fence_gate");
+        toolBlackList.add("pale_oak_fence_gate");
         toolBlackList.add("spruce_fence_gate");
         toolBlackList.add("birch_fence_gate");
         toolBlackList.add("jungle_fence_gate");
@@ -1212,11 +1245,13 @@ public class MaterialMapStore {
         toolBlackList.add("birch_button");
         toolBlackList.add("acacia_button");
         toolBlackList.add("dark_oak_button");
+        toolBlackList.add("pale_oak_button");
         toolBlackList.add("jungle_button");
         toolBlackList.add("spruce_button");
         toolBlackList.add("acacia_trapdoor");
         toolBlackList.add("birch_trapdoor");
         toolBlackList.add("dark_oak_trapdoor");
+        toolBlackList.add("pale_oak_trapdoor");
         toolBlackList.add("jungle_trapdoor");
         toolBlackList.add("oak_trapdoor");
         toolBlackList.add("spruce_trapdoor");
@@ -1234,9 +1269,11 @@ public class MaterialMapStore {
         toolBlackList.add("birch_door");
         toolBlackList.add("jungle_door");
         toolBlackList.add("dark_oak_door");
+        toolBlackList.add("pale_oak_door");
         toolBlackList.add("oak_fence");
         toolBlackList.add("acacia_fence");
         toolBlackList.add("dark_oak_fence");
+        toolBlackList.add("pale_oak_fence");
         toolBlackList.add("birch_fence");
         toolBlackList.add("jungle_fence");
         toolBlackList.add("spruce_fence");
@@ -1265,8 +1302,11 @@ public class MaterialMapStore {
         toolBlackList.add("birch_hanging_sign");
         toolBlackList.add("birch_wall_sign");
         toolBlackList.add("dark_oak_sign");
+        toolBlackList.add("pale_oak_sign");
         toolBlackList.add("dark_oak_hanging_sign");
+        toolBlackList.add("pale_oak_hanging_sign");
         toolBlackList.add("dark_oak_wall_sign");
+        toolBlackList.add("pale_oak_wall_sign");
         toolBlackList.add("jungle_sign");
         toolBlackList.add("jungle_hanging_sign");
         toolBlackList.add("jungle_wall_sign");
@@ -1286,7 +1326,9 @@ public class MaterialMapStore {
         toolBlackList.add("stripped_birch_log");
         toolBlackList.add("stripped_birch_wood");
         toolBlackList.add("stripped_dark_oak_log");
+        toolBlackList.add("stripped_pale_oak_log");
         toolBlackList.add("stripped_dark_oak_wood");
+        toolBlackList.add("stripped_pale_oak_wood");
         toolBlackList.add("stripped_jungle_log");
         toolBlackList.add("stripped_jungle_wood");
         toolBlackList.add("stripped_oak_log");
@@ -1301,7 +1343,9 @@ public class MaterialMapStore {
         toolBlackList.add("birch_log");
         toolBlackList.add("birch_wood");
         toolBlackList.add("dark_oak_log");
+        toolBlackList.add("pale_oak_log");
         toolBlackList.add("dark_oak_wood");
+        toolBlackList.add("pale_oak_wood");
         toolBlackList.add("jungle_log");
         toolBlackList.add("jungle_wood");
         toolBlackList.add("oak_log");
@@ -1350,8 +1394,7 @@ public class MaterialMapStore {
         return tierValue.getOrDefault(id, 1); //1 for unknown items
     }
 
-    private void addToHashSet(@NotNull String string, @NotNull HashSet<String> stringHashSet)
-    {
+    private void addToHashSet(@NotNull String string, @NotNull HashSet<String> stringHashSet) {
         stringHashSet.add(string.toLowerCase(Locale.ENGLISH));
     }
 }

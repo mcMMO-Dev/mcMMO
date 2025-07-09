@@ -5,19 +5,21 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.entity.LivingEntity;
 
 public class AwardCombatXpTask extends CancellableRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final double baseXp;
     private final PrimarySkillType primarySkillType;
     private final LivingEntity target;
     private final XPGainReason xpGainReason;
     private final double baseHealth;
 
-    public AwardCombatXpTask(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public AwardCombatXpTask(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType,
+            double baseXp, LivingEntity target, XPGainReason xpGainReason) {
+        this.mmoPlayer = mmoPlayer;
         this.primarySkillType = primarySkillType;
         this.baseXp = baseXp;
         this.target = target;
@@ -40,10 +42,13 @@ public class AwardCombatXpTask extends CancellableRunnable {
             damage += health;
         }
 
-        if(ExperienceConfig.getInstance().useCombatHPCeiling()) {
+        if (ExperienceConfig.getInstance().useCombatHPCeiling()) {
             damage = Math.min(damage, ExperienceConfig.getInstance().getCombatHPCeiling());
         }
 
-        mcMMOPlayer.beginXpGain(primarySkillType, (int) (damage * baseXp), xpGainReason, XPGainSource.SELF);
+        final double finalDamage = damage;
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntity(mmoPlayer.getPlayer(),
+                task -> mmoPlayer.beginXpGain(primarySkillType, (int) (finalDamage * baseXp),
+                        xpGainReason, XPGainSource.SELF));
     }
 }

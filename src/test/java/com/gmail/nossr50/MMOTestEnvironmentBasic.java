@@ -1,7 +1,15 @@
 package com.gmail.nossr50;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.gmail.nossr50.commands.levelup.LevelUpCommandManager;
-import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.ChatConfig;
+import com.gmail.nossr50.config.CommandOnLevelUpConfig;
+import com.gmail.nossr50.config.GeneralConfig;
+import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -11,13 +19,17 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerPreXpGainEvent;
 import com.gmail.nossr50.listeners.SelfListener;
-import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.TransientEntityTracker;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -31,14 +43,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 public abstract class MMOTestEnvironmentBasic {
-    private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MMOTestEnvironmentBasic.class.getName());
+    private final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(
+            MMOTestEnvironmentBasic.class.getName());
     protected MockedStatic<mcMMO> mockedMcMMO;
     protected MockedStatic<Bukkit> mockedBukkit;
     protected MockedStatic<ChatConfig> mockedChatConfig;
@@ -143,7 +150,8 @@ public abstract class MMOTestEnvironmentBasic {
         }).when(pluginManager).callEvent(any(McMMOPlayerLevelUpEvent.class));
 
         // Don't process pre-gain events
-        Mockito.doAnswer((ignored) -> null).when(pluginManager).callEvent(any(McMMOPlayerPreXpGainEvent.class));
+        Mockito.doAnswer((ignored) -> null).when(pluginManager)
+                .callEvent(any(McMMOPlayerPreXpGainEvent.class));
 
         // wire world
         this.world = mock(World.class);
@@ -167,9 +175,12 @@ public abstract class MMOTestEnvironmentBasic {
 
     private void mockPermissions() {
         mockedPermissions = Mockito.mockStatic(Permissions.class);
-        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.skillEnabled(any(Player.class), any(PrimarySkillType.class))).thenReturn(true);
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.skillEnabled(any(Player.class), any(PrimarySkillType.class))).thenReturn(
+                true);
     }
 
     private void mockNotifications() {
@@ -213,7 +224,8 @@ public abstract class MMOTestEnvironmentBasic {
         when(ExperienceConfig.getInstance().getFormulaType()).thenReturn(FormulaType.LINEAR);
         when(ExperienceConfig.getInstance().getBase(FormulaType.LINEAR)).thenReturn(1020);
         when(ExperienceConfig.getInstance().getMultiplier(FormulaType.LINEAR)).thenReturn(20D);
-        when(ExperienceConfig.getInstance().getFormulaSkillModifier(any(PrimarySkillType.class))).thenReturn(1D);
+        when(ExperienceConfig.getInstance()
+                .getFormulaSkillModifier(any(PrimarySkillType.class))).thenReturn(1D);
         when(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()).thenReturn(1D);
         when(ExperienceConfig.getInstance().getExpModifier()).thenReturn(1D);
     }
@@ -264,7 +276,8 @@ public abstract class MMOTestEnvironmentBasic {
         when(player.getInventory()).thenReturn(playerInventory);
 
         // Player Profile
-        PlayerProfile playerProfile = Mockito.spy(new PlayerProfile(playerName, player.getUniqueId(), startingLevel));
+        PlayerProfile playerProfile = Mockito.spy(
+                new PlayerProfile(playerName, player.getUniqueId(), startingLevel));
         when(playerProfile.isLoaded()).thenReturn(true);
         // McMMOPlayer
         McMMOPlayer mmoPlayer = Mockito.spy(new McMMOPlayer(player, playerProfile));

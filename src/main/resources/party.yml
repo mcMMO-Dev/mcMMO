@@ -1,0 +1,4 @@
+# Settings for mcMMO Party System
+Party:
+    # Enable or disable the mcMMO party system
+    Enabled: true

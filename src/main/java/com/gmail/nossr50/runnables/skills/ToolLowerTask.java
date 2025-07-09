@@ -8,24 +8,25 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.player.NotificationManager;
 
 public class ToolLowerTask extends CancellableRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final ToolType tool;
 
-    public ToolLowerTask(McMMOPlayer mcMMOPlayer, ToolType tool) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public ToolLowerTask(McMMOPlayer mmoPlayer, ToolType tool) {
+        this.mmoPlayer = mmoPlayer;
         this.tool = tool;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getToolPreparationMode(tool)) {
+        if (!mmoPlayer.getToolPreparationMode(tool)) {
             return;
         }
 
-        mcMMOPlayer.setToolPreparationMode(tool, false);
+        mmoPlayer.setToolPreparationMode(tool, false);
 
         if (mcMMO.p.getGeneralConfig().getAbilityMessagesEnabled()) {
-            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.TOOL, tool.getLowerTool());
+            NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.TOOL,
+                    tool.getLowerTool());
         }
     }
 }

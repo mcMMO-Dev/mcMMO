@@ -1,8 +1,7 @@
 package com.gmail.nossr50.database;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 public class UserQueryFull implements UserQueryUUID, UserQueryName {
 

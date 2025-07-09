@@ -14,8 +14,9 @@ public class SoundConfig extends BukkitConfig {
     }
 
     public static SoundConfig getInstance() {
-        if (instance == null)
+        if (instance == null) {
             return new SoundConfig();
+        }
 
         return instance;
     }
@@ -29,14 +30,16 @@ public class SoundConfig extends BukkitConfig {
     protected boolean validateKeys() {
         for (SoundType soundType : SoundType.values()) {
             if (config.getDouble("Sounds." + soundType.toString() + ".Volume") < 0) {
-                LogUtils.debug(mcMMO.p.getLogger(), "[mcMMO] Sound volume cannot be below 0 for " + soundType);
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "[mcMMO] Sound volume cannot be below 0 for " + soundType);
                 return false;
             }
 
             //Sounds with custom pitching don't use pitch values
             if (!soundType.usesCustomPitch()) {
                 if (config.getDouble("Sounds." + soundType + ".Pitch") < 0) {
-                    LogUtils.debug(mcMMO.p.getLogger(), "[mcMMO] Sound pitch cannot be below 0 for " + soundType);
+                    LogUtils.debug(mcMMO.p.getLogger(),
+                            "[mcMMO] Sound pitch cannot be below 0 for " + soundType);
                     return false;
                 }
             }
@@ -50,12 +53,12 @@ public class SoundConfig extends BukkitConfig {
 
     public float getVolume(SoundType soundType) {
         String key = "Sounds." + soundType.toString() + ".Volume";
-        return (float) config.getDouble(key);
+        return (float) config.getDouble(key, 1.0);
     }
 
     public float getPitch(SoundType soundType) {
         String key = "Sounds." + soundType.toString() + ".Pitch";
-        return (float) config.getDouble(key);
+        return (float) config.getDouble(key, 1.0);
     }
 
     public boolean getIsEnabled(SoundType soundType) {

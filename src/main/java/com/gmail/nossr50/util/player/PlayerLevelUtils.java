@@ -19,7 +19,7 @@ public class PlayerLevelUtils {
 //            int levelCap = Config.getInstance().getLevelCap(primarySkillType);
 //            int cap;
 //
-//            if(levelCap == Integer.MAX_VALUE || levelCap <= 0)
+//            if (levelCap == Integer.MAX_VALUE || levelCap <= 0)
 //            {
 //                cap = Config.getInstance().getIsRetroMode() ? 50 : 5;
 //            } else {
@@ -30,19 +30,22 @@ public class PlayerLevelUtils {
 //        }
 //    }
 
-    public int getEarlyGameCutoff(PrimarySkillType primarySkillType)
-    {
+    public int getEarlyGameCutoff(PrimarySkillType primarySkillType) {
         return 1;
     }
 
     /**
-     * Check if a player is currently qualifying for the early game boosted XP
-     * Will return false only if a player is above the boost level cutoff, it does not check config settings to see if the early game boost is on
-     * @param mcMMOPlayer target player
+     * Check if a player is currently qualifying for the early game boosted XP Will return false
+     * only if a player is above the boost level cutoff, it does not check config settings to see if
+     * the early game boost is on
+     *
+     * @param mmoPlayer target player
      * @param primarySkillType target skill
      * @return if the player would qualify for the XP boost if its enabled
      */
-    public static boolean qualifiesForEarlyGameBoost(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
-        return mcMMOPlayer.getSkillLevel(primarySkillType) < mcMMO.getPlayerLevelUtils().getEarlyGameCutoff(primarySkillType);
+    public static boolean qualifiesForEarlyGameBoost(McMMOPlayer mmoPlayer,
+            PrimarySkillType primarySkillType) {
+        return mmoPlayer.getSkillLevel(primarySkillType) < mcMMO.getPlayerLevelUtils()
+                .getEarlyGameCutoff(primarySkillType);
     }
 }

@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.LogUtils;
@@ -15,12 +14,14 @@ public class SaveTimerTask extends CancellableRunnable {
         // All player data will be saved periodically through this
         int count = 1;
 
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-            mcMMO.p.getFoliaLib().getImpl().runLaterAsync(new PlayerProfileSaveTask(mcMMOPlayer.getProfile(), false), count);
+        for (McMMOPlayer mmoPlayer : UserManager.getPlayers()) {
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runLaterAsync(new PlayerProfileSaveTask(mmoPlayer.getProfile(), false), count);
             count++;
         }
 
-
-        PartyManager.saveParties();
+        if (mcMMO.p.getPartyConfig().isPartyEnabled()) {
+            mcMMO.p.getPartyManager().saveParties();
+        }
     }
 }

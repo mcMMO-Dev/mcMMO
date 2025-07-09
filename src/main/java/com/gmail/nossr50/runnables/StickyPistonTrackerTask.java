@@ -19,7 +19,7 @@ public class StickyPistonTrackerTask extends CancellableRunnable {
 
     @Override
     public void run() {
-        if (!mcMMO.getPlaceStore().isTrue(movedBlock.getRelative(direction))) {
+        if (!mcMMO.getUserBlockTracker().isIneligible(movedBlock.getRelative(direction))) {
             return;
         }
 
@@ -29,7 +29,7 @@ public class StickyPistonTrackerTask extends CancellableRunnable {
         }
 
         // The sticky piston actually pulled the block so move the PlaceStore data
-        mcMMO.getPlaceStore().setFalse(movedBlock.getRelative(direction));
+        mcMMO.getUserBlockTracker().setEligible(movedBlock.getRelative(direction));
         BlockUtils.setUnnaturalBlock(movedBlock);
     }
 }

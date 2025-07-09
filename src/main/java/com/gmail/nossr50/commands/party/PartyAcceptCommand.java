@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,9 +12,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyAcceptCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 1) {
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
 
             //Check if player profile is loaded
             if (UserManager.getPlayer(player) == null) {
@@ -22,20 +23,20 @@ public class PartyAcceptCommand implements CommandExecutor {
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-
-            if (!mcMMOPlayer.hasPartyInvite()) {
+            if (!mmoPlayer.hasPartyInvite()) {
                 sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));
                 return true;
             }
 
             // Changing parties
-            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, mcMMOPlayer.getPartyInvite().getName())) {
+            if (!mcMMO.p.getPartyManager()
+                    .changeOrJoinParty(mmoPlayer, mmoPlayer.getPartyInvite().getName())) {
                 return true;
             }
 
-            PartyManager.joinInvitedParty(mcMMOPlayer);
+            mcMMO.p.getPartyManager().joinInvitedParty(mmoPlayer);
             return true;
         }
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "accept"));

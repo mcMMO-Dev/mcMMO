@@ -1,5 +1,8 @@
 package com.gmail.nossr50.datatypes.player;
 
+import static com.gmail.nossr50.util.EventUtils.callPlayerAbilityActivateEvent;
+import static java.util.Objects.requireNonNull;
+
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.chat.author.PlayerAuthor;
 import com.gmail.nossr50.config.ChatConfig;
@@ -10,7 +13,6 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -20,28 +22,34 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.experience.McMMOPlayerPreXpGainEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
+import com.gmail.nossr50.runnables.skills.RuptureTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
+import com.gmail.nossr50.skills.maces.MacesManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentsManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.MetadataConstants;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -52,6 +60,9 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.UUID;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.GameMode;
@@ -63,11 +74,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class McMMOPlayer implements Identified {
     private final @NotNull Identity identity;
@@ -75,16 +83,17 @@ public class McMMOPlayer implements Identified {
     //Hacky fix for now, redesign later
     private final @NotNull PlayerAuthor playerAuthor;
 
-    private final Player        player;
+    private final Player player;
     private final PlayerProfile profile;
 
-    private final Map<PrimarySkillType, SkillManager> skillManagers = new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, SkillManager> skillManagers = new EnumMap<>(
+            PrimarySkillType.class);
     private final ExperienceBarManager experienceBarManager;
 
-    private Party   party;
-    private Party   invite;
-    private Party   allianceInvite;
-    private int     itemShareModifier;
+    private Party party;
+    private Party invite;
+    private Party allianceInvite;
+    private int itemShareModifier;
 
     private PartyTeleportRecord ptpRecord;
 
@@ -97,8 +106,10 @@ public class McMMOPlayer implements Identified {
 
     private ChatChannel chatChannel;
 
-    private final Map<SuperAbilityType, Boolean> abilityMode     = new EnumMap<>(SuperAbilityType.class);
-    private final Map<SuperAbilityType, Boolean> abilityInformed = new EnumMap<>(SuperAbilityType.class);
+    private final Map<SuperAbilityType, Boolean> abilityMode = new EnumMap<>(
+            SuperAbilityType.class);
+    private final Map<SuperAbilityType, Boolean> abilityInformed = new EnumMap<>(
+            SuperAbilityType.class);
 
     private final Map<ToolType, Boolean> toolMode = new EnumMap<>(ToolType.class);
 
@@ -106,7 +117,6 @@ public class McMMOPlayer implements Identified {
     private int respawnATS;
     private int teleportATS;
     private long databaseATS;
-    private double attackStrength; //captured during arm swing events
     //private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -117,6 +127,8 @@ public class McMMOPlayer implements Identified {
     private PrimarySkillType lastSkillShownScoreboard = PrimarySkillType.values()[0];
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
+        requireNonNull(player, "player cannot be null");
+        requireNonNull(profile, "profile cannot be null");
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
         identity = Identity.identity(uuid);
@@ -143,19 +155,18 @@ public class McMMOPlayer implements Identified {
         experienceBarManager = new ExperienceBarManager(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
-        attackStrength = 1.0D;
 
         this.playerAuthor = new PlayerAuthor(player);
 
         this.chatChannel = ChatChannel.NONE;
 
-        if(ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
+        if (ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
             chatSpy = true;
         }
     }
 
     private void initSkillManagers() {
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             try {
                 initManager(primarySkillType);
             } catch (InvalidSkillException e) {
@@ -166,7 +177,7 @@ public class McMMOPlayer implements Identified {
 
     //TODO: Add test
     private void initManager(PrimarySkillType primarySkillType) throws InvalidSkillException {
-        switch(primarySkillType) {
+        switch (primarySkillType) {
             case ACROBATICS:
                 skillManagers.put(primarySkillType, new AcrobaticsManager(this));
                 break;
@@ -178,6 +189,9 @@ public class McMMOPlayer implements Identified {
                 break;
             case AXES:
                 skillManagers.put(primarySkillType, new AxesManager(this));
+                break;
+            case CROSSBOWS:
+                skillManagers.put(primarySkillType, new CrossbowsManager(this));
                 break;
             case EXCAVATION:
                 skillManagers.put(primarySkillType, new ExcavationManager(this));
@@ -206,14 +220,23 @@ public class McMMOPlayer implements Identified {
             case TAMING:
                 skillManagers.put(primarySkillType, new TamingManager(this));
                 break;
+            case TRIDENTS:
+                skillManagers.put(primarySkillType, new TridentsManager(this));
+                break;
             case UNARMED:
                 skillManagers.put(primarySkillType, new UnarmedManager(this));
                 break;
             case WOODCUTTING:
                 skillManagers.put(primarySkillType, new WoodcuttingManager(this));
                 break;
+            case MACES:
+                if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                    skillManagers.put(primarySkillType, new MacesManager(this));
+                }
+                break;
             default:
-                throw new InvalidSkillException("The skill named has no manager! Contact the devs!");
+                throw new InvalidSkillException(
+                        "The skill named has no manager! Contact the devs!");
         }
     }
 
@@ -222,17 +245,12 @@ public class McMMOPlayer implements Identified {
     }
 
     public double getAttackStrength() {
-        return attackStrength;
+        if (mcMMO.p.getAdvancedConfig().useAttackCooldown()) {
+            return player.getAttackCooldown();
+        } else {
+            return 1.0D;
+        }
     }
-
-//    public void setAttackStrength(double attackStrength) {
-//        this.attackStrength = attackStrength;
-//    }
-
-    /*public void hideXpBar(PrimarySkillType primarySkillType)
-    {
-        experienceBarManager.hideExperienceBar(primarySkillType);
-    }*/
 
     public @NotNull PrimarySkillType getLastSkillShownScoreboard() {
         return lastSkillShownScoreboard;
@@ -242,42 +260,45 @@ public class McMMOPlayer implements Identified {
         this.lastSkillShownScoreboard = primarySkillType;
     }
 
-    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
-    {
+    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin,
+            XPGainSource xpGainSource) {
         //Check if they've reached the power level cap just now
-        if(hasReachedPowerLevelCap()) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
-        } else if(hasReachedLevelCap(primarySkillType)) {
+        if (hasReachedPowerLevelCap()) {
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel",
+                    String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
+        } else if (hasReachedLevelCap(primarySkillType)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill",
                     String.valueOf(mcMMO.p.getSkillTools().getLevelCap(primarySkillType)),
                     mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
         }
 
         //Updates from Party sources
-        if(xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance()
+                .isPartyExperienceBarsEnabled()) {
             return;
+        }
 
         //Updates from passive sources (Alchemy, Smelting, etc...)
-        if(xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance()
+                .isPassiveGainsExperienceBarsEnabled()) {
             return;
+        }
 
         updateXPBar(primarySkillType, plugin);
     }
 
-    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel)
-    {
+    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType,
+            int skillLevel) {
         RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, skillLevel);
     }
 
-    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
-    {
+    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
         //XP BAR UPDATES
         experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }
 
-    public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
-    {
-        if(SkillTools.isChildSkill(primarySkillType)) {
+    public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType) {
+        if (SkillTools.isChildSkill(primarySkillType)) {
             return 1.0D;
         }
 
@@ -305,6 +326,18 @@ public class McMMOPlayer implements Identified {
 
     public AxesManager getAxesManager() {
         return (AxesManager) skillManagers.get(PrimarySkillType.AXES);
+    }
+
+    public CrossbowsManager getCrossbowsManager() {
+        return (CrossbowsManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
+    }
+
+    public TridentsManager getTridentsManager() {
+        return (TridentsManager) skillManagers.get(PrimarySkillType.TRIDENTS);
+    }
+
+    public MacesManager getMacesManager() {
+        return (MacesManager) skillManagers.get(PrimarySkillType.MACES);
     }
 
     public ExcavationManager getExcavationManager() {
@@ -366,13 +399,14 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Get the mode of an ability.
+     * Get the mode of a superAbilityType.
      *
-     * @param ability The ability to check
-     * @return true if the ability is enabled, false otherwise
+     * @param superAbilityType The superAbilityType to check
+     * @return true if the superAbilityType is enabled, false otherwise
      */
-    public boolean getAbilityMode(SuperAbilityType ability) {
-        return abilityMode.get(ability);
+    public boolean getAbilityMode(@NotNull SuperAbilityType superAbilityType) {
+        requireNonNull(superAbilityType, "superAbilityType cannot be null");
+        return abilityMode.get(superAbilityType);
     }
 
     /**
@@ -382,6 +416,7 @@ public class McMMOPlayer implements Identified {
      * @param isActive True if the ability is active, false otherwise
      */
     public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
+        // TODO: This should reject "one and done" type abilities
         abilityMode.put(ability, isActive);
     }
 
@@ -471,7 +506,8 @@ public class McMMOPlayer implements Identified {
     }
 
     public void actualizeChimeraWingLastUse() {
-        profile.setChimaeraWingDATS((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
+        profile.setChimaeraWingDATS(
+                (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
     }
 
     public Location getTeleportCommenceLocation() {
@@ -530,9 +566,13 @@ public class McMMOPlayer implements Identified {
      * Party Chat Spy
      */
 
-    public boolean isPartyChatSpying() { return chatSpy; }
+    public boolean isPartyChatSpying() {
+        return chatSpy;
+    }
 
-    public void togglePartyChatSpying() { chatSpy = !chatSpy;}
+    public void togglePartyChatSpying() {
+        chatSpy = !chatSpy;
+    }
 
     /*
      * Debug Mode Flags
@@ -576,21 +616,25 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Whether a player is level capped
-     * If they are at the power level cap, this will return true, otherwise it checks their skill level
+     * Whether a player is level capped If they are at the power level cap, this will return true,
+     * otherwise it checks their skill level
+     *
      * @param primarySkillType
      * @return
      */
     public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
-        if(hasReachedPowerLevelCap())
+        if (hasReachedPowerLevelCap()) {
             return true;
+        }
 
-        return getSkillLevel(primarySkillType) >= mcMMO.p.getSkillTools().getLevelCap(primarySkillType);
+        return getSkillLevel(primarySkillType) >= mcMMO.p.getSkillTools()
+                .getLevelCap(primarySkillType);
     }
 
     /**
-     * Whether a player is power level capped
-     * Compares their power level total to the current set limit
+     * Whether a player is power level capped Compares their power level total to the current set
+     * limit
+     *
      * @return true if they have reached the power level cap
      */
     public boolean hasReachedPowerLevelCap() {
@@ -598,18 +642,20 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
+     * Begins an experience gain. The amount will be affected by skill modifiers, global rate,
+     * perks, and may be shared with the party
      *
      * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(xp <= 0) {
+    public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason,
+            XPGainSource xpGainSource) {
+        if (xp <= 0) {
             return;
         }
 
         if (SkillTools.isChildSkill(skill)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
             float splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -622,7 +668,8 @@ public class McMMOPlayer implements Identified {
         }
 
         // Return if the experience has been shared
-        if (party != null && ShareHandler.handleXpShare(xp, this, skill, ShareHandler.getSharedXpGainReason(xpGainReason))) {
+        if (party != null && ShareHandler.handleXpShare(xp, this, skill,
+                ShareHandler.getSharedXpGainReason(xpGainReason))) {
             return;
         }
 
@@ -630,22 +677,27 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Begins an experience gain. The amount will be affected by skill modifiers, global rate and perks
+     * Begins an experience gain. The amount will be affected by skill modifiers, global rate and
+     * perks
      *
      * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(player.getGameMode() == GameMode.CREATIVE)
-            return;
-
-        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
-
-        if (party == null || party.hasReachedLevelCap()) {
+    public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason,
+            XPGainSource xpGainSource) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
+        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
+
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || party == null
+                || party.hasReachedLevelCap()) {
+            return;
+        }
+
+        if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !mcMMO.p.getPartyManager()
+                .getNearMembers(this).isEmpty()) {
             party.applyXpGain(modifyXpGain(skill, xp));
         }
     }
@@ -656,17 +708,19 @@ public class McMMOPlayer implements Identified {
      * @param primarySkillType Skill being used
      * @param xp Experience amount to add
      */
-    public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason,
+            XPGainSource xpGainSource) {
         if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
             return;
         }
 
-        final McMMOPlayerPreXpGainEvent mcMMOPlayerPreXpGainEvent = new McMMOPlayerPreXpGainEvent(player, primarySkillType, xp, xpGainReason);
-        mcMMO.p.getServer().getPluginManager().callEvent(mcMMOPlayerPreXpGainEvent);
-        xp = mcMMOPlayerPreXpGainEvent.getXpGained();
+        final McMMOPlayerPreXpGainEvent mmoPlayerPreXpGainEvent = new McMMOPlayerPreXpGainEvent(
+                player, primarySkillType, xp, xpGainReason);
+        mcMMO.p.getServer().getPluginManager().callEvent(mmoPlayerPreXpGainEvent);
+        xp = mmoPlayerPreXpGainEvent.getXpGained();
 
         if (SkillTools.isChildSkill(primarySkillType)) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
@@ -688,9 +742,11 @@ public class McMMOPlayer implements Identified {
      *
      * @param primarySkillType The skill to check
      */
-    private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(hasReachedLevelCap(primarySkillType))
+    private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason,
+            XPGainSource xpGainSource) {
+        if (hasReachedLevelCap(primarySkillType)) {
             return;
+        }
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
             processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
@@ -710,7 +766,8 @@ public class McMMOPlayer implements Identified {
             levelsGained++;
         }
 
-        if (EventUtils.tryLevelChangeEvent(this, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
+        if (EventUtils.tryLevelChangeEvent(this, primarySkillType, levelsGained, xpRemoved, true,
+                xpGainReason)) {
             return;
         }
 
@@ -722,7 +779,8 @@ public class McMMOPlayer implements Identified {
          * Check to see if the player unlocked any new skills
          */
 
-        NotificationManager.sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
+        NotificationManager.sendPlayerLevelUpNotification(this, primarySkillType, levelsGained,
+                profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
         processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
@@ -732,11 +790,11 @@ public class McMMOPlayer implements Identified {
      * Players & Profiles
      */
 
-    public Player getPlayer() {
+    public @NotNull Player getPlayer() {
         return player;
     }
 
-    public PlayerProfile getProfile() {
+    public @NotNull PlayerProfile getProfile() {
         return profile;
     }
 
@@ -745,11 +803,14 @@ public class McMMOPlayer implements Identified {
      */
 
     public void setupPartyData() {
-        party = PartyManager.getPlayerParty(player.getName(), player.getUniqueId());
-        ptpRecord = new PartyTeleportRecord();
+        if (mcMMO.p.isPartySystemEnabled()) {
+            party = mcMMO.p.getPartyManager()
+                    .getPlayerParty(player.getName(), player.getUniqueId());
+            ptpRecord = new PartyTeleportRecord();
 
-        if (inParty()) {
-            loginParty();
+            if (inParty()) {
+                loginParty();
+            }
         }
     }
 
@@ -769,7 +830,7 @@ public class McMMOPlayer implements Identified {
         this.party = party;
     }
 
-    public Party getParty() {
+    public @Nullable Party getParty() {
         return party;
     }
 
@@ -785,7 +846,7 @@ public class McMMOPlayer implements Identified {
         invite = null;
     }
 
-    public PartyTeleportRecord getPartyTeleportRecord() {
+    public @Nullable PartyTeleportRecord getPartyTeleportRecord() {
         return ptpRecord;
     }
 
@@ -832,29 +893,25 @@ public class McMMOPlayer implements Identified {
      * @param xp Experience amount to process
      * @return Modified experience
      */
-    private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
+    @VisibleForTesting
+    float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
         //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
-        if ((mcMMO.p.getSkillTools().getLevelCap(primarySkillType) <= getSkillLevel(primarySkillType))
+        if ((mcMMO.p.getSkillTools().getLevelCap(primarySkillType) <= getSkillLevel(
+                primarySkillType))
                 || (mcMMO.p.getGeneralConfig().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
-        xp = (float) (xp / ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType) * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-
-        if (mcMMO.p.getGeneralConfig().getToolModsEnabled()) {
-            CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
-
-            if (tool != null) {
-                xp *= tool.getXpMultiplier();
-            }
-        }
+        xp = (float) (
+                (xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType))
+                        * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         return PerksUtils.handleXpPerks(player, xp, primarySkillType);
     }
 
     public void checkGodMode() {
         if (godMode && !Permissions.mcgod(player)
-            || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
+                || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
             toggleGodMode();
             player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
         }
@@ -874,7 +931,8 @@ public class McMMOPlayer implements Identified {
      */
     public void checkAbilityActivation(PrimarySkillType primarySkillType) {
         ToolType tool = mcMMO.p.getSkillTools().getPrimarySkillToolType(primarySkillType);
-        SuperAbilityType superAbilityType = mcMMO.p.getSkillTools().getSuperAbility(primarySkillType);
+        SuperAbilityType superAbilityType = mcMMO.p.getSkillTools()
+                .getSuperAbility(primarySkillType);
         SubSkillType subSkillType = superAbilityType.getSubSkillTypeDefinition();
 
         if (getAbilityMode(superAbilityType) || !superAbilityType.getPermissions(player)) {
@@ -883,12 +941,14 @@ public class McMMOPlayer implements Identified {
 
         //TODO: This is hacky and temporary solution until skills are move to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
-        if(!RankUtils.hasUnlockedSubskill(player, subSkillType))
-        {
-            int diff = RankUtils.getSuperAbilityUnlockRequirement(superAbilityType) - getSkillLevel(primarySkillType);
+        if (!RankUtils.hasUnlockedSubskill(player, subSkillType)) {
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(superAbilityType) - getSkillLevel(
+                    primarySkillType);
 
             //Inform the player they are not yet skilled enough
-            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
+            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN,
+                    "Skills.AbilityGateRequirementFail", String.valueOf(diff),
+                    mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
             return;
         }
 
@@ -899,15 +959,17 @@ public class McMMOPlayer implements Identified {
              * Axes and Woodcutting are odd because they share the same tool.
              * We show them the too tired message when they take action.
              */
-            if (primarySkillType == PrimarySkillType.WOODCUTTING || primarySkillType == PrimarySkillType.AXES) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+            if (primarySkillType == PrimarySkillType.WOODCUTTING
+                    || primarySkillType == PrimarySkillType.AXES) {
+                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN,
+                        "Skills.TooTired", String.valueOf(timeRemaining));
                 //SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
             }
 
             return;
         }
 
-        if (EventUtils.callPlayerAbilityActivateEvent(player, primarySkillType).isCancelled()) {
+        if (callPlayerAbilityActivateEvent(this, primarySkillType).isCancelled()) {
             return;
         }
 
@@ -918,39 +980,51 @@ public class McMMOPlayer implements Identified {
         int ticks;
 
         //Ability cap of 0 or below means no cap
-        if(abilityLengthCap > 0)
-        {
-            ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, getSkillLevel(primarySkillType)) / abilityLengthVar), superAbilityType.getMaxLength());
+        if (abilityLengthCap > 0) {
+            ticks = PerksUtils.handleActivationPerks(player,
+                    2 + (Math.min(abilityLengthCap, getSkillLevel(primarySkillType))
+                            / abilityLengthVar), superAbilityType.getMaxLength());
         } else {
-            ticks = PerksUtils.handleActivationPerks(player, 2 + (getSkillLevel(primarySkillType) / abilityLengthVar), superAbilityType.getMaxLength());
+            ticks = PerksUtils.handleActivationPerks(player,
+                    2 + (getSkillLevel(primarySkillType) / abilityLengthVar),
+                    superAbilityType.getMaxLength());
         }
 
         if (useChatNotifications()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, superAbilityType.getAbilityOn());
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY,
+                    superAbilityType.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
         }
 
         if (mcMMO.p.getAdvancedConfig().sendAbilityNotificationToOtherPlayers()) {
-            SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, superAbilityType.getAbilityPlayer());
+            SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
+                    superAbilityType.getAbilityPlayer());
         }
 
         //Sounds
-        SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+        SoundManager.worldSendSound(player.getWorld(), player.getLocation(),
+                SoundType.ABILITY_ACTIVATED_GENERIC);
 
         //If the current item is still buffed somehow, remove it to prevent enchantments from stacking.
-        if (superAbilityType == SuperAbilityType.SUPER_BREAKER || superAbilityType == SuperAbilityType.GIGA_DRILL_BREAKER)
+        if (superAbilityType == SuperAbilityType.SUPER_BREAKER
+                || superAbilityType == SuperAbilityType.GIGA_DRILL_BREAKER) {
             SkillUtils.removeAbilityBuff(player.getInventory().getItemInMainHand());
+        }
 
         // Enable the ability
-        profile.setAbilityDATS(superAbilityType, System.currentTimeMillis() + ((long) ticks * Misc.TIME_CONVERSION_FACTOR));
+        profile.setAbilityDATS(superAbilityType,
+                System.currentTimeMillis() + ((long) ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(superAbilityType, true);
 
-        if (superAbilityType == SuperAbilityType.SUPER_BREAKER || superAbilityType == SuperAbilityType.GIGA_DRILL_BREAKER) {
+        if (superAbilityType == SuperAbilityType.SUPER_BREAKER
+                || superAbilityType == SuperAbilityType.GIGA_DRILL_BREAKER) {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
 
         setToolPreparationMode(tool, false);
-        mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType), (long) ticks * Misc.TICK_CONVERSION_FACTOR);
+        mcMMO.p.getFoliaLib().getScheduler()
+                .runAtEntityLater(player, new AbilityDisableTask(this, superAbilityType),
+                        (long) ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void processAbilityActivation(@NotNull PrimarySkillType primarySkillType) {
@@ -958,15 +1032,12 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
+        if (mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking()
+                && !player.isSneaking()) {
             return;
         }
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
-
-        if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
-            return;
-        }
 
         if (!getAbilityUse()) {
             return;
@@ -986,11 +1057,14 @@ public class McMMOPlayer implements Identified {
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
         if (tool.inHand(inHand) && !getToolPreparationMode(tool)) {
-            if (primarySkillType != PrimarySkillType.WOODCUTTING && primarySkillType != PrimarySkillType.AXES) {
+            if (primarySkillType != PrimarySkillType.WOODCUTTING
+                    && primarySkillType != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (isAbilityOnCooldown(ability)) {
-                    NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                    NotificationManager.sendPlayerInformation(player,
+                            NotificationType.ABILITY_COOLDOWN, "Skills.TooTired",
+                            String.valueOf(timeRemaining));
                     return;
                 }
             }
@@ -1001,10 +1075,11 @@ public class McMMOPlayer implements Identified {
                  * IF THE TOOL IS AN AXE
                  *
                  */
-                if(tool == ToolType.AXE) {
+                if (tool == ToolType.AXE) {
                     processAxeToolMessages();
                 } else {
-                    NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                    NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
+                            tool.getRaiseTool());
                 }
 
                 //Send Sound
@@ -1012,7 +1087,9 @@ public class McMMOPlayer implements Identified {
             }
 
             setToolPreparationMode(tool, true);
-            mcMMO.p.getFoliaLib().getImpl().runAtEntityLater(player, new ToolLowerTask(this, tool), 4 * Misc.TICK_CONVERSION_FACTOR);
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runAtEntityLater(player, new ToolLowerTask(this, tool),
+                            4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -1022,37 +1099,51 @@ public class McMMOPlayer implements Identified {
         /*
          * IF BOTH TREE FELLER & SKULL SPLITTER ARE ON CD
          */
-        if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
-            tooTiredMultiple(PrimarySkillType.WOODCUTTING, SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER, SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
-        /*
-         * IF TREE FELLER IS ON CD
-         * AND PLAYER IS LOOKING AT TREE
-         */
-        } else if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
+        if (isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(
+                SuperAbilityType.SKULL_SPLITTER)) {
+            tooTiredMultiple(PrimarySkillType.WOODCUTTING, SubSkillType.WOODCUTTING_TREE_FELLER,
+                    SuperAbilityType.TREE_FELLER, SubSkillType.AXES_SKULL_SPLITTER,
+                    SuperAbilityType.SKULL_SPLITTER);
+            /*
+             * IF TREE FELLER IS ON CD
+             * AND PLAYER IS LOOKING AT TREE
+             */
+        } else if (isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
                 && BlockUtils.isPartOfTree(rayCast)) {
-            raiseToolWithCooldowns(SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER);
+            raiseToolWithCooldowns(SubSkillType.WOODCUTTING_TREE_FELLER,
+                    SuperAbilityType.TREE_FELLER);
 
-        /*
-         * IF SKULL SPLITTER IS ON CD
-         */
-        } else if(isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
-            raiseToolWithCooldowns(SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+            /*
+             * IF SKULL SPLITTER IS ON CD
+             */
+        } else if (isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            raiseToolWithCooldowns(SubSkillType.AXES_SKULL_SPLITTER,
+                    SuperAbilityType.SKULL_SPLITTER);
         } else {
-            NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, ToolType.AXE.getRaiseTool());
+            NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
+                    ToolType.AXE.getRaiseTool());
         }
     }
 
-    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill, SuperAbilityType aSuperAbility, SubSkillType bSubSkill, SuperAbilityType bSuperAbility) {
-        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", aSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(aSuperAbility)));
-        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", bSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(bSuperAbility)));
+    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill,
+            SuperAbilityType aSuperAbility, SubSkillType bSubSkill,
+            SuperAbilityType bSuperAbility) {
+        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named",
+                aSubSkill.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(aSuperAbility)));
+        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named",
+                bSubSkill.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(bSuperAbility)));
         String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
 
-        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
+                "Skills.TooTired.Extra",
                 mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType),
                 allCDStr);
     }
 
-    private void raiseToolWithCooldowns(SubSkillType subSkillType, SuperAbilityType superAbilityType) {
+    private void raiseToolWithCooldowns(SubSkillType subSkillType,
+            SuperAbilityType superAbilityType) {
         NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
                 "Axes.Ability.Ready.Extra",
                 subSkillType.getLocaleName(),
@@ -1067,12 +1158,14 @@ public class McMMOPlayer implements Identified {
      * Calculate the time remaining until the ability's cooldown expires.
      *
      * @param ability SuperAbilityType whose cooldown to check
-     *
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeRemaining(SuperAbilityType ability) {
         long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
-        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimestamp + (
+                PerksUtils.handleCooldownPerks(player, ability.getCooldown())
+                        * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis())
+                / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*
@@ -1127,19 +1220,24 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
+     * This method is called by PlayerQuitEvent to tear down the mmoPlayer.
      *
      * @param syncSave if true, data is saved synchronously
      */
     public void logout(boolean syncSave) {
-        Player thisPlayer = getPlayer();
-        if(getPlayer().hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
-            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) getPlayer().getMetadata(MetadataConstants.METADATA_KEY_RUPTURE).get(0);
-
-            //Punish a logout
-            ruptureTaskMeta.getRuptureTimerTask().endRupture();
-            ruptureTaskMeta.getRuptureTimerTask().endRupture();
-            ruptureTaskMeta.getRuptureTimerTask().endRupture();
+        final Player thisPlayer = getPlayer();
+        if (getPlayer() != null && getPlayer().hasMetadata(
+                MetadataConstants.METADATA_KEY_RUPTURE)) {
+            final RuptureTaskMeta ruptureTaskMeta
+                    = (RuptureTaskMeta) getPlayer().getMetadata(
+                    MetadataConstants.METADATA_KEY_RUPTURE).get(0);
+            if (ruptureTaskMeta != null) {
+                final RuptureTask ruptureTimerTask = ruptureTaskMeta.getRuptureTimerTask();
+                if (ruptureTimerTask != null) {
+                    ruptureTimerTask.cancel();
+                }
+                getPlayer().removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
+            }
         }
 
         cleanup();
@@ -1152,8 +1250,9 @@ public class McMMOPlayer implements Identified {
 
         UserManager.remove(thisPlayer);
 
-        if(mcMMO.p.getGeneralConfig().getScoreboardsEnabled())
+        if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
             ScoreboardManager.teardownPlayer(thisPlayer);
+        }
 
         if (inParty()) {
             party.removeOnlineMember(thisPlayer);
@@ -1164,10 +1263,8 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Cleanup various things related to this player
-     * Such as temporary summons..
-     * Turning off abilities...
-     * Etc...
+     * Cleanup various things related to this player Such as temporary summons.. Turning off
+     * abilities... Etc...
      */
     public void cleanup() {
         resetAbilityMode();
@@ -1176,6 +1273,7 @@ public class McMMOPlayer implements Identified {
 
     /**
      * For use with Adventure API (Kyori lib)
+     *
      * @return this players identity
      */
     @Override
@@ -1186,6 +1284,7 @@ public class McMMOPlayer implements Identified {
 
     /**
      * The {@link com.gmail.nossr50.chat.author.Author} for this player, used by mcMMO chat
+     *
      * @return the {@link com.gmail.nossr50.chat.author.Author} for this player
      */
     public @NotNull PlayerAuthor getPlayerAuthor() {
@@ -1197,8 +1296,8 @@ public class McMMOPlayer implements Identified {
     }
 
     /**
-     * Change the chat channel for a player
-     * This does not inform the player
+     * Change the chat channel for a player This does not inform the player
+     *
      * @param chatChannel new chat channel
      */
     public void setChatMode(@NotNull ChatChannel chatChannel) {

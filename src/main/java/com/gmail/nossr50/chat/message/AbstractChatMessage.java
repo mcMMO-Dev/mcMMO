@@ -15,7 +15,9 @@ public abstract class AbstractChatMessage implements ChatMessage {
     protected @NotNull TextComponent componentMessage;
     protected @NotNull Audience audience;
 
-    public AbstractChatMessage(@NotNull Plugin pluginRef, @NotNull Author author, @NotNull Audience audience, @NotNull String rawMessage, @NotNull TextComponent componentMessage) {
+    public AbstractChatMessage(@NotNull Plugin pluginRef, @NotNull Author author,
+            @NotNull Audience audience,
+            @NotNull String rawMessage, @NotNull TextComponent componentMessage) {
         this.pluginRef = pluginRef;
         this.author = author;
         this.audience = audience;
@@ -39,6 +41,11 @@ public abstract class AbstractChatMessage implements ChatMessage {
     }
 
     @Override
+    public void setAudience(@NotNull Audience newAudience) {
+        audience = newAudience;
+    }
+
+    @Override
     public @NotNull TextComponent getChatMessage() {
         return componentMessage;
     }
@@ -49,20 +56,19 @@ public abstract class AbstractChatMessage implements ChatMessage {
     }
 
     @Override
-    public void setAudience(@NotNull Audience newAudience) {
-        audience = newAudience;
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AbstractChatMessage that = (AbstractChatMessage) o;
-        return Objects.equal(pluginRef, that.pluginRef) &&
-                Objects.equal(author, that.author) &&
-                Objects.equal(rawMessage, that.rawMessage) &&
-                Objects.equal(componentMessage, that.componentMessage) &&
-                Objects.equal(audience, that.audience);
+        return Objects.equal(pluginRef, that.pluginRef) && Objects.equal(author, that.author)
+                && Objects.equal(
+                rawMessage, that.rawMessage) && Objects.equal(componentMessage,
+                that.componentMessage) && Objects.equal(
+                audience, that.audience);
     }
 
     @Override

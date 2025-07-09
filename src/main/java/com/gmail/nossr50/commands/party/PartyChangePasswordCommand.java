@@ -11,9 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyChangePasswordCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -35,8 +35,10 @@ public class PartyChangePasswordCommand implements CommandExecutor {
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "password", "[clear|reset]"));
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "password", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "password",
+                        "[clear|reset]"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "password",
+                        "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"));
                 return true;
         }
     }

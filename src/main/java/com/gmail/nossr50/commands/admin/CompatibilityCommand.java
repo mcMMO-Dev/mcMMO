@@ -11,8 +11,8 @@ public class CompatibilityCommand implements CommandExecutor {
     /**
      * Executes the given command, returning its success.
      * <br>
-     * If false is returned, then the "usage" plugin.yml entry for this command
-     * (if defined) will be sent to the player.
+     * If false is returned, then the "usage" plugin.yml entry for this command (if defined) will be
+     * sent to the player.
      *
      * @param commandSender Source of the command
      * @param command Command which was executed
@@ -21,7 +21,9 @@ public class CompatibilityCommand implements CommandExecutor {
      * @return true if a valid command, otherwise false
      */
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command,
+            @NotNull String s,
+            @NotNull String[] strings) {
         mcMMO.getCompatibilityManager().reportCompatibilityStatus(commandSender);
         return true;
     }

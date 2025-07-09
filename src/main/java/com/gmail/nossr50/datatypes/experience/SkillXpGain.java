@@ -2,10 +2,9 @@ package com.gmail.nossr50.datatypes.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.NotNull;
 
 public class SkillXpGain implements Delayed {
     private final long expiryTime;
@@ -27,14 +26,14 @@ public class SkillXpGain implements Delayed {
     }
 
     private static long getDuration() {
-        return TimeUnit.MINUTES.toMillis(ExperienceConfig.getInstance().getDiminishedReturnsTimeInterval());
+        return TimeUnit.MINUTES.toMillis(
+                ExperienceConfig.getInstance().getDiminishedReturnsTimeInterval());
     }
 
     public int compareTo(SkillXpGain other) {
         if (this.expiryTime < other.expiryTime) {
             return -1;
-        }
-        else if (this.expiryTime > other.expiryTime) {
+        } else if (this.expiryTime > other.expiryTime) {
             return 1;
         }
         return 0;

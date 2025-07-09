@@ -17,7 +17,7 @@ public class TravelingBlockMetaCleanup extends CancellableRunnable {
 
     @Override
     public void run() {
-        if(!entity.isValid()) {
+        if (!entity.isValid()) {
             entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
             this.cancel();
         } else if (!entity.hasMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK)) {
