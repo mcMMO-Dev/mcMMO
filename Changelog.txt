@@ -1,3 +1,6 @@
+Version 2.2.041
+    Fixed buckets being consumed by furnaces (thanks RunqRun)
+
 Version 2.2.040
     Fixed hover component and action bar messages not working for 1.21.6 and 1.21.7
     Fixed bug where entries of mctop could be duplicated when using FlatFile
