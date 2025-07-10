@@ -1,19 +1,12 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.commands.levelup.LevelUpCommand;
-import com.gmail.nossr50.commands.levelup.LevelUpCommandBuilder;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
+import java.io.File;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class CommandOnLevelUpConfig extends BukkitConfig {
 

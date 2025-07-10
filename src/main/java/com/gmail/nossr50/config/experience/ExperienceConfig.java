@@ -290,7 +290,7 @@ public class ExperienceConfig extends BukkitConfig {
         return config.getDouble(
                 "Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(
                         skill.toString()),
-                1);
+                1D);
     }
 
     /* Custom XP perk */

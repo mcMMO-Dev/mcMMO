@@ -5,15 +5,12 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillTools;
 import java.util.ArrayList;
-import java.util.List;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public enum PrimarySkillType {
     ACROBATICS,

@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyLeader;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.TestPlayerMock;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import java.util.ArrayList;
@@ -144,6 +145,8 @@ class PartyManagerTest extends MMOTestEnvironment {
 
     @Test
     public void checkPartyExistenceReturnsTrueIfExists() {
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final Player player = testPlayerMock.player();
         PartyManager partyManager = new PartyManager(mcMMO.p);
 
         Party party = Mockito.mock(Party.class);

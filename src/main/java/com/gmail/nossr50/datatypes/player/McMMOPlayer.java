@@ -710,7 +710,7 @@ public class McMMOPlayer implements Identified {
      */
     public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason,
             XPGainSource xpGainSource) {
-        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
+        if (!Permissions.skillEnabled(player, primarySkillType)) {
             return;
         }
 
