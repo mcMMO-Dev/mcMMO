@@ -16,7 +16,7 @@ public class DatabaseAPI {
      * @param offlinePlayer target player
      * @return true if the player exists in the DB, false if they do not
      */
-    public boolean doesPlayerExistInDB(@NotNull OfflinePlayer offlinePlayer) {
+    public static boolean doesPlayerExistInDB(@NotNull OfflinePlayer offlinePlayer) {
         PlayerProfile playerProfile = mcMMO.getDatabaseManager().loadPlayerProfile(offlinePlayer);
 
         return playerProfile.isLoaded();
@@ -28,7 +28,7 @@ public class DatabaseAPI {
      * @param uuid target player
      * @return true if the player exists in the DB, false if they do not
      */
-    public boolean doesPlayerExistInDB(@NotNull UUID uuid) {
+    public static boolean doesPlayerExistInDB(@NotNull UUID uuid) {
         PlayerProfile playerProfile = null;
         try {
             playerProfile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
@@ -45,7 +45,7 @@ public class DatabaseAPI {
      * @param playerName target player
      * @return true if the player exists in the DB, false if they do not
      */
-    public boolean doesPlayerExistInDB(@NotNull String playerName) {
+    public static boolean doesPlayerExistInDB(@NotNull String playerName) {
         PlayerProfile playerProfile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
         return playerProfile.isLoaded();
