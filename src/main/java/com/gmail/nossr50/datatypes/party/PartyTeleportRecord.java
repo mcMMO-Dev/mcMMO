@@ -5,9 +5,9 @@ import com.gmail.nossr50.util.Misc;
 import org.bukkit.entity.Player;
 
 public class PartyTeleportRecord {
-    private Player  requestor;
+    private Player requestor;
     private boolean enabled, confirmRequired;
-    private int     timeout, lastUse;
+    private int timeout, lastUse;
 
     public PartyTeleportRecord() {
         requestor = null;

@@ -1,25 +1,29 @@
 package com.gmail.nossr50.util.random;
 
+import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.ACROBATICS;
+import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.MINING;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.ACROBATICS_DODGE;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.AXES_ARMOR_IMPACT;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.AXES_GREATER_IMPACT;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.MINING_DOUBLE_DROPS;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.TAMING_FAST_FOOD_SERVICE;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.UNARMED_ARROW_DEFLECT;
+import static com.gmail.nossr50.util.random.ProbabilityTestUtils.assertProbabilityExpectations;
+import static com.gmail.nossr50.util.random.ProbabilityUtil.calculateCurrentSkillProbability;
+import static java.util.logging.Logger.getLogger;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.logging.Logger;
-import java.util.stream.Stream;
-
-import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.ACROBATICS;
-import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.MINING;
-import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
-import static com.gmail.nossr50.util.random.ProbabilityTestUtils.assertProbabilityExpectations;
-import static com.gmail.nossr50.util.random.ProbabilityUtil.calculateCurrentSkillProbability;
-import static java.util.logging.Logger.getLogger;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 class ProbabilityUtilTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(ProbabilityUtilTest.class.getName());
@@ -52,7 +56,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
 
     @ParameterizedTest
     @MethodSource("staticChanceSkills")
-    void staticChanceSkillsShouldSucceedAsExpected(SubSkillType subSkillType, double expectedWinPercent)
+    void staticChanceSkillsShouldSucceedAsExpected(SubSkillType subSkillType,
+            double expectedWinPercent)
             throws InvalidStaticChance {
         Probability staticRandomChance = ProbabilityUtil.getStaticRandomChance(subSkillType);
         assertProbabilityExpectations(expectedWinPercent, staticRandomChance);
@@ -64,8 +69,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         when(advancedConfig.getMaximumProbability(UNARMED_ARROW_DEFLECT)).thenReturn(20D);
         when(advancedConfig.getMaxBonusLevel(UNARMED_ARROW_DEFLECT)).thenReturn(0);
 
-        @SuppressWarnings("all")
-        final Probability probability = ProbabilityUtil.getSkillProbability(UNARMED_ARROW_DEFLECT, mmoPlayer);
+        @SuppressWarnings("all") final Probability probability = ProbabilityUtil.getSkillProbability(
+                UNARMED_ARROW_DEFLECT, mmoPlayer);
         assertEquals(0.2D, probability.getValue());
         assertProbabilityExpectations(20, probability);
     }
@@ -91,10 +96,12 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
 
     @ParameterizedTest
     @MethodSource("provideSkillProbabilityTestData")
-    void testCalculateCurrentSkillProbability(double skillLevel, double floor, double ceiling, double maxBonusLevel,
-                                              double expectedValue) {
+    void testCalculateCurrentSkillProbability(double skillLevel, double floor, double ceiling,
+            double maxBonusLevel,
+            double expectedValue) {
         // When
-        final Probability probability = calculateCurrentSkillProbability(skillLevel, floor, ceiling, maxBonusLevel);
+        final Probability probability = calculateCurrentSkillProbability(skillLevel, floor, ceiling,
+                maxBonusLevel);
 
         // Then
         assertEquals(expectedValue, probability.getValue());
@@ -108,7 +115,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         mmoPlayer.modifySkill(ACROBATICS, 500);
 
         // When & Then
-        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, ACROBATICS_DODGE);
+        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                ACROBATICS_DODGE);
         assertEquals("10.00%", rngDisplayValues[0]);
     }
 
@@ -120,7 +128,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         mmoPlayer.modifySkill(ACROBATICS, 1000);
 
         // When & then
-        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, ACROBATICS_DODGE);
+        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                ACROBATICS_DODGE);
         assertEquals("20.00%", rngDisplayValues[0]);
     }
 
@@ -132,7 +141,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         mmoPlayer.modifySkill(ACROBATICS, 0);
 
         // When & then
-        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, ACROBATICS_DODGE);
+        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                ACROBATICS_DODGE);
         assertEquals("0.00%", rngDisplayValues[0]);
     }
 
@@ -144,7 +154,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         mmoPlayer.modifySkill(MINING, 100);
 
         // When & Then
-        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, MINING_DOUBLE_DROPS);
+        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                MINING_DOUBLE_DROPS);
         assertEquals("10.00%", rngDisplayValues[0]);
     }
 
@@ -156,7 +167,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         mmoPlayer.modifySkill(MINING, 500);
 
         // When & Then
-        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, MINING_DOUBLE_DROPS);
+        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                MINING_DOUBLE_DROPS);
         assertEquals("50.00%", rngDisplayValues[0]);
     }
 
@@ -168,7 +180,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         mmoPlayer.modifySkill(MINING, 1000);
 
         // When & Then
-        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, MINING_DOUBLE_DROPS);
+        final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                MINING_DOUBLE_DROPS);
         assertEquals("100.00%", rngDisplayValues[0]);
     }
 

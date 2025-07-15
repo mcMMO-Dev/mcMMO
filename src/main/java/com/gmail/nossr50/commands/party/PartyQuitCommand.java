@@ -14,23 +14,26 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyQuitCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 1) {
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
 
             if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            Party playerParty = mcMMOPlayer.getParty();
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            Party playerParty = mmoPlayer.getParty();
 
-            if (!mcMMO.p.getPartyManager().handlePartyChangeEvent(player, playerParty.getName(), null, EventReason.LEFT_PARTY)) {
+            if (!mcMMO.p.getPartyManager()
+                    .handlePartyChangeEvent(player, playerParty.getName(), null,
+                            EventReason.LEFT_PARTY)) {
                 return true;
             }
 
-            mcMMO.p.getPartyManager().removeFromParty(mcMMOPlayer);
+            mcMMO.p.getPartyManager().removeFromParty(mmoPlayer);
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
             return true;
         }

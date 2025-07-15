@@ -1,13 +1,13 @@
 package com.gmail.nossr50.events.skills.fishing;
 
+import static java.util.Objects.requireNonNull;
+
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static java.util.Objects.requireNonNull;
 
 public class McMMOPlayerFishingTreasureEvent extends McMMOPlayerFishingEvent {
     private ItemStack treasure;
@@ -18,7 +18,8 @@ public class McMMOPlayerFishingTreasureEvent extends McMMOPlayerFishingEvent {
         this(requireNonNull(UserManager.getPlayer(player)), treasure, xp);
     }
 
-    public McMMOPlayerFishingTreasureEvent(@NotNull McMMOPlayer mmoPlayer, @Nullable ItemStack treasure, int xp) {
+    public McMMOPlayerFishingTreasureEvent(@NotNull McMMOPlayer mmoPlayer,
+            @Nullable ItemStack treasure, int xp) {
         super(mmoPlayer);
         this.treasure = treasure;
         this.xp = xp;

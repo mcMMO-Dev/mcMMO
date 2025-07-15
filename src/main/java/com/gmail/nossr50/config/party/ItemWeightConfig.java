@@ -1,12 +1,11 @@
 package com.gmail.nossr50.config.party;
 
-import com.gmail.nossr50.config.BukkitConfig;
-import org.bukkit.Material;
+import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 
+import com.gmail.nossr50.config.BukkitConfig;
 import java.util.HashSet;
 import java.util.Locale;
-
-import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
+import org.bukkit.Material;
 
 public class ItemWeightConfig extends BukkitConfig {
     private static ItemWeightConfig instance;
@@ -24,7 +23,9 @@ public class ItemWeightConfig extends BukkitConfig {
     }
 
     public int getItemWeight(Material material) {
-        return config.getInt("Item_Weights." + getMaterialConfigString(material).replace(" ", "_"), config.getInt("Item_Weights.Default"));
+        return config.getInt(
+                "Item_Weights." + getMaterialConfigString(material).replace(" ", "_"),
+                config.getInt("Item_Weights.Default"));
     }
 
     public HashSet<Material> getMiscItems() {

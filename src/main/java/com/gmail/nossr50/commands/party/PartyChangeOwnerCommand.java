@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyChangeOwnerCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 2) {//Check if player profile is loaded
             if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -33,7 +34,8 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
             mcMMO.p.getPartyManager().setPartyLeader(target.getUniqueId(), playerParty);
             return true;
         }
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner",
+                "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         return true;
     }
 }

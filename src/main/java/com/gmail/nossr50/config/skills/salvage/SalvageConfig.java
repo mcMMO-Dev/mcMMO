@@ -10,13 +10,18 @@ import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
 
 public class SalvageConfig extends BukkitConfig {
     private final HashSet<String> notSupported;
@@ -42,17 +47,26 @@ public class SalvageConfig extends BukkitConfig {
 
         //Original version of 1.16 support had maximum quantities that were bad, this fixes it
         if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES)) {
-            mcMMO.p.getLogger().log(Level.INFO, "Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
+            mcMMO.p.getLogger().log(
+                    Level.INFO,
+                    "Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
             for (String namespacedkey : mcMMO.getMaterialMapStore().getNetheriteArmor()) {
-                config.set("Salvageables." + namespacedkey.toUpperCase(Locale.ENGLISH) + ".MaximumQuantity", 4); //TODO: Doesn't make sense to default to 4 for everything
+                config.set(
+                        "Salvageables." + namespacedkey.toUpperCase(Locale.ENGLISH)
+                                + ".MaximumQuantity",
+                        4); //TODO: Doesn't make sense to default to 4 for everything
             }
 
             try {
                 config.save(getFile());
-                mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES);
-                LogUtils.debug(mcMMO.p.getLogger(), "Fixed incorrect Salvage quantities for Netherite gear!");
+                mcMMO.getUpgradeManager()
+                        .setUpgradeCompleted(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES);
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "Fixed incorrect Salvage quantities for Netherite gear!");
             } catch (IOException e) {
-                LogUtils.debug(mcMMO.p.getLogger(), "Unable to fix Salvage config, please delete the salvage yml file to generate a new one.");
+                LogUtils.debug(
+                        mcMMO.p.getLogger(),
+                        "Unable to fix Salvage config, please delete the salvage yml file to generate a new one.");
                 e.printStackTrace();
             }
         }
@@ -71,7 +85,8 @@ public class SalvageConfig extends BukkitConfig {
 
             // Salvage Material Type
             MaterialType salvageMaterialType = MaterialType.OTHER;
-            String salvageMaterialTypeString = config.getString("Salvageables." + key + ".MaterialType", "OTHER");
+            String salvageMaterialTypeString = config.getString(
+                    "Salvageables." + key + ".MaterialType", "OTHER");
 
             if (!config.contains("Salvageables." + key + ".MaterialType") && itemMaterial != null) {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
@@ -86,26 +101,36 @@ public class SalvageConfig extends BukkitConfig {
                     salvageMaterialType = MaterialType.PRISMARINE;
                 } else if (ItemUtils.isLeatherArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.LEATHER;
-                } else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
+                } else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(
+                        salvageItem)) {
                     salvageMaterialType = MaterialType.IRON;
-                } else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
+                } else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(
+                        salvageItem)) {
                     salvageMaterialType = MaterialType.GOLD;
-                } else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
+                } else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(
+                        salvageItem)) {
                     salvageMaterialType = MaterialType.DIAMOND;
-                } else if (ItemUtils.isNetheriteTool(salvageItem) || ItemUtils.isNetheriteArmor(salvageItem)) {
+                } else if (ItemUtils.isNetheriteTool(salvageItem) || ItemUtils.isNetheriteArmor(
+                        salvageItem)) {
                     salvageMaterialType = MaterialType.NETHERITE;
                 }
             } else {
                 try {
-                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
+                    salvageMaterialType = MaterialType.valueOf(
+                            salvageMaterialTypeString.replace(" ", "_")
+                                    .toUpperCase(Locale.ENGLISH));
                 } catch (IllegalArgumentException ex) {
-                    reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
+                    reason.add(
+                            key + " has an invalid MaterialType of " + salvageMaterialTypeString);
                 }
             }
 
             // Salvage Material
-            String salvageMaterialName = config.getString("Salvageables." + key + ".SalvageMaterial");
-            Material salvageMaterial = (salvageMaterialName == null ? salvageMaterialType.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
+            String salvageMaterialName = config.getString(
+                    "Salvageables." + key + ".SalvageMaterial");
+            Material salvageMaterial = (salvageMaterialName == null
+                    ? salvageMaterialType.getDefaultMaterial()
+                    : Material.matchMaterial(salvageMaterialName));
 
             if (salvageMaterial == null) {
                 notSupported.add(key);
@@ -113,11 +138,14 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             // Maximum Durability
-            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Salvageables." + key + ".MaximumDurability"));
+            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability()
+                    : (short) config.getInt(
+                            "Salvageables." + key + ".MaximumDurability"));
 
             // Item Type
             ItemType salvageItemType = ItemType.OTHER;
-            String salvageItemTypeString = config.getString("Salvageables." + key + ".ItemType", "OTHER");
+            String salvageItemTypeString = config.getString("Salvageables." + key + ".ItemType",
+                    "OTHER");
 
             if (!config.contains("Salvageables." + key + ".ItemType") && itemMaterial != null) {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
@@ -129,7 +157,8 @@ public class SalvageConfig extends BukkitConfig {
                 }
             } else {
                 try {
-                    salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
+                    salvageItemType = ItemType.valueOf(
+                            salvageItemTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
                 } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + salvageItemTypeString);
                 }
@@ -143,15 +172,16 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             // Maximum Quantity
-            int maximumQuantity = itemMaterial != null
-                    ? SkillUtils.getRepairAndSalvageQuantities(itemMaterial, salvageMaterial)
-                    : config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
+            int maximumQuantity = itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(
+                    itemMaterial,
+                    salvageMaterial) : config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
                 maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
             }
 
-            int configMaximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", -1);
+            int configMaximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity",
+                    -1);
 
             if (configMaximumQuantity > 0) {
                 maximumQuantity = configMaximumQuantity;
@@ -162,7 +192,10 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             if (noErrorsInSalvageable(reason)) {
-                Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType, xpMultiplier);
+                Salvageable salvageable = SalvageableFactory.getSalvageable(
+                        itemMaterial, salvageMaterial, minimumLevel,
+                        maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType,
+                        xpMultiplier);
                 salvageables.add(salvageable);
             }
         }
@@ -170,7 +203,8 @@ public class SalvageConfig extends BukkitConfig {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (notSupported.size() > 0) {
-            stringBuilder.append("mcMMO found the following materials in the Salvage config that are not supported by the version of Minecraft running on this server: ");
+            stringBuilder.append(
+                    "mcMMO found the following materials in the Salvage config that are not supported by the version of Minecraft running on this server: ");
 
             for (Iterator<String> iterator = notSupported.iterator(); iterator.hasNext(); ) {
                 String unsupportedMaterial = iterator.next();
@@ -183,7 +217,8 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             LogUtils.debug(mcMMO.p.getLogger(), stringBuilder.toString());
-            LogUtils.debug(mcMMO.p.getLogger(), "Items using materials that are not supported will simply be skipped.");
+            LogUtils.debug(mcMMO.p.getLogger(),
+                    "Items using materials that are not supported will simply be skipped.");
         }
     }
 

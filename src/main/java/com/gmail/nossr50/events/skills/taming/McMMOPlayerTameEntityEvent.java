@@ -19,7 +19,8 @@ public class McMMOPlayerTameEntityEvent extends McMMOPlayerExperienceEvent {
     private float xpGained;
     private final Entity tamedEntity;
 
-    public McMMOPlayerTameEntityEvent(@NotNull McMMOPlayer mmoPlayer, float xp, @NotNull Entity tamedEntity) {
+    public McMMOPlayerTameEntityEvent(@NotNull McMMOPlayer mmoPlayer, float xp,
+            @NotNull Entity tamedEntity) {
         super(mmoPlayer.getPlayer(), PrimarySkillType.TAMING, XPGainReason.PVE);
         this.mmoPlayer = mmoPlayer;
         this.xpGained = xp;
@@ -58,7 +59,8 @@ public class McMMOPlayerTameEntityEvent extends McMMOPlayerExperienceEvent {
     }
 
     /**
-     * @apiNote Cancelling this event prevents experience from being awarded, but the entity will remain tamed.
+     * @apiNote Cancelling this event prevents experience from being awarded, but the entity will
+     * remain tamed.
      */
     @Override
     public void setCancelled(boolean cancelled) {

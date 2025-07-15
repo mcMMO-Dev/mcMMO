@@ -38,10 +38,11 @@ public enum MaterialType {
                 return Material.DIAMOND;
 
             case NETHERITE:
-                if (Material.getMaterial("NETHERITE_SCRAP") != null)
+                if (Material.getMaterial("NETHERITE_SCRAP") != null) {
                     return Material.getMaterial("NETHERITE_SCRAP");
-                else
+                } else {
                     return Material.DIAMOND;
+                }
             case PRISMARINE:
                 return Material.PRISMARINE_CRYSTALS;
 

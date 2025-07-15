@@ -31,10 +31,15 @@ public class EnchantmentWrapper {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         EnchantmentWrapper that = (EnchantmentWrapper) o;
-        return enchantmentLevel == that.enchantmentLevel && Objects.equal(enchantment, that.enchantment);
+        return enchantmentLevel == that.enchantmentLevel && Objects.equal(enchantment,
+                that.enchantment);
     }
 
     @Override

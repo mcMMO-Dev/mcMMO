@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.skills.salvage;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,9 @@ public class SalvageConfigManager {
         salvageables.addAll(mainSalvageConfig.getLoadedSalvageables());
 
         for (String fileName : dataFolder.list()) {
-            if (fileName.equals(SALVAGE_VANILLA_YML))
+            if (fileName.equals(SALVAGE_VANILLA_YML)) {
                 continue;
+            }
 
             if (!pattern.matcher(fileName).matches()) {
                 continue;

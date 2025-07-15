@@ -1,12 +1,18 @@
 package com.gmail.nossr50.util.text;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class StringUtilsTest {
 
@@ -17,20 +23,23 @@ class StringUtilsTest {
     }
 
     /**
-     * Utility method to clear all caches in StringUtils.
-     * Reflection is used since the caches are private.
+     * Utility method to clear all caches in StringUtils. Reflection is used since the caches are
+     * private.
      */
     private void clearCaches() {
         try {
-            java.lang.reflect.Field entityCache = StringUtils.class.getDeclaredField("formattedEntityStrings");
+            java.lang.reflect.Field entityCache = StringUtils.class.getDeclaredField(
+                    "formattedEntityStrings");
             entityCache.setAccessible(true);
             ((java.util.Map<?, ?>) entityCache.get(null)).clear();
 
-            java.lang.reflect.Field superAbilityCache = StringUtils.class.getDeclaredField("formattedSuperAbilityStrings");
+            java.lang.reflect.Field superAbilityCache = StringUtils.class.getDeclaredField(
+                    "formattedSuperAbilityStrings");
             superAbilityCache.setAccessible(true);
             ((java.util.Map<?, ?>) superAbilityCache.get(null)).clear();
 
-            java.lang.reflect.Field materialCache = StringUtils.class.getDeclaredField("formattedMaterialStrings");
+            java.lang.reflect.Field materialCache = StringUtils.class.getDeclaredField(
+                    "formattedMaterialStrings");
             materialCache.setAccessible(true);
             ((java.util.Map<?, ?>) materialCache.get(null)).clear();
         } catch (NoSuchFieldException | IllegalAccessException e) {

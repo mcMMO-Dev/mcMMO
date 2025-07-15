@@ -1,17 +1,18 @@
 package com.gmail.nossr50.commands.skills;
 
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.CROSSBOWS_POWERED_SHOT;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.CROSSBOWS_TRICK_SHOT;
+
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.gmail.nossr50.datatypes.skills.SubSkillType.*;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class CrossbowsCommand extends SkillCommand {
     private boolean canTrickShot;
@@ -36,7 +37,8 @@ public class CrossbowsCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (mmoPlayer == null) {
@@ -55,7 +57,8 @@ public class CrossbowsCommand extends SkillCommand {
 
         if (Permissions.canUseSubSkill(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK)) {
             messages.add(getStatMessage(CROSSBOWS_CROSSBOWS_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player,
+                            CROSSBOWS_CROSSBOWS_LIMIT_BREAK, 1000))));
         }
 
         return messages;
@@ -65,7 +68,8 @@ public class CrossbowsCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.CROSSBOWS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+                PrimarySkillType.CROSSBOWS);
 
         return textComponents;
     }

@@ -26,8 +26,9 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld())) {
             return;
+        }
 
         // Using 50 ms later as I do not know of a way to run one tick later (safely)
         plugin.getFoliaLib().getScheduler().runLater(() -> {
@@ -45,8 +46,9 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld())) {
             return;
+        }
 
         mcMMO.getChunkManager().unloadWorld(event.getWorld());
     }
@@ -59,8 +61,9 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld())) {
             return;
+        }
 
         Chunk chunk = event.getChunk();
 

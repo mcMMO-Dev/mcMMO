@@ -7,14 +7,18 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.UUID;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-
 public final class PartyAPI {
-    private PartyAPI() {}
+    private PartyAPI() {
+    }
 
     /**
      * Get the name of the party a player is in.
@@ -50,8 +54,9 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || UserManager.getPlayer(player) == null)
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || UserManager.getPlayer(player) == null) {
             return false;
+        }
 
         return UserManager.getPlayer(player).inParty();
     }
@@ -66,8 +71,9 @@ public final class PartyAPI {
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playerA, Player playerB) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled()) {
             return false;
+        }
 
         return mcMMO.p.getPartyManager().inSameParty(playerA, playerB);
     }
@@ -101,8 +107,9 @@ public final class PartyAPI {
         //Check if player profile is loaded
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        if (mmoPlayer == null)
+        if (mmoPlayer == null) {
             return;
+        }
 
         Party party = mcMMO.p.getPartyManager().getParty(partyName);
 
@@ -110,7 +117,9 @@ public final class PartyAPI {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
         } else {
             if (mcMMO.p.getPartyManager().isPartyFull(player, party)) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
+                NotificationManager.sendPlayerInformation(
+                        player, NotificationType.PARTY_MESSAGE,
+                        "Commands.Party.PartyFull", party.toString());
                 return;
             }
         }
@@ -119,8 +128,8 @@ public final class PartyAPI {
     }
 
     /**
-     * The max party size of the server
-     * 0 or less for no size limit
+     * The max party size of the server 0 or less for no size limit
+     *
      * @return the max party size on this server
      */
     public static int getMaxPartySize() {
@@ -138,8 +147,9 @@ public final class PartyAPI {
      */
     public static void addToParty(Player player, String partyName, boolean bypassLimit) {
         //Check if player profile is loaded
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || UserManager.getPlayer(player) == null)
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || UserManager.getPlayer(player) == null) {
             return;
+        }
 
         Party party = mcMMO.p.getPartyManager().getParty(partyName);
 
@@ -159,8 +169,9 @@ public final class PartyAPI {
      */
     public static void removeFromParty(Player player) {
         //Check if player profile is loaded
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || UserManager.getPlayer(player) == null)
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled() || UserManager.getPlayer(player) == null) {
             return;
+        }
 
         mcMMO.p.getPartyManager().removeFromParty(UserManager.getPlayer(player));
     }
@@ -174,8 +185,9 @@ public final class PartyAPI {
      * @return the leader of the party
      */
     public static @Nullable String getPartyLeader(String partyName) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled()) {
             return null;
+        }
 
         return mcMMO.p.getPartyManager().getPartyLeaderName(partyName);
     }
@@ -190,10 +202,13 @@ public final class PartyAPI {
      */
     @Deprecated
     public static void setPartyLeader(String partyName, String playerName) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled()) {
             return;
+        }
 
-        mcMMO.p.getPartyManager().setPartyLeader(mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId(), mcMMO.p.getPartyManager().getParty(partyName));
+        mcMMO.p.getPartyManager().setPartyLeader(
+                mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId(),
+                mcMMO.p.getPartyManager().getParty(partyName));
     }
 
     /**
@@ -210,7 +225,7 @@ public final class PartyAPI {
             return null;
         }
 
-        List<OfflinePlayer> members = new ArrayList<>();
+        final List<OfflinePlayer> members = new ArrayList<>();
         for (UUID memberUniqueId : mcMMO.p.getPartyManager().getAllMembers(player).keySet()) {
             OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
             members.add(member);
@@ -228,8 +243,9 @@ public final class PartyAPI {
      */
     @Deprecated
     public static LinkedHashSet<String> getMembers(Player player) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled()) {
             return null;
+        }
 
         return (LinkedHashSet<String>) mcMMO.p.getPartyManager().getAllMembers(player).values();
     }
@@ -243,8 +259,9 @@ public final class PartyAPI {
      * @return all the player names and uuids in the player's party
      */
     public static LinkedHashMap<UUID, String> getMembersMap(Player player) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled()) {
             return null;
+        }
 
         return mcMMO.p.getPartyManager().getAllMembers(player);
     }
@@ -258,8 +275,9 @@ public final class PartyAPI {
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(String partyName) {
-        if (!mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (!mcMMO.p.getPartyConfig().isPartyEnabled()) {
             return null;
+        }
 
         return mcMMO.p.getPartyManager().getOnlineMembers(partyName);
     }

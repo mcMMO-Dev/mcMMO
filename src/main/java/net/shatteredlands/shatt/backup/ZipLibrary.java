@@ -2,7 +2,6 @@ package net.shatteredlands.shatt.backup;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,15 +16,18 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipLibrary {
-    private static final String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;
+    private static final String BACKUP_DIRECTORY =
+            mcMMO.getMainDirectory() + "backup" + File.separator;
     private static final File BACKUP_DIR = new File(BACKUP_DIRECTORY);
     private static final File FLAT_FILE_DIRECTORY = new File(mcMMO.getFlatFileDirectory());
     private static final File MOD_FILE_DIRECTORY = new File(mcMMO.getModDirectory());
     private static final File CONFIG_FILE = new File(mcMMO.getMainDirectory() + "config.yml");
-    private static final File EXPERIENCE_FILE = new File(mcMMO.getMainDirectory() + "experience.yml");
+    private static final File EXPERIENCE_FILE = new File(
+            mcMMO.getMainDirectory() + "experience.yml");
     private static final File TREASURE_FILE = new File(mcMMO.getMainDirectory() + "treasures.yml");
     private static final File ADVANCED_FILE = new File(mcMMO.getMainDirectory() + "advanced.yml");
-    private static final File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
+    private static final File REPAIR_FILE = new File(
+            mcMMO.getMainDirectory() + "repair.vanilla.yml");
 
     public static void mcMMOBackup() throws IOException {
         if (mcMMO.p.getGeneralConfig().getUseMySQL()) {
@@ -37,15 +39,15 @@ public class ZipLibrary {
             if (BACKUP_DIR.mkdir()) {
                 LogUtils.debug(mcMMO.p.getLogger(), "Created Backup Directory.");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             mcMMO.p.getLogger().severe(e.toString());
         }
 
         // Generate the proper date for the backup filename
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.US);
-        File fileZip = new File(BACKUP_DIRECTORY + File.separator + dateFormat.format(date) + ".zip");
+        File fileZip = new File(
+                BACKUP_DIRECTORY + File.separator + dateFormat.format(date) + ".zip");
 
         // Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<>();
@@ -94,7 +96,8 @@ public class ZipLibrary {
 
     private static void zipDir(ZipOutputStream zos, String path, File dir) throws IOException {
         if (!dir.canRead()) {
-            mcMMO.p.getLogger().severe("Cannot read " + dir.getCanonicalPath() + " (Maybe because of permissions?)");
+            mcMMO.p.getLogger().severe("Cannot read " + dir.getCanonicalPath()
+                    + " (Maybe because of permissions?)");
             return;
         }
 
@@ -112,7 +115,8 @@ public class ZipLibrary {
 
     private static void zipFile(ZipOutputStream zos, String path, File file) throws IOException {
         if (!file.canRead()) {
-            mcMMO.p.getLogger().severe("Cannot read " + file.getCanonicalPath() + "(File Permissions?)");
+            mcMMO.p.getLogger()
+                    .severe("Cannot read " + file.getCanonicalPath() + "(File Permissions?)");
             return;
         }
 

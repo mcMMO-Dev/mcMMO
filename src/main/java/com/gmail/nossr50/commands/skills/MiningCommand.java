@@ -8,11 +8,10 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class MiningCommand extends SkillCommand {
     private String doubleDropChance;
@@ -26,7 +25,7 @@ public class MiningCommand extends SkillCommand {
     private int bonusTNTDrops;
     private double blastRadiusIncrease;
     private String oreBonus;
-//    private String debrisReduction;
+    //    private String debrisReduction;
     private String blastDamageDecrease;
 
     private boolean canSuperBreaker;
@@ -56,18 +55,20 @@ public class MiningCommand extends SkillCommand {
 
         // Mastery TRIPLE DROPS
         if (canTripleDrop) {
-            String[] masteryTripleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.MINING_MOTHER_LODE);
+            String[] masteryTripleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                    SubSkillType.MINING_MOTHER_LODE);
             tripleDropChance = masteryTripleDropStrings[0];
             tripleDropChanceLucky = masteryTripleDropStrings[1];
         }
-        
+
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.MINING_DOUBLE_DROPS);
+            String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                    SubSkillType.MINING_DOUBLE_DROPS);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
-        
+
         // SUPER BREAKER
         if (canSuperBreaker) {
             String[] superBreakerStrings = calculateLengthDisplayValues(player, skillValue);
@@ -78,47 +79,61 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
-        canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
-        canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
+        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS)
+                && Permissions.biggerBombs(player);
+        canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING)
+                && Permissions.remoteDetonation(player);
+        canDemoExpert =
+                RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE)
+                        && Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_DOUBLE_DROPS);
         canTripleDrop = Permissions.canUseSubSkill(player, SubSkillType.MINING_MOTHER_LODE);
-        canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
+        canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER)
+                && Permissions.superBreaker(player);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canBiggerBombs) {
-            messages.add(getStatMessage(true, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastRadiusIncrease)));
+            messages.add(getStatMessage(true, true, SubSkillType.MINING_BLAST_MINING,
+                    String.valueOf(blastRadiusIncrease)));
             //messages.add(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
         }
-        
+
         if (canBlast) {
-            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING)), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, bonusTNTDrops)));
+            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING,
+                    String.valueOf(blastMiningRank),
+                    String.valueOf(RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING)),
+                    LocaleLoader.getString("Mining.Blast.Effect", oreBonus, bonusTNTDrops)));
             //messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
-        
-         if (canDemoExpert) {
-            messages.add(getStatMessage(SubSkillType.MINING_DEMOLITIONS_EXPERTISE, blastDamageDecrease));
+
+        if (canDemoExpert) {
+            messages.add(
+                    getStatMessage(SubSkillType.MINING_DEMOLITIONS_EXPERTISE, blastDamageDecrease));
             //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
         }
 
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.MINING_DOUBLE_DROPS, doubleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky)
+                    : ""));
             //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canTripleDrop) {
             messages.add(getStatMessage(SubSkillType.MINING_MOTHER_LODE, tripleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky)
+                    : ""));
         }
 
         if (canSuperBreaker) {
             messages.add(getStatMessage(SubSkillType.MINING_SUPER_BREAKER, superBreakerLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
+                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus",
+                    superBreakerLengthEndurance) : ""));
             //messages.add(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
         }
 
@@ -129,7 +144,8 @@ public class MiningCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.MINING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+                PrimarySkillType.MINING);
 
         return textComponents;
     }

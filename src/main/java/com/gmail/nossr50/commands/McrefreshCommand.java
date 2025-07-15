@@ -17,13 +17,13 @@ public class McrefreshCommand extends ToggleCommand {
     }
 
     @Override
-    protected void applyCommandAction(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.setRecentlyHurt(0);
-        mcMMOPlayer.resetCooldowns();
-        mcMMOPlayer.resetToolPrepMode();
-        mcMMOPlayer.resetAbilityMode();
+    protected void applyCommandAction(McMMOPlayer mmoPlayer) {
+        mmoPlayer.setRecentlyHurt(0);
+        mmoPlayer.resetCooldowns();
+        mmoPlayer.resetToolPrepMode();
+        mmoPlayer.resetAbilityMode();
 
-        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
+        mmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
     }
 
     @Override

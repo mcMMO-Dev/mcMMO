@@ -1,13 +1,12 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.UUID;
+import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Used for unit testing upgrades from the old ChunkStore class.
@@ -71,24 +70,27 @@ class LegacyChunkStore implements ChunkStore, Serializable {
 
     @Override
     public void setTrue(int x, int y, int z) {
-        if (y >= store[0][0].length || y < 0)
+        if (y >= store[0][0].length || y < 0) {
             return;
+        }
         store[x][z][y] = true;
         dirty = true;
     }
 
     @Override
     public void setFalse(int x, int y, int z) {
-        if (y >= store[0][0].length || y < 0)
+        if (y >= store[0][0].length || y < 0) {
             return;
+        }
         store[x][z][y] = false;
         dirty = true;
     }
 
     @Override
     public void set(int x, int y, int z, boolean value) {
-        if (y >= store[0][0].length || y < 0)
+        if (y >= store[0][0].length || y < 0) {
             return;
+        }
         store[x][z][y] = value;
         dirty = true;
     }
@@ -120,7 +122,8 @@ class LegacyChunkStore implements ChunkStore, Serializable {
         dirty = false;
     }
 
-    private void readObject(@NotNull ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(@NotNull ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
         throw new UnsupportedOperationException();
     }
 

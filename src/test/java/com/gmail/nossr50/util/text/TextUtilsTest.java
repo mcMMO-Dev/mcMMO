@@ -6,13 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * This Unit Test checks if Adventure was set up correctly and works as expected.
- * Normally, we can rely on this to be the case. However sometimes our dependencies
- * lack so far behind that things stop working correctly.
- * This test ensures that basic functionality is guaranteed to work as we would expect.
- * 
+ * This Unit Test checks if Adventure was set up correctly and works as expected. Normally, we can
+ * rely on this to be the case. However sometimes our dependencies lack so far behind that things
+ * stop working correctly. This test ensures that basic functionality is guaranteed to work as we
+ * would expect.
+ * <p>
  * See https://github.com/mcMMO-Dev/mcMMO/pull/4446
- *
  */
 class TextUtilsTest {
 

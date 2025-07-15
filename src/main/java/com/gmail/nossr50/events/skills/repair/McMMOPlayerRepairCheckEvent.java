@@ -15,7 +15,8 @@ public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implement
     private final ItemStack repairedObject;
     private boolean cancelled;
 
-    public McMMOPlayerRepairCheckEvent(Player player, short repairAmount, ItemStack repairMaterial, ItemStack repairedObject) {
+    public McMMOPlayerRepairCheckEvent(Player player, short repairAmount, ItemStack repairMaterial,
+            ItemStack repairedObject) {
         super(player, PrimarySkillType.REPAIR);
         this.repairAmount = repairAmount;
         this.repairMaterial = repairMaterial;
@@ -44,7 +45,9 @@ public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implement
         return repairedObject;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;

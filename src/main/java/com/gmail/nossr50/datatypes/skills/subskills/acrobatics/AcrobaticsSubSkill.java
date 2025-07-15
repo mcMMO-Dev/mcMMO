@@ -14,21 +14,22 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
 
     protected EventPriority interactionPriority;
 
-    public AcrobaticsSubSkill(String configKeySub, EventPriority interactionPriority, SubSkillType subSkillType) {
+    public AcrobaticsSubSkill(String configKeySub, EventPriority interactionPriority,
+            SubSkillType subSkillType) {
         super(configKeySub, "Acrobatics", subSkillType);
 
         this.interactionPriority = interactionPriority;
     }
 
     /**
-     * The name of this subskill
-     * Core mcMMO skills will pull the name from Locale with this method
+     * The name of this subskill Core mcMMO skills will pull the name from Locale with this method
      *
      * @return the subskill name
      */
     @Override
     public String getNiceName() {
-        return LocaleLoader.getString(getPrimaryKeyName()+".SubSkill."+getConfigKeyName()+".Name");
+        return LocaleLoader.getString(
+                getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Name");
     }
 
     /**
@@ -48,7 +49,9 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
      */
     @Override
     public String getTips() {
-        return LocaleLoader.getString("JSON."+StringUtils.getCapitalized(getPrimarySkill().toString())+".SubSkill."+getConfigKeyName()+".Details.Tips");
+        return LocaleLoader.getString(
+                "JSON." + StringUtils.getCapitalized(getPrimarySkill().toString()) + ".SubSkill."
+                        + getConfigKeyName() + ".Details.Tips");
     }
 
     /**
@@ -84,7 +87,7 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
     /**
      * Executes the interaction between this subskill and Minecraft
      *
-     * @param event  the vector of interaction
+     * @param event the vector of interaction
      * @param plugin the mcMMO plugin instance
      * @return true if interaction wasn't cancelled
      */

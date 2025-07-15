@@ -1,11 +1,10 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.mcMMO;
+import static com.gmail.nossr50.util.LogUtils.DEBUG_STR;
 
+import com.gmail.nossr50.mcMMO;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
-
-import static com.gmail.nossr50.util.LogUtils.DEBUG_STR;
 
 public class LogFilter implements Filter {
     private final boolean debug;

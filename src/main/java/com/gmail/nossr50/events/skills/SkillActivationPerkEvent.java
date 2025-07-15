@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 public class SkillActivationPerkEvent extends Event {
 
 
-
-
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
     private int ticks;

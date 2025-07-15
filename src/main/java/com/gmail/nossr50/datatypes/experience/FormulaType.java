@@ -8,8 +8,7 @@ public enum FormulaType {
     public static FormulaType getFormulaType(String string) {
         try {
             return valueOf(string);
-        }
-        catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             return UNKNOWN;
         }
     }

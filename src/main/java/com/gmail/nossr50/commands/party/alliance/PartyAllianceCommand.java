@@ -8,6 +8,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,22 +19,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PartyAllianceCommand implements TabExecutor {
     private Player player;
     private Party playerParty;
     private Party targetParty;
 
-    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
+    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept",
+            "disband");
 
     private final CommandExecutor partyAllianceInviteCommand = new PartyAllianceInviteCommand();
     private final CommandExecutor partyAllianceAcceptCommand = new PartyAllianceAcceptCommand();
     private final CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -43,13 +44,14 @@ public class PartyAllianceCommand implements TabExecutor {
         }
 
         player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        playerParty = mcMMOPlayer.getParty();
+        playerParty = mmoPlayer.getParty();
 
         switch (args.length) {
             case 1:
-                if (playerParty.getLevel() < mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < mcMMO.p.getGeneralConfig()
+                        .getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }
@@ -62,12 +64,13 @@ public class PartyAllianceCommand implements TabExecutor {
                 targetParty = playerParty.getAlly();
 
                 displayPartyHeader();
-                displayMemberInfo(mcMMOPlayer);
+                displayMemberInfo(mmoPlayer);
                 return true;
 
             case 2:
             case 3:
-                if (playerParty.getLevel() < mcMMO.p.getGeneralConfig().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < mcMMO.p.getGeneralConfig()
+                        .getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }
@@ -92,7 +95,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 targetParty = playerParty.getAlly();
 
                 displayPartyHeader();
-                displayMemberInfo(mcMMOPlayer);
+                displayMemberInfo(mmoPlayer);
                 return true;
 
             default:
@@ -107,13 +110,16 @@ public class PartyAllianceCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender,
+            @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 1) {
-            List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<>(ALLIANCE_SUBCOMMANDS.size()));
+            List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS,
+                    new ArrayList<>(ALLIANCE_SUBCOMMANDS.size()));
 
             if (matches.size() == 0) {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
+                return StringUtil.copyPartialMatches(args[0], playerNames,
+                        new ArrayList<>(playerNames.size()));
             }
 
             return matches;
@@ -123,11 +129,13 @@ public class PartyAllianceCommand implements TabExecutor {
 
     private void displayPartyHeader() {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Ally", playerParty.getName(), targetParty.getName()));
+        player.sendMessage(
+                LocaleLoader.getString("Commands.Party.Alliance.Ally", playerParty.getName(),
+                        targetParty.getName()));
     }
 
-    private void displayMemberInfo(McMMOPlayer mcMMOPlayer) {
-        List<Player> nearMembers = mcMMO.p.getPartyManager().getNearMembers(mcMMOPlayer);
+    private void displayMemberInfo(McMMOPlayer mmoPlayer) {
+        List<Player> nearMembers = mcMMO.p.getPartyManager().getNearMembers(mmoPlayer);
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Members.Header"));
         player.sendMessage(playerParty.createMembersList(player));
         player.sendMessage(ChatColor.DARK_GRAY + "----------------------------");

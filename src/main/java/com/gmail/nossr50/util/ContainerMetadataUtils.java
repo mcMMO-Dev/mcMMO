@@ -1,7 +1,11 @@
 package com.gmail.nossr50.util;
 
+import static com.gmail.nossr50.util.MetadataService.NSK_CONTAINER_UUID_LEAST_SIG;
+import static com.gmail.nossr50.util.MetadataService.NSK_CONTAINER_UUID_MOST_SIG;
+
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -13,14 +17,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
-import static com.gmail.nossr50.util.MetadataService.NSK_CONTAINER_UUID_LEAST_SIG;
-import static com.gmail.nossr50.util.MetadataService.NSK_CONTAINER_UUID_MOST_SIG;
-
 public class ContainerMetadataUtils {
 
-    public static void changeContainerOwnership(@Nullable BlockState blockState, @Nullable Player player) {
+    public static void changeContainerOwnership(@Nullable BlockState blockState,
+            @Nullable Player player) {
         // no-op when the blockState is null or player is null
         if (blockState == null || player == null) {
             return;
@@ -36,11 +36,12 @@ public class ContainerMetadataUtils {
         setOwner(blockState, player.getUniqueId());
     }
 
-    public static void printOwnershipGainDebug(@NotNull BlockState blockState, @Nullable McMMOPlayer mmoPlayer) {
+    public static void printOwnershipGainDebug(@NotNull BlockState blockState,
+            @Nullable McMMOPlayer mmoPlayer) {
         if (mmoPlayer != null && mmoPlayer.isDebugMode()) {
             mmoPlayer.getPlayer().sendMessage("Container ownership " +
-                    ChatColor.GREEN +"gained " + ChatColor.RESET +
-                    "at location: " + blockState.getLocation().toString());
+                    ChatColor.GREEN + "gained " + ChatColor.RESET +
+                    "at location: " + blockState.getLocation());
         }
     }
 
@@ -54,7 +55,7 @@ public class ContainerMetadataUtils {
                 if (mmoContainerOwner.isDebugMode()) {
                     mmoContainerOwner.getPlayer().sendMessage("Container ownership " +
                             ChatColor.RED + "lost " + ChatColor.RESET +
-                            "at location: " + blockState.getLocation().toString());
+                            "at location: " + blockState.getLocation());
                 }
             }
         }
@@ -84,8 +85,9 @@ public class ContainerMetadataUtils {
         }
 
         if (getContainerOwner(blockState) != null) {
-            if (getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId()))
+            if (getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId())) {
                 return;
+            }
         }
 
         changeContainerOwnership(blockState, player);
@@ -96,8 +98,10 @@ public class ContainerMetadataUtils {
         final PersistentDataContainer dataContainer = persistentDataHolder.getPersistentDataContainer();
 
         //Too lazy to make a custom data type for this stuff
-        final Long mostSigBits = dataContainer.get(NSK_CONTAINER_UUID_MOST_SIG, PersistentDataType.LONG);
-        final Long leastSigBits = dataContainer.get(NSK_CONTAINER_UUID_LEAST_SIG, PersistentDataType.LONG);
+        final Long mostSigBits = dataContainer.get(NSK_CONTAINER_UUID_MOST_SIG,
+                PersistentDataType.LONG);
+        final Long leastSigBits = dataContainer.get(NSK_CONTAINER_UUID_LEAST_SIG,
+                PersistentDataType.LONG);
 
         if (mostSigBits != null && leastSigBits != null) {
             return new UUID(mostSigBits, leastSigBits);
@@ -109,8 +113,10 @@ public class ContainerMetadataUtils {
     public static void setOwner(@NotNull BlockState blockState, @NotNull UUID uuid) {
         PersistentDataContainer dataContainer = ((PersistentDataHolder) blockState).getPersistentDataContainer();
 
-        dataContainer.set(NSK_CONTAINER_UUID_MOST_SIG, PersistentDataType.LONG, uuid.getMostSignificantBits());
-        dataContainer.set(NSK_CONTAINER_UUID_LEAST_SIG, PersistentDataType.LONG, uuid.getLeastSignificantBits());
+        dataContainer.set(NSK_CONTAINER_UUID_MOST_SIG, PersistentDataType.LONG,
+                uuid.getMostSignificantBits());
+        dataContainer.set(NSK_CONTAINER_UUID_LEAST_SIG, PersistentDataType.LONG,
+                uuid.getLeastSignificantBits());
 
         blockState.update();
     }

@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.excavation;
 
+import static java.util.Objects.requireNonNull;
+
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -16,6 +18,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -23,13 +26,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
-import java.util.List;
-
-import static java.util.Objects.requireNonNull;
-
 public class ExcavationManager extends SkillManager {
-    public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.EXCAVATION);
+    public ExcavationManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.EXCAVATION);
     }
 
     /**
@@ -55,7 +54,8 @@ public class ExcavationManager extends SkillManager {
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
                             && ProbabilityUtil.isStaticSkillRNGSuccessful(
-                            PrimarySkillType.EXCAVATION, mmoPlayer, treasure.getDropProbability())) {
+                            PrimarySkillType.EXCAVATION, mmoPlayer,
+                            treasure.getDropProbability())) {
                         processExcavationBonusesOnBlock(treasure, centerOfBlock);
                     }
                 }
@@ -78,7 +78,8 @@ public class ExcavationManager extends SkillManager {
 
     @VisibleForTesting
     @Deprecated(forRemoval = true, since = "2.2.024")
-    public void processExcavationBonusesOnBlock(BlockState ignored, ExcavationTreasure treasure, Location location) {
+    public void processExcavationBonusesOnBlock(BlockState ignored, ExcavationTreasure treasure,
+            Location location) {
         processExcavationBonusesOnBlock(treasure, location);
     }
 
@@ -91,7 +92,8 @@ public class ExcavationManager extends SkillManager {
 
         int xp = 0;
         xp += treasure.getXp();
-        ItemUtils.spawnItem(getPlayer(), location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
+        ItemUtils.spawnItem(getPlayer(), location, treasure.getDrop(),
+                ItemSpawnReason.EXCAVATION_TREASURE);
         if (xp > 0) {
             applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
         }
@@ -116,10 +118,13 @@ public class ExcavationManager extends SkillManager {
             if (!treasures.isEmpty()) {
                 for (ExcavationTreasure treasure : treasures) {
                     player.sendMessage("|||||||||||||||||||||||||||||||||");
-                    player.sendMessage("[mcMMO DEBUG] Treasure found: ("+treasure.getDrop().getType().toString()+")");
-                    player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: "+treasure.getDropChance());
-                    player.sendMessage("[mcMMO DEBUG] Skill Level Required: "+treasure.getDropLevel());
-                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: "+treasure.getXp());
+                    player.sendMessage(
+                            "[mcMMO DEBUG] Treasure found: (" + treasure.getDrop().getType() + ")");
+                    player.sendMessage(
+                            "[mcMMO DEBUG] Drop Chance for Treasure: " + treasure.getDropChance());
+                    player.sendMessage(
+                            "[mcMMO DEBUG] Skill Level Required: " + treasure.getDropLevel());
+                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: " + treasure.getXp());
                 }
             } else {
                 player.sendMessage("[mcMMO DEBUG] No treasures found for this block.");

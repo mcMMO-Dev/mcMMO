@@ -1,12 +1,12 @@
 package com.gmail.nossr50.datatypes;
 
 import com.google.common.collect.HashMultiset;
+import java.util.LinkedList;
 import org.bukkit.Location;
 
-import java.util.LinkedList;
-
 /**
- * This class works with the assumption that you only pass in Block Locations.  If locations have differing pitch/yaw, the logic breaks
+ * This class works with the assumption that you only pass in Block Locations.  If locations have
+ * differing pitch/yaw, the logic breaks
  */
 public class BlockLocationHistory {
     private final LinkedList<Location> limitedSizeOrderedList = new LinkedList<>();
@@ -18,15 +18,17 @@ public class BlockLocationHistory {
     }
 
     /**
-     * Adds a block location to the history.  If the history memory would exceed the max size, it will remove the least recently added block location
+     * Adds a block location to the history.  If the history memory would exceed the max size, it
+     * will remove the least recently added block location
      *
      * @param newItem
      */
     public void add(Location newItem) {
         limitedSizeOrderedList.addFirst(newItem);
         lookup.add(newItem);
-        if (limitedSizeOrderedList.size() > maxSize)
+        if (limitedSizeOrderedList.size() > maxSize) {
             lookup.remove(limitedSizeOrderedList.removeLast());
+        }
     }
 
     /**

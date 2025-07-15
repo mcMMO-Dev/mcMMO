@@ -1,10 +1,12 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
+import static com.gmail.nossr50.util.PotionUtil.isLong;
+import static com.gmail.nossr50.util.PotionUtil.isPotionTypeWater;
+import static com.gmail.nossr50.util.PotionUtil.isStrong;
+
 import com.gmail.nossr50.util.PotionUtil;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-
-import static com.gmail.nossr50.util.PotionUtil.*;
 
 public enum PotionStage {
     FIVE(5),
@@ -63,8 +65,8 @@ public enum PotionStage {
         if (isStrong(potionMeta)) {
             stage++;
         } else if (!potionMeta.getCustomEffects().isEmpty()) {
-            for (PotionEffect effect : potionMeta.getCustomEffects()){
-                if (effect.getAmplifier() > 0){
+            for (PotionEffect effect : potionMeta.getCustomEffects()) {
+                if (effect.getAmplifier() > 0) {
                     stage++;
                     break;
                 }

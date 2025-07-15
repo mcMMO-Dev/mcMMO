@@ -11,6 +11,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -18,19 +20,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class InspectCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 1) {
             String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+            final McMMOPlayer mmoPlayer = UserManager.getOfflinePlayer(playerName);
 
-            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-            if (mcMMOPlayer == null) {
-                PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName); // Temporary Profile
+            // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mmoPlayer == null) {
+                PlayerProfile profile = mcMMO.getDatabaseManager()
+                        .loadPlayerProfile(playerName); // Temporary Profile
 
                 if (!CommandUtils.isLoaded(sender, profile)) {
                     return true;
@@ -65,27 +66,26 @@ public class InspectCommand implements TabExecutor {
 
                 // Sum power level
                 int powerLevel = 0;
-                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS)
+                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
                     powerLevel += profile.getSkillLevel(skill);
+                }
 
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", powerLevel));
             } else {
-                Player target = mcMMOPlayer.getPlayer();
-                boolean isVanished = false;
-
-                if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
-                    isVanished = true;
-                }
+                Player target = mmoPlayer.getPlayer();
+                boolean isVanished = CommandUtils.hidden(sender, target,
+                        Permissions.inspectHidden(sender));
 
                 //Only distance check players who are online and not vanished
-                if (!isVanished && CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                if (!isVanished && CommandUtils.tooFar(sender, target,
+                        Permissions.inspectFar(sender))) {
                     return true;
                 }
 
                 if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled()
                         && sender instanceof Player
                         && mcMMO.p.getGeneralConfig().getInspectUseBoard()) {
-                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer);
+                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mmoPlayer);
 
                     if (!mcMMO.p.getGeneralConfig().getInspectUseChat()) {
                         return true;
@@ -102,7 +102,8 @@ public class InspectCommand implements TabExecutor {
                 CommandUtils.printCombatSkills(target, sender);
                 CommandUtils.printMiscSkills(target, sender);
 
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+                sender.sendMessage(
+                        LocaleLoader.getString("Commands.PowerLevel", mmoPlayer.getPowerLevel()));
             }
 
             return true;
@@ -111,10 +112,12 @@ public class InspectCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, String[] args) {
         if (args.length == 1) {
             List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
-            return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
+            return StringUtil.copyPartialMatches(args[0], playerNames,
+                    new ArrayList<>(playerNames.size()));
         }
         return ImmutableList.of();
     }

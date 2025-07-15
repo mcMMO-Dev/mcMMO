@@ -13,15 +13,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyAllianceDisbandCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 2) {
             if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
-            Player player = (Player) sender;
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            Party party = mcMMOPlayer.getParty();
+            final Player player = (Player) sender;
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            Party party = mmoPlayer.getParty();
 
             if (party.getAlly() == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.None"));
@@ -31,7 +32,8 @@ public class PartyAllianceDisbandCommand implements CommandExecutor {
             mcMMO.p.getPartyManager().disbandAlliance(player, party, party.getAlly());
             return true;
         }
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "disband"));
+        sender.sendMessage(
+                LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "disband"));
         return true;
     }
 }

@@ -12,7 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class McmmoCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         switch (args.length) {
             case 0:
                 if (!Permissions.mcmmoDescription(sender)) {
@@ -27,18 +28,22 @@ public class McmmoCommand implements CommandExecutor {
 
                 if (mcMMO.p.getGeneralConfig().getDonateMessageEnabled()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
-                    sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com" + ChatColor.GOLD + " Paypal");
+                    sender.sendMessage(
+                            ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com"
+                                    + ChatColor.GOLD + " Paypal");
                 }
 
                 if (Permissions.showversion(sender)) {
-                    sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
+                    sender.sendMessage(LocaleLoader.getString("MOTD.Version",
+                            mcMMO.p.getDescription().getVersion()));
                 }
 
 //                mcMMO.getHolidayManager().anniversaryCheck(sender);
                 return true;
 
             case 1:
-                if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("commands")) {
+                if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help")
+                        || args[0].equalsIgnoreCase("commands")) {
                     if (!Permissions.mcmmoHelp(sender)) {
                         sender.sendMessage(command.getPermissionMessage());
                         return true;
@@ -72,8 +77,10 @@ public class McmmoCommand implements CommandExecutor {
 
     private void displayOtherCommands(CommandSender sender) {
         //Don't show them this category if they have none of the permissions
-        if (!Permissions.skillreset(sender) && !Permissions.mmoedit(sender) && !Permissions.adminChat(sender) && !Permissions.mcgod(sender))
+        if (!Permissions.skillreset(sender) && !Permissions.mmoedit(sender)
+                && !Permissions.adminChat(sender) && !Permissions.mcgod(sender)) {
             return;
+        }
 
         sender.sendMessage(LocaleLoader.getString("Commands.Other"));
 

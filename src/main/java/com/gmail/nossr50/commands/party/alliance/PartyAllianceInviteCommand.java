@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyAllianceInviteCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 3) {
             String targetName = CommandUtils.getMatchedPlayerName(args[2]);
             McMMOPlayer mcMMOTarget = UserManager.getOfflinePlayer(targetName);
@@ -30,8 +31,8 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
                 return true;
             }
 
-            Player player = (Player) sender;
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            final Player player = (Player) sender;
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
             String playerName = player.getName();
 
             if (player.equals(target)) {
@@ -54,7 +55,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
                 return true;
             }
 
-            Party playerParty = mcMMOPlayer.getParty();
+            Party playerParty = mmoPlayer.getParty();
 
             if (playerParty.getAlly() != null) {
                 player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.AlreadyAllies"));
@@ -64,11 +65,13 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
             mcMMOTarget.setPartyAllianceInvite(playerParty);
 
             sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-            target.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.0", playerParty.getName(), playerName));
+            target.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.0",
+                    playerParty.getName(), playerName));
             target.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.1"));
             return true;
         }
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "alliance", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "alliance", "invite",
+                "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         return true;
     }
 }

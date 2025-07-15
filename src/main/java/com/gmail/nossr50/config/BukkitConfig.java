@@ -2,16 +2,15 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BukkitConfig {
     boolean copyDefaults = true;
@@ -19,7 +18,8 @@ public abstract class BukkitConfig {
     protected final File configFile;
     protected YamlConfiguration defaultYamlConfig;
     protected YamlConfiguration config;
-    protected @NotNull final File dataFolder;
+    protected @NotNull
+    final File dataFolder;
     private boolean savedDefaults = false;
 
     public BukkitConfig(@NotNull String fileName, @NotNull File dataFolder, boolean copyDefaults) {
@@ -41,6 +41,7 @@ public abstract class BukkitConfig {
     public BukkitConfig(@NotNull String fileName) {
         this(fileName, mcMMO.p.getDataFolder());
     }
+
     public BukkitConfig(@NotNull String fileName, boolean copyDefaults) {
         this(fileName, mcMMO.p.getDataFolder(), copyDefaults);
     }
@@ -82,8 +83,9 @@ public abstract class BukkitConfig {
      * Copies the config from the JAR to defaults/<fileName>
      */
     YamlConfiguration saveDefaultConfigToDisk() {
-        LogUtils.debug(mcMMO.p.getLogger(), "Copying default config to disk: " + fileName + " to defaults/" + fileName);
-        try(InputStream inputStream = mcMMO.p.getResource(fileName)) {
+        LogUtils.debug(mcMMO.p.getLogger(),
+                "Copying default config to disk: " + fileName + " to defaults/" + fileName);
+        try (InputStream inputStream = mcMMO.p.getResource(fileName)) {
             if (inputStream == null) {
                 mcMMO.p.getLogger().severe("Unable to copy default config: " + fileName);
                 return null;
@@ -110,7 +112,9 @@ public abstract class BukkitConfig {
 
     YamlConfiguration initConfig() {
         if (!configFile.exists()) {
-            LogUtils.debug(mcMMO.p.getLogger(), "User config file not found, copying a default config to disk: " + fileName);
+            LogUtils.debug(
+                    mcMMO.p.getLogger(),
+                    "User config file not found, copying a default config to disk: " + fileName);
             mcMMO.p.saveResource(fileName, false);
         }
 
@@ -154,15 +158,20 @@ public abstract class BukkitConfig {
         if (validateKeys()) {
             LogUtils.debug(mcMMO.p.getLogger(), "No errors found in " + fileName + "!");
         } else {
-            mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
+            mcMMO.p.getLogger()
+                    .warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
             mcMMO.p.noErrorsInConfigFiles = false;
         }
     }
 
     public void backup() {
-        LogUtils.debug(mcMMO.p.getLogger(), "You are using an old version of the " + fileName + " file.");
-        LogUtils.debug(mcMMO.p.getLogger(), "Your old file has been renamed to " + fileName + ".old and has been replaced by an updated version.");
+        LogUtils.debug(mcMMO.p.getLogger(),
+                "You are using an old version of the " + fileName + " file.");
+        LogUtils.debug(
+                mcMMO.p.getLogger(),
+                "Your old file has been renamed to " + fileName
+                        + ".old and has been replaced by an updated version.");
 
         configFile.renameTo(new File(configFile.getPath() + ".old"));
 

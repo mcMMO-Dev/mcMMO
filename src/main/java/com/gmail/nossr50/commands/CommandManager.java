@@ -60,7 +60,8 @@ public class CommandManager {
             if (ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.ADMIN)) {
                 bukkitCommandManager.registerCommand(new AdminChatCommand(pluginRef));
             }
-            if (pluginRef.getPartyConfig().isPartyEnabled() && ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.PARTY)) {
+            if (pluginRef.getPartyConfig().isPartyEnabled() && ChatConfig.getInstance()
+                    .isChatChannelEnabled(ChatChannel.PARTY)) {
                 bukkitCommandManager.registerCommand(new PartyChatCommand(pluginRef));
             }
         }
@@ -72,15 +73,17 @@ public class CommandManager {
     }
 
     private void registerSkillConditions() {
-        bukkitCommandManager.getCommandConditions().addCondition(POWER_LEVEL_CONDITION, (context) -> {
-            BukkitCommandIssuer issuer = context.getIssuer();
+        bukkitCommandManager.getCommandConditions()
+                .addCondition(POWER_LEVEL_CONDITION, (context) -> {
+                    BukkitCommandIssuer issuer = context.getIssuer();
 
-            if (issuer.getIssuer() instanceof Player) {
-                validateLoadedData(issuer.getPlayer());
-            } else {
-                throw new ConditionFailedException(LocaleLoader.getString("Commands.NoConsole"));
-            }
-        });
+                    if (issuer.getIssuer() instanceof Player) {
+                        validateLoadedData(issuer.getPlayer());
+                    } else {
+                        throw new ConditionFailedException(
+                                LocaleLoader.getString("Commands.NoConsole"));
+                    }
+                });
     }
 
     private void registerChatCommandConditions() {
@@ -114,7 +117,8 @@ public class CommandManager {
         });
     }
 
-    private void validatePermission(@NotNull String permissionNode, @NotNull Permissible permissible) {
+    private void validatePermission(@NotNull String permissionNode,
+            @NotNull Permissible permissible) {
         if (!permissible.hasPermission(permissionNode)) {
             throw new ConditionFailedException(LocaleLoader.getString("mcMMO.NoPermission"));
         }
@@ -123,7 +127,8 @@ public class CommandManager {
 
     public void validateAdmin(@NotNull Player player) {
         if (!player.isOp() && !Permissions.adminChat(player)) {
-            throw new ConditionFailedException("You are lacking the correct permissions to use this command.");
+            throw new ConditionFailedException(
+                    "You are lacking the correct permissions to use this command.");
         }
     }
 
@@ -134,7 +139,7 @@ public class CommandManager {
     }
 
     public void validatePlayerParty(@NotNull Player player) {
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         if (!pluginRef.getPartyConfig().isPartyEnabled() || mmoPlayer.getParty() == null) {
             throw new ConditionFailedException(LocaleLoader.getString("Commands.Party.None"));

@@ -14,26 +14,28 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyDisbandCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 1) {
-            final McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
-            if (mcMMOPlayer == null) {
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
+            if (mmoPlayer == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            final Party playerParty = mcMMOPlayer.getParty();
+            final Party playerParty = mmoPlayer.getParty();
             final String partyName = playerParty.getName();
 
             for (Player member : playerParty.getOnlineMembers()) {
-                if (!mcMMO.p.getPartyManager().handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                if (!mcMMO.p.getPartyManager().handlePartyChangeEvent(member, partyName, null,
+                        EventReason.KICKED_FROM_PARTY)) {
                     return true;
                 }
 
                 member.sendMessage(LocaleLoader.getString("Party.Disband"));
             }
 
-            mcMMO.p.getPartyManager().disbandParty(mcMMOPlayer, playerParty);
+            mcMMO.p.getPartyManager().disbandParty(mmoPlayer, playerParty);
             return true;
         }
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "disband"));

@@ -1,3 +1,18 @@
+Version 2.2.041
+    Fixed buckets being consumed by furnaces (thanks RunqRun)
+    Fixed Repair stripping unsafe enchantments from items (thanks Techirion)
+    Fixed IronGolem causing cast exceptions in rare cases (thanks Techirion)
+
+Version 2.2.040
+    Fixed hover component and action bar messages not working for 1.21.6 and 1.21.7
+    Fixed bug where entries of mctop could be duplicated when using FlatFile
+    Fixed bug where a party leader could leave a party and the party would be left without a party leader
+    Fixed a bug where EcoEnchants and similar plugins could cause an infinite loop within mcMMO during TreeFeller and other abilities
+    Added 'Happy_Ghast' to experience.yml for combat XP
+    Added 'Ghastling' to experience.yml for combat XP
+    Updated Japanese (ja_JP) translation (Thanks ryota-abe)
+    Updated Simplified Chinese (zh_CN) locale (Thanks GhostDC)
+
 Version 2.2.039
     Added StackOverflow safeguards for abilities dealing damage in mcMMO
     Improved compatibility with MythicMobs/ModelEngine
@@ -3245,7 +3260,7 @@ Version 1.5.01
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
- = Fixed bug where player didn't have a mcMMOPlayer object in AsyncPlayerChatEvent
+ = Fixed bug where player didn't have a mmoPlayer object in AsyncPlayerChatEvent
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException

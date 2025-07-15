@@ -4,12 +4,11 @@ import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillTools;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public enum PrimarySkillType {
     ACROBATICS,
@@ -32,10 +31,13 @@ public enum PrimarySkillType {
     WOODCUTTING;
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getLevelCap(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public int getMaxLevel() {
@@ -43,10 +45,14 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
-     * @see SkillTools#isSuperAbilityUnlocked(com.gmail.nossr50.datatypes.skills.PrimarySkillType, org.bukkit.entity.Player)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @see SkillTools#isSuperAbilityUnlocked(com.gmail.nossr50.datatypes.skills.PrimarySkillType,
+     * org.bukkit.entity.Player)
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean isSuperAbilityUnlocked(@NotNull Player player) {
@@ -54,10 +60,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getPVPEnabled(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean getPVPEnabled() {
@@ -65,10 +74,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getPVEEnabled(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean getPVEEnabled() {
@@ -76,10 +88,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see GeneralConfig#getDoubleDropsDisabled(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean getDoubleDropsDisabled() {
@@ -87,10 +102,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getHardcoreStatLossEnabled(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean getHardcoreStatLossEnabled() {
@@ -98,10 +116,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getHardcoreVampirismEnabled(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean getHardcoreVampirismEnabled() {
@@ -109,10 +130,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getPrimarySkillToolType(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public ToolType getTool() {
@@ -120,10 +144,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getSubSkills(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public List<SubSkillType> getSkillAbilities() {
@@ -131,10 +158,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getXpMultiplier(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public double getXpModifier() {
@@ -142,10 +172,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#matchSkill(java.lang.String)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public static PrimarySkillType getSkill(String skillName) {
@@ -153,10 +186,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#isChildSkill(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean isChildSkill() {
@@ -164,10 +200,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getPrimarySkillBySubSkill(com.gmail.nossr50.datatypes.skills.SubSkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public static PrimarySkillType bySecondaryAbility(SubSkillType subSkillType) {
@@ -175,10 +214,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getPrimarySkillBySuperAbility(com.gmail.nossr50.datatypes.skills.SuperAbilityType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public static PrimarySkillType byAbility(SuperAbilityType superAbilityType) {
@@ -186,10 +228,13 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
      * @see SkillTools#getLocalizedSkillName(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public String getName() {
@@ -197,9 +242,12 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
-     * @see Permissions#skillEnabled(org.bukkit.permissions.Permissible, com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+     * @see Permissions#skillEnabled(org.bukkit.permissions.Permissible,
+     * com.gmail.nossr50.datatypes.skills.PrimarySkillType)
      * @deprecated this is being removed in an upcoming update
      */
     @Deprecated
@@ -208,10 +256,14 @@ public enum PrimarySkillType {
     }
 
     /**
-     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools()
+     * instead
+     *
      * @return the max level of this skill
-     * @see SkillTools#canCombatSkillsTrigger(com.gmail.nossr50.datatypes.skills.PrimarySkillType, org.bukkit.entity.Entity)
-     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @see SkillTools#canCombatSkillsTrigger(com.gmail.nossr50.datatypes.skills.PrimarySkillType,
+     * org.bukkit.entity.Entity)
+     * @deprecated this is being removed in an upcoming update, you should be using
+     * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public boolean shouldProcess(Entity target) {

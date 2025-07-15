@@ -1,10 +1,9 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.HashMap;
 import java.util.List;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class SimpleRepairableManager implements RepairableManager {
     private final HashMap<Material, Repairable> repairables;

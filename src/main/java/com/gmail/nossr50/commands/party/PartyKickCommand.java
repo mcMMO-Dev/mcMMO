@@ -15,7 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyKickCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 2) {
             if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -36,7 +37,8 @@ public class PartyKickCommand implements CommandExecutor {
                 Player onlineTarget = target.getPlayer();
                 String partyName = playerParty.getName();
 
-                if (!mcMMO.p.getPartyManager().handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                if (!mcMMO.p.getPartyManager().handlePartyChangeEvent(onlineTarget, partyName, null,
+                        EventReason.KICKED_FROM_PARTY)) {
                     return true;
                 }
 
@@ -47,7 +49,8 @@ public class PartyKickCommand implements CommandExecutor {
             mcMMO.p.getPartyManager().removeFromParty(target, playerParty);
             return true;
         }
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick",
+                "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         return true;
     }
 }

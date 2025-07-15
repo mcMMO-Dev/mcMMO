@@ -7,10 +7,9 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillTools;
+import java.util.Map;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
 
 /**
  * Display the results of McrankCommandAsyncTask to the sender.
@@ -21,8 +20,9 @@ public class McRankCommandDisplayTask extends CancellableRunnable {
     private final String playerName;
     private final boolean useBoard, useChat;
 
-    McRankCommandDisplayTask(Map<PrimarySkillType, Integer> skills, CommandSender sender, String playerName,
-                             boolean useBoard, boolean useChat) {
+    McRankCommandDisplayTask(Map<PrimarySkillType, Integer> skills, CommandSender sender,
+            String playerName,
+            boolean useBoard, boolean useChat) {
         this.skills = skills;
         this.sender = sender;
         this.playerName = playerName;
@@ -51,15 +51,19 @@ public class McRankCommandDisplayTask extends CancellableRunnable {
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
             // Check if the command is for Maces but the MC version is not correct
             if (skill == PrimarySkillType.MACES
-                    && !mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                    && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
+                    .isAtLeast(1, 21, 0)) {
                 continue;
             }
             rank = skills.get(skill);
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill",
+                    mcMMO.p.getSkillTools().getLocalizedSkillName(skill),
+                    (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
         }
 
         rank = skills.get(null);
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall",
+                (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
     }
 
     public void displayBoard() {

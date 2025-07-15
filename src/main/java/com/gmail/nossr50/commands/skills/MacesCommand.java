@@ -1,5 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.MACES_CRIPPLE;
+import static com.gmail.nossr50.datatypes.skills.SubSkillType.MACES_MACES_LIMIT_BREAK;
+
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -9,14 +12,10 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.gmail.nossr50.datatypes.skills.SubSkillType.MACES_CRIPPLE;
-import static com.gmail.nossr50.datatypes.skills.SubSkillType.MACES_MACES_LIMIT_BREAK;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class MacesCommand extends SkillCommand {
 
@@ -30,19 +29,25 @@ public class MacesCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         if (SkillUtils.canUseSubskill(player, MACES_CRIPPLE)) {
             int crippleRank = RankUtils.getRank(player, MACES_CRIPPLE);
-            crippleLengthAgainstPlayers = String.valueOf(MacesManager.getCrippleTickDuration(true) / 20.0D);
-            crippleLengthAgainstMobs = String.valueOf(MacesManager.getCrippleTickDuration(false) / 20.0D);
+            crippleLengthAgainstPlayers = String.valueOf(
+                    MacesManager.getCrippleTickDuration(true) / 20.0D);
+            crippleLengthAgainstMobs = String.valueOf(
+                    MacesManager.getCrippleTickDuration(false) / 20.0D);
 
-            crippleChanceToApply = String.valueOf(mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank) + "%");
-            crippleChanceToApplyLucky = String.valueOf(mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank) * 1.33);
+            crippleChanceToApply =
+                    mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank) + "%";
+            crippleChanceToApplyLucky = String.valueOf(
+                    mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank) * 1.33);
         }
     }
 
     @Override
-    protected void permissionsCheck(Player player) {}
+    protected void permissionsCheck(Player player) {
+    }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         final List<String> messages = new ArrayList<>();
 
         if (SkillUtils.canUseSubskill(player, MACES_MACES_LIMIT_BREAK)) {
@@ -53,7 +58,8 @@ public class MacesCommand extends SkillCommand {
 
         if (SkillUtils.canUseSubskill(player, MACES_CRIPPLE)) {
             messages.add(getStatMessage(MACES_CRIPPLE, crippleChanceToApply)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", crippleChanceToApplyLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus",
+                    crippleChanceToApplyLucky) : ""));
             messages.add(getStatMessage(true, true, MACES_CRIPPLE,
                     crippleLengthAgainstPlayers,
                     crippleLengthAgainstMobs));
@@ -71,7 +77,8 @@ public class MacesCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.MACES);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+                PrimarySkillType.MACES);
 
         return textComponents;
     }

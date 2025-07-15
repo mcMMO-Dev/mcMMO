@@ -7,21 +7,22 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.player.NotificationManager;
 
 public class AbilityCooldownTask extends CancellableRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final SuperAbilityType ability;
 
-    public AbilityCooldownTask(McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public AbilityCooldownTask(McMMOPlayer mmoPlayer, SuperAbilityType ability) {
+        this.mmoPlayer = mmoPlayer;
         this.ability = ability;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getAbilityInformed(ability)) {
+        if (!mmoPlayer.getPlayer().isOnline() || mmoPlayer.getAbilityInformed(ability)) {
             return;
         }
 
-        mcMMOPlayer.setAbilityInformed(ability, true); // TODO: ?? What does this do again?
-        NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
+        mmoPlayer.setAbilityInformed(ability, true); // TODO: ?? What does this do again?
+        NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(),
+                NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
     }
 }

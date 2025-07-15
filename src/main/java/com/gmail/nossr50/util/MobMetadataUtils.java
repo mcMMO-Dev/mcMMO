@@ -1,22 +1,27 @@
 package com.gmail.nossr50.util;
 
+import static com.gmail.nossr50.util.MetadataService.NSK_COTW_SUMMONED_MOB;
+import static com.gmail.nossr50.util.MetadataService.NSK_EGG_MOB;
+import static com.gmail.nossr50.util.MetadataService.NSK_EXPLOITED_ENDERMEN;
+import static com.gmail.nossr50.util.MetadataService.NSK_MOB_SPAWNER_MOB;
+import static com.gmail.nossr50.util.MetadataService.NSK_NETHER_GATE_MOB;
+import static com.gmail.nossr50.util.MetadataService.NSK_PLAYER_BRED_MOB;
+import static com.gmail.nossr50.util.MetadataService.NSK_PLAYER_TAMED_MOB;
+
 import com.gmail.nossr50.api.exceptions.IncompleteNamespacedKeyRegister;
 import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.google.common.collect.MapMaker;
+import java.util.EnumMap;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.EnumMap;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import static com.gmail.nossr50.util.MetadataService.*;
 
 public final class MobMetadataUtils {
     private static final @NotNull ConcurrentMap<Entity, Set<MobMetaFlagType>> mobRegistry; // transient data
@@ -48,8 +53,8 @@ public final class MobMetadataUtils {
     }
 
     /**
-     * Registers the namespaced keys required by the API (CB/Spigot)
-     * Used primarily for persistent data
+     * Registers the namespaced keys required by the API (CB/Spigot) Used primarily for persistent
+     * data
      */
     private static void initMobFlagKeyMap() throws IncompleteNamespacedKeyRegister {
         for (MobMetaFlagType mobMetaFlagType : MobMetaFlagType.values()) {
@@ -59,9 +64,11 @@ public final class MobMetadataUtils {
                 case NETHER_PORTAL_MOB -> mobFlagKeyMap.put(mobMetaFlagType, NSK_NETHER_GATE_MOB);
                 case COTW_SUMMONED_MOB -> mobFlagKeyMap.put(mobMetaFlagType, NSK_COTW_SUMMONED_MOB);
                 case PLAYER_BRED_MOB -> mobFlagKeyMap.put(mobMetaFlagType, NSK_PLAYER_BRED_MOB);
-                case EXPLOITED_ENDERMEN -> mobFlagKeyMap.put(mobMetaFlagType, NSK_EXPLOITED_ENDERMEN);
+                case EXPLOITED_ENDERMEN ->
+                        mobFlagKeyMap.put(mobMetaFlagType, NSK_EXPLOITED_ENDERMEN);
                 case PLAYER_TAMED_MOB -> mobFlagKeyMap.put(mobMetaFlagType, NSK_PLAYER_TAMED_MOB);
-                default -> throw new IncompleteNamespacedKeyRegister("Missing namespaced key register for type: " + mobMetaFlagType);
+                default -> throw new IncompleteNamespacedKeyRegister(
+                        "Missing namespaced key register for type: " + mobMetaFlagType);
             }
         }
     }
@@ -69,13 +76,15 @@ public final class MobMetadataUtils {
     /**
      * Checks if a {@link LivingEntity} has a specific mcMMO mob flag.
      *
-     * @param flag         the type of mob flag to check for
+     * @param flag the type of mob flag to check for
      * @param livingEntity the living entity to check
      * @return true if the mob has the specified metadata flag
      */
-    public static boolean hasMobFlag(@NotNull MobMetaFlagType flag, @NotNull LivingEntity livingEntity) {
+    public static boolean hasMobFlag(@NotNull MobMetaFlagType flag,
+            @NotNull LivingEntity livingEntity) {
         if (PersistentDataConfig.getInstance().isMobPersistent(flag)) {
-            return livingEntity.getPersistentDataContainer().has(mobFlagKeyMap.get(flag), PersistentDataType.BYTE);
+            return livingEntity.getPersistentDataContainer()
+                    .has(mobFlagKeyMap.get(flag), PersistentDataType.BYTE);
         } else {
             final Set<MobMetaFlagType> flags = mobRegistry.get(livingEntity);
             return flags != null && flags.contains(flag);
@@ -103,13 +112,14 @@ public final class MobMetadataUtils {
     }
 
     /**
-     * Copies all mcMMO mob flags from one {@link LivingEntity} to another.
-     * This does not clear existing mcMMO mob flags on the target.
+     * Copies all mcMMO mob flags from one {@link LivingEntity} to another. This does not clear
+     * existing mcMMO mob flags on the target.
      *
      * @param sourceEntity entity to copy from
      * @param targetEntity entity to copy to
      */
-    public static void addMobFlags(@NotNull LivingEntity sourceEntity, @NotNull LivingEntity targetEntity) {
+    public static void addMobFlags(@NotNull LivingEntity sourceEntity,
+            @NotNull LivingEntity targetEntity) {
         if (!hasMobFlags(sourceEntity)) {
             return;
         }
@@ -123,27 +133,31 @@ public final class MobMetadataUtils {
         } else {
             Set<MobMetaFlagType> sourceFlags = mobRegistry.get(sourceEntity);
             if (sourceFlags != null) {
-                Set<MobMetaFlagType> targetFlags = mobRegistry.computeIfAbsent(targetEntity, k -> ConcurrentHashMap.newKeySet());
+                Set<MobMetaFlagType> targetFlags = mobRegistry.computeIfAbsent(targetEntity,
+                        k -> ConcurrentHashMap.newKeySet());
                 targetFlags.addAll(sourceFlags);
             }
         }
     }
 
     /**
-     * Adds a mob flag to a {@link LivingEntity}.
-     * The existence of the flag acts as a true value; non-existence is false.
+     * Adds a mob flag to a {@link LivingEntity}. The existence of the flag acts as a true value;
+     * non-existence is false.
      *
-     * @param flag         the desired flag to assign
+     * @param flag the desired flag to assign
      * @param livingEntity the target living entity
      */
-    public static void flagMetadata(@NotNull MobMetaFlagType flag, @NotNull LivingEntity livingEntity) {
+    public static void flagMetadata(@NotNull MobMetaFlagType flag,
+            @NotNull LivingEntity livingEntity) {
         if (PersistentDataConfig.getInstance().isMobPersistent(flag)) {
             if (!hasMobFlag(flag, livingEntity)) {
                 PersistentDataContainer persistentDataContainer = livingEntity.getPersistentDataContainer();
-                persistentDataContainer.set(mobFlagKeyMap.get(flag), PersistentDataType.BYTE, MetadataConstants.SIMPLE_FLAG_VALUE);
+                persistentDataContainer.set(mobFlagKeyMap.get(flag), PersistentDataType.BYTE,
+                        MetadataConstants.SIMPLE_FLAG_VALUE);
             }
         } else {
-            final Set<MobMetaFlagType> flags = mobRegistry.computeIfAbsent(livingEntity, k -> ConcurrentHashMap.newKeySet());
+            final Set<MobMetaFlagType> flags = mobRegistry.computeIfAbsent(livingEntity,
+                    k -> ConcurrentHashMap.newKeySet());
             flags.add(flag);
         }
     }
@@ -151,10 +165,11 @@ public final class MobMetadataUtils {
     /**
      * Removes a specific mob flag from a {@link LivingEntity}.
      *
-     * @param flag         the flag to remove
+     * @param flag the flag to remove
      * @param livingEntity the target living entity
      */
-    public static void removeMobFlag(@NotNull MobMetaFlagType flag, @NotNull LivingEntity livingEntity) {
+    public static void removeMobFlag(@NotNull MobMetaFlagType flag,
+            @NotNull LivingEntity livingEntity) {
         if (PersistentDataConfig.getInstance().isMobPersistent(flag)) {
             if (hasMobFlag(flag, livingEntity)) {
                 PersistentDataContainer persistentDataContainer = livingEntity.getPersistentDataContainer();

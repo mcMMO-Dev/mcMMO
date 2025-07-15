@@ -11,7 +11,9 @@ public class McMMOScoreboardObjectiveEvent extends McMMOScoreboardEvent implemen
     protected Objective targetObjective;
     protected final ScoreboardObjectiveEventReason objectiveEventReason;
 
-    public McMMOScoreboardObjectiveEvent(Objective targetObjective, ScoreboardObjectiveEventReason objectiveEventReason, Scoreboard scoreboard, Scoreboard oldboard, Player targetPlayer, ScoreboardEventReason scoreboardEventReason) {
+    public McMMOScoreboardObjectiveEvent(Objective targetObjective,
+            ScoreboardObjectiveEventReason objectiveEventReason, Scoreboard scoreboard,
+            Scoreboard oldboard, Player targetPlayer, ScoreboardEventReason scoreboardEventReason) {
         super(scoreboard, oldboard, targetPlayer, scoreboardEventReason);
         this.objectiveEventReason = objectiveEventReason;
         this.targetObjective = targetObjective;
@@ -20,6 +22,7 @@ public class McMMOScoreboardObjectiveEvent extends McMMOScoreboardEvent implemen
 
     /**
      * The objective that will be modified by this event
+     *
      * @return
      */
     public Objective getTargetObjective() {
@@ -28,6 +31,7 @@ public class McMMOScoreboardObjectiveEvent extends McMMOScoreboardEvent implemen
 
     /**
      * Change the target objective for this event
+     *
      * @param newObjective new target objective
      */
     public void setTargetObjective(Objective newObjective) {

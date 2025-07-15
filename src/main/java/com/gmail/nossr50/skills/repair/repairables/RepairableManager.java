@@ -1,9 +1,8 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public interface RepairableManager {
     /**
@@ -24,7 +23,6 @@ public interface RepairableManager {
      * Checks if an item is repairable
      *
      * @param type Material to check if repairable
-     *
      * @return true if repairable, false if not
      */
     boolean isRepairable(Material type);
@@ -33,7 +31,6 @@ public interface RepairableManager {
      * Checks if an item is repairable
      *
      * @param itemStack Item to check if repairable
-     *
      * @return true if repairable, false if not
      */
     boolean isRepairable(ItemStack itemStack);
@@ -42,7 +39,6 @@ public interface RepairableManager {
      * Gets the repairable with this type
      *
      * @param type Material of the repairable to look for
-     *
      * @return the repairable, can be null
      */
     Repairable getRepairable(Material type);

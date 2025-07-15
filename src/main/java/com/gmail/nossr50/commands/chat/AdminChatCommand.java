@@ -22,24 +22,29 @@ public class AdminChatCommand extends BaseCommand {
         this.pluginRef = pluginRef;
     }
 
-    @Default @Conditions(CommandManager.ADMIN_CONDITION)
+    @Default
+    @Conditions(CommandManager.ADMIN_CONDITION)
     public void processCommand(String[] args) {
-        BukkitCommandIssuer bukkitCommandIssuer = (BukkitCommandIssuer) getCurrentCommandIssuer();
+        final BukkitCommandIssuer bukkitCommandIssuer = (BukkitCommandIssuer) getCurrentCommandIssuer();
         if (args == null || args.length == 0) {
             //Process with no arguments
             if (bukkitCommandIssuer.isPlayer()) {
-                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(
+                        bukkitCommandIssuer.getPlayer());
                 pluginRef.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.ADMIN);
             } else {
                 //Not support for console
-                mcMMO.p.getLogger().info("You cannot switch chat channels as console, please provide full arguments.");
+                mcMMO.p.getLogger()
+                        .info("You cannot switch chat channels as console, please provide full arguments.");
             }
         } else {
             if (bukkitCommandIssuer.isPlayer()) {
-                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(
+                        bukkitCommandIssuer.getPlayer());
 
-                if (mmoPlayer == null)
+                if (mmoPlayer == null) {
                     return;
+                }
 
                 //Message contains the original command so it needs to be passed to this method to trim it
                 pluginRef.getChatManager().processPlayerMessage(mmoPlayer, args, ChatChannel.ADMIN);

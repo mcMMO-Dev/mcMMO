@@ -5,16 +5,20 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.NPC;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class Misc {
     private static final @NotNull Random random = new Random();
@@ -36,25 +40,30 @@ public final class Misc {
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
     public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always*/
 
-    public static final @NotNull Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO",
-            "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST",
-            "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS",
+    public static final @NotNull Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT",
+            "ENDERIO",
+            "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT",
+            "TWILIGHTFOREST",
+            "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS",
+            "SWAMPMOBS",
             "MARICULTURE", "MINESTRAPPOLATION");
 
-    private Misc() {}
+    private Misc() {
+    }
 
     /**
-     * Determines if an entity is an NPC but not a villager
-     * This method aims to establish compatibility between mcMMO and other plugins which create "NPCs"
+     * Determines if an entity is an NPC but not a villager This method aims to establish
+     * compatibility between mcMMO and other plugins which create "NPCs"
+     * <p>
+     * It does this by checking the following 1) The entity is not a Villager 2) The entity can be
+     * considered an NPC
+     * <p>
+     * In this context, an NPC is a bit hard to define. Various plugins determine what an NPC is in
+     * different ways.
      *
-     * It does this by checking the following
-     * 1) The entity is not a Villager
-     * 2) The entity can be considered an NPC
-     *
-     * In this context, an NPC is a bit hard to define. Various plugins determine what an NPC is in different ways.
-     * @see Misc::isNPCIncludingVillagers
      * @param entity target entity
      * @return true if the entity is not a Villager and is not a "NPC"
+     * @see Misc::isNPCIncludingVillagers
      */
     public static boolean isNPCEntityExcludingVillagers(@NotNull Entity entity) {
         return (!isVillager(entity)
@@ -88,15 +97,18 @@ public final class Misc {
      * @param first The first location
      * @param second The second location
      * @param maxDistance The max distance apart
-     * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
+     * @return true if the distance between {@code first} and {@code second} is less than
+     * {@code maxDistance}, false otherwise
      */
-    public static boolean isNear(@NotNull Location first, @NotNull Location second, double maxDistance) {
-        return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
+    public static boolean isNear(@NotNull Location first, @NotNull Location second,
+            double maxDistance) {
+        return (first.getWorld() == second.getWorld()) && (
+                first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
     }
 
     /**
      * Get the center of the given block.
-     * 
+     *
      * @param blockState The {@link BlockState} of the block
      * @return A {@link Location} lying at the center of the block
      */
@@ -117,15 +129,18 @@ public final class Misc {
 
         if (player != null) {
             UserManager.remove(player);
-            mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileLoadingTask(player), 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+            mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileLoadingTask(player),
+                    1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }
 
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
         if ((convertedUsers % progressInterval) == 0) {
-            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second",
-                    convertedUsers,
-                    convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
+            mcMMO.p.getLogger()
+                    .info(String.format("Conversion progress: %d users at %.2f users/second",
+                            convertedUsers,
+                            convertedUsers / (double) ((System.currentTimeMillis() - startMillis)
+                                    / TIME_CONVERSION_FACTOR)));
         }
     }
 
@@ -173,7 +188,8 @@ public final class Misc {
      * @return true if the player is the party leader
      */
     public static boolean isPartyLeader(@NotNull McMMOPlayer mmoPlayer) {
-        return mmoPlayer.getParty().getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
+        return mmoPlayer.getParty().getLeader().getUniqueId()
+                .equals(mmoPlayer.getPlayer().getUniqueId());
     }
 
 //    public static void spawnExperienceOrb(@NotNull Location location, int orbAmount, int experienceValue) {
@@ -183,16 +199,18 @@ public final class Misc {
 //    }
 
     public static void spawnExperienceOrb(@NotNull Location location, int experienceValue) {
-        if (location.getWorld() == null)
+        if (location.getWorld() == null) {
             return;
+        }
 
-        ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+        ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld()
+                .spawnEntity(location, EntityType.EXPERIENCE_ORB);
         experienceOrb.setExperience(experienceValue);
     }
 
     private static class SpawnOrbTask implements Runnable {
         private final Location location;
-        private int orbExpValue;
+        private final int orbExpValue;
 
         private SpawnOrbTask(Location location, int orbExpValue) {
             this.location = location;
@@ -201,10 +219,12 @@ public final class Misc {
 
         @Override
         public void run() {
-            if (location == null || location.getWorld() == null)
+            if (location == null || location.getWorld() == null) {
                 return;
+            }
 
-            ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+            ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld()
+                    .spawnEntity(location, EntityType.EXPERIENCE_ORB);
             experienceOrb.setExperience(orbExpValue);
         }
     }

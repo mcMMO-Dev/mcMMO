@@ -11,6 +11,8 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -19,12 +21,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class McTopCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         PrimarySkillType skill = null;
 
         switch (args.length) {
@@ -46,7 +46,8 @@ public class McTopCommand implements TabExecutor {
 
                 // Check if the command is for Maces but the MC version is not correct
                 if (skill == PrimarySkillType.MACES
-                        && !mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                        && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
+                        .isAtLeast(1, 21, 0)) {
                     return true;
                 }
 
@@ -66,7 +67,8 @@ public class McTopCommand implements TabExecutor {
 
                 // Check if the command is for Maces but the MC version is not correct
                 if (skill == PrimarySkillType.MACES
-                        && !mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+                        && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
+                        .isAtLeast(1, 21, 0)) {
                     return true;
                 }
 
@@ -79,9 +81,12 @@ public class McTopCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, String[] args) {
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
+            return StringUtil.copyPartialMatches(args[0],
+                    mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES,
+                    new ArrayList<>(mcMMO.p.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
         }
         return ImmutableList.of();
     }
@@ -97,16 +102,20 @@ public class McTopCommand implements TabExecutor {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-            long cooldownMillis = Math.max(mcMMO.p.getGeneralConfig().getDatabasePlayerCooldown(), 1750);
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(sender.getName());
+            long cooldownMillis = Math.max(mcMMO.p.getGeneralConfig().getDatabasePlayerCooldown(),
+                    1750);
 
-            if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000.0D;
+            if (mmoPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
+                double seconds =
+                        ((mmoPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis())
+                                / 1000.0D;
                 if (seconds < 1) {
                     seconds = 1;
                 }
 
-                sender.sendMessage(LocaleLoader.formatString(LocaleLoader.getString("Commands.Database.Cooldown"), seconds));
+                sender.sendMessage(LocaleLoader.formatString(
+                        LocaleLoader.getString("Commands.Database.Cooldown"), seconds));
                 return;
             }
 
@@ -114,20 +123,23 @@ public class McTopCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(MetadataConstants.METADATA_KEY_DATABASE_COMMAND, new FixedMetadataValue(mcMMO.p, null));
+                ((Player) sender).setMetadata(MetadataConstants.METADATA_KEY_DATABASE_COMMAND,
+                        new FixedMetadataValue(mcMMO.p, null));
             }
 
-            mcMMOPlayer.actualizeDatabaseATS();
+            mmoPlayer.actualizeDatabaseATS();
         }
 
         display(page, skill, sender);
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getTopUseBoard());
+        boolean useBoard =
+                (sender instanceof Player) && (mcMMO.p.getGeneralConfig().getTopUseBoard());
         boolean useChat = !useBoard || mcMMO.p.getGeneralConfig().getTopUseChat();
 
-        mcMMO.p.getFoliaLib().getScheduler().runAsync(new McTopCommandAsyncTask(page, skill, sender, useBoard, useChat));
+        mcMMO.p.getFoliaLib().getScheduler()
+                .runAsync(new McTopCommandAsyncTask(page, skill, sender, useBoard, useChat));
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {

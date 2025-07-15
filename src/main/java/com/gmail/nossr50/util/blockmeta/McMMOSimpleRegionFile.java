@@ -19,26 +19,30 @@
  */
 package com.gmail.nossr50.util.blockmeta;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.BitSet;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * File format:
- * bytes 0-4096 contain 1024 integer values representing the segment index of each chunk
- * bytes 4096-8192 contain 1024 integer values representing the byte length of each chunk
- * bytes 8192-8196 is the integer value of the segment exponent
- * bytes 8196-12288 are reserved for future use
- * bytes 12288+ contain the data segments, by default 1024 byte segments.
- * Chunk data is compressed and stored in 1 or more segments as needed.
+ * File format: bytes 0-4096 contain 1024 integer values representing the segment index of each
+ * chunk bytes 4096-8192 contain 1024 integer values representing the byte length of each chunk
+ * bytes 8192-8196 is the integer value of the segment exponent bytes 8196-12288 are reserved for
+ * future use bytes 12288+ contain the data segments, by default 1024 byte segments. Chunk data is
+ * compressed and stored in 1 or more segments as needed.
  */
 public class McMMOSimpleRegionFile {
     private static final int DEFAULT_SEGMENT_EXPONENT = 10; // TODO, analyze real world usage and determine if a smaller segment(512) is worth it or not. (need to know average chunkstore bytesize)
-    private static final int DEFAULT_SEGMENT_SIZE = (int)Math.pow(2, DEFAULT_SEGMENT_EXPONENT); // 1024
+    private static final int DEFAULT_SEGMENT_SIZE = (int) Math.pow(2,
+            DEFAULT_SEGMENT_EXPONENT); // 1024
     private static final int RESERVED_HEADER_BYTES = 12288; // This needs to be divisible by segment size
     private static final int NUM_CHUNKS = 1024; // 32x32
     private static final int SEEK_CHUNK_SEGMENT_INDICES = 0;
@@ -90,8 +94,9 @@ public class McMMOSimpleRegionFile {
 
             // Read chunk header data
             file.seek(SEEK_CHUNK_SEGMENT_INDICES);
-            for (int i = 0; i < NUM_CHUNKS; i++)
+            for (int i = 0; i < NUM_CHUNKS; i++) {
                 chunkSegmentIndex[i] = file.readInt();
+            }
 
             file.seek(SEEK_CHUNK_BYTE_LENGTHS);
             for (int i = 0; i < NUM_CHUNKS; i++) {
@@ -101,15 +106,15 @@ public class McMMOSimpleRegionFile {
             }
 
             fixFileLength();
-        }
-        catch (IOException fnfe) {
+        } catch (IOException fnfe) {
             throw new RuntimeException(fnfe);
         }
     }
 
     public synchronized @NotNull DataOutputStream getOutputStream(int x, int z) {
         int index = getChunkIndex(x, z); // Get chunk index
-        return new DataOutputStream(new DeflaterOutputStream(new McMMOSimpleChunkBuffer(this, index)));
+        return new DataOutputStream(
+                new DeflaterOutputStream(new McMMOSimpleChunkBuffer(this, index)));
     }
 
     private static class McMMOSimpleChunkBuffer extends ByteArrayOutputStream {
@@ -131,7 +136,8 @@ public class McMMOSimpleRegionFile {
     private synchronized void write(int index, byte[] buffer, int size) throws IOException {
         int oldSegmentIndex = chunkSegmentIndex[index]; // Get current segment index
         markChunkSegments(index, false); // Clear our old segments
-        int newSegmentIndex = findContiguousSegments(oldSegmentIndex, size); // Find contiguous segments to save to
+        int newSegmentIndex = findContiguousSegments(oldSegmentIndex,
+                size); // Find contiguous segments to save to
         file.seek((long) newSegmentIndex << segmentExponent); // Seek to file location
         file.write(buffer, 0, size); // Write data
         // update in memory info
@@ -152,8 +158,9 @@ public class McMMOSimpleRegionFile {
         int byteLength = chunkNumBytes[index]; // Get byte length of data
 
         // No bytes
-        if (byteLength == 0)
+        if (byteLength == 0) {
             return null;
+        }
 
         byte[] data = new byte[byteLength];
 
@@ -166,16 +173,16 @@ public class McMMOSimpleRegionFile {
         try {
             file.close();
             segments.clear();
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new RuntimeException("Unable to close file", ioe);
         }
     }
 
     private synchronized void markChunkSegments(int index, boolean inUse) {
         // No bytes used
-        if (chunkNumBytes[index] == 0)
+        if (chunkNumBytes[index] == 0) {
             return;
+        }
 
         int start = chunkSegmentIndex[index];
         int end = start + chunkNumSegments[index];
@@ -183,16 +190,18 @@ public class McMMOSimpleRegionFile {
         // If we are writing, assert we don't write over any in-use segments
         if (inUse) {
             int nextSetBit = segments.nextSetBit(start);
-            if (nextSetBit != -1 && nextSetBit < end)
+            if (nextSetBit != -1 && nextSetBit < end) {
                 throw new IllegalStateException("Attempting to overwrite an in-use segment");
+            }
         }
 
         segments.set(start, end, inUse);
     }
 
     private synchronized void fixFileLength() throws IOException {
-        int fileLength = (int)file.length();
-        int extend = -fileLength & segmentMask; // how many bytes do we need to be divisible by segment size
+        int fileLength = (int) file.length();
+        int extend = -fileLength
+                & segmentMask; // how many bytes do we need to be divisible by segment size
 
         // Go to end of file
         file.seek(fileLength);
@@ -201,8 +210,9 @@ public class McMMOSimpleRegionFile {
     }
 
     private synchronized int findContiguousSegments(int hint, int size) {
-        if (size == 0)
+        if (size == 0) {
             return 0; // Zero byte data will not claim any chunks anyways
+        }
 
         int segments = bytesToSegments(size); // Number of segments we need
 
@@ -216,8 +226,9 @@ public class McMMOSimpleRegionFile {
         }
 
         // We fit!
-        if (oldFree)
+        if (oldFree) {
             return hint;
+        }
 
         // Find somewhere to put us
         int start = 0;
@@ -228,12 +239,14 @@ public class McMMOSimpleRegionFile {
             current++; // Move up a segment
 
             // Move up start if the segment was in use
-            if (segmentInUse)
+            if (segmentInUse) {
                 start = current;
+            }
 
             // If we have enough segments now, return
-            if (current - start >= segments)
+            if (current - start >= segments) {
                 return start;
+            }
         }
 
         // Return the end of the segments (will expand to fit them)
@@ -241,15 +254,17 @@ public class McMMOSimpleRegionFile {
     }
 
     private synchronized int bytesToSegments(int bytes) {
-        if (bytes <= 0)
+        if (bytes <= 0) {
             return 1;
+        }
 
         return ((bytes - 1) >> segmentExponent) + 1; // ((bytes - 1) / segmentSize) + 1
     }
 
     private synchronized int getChunkIndex(int x, int z) {
-        if (rx != (x >> 5) || rz != (z >> 5))
+        if (rx != (x >> 5) || rz != (z >> 5)) {
             throw new IndexOutOfBoundsException();
+        }
 
         x = x & 0x1F; // 5 bits (mod 32)
         z = z & 0x1F; // 5 bits (mod 32)

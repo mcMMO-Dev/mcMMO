@@ -9,6 +9,8 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,11 +21,9 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class ChimaeraWing {
-    private ChimaeraWing() {}
+    private ChimaeraWing() {
+    }
 
     /**
      * Check for item usage.
@@ -42,47 +42,56 @@ public final class ChimaeraWing {
         }
 
         if (!Permissions.chimaeraWing(player)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION,
+                    "mcMMO.NoPermission");
             return;
         }
 
-        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         //Not loaded
-        if (mcMMOPlayer == null)
+        if (mmoPlayer == null) {
             return;
+        }
 
-        if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
+        if (mmoPlayer.getTeleportCommenceLocation() != null) {
             return;
         }
 
         int amountInHand = inHand.getAmount();
 
         if (amountInHand < mcMMO.p.getGeneralConfig().getChimaeraUseCost()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(mcMMO.p.getGeneralConfig().getChimaeraUseCost() - amountInHand), "Item.ChimaeraWing.Name");
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET,
+                    "Item.ChimaeraWing.NotEnough",
+                    String.valueOf(mcMMO.p.getGeneralConfig().getChimaeraUseCost() - amountInHand),
+                    "Item.ChimaeraWing.Name");
             return;
         }
 
-        long lastTeleport = mcMMOPlayer.getChimeraWingLastUse();
+        long lastTeleport = mmoPlayer.getChimeraWingLastUse();
         int cooldown = mcMMO.p.getGeneralConfig().getChimaeraCooldown();
 
         if (cooldown > 0) {
-            int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
+            int timeRemaining = SkillUtils.calculateTimeLeft(
+                    lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
 
             if (timeRemaining > 0) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Item.Generic.Wait", String.valueOf(timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN,
+                        "Item.Generic.Wait", String.valueOf(timeRemaining));
                 return;
             }
         }
 
-        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        long recentlyHurt = mmoPlayer.getRecentlyHurt();
         int hurtCooldown = mcMMO.p.getGeneralConfig().getChimaeraRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
-            int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+            int timeRemaining = SkillUtils.calculateTimeLeft(
+                    recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
 
             if (timeRemaining > 0) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.Injured.Wait", String.valueOf(timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE,
+                        "Item.Injured.Wait", String.valueOf(timeRemaining));
                 return;
             }
         }
@@ -97,18 +106,22 @@ public final class ChimaeraWing {
                 player.setVelocity(new Vector(0, 0.5D, 0));
                 final int dmg = Misc.getRandom().nextInt((int) (player.getHealth() - 10));
                 CombatUtils.safeDealDamage(player, dmg);
-                mcMMOPlayer.actualizeChimeraWingLastUse();
+                mmoPlayer.actualizeChimeraWingLastUse();
                 return;
             }
         }
 
-        mcMMOPlayer.actualizeTeleportCommenceLocation(player);
+        mmoPlayer.actualizeTeleportCommenceLocation(player);
         long teleportDelay = mcMMO.p.getGeneralConfig().getChimaeraWarmup();
         if (teleportDelay > 0) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(teleportDelay));
-            mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(player, new ChimaeraWingWarmup(mcMMOPlayer, playerLocation), 20 * teleportDelay);
+            NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE,
+                    "Teleport.Commencing", String.valueOf(teleportDelay));
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runAtEntityLater(player, new ChimaeraWingWarmup(mmoPlayer, playerLocation),
+                            20 * teleportDelay);
         } else {
-            mcMMO.p.getFoliaLib().getScheduler().runAtEntityLater(player, new ChimaeraWingWarmup(mcMMOPlayer, playerLocation), 0);
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runAtEntityLater(player, new ChimaeraWingWarmup(mmoPlayer, playerLocation), 0);
         }
     }
 
@@ -142,7 +155,8 @@ public final class ChimaeraWing {
         Material ingredient = mcMMO.p.getGeneralConfig().getChimaeraItem();
         int amount = mcMMO.p.getGeneralConfig().getChimaeraRecipeCost();
 
-        ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"), getChimaeraWing(1));
+        ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"),
+                getChimaeraWing(1));
         chimeraWing.addIngredient(amount, ingredient);
         return chimeraWing;
     }

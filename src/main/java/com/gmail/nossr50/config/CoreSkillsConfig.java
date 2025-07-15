@@ -13,8 +13,9 @@ public class CoreSkillsConfig extends BukkitConfig {
     }
 
     public static CoreSkillsConfig getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new CoreSkillsConfig();
+        }
 
         return instance;
     }
@@ -35,25 +36,26 @@ public class CoreSkillsConfig extends BukkitConfig {
      */
 
     /**
-     * Whether a skill is enabled
-     * Defaults true
+     * Whether a skill is enabled Defaults true
      *
      * @param abstractSubSkill SubSkill definition to check
-     *
      * @return true if subskill is enabled
      */
     public boolean isSkillEnabled(AbstractSubSkill abstractSubSkill) {
-        return config.getBoolean(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()) + "." + abstractSubSkill.getConfigKeyName() + ".Enabled", true);
+        return config.getBoolean(
+                StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill()
+                        .toString()) + "." + abstractSubSkill.getConfigKeyName() + ".Enabled",
+                true);
     }
 
     /**
      * Whether this primary skill is enabled
      *
      * @param primarySkillType target primary skill
-     *
      * @return true if enabled
      */
     public boolean isPrimarySkillEnabled(PrimarySkillType primarySkillType) {
-        return config.getBoolean(StringUtils.getCapitalized(primarySkillType.toString()) + ".Enabled", true);
+        return config.getBoolean(
+                StringUtils.getCapitalized(primarySkillType.toString()) + ".Enabled", true);
     }
 }

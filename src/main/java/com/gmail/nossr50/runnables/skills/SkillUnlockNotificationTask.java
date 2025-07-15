@@ -7,34 +7,37 @@ import com.gmail.nossr50.util.player.NotificationManager;
 
 
 public class SkillUnlockNotificationTask extends CancellableRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final SubSkillType subSkillType;
     private final int rank;
+
     /**
      * Notify a player about a newly unlocked subskill
-     * @param mcMMOPlayer target player
+     *
+     * @param mmoPlayer target player
      * @param subSkillType the subskill that they just unlocked
      * @param rank the rank of the subskill
      */
-    public SkillUnlockNotificationTask(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType, int rank) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public SkillUnlockNotificationTask(McMMOPlayer mmoPlayer, SubSkillType subSkillType, int rank) {
+        this.mmoPlayer = mmoPlayer;
         this.subSkillType = subSkillType;
         this.rank = rank;
     }
+
     /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
+     * When an object implementing interface <code>Runnable</code> is used to create a thread,
+     * starting the thread causes the object's
      * <code>run</code> method to be called in that separately executing
      * thread.
      * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
+     * The general contract of the method <code>run</code> is that it may take any action
+     * whatsoever.
      *
      * @see Thread#run()
      */
     @Override
     public void run() {
-        //mcMMOPlayer.getPlayer().sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
-        NotificationManager.sendPlayerUnlockNotification(mcMMOPlayer, subSkillType);
+        //mmoPlayer.getPlayer().sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
+        NotificationManager.sendPlayerUnlockNotification(mmoPlayer, subSkillType);
     }
 }

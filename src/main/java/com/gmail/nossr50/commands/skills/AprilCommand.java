@@ -31,7 +31,7 @@
 //        skillName = StringUtils.getCapitalized(label);
 //
 //        if (args.length == 0) {
-//            Player player = (Player) sender;
+//            final Player player = (Player) sender;
 //            FakeSkillType fakeSkillType = FakeSkillType.getByName(skillName);
 //
 //            float skillValue = Misc.getRandom().nextInt(99);

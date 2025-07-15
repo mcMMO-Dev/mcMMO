@@ -21,30 +21,35 @@ public class BlastMining {
     }
 
     public static int getDemolitionExpertUnlockLevel() {
-        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++) {
-            if (getBlastDamageDecrease(i+1) > 0)
-                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
+        for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
+            if (getBlastDamageDecrease(i + 1) > 0) {
+                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
+            }
         }
 
         return 0;
     }
 
     public static int getBiggerBombsUnlockLevel() {
-        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++) {
-            if (getBlastRadiusModifier(i+1) > 0)
-                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
+        for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
+            if (getBlastRadiusModifier(i + 1) > 0) {
+                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
+            }
         }
 
         return 0;
     }
 
-    public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
-        if (!tnt.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT) || !UserManager.hasPlayerDataKey(defender)) {
+    public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event,
+            TNTPrimed tnt, Player defender) {
+        if (!tnt.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT)
+                || !UserManager.hasPlayerDataKey(defender)) {
             return false;
         }
 
         // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        Player player = mcMMO.p.getServer().getPlayerExact(
+                tnt.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
 
         if (!(player != null && player.equals(defender))) {
             return false;
@@ -54,7 +59,7 @@ public class BlastMining {
             return false;
         }
 
-        final MiningManager miningManager =  UserManager.getPlayer(defender).getMiningManager();
+        final MiningManager miningManager = UserManager.getPlayer(defender).getMiningManager();
 
         if (!miningManager.canUseDemolitionsExpertise()) {
             return false;

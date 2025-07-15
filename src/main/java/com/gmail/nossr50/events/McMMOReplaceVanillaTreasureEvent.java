@@ -13,17 +13,21 @@ public class McMMOReplaceVanillaTreasureEvent extends Event {
     private final @NotNull Item originalItem;
     private final @Nullable Player causingPlayer;
 
-    public McMMOReplaceVanillaTreasureEvent(@NotNull Item originalItem, @NotNull ItemStack replacementItemStack) {
+    public McMMOReplaceVanillaTreasureEvent(@NotNull Item originalItem,
+            @NotNull ItemStack replacementItemStack) {
         this(originalItem, replacementItemStack, null);
     }
 
-    public McMMOReplaceVanillaTreasureEvent(@NotNull Item originalItem, @NotNull ItemStack replacementItemStack, @Nullable Player causingPlayer) {
+    public McMMOReplaceVanillaTreasureEvent(@NotNull Item originalItem,
+            @NotNull ItemStack replacementItemStack, @Nullable Player causingPlayer) {
         this.originalItem = originalItem;
         this.replacementItemStack = replacementItemStack;
         this.causingPlayer = causingPlayer;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
     private static final @NotNull HandlerList handlers = new HandlerList();
 
     @Override

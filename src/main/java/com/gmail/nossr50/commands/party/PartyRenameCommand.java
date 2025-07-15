@@ -14,15 +14,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyRenameCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 2) {
             if (UserManager.getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
-            Party playerParty = mcMMOPlayer.getParty();
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
+            Party playerParty = mmoPlayer.getParty();
 
             String oldPartyName = playerParty.getName();
             String newPartyName = args[1].replace(".", "");
@@ -33,7 +34,7 @@ public class PartyRenameCommand implements CommandExecutor {
                 return true;
             }
 
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mmoPlayer.getPlayer();
 
             // Check to see if the party exists, and if it does cancel renaming the party
             if (mcMMO.p.getPartyManager().checkPartyExistence(player, newPartyName)) {
@@ -43,12 +44,16 @@ public class PartyRenameCommand implements CommandExecutor {
             String leaderName = playerParty.getLeader().getPlayerName();
 
             for (Player member : playerParty.getOnlineMembers()) {
-                if (!mcMMO.p.getPartyManager().handlePartyChangeEvent(member, oldPartyName, newPartyName, EventReason.CHANGED_PARTIES)) {
+                if (!mcMMO.p.getPartyManager()
+                        .handlePartyChangeEvent(member, oldPartyName, newPartyName,
+                                EventReason.CHANGED_PARTIES)) {
                     return true;
                 }
 
                 if (!member.getName().equalsIgnoreCase(leaderName)) {
-                    member.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", leaderName, newPartyName));
+                    member.sendMessage(
+                            LocaleLoader.getString("Party.InformedOnNameChange", leaderName,
+                                    newPartyName));
                 }
             }
 
@@ -57,7 +62,8 @@ public class PartyRenameCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Rename", newPartyName));
             return true;
         }
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "rename", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "rename",
+                "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"));
         return true;
     }
 }

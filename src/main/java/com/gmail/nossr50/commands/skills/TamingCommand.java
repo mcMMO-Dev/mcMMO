@@ -7,12 +7,11 @@ import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.text.TextComponentFactory;
+import java.util.ArrayList;
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TamingCommand extends SkillCommand {
     private String goreChance;
@@ -35,7 +34,8 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue) {
         if (canGore) {
-            String[] goreStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.TAMING_GORE);
+            String[] goreStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                    SubSkillType.TAMING_GORE);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }
@@ -44,8 +44,12 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBeastLore = Permissions.canUseSubSkill(player, SubSkillType.TAMING_BEAST_LORE);
-        canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = Permissions.canUseSubSkill(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
+        canCallWild =
+                Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(
+                        player, EntityType.WOLF) || Permissions.callOfTheWild(player,
+                        EntityType.OCELOT);
+        canEnvironmentallyAware = Permissions.canUseSubSkill(player,
+                SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
         canFastFood = Permissions.canUseSubSkill(player, SubSkillType.TAMING_FAST_FOOD_SERVICE);
         canGore = Permissions.canUseSubSkill(player, SubSkillType.TAMING_GORE);
         canSharpenedClaws = Permissions.canUseSubSkill(player, SubSkillType.TAMING_SHARPENED_CLAWS);
@@ -55,37 +59,53 @@ public class TamingCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canEnvironmentallyAware) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1")));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Ability.Bonus.0"),
+                    LocaleLoader.getString("Taming.Ability.Bonus.1")));
         }
-        
+
         if (canFastFood) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance / 100D))));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Ability.Bonus.8"),
+                    LocaleLoader.getString("Taming.Ability.Bonus.9",
+                            percent.format(Taming.fastFoodServiceActivationChance / 100D))));
         }
-        
+
         if (canGore) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template",
                     LocaleLoader.getString("Taming.Combat.Chance.Gore"),
-                    goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
+                    goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus",
+                    goreChanceLucky) : ""));
         }
-        
+
         if (canHolyHound) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.10"), LocaleLoader.getString("Taming.Ability.Bonus.11")));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Ability.Bonus.10"),
+                    LocaleLoader.getString("Taming.Ability.Bonus.11")));
         }
 
         if (canSharpenedClaws) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.6"), LocaleLoader.getString("Taming.Ability.Bonus.7", Taming.sharpenedClawsBonusDamage)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Ability.Bonus.6"),
+                    LocaleLoader.getString("Taming.Ability.Bonus.7",
+                            Taming.sharpenedClawsBonusDamage)));
         }
-        
+
         if (canShockProof) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5", Taming.shockProofModifier)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Ability.Bonus.4"),
+                    LocaleLoader.getString("Taming.Ability.Bonus.5", Taming.shockProofModifier)));
         }
-        
+
         if (canThickFur) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Ability.Bonus.2"),
+                    LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
         }
 
         return messages;

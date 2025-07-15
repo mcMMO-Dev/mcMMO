@@ -12,13 +12,15 @@ public class McMMOPlayerProfileLoadEvent extends Event implements Cancellable {
     private boolean cancelled;
     private final PlayerProfile profile;
     private final Player player;
-    public McMMOPlayerProfileLoadEvent(Player player, PlayerProfile profile){
+
+    public McMMOPlayerProfileLoadEvent(Player player, PlayerProfile profile) {
         super(!Bukkit.isPrimaryThread());
 
         this.cancelled = false;
         this.profile = profile;
         this.player = player;
     }
+
     @Override
     public boolean isCancelled() {
         return this.cancelled;
@@ -29,7 +31,10 @@ public class McMMOPlayerProfileLoadEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    public PlayerProfile getProfile(){return this.profile;}
+    public PlayerProfile getProfile() {
+        return this.profile;
+    }
+
     private static final HandlerList handlers = new HandlerList();
 
     @Override
@@ -41,5 +46,7 @@ public class McMMOPlayerProfileLoadEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public Player getPlayer() {return player;}
+    public Player getPlayer() {
+        return player;
+    }
 }

@@ -19,13 +19,17 @@ public class PartyChatMessage extends AbstractChatMessage {
 
     private final @NotNull Party party;
 
-    public PartyChatMessage(@NotNull Plugin pluginRef, @NotNull Author author, @NotNull Audience audience, @NotNull String rawMessage, @NotNull TextComponent componentMessage, @NotNull Party party) {
+    public PartyChatMessage(@NotNull Plugin pluginRef, @NotNull Author author,
+            @NotNull Audience audience,
+            @NotNull String rawMessage, @NotNull TextComponent componentMessage,
+            @NotNull Party party) {
         super(pluginRef, author, audience, rawMessage, componentMessage);
         this.party = party;
     }
 
     /**
      * The party that this chat message was intended for
+     *
      * @return the party that this message was intended for
      */
     public @NotNull Party getParty() {
@@ -46,29 +50,33 @@ public class PartyChatMessage extends AbstractChatMessage {
 
         //Sends to everyone but console
         audience.sendMessage(author, componentMessage);
-        TextComponent spyMessage = LocaleLoader.getTextComponent("Chat.Spy.Party", author.getAuthoredName(ChatChannel.PARTY), rawMessage, party.getName());
+        final TextComponent spyMessage = LocaleLoader.getTextComponent(
+                "Chat.Spy.Party",
+                author.getAuthoredName(ChatChannel.PARTY), rawMessage, party.getName());
 
         //Relay to spies
         messagePartyChatSpies(spyMessage);
 
         //Console message
-        if (ChatConfig.getInstance().isConsoleIncludedInAudience(ChatChannel.PARTY))
+        if (ChatConfig.getInstance().isConsoleIncludedInAudience(ChatChannel.PARTY)) {
             mcMMO.p.getChatManager().sendConsoleMessage(author, spyMessage);
+        }
     }
 
     /**
-     * Console and Party Chat Spies get a more verbose version of the message
-     * Party Chat Spies will get a copy of the message as well
+     * Console and Party Chat Spies get a more verbose version of the message Party Chat Spies will
+     * get a copy of the message as well
+     *
      * @param spyMessage the message to copy to spies
      */
     private void messagePartyChatSpies(@NotNull TextComponent spyMessage) {
         //Find the people with permissions
-        for(McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-            Player player = mcMMOPlayer.getPlayer();
+        for (McMMOPlayer mmoPlayer : UserManager.getPlayers()) {
+            final Player player = mmoPlayer.getPlayer();
 
             //Check for toggled players
-            if (mcMMOPlayer.isPartyChatSpying()) {
-                Party adminParty = mcMMOPlayer.getParty();
+            if (mmoPlayer.isPartyChatSpying()) {
+                Party adminParty = mmoPlayer.getParty();
 
                 //Only message admins not part of this party
                 if (adminParty == null || adminParty != getParty()) {
@@ -82,10 +90,16 @@ public class PartyChatMessage extends AbstractChatMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        PartyChatMessage that = (PartyChatMessage) o;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        final PartyChatMessage that = (PartyChatMessage) o;
         return Objects.equal(party, that.party);
     }
 

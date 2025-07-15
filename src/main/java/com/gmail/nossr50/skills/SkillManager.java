@@ -27,6 +27,7 @@ public abstract class SkillManager {
 
     /**
      * Applies XP to a player, provides SELF as an XpGainSource source
+     *
      * @param xp amount of XP to apply
      * @param xpGainReason the reason for the XP gain
      * @deprecated use applyXpGain(float, XPGainReason, XPGainSource)
@@ -38,6 +39,7 @@ public abstract class SkillManager {
 
     /**
      * Applies XP to a player
+     *
      * @param xp amount of XP to apply
      * @param xpGainReason the reason for the XP gain
      * @param xpGainSource the source of the XP
@@ -47,6 +49,7 @@ public abstract class SkillManager {
     }
 
     public XPGainReason getXPGainReason(LivingEntity target, Entity damager) {
-        return (damager instanceof Player && target instanceof Player) ? XPGainReason.PVP : XPGainReason.PVE;
+        return (damager instanceof Player && target instanceof Player) ? XPGainReason.PVP
+                : XPGainReason.PVE;
     }
 }

@@ -1,13 +1,12 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.mcMMO;
+import java.util.Arrays;
 import org.bukkit.Chunk;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
-
-import java.util.Arrays;
 
 public class ChunkListener implements Listener {
 
@@ -16,7 +15,8 @@ public class ChunkListener implements Listener {
         final Chunk unloadingChunk = event.getChunk();
 
         // Avoid processing if chunk is null or unloaded
-        if (unloadingChunk == null || !unloadingChunk.isLoaded() || unloadingChunk.getEntities() == null) {
+        if (unloadingChunk == null || !unloadingChunk.isLoaded()
+                || unloadingChunk.getEntities() == null) {
             return;
         }
 
@@ -24,9 +24,11 @@ public class ChunkListener implements Listener {
             Arrays.stream(unloadingChunk.getEntities())
                     .filter(entity -> entity instanceof LivingEntity)
                     .map(entity -> (LivingEntity) entity)
-                    .forEach(livingEntity -> mcMMO.getTransientEntityTracker().removeTrackedEntity(livingEntity));
+                    .forEach(livingEntity -> mcMMO.getTransientEntityTracker()
+                            .removeTrackedEntity(livingEntity));
         } catch (Exception ex) {
-            mcMMO.p.getLogger().warning("Caught exception during chunk unload event processing: " + ex.getMessage());
+            mcMMO.p.getLogger().warning(
+                    "Caught exception during chunk unload event processing: " + ex.getMessage());
         }
     }
 }

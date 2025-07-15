@@ -1,8 +1,8 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
-import org.bukkit.event.entity.EntityDamageEvent;
-
 import static java.util.Objects.requireNonNull;
+
+import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
  * Immutable class representing the result of a roll action in acrobatics.
@@ -70,7 +70,7 @@ public class RollResult {
          * Constructs a new {@code Builder} with required parameters.
          *
          * @param entityDamageEvent the damage event, must not be null
-         * @param isGracefulRoll    whether the roll is graceful
+         * @param isGracefulRoll whether the roll is graceful
          */
         public Builder(EntityDamageEvent entityDamageEvent, boolean isGracefulRoll) {
             requireNonNull(entityDamageEvent, "EntityDamageEvent cannot be null");

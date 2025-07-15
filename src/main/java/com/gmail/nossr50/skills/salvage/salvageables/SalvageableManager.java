@@ -1,9 +1,8 @@
 package com.gmail.nossr50.skills.salvage.salvageables;
 
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public interface SalvageableManager {
     /**
@@ -24,7 +23,6 @@ public interface SalvageableManager {
      * Checks if an item is salvageable
      *
      * @param type Material to check if salvageable
-     *
      * @return true if salvageable, false if not
      */
     boolean isSalvageable(Material type);
@@ -33,7 +31,6 @@ public interface SalvageableManager {
      * Checks if an item is salvageable
      *
      * @param itemStack Item to check if salvageable
-     *
      * @return true if salvageable, false if not
      */
     boolean isSalvageable(ItemStack itemStack);
@@ -42,7 +39,6 @@ public interface SalvageableManager {
      * Gets the salvageable with this type
      *
      * @param type Material of the salvageable to look for
-     *
      * @return the salvageable, can be null
      */
     Salvageable getSalvageable(Material type);

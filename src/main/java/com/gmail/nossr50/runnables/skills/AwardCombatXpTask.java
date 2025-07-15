@@ -10,15 +10,16 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import org.bukkit.entity.LivingEntity;
 
 public class AwardCombatXpTask extends CancellableRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final double baseXp;
     private final PrimarySkillType primarySkillType;
     private final LivingEntity target;
     private final XPGainReason xpGainReason;
     private final double baseHealth;
 
-    public AwardCombatXpTask(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public AwardCombatXpTask(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType,
+            double baseXp, LivingEntity target, XPGainReason xpGainReason) {
+        this.mmoPlayer = mmoPlayer;
         this.primarySkillType = primarySkillType;
         this.baseXp = baseXp;
         this.target = target;
@@ -46,6 +47,8 @@ public class AwardCombatXpTask extends CancellableRunnable {
         }
 
         final double finalDamage = damage;
-        mcMMO.p.getFoliaLib().getScheduler().runAtEntity(mcMMOPlayer.getPlayer(), task -> mcMMOPlayer.beginXpGain(primarySkillType, (int) (finalDamage * baseXp), xpGainReason, XPGainSource.SELF));
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntity(mmoPlayer.getPlayer(),
+                task -> mmoPlayer.beginXpGain(primarySkillType, (int) (finalDamage * baseXp),
+                        xpGainReason, XPGainSource.SELF));
     }
 }

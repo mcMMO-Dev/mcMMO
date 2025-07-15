@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
  * Called when a chat is sent to the admin chat channel
  */
 public class McMMOAdminChatEvent extends McMMOChatEvent {
-    public McMMOAdminChatEvent(@NotNull Plugin plugin, @NotNull AbstractChatMessage chatMessage, boolean isAsync) {
+    public McMMOAdminChatEvent(@NotNull Plugin plugin, @NotNull AbstractChatMessage chatMessage,
+            boolean isAsync) {
         super(plugin, chatMessage, isAsync);
     }
 }

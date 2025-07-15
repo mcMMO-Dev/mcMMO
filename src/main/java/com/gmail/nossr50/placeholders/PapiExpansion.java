@@ -9,17 +9,17 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
+import java.util.Map;
+import java.util.TreeMap;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public class PapiExpansion extends PlaceholderExpansion {
-    private final Map<String, Placeholder> placeholders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, Placeholder> placeholders = new TreeMap<>(
+            String.CASE_INSENSITIVE_ORDER);
 
     public PapiExpansion() {
         init();
@@ -76,19 +76,25 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public Integer getSkillLevel(PrimarySkillType skill, Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         return user.getSkillLevel(skill);
     }
 
     public Integer getExpNeeded(PrimarySkillType skill, Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         return user.getXpToLevel(skill);
     }
 
     public Integer getExp(PrimarySkillType skill, Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
 
         return user.getSkillXpLevel(skill);
     }
@@ -96,7 +102,9 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public Integer getExpRemaining(PrimarySkillType skill, Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         int current = user.getSkillXpLevel(skill);
         int needed = user.getXpToLevel(skill);
 
@@ -105,7 +113,8 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public Integer getRank(PrimarySkillType skill, Player player) {
         try {
-            return ExperienceAPI.getPlayerRankSkill(player.getUniqueId(), StringUtils.getCapitalized(skill.toString()));
+            return ExperienceAPI.getPlayerRankSkill(player.getUniqueId(),
+                    StringUtils.getCapitalized(skill.toString()));
         } catch (Exception ex) {
             return null;
         }
@@ -113,7 +122,9 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public Integer getPowerLevel(Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         return user.getPowerLevel();
     }
 
@@ -123,7 +134,9 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public String getPartyName(Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         final Party party = user.getParty();
 
         return (party == null) ? null : party.getName();
@@ -131,14 +144,18 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public String getPartyLeader(Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         final Party party = user.getParty();
         return (party == null) ? null : party.getLeader().getPlayerName();
     }
 
     public Integer getPartySize(Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
         final Party party = user.getParty();
         return (party == null) ? null : party.getMembers().size();
     }
@@ -149,36 +166,42 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     public String getSkillXpRate(PrimarySkillType skill, Player player) {
         final McMMOPlayer user = UserManager.getPlayer(player);
-        if (user == null) return null;
+        if (user == null) {
+            return null;
+        }
 
         double modifier = 1.0F;
 
-        if (Permissions.customXpBoost(player, skill))
+        if (Permissions.customXpBoost(player, skill)) {
             modifier = ExperienceConfig.getInstance().getCustomXpPerkBoost();
-        else if (Permissions.quadrupleXp(player, skill))
+        } else if (Permissions.quadrupleXp(player, skill)) {
             modifier = 4;
-        else if (Permissions.tripleXp(player, skill))
+        } else if (Permissions.tripleXp(player, skill)) {
             modifier = 3;
-        else if (Permissions.doubleAndOneHalfXp(player, skill))
+        } else if (Permissions.doubleAndOneHalfXp(player, skill)) {
             modifier = 2.5;
-        else if (Permissions.doubleXp(player, skill))
+        } else if (Permissions.doubleXp(player, skill)) {
             modifier = 2;
-        else if (Permissions.oneAndOneHalfXp(player, skill))
+        } else if (Permissions.oneAndOneHalfXp(player, skill)) {
             modifier = 1.5;
-        else if (Permissions.oneAndOneTenthXp(player, skill))
+        } else if (Permissions.oneAndOneTenthXp(player, skill)) {
             modifier = 1.1;
+        }
 
         return String.valueOf(modifier);
     }
 
     public String isExpEventActive(Player player) {
-        return mcMMO.p.isXPEventEnabled() ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
+        return mcMMO.p.isXPEventEnabled() ? PlaceholderAPIPlugin.booleanTrue()
+                : PlaceholderAPIPlugin.booleanFalse();
     }
 
     public void registerPlaceholder(Placeholder placeholder) {
         final Placeholder registered = placeholders.get(placeholder.getName());
-        if (registered != null)
-            throw new IllegalStateException("Placeholder " + placeholder.getName() + " is already registered!");
+        if (registered != null) {
+            throw new IllegalStateException(
+                    "Placeholder " + placeholder.getName() + " is already registered!");
+        }
 
         placeholders.put(placeholder.getName(), placeholder);
     }
@@ -205,7 +228,6 @@ public class PapiExpansion extends PlaceholderExpansion {
             registerPlaceholder(new SkillXpRatePlaceholder(this, skill));
         }
 
-
         //%mcmmo_power_level%
         registerPlaceholder(new PowerLevelPlaceholder(this));
 
@@ -231,5 +253,6 @@ public class PapiExpansion extends PlaceholderExpansion {
         registerPlaceholder(new XpEventActivePlaceholder(this));
         // %mcmmo_xprate%
         registerPlaceholder(new XpRatePlaceholder(this));
-    };
+    }
+
 }

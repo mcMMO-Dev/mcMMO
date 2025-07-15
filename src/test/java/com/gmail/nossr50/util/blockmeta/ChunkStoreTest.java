@@ -1,21 +1,32 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import com.gmail.nossr50.mcMMO;
-import com.google.common.io.Files;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.junit.jupiter.api.*;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-
-import java.io.*;
-import java.util.UUID;
-
-import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.*;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.LEGACY_WORLD_HEIGHT_MAX;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.LEGACY_WORLD_HEIGHT_MIN;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.assertChunkStoreEquals;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.serializeChunkStore;
 import static com.gmail.nossr50.util.blockmeta.UserBlockTrackerTest.recursiveDelete;
 import static org.bukkit.Bukkit.getWorld;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
+
+import com.gmail.nossr50.mcMMO;
+import com.google.common.io.Files;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 class ChunkStoreTest {
     private static File tempDir;
@@ -65,7 +76,8 @@ class ChunkStoreTest {
         original.setTrue(14, 90, 12);
         original.setTrue(13, 89, 12);
         byte[] serializedBytes = serializeChunkStore(original);
-        ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
+        ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(
+                new DataInputStream(new ByteArrayInputStream(serializedBytes)));
         assert deserialized != null;
         assertChunkStoreEquals(original, deserialized);
     }
@@ -83,7 +95,8 @@ class ChunkStoreTest {
         }
         region.close();
         region = new McMMOSimpleRegionFile(file, 0, 0);
-        try (DataInputStream is = region.getInputStream(original.getChunkX(), original.getChunkZ())) {
+        try (DataInputStream is = region.getInputStream(original.getChunkX(),
+                original.getChunkZ())) {
             Assertions.assertNotNull(is);
             ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(is);
             assert deserialized != null;

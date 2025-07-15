@@ -28,13 +28,16 @@ public class PowerLevelCommand extends BaseCommand {
     public void processCommand(String[] args) {
         BukkitCommandIssuer bukkitCommandIssuer = (BukkitCommandIssuer) getCurrentCommandIssuer();
         Player player = bukkitCommandIssuer.getPlayer();
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player); //Should never be null at this point because its caught in an ACF validation
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(
+                player); //Should never be null at this point because its caught in an ACF validation
         if (mmoPlayer == null) {
             return;
         }
 
         int powerLevel = mmoPlayer.getPowerLevel();
 
-        mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Your " + ChatColor.GOLD + "[mcMMO]" + ChatColor.DARK_AQUA + " power level is: " + ChatColor.GREEN + powerLevel);
+        mmoPlayer.getPlayer().sendMessage(
+                ChatColor.DARK_AQUA + "Your " + ChatColor.GOLD + "[mcMMO]" + ChatColor.DARK_AQUA
+                        + " power level is: " + ChatColor.GREEN + powerLevel);
     }
 }

@@ -24,12 +24,14 @@ public class McMMOPlayerLevelDownEvent extends McMMOPlayerLevelChangeEvent {
         this.levelsLost = levelsLost;
     }
 
-    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, XPGainReason xpGainReason) {
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill,
+            XPGainReason xpGainReason) {
         super(player, skill, xpGainReason);
         this.levelsLost = 1;
     }
 
-    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int levelsLost, XPGainReason xpGainReason) {
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int levelsLost,
+            XPGainReason xpGainReason) {
         super(player, skill, xpGainReason);
         this.levelsLost = levelsLost;
     }

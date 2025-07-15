@@ -10,7 +10,8 @@ public class CustomEntity {
     private final ItemStack callOfTheWildItem;
     private final int callOfTheWildAmount;
 
-    public CustomEntity(double xpMultiplier, boolean canBeTamed, int tamingXP, boolean canBeSummoned, ItemStack callOfTheWildItem, int callOfTheWildAmount) {
+    public CustomEntity(double xpMultiplier, boolean canBeTamed, int tamingXP,
+            boolean canBeSummoned, ItemStack callOfTheWildItem, int callOfTheWildAmount) {
         this.xpMultiplier = xpMultiplier;
         this.canBeTamed = canBeTamed;
         this.tamingXP = tamingXP;

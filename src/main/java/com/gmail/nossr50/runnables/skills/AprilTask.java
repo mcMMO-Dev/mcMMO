@@ -25,7 +25,7 @@
 //            if (betterRandom == 0) {
 //                SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
 //                player.sendMessage(unknown("superskill") + " skill increased by 1. Total (" + unknown("12") + ")");
-////                fireworksShow(player);
+/// /                fireworksShow(player);
 //            }
 //
 //            for (Statistic statistic : mcMMO.getHolidayManager().movementStatistics) {

@@ -11,6 +11,7 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
+import java.util.Locale;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.entity.LivingEntity;
@@ -18,8 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Locale;
 
 public class MacesManager extends SkillManager {
     private static @Nullable PotionEffectType slowEffectType;
@@ -41,8 +40,9 @@ public class MacesManager extends SkillManager {
      * @return the Crush damage bonus.
      */
     public double getCrushDamage() {
-        if (!Permissions.canUseSubSkill(mmoPlayer.getPlayer(), SubSkillType.MACES_CRUSH))
+        if (!Permissions.canUseSubSkill(mmoPlayer.getPlayer(), SubSkillType.MACES_CRUSH)) {
             return 0;
+        }
 
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.MACES_CRUSH);
 
@@ -84,7 +84,8 @@ public class MacesManager extends SkillManager {
         double crippleOdds = (mcMMO.p.getAdvancedConfig().getCrippleChanceToApplyOnHit(crippleRank)
                 * mmoPlayer.getAttackStrength());
 
-        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.MACES, mmoPlayer, crippleOdds)) {
+        if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.MACES, mmoPlayer,
+                crippleOdds)) {
             if (mmoPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(),
                         NotificationType.SUBSKILL_MESSAGE, "Maces.SubSkill.Cripple.Activated");
