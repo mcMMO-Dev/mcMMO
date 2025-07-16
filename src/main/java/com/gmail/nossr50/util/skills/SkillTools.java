@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 public class SkillTools {
@@ -272,14 +274,15 @@ public class SkillTools {
     }
 
     /**
-     * Matches a string of a skill to a skill This is NOT case sensitive First it checks the locale
+     * Matches a string of a skill to a skill This is NOT case-sensitive First it checks the locale
      * file and tries to match by the localized name of the skill Then if nothing is found it checks
      * against the hard coded "name" of the skill, which is just its name in English
      *
      * @param skillName target skill name
      * @return the matching PrimarySkillType if one is found, otherwise null
      */
-    public PrimarySkillType matchSkill(String skillName) {
+    @Nullable
+    public PrimarySkillType matchSkill(@NotNull String skillName) {
         if (!pluginRef.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : PrimarySkillType.values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(
@@ -301,6 +304,28 @@ public class SkillTools {
         }
 
         return null;
+    }
+
+    /**
+     * Matches an array of strings of skills to skills
+     * This is NOT case-sensitive
+     * First it checks the locale file and tries to match by the localized name of the skill
+     * Then if nothing is found it checks against the hard coded "name" of the skill, which is just its name in English
+     *
+     * @param skills target skill names
+     * @return the matching PrimarySkillType if one is found, otherwise null
+     */
+    @NotNull
+    public Set<PrimarySkillType> matchSkills(@NotNull Collection<String> skills) {
+        Set<PrimarySkillType> matchingSkills = new HashSet<>();
+        for (String skillName : skills) {
+            PrimarySkillType primarySkillType = matchSkill(skillName);
+            if(primarySkillType != null) {
+                matchingSkills.add(primarySkillType);
+            }
+        }
+
+        return matchingSkills;
     }
 
     /**
