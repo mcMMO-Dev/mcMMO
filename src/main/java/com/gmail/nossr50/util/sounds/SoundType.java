@@ -1,31 +1,33 @@
 package com.gmail.nossr50.util.sounds;
 
 public enum SoundType {
-    ANVIL,
-    LEVEL_UP,
-    FIZZ,
-    ITEM_BREAK,
-    POP,
-    CHIMAERA_WING,
-    ROLL_ACTIVATED,
-    SKILL_UNLOCKED,
-    DEFLECT_ARROWS,
-    TOOL_READY,
-    ABILITY_ACTIVATED_GENERIC,
-    ABILITY_ACTIVATED_BERSERK,
-    BLEED,
-    GLASS,
-    ITEM_CONSUMED,
-    CRIPPLE,
-    TIRED;
-
-    public boolean usesCustomPitch() {
-        switch (this) {
-            case POP:
-            case FIZZ:
-                return true;
-            default:
-                return false;
-        }
+    ANVIL("minecraft:block.anvil.place"),
+    ITEM_BREAK("minecraft:entity.item.break"),
+    POP("minecraft:entity.item.pickup"),
+    CHIMAERA_WING("minecraft:entity.bat.takeoff"),
+    LEVEL_UP("minecraft:entity.player.levelup"),
+    FIZZ("minecraft:block.fire.extinguish"),
+    TOOL_READY("minecraft:item.armor.equip_gold"),
+    ROLL_ACTIVATED("minecraft:entity.llama.swag"),
+    SKILL_UNLOCKED("minecraft:ui.toast.challenge_complete"),
+    ABILITY_ACTIVATED_BERSERK("minecraft:block.conduit.ambient"),
+    TIRED("minecraft:block.conduit.ambient"),
+    ABILITY_ACTIVATED_GENERIC("minecraft:item.trident.riptide_3"),
+    DEFLECT_ARROWS("minecraft:entity.ender_eye.death"),
+    BLEED("minecraft:entity.ender_eye.death"),
+    GLASS("minecraft:block.glass.break"),
+    ITEM_CONSUMED("minecraft:item.bottle.empty"),
+    CRIPPLE("minecraft:block.anvil.place");
+    
+    private final String id;
+    SoundType(String id) { this.id = id; }
+    public String id()   { return id; }
+    
+    public boolean usesCustomPitch()
+    {
+        return switch (this) {
+            case POP, FIZZ -> true;
+            default -> false;
+        };
     }
 }
