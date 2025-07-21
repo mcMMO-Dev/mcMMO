@@ -61,8 +61,18 @@ public class SoundConfig extends BukkitConfig {
         return (float) config.getDouble(key, 1.0);
     }
 
+    public String getSound(SoundType soundType) {
+        String key = "Sounds." + soundType.toString() + ".ID";
+        return (String) config.getString(key);
+    }
+
     public boolean getIsEnabled(SoundType soundType) {
         String key = "Sounds." + soundType.toString() + ".Enabled";
+        return config.getBoolean(key, true);
+    }
+
+    public boolean getCustomSoundEnabled() {
+        String key = "Sounds.EnableCustomSounds";
         return config.getBoolean(key, true);
     }
 }
