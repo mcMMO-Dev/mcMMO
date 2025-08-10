@@ -39,7 +39,8 @@ import org.mockito.Mockito;
 
 class LevelUpCommandTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(LevelUpCommandTest.class.getName());
-    private static final BiPredicate<PrimarySkillType, Integer> ALWAYS_TRUE = (skill, level) -> true;
+    private static final BiPredicate<PrimarySkillType, Integer> ALWAYS_TRUE =
+            (skill, level) -> true;
     private static final String DEFAULT_PLAYER_NAME = "Momshroom";
     private SelfListener selfListener;
 
@@ -65,8 +66,6 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         Mockito.doAnswer(invocation -> {
             return invocation.getArgument(0);
         }).when(pluginManager).callEvent(any(McMMOPlayerPreXpGainEvent.class));
-
-
     }
 
     @AfterEach
