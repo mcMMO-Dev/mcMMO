@@ -67,7 +67,7 @@ public class SoundConfig extends BukkitConfig {
     }
 
     public boolean getIsEnabled(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Enabled";
+        String key = "Sounds." + soundType.toString() + ".Enable";
         return config.getBoolean(key, true);
     }
 
