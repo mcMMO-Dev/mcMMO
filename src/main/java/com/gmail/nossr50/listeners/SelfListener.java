@@ -30,7 +30,7 @@ public class SelfListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         final Player player = event.getPlayer();
         final PrimarySkillType skill = event.getSkill();
@@ -47,8 +47,7 @@ public class SelfListener implements Listener {
             for (int i = 0; i < event.getLevelsGained(); i++) {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
-                UserManager.getPlayer(player)
-                        .processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+                mmoPlayer.processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
             }
 
             //Reset the delay timer
@@ -70,8 +69,8 @@ public class SelfListener implements Listener {
             powerLevelsAchieved.add(startingPowerLevel + (i + 1));
         }
 
-        plugin.getLevelUpCommandManager()
-                .applySkillLevelUp(mmoPlayer, skill, levelsAchieved, powerLevelsAchieved);
+        plugin.getLevelUpCommandManager().applySkillLevelUp(
+                mmoPlayer, skill, levelsAchieved, powerLevelsAchieved);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

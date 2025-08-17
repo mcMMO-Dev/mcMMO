@@ -15,19 +15,19 @@ import org.jetbrains.annotations.NotNull;
  * Manages commands to be executed on level up
  */
 public class LevelUpCommandManager {
-    private final @NotNull Set<LevelUpCommand> levelUpCommands;
+    private final @NotNull Set<SimpleLevelUpCommand> simpleLevelUpCommands;
     private final @NotNull mcMMO plugin;
 
     public LevelUpCommandManager(@NotNull mcMMO plugin) {
         this.plugin = requireNonNull(plugin, "plugin cannot be null");
-        this.levelUpCommands = new HashSet<>();
+        this.simpleLevelUpCommands = new HashSet<>();
     }
 
-    public void registerCommand(@NotNull LevelUpCommand levelUpCommand) {
-        requireNonNull(levelUpCommand, "skillLevelUpCommand cannot be null");
-        levelUpCommands.add(levelUpCommand);
+    public void registerCommand(@NotNull SimpleLevelUpCommand simpleLevelUpCommand) {
+        requireNonNull(simpleLevelUpCommand, "skillLevelUpCommand cannot be null");
+        simpleLevelUpCommands.add(simpleLevelUpCommand);
         LogUtils.debug(mcMMO.p.getLogger(),
-                "Registered level up command - SkillLevelUpCommand: " + levelUpCommand);
+                "Registered level up command - SkillLevelUpCommand: " + simpleLevelUpCommand);
     }
 
     /**
@@ -44,13 +44,13 @@ public class LevelUpCommandManager {
             return;
         }
 
-        for (LevelUpCommand command : levelUpCommands) {
+        for (SimpleLevelUpCommand command : simpleLevelUpCommands) {
             command.process(mmoPlayer, primarySkillType, levelsGained, powerLevelsGained);
         }
     }
 
-    public @NotNull Set<LevelUpCommand> getLevelUpCommands() {
-        return levelUpCommands;
+    public @NotNull Set<SimpleLevelUpCommand> getLevelUpCommands() {
+        return simpleLevelUpCommands;
     }
 
     /**
@@ -58,7 +58,7 @@ public class LevelUpCommandManager {
      */
     public void clear() {
         mcMMO.p.getLogger().info("Clearing registered commands on level up");
-        levelUpCommands.clear();
+        simpleLevelUpCommands.clear();
     }
 
     @Override
@@ -70,19 +70,19 @@ public class LevelUpCommandManager {
             return false;
         }
         LevelUpCommandManager that = (LevelUpCommandManager) o;
-        return Objects.equals(levelUpCommands, that.levelUpCommands) && Objects.equals(plugin,
+        return Objects.equals(simpleLevelUpCommands, that.simpleLevelUpCommands) && Objects.equals(plugin,
                 that.plugin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(levelUpCommands, plugin);
+        return Objects.hash(simpleLevelUpCommands, plugin);
     }
 
     @Override
     public String toString() {
         return "LevelUpCommandManager{" +
-                "levelUpCommands=" + levelUpCommands +
+                "levelUpCommands=" + simpleLevelUpCommands +
                 ", plugin=" + plugin +
                 '}';
     }

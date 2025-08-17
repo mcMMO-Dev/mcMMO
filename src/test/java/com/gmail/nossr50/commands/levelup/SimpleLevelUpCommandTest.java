@@ -37,8 +37,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class LevelUpCommandTest extends MMOTestEnvironment {
-    private static final Logger logger = getLogger(LevelUpCommandTest.class.getName());
+class SimpleLevelUpCommandTest extends MMOTestEnvironment {
+    private static final Logger logger = getLogger(SimpleLevelUpCommandTest.class.getName());
     private static final BiPredicate<PrimarySkillType, Integer> ALWAYS_TRUE =
             (skill, level) -> true;
     private static final String DEFAULT_PLAYER_NAME = "Momshroom";
@@ -79,20 +79,20 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         // GIVEN level up command for Mining should always execute for Mining level up
         final String commandStr = "say hello";
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (skill, skillLevel) -> skill == MINING && skillLevel >= 1 && skillLevel <= 5);
 
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         // WHEN player gains 5 levels in mining via command
         levelPlayerViaXP(mmoPlayer, MINING, 5);
 
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, atLeastOnce()).applySkillLevelUp(any(), any(), any(), any());
-        verify(levelUpCommand, atLeastOnce()).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommand, atLeastOnce()).process(any(), any(), any(), any());
 
         // THEN the command should have executed
-        verify(levelUpCommand, times(5)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommand, times(5)).executeCommand(any(McMMOPlayer.class));
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), any()), atLeast(5));
     }
 
@@ -130,19 +130,19 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final TestPlayerMock testPlayerMock = mockPlayer(UUID.randomUUID(), DEFAULT_PLAYER_NAME, 0);
         final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final String commandStr = "say hello";
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (skill, skillLevel) -> skill == MINING && skillLevel >= 1 && skillLevel <= 5);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         // WHEN player gains 5 levels in mining via command
         levelPlayerViaXP(mmoPlayer, MINING, 5);
 
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, times(5)).applySkillLevelUp(any(), any(), any(), any());
-        verify(levelUpCommand, times(5)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommand, times(5)).process(any(), any(), any(), any());
 
         // THEN the command should have executed
-        verify(levelUpCommand, times(5)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommand, times(5)).executeCommand(any(McMMOPlayer.class));
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), any()), atLeast(5));
     }
 
@@ -162,9 +162,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
                 "say hello " + DEFAULT_PLAYER_NAME + ", you have reached level 4";
         final String expectedStr5 =
                 "say hello " + DEFAULT_PLAYER_NAME + ", you have reached level 5";
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (skill, skillLevel) -> skill == MINING && skillLevel >= 1 && skillLevel <= 5);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         // WHEN player gains 5 levels in mining via command
         assertEquals(0, mmoPlayer.getSkillLevel(MINING));
@@ -174,10 +174,10 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, times(levelsGained)).applySkillLevelUp(any(), any(), any(),
                 any());
-        verify(levelUpCommand, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommand, times(levelsGained)).process(any(), any(), any(), any());
 
         // THEN the command should have executed
-        verify(levelUpCommand, times(levelsGained)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommand, times(levelsGained)).executeCommand(any(McMMOPlayer.class));
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), any()), atLeast(5));
         // AND THEN the message for each level up should have happened at least once
         // verify that Bukkit.dispatchCommand got executed at least 5 times with the correct injectedCommand
@@ -201,15 +201,15 @@ class LevelUpCommandTest extends MMOTestEnvironment {
 
         final String commandStr = "say hello {@player}";
         final String expectedStr = "say hello " + DEFAULT_PLAYER_NAME;
-        final LevelUpCommand levelUpCommandOne = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommandOne = buildLevelUpCommand(commandStr,
                 (skill, level) -> skill == MINING && level == 1);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommandOne);
-        final LevelUpCommand levelUpCommandTwo = buildLevelUpCommand(commandStr,
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommandOne);
+        final SimpleLevelUpCommand simpleLevelUpCommandTwo = buildLevelUpCommand(commandStr,
                 (skill, level) -> skill == MINING && level == 2);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommandTwo);
-        final LevelUpCommand levelUpCommandThree = buildLevelUpCommand(commandStr,
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommandTwo);
+        final SimpleLevelUpCommand simpleLevelUpCommandThree = buildLevelUpCommand(commandStr,
                 (skill, level) -> skill == MINING && level == 3);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommandThree);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommandThree);
         int levelsGained = 5;
 
         // WHEN player gains 5 levels in mining
@@ -218,13 +218,13 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, times(levelsGained)).applySkillLevelUp(any(), any(), any(),
                 any());
-        verify(levelUpCommandOne, times(levelsGained)).process(any(), any(), any(), any());
-        verify(levelUpCommandTwo, times(levelsGained)).process(any(), any(), any(), any());
-        verify(levelUpCommandThree, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommandOne, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommandTwo, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommandThree, times(levelsGained)).process(any(), any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommandOne, times(1)).executeCommand(any(McMMOPlayer.class));
-        verify(levelUpCommandTwo, times(1)).executeCommand(any(McMMOPlayer.class));
-        verify(levelUpCommandThree, times(1)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommandOne, times(1)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommandTwo, times(1)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommandThree, times(1)).executeCommand(any(McMMOPlayer.class));
         // verify that Bukkit.dispatchCommand got executed at least 20 times with the correct injectedCommand
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), eq(expectedStr)), atLeast(3));
     }
@@ -242,15 +242,15 @@ class LevelUpCommandTest extends MMOTestEnvironment {
 
         final String commandStr = "say hello {@player}";
         final String expectedStr = "say hello " + DEFAULT_PLAYER_NAME;
-        final LevelUpCommand levelUpCommandOne = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommandOne = buildLevelUpCommand(commandStr,
                 (skill, level) -> skill == MINING && (level == 1 || level == 4));
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommandOne);
-        final LevelUpCommand levelUpCommandTwo = buildLevelUpCommand(commandStr,
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommandOne);
+        final SimpleLevelUpCommand simpleLevelUpCommandTwo = buildLevelUpCommand(commandStr,
                 (skill, level) -> skill == MINING && level == 2);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommandTwo);
-        final LevelUpCommand levelUpCommandThree = buildLevelUpCommand(commandStr,
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommandTwo);
+        final SimpleLevelUpCommand simpleLevelUpCommandThree = buildLevelUpCommand(commandStr,
                 (skill, level) -> skill == MINING && level == 3);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommandThree);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommandThree);
         int levelsGained = 5;
 
         // WHEN player gains 5 levels in mining
@@ -259,13 +259,13 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, times(levelsGained)).applySkillLevelUp(any(), any(), any(),
                 any());
-        verify(levelUpCommandOne, times(levelsGained)).process(any(), any(), any(), any());
-        verify(levelUpCommandTwo, times(levelsGained)).process(any(), any(), any(), any());
-        verify(levelUpCommandThree, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommandOne, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommandTwo, times(levelsGained)).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommandThree, times(levelsGained)).process(any(), any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommandOne, times(2)).executeCommand(any(McMMOPlayer.class));
-        verify(levelUpCommandTwo, times(1)).executeCommand(any(McMMOPlayer.class));
-        verify(levelUpCommandThree, times(1)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommandOne, times(2)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommandTwo, times(1)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommandThree, times(1)).executeCommand(any(McMMOPlayer.class));
         // verify that Bukkit.dispatchCommand got executed at least 20 times with the correct injectedCommand
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), eq(expectedStr)), atLeast(3));
     }
@@ -288,9 +288,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final String expectedStr5 =
                 "say hello " + DEFAULT_PLAYER_NAME + ", you have reached level 5";
 
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (skill, ignored) -> skill == MINING);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         // WHEN player gains 5 levels in mining
         int levelsGained = 5;
@@ -299,10 +299,10 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, times(levelsGained))
                 .applySkillLevelUp(any(), any(), any(), any());
-        verify(levelUpCommand, times(levelsGained))
+        verify(simpleLevelUpCommand, times(levelsGained))
                 .process(any(), any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommand, times(levelsGained))
+        verify(simpleLevelUpCommand, times(levelsGained))
                 .executeCommand(any(McMMOPlayer.class));
         // verify that Bukkit.dispatchCommand got executed at least 5 times with the correct injectedCommand
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), eq(expectedStr1)), atLeastOnce());
@@ -318,9 +318,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final TestPlayerMock testPlayerMock = mockPlayer(UUID.randomUUID(), DEFAULT_PLAYER_NAME, 0);
         final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final String commandStr = "say hello";
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (skill, ignored) -> skill == MINING);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         int levelsGained = 1;
         // WHEN player gains 5 levels in mining
@@ -330,9 +330,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
 
         // THEN the command should be checked for execution
         verify(levelUpCommandManager).applySkillLevelUp(any(), any(), any(), any());
-        verify(levelUpCommand).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommand).process(any(), any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommand).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommand).executeCommand(any(McMMOPlayer.class));
     }
 
     @Test
@@ -341,9 +341,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final TestPlayerMock testPlayerMock = mockPlayer(UUID.randomUUID(), DEFAULT_PLAYER_NAME, 0);
         final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final String commandStr = "say hello";
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (skill, ignored) -> skill == WOODCUTTING);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         int levelsGained = 5;
         // WHEN player gains 5 levels in mining
@@ -353,9 +353,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
 
         // THEN the command should be checked for execution
         verify(levelUpCommandManager).applySkillLevelUp(any(), any(), any(), any());
-        verify(levelUpCommand).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommand).process(any(), any(), any(), any());
         // THEN the command should not be run
-        verify(levelUpCommand, never()).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommand, never()).executeCommand(any(McMMOPlayer.class));
     }
 
     @Test
@@ -364,8 +364,8 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final TestPlayerMock testPlayerMock = mockPlayer(UUID.randomUUID(), DEFAULT_PLAYER_NAME, 0);
         final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final String commandStr = "say hello";
-        final LevelUpCommand levelUpCommand = buildLevelUpCommand(commandStr, ALWAYS_TRUE);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+        final SimpleLevelUpCommand simpleLevelUpCommand = buildLevelUpCommand(commandStr, ALWAYS_TRUE);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
 
         // WHEN player gains 10 levels
         levelPlayerViaXP(mmoPlayer, MINING, 10);
@@ -373,9 +373,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, atLeastOnce()).applySkillLevelUp(any(), eq(MINING), any(),
                 any());
-        verify(levelUpCommand, atLeastOnce()).process(any(), any(), any(), any());
+        verify(simpleLevelUpCommand, atLeastOnce()).process(any(), any(), any(), any());
         // THEN the command should have executed
-        verify(levelUpCommand, times(10)).executeCommand(any(McMMOPlayer.class));
+        verify(simpleLevelUpCommand, times(10)).executeCommand(any(McMMOPlayer.class));
     }
 
     @Test
@@ -384,22 +384,22 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final TestPlayerMock testPlayerMock = mockPlayer(UUID.randomUUID(), DEFAULT_PLAYER_NAME, 0);
         final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final String commandStr = "say hello";
-        final LevelUpCommand powerLevelUpCommand = buildLevelUpCommand(commandStr,
+        final SimpleLevelUpCommand powerSimpleLevelUpCommand = buildLevelUpCommand(commandStr,
                 (ignoredA, ignoredB) -> true, (powerlevel) -> powerlevel == 3);
-        mcMMO.p.getLevelUpCommandManager().registerCommand(powerLevelUpCommand);
+        mcMMO.p.getLevelUpCommandManager().registerCommand(powerSimpleLevelUpCommand);
 
         // WHEN player gains 5 levels
         levelPlayerViaXP(mmoPlayer, MINING, 5);
 
         // THEN the command should be checked for execution
         verify(levelUpCommandManager, atLeastOnce()).applySkillLevelUp(any(), any(), any(), any());
-        verify(powerLevelUpCommand, atLeastOnce()).process(any(), any(), any(), any());
+        verify(powerSimpleLevelUpCommand, atLeastOnce()).process(any(), any(), any(), any());
 
         // THEN the command should have executed
-        verify(powerLevelUpCommand, times(1)).executeCommand(any(McMMOPlayer.class));
+        verify(powerSimpleLevelUpCommand, times(1)).executeCommand(any(McMMOPlayer.class));
     }
 
-    private LevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
+    private SimpleLevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
             @NotNull List<BiPredicate<PrimarySkillType, Integer>> conditions,
             @Nullable Predicate<Integer> powerLevelCondition) {
         requireNonNull(commandStr, "commandStr cannot be null");
@@ -414,12 +414,12 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         return Mockito.spy(builder.build());
     }
 
-    private LevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
+    private SimpleLevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
             @NotNull List<BiPredicate<PrimarySkillType, Integer>> conditions) {
         return buildLevelUpCommand(commandStr, conditions, null);
     }
 
-    private LevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
+    private SimpleLevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
             @NotNull BiPredicate<PrimarySkillType, Integer> predicate,
             @Nullable Predicate<Integer> powerLevelCondition) {
         requireNonNull(commandStr, "commandStr cannot be null");
@@ -434,7 +434,7 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         return Mockito.spy(builder.build());
     }
 
-    private LevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
+    private SimpleLevelUpCommand buildLevelUpCommand(@NotNull String commandStr,
             @NotNull BiPredicate<PrimarySkillType, Integer> predicate) {
         return buildLevelUpCommand(commandStr, predicate, null);
     }

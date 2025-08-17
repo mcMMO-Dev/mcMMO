@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.commands.levelup.LevelUpCommand;
+import com.gmail.nossr50.commands.levelup.SimpleLevelUpCommand;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import java.io.File;
@@ -39,18 +39,18 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
                 continue;
             }
 
-            LevelUpCommand levelUpCommand = buildSkillLevelUpCommand(commandSection);
+            SimpleLevelUpCommand simpleLevelUpCommand = buildSkillLevelUpCommand(commandSection);
 
-            if (levelUpCommand == null) {
+            if (simpleLevelUpCommand == null) {
                 mcMMO.p.getLogger().severe("Invalid command format for key: " + key);
             } else {
-                mcMMO.p.getLevelUpCommandManager().registerCommand(levelUpCommand);
+                mcMMO.p.getLevelUpCommandManager().registerCommand(simpleLevelUpCommand);
                 mcMMO.p.getLogger().info("Level up command successfully loaded from config for key: " + key);
             }
         }
     }
 
-    private @Nullable LevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
+    private @Nullable SimpleLevelUpCommand buildSkillLevelUpCommand(final ConfigurationSection commandSection) {
         // TODO: Rework
         return null;
 //        LevelUpCommandBuilder builder = new LevelUpCommandBuilder();
