@@ -1,4 +1,5 @@
 Version 2.2.041
+    Optimizations for Hoppers & Alchemy (thanks Warriorrrr)
     Fixed buckets being consumed by furnaces (thanks RunqRun)
     Fixed Repair stripping unsafe enchantments from items (thanks Techirion)
     Fixed IronGolem causing cast exceptions in rare cases (thanks Techirion)
