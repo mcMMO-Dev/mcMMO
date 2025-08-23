@@ -1,6 +1,8 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import static com.gmail.nossr50.util.random.ProbabilityUtil.isSkillRNGSuccessful;
+import static org.bukkit.Material.INFESTED_STONE_BRICKS;
+import static org.bukkit.Material.STONE_BRICKS;
 
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -21,6 +23,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -79,28 +82,26 @@ public class UnarmedManager extends SkillManager {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
-    public void blockCrackerCheck(@NotNull BlockState blockState) {
+    public void blockCrackerCheck(@NotNull Block block) {
         if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER,
                 mmoPlayer)) {
             return;
         }
 
-        switch (blockState.getType()) {
+        switch (block.getType()) {
             case STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
                     return;
                 }
 
-                blockState.getBlock().setType(Material.CRACKED_STONE_BRICKS);
-                blockState.update(true);
+                block.setType(Material.CRACKED_STONE_BRICKS);
                 return;
             case INFESTED_STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
                     return;
                 }
 
-                blockState.getBlock().setType(Material.INFESTED_CRACKED_STONE_BRICKS);
-                blockState.update(true);
+                block.setType(Material.INFESTED_CRACKED_STONE_BRICKS);
                 return;
             default:
         }

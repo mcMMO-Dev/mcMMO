@@ -1,4 +1,5 @@
 Version 2.2.041
+    Fixed Berserk failing to crack blocks
     Optimizations for Hoppers & Alchemy (thanks Warriorrrr)
     Fixed buckets being consumed by furnaces (thanks RunqRun)
     Fixed Repair stripping unsafe enchantments from items (thanks Techirion)

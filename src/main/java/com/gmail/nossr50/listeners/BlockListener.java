@@ -696,7 +696,7 @@ public class BlockListener implements Listener {
             if (mmoPlayer.getUnarmedManager().canUseBlockCracker()
                     && BlockUtils.affectedByBlockCracker(block)) {
                 if (EventUtils.simulateBlockBreak(block, player)) {
-                    mmoPlayer.getUnarmedManager().blockCrackerCheck(block.getState());
+                    mmoPlayer.getUnarmedManager().blockCrackerCheck(block);
                 }
             } else if (!event.getInstaBreak() && SuperAbilityType.BERSERK.blockCheck(block)
                     && EventUtils.simulateBlockBreak(block, player)) {
