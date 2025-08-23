@@ -83,6 +83,9 @@ public class UnarmedManager extends SkillManager {
     }
 
     public void blockCrackerCheck(@NotNull Block block) {
+        if (!mcMMO.p.getGeneralConfig().isBlockCrackerAllowed()) {
+            return;
+        }
         if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER,
                 mmoPlayer)) {
             return;
@@ -90,18 +93,22 @@ public class UnarmedManager extends SkillManager {
 
         switch (block.getType()) {
             case STONE_BRICKS:
-                if (!Unarmed.blockCrackerSmoothBrick) {
-                    return;
-                }
-
                 block.setType(Material.CRACKED_STONE_BRICKS);
                 return;
             case INFESTED_STONE_BRICKS:
-                if (!Unarmed.blockCrackerSmoothBrick) {
-                    return;
-                }
-
                 block.setType(Material.INFESTED_CRACKED_STONE_BRICKS);
+                return;
+            case DEEPSLATE_BRICKS:
+                block.setType(Material.CRACKED_DEEPSLATE_BRICKS);
+                return;
+            case DEEPSLATE_TILES:
+                block.setType(Material.CRACKED_DEEPSLATE_TILES);
+                return;
+            case POLISHED_BLACKSTONE_BRICKS:
+                block.setType(Material.CRACKED_POLISHED_BLACKSTONE_BRICKS);
+                return;
+            case NETHER_BRICKS:
+                block.setType(Material.CRACKED_NETHER_BRICKS);
                 return;
             default:
         }

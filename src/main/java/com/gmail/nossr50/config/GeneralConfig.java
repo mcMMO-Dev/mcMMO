@@ -872,8 +872,8 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     /* Unarmed */
-    public boolean getUnarmedBlockCrackerSmoothbrickToCracked() {
-        return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true);
+    public boolean isBlockCrackerAllowed() {
+        return config.getBoolean("Skills.Unarmed.Block_Cracker.Allow_Block_Cracker", true);
     }
 
     public boolean getUnarmedItemPickupDisabled() {

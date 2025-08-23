@@ -1,5 +1,8 @@
 Version 2.2.041
     Fixed Berserk failing to crack blocks
+    Added 'Skills.Unarmed.Block_Cracker.Allow_Block_Cracker' to config.yml
+    Removed 'SmoothBrick_To_CrackedBrick', it has been replaced by `Allow_Block_Cracker`
+    Block Cracker can now crack deepslate bricks, deepslate tiles, polished blackstone bricks, and netherbricks
     Optimizations for Hoppers & Alchemy (thanks Warriorrrr)
     Fixed buckets being consumed by furnaces (thanks RunqRun)
     Fixed Repair stripping unsafe enchantments from items (thanks Techirion)

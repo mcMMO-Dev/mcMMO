@@ -460,7 +460,7 @@ Skills:
         Enabled_For_PVE: true
         Level_Cap: 0
         Block_Cracker:
-            SmoothBrick_To_CrackedBrick: true
+            Allow_Block_Cracker: true
         # When using Unarmed, picked up items will automatically get moved to a free slot instead of going in the slot
         # of your hand. Should item pickup be disabled when your entire inventory - except for your hand - is full?
         Item_Pickup_Disabled_Full_Inventory: true
