@@ -14,6 +14,7 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEvent;
+import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
@@ -111,7 +112,7 @@ public class BlockListener implements Listener {
         //If there are more than one block in the item list we can't really trust it and will back out of rewarding bonus drops
         if (blockCount <= 1) {
             for (Item item : event.getItems()) {
-                ItemStack is = new ItemStack(item.getItemStack());
+                ItemStack is = item.getItemStack();
 
                 if (is.getAmount() <= 0) {
                     continue;
@@ -134,17 +135,23 @@ public class BlockListener implements Listener {
                     }
                 }
 
-                if (event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS).size()
-                        > 0) {
+                if (!event.getBlock().getMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS).isEmpty()) {
                     final BonusDropMeta bonusDropMeta =
                             (BonusDropMeta) event.getBlock().getMetadata(
                                     MetadataConstants.METADATA_KEY_BONUS_DROPS).get(0);
                     int bonusCount = bonusDropMeta.asInt();
                     final Location centeredLocation = getBlockCenter(event.getBlock());
-                    for (int i = 0; i < bonusCount; i++) {
+                    int newAmount = is.getAmount() * (bonusCount + 1);
 
-                        ItemUtils.spawnItemNaturally(event.getPlayer(),
-                                centeredLocation, is, ItemSpawnReason.BONUS_DROPS);
+                    ItemStack copy = is.clone();
+                    copy.setAmount(newAmount);
+
+                    final McMMOItemSpawnEvent spawnEvent = new McMMOItemSpawnEvent(centeredLocation,
+                            copy, ItemSpawnReason.BONUS_DROPS, event.getPlayer());
+                    mcMMO.p.getServer().getPluginManager().callEvent(spawnEvent);
+
+                    if (!spawnEvent.isCancelled()) {
+                        is.setAmount(newAmount);
                     }
                 }
             }
