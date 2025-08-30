@@ -10,84 +10,84 @@ Sounds:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-        CustomSoundId: null
+        CustomSoundId: ''
     GLASS:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-        CustomSoundId: null
+        CustomSoundId: ''
     ANVIL:
         Enable: true
         Volume: 1.0
         Pitch: 0.3
-        CustomSoundId: null
+        CustomSoundId: ''
     #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     FIZZ:
         Enable: true
         Volume: 0.5
-        CustomSoundId: null
+        CustomSoundId: ''
     LEVEL_UP:
         Enable: true
         Volume: 0.3
         Pitch: 0.5
-        CustomSoundId: null
+        CustomSoundId: ''
     ITEM_BREAK:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-        CustomSoundId: null
+        CustomSoundId: ''
     #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     POP:
         Enable: true
         Volume: 0.2
-        CustomSoundId: null
+        CustomSoundId: ''
     CHIMAERA_WING:
         Enable: true
         Volume: 1.0
         Pitch: 0.6
-        CustomSoundId: null
+        CustomSoundId: ''
     ROLL_ACTIVATED:
         Enable: true
         Volume: 1.0
         Pitch: 0.7
-        CustomSoundId: null
+        CustomSoundId: ''
     SKILL_UNLOCKED:
         Enable: true
         Volume: 1.0
         Pitch: 1.4
-        CustomSoundId: null
+        CustomSoundId: ''
     DEFLECT_ARROWS:
         Enable: true
         Volume: 1.0
         Pitch: 2.0
-        CustomSoundId: null
+        CustomSoundId: ''
     TOOL_READY:
         Enable: true
         Volume: 1.0
         Pitch: 0.4
-        CustomSoundId: null
+        CustomSoundId: ''
     ABILITY_ACTIVATED_GENERIC:
         Enable: true
         Volume: 1.0
         Pitch: 0.1
-        CustomSoundId: null
+        CustomSoundId: ''
     ABILITY_ACTIVATED_BERSERK:
         Enable: true
         Volume: 0.5
         Pitch: 1.7
-        CustomSoundId: null
+        CustomSoundId: ''
     TIRED:
         Enable: true
         Volume: 1.0
         Pitch: 1.7
-        CustomSoundId: null
+        CustomSoundId: ''
     BLEED:
         Enable: true
         Volume: 2.0
         Pitch: 2.0
-        CustomSoundId: null
+        CustomSoundId: ''
     CRIPPLE:
         Enable: true
         Volume: 1.0
         Pitch: 0.5
-        CustomSoundId: null
+        CustomSoundId: ''
