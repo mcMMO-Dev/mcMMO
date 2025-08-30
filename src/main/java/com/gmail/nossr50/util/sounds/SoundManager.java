@@ -2,8 +2,8 @@ package com.gmail.nossr50.util.sounds;
 
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.util.Misc;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -11,13 +11,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class SoundManager {
-    private static Sound CRIPPLE_SOUND;
 
-    private static final String ITEM_MACE_SMASH_GROUND = "ITEM_MACE_SMASH_GROUND";
-
-    private static final String VALUE_OF = "valueOf";
-
-    private static final String ORG_BUKKIT_SOUND = "org.bukkit.Sound";
+    private static final Map<SoundType, Sound> sounds = new ConcurrentHashMap<>();
+    private static final String NULL_FALLBACK_ID = null;
 
     /**
      * Sends a sound to the player
@@ -106,18 +102,26 @@ public class SoundManager {
         };
     }
 
-    private static String getSound(SoundType soundType)
+    private static Sound getSound(SoundType soundType)
     {
-        String sound = SoundConfig.getInstance().getSound(soundType);
+        if (sounds.containsKey(soundType)) {
+            return sounds.get(soundType);
+        }
 
-        if (SoundConfig.getInstance().getCustomSoundEnabled())
-        {
+        final String soundId = SoundConfig.getInstance().getSound(soundType);
+        Sound sound;
+        if (soundId != null && !soundId.isEmpty()) {
+            sound = SoundRegistryUtils.getSound(soundId, soundType.id());
+        } else {
+            sound = SoundRegistryUtils.getSound(soundType.id(), NULL_FALLBACK_ID);
+        }
+
+        if (sound != null) {
+            sounds.putIfAbsent(soundType, sound);
             return sound;
         }
 
-        return SoundLookup.exists(sound)
-                ? sound
-                : soundType.id();
+        throw new RuntimeException("Could not find Sound for SoundType: " + soundType);
     }
 
     public static float getFizzPitch() {
@@ -126,9 +130,5 @@ public class SoundManager {
 
     public static float getPopPitch() {
         return ((Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
-    }
-
-    public static float getKrakenPitch() {
-        return (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.2F + 1.0F;
     }
 }

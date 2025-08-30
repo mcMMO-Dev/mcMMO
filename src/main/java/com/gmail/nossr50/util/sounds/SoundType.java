@@ -19,9 +19,15 @@ public enum SoundType {
     ITEM_CONSUMED("minecraft:item.bottle.empty"),
     CRIPPLE("minecraft:block.anvil.place");
     
-    private final String id;
-    SoundType(String id) { this.id = id; }
-    public String id()   { return id; }
+    private final String soundRegistryId;
+
+    SoundType(String soundRegistryId) {
+        this.soundRegistryId = soundRegistryId;
+    }
+
+    public String id() {
+        return soundRegistryId;
+    }
     
     public boolean usesCustomPitch()
     {

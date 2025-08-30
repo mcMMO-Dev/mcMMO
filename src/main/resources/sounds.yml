@@ -4,90 +4,90 @@ Sounds:
     # 1.0 = Max volume
     # 0.0 = No Volume
     MasterVolume: 1.0
-    # Enable this to allow sounds from resource packs. WARNING: This will disable default sound fallback if your ID is invalid!
-    EnableCustomSounds: false
+    # If you want to use custom sounds, provide an ID for CustomSoundId
+    # Sound IDs are strings, such as minecraft:entity.player.levelup
     ITEM_CONSUMED:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-        ID: "minecraft:item.bottle.empty"
+        CustomSoundId: null
     GLASS:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-        ID: "minecraft:block.glass.break"
+        CustomSoundId: null
     ANVIL:
         Enable: true
         Volume: 1.0
         Pitch: 0.3
-        ID: "minecraft:block.anvil.place"
+        CustomSoundId: null
     #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     FIZZ:
         Enable: true
         Volume: 0.5
-        ID: "minecraft:block.fire.extinguish"
+        CustomSoundId: null
     LEVEL_UP:
         Enable: true
         Volume: 0.3
         Pitch: 0.5
-        ID: "minecraft:entity.player.levelup"
+        CustomSoundId: null
     ITEM_BREAK:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-        ID: "minecraft:entity.item.break"
+        CustomSoundId: null
     #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     POP:
         Enable: true
         Volume: 0.2
-        ID: "minecraft:entity.item.pickup"
+        CustomSoundId: null
     CHIMAERA_WING:
         Enable: true
         Volume: 1.0
         Pitch: 0.6
-        ID: "minecraft:entity.bat.takeoff"
+        CustomSoundId: null
     ROLL_ACTIVATED:
         Enable: true
         Volume: 1.0
         Pitch: 0.7
-        ID: "minecraft:entity.llama.swag"
+        CustomSoundId: null
     SKILL_UNLOCKED:
         Enable: true
         Volume: 1.0
         Pitch: 1.4
-        ID: "minecraft:ui.toast.challenge_complete"
+        CustomSoundId: null
     DEFLECT_ARROWS:
         Enable: true
         Volume: 1.0
         Pitch: 2.0
-        ID: "minecraft:entity.ender_eye.death"
+        CustomSoundId: null
     TOOL_READY:
         Enable: true
         Volume: 1.0
         Pitch: 0.4
-        ID: "minecraft:item.armor.equip_gold"
+        CustomSoundId: null
     ABILITY_ACTIVATED_GENERIC:
         Enable: true
         Volume: 1.0
         Pitch: 0.1
-        ID: "minecraft:item.trident.riptide_3"
+        CustomSoundId: null
     ABILITY_ACTIVATED_BERSERK:
         Enable: true
         Volume: 0.5
         Pitch: 1.7
-        ID: "minecraft:block.conduit.ambient"
+        CustomSoundId: null
     TIRED:
         Enable: true
         Volume: 1.0
         Pitch: 1.7
-        ID: "minecraft:block.conduit.ambient"
+        CustomSoundId: null
     BLEED:
         Enable: true
         Volume: 2.0
         Pitch: 2.0
-        ID: "minecraft:entity.ender_eye.death"
+        CustomSoundId: null
     CRIPPLE:
         Enable: true
         Volume: 1.0
         Pitch: 0.5
-        ID: "minecraft:item.mace.smash_ground"
+        CustomSoundId: null
