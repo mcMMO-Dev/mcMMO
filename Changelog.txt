@@ -1,5 +1,6 @@
 Version 2.2.042
     You can now define custom sounds to be played in sounds.yml (Thank you JeBobs, see notes)
+    Reduced Blast Mining PVP damage to other players
 
     Notes:
     The new sounds.yml config file allows you to override the sounds played by mcMMO.
