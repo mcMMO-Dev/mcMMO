@@ -1,3 +1,14 @@
+Version 2.2.042
+    You can now define custom sounds to be played in sounds.yml (Thank you JeBobs, see notes)
+
+    Notes:
+    The new sounds.yml config file allows you to override the sounds played by mcMMO.
+    Simply define the ID of the sound you want to play for each sound.
+    For example, add an entry for Sounds.TOOL_READY.CustomSoundId into sounds.yml to override the sound played when a tool is "readied".
+    If you are on older versions (1.18, 1.19, etc), instead of registering an ID, you specify the Sound enum.
+    Those who are on newer versions, can define the ID of any sound registered with Paper/Spigot, this allows you to even play custom sounds so long as they are properly loaded on the server.
+    Vanilla minecraft sounds tend to have IDs like "minecraft:ui.toast.challenge_complete", you can google what these keys are.
+
 Version 2.2.041
     Fixed Berserk failing to crack blocks
     Added 'Skills.Unarmed.Block_Cracker.Allow_Block_Cracker' to config.yml
