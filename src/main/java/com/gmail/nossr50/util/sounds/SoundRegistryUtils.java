@@ -7,6 +7,7 @@ import com.gmail.nossr50.util.AttributeMapper;
 import com.gmail.nossr50.util.LogUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.Nullable;
@@ -57,6 +58,10 @@ public final class SoundRegistryUtils {
                 }
             }
         }
+    }
+
+    public static boolean useLegacyLookup() {
+        return registryLookup == null;
     }
 
     public static @Nullable Sound getSound(String id, String fallBackId) {
