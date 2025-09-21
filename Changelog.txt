@@ -1,6 +1,6 @@
 Version 2.2.042
     mcMMO now listens to BlockDropItemEvent at LOW priority instead of HIGHEST
-    Bonus drops from mcMMO now simply modify quantity in BlockDropItemEvent
+    Bonus drops from mcMMO now simply modify quantity in BlockDropItemEvent instead of spawning new ItemStacks.
     Added McMMOModifyBlockDropItemEvent event, this event is called when mcMMO modifies the quantity of an ItemStack during a BlockDropItemEvent, it is modifiable and cancellable.
     You can now define custom sounds to be played in sounds.yml (Thank you JeBobs, see notes)
     Added a cap to how much Blast Mining PVP damage can do to other players
