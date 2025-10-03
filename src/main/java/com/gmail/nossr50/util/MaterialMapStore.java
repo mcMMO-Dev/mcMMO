@@ -29,6 +29,8 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> woodTools;
     private final @NotNull HashSet<String> stoneTools;
     private final @NotNull HashSet<String> leatherArmor;
+    private final @NotNull HashSet<String> copperArmor;
+    private final @NotNull HashSet<String> copperTools;    
     private final @NotNull HashSet<String> ironArmor;
     private final @NotNull HashSet<String> ironTools;
     private final @NotNull HashSet<String> stringTools;
@@ -73,6 +75,7 @@ public class MaterialMapStore {
         glassBlocks = new HashSet<>();
 
         leatherArmor = new HashSet<>();
+        copperArmor = new HashSet<>();
         ironArmor = new HashSet<>();
         chainmailArmor = new HashSet<>();
         goldArmor = new HashSet<>();
@@ -82,6 +85,7 @@ public class MaterialMapStore {
 
         woodTools = new HashSet<>();
         stoneTools = new HashSet<>();
+        copperTools = new HashSet<>();        
         ironTools = new HashSet<>();
         goldTools = new HashSet<>();
         diamondTools = new HashSet<>();
@@ -173,6 +177,10 @@ public class MaterialMapStore {
         for (String id : leatherArmor) {
             tierValue.put(id, 1);
         }
+
+        for (String id : copperArmor) {
+            tierValue.put(id, 2);
+        }        
 
         for (String id : ironArmor) {
             tierValue.put(id, 2);
@@ -421,6 +429,7 @@ public class MaterialMapStore {
 
     private void fillArmors() {
         fillLeatherArmorWhiteList();
+        fillCopperArmorWhiteList();
         fillIronArmorWhiteList();
         fillChainmailWhiteList();
         fillGoldArmorWhiteList();
@@ -429,6 +438,7 @@ public class MaterialMapStore {
 
         //Add all armors to armors hashset
         armors.addAll(leatherArmor);
+        armors.addAll(copperArmor);
         armors.addAll(ironArmor);
         armors.addAll(chainmailArmor);
         armors.addAll(goldArmor);
@@ -460,7 +470,8 @@ public class MaterialMapStore {
     private void fillTools() {
         fillWoodToolsWhiteList();
         fillStoneToolsWhiteList();
-        fillIronToolsWhiteList();
+        fillCopperToolsWhiteList();         
+        fillIronToolsWhiteList();       
         fillGoldToolsWhiteList();
         fillDiamondToolsWhiteList();
         fillNetheriteToolsWhiteList();
@@ -480,6 +491,7 @@ public class MaterialMapStore {
         //Tools collection
         tools.addAll(woodTools);
         tools.addAll(stoneTools);
+        tools.addAll(copperTools);
         tools.addAll(ironTools);
         tools.addAll(goldTools);
         tools.addAll(diamondTools);
@@ -522,6 +534,7 @@ public class MaterialMapStore {
         swords.add("wood_sword");
         swords.add("wooden_sword");
         swords.add("stone_sword");
+        swords.add("copper_sword");
         swords.add("iron_sword");
         swords.add("gold_sword");
         swords.add("golden_sword");
@@ -533,6 +546,7 @@ public class MaterialMapStore {
         axes.add("wood_axe");
         axes.add("wooden_axe");
         axes.add("stone_axe");
+        axes.add("copper_axe");
         axes.add("iron_axe");
         axes.add("gold_axe");
         axes.add("golden_axe");
@@ -544,6 +558,7 @@ public class MaterialMapStore {
         pickAxes.add("wood_pickaxe");
         pickAxes.add("wooden_pickaxe");
         pickAxes.add("stone_pickaxe");
+        pickAxes.add("copper_pickaxe");
         pickAxes.add("iron_pickaxe");
         pickAxes.add("gold_pickaxe");
         pickAxes.add("golden_pickaxe");
@@ -555,6 +570,7 @@ public class MaterialMapStore {
         hoes.add("wood_hoe");
         hoes.add("wooden_hoe");
         hoes.add("stone_hoe");
+        hoes.add("copper_hoe");
         hoes.add("iron_hoe");
         hoes.add("gold_hoe");
         hoes.add("golden_hoe");
@@ -566,6 +582,7 @@ public class MaterialMapStore {
         shovels.add("wood_shovel");
         shovels.add("wooden_shovel");
         shovels.add("stone_shovel");
+        shovels.add("copper_shovel");
         shovels.add("iron_shovel");
         shovels.add("gold_shovel");
         shovels.add("golden_shovel");
@@ -579,6 +596,13 @@ public class MaterialMapStore {
         leatherArmor.add("leather_leggings");
         leatherArmor.add("leather_boots");
     }
+
+    private void fillCopperArmorWhiteList() {
+        copperArmor.add("copper_helmet");
+        copperArmor.add("copper_chestplate");
+        copperArmor.add("copper_leggings");
+        copperArmor.add("copper_boots");
+    }    
 
     private void fillIronArmorWhiteList() {
         ironArmor.add("iron_helmet");
@@ -643,6 +667,14 @@ public class MaterialMapStore {
         stoneTools.add("stone_pickaxe");
         stoneTools.add("stone_shovel");
     }
+
+    private void fillCopperToolsWhiteList() {
+        copperTools.add("copper_sword");
+        copperTools.add("copper_axe");
+        copperTools.add("copper_hoe");
+        copperTools.add("copper_pickaxe");
+        copperTools.add("copper_shovel");
+    }    
 
     private void fillIronToolsWhiteList() {
         ironTools.add("iron_sword");
@@ -849,6 +881,14 @@ public class MaterialMapStore {
         return leatherArmor.contains(id);
     }
 
+    public boolean isCopperArmor(@NotNull Material material) {
+        return isCopperArmor(material.getKey().getKey());
+    }
+
+    public boolean isCopperArmor(@NotNull String id) {
+        return copperArmor.contains(id);
+    }    
+
     public boolean isIronArmor(@NotNull Material material) {
         return isIronArmor(material.getKey().getKey());
     }
@@ -905,12 +945,20 @@ public class MaterialMapStore {
         return stoneTools.contains(id);
     }
 
-    public boolean isIronTool(@NotNull Material material) {
-        return isIronTool(material.getKey().getKey());
-    }
+    public boolean isCopperTool(@NotNull String id) {
+        return copperTools.contains(id);
+    }   
+
+    public boolean isCopperTool(@NotNull Material material) {
+        return isCopperTool(material.getKey().getKey());
+    }    
 
     public boolean isIronTool(@NotNull String id) {
         return ironTools.contains(id);
+    }   
+
+    public boolean isIronTool(@NotNull Material material) {
+        return isIronTool(material.getKey().getKey());
     }
 
     public boolean isGoldTool(@NotNull Material material) {
