@@ -1,3 +1,16 @@
+Version 2.2.043
+    Added support for the new copper tools and weapons added in Minecraft 1.21.9
+    Added copper tools and armor to repair.vanilla.yml (see notes)
+    Added copper tools and armor to salvage.vanilla.yml (see notes)
+    Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)
+    TOOD: Smelting
+
+    NOTES:
+    You will need to manually update your repair.vanilla.yml and salvage.vanilla.yml files to get support for copper tools and armor.
+    You can find the default config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
+    You can use this default file to copy paste if you please, or if you haven't customizes these two config files, simply delete them to have mcMMO regenerate them with the new entries.
+    mcMMO has an internal blacklist of blocks that abilities and tools won't activate or "ready" on, pretty much anything that is interactable should go on this list, and I performed an audit and there were quite a few missing entries, so I've added them in this update, what this means is you won't click on a button and have it ready your tool anymore, as it should have been doing.
+
 Version 2.2.042
     mcMMO now listens to BlockDropItemEvent at LOW priority instead of HIGHEST
     Bonus drops from mcMMO now simply modify quantity in BlockDropItemEvent instead of spawning new ItemStacks.

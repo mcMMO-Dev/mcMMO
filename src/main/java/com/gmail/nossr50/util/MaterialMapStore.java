@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +30,8 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> woodTools;
     private final @NotNull HashSet<String> stoneTools;
     private final @NotNull HashSet<String> leatherArmor;
+    private final @NotNull HashSet<String> copperTools;
+    private final @NotNull HashSet<String> copperArmor;
     private final @NotNull HashSet<String> ironArmor;
     private final @NotNull HashSet<String> ironTools;
     private final @NotNull HashSet<String> stringTools;
@@ -74,6 +77,7 @@ public class MaterialMapStore {
 
         leatherArmor = new HashSet<>();
         ironArmor = new HashSet<>();
+        copperArmor = new HashSet<>();
         chainmailArmor = new HashSet<>();
         goldArmor = new HashSet<>();
         diamondArmor = new HashSet<>();
@@ -82,6 +86,7 @@ public class MaterialMapStore {
 
         woodTools = new HashSet<>();
         stoneTools = new HashSet<>();
+        copperTools = new HashSet<>();
         ironTools = new HashSet<>();
         goldTools = new HashSet<>();
         diamondTools = new HashSet<>();
@@ -171,6 +176,10 @@ public class MaterialMapStore {
 
     private void fillTierMap() {
         for (String id : leatherArmor) {
+            tierValue.put(id, 1);
+        }
+
+        for (String id : copperArmor) {
             tierValue.put(id, 1);
         }
 
@@ -421,6 +430,7 @@ public class MaterialMapStore {
 
     private void fillArmors() {
         fillLeatherArmorWhiteList();
+        fillCopperArmorWhiteList();
         fillIronArmorWhiteList();
         fillChainmailWhiteList();
         fillGoldArmorWhiteList();
@@ -429,6 +439,7 @@ public class MaterialMapStore {
 
         //Add all armors to armors hashset
         armors.addAll(leatherArmor);
+        armors.addAll(copperArmor);
         armors.addAll(ironArmor);
         armors.addAll(chainmailArmor);
         armors.addAll(goldArmor);
@@ -460,6 +471,7 @@ public class MaterialMapStore {
     private void fillTools() {
         fillWoodToolsWhiteList();
         fillStoneToolsWhiteList();
+        fillCopperToolsWhiteList();
         fillIronToolsWhiteList();
         fillGoldToolsWhiteList();
         fillDiamondToolsWhiteList();
@@ -480,6 +492,7 @@ public class MaterialMapStore {
         //Tools collection
         tools.addAll(woodTools);
         tools.addAll(stoneTools);
+        tools.addAll(copperTools);
         tools.addAll(ironTools);
         tools.addAll(goldTools);
         tools.addAll(diamondTools);
@@ -522,6 +535,7 @@ public class MaterialMapStore {
         swords.add("wood_sword");
         swords.add("wooden_sword");
         swords.add("stone_sword");
+        swords.add("copper_sword");
         swords.add("iron_sword");
         swords.add("gold_sword");
         swords.add("golden_sword");
@@ -533,6 +547,7 @@ public class MaterialMapStore {
         axes.add("wood_axe");
         axes.add("wooden_axe");
         axes.add("stone_axe");
+        axes.add("copper_axe");
         axes.add("iron_axe");
         axes.add("gold_axe");
         axes.add("golden_axe");
@@ -544,6 +559,7 @@ public class MaterialMapStore {
         pickAxes.add("wood_pickaxe");
         pickAxes.add("wooden_pickaxe");
         pickAxes.add("stone_pickaxe");
+        pickAxes.add("copper_pickaxe");
         pickAxes.add("iron_pickaxe");
         pickAxes.add("gold_pickaxe");
         pickAxes.add("golden_pickaxe");
@@ -555,6 +571,7 @@ public class MaterialMapStore {
         hoes.add("wood_hoe");
         hoes.add("wooden_hoe");
         hoes.add("stone_hoe");
+        hoes.add("copper_hoe");
         hoes.add("iron_hoe");
         hoes.add("gold_hoe");
         hoes.add("golden_hoe");
@@ -566,6 +583,7 @@ public class MaterialMapStore {
         shovels.add("wood_shovel");
         shovels.add("wooden_shovel");
         shovels.add("stone_shovel");
+        shovels.add("copper_shovel");
         shovels.add("iron_shovel");
         shovels.add("gold_shovel");
         shovels.add("golden_shovel");
@@ -578,6 +596,13 @@ public class MaterialMapStore {
         leatherArmor.add("leather_chestplate");
         leatherArmor.add("leather_leggings");
         leatherArmor.add("leather_boots");
+    }
+
+    private void fillCopperArmorWhiteList() {
+        copperArmor.add("copper_helmet");
+        copperArmor.add("copper_chestplate");
+        copperArmor.add("copper_leggings");
+        copperArmor.add("copper_boots");
     }
 
     private void fillIronArmorWhiteList() {
@@ -642,6 +667,14 @@ public class MaterialMapStore {
         stoneTools.add("stone_hoe");
         stoneTools.add("stone_pickaxe");
         stoneTools.add("stone_shovel");
+    }
+
+    private void fillCopperToolsWhiteList() {
+        copperTools.add("copper_sword");
+        copperTools.add("copper_axe");
+        copperTools.add("copper_hoe");
+        copperTools.add("copper_pickaxe");
+        copperTools.add("copper_shovel");
     }
 
     private void fillIronToolsWhiteList() {
@@ -849,6 +882,14 @@ public class MaterialMapStore {
         return leatherArmor.contains(id);
     }
 
+    public boolean isCopperArmor(@NotNull Material material) {
+        return isCopperArmor(material.getKey().getKey());
+    }
+
+    public boolean isCopperArmor(@NotNull String id) {
+        return copperArmor.contains(id);
+    }
+
     public boolean isIronArmor(@NotNull Material material) {
         return isIronArmor(material.getKey().getKey());
     }
@@ -903,6 +944,14 @@ public class MaterialMapStore {
 
     public boolean isStoneTool(@NotNull String id) {
         return stoneTools.contains(id);
+    }
+
+    public boolean isCopperTool(@NotNull Material material) {
+        return isCopperTool(material.getKey().getKey());
+    }
+
+    public boolean isCopperTool(@NotNull String id) {
+        return copperTools.contains(id);
     }
 
     public boolean isIronTool(@NotNull Material material) {
@@ -1070,255 +1119,304 @@ public class MaterialMapStore {
         mossyWhiteList.add("cobblestone_wall");
     }
 
+    private void addCommonToBlackList(Set<String> blackList) {
+        // All things that should be on both the tools and ability blacklist get added here
+        addButtonsToBlackList(blackList);
+        addTrapdoorsToBlackList(blackList);
+        addFenceGatesToBlackList(blackList);
+        addBedsToBlacklist(blackList);
+        addPressurePlatesToBlackList(blackList);
+        addChestsToBlackList(blackList);
+        addGolemStatuesToBlackList(blackList);
+        addShelvesToBlackList(blackList);
+        addDoorsToBlackList(blackList);
+        addFencesToBlackList(blackList);
+        addSignsToBlackList(blackList);
+        addHangingSignsToBlackList(blackList);
+        addShulkerBoxesToBlackList(blackList);
+        addMiscInteractableToBlackList(blackList);
+    }
+
+    private void addButtonsToBlackList(Set<String> blackList) {
+        blackList.add("oak_button");
+        blackList.add("spruce_button");
+        blackList.add("birch_button");
+        blackList.add("jungle_button");
+        blackList.add("acacia_button");
+        blackList.add("dark_oak_button");
+        blackList.add("mangrove_button");
+        blackList.add("cherry_button");
+        blackList.add("pale_oak_button");
+        blackList.add("bamboo_button");
+        blackList.add("crimson_button");
+        blackList.add("warped_button");
+        // Non-wood buttons
+        blackList.add("stone_button");
+        blackList.add("polished_blackstone_button");
+    }
+
+    private void addTrapdoorsToBlackList(Set<String> blackList) {
+        // Wood Trapdoors
+        blackList.add("oak_trapdoor");
+        blackList.add("spruce_trapdoor");
+        blackList.add("birch_trapdoor");
+        blackList.add("jungle_trapdoor");
+        blackList.add("acacia_trapdoor");
+        blackList.add("dark_oak_trapdoor");
+        blackList.add("mangrove_trapdoor");
+        blackList.add("cherry_trapdoor");
+        blackList.add("pale_oak_trapdoor");
+        blackList.add("bamboo_trapdoor");
+        blackList.add("crimson_trapdoor");
+        blackList.add("warped_trapdoor");
+
+        // Copper Trapdoors
+        blackList.add("waxed_copper_trapdoor");
+        blackList.add("waxed_exposed_copper_trapdoor");
+        blackList.add("waxed_weathered_copper_trapdoor");
+        blackList.add("waxed_oxidized_copper_trapdoor");
+        blackList.add("copper_trapdoor");
+        blackList.add("exposed_copper_trapdoor");
+        blackList.add("weathered_copper_trapdoor");
+        blackList.add("oxidized_copper_trapdoor");
+
+        // Other Trapdoors
+        blackList.add("iron_trapdoor");
+    }
+
+    private void addFenceGatesToBlackList(Set<String> blackList) {
+        // Fence Gates
+        blackList.add("oak_fence_gate");
+        blackList.add("spruce_fence_gate");
+        blackList.add("birch_fence_gate");
+        blackList.add("jungle_fence_gate");
+        blackList.add("acacia_fence_gate");
+        blackList.add("dark_oak_fence_gate");
+        blackList.add("mangrove_fence_gate");
+        blackList.add("cherry_fence_gate");
+        blackList.add("pale_oak_fence_gate");
+        blackList.add("bamboo_fence_gate");
+        blackList.add("crimson_fence_gate");
+        blackList.add("warped_fence_gate");
+    }
+
+    private void addBedsToBlacklist(Set<String> blackList) {
+        blackList.add("black_bed");
+        blackList.add("blue_bed");
+        blackList.add("brown_bed");
+        blackList.add("cyan_bed");
+        blackList.add("gray_bed");
+        blackList.add("green_bed");
+        blackList.add("light_blue_bed");
+        blackList.add("light_gray_bed");
+        blackList.add("lime_bed");
+        blackList.add("magenta_bed");
+        blackList.add("orange_bed");
+        blackList.add("pink_bed");
+        blackList.add("purple_bed");
+        blackList.add("red_bed");
+        blackList.add("white_bed");
+        blackList.add("yellow_bed");
+    }
+
+    private void addPressurePlatesToBlackList(Set<String> blackList) {
+        blackList.add("oak_pressure_plate");
+        blackList.add("spruce_pressure_plate");
+        blackList.add("birch_pressure_plate");
+        blackList.add("jungle_pressure_plate");
+        blackList.add("acacia_pressure_plate");
+        blackList.add("dark_oak_pressure_plate");
+        blackList.add("mangrove_pressure_plate");
+        blackList.add("cherry_pressure_plate");
+        blackList.add("pale_oak_pressure_plate");
+        blackList.add("bamboo_pressure_plate");
+        blackList.add("crimson_pressure_plate");
+        blackList.add("warped_pressure_plate");
+        blackList.add("stone_pressure_plate");
+        blackList.add("light_weighted_pressure_plate");
+        blackList.add("heavy_weighted_pressure_plate");
+        blackList.add("polished_blackstone_pressure_plate");
+    }
+
+    private void addChestsToBlackList(Set<String> blackList) {
+        blackList.add("chest");
+        blackList.add("copper_chest");
+        blackList.add("waxed_copper_chest");
+        blackList.add("exposed_copper_chest");
+        blackList.add("weathered_copper_chest");
+        blackList.add("oxidized_copper_chest");
+        blackList.add("trapped_chest");
+        blackList.add("ender_chest");
+    }
+
+    private void addShelvesToBlackList(Set<String> blackList) {
+        blackList.add("oak_shelf");
+        blackList.add("spruce_shelf");
+        blackList.add("birch_shelf");
+        blackList.add("jungle_shelf");
+        blackList.add("acacia_shelf");
+        blackList.add("dark_oak_shelf");
+        blackList.add("mangrove_shelf");
+        blackList.add("cherry_shelf");
+        blackList.add("pale_oak_shelf");
+        blackList.add("bamboo_shelf");
+        blackList.add("crimson_shelf");
+        blackList.add("warped_shelf");
+    }
+
+    private void addGolemStatuesToBlackList(Set<String> blackList) {
+        blackList.add("copper_golem_statue");
+        blackList.add("waxed_copper_golem_statue");
+        blackList.add("exposed_copper_golem_statue");
+        blackList.add("weathered_copper_golem_statue");
+        blackList.add("oxidized_copper_golem_statue");
+    }
+
+    private void addDoorsToBlackList(Set<String> blackList) {
+        // Doors
+        blackList.add("oak_door");
+        blackList.add("spruce_door");
+        blackList.add("birch_door");
+        blackList.add("jungle_door");
+        blackList.add("acacia_door");
+        blackList.add("dark_oak_door");
+        blackList.add("mangrove_door");
+        blackList.add("cherry_door");
+        blackList.add("pale_oak_door");
+        blackList.add("bamboo_door");
+        blackList.add("crimson_door");
+        blackList.add("warped_door");
+
+        // Metal
+        blackList.add("iron_door");
+        blackList.add("copper_door");
+        blackList.add("exposed_copper_door");
+        blackList.add("weathered_copper_door");
+        blackList.add("oxidized_copper_door");
+        blackList.add("waxed_copper_door");
+        blackList.add("waxed_exposed_copper_door");
+        blackList.add("waxed_weathered_copper_door");
+        blackList.add("waxed_oxidized_copper_door");
+    }
+
+    private void addFencesToBlackList(Set<String> blackList) {
+        // Fences
+        blackList.add("oak_fence");
+        blackList.add("spruce_fence");
+        blackList.add("birch_fence");
+        blackList.add("jungle_fence");
+        blackList.add("acacia_fence");
+        blackList.add("dark_oak_fence");
+        blackList.add("mangrove_fence");
+        blackList.add("cherry_fence");
+        blackList.add("pale_oak_fence");
+        blackList.add("bamboo_fence");
+        blackList.add("crimson_fence");
+        blackList.add("warped_fence");
+        blackList.add("dispenser");
+        blackList.add("enchanting_table");
+
+        // Metal Fences
+        blackList.add("nether_brick_fence");
+        blackList.add("iron_bars");
+    }
+
+    private void addSignsToBlackList(Set<String> blackList) {
+        // Sign
+        blackList.add("oak_sign");
+        blackList.add("spruce_sign");
+        blackList.add("birch_sign");
+        blackList.add("jungle_sign");
+        blackList.add("acacia_sign");
+        blackList.add("dark_oak_sign");
+        blackList.add("mangrove_sign");
+        blackList.add("cherry_sign");
+        blackList.add("pale_oak_sign");
+        blackList.add("bamboo_sign");
+        blackList.add("crimson_sign");
+        blackList.add("warped_sign");
+    }
+
+    private void addHangingSignsToBlackList(Set<String> blackList) {
+        // Hanging Sign
+        blackList.add("oak_hanging_sign");
+        blackList.add("spruce_hanging_sign");
+        blackList.add("birch_hanging_sign");
+        blackList.add("jungle_hanging_sign");
+        blackList.add("acacia_hanging_sign");
+        blackList.add("dark_oak_hanging_sign");
+        blackList.add("mangrove_hanging_sign");
+        blackList.add("cherry_hanging_sign");
+        blackList.add("pale_oak_hanging_sign");
+        blackList.add("bamboo_hanging_sign");
+        blackList.add("crimson_hanging_sign");
+        blackList.add("warped_hanging_sign");
+    }
+
+    private void addShulkerBoxesToBlackList(Set<String> blackList) {
+        // Shulker Boxes
+        blackList.add("black_shulker_box");
+        blackList.add("blue_shulker_box");
+        blackList.add("brown_shulker_box");
+        blackList.add("cyan_shulker_box");
+        blackList.add("gray_shulker_box");
+        blackList.add("green_shulker_box");
+        blackList.add("light_blue_shulker_box");
+        blackList.add("lime_shulker_box");
+        blackList.add("magenta_shulker_box");
+        blackList.add("orange_shulker_box");
+        blackList.add("pink_shulker_box");
+        blackList.add("purple_shulker_box");
+        blackList.add("red_shulker_box");
+        blackList.add("light_gray_shulker_box");
+        blackList.add("white_shulker_box");
+        blackList.add("yellow_shulker_box");
+        blackList.add("shulker_box");
+    }
+
+    private void addMiscInteractableToBlackList(Set<String> blackList) {
+        blackList.add("bell");
+        blackList.add("barrel");
+        blackList.add("blast_furnace");
+        blackList.add("campfire");
+        blackList.add("soul_campfire");
+        blackList.add("cartography_table");
+        blackList.add("composter");
+        blackList.add("grindstone");
+        blackList.add("lectern");
+        blackList.add("loom");
+        blackList.add("scaffolding");
+        blackList.add("smoker");
+        blackList.add("stonecutter");
+        blackList.add("sweet_berry_bush");
+        blackList.add("smithing_table");
+        blackList.add("lodestone");
+        blackList.add("respawn_anchor");
+        blackList.add("chiseled_bookshelf");
+        blackList.add("brewing_stand");
+        blackList.add("bookshelf");
+        blackList.add("cake");
+        blackList.add("dispenser");
+        blackList.add("enchanting_table");
+        blackList.add("furnace");
+        blackList.add("jukebox");
+        blackList.add("lever");
+        blackList.add("note_block");
+        blackList.add("crafting_table");
+        blackList.add("beacon");
+        blackList.add("anvil");
+        blackList.add("dropper");
+        blackList.add("hopper");
+        blackList.add("armor_stand");
+    }
+
     private void fillAbilityBlackList() {
-        abilityBlackList.add("warped_fence_gate");
-        abilityBlackList.add("crimson_fence_gate");
-        abilityBlackList.add("warped_pressure_plate");
-        abilityBlackList.add("crimson_pressure_plate");
-        abilityBlackList.add("warped_button");
-        abilityBlackList.add("crimson_button");
-        abilityBlackList.add("warped_door");
-        abilityBlackList.add("crimson_door");
-        abilityBlackList.add("warped_trapdoor");
-        abilityBlackList.add("crimson_trapdoor");
-        abilityBlackList.add("black_bed");
-        abilityBlackList.add("blue_bed");
-        abilityBlackList.add("brown_bed");
-        abilityBlackList.add("cyan_bed");
-        abilityBlackList.add("gray_bed");
-        abilityBlackList.add("green_bed");
-        abilityBlackList.add("light_blue_bed");
-        abilityBlackList.add("light_gray_bed");
-        abilityBlackList.add("lime_bed");
-        abilityBlackList.add("magenta_bed");
-        abilityBlackList.add("orange_bed");
-        abilityBlackList.add("pink_bed");
-        abilityBlackList.add("purple_bed");
-        abilityBlackList.add("red_bed");
-        abilityBlackList.add("white_bed");
-        abilityBlackList.add("yellow_bed");
-        abilityBlackList.add("brewing_stand");
-        abilityBlackList.add("bookshelf");
-        abilityBlackList.add("cake");
-        abilityBlackList.add("chest");
-        abilityBlackList.add("dispenser");
-        abilityBlackList.add("enchanting_table");
-        abilityBlackList.add("ender_chest");
-        abilityBlackList.add("oak_fence_gate");
-        abilityBlackList.add("acacia_fence_gate");
-        abilityBlackList.add("dark_oak_fence_gate");
-        abilityBlackList.add("pale_oak_fence_gate");
-        abilityBlackList.add("spruce_fence_gate");
-        abilityBlackList.add("birch_fence_gate");
-        abilityBlackList.add("jungle_fence_gate");
-        abilityBlackList.add("furnace");
-        abilityBlackList.add("jukebox");
-        abilityBlackList.add("lever");
-        abilityBlackList.add("note_block");
-        abilityBlackList.add("stone_button");
-        abilityBlackList.add("oak_button");
-        abilityBlackList.add("birch_button");
-        abilityBlackList.add("acacia_button");
-        abilityBlackList.add("dark_oak_button");
-        abilityBlackList.add("pale_oak_button");
-        abilityBlackList.add("jungle_button");
-        abilityBlackList.add("spruce_button");
-        abilityBlackList.add("acacia_trapdoor");
-        abilityBlackList.add("birch_trapdoor");
-        abilityBlackList.add("dark_oak_trapdoor");
-        abilityBlackList.add("pale_oak_trapdoor");
-        abilityBlackList.add("jungle_trapdoor");
-        abilityBlackList.add("oak_trapdoor");
-        abilityBlackList.add("spruce_trapdoor");
-        abilityBlackList.add("acacia_sign");
-        abilityBlackList.add("acacia_wall_sign");
-        abilityBlackList.add("birch_sign");
-        abilityBlackList.add("birch_wall_sign");
-        abilityBlackList.add("dark_oak_sign");
-        abilityBlackList.add("pale_oak_sign");
-        abilityBlackList.add("dark_oak_wall_sign");
-        abilityBlackList.add("pale_oak_wall_sign");
-        abilityBlackList.add("jungle_sign");
-        abilityBlackList.add("jungle_wall_sign");
-        abilityBlackList.add("spruce_sign");
-        abilityBlackList.add("spruce_wall_sign");
-        abilityBlackList.add("oak_sign");
-        abilityBlackList.add("oak_wall_sign");
-        abilityBlackList.add("crafting_table");
-        abilityBlackList.add("beacon");
-        abilityBlackList.add("anvil");
-        abilityBlackList.add("dropper");
-        abilityBlackList.add("hopper");
-        abilityBlackList.add("trapped_chest");
-        abilityBlackList.add("iron_door");
-        abilityBlackList.add("iron_trapdoor");
-        abilityBlackList.add("oak_door");
-        abilityBlackList.add("acacia_door");
-        abilityBlackList.add("spruce_door");
-        abilityBlackList.add("birch_door");
-        abilityBlackList.add("jungle_door");
-        abilityBlackList.add("dark_oak_door");
-        abilityBlackList.add("pale_oak_door");
-        abilityBlackList.add("oak_fence");
-        abilityBlackList.add("acacia_fence");
-        abilityBlackList.add("dark_oak_fence");
-        abilityBlackList.add("pale_oak_fence");
-        abilityBlackList.add("birch_fence");
-        abilityBlackList.add("jungle_fence");
-        abilityBlackList.add("spruce_fence");
-        abilityBlackList.add("armor_stand");
-        abilityBlackList.add("black_shulker_box");
-        abilityBlackList.add("blue_shulker_box");
-        abilityBlackList.add("brown_shulker_box");
-        abilityBlackList.add("cyan_shulker_box");
-        abilityBlackList.add("gray_shulker_box");
-        abilityBlackList.add("green_shulker_box");
-        abilityBlackList.add("light_blue_shulker_box");
-        abilityBlackList.add("lime_shulker_box");
-        abilityBlackList.add("magenta_shulker_box");
-        abilityBlackList.add("orange_shulker_box");
-        abilityBlackList.add("pink_shulker_box");
-        abilityBlackList.add("purple_shulker_box");
-        abilityBlackList.add("red_shulker_box");
-        abilityBlackList.add("light_gray_shulker_box");
-        abilityBlackList.add("white_shulker_box");
-        abilityBlackList.add("yellow_shulker_box");
-        abilityBlackList.add("shulker_box");
-        abilityBlackList.add("wall_sign"); //1.13 and lower?
-        abilityBlackList.add("sign"); //1.13 and lower?
-        abilityBlackList.add("cartography_table");
-        abilityBlackList.add("grindstone");
-        abilityBlackList.add("lectern");
-        abilityBlackList.add("loom");
-        abilityBlackList.add("scaffolding");
-        abilityBlackList.add("smoker");
-        abilityBlackList.add("stonecutter");
-        abilityBlackList.add("sweet_berry_bush");
-        abilityBlackList.add("bell");
-        abilityBlackList.add("barrel");
-        abilityBlackList.add("blast_furnace");
-        abilityBlackList.add("campfire");
-        abilityBlackList.add("soul_campfire");
-        abilityBlackList.add("composter");
-        abilityBlackList.add("lodestone");
-        abilityBlackList.add("respawn_anchor");
+        addCommonToBlackList(abilityBlackList);
     }
 
     private void fillToolBlackList() {
-        toolBlackList.add("chiseled_bookshelf");
-        toolBlackList.add("black_bed");
-        toolBlackList.add("blue_bed");
-        toolBlackList.add("brown_bed");
-        toolBlackList.add("cyan_bed");
-        toolBlackList.add("gray_bed");
-        toolBlackList.add("green_bed");
-        toolBlackList.add("light_blue_bed");
-        toolBlackList.add("light_gray_bed");
-        toolBlackList.add("lime_bed");
-        toolBlackList.add("magenta_bed");
-        toolBlackList.add("orange_bed");
-        toolBlackList.add("pink_bed");
-        toolBlackList.add("purple_bed");
-        toolBlackList.add("red_bed");
-        toolBlackList.add("white_bed");
-        toolBlackList.add("yellow_bed");
-        toolBlackList.add("brewing_stand");
-        toolBlackList.add("bookshelf");
-        toolBlackList.add("cake");
-        toolBlackList.add("chest");
-        toolBlackList.add("dispenser");
-        toolBlackList.add("enchanting_table");
-        toolBlackList.add("ender_chest");
-        toolBlackList.add("oak_fence_gate");
-        toolBlackList.add("acacia_fence_gate");
-        toolBlackList.add("dark_oak_fence_gate");
-        toolBlackList.add("pale_oak_fence_gate");
-        toolBlackList.add("spruce_fence_gate");
-        toolBlackList.add("birch_fence_gate");
-        toolBlackList.add("jungle_fence_gate");
-        toolBlackList.add("furnace");
-        toolBlackList.add("jukebox");
-        toolBlackList.add("lever");
-        toolBlackList.add("note_block");
-        toolBlackList.add("stone_button");
-        toolBlackList.add("oak_button");
-        toolBlackList.add("birch_button");
-        toolBlackList.add("acacia_button");
-        toolBlackList.add("dark_oak_button");
-        toolBlackList.add("pale_oak_button");
-        toolBlackList.add("jungle_button");
-        toolBlackList.add("spruce_button");
-        toolBlackList.add("acacia_trapdoor");
-        toolBlackList.add("birch_trapdoor");
-        toolBlackList.add("dark_oak_trapdoor");
-        toolBlackList.add("pale_oak_trapdoor");
-        toolBlackList.add("jungle_trapdoor");
-        toolBlackList.add("oak_trapdoor");
-        toolBlackList.add("spruce_trapdoor");
-        toolBlackList.add("crafting_table");
-        toolBlackList.add("beacon");
-        toolBlackList.add("anvil");
-        toolBlackList.add("dropper");
-        toolBlackList.add("hopper");
-        toolBlackList.add("trapped_chest");
-        toolBlackList.add("iron_door");
-        toolBlackList.add("iron_trapdoor");
-        toolBlackList.add("oak_door");
-        toolBlackList.add("acacia_door");
-        toolBlackList.add("spruce_door");
-        toolBlackList.add("birch_door");
-        toolBlackList.add("jungle_door");
-        toolBlackList.add("dark_oak_door");
-        toolBlackList.add("pale_oak_door");
-        toolBlackList.add("oak_fence");
-        toolBlackList.add("acacia_fence");
-        toolBlackList.add("dark_oak_fence");
-        toolBlackList.add("pale_oak_fence");
-        toolBlackList.add("birch_fence");
-        toolBlackList.add("jungle_fence");
-        toolBlackList.add("spruce_fence");
-        toolBlackList.add("armor_stand");
-        toolBlackList.add("black_shulker_box");
-        toolBlackList.add("blue_shulker_box");
-        toolBlackList.add("brown_shulker_box");
-        toolBlackList.add("cyan_shulker_box");
-        toolBlackList.add("gray_shulker_box");
-        toolBlackList.add("green_shulker_box");
-        toolBlackList.add("light_blue_shulker_box");
-        toolBlackList.add("lime_shulker_box");
-        toolBlackList.add("magenta_shulker_box");
-        toolBlackList.add("orange_shulker_box");
-        toolBlackList.add("pink_shulker_box");
-        toolBlackList.add("purple_shulker_box");
-        toolBlackList.add("red_shulker_box");
-        toolBlackList.add("light_gray_shulker_box");
-        toolBlackList.add("white_shulker_box");
-        toolBlackList.add("yellow_shulker_box");
-        toolBlackList.add("shulker_box");
-        toolBlackList.add("acacia_sign");
-        toolBlackList.add("acacia_hanging_sign");
-        toolBlackList.add("acacia_wall_sign");
-        toolBlackList.add("birch_sign");
-        toolBlackList.add("birch_hanging_sign");
-        toolBlackList.add("birch_wall_sign");
-        toolBlackList.add("dark_oak_sign");
-        toolBlackList.add("pale_oak_sign");
-        toolBlackList.add("dark_oak_hanging_sign");
-        toolBlackList.add("pale_oak_hanging_sign");
-        toolBlackList.add("dark_oak_wall_sign");
-        toolBlackList.add("pale_oak_wall_sign");
-        toolBlackList.add("jungle_sign");
-        toolBlackList.add("jungle_hanging_sign");
-        toolBlackList.add("jungle_wall_sign");
-        toolBlackList.add("spruce_sign");
-        toolBlackList.add("spruce_hanging_sign");
-        toolBlackList.add("spruce_wall_sign");
-        toolBlackList.add("oak_sign");
-        toolBlackList.add("oak_hanging_sign");
-        toolBlackList.add("oak_wall_sign");
-        toolBlackList.add("cherry_sign");
-        toolBlackList.add("cherry_hanging_sign");
-        toolBlackList.add("cherry_wall_sign");
+        addCommonToBlackList(toolBlackList);
+        // TODO: Organize later...
         toolBlackList.add("stripped_cherry_log");
         toolBlackList.add("stripped_cherry_wood");
         toolBlackList.add("stripped_acacia_log");
@@ -1351,22 +1449,6 @@ public class MaterialMapStore {
         toolBlackList.add("oak_log");
         toolBlackList.add("oak_wood");
         toolBlackList.add("spruce_log");
-        toolBlackList.add("bell");
-        toolBlackList.add("barrel");
-        toolBlackList.add("blast_furnace");
-        toolBlackList.add("campfire");
-        toolBlackList.add("soul_campfire");
-        toolBlackList.add("cartography_table");
-        toolBlackList.add("composter");
-        toolBlackList.add("grindstone");
-        toolBlackList.add("lectern");
-        toolBlackList.add("loom");
-        toolBlackList.add("smoker");
-        toolBlackList.add("stonecutter");
-        toolBlackList.add("lodestone");
-        toolBlackList.add("respawn_anchor");
-        toolBlackList.add("sweet_berry_bush");
-        toolBlackList.add("smithing_table");
     }
 
     public boolean isIntendedToolPickaxe(@NotNull Material material) {

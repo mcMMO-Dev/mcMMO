@@ -64,10 +64,9 @@ public class SalvageConfig extends BukkitConfig {
                 LogUtils.debug(mcMMO.p.getLogger(),
                         "Fixed incorrect Salvage quantities for Netherite gear!");
             } catch (IOException e) {
-                LogUtils.debug(
-                        mcMMO.p.getLogger(),
-                        "Unable to fix Salvage config, please delete the salvage yml file to generate a new one.");
-                e.printStackTrace();
+                mcMMO.p.getLogger().log(Level.SEVERE,
+                        "Unable to fix Salvage config, please delete the salvage yml file"
+                                + " to generate a new one.", e);
             }
         }
 
@@ -120,8 +119,7 @@ public class SalvageConfig extends BukkitConfig {
                             salvageMaterialTypeString.replace(" ", "_")
                                     .toUpperCase(Locale.ENGLISH));
                 } catch (IllegalArgumentException ex) {
-                    reason.add(
-                            key + " has an invalid MaterialType of " + salvageMaterialTypeString);
+                    reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
                 }
             }
 
@@ -192,11 +190,17 @@ public class SalvageConfig extends BukkitConfig {
             }
 
             if (noErrorsInSalvageable(reason)) {
-                Salvageable salvageable = SalvageableFactory.getSalvageable(
-                        itemMaterial, salvageMaterial, minimumLevel,
-                        maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType,
-                        xpMultiplier);
-                salvageables.add(salvageable);
+                try {
+                    final Salvageable salvageable = SalvageableFactory.getSalvageable(
+                            itemMaterial, salvageMaterial, minimumLevel,
+                            maximumQuantity, maximumDurability, salvageItemType,
+                            salvageMaterialType,
+                            xpMultiplier);
+                    salvageables.add(salvageable);
+                } catch (Exception e) {
+                    mcMMO.p.getLogger().log(Level.SEVERE,
+                            "Error loading salvageable from config entry: " + key, e);
+                }
             }
         }
         //Report unsupported
