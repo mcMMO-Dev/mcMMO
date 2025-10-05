@@ -161,7 +161,7 @@ public class PotionConfig extends LegacyConfigLoader {
             }
         }
 
-        int totalPotions = potionsLoaded + incompatible + failures;
+        int totalPotions = potionsLoaded + failures;
 
         mcMMO.p.getLogger()
                 .info("Loaded " + potionsLoaded + " of " + totalPotions + " Alchemy potions.");

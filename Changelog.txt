@@ -7,9 +7,11 @@ Version 2.2.043
     Added Copper_Nugget to treasures.yml (see notes)
     Added Copper_Nugget to experience.yml for Smelting XP
     Added Copper_Golem to experience.yml for Combat XP
+    Fixed mcMMO custom potions not having their name set correctly (see notes)
     Fixed ExploitFix.PreventArmorStandInteraction in experience.yml not being respected
     Added ExploitFix.PreventMannequinInteraction to experience.yml to prevent mannequins from granting XP or other effects
-    Fixed bug where Armor Stands would get renamed to heart symbols upon breaking them
+    Fixed bug where Armor Stands would get renamed to heart symbols upon breaking them (see notes)
+    Tweaked potions loaded msg during mcMMO startup to not include potions requiring newer game versions from being included in the total.
 
     NOTES:
     You don't need to update your experience.yml, that one updates automatically when you run mcMMO after an update.
@@ -20,6 +22,8 @@ Version 2.2.043
     mcMMO has an internal blacklist of blocks that abilities and tools won't activate or "ready" on, pretty much anything that is interactable should go on this list, and I performed an audit and there were quite a few missing entries, so I've added them in this update, what this means is you won't click on a button and have it ready your tool anymore, as it should have been doing.
     Mannequins are treated the same way armor stands are treated, the default behavior is mcMMO won't process on them unless you turn on the setting under ExploitFix in experience.yml, in addition to this their default XP is set to 0.0
     mcMMO had a setting 'ExploitFix.PreventArmorStandInteraction' to allow mcMMO to process abilities and XP on armor stands, but it was never hooked up! I fixed that mistake in this update.
+    The fix for potion names will only apply to newly created potions.
+    Armor stands that had already been renamed from the heart symbol bug will keep their names, but the bug shouldn't happen anymore
 
 Version 2.2.042
     mcMMO now listens to BlockDropItemEvent at LOW priority instead of HIGHEST
