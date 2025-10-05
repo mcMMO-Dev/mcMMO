@@ -9,6 +9,7 @@ Version 2.2.043
     Added Copper_Golem to experience.yml for Combat XP
     Fixed ExploitFix.PreventArmorStandInteraction in experience.yml not being respected
     Added ExploitFix.PreventMannequinInteraction to experience.yml to prevent mannequins from granting XP or other effects
+    Fixed bug where Armor Stands would get renamed to heart symbols upon breaking them
 
     NOTES:
     You don't need to update your experience.yml, that one updates automatically when you run mcMMO after an update.

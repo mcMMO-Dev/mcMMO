@@ -1,5 +1,8 @@
 package com.gmail.nossr50.util;
 
+import static com.gmail.nossr50.listeners.EntityListener.isArmorStandEntity;
+import static com.gmail.nossr50.listeners.EntityListener.isMannequinEntity;
+
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
@@ -40,8 +43,12 @@ public final class MobHealthbarUtils {
      * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
-        if (mcMMO.isHealthBarPluginEnabled() || !mcMMO.p.getGeneralConfig()
-                .getMobHealthbarEnabled()) {
+        if (isArmorStandEntity(target) || isMannequinEntity(target)) {
+            return;
+        }
+
+        if (mcMMO.isHealthBarPluginEnabled()
+                || !mcMMO.p.getGeneralConfig().getMobHealthbarEnabled()) {
             return;
         }
 
@@ -54,13 +61,13 @@ public final class MobHealthbarUtils {
             return;
         }
 
-        String originalName = target.getName();
+        final String originalName = target.getName();
         String oldName = target.getCustomName();
 
         /*
          * Store the name in metadata
          */
-        if (target.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY).size() <= 0) {
+        if (target.getMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY).isEmpty()) {
             target.setMetadata(MetadataConstants.METADATA_KEY_OLD_NAME_KEY,
                     new OldName(originalName, plugin));
         }

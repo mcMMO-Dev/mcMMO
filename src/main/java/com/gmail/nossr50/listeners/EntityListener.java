@@ -1203,11 +1203,11 @@ public class EntityListener implements Listener {
         }
     }
 
-    private static boolean isMannequinEntity(Entity attacker) {
+    public static boolean isMannequinEntity(Entity attacker) {
         return MANNEQUIN.contains(attacker.getType().toString());
     }
 
-    private static boolean isArmorStandEntity(Entity attacker) {
+    public static boolean isArmorStandEntity(Entity attacker) {
         return ARMOR_STAND.contains(attacker.getType().toString());
     }
 }
