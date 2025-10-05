@@ -2,7 +2,9 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.commands.CommandManager;
+import com.gmail.nossr50.commands.levelup.LevelUpCommandManager;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.CommandOnLevelUpConfig;
 import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.CustomItemSupportConfig;
 import com.gmail.nossr50.config.GeneralConfig;
@@ -87,10 +89,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -101,8 +101,9 @@ public class mcMMO extends JavaPlugin {
     private static RepairableManager repairableManager;
     private static SalvageableManager salvageableManager;
     private static DatabaseManager databaseManager;
-    private static FormulaManager formulaManager;
+    private FormulaManager formulaManager;
     private static UpgradeManager upgradeManager;
+    private static LevelUpCommandManager levelUpCommandManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static TransientMetadataTools transientMetadataTools;
@@ -159,6 +160,8 @@ public class mcMMO extends JavaPlugin {
     private FoliaLib foliaLib;
     private PartyManager partyManager;
 
+    private CommandOnLevelUpConfig commandOnLevelUpConfig;
+
     public mcMMO() {
         p = this;
     }
@@ -187,7 +190,9 @@ public class mcMMO extends JavaPlugin {
             skillTools = new SkillTools(this); //Load after general config
 
             //Init configs
+            levelUpCommandManager = new LevelUpCommandManager(this);
             advancedConfig = new AdvancedConfig(getDataFolder());
+            commandOnLevelUpConfig = new CommandOnLevelUpConfig(getDataFolder());
             partyConfig = new PartyConfig(getDataFolder());
             customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
 
@@ -457,7 +462,7 @@ public class mcMMO extends JavaPlugin {
         xpEventEnabled = !xpEventEnabled;
     }
 
-    public static FormulaManager getFormulaManager() {
+    public FormulaManager getFormulaManager() {
         return formulaManager;
     }
 
@@ -840,5 +845,13 @@ public class mcMMO extends JavaPlugin {
 
     public @NotNull FoliaLib getFoliaLib() {
         return foliaLib;
+    }
+
+    public @NotNull CommandOnLevelUpConfig getCommandOnLevelUpConfig() {
+        return commandOnLevelUpConfig;
+    }
+
+    public @NotNull LevelUpCommandManager getLevelUpCommandManager() {
+        return levelUpCommandManager;
     }
 }

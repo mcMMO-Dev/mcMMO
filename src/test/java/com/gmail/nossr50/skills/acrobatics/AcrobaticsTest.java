@@ -11,13 +11,16 @@ import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.TestPlayerMock;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.util.logging.Logger;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
@@ -62,9 +65,11 @@ class AcrobaticsTest extends MMOTestEnvironment {
     @Test
     public void rollShouldLowerDamage() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final Roll roll = new Roll();
         final double damage = 2D;
-        final EntityDamageEvent mockEvent = mockEntityDamageEvent(damage);
+        final EntityDamageEvent mockEvent = mockEntityDamageEvent(testPlayerMock.player(), damage);
         mmoPlayer.modifySkill(PrimarySkillType.ACROBATICS, 1000);
         when(roll.canRoll(mmoPlayer)).thenReturn(true);
         assertThat(roll.canRoll(mmoPlayer)).isTrue();
@@ -80,9 +85,11 @@ class AcrobaticsTest extends MMOTestEnvironment {
     @Test
     public void rollShouldNotLowerDamage() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         final Roll roll = new Roll();
         final double damage = 100D;
-        final EntityDamageEvent mockEvent = mockEntityDamageEvent(damage);
+        final EntityDamageEvent mockEvent = mockEntityDamageEvent(testPlayerMock.player(), damage);
         mmoPlayer.modifySkill(PrimarySkillType.ACROBATICS, 0);
         when(roll.canRoll(mmoPlayer)).thenReturn(true);
         assertThat(roll.canRoll(mmoPlayer)).isTrue();
@@ -95,7 +102,7 @@ class AcrobaticsTest extends MMOTestEnvironment {
         verify(mockEvent, Mockito.never()).setDamage(any(Double.class));
     }
 
-    private @NotNull EntityDamageEvent mockEntityDamageEvent(double damage) {
+    private @NotNull EntityDamageEvent mockEntityDamageEvent(Entity player, double damage) {
         final EntityDamageEvent mockEvent = mock(EntityDamageEvent.class);
         when(mockEvent.isApplicable(any(EntityDamageEvent.DamageModifier.class))).thenReturn(true);
         when(mockEvent.getCause()).thenReturn(EntityDamageEvent.DamageCause.FALL);
