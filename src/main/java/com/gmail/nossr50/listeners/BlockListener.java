@@ -1,13 +1,10 @@
 package com.gmail.nossr50.listeners;
 
 import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_BONUS_DROPS;
-import static com.gmail.nossr50.util.Misc.getBlockCenter;
 
-import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -28,7 +25,6 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ContainerMetadataUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;

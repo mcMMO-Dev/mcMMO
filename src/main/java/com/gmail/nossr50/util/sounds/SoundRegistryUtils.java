@@ -7,7 +7,6 @@ import com.gmail.nossr50.util.AttributeMapper;
 import com.gmail.nossr50.util.LogUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Locale;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.Nullable;
