@@ -1,5 +1,5 @@
 Version 2.2.043
-    Added support for the new copper tools and weapons added in Minecraft 1.21.9
+    Added support for the new copper tools and armor added in Minecraft 1.21.9
     Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)
     Added copper tools and armor to repair.vanilla.yml (see notes)
     Added copper tools and armor to salvage.vanilla.yml (see notes)
