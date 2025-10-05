@@ -1408,6 +1408,7 @@ public class MaterialMapStore {
         blackList.add("dropper");
         blackList.add("hopper");
         blackList.add("armor_stand");
+        blackList.add("mannequin");
     }
 
     private void fillAbilityBlackList() {

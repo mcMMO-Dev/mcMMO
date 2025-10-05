@@ -30,6 +30,7 @@ ExploitFix:
     PistonCheating: true
     SnowGolemExcavation: true
     PreventArmorStandInteraction: true
+    PreventMannequinInteraction: true
     # This include NPCs from stuff like Citizens, this is not a setting for Vanilla Minecraft Villagers (Which can be considered NPCs)
     # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
     # Of course, mcMMO doesn't know for sure whether something is an NPC, it checks a few known things, see our source code to see how
@@ -553,6 +554,7 @@ Experience_Values:
         String: 1.8
         Other: 1.5
     Smelting:
+        Copper_Nugget: 85
         Raw_Copper: 75
         Deepslate_Redstone_Ore: 30
         Deepslate_Copper_Ore: 100
@@ -683,3 +685,5 @@ Experience_Values:
             Camel: 1.2
             Bogged: 2.0
             Breeze: 4.0
+            Armor_Stand: 0.0
+            Mannequin: 0.0

@@ -201,6 +201,10 @@ public class ExperienceConfig extends BukkitConfig {
         return config.getBoolean("ExploitFix.PreventArmorStandInteraction", true);
     }
 
+    public boolean isMannequinInteractionPrevented() {
+        return config.getBoolean("ExploitFix.PreventMannequinInteraction", true);
+    }
+
     public boolean isFishingExploitingPrevented() {
         return config.getBoolean("ExploitFix.Fishing", true);
     }

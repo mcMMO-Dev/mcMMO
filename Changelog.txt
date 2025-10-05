@@ -1,15 +1,24 @@
 Version 2.2.043
     Added support for the new copper tools and weapons added in Minecraft 1.21.9
+    Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)
     Added copper tools and armor to repair.vanilla.yml (see notes)
     Added copper tools and armor to salvage.vanilla.yml (see notes)
-    Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)
-    TOOD: Smelting
+    Added copper tools and armor to fishing_treasures.yml (see notes)
+    Added Copper_Nugget to treasures.yml (see notes)
+    Added Copper_Nugget to experience.yml for Smelting XP
+    Added Copper_Golem to experience.yml for Combat XP
+    Fixed ExploitFix.PreventArmorStandInteraction in experience.yml not being respected
+    Added ExploitFix.PreventMannequinInteraction to experience.yml to prevent mannequins from granting XP or other effects
 
     NOTES:
-    You will need to manually update your repair.vanilla.yml and salvage.vanilla.yml files to get support for copper tools and armor.
+    You don't need to update your experience.yml, that one updates automatically when you run mcMMO after an update.
+    You will need to manually update the following files manually repair.vanilla.yml, salvage.vanilla.yml, treasures.yml, and fishing_treasures.yml files to get support for copper tools and armor.
     You can find the default config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
-    You can use this default file to copy paste if you please, or if you haven't customizes these two config files, simply delete them to have mcMMO regenerate them with the new entries.
+    You can use this default file to copy paste if you please
+    OR if you haven't customizes these config files, simply delete them to have mcMMO regenerate them with the new entries.
     mcMMO has an internal blacklist of blocks that abilities and tools won't activate or "ready" on, pretty much anything that is interactable should go on this list, and I performed an audit and there were quite a few missing entries, so I've added them in this update, what this means is you won't click on a button and have it ready your tool anymore, as it should have been doing.
+    Mannequins are treated the same way armor stands are treated, the default behavior is mcMMO won't process on them unless you turn on the setting under ExploitFix in experience.yml, in addition to this their default XP is set to 0.0
+    mcMMO had a setting 'ExploitFix.PreventArmorStandInteraction' to allow mcMMO to process abilities and XP on armor stands, but it was never hooked up! I fixed that mistake in this update.
 
 Version 2.2.042
     mcMMO now listens to BlockDropItemEvent at LOW priority instead of HIGHEST

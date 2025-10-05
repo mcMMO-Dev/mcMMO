@@ -58,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class CombatUtils {
 
-    private static final ThreadLocal<Boolean> IN_MCMO_DAMAGE
+    private static final ThreadLocal<Boolean> IN_MCMMO_DAMAGE
             = ThreadLocal.withInitial(() -> false);
 
 
@@ -75,14 +75,14 @@ public final class CombatUtils {
      */
     public static void safeDealDamage(@NotNull LivingEntity target, double amount,
             @Nullable Entity attacker) {
-        boolean prev = IN_MCMO_DAMAGE.get();
+        boolean prev = IN_MCMMO_DAMAGE.get();
 
         if (prev || target.isDead()) {
             return;
         }
 
         try {
-            IN_MCMO_DAMAGE.set(true);
+            IN_MCMMO_DAMAGE.set(true);
             if (!hasIgnoreDamageMetadata(target)) {
                 applyIgnoreDamageMetadata(target);
             }
@@ -93,7 +93,7 @@ public final class CombatUtils {
                 target.damage(amount);
             }
         } finally {
-            IN_MCMO_DAMAGE.set(false);
+            IN_MCMMO_DAMAGE.set(false);
             if (hasIgnoreDamageMetadata(target)) {
                 removeIgnoreDamageMetadata(target);
             }

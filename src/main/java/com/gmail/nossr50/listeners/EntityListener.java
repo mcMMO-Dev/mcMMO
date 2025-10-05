@@ -34,6 +34,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import java.util.Locale;
 import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -352,11 +353,13 @@ public class EntityListener implements Listener {
             return;
         }
 
-        // Don't process this event for marked entities, for players this is handled above,
-        // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
-        // properly
+        if (ExperienceConfig.getInstance().isArmorStandInteractionPrevented()
+                && attacker.getType().toString().toLowerCase(Locale.ENGLISH).equals("armor_stand")) {
+            return;
+        }
 
-        if (event.getEntity() instanceof ArmorStand) {
+        if (ExperienceConfig.getInstance().isMannequinInteractionPrevented()
+                && attacker.getType().toString().toLowerCase(Locale.ENGLISH).equals("mannequin")) {
             return;
         }
 
