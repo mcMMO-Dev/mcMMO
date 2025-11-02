@@ -1,3 +1,6 @@
+Version 2.2.044
+    Fixed copper armor and tools not working with Repair or Salvage
+
 Version 2.2.043
     Added support for the new copper tools and armor added in Minecraft 1.21.9
     Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)

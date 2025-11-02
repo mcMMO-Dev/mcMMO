@@ -380,6 +380,10 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isIronArmor(item.getType().getKey().getKey());
     }
 
+    public static boolean isCopperArmor(ItemStack item) {
+        return mcMMO.getMaterialMapStore().isCopperArmor(item.getType().getKey().getKey());
+    }
+
     /**
      * Checks to see if an item is a diamond armor piece.
      *
@@ -450,6 +454,10 @@ public final class ItemUtils {
 
     public static boolean isPrismarineTool(ItemStack item) {
         return mcMMO.getMaterialMapStore().isPrismarineTool(item.getType().getKey().getKey());
+    }
+
+    public static boolean isCopperTool(ItemStack item) {
+        return mcMMO.getMaterialMapStore().isCopperTool(item.getType().getKey().getKey());
     }
 
     /**
