@@ -49,6 +49,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.util.FoliaLibOptions;
 import com.tcoded.folialib.util.InvalidTickDelayNotifier;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -160,8 +161,11 @@ public class mcMMO extends JavaPlugin {
             platformManager = new PlatformManager();
 
             //Folia lib plugin instance
-            foliaLib = new FoliaLib(this);
-            InvalidTickDelayNotifier.disableNotifications = true;
+            FoliaLibOptions options = new FoliaLibOptions();
+            options.disableNotifications();
+            options.disableInvalidTickDebugMode();
+            foliaLib = new FoliaLib(this, options);
+
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
