@@ -1,5 +1,7 @@
 package com.gmail.nossr50.worldguard;
 
+import static org.bukkit.Bukkit.getServer;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -12,62 +14,70 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class WorldGuardManager {
     private static WorldGuardManager instance;
     private WorldGuardPlugin worldGuardPluginRef;
 
     public static WorldGuardManager getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new WorldGuardManager();
+        }
 
         return instance;
     }
 
     public boolean hasMainFlag(Player player) {
-        if (player == null)
+        if (player == null) {
             return false;
+        }
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer()
+                .createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
-        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player),
+                WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
     }
 
     public boolean hasXPFlag(Player player) {
-        if (player == null)
+        if (player == null) {
             return false;
+        }
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer()
+                .createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
-        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_XP_WG_FLAG);
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player),
+                WorldGuardFlags.MCMMO_XP_WG_FLAG);
     }
 
     public boolean hasHardcoreFlag(Player player) {
-        if (player == null)
+        if (player == null) {
             return false;
+        }
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer()
+                .createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
-        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player),
+                WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
     }
 
     private WorldGuardPlugin getWorldGuard() {

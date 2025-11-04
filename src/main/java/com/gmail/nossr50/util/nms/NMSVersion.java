@@ -36,7 +36,8 @@ public enum NMSVersion {
     /**
      * The standardized major.minor.patch {@link String} for the current NMS mappings
      *
-     * @return the standardized major.minor.patch version string, patch is omitted if it is not a patch version
+     * @return the standardized major.minor.patch version string, patch is omitted if it is not a
+     * patch version
      */
     public String getSanitizedVersionNumber() {
         return sanitizedVersionNumber;

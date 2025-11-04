@@ -87,6 +87,65 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .25
     #
+    # Copper repairables
+    ###
+    # Tools
+    COPPER_SWORD:
+        MinimumLevel: 0
+        XpMultiplier: .3
+        ItemType: TOOL
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_SHOVEL:
+        MinimumLevel: 0
+        XpMultiplier: .2
+        ItemType: TOOL
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_PICKAXE:
+        MinimumLevel: 0
+        XpMultiplier: .6
+        ItemType: TOOL
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_AXE:
+        MinimumLevel: 0
+        XpMultiplier: .6
+        ItemType: TOOL
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_HOE:
+        MinimumLevel: 0
+        XpMultiplier: .3
+        ItemType: TOOL
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    # Armor
+    COPPER_HELMET:
+        MinimumLevel: 0
+        XpMultiplier: 1.8
+        ItemType: ARMOR
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_CHESTPLATE:
+        MinimumLevel: 0
+        XpMultiplier: 1.8
+        ItemType: ARMOR
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_LEGGINGS:
+        MinimumLevel: 0
+        XpMultiplier: 1.8
+        ItemType: ARMOR
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_BOOTS:
+        MinimumLevel: 0
+        XpMultiplier: 1.8
+        ItemType: ARMOR
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    #
     # Iron repairables
     ###
     # Tools

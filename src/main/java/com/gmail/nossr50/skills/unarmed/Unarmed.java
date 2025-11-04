@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.Player;
@@ -8,7 +7,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Unarmed {
-    public static boolean blockCrackerSmoothBrick = mcMMO.p.getGeneralConfig().getUnarmedBlockCrackerSmoothbrickToCracked();
     public static double berserkDamageModifier = 1.5;
 
     public static void handleItemPickup(Player player, EntityPickupItemEvent event) {
@@ -19,12 +17,14 @@ public class Unarmed {
         int amount = itemDrop.getAmount();
         boolean grabbedItem = false;
 
-        for(int i = 0; i <= storageContents.length-1; i++) {
-            if (amount <= 0)
+        for (int i = 0; i <= storageContents.length - 1; i++) {
+            if (amount <= 0) {
                 break;
+            }
 
-            if (i == heldItemSlotID)
+            if (i == heldItemSlotID) {
                 continue;
+            }
 
             //EMPTY SLOT!
             if (storageContents[i] == null) {
@@ -32,9 +32,11 @@ public class Unarmed {
                 amount = 0;
                 grabbedItem = true;
                 break;
-            } else if (itemDrop.isSimilar(storageContents[i]) && storageContents[i].getAmount() < storageContents[i].getMaxStackSize()) {
+            } else if (itemDrop.isSimilar(storageContents[i])
+                    && storageContents[i].getAmount() < storageContents[i].getMaxStackSize()) {
                 //If we can fit this whole itemstack into this item
-                if (amount + storageContents[i].getAmount() <= storageContents[i].getMaxStackSize()) {
+                if (amount + storageContents[i].getAmount()
+                        <= storageContents[i].getMaxStackSize()) {
                     ItemStack modifiedAmount = storageContents[i];
                     modifiedAmount.setAmount(amount + storageContents[i].getAmount());
 
@@ -44,7 +46,8 @@ public class Unarmed {
                 } else {
                     //Add what we can from this stack
                     ItemStack modifiedAmount = storageContents[i];
-                    int amountThatCanFit = storageContents[i].getMaxStackSize() - storageContents[i].getAmount();
+                    int amountThatCanFit =
+                            storageContents[i].getMaxStackSize() - storageContents[i].getAmount();
                     modifiedAmount.setAmount(amountThatCanFit);
 
                     player.getInventory().setItem(i, modifiedAmount);
@@ -56,10 +59,11 @@ public class Unarmed {
             }
         }
 
-        if (amount <= 0)
+        if (amount <= 0) {
             event.getItem().remove(); //Cleanup Item
-        else
+        } else {
             event.getItem().getItemStack().setAmount(amount);
+        }
 
         event.setCancelled(true);
 

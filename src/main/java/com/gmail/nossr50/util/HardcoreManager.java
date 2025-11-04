@@ -9,25 +9,28 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import java.util.HashMap;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
 public final class HardcoreManager {
-    private HardcoreManager() {}
+    private HardcoreManager() {
+    }
 
     public static void invokeStatPenalty(Player player) {
 
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasHardcoreFlag(player))
+            if (!WorldGuardManager.getInstance().hasHardcoreFlag(player)) {
                 return;
+            }
         }
 
-        double statLossPercentage = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyPercentage();
+        double statLossPercentage = mcMMO.p.getGeneralConfig()
+                .getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyLevelThreshold();
 
-        if (UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null) {
             return;
+        }
 
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
@@ -51,7 +54,8 @@ public final class HardcoreManager {
                 continue;
             }
 
-            double statsLost = Math.max(0, (playerSkillLevel - levelThreshold)) * (statLossPercentage * 0.01D);
+            double statsLost =
+                    Math.max(0, (playerSkillLevel - levelThreshold)) * (statLossPercentage * 0.01D);
             int levelsLost = (int) statsLost;
             int xpLost = (int) Math.floor(playerSkillXpLevel * (statsLost - levelsLost));
             levelChanged.put(primarySkillType.toString(), levelsLost);
@@ -64,21 +68,26 @@ public final class HardcoreManager {
             return;
         }
 
-        NotificationManager.sendPlayerInformation(player, NotificationType.HARDCORE_MODE, "Hardcore.DeathStatLoss.PlayerDeath", String.valueOf(totalLevelsLost));
+        NotificationManager.sendPlayerInformation(player, NotificationType.HARDCORE_MODE,
+                "Hardcore.DeathStatLoss.PlayerDeath", String.valueOf(totalLevelsLost));
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
 
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasHardcoreFlag(killer) || !WorldGuardManager.getInstance().hasHardcoreFlag(victim))
+            if (!WorldGuardManager.getInstance().hasHardcoreFlag(killer)
+                    || !WorldGuardManager.getInstance().hasHardcoreFlag(victim)) {
                 return;
+            }
         }
 
-        double vampirismStatLeechPercentage = mcMMO.p.getGeneralConfig().getHardcoreVampirismStatLeechPercentage();
+        double vampirismStatLeechPercentage = mcMMO.p.getGeneralConfig()
+                .getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = mcMMO.p.getGeneralConfig().getHardcoreVampirismLevelThreshold();
 
-        if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
+        if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null) {
             return;
+        }
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
@@ -97,7 +106,8 @@ public final class HardcoreManager {
             int killerSkillLevel = killerProfile.getSkillLevel(primarySkillType);
             int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 
-            if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
+            if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2
+                    || victimSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0F);
                 continue;
@@ -119,11 +129,17 @@ public final class HardcoreManager {
         }
 
         if (totalLevelsStolen > 0) {
-            NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Success", String.valueOf(totalLevelsStolen), victim.getName());
-            NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Success", killer.getName(), String.valueOf(totalLevelsStolen));
+            NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE,
+                    "Hardcore.Vampirism.Killer.Success", String.valueOf(totalLevelsStolen),
+                    victim.getName());
+            NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE,
+                    "Hardcore.Vampirism.Victim.Success", killer.getName(),
+                    String.valueOf(totalLevelsStolen));
         } else {
-            NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Failure", victim.getName());
-            NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Failure", killer.getName());
+            NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE,
+                    "Hardcore.Vampirism.Killer.Failure", victim.getName());
+            NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE,
+                    "Hardcore.Vampirism.Victim.Failure", killer.getName());
         }
     }
 

@@ -24,7 +24,8 @@ public class MmoeditCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill,
+            int value) {
         int skillLevel = profile.getSkillLevel(skill);
         float xpRemoved = profile.getSkillXpLevelRaw(skill);
 
@@ -39,29 +40,35 @@ public class MmoeditCommand extends ExperienceCommand {
             return;
         }
 
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         if (mmoPlayer != null) {
-            EventUtils.tryLevelEditEvent(mmoPlayer, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+            EventUtils.tryLevelEditEvent(mmoPlayer, skill, value, xpRemoved, value > skillLevel,
+                    XPGainReason.COMMAND, skillLevel);
         } else {
-            EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
+            EventUtils.tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel,
+                    XPGainReason.COMMAND, skillLevel);
         }
 
     }
 
     @Override
     protected void handlePlayerMessageAll(Player player, int value, boolean isSilent) {
-        if (isSilent)
+        if (isSilent) {
             return;
+        }
 
         player.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", value));
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
-        if (isSilent)
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill,
+            boolean isSilent) {
+        if (isSilent) {
             return;
+        }
 
-        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", mcMMO.p.getSkillTools().getLocalizedSkillName(skill), value));
+        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",
+                mcMMO.p.getSkillTools().getLocalizedSkillName(skill), value));
     }
 }

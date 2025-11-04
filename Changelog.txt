@@ -1,7 +1,86 @@
+Version 2.2.044
+    Fixed copper armor and tools not working with Repair or Salvage
+
+Version 2.2.043
+    Added support for the new copper tools and armor added in Minecraft 1.21.9
+    Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)
+    Added copper tools and armor to repair.vanilla.yml (see notes)
+    Added copper tools and armor to salvage.vanilla.yml (see notes)
+    Added copper tools and armor to fishing_treasures.yml (see notes)
+    Added Copper_Nugget to treasures.yml (see notes)
+    Added Copper_Nugget to experience.yml for Smelting XP
+    Added Copper_Golem to experience.yml for Combat XP
+    Fixed mcMMO custom potions not having their name set correctly (see notes)
+    Fixed ExploitFix.PreventArmorStandInteraction in experience.yml not being respected
+    Added ExploitFix.PreventMannequinInteraction to experience.yml to prevent mannequins from granting XP or other effects
+    Fixed bug where Armor Stands would get renamed to heart symbols upon breaking them (see notes)
+    Tweaked potions loaded msg during mcMMO startup to not include potions requiring newer game versions from being included in the total.
+
+    NOTES:
+    You don't need to update your experience.yml, that one updates automatically when you run mcMMO after an update.
+    You will need to manually update the following files manually repair.vanilla.yml, salvage.vanilla.yml, treasures.yml, and fishing_treasures.yml files to get support for copper tools and armor.
+    You can find the default config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
+    You can use this default file to copy paste if you please
+    OR if you haven't customizes these config files, simply delete them to have mcMMO regenerate them with the new entries.
+    mcMMO has an internal blacklist of blocks that abilities and tools won't activate or "ready" on, pretty much anything that is interactable should go on this list, and I performed an audit and there were quite a few missing entries, so I've added them in this update, what this means is you won't click on a button and have it ready your tool anymore, as it should have been doing.
+    Mannequins are treated the same way armor stands are treated, the default behavior is mcMMO won't process on them unless you turn on the setting under ExploitFix in experience.yml, in addition to this their default XP is set to 0.0
+    mcMMO had a setting 'ExploitFix.PreventArmorStandInteraction' to allow mcMMO to process abilities and XP on armor stands, but it was never hooked up! I fixed that mistake in this update.
+    The fix for potion names will only apply to newly created potions.
+    Armor stands that had already been renamed from the heart symbol bug will keep their names, but the bug shouldn't happen anymore
+
+Version 2.2.042
+    mcMMO now listens to BlockDropItemEvent at LOW priority instead of HIGHEST
+    Bonus drops from mcMMO now simply modify quantity in BlockDropItemEvent instead of spawning new ItemStacks.
+    Added McMMOModifyBlockDropItemEvent event, this event is called when mcMMO modifies the quantity of an ItemStack during a BlockDropItemEvent, it is modifiable and cancellable.
+    You can now define custom sounds to be played in sounds.yml (Thank you JeBobs, see notes)
+    Added a cap to how much Blast Mining PVP damage can do to other players
+
+    Notes:
+    The new sounds.yml config file allows you to override the sounds played by mcMMO.
+    Simply define the ID of the sound you want to play for each sound.
+    For example, add an entry for Sounds.TOOL_READY.CustomSoundId into sounds.yml to override the sound played when a tool is "readied".
+    If you are on older versions (1.18, 1.19, etc), instead of registering an ID, you specify the Sound enum.
+    Those who are on newer versions, can define the ID of any sound registered with Paper/Spigot, this allows you to even play custom sounds so long as they are properly loaded on the server.
+    Vanilla minecraft sounds tend to have IDs like "minecraft:ui.toast.challenge_complete", you can google what these keys are.
+
+Version 2.2.041
+    Fixed Berserk failing to crack blocks
+    Added 'Skills.Unarmed.Block_Cracker.Allow_Block_Cracker' to config.yml
+    Removed 'SmoothBrick_To_CrackedBrick', it has been replaced by `Allow_Block_Cracker`
+    Block Cracker can now crack deepslate bricks, deepslate tiles, polished blackstone bricks, and netherbricks
+    Optimizations for Hoppers & Alchemy (thanks Warriorrrr)
+    Fixed buckets being consumed by furnaces (thanks RunqRun)
+    Fixed Repair stripping unsafe enchantments from items (thanks Techirion)
+    Fixed IronGolem causing cast exceptions in rare cases (thanks Techirion)
+
+Version 2.2.040
+    Fixed hover component and action bar messages not working for 1.21.6 and 1.21.7
+    Fixed bug where entries of mctop could be duplicated when using FlatFile
+    Fixed bug where a party leader could leave a party and the party would be left without a party leader
+    Fixed a bug where EcoEnchants and similar plugins could cause an infinite loop within mcMMO during TreeFeller and other abilities
+    Added 'Happy_Ghast' to experience.yml for combat XP
+    Added 'Ghastling' to experience.yml for combat XP
+    Updated Japanese (ja_JP) translation (Thanks ryota-abe)
+    Updated Simplified Chinese (zh_CN) locale (Thanks GhostDC)
+
+Version 2.2.039
+    Added StackOverflow safeguards for abilities dealing damage in mcMMO
+    Improved compatibility with MythicMobs/ModelEngine
+    Improved compatibility with AdvancedEnchantments
+
+Version 2.2.038
+    Fix potion match failing for non-english locales
+    FoliaLib Performance improvements (thanks SirSalad)
+    Fixed situations where Rupture could never end which affected server performance
+
+Version 2.2.037
+    Fixed bug where Alchemy was not matching potions correctly and producing incorrect results (Thanks TheBentoBox)
+
 Version 2.2.036
     Fixed a bug where Chimaera Wing could cause an exception when used
     Fixed bug where Mob Spawners could drop in Blast Mining (thanks TomBock)
     Fixed Spectral Arrows not granting XP for Archery or Crossbows (thanks broccolai)
+    Fixed bug where Trickshot arrows would lose their potion or custom effects
     Added locale strings for /mcmmo help command (thanks Griffeng)
 
 Version 2.2.035
@@ -3231,7 +3310,7 @@ Version 1.5.01
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
- = Fixed bug where player didn't have a mcMMOPlayer object in AsyncPlayerChatEvent
+ = Fixed bug where player didn't have a mmoPlayer object in AsyncPlayerChatEvent
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException

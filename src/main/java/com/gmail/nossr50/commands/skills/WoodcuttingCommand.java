@@ -8,11 +8,10 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class WoodcuttingCommand extends SkillCommand {
     private String treeFellerLength;
@@ -41,7 +40,8 @@ public class WoodcuttingCommand extends SkillCommand {
 
         //Clean Cuts
         if (canTripleDrop) {
-            String[] tripleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.WOODCUTTING_CLEAN_CUTS);
+            String[] tripleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                    SubSkillType.WOODCUTTING_CLEAN_CUTS);
             tripleDropChance = tripleDropStrings[0];
             tripleDropChanceLucky = tripleDropStrings[1];
         }
@@ -55,36 +55,42 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     private void setDoubleDropClassicChanceStrings(Player player) {
-        String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
+        String[] doubleDropStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                SubSkillType.WOODCUTTING_HARVEST_LUMBER);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreeFell = RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(player);
+        canTreeFell = RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER)
+                && Permissions.treeFeller(player);
         canDoubleDrop = !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill)
                 && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RankUtils.getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
-        canTripleDrop = !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill) && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
+        canTripleDrop = !mcMMO.p.getGeneralConfig().getDoubleDropsDisabled(skill)
+                && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_CLEAN_CUTS);
         canLeafBlow = Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
-        canKnockOnWood = canTreeFell && Permissions.canUseSubSkill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
+        canKnockOnWood = canTreeFell && Permissions.canUseSubSkill(player,
+                SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky)
+                    : ""));
         }
 
         if (canTripleDrop) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_CLEAN_CUTS, tripleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", tripleDropChanceLucky)
+                    : ""));
         }
-
 
         if (canKnockOnWood) {
             String lootNote;
@@ -97,14 +103,17 @@ public class WoodcuttingCommand extends SkillCommand {
 
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD, lootNote));
         }
-        
+
         if (canLeafBlow) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Woodcutting.Ability.0"),
+                    LocaleLoader.getString("Woodcutting.Ability.1")));
         }
 
         if (canTreeFell) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_TREE_FELLER, treeFellerLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", treeFellerLengthEndurance) : ""));
+                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus",
+                    treeFellerLengthEndurance) : ""));
         }
 
         return messages;
@@ -114,7 +123,8 @@ public class WoodcuttingCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.WOODCUTTING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+                PrimarySkillType.WOODCUTTING);
 
         return textComponents;
     }

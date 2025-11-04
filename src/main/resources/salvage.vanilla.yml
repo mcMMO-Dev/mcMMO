@@ -91,6 +91,47 @@ Salvageables:
         XpMultiplier: .25
         MaximumQuantity: 2
     #
+    # Copper salvageables
+    ###
+    # Tools
+    COPPER_SWORD:
+        MinimumLevel: 0
+        XpMultiplier: .4
+        MaximumQuantity: 2
+    COPPER_SHOVEL:
+        MinimumLevel: 0
+        XpMultiplier: .25
+        MaximumQuantity: 1
+    COPPER_PICKAXE:
+        MinimumLevel: 0
+        XpMultiplier: .9
+        MaximumQuantity: 3
+    COPPER_AXE:
+        MinimumLevel: 0
+        XpMultiplier: .9
+        MaximumQuantity: 3
+    COPPER_HOE:
+        MinimumLevel: 0
+        XpMultiplier: .4
+        MaximumQuantity: 2
+    # Armor
+    COPPER_HELMET:
+        MinimumLevel: 0
+        XpMultiplier: 1.9
+        MaximumQuantity: 5
+    COPPER_CHESTPLATE:
+        MinimumLevel: 0
+        XpMultiplier: 1.9
+        MaximumQuantity: 8
+    COPPER_LEGGINGS:
+        MinimumLevel: 0
+        XpMultiplier: 1.9
+        MaximumQuantity: 7
+    COPPER_BOOTS:
+        MinimumLevel: 0
+        XpMultiplier: 1.9
+        MaximumQuantity: 4
+    #
     # Iron salvageables
     ###
     # Tools
@@ -219,7 +260,10 @@ Salvageables:
         MinimumLevel: 50
         XpMultiplier: 6
         MaximumQuantity: 4
-
+    #
+    # Netherite salvageables
+    ###
+    # Tools
     NETHERITE_SWORD:
         MinimumLevel: 100
         XpMultiplier: .5

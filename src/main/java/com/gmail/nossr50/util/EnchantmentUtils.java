@@ -1,9 +1,8 @@
 package com.gmail.nossr50.util;
 
+import java.util.HashMap;
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
 
 public class EnchantmentUtils {
 
@@ -35,7 +34,6 @@ public class EnchantmentUtils {
      * Method to get an {@link Enchantment} using it's Vanilla Minecraft name or Bukkit enum name
      *
      * @param enchantmentName Vanilla or Bukkit name of enchantment
-     *
      * @return Enchantment or null if no enchantment was found
      */
     @SuppressWarnings("deprecation")
@@ -48,7 +46,8 @@ public class EnchantmentUtils {
     }
 
     @SuppressWarnings("deprecation")
-    private static void addLegacyEnchantmentLookup(String enchantmentName, String legacyBukkitName) {
+    private static void addLegacyEnchantmentLookup(String enchantmentName,
+            String legacyBukkitName) {
         if (Enchantment.getByName(legacyBukkitName) != null) {
             legacyEnchantments.put(enchantmentName, Enchantment.getByName(legacyBukkitName));
         }

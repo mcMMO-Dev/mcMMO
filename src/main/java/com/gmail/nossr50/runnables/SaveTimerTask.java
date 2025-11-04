@@ -14,12 +14,14 @@ public class SaveTimerTask extends CancellableRunnable {
         // All player data will be saved periodically through this
         int count = 1;
 
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-            mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileSaveTask(mcMMOPlayer.getProfile(), false), count);
+        for (McMMOPlayer mmoPlayer : UserManager.getPlayers()) {
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runLaterAsync(new PlayerProfileSaveTask(mmoPlayer.getProfile(), false), count);
             count++;
         }
 
-        if (mcMMO.p.getPartyConfig().isPartyEnabled())
+        if (mcMMO.p.getPartyConfig().isPartyEnabled()) {
             mcMMO.p.getPartyManager().saveParties();
+        }
     }
 }

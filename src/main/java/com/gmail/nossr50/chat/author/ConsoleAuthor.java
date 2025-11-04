@@ -2,10 +2,9 @@ package com.gmail.nossr50.chat.author;
 
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.util.text.TextUtils;
+import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 public class ConsoleAuthor implements Author {
     private final UUID uuid;

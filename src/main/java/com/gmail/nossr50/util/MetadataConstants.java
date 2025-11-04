@@ -1,28 +1,27 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.metadata.FixedMetadataValue;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Set;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Stores our constants related to metadata
  */
 public class MetadataConstants {
     public static final @NotNull Set<String> MOB_METADATA_KEYS = Set.of(
-        MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB,
-        MetadataConstants.METADATA_KEY_EGG_MOB,
-        MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB,
-        MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB,
-        MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB,
-        MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB,
-        MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN,
-        MetadataConstants.METADATA_KEY_CUSTOM_NAME,
-        MetadataConstants.METADATA_KEY_RUPTURE,
-        MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE,
-        MetadataConstants.METADATA_KEY_OLD_NAME_KEY,
-        MetadataConstants.METADATA_KEY_DODGE_TRACKER
+            MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB,
+            MetadataConstants.METADATA_KEY_EGG_MOB,
+            MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB,
+            MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB,
+            MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB,
+            MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB,
+            MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN,
+            MetadataConstants.METADATA_KEY_CUSTOM_NAME,
+            MetadataConstants.METADATA_KEY_RUPTURE,
+            MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE,
+            MetadataConstants.METADATA_KEY_OLD_NAME_KEY,
+            MetadataConstants.METADATA_KEY_DODGE_TRACKER
     );
 
     public static final @NotNull List<String> ARROW_METADATA_KEYS = List.of(

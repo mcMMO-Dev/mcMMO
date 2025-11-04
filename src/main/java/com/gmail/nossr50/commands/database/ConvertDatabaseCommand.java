@@ -17,17 +17,25 @@ import org.jetbrains.annotations.NotNull;
 
 public class ConvertDatabaseCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label,
+            String[] args) {
         if (args.length == 2) {
             DatabaseType previousType = DatabaseType.getDatabaseType(args[1]);
             DatabaseType newType = mcMMO.getDatabaseManager().getDatabaseType();
 
-            if (previousType == newType || (newType == DatabaseType.CUSTOM && DatabaseManagerFactory.getCustomDatabaseManagerClass().getSimpleName().equalsIgnoreCase(args[1]))) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Same", newType.toString()));
+            if (previousType == newType || (newType == DatabaseType.CUSTOM
+                    && DatabaseManagerFactory.getCustomDatabaseManagerClass()
+                    .getSimpleName()
+                    .equalsIgnoreCase(args[1]))) {
+                sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Same",
+                        newType.toString()));
                 return true;
             }
 
-            DatabaseManager oldDatabase = DatabaseManagerFactory.createDatabaseManager(previousType, mcMMO.getUsersFilePath(), mcMMO.p.getLogger(), mcMMO.p.getPurgeTime(), mcMMO.p.getAdvancedConfig().getStartingLevel());
+            DatabaseManager oldDatabase = DatabaseManagerFactory.createDatabaseManager(previousType,
+                    mcMMO.getUsersFilePath(), mcMMO.p.getLogger(), mcMMO.p.getPurgeTime(),
+                    mcMMO.p.getAdvancedConfig().getStartingLevel());
             if (oldDatabase == null) {
                 sender.sendMessage("Unable to load the old database! Check your log for errors.");
                 return true;
@@ -40,19 +48,26 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                     clazz = Class.forName(args[1]);
 
                     if (!DatabaseManager.class.isAssignableFrom(clazz)) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
+                        sender.sendMessage(
+                                LocaleLoader.getString("Commands.mcconvert.Database.InvalidType",
+                                        args[1]));
                         return true;
                     }
 
-                    oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
+                    oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager(
+                            (Class<? extends DatabaseManager>) clazz);
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
+                    sender.sendMessage(
+                            LocaleLoader.getString("Commands.mcconvert.Database.InvalidType",
+                                    args[1]));
                     return true;
                 }
             }
 
-            sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Start", previousType.toString(), newType.toString()));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Start",
+                    previousType.toString(),
+                    newType.toString()));
 
             UserManager.saveAll();
             UserManager.clearAll();
@@ -64,10 +79,14 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                     mcMMO.getDatabaseManager().saveUser(profile);
                 }
 
-                mcMMO.p.getFoliaLib().getScheduler().runLaterAsync(new PlayerProfileLoadingTask(player), 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                mcMMO.p.getFoliaLib().getScheduler()
+                        .runLaterAsync(new PlayerProfileLoadingTask(player),
+                                1); // 1 Tick delay to ensure the player is marked as online before we begin loading
             }
 
-            mcMMO.p.getFoliaLib().getScheduler().runAsync(new DatabaseConversionTask(oldDatabase, sender, previousType.toString(), newType.toString()));
+            mcMMO.p.getFoliaLib().getScheduler().runAsync(
+                    new DatabaseConversionTask(oldDatabase, sender, previousType.toString(),
+                            newType.toString()));
             return true;
         }
         return false;

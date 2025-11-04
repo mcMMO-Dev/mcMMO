@@ -9,9 +9,11 @@ import org.jetbrains.annotations.NotNull;
 public class PartyHelpCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (args.length == 1) {
-            sender.sendMessage(LocaleLoader.getString("Party.Help.3", "/party join", "/party quit"));
+            sender.sendMessage(
+                    LocaleLoader.getString("Party.Help.3", "/party join", "/party quit"));
             sender.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
             sender.sendMessage(LocaleLoader.getString("Party.Help.4", "/party <lock|unlock>"));
             sender.sendMessage(LocaleLoader.getString("Party.Help.5", "/party password"));

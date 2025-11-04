@@ -5,7 +5,8 @@ import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class BungeeLegacySerializerCompatibilityLayer extends AbstractBungeeSerializerCompatibilityLayer {
+public class BungeeLegacySerializerCompatibilityLayer extends
+        AbstractBungeeSerializerCompatibilityLayer {
     @Override
     public @NonNull Component deserialize(@NonNull BaseComponent @NonNull [] input) {
         return BungeeComponentSerializer.legacy().deserialize(input);

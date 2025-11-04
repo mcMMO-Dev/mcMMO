@@ -1,11 +1,10 @@
 package com.gmail.nossr50.skills.salvage.salvageables;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class SimpleSalvageableManager implements SalvageableManager {
     private final Map<Material, Salvageable> salvageables;

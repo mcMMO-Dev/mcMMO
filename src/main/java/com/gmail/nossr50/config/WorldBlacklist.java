@@ -1,10 +1,13 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.World;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
+import org.bukkit.World;
 
 /**
  * Blacklist certain features in certain worlds
@@ -24,8 +27,9 @@ public class WorldBlacklist {
     public static boolean isWorldBlacklisted(World world) {
 
         for (String s : blacklist) {
-            if (world.getName().equalsIgnoreCase(s))
+            if (world.getName().equalsIgnoreCase(s)) {
                 return true;
+            }
         }
 
         return false;
@@ -36,8 +40,9 @@ public class WorldBlacklist {
         File blackListFile = new File(plugin.getDataFolder() + File.separator + blackListFileName);
 
         try {
-            if (!blackListFile.exists())
+            if (!blackListFile.exists()) {
                 blackListFile.createNewFile();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,11 +62,13 @@ public class WorldBlacklist {
             String currentLine;
 
             while ((currentLine = bufferedReader.readLine()) != null) {
-                if (currentLine.length() == 0)
+                if (currentLine.length() == 0) {
                     continue;
+                }
 
-                if (!blacklist.contains(currentLine))
+                if (!blacklist.contains(currentLine)) {
                     blacklist.add(currentLine);
+                }
             }
 
 
@@ -73,8 +80,9 @@ public class WorldBlacklist {
             closeRead(fileReader);
         }
 
-        if (blacklist.size() > 0)
+        if (blacklist.size() > 0) {
             plugin.getLogger().info(blacklist.size() + " entries in mcMMO World Blacklist");
+        }
     }
 
     private void closeRead(Reader reader) {

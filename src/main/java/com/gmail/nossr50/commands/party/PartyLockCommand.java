@@ -13,7 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyLockCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("lock")) {
@@ -59,13 +60,15 @@ public class PartyLockCommand implements CommandExecutor {
 
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
-        if (!Permissions.partySubcommand(sender, lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {
+        if (!Permissions.partySubcommand(sender,
+                lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {
             sender.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
 
         if (lock == party.isLocked()) {
-            sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
+            sender.sendMessage(
+                    LocaleLoader.getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
             return;
         }
 

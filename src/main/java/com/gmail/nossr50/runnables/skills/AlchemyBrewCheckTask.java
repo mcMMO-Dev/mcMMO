@@ -1,10 +1,13 @@
 package com.gmail.nossr50.runnables.skills;
 
+import static com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer.isValidBrew;
+
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.ContainerMetadataUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import java.util.Arrays;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BrewingStand;
@@ -12,10 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-
-import static com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer.isValidBrew;
 
 public class AlchemyBrewCheckTask extends CancellableRunnable {
     private final BrewingStand brewingStand;
@@ -42,13 +41,16 @@ public class AlchemyBrewCheckTask extends CancellableRunnable {
             }
         }
         final Location location = brewingStand.getLocation();
-        final ItemStack[] newInventory = Arrays.copyOfRange(brewingStand.getInventory().getContents(), 0, 4);
-        boolean validBrew = brewingStand.getFuelLevel() > 0 && isValidBrew(ingredientLevel, newInventory);
+        final ItemStack[] newInventory = Arrays.copyOfRange(
+                brewingStand.getInventory().getContents(), 0, 4);
+        boolean validBrew =
+                brewingStand.getFuelLevel() > 0 && isValidBrew(ingredientLevel, newInventory);
 
         if (Alchemy.brewingStandMap.containsKey(location)) {
             if (oldInventory[Alchemy.INGREDIENT_SLOT] == null
                     || newInventory[Alchemy.INGREDIENT_SLOT] == null
-                    || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT])
+                    || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(
+                    newInventory[Alchemy.INGREDIENT_SLOT])
                     || !validBrew) {
                 Alchemy.brewingStandMap.get(location).cancelBrew();
             }

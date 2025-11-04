@@ -1,26 +1,33 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import com.gmail.nossr50.mcMMO;
-import com.google.common.io.Files;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.junit.jupiter.api.*;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
-
-import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.*;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.LEGACY_WORLD_HEIGHT_MAX;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.LEGACY_WORLD_HEIGHT_MIN;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.assertChunkStoreEquals;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.assertEqualIgnoreMinMax;
+import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.serializeChunkStore;
 import static com.gmail.nossr50.util.blockmeta.UserBlockTrackerTest.recursiveDelete;
 import static org.bukkit.Bukkit.getWorld;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
+
+import com.gmail.nossr50.mcMMO;
+import com.google.common.io.Files;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 class BitSetChunkStoreTest {
     private static File tempDir;
@@ -88,7 +95,8 @@ class BitSetChunkStoreTest {
         original.setTrue(14, 90, 12);
         original.setTrue(13, 89, 12);
         byte[] serializedBytes = serializeChunkStore(original);
-        final ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
+        final ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(
+                new DataInputStream(new ByteArrayInputStream(serializedBytes)));
         assertChunkStoreEquals(original, deserialized);
     }
 
@@ -101,7 +109,8 @@ class BitSetChunkStoreTest {
         original.setTrue(14, -64, 12);
         original.setTrue(13, -63, 12);
         byte[] serializedBytes = serializeChunkStore(original);
-        final ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
+        final ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(
+                new DataInputStream(new ByteArrayInputStream(serializedBytes)));
         assertChunkStoreEquals(original, deserialized);
     }
 
@@ -114,7 +123,8 @@ class BitSetChunkStoreTest {
         byte[] serializedBytes = serializeChunkStore(original);
 
         when(mockWorld.getMinHeight()).thenReturn(-64);
-        final ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(new DataInputStream(new ByteArrayInputStream(serializedBytes)));
+        final ChunkStore deserialized = BitSetChunkStore.Serialization.readChunkStore(
+                new DataInputStream(new ByteArrayInputStream(serializedBytes)));
         assert deserialized != null;
         assertEqualIgnoreMinMax(original, deserialized);
     }

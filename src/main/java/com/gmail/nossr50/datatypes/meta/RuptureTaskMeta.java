@@ -8,11 +8,12 @@ import org.jetbrains.annotations.NotNull;
 public class RuptureTaskMeta extends FixedMetadataValue {
 
     private final @NotNull RuptureTask ruptureTask;
+
     /**
      * Initializes a FixedMetadataValue with an Object
      *
      * @param owningPlugin the {@link Plugin} that created this metadata value
-     * @param ruptureTask        the value assigned to this metadata value
+     * @param ruptureTask the value assigned to this metadata value
      */
     public RuptureTaskMeta(@NotNull Plugin owningPlugin, @NotNull RuptureTask ruptureTask) {
         super(owningPlugin, ruptureTask);

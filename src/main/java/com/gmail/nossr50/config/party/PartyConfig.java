@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.party;
 
 import com.gmail.nossr50.config.BukkitConfig;
-
 import java.io.File;
 
 public class PartyConfig extends BukkitConfig {

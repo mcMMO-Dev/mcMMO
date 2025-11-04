@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 public interface Author extends Identity {
 
     /**
-     * The name of this author as used in mcMMO chat
-     * This is the {@link String} representation of the users current chat username
-     * This can either be the player's display name or the player's official registered nickname with Mojang it depends on the servers chat settings for mcMMO
+     * The name of this author as used in mcMMO chat This is the {@link String} representation of
+     * the users current chat username This can either be the player's display name or the player's
+     * official registered nickname with Mojang it depends on the servers chat settings for mcMMO
      *
      * @param chatChannel which chat channel this is going to
      * @return The name of this author as used in mcMMO chat
@@ -25,6 +25,7 @@ public interface Author extends Identity {
 
     /**
      * Whether this author is a {@link org.bukkit.entity.Player}
+     *
      * @return true if this author is a player
      */
     boolean isPlayer();

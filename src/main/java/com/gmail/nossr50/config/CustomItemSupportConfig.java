@@ -14,10 +14,12 @@ public class CustomItemSupportConfig extends BukkitConfig {
     }
 
     public boolean isCustomRepairAllowed() {
-        return config.getBoolean("Custom_Item_Support.Repair.Allow_Repair_On_Items_With_Custom_Model_Data", true);
+        return config.getBoolean(
+                "Custom_Item_Support.Repair.Allow_Repair_On_Items_With_Custom_Model_Data", true);
     }
 
     public boolean isCustomSalvageAllowed() {
-        return config.getBoolean("Custom_Item_Support.Salvage.Allow_Salvage_On_Items_With_Custom_Model_Data", true);
+        return config.getBoolean(
+                "Custom_Item_Support.Salvage.Allow_Salvage_On_Items_With_Custom_Model_Data", true);
     }
 }

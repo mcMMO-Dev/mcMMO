@@ -1,5 +1,8 @@
 package com.gmail.nossr50.util.skills;
 
+import static com.gmail.nossr50.util.MetadataConstants.ARROW_METADATA_KEYS;
+import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
 import org.bukkit.block.BlockFace;
@@ -10,9 +13,6 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
-import static com.gmail.nossr50.util.MetadataConstants.ARROW_METADATA_KEYS;
-import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
 
 public class ProjectileUtils {
 
@@ -47,13 +47,14 @@ public class ProjectileUtils {
      * @param targetArrow The arrow to which metadata is copied.
      */
     public static void copyArrowMetadata(@NotNull Plugin pluginRef, @NotNull Arrow sourceArrow,
-                                         @NotNull Arrow targetArrow) {
+            @NotNull Arrow targetArrow) {
         ARROW_METADATA_KEYS.stream()
                 .filter(sourceArrow::hasMetadata)
                 .forEach(key -> {
                     final MetadataValue metadataValue = sourceArrow.getMetadata(key).get(0);
                     if (key.equals(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
-                        targetArrow.setMetadata(key, new FixedMetadataValue(pluginRef, metadataValue.asDouble()));
+                        targetArrow.setMetadata(key,
+                                new FixedMetadataValue(pluginRef, metadataValue.asDouble()));
                     } else if (key.equals(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE)) {
                         targetArrow.setMetadata(key, MCMMO_METADATA_VALUE);
                     } else {

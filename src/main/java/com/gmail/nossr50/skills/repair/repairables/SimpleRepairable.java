@@ -17,7 +17,9 @@ public class SimpleRepairable implements Repairable {
     private final double xpMultiplier;
     private int minQuantity = -1;
 
-    protected SimpleRepairable(Material type, Material repairMaterial, String repairMaterialPrettyName, int minimumLevel, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
+    protected SimpleRepairable(Material type, Material repairMaterial,
+            String repairMaterialPrettyName, int minimumLevel, short maximumDurability,
+            ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
         this.itemMaterial = type;
         this.repairMaterial = repairMaterial;
         this.repairMaterialPrettyName = repairMaterialPrettyName;
@@ -28,7 +30,10 @@ public class SimpleRepairable implements Repairable {
         this.xpMultiplier = xpMultiplier;
     }
 
-    protected SimpleRepairable(Material type, Material repairMaterial, String repairMaterialPrettyName, int minimumLevel, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier, int minQuantity) {
+    protected SimpleRepairable(Material type, Material repairMaterial,
+            String repairMaterialPrettyName, int minimumLevel, short maximumDurability,
+            ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier,
+            int minQuantity) {
         this.itemMaterial = type;
         this.repairMaterial = repairMaterial;
         this.repairMaterialPrettyName = repairMaterialPrettyName;
@@ -67,10 +72,12 @@ public class SimpleRepairable implements Repairable {
 
     @Override
     public int getMinimumQuantity() {
-        if (minQuantity == -1)
-            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial), 1);
-        else
+        if (minQuantity == -1) {
+            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial),
+                    1);
+        } else {
             return minQuantity;
+        }
     }
 
     @Override

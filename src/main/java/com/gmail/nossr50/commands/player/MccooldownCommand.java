@@ -8,17 +8,17 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class MccooldownCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -28,9 +28,10 @@ public class MccooldownCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
 
-            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled() && mcMMO.p.getGeneralConfig().getCooldownUseBoard()) {
+            if (mcMMO.p.getGeneralConfig().getScoreboardsEnabled() && mcMMO.p.getGeneralConfig()
+                    .getCooldownUseBoard()) {
                 ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
                 if (!mcMMO.p.getGeneralConfig().getCooldownUseChat()) {
@@ -43,7 +44,7 @@ public class MccooldownCommand implements TabExecutor {
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
             player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
             player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
@@ -53,12 +54,14 @@ public class MccooldownCommand implements TabExecutor {
                     continue;
                 }
 
-                int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
+                int seconds = mmoPlayer.calculateTimeRemaining(ability);
 
                 if (seconds <= 0) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getLocalizedName()));
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y",
+                            ability.getLocalizedName()));
                 } else {
-                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getLocalizedName(), seconds));
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N",
+                            ability.getLocalizedName(), seconds));
                 }
             }
 
@@ -68,7 +71,8 @@ public class MccooldownCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, String[] args) {
         return ImmutableList.of();
     }
 }

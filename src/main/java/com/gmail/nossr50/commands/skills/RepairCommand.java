@@ -13,12 +13,11 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.text.TextComponentFactory;
+import java.util.ArrayList;
+import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RepairCommand extends SkillCommand {
     private String repairMasteryBonus;
@@ -49,10 +48,14 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue) {
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = mcMMO.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
-        Repairable goldRepairable = mcMMO.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
-        Repairable ironRepairable = mcMMO.getRepairableManager().getRepairable(Material.IRON_PICKAXE);
-        Repairable stoneRepairable = mcMMO.getRepairableManager().getRepairable(Material.STONE_PICKAXE);
+        Repairable diamondRepairable = mcMMO.getRepairableManager()
+                .getRepairable(Material.DIAMOND_PICKAXE);
+        Repairable goldRepairable = mcMMO.getRepairableManager()
+                .getRepairable(Material.GOLDEN_PICKAXE);
+        Repairable ironRepairable = mcMMO.getRepairableManager()
+                .getRepairable(Material.IRON_PICKAXE);
+        Repairable stoneRepairable = mcMMO.getRepairableManager()
+                .getRepairable(Material.STONE_PICKAXE);
 
         // TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
         diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
@@ -62,12 +65,15 @@ public class RepairCommand extends SkillCommand {
 
         // REPAIR MASTERY
         if (canMasterRepair) {
-            repairMasteryBonus = percent.format(Math.min(((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * skillValue), Repair.repairMasteryMaxBonus) / 100D);
+            repairMasteryBonus = percent.format(Math.min(
+                    ((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel)
+                            * skillValue), Repair.repairMasteryMaxBonus) / 100D);
         }
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer, SubSkillType.REPAIR_SUPER_REPAIR);
+            String[] superRepairStrings = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
+                    SubSkillType.REPAIR_SUPER_REPAIR);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -85,11 +91,13 @@ public class RepairCommand extends SkillCommand {
         canRepairString = Permissions.repairMaterialType(player, MaterialType.STRING);
         canRepairLeather = Permissions.repairMaterialType(player, MaterialType.LEATHER);
         canRepairWood = Permissions.repairMaterialType(player, MaterialType.WOOD);
-        arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(player));
+        arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(
+                player));
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance,
+            boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {
@@ -103,17 +111,20 @@ public class RepairCommand extends SkillCommand {
             if (ArcaneForging.arcaneForgingEnchantLoss || ArcaneForging.arcaneForgingDowngrades) {
                 messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,
                         String.valueOf(arcaneBypass ? 100 : repairManager.getKeepEnchantChance()),
-                        String.valueOf(arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses
+                        String.valueOf(arcaneBypass ? 0
+                                : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses
             }
         }
-        
+
         if (canMasterRepair) {
-            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_REPAIR_MASTERY, repairMasteryBonus));
+            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_REPAIR_MASTERY,
+                    repairMasteryBonus));
         }
 
         if (canSuperRepair) {
             messages.add(getStatMessage(SubSkillType.REPAIR_SUPER_REPAIR, superRepairChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky)
+                    : ""));
         }
 
         return messages;
@@ -123,7 +134,8 @@ public class RepairCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.REPAIR);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+                PrimarySkillType.REPAIR);
 
         return textComponents;
     }

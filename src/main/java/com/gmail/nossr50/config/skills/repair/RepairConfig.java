@@ -1,5 +1,20 @@
 package com.gmail.nossr50.config.skills.repair;
 
+import static com.gmail.nossr50.util.ItemUtils.isCopperArmor;
+import static com.gmail.nossr50.util.ItemUtils.isCopperTool;
+import static com.gmail.nossr50.util.ItemUtils.isDiamondArmor;
+import static com.gmail.nossr50.util.ItemUtils.isDiamondTool;
+import static com.gmail.nossr50.util.ItemUtils.isGoldArmor;
+import static com.gmail.nossr50.util.ItemUtils.isGoldTool;
+import static com.gmail.nossr50.util.ItemUtils.isIronArmor;
+import static com.gmail.nossr50.util.ItemUtils.isIronTool;
+import static com.gmail.nossr50.util.ItemUtils.isLeatherArmor;
+import static com.gmail.nossr50.util.ItemUtils.isNetheriteArmor;
+import static com.gmail.nossr50.util.ItemUtils.isNetheriteTool;
+import static com.gmail.nossr50.util.ItemUtils.isStoneTool;
+import static com.gmail.nossr50.util.ItemUtils.isStringTool;
+import static com.gmail.nossr50.util.ItemUtils.isWoodTool;
+
 import com.gmail.nossr50.config.BukkitConfig;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
@@ -8,11 +23,15 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.LogUtils;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.*;
 
 public class RepairConfig extends BukkitConfig {
     private final HashSet<String> notSupported;
@@ -56,27 +75,30 @@ public class RepairConfig extends BukkitConfig {
 
             // Repair Material Type
             MaterialType repairMaterialType = MaterialType.OTHER;
-            String repairMaterialTypeString = config.getString("Repairables." + key + ".MaterialType", "OTHER");
+            String repairMaterialTypeString = config.getString(
+                    "Repairables." + key + ".MaterialType", "OTHER");
 
-            if (!config.contains("Repairables." + key + ".MaterialType") && itemMaterial != null) {
-                ItemStack repairItem = new ItemStack(itemMaterial);
+            if (!config.contains("Repairables." + key + ".MaterialType")) {
+                final ItemStack repairItem = new ItemStack(itemMaterial);
 
-                if (ItemUtils.isWoodTool(repairItem)) {
+                if (isWoodTool(repairItem)) {
                     repairMaterialType = MaterialType.WOOD;
-                } else if (ItemUtils.isStoneTool(repairItem)) {
+                } else if (isStoneTool(repairItem)) {
                     repairMaterialType = MaterialType.STONE;
-                } else if (ItemUtils.isStringTool(repairItem)) {
+                } else if (isStringTool(repairItem)) {
                     repairMaterialType = MaterialType.STRING;
-                } else if (ItemUtils.isLeatherArmor(repairItem)) {
+                } else if (isLeatherArmor(repairItem)) {
                     repairMaterialType = MaterialType.LEATHER;
-                } else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
+                } else if (isIronArmor(repairItem) || isIronTool(repairItem)) {
                     repairMaterialType = MaterialType.IRON;
-                } else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
+                } else if (isGoldArmor(repairItem) || isGoldTool(repairItem)) {
                     repairMaterialType = MaterialType.GOLD;
-                } else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
+                } else if (isDiamondArmor(repairItem) || isDiamondTool(repairItem)) {
                     repairMaterialType = MaterialType.DIAMOND;
-                } else if (ItemUtils.isNetheriteArmor(repairItem) || ItemUtils.isNetheriteTool(repairItem)) {
+                } else if (isNetheriteArmor(repairItem) || isNetheriteTool(repairItem)) {
                     repairMaterialType = MaterialType.NETHERITE;
+                } else if (isCopperTool(repairItem) || isCopperArmor(repairItem)) {
+                    repairMaterialType = MaterialType.COPPER;
                 }
             } else {
                 try {
@@ -88,7 +110,9 @@ public class RepairConfig extends BukkitConfig {
 
             // Repair Material
             String repairMaterialName = config.getString("Repairables." + key + ".RepairMaterial");
-            Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
+            Material repairMaterial = (repairMaterialName == null
+                    ? repairMaterialType.getDefaultMaterial()
+                    : Material.matchMaterial(repairMaterialName));
 
             if (repairMaterial == null) {
                 notSupported.add(key); //Collect names of unsupported items
@@ -96,10 +120,11 @@ public class RepairConfig extends BukkitConfig {
             }
 
             // Maximum Durability
-            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Repairables." + key + ".MaximumDurability"));
+            short maximumDurability = itemMaterial.getMaxDurability();
 
             if (maximumDurability <= 0) {
-                maximumDurability = (short) config.getInt("Repairables." + key + ".MaximumDurability");
+                maximumDurability = (short) config.getInt(
+                        "Repairables." + key + ".MaximumDurability");
             }
 
             if (maximumDurability <= 0) {
@@ -108,7 +133,8 @@ public class RepairConfig extends BukkitConfig {
 
             // Item Type
             ItemType repairItemType = ItemType.OTHER;
-            String repairItemTypeString = config.getString("Repairables." + key + ".ItemType", "OTHER");
+            String repairItemTypeString = config.getString("Repairables." + key + ".ItemType",
+                    "OTHER");
 
             if (!config.contains("Repairables." + key + ".ItemType") && itemMaterial != null) {
                 ItemStack repairItem = new ItemStack(itemMaterial);
@@ -141,15 +167,24 @@ public class RepairConfig extends BukkitConfig {
             }
 
             if (noErrorsInRepairable(reason)) {
-                Repairable repairable = RepairableFactory.getRepairable(itemMaterial, repairMaterial, null, minimumLevel, maximumDurability, repairItemType, repairMaterialType, xpMultiplier, minimumQuantity);
-                repairables.add(repairable);
+                try {
+                    final Repairable repairable = RepairableFactory.getRepairable(
+                            itemMaterial, repairMaterial, null, minimumLevel, maximumDurability,
+                            repairItemType,
+                            repairMaterialType, xpMultiplier, minimumQuantity);
+                    repairables.add(repairable);
+                } catch (Exception e) {
+                    mcMMO.p.getLogger().log(Level.SEVERE,
+                            "Error loading repairable from config entry: " + key, e);
+                }
             }
         }
         //Report unsupported
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (notSupported.size() > 0) {
-            stringBuilder.append("mcMMO found the following materials in the Repair config that are not supported by the version of Minecraft running on this server: ");
+        if (!notSupported.isEmpty()) {
+            stringBuilder.append(
+                    "mcMMO found the following materials in the Repair config that are not supported by the version of Minecraft running on this server: ");
 
             for (Iterator<String> iterator = notSupported.iterator(); iterator.hasNext(); ) {
                 String unsupportedMaterial = iterator.next();
@@ -162,7 +197,8 @@ public class RepairConfig extends BukkitConfig {
             }
 
             LogUtils.debug(mcMMO.p.getLogger(), stringBuilder.toString());
-            LogUtils.debug(mcMMO.p.getLogger(), "Items using materials that are not supported will simply be skipped.");
+            LogUtils.debug(mcMMO.p.getLogger(),
+                    "Items using materials that are not supported will simply be skipped.");
         }
     }
 

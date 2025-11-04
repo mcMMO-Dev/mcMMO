@@ -1,5 +1,14 @@
 package com.gmail.nossr50.database;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+
 import com.gmail.nossr50.database.flatfile.LeaderboardStatus;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -8,15 +17,12 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.io.Files;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -26,9 +32,13 @@ import java.util.UUID;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class FlatFileDatabaseManagerTest {
 
@@ -94,14 +104,16 @@ class FlatFileDatabaseManagerTest {
 
     private static final String[] badUUIDDatabaseData = {
             "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
-            "z750:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:3:5:1600906906:", //This one has an incorrect UUID representation
+            "z750:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:3:5:1600906906:",
+            //This one has an incorrect UUID representation
             "powerless:0:::0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0::0:0:0:0:0:0:0:0:0::0:0:0:0:HEARTS:0:0:e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c:5:1600906906:"
     };
 
     private static final String[] outdatedDatabaseData = {
             "nossr50:1000:::0:1000:640:1000:1000:1000:1000:1000:1000:1000:1000:16:0:500:0:0:0:0:0::1000:0:0:0:1593543012:0:0:0:0::1000:0:0:1593806053:HEARTS:1000:0:588fe472-1c82-4c4e-9aa1-7eefccb277e3:0:0:",
             "mrfloris:2420:::0:2452:0:1983:1937:1790:3042:1138:3102:2408:3411:0:0:0:0:0:0:0:0::642:0:1617583171:0:1617165043:0:1617583004:1617563189:1616785408::2184:0:0:1617852413:HEARTS:415:0:631e3896-da2a-4077-974b-d047859d76bc:5:1600906906:",
-            "electronicboy:0:::0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0::0:0:0:0:0:0:0:0:0::0:0:0:0:HEARTS:0:0:e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c:" //This user is missing data added after UUID index
+            "electronicboy:0:::0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0::0:0:0:0:0:0:0:0:0::0:0:0:0:HEARTS:0:0:e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c:"
+            //This user is missing data added after UUID index
     };
 
     private static final String[] emptyLineDatabaseData = {
@@ -149,14 +161,16 @@ class FlatFileDatabaseManagerTest {
 
     @Test
     void testUpdateLeaderboards() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         assertNotNull(flatFileDatabaseManager);
         assertEquals(LeaderboardStatus.UPDATED, flatFileDatabaseManager.updateLeaderboards());
     }
 
     @Test
     void testSaveUser() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         //Make a Profile to save and check to see if it worked
         UUID uuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
         String playerName = "nossr50";
@@ -165,7 +179,8 @@ class FlatFileDatabaseManagerTest {
 
         //Save the zero version and see if it looks correct
         assertNotNull(flatFileDatabaseManager);
-        assertTrue(flatFileDatabaseManager.getUsersFile().exists()); //Users file should have been created from the above com.gmail.nossr50.database.FlatFileDatabaseManager.checkFileHealthAndStructure
+        assertTrue(flatFileDatabaseManager.getUsersFile()
+                .exists()); //Users file should have been created from the above com.gmail.nossr50.database.FlatFileDatabaseManager.checkFileHealthAndStructure
         assertNotNull(flatFileDatabaseManager.getUsersFile());
 
         //The flatFileDatabaseManager is empty at this point, add our user
@@ -173,7 +188,8 @@ class FlatFileDatabaseManagerTest {
 
         //Check for the empty profile
         PlayerProfile retrievedFromData = flatFileDatabaseManager.loadPlayerProfile(uuid);
-        assertTrue(retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
+        assertTrue(
+                retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
         assertEquals(uuid, retrievedFromData.getUniqueId());
         assertEquals(playerName, retrievedFromData.getPlayerName());
 
@@ -183,10 +199,12 @@ class FlatFileDatabaseManagerTest {
 
         String alteredName = "changedmyname";
         PlayerProfile changedNameProfile = new PlayerProfile(alteredName, uuid, 0);
-        assertTrue(flatFileDatabaseManager.saveUser(changedNameProfile)); //True means we saved the user
+        assertTrue(flatFileDatabaseManager.saveUser(
+                changedNameProfile)); //True means we saved the user
 
         retrievedFromData = flatFileDatabaseManager.loadPlayerProfile(uuid);
-        assertTrue(retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
+        assertTrue(
+                retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
         assertEquals(uuid, retrievedFromData.getUniqueId());
         assertEquals(alteredName, retrievedFromData.getPlayerName());
     }
@@ -194,7 +212,8 @@ class FlatFileDatabaseManagerTest {
     @Test
     void testAddedMissingLastLoginValues() {
         File dbFile = prepareDatabaseTestResource(DB_MISSING_LAST_LOGIN);
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(dbFile,
+                logger, PURGE_TIME, 0, true);
         List<FlatFileDataFlag> flagsFound = flatFileDatabaseManager.checkFileHealthAndStructure();
         assertNotNull(flagsFound);
         assertTrue(flagsFound.contains(FlatFileDataFlag.LAST_LOGIN_SCHEMA_UPGRADE));
@@ -207,7 +226,8 @@ class FlatFileDatabaseManagerTest {
     @Test
     void testLoadByName() {
         File healthyDB = prepareDatabaseTestResource(DB_HEALTHY);
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(healthyDB, logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(healthyDB,
+                logger, PURGE_TIME, 0, true);
         List<FlatFileDataFlag> flagsFound = flatFileDatabaseManager.checkFileHealthAndStructure();
         assertNull(flagsFound); //No flags should be found
 
@@ -225,7 +245,9 @@ class FlatFileDatabaseManagerTest {
         String playerName = "nossr50";
 
         int newUserTestStartingLvl = 1337;
-        var flatFileDatabaseManager = new FlatFileDatabaseManager(new File(tempDir.getPath() + File.separator + TEST_FILE_NAME), logger, PURGE_TIME, newUserTestStartingLvl, true);
+        var flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(tempDir.getPath() + File.separator + TEST_FILE_NAME), logger, PURGE_TIME,
+                newUserTestStartingLvl, true);
         flatFileDatabaseManager.checkFileHealthAndStructure();
 
         PlayerProfile playerProfile = flatFileDatabaseManager.newUser(playerName, uuid);
@@ -260,7 +282,8 @@ class FlatFileDatabaseManagerTest {
         File file = prepareDatabaseTestResource(DB_HEALTHY); //Existing DB
 
         int newUserTestStartingLvl = 1337;
-        var flatFileDatabaseManager = new FlatFileDatabaseManager(file, logger, PURGE_TIME, newUserTestStartingLvl, true);
+        var flatFileDatabaseManager = new FlatFileDatabaseManager(file, logger, PURGE_TIME,
+                newUserTestStartingLvl, true);
         flatFileDatabaseManager.checkFileHealthAndStructure();
 
         PlayerProfile playerProfile = flatFileDatabaseManager.newUser(playerName, uuid);
@@ -292,15 +315,16 @@ class FlatFileDatabaseManagerTest {
 
     private void checkNewUserValues(@NotNull PlayerProfile playerProfile, int startingLevel) {
         //Checking a new user for being zero initialized
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (SkillTools.isChildSkill(primarySkillType))
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (SkillTools.isChildSkill(primarySkillType)) {
                 continue;
+            }
 
             assertEquals(startingLevel, playerProfile.getSkillLevel(primarySkillType));
             assertEquals(0, playerProfile.getSkillXpLevelRaw(primarySkillType), 0);
         }
 
-        for(SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             assertEquals(0, playerProfile.getAbilityDATS(superAbilityType));
         }
 
@@ -312,7 +336,8 @@ class FlatFileDatabaseManagerTest {
     @Test
     void testLoadByUUID() {
         File dbFile = prepareDatabaseTestResource(DB_HEALTHY);
-        var flatFileDatabaseManager = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0, true);
+        var flatFileDatabaseManager = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0,
+                true);
         List<FlatFileDataFlag> flagsFound = flatFileDatabaseManager.checkFileHealthAndStructure();
         assertNull(flagsFound); //No flags should be found
 
@@ -326,14 +351,15 @@ class FlatFileDatabaseManagerTest {
         PlayerProfile profile1 = flatFileDatabaseManager.loadPlayerProfile(uuid);
         testHealthyDataProfileValues(playerName, uuid, profile1);
 
-
-        assertFalse(flatFileDatabaseManager.loadPlayerProfile(new UUID(0, 1)).isLoaded()); //This profile should not exist and therefor will return unloaded
+        assertFalse(flatFileDatabaseManager.loadPlayerProfile(new UUID(0, 1))
+                .isLoaded()); //This profile should not exist and therefor will return unloaded
     }
 
     @Test
     void testLoadByUUIDAndName() {
         File dbFile = prepareDatabaseTestResource(DB_HEALTHY);
-        var flatFileDatabaseManager = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0, true);
+        var flatFileDatabaseManager = new FlatFileDatabaseManager(dbFile, logger, PURGE_TIME, 0,
+                true);
         List<FlatFileDataFlag> flagsFound = flatFileDatabaseManager.checkFileHealthAndStructure();
         assertNull(flagsFound); //No flags should be found
 
@@ -346,7 +372,8 @@ class FlatFileDatabaseManagerTest {
 
         String updatedName = "updatedName";
         Player updatedNamePlayer = initMockPlayer(updatedName, uuid);
-        PlayerProfile updatedNameProfile = flatFileDatabaseManager.loadPlayerProfile(updatedNamePlayer);
+        PlayerProfile updatedNameProfile = flatFileDatabaseManager.loadPlayerProfile(
+                updatedNamePlayer);
         testHealthyDataProfileValues(updatedName, uuid, updatedNameProfile);
 
         Player shouldNotExist = initMockPlayer("doesntexist", new UUID(0, 1));
@@ -387,8 +414,10 @@ class FlatFileDatabaseManagerTest {
         return copyOfFile;
     }
 
-    private void testHealthyDataProfileValues(@NotNull String playerName, @NotNull UUID uuid, @NotNull PlayerProfile profile) {
-        assertTrue(profile.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
+    private void testHealthyDataProfileValues(@NotNull String playerName, @NotNull UUID uuid,
+            @NotNull PlayerProfile profile) {
+        assertTrue(
+                profile.isLoaded()); //PlayerProfile::isLoaded returns true if the data was created from the file, false if it wasn't found and a dummy profile was returned
         assertEquals(uuid, profile.getUniqueId());
         assertEquals(playerName, profile.getPlayerName());
 
@@ -396,25 +425,30 @@ class FlatFileDatabaseManagerTest {
          * Player is a match and data is loaded, check values
          */
 
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (SkillTools.isChildSkill(primarySkillType))
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (SkillTools.isChildSkill(primarySkillType)) {
                 continue;
+            }
 
-            int expectedLevelHealthyDBEntryOne = getExpectedLevelHealthyDBEntryOne(primarySkillType);
+            int expectedLevelHealthyDBEntryOne = getExpectedLevelHealthyDBEntryOne(
+                    primarySkillType);
             int skillLevel = profile.getSkillLevel(primarySkillType);
             assertEquals(expectedLevelHealthyDBEntryOne, skillLevel);
 
-            float expectedExperienceHealthyDBEntryOne = getExpectedExperienceHealthyDBEntryOne(primarySkillType);
+            float expectedExperienceHealthyDBEntryOne = getExpectedExperienceHealthyDBEntryOne(
+                    primarySkillType);
             float skillXpLevelRaw = profile.getSkillXpLevelRaw(primarySkillType);
             assertEquals(expectedExperienceHealthyDBEntryOne, skillXpLevelRaw, 0);
         }
 
         //Check the other things
-        for(SuperAbilityType superAbilityType : SuperAbilityType.values()) {
-            assertEquals(getExpectedSuperAbilityDATS(superAbilityType), profile.getAbilityDATS(superAbilityType));
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+            assertEquals(getExpectedSuperAbilityDATS(superAbilityType),
+                    profile.getAbilityDATS(superAbilityType));
         }
 
-        assertEquals(expectedChimaeraWingCd, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
+        assertEquals(expectedChimaeraWingCd,
+                profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
         assertEquals(expectedScoreboardTips, profile.getScoreboardTipsShown());
         assertEquals(expectedLastLogin, profile.getLastLogin());
     }
@@ -433,13 +467,15 @@ class FlatFileDatabaseManagerTest {
             case TRIDENTS_SUPER_ABILITY -> expectedTridentSuperCd;
             case EXPLOSIVE_SHOT -> expectedExplosiveShotCd;
             case MACES_SUPER_ABILITY -> expectedMacesSuperCd;
-            default -> throw new RuntimeException("Values not defined for super ability please add " +
-                    "values for " + superAbilityType.toString() + " to the test");
+            default ->
+                    throw new RuntimeException("Values not defined for super ability please add " +
+                            "values for " + superAbilityType + " to the test");
         };
 
     }
 
-    private float getExpectedExperienceHealthyDBEntryOne(@NotNull PrimarySkillType primarySkillType) {
+    private float getExpectedExperienceHealthyDBEntryOne(
+            @NotNull PrimarySkillType primarySkillType) {
         return switch (primarySkillType) {
             case ACROBATICS -> expectedExpAcrobatics;
             case ALCHEMY -> expectedExpAlchemy;
@@ -458,8 +494,9 @@ class FlatFileDatabaseManagerTest {
             case UNARMED -> expectedExpUnarmed;
             case WOODCUTTING -> expectedExpWoodcutting;
             case MACES -> expectedExpMaces;
-            default ->
-                    throw new RuntimeException("Values for skill not defined, please add values for " + primarySkillType.toString() + " to the test");
+            default -> throw new RuntimeException(
+                    "Values for skill not defined, please add values for "
+                            + primarySkillType + " to the test");
         };
 
     }
@@ -483,23 +520,28 @@ class FlatFileDatabaseManagerTest {
             case UNARMED -> expectedLvlUnarmed;
             case WOODCUTTING -> expectedLvlWoodcutting;
             case MACES -> expectedLvlMaces;
-            default ->
-                    throw new RuntimeException("Values for skill not defined, please add values for " + primarySkillType.toString() + " to the test");
+            default -> throw new RuntimeException(
+                    "Values for skill not defined, please add values for "
+                            + primarySkillType + " to the test");
         };
 
     }
 
     @Test
     void testOverwriteName() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, duplicateNameDatabaseData, FlatFileDataFlag.DUPLICATE_NAME);
-        ArrayList<String[]> splitDataLines = getSplitDataFromFile(flatFileDatabaseManager.getUsersFile());
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, duplicateNameDatabaseData,
+                FlatFileDataFlag.DUPLICATE_NAME);
+        ArrayList<String[]> splitDataLines = getSplitDataFromFile(
+                flatFileDatabaseManager.getUsersFile());
         assertNotEquals(splitDataLines.get(1)[0], splitDataLines.get(0)[0]); //Name comparison
     }
 
     @Test
     void testDataNotFound() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         //Save the zero version and see if it looks correct
         assertNotNull(flatFileDatabaseManager);
         assertTrue(flatFileDatabaseManager.getUsersFile().exists());
@@ -507,12 +549,14 @@ class FlatFileDatabaseManagerTest {
 
         //Check for the "unloaded" profile
         PlayerProfile retrievedFromData = flatFileDatabaseManager.loadPlayerProfile("nossr50");
-        assertFalse(retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns false if data doesn't exist for the user
+        assertFalse(
+                retrievedFromData.isLoaded()); //PlayerProfile::isLoaded returns false if data doesn't exist for the user
     }
 
     @Test
     void testPurgePowerlessUsers() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         replaceDataInFile(flatFileDatabaseManager, normalDatabaseData);
         int purgeCount = flatFileDatabaseManager.purgePowerlessUsers();
         assertEquals(purgeCount, 1); //1 User should have been purged
@@ -520,7 +564,8 @@ class FlatFileDatabaseManagerTest {
 
     @Test
     void testCheckFileHealthAndStructure() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         replaceDataInFile(flatFileDatabaseManager, badDatabaseData);
 
         List<FlatFileDataFlag> dataFlags = flatFileDatabaseManager.checkFileHealthAndStructure();
@@ -530,49 +575,64 @@ class FlatFileDatabaseManagerTest {
 
     @Test
     void testFindFixableDuplicateNames() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, duplicateNameDatabaseData, FlatFileDataFlag.DUPLICATE_NAME);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, duplicateNameDatabaseData,
+                FlatFileDataFlag.DUPLICATE_NAME);
     }
 
     @Test
     void testFindDuplicateUUIDs() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, duplicateUUIDDatabaseData, FlatFileDataFlag.DUPLICATE_UUID);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, duplicateUUIDDatabaseData,
+                FlatFileDataFlag.DUPLICATE_UUID);
     }
 
     @Test()
     void findBadUUIDData() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, badUUIDDatabaseData, FlatFileDataFlag.BAD_UUID_DATA);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, badUUIDDatabaseData,
+                FlatFileDataFlag.BAD_UUID_DATA);
     }
 
     @Test
     void testFindCorruptData() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, corruptDatabaseData, FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, corruptDatabaseData,
+                FlatFileDataFlag.CORRUPTED_OR_UNRECOGNIZABLE);
     }
 
     @Test
     void testFindEmptyNames() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, emptyNameDatabaseData, FlatFileDataFlag.MISSING_NAME);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, emptyNameDatabaseData,
+                FlatFileDataFlag.MISSING_NAME);
     }
 
     @Test
     void testFindBadValues() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, badDatabaseData, FlatFileDataFlag.BAD_VALUES);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, badDatabaseData,
+                FlatFileDataFlag.BAD_VALUES);
     }
 
     @Test
     void testFindOutdatedData() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
-        overwriteDataAndCheckForFlag(flatFileDatabaseManager, outdatedDatabaseData, FlatFileDataFlag.INCOMPLETE);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        overwriteDataAndCheckForFlag(flatFileDatabaseManager, outdatedDatabaseData,
+                FlatFileDataFlag.INCOMPLETE);
     }
 
     @Test
     void testGetDatabaseType() {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         assertNotNull(flatFileDatabaseManager);
         assertEquals(flatFileDatabaseManager.getDatabaseType(), DatabaseType.FLATFILE);
     }
@@ -580,20 +640,25 @@ class FlatFileDatabaseManagerTest {
     @Test
     void testReadRank() {
         //This is an empty DB
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         String rankBoyName = "rankBoy";
         UUID rankBoyUUID = new UUID(1337, 1337);
         String rankGirlName = "rankGirl";
         UUID rankGirlUUID = new UUID(7331, 7331);
 
-        PlayerProfile rankGirlProfile = addPlayerProfileWithLevelsAndSave(rankGirlName, rankGirlUUID, 100); //Rank 1
-        PlayerProfile rankBoyProfile = addPlayerProfileWithLevelsAndSave(rankBoyName, rankBoyUUID, 10); //Rank 2
+        PlayerProfile rankGirlProfile = addPlayerProfileWithLevelsAndSave(rankGirlName,
+                rankGirlUUID, 100); //Rank 1
+        PlayerProfile rankBoyProfile = addPlayerProfileWithLevelsAndSave(rankBoyName, rankBoyUUID,
+                10); //Rank 2
 
         assertEquals(LeaderboardStatus.UPDATED, flatFileDatabaseManager.updateLeaderboards());
-        Map<PrimarySkillType, Integer> rankGirlPositions = flatFileDatabaseManager.readRank(rankGirlName);
-        Map<PrimarySkillType, Integer> rankBoyPositions = flatFileDatabaseManager.readRank(rankBoyName);
+        Map<PrimarySkillType, Integer> rankGirlPositions = flatFileDatabaseManager.readRank(
+                rankGirlName);
+        Map<PrimarySkillType, Integer> rankBoyPositions = flatFileDatabaseManager.readRank(
+                rankBoyName);
 
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if (primarySkillType.isChildSkill()) {
                 assertNull(rankBoyPositions.get(primarySkillType));
                 assertNull(rankGirlPositions.get(primarySkillType));
@@ -603,8 +668,10 @@ class FlatFileDatabaseManagerTest {
             }
         }
 
-        assertEquals(1, flatFileDatabaseManager.readRank(rankGirlName).get(null)); //Girl should be position 1
-        assertEquals(2, flatFileDatabaseManager.readRank(rankBoyName).get(null)); //Boy should be position 2
+        assertEquals(1, flatFileDatabaseManager.readRank(rankGirlName)
+                .get(null)); //Girl should be position 1
+        assertEquals(2,
+                flatFileDatabaseManager.readRank(rankBoyName).get(null)); //Boy should be position 2
     }
 
     @Test
@@ -639,12 +706,13 @@ class FlatFileDatabaseManagerTest {
 
         //This makes sure our private method is working before the tests run afterwards
         ArrayList<String[]> dataFromFile = getSplitDataFromFile(copyOfFile);
-        logger.info("File Path: "+copyOfFile.getAbsolutePath());
+        logger.info("File Path: " + copyOfFile.getAbsolutePath());
         assertArrayEquals(BAD_FILE_LINE_ONE.split(":"), dataFromFile.get(0));
         assertEquals(dataFromFile.get(22)[0], "nossr51");
         assertArrayEquals(BAD_DATA_FILE_LINE_TWENTY_THREE.split(":"), dataFromFile.get(22));
 
-        FlatFileDatabaseManager db_a = new FlatFileDatabaseManager(copyOfFile, logger, PURGE_TIME, 0, true);
+        FlatFileDatabaseManager db_a = new FlatFileDatabaseManager(copyOfFile, logger, PURGE_TIME,
+                0, true);
         List<FlatFileDataFlag> flagsFound = db_a.checkFileHealthAndStructure();
         assertNotNull(flagsFound);
         assertTrue(flagsFound.contains(FlatFileDataFlag.BAD_VALUES));
@@ -657,8 +725,9 @@ class FlatFileDatabaseManagerTest {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.isEmpty())
+                if (line.isEmpty()) {
                     continue;
+                }
 
                 String[] splitData = line.split(":");
                 splitDataList.add(splitData);
@@ -671,8 +740,10 @@ class FlatFileDatabaseManagerTest {
         return splitDataList;
     }
 
-    private @NotNull PlayerProfile addPlayerProfileWithLevelsAndSave(String playerName, UUID uuid, int levels) {
-        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+    private @NotNull PlayerProfile addPlayerProfileWithLevelsAndSave(String playerName, UUID uuid,
+            int levels) {
+        FlatFileDatabaseManager flatFileDatabaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
         assertFalse(flatFileDatabaseManager.loadPlayerProfile(uuid).isLoaded());
 
         flatFileDatabaseManager.newUser(playerName, uuid);
@@ -682,17 +753,19 @@ class FlatFileDatabaseManagerTest {
         assertEquals(playerName, leveledProfile.getPlayerName());
         assertEquals(uuid, leveledProfile.getUniqueId());
 
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (SkillTools.isChildSkill(primarySkillType))
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (SkillTools.isChildSkill(primarySkillType)) {
                 continue;
+            }
 
-            leveledProfile.modifySkill(primarySkillType, levels); //TODO: This method also resets XP, not cool
+            leveledProfile.modifySkill(primarySkillType,
+                    levels); //TODO: This method also resets XP, not cool
         }
 
         flatFileDatabaseManager.saveUser(leveledProfile);
         leveledProfile = flatFileDatabaseManager.loadPlayerProfile(uuid);
 
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if (SkillTools.isChildSkill(primarySkillType)) {
                 continue;
             }
@@ -703,7 +776,8 @@ class FlatFileDatabaseManagerTest {
         return leveledProfile;
     }
 
-    private void replaceDataInFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager, @NotNull String[] dataEntries) {
+    private void replaceDataInFile(@NotNull FlatFileDatabaseManager flatFileDatabaseManager,
+            @NotNull String[] dataEntries) {
         String filePath = flatFileDatabaseManager.getUsersFile().getAbsolutePath();
         BufferedReader in = null;
         FileWriter out = null;
@@ -711,7 +785,7 @@ class FlatFileDatabaseManagerTest {
         try {
             StringBuilder writer = new StringBuilder();
 
-            for(String data : dataEntries) {
+            for (String data : dataEntries) {
                 writer.append(data).append("\r\n");
             }
 
@@ -726,15 +800,15 @@ class FlatFileDatabaseManagerTest {
             if (out != null) {
                 try {
                     out.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     // Ignore
                 }
             }
         }
 
         try {
-            logger.info("Added the following lines to the FlatFileDatabase for the purposes of the test...");
+            logger.info(
+                    "Added the following lines to the FlatFileDatabase for the purposes of the test...");
             // Open the file
             in = new BufferedReader(new FileReader(filePath));
             String line;
@@ -747,15 +821,15 @@ class FlatFileDatabaseManagerTest {
             if (in != null) {
                 try {
                     in.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     // Ignore
                 }
             }
         }
     }
 
-    private void overwriteDataAndCheckForFlag(@NotNull FlatFileDatabaseManager targetDatabase, @NotNull String[] data, @NotNull FlatFileDataFlag flag) {
+    private void overwriteDataAndCheckForFlag(@NotNull FlatFileDatabaseManager targetDatabase,
+            @NotNull String[] data, @NotNull FlatFileDataFlag flag) {
         replaceDataInFile(targetDatabase, data);
 
         List<FlatFileDataFlag> dataFlags = targetDatabase.checkFileHealthAndStructure();

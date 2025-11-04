@@ -4,13 +4,12 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SkillGuideCommand implements CommandExecutor {
     private final String header;
@@ -19,12 +18,14 @@ public class SkillGuideCommand implements CommandExecutor {
     private final String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
     public SkillGuideCommand(PrimarySkillType skill) {
-        header = LocaleLoader.getString("Guides.Header", mcMMO.p.getSkillTools().getLocalizedSkillName(skill));
+        header = LocaleLoader.getString("Guides.Header",
+                mcMMO.p.getSkillTools().getLocalizedSkillName(skill));
         guide = getGuide(skill);
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         switch (args.length) {
             case 1:
                 if (!args[0].equals("?")) {
@@ -45,7 +46,8 @@ public class SkillGuideCommand implements CommandExecutor {
                 int pageNumber = Integer.parseInt(args[1]);
 
                 if (pageNumber > totalPages || pageNumber <= 0) {
-                    sender.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
+                    sender.sendMessage(
+                            LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
                     return true;
                 }
 
@@ -90,7 +92,9 @@ public class SkillGuideCommand implements CommandExecutor {
         ArrayList<String> guide = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");
+            String[] section = LocaleLoader.getString(
+                            "Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i)
+                    .split("\n");
 
             if (section[0].startsWith("!")) {
                 break;

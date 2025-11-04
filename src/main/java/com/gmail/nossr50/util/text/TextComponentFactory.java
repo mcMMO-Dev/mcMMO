@@ -12,6 +12,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -24,20 +27,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 /**
  * This class handles many of the JSON components that mcMMO makes and uses
  */
 public class TextComponentFactory {
 
     /**
-     * Makes a text component using strings from a locale and supports passing an undefined number of variables to the LocaleLoader
+     * Makes a text component using strings from a locale and supports passing an undefined number
+     * of variables to the LocaleLoader
      *
      * @param localeKey target locale string address
-     * @param values    vars to be passed to the locale loader
+     * @param values vars to be passed to the locale loader
      * @return
      */
     public static TextComponent getNotificationMultipleValues(String localeKey, String... values) {
@@ -49,8 +49,11 @@ public class TextComponentFactory {
         return getNotificationTextComponent(LocaleLoader.getString(localeKey));
     }
 
-    public static Component getNotificationLevelUpTextComponent(PrimarySkillType skill, int levelsGained, int currentLevel) {
-        return Component.text(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString("Overhaul.Name." + StringUtils.getCapitalized(skill.toString())), levelsGained, currentLevel));
+    public static Component getNotificationLevelUpTextComponent(PrimarySkillType skill,
+            int levelsGained, int currentLevel) {
+        return Component.text(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString(
+                        "Overhaul.Name." + StringUtils.getCapitalized(skill.toString())), levelsGained,
+                currentLevel));
     }
 
     private static TextComponent getNotificationTextComponent(String text) {
@@ -64,17 +67,22 @@ public class TextComponentFactory {
                 + subSkillType.getWikiUrl().toLowerCase(Locale.ENGLISH);
     }
 
-    public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted, SubSkillType subSkillType) {
-        if (!mcMMO.p.getGeneralConfig().getUrlLinksEnabled())
+    public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted,
+            SubSkillType subSkillType) {
+        if (!mcMMO.p.getGeneralConfig().getUrlLinksEnabled()) {
             return;
+        }
 
-        TextComponent.Builder wikiLinkComponent = Component.text().content(LocaleLoader.getString("Overhaul.mcMMO.MmoInfo.Wiki"));
+        TextComponent.Builder wikiLinkComponent = Component.text()
+                .content(LocaleLoader.getString("Overhaul.mcMMO.MmoInfo.Wiki"));
         wikiLinkComponent.decoration(TextDecoration.UNDERLINED, true);
 
         final String subSkillWikiLink = getSubSkillWikiLink(subSkillType);
         wikiLinkComponent.clickEvent(ClickEvent.openUrl(subSkillWikiLink));
 
-        TextComponent.Builder componentBuilder = Component.text().content(subskillformatted).append(Component.newline()).append(Component.text(subSkillWikiLink)).color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, true);
+        TextComponent.Builder componentBuilder = Component.text().content(subskillformatted)
+                .append(Component.newline()).append(Component.text(subSkillWikiLink))
+                .color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, true);
 
         wikiLinkComponent.hoverEvent(HoverEvent.showText(componentBuilder.build()));
 
@@ -82,9 +90,11 @@ public class TextComponentFactory {
     }
 
     public static void sendPlayerUrlHeader(Player player) {
-        TextComponent prefix = Component.text(LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Prefix") + " ");
+        TextComponent prefix = Component.text(
+                LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Prefix") + " ");
         /*prefix.setColor(ChatColor.DARK_AQUA);*/
-        TextComponent suffix = Component.text(" " + LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Suffix"));
+        TextComponent suffix = Component.text(
+                " " + LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Suffix"));
         /*suffix.setColor(ChatColor.DARK_AQUA);*/
 
         TextComponent emptySpace = Component.space();
@@ -108,18 +118,20 @@ public class TextComponentFactory {
     }
 
     /**
-     * Sends a player a bunch of text components that represent a list of sub-skills
-     * Styling and formatting is applied before sending the messages
+     * Sends a player a bunch of text components that represent a list of sub-skills Styling and
+     * formatting is applied before sending the messages
      *
-     * @param player             target player
+     * @param player target player
      * @param subSkillComponents the text components representing the sub-skills by name
      */
-    public static void sendPlayerSubSkillList(@NotNull Player player, @NotNull List<Component> subSkillComponents) {
+    public static void sendPlayerSubSkillList(@NotNull Player player,
+            @NotNull List<Component> subSkillComponents) {
         final Audience audience = mcMMO.getAudiences().player(player);
 
         //@ Signs, done for style
         Component space = Component.space();
-        TextComponent atSignComponent = Component.text(LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
+        TextComponent atSignComponent = Component.text(
+                LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
 
         //Only send 3 sub-skills per line
         Component[][] splitSubSkills = TextUtils.splitComponentsIntoGroups(subSkillComponents, 3);
@@ -141,32 +153,38 @@ public class TextComponentFactory {
 
         switch (webLinks) {
             case WEBSITE -> {
-                webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
+                webTextComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
                 TextUtils.addChildWebComponent(webTextComponent, "Web");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlWebsite));
             }
             case SPIGOT -> {
-                webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
+                webTextComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
                 TextUtils.addChildWebComponent(webTextComponent, "Spigot");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlSpigot));
             }
             case DISCORD -> {
-                webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
+                webTextComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
                 TextUtils.addChildWebComponent(webTextComponent, "Discord");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlDiscord));
             }
             case PATREON -> {
-                webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
+                webTextComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
                 TextUtils.addChildWebComponent(webTextComponent, "Patreon");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlPatreon));
             }
             case WIKI -> {
-                webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
+                webTextComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
                 TextUtils.addChildWebComponent(webTextComponent, "Wiki");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlWiki));
             }
             case HELP_TRANSLATE -> {
-                webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
+                webTextComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
                 TextUtils.addChildWebComponent(webTextComponent, "Lang");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlTranslate));
             }
@@ -186,50 +204,67 @@ public class TextComponentFactory {
             case WEBSITE -> {
                 addUrlHeaderHover(webLinks, componentBuilder);
                 componentBuilder.append(Component.newline()).append(Component.newline());
-                componentBuilder.append(Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
-                componentBuilder.append(Component.text("\nDev Blogs, and information related to mcMMO can be found here", NamedTextColor.GRAY));
+                componentBuilder.append(
+                        Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
+                componentBuilder.append(Component.text(
+                        "\nDev Blogs, and information related to mcMMO can be found here",
+                        NamedTextColor.GRAY));
             }
             case SPIGOT -> {
                 addUrlHeaderHover(webLinks, componentBuilder);
                 componentBuilder.append(Component.newline()).append(Component.newline());
-                componentBuilder.append(Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
-                componentBuilder.append(Component.text("\nI post regularly in the discussion thread here!", NamedTextColor.GRAY));
+                componentBuilder.append(
+                        Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
+                componentBuilder.append(
+                        Component.text("\nI post regularly in the discussion thread here!",
+                                NamedTextColor.GRAY));
             }
             case PATREON -> {
                 addUrlHeaderHover(webLinks, componentBuilder);
                 componentBuilder.append(Component.newline()).append(Component.newline());
-                componentBuilder.append(Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
+                componentBuilder.append(
+                        Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
                 componentBuilder.append(Component.newline());
-                componentBuilder.append(Component.text("Show support by buying me a coffee :)", NamedTextColor.GRAY));
+                componentBuilder.append(Component.text("Show support by buying me a coffee :)",
+                        NamedTextColor.GRAY));
             }
             case WIKI -> {
                 addUrlHeaderHover(webLinks, componentBuilder);
                 componentBuilder.append(Component.newline()).append(Component.newline());
-                componentBuilder.append(Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
+                componentBuilder.append(
+                        Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
                 componentBuilder.append(Component.newline());
-                componentBuilder.append(Component.text("I'm looking for more wiki staff, contact me on our discord!", NamedTextColor.DARK_GRAY));
+                componentBuilder.append(Component.text(
+                        "I'm looking for more wiki staff, contact me on our discord!",
+                        NamedTextColor.DARK_GRAY));
             }
             case DISCORD -> {
                 addUrlHeaderHover(webLinks, componentBuilder);
                 componentBuilder.append(Component.newline()).append(Component.newline());
-                componentBuilder.append(Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
+                componentBuilder.append(
+                        Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
             }
             case HELP_TRANSLATE -> {
                 addUrlHeaderHover(webLinks, componentBuilder);
                 componentBuilder.append(Component.newline()).append(Component.newline());
-                componentBuilder.append(Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
+                componentBuilder.append(
+                        Component.text(webLinks.getLocaleDescription(), NamedTextColor.GREEN));
                 componentBuilder.append(Component.newline());
-                componentBuilder.append(Component.text("You can use this website to help translate mcMMO into your language!" +
-                        "\nIf you want to know more contact me in discord.", NamedTextColor.DARK_GRAY));
+                componentBuilder.append(Component.text(
+                        "You can use this website to help translate mcMMO into your language!" +
+                                "\nIf you want to know more contact me in discord.",
+                        NamedTextColor.DARK_GRAY));
             }
         }
 
         return componentBuilder.build();
     }
 
-    private static void addUrlHeaderHover(McMMOWebLinks webLinks, TextComponent.Builder componentBuilder) {
+    private static void addUrlHeaderHover(McMMOWebLinks webLinks,
+            TextComponent.Builder componentBuilder) {
         componentBuilder.append(Component.newline());
-        componentBuilder.append(Component.text(webLinks.getUrl(), NamedTextColor.GRAY, TextDecoration.ITALIC));
+        componentBuilder.append(
+                Component.text(webLinks.getUrl(), NamedTextColor.GRAY, TextDecoration.ITALIC));
     }
 
     private static ClickEvent getUrlClickEvent(String url) {
@@ -242,10 +277,12 @@ public class TextComponentFactory {
 
         boolean skillUnlocked = RankUtils.hasUnlockedSubskill(player, subSkillType);
 
-        TextComponent.Builder textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
+        TextComponent.Builder textComponent = initNewSkillTextComponent(player, skillName,
+                subSkillType, skillUnlocked);
 
         //Hover Event
-        TextUtils.addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, subSkillType));
+        TextUtils.addNewHoverComponentToTextComponent(textComponent,
+                getSubSkillHoverComponent(player, subSkillType));
 
         //Insertion
         textComponent.insertion(skillName);
@@ -253,7 +290,8 @@ public class TextComponentFactory {
         return textComponent.build();
     }
 
-    private static TextComponent getSubSkillTextComponent(Player player, AbstractSubSkill abstractSubSkill) {
+    private static TextComponent getSubSkillTextComponent(Player player,
+            AbstractSubSkill abstractSubSkill) {
         //String key = abstractSubSkill.getConfigKeyName();
         String skillName = abstractSubSkill.getNiceName();
 
@@ -262,10 +300,12 @@ public class TextComponentFactory {
 
         boolean skillUnlocked = RankUtils.hasUnlockedSubskill(player, subSkillType);
 
-        TextComponent.Builder textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
+        TextComponent.Builder textComponent = initNewSkillTextComponent(player, skillName,
+                subSkillType, skillUnlocked);
 
         //Hover Event
-        TextUtils.addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, abstractSubSkill));
+        TextUtils.addNewHoverComponentToTextComponent(textComponent,
+                getSubSkillHoverComponent(player, abstractSubSkill));
 
         //Insertion
         textComponent.insertion(skillName);
@@ -273,15 +313,21 @@ public class TextComponentFactory {
         return textComponent.build();
     }
 
-    private static TextComponent.Builder initNewSkillTextComponent(Player player, String skillName, SubSkillType subSkillType, boolean skillUnlocked) {
+    private static TextComponent.Builder initNewSkillTextComponent(Player player, String skillName,
+            SubSkillType subSkillType, boolean skillUnlocked) {
         TextComponent.Builder textComponent;
         if (skillUnlocked) {
-            if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player, subSkillType) && subSkillType.getNumRanks() > 1)
-                textComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.MaxRankSkillName", skillName));
-            else
-                textComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.SkillName", skillName));
+            if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player, subSkillType)
+                    && subSkillType.getNumRanks() > 1) {
+                textComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.MaxRankSkillName", skillName));
+            } else {
+                textComponent = Component.text()
+                        .content(LocaleLoader.getString("JSON.Hover.SkillName", skillName));
+            }
 
-            textComponent.clickEvent(ClickEvent.runCommand("/mmoinfo " + subSkillType.getNiceNameNoSpaces(subSkillType)));
+            textComponent.clickEvent(ClickEvent.runCommand(
+                    "/mmoinfo " + subSkillType.getNiceNameNoSpaces(subSkillType)));
 
         } else {
             textComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.Mystery",
@@ -292,7 +338,8 @@ public class TextComponentFactory {
         return textComponent;
     }
 
-    private static Component getSubSkillHoverComponent(Player player, AbstractSubSkill abstractSubSkill) {
+    private static Component getSubSkillHoverComponent(Player player,
+            AbstractSubSkill abstractSubSkill) {
         return getSubSkillHoverEventJSON(abstractSubSkill, player);
     }
 
@@ -304,10 +351,11 @@ public class TextComponentFactory {
      * Used for the skill in the new skill system (Deriving from AbstractSubSkill)
      *
      * @param abstractSubSkill this subskill
-     * @param player           the player who owns this subskill
+     * @param player the player who owns this subskill
      * @return the hover basecomponent object for this subskill
      */
-    private static Component getSubSkillHoverEventJSON(AbstractSubSkill abstractSubSkill, Player player) {
+    private static Component getSubSkillHoverEventJSON(AbstractSubSkill abstractSubSkill,
+            Player player) {
         String skillName = ChatColor.stripColor(abstractSubSkill.getNiceName());
 
         /*
@@ -320,11 +368,13 @@ public class TextComponentFactory {
         SubSkillType subSkillType = abstractSubSkill.getSubSkillType();
 
         //SubSkillType Name
-        TextComponent.Builder componentBuilder = setupSkillComponentNameStyle(player, skillName, subSkillType, RankUtils.hasUnlockedSubskill(player, abstractSubSkill));
+        TextComponent.Builder componentBuilder = setupSkillComponentNameStyle(player, skillName,
+                subSkillType, RankUtils.hasUnlockedSubskill(player, abstractSubSkill));
 
         if (!RankUtils.hasUnlockedSubskill(player, abstractSubSkill)) {
             //Skill is not unlocked yet
-            addLocked(abstractSubSkill, ccLocked, ccLevelRequirement, ccLevelRequired, componentBuilder);
+            addLocked(abstractSubSkill, ccLocked, ccLevelRequirement, ccLevelRequired,
+                    componentBuilder);
         } else {
             addSubSkillTypeToHoverEventJSON(abstractSubSkill, componentBuilder);
 
@@ -336,10 +386,14 @@ public class TextComponentFactory {
                 nextRank = RankUtils.getRankUnlockLevel(abstractSubSkill, curRank + 1);
             }
 
-            addRanked(componentBuilder, abstractSubSkill.getNumRanks(), RankUtils.getRank(player, abstractSubSkill), nextRank);
+            addRanked(componentBuilder, abstractSubSkill.getNumRanks(),
+                    RankUtils.getRank(player, abstractSubSkill), nextRank);
 
-            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.DescriptionHeader")));
-            componentBuilder.append(Component.newline()).append(Component.text(abstractSubSkill.getDescription())).append(Component.newline());
+            componentBuilder.append(
+                    Component.text(LocaleLoader.getString("JSON.DescriptionHeader")));
+            componentBuilder.append(Component.newline())
+                    .append(Component.text(abstractSubSkill.getDescription()))
+                    .append(Component.newline());
 
             //Empty line
             componentBuilder.append(Component.newline()).decoration(TextDecoration.BOLD, false);
@@ -353,16 +407,22 @@ public class TextComponentFactory {
         return componentBuilder.build();
     }
 
-    private static TextComponent.Builder setupSkillComponentNameStyle(Player player, String skillName, SubSkillType subSkillType, boolean skillUnlocked) {
+    private static TextComponent.Builder setupSkillComponentNameStyle(Player player,
+            String skillName, SubSkillType subSkillType, boolean skillUnlocked) {
         TextComponent.Builder componentBuilder;
         if (skillUnlocked) {
-            if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player, subSkillType) && subSkillType.getNumRanks() > 1)
-                componentBuilder = getNewComponentBuilder(LocaleLoader.getString("JSON.Hover.MaxRankSkillName", skillName));
-            else
-                componentBuilder = getNewComponentBuilder(LocaleLoader.getString("JSON.Hover.SkillName", skillName));
-        } else
+            if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player, subSkillType)
+                    && subSkillType.getNumRanks() > 1) {
+                componentBuilder = getNewComponentBuilder(
+                        LocaleLoader.getString("JSON.Hover.MaxRankSkillName", skillName));
+            } else {
+                componentBuilder = getNewComponentBuilder(
+                        LocaleLoader.getString("JSON.Hover.SkillName", skillName));
+            }
+        } else {
             componentBuilder = getNewComponentBuilder(LocaleLoader.getString("JSON.Hover.Mystery",
                     String.valueOf(RankUtils.getUnlockLevel(subSkillType))));
+        }
         return componentBuilder;
     }
 
@@ -372,33 +432,51 @@ public class TextComponentFactory {
         return componentBuilder;
     }
 
-    private static void addRanked(TextComponent.Builder componentBuilder, int numRanks, int rank, int nextRank) {
+    private static void addRanked(TextComponent.Builder componentBuilder, int numRanks, int rank,
+            int nextRank) {
         if (numRanks > 0) {
             //Rank: x
-            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.Hover.Rank", String.valueOf(rank)))).append(Component.newline());
+            componentBuilder.append(
+                            Component.text(LocaleLoader.getString("JSON.Hover.Rank", String.valueOf(rank))))
+                    .append(Component.newline());
 
             //Next Rank: x
-            if (nextRank > rank)
-                componentBuilder.append(Component.text(LocaleLoader.getString("JSON.Hover.NextRank", String.valueOf(nextRank)))).append(Component.newline());
+            if (nextRank > rank) {
+                componentBuilder.append(Component.text(
+                                LocaleLoader.getString("JSON.Hover.NextRank", String.valueOf(nextRank))))
+                        .append(Component.newline());
+            }
         }
     }
 
-    private static void addLocked(SubSkillType subSkillType, TextColor ccLocked, TextColor ccLevelRequirement, TextColor ccLevelRequired, TextComponent.Builder componentBuilder) {
+    private static void addLocked(SubSkillType subSkillType, TextColor ccLocked,
+            TextColor ccLevelRequirement, TextColor ccLevelRequired,
+            TextComponent.Builder componentBuilder) {
         addLocked(ccLocked, ccLevelRequirement, componentBuilder);
-        componentBuilder.append(Component.text(String.valueOf(RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, 1)), ccLevelRequired));
+        componentBuilder.append(Component.text(
+                String.valueOf(RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, 1)),
+                ccLevelRequired));
         //componentBuilder.append(Component.newline());
     }
 
-    private static void addLocked(AbstractSubSkill abstractSubSkill, TextColor ccLocked, TextColor ccLevelRequirement, TextColor ccLevelRequired, TextComponent.Builder componentBuilder) {
+    private static void addLocked(AbstractSubSkill abstractSubSkill, TextColor ccLocked,
+            TextColor ccLevelRequirement, TextColor ccLevelRequired,
+            TextComponent.Builder componentBuilder) {
         addLocked(ccLocked, ccLevelRequirement, componentBuilder);
-        componentBuilder.append(Component.text(String.valueOf(RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, 1)), ccLevelRequired));
+        componentBuilder.append(Component.text(String.valueOf(
+                        RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, 1)),
+                ccLevelRequired));
         //componentBuilder.append(Component.newline());
     }
 
-    private static void addLocked(TextColor ccLocked, TextColor ccLevelRequirement, TextComponent.Builder componentBuilder) {
-        componentBuilder.append(Component.text(LocaleLoader.getString("JSON.Locked"), ccLocked, TextDecoration.BOLD));
+    private static void addLocked(TextColor ccLocked, TextColor ccLevelRequirement,
+            TextComponent.Builder componentBuilder) {
+        componentBuilder.append(Component.text(LocaleLoader.getString("JSON.Locked"), ccLocked,
+                TextDecoration.BOLD));
         componentBuilder.append(Component.newline()).append(Component.newline());
-        componentBuilder.append(Component.text(LocaleLoader.getString("JSON.LevelRequirement") + ": ", ccLevelRequirement));
+        componentBuilder.append(
+                Component.text(LocaleLoader.getString("JSON.LevelRequirement") + ": ",
+                        ccLevelRequirement));
     }
 
     private static Component getSubSkillHoverEventJSON(SubSkillType subSkillType, Player player) {
@@ -415,11 +493,13 @@ public class TextComponentFactory {
         TextColor ccLevelRequired = NamedTextColor.RED;
 
         //SubSkillType Name
-        TextComponent.Builder componentBuilder = setupSkillComponentNameStyle(player, skillName, subSkillType, RankUtils.hasUnlockedSubskill(player, subSkillType));
+        TextComponent.Builder componentBuilder = setupSkillComponentNameStyle(player, skillName,
+                subSkillType, RankUtils.hasUnlockedSubskill(player, subSkillType));
 
         if (!RankUtils.hasUnlockedSubskill(player, subSkillType)) {
             //Skill is not unlocked yet
-            addLocked(subSkillType, ccLocked, ccLevelRequirement, ccLevelRequired, componentBuilder);
+            addLocked(subSkillType, ccLocked, ccLevelRequirement, ccLevelRequired,
+                    componentBuilder);
         } else {
             //addSubSkillTypeToHoverEventJSON(subSkillType, componentBuilder);
 
@@ -437,16 +517,19 @@ public class TextComponentFactory {
             }
 
             componentBuilder.append(Component.newline());
-            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.DescriptionHeader")).color(ccDescriptionHeader));
+            componentBuilder.append(Component.text(LocaleLoader.getString("JSON.DescriptionHeader"))
+                    .color(ccDescriptionHeader));
             componentBuilder.append(Component.newline());
-            componentBuilder.append(Component.text(ChatColor.stripColor(subSkillType.getLocaleDescription())).color(ccDescription));
+            componentBuilder.append(
+                    Component.text(ChatColor.stripColor(subSkillType.getLocaleDescription()))
+                            .color(ccDescription));
         }
 
         return componentBuilder.build();
     }
 
     private static void addSubSkillTypeToHoverEventJSON(AbstractSubSkill abstractSubSkill,
-                                                        TextComponent.Builder componentBuilder) {
+            TextComponent.Builder componentBuilder) {
         if (abstractSubSkill.isSuperAbility()) {
             componentBuilder.append(Component.text(LocaleLoader.getString("JSON.Type.SuperAbility"),
                     NamedTextColor.LIGHT_PURPLE, TextDecoration.BOLD));
@@ -462,18 +545,22 @@ public class TextComponentFactory {
     }
 
     public static void getSubSkillTextComponents(Player player, List<Component> textComponents,
-                                                 PrimarySkillType parentSkill) {
+            PrimarySkillType parentSkill) {
         for (SubSkillType subSkillType : SubSkillType.values()) {
             if (subSkillType.getParentSkill() == parentSkill) {
                 //TODO: Hacky rewrite later
                 //Only some versions of MC have this skill
                 if (subSkillType == SubSkillType.FISHING_MASTER_ANGLER
-                        && mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() == null)
+                        && mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer()
+                        == null) {
                     continue;
+                }
 
                 if (Permissions.isSubSkillEnabled(player, subSkillType)) {
-                    if (!InteractionManager.hasSubSkill(subSkillType))
-                        textComponents.add(TextComponentFactory.getSubSkillTextComponent(player, subSkillType));
+                    if (!InteractionManager.hasSubSkill(subSkillType)) {
+                        textComponents.add(TextComponentFactory.getSubSkillTextComponent(player,
+                                subSkillType));
+                    }
                 }
             }
         }
@@ -481,16 +568,23 @@ public class TextComponentFactory {
         /* NEW SKILL SYSTEM */
         for (AbstractSubSkill abstractSubSkill : InteractionManager.getSubSkillList()) {
             if (abstractSubSkill.getPrimarySkill() == parentSkill) {
-                if (Permissions.isSubSkillEnabled(player, abstractSubSkill.getSubSkillType()))
-                    textComponents.add(TextComponentFactory.getSubSkillTextComponent(player, abstractSubSkill));
+                if (Permissions.isSubSkillEnabled(player, abstractSubSkill.getSubSkillType())) {
+                    textComponents.add(TextComponentFactory.getSubSkillTextComponent(player,
+                            abstractSubSkill));
+                }
             }
         }
     }
 
-    public static TextComponent getSubSkillUnlockedNotificationComponents(Player player, SubSkillType subSkillType) {
-        TextComponent.Builder unlockMessage = Component.text().content(LocaleLoader.getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(), RankUtils.getRank(player, subSkillType)));
-        unlockMessage.hoverEvent(HoverEvent.showText(getSubSkillHoverComponent(player, subSkillType)));
-        unlockMessage.clickEvent(ClickEvent.runCommand("/" + subSkillType.getParentSkill().toString().toLowerCase(Locale.ENGLISH)));
+    public static TextComponent getSubSkillUnlockedNotificationComponents(Player player,
+            SubSkillType subSkillType) {
+        TextComponent.Builder unlockMessage = Component.text().content(
+                LocaleLoader.getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(),
+                        RankUtils.getRank(player, subSkillType)));
+        unlockMessage.hoverEvent(
+                HoverEvent.showText(getSubSkillHoverComponent(player, subSkillType)));
+        unlockMessage.clickEvent(ClickEvent.runCommand(
+                "/" + subSkillType.getParentSkill().toString().toLowerCase(Locale.ENGLISH)));
         return unlockMessage.build();
     }
 }
