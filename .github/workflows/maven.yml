@@ -1,52 +1,46 @@
-# This workflow automatically tests new commits and pull requests as they come in.
-# Note that this does not upload any artifacts, you will need to compile mcMMO manually
-# if you wish to create the actual jar.
-name: Compile and test
+name: Compile, test, and upload artifacts
 
 on:
-  # We run our tests whenever the pom or a source file was touched.
-  # There is no need to run Maven when only the changelog was touched.
-  # We may also want to re-run this workflow when the workflow file itself
-  # was updated too.
   push:
     paths:
-    - 'src/**'
-    - 'pom.xml'
-    - '.github/workflows/maven.yml'
-
-  # Whenever someone submits a new pull request which modified the pom or a source file,
-  # we want to ensure it compiles successfully and that all tests will pass.
+      - 'src/**'
+      - 'pom.xml'
+      - '.github/workflows/maven.yml'
   pull_request:
     paths:
-    - 'src/**'
-    - 'pom.xml'
+      - 'src/**'
+      - 'pom.xml'
 
 jobs:
-  compile:
-    name: Maven compiler
+  build:
+    name: Maven Build
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # 1. Check out the current working tree
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
 
-    # 2. Setup Java 17 JDK (Adopt)
-    - name: Java 17 setup
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'adopt'
-        java-package: jdk
-        java-version: '17'
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2
 
-    # 3. Setup local Maven package cache to speed up building
-    - name: Cache Maven packages
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+      - name: Build with Maven
+        run: mvn clean package -B --file pom.xml -DdisableXmlReport=true
 
-    # 4. Build via Maven 
-    - name: Build via Maven
-      run: mvn verify -B --file pom.xml -DdisableXmlReport=true
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcmmo-build
+          path: |
+            target/*.jar
+            !target/original-*.jar
