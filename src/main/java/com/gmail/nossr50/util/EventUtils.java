@@ -349,6 +349,7 @@ public final class EventUtils {
      * @return true if the event wasn't cancelled, false otherwise {@code @Deprecated} use
      * {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
+    @Deprecated
     public static boolean simulateBlockBreak(Block block, Player player, boolean shouldArmSwing) {
         return simulateBlockBreak(block, player);
     }
@@ -361,6 +362,7 @@ public final class EventUtils {
      * @return true if the event wasn't cancelled, false otherwise {@code @Deprecated} use
      * {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
+    @Deprecated
     public static boolean simulateBlockBreak(Block block, Player player) {
         return simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
     }
