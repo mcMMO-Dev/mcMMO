@@ -8,7 +8,7 @@ Version 2.2.045
     Added missing permission node 'mcmmo.ability.salvage.coppersalvage'
 
     NOTES:
-    The delay from a plant being replanted from Green Thumb is intentional, and while looking into bugs it seemd maybe a tad slow, so I sped it up a bit.
+    The delay from a plant being replanted from Green Thumb is intentional, and while looking into bugs it seemed maybe a tad slow, so I sped it up a bit.
     Green Thumb still won't replant some stuff such as sugar canes, cacti, those are handled a bit differently, but I could add support for it in an upcoming patch if requested.
 
 Version 2.2.044
