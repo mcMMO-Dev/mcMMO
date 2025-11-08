@@ -43,8 +43,8 @@ public class SalvageConfig extends BukkitConfig {
     private final HashSet<String> notSupported;
     private Set<Salvageable> salvageables;
 
-    public SalvageConfig(String fileName, boolean copyDefaults) {
-        super(fileName, copyDefaults);
+    public SalvageConfig(String fileName) {
+        super(fileName, false);
         notSupported = new HashSet<>();
         loadKeys();
     }

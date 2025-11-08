@@ -8,12 +8,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Level;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BukkitConfig {
-    boolean copyDefaults = true;
+    boolean copyDefaults;
     protected final String fileName;
     protected final File configFile;
     protected YamlConfiguration defaultYamlConfig;
@@ -58,7 +59,7 @@ public abstract class BukkitConfig {
                 savedDefaults = true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            mcMMO.p.getLogger().log(Level.SEVERE, "Unable to save config file: " + fileName, e);
         }
     }
 
