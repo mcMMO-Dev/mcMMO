@@ -5,7 +5,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillTools;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -183,6 +185,16 @@ public enum PrimarySkillType {
     @Deprecated
     public static PrimarySkillType getSkill(String skillName) {
         return mcMMO.p.getSkillTools().matchSkill(skillName);
+    }
+
+    /**
+     * WARNING: Being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     * @see SkillTools#matchSkill(java.lang.String)
+     * @deprecated this is being removed in an upcoming update, you should be using mcMMO.getSkillTools() instead
+     */
+    @Deprecated
+    public static Set<PrimarySkillType> getSkills(Collection<String> skillNames) {
+        return mcMMO.p.getSkillTools().matchSkills(skillNames);
     }
 
     /**
