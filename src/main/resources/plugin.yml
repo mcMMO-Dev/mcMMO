@@ -529,6 +529,7 @@ permissions:
             mcmmo.ability.repair.armorrepair: true
             mcmmo.ability.repair.netheriterepair: true
             mcmmo.ability.repair.diamondrepair: true
+            mcmmo.ability.repair.copperrepair: true
             mcmmo.ability.repair.goldrepair: true
             mcmmo.ability.repair.ironrepair: true
             mcmmo.ability.repair.leatherrepair: true
@@ -548,6 +549,8 @@ permissions:
         description: Allows ability to repair Netherite tools & armor
     mcmmo.ability.repair.diamondrepair:
         description: Allows ability to repair Diamond tools & armor
+    mcmmo.ability.repair.copperrepair:
+        description: Allows ability to repair Copper tools & armor
     mcmmo.ability.repair.goldrepair:
         description: Allows ability to repair Gold tools & armor
     mcmmo.ability.repair.ironrepair:
@@ -584,6 +587,7 @@ permissions:
             mcmmo.ability.salvage.diamondsalvage: true
             mcmmo.ability.salvage.netheritesalvage: true
             mcmmo.ability.salvage.goldsalvage: true
+            mcmmo.ability.salvage.coppersalvage: true
             mcmmo.ability.salvage.ironsalvage: true
             mcmmo.ability.salvage.leathersalvage: true
             mcmmo.ability.salvage.othermaterialsalvage: true
@@ -604,6 +608,8 @@ permissions:
         description: Allows ability to salvage Diamond tools & armor
     mcmmo.ability.salvage.goldsalvage:
         description: Allows ability to salvage Gold tools & armor
+    mcmmo.ability.salvage.coppersalvage:
+        description: Allows ability to salvage Copper tools & armor
     mcmmo.ability.salvage.ironsalvage:
         description: Allows ability to salvage Iron tools & armor
     mcmmo.ability.salvage.leathersalvage:
