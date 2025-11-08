@@ -1,3 +1,10 @@
+Version 2.2.045
+    Fixed an error that could happen when replanting crops with Green Thumb
+    Green Thumb now replants harvested plants faster
+
+    NOTES:
+    The delay from a plant being replanted from Green Thumb is intentional, and while looking into bugs it seemd maybe a tad slow, so I sped it up a bit.
+
 Version 2.2.044
     Fixed copper armor and tools not working with Repair or Salvage
 
