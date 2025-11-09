@@ -111,7 +111,7 @@ public class TextUtils {
     }
 
     public static @NotNull TextComponent ofBungeeComponents(@NotNull BaseComponent[] bungeeName) {
-        return TextComponent.ofChildren(
+        return Component.textOfChildren(
                 mcMMO.getCompatibilityManager().getBungeeSerializerCompatibilityLayer()
                         .deserialize(bungeeName));
     }

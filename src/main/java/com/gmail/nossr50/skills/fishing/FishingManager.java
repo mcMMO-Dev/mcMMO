@@ -4,6 +4,7 @@ import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -526,7 +527,7 @@ public class FishingManager extends SkillManager {
             fishingCatch.setItemStack(treasureDrop);
         }
 
-        applyXpGain(fishXp + treasureXp, XPGainReason.PVE);
+        applyXpGain(fishXp + treasureXp, XPGainReason.PVE, XPGainSource.SELF);
     }
 
     /**
@@ -631,7 +632,8 @@ public class FishingManager extends SkillManager {
             // Make it so you can shake a mob no more than 4 times.
             double dmg = Math.min(Math.max(target.getMaxHealth() / 4, 1), 10);
             CombatUtils.safeDealDamage(target, dmg, getPlayer());
-            applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
+            applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE,
+                    XPGainSource.SELF);
         }
     }
 

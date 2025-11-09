@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.repair;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -212,7 +213,7 @@ public class RepairManager extends SkillManager {
                         * repairable.getXpMultiplier())
                         * ExperienceConfig.getInstance().getRepairXPBase()
                         * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())),
-                XPGainReason.PVE);
+                XPGainReason.PVE, XPGainSource.SELF);
 
         // BWONG BWONG BWONG
         if (mcMMO.p.getGeneralConfig().getRepairAnvilUseSoundsEnabled()) {

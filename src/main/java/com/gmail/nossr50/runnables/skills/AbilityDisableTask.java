@@ -12,6 +12,7 @@ import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class AbilityDisableTask extends CancellableRunnable {
@@ -72,7 +73,7 @@ public class AbilityDisableTask extends CancellableRunnable {
         }
     }
 
-    private void resendChunkRadiusAt(Player player) {
+    private void resendChunkRadiusAt(Entity player) {
         Chunk chunk = player.getLocation().getChunk();
         World world = player.getWorld();
 

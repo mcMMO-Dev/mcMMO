@@ -7,6 +7,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("unused")
 public final class AbilityAPI {
     private AbilityAPI() {
     }

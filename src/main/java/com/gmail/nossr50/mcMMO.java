@@ -243,7 +243,7 @@ public class mcMMO extends JavaPlugin {
             checkForOutdatedAPI();
 
             if (serverAPIOutdated) {
-                foliaLib.getImpl().runTimer(
+                foliaLib.getScheduler().runTimer(
                         () -> getLogger().severe(
                                 "You are running an outdated version of "
                                         + platformManager.getServerSoftware()
@@ -251,7 +251,7 @@ public class mcMMO extends JavaPlugin {
                         20, 20 * 60 * 30);
 
                 if (platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT) {
-                    foliaLib.getImpl().runTimer(
+                    foliaLib.getScheduler().runTimer(
                             () -> getLogger().severe(
                                     "We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
                             20, 20 * 60 * 30);
@@ -307,11 +307,9 @@ public class mcMMO extends JavaPlugin {
         } catch (Throwable t) {
             getLogger().log(Level.SEVERE, "There was an error while enabling mcMMO!", t);
 
-            if (!(t instanceof ExceptionInInitializerError)) {
-                t.printStackTrace();
-            } else {
-                getLogger().info(
-                        "Please do not replace the mcMMO jar while the server is running.");
+            if (t instanceof ExceptionInInitializerError) {
+                getLogger().info("Please do not replace the mcMMO jar while the server"
+                        + " is running.");
             }
 
             getServer().getPluginManager().disablePlugin(this);
@@ -398,7 +396,7 @@ public class mcMMO extends JavaPlugin {
             formulaManager.saveFormula();
             chunkManager.closeAll();
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "An error occurred while disabling mcMMO!", e);
         }
 
         if (generalConfig.getBackupsEnabled()) {
@@ -586,7 +584,6 @@ public class mcMMO extends JavaPlugin {
         TreasureConfig.getInstance();
         FishingTreasureConfig.getInstance();
         HiddenConfig.getInstance();
-        mcMMO.p.getAdvancedConfig();
 
         // init potion config
         potionConfig = new PotionConfig();
@@ -596,16 +593,15 @@ public class mcMMO extends JavaPlugin {
         SoundConfig.getInstance();
         RankConfig.getInstance();
 
-        List<Repairable> repairables = new ArrayList<>();
-
         // Load repair configs, make manager, and register them at this time
-        repairables.addAll(new RepairConfigManager(this).getLoadedRepairables());
+        final List<Repairable> repairables = new ArrayList<>(
+                new RepairConfigManager(this).getLoadedRepairables());
         repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
 
         // Load salvage configs, make manager and register them at this time
         SalvageConfigManager sManager = new SalvageConfigManager(this);
-        List<Salvageable> salvageables = sManager.getLoadedSalvageables();
+        final List<Salvageable> salvageables = sManager.getLoadedSalvageables();
         salvageableManager = new SimpleSalvageableManager(salvageables.size());
         salvageableManager.registerSalvageables(salvageables);
     }

@@ -121,7 +121,7 @@ public class MiningManager extends SkillManager {
         Player player = getPlayer();
 
         applyXpGain(ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, block),
-                XPGainReason.PVE);
+                XPGainReason.PVE, XPGainSource.SELF);
 
         if (!Permissions.isSubSkillEnabled(player, SubSkillType.MINING_DOUBLE_DROPS)) {
             return;
