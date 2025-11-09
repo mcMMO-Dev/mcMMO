@@ -4,6 +4,8 @@ import static com.gmail.nossr50.util.ItemUtils.hasItemIncludingOffHand;
 import static com.gmail.nossr50.util.ItemUtils.removeItemIncludingOffHand;
 import static com.gmail.nossr50.util.Misc.TICK_CONVERSION_FACTOR;
 import static com.gmail.nossr50.util.Misc.getBlockCenter;
+import static com.gmail.nossr50.util.Permissions.isSubSkillEnabled;
+import static com.gmail.nossr50.util.skills.RankUtils.hasUnlockedSubskill;
 import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 import static java.util.Objects.requireNonNull;
 
@@ -30,7 +32,6 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.MetadataConstants;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
@@ -62,17 +63,23 @@ import org.jetbrains.annotations.NotNull;
 public class HerbalismManager extends SkillManager {
     private final static HashMap<String, Integer> plantBreakLimits;
 
-    private static final String CACTUS_STR = "cactus";
+    private static final String CACTUS_ID = "cactus";
     private static final String CACTUS_FLOWER_STR = "cactus_flower";
+    private static final String BAMBOO_ID = "bamboo";
+    private static final String SUGAR_CANE_ID = "sugar_cane";
+    private static final String KELP_ID = "kelp";
+    private static final String KELP_PLANT_ID = "kelp_plant";
+    private static final String CHORUS_PLANT_ID = "chorus_plant";
+    private static final String SWEET_BERRY_BUSH_ID = "sweet_berry_bush";
 
     static {
         plantBreakLimits = new HashMap<>();
-        plantBreakLimits.put(CACTUS_STR, 3);
-        plantBreakLimits.put("bamboo", 20);
-        plantBreakLimits.put("sugar_cane", 3);
-        plantBreakLimits.put("kelp", 26);
-        plantBreakLimits.put("kelp_plant", 26);
-        plantBreakLimits.put("chorus_plant", 22);
+        plantBreakLimits.put(CACTUS_ID, 3);
+        plantBreakLimits.put(BAMBOO_ID, 20);
+        plantBreakLimits.put(SUGAR_CANE_ID, 3);
+        plantBreakLimits.put(KELP_ID, 26);
+        plantBreakLimits.put(KELP_PLANT_ID, 26);
+        plantBreakLimits.put(CHORUS_PLANT_ID, 22);
     }
 
     public HerbalismManager(McMMOPlayer mmoPlayer) {
@@ -80,7 +87,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB)) {
+        if (!hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB)) {
             return false;
         }
 
@@ -98,7 +105,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB)) {
+        if (!hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB)) {
             return false;
         }
 
@@ -110,12 +117,12 @@ public class HerbalismManager extends SkillManager {
                 || itemType == Material.RED_MUSHROOM)
                 && inventory.contains(Material.BROWN_MUSHROOM, 1)
                 && inventory.contains(Material.RED_MUSHROOM, 1)
-                && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+                && isSubSkillEnabled(player, SubSkillType.HERBALISM_SHROOM_THUMB);
     }
 
     public void processBerryBushHarvesting(@NotNull BlockState blockState) {
         /* Check if the player is harvesting a berry bush */
-        if (blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+        if (blockState.getType().toString().equalsIgnoreCase(SWEET_BERRY_BUSH_ID)) {
             if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage("Processing sweet berry bush rewards");
             }
@@ -167,7 +174,7 @@ public class HerbalismManager extends SkillManager {
         public void run() {
             BlockState blockState = block.getState();
 
-            if (blockState.getType().toString().equalsIgnoreCase("sweet_berry_bush")) {
+            if (blockState.getType().toString().equalsIgnoreCase(SWEET_BERRY_BUSH_ID)) {
                 if (blockState.getBlockData() instanceof Ageable ageable) {
 
                     if (ageable.getAge() <= 1) {
@@ -180,16 +187,16 @@ public class HerbalismManager extends SkillManager {
 
 
     public boolean canUseHylianLuck() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK)) {
+        if (!hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK)) {
             return false;
         }
 
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK);
+        return isSubSkillEnabled(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK);
     }
 
     public boolean canActivateAbility() {
-        return mmoPlayer.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(
-                getPlayer());
+        return mmoPlayer.getToolPreparationMode(ToolType.HOE)
+                && Permissions.greenTerra(getPlayer());
     }
 
     public boolean isGreenTerraActive() {
@@ -379,8 +386,8 @@ public class HerbalismManager extends SkillManager {
     public void checkDoubleDropsOnBrokenPlants(Player player, Collection<Block> brokenPlants) {
 
         //Only proceed if skill unlocked and permission enabled
-        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS)
-                || !Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
+        if (!hasUnlockedSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS)
+                || !isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
             return;
         }
 
@@ -470,7 +477,7 @@ public class HerbalismManager extends SkillManager {
                 /*
                  * Unnatural Blocks
                  */
-                //If its a Crop we need to reward XP when its fully grown
+                //If it's a Crop we need to reward XP when its fully grown
                 if (isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
                     xpToReward += ExperienceConfig.getInstance()
                             .getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
@@ -660,7 +667,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     private boolean isCactus(Material material) {
-        return material.getKey().getKey().equalsIgnoreCase(CACTUS_STR)
+        return material.getKey().getKey().equalsIgnoreCase(CACTUS_ID)
                 || material.getKey().getKey().equalsIgnoreCase(CACTUS_FLOWER_STR);
     }
 
@@ -799,7 +806,6 @@ public class HerbalismManager extends SkillManager {
 
         playerInventory.removeItem(new ItemStack(Material.BROWN_MUSHROOM));
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
-        getPlayer().updateInventory();
 
         if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(),

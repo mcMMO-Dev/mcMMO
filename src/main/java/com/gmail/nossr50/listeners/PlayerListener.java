@@ -737,7 +737,6 @@ public class PlayerListener implements Listener {
                         // Make sure the player knows what he's doing when trying to repair an enchanted item
                         if (repairManager.checkConfirmation(true)) {
                             repairManager.handleRepair(heldItem);
-                            player.updateInventory();
                         }
                     }
                     /* SALVAGE CHECKS */
@@ -756,7 +755,6 @@ public class PlayerListener implements Listener {
                         if (salvageManager.checkConfirmation(true)) {
                             SkillUtils.removeAbilityBoostsFromInventory(player);
                             salvageManager.handleSalvage(clickedBlock.getLocation(), heldItem);
-                            player.updateInventory();
                         }
                     }
 
@@ -926,7 +924,6 @@ public class PlayerListener implements Listener {
                             // Bukkit.getPluginManager().callEvent(fakeSwing);
                             player.getInventory().getItemInMainHand()
                                     .setAmount(heldItem.getAmount() - 1);
-                            player.updateInventory();
                             if (herbalismManager.processGreenThumbBlocks(blockState)
                                     && EventUtils.simulateBlockBreak(block, player)) {
                                 blockState.update(true);

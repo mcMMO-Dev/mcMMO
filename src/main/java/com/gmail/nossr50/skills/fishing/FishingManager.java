@@ -596,8 +596,6 @@ public class FishingManager extends SkillManager {
                                                     drop.getAmount() - 1) : null);
                                     drop.setAmount(1);
                                 }
-
-                                targetPlayer.updateInventory();
                             }
                             break;
 

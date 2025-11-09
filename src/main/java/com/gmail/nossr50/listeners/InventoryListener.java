@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ContainerMetadataUtils;
@@ -270,7 +269,6 @@ public class InventoryListener implements Listener {
                     }
 
                     event.setCancelled(true);
-                    AlchemyPotionBrewer.scheduleUpdate(inventory);
                     AlchemyPotionBrewer.scheduleCheck(stand);
                     return;
                 default:
@@ -294,7 +292,6 @@ public class InventoryListener implements Listener {
                         event.setCurrentItem(cursor.clone());
                         event.setCursor(null);
 
-                        AlchemyPotionBrewer.scheduleUpdate(inventory);
                         AlchemyPotionBrewer.scheduleCheck(stand);
                     } else if (click == ClickType.RIGHT) {
                         event.setCancelled(true);
@@ -308,7 +305,6 @@ public class InventoryListener implements Listener {
                         event.setCurrentItem(one);
                         event.setCursor(rest);
 
-                        AlchemyPotionBrewer.scheduleUpdate(inventory);
                         AlchemyPotionBrewer.scheduleCheck(stand);
                     }
                 }
@@ -371,7 +367,6 @@ public class InventoryListener implements Listener {
             }
 
             event.setCancelled(true);
-            AlchemyPotionBrewer.scheduleUpdate(inventory);
         }
     }
 
@@ -511,9 +506,6 @@ public class InventoryListener implements Listener {
                 return;
             }
         }
-
-        mcMMO.p.getFoliaLib().getScheduler()
-                .runAtEntity(whoClicked, new PlayerUpdateInventoryTask((Player) whoClicked));
     }
 
 }

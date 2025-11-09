@@ -425,7 +425,6 @@ public class TamingManager extends SkillManager {
                     int itemAmountAfterPayingCost =
                             itemInMainHand.getAmount() - tamingSummon.getItemAmountRequired();
                     itemInMainHand.setAmount(itemAmountAfterPayingCost);
-                    player.updateInventory();
                 }
 
             } else {

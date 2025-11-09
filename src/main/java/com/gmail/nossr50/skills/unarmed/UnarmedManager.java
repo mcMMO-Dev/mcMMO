@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class UnarmedManager extends SkillManager {
+    public static final double BERSERK_DMG_MODIFIER = 1.5;
 
     public UnarmedManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.UNARMED);
@@ -163,7 +164,7 @@ public class UnarmedManager extends SkillManager {
      */
     public double berserkDamage(double damage) {
         damage =
-                ((damage * Unarmed.berserkDamageModifier) * mmoPlayer.getAttackStrength()) - damage;
+                ((damage * BERSERK_DMG_MODIFIER) * mmoPlayer.getAttackStrength()) - damage;
 
         return damage;
     }

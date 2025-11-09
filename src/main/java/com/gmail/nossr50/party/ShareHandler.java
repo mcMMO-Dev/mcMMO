@@ -172,10 +172,8 @@ public final class ShareHandler {
     }
 
     private static void awardDrop(Player winningPlayer, ItemStack drop) {
-        if (winningPlayer.getInventory().addItem(drop).size() != 0) {
+        if (!winningPlayer.getInventory().addItem(drop).isEmpty()) {
             winningPlayer.getWorld().dropItem(winningPlayer.getLocation(), drop);
         }
-
-        winningPlayer.updateInventory();
     }
 }
