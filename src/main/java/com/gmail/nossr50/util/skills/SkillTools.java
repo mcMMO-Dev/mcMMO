@@ -166,9 +166,20 @@ public class SkillTools {
         /*
          * Build categorized skill lists
          */
-
-        // We are in a game version with Maces
-        if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+        if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 11)) {
+            // We are in a game version with Spears and Maces
+            COMBAT_SKILLS = ImmutableList.of(
+                    PrimarySkillType.ARCHERY,
+                    PrimarySkillType.AXES,
+                    PrimarySkillType.CROSSBOWS,
+                    PrimarySkillType.MACES,
+                    PrimarySkillType.SWORDS,
+                    PrimarySkillType.SPEARS,
+                    PrimarySkillType.TAMING,
+                    PrimarySkillType.TRIDENTS,
+                    PrimarySkillType.UNARMED);
+        } else if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
+            // We are in a game version with Maces
             COMBAT_SKILLS = ImmutableList.of(
                     PrimarySkillType.ARCHERY,
                     PrimarySkillType.AXES,
@@ -225,6 +236,7 @@ public class SkillTools {
             case TRIDENTS_SUPER_ABILITY -> PrimarySkillType.TRIDENTS;
             case EXPLOSIVE_SHOT -> PrimarySkillType.ARCHERY;
             case MACES_SUPER_ABILITY -> PrimarySkillType.MACES;
+            case SPEARS_SUPER_ABILITY -> PrimarySkillType.SPEARS;
         };
     }
 

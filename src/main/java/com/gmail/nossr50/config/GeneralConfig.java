@@ -424,10 +424,6 @@ public class GeneralConfig extends BukkitConfig {
         return config.getBoolean("MySQL.Server.SSL", true);
     }
 
-    public boolean getMySQLDebug() {
-        return config.getBoolean("MySQL.Debug", false);
-    }
-
     public boolean getMySQLPublicKeyRetrieval() {
         return config.getBoolean("MySQL.Server.allowPublicKeyRetrieval", true);
     }
