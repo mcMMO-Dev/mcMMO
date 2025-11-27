@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 
 import static com.gmail.nossr50.datatypes.skills.SubSkillType.SPEARS_SPEARS_LIMIT_BREAK;
+import static com.gmail.nossr50.util.skills.SkillUtils.canUseSubskill;
 import static com.gmail.nossr50.util.text.TextComponentFactory.appendSubSkillTextComponents;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -32,7 +33,7 @@ public class SpearsCommand extends SkillCommand {
             boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        if (SkillUtils.canUseSubskill(player, SPEARS_SPEARS_LIMIT_BREAK)) {
+        if (canUseSubskill(player, SPEARS_SPEARS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SPEARS_SPEARS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player,
                             SPEARS_SPEARS_LIMIT_BREAK, 1000))));

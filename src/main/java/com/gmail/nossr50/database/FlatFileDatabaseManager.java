@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -845,44 +846,46 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     }
 
     public void convertUsers(DatabaseManager destination) {
-        BufferedReader in = null;
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
 
         synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
+            try (BufferedReader reader = new BufferedReader(new FileReader(usersFilePath))) {
                 String line;
 
-                while ((line = in.readLine()) != null) {
-                    if (line.startsWith("#")) {
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+
+                    // Skip comments and empty lines
+                    if (line.isEmpty() || line.startsWith("#")) {
                         continue;
                     }
 
-                    String[] character = line.split(":");
+                    final String[] character = line.split(":");
 
                     try {
                         destination.saveUser(loadFromLine(character));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // Keep the same semantics as before, but log via logger
+                        final String username = (character.length > USERNAME_INDEX)
+                                ? character[USERNAME_INDEX]
+                                : "<unknown username>";
+                        logger.log(
+                                Level.SEVERE,
+                                "Could not convert user from FlatFile to SQL DB: " + username,
+                                e
+                        );
                     }
+
                     convertedUsers++;
                     Misc.printProgress(convertedUsers, progressInterval, startMillis);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Failed to convert users from FlatFile to SQL DB", e);
             }
         }
     }
+
 
     public boolean saveUserUUID(String userName, UUID uuid) {
         boolean worked = false;

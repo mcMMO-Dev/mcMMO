@@ -14,8 +14,9 @@ import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillTools;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -29,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
@@ -44,7 +46,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final String USER_VARCHAR = "VARCHAR(40)";
     public static final int CHILD_SKILLS_SIZE = 2;
     public static final String LEGACY_DRIVER_PATH = "com.mysql.jdbc.Driver";
-    public static final int MAGIC_NUMBER = 44;
     private final String tablePrefix = mcMMO.p.getGeneralConfig().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
@@ -53,24 +54,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private DataSource loadPool;
     private DataSource savePool;
 
-    private boolean debug = false;
-
     private final ReentrantLock massUpdateLock = new ReentrantLock();
 
     private final String CHARSET_SQL = "utf8mb4"; //This is compliant with UTF-8 while "utf8" is not, confusing but this is how it is.
     private final Logger logger;
-    private final boolean h2;
 
     SQLDatabaseManager(Logger logger, String driverPath) {
-        this(logger, driverPath, false);
-    }
-
-    SQLDatabaseManager(Logger logger, String driverPath, boolean h2) {
         this.logger = logger;
-        this.h2 = h2;
-        String connectionString = getConnectionString(h2);
+        String connectionString = getConnectionString();
 
-        if (!h2 && mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
+        if (mcMMO.p.getGeneralConfig().getMySQLPublicKeyRetrieval()) {
             connectionString +=
                     "&allowPublicKeyRetrieval=true";
         }
@@ -90,8 +83,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
-
-        debug = mcMMO.p.getGeneralConfig().getMySQLDebug();
 
         PoolProperties poolProperties = new PoolProperties();
         poolProperties.setDriverClassName(driverPath);
@@ -149,11 +140,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     @NotNull
-    private static String getConnectionString(boolean h2) {
-        if (h2) {
-            return "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL";
-        }
-
+    private static String getConnectionString() {
         String connectionString = "jdbc:mysql://" + mcMMO.p.getGeneralConfig().getMySQLServerName()
                 + ":" + mcMMO.p.getGeneralConfig().getMySQLServerPort() + "/"
                 + mcMMO.p.getGeneralConfig().getMySQLDatabaseName();
@@ -189,7 +176,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "taming = 0 AND mining = 0 AND woodcutting = 0 AND repair = 0 "
                     + "AND unarmed = 0 AND herbalism = 0 AND excavation = 0 AND "
                     + "archery = 0 AND swords = 0 AND axes = 0 AND acrobatics = 0 "
-                    + "AND fishing = 0 AND alchemy = 0 AND crossbows = 0 AND tridents = 0 AND maces = 0;");
+                    + "AND fishing = 0 AND alchemy = 0 AND crossbows = 0 AND tridents = 0 AND maces = 0 AND spears = 0;");
 
             statement.executeUpdate(
                     "DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `"
@@ -208,7 +195,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + tablePrefix + "skills` `s` WHERE `" + tablePrefix
                             + "users`.`id` = `s`.`user_id`)");
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(statement);
             tryClose(connection);
@@ -241,7 +228,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             "WHERE ((UNIX_TIMESTAMP() - lastlogin) > " + mcMMO.p.getPurgeTime()
                             + ")");
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(statement);
             tryClose(connection);
@@ -270,7 +257,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             success = statement.executeUpdate() != 0;
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(statement);
             tryClose(connection);
@@ -292,141 +279,227 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public boolean saveUser(PlayerProfile profile) {
-        boolean success = true;
-        PreparedStatement statement = null;
-        Connection connection = null;
+        final String playerName = profile.getPlayerName();
+        final UUID uuid = profile.getUniqueId();
 
-        try {
-            connection = getConnection(PoolIdentifier.SAVE);
+        try (Connection connection = getConnection(PoolIdentifier.SAVE)) {
+            // Make the whole save atomic
+            boolean originalAutoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
 
-            int id = getUserID(connection, profile.getPlayerName(), profile.getUniqueId());
+            try {
+                int userId = getUserID(connection, playerName, uuid);
+                if (userId == -1) {
+                    userId = newUser(connection, playerName, uuid);
+                    if (userId == -1) {
+                        logger.severe("Failed to create new account for " + playerName);
+                        connection.rollback();
+                        return false;
+                    }
+                }
 
-            if (id == -1) {
-                id = newUser(connection, profile.getPlayerName(), profile.getUniqueId());
-                if (id == -1) {
-                    logger.severe("Failed to create new account for " + profile.getPlayerName());
+                if (!updateLastLogin(connection, userId, playerName)) {
+                    connection.rollback();
                     return false;
                 }
-            }
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix
-                    + "users SET lastlogin = UNIX_TIMESTAMP() WHERE id = ?");
-            statement.setInt(1, id);
-            success &= (statement.executeUpdate() != 0);
-            statement.close();
-            if (!success) {
-                logger.severe("Failed to update last login for " + profile.getPlayerName());
+                if (!updateSkills(connection, userId, profile, playerName)) {
+                    connection.rollback();
+                    return false;
+                }
+
+                if (!updateExperience(connection, userId, profile, playerName)) {
+                    connection.rollback();
+                    return false;
+                }
+
+                if (!updateCooldowns(connection, userId, profile, playerName)) {
+                    connection.rollback();
+                    return false;
+                }
+
+                if (!updateHudSettings(connection, userId, profile, playerName)) {
+                    connection.rollback();
+                    return false;
+                }
+
+                connection.commit();
+                connection.setAutoCommit(originalAutoCommit);
+                return true;
+            } catch (SQLException e) {
+                connection.rollback();
+                logSQLException(e);
+                return false;
+            } finally {
+                // Best-effort restore
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException ignored) {
+                }
+            }
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return false;
+        }
+    }
+
+    private boolean updateLastLogin(Connection connection, int userId, String playerName) {
+        String sql = "UPDATE " + tablePrefix + "users SET lastlogin = UNIX_TIMESTAMP() WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            if (stmt.executeUpdate() == 0) {
+                logger.severe("Failed to update last login for " + playerName);
                 return false;
             }
+            return true;
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return false;
+        }
+    }
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "skills SET "
-                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                    + ", unarmed = ?, herbalism = ?, excavation = ?"
-                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, maces = ?, total = ? WHERE user_id = ?");
-            statement.setInt(1, profile.getSkillLevel(PrimarySkillType.TAMING));
-            statement.setInt(2, profile.getSkillLevel(PrimarySkillType.MINING));
-            statement.setInt(3, profile.getSkillLevel(PrimarySkillType.REPAIR));
-            statement.setInt(4, profile.getSkillLevel(PrimarySkillType.WOODCUTTING));
-            statement.setInt(5, profile.getSkillLevel(PrimarySkillType.UNARMED));
-            statement.setInt(6, profile.getSkillLevel(PrimarySkillType.HERBALISM));
-            statement.setInt(7, profile.getSkillLevel(PrimarySkillType.EXCAVATION));
-            statement.setInt(8, profile.getSkillLevel(PrimarySkillType.ARCHERY));
-            statement.setInt(9, profile.getSkillLevel(PrimarySkillType.SWORDS));
-            statement.setInt(10, profile.getSkillLevel(PrimarySkillType.AXES));
-            statement.setInt(11, profile.getSkillLevel(PrimarySkillType.ACROBATICS));
-            statement.setInt(12, profile.getSkillLevel(PrimarySkillType.FISHING));
-            statement.setInt(13, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
-            statement.setInt(14, profile.getSkillLevel(PrimarySkillType.CROSSBOWS));
-            statement.setInt(15, profile.getSkillLevel(PrimarySkillType.TRIDENTS));
-            statement.setInt(16, profile.getSkillLevel(PrimarySkillType.MACES));
+    private boolean updateSkills(Connection connection, int userId, PlayerProfile profile, String playerName) {
+        String sql = "UPDATE " + tablePrefix + "skills SET "
+                + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                + ", unarmed = ?, herbalism = ?, excavation = ?"
+                + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, maces = ?, spears = ?, total = ?"
+                + " WHERE user_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            int i = 1;
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.TAMING));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.MINING));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.REPAIR));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.WOODCUTTING));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.UNARMED));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.HERBALISM));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.EXCAVATION));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.ARCHERY));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.SWORDS));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.AXES));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.ACROBATICS));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.FISHING));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.CROSSBOWS));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.TRIDENTS));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.MACES));
+            stmt.setInt(i++, profile.getSkillLevel(PrimarySkillType.SPEARS));
+
             int total = 0;
             for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
                 total += profile.getSkillLevel(primarySkillType);
             }
-            statement.setInt(17, total);
-            statement.setInt(18, id);
-            success &= (statement.executeUpdate() != 0);
-            statement.close();
-            if (!success) {
-                logger.severe("Failed to update skills for " + profile.getPlayerName());
-                return false;
-            }
+            stmt.setInt(i++, total);
+            stmt.setInt(i, userId);
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "experience SET "
-                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                    + ", unarmed = ?, herbalism = ?, excavation = ?"
-                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, maces = ? WHERE user_id = ?");
-            statement.setInt(1, profile.getSkillXpLevel(PrimarySkillType.TAMING));
-            statement.setInt(2, profile.getSkillXpLevel(PrimarySkillType.MINING));
-            statement.setInt(3, profile.getSkillXpLevel(PrimarySkillType.REPAIR));
-            statement.setInt(4, profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING));
-            statement.setInt(5, profile.getSkillXpLevel(PrimarySkillType.UNARMED));
-            statement.setInt(6, profile.getSkillXpLevel(PrimarySkillType.HERBALISM));
-            statement.setInt(7, profile.getSkillXpLevel(PrimarySkillType.EXCAVATION));
-            statement.setInt(8, profile.getSkillXpLevel(PrimarySkillType.ARCHERY));
-            statement.setInt(9, profile.getSkillXpLevel(PrimarySkillType.SWORDS));
-            statement.setInt(10, profile.getSkillXpLevel(PrimarySkillType.AXES));
-            statement.setInt(11, profile.getSkillXpLevel(PrimarySkillType.ACROBATICS));
-            statement.setInt(12, profile.getSkillXpLevel(PrimarySkillType.FISHING));
-            statement.setInt(13, profile.getSkillXpLevel(PrimarySkillType.ALCHEMY));
-            statement.setInt(14, profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS));
-            statement.setInt(15, profile.getSkillXpLevel(PrimarySkillType.TRIDENTS));
-            statement.setInt(16, profile.getSkillXpLevel(PrimarySkillType.MACES));
-            statement.setInt(17, id);
-            success &= (statement.executeUpdate() != 0);
-            statement.close();
-            if (!success) {
-                logger.severe("Failed to update experience for " + profile.getPlayerName());
+            if (stmt.executeUpdate() == 0) {
+                logger.severe("Failed to update skills for " + playerName);
                 return false;
             }
-
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
-                    + "  mining = ?, woodcutting = ?, unarmed = ?"
-                    + ", herbalism = ?, excavation = ?, swords = ?"
-                    + ", axes = ?, blast_mining = ?, chimaera_wing = ?, crossbows = ?"
-                    + ", tridents = ?, maces = ? WHERE user_id = ?");
-            statement.setLong(1, profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER));
-            statement.setLong(2, profile.getAbilityDATS(SuperAbilityType.TREE_FELLER));
-            statement.setLong(3, profile.getAbilityDATS(SuperAbilityType.BERSERK));
-            statement.setLong(4, profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA));
-            statement.setLong(5, profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER));
-            statement.setLong(6, profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES));
-            statement.setLong(7, profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER));
-            statement.setLong(8, profile.getAbilityDATS(SuperAbilityType.BLAST_MINING));
-            statement.setLong(9, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
-            statement.setLong(10, profile.getAbilityDATS(SuperAbilityType.SUPER_SHOTGUN));
-            statement.setLong(11, profile.getAbilityDATS(SuperAbilityType.TRIDENTS_SUPER_ABILITY));
-            statement.setLong(12, profile.getAbilityDATS(SuperAbilityType.MACES_SUPER_ABILITY));
-            statement.setInt(13, id);
-            success = (statement.executeUpdate() != 0);
-            statement.close();
-            if (!success) {
-                logger.severe("Failed to update cooldowns for " + profile.getPlayerName());
-                return false;
-            }
-
-            statement = connection.prepareStatement("UPDATE " + tablePrefix
-                    + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?");
-            statement.setString(1, MobHealthbarType.HEARTS.name());
-            statement.setInt(2, profile.getScoreboardTipsShown());
-            statement.setInt(3, id);
-            success = (statement.executeUpdate() != 0);
-            statement.close();
-            if (!success) {
-                logger.severe("Failed to update hud settings for " + profile.getPlayerName());
-                return false;
-            }
+            return true;
         } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            tryClose(statement);
-            tryClose(connection);
+            logSQLException(ex);
+            return false;
         }
-
-        return success;
     }
+
+    private boolean updateExperience(Connection connection, int userId, PlayerProfile profile, String playerName) {
+        String sql = "UPDATE " + tablePrefix + "experience SET "
+                + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                + ", unarmed = ?, herbalism = ?, excavation = ?"
+                + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                + ", fishing = ?, alchemy = ?, crossbows = ?, tridents = ?, maces = ?, spears = ?"
+                + " WHERE user_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            int i = 1;
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.TAMING));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.MINING));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.REPAIR));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.UNARMED));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.HERBALISM));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.EXCAVATION));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.ARCHERY));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.SWORDS));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.AXES));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.ACROBATICS));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.FISHING));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.ALCHEMY));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.TRIDENTS));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.MACES));
+            stmt.setInt(i++, profile.getSkillXpLevel(PrimarySkillType.SPEARS));
+            stmt.setInt(i, userId);
+
+            if (stmt.executeUpdate() == 0) {
+                logger.severe("Failed to update experience for " + playerName);
+                return false;
+            }
+            return true;
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return false;
+        }
+    }
+
+    private boolean updateCooldowns(Connection connection, int userId, PlayerProfile profile, String playerName) {
+        String sql = "UPDATE " + tablePrefix + "cooldowns SET "
+                + "  mining = ?, woodcutting = ?, unarmed = ?"
+                + ", herbalism = ?, excavation = ?, swords = ?"
+                + ", axes = ?, blast_mining = ?, chimaera_wing = ?, crossbows = ?"
+                + ", tridents = ?, maces = ?, spears = ?"
+                + " WHERE user_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            int i = 1;
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.TREE_FELLER));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.BERSERK));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.BLAST_MINING));
+            stmt.setLong(i++, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SUPER_SHOTGUN));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.TRIDENTS_SUPER_ABILITY));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.MACES_SUPER_ABILITY));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SPEARS_SUPER_ABILITY));
+            stmt.setInt(i, userId);
+
+            if (stmt.executeUpdate() == 0) {
+                logger.severe("Failed to update cooldowns for " + playerName);
+                return false;
+            }
+            return true;
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return false;
+        }
+    }
+
+    private boolean updateHudSettings(Connection connection, int userId, PlayerProfile profile, String playerName) {
+        String sql = "UPDATE " + tablePrefix + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, MobHealthbarType.HEARTS.name());
+            stmt.setInt(2, profile.getScoreboardTipsShown());
+            stmt.setInt(3, userId);
+
+            if (stmt.executeUpdate() == 0) {
+                logger.severe("Failed to update hud settings for " + playerName);
+                return false;
+            }
+            return true;
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return false;
+        }
+    }
+
 
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill,
             int pageNumber, int statsPerPage) throws InvalidSkillException {
@@ -466,7 +539,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 stats.add(new PlayerStat(column.get(1), Integer.parseInt(column.get(0))));
             }
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
             tryClose(statement);
@@ -569,7 +642,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
             tryClose(statement);
@@ -586,7 +659,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection(PoolIdentifier.MISC);
             newUser(connection, playerName, uuid);
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(connection);
         }
@@ -608,57 +681,75 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return loadPlayerProfile(player);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Unexpected SQLException while creating new user for "
+                    + player.getName(), e);
         }
 
         return new PlayerProfile(player.getName(), player.getUniqueId(), false,
                 mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
-    private int newUser(Connection connection, String playerName, UUID uuid) {
-        ResultSet resultSet = null;
-        PreparedStatement statement = null;
+    private static final String INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_";
 
-        try {
-            statement = connection.prepareStatement(
-                    "UPDATE `" + tablePrefix + "users` "
-                            + "SET `user` = ? "
-                            + "WHERE `user` = ?");
-            statement.setString(1, "_INVALID_OLD_USERNAME_");
-            statement.setString(2, playerName);
-            statement.executeUpdate();
-            statement.close();
-
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix
-                            + "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())",
-                    Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, playerName);
-            statement.setString(2, uuid != null ? uuid.toString() : null);
-            statement.executeUpdate();
-
-            resultSet = statement.getGeneratedKeys();
-
-            if (!resultSet.next()) {
-                logger.severe("Unable to create new user account in DB");
-                return -1;
-            }
-
-            writeMissingRows(connection, resultSet.getInt(1));
-            return resultSet.getInt(1);
-        } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            tryClose(resultSet);
-            tryClose(statement);
+    private int newUser(Connection connection, String playerName, @Nullable UUID uuid) {
+        if (connection == null) {
+            throw new IllegalArgumentException("connection must not be null");
         }
-        return -1;
+        if (playerName == null || playerName.isEmpty()) {
+            logger.severe("Attempted to create user with null/empty playerName");
+            return -1;
+        }
+
+        // Step 1: Invalidate any existing rows with the same username
+        String invalidateSql =
+                "UPDATE `" + tablePrefix + "users` " +
+                        "SET `user` = ? " +
+                        "WHERE `user` = ?";
+
+        try (PreparedStatement invalidateStmt = connection.prepareStatement(invalidateSql)) {
+            invalidateStmt.setString(1, INVALID_OLD_USERNAME);
+            invalidateStmt.setString(2, playerName);
+            invalidateStmt.executeUpdate();
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return -1;
+        }
+
+        // Step 2: Insert the new user and fetch the generated id
+        String insertSql =
+                "INSERT INTO " + tablePrefix +
+                        "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())";
+
+        try (PreparedStatement insertStmt = connection.prepareStatement(
+                insertSql, Statement.RETURN_GENERATED_KEYS)) {
+
+            insertStmt.setString(1, playerName);
+            insertStmt.setString(2, uuid != null ? uuid.toString() : null);
+            insertStmt.executeUpdate();
+
+            try (ResultSet keys = insertStmt.getGeneratedKeys()) {
+                if (!keys.next()) {
+                    logger.severe("Unable to create new user account in DB for player '" + playerName + "'");
+                    return -1;
+                }
+
+                int userId = keys.getInt(1);
+                writeMissingRows(connection, userId);
+                return userId;
+            }
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return -1;
+        }
     }
+
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
         try {
             return loadPlayerFromDB(null, playerName);
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            mcMMO.p.getLogger().log(Level.SEVERE,
+                    "Unexpected error while loading player profile for " + playerName, e);
             return new PlayerProfile(playerName, false,
                     mcMMO.p.getAdvancedConfig().getStartingLevel());
         }
@@ -680,142 +771,181 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName)
-            throws RuntimeException {
+            throws IllegalArgumentException {
         if (uuid == null && playerName == null) {
-            throw new RuntimeException(
+            throw new IllegalArgumentException(
                     "Error looking up player, both UUID and playerName are null and one must not be.");
         }
 
-        PreparedStatement statement = null;
-        Connection connection = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = getConnection(PoolIdentifier.LOAD);
+        try (Connection connection = getConnection(PoolIdentifier.LOAD)) {
             int id = getUserID(connection, playerName, uuid);
 
             if (id == -1) {
-                // There is no such user
-                return new PlayerProfile(playerName,
-                        mcMMO.p.getAdvancedConfig().getStartingLevel());
+                return createEmptyProfile(playerName);
             }
-            // There is such a user
+
             writeMissingRows(connection, id);
 
-            statement = connection.prepareStatement(
+            String sql =
                     "SELECT " +
-                            "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, s.crossbows, s.tridents, s.maces, "
-                            +
-                            "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, e.crossbows, e.tridents, e.maces, "
-                            +
-                            "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, c.crossbows, c.tridents, c.maces, "
-                            +
-                            "h.mobhealthbar, h.scoreboardtips, u.uuid, u.`user` "
-                            + "FROM " + tablePrefix + "users u "
-                            + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
-                            + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
-                            + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
-                            + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.id = ?"
-            );
-            statement.setInt(1, id);
+                            // --- skills (levels) ---
+                            "s.taming      AS skill_taming, " +
+                            "s.mining      AS skill_mining, " +
+                            "s.repair      AS skill_repair, " +
+                            "s.woodcutting AS skill_woodcutting, " +
+                            "s.unarmed     AS skill_unarmed, " +
+                            "s.herbalism   AS skill_herbalism, " +
+                            "s.excavation  AS skill_excavation, " +
+                            "s.archery     AS skill_archery, " +
+                            "s.swords      AS skill_swords, " +
+                            "s.axes        AS skill_axes, " +
+                            "s.acrobatics  AS skill_acrobatics, " +
+                            "s.fishing     AS skill_fishing, " +
+                            "s.alchemy     AS skill_alchemy, " +
+                            "s.crossbows   AS skill_crossbows, " +
+                            "s.tridents    AS skill_tridents, " +
+                            "s.maces       AS skill_maces, " +
+                            "s.spears      AS skill_spears, " +
 
-            resultSet = statement.executeQuery();
+                            // --- skills XP ---
+                            "e.taming      AS xp_taming, " +
+                            "e.mining      AS xp_mining, " +
+                            "e.repair      AS xp_repair, " +
+                            "e.woodcutting AS xp_woodcutting, " +
+                            "e.unarmed     AS xp_unarmed, " +
+                            "e.herbalism   AS xp_herbalism, " +
+                            "e.excavation  AS xp_excavation, " +
+                            "e.archery     AS xp_archery, " +
+                            "e.swords      AS xp_swords, " +
+                            "e.axes        AS xp_axes, " +
+                            "e.acrobatics  AS xp_acrobatics, " +
+                            "e.fishing     AS xp_fishing, " +
+                            "e.alchemy     AS xp_alchemy, " +
+                            "e.crossbows   AS xp_crossbows, " +
+                            "e.tridents    AS xp_tridents, " +
+                            "e.maces       AS xp_maces, " +
+                            "e.spears      AS xp_spears, " +
 
-            if (resultSet.next()) {
-                try {
-                    PlayerProfile profile = loadFromResult(playerName, resultSet);
-                    String name = resultSet.getString(
-                            MAGIC_NUMBER); // TODO: Magic Number, make sure it stays updated
-                    resultSet.close();
-                    statement.close();
+                            // --- cooldowns / unique data ---
+                            // c.taming is unused for abilities, left out or alias if you want it
+                            "c.mining        AS cd_super_breaker, " +
+                            "c.repair        AS cd_repair_unused, " +     // unused but explicit
+                            "c.woodcutting   AS cd_tree_feller, " +
+                            "c.unarmed       AS cd_berserk, " +
+                            "c.herbalism     AS cd_green_terra, " +
+                            "c.excavation    AS cd_giga_drill_breaker, " +
+                            "c.archery       AS cd_explosive_shot, " +
+                            "c.swords        AS cd_serrated_strikes, " +
+                            "c.axes          AS cd_skull_splitter, " +
+                            "c.acrobatics    AS cd_acrobatics_unused, " + // unused but explicit
+                            "c.blast_mining  AS cd_blast_mining, " +
+                            "c.chimaera_wing AS ud_chimaera_wing_dats, " +
+                            "c.crossbows     AS cd_super_shotgun, " +
+                            "c.tridents      AS cd_tridents_super_ability, " +
+                            "c.maces         AS cd_maces_super_ability, " +
+                            "c.spears        AS cd_spears_super_ability, " +
 
-                    if (playerName != null
-                            && !playerName.isEmpty()
-                            && !playerName.equalsIgnoreCase(name)
-                            && uuid != null) {
-                        statement = connection.prepareStatement(
-                                "UPDATE `" + tablePrefix + "users` "
-                                        + "SET `user` = ? "
-                                        + "WHERE `user` = ?");
-                        statement.setString(1, "_INVALID_OLD_USERNAME_");
-                        statement.setString(2, name);
-                        statement.executeUpdate();
-                        statement.close();
-                        statement = connection.prepareStatement(
-                                "UPDATE `" + tablePrefix + "users` "
-                                        + "SET `user` = ?, uuid = ? "
-                                        + "WHERE id = ?");
-                        statement.setString(1, playerName);
-                        statement.setString(2, uuid.toString());
-                        statement.setInt(3, id);
-                        statement.executeUpdate();
-                        statement.close();
+                            // --- HUD + user info ---
+                            "h.mobhealthbar  AS mobhealthbar, " +
+                            "h.scoreboardtips AS scoreboardtips, " +
+                            "u.uuid          AS uuid, " +
+                            "u.`user`        AS username " +
+                            "FROM " + tablePrefix + "users u " +
+                            "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                            "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                            "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                            "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                            "WHERE u.id = ?";
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, id);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (!resultSet.next()) {
+                        return createEmptyProfile(playerName);
                     }
 
-                    return profile;
-                } catch (SQLException e) {
-                    printErrors(e);
+                    String nameInDb = resultSet.getString("username");
+
+                    if (shouldUpdateUsername(playerName, uuid, nameInDb)) {
+                        invalidateOldUsername(connection, nameInDb);
+                        updateCurrentUsername(connection, id, playerName, uuid);
+                    }
+
+                    if (playerName == null || playerName.isEmpty()) {
+                        playerName = nameInDb;
+                    }
+
+                    return loadFromResult(playerName, resultSet);
                 }
             }
-            resultSet.close();
         } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            tryClose(resultSet);
-            tryClose(statement);
-            tryClose(connection);
+            logSQLException(ex);
+            return createEmptyProfile(playerName);
         }
+    }
 
-        //Return empty profile
+
+    private PlayerProfile createEmptyProfile(@Nullable String playerName) {
         return new PlayerProfile(playerName, mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
-    public void convertUsers(DatabaseManager destination) {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        ResultSet resultSet = null;
+    private boolean shouldUpdateUsername(@Nullable String playerName, @Nullable UUID uuid, String nameInDb) {
+        return playerName != null
+                && !playerName.isEmpty()
+                && !playerName.equalsIgnoreCase(nameInDb)
+                && uuid != null;
+    }
 
-        try {
-            connection = getConnection(PoolIdentifier.MISC);
-            statement = connection.prepareStatement(
-                    "SELECT "
-                            + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
-                            + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, "
-                            + "h.mobhealthbar, h.scoreboardtips, u.uuid "
-                            + "FROM " + tablePrefix + "users u "
-                            + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
-                            + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
-                            + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
-                            + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.`user` = ?");
-            List<String> usernames = getStoredUsers();
+    private void invalidateOldUsername(Connection connection, String oldName) throws SQLException {
+        String sql = "UPDATE `" + tablePrefix + "users` SET `user` = ? WHERE `user` = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, "_INVALID_OLD_USERNAME_");
+            stmt.setString(2, oldName);
+            stmt.executeUpdate();
+        }
+    }
+
+    private void updateCurrentUsername(Connection connection, int id, String playerName, UUID uuid) throws SQLException {
+        String sql = "UPDATE `" + tablePrefix + "users` SET `user` = ?, uuid = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, playerName);
+            stmt.setString(2, uuid.toString());
+            stmt.setInt(3, id);
+            stmt.executeUpdate();
+        }
+    }
+
+
+    public void convertUsers(DatabaseManager destination) {
+            // Get the list of usernames we want to migrate
+            final List<String> usernames = getStoredUsers();
+            if (usernames.isEmpty()) {
+                logger.info("No stored users found to convert.");
+                return;
+            }
+
             int convertedUsers = 0;
             long startMillis = System.currentTimeMillis();
+
             for (String playerName : usernames) {
-                statement.setString(1, playerName);
                 try {
-                    resultSet = statement.executeQuery();
-                    resultSet.next();
-                    destination.saveUser(loadFromResult(playerName, resultSet));
-                    resultSet.close();
-                } catch (SQLException e) {
-                    printErrors(e);
-                    // Ignore
+                    // Reuse the canonical loading path (handles schema, aliases, etc.)
+                    final PlayerProfile profile = loadPlayerProfile(playerName);
+
+                    // Delegate save to the destination database manager
+                    destination.saveUser(profile);
+                } catch (Exception ex) {
+                    // Log and continue with remaining users
+                    logger.log(Level.SEVERE, "Failed to convert user '" + playerName + "'", ex);
                 }
+
                 convertedUsers++;
                 Misc.printProgress(convertedUsers, progressInterval, startMillis);
             }
-        } catch (SQLException e) {
-            printErrors(e);
-        } finally {
-            tryClose(resultSet);
-            tryClose(statement);
-            tryClose(connection);
-        }
 
-    }
+            logger.info("Finished converting " + convertedUsers + " users.");
+        }
 
     public boolean saveUserUUID(String userName, UUID uuid) {
         PreparedStatement statement = null;
@@ -831,7 +961,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.execute();
             return true;
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
             return false;
         } finally {
             tryClose(statement);
@@ -870,7 +1000,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             return true;
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
             return false;
         } finally {
             tryClose(statement);
@@ -893,7 +1023,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 users.add(resultSet.getString("user"));
             }
         } catch (SQLException e) {
-            printErrors(e);
+            logSQLException(e);
         } finally {
             tryClose(resultSet);
             tryClose(statement);
@@ -906,273 +1036,309 @@ public final class SQLDatabaseManager implements DatabaseManager {
     /**
      * Checks that the database structure is present and correct
      */
+    /**
+     * Checks that the database structure is present and correct.
+     * Runs once on startup.
+     */
     private void checkStructure() {
-        PreparedStatement statement = null;
-        Statement createStatement = null;
-        ResultSet resultSet = null;
-        Connection connection = null;
+        try (Connection connection = getConnection(PoolIdentifier.MISC)) {
+            final String schemaQuery =
+                    "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?"
+                            + " AND table_name = ?";
 
-        try {
-            connection = getConnection(PoolIdentifier.MISC);
-            String schemaQuery = this.h2
-                    ? "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_name = ?"
-                    : "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ? AND table_name = ?";
-
-            statement = connection.prepareStatement(schemaQuery);
-
-            setStatementQuery(statement, "users");
-
-            resultSet = statement.executeQuery();
-
-            if (!resultSet.next()) {
-                createStatement = connection.createStatement();
-                String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` (" +
-                        "`id` int AUTO_INCREMENT," +
-                        "`user` varchar(40) NOT NULL," +
-                        "`uuid` varchar(36)," +
-                        "`lastlogin` bigint NOT NULL," +
-                        "PRIMARY KEY (`id`)," +
-                        "INDEX `user_index`(`user`)," +
-                        "UNIQUE(`uuid`))";
-                createStatement.executeUpdate(sql);
-                tryClose(createStatement);
+            try (PreparedStatement schemaStmt = connection.prepareStatement(schemaQuery)) {
+                ensureUsersTable(connection, schemaStmt);
+                ensureHudsTable(connection, schemaStmt);
+                ensureCooldownsTable(connection, schemaStmt);
+                ensureSkillsTable(connection, schemaStmt);
+                ensureExperienceTable(connection, schemaStmt);
             }
-            tryClose(resultSet);
-            setStatementQuery(statement, "huds");
-            resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                createStatement = connection.createStatement();
-                createStatement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
-                                + "`user_id` int(10) unsigned NOT NULL,"
-                                + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '"
-                                + mcMMO.p.getGeneralConfig().getMobHealthbarDefault() + "',"
-                                + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
-                                + "PRIMARY KEY (`user_id`)) "
-                                + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
-                tryClose(createStatement);
-            }
-            tryClose(resultSet);
-            setStatementQuery(statement, "cooldowns");
-            resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                createStatement = connection.createStatement();
-                createStatement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
-                                + "`user_id` int(10) unsigned NOT NULL,"
-                                + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`crossbows` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`tridents` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "`maces` int(32) unsigned NOT NULL DEFAULT '0',"
-                                + "PRIMARY KEY (`user_id`)) "
-                                + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
-                tryClose(createStatement);
-            }
-            tryClose(resultSet);
-            setStatementQuery(statement, "skills");
-            resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
-                String totalLevel = "'" + (mcMMO.p.getAdvancedConfig().getStartingLevel() * (
-                        PrimarySkillType.values().length - CHILD_SKILLS_SIZE)) + "'";
-                createStatement = connection.createStatement();
-                createStatement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
-                                + "`user_id` int(10) unsigned NOT NULL,"
-                                + "`taming` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`mining` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`woodcutting` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`repair` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`unarmed` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`herbalism` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`excavation` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`archery` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`swords` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`axes` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
-                                + "`acrobatics` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`fishing` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`alchemy` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`crossbows` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`tridents` int(10) unsigned NOT NULL DEFAULT " + startingLevel
-                                + ","
-                                + "`maces` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
-                                + "`total` int(10) unsigned NOT NULL DEFAULT " + totalLevel + ","
-                                + "PRIMARY KEY (`user_id`)) "
-                                + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
-                tryClose(createStatement);
-            }
-            tryClose(resultSet);
-            setStatementQuery(statement, "experience");
-            resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                createStatement = connection.createStatement();
-                createStatement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
-                                + "`user_id` int(10) unsigned NOT NULL,"
-                                + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`crossbows` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "`tridents` int(10) unsigned NOT NULL DEFAULT '0',"
-                                + "PRIMARY KEY (`user_id`)) "
-                                + "DEFAULT CHARSET=" + CHARSET_SQL + ";");
-                tryClose(createStatement);
-            }
-            tryClose(resultSet);
-            tryClose(statement);
 
+            // Run upgrade steps
             for (UpgradeType updateType : UpgradeType.values()) {
                 checkDatabaseStructure(connection, updateType);
             }
 
+            // Optionally truncate skills to level caps
             if (mcMMO.p.getGeneralConfig().getTruncateSkills()) {
-                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-                    int cap = mcMMO.p.getSkillTools().getLevelCap(skill);
-                    if (cap != Integer.MAX_VALUE) {
-                        statement = connection.prepareStatement(
-                                "UPDATE `" + tablePrefix + "skills` SET `" + skill.name()
-                                        .toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `"
-                                        + skill.name().toLowerCase(Locale.ENGLISH) + "` > " + cap);
-                        statement.executeUpdate();
-                        tryClose(statement);
-                    }
-                }
+                truncateSkillsToCaps(connection);
             }
 
-            // TODO: refactor
-            LogUtils.debug(logger, "Killing orphans");
-            createStatement = connection.createStatement();
-            createStatement.executeUpdate(
-                    "DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `"
-                            + tablePrefix + "users` `u` WHERE `" + tablePrefix
-                            + "experience`.`user_id` = `u`.`id`)");
-            createStatement.executeUpdate(
-                    "DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `"
-                            + tablePrefix + "users` `u` WHERE `" + tablePrefix
-                            + "huds`.`user_id` = `u`.`id`)");
-            createStatement.executeUpdate(
-                    "DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `"
-                            + tablePrefix + "users` `u` WHERE `" + tablePrefix
-                            + "cooldowns`.`user_id` = `u`.`id`)");
-            createStatement.executeUpdate(
-                    "DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `"
-                            + tablePrefix + "users` `u` WHERE `" + tablePrefix
-                            + "skills`.`user_id` = `u`.`id`)");
+            // Clean up orphan rows
+            deleteOrphans(connection);
+
         } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            tryClose(resultSet);
-            tryClose(statement);
-            tryClose(createStatement);
-            tryClose(connection);
+            logSQLException(ex);
         }
 
+        // Column-level structure updates (adds newer skill columns if missing)
         final String skills = "skills";
+        final String experience = "experience";
+        final String cooldowns = "cooldowns";
         final String crossbows = "crossbows";
         final String tridents = "tridents";
         final String maces = "maces";
-        final String experience = "experience";
-        final String cooldowns = "cooldowns";
+        final String spears = "spears";
 
-        updateStructure(skills, crossbows, String.valueOf(32));
-        updateStructure(skills, tridents, String.valueOf(32));
-        updateStructure(skills, maces, String.valueOf(32));
+        updateStructure(skills, crossbows, "32");
+        updateStructure(skills, tridents, "32");
+        updateStructure(skills, maces, "32");
+        updateStructure(skills, spears, "32");
 
-        updateStructure(experience, crossbows, String.valueOf(10));
-        updateStructure(experience, tridents, String.valueOf(10));
-        updateStructure(experience, maces, String.valueOf(10));
+        updateStructure(experience, crossbows, "10");
+        updateStructure(experience, tridents, "10");
+        updateStructure(experience, maces, "10");
+        updateStructure(experience, spears, "10");
 
-        updateStructure(cooldowns, crossbows, String.valueOf(10));
-        updateStructure(cooldowns, tridents, String.valueOf(10));
-        updateStructure(cooldowns, maces, String.valueOf(10));
+        updateStructure(cooldowns, crossbows, "10");
+        updateStructure(cooldowns, tridents, "10");
+        updateStructure(cooldowns, maces, "10");
+        updateStructure(cooldowns, spears, "10");
     }
+
+    private void ensureUsersTable(Connection connection, PreparedStatement schemaStmt) throws SQLException {
+        if (tableExists(schemaStmt, "users")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
+                + "`id` int AUTO_INCREMENT,"
+                + "`user` varchar(40) NOT NULL,"
+                + "`uuid` varchar(36),"
+                + "`lastlogin` bigint NOT NULL,"
+                + "PRIMARY KEY (`id`),"
+                + "INDEX `user_index`(`user`),"
+                + "UNIQUE(`uuid`))";
+
+        try (Statement createStatement = connection.createStatement()) {
+            createStatement.executeUpdate(sql);
+        }
+    }
+
+    private void ensureHudsTable(Connection connection, PreparedStatement schemaStmt) throws SQLException {
+        if (tableExists(schemaStmt, "huds")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
+                + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '"
+                + mcMMO.p.getGeneralConfig().getMobHealthbarDefault() + "',"
+                + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
+                + "PRIMARY KEY (`user_id`)) "
+                + "DEFAULT CHARSET=" + CHARSET_SQL + ";";
+
+        try (Statement createStatement = connection.createStatement()) {
+            createStatement.executeUpdate(sql);
+        }
+    }
+
+    private void ensureCooldownsTable(Connection connection, PreparedStatement schemaStmt) throws SQLException {
+        if (tableExists(schemaStmt, "cooldowns")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
+                + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`crossbows` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`tridents` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`maces` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "`spears` int(32) unsigned NOT NULL DEFAULT '0',"
+                + "PRIMARY KEY (`user_id`)) "
+                + "DEFAULT CHARSET=" + CHARSET_SQL + ";";
+
+        try (Statement createStatement = connection.createStatement()) {
+            createStatement.executeUpdate(sql);
+        }
+    }
+
+    private void ensureSkillsTable(Connection connection, PreparedStatement schemaStmt) throws SQLException {
+        if (tableExists(schemaStmt, "skills")) {
+            return;
+        }
+
+        int starting = mcMMO.p.getAdvancedConfig().getStartingLevel();
+        String startingLevel = "'" + starting + "'";
+        String totalLevel = "'" + (starting * (PrimarySkillType.values().length - CHILD_SKILLS_SIZE)) + "'";
+
+        String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
+                + "`taming` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`mining` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`woodcutting` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`repair` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`unarmed` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`herbalism` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`excavation` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`archery` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`swords` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`axes` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`acrobatics` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`fishing` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`alchemy` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`crossbows` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`tridents` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`maces` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`spears` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
+                + "`total` int(10) unsigned NOT NULL DEFAULT " + totalLevel + ","
+                + "PRIMARY KEY (`user_id`)) "
+                + "DEFAULT CHARSET=" + CHARSET_SQL + ";";
+
+        try (Statement createStatement = connection.createStatement()) {
+            createStatement.executeUpdate(sql);
+        }
+    }
+
+    private void ensureExperienceTable(Connection connection, PreparedStatement schemaStmt) throws SQLException {
+        if (tableExists(schemaStmt, "experience")) {
+            return;
+        }
+
+        String sql = "CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
+                + "`user_id` int(10) unsigned NOT NULL,"
+                + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`crossbows` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`tridents` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`maces` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`spears` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "PRIMARY KEY (`user_id`)) "
+                + "DEFAULT CHARSET=" + CHARSET_SQL + ";";
+
+        try (Statement createStatement = connection.createStatement()) {
+            createStatement.executeUpdate(sql);
+        }
+    }
+
+    /**
+     * Uses the shared schema PreparedStatement + existing setStatementQuery logic
+     * to determine if a given logical table exists.
+     */
+    private boolean tableExists(PreparedStatement schemaStmt, String tableName) throws SQLException {
+        setStatementQuery(schemaStmt, tableName);
+        try (ResultSet rs = schemaStmt.executeQuery()) {
+            return rs.next();
+        }
+    }
+
+    /* -------------------- Post-creation maintenance -------------------- */
+
+    private void truncateSkillsToCaps(Connection connection) throws SQLException {
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            int cap = mcMMO.p.getSkillTools().getLevelCap(skill);
+            if (cap == Integer.MAX_VALUE) {
+                continue;
+            }
+
+            String column = skill.name().toLowerCase(Locale.ENGLISH);
+            String sql = "UPDATE `" + tablePrefix + "skills` "
+                    + "SET `" + column + "` = " + cap + " "
+                    + "WHERE `" + column + "` > " + cap;
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.executeUpdate();
+            }
+        }
+    }
+
+    private void deleteOrphans(Connection connection) throws SQLException {
+        LogUtils.debug(logger, "Killing orphans");
+
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(
+                    "DELETE FROM `" + tablePrefix + "experience` " +
+                            "WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` " +
+                            "WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
+
+            stmt.executeUpdate(
+                    "DELETE FROM `" + tablePrefix + "huds` " +
+                            "WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` " +
+                            "WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
+
+            stmt.executeUpdate(
+                    "DELETE FROM `" + tablePrefix + "cooldowns` " +
+                            "WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` " +
+                            "WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
+
+            stmt.executeUpdate(
+                    "DELETE FROM `" + tablePrefix + "skills` " +
+                            "WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` " +
+                            "WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
+        }
+    }
+
+    /* -------------------- Existing helpers (lightly cleaned) -------------------- */
 
     private void updateStructure(String tableName, String columnName, String columnSize) {
         try (Connection connection = getConnection(PoolIdentifier.MISC)) {
-            if (!columnExists(connection, mcMMO.p.getGeneralConfig().getMySQLDatabaseName(),
-                    tablePrefix + tableName, columnName)) {
+            if (!columnExists(connection,
+                    mcMMO.p.getGeneralConfig().getMySQLDatabaseName(),
+                    tablePrefix + tableName,
+                    columnName)) {
+
                 try (Statement createStatement = connection.createStatement()) {
-                    // logger.info("[SQLDB Check] Adding column '" + columnName + "' to table '" + tablePrefix + tableName + "'...");
-                    String startingLevel =
-                            "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
-                    createStatement.executeUpdate("ALTER TABLE `" + tablePrefix + tableName + "` "
-                            + "ADD COLUMN `" + columnName + "` int(" + columnSize
-                            + ") unsigned NOT NULL DEFAULT " + startingLevel);
+                    String startingLevel = "'" + mcMMO.p.getAdvancedConfig().getStartingLevel() + "'";
+                    String sql = "ALTER TABLE `" + tablePrefix + tableName + "` "
+                            + "ADD COLUMN `" + columnName + "` int(" + columnSize + ") "
+                            + "unsigned NOT NULL DEFAULT " + startingLevel;
+                    createStatement.executeUpdate(sql);
                 }
-            } else {
-                // logger.info("[SQLDB Check] Column '" + columnName + "' already exists in table '" + tablePrefix + tableName + "', looks good!");
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Consider more robust logging
+            logSQLException(e);
             throw new RuntimeException(e);
         }
     }
 
     private boolean columnExists(Connection connection, String database, String tableName,
             String columnName) throws SQLException {
-        // logger.info("[SQLDB Check] Checking if column '" + columnName + "' exists in table '" + tableName + "'");
-        try (Statement createStatement = connection.createStatement()) {
-            String sql = "SELECT `COLUMN_NAME`\n" +
-                    "FROM `INFORMATION_SCHEMA`.`COLUMNS`\n" +
-                    "WHERE `TABLE_SCHEMA`='" + database + "'\n" +
-                    "  AND `TABLE_NAME`='" + tableName + "'\n" +
-                    "  AND `COLUMN_NAME`='" + columnName + "'";
-            var resultSet = createStatement.executeQuery(sql);
-            return resultSet.next();
+        String sql = "SELECT `COLUMN_NAME` " +
+                "FROM `INFORMATION_SCHEMA`.`COLUMNS` " +
+                "WHERE `TABLE_SCHEMA`='" + database + "' " +
+                "AND `TABLE_NAME`='" + tableName + "' " +
+                "AND `COLUMN_NAME`='" + columnName + "'";
+
+        try (Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            return rs.next();
         } catch (SQLException e) {
-            logger.info("Failed to check if column exists in table " + tableName + " for column "
-                    + columnName);
-            e.printStackTrace();
+            logger.info("Failed to check if column exists in table " + tableName
+                    + " for column " + columnName);
+            logSQLException(e);
             throw e;
         }
     }
 
-
     private void setStatementQuery(PreparedStatement statement, String tableName)
             throws SQLException {
-        if (!this.h2) {
-            // Set schema name for MySQL
-            statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + tableName);
-        } else {
-            // For H2, the schema parameter is not needed
-            statement.setString(1, tablePrefix + tableName);
-        }
+        // Set schema name for MySQL
+        statement.setString(1, mcMMO.p.getGeneralConfig().getMySQLDatabaseName());
+        statement.setString(2, tablePrefix + tableName);
     }
 
     Connection getConnection(PoolIdentifier identifier) throws SQLException {
@@ -1263,7 +1429,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             }
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(statement);
         }
@@ -1299,122 +1465,130 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.execute();
             statement.close();
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(statement);
         }
     }
 
+    private static final PrimarySkillType[] PERSISTED_SKILLS = {
+            PrimarySkillType.TAMING,
+            PrimarySkillType.MINING,
+            PrimarySkillType.REPAIR,
+            PrimarySkillType.WOODCUTTING,
+            PrimarySkillType.UNARMED,
+            PrimarySkillType.HERBALISM,
+            PrimarySkillType.EXCAVATION,
+            PrimarySkillType.ARCHERY,
+            PrimarySkillType.SWORDS,
+            PrimarySkillType.AXES,
+            PrimarySkillType.ACROBATICS,
+            PrimarySkillType.FISHING,
+            PrimarySkillType.ALCHEMY,
+            PrimarySkillType.CROSSBOWS,
+            PrimarySkillType.TRIDENTS,
+            PrimarySkillType.MACES,
+            PrimarySkillType.SPEARS
+    };
+
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        final Map<PrimarySkillType, Integer> skills = new EnumMap<>(
-                PrimarySkillType.class); // Skill & Level
-        final Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(
-                PrimarySkillType.class); // Skill & XP
-        final Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(
-                SuperAbilityType.class); // Ability & Cooldown
-        final Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(
-                UniqueDataType.class); //Chimaera wing cooldown and other misc info
-        UUID uuid;
+        final var skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class);
+        final var skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);
+        final var skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class);
+        final var uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
+
+        // --- Skills & XP by predictable alias name ---
+
+        for (PrimarySkillType skill : PERSISTED_SKILLS) {
+            String base = skill.name().toLowerCase(Locale.ROOT); // e.g. "taming", "woodcutting"
+
+            int level  = result.getInt("skill_" + base);
+            float xp   = result.getFloat("xp_" + base);
+
+            skills.put(skill, level);
+            skillsXp.put(skill, xp);
+        }
+
+        // --- Cooldowns / DATS ---
+
+        skillsDATS.put(SuperAbilityType.SUPER_BREAKER,
+                result.getInt("cd_super_breaker"));
+        // cd_repair_unused exists but is not mapped to an ability
+        skillsDATS.put(SuperAbilityType.TREE_FELLER,
+                result.getInt("cd_tree_feller"));
+        skillsDATS.put(SuperAbilityType.BERSERK,
+                result.getInt("cd_berserk"));
+        skillsDATS.put(SuperAbilityType.GREEN_TERRA,
+                result.getInt("cd_green_terra"));
+        skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER,
+                result.getInt("cd_giga_drill_breaker"));
+        skillsDATS.put(SuperAbilityType.EXPLOSIVE_SHOT,
+                result.getInt("cd_explosive_shot"));
+        skillsDATS.put(SuperAbilityType.SERRATED_STRIKES,
+                result.getInt("cd_serrated_strikes"));
+        skillsDATS.put(SuperAbilityType.SKULL_SPLITTER,
+                result.getInt("cd_skull_splitter"));
+        // cd_acrobatics_unused exists but not mapped
+        skillsDATS.put(SuperAbilityType.BLAST_MINING,
+                result.getInt("cd_blast_mining"));
+
+        uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS,
+                result.getInt("ud_chimaera_wing_dats"));
+
+        skillsDATS.put(SuperAbilityType.SUPER_SHOTGUN,
+                result.getInt("cd_super_shotgun"));
+        skillsDATS.put(SuperAbilityType.TRIDENTS_SUPER_ABILITY,
+                result.getInt("cd_tridents_super_ability"));
+        skillsDATS.put(SuperAbilityType.MACES_SUPER_ABILITY,
+                result.getInt("cd_maces_super_ability"));
+        skillsDATS.put(SuperAbilityType.SPEARS_SUPER_ABILITY,
+                result.getInt("cd_spears_super_ability"));
+
+        // --- HUD + UUID ---
+
         int scoreboardTipsShown;
-
-        final int SKILL_COLUMNS = 16;
-        final int OFFSET_SKILLS = 0;
-        final int OFFSET_XP = SKILL_COLUMNS;
-        final int OFFSET_DATS = OFFSET_XP + SKILL_COLUMNS;
-        final int OFFSET_OTHER = OFFSET_DATS + SKILL_COLUMNS;
-
-        skills.put(PrimarySkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
-        skills.put(PrimarySkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
-        skills.put(PrimarySkillType.REPAIR, result.getInt(OFFSET_SKILLS + 3));
-        skills.put(PrimarySkillType.WOODCUTTING, result.getInt(OFFSET_SKILLS + 4));
-        skills.put(PrimarySkillType.UNARMED, result.getInt(OFFSET_SKILLS + 5));
-        skills.put(PrimarySkillType.HERBALISM, result.getInt(OFFSET_SKILLS + 6));
-        skills.put(PrimarySkillType.EXCAVATION, result.getInt(OFFSET_SKILLS + 7));
-        skills.put(PrimarySkillType.ARCHERY, result.getInt(OFFSET_SKILLS + 8));
-        skills.put(PrimarySkillType.SWORDS, result.getInt(OFFSET_SKILLS + 9));
-        skills.put(PrimarySkillType.AXES, result.getInt(OFFSET_SKILLS + 10));
-        skills.put(PrimarySkillType.ACROBATICS, result.getInt(OFFSET_SKILLS + 11));
-        skills.put(PrimarySkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
-        skills.put(PrimarySkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
-        skills.put(PrimarySkillType.CROSSBOWS, result.getInt(OFFSET_SKILLS + 14));
-        skills.put(PrimarySkillType.TRIDENTS, result.getInt(OFFSET_SKILLS + 15));
-        skills.put(PrimarySkillType.MACES, result.getInt(OFFSET_SKILLS + 16));
-
-        skillsXp.put(PrimarySkillType.TAMING, result.getFloat(OFFSET_XP + 1));
-        skillsXp.put(PrimarySkillType.MINING, result.getFloat(OFFSET_XP + 2));
-        skillsXp.put(PrimarySkillType.REPAIR, result.getFloat(OFFSET_XP + 3));
-        skillsXp.put(PrimarySkillType.WOODCUTTING, result.getFloat(OFFSET_XP + 4));
-        skillsXp.put(PrimarySkillType.UNARMED, result.getFloat(OFFSET_XP + 5));
-        skillsXp.put(PrimarySkillType.HERBALISM, result.getFloat(OFFSET_XP + 6));
-        skillsXp.put(PrimarySkillType.EXCAVATION, result.getFloat(OFFSET_XP + 7));
-        skillsXp.put(PrimarySkillType.ARCHERY, result.getFloat(OFFSET_XP + 8));
-        skillsXp.put(PrimarySkillType.SWORDS, result.getFloat(OFFSET_XP + 9));
-        skillsXp.put(PrimarySkillType.AXES, result.getFloat(OFFSET_XP + 10));
-        skillsXp.put(PrimarySkillType.ACROBATICS, result.getFloat(OFFSET_XP + 11));
-        skillsXp.put(PrimarySkillType.FISHING, result.getFloat(OFFSET_XP + 12));
-        skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
-        skillsXp.put(PrimarySkillType.CROSSBOWS, result.getFloat(OFFSET_XP + 14));
-        skillsXp.put(PrimarySkillType.TRIDENTS, result.getFloat(OFFSET_XP + 15));
-        skillsXp.put(PrimarySkillType.MACES, result.getFloat(OFFSET_XP + 16));
-
-        // Taming - Unused - result.getInt(OFFSET_DATS + 1)
-        skillsDATS.put(SuperAbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
-        // Repair - Unused - result.getInt(OFFSET_DATS + 3)
-        skillsDATS.put(SuperAbilityType.TREE_FELLER, result.getInt(OFFSET_DATS + 4));
-        skillsDATS.put(SuperAbilityType.BERSERK, result.getInt(OFFSET_DATS + 5));
-        skillsDATS.put(SuperAbilityType.GREEN_TERRA, result.getInt(OFFSET_DATS + 6));
-        skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER, result.getInt(OFFSET_DATS + 7));
-        skillsDATS.put(SuperAbilityType.EXPLOSIVE_SHOT, result.getInt(OFFSET_DATS + 8));
-        // Archery - Unused - result.getInt(OFFSET_DATS + 8)
-        skillsDATS.put(SuperAbilityType.SERRATED_STRIKES, result.getInt(OFFSET_DATS + 9));
-        skillsDATS.put(SuperAbilityType.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
-        // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
-        skillsDATS.put(SuperAbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
-        uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS, result.getInt(OFFSET_DATS + 13));
-        skillsDATS.put(SuperAbilityType.SUPER_SHOTGUN, result.getInt(OFFSET_DATS + 14));
-        skillsDATS.put(SuperAbilityType.TRIDENTS_SUPER_ABILITY, result.getInt(OFFSET_DATS + 15));
-        skillsDATS.put(SuperAbilityType.MACES_SUPER_ABILITY, result.getInt(OFFSET_DATS + 16));
-
-        // ORDER IS AS FOLLOWS
-        // MOB HEALTH BAR
-        // SCOREBOARD TIPS
-        // UUID
-        // USER
-
         try {
-            // Mob Health bar is unused, so we add two
-            // TODO: Why even SELECT the mob health bar?
-            //  Refactor later.
-            scoreboardTipsShown = result.getInt(OFFSET_OTHER + 2);
-        } catch (Exception e) {
+            // For older schemas this may not exist; keep your defensive behavior.
+            scoreboardTipsShown = result.getInt("scoreboardtips");
+        } catch (SQLException | RuntimeException ignored) {
             scoreboardTipsShown = 0;
         }
 
+        UUID uuid = null;
         try {
-            uuid = UUID.fromString(result.getString(OFFSET_OTHER + 3));
-        } catch (Exception e) {
-            uuid = null;
+            String uuidString = result.getString("uuid");
+            if (uuidString != null && !uuidString.isEmpty()) {
+                uuid = UUID.fromString(uuidString);
+            }
+        } catch (SQLException | IllegalArgumentException ignored) {
+            // Keep uuid as null
         }
 
         return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS,
                 scoreboardTipsShown, uniqueData, null);
     }
 
-    private void printErrors(SQLException ex) {
-        ex.printStackTrace();
 
-        // logger.severe("SQLException: " + ex.getMessage());
-        logger.severe("SQLState: " + ex.getSQLState());
-        logger.severe("VendorError: " + ex.getErrorCode());
+    private void logSQLException(SQLException ex) {
+        SQLException current = ex;
 
-        // Handling SQLException chain
-        SQLException nextException = ex.getNextException();
-        while (nextException != null) {
-            logger.severe("Caused by: " + nextException.getMessage());
-            nextException = nextException.getNextException();
+        while (current != null) {
+            logger.severe("SQLException occurred:");
+            logger.severe("  Message:    " + current.getMessage());
+            logger.severe("  SQLState:   " + current.getSQLState());
+            logger.severe("  VendorCode: " + current.getErrorCode());
+
+            // Log the full stack trace
+            StringWriter sw = new StringWriter();
+            current.printStackTrace(new PrintWriter(sw));
+            logger.severe(sw.toString());
+
+            current = current.getNextException();
+            if (current != null) {
+                logger.severe("Caused by next SQLException in chain:");
+            }
         }
     }
-
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.SQL;
@@ -1437,7 +1611,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "ADD INDEX `user` (`user`(20) ASC)");
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_NAME_UNIQUENESS);
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
         }
@@ -1543,7 +1717,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SQL_INDEXES);
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
         }
@@ -1578,7 +1752,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
         }
@@ -1602,7 +1776,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         names.add(resultSet.getString("user"));
                     }
                 } catch (SQLException ex) {
-                    printErrors(ex);
+                    logSQLException(ex);
                 } finally {
                     tryClose(resultSet);
                     tryClose(statement);
@@ -1644,7 +1818,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SQL_PARTY_NAMES);
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
         }
@@ -1682,7 +1856,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SKILL_TOTAL);
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             connection.setAutoCommit(true);
             tryClose(resultSet);
@@ -1714,7 +1888,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SPOUT);
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
         }
@@ -1747,7 +1921,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return id;
             }
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
             tryClose(statement);
@@ -1771,7 +1945,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return resultSet.getInt("id");
             }
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(resultSet);
             tryClose(statement);
@@ -1815,7 +1989,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, mcMMO.p.getGeneralConfig().getMobHealthbarDefault().toString());
             statement.executeUpdate();
         } catch (SQLException ex) {
-            printErrors(ex);
+            logSQLException(ex);
         } finally {
             tryClose(statement);
             tryClose(connection);
@@ -1851,7 +2025,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.SQL_CHARSET_UTF8MB4);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logSQLException(e);
         }
     }
 
@@ -1883,29 +2057,5 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 "    " + MOBHEALTHBAR_VARCHAR + "\n" +
                 "    CHARACTER SET utf8mb4\n" +
                 "    COLLATE utf8mb4_unicode_ci;";
-    }
-
-    public void printAllTablesWithColumns(Connection connection) {
-        try {
-            DatabaseMetaData metaData = connection.getMetaData();
-            String[] types = {"TABLE"};
-            ResultSet tables = metaData.getTables(null, null, "%", types);
-
-            while (tables.next()) {
-                String tableName = tables.getString("TABLE_NAME");
-                System.out.println("Table: " + tableName);
-
-                ResultSet columns = metaData.getColumns(null, null, tableName, "%");
-                while (columns.next()) {
-                    String columnName = columns.getString("COLUMN_NAME");
-                    String columnType = columns.getString("TYPE_NAME");
-                    System.out.println("  Column: " + columnName + " Type: " + columnType);
-                }
-                columns.close();
-            }
-            tables.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

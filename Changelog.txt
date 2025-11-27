@@ -2,6 +2,7 @@ Version 2.2.046
     Added Spears combat skill
     Added permissions related to Spears
     Added /spears skill command
+    Fixed bug where converting from SQL to FlatFile would not copy data for tridents, crossbows, maces, or spears
 
 Version 2.2.045
     Green Thumb now replants some crops it was failing to replant before (see notes)
