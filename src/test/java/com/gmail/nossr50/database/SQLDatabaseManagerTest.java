@@ -474,8 +474,6 @@ class SQLDatabaseManagerTest {
         when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
     }
 
-
-
     // ------------------------------------------------------------------------
     // New user -> rows in all core tables
     // ------------------------------------------------------------------------
