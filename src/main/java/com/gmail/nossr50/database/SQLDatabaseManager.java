@@ -76,8 +76,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 driverPath = LEGACY_DRIVER_PATH; //fall on deprecated path if new path isn't found
                 Class.forName(driverPath);
             } catch (ClassNotFoundException ex) {
-                e.printStackTrace();
-                ex.printStackTrace();
+                logger.log(Level.SEVERE, "Initial driver path load failed", e);
+                logger.log(Level.SEVERE, "Legacy driver path load failed", ex);
                 logger.severe("Neither driver found");
                 return;
             }
@@ -1688,38 +1688,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             logger.info("Updating mcMMO MySQL tables for scoreboard tips...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix
                     + "huds` ADD `scoreboardtips` int(10) NOT NULL DEFAULT '0' ;");
-        }
-    }
-
-    private void checkUpgradeAddSQLIndexes(final Statement statement) {
-        ResultSet resultSet = null;
-
-        try {
-            resultSet = statement.executeQuery(
-                    "SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
-            resultSet.last();
-
-            if (resultSet.getRow() != SkillTools.NON_CHILD_SKILLS.size()) {
-                logger.info("Indexing tables, this may take a while on larger databases");
-
-                for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-                    String skill_name = skill.name().toLowerCase(Locale.ENGLISH);
-
-                    try {
-                        statement.executeUpdate(
-                                "ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_"
-                                        + skill_name + "` (`" + skill_name + "`) USING BTREE");
-                    } catch (SQLException ex) {
-                        // Ignore
-                    }
-                }
-            }
-
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SQL_INDEXES);
-        } catch (SQLException ex) {
-            logSQLException(ex);
-        } finally {
-            tryClose(resultSet);
         }
     }
 

@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testcontainers.containers.JdbcDatabaseContainer;
@@ -47,7 +49,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -382,7 +388,7 @@ class SQLDatabaseManagerTest {
     }
 
     // ------------------------------------------------------------------------
-    // Schema upgrades (legacy spears)
+    // Schema upgrades
     // ------------------------------------------------------------------------
 
     @ParameterizedTest(name = "{0} - upgrades legacy schema to add spears columns")
@@ -420,6 +426,55 @@ class SQLDatabaseManagerTest {
             databaseManager.onDisable();
         }
     }
+
+    @ParameterizedTest(name = "{0} - SQL_CHARSET_UTF8MB4 upgrade runs without error")
+    @MethodSource("dbFlavors")
+    void whenCharsetUpgradeIsRequiredShouldUpdateCharacterSet(DbFlavor flavor) {
+        // GIVEN
+        truncateAllCoreTables(flavor);
+
+        // First reset and restub the upgrade manager so only the charset upgrade runs
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        when(upgradeManager.shouldUpgrade(UpgradeType.SQL_CHARSET_UTF8MB4)).thenReturn(true);
+
+        // WHEN – constructor will call checkStructure(), which will in turn call updateCharacterSet(...)
+        SQLDatabaseManager manager = createManagerFor(flavor);
+
+        // THEN – we at least expect the upgrade to be marked completed
+        verify(upgradeManager, atLeastOnce()).setUpgradeCompleted(UpgradeType.SQL_CHARSET_UTF8MB4);
+
+        manager.onDisable();
+
+        // Restore default behavior for other tests: no upgrades
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+    }
+
+    @ParameterizedTest(name = "{0} - when all upgrades are required, all upgrade helpers execute")
+    @MethodSource("dbFlavors")
+    void whenAllUpgradesRequiredShouldExecuteAllUpgradeHelpers(DbFlavor flavor) {
+        // GIVEN – clean schema
+        truncateAllCoreTables(flavor);
+
+        // GIVEN – every UpgradeType should be considered "needed"
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(true);
+
+        // WHEN – constructor will call checkStructure() which loops all UpgradeType values
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        // THEN – at least one call to mark some upgrades complete (and in practice, many)
+        verify(upgradeManager, atLeastOnce()).setUpgradeCompleted(any(UpgradeType.class));
+
+        databaseManager.onDisable();
+
+        // Restore default for other tests
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+    }
+
+
 
     // ------------------------------------------------------------------------
     // New user -> rows in all core tables
@@ -1152,6 +1207,59 @@ class SQLDatabaseManagerTest {
             databaseManager.onDisable();
         }
     }
+
+    // --------------------------------------------------------------------------
+    // Convert Users Tests
+    // --------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "{0} - convertUsers migrates all stored users")
+    @MethodSource("dbFlavors")
+    void whenConvertingUsersShouldSaveEachStoredUserToDestination(DbFlavor flavor) {
+        // GIVEN
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager sourceManager = createManagerFor(flavor);
+
+        String userA = "convert_user_a_" + flavor.name().toLowerCase();
+        String userB = "convert_user_b_" + flavor.name().toLowerCase();
+        sourceManager.newUser(userA, new UUID(1L, 2L));
+        sourceManager.newUser(userB, new UUID(3L, 4L));
+
+        DatabaseManager destination = mock(DatabaseManager.class);
+        when(destination.saveUser(any(PlayerProfile.class))).thenReturn(true);
+
+        // WHEN
+        sourceManager.convertUsers(destination);
+
+        // THEN – destination.saveUser(...) called once per stored user
+        ArgumentCaptor<PlayerProfile> profileCaptor = ArgumentCaptor.forClass(PlayerProfile.class);
+        verify(destination, times(2)).saveUser(profileCaptor.capture());
+
+        assertThat(profileCaptor.getAllValues())
+                .extracting(PlayerProfile::getPlayerName)
+                .containsExactlyInAnyOrder(userA, userB);
+
+        sourceManager.onDisable();
+    }
+
+    @ParameterizedTest(name = "{0} - convertUsers on empty database does nothing")
+    @MethodSource("dbFlavors")
+    void whenConvertingUsersWithNoStoredUsersShouldNotCallDestination(DbFlavor flavor) {
+        // GIVEN
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager sourceManager = createManagerFor(flavor);
+
+        DatabaseManager destination = mock(DatabaseManager.class);
+        when(destination.saveUser(any(PlayerProfile.class))).thenReturn(true);
+
+        // WHEN
+        sourceManager.convertUsers(destination);
+
+        // THEN
+        verify(destination, times(0)).saveUser(any(PlayerProfile.class));
+
+        sourceManager.onDisable();
+    }
+
 
     // ------------------------------------------------------------------------
     // Helpers for legacy schema tests
