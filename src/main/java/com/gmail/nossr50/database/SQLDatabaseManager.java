@@ -574,104 +574,124 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public Map<PrimarySkillType, Integer> readRank(String playerName) {
-        Map<PrimarySkillType, Integer> skills = new HashMap<>();
+        // NOTE: We keep HashMap so we can still use `null` as the "total" key,
+        // just like the original code.
+        Map<PrimarySkillType, Integer> ranks = new HashMap<>();
 
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+        // Preload this player's skill levels & total in a single query
+        try (Connection connection = getConnection(PoolIdentifier.MISC)) {
 
-        try {
-            connection = getConnection(PoolIdentifier.MISC);
+            // 1) Load all relevant skill levels for this player in one shot
+            Map<PrimarySkillType, Integer> levels = new EnumMap<>(PrimarySkillType.class);
+            int totalLevel = 0;
 
-            // Per-skill rank
-            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
-                String skillName = primarySkillType.name().toLowerCase(Locale.ENGLISH);
+            String loadSql =
+                    "SELECT s.*, u.`user` " +
+                            "FROM " + tablePrefix + "users u " +
+                            "JOIN " + tablePrefix + "skills s ON s.user_id = u.id " +
+                            "WHERE u.`user` = ?";
 
-                String sql = "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN "
-                        + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
-                        "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix
-                        + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                        "WHERE `user` = ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(loadSql)) {
+                stmt.setString(1, playerName);
 
-                statement = connection.prepareStatement(sql);
-                statement.setString(1, playerName);
-                resultSet = statement.executeQuery();
-
-                resultSet.next();
-                int rank = resultSet.getInt("rank");
-
-                resultSet.close();
-                statement.close();
-
-                sql = "SELECT user, " + skillName + " FROM " + tablePrefix + "users JOIN "
-                        + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
-                        "AND " + skillName + " = (SELECT " + skillName + " FROM " + tablePrefix
-                        + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                        "WHERE `user` = '" + playerName + "') ORDER BY user";
-
-                statement = connection.prepareStatement(sql);
-                resultSet = statement.executeQuery();
-
-                while (resultSet.next()) {
-                    if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                        skills.put(primarySkillType, rank + resultSet.getRow());
-                        break;
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (!rs.next()) {
+                        // Player not found in DB, no ranks to report
+                        return ranks;
                     }
-                }
 
-                resultSet.close();
-                statement.close();
-            }
+                    for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
+                        String column = primarySkillType.name().toLowerCase(Locale.ENGLISH);
+                        levels.put(primarySkillType, rs.getInt(column));
+                    }
 
-            // Total rank
-            String sql =
-                    "SELECT COUNT(*) AS 'rank' FROM " + tablePrefix + "users JOIN " + tablePrefix
-                            + "skills ON user_id = id " +
-                            "WHERE " + ALL_QUERY_VERSION + " > 0 " +
-                            "AND " + ALL_QUERY_VERSION + " > " +
-                            "(SELECT " + ALL_QUERY_VERSION + " " +
-                            "FROM " + tablePrefix + "users JOIN " + tablePrefix
-                            + "skills ON user_id = id WHERE `user` = ?)";
-
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, playerName);
-            resultSet = statement.executeQuery();
-
-            resultSet.next();
-            int rank = resultSet.getInt("rank");
-
-            resultSet.close();
-            statement.close();
-
-            sql = "SELECT user, " + ALL_QUERY_VERSION + " " +
-                    "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id "
-                    +
-                    "WHERE " + ALL_QUERY_VERSION + " > 0 " +
-                    "AND " + ALL_QUERY_VERSION + " = " +
-                    "(SELECT " + ALL_QUERY_VERSION + " " +
-                    "FROM " + tablePrefix + "users JOIN " + tablePrefix
-                    + "skills ON user_id = id WHERE `user` = ?) ORDER BY user";
-
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, playerName);
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                    skills.put(null, rank + resultSet.getRow());
-                    break;
+                    totalLevel = rs.getInt(ALL_QUERY_VERSION); // "total" column
                 }
             }
+
+            // Helper method to compute a rank (base + tie offset + 1)
+            // for any numeric column on the skills table.
+            class RankCalculator {
+                int computeRank(String columnName, int value) throws SQLException {
+                    if (value <= 0) {
+                        // Original logic effectively did not assign a rank when the value <= 0
+                        return -1;
+                    }
+
+                    // Base: number of players with strictly higher value
+                    String higherSql =
+                            "SELECT COUNT(*) AS cnt " +
+                                    "FROM " + tablePrefix + "users u " +
+                                    "JOIN " + tablePrefix + "skills s ON s.user_id = u.id " +
+                                    "WHERE s." + columnName + " > ?";
+
+                    int higherCount = 0;
+                    try (PreparedStatement stmt = connection.prepareStatement(higherSql)) {
+                        stmt.setInt(1, value);
+                        try (ResultSet rs = stmt.executeQuery()) {
+                            if (rs.next()) {
+                                higherCount = rs.getInt("cnt");
+                            }
+                        }
+                    }
+
+                    // Tie offset: number of players with the same value whose username
+                    // sorts alphabetically before this player's name.
+                    String tieSql =
+                            "SELECT COUNT(*) AS cnt " +
+                                    "FROM " + tablePrefix + "users u " +
+                                    "JOIN " + tablePrefix + "skills s ON s.user_id = u.id " +
+                                    "WHERE s." + columnName + " = ? " +
+                                    "AND s." + columnName + " > 0 " +
+                                    "AND u.`user` < ?";
+
+                    int tieCount = 0;
+                    try (PreparedStatement stmt = connection.prepareStatement(tieSql)) {
+                        stmt.setInt(1, value);
+                        stmt.setString(2, playerName);
+                        try (ResultSet rs = stmt.executeQuery()) {
+                            if (rs.next()) {
+                                tieCount = rs.getInt("cnt");
+                            }
+                        }
+                    }
+
+                    // 1-based rank: higher values first, then alphabetical by username
+                    return higherCount + tieCount + 1;
+                }
+            }
+
+            RankCalculator rankCalculator = new RankCalculator();
+
+            // 2) Per-skill rank
+            for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
+                int level = levels.getOrDefault(primarySkillType, 0);
+
+                int rank = rankCalculator.computeRank(
+                        primarySkillType.name().toLowerCase(Locale.ENGLISH),
+                        level
+                );
+
+                if (rank > 0) {
+                    ranks.put(primarySkillType, rank);
+                }
+            }
+
+            // 3) Total rank (null key matches original behavior)
+            if (totalLevel > 0) {
+                int totalRank = rankCalculator.computeRank(ALL_QUERY_VERSION, totalLevel);
+                if (totalRank > 0) {
+                    ranks.put(null, totalRank);
+                }
+            }
+
         } catch (SQLException ex) {
             logSQLException(ex);
-        } finally {
-            tryClose(resultSet);
-            tryClose(statement);
-            tryClose(connection);
         }
 
-        return skills;
+        return ranks;
     }
+
 
     // ---------------------------------------------------------------------
     // New user / load profile
@@ -815,7 +835,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             int id = getUserID(connection, playerName, uuid);
 
             if (id == -1) {
-                return createEmptyProfile(playerName);
+                return createEmptyProfile(playerName, uuid);
             }
 
             writeMissingRows(connection, id);
@@ -895,7 +915,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (!resultSet.next()) {
-                        return createEmptyProfile(playerName);
+                        return createEmptyProfile(playerName, uuid);
                     }
 
                     String nameInDb = resultSet.getString("username");
@@ -914,12 +934,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         } catch (SQLException ex) {
             logSQLException(ex);
-            return createEmptyProfile(playerName);
+            return createEmptyProfile(playerName, uuid);
         }
     }
 
-    private PlayerProfile createEmptyProfile(@Nullable String playerName) {
-        return new PlayerProfile(playerName, mcMMO.p.getAdvancedConfig().getStartingLevel());
+    private PlayerProfile createEmptyProfile(@Nullable String playerName, @Nullable UUID uuid) {
+        return new PlayerProfile(playerName, uuid, mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
     private boolean shouldUpdateUsername(@Nullable String playerName,
@@ -1354,8 +1374,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void deleteOrphans(Connection connection) throws SQLException {
-        LogUtils.debug(logger, "Killing orphans");
-
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(
                     "DELETE FROM `" + tablePrefix + "experience` " +
@@ -1455,7 +1473,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
-            LogUtils.debug(logger, "Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
         }
 
@@ -1463,10 +1480,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             switch (upgrade) {
                 case ADD_FISHING -> checkUpgradeAddFishing(statement);
                 case ADD_BLAST_MINING_COOLDOWN -> checkUpgradeAddBlastMiningCooldown(statement);
-                case ADD_SQL_INDEXES -> {
-                    // historical: currently disabled
-                    // checkUpgradeAddSQLIndexes(statement);
-                }
                 case ADD_MOB_HEALTHBARS -> checkUpgradeAddMobHealthbars(statement);
                 case DROP_SQL_PARTY_NAMES -> checkUpgradeDropPartyNames(statement);
                 case DROP_SPOUT -> checkUpgradeDropSpout(statement);
@@ -1721,12 +1734,21 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SKILL_TOTAL);
         } catch (SQLException ex) {
             logSQLException(ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+                // best effort
+            }
         } finally {
-            connection.setAutoCommit(true);
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ignored) {
+            }
             tryClose(resultSet);
             tryClose(statement);
         }
     }
+
 
     private void checkUpgradeDropSpout(final Statement statement) {
         ResultSet resultSet = null;

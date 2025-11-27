@@ -1184,6 +1184,246 @@ class SQLDatabaseManagerTest {
         databaseManager.onDisable();
     }
 
+    @ParameterizedTest(name = "{0} - readRank for unknown user returns empty map")
+    @MethodSource("dbFlavors")
+    void whenReadingRankForUnknownUserShouldReturnEmptyMap(DbFlavor flavor) {
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            Map<PrimarySkillType, Integer> ranks = databaseManager.readRank("ghost_" + flavor.name().toLowerCase());
+
+            assertThat(ranks)
+                    .as("Unknown user should yield an empty rank map")
+                    .isEmpty();
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - readRank for zero-skill user returns empty map")
+    @MethodSource("dbFlavors")
+    void whenReadingRankForZeroSkillUserShouldReturnEmptyMap(DbFlavor flavor) {
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        String zeroName = "zeros_" + flavor.name().toLowerCase();
+        UUID zeroUuid = UUID.randomUUID();
+
+        try {
+            // newUser -> all skills 0, total 0
+            databaseManager.newUser(zeroName, zeroUuid);
+            PlayerProfile zeroProfile = databaseManager.loadPlayerProfile(zeroUuid);
+            assertThat(databaseManager.saveUser(zeroProfile)).isTrue();
+
+            // Also create a powered user for sanity; zero user still should not be ranked
+            String poweredName = "nonzero_" + flavor.name().toLowerCase();
+            UUID poweredUuid = UUID.randomUUID();
+            createUserWithUniformNonChildSkills(databaseManager, poweredName, poweredUuid, 100);
+
+            Map<PrimarySkillType, Integer> ranks = databaseManager.readRank(zeroName);
+
+            assertThat(ranks)
+                    .as("User with all skills at 0 should not have any rank entries")
+                    .isEmpty();
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - readRank with a single user → rank 1 for all non-child skills")
+    @MethodSource("dbFlavors")
+    void whenSingleUserShouldBeRankOneForAllNonChildSkills(DbFlavor flavor) {
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        String soloName = "solo_" + flavor.name().toLowerCase();
+        UUID soloUuid = UUID.randomUUID();
+
+        try {
+            // All non-child skills = 50
+            createUserWithUniformNonChildSkills(databaseManager, soloName, soloUuid, 50);
+
+            Map<PrimarySkillType, Integer> ranks = databaseManager.readRank(soloName);
+
+            for (PrimarySkillType type : PrimarySkillType.values()) {
+                if (SkillTools.isChildSkill(type)) {
+                    assertThat(ranks.get(type))
+                            .as("Child skill %s should have no rank", type)
+                            .isNull();
+                } else {
+                    assertThat(ranks.get(type))
+                            .as("Solo player should be rank 1 for skill %s", type)
+                            .isEqualTo(1);
+                }
+            }
+
+            // Total rank (null key) should also be 1
+            assertThat(ranks.get(null))
+                    .as("Solo player total rank should be 1")
+                    .isEqualTo(1);
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - readRank alphabetical tiebreaker with only equal-skill users")
+    @MethodSource("dbFlavors")
+    void whenEqualSkillUsersOnlyShouldUseAlphabeticalTiebreaker(DbFlavor flavor) {
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        String nameA = "aaa_" + flavor.name().toLowerCase();
+        String nameB = "bbb_" + flavor.name().toLowerCase();
+        String nameC = "ccc_" + flavor.name().toLowerCase();
+
+        UUID uuidA = UUID.randomUUID();
+        UUID uuidB = UUID.randomUUID();
+        UUID uuidC = UUID.randomUUID();
+
+        try {
+            // For simplicity, set only MINING and let total = mining
+            Map<PrimarySkillType, Integer> skillMap = Map.of(PrimarySkillType.MINING, 100);
+
+            createUserWithSkills(databaseManager, nameA, uuidA, skillMap);
+            createUserWithSkills(databaseManager, nameB, uuidB, skillMap);
+            createUserWithSkills(databaseManager, nameC, uuidC, skillMap);
+
+            Map<PrimarySkillType, Integer> ranksA = databaseManager.readRank(nameA);
+            Map<PrimarySkillType, Integer> ranksB = databaseManager.readRank(nameB);
+            Map<PrimarySkillType, Integer> ranksC = databaseManager.readRank(nameC);
+
+            // Mining ranks: alphabetical order
+            assertThat(ranksA.get(PrimarySkillType.MINING)).isEqualTo(1);
+            assertThat(ranksB.get(PrimarySkillType.MINING)).isEqualTo(2);
+            assertThat(ranksC.get(PrimarySkillType.MINING)).isEqualTo(3);
+
+            // Total ranks behave the same in this setup (total == mining)
+            assertThat(ranksA.get(null)).isEqualTo(1);
+            assertThat(ranksB.get(null)).isEqualTo(2);
+            assertThat(ranksC.get(null)).isEqualTo(3);
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - readRank tie group is offset by number of higher players")
+    @MethodSource("dbFlavors")
+    void whenEqualSkillUsersHaveHigherPlayerShouldOffsetByHigherCount(DbFlavor flavor) {
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        String higherName = "zoe_" + flavor.name().toLowerCase();
+        String nameA = "aaa2_" + flavor.name().toLowerCase();
+        String nameB = "bbb2_" + flavor.name().toLowerCase();
+        String nameC = "ccc2_" + flavor.name().toLowerCase();
+
+        UUID uuidHigher = UUID.randomUUID();
+        UUID uuidA = UUID.randomUUID();
+        UUID uuidB = UUID.randomUUID();
+        UUID uuidC = UUID.randomUUID();
+
+        try {
+            // Higher player
+            createUserWithSkills(
+                    databaseManager,
+                    higherName,
+                    uuidHigher,
+                    Map.of(PrimarySkillType.MINING, 200)
+            );
+
+            // Tie group
+            Map<PrimarySkillType, Integer> tieSkills = Map.of(PrimarySkillType.MINING, 100);
+            createUserWithSkills(databaseManager, nameA, uuidA, tieSkills);
+            createUserWithSkills(databaseManager, nameB, uuidB, tieSkills);
+            createUserWithSkills(databaseManager, nameC, uuidC, tieSkills);
+
+            Map<PrimarySkillType, Integer> higherRanks = databaseManager.readRank(higherName);
+            Map<PrimarySkillType, Integer> ranksA = databaseManager.readRank(nameA);
+            Map<PrimarySkillType, Integer> ranksB = databaseManager.readRank(nameB);
+            Map<PrimarySkillType, Integer> ranksC = databaseManager.readRank(nameC);
+
+            // Higher player is rank 1
+            assertThat(higherRanks.get(PrimarySkillType.MINING)).isEqualTo(1);
+
+            // Others follow in alphabetical order, offset by 1
+            assertThat(ranksA.get(PrimarySkillType.MINING)).isEqualTo(2);
+            assertThat(ranksB.get(PrimarySkillType.MINING)).isEqualTo(3);
+            assertThat(ranksC.get(PrimarySkillType.MINING)).isEqualTo(4);
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - readRank per-skill vs total ranking can differ")
+    @MethodSource("dbFlavors")
+    void whenDifferentSkillDistributionsShouldComputePerSkillAndTotalRanksSeparately(DbFlavor flavor) {
+        truncateAllCoreTables(flavor);
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        String alphaName = "alpha_" + flavor.name().toLowerCase();
+        String bravoName = "bravo_" + flavor.name().toLowerCase();
+        String charlieName = "charlie_" + flavor.name().toLowerCase();
+
+        UUID alphaUuid = UUID.randomUUID();
+        UUID bravoUuid = UUID.randomUUID();
+        UUID charlieUuid = UUID.randomUUID();
+
+        try {
+            // alpha: mining 100, fishing 0
+            createUserWithSkills(
+                    databaseManager,
+                    alphaName,
+                    alphaUuid,
+                    Map.of(PrimarySkillType.MINING, 100)
+            );
+
+            // bravo: mining 50, fishing 200
+            createUserWithSkills(
+                    databaseManager,
+                    bravoName,
+                    bravoUuid,
+                    Map.of(
+                            PrimarySkillType.MINING, 50,
+                            PrimarySkillType.FISHING, 200
+                    )
+            );
+
+            // charlie: mining 75, fishing 50
+            createUserWithSkills(
+                    databaseManager,
+                    charlieName,
+                    charlieUuid,
+                    Map.of(
+                            PrimarySkillType.MINING, 75,
+                            PrimarySkillType.FISHING, 50
+                    )
+            );
+
+            Map<PrimarySkillType, Integer> alphaRanks = databaseManager.readRank(alphaName);
+            Map<PrimarySkillType, Integer> bravoRanks = databaseManager.readRank(bravoName);
+            Map<PrimarySkillType, Integer> charlieRanks = databaseManager.readRank(charlieName);
+
+            // --- Mining (100 > 75 > 50) ---
+            assertThat(alphaRanks.get(PrimarySkillType.MINING)).isEqualTo(1);
+            assertThat(charlieRanks.get(PrimarySkillType.MINING)).isEqualTo(2);
+            assertThat(bravoRanks.get(PrimarySkillType.MINING)).isEqualTo(3);
+
+            // --- Fishing (200 > 50 > 0) ---
+            // alpha has 0 -> no rank entry for fishing
+            assertThat(alphaRanks.get(PrimarySkillType.FISHING)).isNull();
+
+            assertThat(bravoRanks.get(PrimarySkillType.FISHING)).isEqualTo(1);
+            assertThat(charlieRanks.get(PrimarySkillType.FISHING)).isEqualTo(2);
+
+            // --- Total: alpha 100, bravo 250, charlie 125 ---
+            assertThat(bravoRanks.get(null)).isEqualTo(1);   // 250 highest
+            assertThat(charlieRanks.get(null)).isEqualTo(2); // 125
+            assertThat(alphaRanks.get(null)).isEqualTo(3);   // 100
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
 
     // ------------------------------------------------------------------------
     // getDatabaseType
@@ -1385,4 +1625,37 @@ class SQLDatabaseManagerTest {
             return resultSet.next();
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Helpers for readRank tests
+    // ------------------------------------------------------------------------
+
+    private void createUserWithUniformNonChildSkills(SQLDatabaseManager manager,
+            String name,
+            UUID uuid,
+            int level) {
+        manager.newUser(name, uuid);
+        PlayerProfile profile = manager.loadPlayerProfile(uuid);
+        for (PrimarySkillType type : PrimarySkillType.values()) {
+            if (SkillTools.isChildSkill(type)) {
+                continue;
+            }
+            profile.modifySkill(type, level);
+        }
+        assertThat(manager.saveUser(profile)).isTrue();
+    }
+
+    private void createUserWithSkills(SQLDatabaseManager manager,
+            String name,
+            UUID uuid,
+            Map<PrimarySkillType, Integer> levels) {
+        manager.newUser(name, uuid);
+        PlayerProfile profile = manager.loadPlayerProfile(uuid);
+        for (Map.Entry<PrimarySkillType, Integer> e : levels.entrySet()) {
+            // modifySkill adds; starting level is 0 in tests
+            profile.modifySkill(e.getKey(), e.getValue());
+        }
+        assertThat(manager.saveUser(profile)).isTrue();
+    }
+
 }
