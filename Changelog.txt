@@ -3,12 +3,14 @@ Version 2.2.046
     Added permissions related to Spears
     Added /spears skill command
     Fixed bug where converting from SQL to FlatFile would not copy data for tridents, crossbows, maces, or spears
-    (Codebase) Added dockerized unit tests for SQL databases
-    (Codebase) Large refactoring to SQLDatabaseManager to bring it up to modern standards and improve maintainability
+    (Codebase) Added dockerized unit tests for SQL databases (See notes)
+    (Codebase) Large refactor to both SQLDatabaseManager and FlatFileDatabaseManager
+    (Codebase) Database related errors are now more descriptive and have had their logging improved
 
     NOTES:
-    If you manually compile mcMMO you will need docker to run the unit tests, if you'd rather not install docker simply just add -DskipTests to your maven instructions
-
+    If you compile mcMMO you will likely run into errors during unit tests for SQL databases, this is because they now rely on docker being present on the system to load up test containers.
+    New SQL database unit tests have been added which leverage test containers to test against real installs of MySQL/MariaDB, which require Docker (or an equivalent) to run.
+    If you'd rather not install docker simply just add -DskipTests to your maven instructions when compiling, this doesn't change anything about mcMMO it just skips running through the unit tests during the build.
 
 Version 2.2.045
     Green Thumb now replants some crops it was failing to replant before (see notes)
