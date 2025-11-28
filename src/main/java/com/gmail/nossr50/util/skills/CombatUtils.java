@@ -361,7 +361,8 @@ public final class CombatUtils {
 
         event.setDamage(boostedDamage);
 
-        // TODO: Apply any non-damage effects here
+        // Apply any non-damage effects here
+        spearsManager.potentiallyApplyMomentum();
 
         processCombatXP(mmoPlayer, target, PrimarySkillType.SPEARS);
         printFinalDamageDebug(player, event, mmoPlayer);
