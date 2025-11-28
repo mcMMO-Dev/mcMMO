@@ -19,6 +19,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.maces.MacesManager;
+import com.gmail.nossr50.skills.spears.SpearsManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.tridents.TridentsManager;
@@ -328,6 +329,41 @@ public final class CombatUtils {
         }
 
         processCombatXP(mmoPlayer, target, PrimarySkillType.MACES);
+        printFinalDamageDebug(player, event, mmoPlayer);
+    }
+
+    private static void processSpearsCombat(@NotNull LivingEntity target,
+            @NotNull Player player,
+            @NotNull EntityDamageByEntityEvent event) {
+        if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+
+        double boostedDamage = event.getDamage();
+
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if (mmoPlayer == null) {
+            return;
+        }
+
+        final SpearsManager spearsManager = mmoPlayer.getSpearsManager();
+
+        // Apply Limit Break DMG
+        if (canUseLimitBreak(player, target, SubSkillType.SPEARS_SPEARS_LIMIT_BREAK)) {
+            boostedDamage += (getLimitBreakDamage(
+                    player, target, SubSkillType.SPEARS_SPEARS_LIMIT_BREAK)
+                    * mmoPlayer.getAttackStrength());
+        }
+
+        // TODO: Apply any other damage boosts for spears here
+
+        event.setDamage(boostedDamage);
+
+        // TODO: Apply any non-damage effects here
+
+        processCombatXP(mmoPlayer, target, PrimarySkillType.SPEARS);
         printFinalDamageDebug(player, event, mmoPlayer);
     }
 
@@ -641,6 +677,15 @@ public final class CombatUtils {
                 if (mcMMO.p.getSkillTools()
                         .doesPlayerHaveSkillPermission(player, PrimarySkillType.MACES)) {
                     processMacesCombat(target, player, event);
+                }
+            } else if (ItemUtils.isSpear(heldItem)) {
+                if (!mcMMO.p.getSkillTools()
+                        .canCombatSkillsTrigger(PrimarySkillType.SPEARS, target)) {
+                    return;
+                }
+                if (mcMMO.p.getSkillTools()
+                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.SPEARS)) {
+                    processSpearsCombat(target, player, event);
                 }
             }
         } else if (entityType == EntityType.WOLF) {

@@ -166,20 +166,6 @@ public final class ItemUtils {
         }
     }
 
-    // TODO: Unit tests
-    public static boolean isCrossbow(@NotNull ItemStack item) {
-        return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
-    }
-
-    // TODO: Unit tests
-    public static boolean isTrident(@NotNull ItemStack item) {
-        return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
-    }
-
-    public static boolean isMace(@NotNull ItemStack item) {
-        return mcMMO.getMaterialMapStore().isMace(item.getType().getKey().getKey());
-    }
-
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {
         return player.getInventory().getItemInMainHand().getType() == material
                 || player.getInventory().getItemInOffHand().getType() == material;
@@ -274,6 +260,46 @@ public final class ItemUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Checks if the item is a crossbow.
+     *
+     * @param item Item to check
+     * @return true if the item is a crossbow, false otherwise
+     */
+    public static boolean isCrossbow(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Checks if the item is a trident.
+     *
+     * @param item Item to check
+     * @return true if the item is a trident, false otherwise
+     */
+    public static boolean isTrident(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Checks if the item is a mace.
+     *
+     * @param item Item to check
+     * @return true if the item is a mace, false otherwise
+     */
+    public static boolean isMace(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isMace(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Checks if the item is a spear.
+     * @param item Item to check
+     *
+     * @return true if the item is a spear, false otherwise
+     */
+    public static boolean isSpear(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isSpear(item.getType().getKey().getKey());
     }
 
     /**
