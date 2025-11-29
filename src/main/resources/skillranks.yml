@@ -428,7 +428,7 @@ Spears:
             Rank_8: 800
             Rank_9: 900
             Rank_10: 1000
-    SpearsMomentum:
+    Momentum:
         Standard:
             Rank_1: 1
             Rank_2: 10

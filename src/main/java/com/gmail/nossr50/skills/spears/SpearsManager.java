@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import java.util.Locale;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,24 +47,19 @@ public class SpearsManager extends SkillManager {
             }
         }
 
-        // TODO: Potentially it should overwrite the effect if we are providing a stronger one
-        if (swiftnessEffectType == null || getPlayer().getPotionEffect(swiftnessEffectType) != null) {
-            return;
-        }
-
-        if (!Permissions.canUseSubSkill(mmoPlayer.getPlayer(), SubSkillType.SPEARS_MOMENTUM)) {
+        if (!canMomentumBeApplied()) {
             return;
         }
 
         int momentumRank = getRank(getPlayer(), SubSkillType.SPEARS_MOMENTUM);
+        // Chance to activate on hit is influence by the CD
         double momentumOdds = (mcMMO.p.getAdvancedConfig().getMomentumChanceToApplyOnHit(momentumRank)
-                * mmoPlayer.getAttackStrength());
+                * Math.min(mmoPlayer.getAttackStrength(), 1.0D));
 
-        if (isStaticSkillRNGSuccessful(PrimarySkillType.MACES, mmoPlayer,
-                momentumOdds)) {
+        if (isStaticSkillRNGSuccessful(PrimarySkillType.SPEARS, mmoPlayer, momentumOdds)) {
             if (mmoPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(),
-                        NotificationType.SUBSKILL_MESSAGE, "Maces.SubSkill.Momentum.Activated");
+                        NotificationType.SUBSKILL_MESSAGE, "Spears.SubSkill.Momentum.Activated");
             }
 
             // Momentum is success, Momentum the target
@@ -81,6 +77,40 @@ public class SpearsManager extends SkillManager {
 
     public static int getMomentumStrength() {
         return 2;
+    }
+
+    private boolean canMomentumBeApplied() {
+        // TODO: Potentially it should overwrite the effect if we are providing a stronger one
+        if (swiftnessEffectType == null) {
+            return false;
+        }
+        final PotionEffect currentlyAppliedPotion = getPlayer()
+                .getPotionEffect(swiftnessEffectType);
+
+        if (currentlyAppliedPotion != null) {
+            if (isCurrentPotionEffectStronger(currentlyAppliedPotion)) {
+                return false;
+            }
+        }
+
+        if (!Permissions.canUseSubSkill(mmoPlayer.getPlayer(), SubSkillType.SPEARS_MOMENTUM)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isCurrentPotionEffectStronger(@NotNull PotionEffect potionEffect) {
+        if (potionEffect.getAmplifier() > getMomentumStrength()) {
+            return true;
+        }
+
+        if (potionEffect.getDuration() > getMomentumTickDuration(getRank(getPlayer(),
+                SubSkillType.SPEARS_MOMENTUM))) {
+            return true;
+        }
+
+        return false;
     }
 
 }

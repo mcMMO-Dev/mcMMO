@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
 
-import static com.gmail.nossr50.datatypes.skills.SubSkillType.MACES_CRIPPLE;
 import static com.gmail.nossr50.datatypes.skills.SubSkillType.SPEARS_MOMENTUM;
 import static com.gmail.nossr50.datatypes.skills.SubSkillType.SPEARS_SPEARS_LIMIT_BREAK;
 import static com.gmail.nossr50.util.skills.SkillUtils.canUseSubskill;
@@ -10,7 +9,6 @@ import static com.gmail.nossr50.util.text.TextComponentFactory.appendSubSkillTex
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.maces.MacesManager;
 import com.gmail.nossr50.skills.spears.SpearsManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
