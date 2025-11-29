@@ -55,6 +55,9 @@ Repairables:
     WOODEN_SWORD:
         MinimumLevel: 0
         XpMultiplier: .25
+    WOODEN_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .25
     WOODEN_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
@@ -74,6 +77,9 @@ Repairables:
     STONE_SWORD:
         MinimumLevel: 0
         XpMultiplier: .25
+    STONE_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .25
     STONE_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
@@ -91,6 +97,12 @@ Repairables:
     ###
     # Tools
     COPPER_SWORD:
+        MinimumLevel: 0
+        XpMultiplier: .3
+        ItemType: TOOL
+        ItemMaterialCategory: COPPER
+        RepairMaterial: COPPER_INGOT
+    COPPER_SPEAR:
         MinimumLevel: 0
         XpMultiplier: .3
         ItemType: TOOL
@@ -152,6 +164,9 @@ Repairables:
     IRON_SWORD:
         MinimumLevel: 0
         XpMultiplier: .5
+    IRON_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .5
     IRON_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .3
@@ -190,6 +205,9 @@ Repairables:
     GOLDEN_SWORD:
         MinimumLevel: 0
         XpMultiplier: 4
+    GOLDEN_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: 4
     GOLDEN_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: 2.6
@@ -220,6 +238,9 @@ Repairables:
     ###
     # Tools
     DIAMOND_SWORD:
+        MinimumLevel: 0
+        XpMultiplier: .5
+    DIAMOND_SPEAR:
         MinimumLevel: 0
         XpMultiplier: .5
     DIAMOND_SHOVEL:
@@ -253,6 +274,9 @@ Repairables:
     ###
     # Tools
     NETHERITE_SWORD:
+        MinimumLevel: 0
+        XpMultiplier: .6
+    NETHERITE_SPEAR:
         MinimumLevel: 0
         XpMultiplier: .6
     NETHERITE_SHOVEL:

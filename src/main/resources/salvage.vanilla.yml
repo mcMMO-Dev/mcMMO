@@ -50,6 +50,10 @@ Salvageables:
         MinimumLevel: 0
         XpMultiplier: .25
         MaximumQuantity: 2
+    WOODEN_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .16
+        MaximumQuantity: 1
     WOODEN_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
@@ -74,6 +78,10 @@ Salvageables:
         MinimumLevel: 0
         XpMultiplier: .25
         MaximumQuantity: 2
+    STONE_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .16
+        MaximumQuantity: 1
     STONE_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
@@ -98,6 +106,10 @@ Salvageables:
         MinimumLevel: 0
         XpMultiplier: .4
         MaximumQuantity: 2
+    COPPER_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .25
+        MaximumQuantity: 1
     COPPER_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .25
@@ -139,6 +151,10 @@ Salvageables:
         MinimumLevel: 0
         XpMultiplier: .5
         MaximumQuantity: 2
+    IRON_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: .3
+        MaximumQuantity: 1
     IRON_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .3
@@ -186,6 +202,10 @@ Salvageables:
         MinimumLevel: 0
         XpMultiplier: 4
         MaximumQuantity: 2
+    GOLDEN_SPEAR:
+        MinimumLevel: 0
+        XpMultiplier: 4
+        MaximumQuantity: 1
     GOLDEN_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: 2.6
@@ -227,6 +247,10 @@ Salvageables:
         MinimumLevel: 50
         XpMultiplier: .5
         MaximumQuantity: 2
+    DIAMOND_SPEAR:
+        MinimumLevel: 50
+        XpMultiplier: .5
+        MaximumQuantity: 1
     DIAMOND_SHOVEL:
         MinimumLevel: 50
         XpMultiplier: .3
@@ -267,6 +291,10 @@ Salvageables:
     NETHERITE_SWORD:
         MinimumLevel: 100
         XpMultiplier: .5
+        MaximumQuantity: 4
+    NETHERITE_SPEAR:
+        MinimumLevel: 100
+        XpMultiplier: .3
         MaximumQuantity: 4
     NETHERITE_SHOVEL:
         MinimumLevel: 100
