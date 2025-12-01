@@ -15,6 +15,8 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,8 +32,8 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
-        Player player = event.getPlayer();
-        PrimarySkillType skill = event.getSkill();
+        final Player player = event.getPlayer();
+        final PrimarySkillType skill = event.getSkill();
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
@@ -56,6 +58,20 @@ public class SelfListener implements Listener {
                 ScoreboardManager.handleLevelUp(player, skill);
             }
         }
+
+        final Set<Integer> levelsAchieved = new LinkedHashSet<>();
+        final Set<Integer> powerLevelsAchieved = new LinkedHashSet<>();
+        int startingLevel = event.getSkillLevel() - event.getLevelsGained();
+        int startingPowerLevel = mmoPlayer.getPowerLevel() - event.getLevelsGained();
+        for (int i = 0; i < event.getLevelsGained(); i++) {
+            levelsAchieved.add(startingLevel + (i + 1));
+        }
+        for (int i = 0; i < event.getLevelsGained(); i++) {
+            powerLevelsAchieved.add(startingPowerLevel + (i + 1));
+        }
+
+        plugin.getLevelUpCommandManager()
+                .applySkillLevelUp(mmoPlayer, skill, levelsAchieved, powerLevelsAchieved);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
