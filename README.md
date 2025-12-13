@@ -23,7 +23,7 @@ If you are using maven, you can add mcMMO API to your plugin by adding it to pom
 <dependency>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>2.2.004</version>
+    <version>put-the-version-here</version>
 </dependency>
 ```
 ### Builds
