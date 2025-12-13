@@ -894,4 +894,8 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getDouble("Skills.Spears.Momentum.Chance_To_Apply_On_Hit.Rank_" + rank,
                 defaultMomentumValues[rank - 1]);
     }
+
+    public double getSpearMasteryRankDamageMultiplier() {
+        return config.getDouble("Skills.Spears.SpearMastery.Rank_Damage_Multiplier", 0.4D);
+    }
 }

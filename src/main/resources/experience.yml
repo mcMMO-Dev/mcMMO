@@ -606,6 +606,7 @@ Experience_Values:
             Goat: 250
             Axolotl: 600
             Frog: 900
+            Nautilus: 1700
     Combat:
         Multiplier:
             Animals: 1.0

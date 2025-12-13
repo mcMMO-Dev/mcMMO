@@ -428,6 +428,25 @@ Spears:
             Rank_8: 800
             Rank_9: 900
             Rank_10: 1000
+    SpearMastery:
+        Standard:
+            Rank_1: 5
+            Rank_2: 15
+            Rank_3: 30
+            Rank_4: 45
+            Rank_5: 60
+            Rank_6: 75
+            Rank_7: 90
+            Rank_8: 100
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 150
+            Rank_3: 300
+            Rank_4: 450
+            Rank_5: 600
+            Rank_6: 750
+            Rank_7: 900
+            Rank_8: 1000
     Momentum:
         Standard:
             Rank_1: 1
@@ -439,7 +458,7 @@ Spears:
             Rank_7: 50
             Rank_8: 60
             Rank_9: 80
-            Rank_10: 100
+            Rank_10: 95
         RetroMode:
             Rank_1: 1
             Rank_2: 100
@@ -450,7 +469,7 @@ Spears:
             Rank_7: 500
             Rank_8: 600
             Rank_9: 800
-            Rank_10: 1000
+            Rank_10: 950
 Salvage:
     ScrapCollector:
         Standard:

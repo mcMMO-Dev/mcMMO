@@ -113,4 +113,9 @@ public class SpearsManager extends SkillManager {
         return false;
     }
 
+    public double getSpearMasteryBonusDamage() {
+        return mcMMO.p.getAdvancedConfig().getSpearMasteryRankDamageMultiplier()
+                * getRank(getPlayer(), SubSkillType.SPEARS_SPEAR_MASTERY);
+    }
+
 }

@@ -660,10 +660,13 @@ permissions:
         children:
             mcmmo.ability.spears.spearslimitbreak: true
             mcmmo.ability.spears.momentum: true
+            mcmmo.ability.spears.spearmastery: true
     mcmmo.ability.spears.spearslimitbreak:
         description: Adds damage to spears
     mcmmo.ability.spears.momentum:
-        description: Adds a chance to increase movement speed temporarily after hitting an entity
+        description: Allows access to the Spear Momentum ability
+    mcmmo.ability.spears.spearmastery:
+        description: Allows access to the Spear Mastery ability
     mcmmo.ability.swords.*:
         default: false
         description: Allows access to all Swords abilities

@@ -1,21 +1,20 @@
 Version 2.2.046
-    TODO: Test FlatFile DB
-    TODO: Double check locale
-    TODO: Double check plugin.yml permissions
-    TODO: Add notes about permission nodes
+    TODO: Investigate when right click air sends events for offhand
+    TODO: Unarmed XP gained from spear offhand interactions
     Added Spears combat skill
     Added Spears to repair.vanilla.yml and salvage.vanilla.yml (see notes)
     Added permissions related to Spears
     Added /spears skill command
+    Added Nautilus to taming XP in experience.yml
     Fixed bug where converting from SQL to FlatFile would not copy data for tridents, crossbows, maces, or spears
-    (Codebase) Added dockerized unit tests for SQL databases (See notes)
+    (Codebase) Added dockerized unit tests for SQL databases (see notes)
     (Codebase) Large refactor to both SQLDatabaseManager and FlatFileDatabaseManager
     (Codebase) Database related errors are now more descriptive and have had their logging improved
 
     NOTES:
-    You will need to manually update repair.vanilla.yml and salvage.vanilla.yml to get support for Spears.
-    Or you can delete these config files to have mcMMO regenerate them with the new entries.
-    You can find the default config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
+    You will need to manually update repair.vanilla.yml and salvage.vanilla.yml to get support for Spears, or...
+    If you want to update salvage/repair configs the easy way, you simply can delete these config files to have mcMMO regenerate them with the new entries.
+    If you don't want to delete them, you can find the default values for these config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
     You can use this default file to copy paste if you please.
     If you compile mcMMO you will likely run into errors during unit tests for SQL databases, this is because they now rely on docker being present on the system to load up test containers.
     New SQL database unit tests have been added which leverage test containers to test against real installs of MySQL/MariaDB, which require Docker (or an equivalent) to run.

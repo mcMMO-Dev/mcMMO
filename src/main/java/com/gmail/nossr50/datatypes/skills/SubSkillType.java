@@ -86,6 +86,7 @@ public enum SubSkillType {
     /* Spears */
     SPEARS_SPEARS_LIMIT_BREAK(10),
     SPEARS_MOMENTUM(10),
+    SPEARS_SPEAR_MASTERY(8),
 
     /* Swords */
     SWORDS_COUNTER_ATTACK(1),
