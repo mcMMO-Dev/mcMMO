@@ -1,6 +1,11 @@
 Version 2.2.047
     Fix bug where off-hand spears damage could be attributed to various combat skills and trigger their abilities
 
+    NOTE:
+    Sorry guys, noticed this right after pushing 2.2.046, for now melee combat skills won't trigger if you have a spear in your off-hand as a temporary work around to mcMMO being unable to differentiate between main hand and off hand damage.
+    I'm working on a more robust solution to this issue, so stay tuned.
+    What this means in laymen's terms is if you are using a sword main hand, and you have a spear off hand, mcMMO has temporarily disabled your main hand abilities from triggering to avoid issues where off hand spear damage benefits from it and triggers abilities belonging to other weapons.
+
 Version 2.2.046
     Added Spears combat skill
     Added Spears to repair.vanilla.yml and salvage.vanilla.yml (see notes)
