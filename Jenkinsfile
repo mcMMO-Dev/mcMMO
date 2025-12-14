@@ -25,28 +25,27 @@ pipeline {
 			}
 		}
 
-		stage('Deploy to Nexus') {
-			steps {
-				withCredentials([usernamePassword(
-					credentialsId: 'nexus-deployer',
-					usernameVariable: 'NEXUS_USER',
-					passwordVariable: 'NEXUS_PASS'
-				)]) {
-					writeFile file: 'settings.xml', text: """
-                    <settings>
-                      <servers>
-                        <server>
-                          <id>neetgames</id>
-                          <username>${env.NEXUS_USER}</username>
-                          <password>${env.NEXUS_PASS}</password>
-                        </server>
-                      </servers>
-                    </settings>
-                    """
-					sh 'mvn -s settings.xml -V -B deploy'
-				}
-			}
-		}
+        stage('Deploy to Nexus') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'nexus-deployer',
+                    usernameVariable: 'NEXUS_USER',
+                    passwordVariable: 'NEXUS_PASS'
+                )]) {
+                    configFileProvider([configFile(fileId: 'maven-settings-nexus', variable: 'MAVEN_SETTINGS_TEMPLATE')]) {
+                        sh '''
+                          # Expand env vars into a real settings file
+                          envsubst < "$MAVEN_SETTINGS_TEMPLATE" > settings.xml
+
+                          mvn -s settings.xml -V -B deploy
+
+                          rm -f settings.xml
+                        '''
+                    }
+                }
+            }
+        }
+
 	}
 
 	post {
