@@ -20,7 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    ./mvnw -V -B clean package
+                    mvn -V -B clean package
                 '''
             }
         }
