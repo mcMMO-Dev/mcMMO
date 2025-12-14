@@ -26,21 +26,10 @@ pipeline {
 		}
 
         stage('Deploy to Nexus') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'nexus-deployer',
-                    usernameVariable: 'NEXUS_USER',
-                    passwordVariable: 'NEXUS_PASS'
-                )]) {
-                    configFileProvider([configFile(fileId: 'maven-settings-nexus', variable: 'MAVEN_SETTINGS_TEMPLATE')]) {
-                        sh '''
-                          # Expand env vars into a real settings file
-                          envsubst < "$MAVEN_SETTINGS_TEMPLATE" > settings.xml
-
-                          mvn -s settings.xml -V -B deploy
-
-                          rm -f settings.xml
-                        '''
+            stage('Deploy to Nexus') {
+                steps {
+                    configFileProvider([configFile(fileId: 'maven-settings-nexus', variable: 'MAVEN_SETTINGS')]) {
+                        sh 'mvn -s "$MAVEN_SETTINGS" -V -B deploy'
                     }
                 }
             }
