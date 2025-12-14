@@ -1,7 +1,7 @@
 Version 2.2.046
     Added Spears combat skill
     Added Spears to repair.vanilla.yml and salvage.vanilla.yml (see notes)
-    Added permissions related to Spears
+    Added various permissions related to Spears
     Added /spears skill command
     Added Nautilus to taming XP in experience.yml
     Added Camel_Husk to taming XP in experience.yml
@@ -13,6 +13,7 @@ Version 2.2.046
     (Codebase) Database related errors are now more descriptive and have had their logging improved
 
     NOTES:
+    This update had a lot of changes behind the scenes, please report any bugs you find to our GitHub issues page!
     You will need to manually update repair.vanilla.yml and salvage.vanilla.yml to get support for Spears, or...
     If you want to update salvage/repair configs the easy way, you simply can delete these config files to have mcMMO regenerate them with the new entries.
     If you don't want to delete them, you can find the default values for these config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.

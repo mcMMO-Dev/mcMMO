@@ -350,6 +350,7 @@ public final class CombatUtils {
         }
 
         final SpearsManager spearsManager = mmoPlayer.getSpearsManager();
+
         if (canUseSubSkill(player, SubSkillType.SPEARS_SPEAR_MASTERY)) {
             boostedDamage += spearsManager.getSpearMasteryBonusDamage()
                     * mmoPlayer.getAttackStrength();
