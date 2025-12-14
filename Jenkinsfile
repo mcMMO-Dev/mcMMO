@@ -28,10 +28,8 @@ pipeline {
 
     post {
         success {
-            echo 'Build succeeded'
-        }
-        failure {
-            echo 'Build failed'
+            archiveArtifacts artifacts: 'target/mcMMO.jar', fingerprint: true
         }
     }
+
 }
