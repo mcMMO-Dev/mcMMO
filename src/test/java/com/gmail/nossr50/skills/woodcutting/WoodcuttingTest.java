@@ -9,14 +9,17 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.TestPlayerMock;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -40,15 +43,13 @@ import org.mockito.Mockito;
 class WoodcuttingTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(WoodcuttingTest.class.getName());
 
-    private WoodcuttingManager woodcuttingManager;
-
     @BeforeEach
     void setUp() throws InvalidSkillException {
         mockBaseEnvironment(logger);
+        // TODO: can move the rest of these to a beforeAll
         Mockito.when(rankConfig.getSubSkillUnlockLevel(SubSkillType.WOODCUTTING_HARVEST_LUMBER, 1))
                 .thenReturn(1);
 
-        // wire advanced config
         Mockito.when(advancedConfig.getMaximumProbability(SubSkillType.WOODCUTTING_HARVEST_LUMBER))
                 .thenReturn(100D);
         Mockito.when(advancedConfig.getMaximumProbability(SubSkillType.WOODCUTTING_CLEAN_CUTS))
@@ -66,14 +67,6 @@ class WoodcuttingTest extends MMOTestEnvironment {
                 eq(SubSkillType.WOODCUTTING_HARVEST_LUMBER))).thenReturn(true);
         Mockito.when(RankUtils.hasReachedRank(eq(1), any(Player.class),
                 eq(SubSkillType.WOODCUTTING_CLEAN_CUTS))).thenReturn(true);
-
-        // wire inventory
-        this.itemInMainHand = new ItemStack(Material.DIAMOND_AXE);
-        Mockito.when(player.getInventory()).thenReturn(playerInventory);
-        Mockito.when(playerInventory.getItemInMainHand()).thenReturn(itemInMainHand);
-
-        // Set up spy for WoodcuttingManager
-        woodcuttingManager = Mockito.spy(new WoodcuttingManager(mmoPlayer));
     }
 
     @AfterEach
@@ -83,6 +76,12 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @Test
     void harvestLumberShouldDoubleDrop() {
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
+        when(testPlayerMock.playerInventory().getItemInMainHand())
+                .thenReturn(new ItemStack(Material.DIAMOND_AXE));
+        final WoodcuttingManager woodcuttingManager = Mockito.spy(
+                new WoodcuttingManager(mmoPlayer));
         mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
 
         Block block = mock(Block.class);
@@ -100,6 +99,12 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @Test
     void harvestLumberShouldNotDoubleDrop() {
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
+        when(testPlayerMock.playerInventory().getItemInMainHand())
+                .thenReturn(new ItemStack(Material.DIAMOND_AXE));
+        final WoodcuttingManager woodcuttingManager = Mockito.spy(
+                new WoodcuttingManager(mmoPlayer));
         mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 0);
 
         Block block = mock(Block.class);
@@ -115,6 +120,12 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @Test
     void testProcessWoodcuttingBlockXP() {
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
+        when(testPlayerMock.playerInventory().getItemInMainHand())
+                .thenReturn(new ItemStack(Material.DIAMOND_AXE));
+        final WoodcuttingManager woodcuttingManager = Mockito.spy(
+                new WoodcuttingManager(mmoPlayer));
         Block targetBlock = mock(Block.class);
         Mockito.when(targetBlock.getType()).thenReturn(Material.OAK_LOG);
         // wire XP
@@ -129,11 +140,15 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @Test
     void treeFellerShouldStopAtThreshold() {
-        // Set threshold artificially low
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
+        when(testPlayerMock.playerInventory().getItemInMainHand())
+                .thenReturn(new ItemStack(Material.DIAMOND_AXE));
+        // Set threshold to 3
         int fakeThreshold = 3;
         Mockito.when(generalConfig.getTreeFellerThreshold()).thenReturn(fakeThreshold);
-
-        WoodcuttingManager manager = Mockito.spy(new WoodcuttingManager(mmoPlayer));
+        final WoodcuttingManager woodcuttingManager = Mockito.spy(
+                new WoodcuttingManager(mmoPlayer));
 
         // Simulate all blocks are logs with XP
         MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
@@ -163,7 +178,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
                         ThreadLocalRandom.current().nextInt(relatives.size())));
 
         Set<Block> treeFellerBlocks = new HashSet<>();
-        manager.processTree(centerBlock, treeFellerBlocks);
+        woodcuttingManager.processTree(centerBlock, treeFellerBlocks);
 
         // --- Assertions ---
 
@@ -171,12 +186,8 @@ class WoodcuttingTest extends MMOTestEnvironment {
         assertFalse(treeFellerBlocks.isEmpty(), "Tree Feller should process at least one block");
 
         // It reached or slightly exceeded the threshold
-        assertTrue(treeFellerBlocks.size() >= fakeThreshold,
-                "Tree Feller should process up to the threshold limit");
-
-        // Confirm it stopped due to the threshold
-        assertTrue(getPrivateTreeFellerReachedThreshold(manager),
-                "Tree Feller should set treeFellerReachedThreshold to true");
+        assertEquals(fakeThreshold, treeFellerBlocks.size(),
+                "expected that Tree Feller will have a block size equal to the threshold");
 
         mockedBlockUtils.close();
     }
@@ -192,11 +203,15 @@ class WoodcuttingTest extends MMOTestEnvironment {
     }
 
     @Test
-    void treeFellerShouldNotReachThreshold() throws NoSuchFieldException, IllegalAccessException {
+    void treeFellerShouldNotReachThreshold() {
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
+        when(testPlayerMock.playerInventory().getItemInMainHand())
+                .thenReturn(new ItemStack(Material.DIAMOND_AXE));
+        final WoodcuttingManager woodcuttingManager = Mockito.spy(
+                new WoodcuttingManager(mmoPlayer));
         int threshold = 10;
         Mockito.when(generalConfig.getTreeFellerThreshold()).thenReturn(threshold);
-
-        WoodcuttingManager manager = Mockito.spy(new WoodcuttingManager(mmoPlayer));
 
         MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
         mockedBlockUtils.when(() -> BlockUtils.hasWoodcuttingXP(any(Block.class))).thenReturn(true);
@@ -222,10 +237,10 @@ class WoodcuttingTest extends MMOTestEnvironment {
         Mockito.when(b3.getRelative(any(BlockFace.class))).thenReturn(null);
 
         Set<Block> processed = new HashSet<>();
-        manager.processTree(b0, processed);
+        woodcuttingManager.processTree(b0, processed);
 
         assertEquals(3, processed.size(), "Should process exactly 4 blocks");
-        assertFalse(getPrivateTreeFellerReachedThreshold(manager),
+        assertFalse(getPrivateTreeFellerReachedThreshold(woodcuttingManager),
                 "treeFellerReachedThreshold should remain false");
 
         mockedBlockUtils.close();

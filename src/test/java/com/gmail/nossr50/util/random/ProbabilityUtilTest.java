@@ -15,7 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TestPlayerMock;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
@@ -66,6 +68,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void isSkillRNGSuccessfulShouldBehaveAsExpected() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(UNARMED_ARROW_DEFLECT)).thenReturn(20D);
         when(advancedConfig.getMaxBonusLevel(UNARMED_ARROW_DEFLECT)).thenReturn(0);
 
@@ -110,6 +114,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void getRNGDisplayValuesShouldReturn10PercentForDodge() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(ACROBATICS_DODGE)).thenReturn(20D);
         when(advancedConfig.getMaxBonusLevel(ACROBATICS_DODGE)).thenReturn(1000);
         mmoPlayer.modifySkill(ACROBATICS, 500);
@@ -123,6 +129,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void getRNGDisplayValuesShouldReturn20PercentForDodge() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(ACROBATICS_DODGE)).thenReturn(20D);
         when(advancedConfig.getMaxBonusLevel(ACROBATICS_DODGE)).thenReturn(1000);
         mmoPlayer.modifySkill(ACROBATICS, 1000);
@@ -136,6 +144,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void getRNGDisplayValuesShouldReturn0PercentForDodge() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(ACROBATICS_DODGE)).thenReturn(20D);
         when(advancedConfig.getMaxBonusLevel(ACROBATICS_DODGE)).thenReturn(1000);
         mmoPlayer.modifySkill(ACROBATICS, 0);
@@ -149,6 +159,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void getRNGDisplayValuesShouldReturn10PercentForDoubleDrops() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(MINING_DOUBLE_DROPS)).thenReturn(100D);
         when(advancedConfig.getMaxBonusLevel(MINING_DOUBLE_DROPS)).thenReturn(1000);
         mmoPlayer.modifySkill(MINING, 100);
@@ -162,6 +174,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void getRNGDisplayValuesShouldReturn50PercentForDoubleDrops() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(MINING_DOUBLE_DROPS)).thenReturn(100D);
         when(advancedConfig.getMaxBonusLevel(MINING_DOUBLE_DROPS)).thenReturn(1000);
         mmoPlayer.modifySkill(MINING, 500);
@@ -175,6 +189,8 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
     @Test
     public void getRNGDisplayValuesShouldReturn100PercentForDoubleDrops() {
         // Given
+        final TestPlayerMock testPlayerMock = mockPlayer();
+        final McMMOPlayer mmoPlayer = testPlayerMock.mmoPlayer();
         when(advancedConfig.getMaximumProbability(MINING_DOUBLE_DROPS)).thenReturn(100D);
         when(advancedConfig.getMaxBonusLevel(MINING_DOUBLE_DROPS)).thenReturn(1000);
         mmoPlayer.modifySkill(MINING, 1000);

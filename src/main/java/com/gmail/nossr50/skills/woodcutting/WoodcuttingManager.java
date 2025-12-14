@@ -27,6 +27,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -209,18 +210,18 @@ public class WoodcuttingManager extends SkillManager {
      */
     @VisibleForTesting
     void processTree(Block block, Set<Block> treeFellerBlocks) {
-        List<Block> futureCenterBlocks = new ArrayList<>();
+        Collection<Block> futureCenterBlocks = new ArrayList<>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
         if (processTreeFellerTargetBlock(block.getRelative(BlockFace.UP), futureCenterBlocks,
                 treeFellerBlocks)) {
             for (int[] dir : directions) {
-                processTreeFellerTargetBlock(block.getRelative(dir[0], 0, dir[1]),
-                        futureCenterBlocks, treeFellerBlocks);
-
                 if (treeFellerReachedThreshold) {
                     return;
                 }
+
+                processTreeFellerTargetBlock(block.getRelative(dir[0], 0, dir[1]),
+                        futureCenterBlocks, treeFellerBlocks);
             }
         } else {
             // Cover DOWN
@@ -229,12 +230,12 @@ public class WoodcuttingManager extends SkillManager {
             // Search in a cube
             for (int y = -1; y <= 1; y++) {
                 for (int[] dir : directions) {
-                    processTreeFellerTargetBlock(block.getRelative(dir[0], y, dir[1]),
-                            futureCenterBlocks, treeFellerBlocks);
-
                     if (treeFellerReachedThreshold) {
                         return;
                     }
+
+                    processTreeFellerTargetBlock(block.getRelative(dir[0], y, dir[1]),
+                            futureCenterBlocks, treeFellerBlocks);
                 }
             }
         }
@@ -302,23 +303,24 @@ public class WoodcuttingManager extends SkillManager {
      * @return true if and only if the given block was a Log not already in treeFellerBlocks.
      */
     private boolean processTreeFellerTargetBlock(@NotNull Block block,
-            @NotNull List<Block> futureCenterBlocks,
-            @NotNull Set<Block> treeFellerBlocks) {
+            @NotNull Collection<Block> futureCenterBlocks,
+            @NotNull Collection<Block> treeFellerBlocks) {
         if (treeFellerBlocks.contains(block) || mcMMO.getUserBlockTracker().isIneligible(block)) {
             return false;
-        }
-
-        // Without this check Tree Feller propagates through leaves until the threshold is hit
-        if (treeFellerBlocks.size() > treeFellerThreshold) {
-            treeFellerReachedThreshold = true;
         }
 
         if (BlockUtils.hasWoodcuttingXP(block)) {
             treeFellerBlocks.add(block);
             futureCenterBlocks.add(block);
+            if (treeFellerBlocks.size() >= treeFellerThreshold) {
+                treeFellerReachedThreshold = true;
+            }
             return true;
         } else if (BlockUtils.isNonWoodPartOfTree(block)) {
             treeFellerBlocks.add(block);
+            if (treeFellerBlocks.size() >= treeFellerThreshold) {
+                treeFellerReachedThreshold = true;
+            }
             return false;
         }
         return false;

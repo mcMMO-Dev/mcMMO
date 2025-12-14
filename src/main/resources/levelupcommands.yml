@@ -1,0 +1,23 @@
+level_up_commands:
+    woodcutting_and_swords_command:
+        enabled: true
+        condition:
+            swords:
+                levels: [10, 100]
+            woodcutting:
+                levels: [10, 100]
+        commands:
+            - "say {@player} reached level {@swords_level} in swords, and {@woodcutting_level} in woodcutting!"
+            - "say Isn't that nice?"
+        run_command_as: 'CONSOLE'
+        log_level: 'INFO'
+    power_level_milestones:
+        enabled: true
+        condition:
+            power_level:
+                levels: [ 1000, 2000, 3000, 4000, 5000 ]
+        commands:
+            - "say {@player} has reached a power level milestone!"
+            - "say {@player} is now at power level {@power_level}!"
+        run_command_as: 'CONSOLE'
+        log_level: 'DEBUG'

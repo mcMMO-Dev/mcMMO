@@ -65,7 +65,6 @@ import java.util.Map;
 import java.util.UUID;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -711,13 +710,13 @@ public class McMMOPlayer implements Identified {
      */
     public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason,
             XPGainSource xpGainSource) {
-        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
+        if (!Permissions.skillEnabled(player, primarySkillType)) {
             return;
         }
 
         final McMMOPlayerPreXpGainEvent mmoPlayerPreXpGainEvent = new McMMOPlayerPreXpGainEvent(
                 player, primarySkillType, xp, xpGainReason);
-        Bukkit.getPluginManager().callEvent(mmoPlayerPreXpGainEvent);
+        mcMMO.p.getServer().getPluginManager().callEvent(mmoPlayerPreXpGainEvent);
         xp = mmoPlayerPreXpGainEvent.getXpGained();
 
         if (SkillTools.isChildSkill(primarySkillType)) {

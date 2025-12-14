@@ -159,7 +159,7 @@ public class NotificationManager {
                 mcMMO.p.getAdvancedConfig().doesNotificationSendCopyToChat(notificationType));
 
         //Call event
-        Bukkit.getServer().getPluginManager().callEvent(customEvent);
+        mcMMO.p.getServer().getPluginManager().callEvent(customEvent);
         return customEvent;
     }
 
