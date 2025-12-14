@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.skills;
 import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
 import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
+import static com.gmail.nossr50.util.Permissions.canUseSubSkill;
 import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -349,6 +350,10 @@ public final class CombatUtils {
         }
 
         final SpearsManager spearsManager = mmoPlayer.getSpearsManager();
+        if (canUseSubSkill(player, SubSkillType.SPEARS_SPEAR_MASTERY)) {
+            boostedDamage += spearsManager.getSpearMasteryBonusDamage()
+                    * mmoPlayer.getAttackStrength();
+        }
 
         // Apply Limit Break DMG
         if (canUseLimitBreak(player, target, SubSkillType.SPEARS_SPEARS_LIMIT_BREAK)) {
@@ -357,7 +362,6 @@ public final class CombatUtils {
                     * mmoPlayer.getAttackStrength());
         }
 
-        // TODO: Apply any other damage boosts for spears here
 
         event.setDamage(boostedDamage);
 
@@ -427,6 +431,11 @@ public final class CombatUtils {
         }
 
         double boostedDamage = event.getDamage();
+
+        // TODO: Temporary hack to avoid unintended spear / unarmed interactions
+        if (ItemUtils.isSpear(player.getInventory().getItemInOffHand())) {
+            return;
+        }
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 

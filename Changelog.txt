@@ -1,13 +1,14 @@
 Version 2.2.046
-    TODO: Investigate when right click air sends events for offhand
-    TODO: Unarmed XP gained from spear offhand interactions
     Added Spears combat skill
     Added Spears to repair.vanilla.yml and salvage.vanilla.yml (see notes)
     Added permissions related to Spears
     Added /spears skill command
     Added Nautilus to taming XP in experience.yml
+    Added Camel_Husk to taming XP in experience.yml
+    Added Camel_Husk to combat XP in experience.yml
+    Added Parched to combat XP in experience.yml
     Fixed bug where converting from SQL to FlatFile would not copy data for tridents, crossbows, maces, or spears
-    (Codebase) Added dockerized unit tests for SQL databases (see notes)
+    (Codebase) Added docker-based unit tests for SQL databases (see notes)
     (Codebase) Large refactor to both SQLDatabaseManager and FlatFileDatabaseManager
     (Codebase) Database related errors are now more descriptive and have had their logging improved
 
@@ -16,9 +17,15 @@ Version 2.2.046
     If you want to update salvage/repair configs the easy way, you simply can delete these config files to have mcMMO regenerate them with the new entries.
     If you don't want to delete them, you can find the default values for these config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
     You can use this default file to copy paste if you please.
-    If you compile mcMMO you will likely run into errors during unit tests for SQL databases, this is because they now rely on docker being present on the system to load up test containers.
-    New SQL database unit tests have been added which leverage test containers to test against real installs of MySQL/MariaDB, which require Docker (or an equivalent) to run.
-    If you'd rather not install docker simply just add -DskipTests to your maven instructions when compiling, this doesn't change anything about mcMMO it just skips running through the unit tests during the build.
+    Docker is ONLY required for developers compiling mcMMO from source code and ONLY for running SQL-related unit tests.
+    mcMMO itself does NOT require Docker to run, and servers using prebuilt releases are completely unaffected.
+    New SQL database unit tests use Testcontainers to spin up temporary MySQL/MariaDB instances for testing purposes.
+    These containers are created at test time and are never used at runtime.
+    If you compile mcMMO locally and do not have Docker installed, SQL-related unit tests may fail.
+    In this case, you can safely compile with -DskipTests to skip unit tests entirely.
+    Skipping tests has no impact on mcMMO functionality when running on a server.
+    Known Issues:
+    I ran into an issue where having a spear in the offhand while the main hand is empty causes attacks to be incorrectly classified as unarmed. This allows unarmed abilities to apply to spear damage. As a temporary measure, I’ve disabled unarmed skills from applying to combat when a spear is equipped in the offhand while I investigate a more robust solution.
 
 Version 2.2.045
     Green Thumb now replants some crops it was failing to replant before (see notes)
