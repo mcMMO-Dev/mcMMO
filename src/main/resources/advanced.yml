@@ -648,3 +648,18 @@ Skills:
                 Rank_2: 15
                 Rank_3: 20
                 Rank_4: 33
+    Spears:
+        SpearMastery:
+            Rank_Damage_Multiplier: 0.4
+        Momentum:
+            Chance_To_Apply_On_Hit:
+                Rank_1: 5
+                Rank_2: 10
+                Rank_3: 15
+                Rank_4: 20
+                Rank_5: 25
+                Rank_6: 30
+                Rank_7: 35
+                Rank_8: 40
+                Rank_9: 45
+                Rank_10: 50

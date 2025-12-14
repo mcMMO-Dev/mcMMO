@@ -41,6 +41,7 @@ import com.gmail.nossr50.commands.skills.MmoInfoCommand;
 import com.gmail.nossr50.commands.skills.RepairCommand;
 import com.gmail.nossr50.commands.skills.SalvageCommand;
 import com.gmail.nossr50.commands.skills.SmeltingCommand;
+import com.gmail.nossr50.commands.skills.SpearsCommand;
 import com.gmail.nossr50.commands.skills.SwordsCommand;
 import com.gmail.nossr50.commands.skills.TamingCommand;
 import com.gmail.nossr50.commands.skills.TridentsCommand;
@@ -101,6 +102,7 @@ public final class CommandRegistrationManager {
                 case REPAIR -> command.setExecutor(new RepairCommand());
                 case SALVAGE -> command.setExecutor(new SalvageCommand());
                 case SMELTING -> command.setExecutor(new SmeltingCommand());
+                case SPEARS -> command.setExecutor(new SpearsCommand());
                 case SWORDS -> command.setExecutor(new SwordsCommand());
                 case TAMING -> command.setExecutor(new TamingCommand());
                 case TRIDENTS -> command.setExecutor(new TridentsCommand());

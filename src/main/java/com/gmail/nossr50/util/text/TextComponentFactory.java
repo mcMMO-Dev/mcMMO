@@ -544,7 +544,25 @@ public class TextComponentFactory {
         componentBuilder.append(Component.newline());
     }
 
+    /**
+     * @deprecated use appendSubSkillTextComponents(Player, List<Component>, PrimarySkillType)
+     * @param player target player
+     * @param textComponents list to append to
+     * @param parentSkill the parent skill
+     */
+    @Deprecated(since = "2.2.046", forRemoval = true)
     public static void getSubSkillTextComponents(Player player, List<Component> textComponents,
+        PrimarySkillType parentSkill) {
+        appendSubSkillTextComponents(player, textComponents, parentSkill);
+    }
+
+    /**
+     * Appends sub-skill text components to a list for a given parent skill
+     * @param player target player
+     * @param textComponents list to append to
+     * @param parentSkill the parent skill
+     */
+    public static void appendSubSkillTextComponents(Player player, List<Component> textComponents,
             PrimarySkillType parentSkill) {
         for (SubSkillType subSkillType : SubSkillType.values()) {
             if (subSkillType.getParentSkill() == parentSkill) {

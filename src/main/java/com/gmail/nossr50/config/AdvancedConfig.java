@@ -11,6 +11,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class AdvancedConfig extends BukkitConfig {
     int[] defaultCrippleValues = new int[]{10, 15, 20, 25};
+    int[] defaultMomentumValues = new int[]{5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 
     public AdvancedConfig(File dataFolder) {
         super("advanced.yml", dataFolder);
@@ -884,7 +885,17 @@ public class AdvancedConfig extends BukkitConfig {
 
     /* MACES */
     public double getCrippleChanceToApplyOnHit(int rank) {
-        String root = "Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_";
-        return config.getDouble(root + rank, defaultCrippleValues[rank - 1]);
+        return config.getDouble("Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_" + rank,
+                defaultCrippleValues[rank - 1]);
+    }
+
+    /* SPEARS */
+    public double getMomentumChanceToApplyOnHit(int rank) {
+        return config.getDouble("Skills.Spears.Momentum.Chance_To_Apply_On_Hit.Rank_" + rank,
+                defaultMomentumValues[rank - 1]);
+    }
+
+    public double getSpearMasteryRankDamageMultiplier() {
+        return config.getDouble("Skills.Spears.SpearMastery.Rank_Damage_Multiplier", 0.4D);
     }
 }

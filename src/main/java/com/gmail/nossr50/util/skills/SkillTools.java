@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -18,6 +17,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -27,15 +27,16 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 public class SkillTools {
     private final mcMMO pluginRef;
+
     // TODO: Java has immutable types now, switch to those
     // TODO: Figure out which ones we don't need, this was copy pasted from a diff branch
     public final @NotNull ImmutableList<String> LOCALIZED_SKILL_NAMES;
     public final @NotNull ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
     public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
     public final @NotNull ImmutableList<PrimarySkillType> CHILD_SKILLS;
-    public final static @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
-    public final static @NotNull ImmutableList<PrimarySkillType> SALVAGE_PARENTS;
-    public final static @NotNull ImmutableList<PrimarySkillType> SMELTING_PARENTS;
+    public static final @NotNull ImmutableList<PrimarySkillType> NON_CHILD_SKILLS;
+    public static final @NotNull ImmutableList<PrimarySkillType> SALVAGE_PARENTS;
+    public static final @NotNull ImmutableList<PrimarySkillType> SMELTING_PARENTS;
     public final @NotNull ImmutableList<PrimarySkillType> COMBAT_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> GATHERING_SKILLS;
     public final @NotNull ImmutableList<PrimarySkillType> MISC_SKILLS;
@@ -44,73 +45,141 @@ public class SkillTools {
     private final @NotNull ImmutableMap<SuperAbilityType, PrimarySkillType> superAbilityParentRelationshipMap;
     private final @NotNull ImmutableMap<PrimarySkillType, Set<SubSkillType>> primarySkillChildrenMap;
 
-    // The map below is for the super abilities which require readying a tool, its everything except blast mining
     private final ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap;
     private final ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
 
     static {
+        // Build NON_CHILD_SKILLS once from the enum values
         ArrayList<PrimarySkillType> tempNonChildSkills = new ArrayList<>();
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (primarySkillType != PrimarySkillType.SALVAGE
-                    && primarySkillType != PrimarySkillType.SMELTING) {
+            if (!isChildSkill(primarySkillType)) {
                 tempNonChildSkills.add(primarySkillType);
             }
         }
-
         NON_CHILD_SKILLS = ImmutableList.copyOf(tempNonChildSkills);
-        SALVAGE_PARENTS = ImmutableList.of(PrimarySkillType.REPAIR, PrimarySkillType.FISHING);
-        SMELTING_PARENTS = ImmutableList.of(PrimarySkillType.MINING, PrimarySkillType.REPAIR);
+
+        SALVAGE_PARENTS = ImmutableList.of(
+                PrimarySkillType.REPAIR,
+                PrimarySkillType.FISHING
+        );
+        SMELTING_PARENTS = ImmutableList.of(
+                PrimarySkillType.MINING,
+                PrimarySkillType.REPAIR
+        );
     }
 
-    public SkillTools(@NotNull mcMMO pluginRef) throws InvalidSkillException {
+    public SkillTools(@NotNull mcMMO pluginRef) {
         this.pluginRef = pluginRef;
 
         /*
          * Setup subskill -> parent relationship map
          */
-        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap = new EnumMap<>(
-                SubSkillType.class);
-
-        //Super hacky and disgusting
-        for (PrimarySkillType primarySkillType1 : PrimarySkillType.values()) {
-            for (SubSkillType subSkillType : SubSkillType.values()) {
-                String[] splitSubSkillName = subSkillType.toString().split("_");
-
-                if (primarySkillType1.toString().equalsIgnoreCase(splitSubSkillName[0])) {
-                    //Parent Skill Found
-                    tempSubParentMap.put(subSkillType, primarySkillType1);
-                }
-            }
-        }
-
-        subSkillParentRelationshipMap = ImmutableMap.copyOf(tempSubParentMap);
+        this.subSkillParentRelationshipMap = buildSubSkillParentMap();
 
         /*
          * Setup primary -> (collection) subskill map
          */
-
-        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap = new EnumMap<>(
-                PrimarySkillType.class);
-
-        //Init the empty Hash Sets
-        for (PrimarySkillType primarySkillType1 : PrimarySkillType.values()) {
-            tempPrimaryChildMap.put(primarySkillType1, new HashSet<>());
-        }
-
-        //Fill in the hash sets
-        for (SubSkillType subSkillType : SubSkillType.values()) {
-            PrimarySkillType parentSkill = subSkillParentRelationshipMap.get(subSkillType);
-
-            //Add this subskill as a child
-            tempPrimaryChildMap.get(parentSkill).add(subSkillType);
-        }
-
-        primarySkillChildrenMap = ImmutableMap.copyOf(tempPrimaryChildMap);
+        this.primarySkillChildrenMap = buildPrimarySkillChildrenMap(subSkillParentRelationshipMap);
 
         /*
          * Setup primary -> tooltype map
          */
-        EnumMap<PrimarySkillType, ToolType> tempToolMap = new EnumMap<>(PrimarySkillType.class);
+        this.primarySkillToolMap = buildPrimarySkillToolMap();
+
+        /*
+         * Setup ability -> primary map
+         * Setup primary -> ability map
+         */
+        var abilityMaps = buildSuperAbilityMaps();
+        this.superAbilityParentRelationshipMap = abilityMaps.superAbilityParentRelationshipMap();
+        this.mainActivatedAbilityChildMap = abilityMaps.mainActivatedAbilityChildMap();
+
+        /*
+         * Build child skill list
+         */
+        this.CHILD_SKILLS = buildChildSkills();
+
+        /*
+         * Build categorized skill lists
+         */
+        this.COMBAT_SKILLS = buildCombatSkills();
+        this.GATHERING_SKILLS = ImmutableList.of(
+                PrimarySkillType.EXCAVATION,
+                PrimarySkillType.FISHING,
+                PrimarySkillType.HERBALISM,
+                PrimarySkillType.MINING,
+                PrimarySkillType.WOODCUTTING
+        );
+        this.MISC_SKILLS = ImmutableList.of(
+                PrimarySkillType.ACROBATICS,
+                PrimarySkillType.ALCHEMY,
+                PrimarySkillType.REPAIR,
+                PrimarySkillType.SALVAGE,
+                PrimarySkillType.SMELTING
+        );
+
+        /*
+         * Build formatted/localized/etc string lists
+         */
+        this.LOCALIZED_SKILL_NAMES = ImmutableList.copyOf(buildLocalizedPrimarySkillNames());
+        this.FORMATTED_SUBSKILL_NAMES = ImmutableList.copyOf(buildFormattedSubSkillNameList());
+        this.EXACT_SUBSKILL_NAMES = ImmutableSet.copyOf(buildExactSubSkillNameList());
+    }
+
+    @VisibleForTesting
+    @NotNull
+    ImmutableMap<SubSkillType, PrimarySkillType> buildSubSkillParentMap() {
+        EnumMap<SubSkillType, PrimarySkillType> tempSubParentMap =
+                new EnumMap<>(SubSkillType.class);
+
+        // SubSkillType names use a convention: <PRIMARY>_SOMETHING
+        for (SubSkillType subSkillType : SubSkillType.values()) {
+            String enumName = subSkillType.name();
+            int underscoreIndex = enumName.indexOf('_');
+            String parentPrefix = underscoreIndex == -1
+                    ? enumName
+                    : enumName.substring(0, underscoreIndex);
+
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+                if (primarySkillType.name().equalsIgnoreCase(parentPrefix)) {
+                    tempSubParentMap.put(subSkillType, primarySkillType);
+                    break;
+                }
+            }
+        }
+
+        return ImmutableMap.copyOf(tempSubParentMap);
+    }
+
+    @VisibleForTesting
+    @NotNull
+    ImmutableMap<PrimarySkillType, Set<SubSkillType>> buildPrimarySkillChildrenMap(
+            ImmutableMap<SubSkillType, PrimarySkillType> subParentMap) {
+
+        EnumMap<PrimarySkillType, Set<SubSkillType>> tempPrimaryChildMap =
+                new EnumMap<>(PrimarySkillType.class);
+
+        // Initialize empty sets
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            tempPrimaryChildMap.put(primarySkillType, new HashSet<>());
+        }
+
+        // Fill sets
+        for (SubSkillType subSkillType : SubSkillType.values()) {
+            PrimarySkillType parentSkill = subParentMap.get(subSkillType);
+            if (parentSkill != null) {
+                tempPrimaryChildMap.get(parentSkill).add(subSkillType);
+            }
+        }
+
+        return ImmutableMap.copyOf(tempPrimaryChildMap);
+    }
+
+    @VisibleForTesting
+    @NotNull
+    ImmutableMap<PrimarySkillType, ToolType> buildPrimarySkillToolMap() {
+        EnumMap<PrimarySkillType, ToolType> tempToolMap =
+                new EnumMap<>(PrimarySkillType.class);
 
         tempToolMap.put(PrimarySkillType.AXES, ToolType.AXE);
         tempToolMap.put(PrimarySkillType.WOODCUTTING, ToolType.AXE);
@@ -120,56 +189,76 @@ public class SkillTools {
         tempToolMap.put(PrimarySkillType.HERBALISM, ToolType.HOE);
         tempToolMap.put(PrimarySkillType.MINING, ToolType.PICKAXE);
 
-        primarySkillToolMap = ImmutableMap.copyOf(tempToolMap);
+        return ImmutableMap.copyOf(tempToolMap);
+    }
 
-        /*
-         * Setup ability -> primary map
-         * Setup primary -> ability map
-         */
+    /**
+     * Holder for the two super ability maps, so we can build them in one pass.
+     */
+    @VisibleForTesting
+    record SuperAbilityMaps(
+            @NotNull ImmutableMap<SuperAbilityType, PrimarySkillType> superAbilityParentRelationshipMap,
+            @NotNull ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap) {
+    }
 
-        EnumMap<SuperAbilityType, PrimarySkillType> tempAbilityParentRelationshipMap = new EnumMap<>(
-                SuperAbilityType.class);
-        EnumMap<PrimarySkillType, SuperAbilityType> tempMainActivatedAbilityChildMap = new EnumMap<>(
-                PrimarySkillType.class);
+    @VisibleForTesting
+    @NotNull
+    SuperAbilityMaps buildSuperAbilityMaps() {
+        final Map<SuperAbilityType, PrimarySkillType> tempAbilityParentRelationshipMap =
+                new EnumMap<>(SuperAbilityType.class);
+        final Map<PrimarySkillType, SuperAbilityType> tempMainActivatedAbilityChildMap =
+                new EnumMap<>(PrimarySkillType.class);
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
-            try {
-                PrimarySkillType parent = getSuperAbilityParent(superAbilityType);
-                tempAbilityParentRelationshipMap.put(superAbilityType, parent);
+            final PrimarySkillType parent = getSuperAbilityParent(superAbilityType);
+            tempAbilityParentRelationshipMap.put(superAbilityType, parent);
 
-                if (superAbilityType != SuperAbilityType.BLAST_MINING) {
-                    //This map is used only for abilities that have a tool readying phase, so blast mining is ignored
-                    tempMainActivatedAbilityChildMap.put(parent, superAbilityType);
-                }
-            } catch (InvalidSkillException e) {
-                e.printStackTrace();
+            // This map is used only for abilities that have a tool readying phase,
+            // so Blast Mining is ignored.
+            if (superAbilityType != SuperAbilityType.BLAST_MINING) {
+                tempMainActivatedAbilityChildMap.put(parent, superAbilityType);
             }
         }
 
-        superAbilityParentRelationshipMap = ImmutableMap.copyOf(tempAbilityParentRelationshipMap);
-        mainActivatedAbilityChildMap = ImmutableMap.copyOf(tempMainActivatedAbilityChildMap);
+        return new SuperAbilityMaps(
+                ImmutableMap.copyOf(tempAbilityParentRelationshipMap),
+                ImmutableMap.copyOf(tempMainActivatedAbilityChildMap)
+        );
+    }
 
-        /*
-         * Build child skill and nonchild skill lists
-         */
-
+    @VisibleForTesting
+    @NotNull
+    ImmutableList<PrimarySkillType> buildChildSkills() {
         List<PrimarySkillType> childSkills = new ArrayList<>();
-
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if (isChildSkill(primarySkillType)) {
                 childSkills.add(primarySkillType);
             }
         }
+        return ImmutableList.copyOf(childSkills);
+    }
 
-        CHILD_SKILLS = ImmutableList.copyOf(childSkills);
+    @VisibleForTesting
+    @NotNull
+    ImmutableList<PrimarySkillType> buildCombatSkills() {
+        var gameVersion = mcMMO.getCompatibilityManager().getMinecraftGameVersion();
 
-        /*
-         * Build categorized skill lists
-         */
-
-        // We are in a game version with Maces
-        if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
-            COMBAT_SKILLS = ImmutableList.of(
+        if (gameVersion.isAtLeast(1, 21, 11)) {
+            // We are in a game version with Spears and Maces
+            return ImmutableList.of(
+                    PrimarySkillType.ARCHERY,
+                    PrimarySkillType.AXES,
+                    PrimarySkillType.CROSSBOWS,
+                    PrimarySkillType.MACES,
+                    PrimarySkillType.SWORDS,
+                    PrimarySkillType.SPEARS,
+                    PrimarySkillType.TAMING,
+                    PrimarySkillType.TRIDENTS,
+                    PrimarySkillType.UNARMED
+            );
+        } else if (gameVersion.isAtLeast(1, 21, 0)) {
+            // We are in a game version with Maces
+            return ImmutableList.of(
                     PrimarySkillType.ARCHERY,
                     PrimarySkillType.AXES,
                     PrimarySkillType.CROSSBOWS,
@@ -177,42 +266,23 @@ public class SkillTools {
                     PrimarySkillType.SWORDS,
                     PrimarySkillType.TAMING,
                     PrimarySkillType.TRIDENTS,
-                    PrimarySkillType.UNARMED);
+                    PrimarySkillType.UNARMED
+            );
         } else {
             // No Maces in this version
-            COMBAT_SKILLS = ImmutableList.of(
+            return ImmutableList.of(
                     PrimarySkillType.ARCHERY,
                     PrimarySkillType.AXES,
                     PrimarySkillType.CROSSBOWS,
                     PrimarySkillType.SWORDS,
                     PrimarySkillType.TAMING,
                     PrimarySkillType.TRIDENTS,
-                    PrimarySkillType.UNARMED);
+                    PrimarySkillType.UNARMED
+            );
         }
-        GATHERING_SKILLS = ImmutableList.of(
-                PrimarySkillType.EXCAVATION,
-                PrimarySkillType.FISHING,
-                PrimarySkillType.HERBALISM,
-                PrimarySkillType.MINING,
-                PrimarySkillType.WOODCUTTING);
-        MISC_SKILLS = ImmutableList.of(
-                PrimarySkillType.ACROBATICS,
-                PrimarySkillType.ALCHEMY,
-                PrimarySkillType.REPAIR,
-                PrimarySkillType.SALVAGE,
-                PrimarySkillType.SMELTING);
-
-        /*
-         * Build formatted/localized/etc string lists
-         */
-
-        LOCALIZED_SKILL_NAMES = ImmutableList.copyOf(buildLocalizedPrimarySkillNames());
-        FORMATTED_SUBSKILL_NAMES = ImmutableList.copyOf(buildFormattedSubSkillNameList());
-        EXACT_SUBSKILL_NAMES = ImmutableSet.copyOf(buildExactSubSkillNameList());
     }
 
-    private @NotNull PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType)
-            throws InvalidSkillException {
+    private @NotNull PrimarySkillType getSuperAbilityParent(SuperAbilityType superAbilityType) {
         return switch (superAbilityType) {
             case BERSERK -> PrimarySkillType.UNARMED;
             case GREEN_TERRA -> PrimarySkillType.HERBALISM;
@@ -225,11 +295,12 @@ public class SkillTools {
             case TRIDENTS_SUPER_ABILITY -> PrimarySkillType.TRIDENTS;
             case EXPLOSIVE_SHOT -> PrimarySkillType.ARCHERY;
             case MACES_SUPER_ABILITY -> PrimarySkillType.MACES;
+            case SPEARS_SUPER_ABILITY -> PrimarySkillType.SPEARS;
         };
     }
 
     /**
-     * Makes a list of the "nice" version of sub skill names Used in tab completion mostly
+     * Makes a list of the "nice" version of sub skill names. Used in tab completion mostly.
      *
      * @return a list of formatted sub skill names
      */
@@ -272,9 +343,12 @@ public class SkillTools {
     }
 
     /**
-     * Matches a string of a skill to a skill This is NOT case sensitive First it checks the locale
-     * file and tries to match by the localized name of the skill Then if nothing is found it checks
-     * against the hard coded "name" of the skill, which is just its name in English
+     * Matches a string of a skill to a skill.
+     * This is NOT case-sensitive.
+     * <p>
+     * First it checks the locale file and tries to match by the localized name of the skill.
+     * Then if nothing is found it checks against the hard coded "name" of the skill,
+     * which is just its name in English.
      *
      * @param skillName target skill name
      * @return the matching PrimarySkillType if one is found, otherwise null
@@ -282,8 +356,9 @@ public class SkillTools {
     public PrimarySkillType matchSkill(String skillName) {
         if (!pluginRef.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : PrimarySkillType.values()) {
-                if (skillName.equalsIgnoreCase(LocaleLoader.getString(
-                        StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
+                String localized = LocaleLoader.getString(
+                        StringUtils.getCapitalized(type.name()) + ".SkillName");
+                if (skillName.equalsIgnoreCase(localized)) {
                     return type;
                 }
             }
@@ -297,15 +372,15 @@ public class SkillTools {
 
         if (!skillName.equalsIgnoreCase("all")) {
             pluginRef.getLogger()
-                    .warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
+                    .warning("Invalid mcMMO skill (" + skillName + ")"); // TODO: Localize
         }
 
         return null;
     }
 
     /**
-     * Gets the PrimarySkillStype to which a SubSkillType belongs Return null if it does not belong
-     * to one.. which should be impossible in most circumstances
+     * Gets the PrimarySkillType to which a SubSkillType belongs.
+     * Returns null if it does not belong to one (which should be impossible in most circumstances).
      *
      * @param subSkillType target subskill
      * @return the PrimarySkillType of this SubSkill, null if it doesn't exist
@@ -315,8 +390,8 @@ public class SkillTools {
     }
 
     /**
-     * Gets the PrimarySkillStype to which a SuperAbilityType belongs Return null if it does not
-     * belong to one.. which should be impossible in most circumstances
+     * Gets the PrimarySkillType to which a SuperAbilityType belongs.
+     * Returns null if it does not belong to one (which should be impossible in most circumstances).
      *
      * @param superAbilityType target super ability
      * @return the PrimarySkillType of this SuperAbilityType, null if it doesn't exist
@@ -326,16 +401,15 @@ public class SkillTools {
     }
 
     public SuperAbilityType getSuperAbility(PrimarySkillType primarySkillType) {
-        if (mainActivatedAbilityChildMap.get(primarySkillType) == null) {
-            return null;
-        }
-
         return mainActivatedAbilityChildMap.get(primarySkillType);
     }
 
     public boolean isSuperAbilityUnlocked(PrimarySkillType primarySkillType, Player player) {
-        SuperAbilityType superAbilityType = mcMMO.p.getSkillTools()
-                .getSuperAbility(primarySkillType);
+        SuperAbilityType superAbilityType = getSuperAbility(primarySkillType);
+        if (superAbilityType == null) {
+            return false;
+        }
+
         SubSkillType subSkillType = superAbilityType.getSubSkillTypeDefinition();
         return RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
@@ -368,7 +442,6 @@ public class SkillTools {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType);
     }
 
-    // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public static boolean isChildSkill(PrimarySkillType primarySkillType) {
         return switch (primarySkillType) {
             case SALVAGE, SMELTING -> true;
@@ -392,8 +465,10 @@ public class SkillTools {
     }
 
     public boolean canCombatSkillsTrigger(PrimarySkillType primarySkillType, Entity target) {
-        return (target instanceof Player || (target instanceof Tameable
-                && ((Tameable) target).isTamed())) ? getPVPEnabled(primarySkillType)
+        boolean isPlayerOrTamed = (target instanceof Player)
+                || (target instanceof Tameable && ((Tameable) target).isTamed());
+        return isPlayerOrTamed
+                ? getPVPEnabled(primarySkillType)
                 : getPVEEnabled(primarySkillType);
     }
 
@@ -410,7 +485,7 @@ public class SkillTools {
     }
 
     public int getLevelCap(@NotNull PrimarySkillType primarySkillType) {
-        return mcMMO.p.getGeneralConfig().getLevelCap(primarySkillType);
+        return pluginRef.getGeneralConfig().getLevelCap(primarySkillType);
     }
 
     /**
@@ -445,17 +520,12 @@ public class SkillTools {
     }
 
     public @NotNull ImmutableList<PrimarySkillType> getChildSkillParents(
-            PrimarySkillType childSkill)
-            throws IllegalArgumentException {
-        switch (childSkill) {
-            case SALVAGE -> {
-                return SALVAGE_PARENTS;
-            }
-            case SMELTING -> {
-                return SMELTING_PARENTS;
-            }
+            PrimarySkillType childSkill) throws IllegalArgumentException {
+        return switch (childSkill) {
+            case SALVAGE -> SALVAGE_PARENTS;
+            case SMELTING -> SMELTING_PARENTS;
             default -> throw new IllegalArgumentException(
                     "Skill " + childSkill + " is not a child skill");
-        }
+        };
     }
 }

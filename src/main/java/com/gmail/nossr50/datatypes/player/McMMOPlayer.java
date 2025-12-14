@@ -40,6 +40,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
+import com.gmail.nossr50.skills.spears.SpearsManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.tridents.TridentsManager;
@@ -63,6 +64,7 @@ import com.gmail.nossr50.util.sounds.SoundType;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Bukkit;
@@ -171,73 +173,50 @@ public class McMMOPlayer implements Identified {
             try {
                 initManager(primarySkillType);
             } catch (InvalidSkillException e) {
-                e.printStackTrace();
+                mcMMO.p.getLogger().log(Level.SEVERE,
+                        "Invalid skill while initializing skill managers for player "
+                        + player.getName()
+                        + ". Contact the plugin developers.", e);
             }
         }
     }
 
     //TODO: Add test
     private void initManager(PrimarySkillType primarySkillType) throws InvalidSkillException {
-        switch (primarySkillType) {
-            case ACROBATICS:
-                skillManagers.put(primarySkillType, new AcrobaticsManager(this));
-                break;
-            case ALCHEMY:
-                skillManagers.put(primarySkillType, new AlchemyManager(this));
-                break;
-            case ARCHERY:
-                skillManagers.put(primarySkillType, new ArcheryManager(this));
-                break;
-            case AXES:
-                skillManagers.put(primarySkillType, new AxesManager(this));
-                break;
-            case CROSSBOWS:
-                skillManagers.put(primarySkillType, new CrossbowsManager(this));
-                break;
-            case EXCAVATION:
-                skillManagers.put(primarySkillType, new ExcavationManager(this));
-                break;
-            case FISHING:
-                skillManagers.put(primarySkillType, new FishingManager(this));
-                break;
-            case HERBALISM:
-                skillManagers.put(primarySkillType, new HerbalismManager(this));
-                break;
-            case MINING:
-                skillManagers.put(primarySkillType, new MiningManager(this));
-                break;
-            case REPAIR:
-                skillManagers.put(primarySkillType, new RepairManager(this));
-                break;
-            case SALVAGE:
-                skillManagers.put(primarySkillType, new SalvageManager(this));
-                break;
-            case SMELTING:
-                skillManagers.put(primarySkillType, new SmeltingManager(this));
-                break;
-            case SWORDS:
-                skillManagers.put(primarySkillType, new SwordsManager(this));
-                break;
-            case TAMING:
-                skillManagers.put(primarySkillType, new TamingManager(this));
-                break;
-            case TRIDENTS:
-                skillManagers.put(primarySkillType, new TridentsManager(this));
-                break;
-            case UNARMED:
-                skillManagers.put(primarySkillType, new UnarmedManager(this));
-                break;
-            case WOODCUTTING:
-                skillManagers.put(primarySkillType, new WoodcuttingManager(this));
-                break;
-            case MACES:
-                if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
-                    skillManagers.put(primarySkillType, new MacesManager(this));
-                }
-                break;
-            default:
-                throw new InvalidSkillException(
-                        "The skill named has no manager! Contact the devs!");
+        final var version = mcMMO.getCompatibilityManager().getMinecraftGameVersion();
+
+        final SkillManager manager = switch (primarySkillType) {
+            case ACROBATICS -> new AcrobaticsManager(this);
+            case ALCHEMY -> new AlchemyManager(this);
+            case ARCHERY -> new ArcheryManager(this);
+            case AXES -> new AxesManager(this);
+            case CROSSBOWS -> new CrossbowsManager(this);
+            case EXCAVATION -> new ExcavationManager(this);
+            case FISHING -> new FishingManager(this);
+            case HERBALISM -> new HerbalismManager(this);
+            case MINING -> new MiningManager(this);
+            case REPAIR -> new RepairManager(this);
+            case SALVAGE -> new SalvageManager(this);
+            case SMELTING -> new SmeltingManager(this);
+            case SWORDS -> new SwordsManager(this);
+            case TAMING -> new TamingManager(this);
+            case TRIDENTS -> new TridentsManager(this);
+            case UNARMED -> new UnarmedManager(this);
+            case WOODCUTTING -> new WoodcuttingManager(this);
+
+            case MACES -> version.isAtLeast(1, 21, 0)
+                    ? new MacesManager(this)
+                    : null; // keep current behavior: no manager on older versions
+
+            case SPEARS -> version.isAtLeast(1, 21, 11)
+                    ? new SpearsManager(this)
+                    : null; // same here
+        };
+
+        if (manager != null) {
+            skillManagers.put(primarySkillType, manager);
+        } else {
+            throw new InvalidSkillException("No valid skill manager for skill: " + primarySkillType);
         }
     }
 
@@ -367,6 +346,10 @@ public class McMMOPlayer implements Identified {
 
     public SmeltingManager getSmeltingManager() {
         return (SmeltingManager) skillManagers.get(PrimarySkillType.SMELTING);
+    }
+
+    public SpearsManager getSpearsManager() {
+        return (SpearsManager) skillManagers.get(PrimarySkillType.SPEARS);
     }
 
     public SwordsManager getSwordsManager() {

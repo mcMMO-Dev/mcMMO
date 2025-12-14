@@ -93,6 +93,13 @@ public enum SuperAbilityType {
             "Placeholder",
             "Placeholder",
             "Placeholder"),
+    SPEARS_SUPER_ABILITY(
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder",
+            "Placeholder"),
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
@@ -216,8 +223,8 @@ public enum SuperAbilityType {
             case SUPER_BREAKER -> Permissions.superBreaker(player);
             case TREE_FELLER -> Permissions.treeFeller(player);
             // TODO: once implemented, return permissions for the following abilities
-            case EXPLOSIVE_SHOT, TRIDENTS_SUPER_ABILITY, SUPER_SHOTGUN, MACES_SUPER_ABILITY ->
-                    false;
+            case EXPLOSIVE_SHOT, TRIDENTS_SUPER_ABILITY, SUPER_SHOTGUN, MACES_SUPER_ABILITY,
+                 SPEARS_SUPER_ABILITY -> false;
         };
     }
 

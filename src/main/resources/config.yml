@@ -229,6 +229,7 @@ Hardcore:
             Tridents: false
             Crossbows: false
             Maces: false
+            Spears: false
     Vampirism:
         Leech_Percentage: 5.0
         Level_Threshold: 0
@@ -249,6 +250,7 @@ Hardcore:
             Tridents: false
             Crossbows: false
             Maces: false
+            Spears: false
 
 #
 #  Settings for SMP Mods
@@ -424,6 +426,10 @@ Skills:
         Enabled_For_PVE: true
         Level_Cap: 0
     Maces:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
+        Level_Cap: 0
+    Spears:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0

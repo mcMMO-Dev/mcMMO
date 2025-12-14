@@ -95,6 +95,10 @@ Experience_Bars:
         Enable: true
         Color: BLUE
         BarStyle: SEGMENTED_6
+    Spears:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
     Repair:
         Enable: true
         Color: PURPLE
@@ -167,6 +171,7 @@ Experience_Formula:
 
     # Experience gained will get multiplied by these values. 1.0 by default, 0.5 means half XP gained. This happens right before multiplying the XP by the global multiplier.
     Skill_Multiplier:
+        Spears: 1.0
         Maces: 1.0
         Crossbows: 1.0
         Tridents: 1.0
@@ -218,6 +223,7 @@ Diminished_Returns:
         Crossbows: 20000
         Tridents: 20000
         Maces: 20000
+        Spears: 20000
 
     Time_Interval: 10
 
@@ -582,6 +588,7 @@ Experience_Values:
     Taming:
         Animal_Taming:
             Camel: 1300
+            Camel_Husk: 1300
             Sniffer: 1500
             Snifflet: 900
             Llama: 1200
@@ -600,12 +607,15 @@ Experience_Values:
             Goat: 250
             Axolotl: 600
             Frog: 900
+            Nautilus: 1700
+            Zombie_Nautilus: 1700
     Combat:
         Multiplier:
             Animals: 1.0
             Armadillo: 1.1
             Creeper: 4.0
             Skeleton: 3.0
+            Parched: 2.5
             Spider: 2.0
             Giant: 4.0
             Zombie: 2.0
@@ -683,6 +693,7 @@ Experience_Values:
             Sniffer: 1.1
             Snifflet: 1.1
             Camel: 1.2
+            Camel_Husk: 1.25
             Bogged: 2.0
             Breeze: 4.0
             Armor_Stand: 0.0

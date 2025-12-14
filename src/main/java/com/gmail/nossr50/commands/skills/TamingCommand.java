@@ -115,7 +115,7 @@ public class TamingCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, this.skill);
+        TextComponentFactory.appendSubSkillTextComponents(player, textComponents, this.skill);
 
         return textComponents;
     }

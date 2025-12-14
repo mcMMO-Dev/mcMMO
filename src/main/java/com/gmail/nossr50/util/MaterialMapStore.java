@@ -51,9 +51,10 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> tridents;
     private final @NotNull HashSet<String> bows;
     private final @NotNull HashSet<String> crossbows;
-    private final @NotNull HashSet<String> tools;
-    private final @NotNull HashSet<String> enchantables;
     private final @NotNull HashSet<String> maces;
+    private final @NotNull HashSet<String> spears;
+    private final @NotNull HashSet<String> enchantables;
+    private final @NotNull HashSet<String> tools;
 
     private final @NotNull HashSet<String> ores;
     private final @NotNull HashSet<String> intendedToolPickAxe;
@@ -95,15 +96,15 @@ public class MaterialMapStore {
         crossbows = new HashSet<>();
         stringTools = new HashSet<>();
         prismarineTools = new HashSet<>();
-        tools = new HashSet<>();
-
         swords = new HashSet<>();
         axes = new HashSet<>();
         pickAxes = new HashSet<>();
         shovels = new HashSet<>();
         hoes = new HashSet<>();
         tridents = new HashSet<>();
+        spears = new HashSet<>();
         maces = new HashSet<>();
+        tools = new HashSet<>();
 
         enchantables = new HashSet<>();
 
@@ -459,6 +460,7 @@ public class MaterialMapStore {
         enchantables.addAll(bows);
         enchantables.addAll(crossbows);
         enchantables.addAll(maces);
+        enchantables.addAll(spears);
 
         enchantables.add("shears");
         enchantables.add("fishing_rod");
@@ -484,6 +486,7 @@ public class MaterialMapStore {
         fillShovels();
         fillTridents();
         fillMaces();
+        fillSpears();
         fillStringTools();
         fillPrismarineTools();
         fillBows();
@@ -502,6 +505,7 @@ public class MaterialMapStore {
         tools.addAll(bows);
         tools.addAll(crossbows);
         tools.addAll(maces);
+        tools.addAll(spears);
     }
 
     private void fillBows() {
@@ -525,6 +529,16 @@ public class MaterialMapStore {
 
     private void fillMaces() {
         maces.add("mace");
+    }
+
+    private void fillSpears() {
+        spears.add("wooden_spear");
+        spears.add("stone_spear");
+        spears.add("copper_spear");
+        spears.add("iron_spear");
+        spears.add("golden_spear");
+        spears.add("diamond_spear");
+        spears.add("netherite_spear");
     }
 
     private void fillTridents() {
@@ -872,6 +886,14 @@ public class MaterialMapStore {
 
     public boolean isMace(@NotNull String id) {
         return maces.contains(id);
+    }
+
+    public boolean isSpear(@NotNull Material material) {
+        return isSpear(material.getKey().getKey());
+    }
+
+    public boolean isSpear(@NotNull String id) {
+        return spears.contains(id);
     }
 
     public boolean isLeatherArmor(@NotNull Material material) {

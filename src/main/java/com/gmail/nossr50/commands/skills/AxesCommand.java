@@ -119,7 +119,7 @@ public class AxesCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         final List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+        TextComponentFactory.appendSubSkillTextComponents(player, textComponents,
                 PrimarySkillType.AXES);
 
         return textComponents;

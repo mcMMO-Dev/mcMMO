@@ -136,7 +136,7 @@ public class UnarmedCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+        TextComponentFactory.appendSubSkillTextComponents(player, textComponents,
                 PrimarySkillType.UNARMED);
 
         return textComponents;
