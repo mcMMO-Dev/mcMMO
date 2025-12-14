@@ -1,3 +1,6 @@
+Version 2.2.047
+    Fix bug where off-hand spears damage could be attributed to various combat skills and trigger their abilities
+
 Version 2.2.046
     Added Spears combat skill
     Added Spears to repair.vanilla.yml and salvage.vanilla.yml (see notes)

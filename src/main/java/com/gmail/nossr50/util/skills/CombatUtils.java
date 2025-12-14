@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.skills;
 
 import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
 import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
+import static com.gmail.nossr50.util.ItemUtils.isSpear;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
 import static com.gmail.nossr50.util.Permissions.canUseSubSkill;
 import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
@@ -124,6 +125,11 @@ public final class CombatUtils {
             return;
         }
 
+        // TODO: Temporary hack to avoid unintended spear interactions
+        if (isSpear(player.getInventory().getItemInOffHand())) {
+            return;
+        }
+
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         //Make sure the profiles been loaded
@@ -185,6 +191,11 @@ public final class CombatUtils {
     private static void processTridentCombatMelee(@NotNull LivingEntity target,
             @NotNull Player player, @NotNull EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+
+        // TODO: Temporary hack to avoid unintended spear interactions
+        if (isSpear(player.getInventory().getItemInOffHand())) {
             return;
         }
 
@@ -301,6 +312,11 @@ public final class CombatUtils {
             return;
         }
 
+        // TODO: Temporary hack to avoid unintended spear interactions
+        if (isSpear(player.getInventory().getItemInOffHand())) {
+            return;
+        }
+
         double boostedDamage = event.getDamage();
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
@@ -379,6 +395,11 @@ public final class CombatUtils {
             return;
         }
 
+        // TODO: Temporary hack to avoid unintended spear interactions
+        if (isSpear(player.getInventory().getItemInOffHand())) {
+            return;
+        }
+
         double boostedDamage = event.getDamage();
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
@@ -433,8 +454,8 @@ public final class CombatUtils {
 
         double boostedDamage = event.getDamage();
 
-        // TODO: Temporary hack to avoid unintended spear / unarmed interactions
-        if (ItemUtils.isSpear(player.getInventory().getItemInOffHand())) {
+        // TODO: Temporary hack to avoid unintended spear interactions
+        if (isSpear(player.getInventory().getItemInOffHand())) {
             return;
         }
 
@@ -689,7 +710,7 @@ public final class CombatUtils {
                         .doesPlayerHaveSkillPermission(player, PrimarySkillType.MACES)) {
                     processMacesCombat(target, player, event);
                 }
-            } else if (ItemUtils.isSpear(heldItem)) {
+            } else if (isSpear(heldItem)) {
                 if (!mcMMO.p.getSkillTools()
                         .canCombatSkillsTrigger(PrimarySkillType.SPEARS, target)) {
                     return;
