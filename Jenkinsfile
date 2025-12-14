@@ -26,11 +26,9 @@ pipeline {
 		}
 
         stage('Deploy to Nexus') {
-            stage('Deploy to Nexus') {
-                steps {
-                    configFileProvider([configFile(fileId: 'maven-settings-nexus', variable: 'MAVEN_SETTINGS')]) {
-                        sh 'mvn -s "$MAVEN_SETTINGS" -V -B deploy'
-                    }
+            steps {
+                configFileProvider([configFile(fileId: 'maven-settings-nexus', variable: 'MAVEN_SETTINGS')]) {
+                    sh 'mvn -s "$MAVEN_SETTINGS" -V -B deploy'
                 }
             }
         }
