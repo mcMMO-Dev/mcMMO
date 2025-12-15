@@ -64,6 +64,12 @@ public final class CommandRegistrationManager {
 
     private static void registerSkillCommands() {
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (primarySkillType == PrimarySkillType.SPEARS
+                    && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
+                    .isAtLeast(1, 21, 11)) {
+                continue;
+            }
+
             if (primarySkillType == PrimarySkillType.MACES
                     && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
                     .isAtLeast(1, 21, 0)) {

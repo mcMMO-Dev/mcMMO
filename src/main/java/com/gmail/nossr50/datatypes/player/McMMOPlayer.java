@@ -181,7 +181,6 @@ public class McMMOPlayer implements Identified {
         }
     }
 
-    //TODO: Add test
     private void initManager(PrimarySkillType primarySkillType) throws InvalidSkillException {
         final var version = mcMMO.getCompatibilityManager().getMinecraftGameVersion();
 
@@ -203,20 +202,12 @@ public class McMMOPlayer implements Identified {
             case TRIDENTS -> new TridentsManager(this);
             case UNARMED -> new UnarmedManager(this);
             case WOODCUTTING -> new WoodcuttingManager(this);
-
-            case MACES -> version.isAtLeast(1, 21, 0)
-                    ? new MacesManager(this)
-                    : null; // keep current behavior: no manager on older versions
-
-            case SPEARS -> version.isAtLeast(1, 21, 11)
-                    ? new SpearsManager(this)
-                    : null; // same here
+            case MACES -> version.isAtLeast(1, 21, 0) ? new MacesManager(this) : null;
+            case SPEARS -> version.isAtLeast(1, 21, 11) ? new SpearsManager(this) : null;
         };
 
         if (manager != null) {
             skillManagers.put(primarySkillType, manager);
-        } else {
-            throw new InvalidSkillException("No valid skill manager for skill: " + primarySkillType);
         }
     }
 

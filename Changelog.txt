@@ -1,3 +1,7 @@
+Version 2.2.048
+    Fixed error when loading Spears skill manager on older Minecraft versions
+    Fixed error when using /spears command on an older Minecraft version
+
 Version 2.2.047
     Fix bug where off-hand spears damage could be attributed to various combat skills and trigger their abilities
 
