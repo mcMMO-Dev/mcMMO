@@ -972,10 +972,6 @@ public class HerbalismManager extends SkillManager {
                 }
                 break;
 
-            case "torchflower":
-                finalAge = 0;
-                break;
-
             default:
                 return false;
         }
