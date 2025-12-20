@@ -58,6 +58,7 @@ import com.gmail.nossr50.util.TransientEntityTracker;
 import com.gmail.nossr50.util.TransientMetadataTools;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.ChunkManagerFactory;
+import com.gmail.nossr50.util.blockmeta.CustomBlockRegistry;
 import com.gmail.nossr50.util.blockmeta.UserBlockTracker;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
@@ -107,6 +108,7 @@ public class mcMMO extends JavaPlugin {
     private static ChatManager chatManager;
     private static CommandManager commandManager; //ACF
     private static TransientEntityTracker transientEntityTracker;
+    private static CustomBlockRegistry customBlockRegistry;
 
     private SkillTools skillTools;
 
@@ -334,6 +336,7 @@ public class mcMMO extends JavaPlugin {
         commandManager = new CommandManager(this);
 
         transientEntityTracker = new TransientEntityTracker();
+        customBlockRegistry = new CustomBlockRegistry();
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -492,6 +495,19 @@ public class mcMMO extends JavaPlugin {
 
     public static SalvageableManager getSalvageableManager() {
         return salvageableManager;
+    }
+
+    /**
+     * Gets the custom block registry for third-party plugin integration.
+     * <p>
+     * Plugins like Oraxen and ItemsAdder can use this registry to register
+     * their custom blocks to award mcMMO XP when broken.
+     *
+     * @return the custom block registry
+     * @since 2.2.026
+     */
+    public static CustomBlockRegistry getCustomBlockRegistry() {
+        return customBlockRegistry;
     }
 
     public static DatabaseManager getDatabaseManager() {
