@@ -10,6 +10,7 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.experience.CustomBlocksConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -336,7 +337,12 @@ public class mcMMO extends JavaPlugin {
         commandManager = new CommandManager(this);
 
         transientEntityTracker = new TransientEntityTracker();
+        
+        // Initialize custom block registry and load persisted entries from config
         customBlockRegistry = new CustomBlockRegistry();
+        CustomBlocksConfig.getInstance(); // Initialize config
+        customBlockRegistry.loadFromConfig();
+        
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

@@ -1320,6 +1320,11 @@ public final class ExperienceAPI {
      * integrate with mcMMO's skill system. Once registered, players will
      * automatically receive XP when breaking the custom block.
      * <p>
+     * <b>Config Integration:</b>
+     * On first registration, an entry is created in {@code custom-blocks.yml} with the
+     * provided default values. Server owners can then customize XP values or disable
+     * specific blocks. Config values always take priority over API-registered values.
+     * <p>
      * Example usage:
      * <pre>
      * // In your plugin's onEnable:
@@ -1329,11 +1334,11 @@ public final class ExperienceAPI {
      * @param pluginName the name of your plugin
      * @param blockId    the unique identifier for this block within your plugin
      * @param skillType  the mcMMO skill to award XP for (e.g., "MINING", "WOODCUTTING")
-     * @param xp         the amount of XP to award
+     * @param xp         the default amount of XP to award (can be overridden in config)
      * @throws InvalidSkillException if the given skill is not valid
      * @since 2.2.026
      */
-    public static void registerCustomBlock(String pluginName, String blockId, String skillType, int xp) 
+    public static void registerCustomBlock(String pluginName, String blockId, String skillType, int xp)
             throws InvalidSkillException {
         PrimarySkillType skill = getSkillType(skillType);
         mcMMO.getCustomBlockRegistry().registerCustomBlock(pluginName, blockId, skill, xp);
@@ -1341,10 +1346,13 @@ public final class ExperienceAPI {
 
     /**
      * Registers a custom block using a combined identifier.
+     * <p>
+     * See {@link #registerCustomBlock(String, String, String, int)} for details on
+     * config integration.
      *
      * @param fullId    the full identifier in "plugin:block" format (e.g., "oraxen:mythril_ore")
      * @param skillType the mcMMO skill to award XP for
-     * @param xp        the amount of XP to award
+     * @param xp        the default amount of XP to award (can be overridden in config)
      * @throws InvalidSkillException if the given skill is not valid
      * @since 2.2.026
      */
@@ -1354,7 +1362,10 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Unregisters a custom block.
+     * Unregisters a custom block from the runtime registry.
+     * <p>
+     * Note: This only removes the block from the runtime registry. The config entry
+     * in {@code custom-blocks.yml} is preserved so user customizations are not lost.
      *
      * @param pluginName the name of the plugin
      * @param blockId    the block identifier
@@ -1367,7 +1378,9 @@ public final class ExperienceAPI {
 
     /**
      * Unregisters all custom blocks from a specific plugin.
-     * Useful in your plugin's onDisable method.
+     * <p>
+     * Useful in your plugin's onDisable method. Note: Config entries are preserved
+     * so user customizations persist.
      *
      * @param pluginName the name of the plugin
      * @return the number of blocks unregistered
@@ -1382,7 +1395,7 @@ public final class ExperienceAPI {
      * <p>
      * This method is for plugins that want to handle block break detection themselves
      * and just need mcMMO to award the XP. For most use cases, using
-     * {@link #registerCustomBlock} is simpler.
+     * {@link #registerCustomBlock} is simpler as it handles everything automatically.
      *
      * @param player        the player who broke the block
      * @param customBlockId the custom block identifier (e.g., "oraxen:mythril_ore")
