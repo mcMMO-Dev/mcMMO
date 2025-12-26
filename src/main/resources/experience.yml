@@ -552,6 +552,7 @@ Experience_Values:
         Base: 1000.0
         Wood: 0.6
         Stone: 1.3
+        Copper: 2.0
         Iron: 2.5
         Gold: 0.3
         Diamond: 5.0
