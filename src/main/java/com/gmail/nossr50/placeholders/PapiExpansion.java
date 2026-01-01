@@ -1,7 +1,9 @@
 package com.gmail.nossr50.placeholders;
 
 import com.gmail.nossr50.api.ExperienceAPI;
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -9,6 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
@@ -196,6 +199,18 @@ public class PapiExpansion extends PlaceholderExpansion {
                 : PlaceholderAPIPlugin.booleanFalse();
     }
 
+    public List<PlayerStat> getLeaderboard(PrimarySkillType skill, int position) {
+        try {
+            // Fetch only the specific entry needed  
+            int statsPerPage = 1;  
+            int pageNumber = position; // Assuming readLeaderboard uses pageNumber as offset for single entry
+            
+            return mcMMO.getDatabaseManager().readLeaderboard(skill, pageNumber, statsPerPage);
+        } catch (InvalidSkillException ex) {
+            return null;
+        }
+    }
+
     public void registerPlaceholder(Placeholder placeholder) {
         final Placeholder registered = placeholders.get(placeholder.getName());
         if (registered != null) {
@@ -206,7 +221,7 @@ public class PapiExpansion extends PlaceholderExpansion {
         placeholders.put(placeholder.getName(), placeholder);
     }
 
-    protected void init() {
+    private void init() {
 
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             // %mcmmo_level_<skillname>%
@@ -226,6 +241,15 @@ public class PapiExpansion extends PlaceholderExpansion {
 
             //%mcmmo_xprate_<skillname>%
             registerPlaceholder(new SkillXpRatePlaceholder(this, skill));
+
+            //%mcmmo_mctop_<skillname>:<position>%
+            registerPlaceholder(new McTopPositionPlaceholder(this, skill));
+
+            //%mcmmo_mctop_name_<skillname>:<position>%
+            registerPlaceholder(new McTopNamePlaceholder(this, skill));
+
+            //%mcmmo_checklevel_<skillname>:<level>%
+            registerPlaceholder(new CheckLevelPlaceholder(this, skill));
         }
 
         //%mcmmo_power_level%
@@ -251,8 +275,18 @@ public class PapiExpansion extends PlaceholderExpansion {
 
         // %mcmmo_is_xp_event_active%
         registerPlaceholder(new XpEventActivePlaceholder(this));
+
         // %mcmmo_xprate%
         registerPlaceholder(new XpRatePlaceholder(this));
+
+        // %mcmmo_rank_overall%
+        registerPlaceholder(new OverallRankPlaceholder(this));
+
+        // %mcmmo_mctop_overall:<position>%
+        registerPlaceholder(new McTopPositionPlaceholder(this, null));
+
+        // %mcmmo_mctop_name_overall:<position>%
+        registerPlaceholder(new McTopNamePlaceholder(this, null));
     }
 
 }
