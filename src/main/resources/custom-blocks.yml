@@ -1,0 +1,37 @@
+# =============================================================================
+# Custom Blocks Configuration
+# =============================================================================
+# This file stores XP values for custom blocks registered by third-party plugins
+# like Oraxen, ItemsAdder, etc.
+#
+# HOW IT WORKS:
+# When a plugin registers a custom block for the first time, an entry will be
+# automatically created here with the default values provided by the plugin.
+# You can then customize the XP values, change the skill, or disable specific
+# blocks entirely.
+#
+# FORMAT:
+#   pluginname:
+#     blockid:
+#       skill: MINING       # The mcMMO skill (MINING, WOODCUTTING, EXCAVATION, HERBALISM)
+#       xp: 100             # XP awarded when breaking this block
+#       enabled: true       # Set to false to disable XP for this block
+#
+# EXAMPLE:
+#   oraxen:
+#     mythril_ore:
+#       skill: MINING
+#       xp: 150
+#       enabled: true
+#     custom_log:
+#       skill: WOODCUTTING
+#       xp: 80
+#       enabled: true
+#
+# NOTES:
+# - Plugin entries are created automatically when plugins register blocks
+# - Your customizations are preserved when plugins update their defaults
+# - Set 'enabled: false' to completely disable XP for a specific block
+# - Valid skills: MINING, WOODCUTTING, EXCAVATION, HERBALISM
+# =============================================================================
+
