@@ -1,3 +1,9 @@
+Version 2.2.049
+    Combat abilities work with spear in off-hand again (see notes)
+
+    NOTES:
+    As a semi-permanent work around, mcMMO keeps track of when players swing their weapon, if they have swung it recently enough combat skills will work even if you have a spear in your off-hand.
+    Prior to this patch, mcMMO disabled combat abilities when spear was in off-hand to prevent the off-hand spear charge from applying combat abilities from other skills, as mcMMO was unable to determine which item (mainhand vs offhand) caused the damage from the event information alone.
 Version 2.2.048
     Fixed error when loading Spears skill manager on older Minecraft versions
     Fixed error when using /spears command on an older Minecraft version
