@@ -147,12 +147,14 @@ public class BlockListener implements Listener {
                         }
 
                         int amountToAddFromBonus = bonusDropMeta.asInt();
-                        final McMMOModifyBlockDropItemEvent modifyBlockDropItemEvent
+                        final McMMOModifyBlockDropItemEvent modifyDropEvent
                                 = new McMMOModifyBlockDropItemEvent(event, item, amountToAddFromBonus);
-                        plugin.getServer().getPluginManager().callEvent(modifyBlockDropItemEvent);
-                        if (!modifyBlockDropItemEvent.isCancelled()
-                                && modifyBlockDropItemEvent.getModifiedItemStackQuantity() > originalAmount) {
-                            eventItemStack.setAmount(modifyBlockDropItemEvent.getModifiedItemStackQuantity());
+                        plugin.getServer().getPluginManager().callEvent(modifyDropEvent);
+                        if (!modifyDropEvent.isCancelled()
+                                && modifyDropEvent.getModifiedItemStackQuantity() > originalAmount) {
+                            eventItemStack.setAmount(
+                                    Math.min(modifyDropEvent.getModifiedItemStackQuantity(),
+                                            item.getItemStack().getMaxStackSize()));
                         }
                     }
                 }
