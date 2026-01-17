@@ -535,6 +535,10 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean isAgeableMature(Ageable ageable) {
+        // Sweet berry bush is harvestable at age 2 and 3 (max is 3)
+        if (ageable.getMaterial() == Material.SWEET_BERRY_BUSH) {
+            return ageable.getAge() >= 2;
+        }
         return ageable.getAge() == ageable.getMaximumAge()
                 && ageable.getAge() != 0;
     }
@@ -868,6 +872,7 @@ public class HerbalismManager extends SkillManager {
             case "beetroots" -> replantMaterial = Material.matchMaterial("BEETROOT_SEEDS");
             case "cocoa" -> replantMaterial = Material.matchMaterial("COCOA_BEANS");
             case "torchflower" -> replantMaterial = Material.matchMaterial("TORCHFLOWER_SEEDS");
+            case "sweet_berry_bush" -> replantMaterial = Material.matchMaterial("SWEET_BERRIES");
             default -> {
                 return false;
             }
@@ -950,6 +955,17 @@ public class HerbalismManager extends SkillManager {
             case "cocoa":
 
                 if (getGreenThumbStage(greenTerra) >= 2) {
+                    finalAge = 1;
+                } else {
+                    finalAge = 0;
+                }
+                break;
+
+            case "sweet_berry_bush":
+
+                // Sweet berry bush has ages 0-3, where 2+ has berries
+                // Cap at age 1 to prevent instant re-harvest exploit with enough herbalism levels
+                if (greenTerra || greenThumbStage >= 2) {
                     finalAge = 1;
                 } else {
                     finalAge = 0;
