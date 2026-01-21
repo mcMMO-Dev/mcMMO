@@ -304,7 +304,7 @@ public class TamingManager extends SkillManager {
 
         Player owner = getPlayer();
 
-        wolf.teleport(owner);
+        mcMMO.p.getFoliaLib().getScheduler().teleportAsync(wolf, owner.getLocation());
         NotificationManager.sendPlayerInformation(owner, NotificationType.SUBSKILL_MESSAGE,
                 "Taming.Listener.Wolf");
     }
