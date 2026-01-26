@@ -259,7 +259,7 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFormEvent(BlockFormEvent event) {
-        World world = event.getBlock().getWorld();
+        final World world = event.getBlock().getWorld();
 
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(world)) {
@@ -267,7 +267,11 @@ public class BlockListener implements Listener {
         }
 
         if (ExperienceConfig.getInstance().preventStoneLavaFarming()) {
-            BlockState newState = event.getNewState();
+            final BlockState newState = event.getNewState();
+            if (!newState.isPlaced()) {
+                // not backed by a real block
+                return;
+            }
 
             if (newState.getType() != Material.OBSIDIAN
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(
