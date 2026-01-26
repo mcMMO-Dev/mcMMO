@@ -276,7 +276,7 @@ public class BlockListener implements Listener {
             if (newState.getType() != Material.OBSIDIAN
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(
                     PrimarySkillType.MINING, newState.getType())) {
-                Block block = newState.getBlock();
+                final Block block = newState.getBlock();
                 if (BlockUtils.isWithinWorldBounds(block)) {
                     BlockUtils.setUnnaturalBlock(block);
                 }

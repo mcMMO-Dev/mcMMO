@@ -1,11 +1,11 @@
 Version 2.2.049
     Combat abilities work with spear in off-hand again (see notes)
     Sweet berry bushes now work with Herbalism (thanks dnocturne)
-    (Codebase) Fixed unit tests for Java 25 (thanks Warriorrrr)
     Fixed copper items not giving XP for Repair (thanks Remski01)
-    Fixed edge case where mcMMO could drop items with stack size set outside normal bounds
+    Fixed rare edge case where mcMMO could drop items with stack size set outside normal bounds
     Fixed a bug where tamed wolves could cause errors on Folia (thanks Warriorrrr)
     Improved compatibility with Excellent Enchants (fixed error spam from Flame Walker)
+    (Codebase) Fixed unit tests when building mcMMO with Java 25 (thanks Warriorrrr)
 
     NOTES:
     As a semi-permanent work around, mcMMO keeps track of when players swing their weapon, if they have swung it recently enough combat skills will work even if you have a spear in your off-hand.
