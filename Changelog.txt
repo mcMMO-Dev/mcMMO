@@ -1,3 +1,6 @@
+Version 2.2.050
+    Further improved compatibility with Excellent Enchants
+
 Version 2.2.049
     Combat abilities work with spear in off-hand again (see notes)
     Sweet berry bushes now work with Herbalism (thanks dnocturne)
