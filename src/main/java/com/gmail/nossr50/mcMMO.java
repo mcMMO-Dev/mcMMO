@@ -351,9 +351,12 @@ public class mcMMO extends JavaPlugin {
 
     private void checkForOutdatedAPI() {
         try {
-            Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
-            checkForClass.getMethod("getItems");
+            Class<?> blockDropItemEvent = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
+            blockDropItemEvent.getMethod("getItems");
             Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+            // 1.20.4 checks
+            Class<?> entityDamageEvent = Class.forName("org.bukkit.event.entity.EntityDamageEvent");
+            entityDamageEvent.getMethod("getDamageSource");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             serverAPIOutdated = true;
             String software = platformManager.getServerSoftwareStr();
