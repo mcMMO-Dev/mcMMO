@@ -245,15 +245,14 @@ public class mcMMO extends JavaPlugin {
             if (serverAPIOutdated) {
                 foliaLib.getScheduler().runTimer(
                         () -> getLogger().severe(
-                                "You are running an outdated version of "
-                                        + platformManager.getServerSoftware()
+                                "You are potentially running an outdated version of your server software"
                                         + ", mcMMO will not work unless you update to a newer version!"),
                         20, 20 * 60 * 30);
-
-                if (platformManager.getServerSoftware() == ServerSoftwareType.CRAFT_BUKKIT) {
+                if (!getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 20, 4)) {
                     foliaLib.getScheduler().runTimer(
                             () -> getLogger().severe(
-                                    "We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
+                                    "This version of mcMMO requires at least Minecraft 1.20.4 to"
+                                            + " function properly, please update your software or use an older version of mcMMO!"),
                             20, 20 * 60 * 30);
                 }
             } else {
@@ -359,10 +358,7 @@ public class mcMMO extends JavaPlugin {
             entityDamageEvent.getMethod("getDamageSource");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             serverAPIOutdated = true;
-            String software = platformManager.getServerSoftwareStr();
-            getLogger().severe(
-                    "You are running an older version of " + software
-                            + " that is not compatible with mcMMO, update your server software!");
+            getLogger().severe("Your server software is missing APIs that mcMMO requires to function properly, please update your server software!");
         }
     }
 

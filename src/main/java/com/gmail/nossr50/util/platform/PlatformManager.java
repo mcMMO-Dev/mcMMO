@@ -30,13 +30,11 @@ public class PlatformManager {
     }
 
     private @Nullable Platform loadPlatform() {
-        ServerSoftwareType serverSoftwareType = determinePlatformType();
         PlatformBuilder platformBuilder = new PlatformBuilder();
         MinecraftGameVersion gameVersion = determineGameVersion(Bukkit.getBukkitVersion());
 
         return platformBuilder
                 .setMinecraftGameVersion(gameVersion)
-                .setSoftwareType(serverSoftwareType)
                 .build();
     }
 
@@ -66,29 +64,6 @@ public class PlatformManager {
                 + patch);
 
         return new MinecraftGameVersion(major, minor, patch);
-    }
-
-    //TODO: Rewrite this properly once we actually support a not-bukkit platform
-    private @NotNull ServerSoftwareType determinePlatformType() {
-        if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("paper")) {
-            return ServerSoftwareType.PAPER;
-        } else if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("spigot")) {
-            return ServerSoftwareType.SPIGOT;
-        } else {
-            return ServerSoftwareType.CRAFT_BUKKIT;
-        }
-    }
-
-    public ServerSoftwareType getServerSoftware() {
-        return platform.getServerSoftwareType();
-    }
-
-    public String getServerSoftwareStr() {
-        return switch (getServerSoftware()) {
-            case PAPER -> "Paper";
-            case SPIGOT -> "Spigot";
-            default -> "CraftBukkit";
-        };
     }
 
     public @Nullable CompatibilityManager getCompatibilityManager() {

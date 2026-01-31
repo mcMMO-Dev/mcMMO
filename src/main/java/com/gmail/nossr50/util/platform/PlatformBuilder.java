@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class PlatformBuilder {
     private MinecraftGameVersion minecraftGameVersion;
-    private ServerSoftwareType serverSoftwareType;
 
     public PlatformBuilder() {
 
@@ -21,19 +20,8 @@ public class PlatformBuilder {
         return this;
     }
 
-    public PlatformBuilder setSoftwareType(@NotNull ServerSoftwareType softwareType) {
-        this.serverSoftwareType = softwareType;
-        return this;
-    }
-
     public @Nullable Platform build() {
-        return switch (serverSoftwareType) {
-            case PAPER, SPIGOT, CRAFT_BUKKIT -> createBukkitPlatform();
-            default -> null;
-        };
-    }
-
-    private BukkitPlatform createBukkitPlatform() {
         return new BukkitPlatform(minecraftGameVersion);
     }
+
 }
