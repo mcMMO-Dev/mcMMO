@@ -4,6 +4,7 @@
 ###
 Concoctions:
     Tier_One_Ingredients:
+        - BREEZE_ROD
         - BLAZE_POWDER
         - FERMENTED_SPIDER_EYE
         - GHAST_TEAR
@@ -22,6 +23,7 @@ Concoctions:
         - STONE
         - SLIME_BLOCK
         - COBWEB
+        - TURTLE_HELMET
     Tier_Two_Ingredients:
         - CARROT
         - SLIME_BALL
@@ -70,6 +72,7 @@ Potions:
         PotionData:
             PotionType: WATER
         Children:
+            BREEZE_ROD: POTION_OF_MUNDANE
             SPIDER_EYE: POTION_OF_MUNDANE
             FERMENTED_SPIDER_EYE: POTION_OF_WEAKNESS
             GLOWSTONE_DUST: POTION_OF_THICK
@@ -87,6 +90,7 @@ Potions:
         PotionData:
             PotionType: UNCRAFTABLE
         Children:
+            BREEZE_ROD: POTION_OF_MUNDANE
             SPIDER_EYE: POTION_OF_MUNDANE
             FERMENTED_SPIDER_EYE: POTION_OF_WEAKNESS
             GLOWSTONE_DUST: POTION_OF_THICK
@@ -116,6 +120,7 @@ Potions:
         PotionData:
             PotionType: AWKWARD
         Children:
+            BREEZE_ROD: POTION_OF_WIND_CHARGING
             QUARTZ: POTION_OF_ABSORPTION
             GUNPOWDER: SPLASH_POTION_OF_AWKWARD
             BROWN_MUSHROOM: POTION_OF_NAUSEA
@@ -698,6 +703,7 @@ Potions:
         PotionData:
             PotionType: WATER
         Children:
+            BREEZE_ROD: SPLASH_POTION_OF_MUNDANE
             SUGAR: SPLASH_POTION_OF_MUNDANE
             BLAZE_POWDER: SPLASH_POTION_OF_MUNDANE
             GHAST_TEAR: SPLASH_POTION_OF_MUNDANE
@@ -1304,6 +1310,7 @@ Potions:
         PotionData:
             PotionType: WATER
         Children:
+            BREEZE_ROD: LINGERING_POTION_OF_MUNDANE
             REDSTONE: LINGERING_POTION_OF_MUNDANE
             GLISTERING_MELON_SLICE: LINGERING_POTION_OF_MUNDANE
             GHAST_TEAR: LINGERING_POTION_OF_MUNDANE
@@ -1843,6 +1850,31 @@ Potions:
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WEAVING 0 3000"]
+    POTION_OF_WIND_CHARGING:
+        Name: Potion of Wind Charging
+        Material: POTION
+        Color: 0xBDC9FF
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: [ "WIND_CHARGED 0 3600" ]
+        Children:
+            GUNPOWDER: SPLASH_POTION_OF_WIND_CHARGING
+    SPLASH_POTION_OF_WIND_CHARGING:
+        Name: Splash Potion of Wind Charging
+        Material: SPLASH_POTION
+        Color: 0xBDC9FF
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: [ "WIND_CHARGED 0 2500" ]
+        Children:
+            DRAGON_BREATH: LINGERING_POTION_OF_WIND_CHARGING
+    LINGERING_POTION_WIND_CHARGING:
+        Name: Lingering Potion of Wind Charging
+        Material: LINGERING_POTION
+        Color: 0xBDC9FF
+        PotionData:
+            PotionType: UNCRAFTABLE
+        Effects: [ "WIND_CHARGED 0 3000" ]
     POTION_OF_OOZING:
         Name: Potion of Oozing
         Material: POTION

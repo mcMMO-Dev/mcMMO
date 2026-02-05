@@ -296,3 +296,11 @@ Hylian_Luck:
             Standard_Mode: 0
             Retro_Mode: 0
         Drops_From: [Pots]
+    COPPER_NUGGET:
+        Amount: 1
+        XP: 5
+        Drop_Chance: 100.0
+        Level_Requirement:
+            Standard_Mode: 0
+            Retro_Mode: 0
+        Drops_From: [Pots]

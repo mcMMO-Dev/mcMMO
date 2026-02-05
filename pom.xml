@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>2.2.030-SNAPSHOT</version>
+    <version>2.2.050-SNAPSHOT</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <scm>
@@ -13,9 +15,11 @@
     </scm>
 
     <properties>
-<!--        <spigot.version>1.19-R0.1-SNAPSHOT</spigot.version>-->
-        <spigot.version>1.21.4-R0.1-SNAPSHOT</spigot.version>
-        <adventure.version>4.3.5-SNAPSHOT</adventure.version>
+<!--        <spigot.version>1.20.4-R0.1-SNAPSHOT</spigot.version>-->
+        <spigot.version>1.21.11-R0.1-SNAPSHOT</spigot.version>
+        <kyori.adventure.version>4.23.0</kyori.adventure.version>
+        <kyori.adventure.platform.version>4.4.1-SNAPSHOT</kyori.adventure.platform.version>
+        <kyori.option.version>1.1.0</kyori.option.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -77,6 +81,26 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <propertiesEncoding>UTF-8</propertiesEncoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
 
@@ -84,18 +108,18 @@
                     <junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
                     <trimStackTrace>false</trimStackTrace>
                     <excludedGroups>skip</excludedGroups>
+                    <!-- https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3 -->
+                    <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.5</version>
-
                 <configuration>
                     <junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
                     <trimStackTrace>false</trimStackTrace>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -152,6 +176,7 @@
                             <include>net.kyori:adventure-platform-facet</include>
                             <include>net.kyori:adventure-platform-viaversion</include>
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
+                            <include>net.kyori:adventure-text-serializer-commons</include>
                             <include>net.kyori:adventure-text-serializer-gson</include>
                             <include>net.kyori:adventure-text-serializer-gson-legacy-impl</include>
                             <include>net.kyori:adventure-text-serializer-json</include>
@@ -172,11 +197,13 @@
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>com.gmail.nossr50.mcmmo.acf</shadedPattern> <!-- Replace this -->
+                            <shadedPattern>com.gmail.nossr50.mcmmo.acf
+                            </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
-                            <shadedPattern>com.gmail.nossr50.mcmmo.locales</shadedPattern> <!-- Replace this -->
+                            <shadedPattern>com.gmail.nossr50.mcmmo.locales
+                            </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons.logging</pattern>
@@ -184,7 +211,8 @@
                         </relocation>
                         <relocation>
                             <pattern>org.apache.juli</pattern>
-                            <shadedPattern>com.gmail.nossr50.mcmmo.database.tomcat.juli</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.database.tomcat.juli
+                            </shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.tomcat</pattern>
@@ -226,11 +254,6 @@
     </pluginRepositories>
 
     <repositories>
-        <!-- Protocol Lib Repository -->
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/repository/public/</url>
-        </repository>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
@@ -259,14 +282,18 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <repository>
-            <id>devmart-other</id>
-            <url>https://nexuslite.gcnt.net/repos/other/</url>
-        </repository>
         <!-- MockBukkit -->
         <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>tcoded-releases</id>
+            <url>https://repo.tcoded.com/releases/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -276,12 +303,26 @@
             <artifactId>assertj-core</artifactId>
             <version>3.25.3</version>
             <scope>test</scope>
+            <exclusions>
+                <!-- Exclude bytebuddy, messes with tests on java 25+ -->
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
+            <groupId>net.dmulloy2</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>LATEST</version>
+            <version>5.3.0</version>
             <scope>compile</scope>
+            <exclusions>
+                <!-- Exclude bytebuddy, messes with tests on java 25+ -->
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -303,67 +344,67 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-bungeecord</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson-legacy-impl</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-json-legacy-impl</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-key</artifactId>
-            <version>4.17.0</version>
+            <version>${kyori.adventure.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-api</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-facet</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-viaversion</artifactId>
-            <version>${adventure.version}</version>
+            <version>${kyori.adventure.platform.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>option</artifactId>
-            <version>1.0.0</version>
+            <version>${kyori.option.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
@@ -376,6 +417,11 @@
             <version>3.0.2</version>
             <scope>compile</scope>
         </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>io.papermc.paper</groupId>-->
+<!--                    <artifactId>paper-api</artifactId>-->
+<!--                    <version>1.21.11-R0.1-SNAPSHOT</version>-->
+<!--                </dependency>-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -412,34 +458,88 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.11.0-M2</version>
+            <version>5.11.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Testcontainers core -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>2.0.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Testcontainers JUnit Jupiter integration -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
+            <version>2.0.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Log4j core for tests -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.25.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Log4j API -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.25.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.25.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- MySQL Testcontainers module -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-mysql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- MariaDB Testcontainers module -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-mariadb</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- MySQL JDBC driver -->
+        <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- MariaDB JDBC driver -->
+        <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.5.6</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.12.0</version>
+            <version>5.21.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <version>5.2.0</version>
-            <scope>test</scope>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.github.seeseemelk</groupId>-->
-<!--            <artifactId>MockBukkit-v1.21</artifactId>-->
-<!--            <version>[version]</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
-            <version>10.1.24</version>
+            <version>11.0.14</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -450,34 +550,26 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.0-jre</version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
+            <version>33.2.0-jre
+            </version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.3.1</version>
+            <version>0.5.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>spigot-1.18.2</id>-->
-<!--            <properties>-->
-<!--                <spigot.version>1.18.2-R0.1-SNAPSHOT</spigot.version>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>spigot-1.21.1</id>-->
-<!--            <properties>-->
-<!--                <spigot.version>1.21.1-R0.1-SNAPSHOT</spigot.version>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>spigot-1.21.3</id>-->
-<!--            <properties>-->
-<!--                <spigot.version>1.21.3-R0.1-SNAPSHOT</spigot.version>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--    </profiles>-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>2.0.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

@@ -6,6 +6,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract class AbstractBungeeSerializerCompatibilityLayer {
 
-    public abstract @NonNull Component deserialize(final @NonNull BaseComponent @NonNull[] input);
+    public abstract @NonNull Component deserialize(final @NonNull BaseComponent @NonNull [] input);
 
 }

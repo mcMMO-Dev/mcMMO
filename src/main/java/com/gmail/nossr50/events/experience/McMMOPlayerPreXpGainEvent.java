@@ -18,7 +18,8 @@ public class McMMOPlayerPreXpGainEvent extends McMMOPlayerExperienceEvent {
         this.xpGained = xpGained;
     }
 
-    public McMMOPlayerPreXpGainEvent(Player player, PrimarySkillType skill, float xpGained, XPGainReason xpGainReason) {
+    public McMMOPlayerPreXpGainEvent(Player player, PrimarySkillType skill, float xpGained,
+            XPGainReason xpGainReason) {
         super(player, skill, xpGainReason);
         this.xpGained = xpGained;
     }

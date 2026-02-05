@@ -1,18 +1,18 @@
 package com.gmail.nossr50.util.text;
 
+import static com.gmail.nossr50.util.text.StringUtils.getCapitalized;
+
 import com.gmail.nossr50.datatypes.party.PartyFeature;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-
-import static com.gmail.nossr50.util.text.StringUtils.getCapitalized;
-
 /**
- * Utility class for String operations, including formatting and caching deterministic results to improve performance.
+ * Utility class for String operations, including formatting and caching deterministic results to
+ * improve performance.
  */
 public class ConfigStringUtils {
     public static final String UNDERSCORE = "_";
@@ -24,11 +24,13 @@ public class ConfigStringUtils {
     private static final Map<PartyFeature, String> configPartyFeatureStrings = new ConcurrentHashMap<>();
 
     public static String getMaterialConfigString(Material material) {
-        return configMaterialStrings.computeIfAbsent(material, ConfigStringUtils::createConfigFriendlyString);
+        return configMaterialStrings.computeIfAbsent(material,
+                ConfigStringUtils::createConfigFriendlyString);
     }
 
     public static String getConfigEntityTypeString(EntityType entityType) {
-        return configEntityStrings.computeIfAbsent(entityType, ConfigStringUtils::createConfigFriendlyString);
+        return configEntityStrings.computeIfAbsent(entityType,
+                ConfigStringUtils::createConfigFriendlyString);
     }
 
     public static String getConfigPartyFeatureString(PartyFeature partyFeature) {
@@ -45,9 +47,9 @@ public class ConfigStringUtils {
         if (baseString.contains(UNDERSCORE) && !baseString.contains(SPACE)) {
             return asConfigFormat(baseString.split(UNDERSCORE));
         } else {
-            if(baseString.contains(SPACE)) {
+            if (baseString.contains(SPACE)) {
                 return asConfigFormat(baseString.split(SPACE));
-            } else{
+            } else {
                 return getCapitalized(baseString);
             }
         }

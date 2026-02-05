@@ -1,12 +1,11 @@
 package com.gmail.nossr50.events.hardcore;
 
+import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancellable {
     private HashMap<String, Integer> levelChanged;
@@ -14,7 +13,8 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
 
     private boolean cancelled;
 
-    public McMMOPlayerDeathPenaltyEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
+    public McMMOPlayerDeathPenaltyEvent(Player player, HashMap<String, Integer> levelChanged,
+            HashMap<String, Float> experienceChanged) {
         super(player);
         this.levelChanged = levelChanged;
         this.experienceChanged = experienceChanged;
@@ -43,7 +43,9 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
         this.experienceChanged = experienceChanged;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -54,7 +56,9 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
     private static final HandlerList handlers = new HandlerList();
 
     @Override

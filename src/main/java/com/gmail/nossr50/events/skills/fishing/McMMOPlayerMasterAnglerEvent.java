@@ -9,11 +9,11 @@ public class McMMOPlayerMasterAnglerEvent extends McMMOPlayerFishingEvent {
     private int reducedMaxWaitTime;
     private final FishingManager fishingManager;
 
-    public McMMOPlayerMasterAnglerEvent(@NotNull McMMOPlayer mcMMOPlayer,
-                                        int reducedMinWaitTime,
-                                        int reducedMaxWaitTime,
-                                        FishingManager fishingManager) {
-        super(mcMMOPlayer);
+    public McMMOPlayerMasterAnglerEvent(@NotNull McMMOPlayer mmoPlayer,
+            int reducedMinWaitTime,
+            int reducedMaxWaitTime,
+            FishingManager fishingManager) {
+        super(mmoPlayer);
         this.fishingManager = fishingManager;
         this.reducedMinWaitTime = Math.max(reducedMinWaitTime, getReducedMinWaitTimeLowerBound());
         this.reducedMaxWaitTime = Math.max(reducedMaxWaitTime, getReducedMaxWaitTimeLowerBound());
@@ -25,8 +25,9 @@ public class McMMOPlayerMasterAnglerEvent extends McMMOPlayerFishingEvent {
 
     public void setReducedMinWaitTime(int reducedMinWaitTime) {
         if (reducedMinWaitTime < 0 || reducedMinWaitTime > reducedMaxWaitTime) {
-            throw new IllegalArgumentException("Reduced min wait time must be greater than or equal to 0" +
-                    " and less than reduced max wait time.");
+            throw new IllegalArgumentException(
+                    "Reduced min wait time must be greater than or equal to 0" +
+                            " and less than reduced max wait time.");
         }
         this.reducedMinWaitTime = Math.max(reducedMinWaitTime, getReducedMinWaitTimeLowerBound());
     }
@@ -37,8 +38,9 @@ public class McMMOPlayerMasterAnglerEvent extends McMMOPlayerFishingEvent {
 
     public void setReducedMaxWaitTime(int reducedMaxWaitTime) {
         if (reducedMaxWaitTime < 0 || reducedMaxWaitTime < reducedMinWaitTime) {
-            throw new IllegalArgumentException("Reduced max wait time must be greater than or equal to 0" +
-                    " and greater than reduced min wait time.");
+            throw new IllegalArgumentException(
+                    "Reduced max wait time must be greater than or equal to 0" +
+                            " and greater than reduced min wait time.");
         }
         this.reducedMaxWaitTime = Math.max(reducedMaxWaitTime, getReducedMaxWaitTimeLowerBound());
     }

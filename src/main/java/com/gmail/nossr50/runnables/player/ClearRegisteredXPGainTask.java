@@ -7,8 +7,8 @@ import com.gmail.nossr50.util.player.UserManager;
 public class ClearRegisteredXPGainTask extends CancellableRunnable {
     @Override
     public void run() {
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-            mcMMOPlayer.getProfile().purgeExpiredXpGains();
+        for (McMMOPlayer mmoPlayer : UserManager.getPlayers()) {
+            mmoPlayer.getProfile().purgeExpiredXpGains();
         }
     }
 }

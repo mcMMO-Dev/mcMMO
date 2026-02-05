@@ -11,7 +11,8 @@ public class DatabaseConversionTask extends CancellableRunnable {
     private final CommandSender sender;
     private final String message;
 
-    public DatabaseConversionTask(DatabaseManager sourceDatabase, CommandSender sender, String oldType, String newType) {
+    public DatabaseConversionTask(DatabaseManager sourceDatabase, CommandSender sender,
+            String oldType, String newType) {
         this.sourceDatabase = sourceDatabase;
         this.sender = sender;
         message = LocaleLoader.getString("Commands.mcconvert.Database.Finish", oldType, newType);
@@ -21,6 +22,6 @@ public class DatabaseConversionTask extends CancellableRunnable {
     public void run() {
         sourceDatabase.convertUsers(mcMMO.getDatabaseManager());
 
-        mcMMO.p.getFoliaLib().getImpl().runNextTick(t -> sender.sendMessage(message));
+        mcMMO.p.getFoliaLib().getScheduler().runNextTick(t -> sender.sendMessage(message));
     }
 }

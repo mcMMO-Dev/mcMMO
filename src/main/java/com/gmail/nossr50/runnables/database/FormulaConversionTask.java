@@ -29,11 +29,11 @@ public class FormulaConversionTask extends CancellableRunnable {
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
         for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+            final McMMOPlayer mmoPlayer = UserManager.getOfflinePlayer(playerName);
             PlayerProfile profile;
 
-            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-            if (mcMMOPlayer == null) {
+            // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mmoPlayer == null) {
                 profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
 
                 if (!profile.isLoaded()) {
@@ -45,7 +45,7 @@ public class FormulaConversionTask extends CancellableRunnable {
                 // Since this is a temporary profile, we save it here.
                 profile.scheduleAsyncSave();
             } else {
-                profile = mcMMOPlayer.getProfile();
+                profile = mmoPlayer.getProfile();
                 editValues(profile);
             }
             convertedUsers++;
@@ -53,22 +53,29 @@ public class FormulaConversionTask extends CancellableRunnable {
         }
         mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);
 
-        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", formulaType.toString()));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish",
+                formulaType.toString()));
     }
 
     private void editValues(PlayerProfile profile) {
-        LogUtils.debug(mcMMO.p.getLogger(), "========================================================================");
-        LogUtils.debug(mcMMO.p.getLogger(), "Conversion report for " + profile.getPlayerName() + ":");
+        LogUtils.debug(mcMMO.p.getLogger(),
+                "========================================================================");
+        LogUtils.debug(mcMMO.p.getLogger(),
+                "Conversion report for " + profile.getPlayerName() + ":");
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             int oldLevel = profile.getSkillLevel(primarySkillType);
             int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
-            int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);
+            int totalOldXP = mcMMO.getFormulaManager()
+                    .calculateTotalExperience(oldLevel, oldXPLevel);
 
             if (totalOldXP == 0) {
                 continue;
             }
 
-            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / ExperienceConfig.getInstance().getExpModifier()), formulaType);
+            int[] newExperienceValues = mcMMO.getFormulaManager()
+                    .calculateNewLevel(primarySkillType, (int) Math.floor(
+                                    totalOldXP / ExperienceConfig.getInstance().getExpModifier()),
+                            formulaType);
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 
@@ -82,7 +89,8 @@ public class FormulaConversionTask extends CancellableRunnable {
             LogUtils.debug(mcMMO.p.getLogger(), "    NEW:");
             LogUtils.debug(mcMMO.p.getLogger(), "      Level " + newLevel);
             LogUtils.debug(mcMMO.p.getLogger(), "      XP " + newXPlevel);
-            LogUtils.debug(mcMMO.p.getLogger(), "------------------------------------------------------------------------");
+            LogUtils.debug(mcMMO.p.getLogger(),
+                    "------------------------------------------------------------------------");
 
             profile.modifySkill(primarySkillType, newLevel);
             profile.setSkillXpLevel(primarySkillType, newXPlevel);

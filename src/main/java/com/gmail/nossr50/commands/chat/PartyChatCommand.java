@@ -33,11 +33,13 @@ public class PartyChatCommand extends BaseCommand {
         if (args == null || args.length == 0) {
             //Process with no arguments
             if (bukkitCommandIssuer.isPlayer()) {
-                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(
+                        bukkitCommandIssuer.getPlayer());
                 pluginRef.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.PARTY);
             } else {
                 //Not support for console
-                mcMMO.p.getLogger().info("You cannot switch chat channels as console, please provide full arguments.");
+                mcMMO.p.getLogger()
+                        .info("You cannot switch chat channels as console, please provide full arguments.");
             }
         } else {
             //Here we split the logic, consoles need to target a party name and players do not
@@ -46,11 +48,12 @@ public class PartyChatCommand extends BaseCommand {
              * Player Logic
              */
             if (bukkitCommandIssuer.getIssuer() instanceof Player) {
-                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(
+                        bukkitCommandIssuer.getPlayer());
                 processCommandArgsPlayer(mmoPlayer, args);
-            /*
-             * Console Logic
-             */
+                /*
+                 * Console Logic
+                 */
             } else {
                 processCommandArgsConsole(args);
             }
@@ -59,6 +62,7 @@ public class PartyChatCommand extends BaseCommand {
 
     /**
      * Processes the command with arguments for a {@link McMMOPlayer}
+     *
      * @param mmoPlayer target player
      * @param args command arguments
      */
@@ -68,19 +72,24 @@ public class PartyChatCommand extends BaseCommand {
     }
 
     /**
-     * Processes the command with arguments for a {@link com.gmail.nossr50.chat.author.ConsoleAuthor}
+     * Processes the command with arguments for a
+     * {@link com.gmail.nossr50.chat.author.ConsoleAuthor}
+     *
      * @param args command arguments
      */
     private void processCommandArgsConsole(@NotNull String[] args) {
         if (args.length <= 1) {
             //Only specific a party and not the message
-            mcMMO.p.getLogger().severe("You need to specify a party name and then write a message afterwards.");
+            mcMMO.p.getLogger()
+                    .severe("You need to specify a party name and then write a message afterwards.");
         } else {
             //Grab party
             Party targetParty = mcMMO.p.getPartyManager().getParty(args[0]);
 
             if (targetParty != null) {
-                pluginRef.getChatManager().processConsoleMessage(StringUtils.buildStringAfterNthElement(args, 1), targetParty);
+                pluginRef.getChatManager()
+                        .processConsoleMessage(StringUtils.buildStringAfterNthElement(args, 1),
+                                targetParty);
             } else {
                 mcMMO.p.getLogger().severe("A party with that name doesn't exist!");
             }

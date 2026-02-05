@@ -10,6 +10,7 @@ import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.TextUtils;
+import java.util.function.Predicate;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
@@ -18,15 +19,13 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Predicate;
-
 public class AdminChatMailer extends AbstractChatMailer {
+
+    public static final @NotNull String MCMMO_CHAT_ADMINCHAT_PERMISSION = "mcmmo.chat.adminchat";
 
     public AdminChatMailer(Plugin pluginRef) {
         super(pluginRef);
     }
-
-    public static final @NotNull String MCMMO_CHAT_ADMINCHAT_PERMISSION = "mcmmo.chat.adminchat";
 
     /**
      * Constructs an audience of admins
@@ -43,9 +42,10 @@ public class AdminChatMailer extends AbstractChatMailer {
      * @return admin chat audience predicate
      */
     public @NotNull Predicate<CommandSender> predicate() {
-        return (commandSender) -> commandSender.isOp()
-                || commandSender.hasPermission(MCMMO_CHAT_ADMINCHAT_PERMISSION)
-                || (ChatConfig.getInstance().isConsoleIncludedInAudience(ChatChannel.ADMIN) && commandSender instanceof ConsoleCommandSender);
+        return (commandSender) -> commandSender.isOp() || commandSender.hasPermission(
+                MCMMO_CHAT_ADMINCHAT_PERMISSION) || (
+                ChatConfig.getInstance().isConsoleIncludedInAudience(
+                        ChatChannel.ADMIN) && commandSender instanceof ConsoleCommandSender);
     }
 
     /**
@@ -56,11 +56,16 @@ public class AdminChatMailer extends AbstractChatMailer {
      * @param canColor whether to replace colors codes with colors in the raw message
      * @return the styled string, based on a locale entry
      */
-    public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor) {
+    public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message,
+            boolean canColor) {
         if (canColor) {
-            return LocaleLoader.getTextComponent("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message);
+            return LocaleLoader.getTextComponent(
+                    "Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN),
+                    message);
         } else {
-            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message));
+            return TextUtils.ofLegacyTextRaw(
+                    LocaleLoader.getString("Chat.Style.Admin",
+                            author.getAuthoredName(ChatChannel.ADMIN), message));
         }
     }
 
@@ -77,8 +82,12 @@ public class AdminChatMailer extends AbstractChatMailer {
      * @param isAsync whether this is being processed asynchronously
      * @param canColor whether the author can use colors in chat
      */
-    public void processChatMessage(@NotNull Author author, @NotNull String rawString, boolean isAsync, boolean canColor) {
-        AdminChatMessage chatMessage = new AdminChatMessage(pluginRef, author, constructAudience(), rawString, addStyle(author, rawString, canColor));
+    public void processChatMessage(@NotNull Author author, @NotNull String rawString,
+            boolean isAsync,
+            boolean canColor) {
+        AdminChatMessage chatMessage = new AdminChatMessage(
+                pluginRef, author, constructAudience(), rawString,
+                addStyle(author, rawString, canColor));
 
         McMMOChatEvent chatEvent = new McMMOAdminChatEvent(pluginRef, chatMessage, isAsync);
         Bukkit.getPluginManager().callEvent(chatEvent);

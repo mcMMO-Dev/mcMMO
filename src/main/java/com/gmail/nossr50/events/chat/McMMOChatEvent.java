@@ -18,7 +18,8 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     protected final @NotNull Plugin plugin;
     protected final @NotNull AbstractChatMessage chatMessage;
 
-    protected McMMOChatEvent(@NotNull Plugin plugin, @NotNull AbstractChatMessage chatMessage, boolean isAsync) {
+    protected McMMOChatEvent(@NotNull Plugin plugin, @NotNull AbstractChatMessage chatMessage,
+            boolean isAsync) {
         super(isAsync);
         this.plugin = plugin;
         this.chatMessage = chatMessage;
@@ -59,8 +60,9 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
-     * The name of the author
-     * Will return the display name if mcMMO chat config is set to, otherwise returns the players Mojang registered nickname
+     * The name of the author Will return the display name if mcMMO chat config is set to, otherwise
+     * returns the players Mojang registered nickname
+     *
      * @return the author's name
      */
     public @NotNull String getDisplayName(ChatChannel chatChannel) {
@@ -79,8 +81,7 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
-     * The original message typed by the player before any formatting
-     * The raw message is immutable
+     * The original message typed by the player before any formatting The raw message is immutable
      *
      * @return the message as it was typed by the player, this is before any formatting
      */
@@ -89,7 +90,8 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
-     * The {@link TextComponent} as it will be sent to all players which should include formatting such as adding chat prefixes, player names, etc
+     * The {@link TextComponent} as it will be sent to all players which should include formatting
+     * such as adding chat prefixes, player names, etc
      *
      * @return the message that will be sent to the {@link Audience}
      */
@@ -98,7 +100,8 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
-     * This will be the final message sent to the audience, this should be the message after its been formatted and has had player names added to it etc
+     * This will be the final message sent to the audience, this should be the message after its
+     * been formatted and has had player names added to it etc
      *
      * @param chatMessage the new chat message
      */
@@ -108,7 +111,6 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
 
     /**
      * @param message Adjusts the final message sent to players in the party
-     *
      * @deprecated use {{@link #setMessagePayload(TextComponent)}}
      */
     @Deprecated
@@ -116,7 +118,9 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
         chatMessage.setChatMessage(Component.text(message));
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -127,7 +131,9 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
     private static final @NotNull HandlerList handlers = new HandlerList();
 
     @Override
@@ -141,6 +147,7 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
 
     /**
      * The {@link ChatMessage}
+     *
      * @return the chat message
      */
     public @NotNull ChatMessage getChatMessage() {

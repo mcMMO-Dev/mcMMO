@@ -6,17 +6,17 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class McstatsCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -31,9 +31,10 @@ public class McstatsCommand implements TabExecutor {
                 return true;
             }
 
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
 
-            if (mcMMO.p.getGeneralConfig().getStatsUseBoard() && mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
+            if (mcMMO.p.getGeneralConfig().getStatsUseBoard() && mcMMO.p.getGeneralConfig()
+                    .getScoreboardsEnabled()) {
                 ScoreboardManager.enablePlayerStatsScoreboard(player);
 
                 if (!mcMMO.p.getGeneralConfig().getStatsUseChat()) {
@@ -51,9 +52,11 @@ public class McstatsCommand implements TabExecutor {
             int powerLevelCap = mcMMO.p.getGeneralConfig().getPowerLevelCap();
 
             if (powerLevelCap != Integer.MAX_VALUE) {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped",
+                        UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
             } else {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel",
+                        UserManager.getPlayer(player).getPowerLevel()));
             }
 
             return true;
@@ -62,7 +65,8 @@ public class McstatsCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, String[] args) {
         return ImmutableList.of();
     }
 }

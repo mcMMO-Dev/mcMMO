@@ -1,20 +1,19 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
+import static com.gmail.nossr50.util.PotionUtil.samePotionType;
+import static java.util.Objects.requireNonNull;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.PotionUtil;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-
-import static com.gmail.nossr50.util.PotionUtil.samePotionType;
-import static java.util.Objects.requireNonNull;
 
 public class AlchemyPotion {
     private final @NotNull String potionConfigName;
@@ -23,11 +22,13 @@ public class AlchemyPotion {
     private final @NotNull Map<ItemStack, String> alchemyPotionChildren;
 
     public AlchemyPotion(@NotNull String potionConfigName, @NotNull ItemStack potionItemStack,
-                         @NotNull Map<ItemStack, String> alchemyPotionChildren) {
+            @NotNull Map<ItemStack, String> alchemyPotionChildren) {
         this.potionConfigName = requireNonNull(potionConfigName, "potionConfigName cannot be null");
         this.potionItemStack = requireNonNull(potionItemStack, "potionItemStack cannot be null");
-        this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren, "alchemyPotionChildren cannot be null");
-        this.potionItemMeta = requireNonNull(potionItemStack.getItemMeta(), "potionItemMeta cannot be null"); // The potion item meta should never be null because it is a potion, but if it is null, then something went terribly wrong
+        this.alchemyPotionChildren = requireNonNull(alchemyPotionChildren,
+                "alchemyPotionChildren cannot be null");
+        this.potionItemMeta = requireNonNull(potionItemStack.getItemMeta(),
+                "potionItemMeta cannot be null"); // The potion item meta should never be null because it is a potion, but if it is null, then something went terribly wrong
     }
 
     public @NotNull ItemStack toItemStack(int amount) {
@@ -135,10 +136,16 @@ public class AlchemyPotion {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AlchemyPotion that = (AlchemyPotion) o;
-        return Objects.equals(potionConfigName, that.potionConfigName) && Objects.equals(potionItemStack, that.potionItemStack) && Objects.equals(alchemyPotionChildren, that.alchemyPotionChildren);
+        return Objects.equals(potionConfigName, that.potionConfigName) && Objects.equals(
+                potionItemStack, that.potionItemStack) && Objects.equals(alchemyPotionChildren,
+                that.alchemyPotionChildren);
     }
 
     @Override

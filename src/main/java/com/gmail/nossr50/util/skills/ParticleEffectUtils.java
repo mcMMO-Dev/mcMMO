@@ -8,7 +8,11 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang3.RandomUtils;
-import org.bukkit.*;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.SoundCategory;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
@@ -17,7 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 public final class ParticleEffectUtils {
 
-    private ParticleEffectUtils() {}
+    private ParticleEffectUtils() {
+    }
 
     public static void playGreenThumbEffect(Location location) {
         World world = location.getWorld();
@@ -39,8 +44,10 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        SoundManager.sendCategorizedSound(livingEntity.getLocation(), SoundType.CRIPPLE, SoundCategory.PLAYERS, 0.2F);
-        livingEntity.getWorld().playEffect(getParticleLocation(livingEntity), Effect.ANVIL_BREAK, null, 20);
+        SoundManager.sendCategorizedSound(livingEntity.getLocation(), SoundType.CRIPPLE,
+                SoundCategory.PLAYERS, 0.2F);
+        livingEntity.getWorld()
+                .playEffect(getParticleLocation(livingEntity), Effect.ANVIL_BREAK, null, 20);
 
         if (livingEntity instanceof Player player) {
             final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
@@ -93,8 +100,9 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        if (location.getWorld() == null)
+        if (location.getWorld() == null) {
             return;
+        }
 
         location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
     }
@@ -102,8 +110,9 @@ public final class ParticleEffectUtils {
     public static void playSmokeEffect(Location location) {
         World world = location.getWorld();
 
-        if (world == null)
+        if (world == null) {
             return;
+        }
 
         // Have to do it this way, because not all block directions are valid for smoke
         world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_EAST);
@@ -124,7 +133,9 @@ public final class ParticleEffectUtils {
 
         Location location = livingEntity.getEyeLocation();
 
-        livingEntity.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
+        livingEntity.getWorld()
+                .createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false,
+                        false);
     }
 
     public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
@@ -132,7 +143,8 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+        livingEntity.getWorld()
+                .playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
     }
 
     public static void playAbilityDisabledEffect(Player player) {

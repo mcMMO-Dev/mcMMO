@@ -10,8 +10,7 @@ public enum ShareMode {
     public static ShareMode getShareMode(String string) {
         try {
             return valueOf(string);
-        }
-        catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             if (string.equalsIgnoreCase("even")) {
                 return EQUAL;
             } else if (CommandUtils.shouldDisableToggle(string)) {

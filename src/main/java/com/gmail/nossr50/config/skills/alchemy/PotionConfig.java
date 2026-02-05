@@ -1,9 +1,23 @@
 package com.gmail.nossr50.config.skills.alchemy;
 
+import static com.gmail.nossr50.util.ItemUtils.customName;
+import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
+import static com.gmail.nossr50.util.PotionUtil.setBasePotionType;
+import static com.gmail.nossr50.util.PotionUtil.setUpgradedAndExtendedProperties;
+
 import com.gmail.nossr50.config.LegacyConfigLoader;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.LogUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -14,18 +28,18 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.gmail.nossr50.util.ItemUtils.setItemName;
-import static com.gmail.nossr50.util.PotionUtil.*;
-
 public class PotionConfig extends LegacyConfigLoader {
+    private static final String BREEZE_ROD_STR = "BREEZE_ROD";
+    private static final String INFESTED_EFFECT_STR = "INFESTED";
+    private static final String WEAVING_EFFECT_STR = "WEAVING";
+    private static final String OOZING_EFFECT_STR = "OOZING";
+    private static final String WIND_CHARGED_EFFECT_STR = "WIND_CHARGED";
+    private static final String SLIME_BLOCK_STR = "SLIME_BLOCK";
+    private static final String COBWEB_STR = "COBWEB";
+    private static final String STONE_STR = "STONE";
 
     private final List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<>();
     private final List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<>();
@@ -35,6 +49,22 @@ public class PotionConfig extends LegacyConfigLoader {
     private final List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<>();
     private final List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<>();
     private final List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<>();
+    private final AlchemyPotionConfigResult INCOMPATIBLE_POTION_RESULT = new AlchemyPotionConfigResult(
+            null,
+            AlchemyPotionConfigResultType.INCOMPATIBLE);
+    private final AlchemyPotionConfigResult ERROR_POTION_RESULT = new AlchemyPotionConfigResult(
+            null,
+            AlchemyPotionConfigResultType.ERROR);
+
+    record AlchemyPotionConfigResult(AlchemyPotion alchemyPotion,
+                                     AlchemyPotionConfigResultType resultType) {
+    }
+
+    enum AlchemyPotionConfigResultType {
+        LOADED,
+        INCOMPATIBLE,
+        ERROR
+    }
 
     /**
      * Map of potion names to AlchemyPotion objects.
@@ -61,17 +91,26 @@ public class PotionConfig extends LegacyConfigLoader {
 
     @VisibleForTesting
     void loadConcoctions() {
-        final ConfigurationSection concoctionSection = config.getConfigurationSection("Concoctions");
+        final ConfigurationSection concoctionSection = config.getConfigurationSection(
+                "Concoctions");
 
         // Load the ingredients for each tier
-        loadConcoctionsTier(concoctionsIngredientsTierOne, concoctionSection.getStringList("Tier_One_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierTwo, concoctionSection.getStringList("Tier_Two_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierThree, concoctionSection.getStringList("Tier_Three_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierFour, concoctionSection.getStringList("Tier_Four_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierFive, concoctionSection.getStringList("Tier_Five_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierSix, concoctionSection.getStringList("Tier_Six_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierSeven, concoctionSection.getStringList("Tier_Seven_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierEight, concoctionSection.getStringList("Tier_Eight_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierOne,
+                concoctionSection.getStringList("Tier_One_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierTwo,
+                concoctionSection.getStringList("Tier_Two_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierThree,
+                concoctionSection.getStringList("Tier_Three_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierFour,
+                concoctionSection.getStringList("Tier_Four_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierFive,
+                concoctionSection.getStringList("Tier_Five_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierSix,
+                concoctionSection.getStringList("Tier_Six_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierSeven,
+                concoctionSection.getStringList("Tier_Seven_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierEight,
+                concoctionSection.getStringList("Tier_Eight_Ingredients"));
 
         concoctionsIngredientsTierTwo.addAll(concoctionsIngredientsTierOne);
         concoctionsIngredientsTierThree.addAll(concoctionsIngredientsTierTwo);
@@ -82,7 +121,8 @@ public class PotionConfig extends LegacyConfigLoader {
         concoctionsIngredientsTierEight.addAll(concoctionsIngredientsTierSeven);
     }
 
-    private void loadConcoctionsTier(List<ItemStack> ingredientList, List<String> ingredientStrings) {
+    private void loadConcoctionsTier(List<ItemStack> ingredientList,
+            List<String> ingredientStrings) {
         if (ingredientStrings != null && !ingredientStrings.isEmpty()) {
             for (String ingredientString : ingredientStrings) {
                 ItemStack ingredient = loadIngredient(ingredientString);
@@ -100,36 +140,51 @@ public class PotionConfig extends LegacyConfigLoader {
     int loadPotionMap() {
         ConfigurationSection potionSection = config.getConfigurationSection("Potions");
         int potionsLoaded = 0;
+        int incompatible = 0;
         int failures = 0;
 
         for (String potionName : potionSection.getKeys(false)) {
-            AlchemyPotion potion = loadPotion(potionSection.getConfigurationSection(potionName));
+            AlchemyPotionConfigResult alchemyPotionConfigResult = loadPotion(
+                    potionSection.getConfigurationSection(potionName));
+            AlchemyPotion potion = alchemyPotionConfigResult.alchemyPotion;
 
             if (potion != null) {
                 alchemyPotions.put(potionName, potion);
                 potionsLoaded++;
             } else {
-                failures++;
+                if (alchemyPotionConfigResult.resultType
+                        == AlchemyPotionConfigResultType.INCOMPATIBLE) {
+                    incompatible++;
+                } else {
+                    failures++;
+                }
             }
         }
 
-        mcMMO.p.getLogger().info("Loaded " + potionsLoaded + " Alchemy potions, skipped " + failures + ".");
+        int totalPotions = potionsLoaded + failures;
+
+        mcMMO.p.getLogger()
+                .info("Loaded " + potionsLoaded + " of " + totalPotions + " Alchemy potions.");
+
+        if (incompatible > 0) {
+            mcMMO.p.getLogger().info(
+                    "Skipped " + incompatible + " Alchemy potions that require a newer"
+                            + " Minecraft game version.");
+        }
+        if (failures > 0) {
+            mcMMO.p.getLogger().info(
+                    "Failed to load " + failures
+                            + " Alchemy potions that encountered errors while loading.");
+        }
         return potionsLoaded;
     }
 
-    /**
-     * Parse a ConfigurationSection representing a AlchemyPotion.
-     * Returns null if input cannot be parsed.
-     *
-     * @param potion_section ConfigurationSection to be parsed.
-     *
-     * @return Parsed AlchemyPotion.
-     */
-    private AlchemyPotion loadPotion(ConfigurationSection potion_section) {
+    private @NotNull AlchemyPotionConfigResult loadPotion(ConfigurationSection potion_section) {
         try {
             final String key = potion_section.getName();
 
-            final ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
+            final ConfigurationSection potionData = potion_section.getConfigurationSection(
+                    "PotionData");
             boolean extended = false;
             boolean upgraded = false;
 
@@ -143,13 +198,17 @@ public class PotionConfig extends LegacyConfigLoader {
             if (materialString != null) {
                 material = ItemUtils.exhaustiveMaterialLookup(materialString);
                 if (material == null) {
-                    mcMMO.p.getLogger().warning("PotionConfig: Failed to parse material for potion " + key + ": " + materialString);
+                    mcMMO.p.getLogger().warning(
+                            "PotionConfig: Failed to parse material for potion " + key + ": "
+                                    + materialString);
                     mcMMO.p.getLogger().warning("PotionConfig: Defaulting to POTION");
                     material = Material.POTION;
                 }
             } else {
-                mcMMO.p.getLogger().warning("PotionConfig: Missing Material config entry for potion " + key + "," +
-                        " from configuration section: " + potion_section + ", defaulting to POTION");
+                mcMMO.p.getLogger().warning(
+                        "PotionConfig: Missing Material config entry for potion " + key + ","
+                                + " from configuration section: " + potion_section
+                                + ", defaulting to POTION");
                 material = Material.POTION;
             }
 
@@ -157,30 +216,35 @@ public class PotionConfig extends LegacyConfigLoader {
             final PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
 
             if (potionMeta == null) {
-                mcMMO.p.getLogger().severe("PotionConfig: Failed to get PotionMeta for " + key + ", from configuration section:" +
-                        " " + potion_section);
-                return null;
+                mcMMO.p.getLogger().severe(
+                        "PotionConfig: Failed to get PotionMeta for " + key
+                                + ", from configuration section:" + " " + potion_section);
+                return ERROR_POTION_RESULT;
             }
 
             // extended and upgraded seem to be mutually exclusive
             if (extended && upgraded) {
-                mcMMO.p.getLogger().warning("Potion " + key + " has both Extended and Upgraded set to true," +
-                        " defaulting to Extended.");
+                mcMMO.p.getLogger().warning(
+                        "Potion " + key + " has both Extended and Upgraded set to true,"
+                                + " defaulting to Extended.");
                 upgraded = false;
             }
 
             String potionTypeStr = potionData.getString("PotionType", null);
             if (potionTypeStr == null) {
-                mcMMO.p.getLogger().severe("PotionConfig: Missing PotionType for " + key + ", from configuration section:" +
-                        " " + potion_section);
-                return null;
+                mcMMO.p.getLogger().severe(
+                        "PotionConfig: Missing PotionType for " + key
+                                + ", from configuration section:" + " " + potion_section);
+                return ERROR_POTION_RESULT;
             }
 
             // This works via side effects
             // TODO: Redesign later, side effects are stupid
-            if(!setPotionType(potionMeta, potionTypeStr, upgraded, extended)) {
-                mcMMO.p.getLogger().severe("PotionConfig: Failed to set parameters of potion for " + key + ": " + potionTypeStr);
-                return null;
+            if (!setPotionType(potionMeta, potionTypeStr, upgraded, extended)) {
+                mcMMO.p.getLogger().severe(
+                        "PotionConfig: Failed to set parameters of potion for " + key + ": "
+                                + potionTypeStr);
+                return ERROR_POTION_RESULT;
             }
 
             final List<String> lore = new ArrayList<>();
@@ -194,15 +258,28 @@ public class PotionConfig extends LegacyConfigLoader {
             if (potion_section.contains("Effects")) {
                 for (String effect : potion_section.getStringList("Effects")) {
                     String[] parts = effect.split(" ");
+                    if (isTrickyTrialsPotionEffect(parts[0]) && !mcMMO.getCompatibilityManager()
+                            .getMinecraftGameVersion()
+                            .isAtLeast(1, 21, 0)) {
+                        LogUtils.debug(
+                                mcMMO.p.getLogger(),
+                                "Skipping potion effect " + effect + " because it is not"
+                                        + " compatible with the current Minecraft game version.");
+                        return INCOMPATIBLE_POTION_RESULT;
+                    }
 
-                    PotionEffectType type = parts.length > 0 ? PotionEffectType.getByName(parts[0]) : null;
+                    PotionEffectType type =
+                            parts.length > 0 ? PotionEffectType.getByName(parts[0]) : null;
                     int amplifier = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
                     int duration = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
 
                     if (type != null) {
-                        potionMeta.addCustomEffect(new PotionEffect(type, duration, amplifier), true);
+                        potionMeta.addCustomEffect(new PotionEffect(type, duration, amplifier),
+                                true);
                     } else {
-                        mcMMO.p.getLogger().severe("PotionConfig: Failed to parse effect for potion " + key + ": " + effect);
+                        mcMMO.p.getLogger().severe(
+                                "PotionConfig: Failed to parse effect for potion " + key + ": "
+                                        + effect);
                     }
                 }
             }
@@ -217,12 +294,25 @@ public class PotionConfig extends LegacyConfigLoader {
 
             final Map<ItemStack, String> children = new HashMap<>();
             if (potion_section.contains("Children")) {
-                for (String child : potion_section.getConfigurationSection("Children").getKeys(false)) {
-                    ItemStack ingredient = loadIngredient(child);
+                for (String childIngredient : potion_section.getConfigurationSection("Children")
+                        .getKeys(false)) {
+                    // Breeze Rod was only for potions after 1.21.0
+                    if (isTrickyTrialsIngredient(childIngredient)
+                            && !mcMMO.getCompatibilityManager()
+                            .getMinecraftGameVersion()
+                            .isAtLeast(1, 21, 0)) {
+                        continue;
+                    }
+                    ItemStack ingredient = loadIngredient(childIngredient);
                     if (ingredient != null) {
-                        children.put(ingredient, potion_section.getConfigurationSection("Children").getString(child));
+                        children.put(
+                                ingredient,
+                                potion_section.getConfigurationSection("Children")
+                                        .getString(childIngredient));
                     } else {
-                        mcMMO.p.getLogger().severe("PotionConfig: Failed to parse child for potion " + key + ": " + child);
+                        mcMMO.p.getLogger().severe(
+                                "PotionConfig: Failed to parse child for potion " + key + ": "
+                                        + childIngredient);
                     }
                 }
             }
@@ -231,19 +321,38 @@ public class PotionConfig extends LegacyConfigLoader {
 
             // TODO: Might not need to .setItemMeta
             itemStack.setItemMeta(potionMeta);
-            return new AlchemyPotion(potion_section.getName(), itemStack, children);
+            return new AlchemyPotionConfigResult(
+                    new AlchemyPotion(potion_section.getName(), itemStack, children),
+                    AlchemyPotionConfigResultType.LOADED);
         } catch (Exception e) {
-            mcMMO.p.getLogger().warning("PotionConfig: Failed to load Alchemy potion: " + potion_section.getName());
+            mcMMO.p.getLogger().warning(
+                    "PotionConfig: Failed to load Alchemy potion: " + potion_section.getName());
             e.printStackTrace();
-            return null;
+            return ERROR_POTION_RESULT;
         }
     }
 
-    private boolean setPotionType(PotionMeta potionMeta, String potionTypeStr, boolean upgraded, boolean extended) {
+    private static boolean isTrickyTrialsIngredient(String ingredientStr) {
+        return ingredientStr.equalsIgnoreCase(BREEZE_ROD_STR) || ingredientStr.equalsIgnoreCase(
+                SLIME_BLOCK_STR) || ingredientStr.equalsIgnoreCase(COBWEB_STR)
+                || ingredientStr.equalsIgnoreCase(
+                STONE_STR);
+    }
+
+    private static boolean isTrickyTrialsPotionEffect(String effectStr) {
+        return effectStr.equalsIgnoreCase(INFESTED_EFFECT_STR) || effectStr.equalsIgnoreCase(
+                WEAVING_EFFECT_STR) || effectStr.equalsIgnoreCase(OOZING_EFFECT_STR)
+                || effectStr.equalsIgnoreCase(
+                WIND_CHARGED_EFFECT_STR);
+    }
+
+    private boolean setPotionType(PotionMeta potionMeta, String potionTypeStr, boolean upgraded,
+            boolean extended) {
         final PotionType potionType = matchPotionType(potionTypeStr, upgraded, extended);
 
         if (potionType == null) {
-            mcMMO.p.getLogger().severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr);
+            mcMMO.p.getLogger()
+                    .severe("PotionConfig: Failed to parse potion type for: " + potionTypeStr);
             return false;
         }
 
@@ -263,17 +372,17 @@ public class PotionConfig extends LegacyConfigLoader {
 
         final String configuredName = section.getString("Name", null);
         if (configuredName != null) {
-            setItemName(potionMeta, configuredName);
+            final TextComponent textComponent = Component.text(configuredName)
+                    .decoration(TextDecoration.ITALIC, false);
+            customName(potionMeta, textComponent, configuredName);
         }
     }
 
     /**
-     * Parse a string representation of an ingredient.
-     * Format: '&lt;MATERIAL&gt;[:data]'
-     * Returns null if input cannot be parsed.
+     * Parse a string representation of an ingredient. Format: '&lt;MATERIAL&gt;[:data]' Returns
+     * null if input cannot be parsed.
      *
      * @param ingredient String representing an ingredient.
-     *
      * @return Parsed ingredient.
      */
     private ItemStack loadIngredient(String ingredient) {
@@ -292,6 +401,7 @@ public class PotionConfig extends LegacyConfigLoader {
 
     /**
      * Get the ingredients for the given tier.
+     *
      * @param tier Tier to get ingredients for.
      * @return List of ingredients for the given tier.
      */
@@ -310,6 +420,7 @@ public class PotionConfig extends LegacyConfigLoader {
 
     /**
      * Check if the given ItemStack is a valid potion.
+     *
      * @param item ItemStack to be checked.
      * @return True if the given ItemStack is a valid potion, false otherwise.
      */
@@ -319,6 +430,7 @@ public class PotionConfig extends LegacyConfigLoader {
 
     /**
      * Get the AlchemyPotion that corresponds to the given name.
+     *
      * @param name Name of the potion to be checked.
      * @return AlchemyPotion that corresponds to the given name.
      */
@@ -330,19 +442,17 @@ public class PotionConfig extends LegacyConfigLoader {
      * Get the AlchemyPotion that corresponds to the given ItemStack.
      *
      * @param item ItemStack to be checked.
-     *
      * @return AlchemyPotion that corresponds to the given ItemStack.
      */
     public AlchemyPotion getPotion(ItemStack item) {
         // Fast return if the item does not have any item meta to avoid initializing an unnecessary ItemMeta instance
-        if (!item.hasItemMeta())
+        if (!item.hasItemMeta()) {
             return null;
+        }
 
         ItemMeta itemMeta = item.getItemMeta();
-        final List<AlchemyPotion> potionList = alchemyPotions.values()
-                .stream()
-                .filter(potion -> potion.isSimilarPotion(item, itemMeta))
-                .toList();
+        final List<AlchemyPotion> potionList = alchemyPotions.values().stream().filter(
+                potion -> potion.isSimilarPotion(item, itemMeta)).toList();
 
         return potionList.isEmpty() ? null : potionList.get(0);
     }

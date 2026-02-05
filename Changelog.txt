@@ -1,4 +1,232 @@
+Version 2.2.050
+    Minimum supported Minecraft version raised to 1.20.4 (see notes)
+    Improved Spears damage detection (see notes)
+    Spear abilities can now trigger from off-hand attacks with the Spear
+    Further improved compatibility with Excellent Enchants (fixed more errors)
+
+    NOTES:
+    From 2.2.050 onwards, mcMMO will require Minecraft versions 1.20.4 or newer.
+    Every now and then I raise the minimum supported Minecraft version to reduce maintenance burden of supporting older versions.
+    mcMMO no longer monitors PlayerAnimationEvent, it turns out Spigot has a DamageType just for Spear damage, avoiding the need to track player arm swings.
+
+Version 2.2.049
+    Combat abilities work with spear in off-hand again (see notes)
+    Sweet berry bushes now work with Herbalism (thanks dnocturne)
+    Fixed copper items not giving XP for Repair (thanks Remski01)
+    Fixed rare edge case where mcMMO could drop items with stack size set outside normal bounds
+    Fixed a bug where tamed wolves could cause errors on Folia (thanks Warriorrrr)
+    Improved compatibility with Excellent Enchants (fixed error spam from Flame Walker)
+    (Codebase) Fixed unit tests when building mcMMO with Java 25 (thanks Warriorrrr)
+
+    NOTES:
+    As a semi-permanent work around, mcMMO keeps track of when players swing their weapon, if they have swung it recently enough combat skills will work even if you have a spear in your off-hand.
+    Prior to this patch, mcMMO disabled combat abilities when spear was in off-hand to prevent the off-hand spear charge from applying combat abilities from other skills, as mcMMO was unable to determine which item (mainhand vs offhand) caused the damage from the event information alone.
+
+Version 2.2.048
+    Fixed error when loading Spears skill manager on older Minecraft versions
+    Fixed error when using /spears command on an older Minecraft version
+
+Version 2.2.047
+    Fix bug where off-hand spears damage could be attributed to various combat skills and trigger their abilities
+
+    NOTE:
+    Sorry guys, noticed this right after pushing 2.2.046, for now melee combat skills won't trigger if you have a spear in your off-hand as a temporary work around to mcMMO being unable to differentiate between main hand and off hand damage.
+    I'm working on a more robust solution to this issue, so stay tuned.
+    What this means in laymen's terms is if you are using a sword main hand, and you have a spear off hand, mcMMO has temporarily disabled your main hand abilities from triggering to avoid issues where off hand spear damage benefits from it and triggers abilities belonging to other weapons.
+
+Version 2.2.046
+    Added Spears combat skill
+    Added Spears to repair.vanilla.yml and salvage.vanilla.yml (see notes)
+    Added various permissions related to Spears
+    Added /spears skill command
+    Added Nautilus to taming XP in experience.yml
+    Added Camel_Husk to taming XP in experience.yml
+    Added Camel_Husk to combat XP in experience.yml
+    Added Parched to combat XP in experience.yml
+    Fixed bug where converting from SQL to FlatFile would not copy data for tridents, crossbows, maces, or spears
+    (Codebase) Added docker-based unit tests for SQL databases (see notes)
+    (Codebase) Large refactor to both SQLDatabaseManager and FlatFileDatabaseManager
+    (Codebase) Database related errors are now more descriptive and have had their logging improved
+
+    NOTES:
+    This update had a lot of changes behind the scenes, please report any bugs you find to our GitHub issues page!
+    You will need to manually update repair.vanilla.yml and salvage.vanilla.yml to get support for Spears, or...
+    If you want to update salvage/repair configs the easy way, you simply can delete these config files to have mcMMO regenerate them with the new entries.
+    If you don't want to delete them, you can find the default values for these config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
+    You can use this default file to copy paste if you please.
+    Docker is ONLY required for developers compiling mcMMO from source code and ONLY for running SQL-related unit tests.
+    mcMMO itself does NOT require Docker to run, and servers using prebuilt releases are completely unaffected.
+    New SQL database unit tests use Testcontainers to spin up temporary MySQL/MariaDB instances for testing purposes.
+    These containers are created at test time and are never used at runtime.
+    If you compile mcMMO locally and do not have Docker installed, SQL-related unit tests may fail.
+    In this case, you can safely compile with -DskipTests to skip unit tests entirely.
+    Skipping tests has no impact on mcMMO functionality when running on a server.
+    Known Issues:
+    I ran into an issue where having a spear in the offhand while the main hand is empty causes attacks to be incorrectly classified as unarmed. This allows unarmed abilities to apply to spear damage. As a temporary measure, I’ve disabled unarmed skills from applying to combat when a spear is equipped in the offhand while I investigate a more robust solution.
+
+Version 2.2.045
+    Green Thumb now replants some crops it was failing to replant before (see notes)
+    Green Thumb now replants harvested plants faster
+    Fixed an error that could happen when replanting crops with Green Thumb
+    Fixed a bug where salvage.vanilla.yml was readding deleted entries on server restart
+    Fixed a bug where repair.vanilla.yml was readding deleted entries on server restart
+    Added missing permission node 'mcmmo.ability.repair.copperrepair'
+    Added missing permission node 'mcmmo.ability.salvage.coppersalvage'
+
+    NOTES:
+    The delay from a plant being replanted from Green Thumb is intentional, and while looking into bugs it seemed maybe a tad slow, so I sped it up a bit.
+    Green Thumb still won't replant some stuff such as sugar canes, cacti, those are handled a bit differently, but I could add support for it in an upcoming patch if requested.
+
+Version 2.2.044
+    Fixed copper armor and tools not working with Repair or Salvage
+
+Version 2.2.043
+    Added support for the new copper tools and armor added in Minecraft 1.21.9
+    Added many missing buttons, trapdoors, doors, fence gates, etc to the ability/tool blacklists (see notes)
+    Added copper tools and armor to repair.vanilla.yml (see notes)
+    Added copper tools and armor to salvage.vanilla.yml (see notes)
+    Added copper tools and armor to fishing_treasures.yml (see notes)
+    Added Copper_Nugget to treasures.yml (see notes)
+    Added Copper_Nugget to experience.yml for Smelting XP
+    Added Copper_Golem to experience.yml for Combat XP
+    Fixed mcMMO custom potions not having their name set correctly (see notes)
+    Fixed ExploitFix.PreventArmorStandInteraction in experience.yml not being respected
+    Added ExploitFix.PreventMannequinInteraction to experience.yml to prevent mannequins from granting XP or other effects
+    Fixed bug where Armor Stands would get renamed to heart symbols upon breaking them (see notes)
+    Tweaked potions loaded msg during mcMMO startup to not include potions requiring newer game versions from being included in the total.
+
+    NOTES:
+    You don't need to update your experience.yml, that one updates automatically when you run mcMMO after an update.
+    You will need to manually update the following files manually repair.vanilla.yml, salvage.vanilla.yml, treasures.yml, and fishing_treasures.yml files to get support for copper tools and armor.
+    You can find the default config files in the defaults folder at plugins\mcMMO\defaults after running this mcMMO update at least once.
+    You can use this default file to copy paste if you please
+    OR if you haven't customizes these config files, simply delete them to have mcMMO regenerate them with the new entries.
+    mcMMO has an internal blacklist of blocks that abilities and tools won't activate or "ready" on, pretty much anything that is interactable should go on this list, and I performed an audit and there were quite a few missing entries, so I've added them in this update, what this means is you won't click on a button and have it ready your tool anymore, as it should have been doing.
+    Mannequins are treated the same way armor stands are treated, the default behavior is mcMMO won't process on them unless you turn on the setting under ExploitFix in experience.yml, in addition to this their default XP is set to 0.0
+    mcMMO had a setting 'ExploitFix.PreventArmorStandInteraction' to allow mcMMO to process abilities and XP on armor stands, but it was never hooked up! I fixed that mistake in this update.
+    The fix for potion names will only apply to newly created potions.
+    Armor stands that had already been renamed from the heart symbol bug will keep their names, but the bug shouldn't happen anymore
+
+Version 2.2.042
+    mcMMO now listens to BlockDropItemEvent at LOW priority instead of HIGHEST
+    Bonus drops from mcMMO now simply modify quantity in BlockDropItemEvent instead of spawning new ItemStacks.
+    Added McMMOModifyBlockDropItemEvent event, this event is called when mcMMO modifies the quantity of an ItemStack during a BlockDropItemEvent, it is modifiable and cancellable.
+    You can now define custom sounds to be played in sounds.yml (Thank you JeBobs, see notes)
+    Added a cap to how much Blast Mining PVP damage can do to other players
+
+    Notes:
+    The new sounds.yml config file allows you to override the sounds played by mcMMO.
+    Simply define the ID of the sound you want to play for each sound.
+    For example, add an entry for Sounds.TOOL_READY.CustomSoundId into sounds.yml to override the sound played when a tool is "readied".
+    If you are on older versions (1.18, 1.19, etc), instead of registering an ID, you specify the Sound enum.
+    Those who are on newer versions, can define the ID of any sound registered with Paper/Spigot, this allows you to even play custom sounds so long as they are properly loaded on the server.
+    Vanilla minecraft sounds tend to have IDs like "minecraft:ui.toast.challenge_complete", you can google what these keys are.
+
+Version 2.2.041
+    Fixed Berserk failing to crack blocks
+    Added 'Skills.Unarmed.Block_Cracker.Allow_Block_Cracker' to config.yml
+    Removed 'SmoothBrick_To_CrackedBrick', it has been replaced by `Allow_Block_Cracker`
+    Block Cracker can now crack deepslate bricks, deepslate tiles, polished blackstone bricks, and netherbricks
+    Optimizations for Hoppers & Alchemy (thanks Warriorrrr)
+    Fixed buckets being consumed by furnaces (thanks RunqRun)
+    Fixed Repair stripping unsafe enchantments from items (thanks Techirion)
+    Fixed IronGolem causing cast exceptions in rare cases (thanks Techirion)
+
+Version 2.2.040
+    Fixed hover component and action bar messages not working for 1.21.6 and 1.21.7
+    Fixed bug where entries of mctop could be duplicated when using FlatFile
+    Fixed bug where a party leader could leave a party and the party would be left without a party leader
+    Fixed a bug where EcoEnchants and similar plugins could cause an infinite loop within mcMMO during TreeFeller and other abilities
+    Added 'Happy_Ghast' to experience.yml for combat XP
+    Added 'Ghastling' to experience.yml for combat XP
+    Updated Japanese (ja_JP) translation (Thanks ryota-abe)
+    Updated Simplified Chinese (zh_CN) locale (Thanks GhostDC)
+
+Version 2.2.039
+    Added StackOverflow safeguards for abilities dealing damage in mcMMO
+    Improved compatibility with MythicMobs/ModelEngine
+    Improved compatibility with AdvancedEnchantments
+
+Version 2.2.038
+    Fix potion match failing for non-english locales
+    FoliaLib Performance improvements (thanks SirSalad)
+    Fixed situations where Rupture could never end which affected server performance
+
+Version 2.2.037
+    Fixed bug where Alchemy was not matching potions correctly and producing incorrect results (Thanks TheBentoBox)
+
+Version 2.2.036
+    Fixed a bug where Chimaera Wing could cause an exception when used
+    Fixed bug where Mob Spawners could drop in Blast Mining (thanks TomBock)
+    Fixed Spectral Arrows not granting XP for Archery or Crossbows (thanks broccolai)
+    Fixed bug where Trickshot arrows would lose their potion or custom effects
+    Added locale strings for /mcmmo help command (thanks Griffeng)
+
+Version 2.2.035
+    Support for new additions from Minecraft 1.21.5
+    Fixed bug where Blast Mining would not drop deep slate
+    Swords subskill Stab is now configurable in advanced.yml
+    Added 'Skills.Swords.Stab.Base_Damage' to advanced.yml
+    Added 'Skills.Swords.Stab.Per_Rank_Multiplier' to advanced.yml
+    Added 'Bush' to experience.yml for Herbalism
+    Added 'Bush' to config.yml Bonus Drops for Herbalism
+    Added 'Cactus_Flower' to experience.yml for Herbalism
+    Added 'Cactus_Flower' to config.yml Bonus Drops for Herbalism
+    Added 'Firefly_Bush' to experience.yml for Herbalism
+    Added 'Firefly_Bush' to config.yml Bonus Drops for Herbalism
+    Added 'Leaf_Litter' to experience.yml for Herbalism
+    Added 'Leaf_Litter' to config.yml Bonus Drops for Herbalism
+    Added 'Short_Dry_Grass' to experience.yml for Herbalism
+    Added 'Short_Dry_Grass' to config.yml Bonus Drops for Herbalism
+    Added 'Tall_Dry_Grass' to experience.yml for Herbalism
+    Added 'Tall_Dry_Grass' to config.yml Bonus Drops for Herbalism
+    Added 'Wildflowers' to experience.yml for Herbalism
+    Added 'Wildflowers' to config.yml Bonus Drops for Herbalism
+
+
+    NOTES:
+    The mob variants will use the "base" mob definition for values for now, such a a warm chicken using chicken values from experience.yml
+    The new config settings will be added automatically to advanced.yml
+
+Version 2.2.034
+    Fixed bug where mcMMO would drop items in such a way that they get stuck in an adjacent block and float to the surface
+    Fixed a rare edge case where null entities during chunk unload would cause a NullPointerException and potentially lead to server instability
+    Fixed bug where arrow would award archery xp after a crossbow trickshot bounce
+
+Version 2.2.033
+    Added Breeze_Rod entries to potions.yml for Awkward potion (see notes)
+    Added missing TURTLE_HELMET entry to potions.yml for Tier 1 ingredients
+    Added missing Wind Charging potion entries to potions.yml (see notes)
+    Fixed bug where mcMMO would attempt to load potions that required ingredients or effects from newer versions of Minecraft
+    mcMMO is a little more specific during start up of how many potions it loaded, it will now report on incompatible potions from being on an older game version.
+
+    NOTES:
+    You will have to update your potions.yml manually to receive these changes, it is highly recommended that if you haven't customized this file that you simply just delete it, mcMMO will generate a new one on the next start up and it will contain all the missing entries.
+    If you have customized this file, you can find the "default" version of this file here on the mcMMO github repo: https://github.com/mcMMO-Dev/mcMMO/blob/master/src/main/resources/potions.yml
+    You can use this file to compare it to your own and make the manual changes needed to get the new entries.
+    After making the changes to potions.yml (either via deleting it or not...) mcMMO should now recognize the Wind Charging potion and the Awkward potion created from Breeze Rods
+
+Version 2.2.032
+    Fixed bug where Roll would throw exceptions with certain CMI interactions
+    Blast Mining no longer drops infested block variants
+    Reduced bonus drops on Blast Mining and randomized results (see notes)
+    Added Beetroot to experience.yml for Herbalism
+    Added Open_Eyeblossom to experience.yml for Herbalism
+    Addeed Open_Eyeblossom to config.yml Bonus Drops for Herbalism
+    Added Closed_Eyeblossom to experience.yml for Herbalism
+    Addeed Closed_Eyeblossom to config.yml Bonus Drops for Herbalism
+
+    NOTES:
+    A balance pass for Blast Mining is coming, but for now, I've reduced the total bonus drops and clamped the yield ceiling as Blast Mining is a bit too good.
+
+Version 2.2.031
+    Fixed potential NPE when player or blockstate is null for Inventory events on Furnaces
+    Fixed bug where en_us locale was being set system-wide (thanks BlvckBytes)
+    Fixed bug where Decimal format would throw exception on non en_us systems (thanks BlvckBytes)
+    (API) Added McMMOPlayerTameEntityEvent event (thanks Warriorrr)
+
 Version 2.2.030
+    Fixed bug where rupture task could cause an exception (Thanks Wariorrrr)
     Fixed bug where Smelting permission was needed for Alchemy XP gain
     Fixed material based salvage permissions not functioning (Thanks Momshroom)
 
@@ -3161,7 +3389,7 @@ Version 1.5.01
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
- = Fixed bug where player didn't have a mcMMOPlayer object in AsyncPlayerChatEvent
+ = Fixed bug where player didn't have a mmoPlayer object in AsyncPlayerChatEvent
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException

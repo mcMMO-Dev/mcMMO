@@ -1,5 +1,12 @@
 package com.gmail.nossr50;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
+
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ChatConfig;
@@ -11,7 +18,11 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.MaterialMapStore;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.TransientEntityTracker;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
@@ -20,7 +31,13 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.sounds.SoundManager;
-import org.bukkit.*;
+import java.util.UUID;
+import java.util.logging.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -31,12 +48,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-
-import java.util.UUID;
-import java.util.logging.Logger;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 public abstract class MMOTestEnvironment {
     protected MockedStatic<Bukkit> mockedBukkit;
@@ -190,11 +201,16 @@ public abstract class MMOTestEnvironment {
 
     private void mockPermissions() {
         mockedPermissions = mockStatic(Permissions.class);
-        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(false); // player is not lucky
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(
+                false); // player is not lucky
     }
 
     private void mockRankConfig() {
@@ -209,7 +225,8 @@ public abstract class MMOTestEnvironment {
     private void mockGeneralConfig() {
         generalConfig = mock(GeneralConfig.class);
         when(generalConfig.getTreeFellerThreshold()).thenReturn(100);
-        when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, Material.OAK_LOG)).thenReturn(true);
+        when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING,
+                Material.OAK_LOG)).thenReturn(true);
         when(generalConfig.getLocale()).thenReturn("en_US");
         when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
     }

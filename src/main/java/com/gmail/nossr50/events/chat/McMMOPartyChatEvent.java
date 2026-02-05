@@ -12,7 +12,8 @@ public class McMMOPartyChatEvent extends McMMOChatEvent {
     private final @NotNull String party; //Not going to break the API to rename this for now
     private final @NotNull Party targetParty;
 
-    public McMMOPartyChatEvent(@NotNull Plugin pluginRef, @NotNull PartyChatMessage chatMessage, @NotNull Party party, boolean isAsync) {
+    public McMMOPartyChatEvent(@NotNull Plugin pluginRef, @NotNull PartyChatMessage chatMessage,
+            @NotNull Party party, boolean isAsync) {
         super(pluginRef, chatMessage, isAsync);
         this.party = party.getName();
         this.targetParty = party;
@@ -20,7 +21,6 @@ public class McMMOPartyChatEvent extends McMMOChatEvent {
 
     /**
      * @return String name of the party the message will be sent to
-     *
      * @deprecated this will be removed in the future
      */
     @Deprecated

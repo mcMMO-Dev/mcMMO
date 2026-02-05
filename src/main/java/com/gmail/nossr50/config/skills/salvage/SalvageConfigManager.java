@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.skills.salvage;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +16,13 @@ public class SalvageConfigManager {
         Pattern pattern = Pattern.compile("salvage\\.(?:.+)\\.yml");
         File dataFolder = plugin.getDataFolder();
 
-        SalvageConfig mainSalvageConfig = new SalvageConfig(SALVAGE_VANILLA_YML, true);
+        SalvageConfig mainSalvageConfig = new SalvageConfig(SALVAGE_VANILLA_YML);
         salvageables.addAll(mainSalvageConfig.getLoadedSalvageables());
 
         for (String fileName : dataFolder.list()) {
-            if (fileName.equals(SALVAGE_VANILLA_YML))
+            if (fileName.equals(SALVAGE_VANILLA_YML)) {
                 continue;
+            }
 
             if (!pattern.matcher(fileName).matches()) {
                 continue;
@@ -34,7 +34,7 @@ public class SalvageConfigManager {
                 continue;
             }
 
-            SalvageConfig salvageConfig = new SalvageConfig(fileName, false);
+            SalvageConfig salvageConfig = new SalvageConfig(fileName);
             salvageables.addAll(salvageConfig.getLoadedSalvageables());
         }
     }

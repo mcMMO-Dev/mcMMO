@@ -30,6 +30,7 @@ ExploitFix:
     PistonCheating: true
     SnowGolemExcavation: true
     PreventArmorStandInteraction: true
+    PreventMannequinInteraction: true
     # This include NPCs from stuff like Citizens, this is not a setting for Vanilla Minecraft Villagers (Which can be considered NPCs)
     # mcMMO normally doesn't process attacks against an Entity if it is an NPC from another plugin
     # Of course, mcMMO doesn't know for sure whether something is an NPC, it checks a few known things, see our source code to see how
@@ -91,6 +92,10 @@ Experience_Bars:
         Color: YELLOW
         BarStyle: SEGMENTED_6
     Maces:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
+    Spears:
         Enable: true
         Color: BLUE
         BarStyle: SEGMENTED_6
@@ -166,6 +171,7 @@ Experience_Formula:
 
     # Experience gained will get multiplied by these values. 1.0 by default, 0.5 means half XP gained. This happens right before multiplying the XP by the global multiplier.
     Skill_Multiplier:
+        Spears: 1.0
         Maces: 1.0
         Crossbows: 1.0
         Tridents: 1.0
@@ -217,6 +223,7 @@ Diminished_Returns:
         Crossbows: 20000
         Tridents: 20000
         Maces: 20000
+        Spears: 20000
 
     Time_Interval: 10
 
@@ -330,7 +337,16 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Bush: 11
+        Cactus_Flower: 60
+        Firefly_Bush: 15
+        Leaf_Litter: 2
+        Short_Dry_Grass: 6
+        Tall_Dry_Grass: 12
+        Wildflowers: 15
         Eyeblossom: 66
+        Open_Eyeblossom: 66
+        Closed_Eyeblossom: 66
         Pitcher_Plant: 160
         Pink_Petals: 10
         Small_Dripleaf: 140
@@ -397,6 +413,7 @@ Experience_Values:
         Cocoa: 30
         Potatoes: 50
         Wheat: 50
+        Beetroot: 50
         Beetroots: 50
         Nether_Wart: 50
         Dead_Bush: 30
@@ -535,6 +552,7 @@ Experience_Values:
         Base: 1000.0
         Wood: 0.6
         Stone: 1.3
+        Copper: 2.0
         Iron: 2.5
         Gold: 0.3
         Diamond: 5.0
@@ -543,6 +561,7 @@ Experience_Values:
         String: 1.8
         Other: 1.5
     Smelting:
+        Copper_Nugget: 85
         Raw_Copper: 75
         Deepslate_Redstone_Ore: 30
         Deepslate_Copper_Ore: 100
@@ -570,6 +589,7 @@ Experience_Values:
     Taming:
         Animal_Taming:
             Camel: 1300
+            Camel_Husk: 1300
             Sniffer: 1500
             Snifflet: 900
             Llama: 1200
@@ -588,17 +608,22 @@ Experience_Values:
             Goat: 250
             Axolotl: 600
             Frog: 900
+            Nautilus: 1700
+            Zombie_Nautilus: 1700
     Combat:
         Multiplier:
             Animals: 1.0
             Armadillo: 1.1
             Creeper: 4.0
             Skeleton: 3.0
+            Parched: 2.5
             Spider: 2.0
             Giant: 4.0
             Zombie: 2.0
             Slime: 2.0
             Ghast: 3.0
+            Happy_Ghast: 1.0
+            Ghastling: 0.5
             Pig_Zombie: 3.0
             Enderman: 1.0
             Cave_Spider: 3.0
@@ -609,6 +634,7 @@ Experience_Values:
             Wither: 1.0
             Witch: 0.1
             Iron_Golem: 2.0
+            Copper_Golem: 1.0
             Wither_Skeleton: 4.0
             Endermite: 2.0
             Guardian: 1.0
@@ -668,5 +694,8 @@ Experience_Values:
             Sniffer: 1.1
             Snifflet: 1.1
             Camel: 1.2
+            Camel_Husk: 1.25
             Bogged: 2.0
             Breeze: 4.0
+            Armor_Stand: 0.0
+            Mannequin: 0.0
