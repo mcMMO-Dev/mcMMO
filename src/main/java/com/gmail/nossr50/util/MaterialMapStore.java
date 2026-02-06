@@ -673,6 +673,7 @@ public class MaterialMapStore {
         woodTools.add("wooden_hoe");
         woodTools.add("wooden_pickaxe");
         woodTools.add("wooden_shovel");
+        woodTools.add("wooden_spear");
     }
 
     private void fillStoneToolsWhiteList() {
@@ -681,6 +682,7 @@ public class MaterialMapStore {
         stoneTools.add("stone_hoe");
         stoneTools.add("stone_pickaxe");
         stoneTools.add("stone_shovel");
+        stoneTools.add("stone_spear");
     }
 
     private void fillCopperToolsWhiteList() {
@@ -689,6 +691,7 @@ public class MaterialMapStore {
         copperTools.add("copper_hoe");
         copperTools.add("copper_pickaxe");
         copperTools.add("copper_shovel");
+        copperTools.add("copper_spear");
     }
 
     private void fillIronToolsWhiteList() {
@@ -697,6 +700,7 @@ public class MaterialMapStore {
         ironTools.add("iron_hoe");
         ironTools.add("iron_pickaxe");
         ironTools.add("iron_shovel");
+        ironTools.add("iron_spear");
 
         //Used for repair, remove in 2.2
         //TODO: Remove in config update
@@ -718,6 +722,7 @@ public class MaterialMapStore {
         goldTools.add("golden_hoe");
         goldTools.add("golden_pickaxe");
         goldTools.add("golden_shovel");
+        goldTools.add("golden_spear");
     }
 
     private void fillDiamondToolsWhiteList() {
@@ -726,6 +731,7 @@ public class MaterialMapStore {
         diamondTools.add("diamond_hoe");
         diamondTools.add("diamond_pickaxe");
         diamondTools.add("diamond_shovel");
+        diamondTools.add("diamond_spear");
     }
 
     private void fillNetheriteToolsWhiteList() {
@@ -734,6 +740,7 @@ public class MaterialMapStore {
         netheriteTools.add("netherite_hoe");
         netheriteTools.add("netherite_pickaxe");
         netheriteTools.add("netherite_shovel");
+        netheriteTools.add("netherite_spear");
     }
 
     private void fillGlassBlockWhiteList() {
