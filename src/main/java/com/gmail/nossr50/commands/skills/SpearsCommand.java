@@ -61,7 +61,7 @@ public class SpearsCommand extends SkillCommand {
 
         if (canUseSubskill(player, SPEARS_SPEAR_MASTERY)) {
             messages.add(getStatMessage(SPEARS_SPEAR_MASTERY,
-                    String.valueOf(spearMasteryBonusDmg)));
+                    String.format("%.2f", spearMasteryBonusDmg)));
         }
 
         if (SkillUtils.canUseSubskill(player, SPEARS_MOMENTUM)) {
