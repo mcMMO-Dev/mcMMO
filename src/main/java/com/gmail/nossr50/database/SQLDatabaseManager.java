@@ -132,7 +132,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + general.getMySQLDatabaseName();
 
         // Temporary hack for 1.17 + SSL support (legacy path kept intact)
-        if (!mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 17, 0)
+        if (!mcMMO.getMinecraftGameVersion().isAtLeast(1, 17, 0)
                 && general.getMySQLSSL()) {
             connectionString += "?verifyServerCertificate=false&useSSL=true&requireSSL=true";
         } else {

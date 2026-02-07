@@ -24,7 +24,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TransientEntityTracker;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -85,18 +84,17 @@ public abstract class MMOTestEnvironment {
     protected ChunkManager chunkManager;
     protected MaterialMapStore materialMapStore;
 
-    protected CompatibilityManager compatibilityManager;
+    protected MinecraftGameVersion minecraftGameVersion;
 
     protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
-        compatibilityManager = mock(CompatibilityManager.class);
-        final MinecraftGameVersion minecraftGameVersion = mock(MinecraftGameVersion.class);
-        when(compatibilityManager.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
-        // TODO: We should change minecraftGameVersion to be a passed in parameter instead of always returning true
-        when(minecraftGameVersion.isAtLeast(anyInt(), anyInt(), anyInt())).thenReturn(true);
         mockedMcMMO = mockStatic(mcMMO.class);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
         mcMMO.p = mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
+
+        // Game version
+        minecraftGameVersion = mock(MinecraftGameVersion.class);
+        when(minecraftGameVersion.isAtLeast(anyInt(), anyInt(), anyInt())).thenReturn(true);
+        when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
 
         // place store
         chunkManager = mock(ChunkManager.class);

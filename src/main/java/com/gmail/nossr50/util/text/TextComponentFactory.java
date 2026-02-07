@@ -38,7 +38,7 @@ public class TextComponentFactory {
      *
      * @param localeKey target locale string address
      * @param values vars to be passed to the locale loader
-     * @return
+     * @return a text component with the locale string and variables applied
      */
     public static TextComponent getNotificationMultipleValues(String localeKey, String... values) {
         String preColoredString = LocaleLoader.getString(localeKey, (Object[]) values);
@@ -566,14 +566,6 @@ public class TextComponentFactory {
             PrimarySkillType parentSkill) {
         for (SubSkillType subSkillType : SubSkillType.values()) {
             if (subSkillType.getParentSkill() == parentSkill) {
-                //TODO: Hacky rewrite later
-                //Only some versions of MC have this skill
-                if (subSkillType == SubSkillType.FISHING_MASTER_ANGLER
-                        && mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer()
-                        == null) {
-                    continue;
-                }
-
                 if (Permissions.isSubSkillEnabled(player, subSkillType)) {
                     if (!InteractionManager.hasSubSkill(subSkillType)) {
                         textComponents.add(TextComponentFactory.getSubSkillTextComponent(player,

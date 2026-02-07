@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MinecraftGameVersionFactory;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.bukkit.Bukkit;
@@ -96,9 +97,8 @@ class MinecraftGameVersionTest {
             bukkit.when(Bukkit::getVersion).thenReturn(serverSoftwareVersion);
             bukkit.when(Bukkit::getBukkitVersion).thenReturn(gameVersion);
 
-            PlatformManager manager = new PlatformManager();
-            Platform platform = manager.getPlatform();
-            MinecraftGameVersion minecraftVersion = platform.getGameVersion();
+            final MinecraftGameVersion minecraftVersion
+                    = MinecraftGameVersionFactory.calculateGameVersion(gameVersion);
 
             assertEquals(major, minecraftVersion.getMajorVersion().asInt());
             assertEquals(minor, minecraftVersion.getMinorVersion().asInt());
@@ -125,7 +125,8 @@ class MinecraftGameVersionTest {
                 Arguments.of("1.14-pre5-SNAPSHOT", 1, 14, 0),
                 Arguments.of("1.15-R0.1-SNAPSHOT", 1, 15, 0),
                 Arguments.of("1.16.5-R0.1-SNAPSHOT", 1, 16, 5),
-                Arguments.of("1.17-R0.1-SNAPSHOT", 1, 17, 0)
+                Arguments.of("1.17-R0.1-SNAPSHOT", 1, 17, 0),
+                Arguments.of("1.21.11-106-0d768aa", 1, 21, 11)
         );
     }
 

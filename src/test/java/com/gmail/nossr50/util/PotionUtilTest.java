@@ -8,7 +8,6 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import org.bukkit.potion.PotionType;
 import org.junit.jupiter.api.AfterEach;
@@ -23,11 +22,9 @@ class PotionUtilTest {
     @BeforeEach
     void setUp() {
         mockedStaticMcMMO = mockStatic(mcMMO.class);
-        CompatibilityManager compatibilityManager = mock(CompatibilityManager.class);
         MinecraftGameVersion minecraftGameVersion = mock(MinecraftGameVersion.class);
-        when(compatibilityManager.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
         when(minecraftGameVersion.isAtLeast(1, 20, 5)).thenReturn(true);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
+        when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
     }
 
     @AfterEach

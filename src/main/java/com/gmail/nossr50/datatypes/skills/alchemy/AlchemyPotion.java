@@ -1,10 +1,8 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import static com.gmail.nossr50.util.PotionUtil.samePotionType;
 import static java.util.Objects.requireNonNull;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.PotionUtil;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -80,12 +78,14 @@ public class AlchemyPotion {
             return false;
         }
 
-        if (!samePotionType(getAlchemyPotionMeta(), otherPotionMeta)) {
+        @NotNull PotionMeta potionMeta = getAlchemyPotionMeta();
+        if (!(potionMeta.getBasePotionType() == otherPotionMeta.getBasePotionType())) {
             return false;
         }
 
         // Legacy only comparison, compare PotionData
-        if (!PotionUtil.isPotionDataEqual(getAlchemyPotionMeta(), otherPotionMeta)) {
+        @NotNull PotionMeta potionMeta1 = getAlchemyPotionMeta();
+        if (!(potionMeta1.getBasePotionType() == otherPotionMeta.getBasePotionType())) {
             return false;
         }
 

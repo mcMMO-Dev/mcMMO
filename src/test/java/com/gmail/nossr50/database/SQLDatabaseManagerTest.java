@@ -1,5 +1,17 @@
 package com.gmail.nossr50.database;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.GeneralConfig;
@@ -10,11 +22,20 @@ import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -32,29 +53,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.mariadb.MariaDBContainer;
 import org.testcontainers.mysql.MySQLContainer;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Testcontainers
@@ -80,8 +78,8 @@ class SQLDatabaseManagerTest {
     private static GeneralConfig generalConfig;
     private static AdvancedConfig advancedConfig;
     private static UpgradeManager upgradeManager;
-    private static CompatibilityManager compatibilityManager;
     private static SkillTools skillTools;
+    private static MinecraftGameVersion minecraftGameVersion;
 
     // --- DB flavors you support ---
     enum DbFlavor {
@@ -96,15 +94,13 @@ class SQLDatabaseManagerTest {
     @BeforeAll
     void setUpAll() {
         // GIVEN a fully mocked mcMMO environment
-        compatibilityManager = mock(CompatibilityManager.class);
-        MinecraftGameVersion minecraftGameVersion = mock(MinecraftGameVersion.class);
-        when(compatibilityManager.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
+        minecraftGameVersion = mock(MinecraftGameVersion.class);
         when(minecraftGameVersion.isAtLeast(anyInt(), anyInt(), anyInt())).thenReturn(true);
 
         mockedMcMMO = Mockito.mockStatic(mcMMO.class);
         mcMMO.p = Mockito.mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
+        when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
 
         mockGeneralConfigBase();
 
@@ -114,11 +110,6 @@ class SQLDatabaseManagerTest {
 
         skillTools = new SkillTools(mcMMO.p);
         when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
-
-        compatibilityManager = Mockito.mock(CompatibilityManager.class);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
-        when(compatibilityManager.getMinecraftGameVersion())
-                .thenReturn(new MinecraftGameVersion(1, 20, 4));
 
         upgradeManager = Mockito.mock(UpgradeManager.class);
         when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);

@@ -28,7 +28,6 @@ import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
-import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -40,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -55,31 +53,24 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.metadata.Metadatable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FishingManager extends SkillManager {
-    public static final int FISHING_ROD_CAST_CD_MILLISECONDS = 100;
-    private final long FISHING_COOLDOWN_SECONDS = 1000L;
-
-    private long fishingRodCastTimestamp = 0L;
     private long fishHookSpawnTimestamp = 0L;
     private long lastWarned = 0L;
-    private final long lastWarnedExhaust = 0L;
-    private FishHook fishHookReference;
     private BoundingBox lastFishingBoundingBox;
     private boolean sameTarget;
-    private Item fishingCatch;
-    private Location hookLocation;
     private int fishCaughtCounter = 1;
     private final int masterAnglerMinWaitLowerBound;
     private final int masterAnglerMaxWaitLowerBound;
 
     public FishingManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.FISHING);
-        //Ticks for minWait and maxWait never go below this value
+        // Ticks for minWait and maxWait never go below this value
         int bonusCapMin = mcMMO.p.getAdvancedConfig().getFishingReductionMinWaitCap();
         int bonusCapMax = mcMMO.p.getAdvancedConfig().getFishingReductionMaxWaitCap();
 
@@ -95,53 +86,18 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canMasterAngler() {
-        return mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null
-                && getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER)
+        return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-//    public void setFishingRodCastTimestamp()
-//    {
-//        long currentTime = System.currentTimeMillis();
-//        //Only track spam casting if the fishing hook is fresh
-//        if (currentTime > fishHookSpawnTimestamp + 1000)
-//            return;
-//
-//        if (currentTime < fishingRodCastTimestamp + FISHING_ROD_CAST_CD_MILLISECONDS)
-//        {
-//            ItemStack fishingRod = getPlayer().getInventory().getItemInMainHand();
-//
-//            //Ensure correct hand item is damaged
-//            if (fishingRod.getType() != Material.FISHING_ROD) {
-//                fishingRod = getPlayer().getInventory().getItemInOffHand();
-//            }
-//
-//            getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
-//            fishingRod.setDurability((short) (fishingRod.getDurability() + 5));
-//            getPlayer().updateInventory();
-//
-//            if (lastWarnedExhaust + (1000) < currentTime)
-//            {
-//                getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
-//                lastWarnedExhaust = currentTime;
-//                SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
-//            }
-//        }
-//
-//        fishingRodCastTimestamp = System.currentTimeMillis();
-//    }
-
-    public void setFishHookReference(FishHook fishHook) {
-        if (fishHook.getMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF).size() > 0) {
+    public void setFishHookReference(Metadatable fishHook) {
+        if (!fishHook.getMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF).isEmpty()) {
             return;
         }
 
         fishHook.setMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF,
                 MetadataConstants.MCMMO_METADATA_VALUE);
-        this.fishHookReference = fishHook;
         fishHookSpawnTimestamp = System.currentTimeMillis();
-        fishingRodCastTimestamp = System.currentTimeMillis();
-
     }
 
     public boolean isFishingTooOften() {
@@ -180,21 +136,41 @@ public class FishingManager extends SkillManager {
         }
     }
 
+    /**
+     * Determines if the player is exploiting fishing by checking if they have caught
+     * more fish than the configured limit without moving their fishing spot.
+     * This method relies on internal state to determine if the player is exploiting fishing,
+     * and the centerOfCastVector parameter is no longer used and will be removed in
+     * a future version.
+     *
+     * @param centerOfCastVector unused
+     * @deprecated since 2.2.050, the parameter is no longer used and will be removed in
+     * a future version. The method now relies on internal state to determine if the player
+     * is exploiting fishing.
+     * @return true if the player is exploiting fishing, false otherwise
+     */
+    @Deprecated(forRemoval = true, since = "2.2.050")
     public boolean isExploitingFishing(Vector centerOfCastVector) {
+        return this.sameTarget && fishCaughtCounter >= ExperienceConfig.getInstance()
+                .getFishingExploitingOptionOverFishLimit();
+    }
 
-        /*Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
-
-        if (!targetBlock.isLiquid()) {
-            return false;
-        }*/
-
+    /**
+     * Determines if the player is exploiting fishing by checking if they have caught
+     * more fish than the configured limit without moving their fishing spot.
+     *
+     * @return true if the player is exploiting fishing, false otherwise
+     */
+    public boolean isExploitingFishing() {
         return this.sameTarget && fishCaughtCounter >= ExperienceConfig.getInstance()
                 .getFishingExploitingOptionOverFishLimit();
     }
 
     public static BoundingBox makeBoundingBox(Vector centerOfCastVector) {
         int exploitingRange = ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange();
-        return BoundingBox.of(centerOfCastVector, exploitingRange / 2, 1, exploitingRange / 2);
+        return BoundingBox.of(centerOfCastVector,
+                (double) exploitingRange / 2, 1,
+                (double) exploitingRange / 2);
     }
 
     public void setFishingTarget() {
@@ -244,15 +220,6 @@ public class FishingManager extends SkillManager {
     }
 
     /**
-     * Gets the Shake Mob probability
-     *
-     * @return Shake Mob probability
-     */
-    public double getShakeProbability() {
-        return getShakeChance();
-    }
-
-    /**
      * Handle the Fisherman's Diet ability
      *
      * @param eventFoodLevel The initial change in hunger from the event
@@ -293,102 +260,95 @@ public class FishingManager extends SkillManager {
      * @param fishHook target fish hook
      */
     public void processMasterAngler(@NotNull FishHook fishHook, int lureLevel) {
-        MasterAnglerCompatibilityLayer masterAnglerCompatibilityLayer = (MasterAnglerCompatibilityLayer) mcMMO.getCompatibilityManager()
-                .getMasterAnglerCompatibilityLayer();
+        int maxWaitTicks = fishHook.getMaxWaitTime();
+        int minWaitTicks = fishHook.getMinWaitTime();
 
-        if (masterAnglerCompatibilityLayer != null) {
-            int maxWaitTicks = masterAnglerCompatibilityLayer.getMaxWaitTime(fishHook);
-            int minWaitTicks = masterAnglerCompatibilityLayer.getMinWaitTime(fishHook);
+        int masterAnglerRank = RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER);
+        int convertedLureBonus = 0;
 
-            int masterAnglerRank = RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER);
-            int convertedLureBonus = 0;
-
-            //This avoids a Minecraft bug where lure levels above 3 break fishing
-            if (lureLevel > 0) {
-                masterAnglerCompatibilityLayer.setApplyLure(fishHook, false);
-                convertedLureBonus = lureLevel * 100;
-            }
-
-            boolean boatBonus = isInBoat();
-            int minWaitReduction = getMasterAnglerTickMinWaitReduction(masterAnglerRank, boatBonus);
-            int maxWaitReduction = getMasterAnglerTickMaxWaitReduction(masterAnglerRank, boatBonus,
-                    convertedLureBonus);
-
-            int reducedMinWaitTime = getReducedTicks(minWaitTicks, minWaitReduction,
-                    masterAnglerMinWaitLowerBound);
-            int reducedMaxWaitTime = getReducedTicks(maxWaitTicks, maxWaitReduction,
-                    masterAnglerMaxWaitLowerBound);
-
-            boolean badValuesFix = false;
-
-            //If we find bad values correct it
-            if (reducedMaxWaitTime < reducedMinWaitTime) {
-                reducedMaxWaitTime = reducedMinWaitTime + 100;
-                badValuesFix = true;
-            }
-
-            final McMMOPlayerMasterAnglerEvent event =
-                    new McMMOPlayerMasterAnglerEvent(mmoPlayer, reducedMinWaitTime,
-                            reducedMaxWaitTime, this);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                return;
-            }
-
-            reducedMaxWaitTime = event.getReducedMaxWaitTime();
-            reducedMinWaitTime = event.getReducedMinWaitTime();
-
-            if (mmoPlayer.isDebugMode()) {
-                mmoPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Master Angler Debug");
-
-                if (badValuesFix) {
-                    mmoPlayer.getPlayer()
-                            .sendMessage(ChatColor.RED + "Bad values were applied and corrected," +
-                                    " check your configs, minWaitLowerBound wait should never be lower than min wait.");
-                }
-
-                mmoPlayer.getPlayer().sendMessage(
-                        "ALLOW STACK WITH LURE: " + masterAnglerCompatibilityLayer.getApplyLure(
-                                fishHook));
-                mmoPlayer.getPlayer().sendMessage("MIN TICK REDUCTION: " + minWaitReduction);
-                mmoPlayer.getPlayer().sendMessage("MAX TICK REDUCTION: " + maxWaitReduction);
-                mmoPlayer.getPlayer().sendMessage("BOAT BONUS: " + boatBonus);
-
-                if (boatBonus) {
-                    mmoPlayer.getPlayer()
-                            .sendMessage("BOAT MAX TICK REDUCTION: " + maxWaitReduction);
-                    mmoPlayer.getPlayer()
-                            .sendMessage("BOAT MIN TICK REDUCTION: " + maxWaitReduction);
-                }
-
-                mmoPlayer.getPlayer().sendMessage("");
-
-                mmoPlayer.getPlayer()
-                        .sendMessage(ChatColor.DARK_AQUA + "BEFORE MASTER ANGLER WAS APPLIED");
-                mmoPlayer.getPlayer().sendMessage("Original Max Wait Ticks: " + maxWaitTicks);
-                mmoPlayer.getPlayer().sendMessage("Original Min Wait Ticks: " + minWaitTicks);
-                mmoPlayer.getPlayer().sendMessage("");
-
-                mmoPlayer.getPlayer()
-                        .sendMessage(ChatColor.DARK_AQUA + "AFTER MASTER ANGLER WAS APPLIED");
-                mmoPlayer.getPlayer().sendMessage("Current Max Wait Ticks: " + reducedMaxWaitTime);
-                mmoPlayer.getPlayer().sendMessage("Current Min Wait Ticks: " + reducedMinWaitTime);
-
-                mmoPlayer.getPlayer().sendMessage("");
-
-                mmoPlayer.getPlayer()
-                        .sendMessage(ChatColor.DARK_AQUA + "Caps / Limits (edit in advanced.yml)");
-                mmoPlayer.getPlayer().sendMessage("Lowest possible minWaitLowerBound wait ticks "
-                        + masterAnglerMinWaitLowerBound);
-                mmoPlayer.getPlayer().sendMessage(
-                        "Lowest possible min wait ticks " + masterAnglerMaxWaitLowerBound);
-            }
-
-            masterAnglerCompatibilityLayer.setMaxWaitTime(fishHook, reducedMaxWaitTime);
-            masterAnglerCompatibilityLayer.setMinWaitTime(fishHook, reducedMinWaitTime);
+        //This avoids a Minecraft bug where lure levels above 3 break fishing
+        if (lureLevel > 0) {
+            fishHook.setApplyLure(false);
+            convertedLureBonus = lureLevel * 100;
         }
 
+        boolean boatBonus = isInBoat();
+        int minWaitReduction = getMasterAnglerTickMinWaitReduction(masterAnglerRank, boatBonus);
+        int maxWaitReduction = getMasterAnglerTickMaxWaitReduction(masterAnglerRank, boatBonus,
+                convertedLureBonus);
+
+        int reducedMinWaitTime = getReducedTicks(minWaitTicks, minWaitReduction,
+                masterAnglerMinWaitLowerBound);
+        int reducedMaxWaitTime = getReducedTicks(maxWaitTicks, maxWaitReduction,
+                masterAnglerMaxWaitLowerBound);
+
+        boolean badValuesFix = false;
+
+        //If we find bad values correct it
+        if (reducedMaxWaitTime < reducedMinWaitTime) {
+            reducedMaxWaitTime = reducedMinWaitTime + 100;
+            badValuesFix = true;
+        }
+
+        final McMMOPlayerMasterAnglerEvent event =
+                new McMMOPlayerMasterAnglerEvent(mmoPlayer, reducedMinWaitTime,
+                        reducedMaxWaitTime, this);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        reducedMaxWaitTime = event.getReducedMaxWaitTime();
+        reducedMinWaitTime = event.getReducedMinWaitTime();
+
+        if (mmoPlayer.isDebugMode()) {
+            mmoPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Master Angler Debug");
+
+            if (badValuesFix) {
+                mmoPlayer.getPlayer()
+                        .sendMessage(ChatColor.RED + "Bad values were applied and corrected," +
+                                " check your configs, minWaitLowerBound wait should never be lower than min wait.");
+            }
+
+            mmoPlayer.getPlayer().sendMessage(
+                    "ALLOW STACK WITH LURE: " + fishHook.getApplyLure());
+            mmoPlayer.getPlayer().sendMessage("MIN TICK REDUCTION: " + minWaitReduction);
+            mmoPlayer.getPlayer().sendMessage("MAX TICK REDUCTION: " + maxWaitReduction);
+            mmoPlayer.getPlayer().sendMessage("BOAT BONUS: " + boatBonus);
+
+            if (boatBonus) {
+                mmoPlayer.getPlayer()
+                        .sendMessage("BOAT MAX TICK REDUCTION: " + maxWaitReduction);
+                mmoPlayer.getPlayer()
+                        .sendMessage("BOAT MIN TICK REDUCTION: " + maxWaitReduction);
+            }
+
+            mmoPlayer.getPlayer().sendMessage("");
+
+            mmoPlayer.getPlayer()
+                    .sendMessage(ChatColor.DARK_AQUA + "BEFORE MASTER ANGLER WAS APPLIED");
+            mmoPlayer.getPlayer().sendMessage("Original Max Wait Ticks: " + maxWaitTicks);
+            mmoPlayer.getPlayer().sendMessage("Original Min Wait Ticks: " + minWaitTicks);
+            mmoPlayer.getPlayer().sendMessage("");
+
+            mmoPlayer.getPlayer()
+                    .sendMessage(ChatColor.DARK_AQUA + "AFTER MASTER ANGLER WAS APPLIED");
+            mmoPlayer.getPlayer().sendMessage("Current Max Wait Ticks: " + reducedMaxWaitTime);
+            mmoPlayer.getPlayer().sendMessage("Current Min Wait Ticks: " + reducedMinWaitTime);
+
+            mmoPlayer.getPlayer().sendMessage("");
+
+            mmoPlayer.getPlayer()
+                    .sendMessage(ChatColor.DARK_AQUA + "Caps / Limits (edit in advanced.yml)");
+            mmoPlayer.getPlayer().sendMessage("Lowest possible minWaitLowerBound wait ticks "
+                    + masterAnglerMinWaitLowerBound);
+            mmoPlayer.getPlayer().sendMessage(
+                    "Lowest possible min wait ticks " + masterAnglerMaxWaitLowerBound);
+        }
+
+        fishHook.setMaxWaitTime(reducedMaxWaitTime);
+        fishHook.setMinWaitTime(reducedMinWaitTime);
     }
 
     public int getReducedTicks(int ticks, int totalBonus, int tickBounds) {
@@ -446,7 +406,6 @@ public class FishingManager extends SkillManager {
      * @param fishingCatch The {@link Item} initially caught
      */
     public void processFishing(@NotNull Item fishingCatch) {
-        this.fishingCatch = fishingCatch;
         int fishXp = ExperienceConfig.getInstance()
                 .getXp(PrimarySkillType.FISHING, fishingCatch.getItemStack().getType());
         int treasureXp = 0;
@@ -458,7 +417,6 @@ public class FishingManager extends SkillManager {
         if (mcMMO.p.getGeneralConfig().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(
                 player, SubSkillType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
-            this.fishingCatch = null;
         }
 
         if (treasure != null) {
@@ -539,10 +497,6 @@ public class FishingManager extends SkillManager {
      */
     public int handleVanillaXpBoost(int experience) {
         return experience * getVanillaXpMultiplier();
-    }
-
-    public Location getHookLocation() {
-        return hookLocation;
     }
 
     /**
@@ -691,11 +645,6 @@ public class FishingManager extends SkillManager {
         if (maxDurability > 0) {
             treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability)));
         }
-
-        //TODO: Add option to randomize the amount rewarded
-        /*if (treasureDrop.getAmount() > 1) {
-            treasureDrop.setAmount(Misc.getRandom().nextInt(treasureDrop.getAmount()) + 1);
-        }*/
 
         treasure.setDrop(treasureDrop);
 

@@ -13,7 +13,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +38,7 @@ class SkillToolsTest {
 
     private static MockedStatic<mcMMO> mockedMcMMO;
     private static MockedStatic<LocaleLoader> mockedLocaleLoader;
-
     private GeneralConfig generalConfig;
-    private CompatibilityManager compatibilityManager;
 
     @BeforeAll
     void setUpAll() {
@@ -58,10 +55,6 @@ class SkillToolsTest {
         when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
         when(generalConfig.getLocale()).thenReturn("en_US");
 
-        // Compatibility manager + game version
-        compatibilityManager = mock(CompatibilityManager.class);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
-
         // LocaleLoader – just echo key back to keep things simple/deterministic
         mockedLocaleLoader.when(() -> LocaleLoader.getString(anyString()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
@@ -74,8 +67,10 @@ class SkillToolsTest {
     }
 
     private SkillTools newSkillToolsForVersion(int major, int minor, int patch) throws Exception {
-        when(compatibilityManager.getMinecraftGameVersion())
-                .thenReturn(new MinecraftGameVersion(major, minor, patch));
+        var mockGameVersion = mock(MinecraftGameVersion.class);
+        when(mockGameVersion.isAtLeast(major, minor, patch))
+                .thenReturn(true);
+        when(mcMMO.getMinecraftGameVersion()).thenReturn(mockGameVersion);
         return new SkillTools(mcMMO.p);
     }
 
@@ -324,22 +319,6 @@ class SkillToolsTest {
                         PrimarySkillType.AXES,
                         PrimarySkillType.CROSSBOWS,
                         PrimarySkillType.MACES,
-                        PrimarySkillType.SWORDS,
-                        PrimarySkillType.TAMING,
-                        PrimarySkillType.TRIDENTS,
-                        PrimarySkillType.UNARMED
-                );
-    }
-
-    @Test
-    void combatSkillsShouldMatchDefinitionForVersionWithoutMacesOrSpears() throws Exception {
-        SkillTools skillTools = newSkillToolsForVersion(1, 20, 4);
-
-        assertThat(skillTools.getCombatSkills())
-                .containsExactly(
-                        PrimarySkillType.ARCHERY,
-                        PrimarySkillType.AXES,
-                        PrimarySkillType.CROSSBOWS,
                         PrimarySkillType.SWORDS,
                         PrimarySkillType.TAMING,
                         PrimarySkillType.TRIDENTS,

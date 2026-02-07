@@ -489,8 +489,7 @@ public class PlayerListener implements Listener {
 
                         fishingManager.processExploiting(event.getHook().getLocation().toVector());
 
-                        if (fishingManager.isExploitingFishing(
-                                event.getHook().getLocation().toVector())) {
+                        if (fishingManager.isExploitingFishing()) {
                             player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
                                     ExperienceConfig.getInstance()
                                             .getFishingExploitingOptionMoveRange()));
