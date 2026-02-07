@@ -29,6 +29,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -360,6 +361,8 @@ public final class SkillUtils {
             return 4;
         }
 
+        final ItemStack recipeItem = recipeMaterial != null ? new ItemStack(recipeMaterial) : null;
+
         for (Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator();
                 recipeIterator.hasNext(); ) {
             Recipe bukkitRecipe = recipeIterator.next();
@@ -368,21 +371,17 @@ public final class SkillUtils {
                 continue;
             }
 
-            if (bukkitRecipe instanceof ShapelessRecipe) {
-                for (ItemStack ingredient : ((ShapelessRecipe) bukkitRecipe).getIngredientList()) {
-                    if (ingredient != null
-                            && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
-                            && (ingredient.getType() == recipeMaterial)) {
-                        quantity += ingredient.getAmount();
+            if (bukkitRecipe instanceof ShapelessRecipe shapelessRecipe) {
+                for (RecipeChoice ingredient : shapelessRecipe.getChoiceList()) {
+                    if (ingredient != null && recipeItem != null && ingredient.test(recipeItem)) {
+                        quantity += 1;
                     }
                 }
-            } else if (bukkitRecipe instanceof ShapedRecipe) {
-                for (ItemStack ingredient : ((ShapedRecipe) bukkitRecipe).getIngredientMap()
+            } else if (bukkitRecipe instanceof ShapedRecipe shapedRecipe) {
+                for (RecipeChoice ingredient : shapedRecipe.getChoiceMap()
                         .values()) {
-                    if (ingredient != null
-                            && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
-                            && (ingredient.getType() == recipeMaterial)) {
-                        quantity += ingredient.getAmount();
+                    if (ingredient != null && recipeItem != null && ingredient.test(recipeItem)) {
+                        quantity += 1;
                     }
                 }
             }
