@@ -13,6 +13,7 @@ Version 2.2.050
     From 2.2.050 onwards, mcMMO will require Minecraft versions 1.20.5 or newer.
     Every now and then I raise the minimum supported Minecraft version to reduce maintenance burden of supporting older versions.
     mcMMO no longer monitors PlayerAnimationEvent, it turns out Spigot has a DamageType just for Spear damage, avoiding the need to track player arm swings.
+    I changed how mcMMO detects the game version slightly, now if it fails to determine the game version it will make the assumption you are on the minimum supported version and print an error, this is just a failsafe in case the version detection mechanism ever fails.
 
 Version 2.2.049
     Combat abilities work with spear in off-hand again (see notes)
