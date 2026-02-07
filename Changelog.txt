@@ -3,6 +3,11 @@ Version 2.2.050
     Improved Spears damage detection (see notes)
     Spear abilities can now trigger from off-hand attacks with the Spear
     Further improved compatibility with Excellent Enchants (fixed more errors)
+    Fixed Spears command showing too many decimal places in some circumstances (Thanks Momshroom)
+    (Codebase) Updated Recipe API to use alternative methods (Thanks Warriorrrr)
+    (Codebase) Removed a bunch of unused code
+    (Codebase) Refactored code around evaluating Minecraft server version
+
 
     NOTES:
     From 2.2.050 onwards, mcMMO will require Minecraft versions 1.20.5 or newer.
