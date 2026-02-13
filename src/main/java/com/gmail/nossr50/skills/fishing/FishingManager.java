@@ -24,7 +24,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
@@ -53,15 +52,14 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.metadata.Metadatable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FishingManager extends SkillManager {
-    private long fishHookSpawnTimestamp = 0L;
-    private long lastWarned = 0L;
+    protected long lastFishCaughtTimestamp = 0L;
+    protected long lastWarned = 0L;
     private BoundingBox lastFishingBoundingBox;
     private boolean sameTarget;
     private int fishCaughtCounter = 1;
@@ -90,27 +88,21 @@ public class FishingManager extends SkillManager {
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public void setFishHookReference(Metadatable fishHook) {
-        if (!fishHook.getMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF).isEmpty()) {
-            return;
-        }
-
-        fishHook.setMetadata(MetadataConstants.METADATA_KEY_FISH_HOOK_REF,
-                MetadataConstants.MCMMO_METADATA_VALUE);
-        fishHookSpawnTimestamp = System.currentTimeMillis();
-    }
-
+    /**
+     * {@return whether the player has had a previous catch within the last second}
+     */
     public boolean isFishingTooOften() {
         long currentTime = System.currentTimeMillis();
-        long fishHookSpawnCD = fishHookSpawnTimestamp + 1000;
-        boolean hasFished = (currentTime < fishHookSpawnCD);
+        boolean hasFishedRecently = lastFishCaughtTimestamp + 1000 > currentTime;
 
-        if (hasFished && (lastWarned + (1000) < currentTime)) {
+        if (hasFishedRecently && currentTime > lastWarned + 1000) {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
-            lastWarned = System.currentTimeMillis();
+            lastWarned = currentTime;
         }
 
-        return hasFished;
+        lastFishCaughtTimestamp = currentTime;
+
+        return hasFishedRecently;
     }
 
     public void processExploiting(Vector centerOfCastVector) {
