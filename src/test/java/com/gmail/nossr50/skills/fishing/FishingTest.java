@@ -49,5 +49,9 @@ public class FishingTest extends MMOTestEnvironment {
         assertTrue(fishingManager.isFishingTooOften());
         assertEquals(lastWarningTime, fishingManager.lastWarned);
         verify(player, times(1)).sendMessage(anyString()); // still only called from the previous invocation
+
+        // Manually decrement the last catch timestamp to simulate time passing
+        fishingManager.lastFishCaughtTimestamp -= 1000;
+        assertFalse(fishingManager.isFishingTooOften());
     }
 }
