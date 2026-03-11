@@ -179,7 +179,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProps.setUsername(mcMMO.p.getGeneralConfig().getMySQLUserName());
         poolProps.setPassword(mcMMO.p.getGeneralConfig().getMySQLUserPassword());
 
+        final int defaultMinIdle = 10;
         poolProps.setInitialSize(0);
+        poolProps.setMinIdle(Math.min(defaultMinIdle, maxIdle));
         poolProps.setMaxIdle(maxIdle);
         poolProps.setMaxActive(maxActive);
         poolProps.setMaxWait(-1);
