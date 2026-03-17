@@ -86,7 +86,7 @@ public class ChimaeraWingWarmup extends CancellableRunnable {
             }
         }
 
-        expendChimaeraWing(player, mcMMO.p.getGeneralConfig().getChimaeraUseCost(),
+        expendChimaeraWing(player, player.getInventory().getItemInMainHand().getAmount(),
                 player.getInventory().getItemInMainHand());
         mmoPlayer.actualizeChimeraWingLastUse();
         mmoPlayer.setTeleportCommenceLocation(null);
