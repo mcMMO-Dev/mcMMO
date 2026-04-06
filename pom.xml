@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>2.2.050-SNAPSHOT</version>
+    <version>2.2.050</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <scm>
@@ -15,7 +15,8 @@
     </scm>
 
     <properties>
-        <spigot.version>1.20.5-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>26.1.1-R0.1-SNAPSHOT</spigot.version>
+<!--        <spigot.version>1.20.5-R0.1-SNAPSHOT</spigot.version>-->
 <!--        <spigot.version>1.21.11-R0.1-SNAPSHOT</spigot.version>-->
         <kyori.adventure.version>4.23.0</kyori.adventure.version>
         <kyori.adventure.platform.version>4.4.1-SNAPSHOT</kyori.adventure.platform.version>

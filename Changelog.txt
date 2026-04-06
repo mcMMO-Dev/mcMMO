@@ -1,4 +1,5 @@
 Version 2.2.050
+    Compatible with Tiny Takeover aka Minecraft 26.1.x (see notes)
     Minimum supported Minecraft version raised to 1.20.5 (see notes)
     Improved Spears damage detection (see notes)
     Spear abilities can now trigger from off-hand attacks with the Spear
@@ -10,6 +11,7 @@ Version 2.2.050
 
 
     NOTES:
+    There weren't any changes needed in mcMMO for the Tiny Takeover Minecraft update
     From 2.2.050 onwards, mcMMO will require Minecraft versions 1.20.5 or newer.
     Every now and then I raise the minimum supported Minecraft version to reduce maintenance burden of supporting older versions.
     mcMMO no longer monitors PlayerAnimationEvent, it turns out Spigot has a DamageType just for Spear damage, avoiding the need to track player arm swings.
