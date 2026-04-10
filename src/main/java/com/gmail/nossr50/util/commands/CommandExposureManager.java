@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,7 +44,16 @@ public final class CommandExposureManager {
 
         CommandExposureRegistry registry = mcMMO.p.getCommandExposureRegistry();
         Map<String, PluginCommand> managedCommands = collectManagedCommands(registry);
+        applyConfiguredExposure(commandMap, knownCommands, registry, managedCommands,
+                mcMMO.p.getLogger(), CommandExposureManager::syncCommands);
+    }
 
+    static void applyConfiguredExposure(@NotNull CommandMap commandMap,
+            @NotNull Map<String, Command> knownCommands,
+            @NotNull CommandExposureRegistry registry,
+            @NotNull Map<String, PluginCommand> managedCommands,
+            @NotNull Logger logger,
+            @NotNull Runnable syncCommandsAction) {
         Map<String, List<String>> requestedRoots = new LinkedHashMap<>();
 
         for (Map.Entry<String, PluginCommand> entry : managedCommands.entrySet()) {
@@ -60,7 +70,7 @@ public final class CommandExposureManager {
         }
 
         Map<String, Set<String>> rejectedRoots = collectRejectedRoots(requestedRoots, managedCommands,
-                knownCommands);
+                knownCommands, logger);
 
         pruneRejectedRoots(requestedRoots, rejectedRoots);
 
@@ -79,7 +89,7 @@ public final class CommandExposureManager {
             List<String> roots = requestedRoots.get(commandId);
             String canonicalName = commandId;
             if (roots == null || roots.isEmpty()) {
-                mcMMO.p.getLogger().warning("Disabling command '" + commandId
+                logger.warning("Disabling command '" + commandId
                         + "' because commands.yml leaves it with no registered root or alias.");
                 registry.setAppliedRoots(commandId, List.of());
                 continue;
@@ -96,7 +106,7 @@ public final class CommandExposureManager {
             commandMap.register(canonicalName, command);
         }
 
-        syncCommands();
+        syncCommandsAction.run();
     }
 
     private static void applyWrappers(@NotNull String commandId, @NotNull PluginCommand command) {
@@ -146,17 +156,20 @@ public final class CommandExposureManager {
     private static @NotNull Map<String, Set<String>> collectRejectedRoots(
             @NotNull Map<String, List<String>> requestedRoots,
             @NotNull Map<String, PluginCommand> managedCommands,
-            @NotNull Map<String, Command> knownCommands) {
+            @NotNull Map<String, Command> knownCommands,
+            @NotNull Logger logger) {
         Map<String, Set<String>> rejectedRoots = new LinkedHashMap<>();
 
-        collectInternalConflicts(requestedRoots, rejectedRoots);
-        collectExternalConflicts(requestedRoots, managedCommands, knownCommands, rejectedRoots);
+        collectInternalConflicts(requestedRoots, rejectedRoots, logger);
+        collectExternalConflicts(requestedRoots, managedCommands, knownCommands, rejectedRoots,
+                logger);
 
         return rejectedRoots;
     }
 
     private static void collectInternalConflicts(@NotNull Map<String, List<String>> requestedRoots,
-            @NotNull Map<String, Set<String>> rejectedRoots) {
+            @NotNull Map<String, Set<String>> rejectedRoots,
+            @NotNull Logger logger) {
         Map<String, List<String>> rootsToCommands = new LinkedHashMap<>();
 
         for (Map.Entry<String, List<String>> entry : requestedRoots.entrySet()) {
@@ -173,7 +186,7 @@ public final class CommandExposureManager {
                             .add(entry.getKey());
                 }
 
-                mcMMO.p.getLogger().warning("Skipping conflicting alias '" + entry.getKey()
+                logger.warning("Skipping conflicting alias '" + entry.getKey()
                         + "' for "
                         + String.join(", ", entry.getValue())
                         + " because it is configured for multiple mcMMO commands.");
@@ -184,7 +197,8 @@ public final class CommandExposureManager {
     private static void collectExternalConflicts(@NotNull Map<String, List<String>> requestedRoots,
             @NotNull Map<String, PluginCommand> managedCommands,
             @NotNull Map<String, Command> knownCommands,
-            @NotNull Map<String, Set<String>> rejectedRoots) {
+            @NotNull Map<String, Set<String>> rejectedRoots,
+            @NotNull Logger logger) {
         Collection<PluginCommand> managedValues = managedCommands.values();
 
         for (Map.Entry<String, List<String>> entry : requestedRoots.entrySet()) {
@@ -198,7 +212,7 @@ public final class CommandExposureManager {
 
                 rejectedRoots.computeIfAbsent(commandId, ignored -> new LinkedHashSet<>())
                         .add(root.toLowerCase());
-                mcMMO.p.getLogger().warning("Skipping conflicting alias '" + root + "' for '"
+                logger.warning("Skipping conflicting alias '" + root + "' for '"
                         + commandId
                         + "' because it is already registered by another Bukkit command.");
             }
