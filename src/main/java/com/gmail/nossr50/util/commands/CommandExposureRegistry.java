@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 public class CommandExposureRegistry {
     private static final List<String> MANAGED_COMMAND_IDS = List.of(
             "mmoxpbar",
-            "mmocompat",
             "mmoinfo",
             "mmodebug",
             "mcability",
