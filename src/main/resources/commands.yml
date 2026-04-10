@@ -1,0 +1,315 @@
+commands:
+    defaults:
+        # Baseline for all commands. A command's own registerOriginalRoot value overrides this.
+        registerOriginalRoot: true
+        tabCompleteMode: both # translated | both | canonical; applies to subcommands and fixed arguments, not root command names
+
+    mmoxpbar:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            reset: []
+            disable: []
+            show: []
+            hide: []
+
+    mmocompat:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mmoinfo:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mmodebug:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcability:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcgod:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcchatspy:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcmmo:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        subcommands:
+            help: []
+
+    mcnotify:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcrefresh:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcscoreboard:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            clear: []
+            keep: []
+            time: []
+
+    xprate:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            reset: []
+            true: []
+            false: []
+
+    mcpurge:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcremove:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mmoshowdb:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcconvert:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        subcommands:
+            database: []
+            experience: []
+        arguments:
+            flatfile: []
+            sql: []
+            linear: []
+            exponential: []
+
+    addlevels:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            all: []
+            -s: []
+
+    addxp:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            all: []
+            -s: []
+
+    mmoedit:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            all: []
+            -s: []
+
+    skillreset:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            all: []
+
+    party:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        subcommands:
+            join: []
+            accept: []
+            create: []
+            help: []
+            info: []
+            quit: []
+            xpshare: []
+            itemshare: []
+            invite: []
+            kick: []
+            disband: []
+            owner: []
+            lock: []
+            unlock: []
+            password: []
+            rename: []
+            teleport: []
+            chat: []
+            alliance: []
+        arguments:
+            toggle: []
+            accept: []
+            acceptany: []
+            acceptall: []
+            on: []
+            off: []
+            clear: []
+            none: []
+            equal: []
+            random: []
+            loot: []
+            mining: []
+            herbalism: []
+            woodcutting: []
+            misc: []
+
+    ptp:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+        arguments:
+            toggle: []
+            accept: []
+            acceptany: []
+            acceptall: []
+
+    inspect:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mccooldown:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcrank:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcstats:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mctop:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    acrobatics:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    alchemy:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    archery:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    axes:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    crossbows:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    excavation:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    fishing:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    herbalism:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    maces:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mining:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    repair:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    salvage:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    smelting:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    spears:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    swords:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    taming:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    tridents:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    unarmed:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    woodcutting:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []
+
+    mcmmoreloadlocale:
+        enabled: true
+        registerOriginalRoot: true
+        aliases: []

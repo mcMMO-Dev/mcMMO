@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandSyntaxFormatter;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -252,9 +253,12 @@ public class PartyCommand implements TabExecutor {
     }
 
     private boolean printUsage(Player player) {
-        player.sendMessage(LocaleLoader.getString("Party.Help.0", "/party join"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.2", "/party ?"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.0",
+                CommandSyntaxFormatter.command("party", "join")));
+        player.sendMessage(LocaleLoader.getString("Party.Help.1",
+                CommandSyntaxFormatter.command("party", "create")));
+        player.sendMessage(LocaleLoader.getString("Party.Help.2",
+                CommandSyntaxFormatter.command("party", "help")));
         return true;
     }
 
@@ -268,4 +272,3 @@ public class PartyCommand implements TabExecutor {
                 "woodcutting") || category.equalsIgnoreCase("misc");
     }
 }
-
