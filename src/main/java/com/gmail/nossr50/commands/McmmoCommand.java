@@ -4,6 +4,7 @@ import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandSyntaxFormatter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -62,16 +63,21 @@ public class McmmoCommand implements CommandExecutor {
     }
 
     private void displayGeneralCommands(CommandSender sender) {
-        sender.sendMessage(LocaleLoader.getString("Commands.Stats"));
-        sender.sendMessage(LocaleLoader.getString("Commands.SkillInfo"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Leaderboards"));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.Stats")));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.SkillInfo")));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.Leaderboards")));
 
         if (Permissions.inspect(sender)) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Inspect"));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.Inspect")));
         }
 
         if (Permissions.mcability(sender)) {
-            sender.sendMessage(LocaleLoader.getString("Commands.ToggleAbility"));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.ToggleAbility")));
         }
     }
 
@@ -104,19 +110,26 @@ public class McmmoCommand implements CommandExecutor {
     private void displayPartyCommands(CommandSender sender) {
         if (Permissions.party(sender)) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
-            sender.sendMessage(LocaleLoader.getString("Commands.Party1"));
-            sender.sendMessage(LocaleLoader.getString("Commands.Party2"));
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.Quit"));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.Party1")));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.Party2")));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.Party.Quit")));
 
             if (Permissions.partyChat(sender)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Party.Toggle"));
+                sender.sendMessage(CommandSyntaxFormatter.transformText(
+                        LocaleLoader.getString("Commands.Party.Toggle")));
             }
 
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.Invite"));
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.Accept"));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.Party.Invite")));
+            sender.sendMessage(CommandSyntaxFormatter.transformText(
+                    LocaleLoader.getString("Commands.Party.Accept")));
 
             if (Permissions.partySubcommand(sender, PartySubcommandType.TELEPORT)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Party.Teleport"));
+                sender.sendMessage(CommandSyntaxFormatter.transformText(
+                        LocaleLoader.getString("Commands.Party.Teleport")));
             }
         }
     }

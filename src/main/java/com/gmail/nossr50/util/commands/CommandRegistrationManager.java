@@ -458,5 +458,7 @@ public final class CommandRegistrationManager {
 
         // Admin commands
         registerReloadLocaleCommand();
+
+        CommandExposureManager.applyConfiguredExposure();
     }
 }
