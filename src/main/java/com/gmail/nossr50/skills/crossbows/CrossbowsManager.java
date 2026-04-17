@@ -79,7 +79,7 @@ public class CrossbowsManager extends SkillManager {
             spawnedArrow.setItem(new ItemStack(Material.TIPPED_ARROW));
             spawnedArrow.setBasePotionType(originalArrow.getBasePotionType());
         }
-        // copy some properties from the old arrow-
+        // copy some properties from the old arrow
         spawnedArrow.setShooter(originalArrowShooter);
         spawnedArrow.setCritical(originalArrow.isCritical());
         spawnedArrow.setPierceLevel(originalArrow.getPierceLevel());
