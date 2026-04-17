@@ -16,9 +16,11 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
@@ -72,16 +74,17 @@ public class CrossbowsManager extends SkillManager {
         // Spawn new arrow with the reflected direction
         final Arrow spawnedArrow = originalArrow.getWorld()
                 .spawnArrow(origin, reflectedDirection, 1, 1);
+        if (originalArrow.getBasePotionType() != null) {
+            // Make the arrow a tipped arrow.
+            spawnedArrow.setItem(new ItemStack(Material.TIPPED_ARROW));
+            spawnedArrow.setBasePotionType(originalArrow.getBasePotionType());
+        }
         // copy some properties from the old arrow
         spawnedArrow.setShooter(originalArrowShooter);
         spawnedArrow.setCritical(originalArrow.isCritical());
         spawnedArrow.setPierceLevel(originalArrow.getPierceLevel());
         spawnedArrow.setPickupStatus(originalArrow.getPickupStatus());
         spawnedArrow.setKnockbackStrength(originalArrow.getKnockbackStrength());
-
-        if (originalArrow.getBasePotionType() != null) {
-            spawnedArrow.setBasePotionType(originalArrow.getBasePotionType());
-        }
 
         if (originalArrow.hasCustomEffects()) {
             for (var effect : originalArrow.getCustomEffects()) {
