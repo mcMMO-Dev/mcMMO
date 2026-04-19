@@ -60,3 +60,6 @@
 # HTML
 /html
 *.html
+
+# md
+*.md
