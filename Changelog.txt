@@ -1,8 +1,8 @@
 Version 2.2.051
     Fixed bug which caused trickshot-bounced arrows to have much longer potion durations than intended (Thanks flyncodes)
     Fixed bug where using a stacked Chimaera Wing with warmup enabled would delete the entire stack instead of consuming only the use cost (Thanks UDPSendToFailed)
+    Fixed Daze (Archery) teleport causing players to snap back to their death/teleport location when hit simultaneously with a kill or world change
     Default value for Glow_Lichen is now 1 instead of 5 (update experience.yml to get this change, or delete file and regenerate it)
-
 
 Version 2.2.050
     Compatible with Tiny Takeover aka Minecraft 26.1.x (see notes)
