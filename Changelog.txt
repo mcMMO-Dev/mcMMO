@@ -1,3 +1,7 @@
+Version 2.2.051
+    Fixed bug which caused trickshot-bounced arrows to have much longer potion durations than intended
+
+
 Version 2.2.050
     Compatible with Tiny Takeover aka Minecraft 26.1.x (see notes)
     Minimum supported Minecraft version raised to 1.20.5 (see notes)

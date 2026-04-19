@@ -13,6 +13,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
+import com.gmail.nossr50.util.skills.ArrowItemStackHandler;
 import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
@@ -79,15 +80,12 @@ public class CrossbowsManager extends SkillManager {
         spawnedArrow.setPickupStatus(originalArrow.getPickupStatus());
         spawnedArrow.setKnockbackStrength(originalArrow.getKnockbackStrength());
 
-        if (originalArrow.getBasePotionType() != null) {
-            spawnedArrow.setBasePotionType(originalArrow.getBasePotionType());
-        }
-
-        if (originalArrow.hasCustomEffects()) {
-            for (var effect : originalArrow.getCustomEffects()) {
-                spawnedArrow.addCustomEffect(effect, true);
-            }
-        }
+        // Copy the full item stack from the original arrow to preserve the tipped arrow
+        // item type and its POTION_DURATION_SCALE (0.125) data component. Without this,
+        // the spawned arrow has a plain Items.ARROW pickup item, causing
+        // POTION_DURATION_SCALE to default to 1.0 — making effects last 8× longer.
+        // Also fixes the arrow losing its tipped-arrow color/texture after ricochet.
+        ArrowItemStackHandler.copyArrowItemStack(originalArrow, spawnedArrow);
 
         // copy metadata from old arrow
         ProjectileUtils.copyArrowMetadata(pluginRef, originalArrow, spawnedArrow);
