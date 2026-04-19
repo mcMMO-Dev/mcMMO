@@ -1,5 +1,6 @@
 Version 2.2.051
     Fixed bug which caused trickshot-bounced arrows to have much longer potion durations than intended
+    Default value for Glow_Lichen is now 1 instead of 5 (update experience.yml to get this change, or delete file and regenerate it)
 
 
 Version 2.2.050
