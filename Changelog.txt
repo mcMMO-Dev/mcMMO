@@ -1,4 +1,11 @@
 Version 2.2.051
+    Added 'Skills.Crossbows.PoweredShot.RankDamageMultiplier' to advanced.yml
+    Added 'Skills.Crossbows.PoweredShot.MaxDamage' to advanced.yml
+    Added 'Skills.Maces.Crush.Base_Damage' to advanced.yml
+    Added 'Skills.Maces.Crush.Rank_Damage_Multiplier' to advanced.yml
+    Added 'Skills.Tridents.Impale.Base_Damage' to advanced.yml
+    Added 'Skills.Tridents.Impale.Rank_Damage_Multiplier' to advanced.yml
+    Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
     Fixed bug which caused trickshot-bounced arrows to have much longer potion durations than intended (Thanks flyncodes)
     Fixed bug where using a stacked Chimaera Wing with warmup enabled would delete the entire stack instead of consuming only the use cost (Thanks UDPSendToFailed)
     Fixed Daze (Archery) teleport causing players to snap back to their death/teleport location when hit simultaneously with a kill or world change

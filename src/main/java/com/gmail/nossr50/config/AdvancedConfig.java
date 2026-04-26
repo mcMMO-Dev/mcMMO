@@ -626,7 +626,7 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public double getPoweredShotDamageMax() {
-        return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D);
+        return config.getDouble("Skills.Crossbows.PoweredShot.MaxDamage", 9.0D);
     }
 
     /* EXCAVATION */
@@ -884,9 +884,26 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /* MACES */
+    public double getCrushBaseDamage() {
+        return config.getDouble("Skills.Maces.Crush.Base_Damage", 0.5D);
+    }
+
+    public double getCrushRankDamageMultiplier() {
+        return config.getDouble("Skills.Maces.Crush.Rank_Damage_Multiplier", 1.0D);
+    }
+
     public double getCrippleChanceToApplyOnHit(int rank) {
         return config.getDouble("Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_" + rank,
                 defaultCrippleValues[rank - 1]);
+    }
+
+    /* TRIDENTS */
+    public double getImpaleBaseDamage() {
+        return config.getDouble("Skills.Tridents.Impale.Base_Damage", 1.0D);
+    }
+
+    public double getImpaleRankDamageMultiplier() {
+        return config.getDouble("Skills.Tridents.Impale.Rank_Damage_Multiplier", 0.5D);
     }
 
     /* SPEARS */

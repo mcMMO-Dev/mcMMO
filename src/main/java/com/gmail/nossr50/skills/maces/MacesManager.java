@@ -47,7 +47,8 @@ public class MacesManager extends SkillManager {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.MACES_CRUSH);
 
         if (rank > 0) {
-            return (0.5D + (rank * 1.D));
+            return mcMMO.p.getAdvancedConfig().getCrushBaseDamage()
+                    + (rank * mcMMO.p.getAdvancedConfig().getCrushRankDamageMultiplier());
         }
 
         return 0;

@@ -172,6 +172,16 @@ Skills:
         # ForceMultiplier: Multiply the force of the bow by this for an XP boost.
         ForceMultiplier: 2.0
     #
+    #  Settings for Crossbows
+    ###
+    Crossbows:
+        PoweredShot:
+            # RankDamageMultiplier: The current rank of this subskill is multiplied by this value to determine bonus damage.
+            # RankDamageMultiplier is a percentage.
+            RankDamageMultiplier: 10.0
+            # MaxDamage: Maximum bonus damage added by PoweredShot.
+            MaxDamage: 9.0
+    #
     #  Settings for Axes
     ###
     Axes:
@@ -642,12 +652,23 @@ Skills:
                 Standard: 100
                 RetroMode: 1000
     Maces:
+        Crush:
+            # Base_Damage: Flat damage bonus applied at rank 1.
+            Base_Damage: 0.5
+            # Rank_Damage_Multiplier: Additional damage bonus per rank.
+            Rank_Damage_Multiplier: 1.0
         Cripple:
             Chance_To_Apply_On_Hit:
                 Rank_1: 10
                 Rank_2: 15
                 Rank_3: 20
                 Rank_4: 33
+    Tridents:
+        Impale:
+            # Base_Damage: Flat damage bonus applied at rank 1.
+            Base_Damage: 1.0
+            # Rank_Damage_Multiplier: Additional damage bonus per rank after rank 1.
+            Rank_Damage_Multiplier: 0.5
     Spears:
         SpearMastery:
             Rank_Damage_Multiplier: 0.4
