@@ -28,6 +28,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -148,22 +149,56 @@ public final class ItemUtils {
      */
     public static void removeItemIncludingOffHand(@NotNull Player player,
             @NotNull Material material, int amount) {
-        // Checks main inventory / item bar
-        if (player.getInventory().contains(material)) {
-            player.getInventory().removeItem(new ItemStack(material, amount));
+        final PlayerInventory playerInventory = player.getInventory();
+        int remainingAmount = removeItemFromStorageByMaterial(playerInventory, material, amount);
+
+        if (remainingAmount <= 0) {
             return;
         }
 
         // Check off-hand
-        final ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        final ItemStack offHandItem = playerInventory.getItemInOffHand();
         if (offHandItem.getType() == material) {
-            int newAmount = offHandItem.getAmount() - amount;
+            int newAmount = offHandItem.getAmount() - remainingAmount;
             if (newAmount > 0) {
                 offHandItem.setAmount(newAmount);
             } else {
-                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                playerInventory.setItemInOffHand(new ItemStack(Material.AIR));
             }
         }
+    }
+
+    private static int removeItemFromStorageByMaterial(@NotNull PlayerInventory playerInventory,
+            @NotNull Material material, int amount) {
+        final ItemStack[] storageContents = playerInventory.getStorageContents();
+        int remainingAmount = amount;
+        boolean updatedStorage = false;
+
+        for (int i = 0; i < storageContents.length && remainingAmount > 0; i++) {
+            final ItemStack storedItem = storageContents[i];
+
+            if (storedItem == null || storedItem.getType() != material) {
+                continue;
+            }
+
+            final int storedAmount = storedItem.getAmount();
+
+            if (storedAmount <= remainingAmount) {
+                storageContents[i] = null;
+                remainingAmount -= storedAmount;
+            } else {
+                storedItem.setAmount(storedAmount - remainingAmount);
+                remainingAmount = 0;
+            }
+
+            updatedStorage = true;
+        }
+
+        if (updatedStorage) {
+            playerInventory.setStorageContents(storageContents);
+        }
+
+        return remainingAmount;
     }
 
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {

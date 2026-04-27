@@ -1,11 +1,13 @@
 Version 2.2.052
+    Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
+    Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
+    Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
     Added 'Skills.Crossbows.PoweredShot.RankDamageMultiplier' to advanced.yml
     Added 'Skills.Crossbows.PoweredShot.MaxDamage' to advanced.yml
     Added 'Skills.Maces.Crush.Base_Damage' to advanced.yml
     Added 'Skills.Maces.Crush.Rank_Damage_Multiplier' to advanced.yml
     Added 'Skills.Tridents.Impale.Base_Damage' to advanced.yml
     Added 'Skills.Tridents.Impale.Rank_Damage_Multiplier' to advanced.yml
-    Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
     Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml
     Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml
     (Codebase) Added unit tests for Arcane Forging and Arcane Salvage enchant-level capping behavior

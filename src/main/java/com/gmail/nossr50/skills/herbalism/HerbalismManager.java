@@ -808,8 +808,10 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        playerInventory.removeItem(new ItemStack(Material.BROWN_MUSHROOM));
-        playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
+        // Consume mushrooms by material so renamed/custom-meta variants are not skipped by
+        // CraftBukkit's stricter ItemStack similarity matcher.
+        removeItemIncludingOffHand(getPlayer(), Material.BROWN_MUSHROOM, 1);
+        removeItemIncludingOffHand(getPlayer(), Material.RED_MUSHROOM, 1);
 
         if (!ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.HERBALISM_SHROOM_THUMB, mmoPlayer)) {
             NotificationManager.sendPlayerInformation(getPlayer(),
