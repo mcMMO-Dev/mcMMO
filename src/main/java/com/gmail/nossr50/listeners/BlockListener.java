@@ -18,8 +18,6 @@ import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ContainerMetadataUtils;
@@ -326,10 +324,10 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (blockState.getType() == Repair.anvilMaterial && mcMMO.p.getSkillTools()
+        if (blockState.getType() == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial() && mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)) {
             mmoPlayer.getRepairManager().placedAnvilCheck();
-        } else if (blockState.getType() == Salvage.anvilMaterial && mcMMO.p.getSkillTools()
+        } else if (blockState.getType() == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial() && mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)) {
             mmoPlayer.getSalvageManager().placedAnvilCheck();
         }

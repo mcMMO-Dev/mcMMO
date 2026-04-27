@@ -12,15 +12,26 @@ public final class Salvage {
     private Salvage() {
     }
 
+    /**
+     * No longer used by mcMMO internally, use the config calls instead.
+     * @see com.gmail.nossr50.config.GeneralConfig
+     */
+    @Deprecated(since = "2.2.052", forRemoval = true)
     public static Material anvilMaterial = mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial();
 
-    /*public static int    salvageMaxPercentageLevel = mcMMO.p.getAdvancedConfig().getSalvageMaxPercentageLevel();
-    public static double salvageMaxPercentage      = mcMMO.p.getAdvancedConfig().getSalvageMaxPercentage();
-
-    public static int advancedSalvageUnlockLevel = RankUtils.getRankUnlockLevel(SubSkillType.SALVAGE_SCRAP_COLLECTOR, 1);*/
-
+    /**
+     * No longer used by mcMMO internally, use the config calls instead.
+     * @see com.gmail.nossr50.config.AdvancedConfig
+     */
+    @Deprecated(since = "2.2.052", forRemoval = true)
     public static boolean arcaneSalvageDowngrades = mcMMO.p.getAdvancedConfig()
             .getArcaneSalvageEnchantDowngradeEnabled();
+
+    /**
+     * No longer used by mcMMO internally, use the config calls instead.
+     * @see com.gmail.nossr50.config.AdvancedConfig
+     */
+    @Deprecated(since = "2.2.052", forRemoval = true)
     public static boolean arcaneSalvageEnchantLoss = mcMMO.p.getAdvancedConfig()
             .getArcaneSalvageEnchantLossEnabled();
 

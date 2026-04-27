@@ -211,6 +211,14 @@ public class SalvageManager extends SkillManager {
                 .getArcaneSalvageExtractPartialEnchantsChance(getArcaneSalvageRank());
     }
 
+    int getArcaneSalvageEnchantLevel(int enchantLevel) {
+        if (ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
+            return enchantLevel;
+        }
+
+        return Math.min(enchantLevel, mcMMO.p.getAdvancedConfig().getArcaneSalvageMaxEnchantLevel());
+    }
+
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {
         Player player = getPlayer();
 
@@ -229,21 +237,15 @@ public class SalvageManager extends SkillManager {
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
 
-            int enchantLevel = enchant.getValue();
+            int enchantLevel = getArcaneSalvageEnchantLevel(enchant.getValue());
 
-            if (!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
-                if (enchantLevel > enchant.getKey().getMaxLevel()) {
-                    enchantLevel = enchant.getKey().getMaxLevel();
-                }
-            }
-
-            if (!Salvage.arcaneSalvageEnchantLoss
+            if (!mcMMO.p.getAdvancedConfig().getArcaneSalvageEnchantLossEnabled()
                     || Permissions.hasSalvageEnchantBypassPerk(player)
                     || ProbabilityUtil.isStaticSkillRNGSuccessful(
                     PrimarySkillType.SALVAGE, mmoPlayer, getExtractFullEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             } else if (enchantLevel > 1
-                    && Salvage.arcaneSalvageDowngrades
+                    && mcMMO.p.getAdvancedConfig().getArcaneSalvageEnchantDowngradeEnabled()
                     && ProbabilityUtil.isStaticSkillRNGSuccessful(
                     PrimarySkillType.SALVAGE, mmoPlayer, getExtractPartialEnchantChance())) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);

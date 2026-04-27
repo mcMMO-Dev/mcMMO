@@ -5,8 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.ArcaneForging;
-import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
@@ -66,8 +64,10 @@ public class RepairCommand extends SkillCommand {
         // REPAIR MASTERY
         if (canMasterRepair) {
             repairMasteryBonus = percent.format(Math.min(
-                    ((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel)
-                            * skillValue), Repair.repairMasteryMaxBonus) / 100D);
+                    ((mcMMO.p.getAdvancedConfig().getRepairMasteryMaxBonus() / mcMMO.p.getAdvancedConfig()
+                            .getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY))
+                            * skillValue), mcMMO.p.getAdvancedConfig()
+                                    .getRepairMasteryMaxBonus()) / 100D);
         }
 
         // SUPER REPAIR
@@ -108,7 +108,9 @@ public class RepairCommand extends SkillCommand {
                     String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
                     RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
-            if (ArcaneForging.arcaneForgingEnchantLoss || ArcaneForging.arcaneForgingDowngrades) {
+            if (mcMMO.p.getAdvancedConfig()
+                    .getArcaneForgingEnchantLossEnabled() || mcMMO.p.getAdvancedConfig()
+                            .getArcaneForgingDowngradeEnabled()) {
                 messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,
                         String.valueOf(arcaneBypass ? 100 : repairManager.getKeepEnchantChance()),
                         String.valueOf(arcaneBypass ? 0

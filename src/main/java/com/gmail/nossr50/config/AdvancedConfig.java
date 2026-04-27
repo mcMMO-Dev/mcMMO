@@ -741,6 +741,10 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true);
     }
 
+    public int getArcaneForgingMaxEnchantLevel() {
+        return config.getInt("Skills.Repair.ArcaneForging.MaxEnchantLevel", 5);
+    }
+
     public double getArcaneForgingKeepEnchantsChance(int rank) {
         return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank);
     }
@@ -759,6 +763,10 @@ public class AdvancedConfig extends BukkitConfig {
 
     public boolean getArcaneSalvageEnchantLossEnabled() {
         return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true);
+    }
+
+    public int getArcaneSalvageMaxEnchantLevel() {
+        return config.getInt("Skills.Salvage.ArcaneSalvage.MaxEnchantLevel", 5);
     }
 
     public double getArcaneSalvageExtractFullEnchantsChance(int rank) {

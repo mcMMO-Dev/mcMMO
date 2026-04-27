@@ -399,6 +399,10 @@ Skills:
 
         ArcaneForging:
             May_Lose_Enchants: true
+            # MaxEnchantLevel: Maximum enchant level Arcane Forging will keep or downgrade to
+            # This defaults to vanilla behavior. Set it higher if you know what you are doing.
+            # Overridden by ExploitFix.UnsafeEnchantments in experience.yml if that is enabled.
+            MaxEnchantLevel: 5
             Keep_Enchants_Chance:
                 Rank_1: 10.0
                 Rank_2: 20.0
@@ -427,6 +431,10 @@ Skills:
             # EnchantDowngradeEnabled: When salvaging enchanted items, the enchants may be downgraded
             EnchantLossEnabled: true
             EnchantDowngradeEnabled: true
+            # MaxEnchantLevel: Maximum enchant level Arcane Salvage will keep or downgrade to
+            # This defaults to vanilla behavior. Set it higher if you know what you are doing.
+            # Overridden by ExploitFix.UnsafeEnchantments in experience.yml if that is enabled.
+            MaxEnchantLevel: 5
 
             # ExtractFullEnchant: Chance to extract the full enchant at each ArcaneSalvage rank
             ExtractFullEnchant:

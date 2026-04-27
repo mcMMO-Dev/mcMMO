@@ -15,9 +15,7 @@ import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
@@ -694,7 +692,8 @@ public class PlayerListener implements Listener {
         Block clickedBlock = event.getClickedBlock();
         Material clickedBlockType = clickedBlock.getType();
         //The blacklist contains interactable blocks so its a convenient filter
-        if (clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
+        if (clickedBlockType == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial()
+                || clickedBlockType == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial()) {
             event.setUseItemInHand(Event.Result.ALLOW);
 
             if (!event.getPlayer().isSneaking() && mcMMO.getMaterialMapStore()
@@ -724,7 +723,7 @@ public class PlayerListener implements Listener {
                 if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking()
                         || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.anvilMaterial
+                    if (type == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial()
                             && mcMMO.p.getSkillTools()
                             .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)
                             && mcMMO.getRepairableManager().isRepairable(heldItem)
@@ -738,7 +737,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial
+                    else if (type == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial()
                             && mcMMO.p.getSkillTools()
                             .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
                             && RankUtils.hasUnlockedSubskill(player,
@@ -774,7 +773,7 @@ public class PlayerListener implements Listener {
                 if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking()
                         || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.anvilMaterial && mcMMO.p.getSkillTools()
+                    if (type == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial() && mcMMO.p.getSkillTools()
                             .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)
                             && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mmoPlayer.getRepairManager();
@@ -787,7 +786,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && mcMMO.p.getSkillTools()
+                    else if (type == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial() && mcMMO.p.getSkillTools()
                             .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
                             && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
                         SalvageManager salvageManager = mmoPlayer.getSalvageManager();
