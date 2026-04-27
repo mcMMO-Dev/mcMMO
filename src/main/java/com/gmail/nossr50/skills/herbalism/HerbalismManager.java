@@ -929,7 +929,6 @@ public class HerbalismManager extends SkillManager {
         //Immature plants will start over at 0
         if (!isAgeableMature(ageable)) {
             startReplantTask(0, blockBreakEvent, blockState, true);
-            blockBreakEvent.setDropItems(false);
             return true;
         }
 

@@ -21,6 +21,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.tcoded.folialib.FoliaLib;
 import java.lang.reflect.Method;
+import java.util.stream.Stream;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import org.bukkit.Location;
@@ -34,6 +35,9 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -103,6 +107,96 @@ class HerbalismManagerTest extends MMOTestEnvironment {
         assertTrue(activated);
         assertNull(storageContents.get()[0],
                 "Green Thumb should consume the renamed seed from storage.");
+        verify(playerInventory, never()).removeItem(any(ItemStack.class));
+    }
+
+    @Test
+    void greenThumbImmatureNetherWartConsumesWartWithoutSuppressingDrops() throws Exception {
+        final AtomicReference<ItemStack[]> storageContents = new AtomicReference<>(
+            new ItemStack[]{createStorageStack(Material.NETHER_WART)});
+        final Block block = mock(Block.class);
+        final BlockState blockState = mock(BlockState.class);
+        final Ageable ageableCrop = mock(Ageable.class);
+        final BlockBreakEvent blockBreakEvent = mock(BlockBreakEvent.class);
+        final Location cropLocation = mock(Location.class);
+
+        when(playerInventory.getItemInMainHand()).thenReturn(new ItemStack(Material.WOODEN_HOE));
+        when(playerInventory.contains(Material.NETHER_WART)).thenReturn(true);
+        when(playerInventory.getStorageContents()).thenAnswer(invocation -> storageContents.get());
+        doAnswer(invocation -> {
+            final ItemStack[] updatedStorage = invocation.getArgument(0);
+            storageContents.set(updatedStorage);
+            return null;
+        }).when(playerInventory).setStorageContents(any(ItemStack[].class));
+        when(playerInventory.getItemInOffHand()).thenReturn(new ItemStack(Material.AIR));
+
+        when(blockState.getType()).thenReturn(Material.NETHER_WART);
+        when(blockState.getBlockData()).thenReturn(ageableCrop);
+        when(blockState.getBlock()).thenReturn(block);
+        when(blockState.getLocation()).thenReturn(cropLocation);
+
+        when(ageableCrop.getMaterial()).thenReturn(Material.NETHER_WART);
+        when(ageableCrop.getAge()).thenReturn(1);
+        when(ageableCrop.getMaximumAge()).thenReturn(3);
+
+        when(blockBreakEvent.getPlayer()).thenReturn(player);
+        when(blockBreakEvent.getBlock()).thenReturn(block);
+        when(block.getLocation()).thenReturn(cropLocation);
+
+        final boolean activated = invokeProcessGreenThumbPlants(blockState, blockBreakEvent,
+            false);
+
+        assertTrue(activated,
+            "Green Thumb should activate for immature nether wart when requirements are met.");
+        verify(blockBreakEvent, never()).setDropItems(false);
+        assertNull(storageContents.get()[0],
+            "Immature nether wart replant should consume one nether wart from storage.");
+        verify(playerInventory, never()).removeItem(any(ItemStack.class));
+    }
+
+    @ParameterizedTest(name = "{0} immature Green Thumb keeps drops enabled")
+    @MethodSource("immatureGreenThumbCrops")
+    void greenThumbImmatureCropsConsumeReplantWithoutSuppressingDrops(Material cropMaterial,
+            Material replantMaterial, int immatureAge, int maxAge) throws Exception {
+        final AtomicReference<ItemStack[]> storageContents = new AtomicReference<>(
+                new ItemStack[]{createStorageStack(replantMaterial)});
+        final Block block = mock(Block.class);
+        final BlockState blockState = mock(BlockState.class);
+        final Ageable ageableCrop = mock(Ageable.class);
+        final BlockBreakEvent blockBreakEvent = mock(BlockBreakEvent.class);
+        final Location cropLocation = mock(Location.class);
+
+        when(playerInventory.getItemInMainHand()).thenReturn(new ItemStack(Material.WOODEN_HOE));
+        when(playerInventory.contains(replantMaterial)).thenReturn(true);
+        when(playerInventory.getStorageContents()).thenAnswer(invocation -> storageContents.get());
+        doAnswer(invocation -> {
+            final ItemStack[] updatedStorage = invocation.getArgument(0);
+            storageContents.set(updatedStorage);
+            return null;
+        }).when(playerInventory).setStorageContents(any(ItemStack[].class));
+        when(playerInventory.getItemInOffHand()).thenReturn(new ItemStack(Material.AIR));
+
+        when(blockState.getType()).thenReturn(cropMaterial);
+        when(blockState.getBlockData()).thenReturn(ageableCrop);
+        when(blockState.getBlock()).thenReturn(block);
+        when(blockState.getLocation()).thenReturn(cropLocation);
+
+        when(ageableCrop.getMaterial()).thenReturn(cropMaterial);
+        when(ageableCrop.getAge()).thenReturn(immatureAge);
+        when(ageableCrop.getMaximumAge()).thenReturn(maxAge);
+
+        when(blockBreakEvent.getPlayer()).thenReturn(player);
+        when(blockBreakEvent.getBlock()).thenReturn(block);
+        when(block.getLocation()).thenReturn(cropLocation);
+
+        final boolean activated = invokeProcessGreenThumbPlants(blockState, blockBreakEvent,
+                false);
+
+        assertTrue(activated,
+                "Green Thumb should activate for immature crops when requirements are met.");
+        verify(blockBreakEvent, never()).setDropItems(false);
+        assertNull(storageContents.get()[0],
+                "Immature crop replant should consume one matching replant item from storage.");
         verify(playerInventory, never()).removeItem(any(ItemStack.class));
     }
 
@@ -201,5 +295,15 @@ class HerbalismManagerTest extends MMOTestEnvironment {
         when(storedStack.getAmount()).thenReturn(1);
 
         return storedStack;
+    }
+
+    private static Stream<Arguments> immatureGreenThumbCrops() {
+        return Stream.of(
+                Arguments.of(Material.CARROTS, Material.CARROT, 1, 7),
+                Arguments.of(Material.POTATOES, Material.POTATO, 1, 7),
+                Arguments.of(Material.WHEAT, Material.WHEAT_SEEDS, 1, 7),
+                Arguments.of(Material.BEETROOTS, Material.BEETROOT_SEEDS, 1, 3),
+                Arguments.of(Material.COCOA, Material.COCOA_BEANS, 1, 2),
+                Arguments.of(Material.SWEET_BERRY_BUSH, Material.SWEET_BERRIES, 1, 3));
     }
 }

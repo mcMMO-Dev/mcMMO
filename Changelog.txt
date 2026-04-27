@@ -2,21 +2,22 @@ Version 2.2.052
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
+    Changed mcMMO behavior around immature crop drops, no longer blocking drops from immature crops (See notes)
     Added 'Skills.Crossbows.PoweredShot.RankDamageMultiplier' to advanced.yml
     Added 'Skills.Crossbows.PoweredShot.MaxDamage' to advanced.yml
     Added 'Skills.Maces.Crush.Base_Damage' to advanced.yml
     Added 'Skills.Maces.Crush.Rank_Damage_Multiplier' to advanced.yml
     Added 'Skills.Tridents.Impale.Base_Damage' to advanced.yml
     Added 'Skills.Tridents.Impale.Rank_Damage_Multiplier' to advanced.yml
-    Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml
-    Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml
-    (Codebase) Added unit tests for Arcane Forging and Arcane Salvage enchant-level capping behavior
+    Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml (See notes)
+    Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml (See notes)
 
     NOTES:
     In this update I've added two new advanced.yml settings for more granular control of the enchant level cap for both Repair and Salvage, this is an alternative to flipping on ExploitFix.UnsafeEnchantments in experience.yml which simply uncaps both skills.
     If ExploitFix.UnsafeEnchantments happens to be enabled in experience.yml, it will override both of these new settings and therefor allow basically uncapped enchant levels for Arcane Forging and Arcane Salvage.
     Allowing the old setting to override is mostly for backwards compatibility so we don't disrupt any existing server behavior.
     If you have this setting on, but you want to use the new more granular settings, simply turn off ExploitFix.UnsafeEnchantments and configure the new settings to your liking.
+    Regarding immature crops, mcMMO used to block them from dropping and just replanted them instead, now they will drop and only replant if you have the relevant seed in inventory, which matches vanilla behavior better.
 
 Version 2.2.051
     Fixed bug which caused trickshot-bounced arrows to have much longer potion durations than intended (Thanks flyncodes)
