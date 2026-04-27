@@ -1,9 +1,6 @@
 package com.gmail.nossr50.skills.crossbows;
 
-import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
-import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE;
 import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
-import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -34,7 +31,7 @@ public class CrossbowsManager extends SkillManager {
 
     public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow,
             @NotNull Vector hitBlockNormal) {
-        if (!isCrossbowProjectile(arrow)) {
+        if (!arrow.isShotFromCrossbow()) {
             return;
         }
 
@@ -104,13 +101,7 @@ public class CrossbowsManager extends SkillManager {
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
         spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
-        // Easy fix to recognize the arrow as a crossbow projectile
-        // TODO: Replace the hack with the new API for setting weapon on projectiles
-        if (!spawnedArrow.hasMetadata(METADATA_KEY_CROSSBOW_PROJECTILE)) {
-            spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE,
-                    MCMMO_METADATA_VALUE);
-        }
-        // There are reasons to keep this despite using the metadata values above
+        // Persist crossbow identity across bounces.
         spawnedArrow.setShotFromCrossbow(true);
 
         // Don't allow multi-shot or infinite arrows to be picked up

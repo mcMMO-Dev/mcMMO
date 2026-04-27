@@ -4,7 +4,6 @@ import static com.gmail.nossr50.datatypes.experience.XPGainReason.PVP;
 import static com.gmail.nossr50.util.AttributeMapper.MAPPED_MOVEMENT_SPEED;
 import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
 import static com.gmail.nossr50.util.Permissions.canUseSubSkill;
-import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -723,7 +722,7 @@ public final class CombatUtils {
             }
         } else if (painSource instanceof AbstractArrow arrow) {
             ProjectileSource projectileSource = arrow.getShooter();
-            boolean isCrossbow = isCrossbowProjectile(arrow);
+            boolean isCrossbow = arrow.isShotFromCrossbow();
             if (projectileSource instanceof Player player) {
                 if (!Misc.isNPCEntityExcludingVillagers(player)) {
                     if (!isCrossbow && mcMMO.p.getSkillTools()

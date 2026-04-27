@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
 import static com.gmail.nossr50.util.MetadataConstants.ARROW_METADATA_KEYS;
-import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
@@ -55,16 +54,10 @@ public class ProjectileUtils {
                     if (key.equals(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
                         targetArrow.setMetadata(key,
                                 new FixedMetadataValue(pluginRef, metadataValue.asDouble()));
-                    } else if (key.equals(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE)) {
-                        targetArrow.setMetadata(key, MCMMO_METADATA_VALUE);
                     } else {
                         targetArrow.setMetadata(key, metadataValue);
                     }
                 });
     }
 
-    public static boolean isCrossbowProjectile(@NotNull AbstractArrow arrow) {
-        return arrow.isShotFromCrossbow()
-                || arrow.hasMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE);
-    }
 }

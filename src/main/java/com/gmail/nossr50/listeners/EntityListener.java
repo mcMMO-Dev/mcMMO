@@ -31,7 +31,6 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import java.util.Set;
@@ -1197,7 +1196,7 @@ public class EntityListener implements Listener {
         }
 
         if (event.getEntity() instanceof Arrow arrow) {
-            if (ProjectileUtils.isCrossbowProjectile(arrow)) {
+            if (arrow.isShotFromCrossbow()) {
                 Crossbows.processCrossbows(event, pluginRef, arrow);
             }
         }
