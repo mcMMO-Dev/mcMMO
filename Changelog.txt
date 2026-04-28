@@ -12,6 +12,7 @@ Version 2.2.052
     Added 'Skills.Tridents.Impale.Rank_Damage_Multiplier' to advanced.yml
     Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml (See notes)
     Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml (See notes)
+    (Codebase) Updated deprecated durability API usage to ItemMeta Damageable API (see notes)
     (Codebase) Removed obsolete multishot arrow metadata marker system, modernized to native Spigot/Paper APIs
     (Codebase) Simplified crossbow arrow handling by eliminating unnecessary custom metadata tracking
 
@@ -21,6 +22,8 @@ Version 2.2.052
     Allowing the old setting to override is mostly for backwards compatibility so we don't disrupt any existing server behavior.
     If you have this setting on, but you want to use the new more granular settings, simply turn off ExploitFix.UnsafeEnchantments and configure the new settings to your liking.
     Regarding immature crops, mcMMO used to block them from dropping and just replanted them instead, now they will drop and only replant if you have the relevant seed in inventory, which matches vanilla behavior better.
+    Durability handling now uses ItemMeta Damageable APIs instead of deprecated ItemStack durability methods.
+    This may address some custom armor durability issues, but if you can still reproduce custom armor repairing when struck by axes, please report the bug with exact reproduction steps and custom-item/plugin details.
 
 Version 2.2.051
     Fixed bug which caused trickshot-bounced arrows to have much longer potion durations than intended (Thanks flyncodes)

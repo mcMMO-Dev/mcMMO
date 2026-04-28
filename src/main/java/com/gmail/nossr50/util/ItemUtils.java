@@ -30,6 +30,7 @@ import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -409,6 +410,53 @@ public final class ItemUtils {
      */
     public static boolean isArmor(ItemStack item) {
         return mcMMO.getMaterialMapStore().isArmor(item.getType());
+    }
+
+    /**
+     * Gets current damage from ItemMeta-backed durability.
+     *
+     * @param item Item to inspect
+     * @return current damage value, or 0 when the item does not support durability
+     */
+    public static int getItemDamage(@NotNull ItemStack item) {
+        final ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof Damageable damageable) {
+            return damageable.getDamage();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Sets current damage through ItemMeta-backed durability.
+     *
+     * @param item target item
+     * @param damage target damage
+     */
+    public static void setItemDamage(@NotNull ItemStack item, int damage) {
+        final ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof Damageable damageable) {
+            damageable.setDamage(Math.max(0, damage));
+            item.setItemMeta(meta);
+        }
+    }
+
+    /**
+     * Gets the effective max damage for an item.
+     *
+     * @param item target item
+     * @return max damage from ItemMeta when present, otherwise Material max durability
+     */
+    public static int getItemMaxDamage(@NotNull ItemStack item) {
+        final ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof Damageable damageable && damageable.hasMaxDamage()) {
+            return damageable.getMaxDamage();
+        }
+
+        return item.getType().getMaxDurability();
     }
 
     /**

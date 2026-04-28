@@ -12,6 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -114,7 +115,7 @@ public class RepairManager extends SkillManager {
         Material repairMaterial = repairable.getRepairMaterial();
         ItemStack toRemove = new ItemStack(repairMaterial);
 
-        short startDurability = item.getDurability();
+        short startDurability = (short) ItemUtils.getItemDamage(item);
 
         // Do not repair if at full durability
         if (startDurability <= 0) {
@@ -225,7 +226,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Repair the item!
-        item.setDurability(newDurability);
+        ItemUtils.setItemDamage(item, newDurability);
     }
 
     private float getPercentageRepaired(short startDurability, short newDurability,

@@ -209,7 +209,6 @@ public class EntityListener implements Listener {
                 // Multi-shot pickup handling is managed natively by Paper/Spigot.
                 // All crossbow arrows inherit the same pickup mode unless in creative mode,
                 // and ricochet side-arrows inherit pickup status from the original arrow.
-
                 if (!arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
                     arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE,
                             new FixedMetadataValue(pluginRef, 1.0));

@@ -269,15 +269,17 @@ public final class SkillUtils {
         }
 
         Material type = itemStack.getType();
-        short maxDurability =
+        int maxDurability =
                 mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager()
                         .getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        maxDurability = Math.max(maxDurability, ItemUtils.getItemMaxDamage(itemStack));
         durabilityModifier = (int) Math.min(durabilityModifier / (
                         itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1),
                 maxDurability * maxDamageModifier);
 
-        itemStack.setDurability(
-                (short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
+        final int currentDamage = ItemUtils.getItemDamage(itemStack);
+        ItemUtils.setItemDamage(itemStack,
+            (int) Math.min(currentDamage + durabilityModifier, maxDurability));
     }
 
     private static boolean isLocalizedSkill(String skillName) {
@@ -307,15 +309,17 @@ public final class SkillUtils {
         }
 
         Material type = itemStack.getType();
-        short maxDurability =
+        int maxDurability =
                 mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager()
                         .getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        maxDurability = Math.max(maxDurability, ItemUtils.getItemMaxDamage(itemStack));
         durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4 / (
                         itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1)),
                 maxDurability * maxDamageModifier);
 
-        itemStack.setDurability(
-                (short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
+        final int currentDamage = ItemUtils.getItemDamage(itemStack);
+        ItemUtils.setItemDamage(itemStack,
+            (int) Math.min(currentDamage + durabilityModifier, maxDurability));
     }
 
     @Nullable

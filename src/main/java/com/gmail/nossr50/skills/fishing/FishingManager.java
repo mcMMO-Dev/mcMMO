@@ -519,7 +519,7 @@ public class FishingManager extends SkillManager {
 
                     switch (drop.getType()) {
                         case PLAYER_HEAD:
-                            drop.setDurability((short) 3);
+                            ItemUtils.setItemDamage(drop, 3);
                             SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
                             skullMeta.setOwningPlayer(targetPlayer);
                             drop.setItemMeta(skullMeta);
@@ -635,7 +635,7 @@ public class FishingManager extends SkillManager {
         short maxDurability = treasureDrop.getType().getMaxDurability();
 
         if (maxDurability > 0) {
-            treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability)));
+            ItemUtils.setItemDamage(treasureDrop, Misc.getRandom().nextInt(maxDurability));
         }
 
         treasure.setDrop(treasureDrop);
