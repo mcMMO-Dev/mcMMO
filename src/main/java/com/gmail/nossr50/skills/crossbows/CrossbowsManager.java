@@ -104,9 +104,8 @@ public class CrossbowsManager extends SkillManager {
         // Persist crossbow identity across bounces.
         spawnedArrow.setShotFromCrossbow(true);
 
-        // Don't allow multi-shot or infinite arrows to be picked up
-        if (spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)
-                || spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+        // Don't allow infinite arrows to be picked up
+        if (spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
             spawnedArrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
         }
 

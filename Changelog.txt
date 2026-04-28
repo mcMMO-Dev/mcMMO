@@ -1,4 +1,5 @@
 Version 2.2.052
+    Fixed exploit where arrows from multishot crossbows could be recovered in regions protected by WorldGuard
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
@@ -11,6 +12,8 @@ Version 2.2.052
     Added 'Skills.Tridents.Impale.Rank_Damage_Multiplier' to advanced.yml
     Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml (See notes)
     Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml (See notes)
+    (Codebase) Removed obsolete multishot arrow metadata marker system, modernized to native Spigot/Paper APIs
+    (Codebase) Simplified crossbow arrow handling by eliminating unnecessary custom metadata tracking
 
     NOTES:
     In this update I've added two new advanced.yml settings for more granular control of the enchant level cap for both Repair and Salvage, this is an alternative to flipping on ExploitFix.UnsafeEnchantments in experience.yml which simply uncaps both skills.

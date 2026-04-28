@@ -87,7 +87,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class EntityListener implements Listener {
-    private static final String MULTISHOT = "multishot";
     private static final String PIERCING = "piercing";
     private static final String DEEPSLATE_REDSTONE_ORE = "deepslate_redstone_ore";
     private static final Set<String> ARMOR_STAND = Set.of("ARMOR_STAND", "armor_stand");
@@ -207,11 +206,9 @@ public class EntityListener implements Listener {
                 // Delayed metadata cleanup in case other cleanup hooks fail
                 CombatUtils.delayArrowMetaCleanup(arrow);
 
-                // If fired from an item with multi-shot, we need to track
-                if (ItemUtils.doesPlayerHaveEnchantmentInHands(player, MULTISHOT)) {
-                    arrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW,
-                            MetadataConstants.MCMMO_METADATA_VALUE);
-                }
+                // Multi-shot pickup handling is managed natively by Paper/Spigot.
+                // All crossbow arrows inherit the same pickup mode unless in creative mode,
+                // and ricochet side-arrows inherit pickup status from the original arrow.
 
                 if (!arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
                     arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE,
@@ -1196,6 +1193,14 @@ public class EntityListener implements Listener {
         }
 
         if (event.getEntity() instanceof Arrow arrow) {
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if (WorldGuardUtils.isWorldGuardLoaded()
+                    && arrow.getShooter() instanceof Player player
+                    && !WorldGuardManager.getInstance().hasMainFlag(player,
+                    arrow.getLocation())) {
+                return;
+            }
+
             if (arrow.isShotFromCrossbow()) {
                 Crossbows.processCrossbows(event, pluginRef, arrow);
             }

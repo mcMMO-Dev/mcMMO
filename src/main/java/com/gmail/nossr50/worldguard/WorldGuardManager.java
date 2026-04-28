@@ -11,6 +11,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -31,8 +32,19 @@ public class WorldGuardManager {
             return false;
         }
 
-        BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
-        com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
+        return hasMainFlag(player, player.getLocation());
+    }
+
+    public boolean hasMainFlag(Player player, Location location) {
+        if (player == null) {
+            return false;
+        }
+
+        if (location == null) {
+            return false;
+        }
+
+        com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(location);
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
         RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer()
