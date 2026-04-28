@@ -1,5 +1,5 @@
 Version 2.2.052
-    Fixed exploit where arrows from multishot crossbows could be recovered in regions protected by WorldGuard
+    Fixed an exploit where arrows from multishot crossbows could be recovered in regions protected by WorldGuard
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own

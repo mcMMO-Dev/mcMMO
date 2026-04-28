@@ -29,7 +29,6 @@ public class MetadataConstants {
             MetadataConstants.METADATA_KEY_BOW_FORCE,
             MetadataConstants.METADATA_KEY_ARROW_DISTANCE,
             MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
-
             MetadataConstants.METADATA_KEY_BOUNCE_COUNT
     );
 
