@@ -49,6 +49,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -222,7 +223,7 @@ public class FishingManager extends SkillManager {
                 SubSkillType.FISHING_FISHERMANS_DIET);
     }
 
-    public void iceFishing(FishHook hook, Block block) {
+    public void iceFishing(FishHook hook, Block block, @Nullable EquipmentSlot fishingHand) {
         // Make a hole
         block.setType(Material.WATER);
 
@@ -237,7 +238,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Recast in the new spot
-        EventUtils.callFakeFishEvent(getPlayer(), hook);
+        EventUtils.callFakeFishEvent(getPlayer(), hook, fishingHand);
     }
 
     public void masterAngler(@NotNull FishHook hook, int lureLevel) {
@@ -393,11 +394,12 @@ public class FishingManager extends SkillManager {
     }
 
     /**
-     * Process the results from a successful fishing trip
+     * Process the results from a successful fishing trip.
      *
      * @param fishingCatch The {@link Item} initially caught
+     * @param fishingHand The hand associated with the fish event, when available
      */
-    public void processFishing(@NotNull Item fishingCatch) {
+    public void processFishing(@NotNull Item fishingCatch, @Nullable EquipmentSlot fishingHand) {
         int fishXp = ExperienceConfig.getInstance()
                 .getXp(PrimarySkillType.FISHING, fishingCatch.getItemStack().getType());
         int treasureXp = 0;
@@ -408,7 +410,7 @@ public class FishingManager extends SkillManager {
 
         if (mcMMO.p.getGeneralConfig().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(
                 player, SubSkillType.FISHING_TREASURE_HUNTER)) {
-            treasure = getFishingTreasure();
+            treasure = getFishingTreasure(fishingHand);
         }
 
         if (treasure != null) {
@@ -589,18 +591,11 @@ public class FishingManager extends SkillManager {
      *
      * @return The {@link FishingTreasure} found, or null if no treasure was found.
      */
-    private @Nullable FishingTreasure getFishingTreasure() {
+    private @Nullable FishingTreasure getFishingTreasure(@Nullable EquipmentSlot fishingHand) {
         double diceRoll = Misc.getRandom().nextDouble() * 100;
-        int luck;
-
-        if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
-            luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(
-                    mcMMO.p.getEnchantmentMapper().getLuckOfTheSea());
-        } else {
-            // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
-            luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(
-                    mcMMO.p.getEnchantmentMapper().getLuckOfTheSea());
-        }
+        ItemStack fishingRod = getFishingRodFromHand(fishingHand);
+        int luck = fishingRod != null ? fishingRod.getEnchantmentLevel(
+                mcMMO.p.getEnchantmentMapper().getLuckOfTheSea()) : 0;
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
         diceRoll *= (1.0 - luck * mcMMO.p.getGeneralConfig().getFishingLureModifier() / 100);
@@ -746,5 +741,25 @@ public class FishingManager extends SkillManager {
 
     public int getMasterAnglerMaxWaitLowerBound() {
         return masterAnglerMaxWaitLowerBound;
+    }
+
+    private @Nullable ItemStack getFishingRodFromHand(@Nullable EquipmentSlot fishingHand) {
+        if (fishingHand == EquipmentSlot.HAND) {
+            return getFishingRodOrNull(getPlayer().getInventory().getItemInMainHand());
+        }
+
+        if (fishingHand == EquipmentSlot.OFF_HAND) {
+            return getFishingRodOrNull(getPlayer().getInventory().getItemInOffHand());
+        }
+
+        return null;
+    }
+
+    private @Nullable ItemStack getFishingRodOrNull(@Nullable ItemStack itemStack) {
+        if (itemStack != null && itemStack.getType() == Material.FISHING_ROD) {
+            return itemStack;
+        }
+
+        return null;
     }
 }

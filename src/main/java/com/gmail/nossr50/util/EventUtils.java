@@ -54,10 +54,12 @@ import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class is meant to help make event related code less boilerplate
@@ -609,9 +611,10 @@ public final class EventUtils {
         return event;
     }
 
-    public static FakePlayerFishEvent callFakeFishEvent(Player player, FishHook hook) {
+    public static FakePlayerFishEvent callFakeFishEvent(Player player, FishHook hook,
+            @Nullable EquipmentSlot hand) {
         FakePlayerFishEvent event = new FakePlayerFishEvent(player, null, hook,
-                PlayerFishEvent.State.FISHING);
+                hand, PlayerFishEvent.State.FISHING);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;

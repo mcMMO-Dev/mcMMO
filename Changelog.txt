@@ -3,6 +3,7 @@ Version 2.2.052
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
+    Fixed fishing hand context handling to use the real event hand across fishing processing paths (see notes)
     Changed mcMMO behavior around immature crop drops, no longer blocking drops from immature crops (See notes)
     Added 'Skills.Crossbows.PoweredShot.RankDamageMultiplier' to advanced.yml
     Added 'Skills.Crossbows.PoweredShot.MaxDamage' to advanced.yml
@@ -13,6 +14,7 @@ Version 2.2.052
     Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml (See notes)
     Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml (See notes)
     (Codebase) Updated deprecated durability API usage to ItemMeta Damageable API (see notes)
+    (Codebase) Updated fake fishing event plumbing to carry hand context
     (Codebase) Removed obsolete multishot arrow metadata marker system, modernized to native Spigot/Paper APIs
     (Codebase) Simplified crossbow arrow handling by eliminating unnecessary custom metadata tracking
 
@@ -22,6 +24,7 @@ Version 2.2.052
     Allowing the old setting to override is mostly for backwards compatibility so we don't disrupt any existing server behavior.
     If you have this setting on, but you want to use the new more granular settings, simply turn off ExploitFix.UnsafeEnchantments and configure the new settings to your liking.
     Regarding immature crops, mcMMO used to block them from dropping and just replanted them instead, now they will drop and only replant if you have the relevant seed in inventory, which matches vanilla behavior better.
+    The fishing hand-context changes in this update may fix reports where off-hand fishing seemed quicker than main-hand fishing.
     Durability handling now uses ItemMeta Damageable APIs instead of deprecated ItemStack durability methods.
     This may address some custom armor durability issues, but if you can still reproduce custom armor repairing when struck by axes, please report the bug with exact reproduction steps and custom-item/plugin details.
 
