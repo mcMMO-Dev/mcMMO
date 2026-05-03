@@ -144,6 +144,8 @@ public class SalvageManager extends SkillManager {
                 StringUtils.getPrettyMaterialString(item.getType()));
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        // avoids visual desync
+        player.updateInventory();
 
         Location anvilLoc = location.clone();
         Location playerLoc = player.getLocation().clone();
