@@ -1,9 +1,10 @@
 Version 2.2.052
+    Fixed incorrect effect durations for splash and lingering variants of Infestation, Weaving, Wind Charging, and Oozing potions in potions.yml (Thanks Warriorrrr)
     Fixed an exploit where arrows from multishot crossbows could be recovered in regions protected by WorldGuard
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
-    Fixed fishing hand context handling to use the real event hand across fishing processing paths (see notes)
+    Fixed Fishing skill only working with main-hand fishing rod when fishing
     Changed mcMMO behavior around immature crop drops, no longer blocking drops from immature crops (See notes)
     Added 'Skills.Crossbows.PoweredShot.RankDamageMultiplier' to advanced.yml
     Added 'Skills.Crossbows.PoweredShot.MaxDamage' to advanced.yml
@@ -13,8 +14,8 @@ Version 2.2.052
     Added 'Skills.Tridents.Impale.Rank_Damage_Multiplier' to advanced.yml
     Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml (See notes)
     Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml (See notes)
+    Updated Simplified Chinese (zh_CN) locale with new Spears and Maces translations, color-code spacing fixes, improved fishing messages, and corrected ability wear-off message formatting (Thanks GhostDC)
     (Codebase) Updated deprecated durability API usage to ItemMeta Damageable API (see notes)
-    (Codebase) Updated fake fishing event plumbing to carry hand context
     (Codebase) Removed obsolete multishot arrow metadata marker system, modernized to native Spigot/Paper APIs
     (Codebase) Simplified crossbow arrow handling by eliminating unnecessary custom metadata tracking
 
