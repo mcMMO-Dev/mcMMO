@@ -10,6 +10,7 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.commands.CommandExposureConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -60,6 +61,7 @@ import com.gmail.nossr50.util.MinecraftGameVersionFactory;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.blockmeta.UserBlockTracker;
+import com.gmail.nossr50.util.commands.CommandExposureRegistry;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
@@ -149,6 +151,7 @@ public class mcMMO extends JavaPlugin {
     private GeneralConfig generalConfig;
     private AdvancedConfig advancedConfig;
     private PartyConfig partyConfig;
+    private CommandExposureConfig commandExposureConfig;
     private PotionConfig potionConfig;
     private CustomItemSupportConfig customItemSupportConfig;
     private EnchantmentMapper enchantmentMapper;
@@ -198,6 +201,7 @@ public class mcMMO extends JavaPlugin {
             advancedConfig = new AdvancedConfig(getDataFolder());
             partyConfig = new PartyConfig(getDataFolder());
             customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
+            commandExposureConfig = new CommandExposureConfig(getDataFolder());
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = generalConfig.getIsRetroMode();
@@ -356,6 +360,10 @@ public class mcMMO extends JavaPlugin {
 
     public static MaterialMapStore getMaterialMapStore() {
         return materialMapStore;
+    }
+
+    public @NotNull CommandExposureRegistry getCommandExposureRegistry() {
+        return commandExposureConfig.getRegistry();
     }
 
     private void checkForOutdatedAPI() {
