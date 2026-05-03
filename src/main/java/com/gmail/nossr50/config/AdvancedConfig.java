@@ -641,6 +641,10 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank);
     }
 
+    public int getSmeltingVanillaXPModifier(int rank) {
+        return config.getInt("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank);
+    }
+
     public int getFishingReductionMinWaitTicks() {
         return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait", 10);
     }

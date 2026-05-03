@@ -4,6 +4,7 @@ Version 2.2.052
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
+    Fixed bug where Smelting Vanilla XP multiplier was not using Skills.Smelting.VanillaXPMultiplier values from advanced.yml
     Fixed Fishing skill only working with main-hand fishing rod when fishing
     Changed mcMMO behavior around immature crop drops, no longer blocking drops from immature crops (See notes)
     Added 'Skills.Crossbows.PoweredShot.RankDamageMultiplier' to advanced.yml
