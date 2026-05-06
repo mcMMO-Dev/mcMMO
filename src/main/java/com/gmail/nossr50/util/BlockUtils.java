@@ -10,13 +10,18 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -122,6 +127,40 @@ public final class BlockUtils {
     public static void markDropsAsBonus(Block block, int amount) {
         block.setMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS,
                 new BonusDropMeta(amount, mcMMO.p));
+    }
+
+    /**
+     * Queues an extra item drop on a block so it can be surfaced through {@code BlockDropItemEvent}
+     * instead of being spawned independently.
+     *
+     * @param block the block whose drop event should carry the queued item
+     * @param itemStack the item to queue for the block drop event
+     */
+    public static void queueBlockDrop(@NotNull Block block, @NotNull ItemStack itemStack) {
+        if (!block.hasMetadata(MetadataConstants.METADATA_KEY_QUEUED_BLOCK_DROPS)) {
+            block.setMetadata(MetadataConstants.METADATA_KEY_QUEUED_BLOCK_DROPS,
+                    new FixedMetadataValue(mcMMO.p, List.of(itemStack.clone())));
+            return;
+        }
+
+        MetadataValue metadataValue = block
+                .getMetadata(MetadataConstants.METADATA_KEY_QUEUED_BLOCK_DROPS).get(0);
+        Object metadata = metadataValue.value();
+        List<ItemStack> queuedDrops = new ArrayList<>(2);
+
+        if (metadata instanceof List<?> queuedMetadata) {
+            queuedDrops = new ArrayList<>(queuedMetadata.size() + 1);
+
+            for (Object queuedDrop : queuedMetadata) {
+                if (queuedDrop instanceof ItemStack queuedItemStack) {
+                    queuedDrops.add(queuedItemStack.clone());
+                }
+            }
+        }
+
+        queuedDrops.add(itemStack.clone());
+        block.setMetadata(MetadataConstants.METADATA_KEY_QUEUED_BLOCK_DROPS,
+                new FixedMetadataValue(mcMMO.p, queuedDrops));
     }
 
     /**

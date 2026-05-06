@@ -48,6 +48,7 @@ import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.EnchantmentMapper;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.MaterialMapStore;
@@ -207,6 +208,7 @@ public class mcMMO extends JavaPlugin {
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
             projectKorraEnabled = pluginManager.getPlugin("ProjectKorra") != null;
+            ItemUtils.refreshCompatibilityRouting();
 
             upgradeManager = new UpgradeManager();
 

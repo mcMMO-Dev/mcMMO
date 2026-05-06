@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
@@ -17,8 +18,10 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -111,6 +114,46 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
         // verify bonus drops were not spawned
         Mockito.verify(woodcuttingManager, Mockito.times(0)).spawnHarvestLumberBonusDrops(block);
+    }
+
+    @Test
+    void blockDropEventRoutingShouldMarkBonusMetadataInsteadOfSpawningDrops() {
+        mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+        Mockito.when(advancedConfig.getMaximumProbability(SubSkillType.WOODCUTTING_CLEAN_CUTS))
+                .thenReturn(0D);
+
+        Block block = mock(Block.class);
+        Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+
+        try (MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class)) {
+            woodcuttingManager.processBonusDropCheck(block, true);
+
+            mockedBlockUtils.verify(() -> BlockUtils.markDropsAsBonus(block, 1));
+            Mockito.verify(woodcuttingManager, never()).spawnHarvestLumberBonusDrops(block);
+        }
+    }
+
+    @Test
+    void ecoDropQueueRoutingShouldBypassBonusMetadata() {
+        mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+        Mockito.when(advancedConfig.getMaximumProbability(SubSkillType.WOODCUTTING_CLEAN_CUTS))
+                .thenReturn(0D);
+
+        Block block = mock(Block.class);
+        Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+        Mockito.when(block.getDrops(any())).thenReturn(List.of(new ItemStack(Material.OAK_LOG)));
+
+        try (MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
+                MockedStatic<ItemUtils> mockedItemUtils = mockStatic(ItemUtils.class)) {
+            mockedItemUtils.when(ItemUtils::shouldUseDropQueueRouting).thenReturn(true);
+            mockedItemUtils.when(() -> ItemUtils.pushDropQueueIfPresent(eq(player), any(),
+                    any())).thenReturn(true);
+
+            woodcuttingManager.processBonusDropCheck(block, true);
+
+            mockedBlockUtils.verifyNoInteractions();
+            Mockito.verify(woodcuttingManager, never()).spawnHarvestLumberBonusDrops(block);
+        }
     }
 
     @Test
@@ -229,6 +272,24 @@ class WoodcuttingTest extends MMOTestEnvironment {
                 "treeFellerReachedThreshold should remain false");
 
         mockedBlockUtils.close();
+    }
+
+    @Test
+    void treeFellerShouldRouteDisplacedDropsThroughCompatibilityRouter() throws Exception {
+        Block block = mock(Block.class);
+        Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+        Mockito.when(block.getDrops(any())).thenReturn(List.of(new ItemStack(Material.OAK_LOG)));
+
+        Method method = WoodcuttingManager.class.getDeclaredMethod("dropTreeFellerDisplacedItems",
+                Block.class, Player.class, ItemStack.class);
+        method.setAccessible(true);
+
+        try (MockedStatic<ItemUtils> mockedItemUtils = mockStatic(ItemUtils.class)) {
+            method.invoke(woodcuttingManager, block, player, itemInMainHand);
+
+            mockedItemUtils.verify(() -> ItemUtils.routeBlockDrops(eq(player), eq(block), any(),
+                    any(), eq(com.gmail.nossr50.api.ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK)));
+        }
     }
 
 }

@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -56,7 +57,7 @@ public class ExcavationManager extends SkillManager {
                             && ProbabilityUtil.isStaticSkillRNGSuccessful(
                             PrimarySkillType.EXCAVATION, mmoPlayer,
                             treasure.getDropProbability())) {
-                        processExcavationBonusesOnBlock(treasure, centerOfBlock);
+                        processExcavationBonusesOnBlock(block, treasure, centerOfBlock);
                     }
                 }
             }
@@ -80,10 +81,19 @@ public class ExcavationManager extends SkillManager {
     @Deprecated(forRemoval = true, since = "2.2.024")
     public void processExcavationBonusesOnBlock(BlockState ignored, ExcavationTreasure treasure,
             Location location) {
-        processExcavationBonusesOnBlock(treasure, location);
+        processExcavationBonusesOnBlock(ignored.getBlock(), treasure, location);
     }
 
-    public void processExcavationBonusesOnBlock(ExcavationTreasure treasure, Location location) {
+    /**
+     * Processes a successful archaeology treasure roll for a broken block.
+     *
+     * @param block the block that triggered the archaeology reward
+     * @param treasure the treasure being awarded
+     * @param location the block center used for related reward effects
+     */
+    public void processExcavationBonusesOnBlock(@NotNull Block block,
+            @NotNull ExcavationTreasure treasure,
+            @NotNull Location location) {
         //Spawn Vanilla XP orbs if a dice roll succeeds
         if (ProbabilityUtil.isStaticSkillRNGSuccessful(
                 PrimarySkillType.EXCAVATION, mmoPlayer, getArchaelogyExperienceOrbChance())) {
@@ -92,8 +102,15 @@ public class ExcavationManager extends SkillManager {
 
         int xp = 0;
         xp += treasure.getXp();
-        ItemUtils.spawnItem(getPlayer(), location, treasure.getDrop(),
-                ItemSpawnReason.EXCAVATION_TREASURE);
+        if (ItemUtils.shouldUseDropQueueRouting() && ItemUtils.pushDropQueueIfPresent(getPlayer(),
+                location, List.of(treasure.getDrop()))) {
+            if (xp > 0) {
+                applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
+            }
+            return;
+        }
+
+        BlockUtils.queueBlockDrop(block, treasure.getDrop());
         if (xp > 0) {
             applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
         }

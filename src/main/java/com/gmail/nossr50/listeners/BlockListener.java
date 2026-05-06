@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_BONUS_DROPS;
+import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_QUEUED_BLOCK_DROPS;
 
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -23,6 +24,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ContainerMetadataUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -74,13 +76,29 @@ public class BlockListener implements Listener {
         //Make sure we clean up metadata on these blocks
         final Block block = event.getBlock();
         if (event.isCancelled()) {
-            if (block.hasMetadata(METADATA_KEY_BONUS_DROPS)) {
-                block.removeMetadata(METADATA_KEY_BONUS_DROPS, plugin);
-            }
+            cleanupQueuedDropMetadata(block);
             return;
         }
 
         try {
+            final List<Item> eventItems = event.getItems();
+
+            if (!block.getMetadata(METADATA_KEY_QUEUED_BLOCK_DROPS).isEmpty()) {
+                MetadataValue queuedDropMeta = block
+                        .getMetadata(METADATA_KEY_QUEUED_BLOCK_DROPS).get(0);
+                Object queuedDrops = queuedDropMeta.value();
+
+                if (queuedDrops instanceof List<?> queuedDropList) {
+                    for (Object queuedDrop : queuedDropList) {
+                        if (!(queuedDrop instanceof ItemStack itemStack)) {
+                            continue;
+                        }
+
+                        ItemUtils.appendBlockDropEventItem(event, itemStack);
+                    }
+                }
+            }
+
             int tileEntityTolerance = 1;
 
             // beetroot hotfix, potentially other plants may need this fix
@@ -94,7 +112,6 @@ public class BlockListener implements Listener {
             boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
             int blockCount = 0;
 
-            final List<Item> eventItems = event.getItems();
             for (Item item : eventItems) {
                 //Track unique materials
                 uniqueMaterials.add(item.getItemStack().getType());
@@ -158,9 +175,16 @@ public class BlockListener implements Listener {
                 }
             }
         } finally {
-            if (block.hasMetadata(METADATA_KEY_BONUS_DROPS)) {
-                block.removeMetadata(METADATA_KEY_BONUS_DROPS, plugin);
-            }
+            cleanupQueuedDropMetadata(block);
+        }
+    }
+
+    private void cleanupQueuedDropMetadata(Block block) {
+        if (block.hasMetadata(METADATA_KEY_BONUS_DROPS)) {
+            block.removeMetadata(METADATA_KEY_BONUS_DROPS, plugin);
+        }
+        if (block.hasMetadata(METADATA_KEY_QUEUED_BLOCK_DROPS)) {
+            block.removeMetadata(METADATA_KEY_QUEUED_BLOCK_DROPS, plugin);
         }
     }
 
@@ -480,7 +504,7 @@ public class BlockListener implements Listener {
                 woodcuttingManager.processWoodcuttingBlockXP(block);
 
                 //Check for bonus drops
-                woodcuttingManager.processBonusDropCheck(block);
+                woodcuttingManager.processBonusDropCheck(block, true);
             }
         }
 

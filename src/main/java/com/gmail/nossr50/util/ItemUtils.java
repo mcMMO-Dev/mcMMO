@@ -13,6 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.smelting.Smelting;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -23,9 +24,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -38,11 +42,26 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ItemUtils {
+    private static final String ECO_ENCHANTS_PLUGIN_NAME = "EcoEnchants";
+    private static final String EXCELLENT_ENCHANTS_PLUGIN_NAME = "ExcellentEnchants";
+    private static volatile boolean compatibilityRoutingInitialized;
+    private static volatile boolean useDropQueueRouting;
+    private static volatile boolean useSyntheticBlockDropRouting;
     // Use custom name if available
     private static final Method customName;
+    private static final Method dropQueueApiGet;
+    private static final Method dropQueueApiCreateQueue;
+    private static final Method dropQueueSetLocation;
+    private static final Method dropQueueAddItems;
+    private static final Method dropQueuePush;
 
     static {
         customName = getCustomNameMethod();
+        dropQueueApiGet = getDropQueueApiGetMethod();
+        dropQueueApiCreateQueue = getDropQueueApiCreateQueueMethod();
+        dropQueueSetLocation = getDropQueueMethod("setLocation", Location.class);
+        dropQueueAddItems = getDropQueueMethod("addItems", Collection.class);
+        dropQueuePush = getDropQueueMethod("push");
     }
 
     private ItemUtils() {
@@ -53,6 +72,32 @@ public final class ItemUtils {
         try {
             return ItemMeta.class.getMethod("customName", Component.class);
         } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    private static Method getDropQueueApiGetMethod() {
+        try {
+            return Class.forName("com.willfp.eco.core.Eco").getMethod("get");
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    private static Method getDropQueueApiCreateQueueMethod() {
+        try {
+            return Class.forName("com.willfp.eco.core.Eco").getMethod("createDropQueue",
+                    Player.class);
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            return null;
+        }
+    }
+
+    private static Method getDropQueueMethod(String methodName, Class<?>... parameterTypes) {
+        try {
+            return Class.forName("com.willfp.eco.core.drops.DropQueue").getMethod(methodName,
+                    parameterTypes);
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             return null;
         }
     }
@@ -71,12 +116,181 @@ public final class ItemUtils {
         }
     }
 
+    /**
+     * Pushes item drops through an optional external DropQueue API when it is present.
+     *
+     * @param player the player associated with the drop
+     * @param location the location the queue should use for non-telekinetic drops
+     * @param itemStacks the items to push through the optional drop queue
+     * @return true if the queue handled the drops, false if it is unavailable or reflection failed
+     */
+    public static boolean pushDropQueueIfPresent(@NotNull Player player, @NotNull Location location,
+            @NotNull Collection<ItemStack> itemStacks) {
+        if (dropQueueApiGet == null || dropQueueApiCreateQueue == null || dropQueueSetLocation == null
+                || dropQueueAddItems == null || dropQueuePush == null
+                || itemStacks.isEmpty()) {
+            return false;
+        }
+
+        try {
+            Object dropQueueApi = dropQueueApiGet.invoke(null);
+            Object dropQueue = dropQueueApiCreateQueue.invoke(dropQueueApi, player);
+            dropQueueSetLocation.invoke(dropQueue, location);
+            dropQueueAddItems.invoke(dropQueue, itemStacks);
+            dropQueuePush.invoke(dropQueue);
+            return true;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            mcMMO.p.getLogger().warning("Failed to route drops through optional DropQueue API: "
+                    + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Refreshes cached compatibility routing flags for optional enchant plugins.
+     */
+    public static void refreshCompatibilityRouting() {
+        useDropQueueRouting = hasPluginEnabled(ECO_ENCHANTS_PLUGIN_NAME);
+        useSyntheticBlockDropRouting = hasPluginEnabled(EXCELLENT_ENCHANTS_PLUGIN_NAME);
+        compatibilityRoutingInitialized = true;
+    }
+
+    /**
+     * Clears cached compatibility routing flags.
+     */
+    static void clearCompatibilityRoutingCache() {
+        compatibilityRoutingInitialized = false;
+        useDropQueueRouting = false;
+        useSyntheticBlockDropRouting = false;
+    }
+
+    /**
+     * @return true if a queue-oriented enchant plugin is active and mcMMO should prefer its queue API
+     */
+    public static boolean shouldUseDropQueueRouting() {
+        initializeCompatibilityRoutingIfNeeded();
+        return useDropQueueRouting;
+    }
+
+    /**
+     * @return true if a block-drop-oriented enchant plugin is active and mcMMO should prefer a
+     * synthetic {@link BlockDropItemEvent}
+     */
+    public static boolean shouldUseSyntheticBlockDropRouting() {
+        initializeCompatibilityRoutingIfNeeded();
+        return useSyntheticBlockDropRouting;
+    }
+
+    /**
+     * Routes manually generated block drops through the most compatible path available.
+     *
+     * @param player the player associated with the drops
+     * @param block the block that conceptually produced the drops
+     * @param location the drop location used for world-spawn fallback behavior
+     * @param itemStacks the drops to route
+     * @param itemSpawnReason the mcMMO spawn reason to use when entities must be created
+     */
+    public static void routeBlockDrops(@NotNull Player player,
+            @NotNull Block block,
+            @NotNull Location location,
+            @NotNull Collection<ItemStack> itemStacks,
+            @NotNull ItemSpawnReason itemSpawnReason) {
+        if (itemStacks.isEmpty()) {
+            return;
+        }
+
+        if (shouldUseSyntheticBlockDropRouting()
+                && dispatchSyntheticBlockDropEvent(player, block, location, itemStacks,
+                itemSpawnReason)) {
+            return;
+        }
+
+        if (shouldUseDropQueueRouting() && pushDropQueueIfPresent(player, location, itemStacks)) {
+            return;
+        }
+
+        spawnItemsFromCollection(player, location, itemStacks, itemSpawnReason);
+    }
+
+    /**
+     * Appends an unspawned item carrier to a block drop event.
+     *
+     * @param event the block drop event receiving the additional drop
+     * @param itemStack the item to expose through the event
+     * @return true if the carrier item was added to the event
+     */
+    public static boolean appendBlockDropEventItem(@NotNull BlockDropItemEvent event,
+            @NotNull ItemStack itemStack) {
+        if (itemStack.getType() == Material.AIR) {
+            return false;
+        }
+
+        final Location blockLocation = event.getBlock().getLocation();
+
+        if (blockLocation.getWorld() == null) {
+            return false;
+        }
+
+        final Item eventItem = (Item) blockLocation.getWorld().createEntity(blockLocation,
+                Item.class);
+        eventItem.setItemStack(itemStack);
+        event.getItems().add(eventItem);
+        return true;
+    }
+
     private static void setItemNameModern(ItemMeta itemMeta, Component name) {
         try {
             customName.invoke(itemMeta, name);
         } catch (IllegalAccessException | InvocationTargetException e) {
             mcMMO.p.getLogger().severe("Failed to set item name: " + e.getMessage());
             throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean dispatchSyntheticBlockDropEvent(@NotNull Player player,
+            @NotNull Block block,
+            @NotNull Location location,
+            @NotNull Collection<ItemStack> itemStacks,
+            @NotNull ItemSpawnReason itemSpawnReason) {
+        final BlockState blockState = block.getState();
+        final BlockDropItemEvent event = new BlockDropItemEvent(block, blockState, player,
+                new ArrayList<>(itemStacks.size()));
+        boolean appendedAnyDrops = false;
+
+        for (ItemStack itemStack : itemStacks) {
+            appendedAnyDrops |= appendBlockDropEventItem(event, itemStack);
+        }
+
+        if (!appendedAnyDrops) {
+            return false;
+        }
+
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return true;
+        }
+
+        for (Item eventItem : event.getItems()) {
+            spawnItem(player, location, eventItem.getItemStack(), itemSpawnReason);
+        }
+
+        return true;
+    }
+
+    private static boolean hasPluginEnabled(@NotNull String pluginName) {
+        return mcMMO.p.getServer().getPluginManager().isPluginEnabled(pluginName);
+    }
+
+    private static void initializeCompatibilityRoutingIfNeeded() {
+        if (compatibilityRoutingInitialized) {
+            return;
+        }
+
+        synchronized (ItemUtils.class) {
+            if (!compatibilityRoutingInitialized) {
+                refreshCompatibilityRouting();
+            }
         }
     }
 

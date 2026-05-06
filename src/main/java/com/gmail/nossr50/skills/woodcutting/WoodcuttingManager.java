@@ -112,28 +112,56 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public void processBonusDropCheck(@NotNull Block block) {
-        //TODO: Why isn't this using the item drop event? Potentially because of Tree Feller? This should be adjusted either way.
+        processBonusDropCheck(block, false);
+    }
+
+    /**
+     * Processes bonus drops for a block and optionally routes them through
+     * {@code BlockDropItemEvent} metadata instead of spawning them directly.
+     *
+     * @param block the block being broken
+     * @param useBlockDropEvent true to mark drops for the block drop event, false to spawn them
+     *                          immediately
+     */
+    public void processBonusDropCheck(@NotNull Block block, boolean useBlockDropEvent) {
         if (mcMMO.p.getGeneralConfig()
                 .getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, block.getType())) {
             //Mastery enabled for player
             if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
                 if (checkCleanCutsActivation(block.getType())) {
                     //Triple drops
-                    spawnHarvestLumberBonusDrops(block);
-                    spawnHarvestLumberBonusDrops(block);
+                    rewardHarvestLumberBonusDrops(block, useBlockDropEvent, 2);
                 } else {
                     //Harvest Lumber Check
                     if (checkHarvestLumberActivation(block.getType())) {
-                        spawnHarvestLumberBonusDrops(block);
+                        rewardHarvestLumberBonusDrops(block, useBlockDropEvent, 1);
                     }
                 }
                 //No Mastery (no Clean Cuts)
             } else if (Permissions.canUseSubSkill(getPlayer(),
                     SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
                 if (checkHarvestLumberActivation(block.getType())) {
-                    spawnHarvestLumberBonusDrops(block);
+                    rewardHarvestLumberBonusDrops(block, useBlockDropEvent, 1);
                 }
             }
+        }
+    }
+
+    private void rewardHarvestLumberBonusDrops(@NotNull Block block, boolean useBlockDropEvent,
+            int amount) {
+        if (useBlockDropEvent) {
+            if (ItemUtils.shouldUseDropQueueRouting()
+                    && ItemUtils.pushDropQueueIfPresent(getPlayer(), getBlockCenter(block),
+                    getHarvestLumberBonusDrops(block, amount))) {
+                return;
+            }
+
+            BlockUtils.markDropsAsBonus(block, amount);
+            return;
+        }
+
+        for (int i = 0; i < amount; i++) {
+            spawnHarvestLumberBonusDrops(block);
         }
     }
 
@@ -330,10 +358,10 @@ public class WoodcuttingManager extends SkillManager {
      * @param treeFellerBlocks List of blocks to be dropped
      */
     private void dropTreeFellerLootFromBlocks(@NotNull Set<Block> treeFellerBlocks) {
-        Player player = getPlayer();
+        final Player player = getPlayer();
         int xp = 0;
         int processedLogCount = 0;
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         for (Block block : treeFellerBlocks) {
             int beforeXP = xp;
@@ -352,18 +380,14 @@ public class WoodcuttingManager extends SkillManager {
                 xp += processTreeFellerXPGains(block, processedLogCount);
 
                 //Drop displaced block
-                spawnItemsFromCollection(player, getBlockCenter(block),
-                        block.getDrops(itemStack), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                dropTreeFellerDisplacedItems(block, player, itemStack);
 
                 //Bonus Drops / Harvest lumber checks
-                processBonusDropCheck(block);
+                processTreeFellerBonusDropCheck(block);
             } else if (BlockUtils.isNonWoodPartOfTree(block)) {
                 // 75% of the time do not drop leaf blocks
                 if (ThreadLocalRandom.current().nextInt(100) > 75) {
-                    spawnItemsFromCollection(player,
-                            getBlockCenter(block),
-                            block.getDrops(itemStack),
-                            ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+                    dropTreeFellerDisplacedItems(block, player, itemStack);
                 } else if (hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
                     // if KnockOnWood is unlocked, then drop any saplings from the remaining blocks
                     ItemUtils.spawnItemsConditionally(block.getDrops(itemStack),
@@ -397,6 +421,52 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
+    }
+
+    private void dropTreeFellerDisplacedItems(@NotNull Block block, @NotNull Player player,
+            @NotNull ItemStack itemStack) {
+        final List<ItemStack> drops = List.copyOf(block.getDrops(itemStack));
+        ItemUtils.routeBlockDrops(player, block, getBlockCenter(block), drops,
+                ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+    }
+
+    private void processTreeFellerBonusDropCheck(@NotNull Block block) {
+        if (!mcMMO.p.getGeneralConfig()
+                .getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, block.getType())) {
+            return;
+        }
+
+        if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
+            if (checkCleanCutsActivation(block.getType())) {
+                routeTreeFellerBonusDrops(block, 2);
+                return;
+            }
+
+            if (checkHarvestLumberActivation(block.getType())) {
+                routeTreeFellerBonusDrops(block, 1);
+            }
+            return;
+        }
+
+        if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && checkHarvestLumberActivation(block.getType())) {
+            routeTreeFellerBonusDrops(block, 1);
+        }
+    }
+
+    private void routeTreeFellerBonusDrops(@NotNull Block block, int amount) {
+        ItemUtils.routeBlockDrops(getPlayer(), block, getBlockCenter(block),
+                getHarvestLumberBonusDrops(block, amount), ItemSpawnReason.BONUS_DROPS);
+    }
+
+    private @NotNull List<ItemStack> getHarvestLumberBonusDrops(@NotNull Block block, int amount) {
+        final List<ItemStack> bonusDrops = new ArrayList<>();
+
+        for (int i = 0; i < amount; i++) {
+            bonusDrops.addAll(block.getDrops(getPlayer().getInventory().getItemInMainHand()));
+        }
+
+        return bonusDrops;
     }
 
     private int updateProcessedLogCount(int xp, int processedLogCount, int beforeXP) {

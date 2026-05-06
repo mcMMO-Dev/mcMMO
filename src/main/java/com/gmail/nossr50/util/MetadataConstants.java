@@ -47,6 +47,7 @@ public class MetadataConstants {
     public static final @NotNull String METADATA_KEY_BOW_FORCE = "mcMMO: Bow Force";
     public static final @NotNull String METADATA_KEY_ARROW_DISTANCE = "mcMMO: Arrow Distance";
     public static final @NotNull String METADATA_KEY_BONUS_DROPS = "mcMMO: Double Drops";
+    public static final @NotNull String METADATA_KEY_QUEUED_BLOCK_DROPS = "mcMMO: Queued Block Drops";
     public static final @NotNull String METADATA_KEY_DISARMED_ITEM = "mcMMO: Disarmed Item";
     public static final @NotNull String METADATA_KEY_PLAYER_DATA = "mcMMO: Player Data";
     public static final @NotNull String METADATA_KEY_DATABASE_COMMAND = "mcMMO: Processing Database Command";
