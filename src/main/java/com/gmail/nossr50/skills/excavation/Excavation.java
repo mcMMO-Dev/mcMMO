@@ -19,11 +19,10 @@ public class Excavation {
      * @return the list of treasures that could be found
      */
     protected static List<ExcavationTreasure> getTreasures(final Material material) {
-        String friendly = getMaterialConfigString(material);
-        if (TreasureConfig.getInstance().excavationMap.containsKey(friendly)) {
-            return TreasureConfig.getInstance().excavationMap.get(friendly);
-        }
-        return new ArrayList<>();
+        final String friendly = getMaterialConfigString(material);
+
+        final List<ExcavationTreasure> treasures = TreasureConfig.getInstance().excavationMap.get(friendly);
+        return treasures != null ? treasures : new ArrayList<>();
     }
 
     /**
