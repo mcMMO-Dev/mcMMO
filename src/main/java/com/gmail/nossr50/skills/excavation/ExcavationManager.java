@@ -51,10 +51,9 @@ public class ExcavationManager extends SkillManager {
         // Treasure drops are rolled inside BlockDropItemEvent via rollAndCollectTreasureDrops()
     }
 
-    @Deprecated(forRemoval = true, since = "2.2.024")
     public List<ExcavationTreasure> getTreasures(@NotNull BlockState blockState) {
         requireNonNull(blockState, "blockState cannot be null");
-        return getTreasures(blockState.getBlock());
+        return Excavation.getTreasures(blockState.getType());
     }
 
     public List<ExcavationTreasure> getTreasures(@NotNull Block block) {
@@ -79,21 +78,21 @@ public class ExcavationManager extends SkillManager {
      * preserving the legacy behaviour where {@link #excavationBlockCheck} was called three
      * times for the centre block (once normally and twice inside {@link #gigaDrillBreaker}).
      *
-     * @param block the block that was broken
+     * @param blockState the block that was broken
      * @return list of treasure {@link ItemStack}s from all successful rolls
      */
-    public @NotNull List<ItemStack> rollAndCollectTreasureDrops(@NotNull Block block) {
+    public @NotNull List<ItemStack> rollAndCollectTreasureDrops(@NotNull BlockState blockState) {
         if (!Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             return List.of();
         }
 
-        final List<ExcavationTreasure> treasures = getTreasures(block);
+        final List<ExcavationTreasure> treasures = getTreasures(blockState);
         if (treasures.isEmpty()) {
             return List.of();
         }
 
         final int skillLevel = getSkillLevel();
-        final Location centerOfBlock = Misc.getBlockCenter(block);
+        final Location centerOfBlock = Misc.getBlockCenter(blockState.getLocation());
 
         // GDB called excavationBlockCheck 3 times (1 regular + 2 via gigaDrillBreaker),
         // giving 3 independent treasure rolls for the centre block. Mirror that here.
@@ -124,7 +123,7 @@ public class ExcavationManager extends SkillManager {
 
     /**
      * @deprecated Treasure drops are now handled via
-     *     {@link #rollAndCollectTreasureDrops(Block)} inside
+     *     {@link #rollAndCollectTreasureDrops(BlockState)} inside
      *     {@link org.bukkit.event.block.BlockDropItemEvent} so they are visible to
      *     Telekinesis-style enchant plugins.
      */

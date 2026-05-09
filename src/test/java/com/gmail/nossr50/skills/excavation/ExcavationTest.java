@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
@@ -69,9 +69,8 @@ class ExcavationTest extends MMOTestEnvironment {
         // Given: player has enough skill and a guaranteed treasure
         mmoPlayer.modifySkill(PrimarySkillType.EXCAVATION, 1000);
 
-        final Block block = Mockito.mock(Block.class);
+        final BlockState block = Mockito.mock(BlockState.class);
         when(block.getType()).thenReturn(Material.SAND);
-        when(block.getDrops(any())).thenReturn(null);
         when(block.getLocation()).thenReturn(new Location(world, 0, 64, 0));
 
         final ExcavationManager excavationManager = Mockito.spy(new ExcavationManager(mmoPlayer));
@@ -91,9 +90,8 @@ class ExcavationTest extends MMOTestEnvironment {
         // Given: a treasure that can never drop (0% chance)
         mmoPlayer.modifySkill(PrimarySkillType.EXCAVATION, 1000);
 
-        final Block block = Mockito.mock(Block.class);
+        final BlockState block = Mockito.mock(BlockState.class);
         when(block.getType()).thenReturn(Material.SAND);
-        when(block.getDrops(any())).thenReturn(null);
         when(block.getLocation()).thenReturn(new Location(world, 0, 64, 0));
 
         final ExcavationManager excavationManager = Mockito.spy(new ExcavationManager(mmoPlayer));
@@ -130,7 +128,7 @@ class ExcavationTest extends MMOTestEnvironment {
             // Given: player has enough skill and a guaranteed treasure exists for this block
             mmoPlayer.modifySkill(PrimarySkillType.EXCAVATION, 1000);
 
-            final Block block = Mockito.mock(Block.class);
+            final BlockState block = Mockito.mock(BlockState.class);
             when(block.getType()).thenReturn(Material.SAND);
             when(block.getLocation()).thenReturn(new Location(world, 1, 64, 1));
 
@@ -154,7 +152,7 @@ class ExcavationTest extends MMOTestEnvironment {
             // Given: a treasure that can never drop (0% chance)
             mmoPlayer.modifySkill(PrimarySkillType.EXCAVATION, 1000);
 
-            final Block block = Mockito.mock(Block.class);
+            final BlockState block = Mockito.mock(BlockState.class);
             when(block.getType()).thenReturn(Material.SAND);
             when(block.getLocation()).thenReturn(new Location(world, 2, 64, 2));
 
