@@ -38,16 +38,20 @@ public class McTopCommandAsyncTask extends CancellableRunnable {
 
 	@Override
 	public void run() {
-		List<PlayerStat> userStats = mcMMO.getDatabaseManager()
-				.readLeaderboard(skill, page, 10);
-
 		Set<String> hidden = mcMMO.p.getGeneralConfig().getHiddenFromLeaderboards()
 				.stream()
 				.map(String::toLowerCase)
 				.collect(Collectors.toSet());
 
+		int fetchAmount = 10 + hidden.size();
+
+		List<PlayerStat> userStats = mcMMO.getDatabaseManager()
+				.readLeaderboard(skill, page, fetchAmount);
+
+
 		userStats = userStats.stream()
 				.filter(stat -> !hidden.contains(stat.playerName().toLowerCase()))
+				.limit(10)
 				.collect(Collectors.toList());
 
 		mcMMO.p.getFoliaLib().getScheduler().runNextTick(
