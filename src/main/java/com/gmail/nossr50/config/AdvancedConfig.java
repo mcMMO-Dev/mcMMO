@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import net.md_5.bungee.api.ChatColor;
 
 public class AdvancedConfig extends BukkitConfig {
     int[] defaultCrippleValues = new int[]{10, 15, 20, 25};
@@ -515,24 +514,6 @@ public class AdvancedConfig extends BukkitConfig {
     public boolean sendAbilityNotificationToOtherPlayers() {
         return config.getBoolean("Feedback.Events.AbilityActivation.SendNotificationToOtherPlayers",
                 true);
-    }
-
-    private ChatColor getChatColorFromKey(String keyLocation) {
-        String colorName = config.getString(keyLocation);
-
-        return getChatColor(colorName);
-    }
-
-    private ChatColor getChatColor(String configColor) {
-        for (ChatColor chatColor : ChatColor.values()) {
-            if (configColor.equalsIgnoreCase(chatColor.getName())) {
-                return chatColor;
-            }
-        }
-
-        //Invalid Color
-        mcMMO.p.getLogger().warning(configColor + " is an invalid color value");
-        return ChatColor.WHITE;
     }
 
     /* ACROBATICS */

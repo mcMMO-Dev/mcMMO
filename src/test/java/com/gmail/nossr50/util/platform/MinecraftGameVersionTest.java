@@ -8,13 +8,12 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MinecraftGameVersionFactory;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 class MinecraftGameVersionTest {
@@ -75,59 +74,91 @@ class MinecraftGameVersionTest {
         assertTrue(patchVersionTest.isAtLeast(0, 0, 5));
     }
 
-    @MethodSource("getGameVersions")
-    @ParameterizedTest(name = "Verify that \"{0}\" is recognized as {1}.{2}.{3}")
-    void testVersionDetection(String gameVersion, int major, int minor, int patch) {
-        /*
-         * The platform manager checks for the type of server software,
-         * we will just simulate some "Spigot" version here, so that the test can
-         * continue successfully.
-         */
-        String serverSoftwareVersion =
-                "git-Spigot-12345-abcdef (MC: " + major + '.' + minor + '.' + patch + ')';
+    @Nested
+    class VersionDetectionFromGetVersion {
+        // Tests calculateGameVersion() with Bukkit.getVersion() format strings — the actual
+        // input mcMMO.java passes at runtime. CraftBukkit always embeds "(MC: X.Y.Z)" in the
+        // string, so the primary pattern must handle all server software variants:
+        //   Spigot:     "git-Spigot-12345-abcdef (MC: 1.21.4)"
+        //   Paper old:  "1.21.11-106-0d768aa (MC: 1.21.11)"
+        //   Paper 26+:  "26.1.2-60-b4682bf (MC: 26.1.2)"
+        @ParameterizedTest(name = "Verify that \"{0}\" is recognized as {1}.{2}.{3}")
+        @MethodSource("getVersionStrings")
+        void detectsVersionCorrectly(String getVersionString, int expectedMajor, int expectedMinor, int expectedPatch) {
+            // Given
+            final mcMMO mockPlugin = Mockito.mock(mcMMO.class);
+            Mockito.when(mockPlugin.getName()).thenReturn("mcMMO");
+            Mockito.when(mockPlugin.getLogger()).thenReturn(Logger.getLogger("mcMMO"));
+            mcMMO.p = mockPlugin;
+            try {
+                // When
+                final MinecraftGameVersion detectedVersion =
+                        MinecraftGameVersionFactory.calculateGameVersion(getVersionString);
 
-        // Set up a mock plugin for logging.
-        mcMMO plugin = Mockito.mock(mcMMO.class);
-        Mockito.when(plugin.getName()).thenReturn("mcMMO");
-        Mockito.when(plugin.getLogger()).thenReturn(Logger.getLogger("mcMMO"));
-        mcMMO.p = plugin;
+                // Then
+                assertEquals(expectedMajor, detectedVersion.getMajorVersion().asInt());
+                assertEquals(expectedMinor, detectedVersion.getMinorVersion().asInt());
+                assertEquals(expectedPatch, detectedVersion.getPatchVersion().asInt());
+            } finally {
+                mcMMO.p = null;
+            }
+        }
 
-        try (MockedStatic<Bukkit> bukkit = Mockito.mockStatic(Bukkit.class)) {
-            // Inject our own Bukkit versions
-            bukkit.when(Bukkit::getVersion).thenReturn(serverSoftwareVersion);
-            bukkit.when(Bukkit::getBukkitVersion).thenReturn(gameVersion);
-
-            final MinecraftGameVersion minecraftVersion
-                    = MinecraftGameVersionFactory.calculateGameVersion(gameVersion);
-
-            assertEquals(major, minecraftVersion.getMajorVersion().asInt());
-            assertEquals(minor, minecraftVersion.getMinorVersion().asInt());
-            assertEquals(patch, minecraftVersion.getPatchVersion().asInt());
-        } finally {
-            mcMMO.p = null;
+        private static @NotNull Stream<Arguments> getVersionStrings() {
+            return Stream.of(
+                    // Spigot: "git-Spigot-<hash>-<hash> (MC: X.Y.Z)"
+                    // The prefix never starts with digits, so the old regex matched nothing → 0.0.0
+                    Arguments.of("git-Spigot-12345-abcdef (MC: 1.13.2)", 1, 13, 2),
+                    Arguments.of("git-Spigot-12345-abcdef (MC: 1.17)", 1, 17, 0),
+                    Arguments.of("git-Spigot-12345-abcdef (MC: 1.21.4)", 1, 21, 4),
+                    // Paper (old versioning): "X.Y.Z-build-hash (MC: X.Y.Z)"
+                    Arguments.of("1.21.11-106-0d768aa (MC: 1.21.11)", 1, 21, 11),
+                    // Paper (new versioning 26+): "26.X.Y-build-hash (MC: 26.X.Y)"
+                    Arguments.of("26.1.2-60-b4682bf (MC: 26.1.2)", 26, 1, 2)
+            );
         }
     }
 
-    private static @NotNull Stream<Arguments> getGameVersions() {
-        /*
-         * These samples were taken directly from the historical
-         * data of CraftBukkit's pom.xml file:
-         * https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/browse/pom.xml
-         *
-         * We should be safe to assume that forks follow these conventions and do not mess
-         * with this version number (Spigot, Paper and Tuinity do at least).
-         */
-        return Stream.of(
-                Arguments.of("1.13.2-R0.1-SNAPSHOT", 1, 13, 2),
-                Arguments.of("1.13-R0.2-SNAPSHOT", 1, 13, 0),
-                Arguments.of("1.13.2-R0.1-SNAPSHOT", 1, 13, 2),
-                Arguments.of("1.13-pre7-R0.1-SNAPSHOT", 1, 13, 0),
-                Arguments.of("1.14-pre5-SNAPSHOT", 1, 14, 0),
-                Arguments.of("1.15-R0.1-SNAPSHOT", 1, 15, 0),
-                Arguments.of("1.16.5-R0.1-SNAPSHOT", 1, 16, 5),
-                Arguments.of("1.17-R0.1-SNAPSHOT", 1, 17, 0),
-                Arguments.of("1.21.11-106-0d768aa", 1, 21, 11)
-        );
+    @Nested
+    class VersionDetectionFallback {
+        // Tests the fallback regex path for strings that lack "(MC: X.Y.Z)".
+        // This covers getBukkitVersion()-style strings and any legacy format.
+        @ParameterizedTest(name = "Fallback: verify that \"{0}\" is recognized as {1}.{2}.{3}")
+        @MethodSource("getBukkitVersionStrings")
+        void detectsVersionFromFallbackFormat(String versionString, int expectedMajor, int expectedMinor, int expectedPatch) {
+            // Given
+            final mcMMO mockPlugin = Mockito.mock(mcMMO.class);
+            Mockito.when(mockPlugin.getName()).thenReturn("mcMMO");
+            Mockito.when(mockPlugin.getLogger()).thenReturn(Logger.getLogger("mcMMO"));
+            mcMMO.p = mockPlugin;
+            try {
+                // When
+                final MinecraftGameVersion detectedVersion =
+                        MinecraftGameVersionFactory.calculateGameVersion(versionString);
+
+                // Then
+                assertEquals(expectedMajor, detectedVersion.getMajorVersion().asInt());
+                assertEquals(expectedMinor, detectedVersion.getMinorVersion().asInt());
+                assertEquals(expectedPatch, detectedVersion.getPatchVersion().asInt());
+            } finally {
+                mcMMO.p = null;
+            }
+        }
+
+        private static @NotNull Stream<Arguments> getBukkitVersionStrings() {
+            // Samples taken from CraftBukkit's historical pom.xml:
+            // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/browse/pom.xml
+            return Stream.of(
+                    Arguments.of("1.13.2-R0.1-SNAPSHOT", 1, 13, 2),
+                    Arguments.of("1.13-R0.2-SNAPSHOT", 1, 13, 0),
+                    Arguments.of("1.13-pre7-R0.1-SNAPSHOT", 1, 13, 0),
+                    Arguments.of("1.14-pre5-SNAPSHOT", 1, 14, 0),
+                    Arguments.of("1.15-R0.1-SNAPSHOT", 1, 15, 0),
+                    Arguments.of("1.16.5-R0.1-SNAPSHOT", 1, 16, 5),
+                    Arguments.of("1.17-R0.1-SNAPSHOT", 1, 17, 0),
+                    Arguments.of("1.21.11-106-0d768aa", 1, 21, 11)
+            );
+        }
     }
 
 }

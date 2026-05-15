@@ -85,6 +85,9 @@ public final class BlockUtils {
         if (block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS)) {
             block.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
         }
+        if (block.hasMetadata(MetadataConstants.METADATA_KEY_EXCAVATION_TREASURE_ROLL)) {
+            block.removeMetadata(MetadataConstants.METADATA_KEY_EXCAVATION_TREASURE_ROLL, mcMMO.p);
+        }
     }
 
     /**

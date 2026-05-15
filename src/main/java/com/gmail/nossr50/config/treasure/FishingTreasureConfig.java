@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.treasure;
 import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
 
 import com.gmail.nossr50.config.BukkitConfig;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasureBook;
@@ -12,11 +13,13 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.PotionUtil;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,6 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class FishingTreasureConfig extends BukkitConfig {
 
@@ -110,6 +114,29 @@ public class FishingTreasureConfig extends BukkitConfig {
             return;
         }
 
+        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_MOOSHROOM_ENTITY_ID)) {
+            mcMMO.p.getLogger().log(Level.INFO,
+                    "Fixing incorrect Mooshroom entity ID in fishing_treasures.yml,"
+                            + " this will only run once...");
+            final boolean patched = fixMooshroomEntityId(config);
+            if (patched) {
+                try {
+                    config.save(getFile());
+                    mcMMO.getUpgradeManager().setUpgradeCompleted(
+                            UpgradeType.FIX_MOOSHROOM_ENTITY_ID);
+                } catch (IOException e) {
+                    mcMMO.p.getLogger().log(Level.SEVERE,
+                            "Failed to save fishing_treasures.yml after patching Mooshroom entity"
+                                    + " ID. You may manually rename the 'Shake.MUSHROOM_COW'"
+                                    + " section to 'Shake.MOOSHROOM' in fishing_treasures.yml.", e);
+                }
+            } else {
+                // Nothing to patch (key absent or already correct) — mark complete so we
+                // don't check again on the next server startup.
+                mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.FIX_MOOSHROOM_ENTITY_ID);
+            }
+        }
+
         loadTreasures("Fishing");
         loadEnchantments();
 
@@ -118,6 +145,39 @@ public class FishingTreasureConfig extends BukkitConfig {
                 loadTreasures("Shake." + entity);
             }
         }
+    }
+
+    /**
+     * Renames the {@code Shake.MUSHROOM_COW} section to {@code Shake.MOOSHROOM} in the supplied
+     * config. {@code MUSHROOM_COW} was shipped as the entity key in early versions of
+     * {@code fishing_treasures.yml} but is not a valid Spigot {@link EntityType} name; the correct
+     * name is {@code MOOSHROOM}.
+     *
+     * <p>The rename is skipped if {@code Shake.MUSHROOM_COW} is absent (already patched or never
+     * present) or if {@code Shake.MOOSHROOM} already exists (user has manual config).
+     *
+     * @param configuration the loaded YAML configuration to patch in-memory
+     * @return {@code true} if the section was renamed, {@code false} if no change was needed
+     */
+    @VisibleForTesting
+    static boolean fixMooshroomEntityId(
+            final @NotNull org.bukkit.configuration.file.YamlConfiguration configuration) {
+        final ConfigurationSection oldSection = configuration.getConfigurationSection(
+                "Shake.MUSHROOM_COW");
+        if (oldSection == null) {
+            return false;
+        }
+
+        // Don't overwrite intentional user config for the correct key.
+        if (configuration.getConfigurationSection("Shake.MOOSHROOM") == null) {
+            for (final String key : oldSection.getKeys(false)) {
+                configuration.set("Shake.MOOSHROOM." + key, oldSection.get(key));
+            }
+            mcMMO.p.getLogger().info(
+                    "Renamed Shake.MUSHROOM_COW to Shake.MOOSHROOM in fishing_treasures.yml.");
+        }
+        configuration.set("Shake.MUSHROOM_COW", null);
+        return true;
     }
 
     private void loadTreasures(@NotNull String type) {

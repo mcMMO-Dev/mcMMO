@@ -1,12 +1,20 @@
+Version 2.2.053
+    (Codebase) Removed 27 dead JSON.* locale keys from all locale files — JSON.Rank, JSON.JWrapper.Header, JSON.JWrapper.Target.{Type,Block,Player}, JSON.Hover.{SuperAbility,Mystery2}, JSON.Notification.SuperAbility, JSON.Acrobatics.Roll.Interaction.Activated, and all JSON.<SkillName> skill-name keys were never loaded in Java source; skill names use <Skill>.SkillName instead
+
 Version 2.2.052
+    Fixed Mooshroom Shake drops not loading due to wrong entity ID in fishing_treasures.yml (see notes)
+    Fixed Minecraft version detection failing on Spigot servers, causing Tricky Trials potions to be skipped
+    Fixed Woodcutting bonus drops (Harvest Lumber, Clean Cuts) and Excavation treasure drops bypassing BlockDropItemEvent, making them invisible to Telekinesis-style enchant plugins (See notes)
     Skill info tooltip colors are now fully customizable via locale strings — all colors in JSON hover components are driven by locale keys and support & codes, hex colors (&#RRGGBB), and [[COLOR_NAME]] tokens
-    Fixed incorrect effect durations for splash and lingering variants of Infestation, Weaving, Wind Charging, and Oozing potions in potions.yml (Thanks Warriorrrr)
+    Fixed incorrect effect durations for splash and lingering variants of Infestation, Weaving, Wind Charging, and Oozing potions in potions.yml (Thanks Warriorrrr) — existing servers are auto-migrated on first startup
     Fixed an exploit where arrows from multishot crossbows could be recovered in regions protected by WorldGuard
     Fixed an exploit where renamed seeds could trigger Green Thumb crop replanting without being consumed
     Fixed an exploit where renamed mushrooms could trigger Shroom Thumb without being consumed
     Fixed bug where Powered Shot (Crossbows) was reading MaxDamage from the Archery config section instead of its own
     Fixed bug where Smelting Vanilla XP multiplier was not using Skills.Smelting.VanillaXPMultiplier values from advanced.yml
     Fixed Fishing skill only working with main-hand fishing rod when fishing
+    Fixed bug where Block Cracker (Unarmed/Berserk) had no effect on deepslate_bricks, deepslate_tiles, polished_blackstone_bricks, and nether_bricks
+    Fixed Verdant Bounty (Herbalism) never triggering triple drops — the subskill was defined and displayed but was never checked during block break processing
     Fixed bug where mob custom names could be permanently corrupted after healthbar display (see notes)
     Fixed bug where vanilla mobs (null custom name) had their name incorrectly restored as an empty string instead of null after healthbar display
     Fixed bug where hitting a mob multiple times during the healthbar display window caused the name to restore too early (see notes)
@@ -22,10 +30,7 @@ Version 2.2.052
     Added 'Skills.Repair.ArcaneForging.MaxEnchantLevel' to advanced.yml (See notes)
     Added 'Skills.Salvage.ArcaneSalvage.MaxEnchantLevel' to advanced.yml (See notes)
     Updated Simplified Chinese (zh_CN) locale with new Spears and Maces translations, color-code spacing fixes, improved fishing messages, and corrected ability wear-off message formatting (Thanks GhostDC)
-    Added & color codes to JSON hover tooltip keys and new JSON.URL.*.Detail, JSON.URL.Header,
-    JSON.URL.Label.* keys to all 13 active non-English locale files
-    (de, es, fr, hu_HU, it, ja_JP, ko, lt_LT, pl, pt_BR, ru, zh_CN, zh_TW)
-    for consistency with locale_en_US.properties
+    Added & color codes to JSON hover tooltip keys and new JSON.URL.*.Detail, JSON.URL.Header, for consistency with locale_en_US.properties
     (Codebase) Updated deprecated durability API usage to ItemMeta Damageable API (see notes)
     (Codebase) Removed obsolete multishot arrow metadata marker system, modernized to native Spigot/Paper APIs
     (Codebase) Simplified crossbow arrow handling by eliminating unnecessary custom metadata tracking
@@ -37,8 +42,11 @@ Version 2.2.052
     (Codebase) Added locale keys JSON.Type.Passive, JSON.Type.Active, JSON.Type.SuperAbility, JSON.Locked, JSON.LevelRequirement, JSON.DescriptionHeader, JSON.URL.*.Detail, JSON.URL.Header, JSON.URL.Label.* with appropriate & color codes in locale_en_US.properties
     (Codebase) Modernized McMMOWebLinks enum with getDescriptionComponent(), getDetailComponent(), getLabelComponent() methods returning proper Adventure TextComponents
     (Codebase) Removed dead TextUtils.addChildWebComponent() method
+    (Codebase) Bumped api-version in plugin.yml from 1.13 to 1.20.5, eliminating legacy bytecode field-rename shims applied by the server at load time
 
     NOTES:
+    The Mooshroom Shake fix is auto-migrated at startup (Shake.MUSHROOM_COW → Shake.MOOSHROOM in fishing_treasures.yml).
+    Regarding the telekenisis plugin compatibility fix, Tree Feller is not yet fixed, I will try to address it in the near future.
     In this update I've added two new advanced.yml settings for more granular control of the enchant level cap for both Repair and Salvage, this is an alternative to flipping on ExploitFix.UnsafeEnchantments in experience.yml which simply uncaps both skills.
     If ExploitFix.UnsafeEnchantments happens to be enabled in experience.yml, it will override both of these new settings and therefor allow basically uncapped enchant levels for Arcane Forging and Arcane Salvage.
     Allowing the old setting to override is mostly for backwards compatibility so we don't disrupt any existing server behavior.

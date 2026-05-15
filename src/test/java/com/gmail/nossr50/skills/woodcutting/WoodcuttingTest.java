@@ -3,11 +3,15 @@ package com.gmail.nossr50.skills.woodcutting;
 import static java.util.logging.Logger.getLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.mockStatic;
 
 import com.gmail.nossr50.MMOTestEnvironment;
@@ -15,8 +19,10 @@ import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,6 +39,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -83,34 +90,41 @@ class WoodcuttingTest extends MMOTestEnvironment {
 
     @Test
     void harvestLumberShouldDoubleDrop() {
+        // Given: player has high Woodcutting skill and Tree Feller is not active
         mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+        mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
 
         Block block = mock(Block.class);
-        // return empty collection if ItemStack
         Mockito.when(block.getDrops(any())).thenReturn(Collections.emptyList());
         Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+
+        // When
         woodcuttingManager.processBonusDropCheck(block);
 
-        // verify bonus drops were spawned
-        // TODO: using at least once since triple drops can also happen
-        // TODO: Change the test env to disallow triple drop in the future
-        Mockito.verify(woodcuttingManager, Mockito.atLeastOnce())
-                .spawnHarvestLumberBonusDrops(block);
+        // Then: bonus drops are routed through BlockDropItemEvent via block metadata,
+        // NOT spawned directly (allows Telekinesis-style enchant plugins to intercept)
+        Mockito.verify(block, Mockito.atLeastOnce()).setMetadata(
+                eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
+        Mockito.verify(woodcuttingManager, Mockito.never()).spawnHarvestLumberBonusDrops(block);
     }
 
     @Test
     void harvestLumberShouldNotDoubleDrop() {
+        // Given: player has no skill and Tree Feller is not active
         mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 0);
+        mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
 
         Block block = mock(Block.class);
-        // wire block
-
         Mockito.when(block.getDrops(any())).thenReturn(null);
         Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+
+        // When
         woodcuttingManager.processBonusDropCheck(block);
 
-        // verify bonus drops were not spawned
-        Mockito.verify(woodcuttingManager, Mockito.times(0)).spawnHarvestLumberBonusDrops(block);
+        // Then: no bonus drop path was triggered
+        Mockito.verify(woodcuttingManager, Mockito.never()).spawnHarvestLumberBonusDrops(block);
+        Mockito.verify(block, Mockito.never()).setMetadata(
+                eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
     }
 
     @Test
@@ -229,6 +243,78 @@ class WoodcuttingTest extends MMOTestEnvironment {
                 "treeFellerReachedThreshold should remain false");
 
         mockedBlockUtils.close();
+    }
+
+    @Nested
+    class ProcessBonusDropCheckRouting {
+        // These tests verify that normal (non-Tree Feller) woodcutting bonus drops are
+        // routed through BlockDropItemEvent via BlockUtils.markDropsAsBonus(), so that
+        // Telekinesis-style enchant plugins can intercept them. Tree Feller must stay on
+        // the legacy spawnHarvestLumberBonusDrops() path because Tree Feller sets blocks
+        // to AIR directly and never fires BlockDropItemEvent.
+
+        @Test
+        void normalDoubleDrop_setsMetadataOnBlock_notSpawnedDirectly() {
+            // Given: player has Woodcutting skill and Tree Feller is NOT active
+            mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+            mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
+
+            final Block block = mock(Block.class);
+            Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+            Mockito.when(block.getDrops(any())).thenReturn(Collections.emptyList());
+
+            // When: bonus drop check is processed
+            woodcuttingManager.processBonusDropCheck(block);
+
+            // Then: metadata was set on the block (routed through BlockDropItemEvent)
+            verify(block, Mockito.atLeastOnce()).setMetadata(
+                    eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
+
+            // Then: drops were NOT spawned directly (old path)
+            verify(woodcuttingManager, never()).spawnHarvestLumberBonusDrops(block);
+        }
+
+        @Test
+        void treeFellerDoubleDrop_spawnsDirectly_doesNotSetMetadata() {
+            // Given: player has Woodcutting skill and Tree Feller IS active
+            mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+            mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, true);
+
+            final Block block = mock(Block.class);
+            Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+            Mockito.when(block.getDrops(any())).thenReturn(Collections.emptyList());
+
+            // When: bonus drop check is processed during Tree Feller
+            woodcuttingManager.processBonusDropCheck(block);
+
+            // Then: drops were spawned directly via the legacy path (Tree Feller cannot use
+            // BlockDropItemEvent since it sets blocks to AIR without firing that event)
+            verify(woodcuttingManager, Mockito.atLeastOnce()).spawnHarvestLumberBonusDrops(block);
+
+            // Then: metadata was NOT set (would be silently lost since BlockDropItemEvent
+            // never fires for Tree Feller blocks)
+            verify(block, never()).setMetadata(
+                    eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
+        }
+
+        @Test
+        void noBonus_whenSkillLevelTooLow_neitherPathInvoked() {
+            // Given: player has no Woodcutting skill and Tree Feller is not active
+            mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 0);
+            mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
+
+            final Block block = mock(Block.class);
+            Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+            Mockito.when(block.getDrops(any())).thenReturn(null);
+
+            // When
+            woodcuttingManager.processBonusDropCheck(block);
+
+            // Then: neither path was triggered
+            verify(woodcuttingManager, never()).spawnHarvestLumberBonusDrops(block);
+            verify(block, never()).setMetadata(
+                    eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
+        }
     }
 
 }

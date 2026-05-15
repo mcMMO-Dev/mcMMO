@@ -638,7 +638,7 @@ Shake:
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
-    MUSHROOM_COW:
+    MOOSHROOM:
         MILK_BUCKET:
             Amount: 1
             XP: 0

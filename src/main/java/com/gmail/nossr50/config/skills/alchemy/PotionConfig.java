@@ -5,14 +5,18 @@ import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
 import static com.gmail.nossr50.util.PotionUtil.setBasePotionType;
 
 import com.gmail.nossr50.config.LegacyConfigLoader;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -20,6 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -38,6 +43,32 @@ public class PotionConfig extends LegacyConfigLoader {
     private static final String SLIME_BLOCK_STR = "SLIME_BLOCK";
     private static final String COBWEB_STR = "COBWEB";
     private static final String STONE_STR = "STONE";
+
+    // The four Tricky Trials splash potion YAML keys shipped with incorrect duration 2500 ticks;
+    // the correct value is 3600 (matching the base potion duration).
+    @VisibleForTesting
+    static final List<String> TRICKY_TRIALS_SPLASH_POTION_KEYS = List.of(
+            "SPLASH_POTION_OF_INFESTATION",
+            "SPLASH_POTION_OF_WEAVING",
+            "SPLASH_POTION_OF_WIND_CHARGING",
+            "SPLASH_POTION_OF_OOZING");
+    @VisibleForTesting
+    static final int TRICKY_TRIALS_SPLASH_INCORRECT_DURATION = 2500;
+    @VisibleForTesting
+    static final int TRICKY_TRIALS_SPLASH_CORRECT_DURATION = 3600;
+
+    // The four Tricky Trials lingering potion YAML keys shipped with incorrect duration 3000 ticks;
+    // the correct value is 900 (1/4 of the base 3600 tick duration per vanilla rules).
+    @VisibleForTesting
+    static final List<String> TRICKY_TRIALS_LINGERING_POTION_KEYS = List.of(
+            "LINGERING_POTION_OF_INFESTATION",
+            "LINGERING_POTION_OF_WEAVING",
+            "LINGERING_POTION_WIND_CHARGING",
+            "LINGERING_POTION_OF_OOZING");
+    @VisibleForTesting
+    static final int TRICKY_TRIALS_LINGERING_INCORRECT_DURATION = 3000;
+    @VisibleForTesting
+    static final int TRICKY_TRIALS_LINGERING_CORRECT_DURATION = 900;
 
     private final List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<>();
     private final List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<>();
@@ -80,8 +111,127 @@ public class PotionConfig extends LegacyConfigLoader {
     }
 
     public void loadPotions() {
+        if (mcMMO.getUpgradeManager().shouldUpgrade(
+                UpgradeType.FIX_TRICKY_TRIALS_SPLASH_POTION_DURATIONS)) {
+            mcMMO.p.getLogger().log(Level.INFO,
+                    "Fixing incorrect potion durations for Tricky Trials potions,"
+                            + " this will only run once...");
+            final boolean patched = fixTrickyTrialsPotionDurations(config, mcMMO.p.getLogger());
+            if (patched) {
+                try {
+                    config.save(getFile());
+                    mcMMO.getUpgradeManager().setUpgradeCompleted(
+                            UpgradeType.FIX_TRICKY_TRIALS_SPLASH_POTION_DURATIONS);
+                } catch (IOException e) {
+                    mcMMO.p.getLogger().log(Level.SEVERE,
+                            "Failed to save potions.yml after patching Tricky Trials potion"
+                                    + " durations. You may manually fix the Effects durations:"
+                                    + " splash potions should be 3600, lingering potions should"
+                                    + " be 900, for INFESTATION, WEAVING, WIND_CHARGING, and"
+                                    + " OOZING.", e);
+                }
+            } else {
+                // Nothing to patch (keys absent or already correct) — mark complete so we
+                // don't check again on the next server startup.
+                mcMMO.getUpgradeManager().setUpgradeCompleted(
+                        UpgradeType.FIX_TRICKY_TRIALS_SPLASH_POTION_DURATIONS);
+            }
+        }
         loadConcoctions();
         loadPotionMap();
+    }
+
+    /**
+     * Patches the Tricky Trials potion Effects durations in the supplied config:
+     * <ul>
+     *   <li>Splash potions: incorrect 2500 → correct 3600 ticks</li>
+     *   <li>Lingering potions: incorrect 3000 → correct 900 ticks</li>
+     * </ul>
+     * Only modifies entries that exactly match the known-bad values — user-customized durations
+     * are preserved unchanged. Silently skips potion keys that are absent in the config;
+     * a customized potions.yml may legitimately omit any of them.
+     *
+     * @param configuration the loaded YAML configuration to patch in-memory
+     * @param logger        logger used to report which potions were patched
+     * @return true if at least one entry was patched, false otherwise
+     */
+    @VisibleForTesting
+    static boolean fixTrickyTrialsPotionDurations(
+            final YamlConfiguration configuration,
+            final Logger logger) {
+        final ConfigurationSection potionsSection =
+                configuration.getConfigurationSection("Potions");
+        if (potionsSection == null) {
+            return false;
+        }
+
+        boolean anyPatched = false;
+        anyPatched |= patchTrickyTrialsDurations(
+                potionsSection,
+                TRICKY_TRIALS_SPLASH_POTION_KEYS,
+                TRICKY_TRIALS_SPLASH_INCORRECT_DURATION,
+                TRICKY_TRIALS_SPLASH_CORRECT_DURATION,
+                logger);
+        anyPatched |= patchTrickyTrialsDurations(
+                potionsSection,
+                TRICKY_TRIALS_LINGERING_POTION_KEYS,
+                TRICKY_TRIALS_LINGERING_INCORRECT_DURATION,
+                TRICKY_TRIALS_LINGERING_CORRECT_DURATION,
+                logger);
+        return anyPatched;
+    }
+
+    private static boolean patchTrickyTrialsDurations(
+            final ConfigurationSection potionsSection,
+            final List<String> potionKeys,
+            final int incorrectDuration,
+            final int correctDuration,
+            final Logger logger) {
+        boolean anyPatched = false;
+
+        for (final String potionKey : potionKeys) {
+            final ConfigurationSection potionSection =
+                    potionsSection.getConfigurationSection(potionKey);
+            if (potionSection == null) {
+                // Not present — the user may have customized potions.yml to omit this entry.
+                continue;
+            }
+
+            final List<String> originalEffects = potionSection.getStringList("Effects");
+            if (originalEffects.isEmpty()) {
+                continue;
+            }
+
+            final List<String> patchedEffects = new ArrayList<>(originalEffects.size());
+            boolean potionPatched = false;
+
+            for (final String effectEntry : originalEffects) {
+                final String[] parts = effectEntry.trim().split("\\s+");
+                if (parts.length == 3 && isTrickyTrialsPotionEffect(parts[0])) {
+                    try {
+                        final int duration = Integer.parseInt(parts[2]);
+                        if (duration == incorrectDuration) {
+                            patchedEffects.add(
+                                    parts[0] + " " + parts[1] + " " + correctDuration);
+                            potionPatched = true;
+                            continue;
+                        }
+                    } catch (NumberFormatException ignored) {
+                        // Malformed duration field — leave the entry unchanged.
+                    }
+                }
+                patchedEffects.add(effectEntry);
+            }
+
+            if (potionPatched) {
+                potionSection.set("Effects", patchedEffects);
+                anyPatched = true;
+                logger.info("Patched Tricky Trials potion duration for " + potionKey
+                        + " from " + incorrectDuration + " to " + correctDuration + " ticks.");
+            }
+        }
+
+        return anyPatched;
     }
 
     @VisibleForTesting

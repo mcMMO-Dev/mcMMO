@@ -1110,7 +1110,10 @@ public class MaterialMapStore {
     private void fillBlockCrackerWhiteList() {
         blockCrackerWhiteList.add("stone_bricks");
         blockCrackerWhiteList.add("infested_stone_bricks");
-
+        blockCrackerWhiteList.add("deepslate_bricks");
+        blockCrackerWhiteList.add("deepslate_tiles");
+        blockCrackerWhiteList.add("polished_blackstone_bricks");
+        blockCrackerWhiteList.add("nether_bricks");
     }
 
     private void fillHerbalismAbilityBlackList() {

@@ -47,6 +47,12 @@ public class MetadataConstants {
     public static final @NotNull String METADATA_KEY_BOW_FORCE = "mcMMO: Bow Force";
     public static final @NotNull String METADATA_KEY_ARROW_DISTANCE = "mcMMO: Arrow Distance";
     public static final @NotNull String METADATA_KEY_BONUS_DROPS = "mcMMO: Double Drops";
+    /**
+     * Set on a block in BlockBreakEvent (only when the block passed the natural-block check) to
+     * signal BlockDropItemEvent that it should roll excavation treasures. The metadata value is the
+     * pre-break {@link org.bukkit.Material} of the block, captured before the block becomes AIR.
+     */
+    public static final @NotNull String METADATA_KEY_EXCAVATION_TREASURE_ROLL = "mcMMO: Excavation Treasure Roll";
     public static final @NotNull String METADATA_KEY_DISARMED_ITEM = "mcMMO: Disarmed Item";
     public static final @NotNull String METADATA_KEY_PLAYER_DATA = "mcMMO: Player Data";
     public static final @NotNull String METADATA_KEY_DATABASE_COMMAND = "mcMMO: Processing Database Command";
