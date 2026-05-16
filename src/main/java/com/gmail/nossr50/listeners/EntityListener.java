@@ -30,6 +30,8 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.skills.bloodcraft.BloodcraftManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -449,6 +451,24 @@ public class EntityListener implements Listener {
 
         CombatUtils.processCombatAttack(event, attacker, target);
         CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), pluginRef);
+
+        if (attacker instanceof Player attackingPlayer) {
+            McMMOPlayer mmoAttacker = UserManager.getPlayer(attackingPlayer);
+            if (mmoAttacker != null) {
+                BloodcraftManager bloodcraftManager = mmoAttacker.getBloodcraftManager();
+                if (bloodcraftManager != null) {
+                    double finalDamage = event.getFinalDamage();
+                    XPGainReason reason = (target instanceof Player)
+                            ? XPGainReason.PVP : XPGainReason.PVE;
+                    bloodcraftManager.applyBloodcraftXP(finalDamage, reason);
+                    bloodcraftManager.processLifesteal(target, finalDamage);
+                    double surgeDamage = bloodcraftManager.getCrimsonSurgeBonusDamage(finalDamage);
+                    if (surgeDamage > 0) {
+                        CombatUtils.dealDamage(target, surgeDamage, attackingPlayer);
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)

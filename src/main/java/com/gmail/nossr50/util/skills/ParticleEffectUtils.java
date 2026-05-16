@@ -8,9 +8,11 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang3.RandomUtils;
+import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -170,6 +172,49 @@ public final class ParticleEffectUtils {
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
     }*/
+
+    /**
+     * Gold + crimson dust sphere around the player on skill level-up (bookedMC theme).
+     */
+    public static void playGoldCrimsonLevelUpEffect(@NotNull Player player) {
+        Location center = player.getLocation().add(0, 1, 0);
+        World world = center.getWorld();
+        if (world == null) {
+            return;
+        }
+        Particle.DustOptions goldDust = new Particle.DustOptions(Color.fromRGB(255, 170, 0), 1.5F);
+        Particle.DustOptions crimsonDust = new Particle.DustOptions(Color.fromRGB(180, 0, 0), 1.5F);
+        for (int i = 0; i < 40; i++) {
+            double angle = (2 * Math.PI / 40) * i;
+            double radius = 1.0;
+            Location loc = center.clone().add(
+                    Math.cos(angle) * radius,
+                    (i % 4) * 0.25 - 0.5,
+                    Math.sin(angle) * radius);
+            Particle.DustOptions dust = (i % 2 == 0) ? goldDust : crimsonDust;
+            world.spawnParticle(Particle.DUST, loc, 1, dust);
+        }
+    }
+
+    /**
+     * Crimson dust burst on super-ability activation (bookedMC theme).
+     */
+    public static void playGoldCrimsonAbilityEffect(@NotNull Player player) {
+        Location center = player.getLocation().add(0, 1, 0);
+        World world = center.getWorld();
+        if (world == null) {
+            return;
+        }
+        Particle.DustOptions crimsonDust = new Particle.DustOptions(Color.fromRGB(180, 0, 0), 1.2F);
+        for (int i = 0; i < 20; i++) {
+            double angle = (2 * Math.PI / 20) * i;
+            Location loc = center.clone().add(
+                    Math.cos(angle) * 0.7,
+                    0.0,
+                    Math.sin(angle) * 0.7);
+            world.spawnParticle(Particle.DUST, loc, 1, crimsonDust);
+        }
+    }
 
     private static boolean hasHeadRoom(Player player) {
         boolean hasHeadRoom = true;

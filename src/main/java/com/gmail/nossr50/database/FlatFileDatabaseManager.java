@@ -113,9 +113,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final int EXP_SPEARS = 55;
     public static final int SKILLS_SPEARS = 56;
     public static final int COOLDOWN_SPEARS = 57;
+    public static final int SKILLS_BLOODCRAFT = 58;
+    public static final int EXP_BLOODCRAFT = 59;
 
     // Update this everytime new data is added
-    public static final int DATA_ENTRY_COUNT = COOLDOWN_SPEARS + 1;
+    public static final int DATA_ENTRY_COUNT = EXP_BLOODCRAFT + 1;
 
     // Maps for cleaner parsing of skills / XP / cooldowns
     private record SkillIndex(PrimarySkillType type, int index) {}
@@ -139,7 +141,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             new SkillIndex(PrimarySkillType.CROSSBOWS, SKILLS_CROSSBOWS),
             new SkillIndex(PrimarySkillType.TRIDENTS, SKILLS_TRIDENTS),
             new SkillIndex(PrimarySkillType.MACES, SKILLS_MACES),
-            new SkillIndex(PrimarySkillType.SPEARS, SKILLS_SPEARS)
+            new SkillIndex(PrimarySkillType.SPEARS, SKILLS_SPEARS),
+            new SkillIndex(PrimarySkillType.BLOODCRAFT, SKILLS_BLOODCRAFT)
     );
 
     // All skill XP columns
@@ -160,7 +163,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             new SkillIndex(PrimarySkillType.CROSSBOWS, EXP_CROSSBOWS),
             new SkillIndex(PrimarySkillType.TRIDENTS, EXP_TRIDENTS),
             new SkillIndex(PrimarySkillType.MACES, EXP_MACES),
-            new SkillIndex(PrimarySkillType.SPEARS, EXP_SPEARS)
+            new SkillIndex(PrimarySkillType.SPEARS, EXP_SPEARS),
+            new SkillIndex(PrimarySkillType.BLOODCRAFT, EXP_BLOODCRAFT)
     );
 
     // All ability cooldown columns

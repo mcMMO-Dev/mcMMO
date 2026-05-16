@@ -101,6 +101,14 @@ public enum SuperAbilityType {
             "Placeholder",
             "Placeholder"),
 
+    BERSERKERS_RUSH(
+            "Bloodcraft.Skills.BerserkersRush.On",
+            "Bloodcraft.Skills.BerserkersRush.Off",
+            "Bloodcraft.Skills.BerserkersRush.Other.On",
+            "Bloodcraft.Skills.BerserkersRush.Refresh",
+            "Bloodcraft.Skills.BerserkersRush.Other.Off",
+            "Bloodcraft.SubSkill.BerserkersRush.Name"),
+
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
      */
@@ -119,6 +127,7 @@ public enum SuperAbilityType {
      */
     // TODO: This is stupid
     static {
+        BERSERKERS_RUSH.subSkillTypeDefinition = SubSkillType.BLOODCRAFT_BERSERKERS_RUSH;
         BERSERK.subSkillTypeDefinition = SubSkillType.UNARMED_BERSERK;
         SUPER_BREAKER.subSkillTypeDefinition = SubSkillType.MINING_SUPER_BREAKER;
         GIGA_DRILL_BREAKER.subSkillTypeDefinition = SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER;
@@ -222,6 +231,7 @@ public enum SuperAbilityType {
             case SKULL_SPLITTER -> Permissions.skullSplitter(player);
             case SUPER_BREAKER -> Permissions.superBreaker(player);
             case TREE_FELLER -> Permissions.treeFeller(player);
+            case BERSERKERS_RUSH -> player.hasPermission("mcmmo.ability.bloodcraft.berserkers_rush");
             // TODO: once implemented, return permissions for the following abilities
             case EXPLOSIVE_SHOT, TRIDENTS_SUPER_ABILITY, SUPER_SHOTGUN, MACES_SUPER_ABILITY,
                  SPEARS_SUPER_ABILITY -> false;

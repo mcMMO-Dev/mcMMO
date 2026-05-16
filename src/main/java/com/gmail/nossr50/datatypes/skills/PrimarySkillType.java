@@ -15,6 +15,7 @@ public enum PrimarySkillType {
     ALCHEMY,
     ARCHERY,
     AXES,
+    BLOODCRAFT,
     CROSSBOWS,
     EXCAVATION,
     FISHING,

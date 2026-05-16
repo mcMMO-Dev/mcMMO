@@ -24,6 +24,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.ChunkListener;
 import com.gmail.nossr50.listeners.EntityListener;
+import com.gmail.nossr50.listeners.GoldCrimsonEffectListener;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
@@ -622,6 +623,7 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(new SelfListener(this), this);
         pluginManager.registerEvents(new WorldListener(this), this);
         pluginManager.registerEvents(new ChunkListener(), this);
+        pluginManager.registerEvents(new GoldCrimsonEffectListener(), this);
         //        pluginManager.registerEvents(new CommandListener(this), this);
     }
 

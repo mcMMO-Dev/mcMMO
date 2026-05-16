@@ -695,3 +695,14 @@ Skills:
                 Rank_8: 40
                 Rank_9: 45
                 Rank_10: 50
+Skills:
+    Bloodcraft:
+        Lifesteal:
+            Percent_Per_Rank: 2.0
+        CrimsonSurge:
+            HP_Threshold_Percent: 30.0
+            Bonus_Per_Rank: 5.0
+        RuptureMastery:
+            Bonus_Chance_Per_Rank: 5.0
+        BerserkersRush:
+            Duration_Seconds: 8

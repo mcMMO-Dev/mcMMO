@@ -31,6 +31,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
+import com.gmail.nossr50.skills.bloodcraft.BloodcraftManager;
 import com.gmail.nossr50.skills.crossbows.CrossbowsManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
@@ -187,6 +188,7 @@ public class McMMOPlayer implements Identified {
             case ALCHEMY -> new AlchemyManager(this);
             case ARCHERY -> new ArcheryManager(this);
             case AXES -> new AxesManager(this);
+            case BLOODCRAFT -> new BloodcraftManager(this);
             case CROSSBOWS -> new CrossbowsManager(this);
             case EXCAVATION -> new ExcavationManager(this);
             case FISHING -> new FishingManager(this);
@@ -341,6 +343,10 @@ public class McMMOPlayer implements Identified {
 
     public SpearsManager getSpearsManager() {
         return (SpearsManager) skillManagers.get(PrimarySkillType.SPEARS);
+    }
+
+    public BloodcraftManager getBloodcraftManager() {
+        return (BloodcraftManager) skillManagers.get(PrimarySkillType.BLOODCRAFT);
     }
 
     public SwordsManager getSwordsManager() {

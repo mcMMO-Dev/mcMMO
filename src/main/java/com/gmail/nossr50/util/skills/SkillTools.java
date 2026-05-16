@@ -294,6 +294,7 @@ public class SkillTools {
             case EXPLOSIVE_SHOT -> PrimarySkillType.ARCHERY;
             case MACES_SUPER_ABILITY -> PrimarySkillType.MACES;
             case SPEARS_SUPER_ABILITY -> PrimarySkillType.SPEARS;
+            case BERSERKERS_RUSH -> PrimarySkillType.BLOODCRAFT;
         };
     }
 

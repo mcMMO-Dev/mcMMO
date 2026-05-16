@@ -121,6 +121,9 @@ commands:
     crossbows:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.crossbows
+    bloodcraft:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.bloodcraft
     swords:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.swords
@@ -667,6 +670,29 @@ permissions:
         description: Allows access to the Spear Momentum ability
     mcmmo.ability.spears.spearmastery:
         description: Allows access to the Spear Mastery ability
+    mcmmo.ability.bloodcraft.*:
+        default: false
+        description: Allows access to all Bloodcraft abilities
+        children:
+            mcmmo.ability.bloodcraft.all: true
+    mcmmo.ability.bloodcraft.all:
+        description: Allows access to all Bloodcraft abilities
+        children:
+            mcmmo.ability.bloodcraft.lifesteal: true
+            mcmmo.ability.bloodcraft.crimson_surge: true
+            mcmmo.ability.bloodcraft.rupture_mastery: true
+            mcmmo.ability.bloodcraft.berserkers_rush: true
+            mcmmo.ability.bloodcraft.bloodcraftlimitbreak: true
+    mcmmo.ability.bloodcraft.lifesteal:
+        description: Allows Bloodcraft Lifesteal passive
+    mcmmo.ability.bloodcraft.crimson_surge:
+        description: Allows Bloodcraft Crimson Surge passive
+    mcmmo.ability.bloodcraft.rupture_mastery:
+        description: Allows Bloodcraft Rupture Mastery passive
+    mcmmo.ability.bloodcraft.berserkers_rush:
+        description: Allows Bloodcraft Berserker's Rush super ability
+    mcmmo.ability.bloodcraft.bloodcraftlimitbreak:
+        description: Allows Bloodcraft Limit Break
     mcmmo.ability.swords.*:
         default: false
         description: Allows access to all Swords abilities
@@ -885,6 +911,7 @@ permissions:
             mcmmo.commands.alchemy: true
             mcmmo.commands.archery: true
             mcmmo.commands.axes: true
+            mcmmo.commands.bloodcraft: true
             mcmmo.commands.crossbows: true
             mcmmo.commands.tridents: true
             mcmmo.commands.excavation: true
@@ -955,6 +982,10 @@ permissions:
     mcmmo.commands.alchemy:
         description: Allows access to the alchemy command
     mcmmo.commands.archery:
+        description: Allows access to the archery command
+    mcmmo.commands.bloodcraft:
+        description: Allows access to the bloodcraft command
+    mcmmo.commands.axes:
         description: Allows access to the archery command
     mcmmo.commands.axes:
         description: Allows access to the axes command
