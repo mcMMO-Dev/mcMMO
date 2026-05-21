@@ -645,6 +645,7 @@ Skills:
         TreeFeller:
             Knock_On_Wood:
                 Add_XP_Orbs_To_Drops: true
+            Additional_Destructible_Items_White_List: []
 
         # Triple Drops
         CleanCuts:

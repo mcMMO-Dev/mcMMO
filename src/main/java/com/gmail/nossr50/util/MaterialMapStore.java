@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.List;
+
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
@@ -1141,6 +1144,11 @@ public class MaterialMapStore {
         treeFellerDestructibleWhiteList.add("warped_wart_block");
         treeFellerDestructibleWhiteList.add("brown_mushroom_block");
         treeFellerDestructibleWhiteList.add("red_mushroom_block");
+
+        List<String> additional = mcMMO.p.getAdvancedConfig().getAdditionalTreeFellerDestructibleWhiteList();
+        if (!additional.isEmpty()) {
+            treeFellerDestructibleWhiteList.addAll(additional);
+        }
     }
 
     private void fillMossyWhiteList() {
