@@ -400,17 +400,20 @@ public class WoodcuttingManager extends SkillManager {
                             player
                     );
                 }
+            }
 
-                //Drop displaced non-woodcutting XP blocks
-                if (hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    if (RankUtils.hasReachedRank(2, player,
-                            SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                        if (mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
-                            if (ProbabilityUtil.isStaticSkillRNGSuccessful(
-                                    PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
-                                int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
-                                Misc.spawnExperienceOrb(block.getLocation(), randOrbCount);
-                            }
+            // KnockOnWood XP orbs apply to any non-log tree component, including blocks that
+            // also grant woodcutting XP (e.g. nether/warped wart blocks). Previously this was
+            // nested inside the else-if above, which prevented orbs from spawning on nether tree
+            // caps because they have woodcutting XP and never reached the else-if branch.
+            if (BlockUtils.isNonWoodPartOfTree(block)
+                    && hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                if (RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                    if (mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
+                        if (ProbabilityUtil.isStaticSkillRNGSuccessful(
+                                PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
+                            int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
+                            Misc.spawnExperienceOrb(block.getLocation(), randOrbCount);
                         }
                     }
                 }
