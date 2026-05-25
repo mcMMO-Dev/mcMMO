@@ -17,8 +17,7 @@ public class TridentsManager extends SkillManager {
 
         if (rank > 0) {
             return mcMMO.p.getAdvancedConfig().getImpaleBaseDamage()
-                    + ((rank - 1)
-                    * mcMMO.p.getAdvancedConfig().getImpaleRankDamageMultiplier());
+                    + (rank * mcMMO.p.getAdvancedConfig().getImpaleRankDamageMultiplier());
         }
 
         return 0.0D;
