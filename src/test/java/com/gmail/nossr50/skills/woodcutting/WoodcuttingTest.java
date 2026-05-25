@@ -262,7 +262,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         // to AIR directly and never fires BlockDropItemEvent.
 
         @Test
-        void normalDoubleDrop_setsMetadataOnBlock_notSpawnedDirectly() {
+        void normalDropSetsBlockMetadataNotDirectlySpawned() {
             // Given: player has Woodcutting skill and Tree Feller is NOT active
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
             mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
@@ -283,7 +283,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         }
 
         @Test
-        void treeFellerDoubleDrop_spawnsDirectly_doesNotSetMetadata() {
+        void treeFellerDropSpawnsDirectlyWithoutBlockMetadata() {
             // Given: player has Woodcutting skill and Tree Feller IS active
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
             mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, true);
@@ -306,7 +306,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         }
 
         @Test
-        void noBonus_whenSkillLevelTooLow_neitherPathInvoked() {
+        void noBonusWhenSkillLevelTooLow() {
             // Given: player has no Woodcutting skill and Tree Feller is not active
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 0);
             mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
@@ -336,7 +336,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         // if-block that runs after the if/else-if drop routing.
 
         @Test
-        void netherWartBlock_spawnXpOrb_whenKnockOnWoodRank2Unlocked() {
+        void netherWartBlockSpawnsOrbWhenRank2Unlocked() {
             // Given: player has KnockOnWood at rank 2 and XP orbs are enabled
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
             Mockito.when(RankUtils.hasUnlockedSubskill(any(Player.class),
@@ -386,7 +386,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         }
 
         @Test
-        void regularLeaf_spawnXpOrb_whenKnockOnWoodRank2Unlocked() {
+        void regularLeafSpawnsOrbWhenRank2Unlocked() {
             // Given: a regular leaf block — only isNonWoodPartOfTree=true, no woodcutting XP.
             // Regression check: existing leaf behaviour continues to work after the fix.
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
@@ -429,7 +429,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         }
 
         @Test
-        void regularLog_doesNotSpawnXpOrb() {
+        void regularLogDoesNotSpawnOrb() {
             // Given: a regular log block (hasWoodcuttingXP=true, isNonWoodPartOfTree=false).
             // XP orbs must NEVER fire for plain logs — only for non-log tree components.
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);

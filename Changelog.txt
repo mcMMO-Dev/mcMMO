@@ -1,6 +1,9 @@
 Version 2.2.053
-    Fixed KnockOnWood XP orbs never spawning on nether/warped tree cap blocks (nether_wart_block, warped_wart_block) during Tree Feller — those blocks grant woodcutting XP and are also tree-feller destructible, but the orb logic was unreachable for them due to an if/else-if routing bug
-    (Codebase) Removed 27 dead JSON.* locale keys from all locale files — JSON.Rank, JSON.JWrapper.Header, JSON.JWrapper.Target.{Type,Block,Player}, JSON.Hover.{SuperAbility,Mystery2}, JSON.Notification.SuperAbility, JSON.Acrobatics.Roll.Interaction.Activated, and all JSON.<SkillName> skill-name keys were never loaded in Java source; skill names use <Skill>.SkillName instead
+    Fixed KnockOnWood XP orbs never spawning on nether/warped tree cap blocks during Tree Feller
+    (Codebase) Removed 27 dead JSON.* locale keys from all locale files (See notes)
+
+    NOTES:
+    The removed locale keys (JSON.Rank, JSON.JWrapper.Header, JSON.JWrapper.Target.{Type,Block,Player}, JSON.Hover.{SuperAbility,Mystery2}, JSON.Notification.SuperAbility, JSON.Acrobatics.Roll.Interaction.Activated, and all JSON.<SkillName> skill-name keys) can safely be removed from any locale_override.properties — they had no effect.
 
 Version 2.2.052
     Fixed Mooshroom Shake drops not loading due to wrong entity ID in fishing_treasures.yml (see notes)
