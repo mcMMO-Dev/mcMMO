@@ -388,6 +388,8 @@ Skills:
         # Always catch fish, even when treasure is found
         Extra_Fish: false
         Lure_Modifier: 4.0
+        # Makes items with conflicting enchantments obtainable through Magic Hunter, such as armor pieces with multiple types of protection
+        Allow_Conflicting_Enchants: false
     Herbalism:
         Level_Cap: 0
         Prevent_AFK_Leveling: true

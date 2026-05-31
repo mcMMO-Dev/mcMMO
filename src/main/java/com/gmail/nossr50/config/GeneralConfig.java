@@ -812,6 +812,10 @@ public class GeneralConfig extends BukkitConfig {
         return config.getDouble("Skills.Fishing.Lure_Modifier", 4.0D);
     }
 
+    public boolean getFishingAllowConflictingEnchants() {
+        return config.getBoolean("Skills.Fishing.Allow_Conflicting_Enchants", false);
+    }
+
     /* Mining */
     public Material getDetonatorItem() {
         return Material.matchMaterial(
