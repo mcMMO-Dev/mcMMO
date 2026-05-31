@@ -2,11 +2,16 @@ Version 2.2.053
     Fixed KnockOnWood XP orbs never spawning on nether/warped tree cap blocks during Tree Feller
     Fixed Impale (Tridents) damage bonus formula applying one fewer rank of the multiplier than intended
     Fixed melee attack strength scale resolving to near-zero after Paper fixed a vanilla attack cooldown bug in 26.1.2 (See notes)
+    Fixed server-side diminished returns state being evicted too early, allowing reconnects to bypass the DR window (See notes)
     (Codebase) Removed 27 dead JSON.* locale keys from all locale files (See notes)
+    (Codebase) Extracted per-player diminished returns tracking from PlayerProfile into DiminishedReturnsCache and DiminishedReturnsState
 
     NOTES:
+    As a reminder, Diminished Returns for XP is an optional feature and is disabled by default, this update has some bugfixes related to it for those using it.
     Paper 26.1.2 fixed a bug where the player attack cooldown ticker was not resetting at the correct point during melee hits. mcMMO was reading the cooldown during the damage event and relied on the old (incorrect) order, so after Paper's fix it always returned near-zero. Attack strength is now back-derived from the raw event damage and the player's attack damage attribute instead. No config changes required.
     The removed locale keys (JSON.Rank, JSON.JWrapper.Header, JSON.JWrapper.Target.{Type,Block,Player}, JSON.Hover.{SuperAbility,Mystery2}, JSON.Notification.SuperAbility, JSON.Acrobatics.Roll.Interaction.Activated, and all JSON.<SkillName> skill-name keys) can safely be removed from any locale_override.properties — they had no effect.
+    evictExpired() was removing freshly-created DiminishedReturnsState entries before the player had registered any XP, orphaning the PlayerProfile reference and letting players bypass the DR window by reconnecting. State is now preserved in a server-side DiminishedReturnsCache keyed by UUID and is only evicted after it has been idle for the full DR window.
+
 
 Version 2.2.052
     Fixed Mooshroom Shake drops not loading due to wrong entity ID in fishing_treasures.yml (see notes)
