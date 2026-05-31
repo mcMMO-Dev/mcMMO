@@ -50,17 +50,6 @@
 # Project Stuff
 /src/main/resources/mcMMO
 
-# Config files that tests can accidentally write to the project root
-# when mcMMO.p.getDataFolder() returns null (resolves to cwd)
-/experience.yml
-/config.yml
-/advanced.yml
-/fishing_treasures.yml
-/treasures.yml
-/sounds.yml
-/potions.yml
-/skillranks.yml
-
 # Other Libraries
 *.jar
 

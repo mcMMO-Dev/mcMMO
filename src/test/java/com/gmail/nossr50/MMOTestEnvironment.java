@@ -30,6 +30,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.sounds.SoundManager;
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
@@ -85,11 +87,18 @@ public abstract class MMOTestEnvironment {
     protected MaterialMapStore materialMapStore;
 
     protected MinecraftGameVersion minecraftGameVersion;
+    protected File testDataFolder;
 
     protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
         mockedMcMMO = mockStatic(mcMMO.class);
         mcMMO.p = mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
+        try {
+            testDataFolder = java.nio.file.Files.createTempDirectory("mcmmo-test-data-").toFile();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create temp test data folder", e);
+        }
+        when(mcMMO.p.getDataFolder()).thenReturn(testDataFolder);
 
         // Game version
         minecraftGameVersion = mock(MinecraftGameVersion.class);
@@ -279,5 +288,21 @@ public abstract class MMOTestEnvironment {
         if (mockedSoundManager != null) {
             mockedSoundManager.close();
         }
+        if (testDataFolder != null) {
+            deleteRecursively(testDataFolder);
+            testDataFolder = null;
+        }
+    }
+
+    private static void deleteRecursively(final File file) {
+        if (file.isDirectory()) {
+            final File[] children = file.listFiles();
+            if (children != null) {
+                for (final File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        file.delete();
     }
 }

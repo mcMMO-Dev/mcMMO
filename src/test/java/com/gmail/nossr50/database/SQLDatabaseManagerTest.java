@@ -25,6 +25,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -82,6 +84,7 @@ class SQLDatabaseManagerTest {
     private static UpgradeManager upgradeManager;
     private static SkillTools skillTools;
     private static MinecraftGameVersion minecraftGameVersion;
+    private static File testDataFolder;
 
     // --- DB flavors you support ---
     enum DbFlavor {
@@ -102,6 +105,12 @@ class SQLDatabaseManagerTest {
         mockedMcMMO = Mockito.mockStatic(mcMMO.class);
         mcMMO.p = Mockito.mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
+        try {
+            testDataFolder = java.nio.file.Files.createTempDirectory("mcmmo-sql-test-data-").toFile();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create temp test data folder", e);
+        }
+        when(mcMMO.p.getDataFolder()).thenReturn(testDataFolder);
         when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
 
         mockGeneralConfigBase();
@@ -127,6 +136,21 @@ class SQLDatabaseManagerTest {
     @AfterAll
     static void tearDownAll() {
         mockedMcMMO.close();
+        if (testDataFolder != null) {
+            deleteRecursively(testDataFolder);
+        }
+    }
+
+    private static void deleteRecursively(final File file) {
+        if (file.isDirectory()) {
+            final File[] children = file.listFiles();
+            if (children != null) {
+                for (final File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        file.delete();
     }
 
     private static void mockGeneralConfigBase() {
