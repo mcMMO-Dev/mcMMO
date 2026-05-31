@@ -1,8 +1,11 @@
 Version 2.2.053
     Fixed KnockOnWood XP orbs never spawning on nether/warped tree cap blocks during Tree Feller
+    Fixed Impale (Tridents) damage bonus formula applying one fewer rank of the multiplier than intended
+    Fixed melee attack strength scale resolving to near-zero after Paper fixed a vanilla attack cooldown bug in 26.1.2 (See notes)
     (Codebase) Removed 27 dead JSON.* locale keys from all locale files (See notes)
 
     NOTES:
+    Paper 26.1.2 fixed a bug where the player attack cooldown ticker was not resetting at the correct point during melee hits. mcMMO was reading the cooldown during the damage event and relied on the old (incorrect) order, so after Paper's fix it always returned near-zero. Attack strength is now back-derived from the raw event damage and the player's attack damage attribute instead. No config changes required.
     The removed locale keys (JSON.Rank, JSON.JWrapper.Header, JSON.JWrapper.Target.{Type,Block,Player}, JSON.Hover.{SuperAbility,Mystery2}, JSON.Notification.SuperAbility, JSON.Acrobatics.Roll.Interaction.Activated, and all JSON.<SkillName> skill-name keys) can safely be removed from any locale_override.properties — they had no effect.
 
 Version 2.2.052
