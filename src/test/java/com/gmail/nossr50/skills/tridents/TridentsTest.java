@@ -57,13 +57,14 @@ class TridentsTest extends MMOTestEnvironment {
     }
 
     @Test
-    void impaleDamageBonusShouldMatchRankOneBaseDamage() {
+    void impaleDamageBonusShouldBeBasePlusMultiplierAtRankOne() {
         Mockito.when(advancedConfig.getImpaleBaseDamage()).thenReturn(1.0D);
         Mockito.when(advancedConfig.getImpaleRankDamageMultiplier()).thenReturn(0.5D);
         Mockito.when(RankUtils.getRank(any(Player.class),
             Mockito.eq(SubSkillType.TRIDENTS_IMPALE))).thenReturn(1);
 
-        assertEquals(1.0D, tridentsManager.impaleDamageBonus());
+        // base + rank * multiplier: 1.0 + 1 * 0.5 = 1.5
+        assertEquals(1.5D, tridentsManager.impaleDamageBonus());
     }
 
     @Test

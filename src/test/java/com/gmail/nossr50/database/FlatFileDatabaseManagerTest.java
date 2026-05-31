@@ -48,9 +48,11 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+@Tag("docker")
 class FlatFileDatabaseManagerTest {
 
     public static final @NotNull String TEST_FILE_NAME = "test.mcmmo.users";
