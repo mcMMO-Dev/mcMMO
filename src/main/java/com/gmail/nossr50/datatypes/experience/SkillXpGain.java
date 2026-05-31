@@ -25,6 +25,14 @@ public class SkillXpGain implements Delayed {
         return xp;
     }
 
+    /**
+     * Returns the absolute epoch-millisecond timestamp at which this entry expires.
+     * Used by {@link DiminishedReturnsState} to track the latest expiry across all entries.
+     */
+    public long getExpiryTimeMillis() {
+        return expiryTime;
+    }
+
     private static long getDuration() {
         return TimeUnit.MINUTES.toMillis(
                 ExperienceConfig.getInstance().getDiminishedReturnsTimeInterval());
