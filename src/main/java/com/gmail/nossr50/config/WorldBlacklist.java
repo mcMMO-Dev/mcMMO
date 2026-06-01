@@ -13,7 +13,7 @@ import org.bukkit.World;
  * Blacklist certain features in certain worlds
  */
 public class WorldBlacklist {
-    private static ArrayList<String> blacklist;
+    private static ArrayList<String> blacklist = new ArrayList<>();
     private final mcMMO plugin;
 
     private final String blackListFileName = "world_blacklist.txt";
@@ -25,6 +25,13 @@ public class WorldBlacklist {
     }
 
     public static boolean isWorldBlacklisted(World world) {
+        if (world == null) {
+            return false;
+        }
+
+        if (blacklist == null || blacklist.isEmpty()) {
+            return false;
+        }
 
         for (String s : blacklist) {
             if (world.getName().equalsIgnoreCase(s)) {
