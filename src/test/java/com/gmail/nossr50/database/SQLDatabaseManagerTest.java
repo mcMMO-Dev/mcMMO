@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.GeneralConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -79,6 +80,7 @@ class SQLDatabaseManagerTest {
                     .withPassword("test");
 
     private static MockedStatic<mcMMO> mockedMcMMO;
+    private static MockedStatic<ExperienceConfig> mockedExperienceConfig;
     private static GeneralConfig generalConfig;
     private static AdvancedConfig advancedConfig;
     private static UpgradeManager upgradeManager;
@@ -119,6 +121,11 @@ class SQLDatabaseManagerTest {
         when(mcMMO.p.getAdvancedConfig()).thenReturn(advancedConfig);
         when(mcMMO.p.getAdvancedConfig().getStartingLevel()).thenReturn(0);
 
+        ExperienceConfig experienceConfig = Mockito.mock(ExperienceConfig.class);
+        when(experienceConfig.getDiminishedReturnsEnabled()).thenReturn(false);
+        mockedExperienceConfig = Mockito.mockStatic(ExperienceConfig.class);
+        mockedExperienceConfig.when(ExperienceConfig::getInstance).thenReturn(experienceConfig);
+
         skillTools = new SkillTools(mcMMO.p);
         when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
 
@@ -136,6 +143,7 @@ class SQLDatabaseManagerTest {
     @AfterAll
     static void tearDownAll() {
         mockedMcMMO.close();
+        mockedExperienceConfig.close();
         if (testDataFolder != null) {
             deleteRecursively(testDataFolder);
         }
