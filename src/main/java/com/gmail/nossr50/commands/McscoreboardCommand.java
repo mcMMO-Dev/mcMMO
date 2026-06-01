@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.commands.CommandSyntaxFormatter;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
@@ -91,10 +92,14 @@ public class McscoreboardCommand implements TabExecutor {
     }
 
     private boolean help(CommandSender sender) {
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.0"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.1"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.2"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.3"));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.Scoreboard.Help.0")));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.Scoreboard.Help.1")));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.Scoreboard.Help.2")));
+        sender.sendMessage(CommandSyntaxFormatter.transformText(
+                LocaleLoader.getString("Commands.Scoreboard.Help.3")));
         return true;
     }
 }
