@@ -85,11 +85,31 @@ public class HashChunkManager implements ChunkManager {
         });
     }
 
+    /**
+     * Resolves the on-disk region file for a chunk's region.
+     *
+     * <p>Region files live inside the world folder at
+     * {@code [worldFolder]/mcmmo_regions/mcmmo_[regionX]_[regionZ]_.mcm}, where
+     * {@code worldFolder} is whatever {@link World#getWorldFolder()} returns on the running
+     * server. On Spigot and pre-26.1 Paper this resolves to
+     * {@code [container]/[worldName]/mcmmo_regions/}; on Paper 26.1+ (PaperMC/Paper PR #13736)
+     * it resolves to
+     * {@code [container]/[worldName]/dimensions/minecraft/<dim>/mcmmo_regions/}.
+     *
+     * <p>Because Paper's {@code LegacyCraftBukkitWorldMigration} runs before plugins load and
+     * deletes the old per-world roots for non-overworld dimensions, mcMMO maintains a restore
+     * store inside the mcMMO plugin data directory that is populated by
+     * {@link McMMORegionBackupStore#backupWorld} on shutdown and replayed by
+     * {@link McMMORegionBackupStore#restoreWorld} on the next startup if the in-world data has
+     * been removed.
+     */
     private @NotNull File getRegionFile(@NotNull World world, @NotNull CoordinateKey regionKey) {
         if (world.getUID() != regionKey.worldID) {
             throw new IllegalArgumentException();
         }
-        return new File(new File(world.getWorldFolder(), "mcmmo_regions"),
+        final File worldRegionRoot = new File(world.getWorldFolder(),
+                McMMORegionBackupStore.IN_WORLD_FOLDER_NAME);
+        return new File(worldRegionRoot,
                 "mcmmo_" + regionKey.x + "_" + regionKey.z + "_.mcm");
     }
 

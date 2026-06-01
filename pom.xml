@@ -25,6 +25,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
+        <surefire.excludedGroups>skip,stress,docker</surefire.excludedGroups>
     </properties>
 
     <issueManagement>
@@ -108,7 +109,7 @@
                 <configuration>
                     <junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
                     <trimStackTrace>false</trimStackTrace>
-                    <excludedGroups>skip</excludedGroups>
+                    <excludedGroups>${surefire.excludedGroups}</excludedGroups>
                     <!-- https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3 -->
                     <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
                 </configuration>
@@ -576,6 +577,24 @@
 
     <profiles>
         <profile>
+            <id>sql-tests</id>
+            <properties>
+                <surefire.excludedGroups>skip,stress</surefire.excludedGroups>
+            </properties>
+        </profile>
+        <profile>
+            <id>stress-tests</id>
+            <properties>
+                <surefire.excludedGroups>skip,docker</surefire.excludedGroups>
+            </properties>
+        </profile>
+        <profile>
+            <id>all-heavy-tests</id>
+            <properties>
+                <surefire.excludedGroups>skip</surefire.excludedGroups>
+            </properties>
+        </profile>
+        <profile>
             <id>skip-docker-tests</id>
             <activation>
                 <property>
@@ -583,16 +602,9 @@
                     <value>true</value>
                 </property>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <excludedGroups>skip,docker</excludedGroups>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <surefire.excludedGroups>skip,docker,stress</surefire.excludedGroups>
+            </properties>
         </profile>
     </profiles>
 </project>

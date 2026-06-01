@@ -1,16 +1,83 @@
 Version 2.2.053
+    !! -- This build has important fixes for anyone using Paper (or forks of Paper), please read the notes carefully.
+    It is completely safe to update to this version of mcMMO.
+    A recent change in Paper can cause data loss in mcMMO region files (which track blocks that should NOT give rewards) if Paper is updated before mcMMO.
+    mcMMO now backs up region data on Spigot and older Paper builds to help prevent this.
+    mcMMO will also migrate backed-up region data when present and when server software is using the Paper 26.1.2+ world layout (See notes)
+    Added 'General.RegionDataMigrationBackups.Enabled' config option to config.yml, which can disabled region data backups for anyone who doesn't plan on updating to newer Paper builds or using Paper
+    Fixed entities retaining their healthbar display name after chunk unload (Thanks Warriorrrr)
+    Fixed traveling block metadata leaking on Folia servers (Thanks Warriorrrr)
+    Fixed Magic Hunter (Fishing) enchantment conflict check not accounting for enchantments already accumulated during the same roll (Thanks Warriorrrr)
     Fixed KnockOnWood XP orbs never spawning on nether/warped tree cap blocks during Tree Feller
     Fixed Impale (Tridents) damage bonus formula applying one fewer rank of the multiplier than intended
     Fixed melee attack strength scale resolving to near-zero after Paper fixed a vanilla attack cooldown bug in 26.1.2 (See notes)
     Fixed server-side diminished returns state being evicted too early, allowing reconnects to bypass the DR window (See notes)
+    Added option to allow Magic Hunter (Fishing) to grant items with conflicting enchantments; disabled by default (Thanks Warriorrrr)
+    Added 'Skills.Fishing.Allow_Conflicting_Enchants' to config.yml (Thanks Warriorrrr)
     (Codebase) Removed 27 dead JSON.* locale keys from all locale files (See notes)
     (Codebase) Extracted per-player diminished returns tracking from PlayerProfile into DiminishedReturnsCache and DiminishedReturnsState
 
     NOTES:
-    As a reminder, Diminished Returns for XP is an optional feature and is disabled by default, this update has some bugfixes related to it for those using it.
-    Paper 26.1.2 fixed a bug where the player attack cooldown ticker was not resetting at the correct point during melee hits. mcMMO was reading the cooldown during the damage event and relied on the old (incorrect) order, so after Paper's fix it always returned near-zero. Attack strength is now back-derived from the raw event damage and the player's attack damage attribute instead. No config changes required.
+    -- Read this first if you already updated to a newer Paper 26.1.2+ build --
+    mcMMO stores block data as '.mcm' files in each world's 'mcmmo_regions' folder.
+    Paper's world migration copies world_nether and world_the_end into new directories, but did not copy over mcMMO region files for those worlds, which results in data loss.
+    The main risk is for 'world_nether' and 'world_the_end', because Paper migration can remove old non-overworld roots before plugins load.
+    The Overworld (your main 'world') is safe because Paper keeps that folder and all mcMMO data in-tact (but no longer in the "right" spot), so mcMMO can still migrate existing overworld '.mcm' data and will do so when you run this update if it finds any.
+
+    Given you are reading this if you already updated Paper and got the new world migration BEFORE updating mcMMO, then you have this option which is not perfect to recover lost mcmmo_region data.
+    Recovery steps:
+
+    1) Stop the server fully.
+    2) Find mcmmo_regions data in any manual backups you make of your server/worlds
+    3) Copy recovered '.mcm' files for Nether/End only into these live folders (create folders if missing):
+        Nether: 'world/dimensions/minecraft/the_nether/mcmmo_regions/'
+        The End: 'world/dimensions/minecraft/the_end/mcmmo_regions/'
+       Do NOT manually copy old overworld '.mcm' files into 'world/mcmmo_regions/' in this scenario, only do this for nether and the end.
+       For your main world, mcMMO safely merges surviving overworld data on startup, and manual overworld copy/overwrite can lose some data.
+    4) Start the server.
+
+    This is an imperfect solution depending on how long your server has been running post updating Paper 26.1.2 before updating mcMMO, as the data will have drifted to some degree (mostly impacts data for the end and nether as stated before).
+
+    -- Read this if you have NOT updated Paper yet, or if you use Spigot instead --
+    Update mcMMO first, then run the server at least once with this mcMMO build before updating server software.
+    On a normal shutdown, mcMMO will make backups of its region files.
+    After that, you are safe to update to the newest Paper builds.
+
+    -- Read this if you don't know whether you already updated to the new Paper world format --
+    Identify the format by checking your world folders:
+    Old/legacy layout looks like this: 
+        'world/'
+        'world_nether/'
+        'world_the_end/'
+    New Paper 26.1+ layout looks like this:
+        'world/'
+        'world/dimensions/minecraft/the_nether/'
+        'world/dimensions/minecraft/the_end/'
+    Quick check: if you see 'world/dimensions/minecraft/the_nether/' and 'world/dimensions/minecraft/the_end/', you are already on the new Paper format.
+    If you already have the new layout and only updated mcMMO now, mcMMO will safely migrate any surviving overworld '.mcm' data from 'world/mcmmo_regions/'.
+    This operation is safe and merges with any new data mcMMO finds.
+    In this scenario, only restore '.mcm' files manually for Nether/End.
+    Do NOT manually copy old overworld '.mcm' files into 'world/mcmmo_regions/' because that can overwrite merged data and lose some entries.
+    In that same scenario, old nether/end '.mcm' data is already gone, so copy those '.mcm' files from any manual backups you have and place them in:
+        'world/dimensions/minecraft/the_nether/mcmmo_regions/'
+        'world/dimensions/minecraft/the_end/mcmmo_regions/'
+    If you are already on the new format, follow the first section above for full recovery steps.
+    If you still have the old layout, follow the section above for Spigot/old Paper: update mcMMO first, run once, then update Paper.
+
+    -- Read this if you use Spigot and never plan to use Paper in the future --
+    You can disable the shutdown migration backup behavior with 'General.RegionDataMigrationBackups' in config.yml
+    Default is 'true'. Set it to 'false' if you are sure you will stay on Spigot and do not need mcMMO to make backups of its region files.
+    In simple terms: this setting controls whether mcMMO makes extra '.mcm' safety copies during shutdown for future Paper world-layout migration.
+    Turning it off reduces extra backup work on shutdown, but removes that Paper-migration safety net.
+
+    OTHER NOTES:
+    Diminished Returns for XP is an optional feature and is disabled by default, this update includes bug fixes for servers using it.
+    evictExpired() was removing freshly created DiminishedReturnsState entries before the player had registered any XP, orphaning the PlayerProfile reference and letting players bypass the DR window by reconnecting.
+    State is now preserved in a server-side DiminishedReturnsCache keyed by UUID and is only evicted after being idle for the full DR window.
+    Paper 26.1.2 fixed a bug where the player attack cooldown ticker was not resetting at the correct point during melee hits.
+    mcMMO was reading cooldown during the damage event and relied on the old (incorrect) order, so after Paper's fix it resolved to near-zero.
+    Attack strength is now back-derived from raw event damage and the player's attack damage attribute. No config changes are required.
     The removed locale keys (JSON.Rank, JSON.JWrapper.Header, JSON.JWrapper.Target.{Type,Block,Player}, JSON.Hover.{SuperAbility,Mystery2}, JSON.Notification.SuperAbility, JSON.Acrobatics.Roll.Interaction.Activated, and all JSON.<SkillName> skill-name keys) can safely be removed from any locale_override.properties — they had no effect.
-    evictExpired() was removing freshly-created DiminishedReturnsState entries before the player had registered any XP, orphaning the PlayerProfile reference and letting players bypass the DR window by reconnecting. State is now preserved in a server-side DiminishedReturnsCache keyed by UUID and is only evicted after it has been idle for the full DR window.
 
 
 Version 2.2.052

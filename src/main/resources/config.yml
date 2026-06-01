@@ -78,6 +78,10 @@ General:
     # Giga Drill Breaker, and Berserk. Resource intensive for larger servers.
     Refresh_Chunks: false
 
+    # Enables backup snapshots used for Paper world migration safety.
+    # Set to false to disable region-data backup creation on shutdown.
+    RegionDataMigrationBackups: true
+
 #
 #  Settings for the mcMMO scoreboards
 ###

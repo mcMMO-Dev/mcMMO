@@ -106,6 +106,25 @@ public class BitSetChunkStore implements ChunkStore {
         return store.isEmpty();
     }
 
+    /**
+     * Merge anti-exploit "block is player-placed" markers from {@code other} into this store.
+     * Only set bits are copied; cleared bits in {@code other} never clear a bit that is set in
+     * this store. Used by the Paper world-folder layout migrator to fold legacy region data into
+     * post-migration region data without losing reward-denial markers.
+     */
+    void mergeFrom(@NotNull BitSetChunkStore other) {
+        if (!worldUid.equals(other.worldUid)) {
+            throw new IllegalArgumentException(
+                    "Cannot merge chunk stores from different worlds (this=" + worldUid
+                            + ", other=" + other.worldUid + ")");
+        }
+        if (other.store.isEmpty()) {
+            return;
+        }
+        store.or(other.store);
+        dirty = true;
+    }
+
     private int coordToIndex(int x, int y, int z) {
         return coordToIndex(x, y, z, worldMin, worldMax);
     }

@@ -236,6 +236,10 @@ public class GeneralConfig extends BukkitConfig {
         return config.getBoolean("General.Refresh_Chunks", false);
     }
 
+    public boolean getRegionDataMigrationBackupsEnabled() {
+        return config.getBoolean("General.RegionDataMigrationBackups", true);
+    }
+
     public boolean getMobHealthbarEnabled() {
         return config.getBoolean("Mob_Healthbar.Enabled", true);
     }
