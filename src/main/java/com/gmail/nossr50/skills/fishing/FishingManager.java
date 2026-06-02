@@ -52,6 +52,7 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
@@ -691,11 +692,24 @@ public class FishingManager extends SkillManager {
 
         int specificChance = 1;
 
+        outer:
         for (EnchantmentTreasure enchantmentTreasure : possibleEnchants) {
             Enchantment possibleEnchantment = enchantmentTreasure.getEnchantment();
 
-            if (treasureDrop.getItemMeta().hasConflictingEnchant(possibleEnchantment)
-                    || Misc.getRandom().nextInt(specificChance) != 0) {
+            if (!mcMMO.p.getGeneralConfig().getFishingAllowConflictingEnchants()) {
+                final ItemMeta meta = treasureDrop.getItemMeta();
+                if (meta != null && meta.hasConflictingEnchant(possibleEnchantment)) {
+                    continue;
+                }
+
+                for (final Enchantment existingEnchantment : enchants.keySet()) {
+                    if (existingEnchantment.conflictsWith(possibleEnchantment)) {
+                        continue outer;
+                    }
+                }
+            }
+
+            if (Misc.getRandom().nextInt(specificChance) != 0) {
                 continue;
             }
 

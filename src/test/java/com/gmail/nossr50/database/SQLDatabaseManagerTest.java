@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.GeneralConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -25,6 +26,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -77,11 +80,13 @@ class SQLDatabaseManagerTest {
                     .withPassword("test");
 
     private static MockedStatic<mcMMO> mockedMcMMO;
+    private static MockedStatic<ExperienceConfig> mockedExperienceConfig;
     private static GeneralConfig generalConfig;
     private static AdvancedConfig advancedConfig;
     private static UpgradeManager upgradeManager;
     private static SkillTools skillTools;
     private static MinecraftGameVersion minecraftGameVersion;
+    private static File testDataFolder;
 
     // --- DB flavors you support ---
     enum DbFlavor {
@@ -102,6 +107,12 @@ class SQLDatabaseManagerTest {
         mockedMcMMO = Mockito.mockStatic(mcMMO.class);
         mcMMO.p = Mockito.mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
+        try {
+            testDataFolder = java.nio.file.Files.createTempDirectory("mcmmo-sql-test-data-").toFile();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create temp test data folder", e);
+        }
+        when(mcMMO.p.getDataFolder()).thenReturn(testDataFolder);
         when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
 
         mockGeneralConfigBase();
@@ -109,6 +120,11 @@ class SQLDatabaseManagerTest {
         advancedConfig = Mockito.mock(AdvancedConfig.class);
         when(mcMMO.p.getAdvancedConfig()).thenReturn(advancedConfig);
         when(mcMMO.p.getAdvancedConfig().getStartingLevel()).thenReturn(0);
+
+        ExperienceConfig experienceConfig = Mockito.mock(ExperienceConfig.class);
+        when(experienceConfig.getDiminishedReturnsEnabled()).thenReturn(false);
+        mockedExperienceConfig = Mockito.mockStatic(ExperienceConfig.class);
+        mockedExperienceConfig.when(ExperienceConfig::getInstance).thenReturn(experienceConfig);
 
         skillTools = new SkillTools(mcMMO.p);
         when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
@@ -127,6 +143,22 @@ class SQLDatabaseManagerTest {
     @AfterAll
     static void tearDownAll() {
         mockedMcMMO.close();
+        mockedExperienceConfig.close();
+        if (testDataFolder != null) {
+            deleteRecursively(testDataFolder);
+        }
+    }
+
+    private static void deleteRecursively(final File file) {
+        if (file.isDirectory()) {
+            final File[] children = file.listFiles();
+            if (children != null) {
+                for (final File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        file.delete();
     }
 
     private static void mockGeneralConfigBase() {

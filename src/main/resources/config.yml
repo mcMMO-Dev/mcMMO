@@ -78,6 +78,10 @@ General:
   # Giga Drill Breaker, and Berserk. Resource intensive for larger servers.
   Refresh_Chunks: false
 
+  # Enables backup snapshots used for Paper world migration safety.
+  # Set to false to disable region-data backup creation on shutdown.
+  RegionDataMigrationBackups: true
+
 #
 #  Settings for the mcMMO scoreboards
 ###
@@ -388,6 +392,8 @@ Skills:
     # Always catch fish, even when treasure is found
     Extra_Fish: false
     Lure_Modifier: 4.0
+    # Makes items with conflicting enchantments obtainable through Magic Hunter, such as armor pieces with multiple types of protection
+    Allow_Conflicting_Enchants: false
   Herbalism:
     Level_Cap: 0
     Prevent_AFK_Leveling: true
@@ -725,6 +731,7 @@ Particles:
 Sounds:
   # This setting controls the master volume. 1.0 is Max,  0 would be off
   MasterVolume: 1.0
+
 
 #
 #  Players listed here will not appear in any leaderboards

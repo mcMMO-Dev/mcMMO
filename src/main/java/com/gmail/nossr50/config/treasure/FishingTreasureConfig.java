@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
 public class FishingTreasureConfig extends BukkitConfig {
+
+    private static final Logger LOGGER = Logger.getLogger(FishingTreasureConfig.class.getName());
 
     public static final String FILENAME = "fishing_treasures.yml";
     private static FishingTreasureConfig instance;
@@ -173,8 +176,7 @@ public class FishingTreasureConfig extends BukkitConfig {
             for (final String key : oldSection.getKeys(false)) {
                 configuration.set("Shake.MOOSHROOM." + key, oldSection.get(key));
             }
-            mcMMO.p.getLogger().info(
-                    "Renamed Shake.MUSHROOM_COW to Shake.MOOSHROOM in fishing_treasures.yml.");
+            LOGGER.info("Renamed Shake.MUSHROOM_COW to Shake.MOOSHROOM in fishing_treasures.yml.");
         }
         configuration.set("Shake.MUSHROOM_COW", null);
         return true;

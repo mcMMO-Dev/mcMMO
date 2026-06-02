@@ -237,6 +237,10 @@ public class GeneralConfig extends BukkitConfig {
 		return config.getBoolean("General.Refresh_Chunks", false);
 	}
 
+	public boolean getRegionDataMigrationBackupsEnabled() {
+		return config.getBoolean("General.RegionDataMigrationBackups", true);
+	}
+
 	public boolean getMobHealthbarEnabled() {
 		return config.getBoolean("Mob_Healthbar.Enabled", true);
 	}
@@ -811,6 +815,10 @@ public class GeneralConfig extends BukkitConfig {
 
 	public double getFishingLureModifier() {
 		return config.getDouble("Skills.Fishing.Lure_Modifier", 4.0D);
+	}
+
+	public boolean getFishingAllowConflictingEnchants() {
+		return config.getBoolean("Skills.Fishing.Allow_Conflicting_Enchants", false);
 	}
 
 	/* Mining */

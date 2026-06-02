@@ -1,8 +1,9 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.DiminishedReturnsCache;
+import com.gmail.nossr50.datatypes.experience.DiminishedReturnsState;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.datatypes.experience.SkillXpGain;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
@@ -15,7 +16,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.DelayQueue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,10 +41,8 @@ public class PlayerProfile {
     private final Map<UniqueDataType, Integer> uniquePlayerData = new EnumMap<>(
             UniqueDataType.class); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
-    // Store previous XP gains for diminished returns
-    private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
-    private final Map<PrimarySkillType, Float> rollingSkillsXp = new EnumMap<>(
-            PrimarySkillType.class);
+    // Store previous XP gains for diminished returns (persisted across reconnects via cache)
+    private final DiminishedReturnsState diminishedReturnsState;
 
     @Deprecated
     public PlayerProfile(String playerName) {
@@ -64,6 +62,7 @@ public class PlayerProfile {
     public PlayerProfile(String playerName, @Nullable UUID uuid, int startingLevel) {
         this.uuid = uuid;
         this.playerName = playerName;
+        this.diminishedReturnsState = DiminishedReturnsCache.getOrCreate(uuid);
 
         scoreboardTipsShown = 0;
 
@@ -99,6 +98,8 @@ public class PlayerProfile {
         this.playerName = playerName;
         this.uuid = uuid;
         this.scoreboardTipsShown = scoreboardTipsShown;
+        // This constructor is used for save copies only — do not pull DR state from cache.
+        this.diminishedReturnsState = DiminishedReturnsCache.getOrCreate(null);
 
         skills.putAll(levelData);
         skillsXp.putAll(xpData);
@@ -404,13 +405,7 @@ public class PlayerProfile {
      * @return xp Experience amount registered
      */
     public float getRegisteredXpGain(PrimarySkillType primarySkillType) {
-        float xp = 0F;
-
-        if (rollingSkillsXp.get(primarySkillType) != null) {
-            xp = rollingSkillsXp.get(primarySkillType);
-        }
-
-        return xp;
+        return diminishedReturnsState.getRegisteredXpGain(primarySkillType);
     }
 
     /**
@@ -420,19 +415,16 @@ public class PlayerProfile {
      * @param xp Experience amount to add
      */
     public void registerXpGain(PrimarySkillType primarySkillType, float xp) {
-        gainedSkillsXp.add(new SkillXpGain(primarySkillType, xp));
-        rollingSkillsXp.put(primarySkillType, getRegisteredXpGain(primarySkillType) + xp);
+        if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
+            diminishedReturnsState.registerXpGain(primarySkillType, xp);
+        }
     }
 
     /**
      * Remove experience gains older than a given time This is used for diminished XP returns
      */
     public void purgeExpiredXpGains() {
-        SkillXpGain gain;
-        while ((gain = gainedSkillsXp.poll()) != null) {
-            rollingSkillsXp.put(gain.getSkill(),
-                    getRegisteredXpGain(gain.getSkill()) - gain.getXp());
-        }
+        diminishedReturnsState.purgeExpiredXpGains();
     }
 
     /**

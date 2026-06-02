@@ -21,7 +21,7 @@ pipeline {
 
 		stage('Build') {
 			steps {
-				sh 'mvn -V -B clean package'
+				sh 'mvn -V -B -Psql-tests clean package'
 			}
 		}
 

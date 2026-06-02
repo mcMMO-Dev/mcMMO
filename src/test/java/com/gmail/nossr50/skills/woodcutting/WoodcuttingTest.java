@@ -17,21 +17,28 @@ import static org.mockito.Mockito.mockStatic;
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.MetadataConstants;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -43,6 +50,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.anyDouble;
 
 class WoodcuttingTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(WoodcuttingTest.class.getName());
@@ -254,7 +262,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         // to AIR directly and never fires BlockDropItemEvent.
 
         @Test
-        void normalDoubleDrop_setsMetadataOnBlock_notSpawnedDirectly() {
+        void normalDropSetsBlockMetadataNotDirectlySpawned() {
             // Given: player has Woodcutting skill and Tree Feller is NOT active
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
             mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
@@ -275,7 +283,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         }
 
         @Test
-        void treeFellerDoubleDrop_spawnsDirectly_doesNotSetMetadata() {
+        void treeFellerDropSpawnsDirectlyWithoutBlockMetadata() {
             // Given: player has Woodcutting skill and Tree Feller IS active
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
             mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, true);
@@ -298,7 +306,7 @@ class WoodcuttingTest extends MMOTestEnvironment {
         }
 
         @Test
-        void noBonus_whenSkillLevelTooLow_neitherPathInvoked() {
+        void noBonusWhenSkillLevelTooLow() {
             // Given: player has no Woodcutting skill and Tree Feller is not active
             mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 0);
             mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
@@ -314,6 +322,161 @@ class WoodcuttingTest extends MMOTestEnvironment {
             verify(woodcuttingManager, never()).spawnHarvestLumberBonusDrops(block);
             verify(block, never()).setMetadata(
                     eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
+        }
+    }
+
+    @Nested
+    class KnockOnWoodXpOrbSpawning {
+        // Covers the bug where KnockOnWood XP orbs never spawned for nether tree cap
+        // blocks (nether_wart_block, warped_wart_block). Those blocks appear in both
+        // experience.yml (hasWoodcuttingXP=true) and the treeFellerDestructibleWhiteList
+        // (isNonWoodPartOfTree=true). The old code placed the XP orb logic inside the
+        // else-if branch for isNonWoodPartOfTree, so it was unreachable for any block
+        // that also had woodcutting XP. The fix extracts the orb logic into a standalone
+        // if-block that runs after the if/else-if drop routing.
+
+        @Test
+        void netherWartBlockSpawnsOrbWhenRank2Unlocked() {
+            // Given: player has KnockOnWood at rank 2 and XP orbs are enabled
+            mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+            Mockito.when(RankUtils.hasUnlockedSubskill(any(Player.class),
+                    eq(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD))).thenReturn(true);
+            Mockito.when(RankUtils.hasReachedRank(eq(2), any(Player.class),
+                    eq(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD))).thenReturn(true);
+            Mockito.when(advancedConfig.isKnockOnWoodXPOrbEnabled()).thenReturn(true);
+
+            // Given: block that satisfies BOTH hasWoodcuttingXP AND isNonWoodPartOfTree
+            // (matches nether_wart_block / warped_wart_block — the previously broken case)
+            final Block netherWartBlock = mock(Block.class, "netherWartBlock");
+            final Location blockLocation = new Location(world, 10, 64, 10);
+            Mockito.when(netherWartBlock.getDrops(any())).thenReturn(Collections.emptyList());
+            Mockito.when(netherWartBlock.getLocation()).thenReturn(blockLocation);
+
+            // Stub processBonusDropCheck so it does not exercise unrelated paths
+            Mockito.doNothing().when(woodcuttingManager).processBonusDropCheck(any(Block.class));
+
+            try (MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
+                    MockedStatic<EventUtils> localMockedEventUtils = mockStatic(EventUtils.class);
+                    MockedStatic<ProbabilityUtil> mockedProbabilityUtil =
+                            mockStatic(ProbabilityUtil.class)) {
+
+                mockedBlockUtils.when(() -> BlockUtils.hasWoodcuttingXP(any(Block.class)))
+                        .thenReturn(true);
+                mockedBlockUtils.when(() -> BlockUtils.isNonWoodPartOfTree(any(Block.class)))
+                        .thenReturn(true);
+                localMockedEventUtils.when(() -> EventUtils.simulateBlockBreak(
+                        any(Block.class), any(Player.class), any())).thenReturn(true);
+                // Force the 10% RNG check to always succeed so the orb always spawns
+                mockedProbabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
+                        any(PrimarySkillType.class), any(McMMOPlayer.class), anyDouble()))
+                        .thenReturn(true);
+
+                // Wire Misc.getRandom() to a predictable stub so the orb count is deterministic
+                final Random stubRandom = mock(Random.class);
+                Mockito.when(Misc.getRandom()).thenReturn(stubRandom);
+                Mockito.when(stubRandom.nextInt(anyInt())).thenReturn(50);
+
+                // When: Tree Feller loot is processed for this block
+                invokeDropTreeFellerLootFromBlocks(Set.of(netherWartBlock));
+
+                // Then: an XP orb was spawned — this was the bug; this call was unreachable
+                // before the fix because the orb code was inside the else-if for isNonWoodPartOfTree
+                mockedMisc.verify(() -> Misc.spawnExperienceOrb(eq(blockLocation), anyInt()));
+            }
+        }
+
+        @Test
+        void regularLeafSpawnsOrbWhenRank2Unlocked() {
+            // Given: a regular leaf block — only isNonWoodPartOfTree=true, no woodcutting XP.
+            // Regression check: existing leaf behaviour continues to work after the fix.
+            mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+            Mockito.when(RankUtils.hasUnlockedSubskill(any(Player.class),
+                    eq(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD))).thenReturn(true);
+            Mockito.when(RankUtils.hasReachedRank(eq(2), any(Player.class),
+                    eq(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD))).thenReturn(true);
+            Mockito.when(advancedConfig.isKnockOnWoodXPOrbEnabled()).thenReturn(true);
+
+            final Block leafBlock = mock(Block.class, "leafBlock");
+            final Location blockLocation = new Location(world, 10, 64, 10);
+            Mockito.when(leafBlock.getDrops(any())).thenReturn(Collections.emptyList());
+            Mockito.when(leafBlock.getLocation()).thenReturn(blockLocation);
+
+            try (MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
+                    MockedStatic<EventUtils> localMockedEventUtils = mockStatic(EventUtils.class);
+                    MockedStatic<ProbabilityUtil> mockedProbabilityUtil =
+                            mockStatic(ProbabilityUtil.class)) {
+
+                mockedBlockUtils.when(() -> BlockUtils.hasWoodcuttingXP(any(Block.class)))
+                        .thenReturn(false);
+                mockedBlockUtils.when(() -> BlockUtils.isNonWoodPartOfTree(any(Block.class)))
+                        .thenReturn(true);
+                localMockedEventUtils.when(() -> EventUtils.simulateBlockBreak(
+                        any(Block.class), any(Player.class), any())).thenReturn(true);
+                mockedProbabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
+                        any(PrimarySkillType.class), any(McMMOPlayer.class), anyDouble()))
+                        .thenReturn(true);
+
+                final Random stubRandom = mock(Random.class);
+                Mockito.when(Misc.getRandom()).thenReturn(stubRandom);
+                Mockito.when(stubRandom.nextInt(anyInt())).thenReturn(50);
+
+                // When
+                invokeDropTreeFellerLootFromBlocks(Set.of(leafBlock));
+
+                // Then: orb still spawns for leaves (unchanged behaviour)
+                mockedMisc.verify(() -> Misc.spawnExperienceOrb(eq(blockLocation), anyInt()));
+            }
+        }
+
+        @Test
+        void regularLogDoesNotSpawnOrb() {
+            // Given: a regular log block (hasWoodcuttingXP=true, isNonWoodPartOfTree=false).
+            // XP orbs must NEVER fire for plain logs — only for non-log tree components.
+            mmoPlayer.modifySkill(PrimarySkillType.WOODCUTTING, 1000);
+            Mockito.when(RankUtils.hasUnlockedSubskill(any(Player.class),
+                    eq(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD))).thenReturn(true);
+            Mockito.when(RankUtils.hasReachedRank(eq(2), any(Player.class),
+                    eq(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD))).thenReturn(true);
+            Mockito.when(advancedConfig.isKnockOnWoodXPOrbEnabled()).thenReturn(true);
+
+            final Block logBlock = mock(Block.class, "logBlock");
+            Mockito.when(logBlock.getDrops(any())).thenReturn(Collections.emptyList());
+
+            // Stub processBonusDropCheck so it does not exercise unrelated paths
+            Mockito.doNothing().when(woodcuttingManager).processBonusDropCheck(any(Block.class));
+
+            try (MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
+                    MockedStatic<EventUtils> localMockedEventUtils = mockStatic(EventUtils.class);
+                    MockedStatic<ProbabilityUtil> mockedProbabilityUtil =
+                            mockStatic(ProbabilityUtil.class)) {
+
+                mockedBlockUtils.when(() -> BlockUtils.hasWoodcuttingXP(any(Block.class)))
+                        .thenReturn(true);
+                mockedBlockUtils.when(() -> BlockUtils.isNonWoodPartOfTree(any(Block.class)))
+                        .thenReturn(false);
+                localMockedEventUtils.when(() -> EventUtils.simulateBlockBreak(
+                        any(Block.class), any(Player.class), any())).thenReturn(true);
+                mockedProbabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
+                        any(PrimarySkillType.class), any(McMMOPlayer.class), anyDouble()))
+                        .thenReturn(true);
+
+                // When
+                invokeDropTreeFellerLootFromBlocks(Set.of(logBlock));
+
+                // Then: no XP orb spawned for a plain log
+                mockedMisc.verify(() -> Misc.spawnExperienceOrb(any(), anyInt()), never());
+            }
+        }
+
+        private void invokeDropTreeFellerLootFromBlocks(final Set<Block> blocks) {
+            try {
+                final Method method = WoodcuttingManager.class.getDeclaredMethod(
+                        "dropTreeFellerLootFromBlocks", Set.class);
+                method.setAccessible(true);
+                method.invoke(woodcuttingManager, blocks);
+            } catch (Exception exception) {
+                throw new RuntimeException(exception);
+            }
         }
     }
 

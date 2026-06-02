@@ -7,9 +7,11 @@ import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.CustomItemSupportConfig;
 import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.util.blockmeta.McMMORegionBackupStore;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -75,6 +77,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -291,6 +294,44 @@ public class mcMMO extends JavaPlugin {
 
                 chunkManager = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
+                if (PersistentDataConfig.getInstance().useBlockTracker()
+                    && generalConfig.getRegionDataMigrationBackupsEnabled()) {
+                    long migrationRestoreTotalNanos = 0L;
+                    int migrationRestoreWorldsWithWork = 0;
+                    boolean migrationAnnouncementLogged = false;
+
+                    for (org.bukkit.World loadedWorld : getServer().getWorlds()) {
+                        if (WorldBlacklist.isWorldBlacklisted(loadedWorld)) {
+                            continue;
+                        }
+
+                        final long migrationRestoreStartNanos = System.nanoTime();
+                        final boolean restoreApplied = McMMORegionBackupStore.restoreWorld(
+                                loadedWorld, getLogger(), getDataFolder().toPath());
+                        final long migrationRestoreElapsedNanos =
+                                System.nanoTime() - migrationRestoreStartNanos;
+
+                        if (!restoreApplied) {
+                            continue;
+                        }
+
+                        if (!migrationAnnouncementLogged) {
+                            getLogger().info("Detected Paper world migration, starting data "
+                                    + "migration for mcMMO region files...");
+                            migrationAnnouncementLogged = true;
+                        }
+
+                        migrationRestoreTotalNanos += migrationRestoreElapsedNanos;
+                        migrationRestoreWorldsWithWork++;
+                    }
+
+                    if (migrationRestoreWorldsWithWork > 0) {
+                        getLogger().info("[RegionDataMigration] total restore time across "
+                                + migrationRestoreWorldsWithWork + " world(s): "
+                                + formatDurationHms(migrationRestoreTotalNanos));
+                    }
+                }
+
                 if (generalConfig.getPTPCommandWorldPermissions()) {
                     Permissions.generateWorldTeleportPermissions();
                 }
@@ -404,6 +445,48 @@ public class mcMMO extends JavaPlugin {
 
             formulaManager.saveFormula();
             chunkManager.closeAll();
+                if (PersistentDataConfig.getInstance().useBlockTracker()
+                    && generalConfig.getRegionDataMigrationBackupsEnabled()) {
+                long backupTotalNanos = 0L;
+                int backupWorldsWithWork = 0;
+                boolean backupAnnouncementLogged = false;
+
+                for (org.bukkit.World loadedWorld : getServer().getWorlds()) {
+                    if (WorldBlacklist.isWorldBlacklisted(loadedWorld)) {
+                        continue;
+                    }
+
+                    final long backupStartNanos = System.nanoTime();
+                    final boolean backupApplied = McMMORegionBackupStore.backupWorld(
+                            loadedWorld, getLogger(), getDataFolder().toPath());
+                    final long backupElapsedNanos = System.nanoTime() - backupStartNanos;
+
+                    if (!backupApplied) {
+                        continue;
+                    }
+
+                    if (!backupAnnouncementLogged) {
+                        getLogger().info("Legacy region format detected, mcMMO will back up "
+                                + "region data files to prevent data loss, do NOT force a "
+                                + "shutdown until this completes.");
+                        backupAnnouncementLogged = true;
+                    }
+
+                    backupTotalNanos += backupElapsedNanos;
+                    backupWorldsWithWork++;
+
+                    getLogger().fine("[RegionDataBackups] world '" + loadedWorld.getName()
+                            + "': mcMMO region file(s) backup finished in "
+                            + formatDurationHms(backupElapsedNanos));
+                }
+
+                if (backupWorldsWithWork > 0) {
+                    getLogger().info("[RegionDataBackups] Region data backup completed, "
+                            + "total time spent to complete this operation across "
+                            + backupWorldsWithWork + " world(s): "
+                            + formatDurationHms(backupTotalNanos));
+                }
+            }
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "An error occurred while disabling mcMMO!", e);
         }
@@ -782,6 +865,39 @@ public class mcMMO extends JavaPlugin {
 
     public static synchronized boolean isServerShutdownExecuted() {
         return serverShutdownExecuted;
+    }
+
+    static String formatDurationHms(long elapsedNanos) {
+        final Duration elapsedDuration = Duration.ofNanos(Math.max(0L, elapsedNanos));
+        final long totalMillis = elapsedDuration.toMillis();
+
+        if (totalMillis < 1000L) {
+            return totalMillis + "ms";
+        }
+
+        final long totalSeconds = elapsedDuration.getSeconds();
+        final long hours = totalSeconds / 3600;
+        final long minutes = (totalSeconds % 3600) / 60;
+        final long seconds = totalSeconds % 60;
+
+        final StringBuilder displayBuilder = new StringBuilder();
+        if (hours > 0L) {
+            displayBuilder.append(hours).append("h");
+        }
+        if (minutes > 0L) {
+            if (displayBuilder.length() > 0) {
+                displayBuilder.append(' ');
+            }
+            displayBuilder.append(minutes).append("m");
+        }
+        if (seconds > 0L) {
+            if (displayBuilder.length() > 0) {
+                displayBuilder.append(' ');
+            }
+            displayBuilder.append(seconds).append("s");
+        }
+
+        return displayBuilder.length() == 0 ? totalMillis + "ms" : displayBuilder.toString();
     }
 
     private static synchronized void setServerShutdown(boolean bool) {
