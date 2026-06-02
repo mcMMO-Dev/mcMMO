@@ -876,6 +876,10 @@ public class AdvancedConfig extends BukkitConfig {
                 true);
     }
 
+    public List<String> getAdditionalTreeFellerDestructibleWhiteList() {
+        return config.getStringList("Skills.Woodcutting.TreeFeller.Additional_Destructible_Items_White_List");
+    }
+
     /* MACES */
     public double getCrushBaseDamage() {
         return config.getDouble("Skills.Maces.Crush.Base_Damage", 0.5D);
