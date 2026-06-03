@@ -269,6 +269,13 @@ public class mcMMO extends JavaPlugin {
                             20, 20 * 60 * 30);
                 }
             } else {
+                // Load the packet-based scoreboard library before registering events/commands
+                // that may touch ScoreboardManager. Guarded by the same config as onDisable's
+                // teardown; falls back to a no-op library on unsupported server versions.
+                if (generalConfig.getScoreboardsEnabled()) {
+                    ScoreboardManager.init();
+                }
+
                 registerEvents();
                 registerCoreSkills();
                 registerCustomRecipes();
