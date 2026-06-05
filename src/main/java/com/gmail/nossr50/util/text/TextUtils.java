@@ -136,4 +136,51 @@ public class TextUtils {
         TextComponent componentForm = ofLegacyTextRaw(string);
         return customLegacySerializer.serialize(componentForm);
     }
+
+    /**
+     * Inserts literal message text between two unique markers in a pre-formatted legacy template.
+     *
+     * <p>Everything before and after the marker pair is parsed as legacy text, while the inserted
+     * message is kept literal so legacy color tokens are not interpreted.
+     */
+    public static @NotNull TextComponent insertLiteralTextAtMarkers(
+            @NotNull String formattedTemplate,
+            @NotNull String startMarker,
+            @NotNull String endMarker,
+            @NotNull String literalMessage) {
+        final int startMarkerIndex = formattedTemplate.indexOf(startMarker);
+
+        if (startMarkerIndex < 0) {
+            return ofLegacyTextRaw(formattedTemplate);
+        }
+
+        final int afterStartMarkerIndex = startMarkerIndex + startMarker.length();
+        final int endMarkerIndex = formattedTemplate.indexOf(endMarker, afterStartMarkerIndex);
+
+        if (endMarkerIndex < 0) {
+            return Component.text()
+                    .append(ofLegacyTextRaw(formattedTemplate.replace(startMarker, "")))
+                    .append(Component.text(literalMessage))
+                    .build();
+        }
+
+        final String prefixText = formattedTemplate.substring(0, startMarkerIndex);
+        final String suffixText = formattedTemplate.substring(endMarkerIndex + endMarker.length());
+
+        return Component.text()
+                .append(ofLegacyTextRaw(prefixText))
+                .append(Component.text(literalMessage))
+                .append(ofLegacyTextRaw(suffixText))
+                .build();
+    }
+
+    /**
+     * Converts section-sign legacy color prefixes to ampersands so formatting tokens are displayed
+     * as plain text instead of being applied.
+     *
+     * <p>This is intended for message inputs when a sender lacks permission to use chat colors.
+     */
+    public static @NotNull String literalizeLegacyColorCodes(@NotNull String text) {
+        return text.replace('\u00A7', '&');
+    }
 }
