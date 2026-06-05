@@ -98,8 +98,7 @@ public class PlayerProfile {
         this.playerName = playerName;
         this.uuid = uuid;
         this.scoreboardTipsShown = scoreboardTipsShown;
-        // This constructor is used for save copies only — do not pull DR state from cache.
-        this.diminishedReturnsState = DiminishedReturnsCache.getOrCreate(null);
+        this.diminishedReturnsState = DiminishedReturnsCache.getOrCreate(uuid);
 
         skills.putAll(levelData);
         skillsXp.putAll(xpData);
