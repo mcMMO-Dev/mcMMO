@@ -8,727 +8,738 @@
 #  Settings for mcMMO in general
 ###
 General:
-    # When players reach certain level milestones messages will be broadcast
-    Level_Up_Chat_Broadcasts:
-        # Whether level up broadcasts are enabled
-        Enabled: true
-        # Whether you want power level milestones to be broadcast
-        Broadcast_Powerlevels:
-            Enabled: true
-            # How often to broadcast, you can change this to 1 to always broadcast a level up event, a setting of 100 will limit it to every 100 levels (for example level 100, level 200, etc)
-            Milestone_Interval: 100
-            Broadcast_Targets:
-                # Send the message to the console as well
-                Send_To_Console: true
-                # Whether to only send chat messages to party members
-                Only_Party_Members: false
-                # Whether players who receive a level up broadcast have to be on the same world as the one who leveled up
-                Only_Same_World: false
-                # Distance restrictions
-                Distance_Restrictions:
-                    Restrict_Distance: false
-                    # When using Restrict_Distance the blow setting configures the range of the broadcast
-                    Restricted_Radius: 100
-        # How often to broadcast, you can change this to 1 to always broadcast a level up event, a setting of 100 will limit it to every 100 levels (for example level 100, level 200, etc)
-        Milestone_Interval: 100
-        Broadcast_Targets:
-            # Send the message to the console as well
-            Send_To_Console: true
-            # Whether to only send chat messages to party members
-            Only_Party_Members: false
-            # Whether players who recieve a level up broadcast have to be on the same world as the one who leveled up
-            Only_Same_World: false
-            # Distance restrictions
-            Distance_Restrictions:
-                Restrict_Distance: false
-                # When using Restrict_Distance the blow setting configures the range of the broadcast
-                Restricted_Radius: 100
-        # Turning this on will scale mcMMO around 1-1000 with default scaling factor
-        # Everything in your config related to skill level requirements, skill level bonuses, etc. will be multiplied by 10 when this mode is on
-        # This change is purely cosmetic, it retains the old feel of mcMMO where you could level up thousands of times
-    RetroMode:
-        Enabled: true
-    Locale: en_US
-    PowerLevel:
-        Skill_Mastery:
-            Enabled: true
-    AprilFoolsEvent: true
-    MOTD_Enabled: true
-    EventBroadcasts: true
-    EventInfoOnPlayerJoin: true
-    AdminNotifications: true
-    # Send a message to the player when his profile was successfully loaded
-    Show_Profile_Loaded: false
-    # Amount of time (in minutes) to wait between saves of player information
-    Save_Interval: 10
-    # Allow mcMMO to report on basic anonymous usage
-    Stats_Tracking: true
-    Power_Level_Cap: 0
-    # Should mcMMO truncate levels if you lower your max level cap for a skillname
-    TruncateSkills: true
-    # Should mcMMO print out debug messages?
-    Verbose_Logging: false
-    # Should mcMMO over-write configs to update, or make new ones ending in .new?
-    Config_Update_Overwrite: true
-    # Play level-up sounds
-    LevelUp_Sounds: true
+  # When players reach certain level milestones messages will be broadcast
+  Level_Up_Chat_Broadcasts:
+    # Whether level up broadcasts are enabled
+    Enabled: true
+    # Whether you want power level milestones to be broadcast
+    Broadcast_Powerlevels:
+      Enabled: true
+      # How often to broadcast, you can change this to 1 to always broadcast a level up event, a setting of 100 will limit it to every 100 levels (for example level 100, level 200, etc)
+      Milestone_Interval: 100
+      Broadcast_Targets:
+        # Send the message to the console as well
+        Send_To_Console: true
+        # Whether to only send chat messages to party members
+        Only_Party_Members: false
+        # Whether players who receive a level up broadcast have to be on the same world as the one who leveled up
+        Only_Same_World: false
+        # Distance restrictions
+        Distance_Restrictions:
+          Restrict_Distance: false
+          # When using Restrict_Distance the blow setting configures the range of the broadcast
+          Restricted_Radius: 100
+    # How often to broadcast, you can change this to 1 to always broadcast a level up event, a setting of 100 will limit it to every 100 levels (for example level 100, level 200, etc)
+    Milestone_Interval: 100
+    Broadcast_Targets:
+      # Send the message to the console as well
+      Send_To_Console: true
+      # Whether to only send chat messages to party members
+      Only_Party_Members: false
+      # Whether players who recieve a level up broadcast have to be on the same world as the one who leveled up
+      Only_Same_World: false
+      # Distance restrictions
+      Distance_Restrictions:
+        Restrict_Distance: false
+        # When using Restrict_Distance the blow setting configures the range of the broadcast
+        Restricted_Radius: 100
+    # Turning this on will scale mcMMO around 1-1000 with default scaling factor
+    # Everything in your config related to skill level requirements, skill level bonuses, etc. will be multiplied by 10 when this mode is on
+    # This change is purely cosmetic, it retains the old feel of mcMMO where you could level up thousands of times
+  RetroMode:
+    Enabled: true
+  Locale: en_US
+  PowerLevel:
+    Skill_Mastery:
+      Enabled: true
+  AprilFoolsEvent: true
+  MOTD_Enabled: true
+  EventBroadcasts: true
+  EventInfoOnPlayerJoin: true
+  AdminNotifications: true
+  # Send a message to the player when his profile was successfully loaded
+  Show_Profile_Loaded: false
+  # Amount of time (in minutes) to wait between saves of player information
+  Save_Interval: 10
+  # Allow mcMMO to report on basic anonymous usage
+  Stats_Tracking: true
+  Power_Level_Cap: 0
+  # Should mcMMO truncate levels if you lower your max level cap for a skillname
+  TruncateSkills: true
+  # Should mcMMO print out debug messages?
+  Verbose_Logging: false
+  # Should mcMMO over-write configs to update, or make new ones ending in .new?
+  Config_Update_Overwrite: true
+  # Play level-up sounds
+  LevelUp_Sounds: true
 
-    # This should fix blocks being broken client side, but not server-side.
-    # Enable to refresh the chunks around a player at the end of Super Breaker,
-    # Giga Drill Breaker, and Berserk. Resource intensive for larger servers.
-    Refresh_Chunks: false
+  # This should fix blocks being broken client side, but not server-side.
+  # Enable to refresh the chunks around a player at the end of Super Breaker,
+  # Giga Drill Breaker, and Berserk. Resource intensive for larger servers.
+  Refresh_Chunks: false
 
-    # Enables backup snapshots used for Paper world migration safety.
-    # Set to false to disable region-data backup creation on shutdown.
-    RegionDataMigrationBackups: true
+  # Enables backup snapshots used for Paper world migration safety.
+  # Set to false to disable region-data backup creation on shutdown.
+  RegionDataMigrationBackups: true
 
 #
 #  Settings for the mcMMO scoreboards
 ###
 Scoreboard:
-    # Set this to true to enable scoreboards
-    UseScoreboards: false
-    # Display player's power levels below their names?
-    Power_Level_Tags: false
+  # Set this to true to enable scoreboards
+  UseScoreboards: false
+  # Display player's power levels below their names?
+  Power_Level_Tags: false
 
-    # Allow players to use "/mcscoreboard keep" to keep the scoreboard up
-    Allow_Keep: true
+  # Allow players to use "/mcscoreboard keep" to keep the scoreboard up
+  Allow_Keep: true
 
-    # Show the /mcstats scoreboard automatically after logging in
-    Show_Stats_After_Login: false
+  # Show the /mcstats scoreboard automatically after logging in
+  Show_Stats_After_Login: false
 
-    # Show scoreboard tips 5 times. Tips are only displayed once for every login session.
-    # Set to 0 to never show these tips.
-    Tips_Amount: 5
+  # Show scoreboard tips 5 times. Tips are only displayed once for every login session.
+  # Set to 0 to never show these tips.
+  Tips_Amount: 5
 
-    # Add some more color on the board :-)
-    Rainbows: false
+  # Add some more color on the board :-)
+  Rainbows: false
 
-    # Display ability names?
-    Ability_Names: true
+  # Display ability names?
+  Ability_Names: true
 
-    # Settings for each type of scoreboard
-    # Print: Should the command output be printed in chat?
-    # Board: Should the command output be displayed in the scoreboard sidebar?
-    # Display_Time: Amount of time (seconds) to display in the sidebar before clearing.
-    # To display permanently, use "/mcscoreboard keep" or set to -1
-    Types:
-        # Settings for /mcrank
-        # The sub-options (Print, Board, Display_Time) are the same for each type.
-        Rank:
-            Print: false
-            Board: true
-            Display_Time: 15
-        # Settings for /mctop
-        Top:
-            Print: true
-            Board: true
-            Display_Time: 15
-        # Settings for /mcstats
-        Stats:
-            Print: false
-            Board: true
-            Display_Time: 15
-        # Settings for /inspect
-        Inspect:
-            Print: false
-            Board: true
-            Display_Time: 20
-        # Settings for /mccooldown
-        Cooldown:
-            Print: true
-            Board: true
-            Display_Time: 41
-        # Settings for /<skillname> (e.g. /mining, /unarmed)
-        # No "print" option is given here; the information will always be displayed in chat.
-        # It should also be noted that this display is pretty dang cool.
-        Skill:
-            Board: true
-            Display_Time: 30
+  # Settings for each type of scoreboard
+  # Print: Should the command output be printed in chat?
+  # Board: Should the command output be displayed in the scoreboard sidebar?
+  # Display_Time: Amount of time (seconds) to display in the sidebar before clearing.
+  # To display permanently, use "/mcscoreboard keep" or set to -1
+  Types:
+    # Settings for /mcrank
+    # The sub-options (Print, Board, Display_Time) are the same for each type.
+    Rank:
+      Print: false
+      Board: true
+      Display_Time: 15
+    # Settings for /mctop
+    Top:
+      Print: true
+      Board: true
+      Display_Time: 15
+    # Settings for /mcstats
+    Stats:
+      Print: false
+      Board: true
+      Display_Time: 15
+    # Settings for /inspect
+    Inspect:
+      Print: false
+      Board: true
+      Display_Time: 20
+    # Settings for /mccooldown
+    Cooldown:
+      Print: true
+      Board: true
+      Display_Time: 41
+    # Settings for /<skillname> (e.g. /mining, /unarmed)
+    # No "print" option is given here; the information will always be displayed in chat.
+    # It should also be noted that this display is pretty dang cool.
+    Skill:
+      Board: true
+      Display_Time: 30
 
-            # Should the board be shown when a player levels up, and for how long?
-            # It is recommended to NOT have LevelUp_Time be -1, as this may confuse players.
-            LevelUp_Board: true
-            LevelUp_Time: 5
+      # Should the board be shown when a player levels up, and for how long?
+      # It is recommended to NOT have LevelUp_Time be -1, as this may confuse players.
+      LevelUp_Board: true
+      LevelUp_Time: 5
 
 Mob_Healthbar:
-    # Enabled: Whether the feature is enabled at all
-    # Display_Type: Per player Default display for mob health bars - HEARTS, BAR, or DISABLED
-    Enabled: true
-    Display_Type: HEARTS
-    Display_Time: 3
+  # Enabled: Whether the feature is enabled at all
+  # Display_Type: Per player Default display for mob health bars - HEARTS, BAR, or DISABLED
+  Enabled: true
+  Display_Type: HEARTS
+  Display_Time: 3
 
 Database_Purging:
-    # Amount of time (in hours) to wait between database purging
-    # To only run at server start, set to 0
-    # To never run, set to -1
-    Purge_Interval: -1
-    # Any user who hasn't connected in this many months will be purged from the database
-    # To never purge old users, set to -1
-    Old_User_Cutoff: 6
+  # Amount of time (in hours) to wait between database purging
+  # To only run at server start, set to 0
+  # To never run, set to -1
+  Purge_Interval: -1
+  # Any user who hasn't connected in this many months will be purged from the database
+  # To never purge old users, set to -1
+  Old_User_Cutoff: 6
 
 #
 #  Settings for Backups
 #  Allow mcMMO to create zip backups for config files and flatfile data on shutdown.
 ###
 Backups:
-    Enabled: true
+  Enabled: true
 
-    Keep:
-        Last_24_Hours: true
-        Daily_Last_Week: true
-        Weekly_Past_Months: true
+  Keep:
+    Last_24_Hours: true
+    Daily_Last_Week: true
+    Weekly_Past_Months: true
 
 #
 #  Settings for using a mySQL database
 ###
 MySQL:
-    Enabled: false
-    Debug: false
-    Database:
-        User_Name: UserName
-        User_Password: UserPassword
-        Name: DataBaseName
-        TablePrefix: mcmmo_
-        # This setting is the max simultaneous mysql connections allowed at a time, needs to be
-        # high enough to support multiple player logins in quick succession
-        MaxConnections:
-            Misc: 30
-            Load: 30
-            Save: 30
-        # This setting is the max size of the pool of cached connections that we hold available
-        # at any given time
-        MaxPoolSize:
-            Misc: 10
-            Load: 20
-            Save: 20
-    Server:
-        SSL: true
-        Port: 3306
-        Address: localhost
-        allowPublicKeyRetrieval: true
+  Enabled: false
+  Debug: false
+  Database:
+    User_Name: UserName
+    User_Password: UserPassword
+    Name: DataBaseName
+    TablePrefix: mcmmo_
+    # This setting is the max simultaneous mysql connections allowed at a time, needs to be
+    # high enough to support multiple player logins in quick succession
+    MaxConnections:
+      Misc: 30
+      Load: 30
+      Save: 30
+    # This setting is the max size of the pool of cached connections that we hold available
+    # at any given time
+    MaxPoolSize:
+      Misc: 10
+      Load: 20
+      Save: 20
+  Server:
+    SSL: true
+    Port: 3306
+    Address: localhost
+    allowPublicKeyRetrieval: true
 
 #
 #  Settings for Hardcore mode
 #  Players will not lose stats when their level is below the Level_Threshold
 ###
 Hardcore:
-    Death_Stat_Loss:
-        Penalty_Percentage: 75.0
-        Level_Threshold: 0
-        Enabled:
-            Acrobatics: false
-            Alchemy: false
-            Archery: false
-            Axes: false
-            Excavation: false
-            Fishing: false
-            Herbalism: false
-            Mining: false
-            Repair: false
-            Swords: false
-            Taming: false
-            Unarmed: false
-            Woodcutting: false
-            Tridents: false
-            Crossbows: false
-            Maces: false
-            Spears: false
-    Vampirism:
-        Leech_Percentage: 5.0
-        Level_Threshold: 0
-        Enabled:
-            Acrobatics: false
-            Alchemy: false
-            Archery: false
-            Axes: false
-            Excavation: false
-            Fishing: false
-            Herbalism: false
-            Mining: false
-            Repair: false
-            Swords: false
-            Taming: false
-            Unarmed: false
-            Woodcutting: false
-            Tridents: false
-            Crossbows: false
-            Maces: false
-            Spears: false
+  Death_Stat_Loss:
+    Penalty_Percentage: 75.0
+    Level_Threshold: 0
+    Enabled:
+      Acrobatics: false
+      Alchemy: false
+      Archery: false
+      Axes: false
+      Excavation: false
+      Fishing: false
+      Herbalism: false
+      Mining: false
+      Repair: false
+      Swords: false
+      Taming: false
+      Unarmed: false
+      Woodcutting: false
+      Tridents: false
+      Crossbows: false
+      Maces: false
+      Spears: false
+  Vampirism:
+    Leech_Percentage: 5.0
+    Level_Threshold: 0
+    Enabled:
+      Acrobatics: false
+      Alchemy: false
+      Archery: false
+      Axes: false
+      Excavation: false
+      Fishing: false
+      Herbalism: false
+      Mining: false
+      Repair: false
+      Swords: false
+      Taming: false
+      Unarmed: false
+      Woodcutting: false
+      Tridents: false
+      Crossbows: false
+      Maces: false
+      Spears: false
 
 #
 #  Settings for SMP Mods
 ###
 Mods:
-    Tool_Mods_Enabled: false
-    Armor_Mods_Enabled: false
-    Block_Mods_Enabled: false
-    Entity_Mods_Enabled: false
+  Tool_Mods_Enabled: false
+  Armor_Mods_Enabled: false
+  Block_Mods_Enabled: false
+  Entity_Mods_Enabled: false
 
 #
 #  Settings for mcMMO items
 ###
 Items:
-    Chimaera_Wing:
-        Enabled: true
-        Cooldown: 240
-        Warmup: 5
-        RecentlyHurt_Cooldown: 60
-        Prevent_Use_Underground: true
-        # Attempt to use the bed spawn, if one is available
-        Use_Bed_Spawn: true
-        Use_Cost: 1
-        Recipe_Cost: 5
-        Item_Name: FEATHER
-        Sound_Enabled: true
-    Flux_Pickaxe:
-        Sound_Enabled: true
+  Chimaera_Wing:
+    Enabled: true
+    Cooldown: 240
+    Warmup: 5
+    RecentlyHurt_Cooldown: 60
+    Prevent_Use_Underground: true
+    # Attempt to use the bed spawn, if one is available
+    Use_Bed_Spawn: true
+    Use_Cost: 1
+    Recipe_Cost: 5
+    Item_Name: FEATHER
+    Sound_Enabled: true
+  Flux_Pickaxe:
+    Sound_Enabled: true
 
 #
 #  Settings for Parties
 ###
 Party:
-    # Enable Hurting other players in the same party
-    FriendlyFire: false
-    # Maximum size for a party, -1 for infinite
-    MaxSize: -1
-    # Amount of time (in hours) to wait between automatically kicking old party members
-    # To only run at server start, set to 0
-    # To never kick old users, set to -1
-    AutoKick_Interval: 12
-    # Any user who hasn't connected in this many days will get kicked from their party
-    Old_Party_Member_Cutoff: 7
+  # Enable Hurting other players in the same party
+  FriendlyFire: false
+  # Maximum size for a party, -1 for infinite
+  MaxSize: -1
+  # Amount of time (in hours) to wait between automatically kicking old party members
+  # To only run at server start, set to 0
+  # To never kick old users, set to -1
+  AutoKick_Interval: 12
+  # Any user who hasn't connected in this many days will get kicked from their party
+  Old_Party_Member_Cutoff: 7
 
-    # Settings for party share modes
-    Sharing:
-        ExpShare_bonus_base: 1.1
-        ExpShare_bonus_increase: 1.05
-        ExpShare_bonus_cap: 1.5
-        Range: 75.0
+  # Settings for party share modes
+  Sharing:
+    ExpShare_bonus_base: 1.1
+    ExpShare_bonus_increase: 1.05
+    ExpShare_bonus_cap: 1.5
+    Range: 75.0
 
-    # Party members level up their party by earning individual experience
-    # Newly created parties will not immediately have access to all the party features
-    # and have to level up the party a bit before they can use them.
-    Leveling:
-        Level_Cap: 10
+  # Party members level up their party by earning individual experience
+  # Newly created parties will not immediately have access to all the party features
+  # and have to level up the party a bit before they can use them.
+  Leveling:
+    Level_Cap: 10
 
-        # Uses the regular XP formula but is multiplied by <amount of party members> + <Xp_Curve_Modifier>
-        Xp_Curve_Modifier: 3
-        Near_Members_Needed: false
-        Inform_All_Party_Members_On_LevelUp: false
+    # Uses the regular XP formula but is multiplied by <amount of party members> + <Xp_Curve_Modifier>
+    Xp_Curve_Modifier: 3
+    Near_Members_Needed: false
+    Inform_All_Party_Members_On_LevelUp: false
 
-        Chat_UnlockLevel: 1
-        Teleport_UnlockLevel: 2
-        Alliance_UnlockLevel: 5
-        ItemShare_UnlockLevel: 8
-        XpShare_UnlockLevel: 10
+    Chat_UnlockLevel: 1
+    Teleport_UnlockLevel: 2
+    Alliance_UnlockLevel: 5
+    ItemShare_UnlockLevel: 8
+    XpShare_UnlockLevel: 10
 
 #
 #  Settings for Abilities
 ###
 Abilities:
-    Enabled: true
-    Messages: true
-    Activation:
-        Only_Activate_When_Sneaking: false
-    Cooldowns:
-        Berserk: 240
-        Blast_Mining: 60
-        Giga_Drill_Breaker: 240
-        Green_Terra: 240
-        Serrated_Strikes: 240
-        Skull_Splitter: 240
-        Super_Breaker: 240
-        Tree_Feller: 240
-    Max_Seconds:
-        Berserk: 0
-        Blast_Mining: 0
-        Giga_Drill_Breaker: 0
-        Green_Terra: 0
-        Serrated_Strikes: 0
-        Skull_Splitter: 0
-        Super_Breaker: 0
-        Tree_Feller: 0
-    Limits:
-        Tree_Feller_Threshold: 1000
-    Tools:
-        # Use more tool durability while using abilities. Set Durability_Loss to 0 to disable the extra durability damage.
-        Durability_Loss: 1
+  Enabled: true
+  Messages: true
+  Activation:
+    Only_Activate_When_Sneaking: false
+  Cooldowns:
+    Berserk: 240
+    Blast_Mining: 60
+    Giga_Drill_Breaker: 240
+    Green_Terra: 240
+    Serrated_Strikes: 240
+    Skull_Splitter: 240
+    Super_Breaker: 240
+    Tree_Feller: 240
+  Max_Seconds:
+    Berserk: 0
+    Blast_Mining: 0
+    Giga_Drill_Breaker: 0
+    Green_Terra: 0
+    Serrated_Strikes: 0
+    Skull_Splitter: 0
+    Super_Breaker: 0
+    Tree_Feller: 0
+  Limits:
+    Tree_Feller_Threshold: 1000
+  Tools:
+    # Use more tool durability while using abilities. Set Durability_Loss to 0 to disable the extra durability damage.
+    Durability_Loss: 1
 
 #
 #  Settings for Skills
 #  Level cap of 0 for no limit
 ###
 Skills:
-    Acrobatics:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Prevent_Dodge_Lightning: false
-        # Prevent earning Acrobatics XP a few seconds after teleporting
-        XP_After_Teleport_Cooldown: 5
-        Level_Cap: 0
-    Alchemy:
-        # Allow Hoppers to transfer ingredients and brew Rank 1 Alchemy potions
-        Enabled_for_Hoppers: true
-        # Prevent Hoppers from transferring ingredients into Brewing Stands
-        Prevent_Hopper_Transfer_Ingredients: false
-        # Prevent Hoppers from transferring bottles into Brewing Stands
-        Prevent_Hopper_Transfer_Bottles: false
-        Level_Cap: 0
-    Archery:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Axes:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Excavation:
-        Level_Cap: 0
-    Fishing:
-        Level_Cap: 0
-        Drops_Enabled: true
-        Override_Vanilla_Treasures: true
-        # Always catch fish, even when treasure is found
-        Extra_Fish: false
-        Lure_Modifier: 4.0
-        # Makes items with conflicting enchantments obtainable through Magic Hunter, such as armor pieces with multiple types of protection
-        Allow_Conflicting_Enchants: false
-    Herbalism:
-        Level_Cap: 0
-        Prevent_AFK_Leveling: true
-    Mining:
-        Level_Cap: 0
-        Detonator_Name: FLINT_AND_STEEL
-    Repair:
-        Level_Cap: 0
-        Anvil_Messages: true
-        Anvil_Placed_Sounds: true
-        Anvil_Use_Sounds: true
-        Anvil_Material: IRON_BLOCK
-        Use_Enchanted_Materials: false
-        # Ask for a confirmation when a player tries to repair an enchanted item
-        Confirm_Required: true
-    Salvage:
-        Level_Cap: 0
-        Anvil_Messages: true
-        Anvil_Placed_Sounds: true
-        Anvil_Use_Sounds: true
-        Anvil_Material: GOLD_BLOCK
-        # Ask for a confirmation when a player tries to salvage an enchanted item
-        Confirm_Required: true
-    Smelting:
-        Level_Cap: 0
-    Swords:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Tridents:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Crossbows:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Maces:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Spears:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-    Taming:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-        Call_Of_The_Wild:
-            # Item_Material: Material of the item needed to summon the pet
-            # Item_Amount: Amount of items required to summon the pet
-            # Summon_Amount: Amount of pets to summon when using Call Of The Wild
-            # Summon_Length: Pets despawn when their summon life length expires
-            # Summon_Max_Amount: Maximum amount of pets that can be summoned at the same time
-            Wolf:
-                Item_Material: BONE
-                Item_Amount: 10
-                Summon_Amount: 1
-                Summon_Length: 240
-                Per_Player_Limit: 2
-            Ocelot:
-                Item_Material: COD
-                Item_Amount: 10
-                Summon_Amount: 1
-                Summon_Length: 240
-                Per_Player_Limit: 1
-            Horse:
-                Item_Material: APPLE
-                Item_Amount: 10
-                Summon_Amount: 1
-                Summon_Length: 240
-                Per_Player_Limit: 1
-    Unarmed:
-        Enabled_For_PVP: true
-        Enabled_For_PVE: true
-        Level_Cap: 0
-        Block_Cracker:
-            Allow_Block_Cracker: true
-        # When using Unarmed, picked up items will automatically get moved to a free slot instead of going in the slot
-        # of your hand. Should item pickup be disabled when your entire inventory - except for your hand - is full?
-        Item_Pickup_Disabled_Full_Inventory: true
-        # Any attacks made without a tool, i.e. with one's open hand, a block, etc., will count as unarmed. 
-        Items_As_Unarmed: false
-    Woodcutting:
-        Tree_Feller_Sounds: true
-        Level_Cap: 0
+  Acrobatics:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Prevent_Dodge_Lightning: false
+    # Prevent earning Acrobatics XP a few seconds after teleporting
+    XP_After_Teleport_Cooldown: 5
+    Level_Cap: 0
+  Alchemy:
+    # Allow Hoppers to transfer ingredients and brew Rank 1 Alchemy potions
+    Enabled_for_Hoppers: true
+    # Prevent Hoppers from transferring ingredients into Brewing Stands
+    Prevent_Hopper_Transfer_Ingredients: false
+    # Prevent Hoppers from transferring bottles into Brewing Stands
+    Prevent_Hopper_Transfer_Bottles: false
+    Level_Cap: 0
+  Archery:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Axes:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Excavation:
+    Level_Cap: 0
+  Fishing:
+    Level_Cap: 0
+    Drops_Enabled: true
+    Override_Vanilla_Treasures: true
+    # Always catch fish, even when treasure is found
+    Extra_Fish: false
+    Lure_Modifier: 4.0
+    # Makes items with conflicting enchantments obtainable through Magic Hunter, such as armor pieces with multiple types of protection
+    Allow_Conflicting_Enchants: false
+  Herbalism:
+    Level_Cap: 0
+    Prevent_AFK_Leveling: true
+  Mining:
+    Level_Cap: 0
+    Detonator_Name: FLINT_AND_STEEL
+  Repair:
+    Level_Cap: 0
+    Anvil_Messages: true
+    Anvil_Placed_Sounds: true
+    Anvil_Use_Sounds: true
+    Anvil_Material: IRON_BLOCK
+    Use_Enchanted_Materials: false
+    # Ask for a confirmation when a player tries to repair an enchanted item
+    Confirm_Required: true
+  Salvage:
+    Level_Cap: 0
+    Anvil_Messages: true
+    Anvil_Placed_Sounds: true
+    Anvil_Use_Sounds: true
+    Anvil_Material: GOLD_BLOCK
+    # Ask for a confirmation when a player tries to salvage an enchanted item
+    Confirm_Required: true
+  Smelting:
+    Level_Cap: 0
+  Swords:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Tridents:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Crossbows:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Maces:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Spears:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+  Taming:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+    Call_Of_The_Wild:
+      # Item_Material: Material of the item needed to summon the pet
+      # Item_Amount: Amount of items required to summon the pet
+      # Summon_Amount: Amount of pets to summon when using Call Of The Wild
+      # Summon_Length: Pets despawn when their summon life length expires
+      # Summon_Max_Amount: Maximum amount of pets that can be summoned at the same time
+      Wolf:
+        Item_Material: BONE
+        Item_Amount: 10
+        Summon_Amount: 1
+        Summon_Length: 240
+        Per_Player_Limit: 2
+      Ocelot:
+        Item_Material: COD
+        Item_Amount: 10
+        Summon_Amount: 1
+        Summon_Length: 240
+        Per_Player_Limit: 1
+      Horse:
+        Item_Material: APPLE
+        Item_Amount: 10
+        Summon_Amount: 1
+        Summon_Length: 240
+        Per_Player_Limit: 1
+  Unarmed:
+    Enabled_For_PVP: true
+    Enabled_For_PVE: true
+    Level_Cap: 0
+    Block_Cracker:
+      Allow_Block_Cracker: true
+    # When using Unarmed, picked up items will automatically get moved to a free slot instead of going in the slot
+    # of your hand. Should item pickup be disabled when your entire inventory - except for your hand - is full?
+    Item_Pickup_Disabled_Full_Inventory: true
+    # Any attacks made without a tool, i.e. with one's open hand, a block, etc., will count as unarmed.
+    Items_As_Unarmed: false
+  Woodcutting:
+    Tree_Feller_Sounds: true
+    Level_Cap: 0
 
 # Disable or Enable the Green Thumb auto replant feature for specific crops, use the name of the block not the crop itemstack
 Green_Thumb_Replanting_Crops:
-    Carrots: true
-    Wheat: true
-    Nether_Wart: true
-    Potatoes: true
-    Beetroots: true
-    Cocoa: true
-    Sweet_Berry_Bush: true
+  Carrots: true
+  Wheat: true
+  Nether_Wart: true
+  Potatoes: true
+  Beetroots: true
+  Cocoa: true
+  Sweet_Berry_Bush: true
 #
 #  Settings for Double Drops
 ###
 Bonus_Drops:
-    Herbalism:
-        Bush: true
-        Cactus_Flower: true
-        Firefly_Bush: true
-        Leaf_Litter: true
-        Short_Dry_Grass: true
-        Tall_Dry_Grass: true
-        Wildflowers: true
-        Eyeblossom: true
-        Open_Eyeblossom: true
-        Closed_Eyeblossom: true
-        Pitcher_Plant: true
-        Torchflower: true
-        Pink_Petals: true
-        Glow_Berries: true
-        Cave_Vines: true
-        Cave_Vines_Plant: true
-        Moss_Block: true
-        Sweet_Berry_Bush: true
-        Weeping_Vines: true
-        Twisting_Vines: true
-        Shroomlight: true
-        Crimson_Stem: true
-        Warped_Stem: true
-        Crimson_Roots: true
-        Warped_Roots: true
-        Nether_Wart_Block: true
-        Warped_Wart_Block: true
-        Bamboo_Sapling: true
-        Crimson_Fungus: true
-        Warped_Fungus: true
-        Chorus_Fruit: true
-        Chorus_Plant: true
-        Beetroots: true
-        Beetroot: true
-        Brown_Mushroom: true
-        Cactus: true
-        Carrots: true
-        Carrot: true
-        Cocoa: true
-        Cocoa_Beans: true
-        Wheat: true
-        Melon: true
-        Melon_Slice: true
-        Nether_Wart: true
-        Potatoes: true
-        Potato: true
-        Pumpkin: true
-        Red_Mushroom: true
-        Sugar_Cane: true
-        Vine: true
-        Lily_Pad: true
-        Red_Tulip: true
-        White_Tulip: true
-        Pink_Tulip: true
-        Orange_Tulip: true
-        Dandelion: true
-        Poppy: true
-        Blue_Orchid: true
-        Allium: true
-        Azure_Bluet: true
-        Oxeye_Daisy: true
-        Sunflower: true
-        Lilac: true
-        Rose_Bush: true
-        Peony: true
-        Lily_Of_The_Valley: true
-    Mining:
-        Tuff: true
-        Deepslate_Redstone_Ore: true
-        Deepslate_Copper_Ore: true
-        Deepslate_Coal_Ore: true
-        Deepslate_Diamond_Ore: true
-        Deepslate_Emerald_Ore: true
-        Deepslate_Iron_Ore: true
-        Deepslate_Gold_Ore: true
-        Deepslate_Lapis_Ore: true
-        Lapis_Lazuli_Ore: true
-        Copper_Ore: true
-        Calcite: true
-        Smooth_Basalt: true
-        Block_Of_Amethyst: true
-        Budding_Amethyst: true
-        Small_Amethyst_Bud: true
-        Medium_Amethyst_Bud: true
-        Large_Amethyst_Bud: true
-        Amethyst_Cluster: true
-        Amethyst_Shard: true
-        Deepslate: true
-        Cobbled_Deepslate: true
-        Gilded_Blackstone: true
-        Crying_Obsidian: true
-        Nether_Bricks: true
-        Red_Nether_Bricks: true
-        Cracked_Nether_Bricks: true
-        Chiseled_Nether_Bricks: true
-        Chain: true
-        Blackstone: true
-        Basalt: true
-        Polished_Basalt: true
-        Nether_Gold_Ore: true
-        Warped_Nylium: true
-        Crimson_Nylium: true
-        Ancient_Debris: true
-        Netherite_Scrap: true
-        Andesite: true
-        Diorite: true
-        Granite: true
-        Coal_Ore: true
-        Coal: true
-        Diamond_Ore: true
-        Diamond: true
-        Emerald_Ore: true
-        Emerald: true
-        End_Stone: true
-        Glowstone: true
-        Glowstone_Dust: true
-        Gold_Ore: true
-        Gold_Nugget: true
-        Iron_Ore: true
-        Iron_Ingot: true
-        Lapis_Ore: true
-        Lapis_Lazuli: true
-        Mossy_Cobblestone: true
-        Netherrack: true
-        Obsidian: true
-        Nether_Quartz_Ore: true
-        Quartz: true
-        Redstone_Ore: true
-        Redstone: true
-        Redstone_Dust: true
-        Sandstone: true
-        Stone: true
-        Cobblestone: true
-        Raw_Copper: true
-        Raw_Iron: true
-        Raw_Gold: true
-    Woodcutting:
-        Crimson_Hyphae: true
-        Warped_Hyphae: true
-        Stripped_Crimson_Hyphae: true
-        Stripped_Warped_Hyphae: true
-        Shroomlight: true
-        Crimson_Stem: true
-        Warped_Stem: true
-        Crimson_Roots: true
-        Warped_Roots: true
-        Acacia_Wood: true
-        Acacia_Log: true
-        Birch_Wood: true
-        Birch_Log: true
-        Cherry_Wood: true
-        Cherry_Log: true
-        Dark_Oak_Wood: true
-        Pale_Oak_Wood: true
-        Dark_Oak_Log: true
-        Pale_Oak_Log: true
-        Oak_Wood: true
-        Oak_Log: true
-        Jungle_Wood: true
-        Jungle_Log: true
-        Spruce_Wood: true
-        Spruce_Log: true
-        Mangrove_Wood: true
-        Mangrove_Log: true
-    Smelting:
-        Iron_Ingot: true
-        Gold_Ingot: true
-        Emerald: true
-        Diamond: true
-        Lapis_Lazuli: true
-        Coal: true
-        Nether_Quartz: true
-        Quartz: true
-        Redstone: true
-        Deepslate: true
-        Copper_Ingot: true
-        Netherite_Scrap: true
+  Herbalism:
+    Bush: true
+    Cactus_Flower: true
+    Firefly_Bush: true
+    Leaf_Litter: true
+    Short_Dry_Grass: true
+    Tall_Dry_Grass: true
+    Wildflowers: true
+    Eyeblossom: true
+    Open_Eyeblossom: true
+    Closed_Eyeblossom: true
+    Pitcher_Plant: true
+    Torchflower: true
+    Pink_Petals: true
+    Glow_Berries: true
+    Cave_Vines: true
+    Cave_Vines_Plant: true
+    Moss_Block: true
+    Sweet_Berry_Bush: true
+    Weeping_Vines: true
+    Twisting_Vines: true
+    Shroomlight: true
+    Crimson_Stem: true
+    Warped_Stem: true
+    Crimson_Roots: true
+    Warped_Roots: true
+    Nether_Wart_Block: true
+    Warped_Wart_Block: true
+    Bamboo_Sapling: true
+    Crimson_Fungus: true
+    Warped_Fungus: true
+    Chorus_Fruit: true
+    Chorus_Plant: true
+    Beetroots: true
+    Beetroot: true
+    Brown_Mushroom: true
+    Cactus: true
+    Carrots: true
+    Carrot: true
+    Cocoa: true
+    Cocoa_Beans: true
+    Wheat: true
+    Melon: true
+    Melon_Slice: true
+    Nether_Wart: true
+    Potatoes: true
+    Potato: true
+    Pumpkin: true
+    Red_Mushroom: true
+    Sugar_Cane: true
+    Vine: true
+    Lily_Pad: true
+    Red_Tulip: true
+    White_Tulip: true
+    Pink_Tulip: true
+    Orange_Tulip: true
+    Dandelion: true
+    Poppy: true
+    Blue_Orchid: true
+    Allium: true
+    Azure_Bluet: true
+    Oxeye_Daisy: true
+    Sunflower: true
+    Lilac: true
+    Rose_Bush: true
+    Peony: true
+    Lily_Of_The_Valley: true
+  Mining:
+    Tuff: true
+    Deepslate_Redstone_Ore: true
+    Deepslate_Copper_Ore: true
+    Deepslate_Coal_Ore: true
+    Deepslate_Diamond_Ore: true
+    Deepslate_Emerald_Ore: true
+    Deepslate_Iron_Ore: true
+    Deepslate_Gold_Ore: true
+    Deepslate_Lapis_Ore: true
+    Lapis_Lazuli_Ore: true
+    Copper_Ore: true
+    Calcite: true
+    Smooth_Basalt: true
+    Block_Of_Amethyst: true
+    Budding_Amethyst: true
+    Small_Amethyst_Bud: true
+    Medium_Amethyst_Bud: true
+    Large_Amethyst_Bud: true
+    Amethyst_Cluster: true
+    Amethyst_Shard: true
+    Deepslate: true
+    Cobbled_Deepslate: true
+    Gilded_Blackstone: true
+    Crying_Obsidian: true
+    Nether_Bricks: true
+    Red_Nether_Bricks: true
+    Cracked_Nether_Bricks: true
+    Chiseled_Nether_Bricks: true
+    Chain: true
+    Blackstone: true
+    Basalt: true
+    Polished_Basalt: true
+    Nether_Gold_Ore: true
+    Warped_Nylium: true
+    Crimson_Nylium: true
+    Ancient_Debris: true
+    Netherite_Scrap: true
+    Andesite: true
+    Diorite: true
+    Granite: true
+    Coal_Ore: true
+    Coal: true
+    Diamond_Ore: true
+    Diamond: true
+    Emerald_Ore: true
+    Emerald: true
+    End_Stone: true
+    Glowstone: true
+    Glowstone_Dust: true
+    Gold_Ore: true
+    Gold_Nugget: true
+    Iron_Ore: true
+    Iron_Ingot: true
+    Lapis_Ore: true
+    Lapis_Lazuli: true
+    Mossy_Cobblestone: true
+    Netherrack: true
+    Obsidian: true
+    Nether_Quartz_Ore: true
+    Quartz: true
+    Redstone_Ore: true
+    Redstone: true
+    Redstone_Dust: true
+    Sandstone: true
+    Stone: true
+    Cobblestone: true
+    Raw_Copper: true
+    Raw_Iron: true
+    Raw_Gold: true
+  Woodcutting:
+    Crimson_Hyphae: true
+    Warped_Hyphae: true
+    Stripped_Crimson_Hyphae: true
+    Stripped_Warped_Hyphae: true
+    Shroomlight: true
+    Crimson_Stem: true
+    Warped_Stem: true
+    Crimson_Roots: true
+    Warped_Roots: true
+    Acacia_Wood: true
+    Acacia_Log: true
+    Birch_Wood: true
+    Birch_Log: true
+    Cherry_Wood: true
+    Cherry_Log: true
+    Dark_Oak_Wood: true
+    Pale_Oak_Wood: true
+    Dark_Oak_Log: true
+    Pale_Oak_Log: true
+    Oak_Wood: true
+    Oak_Log: true
+    Jungle_Wood: true
+    Jungle_Log: true
+    Spruce_Wood: true
+    Spruce_Log: true
+    Mangrove_Wood: true
+    Mangrove_Log: true
+  Smelting:
+    Iron_Ingot: true
+    Gold_Ingot: true
+    Emerald: true
+    Diamond: true
+    Lapis_Lazuli: true
+    Coal: true
+    Nether_Quartz: true
+    Quartz: true
+    Redstone: true
+    Deepslate: true
+    Copper_Ingot: true
+    Netherite_Scrap: true
 #
 #  Settings for commands
 ###
 Commands:
-    Skills:
-        # Turn this off to prevent mcMMO URL links from being sent
-        URL_Links: true
-    Generic:
-        # If true, when using partial names in commands mcMMO will try to look for a match from
-        # the offline players. Enabling this might slow the server down if there are a lot of offline players.
-        Match_OfflinePlayers: false
-    Database:
-        # Database command cooldown in milliseconds, cannot be changed below the default value. (1750)
-        # Prevents players from spamming /mctop or /mcrank
-        Player_Cooldown: 1750
-    mcmmo:
-        Donate_Message: true
-    inspect:
-        Max_Distance: 30.0
-    ptp:
-        Cooldown: 120
-        Warmup: 5
-        RecentlyHurt_Cooldown: 60
-        Accept_Required: true
-        Request_Timeout: 300
-        # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
-        # to teleport to, from, or within any given world.
-        World_Based_Permissions: false
+  Skills:
+    # Turn this off to prevent mcMMO URL links from being sent
+    URL_Links: true
+  Generic:
+    # If true, when using partial names in commands mcMMO will try to look for a match from
+    # the offline players. Enabling this might slow the server down if there are a lot of offline players.
+    Match_OfflinePlayers: false
+  Database:
+    # Database command cooldown in milliseconds, cannot be changed below the default value. (1750)
+    # Prevents players from spamming /mctop or /mcrank
+    Player_Cooldown: 1750
+  mcmmo:
+    Donate_Message: true
+  inspect:
+    Max_Distance: 30.0
+  ptp:
+    Cooldown: 120
+    Warmup: 5
+    RecentlyHurt_Cooldown: 60
+    Accept_Required: true
+    Request_Timeout: 300
+    # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
+    # to teleport to, from, or within any given world.
+    World_Based_Permissions: false
 
 #
 #  Settings for particles
 ###
 Particles:
-    # These settings determine if fireworks should get launched when a player activates/deactivates an ability
-    Ability_Activation: false
-    Ability_Deactivation: false
+  # These settings determine if fireworks should get launched when a player activates/deactivates an ability
+  Ability_Activation: false
+  Ability_Deactivation: false
 
-    # Determines if the fireworks should be a large ball or a small one
-    LargeFireworks: true
+  # Determines if the fireworks should be a large ball or a small one
+  LargeFireworks: true
 
-    # Use particle effect when these abilities trigger
-    Bleed: true
-    Dodge: true
-    Flux: true
-    Greater_Impact: true
-    Call_of_the_Wild: true
-    Cripple: true
+  # Use particle effect when these abilities trigger
+  Bleed: true
+  Dodge: true
+  Flux: true
+  Greater_Impact: true
+  Call_of_the_Wild: true
+  Cripple: true
 
-    # These settings determine if fireworks should get launched when a player levels-up,
-    # this will happen by default for every 100 levels.
-    LevelUp_Enabled: true
-    LevelUp_Tier: 100
+  # These settings determine if fireworks should get launched when a player levels-up,
+  # this will happen by default for every 100 levels.
+  LevelUp_Enabled: true
+  LevelUp_Tier: 100
 #
 #  Settings for sounds
 ###
 Sounds:
-    # This setting controls the master volume. 1.0 is Max,  0 would be off
-    MasterVolume: 1.0
-    
+  # This setting controls the master volume. 1.0 is Max,  0 would be off
+  MasterVolume: 1.0
+
+
+#
+#  Players listed here will not appear in any leaderboards
+#  (/mctop, /mctop <skill>).
+#
+#  This is useful for admin and test accounts that should
+#  not influence the rankings shown to regular players.
+#
+###
+Hidden_From_Leaderboards:
+  - 'Baktus_79'
