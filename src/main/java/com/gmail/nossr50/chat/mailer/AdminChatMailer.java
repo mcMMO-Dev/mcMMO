@@ -63,9 +63,9 @@ public class AdminChatMailer extends AbstractChatMailer {
                     "Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN),
                     message);
         } else {
-            return TextUtils.ofLegacyTextRaw(
-                    LocaleLoader.getString("Chat.Style.Admin",
-                            author.getAuthoredName(ChatChannel.ADMIN), message));
+            final String literalMessage = TextUtils.literalizeLegacyColorCodes(message);
+            return formatLocaleStyleWithLiteralMessage("Chat.Style.Admin",
+                    author.getAuthoredName(ChatChannel.ADMIN), literalMessage);
         }
     }
 

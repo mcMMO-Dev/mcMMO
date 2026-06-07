@@ -1,3 +1,7 @@
+Version 2.2.054
+    Fixed party/admin chat allowing player color code tokens without the 'mcmmo.chat.colors' permission
+    Fixed diminished returns resetting in certain situations when players reconnected
+
 Version 2.2.053
     !! -- This build has important fixes for anyone using Paper (or forks of Paper), please read the notes carefully.
     It is completely safe to update to this version of mcMMO.
@@ -11,7 +15,6 @@ Version 2.2.053
     Fixed KnockOnWood XP orbs never spawning on nether/warped tree cap blocks during Tree Feller
     Fixed Impale (Tridents) damage bonus formula applying one fewer rank of the multiplier than intended
     Fixed melee attack strength scale resolving to near-zero after Paper fixed a vanilla attack cooldown bug in 26.1.2 (See notes)
-    Fixed server-side diminished returns state being evicted too early, allowing reconnects to bypass the DR window (See notes)
     Added option to allow Magic Hunter (Fishing) to grant items with conflicting enchantments; disabled by default (Thanks Warriorrrr)
     Added 'Skills.Fishing.Allow_Conflicting_Enchants' to config.yml (Thanks Warriorrrr)
     (Codebase) Removed 27 dead JSON.* locale keys from all locale files (See notes)
@@ -5522,4 +5525,5 @@ Version 0.2
 Version 0.1
 
     Releasing my awesome plugin
+
 

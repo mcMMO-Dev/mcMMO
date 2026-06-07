@@ -11,7 +11,13 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.UniqueDataType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import java.lang.reflect.Field;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -286,6 +292,31 @@ class DiminishedReturnsCacheTest {
             // When / Then
             assertTrue(state.hasActiveEntries(),
                     "state with a future latestExpiryTimeMillis should report active entries");
+        }
+    }
+
+    @Nested
+    class PlayerProfileConstructorIntegration {
+
+        @Test
+        void mapBasedConstructorShouldUseUuidCacheState() {
+            // Given - a player UUID with an existing cached DR state
+            final UUID playerUuid = UUID.randomUUID();
+            final DiminishedReturnsState cachedState = DiminishedReturnsCache.getOrCreate(playerUuid);
+
+            final Map<PrimarySkillType, Integer> levelData = new EnumMap<>(PrimarySkillType.class);
+            final Map<PrimarySkillType, Float> xpData = new EnumMap<>(PrimarySkillType.class);
+            final Map<SuperAbilityType, Integer> cooldownData = new EnumMap<>(SuperAbilityType.class);
+            final Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class);
+
+            // When - profile is created using the map-based constructor used by DB loaders
+            final PlayerProfile loadedProfile = new PlayerProfile("TestPlayer", playerUuid,
+                    levelData, xpData, cooldownData, 0, uniqueData, null);
+            loadedProfile.registerXpGain(PrimarySkillType.MINING, 50F);
+
+            // Then - cached state should reflect the XP registered by that loaded profile
+            assertEquals(50F, cachedState.getRegisteredXpGain(PrimarySkillType.MINING),
+                    "loaded profiles with UUID must use the UUID-cached DR state");
         }
     }
 }
