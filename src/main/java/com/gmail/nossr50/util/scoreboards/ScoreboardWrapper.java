@@ -9,17 +9,17 @@ import com.gmail.nossr50.events.scoreboard.McMMOScoreboardRevertEvent;
 import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
+import com.gmail.nossr50.util.scoreboards.backend.PlayerBoard;
+import com.gmail.nossr50.util.scoreboards.backend.SidebarLine;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.megavex.scoreboardlibrary.api.objective.ScoreFormat;
-import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -27,24 +27,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Wraps a packet-based {@link Sidebar} (scoreboard-library) for a single player.
- * <p>
- * Unlike the previous Bukkit {@code Scoreboard} implementation, the sidebar here is sent via
- * packets and overlays whatever scoreboard the player already has. Showing/hiding the board is
- * just {@code sidebar.addPlayer/removePlayer}; there is no Bukkit board to swap or revert, which
- * removes the objective register/unregister race that crashed on Folia/Canvas.
+ * Wraps a backend-specific player board for a single player.
  */
 public class ScoreboardWrapper {
-    // scoreboard-library hard-caps a sidebar at 15 lines.
-    private static final int MAX_LINES = Sidebar.MAX_LINES;
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
+    private static final int MAX_LINES = 15;
 
     // Initialization variables
     public final String playerName;
     public final Player player;
-    private final Sidebar sidebar;
+    private final PlayerBoard playerBoard;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
+    private Scoreboard oldBoard = null;
 
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
@@ -59,15 +53,11 @@ public class ScoreboardWrapper {
     private Map<PrimarySkillType, Integer> rankData = null;
     private List<PlayerStat> leaderboardData = null;
 
-    public ScoreboardWrapper(Player player) {
+    public ScoreboardWrapper(Player player, PlayerBoard playerBoard) {
         this.player = player;
         this.playerName = player.getName();
         this.sidebarType = SidebarType.NONE;
-        this.sidebar = ScoreboardManager.scoreboardLibrary.createSidebar(MAX_LINES);
-    }
-
-    private Component toComponent(String legacy) {
-        return LEGACY.deserialize(legacy == null ? "" : legacy);
+        this.playerBoard = playerBoard;
     }
 
     public WrappedTask updateTask = null;
@@ -127,7 +117,9 @@ public class ScoreboardWrapper {
             try {
                 cooldownTask.cancel();
             } catch (Exception e) {
-                e.printStackTrace();
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "Unable to cancel cooldown scoreboard task for " + playerName + ": "
+                                + e.getMessage());
             }
 
             cooldownTask = null;
@@ -147,9 +139,9 @@ public class ScoreboardWrapper {
     }
 
     public void showBoardWithNoRevert() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        final Player onlinePlayer = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        if (player == null) {
+        if (onlinePlayer == null) {
             ScoreboardManager.cleanup(this);
             return;
         }
@@ -158,14 +150,24 @@ public class ScoreboardWrapper {
             revertTask.cancel();
         }
 
-        sidebar.addPlayer(player);
+        final boolean alreadyShown = playerBoard.isShown();
+        final Scoreboard previousBoard = playerBoard.show();
+
+        if (ScoreboardManager.isBukkitBackendActive()) {
+            if (alreadyShown && oldBoard == null && ScoreboardManager.getScoreboardManager() != null) {
+                oldBoard = ScoreboardManager.getScoreboardManager().getMainScoreboard();
+            } else if (!alreadyShown) {
+                oldBoard = previousBoard;
+            }
+        }
+
         revertTask = null;
     }
 
     public void showBoardAndScheduleRevert(int ticks) {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        final Player onlinePlayer = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        if (player == null) {
+        if (onlinePlayer == null) {
             ScoreboardManager.cleanup(this);
             return;
         }
@@ -174,15 +176,24 @@ public class ScoreboardWrapper {
             revertTask.cancel();
         }
 
-        sidebar.addPlayer(player);
+        final boolean alreadyShown = playerBoard.isShown();
+        final Scoreboard previousBoard = playerBoard.show();
+        if (ScoreboardManager.isBukkitBackendActive()) {
+            if (alreadyShown && oldBoard == null && ScoreboardManager.getScoreboardManager() != null) {
+                oldBoard = ScoreboardManager.getScoreboardManager().getMainScoreboard();
+            } else if (!alreadyShown) {
+                oldBoard = previousBoard;
+            }
+        }
+
         revertTask = mcMMO.p.getFoliaLib().getScheduler()
-                .runAtEntityLater(player, new ScoreboardChangeTask(), ticks);
+                .runAtEntityLater(onlinePlayer, new ScoreboardChangeTask(), ticks);
 
         if (UserManager.getPlayer(playerName) == null) {
             return;
         }
 
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+        PlayerProfile profile = UserManager.getPlayer(onlinePlayer).getProfile();
 
         if (profile.getScoreboardTipsShown() >= mcMMO.p.getGeneralConfig().getTipsAmount()) {
             return;
@@ -190,42 +201,51 @@ public class ScoreboardWrapper {
 
         if (!tippedKeep) {
             tippedKeep = true;
-            player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Keep"));
+            onlinePlayer.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Keep"));
         } else if (!tippedClear) {
             tippedClear = true;
-            player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Clear"));
+            onlinePlayer.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Clear"));
             profile.increaseTipsShown();
         }
     }
 
     public void tryRevertBoard() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player onlinePlayer = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        if (player == null) {
+        if (onlinePlayer == null) {
             ScoreboardManager.cleanup(this);
             return;
         }
 
-        // Fire McMMOScoreboardRevertEvent so external plugins still get notified when an mcMMO
-        // board is cleared. Previously this swapped the player's Bukkit scoreboard back to the
-        // saved "old board"; with the packet sidebar there is nothing to swap, so we only need to
-        // stop showing our overlay.
-        //
-        // Compatibility note: the event was built around Bukkit Scoreboards (target/current board).
-        // None exist here, so we pass the player's current Bukkit scoreboard for both arguments as
-        // a non-null placeholder. The board fields are informational only - the packet sidebar does
-        // not read them back, so setTargetBoard() no longer has any effect. setTargetPlayer() is
-        // still honoured to decide which player the overlay is removed from.
-        if (isBoardShown()) {
+        if (ScoreboardManager.isBukkitBackendActive()) {
+            if (oldBoard != null && isBoardShown()) {
+                McMMOScoreboardRevertEvent event = new McMMOScoreboardRevertEvent(
+                        oldBoard,
+                        onlinePlayer.getScoreboard(),
+                        onlinePlayer,
+                        ScoreboardEventReason.REVERTING_BOARD);
+                onlinePlayer.getServer().getPluginManager().callEvent(event);
+                onlinePlayer = event.getTargetPlayer();
+                playerBoard.hide(onlinePlayer, event.getTargetBoard());
+                oldBoard = null;
+            } else if (oldBoard != null) {
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "Not reverting scoreboard for "
+                                + playerName
+                                + " - scoreboard was changed by another plugin.");
+            }
+        } else if (isBoardShown()) {
             McMMOScoreboardRevertEvent event = new McMMOScoreboardRevertEvent(
-                    player.getScoreboard(), player.getScoreboard(), player,
+                    onlinePlayer.getScoreboard(),
+                    onlinePlayer.getScoreboard(),
+                    onlinePlayer,
                     ScoreboardEventReason.REVERTING_BOARD);
-            player.getServer().getPluginManager().callEvent(event);
-            player = event.getTargetPlayer();
+            onlinePlayer.getServer().getPluginManager().callEvent(event);
+            onlinePlayer = event.getTargetPlayer();
+            playerBoard.hide(onlinePlayer, event.getTargetBoard());
+        } else {
+            playerBoard.hide(onlinePlayer, null);
         }
-
-        // Packet sidebar: hiding is just removing the player from the sidebar overlay.
-        sidebar.removePlayer(player);
 
         cancelRevert();
 
@@ -239,14 +259,14 @@ public class ScoreboardWrapper {
     }
 
     public boolean isBoardShown() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player onlinePlayer = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        if (player == null) {
+        if (onlinePlayer == null) {
             ScoreboardManager.cleanup(this);
             return false;
         }
 
-        return sidebar.players().contains(player);
+        return playerBoard.isShown();
     }
 
     public void cancelRevert() {
@@ -259,8 +279,7 @@ public class ScoreboardWrapper {
     }
 
     /**
-     * Releases the underlying packet sidebar. Must be called when the player logs off or the
-     * plugin shuts down, otherwise the library keeps the player registered.
+     * Releases backend resources and scheduled tasks.
      */
     public void close() {
         try {
@@ -274,9 +293,8 @@ public class ScoreboardWrapper {
             // best-effort task cleanup
         }
 
-        if (!sidebar.closed()) {
-            sidebar.close();
-        }
+        playerBoard.close();
+        ScoreboardManager.onPlayerBoardClosed(playerName);
     }
 
     // Board Type Changing 'API' methods
@@ -401,40 +419,22 @@ public class ScoreboardWrapper {
      * Sets the sidebar title and re-renders. Replaces the old register/unregister objective flow.
      */
     protected void loadObjective(String displayName) {
-        if (displayName.length() > 32) {
-            displayName = displayName.substring(0, 32);
-        }
-
-        sidebar.title(toComponent(displayName));
+        playerBoard.setTitle(displayName);
         render();
     }
 
     /**
-     * Holds one sidebar row: a legacy-formatted label and the integer shown on the right.
-     */
-    private record SidebarLine(String label, int value) {
-    }
-
-    private ScoreFormat redScore(int value) {
-        return ScoreFormat.fixed(Component.text(value, net.kyori.adventure.text.format.NamedTextColor.RED));
-    }
-
-    /**
-     * Pushes an ordered list of rows to the sidebar. {@code lines.get(0)} is drawn at the top.
-     * scoreboard-library indexes line 0 at the bottom, so we map top rows to the highest indices.
+     * Pushes an ordered list of rows to the active backend board.
      */
     private void drawLines(List<SidebarLine> lines) {
-        // Cap to the sidebar's hard line limit.
         int count = Math.min(lines.size(), MAX_LINES);
+        List<SidebarLine> toRender = lines;
 
-        // Reset to a clean slate; the library diffs internally so only net changes are sent.
-        sidebar.clearLines();
-
-        for (int i = 0; i < count; i++) {
-            SidebarLine line = lines.get(i);
-            // scoreboard-library draws line index 0 at the TOP, so list order maps directly.
-            sidebar.line(i, toComponent(line.label()), redScore(line.value()));
+        if (count != lines.size()) {
+            toRender = new ArrayList<>(lines.subList(0, count));
         }
+
+        playerBoard.draw(toRender);
     }
 
     /**
@@ -446,7 +446,9 @@ public class ScoreboardWrapper {
             try {
                 updateTask.cancel();
             } catch (Exception e) {
-                e.printStackTrace();
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "Unable to cancel sidebar update task for " + playerName + ": "
+                                + e.getMessage());
             }
 
             updateTask = null;

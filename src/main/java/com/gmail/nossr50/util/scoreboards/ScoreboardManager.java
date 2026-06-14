@@ -11,37 +11,42 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.PaperUtil;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.backend.BukkitScoreboardBackend;
+import com.gmail.nossr50.util.scoreboards.backend.NoopScoreboardBackend;
+import com.gmail.nossr50.util.scoreboards.backend.PlayerBoard;
+import com.gmail.nossr50.util.scoreboards.backend.PacketScoreboardBackend;
+import com.gmail.nossr50.util.scoreboards.backend.ScoreboardBackend;
+import com.gmail.nossr50.util.scoreboards.backend.ScoreboardBackendSelector;
+import com.gmail.nossr50.util.scoreboards.backend.ScoreboardBackendType;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.megavex.scoreboardlibrary.api.ScoreboardLibrary;
-import net.megavex.scoreboardlibrary.api.exception.NoPacketAdapterAvailableException;
-import net.megavex.scoreboardlibrary.api.noop.NoopScoreboardLibrary;
-import net.megavex.scoreboardlibrary.api.objective.ObjectiveDisplaySlot;
-import net.megavex.scoreboardlibrary.api.objective.ObjectiveManager;
 import net.megavex.scoreboardlibrary.api.objective.ScoreboardObjective;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manages the Scoreboards used to display a variety of mcMMO related information to the player
  */
 public class ScoreboardManager {
-    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<>();
+    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new ConcurrentHashMap<>();
 
     // do not localize; these are internal identifiers
-    static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
+    public static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
     // Randomized per server start so it can never collide with a leftover objective of the same
     // name on a client - e.g. the old Bukkit implementation's 'mcmmo_pwrlvl' lingering after an
     // in-place upgrade, or another plugin's objective. Minecraft caps objective names at 16 chars,
     // so this stays well under: "mcmmo_" (6) + 8 hex = 14.
-    static final String POWER_OBJECTIVE = "mcmmo_" + java.util.UUID.randomUUID()
+    public static final String POWER_OBJECTIVE = "mcmmo_" + java.util.UUID.randomUUID()
             .toString().replace("-", "").substring(0, 8);
 
     static final String HEADER_STATS = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
@@ -64,22 +69,17 @@ public class ScoreboardManager {
     static final Map<SuperAbilityType, String> abilityLabelsSkill;
 
     public static final String DISPLAY_NAME = "powerLevel";
-    public static ScoreboardLibrary scoreboardLibrary;
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
-
-    // Packet-based below-name power level tag (replaces the old Bukkit main-scoreboard objective)
-    private static ObjectiveManager powerLevelObjectiveManager;
-    private static ScoreboardObjective powerLevelObjective;
+    private static ScoreboardBackend backend;
+    private static ScoreboardBackendType backendType = ScoreboardBackendType.NOOP;
 
     /*
      * Initializes the static label maps for our scoreboards.
      *
-     * Note: the packet ScoreboardLibrary is NOT loaded here. Loading it can fail on unsupported
-     * server versions, and doing that inside a static initializer would turn the failure into an
-     * unrecoverable ExceptionInInitializerError on first access to this class. Instead the library
-     * is loaded explicitly from the main class via {@link #init()} during onEnable, guarded by the
-     * scoreboards-enabled config, so it can fail gracefully.
+     * Note: backend resources are not loaded here. Loading packet adapters can fail on unsupported
+     * server versions, and doing that inside a static initializer would turn failures into
+     * ExceptionInInitializerError on first access. Backends are initialized explicitly via
+     * {@link #init()} during onEnable, guarded by the scoreboards-enabled config.
      */
     static {
         /*
@@ -173,27 +173,55 @@ public class ScoreboardManager {
         abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
-    private static final List<String> dirtyPowerLevels = new ArrayList<>();
+    private static final Set<String> dirtyPowerLevels = ConcurrentHashMap.newKeySet();
 
-    /**
-     * Loads the packet-based {@link ScoreboardLibrary}. Call this once from the main class during
-     * onEnable (guarded by the scoreboards-enabled config).
-     * <p>
-     * If the running server version has no packet adapter, we fall back to a
-     * {@link NoopScoreboardLibrary} as recommended by the library author: scoreboards simply won't
-     * render, but nothing throws and the rest of the plugin keeps working.
-     */
     public static void init() {
-        if (scoreboardLibrary != null && !scoreboardLibrary.closed()) {
-            return; // already initialized
+        if (backend != null) {
+            return;
+        }
+
+        if (!mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
+            backendType = ScoreboardBackendType.NOOP;
+            backend = new NoopScoreboardBackend();
+            backend.init();
+            return;
+        }
+
+        final boolean isFolia = PaperUtil.isFolia();
+        final ScoreboardBackendType selectedType = ScoreboardBackendSelector.select(
+                isFolia,
+                mcMMO.getMinecraftGameVersion());
+        backendType = selectedType;
+
+        switch (selectedType) {
+            case BUKKIT -> backend = new BukkitScoreboardBackend();
+            case PACKET -> backend = new PacketScoreboardBackend();
+            case NOOP -> {
+                backend = new NoopScoreboardBackend();
+                mcMMO.p.getLogger().warning(
+                        "Folia detected on unsupported Minecraft version "
+                                + mcMMO.getMinecraftGameVersion().getVersionStr()
+                                + " (supported packet scoreboard max is "
+                                + ScoreboardBackendSelector.MAX_PACKET_VERSION_STRING
+                                + "). Scoreboards are disabled to avoid Folia async scoreboard issues. "
+                                + "Please update mcMMO.");
+            }
         }
 
         try {
-            scoreboardLibrary = ScoreboardLibrary.loadScoreboardLibrary(mcMMO.p);
-        } catch (NoPacketAdapterAvailableException e) {
-            scoreboardLibrary = new NoopScoreboardLibrary();
-            mcMMO.p.getLogger().warning(
-                    "Server version unsupported, scoreboard functionality will not be visible!");
+            backend.init();
+        } catch (RuntimeException e) {
+            if (selectedType == ScoreboardBackendType.PACKET) {
+                mcMMO.p.getLogger().warning(
+                        "Packet scoreboard backend failed to initialize ("
+                                + e.getMessage()
+                                + "). Falling back to a Folia-safe no-op scoreboard backend.");
+                backendType = ScoreboardBackendType.NOOP;
+                backend = new NoopScoreboardBackend();
+                backend.init();
+            } else {
+                throw e;
+            }
         }
     }
 
@@ -234,48 +262,40 @@ public class ScoreboardManager {
 
     // Called by PlayerJoinEvent listener
     public static void setupPlayer(Player player) {
+        ensureBackendReady();
         teardownPlayer(player);
         PLAYER_SCOREBOARDS.put(player.getName(), makeNewScoreboard(player));
         dirtyPowerLevels.add(player.getName());
 
-        // Make the player see the below-name power level tag, if enabled
-        if (mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled() && getPowerLevelObjective() != null) {
-            powerLevelObjectiveManager.addPlayer(player);
+        if (mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled() && backend.isPowerLevelTagActive()) {
+            backend.setupPowerLevelTag(player);
         }
     }
 
     // Called by PlayerQuitEvent listener and OnPlayerTeleport under certain circumstances
     public static void teardownPlayer(Player player) {
+        ensureBackendReady();
+
         if (player == null) {
             return;
         }
 
-        // Only remove the player from the shared power-level ObjectiveManager while they are still
-        // online. scoreboard-library tracks players in a weak-key map and processes removals on an
-        // async tick; if we enqueue a removal for an already-offline player, their Player object can
-        // be garbage-collected before that tick runs, which makes the library's
-        // ObjectiveManagerImpl.tick() throw an NPE (requireNonNull on the now-evicted map entry).
-        // For offline players we let the library's weak-key map evict them on its own instead.
-        if (powerLevelObjectiveManager != null && !powerLevelObjectiveManager.closed()
-                && player.isOnline()) {
-            powerLevelObjectiveManager.removePlayer(player);
-            // Remove the player's score entry so it doesn't accumulate for offline players.
-            // Without this, every player who ever joined adds a persistent entry to the scores map;
-            // when a new player connects, the library sends the full map to them (potentially
-            // thousands of entries) causing a large initial packet burst.
-            if (powerLevelObjective != null) {
-                powerLevelObjective.removeScore(player.getName());
-            }
+        if (isBukkitBackendActive() && player.isOnline() && player.isValid()
+                && Bukkit.getScoreboardManager() != null) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
+
+        backend.removePowerLevelTag(player);
 
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
         if (wrapper != null) {
-            wrapper.close(); // cancels revertTask, cooldownTask, and updateTask internally
+            wrapper.close();
         }
     }
 
     // Called in onDisable()
     public static void teardownAll() {
+        ensureBackendReady();
         ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(
                 mcMMO.p.getServer().getOnlinePlayers());
         LogUtils.debug(mcMMO.p.getLogger(),
@@ -284,24 +304,18 @@ public class ScoreboardManager {
             teardownPlayer(player);
         }
 
-        // The external plugin never closes the library; do it here so reload/disable doesn't
-        // leak the packet listeners or registered players.
-        if (powerLevelObjectiveManager != null && !powerLevelObjectiveManager.closed()) {
-            powerLevelObjectiveManager.close();
+        if (backend != null) {
+            backend.shutdown();
         }
-        powerLevelObjectiveManager = null;
-        powerLevelObjective = null;
-
-        if (scoreboardLibrary != null && !scoreboardLibrary.closed()) {
-            scoreboardLibrary.close();
-        }
-        scoreboardLibrary = null;
+        backend = null;
+        backendType = ScoreboardBackendType.NOOP;
     }
 
     // Called by ScoreboardWrapper when its Player logs off and an action tries to be performed
     public static void cleanup(ScoreboardWrapper wrapper) {
+        ensureBackendReady();
         PLAYER_SCOREBOARDS.remove(wrapper.playerName);
-        wrapper.close(); // cancels revertTask, cooldownTask, and updateTask internally
+        wrapper.close();
     }
 
     // Called by internal level-up event listener
@@ -556,10 +570,10 @@ public class ScoreboardManager {
      * @return false if power levels are disabled
      */
     public static boolean powerLevelHeartbeat() {
-        ScoreboardObjective mainObjective = getPowerLevelObjective();
+        ensureBackendReady();
 
-        if (mainObjective == null) {
-            return false; // indicates
+        if (!backend.isPowerLevelTagActive()) {
+            return false;
         }
 
         for (String playerName : dirtyPowerLevels) {
@@ -569,9 +583,8 @@ public class ScoreboardManager {
                 continue;
             }
 
-            int power = mmoPlayer.getPowerLevel();
-
-            mainObjective.score(playerName, power);
+            final int power = mmoPlayer.getPowerLevel();
+            backend.setPowerLevel(playerName, power);
         }
 
         dirtyPowerLevels.clear();
@@ -586,33 +599,8 @@ public class ScoreboardManager {
      * @return the power level objective, or null if disabled
      */
     public static @Nullable ScoreboardObjective getPowerLevelObjective() {
-        if (!mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled()) {
-            if (powerLevelObjectiveManager != null && !powerLevelObjectiveManager.closed()) {
-                powerLevelObjectiveManager.close();
-                LogUtils.debug(mcMMO.p.getLogger(),
-                        "Removed leftover objects from Power Level Tags.");
-            }
-            powerLevelObjectiveManager = null;
-            powerLevelObjective = null;
-            return null;
-        }
-
-        if (scoreboardLibrary == null || scoreboardLibrary.closed()) {
-            return null;
-        }
-
-        if (powerLevelObjectiveManager == null || powerLevelObjectiveManager.closed()) {
-            powerLevelObjectiveManager = scoreboardLibrary.createObjectiveManager();
-            powerLevelObjective = powerLevelObjectiveManager.create(POWER_OBJECTIVE);
-            powerLevelObjective.value(LEGACY.deserialize(TAG_POWER_LEVEL));
-            powerLevelObjectiveManager.display(ObjectiveDisplaySlot.belowName(), powerLevelObjective);
-
-            // Show the tag to everyone currently online
-            powerLevelObjectiveManager.addPlayers(
-                    new ArrayList<>(mcMMO.p.getServer().getOnlinePlayers()));
-        }
-
-        return powerLevelObjective;
+        ensureBackendReady();
+        return backend.getPacketPowerLevelObjective();
     }
 
     /**
@@ -635,20 +623,29 @@ public class ScoreboardManager {
     }
 
     public static boolean isBoardShown(String playerName) {
-        return PLAYER_SCOREBOARDS.get(playerName).isBoardShown();
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(playerName);
+        return wrapper != null && wrapper.isBoardShown();
     }
 
     public static void clearBoard(String playerName) {
-        PLAYER_SCOREBOARDS.get(playerName).tryRevertBoard();
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(playerName);
+        if (wrapper != null) {
+            wrapper.tryRevertBoard();
+        }
     }
 
     public static void keepBoard(String playerName) {
-        PLAYER_SCOREBOARDS.get(playerName).cancelRevert();
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(playerName);
+        if (wrapper != null) {
+            wrapper.cancelRevert();
+        }
     }
 
     public static void setRevertTimer(String playerName, int seconds) {
-        PLAYER_SCOREBOARDS.get(playerName)
-                .showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(playerName);
+        if (wrapper != null) {
+            wrapper.showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);
+        }
     }
 
     public static boolean isPlayerBoardSetup(@NotNull String playerName) {
@@ -656,21 +653,51 @@ public class ScoreboardManager {
     }
 
     public static @NotNull ScoreboardWrapper makeNewScoreboard(Player player) {
-        // The board is now a packet-based sidebar overlay, so there is no Bukkit Scoreboard to
-        // create or swap. We still fire McMMOScoreboardMakeboardEvent so external plugins that
-        // listened for board creation keep getting notified.
-        //
-        // Compatibility note: this event was designed around Bukkit Scoreboards (target/current
-        // board). Since none exist here, we pass the player's current Bukkit scoreboard for both
-        // arguments purely as a non-null placeholder. The event's board fields are NOT consumed by
-        // the packet implementation - it is informational only, and setTargetBoard()/setTargetPlayer()
-        // no longer influence which board is shown.
+        ensureBackendReady();
+
+        final Scoreboard eventTargetBoard = backend.createEventTargetBoard(player);
+        final Scoreboard currentBoard = player.getScoreboard();
         McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(
-                player.getScoreboard(), player.getScoreboard(), player,
+                eventTargetBoard, currentBoard, player,
                 ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
         player.getServer().getPluginManager().callEvent(event);
 
-        // Honour any player reassignment the event performed; the sidebar follows that player.
-        return new ScoreboardWrapper(event.getTargetPlayer());
+        final Player targetPlayer = event.getTargetPlayer();
+        final Scoreboard targetBoard = event.getTargetBoard() == null
+                ? currentBoard
+                : event.getTargetBoard();
+        final PlayerBoard playerBoard = backend.createPlayerBoard(targetPlayer, targetBoard);
+        return new ScoreboardWrapper(targetPlayer, playerBoard);
+    }
+
+    public static @NotNull ScoreboardBackend getBackend() {
+        ensureBackendReady();
+        return backend;
+    }
+
+    public static @NotNull ScoreboardBackendType getBackendType() {
+        ensureBackendReady();
+        return backendType;
+    }
+
+    public static boolean isBukkitBackendActive() {
+        return getBackendType() == ScoreboardBackendType.BUKKIT;
+    }
+
+    public static void onPlayerBoardClosed(@NotNull String playerName) {
+        ensureBackendReady();
+        backend.onPlayerBoardClosed(playerName);
+    }
+
+    private static void ensureBackendReady() {
+        if (backend == null) {
+            init();
+        }
+
+        if (backend == null) {
+            backend = new NoopScoreboardBackend();
+            backendType = ScoreboardBackendType.NOOP;
+            backend.init();
+        }
     }
 }
