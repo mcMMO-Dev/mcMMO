@@ -150,6 +150,15 @@ public class GeneralConfig extends BukkitConfig {
             reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
         }
 
+        if (getPapiLeaderboardMaxTrackedRank() <= 0) {
+            reason.add("General.PlaceholderAPI.Leaderboards.Max_Tracked_Rank should be greater than 0!");
+        }
+
+        if (getPapiLeaderboardRefreshIntervalSeconds() <= 0) {
+            reason.add(
+                    "General.PlaceholderAPI.Leaderboards.Refresh_Interval_Seconds should be greater than 0!");
+        }
+
         if (getFishingLureModifier() < 0) {
             reason.add("Abilities.Fishing.Lure_Modifier should be at least 0!");
         }
@@ -238,6 +247,14 @@ public class GeneralConfig extends BukkitConfig {
 
     public boolean getRegionDataMigrationBackupsEnabled() {
         return config.getBoolean("General.RegionDataMigrationBackups", true);
+    }
+
+    public int getPapiLeaderboardMaxTrackedRank() {
+        return config.getInt("General.PlaceholderAPI.Leaderboards.Max_Tracked_Rank", 100);
+    }
+
+    public int getPapiLeaderboardRefreshIntervalSeconds() {
+        return config.getInt("General.PlaceholderAPI.Leaderboards.Refresh_Interval_Seconds", 60);
     }
 
     public boolean getMobHealthbarEnabled() {

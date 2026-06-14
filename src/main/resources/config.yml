@@ -82,6 +82,16 @@ General:
     # Set to false to disable region-data backup creation on shutdown.
     RegionDataMigrationBackups: true
 
+    # PlaceholderAPI settings.
+    PlaceholderAPI:
+        Leaderboards:
+            # Max rank position kept in mcMMO's PlaceholderAPI leaderboard cache.
+            # Requests above this number return an empty string.
+            # Do not set this setting too high as it requires storing entries in memory.
+            Max_Tracked_Rank: 100
+            # How often to refresh cached leaderboard data (in seconds).
+            Refresh_Interval_Seconds: 60
+
 #
 #  Settings for the mcMMO scoreboards
 ###
