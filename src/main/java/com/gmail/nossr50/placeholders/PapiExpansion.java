@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.text.StringUtils;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,29 +17,46 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
+/**
+ * PlaceholderAPI expansion entrypoint for mcMMO placeholders.
+ */
 public class PapiExpansion extends PlaceholderExpansion {
-    private final Map<String, Placeholder> placeholders = new TreeMap<>(
-            String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, Placeholder> placeholders
+            = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    /**
+     * Shared cache backing leaderboard-by-position placeholders.
+     */
+    private final LeaderboardPlaceholderCache leaderboardPlaceholderCache;
 
     public PapiExpansion() {
+        final int maxTrackedRank = mcMMO.p.getGeneralConfig().getPapiLeaderboardMaxTrackedRank();
+        final long refreshIntervalTicks =
+                20L * mcMMO.p.getGeneralConfig().getPapiLeaderboardRefreshIntervalSeconds();
+
+        this.leaderboardPlaceholderCache = new LeaderboardPlaceholderCache(
+                mcMMO.p,
+                maxTrackedRank,
+                refreshIntervalTicks
+        );
         init();
+        leaderboardPlaceholderCache.start();
     }
 
     @Override
-    public String getIdentifier() {
+    public @NonNull String getIdentifier() {
         return "mcmmo";
     }
 
     @Override
-    public String getAuthor() {
+    public @NonNull String getAuthor() {
         return "mcMMO Dev Team";
     }
 
     @Override
-    public String getVersion() {
-        //grab version from pom.xml
-        return "1.0,0";
+    public @NonNull String getVersion() {
+        return mcMMO.p.getDescription().getVersion();
     }
 
     @Override
@@ -196,6 +214,14 @@ public class PapiExpansion extends PlaceholderExpansion {
                 : PlaceholderAPIPlugin.booleanFalse();
     }
 
+    public void shutdown() {
+        // Called from plugin disable to stop periodic refresh tasks before global task cancellation.
+        leaderboardPlaceholderCache.shutdown();
+    }
+
+    /**
+     * Registers one placeholder handler in the expansion token map.
+     */
     public void registerPlaceholder(Placeholder placeholder) {
         final Placeholder registered = placeholders.get(placeholder.getName());
         if (registered != null) {
@@ -206,8 +232,10 @@ public class PapiExpansion extends PlaceholderExpansion {
         placeholders.put(placeholder.getName(), placeholder);
     }
 
+    /**
+     * Performs one-time placeholder registration for all supported tokens.
+     */
     protected void init() {
-
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             // %mcmmo_level_<skillname>%
             registerPlaceholder(new SkillLevelPlaceholder(this, skill));
@@ -226,6 +254,14 @@ public class PapiExpansion extends PlaceholderExpansion {
 
             //%mcmmo_xprate_<skillname>%
             registerPlaceholder(new SkillXpRatePlaceholder(this, skill));
+        }
+
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            // %mcmmo_mctop_<skillname>:<position>%
+            registerPlaceholder(new McTopPositionPlaceholder(skill, leaderboardPlaceholderCache));
+
+            // %mcmmo_mctop_name_<skillname>:<position>%
+            registerPlaceholder(new McTopNamePlaceholder(skill, leaderboardPlaceholderCache));
         }
 
         //%mcmmo_power_level%
@@ -253,6 +289,24 @@ public class PapiExpansion extends PlaceholderExpansion {
         registerPlaceholder(new XpEventActivePlaceholder(this));
         // %mcmmo_xprate%
         registerPlaceholder(new XpRatePlaceholder(this));
+
+        // %mcmmo_mctop_overall:<position>%
+        registerPlaceholder(new McTopPositionPlaceholder(null, leaderboardPlaceholderCache));
+
+        // %mcmmo_mctop_name_overall:<position>%
+        registerPlaceholder(new McTopNamePlaceholder(null, leaderboardPlaceholderCache));
+
+        // %mcmmo_mctop_all:<position>%
+        registerPlaceholder(new McTopPositionPlaceholder(null, "all", leaderboardPlaceholderCache));
+
+        // %mcmmo_mctop_name_all:<position>%
+        registerPlaceholder(new McTopNamePlaceholder(null, "all", leaderboardPlaceholderCache));
+
+        // %mcmmo_mctop_powerlevel:<position>%
+        registerPlaceholder(new McTopPositionPlaceholder(null, "powerlevel", leaderboardPlaceholderCache));
+
+        // %mcmmo_mctop_name_powerlevel:<position>%
+        registerPlaceholder(new McTopNamePlaceholder(null, "powerlevel", leaderboardPlaceholderCache));
     }
 
 }

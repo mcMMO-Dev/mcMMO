@@ -1,6 +1,44 @@
 Version 2.2.054
     Fixed party/admin chat allowing player color code tokens without the 'mcmmo.chat.colors' permission
     Fixed diminished returns resetting in certain situations when players reconnected
+    Added PlaceholderAPI leaderboard rank-position placeholders for all non-child skills and overall power level (See notes)
+    Added 'General.PlaceholderAPI.Leaderboards.Max_Tracked_Rank' to config.yml
+    Added 'General.PlaceholderAPI.Leaderboards.Refresh_Interval_Seconds' to config.yml
+    (Codebase) Added async leaderboard snapshot caching for rank-position PlaceholderAPI lookups
+
+    NOTES:
+    -- PlaceholderAPI leaderboard rank-position placeholders --
+    This update adds placeholders that let you request specific leaderboard positions directly.
+    Format examples:
+        %mcmmo_mctop_<skill>:<position>%
+        %mcmmo_mctop_name_<skill>:<position>%
+
+    Mining examples:
+        %mcmmo_mctop_mining:1%         -> top Mining level value
+        %mcmmo_mctop_name_mining:1%    -> top Mining player name
+        %mcmmo_mctop_mining:34%        -> 34th Mining level value
+        %mcmmo_mctop_name_mining:34%   -> 34th Mining player name
+
+    Overall / power level examples:
+        %mcmmo_mctop_overall:1%
+        %mcmmo_mctop_name_overall:1%
+        %mcmmo_mctop_all:10%
+        %mcmmo_mctop_name_all:10%
+        %mcmmo_mctop_powerlevel:25%
+        %mcmmo_mctop_name_powerlevel:25%
+
+    Alias behavior:
+    'overall', 'all', and 'powerlevel' all map to the same overall leaderboard data.
+
+    Config notes:
+    'General.PlaceholderAPI.Leaderboards.Max_Tracked_Rank' controls the highest supported placeholder position.
+    Default is 100.
+    Requests above this value return an empty result.
+    Invalid positions (blank, non-numeric, 0, negative) also return an empty result.
+
+    'General.PlaceholderAPI.Leaderboards.Refresh_Interval_Seconds' controls cache refresh interval.
+    Default is 60 seconds.
+    Placeholder requests are served from cache between refreshes.
 
 Version 2.2.053
     !! -- This build has important fixes for anyone using Paper (or forks of Paper), please read the notes carefully.
@@ -5525,5 +5563,3 @@ Version 0.2
 Version 0.1
 
     Releasing my awesome plugin
-
-
