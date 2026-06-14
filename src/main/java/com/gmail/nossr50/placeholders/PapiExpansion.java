@@ -56,7 +56,7 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     @Override
     public @NonNull String getVersion() {
-        return "1.1,0";
+        return mcMMO.p.getDescription().getVersion();
     }
 
     @Override
