@@ -337,19 +337,19 @@ public class TamingManager extends SkillManager {
                 return;
             }
         }
-        double range = 5;
-        Player player = getPlayer();
+        final double range = 5;
+        final Player player = getPlayer();
 
         if (!target.getWorld().equals(player.getWorld())) {
             return;
         }
 
-        for (Entity entity : player.getNearbyEntities(range, range, range)) {
+        for (Entity entity : target.getNearbyEntities(range, range, range)) {
             if (entity.getType() != EntityType.WOLF) {
                 continue;
             }
 
-            Wolf wolf = (Wolf) entity;
+            final Wolf wolf = (Wolf) entity;
 
             if (!wolf.isTamed() || (wolf.getOwner() != player) || wolf.isSitting()) {
                 continue;
