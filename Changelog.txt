@@ -2,6 +2,7 @@ Version 2.2.054
     Fixed party/admin chat allowing player color code tokens without the 'mcmmo.chat.colors' permission
     Fixed diminished returns resetting in certain situations when players reconnected
     Fixed Folia thread-check errors when ranged attacks triggered Taming wolf assist targeting
+    Fixed right-click wood stripping triggering Tree Feller tool readying on affected blocks
 
 Version 2.2.053
     !! -- This build has important fixes for anyone using Paper (or forks of Paper), please read the notes carefully.
@@ -5526,4 +5527,3 @@ Version 0.2
 Version 0.1
 
     Releasing my awesome plugin
-

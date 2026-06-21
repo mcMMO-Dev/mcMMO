@@ -1449,39 +1449,64 @@ public class MaterialMapStore {
 
     private void fillToolBlackList() {
         addCommonToBlackList(toolBlackList);
-        // TODO: Organize later...
-        toolBlackList.add("stripped_cherry_log");
-        toolBlackList.add("stripped_cherry_wood");
+
+        toolBlackList.add("acacia_log");
         toolBlackList.add("stripped_acacia_log");
+        toolBlackList.add("acacia_wood");
         toolBlackList.add("stripped_acacia_wood");
+
+        toolBlackList.add("bamboo_block");
+        toolBlackList.add("stripped_bamboo_block");
+
+        toolBlackList.add("birch_log");
         toolBlackList.add("stripped_birch_log");
+        toolBlackList.add("birch_wood");
         toolBlackList.add("stripped_birch_wood");
+
+        toolBlackList.add("cherry_log");
+        toolBlackList.add("stripped_cherry_log");
+        toolBlackList.add("cherry_wood");
+        toolBlackList.add("stripped_cherry_wood");
+
+        toolBlackList.add("crimson_hyphae");
+        toolBlackList.add("stripped_crimson_hyphae");
+        toolBlackList.add("crimson_stem");
+        toolBlackList.add("stripped_crimson_stem");
+
+        toolBlackList.add("dark_oak_log");
         toolBlackList.add("stripped_dark_oak_log");
-        toolBlackList.add("stripped_pale_oak_log");
+        toolBlackList.add("dark_oak_wood");
         toolBlackList.add("stripped_dark_oak_wood");
-        toolBlackList.add("stripped_pale_oak_wood");
+
+        toolBlackList.add("jungle_log");
         toolBlackList.add("stripped_jungle_log");
+        toolBlackList.add("jungle_wood");
         toolBlackList.add("stripped_jungle_wood");
-        toolBlackList.add("stripped_oak_log");
-        toolBlackList.add("stripped_oak_wood");
-        toolBlackList.add("stripped_spruce_log");
-        toolBlackList.add("stripped_spruce_wood");
-        toolBlackList.add("mangrove_wood");
+
         toolBlackList.add("mangrove_log");
         toolBlackList.add("stripped_mangrove_log");
-        toolBlackList.add("acacia_log");
-        toolBlackList.add("acacia_wood");
-        toolBlackList.add("birch_log");
-        toolBlackList.add("birch_wood");
-        toolBlackList.add("dark_oak_log");
-        toolBlackList.add("pale_oak_log");
-        toolBlackList.add("dark_oak_wood");
-        toolBlackList.add("pale_oak_wood");
-        toolBlackList.add("jungle_log");
-        toolBlackList.add("jungle_wood");
+        toolBlackList.add("mangrove_wood");
+        toolBlackList.add("stripped_mangrove_wood");
+
         toolBlackList.add("oak_log");
+        toolBlackList.add("stripped_oak_log");
         toolBlackList.add("oak_wood");
+        toolBlackList.add("stripped_oak_wood");
+
+        toolBlackList.add("pale_oak_log");
+        toolBlackList.add("stripped_pale_oak_log");
+        toolBlackList.add("pale_oak_wood");
+        toolBlackList.add("stripped_pale_oak_wood");
+
         toolBlackList.add("spruce_log");
+        toolBlackList.add("stripped_spruce_log");
+        toolBlackList.add("spruce_wood");
+        toolBlackList.add("stripped_spruce_wood");
+
+        toolBlackList.add("warped_hyphae");
+        toolBlackList.add("stripped_warped_hyphae");
+        toolBlackList.add("warped_stem");
+        toolBlackList.add("stripped_warped_stem");
     }
 
     public boolean isIntendedToolPickaxe(@NotNull Material material) {
