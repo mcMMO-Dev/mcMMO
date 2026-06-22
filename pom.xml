@@ -190,9 +190,15 @@
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>co.aikar:acf-bukkit</include>
                             <include>com.tcoded:FoliaLib</include>
+                            <include>net.megavex:scoreboard-library-api</include>
+                            <include>net.megavex:scoreboard-library-implementation</include>
                         </includes>
                     </artifactSet>
                     <relocations>
+                        <relocation>
+                            <pattern>net.megavex.scoreboardlibrary</pattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.scoreboard</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>net.kyori</pattern>
                             <shadedPattern>com.gmail.nossr50.mcmmo.kyori</shadedPattern>
@@ -299,6 +305,17 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>net.megavex</groupId>
+            <artifactId>scoreboard-library-api</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>net.megavex</groupId>
+            <artifactId>scoreboard-library-implementation</artifactId>
+            <version>2.7.4</version>
+            <scope>runtime</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>org.assertj</groupId>
