@@ -3,6 +3,7 @@ Version 2.2.054
     Fixed diminished returns resetting in certain situations when players reconnected
     Fixed Folia thread-check errors when ranged attacks triggered Taming wolf assist targeting
     Fixed right-click wood stripping triggering Tree Feller tool readying on affected blocks
+    Fixed SuperBreaker activation to treat deepslate bricks and deepslate tiles like other pickaxe-target blocks
 
 Version 2.2.053
     !! -- This build has important fixes for anyone using Paper (or forks of Paper), please read the notes carefully.

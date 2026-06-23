@@ -315,6 +315,8 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("polished_andesite");
         intendedToolPickAxe.add("polished_blackstone");
         intendedToolPickAxe.add("polished_blackstone_bricks");
+        intendedToolPickAxe.add("deepslate_bricks");
+        intendedToolPickAxe.add("deepslate_tiles");
         intendedToolPickAxe.add("polished_diorite");
         intendedToolPickAxe.add("polished_granite");
         intendedToolPickAxe.add("red_sandstone");
