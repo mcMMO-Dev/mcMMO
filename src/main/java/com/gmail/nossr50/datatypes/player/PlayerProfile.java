@@ -460,4 +460,17 @@ public class PlayerProfile {
 
         return sum / parents.size();
     }
+
+    /*
+     * Settings
+     */
+
+    public boolean isAbilityUseDisabled() {
+        return uniquePlayerData.getOrDefault(UniqueDataType.ABILITY_USE_DISABLED, 0) > 0;
+    }
+
+    public void toggleAbilityUseDisabled() {
+        markProfileDirty();
+        uniquePlayerData.put(UniqueDataType.ABILITY_USE_DISABLED, isAbilityUseDisabled() ? 0 : 1);
+    }
 }
