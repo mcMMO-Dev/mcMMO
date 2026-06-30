@@ -103,7 +103,6 @@ public class McMMOPlayer implements Identified {
     private boolean displaySkillNotifications = true;
     private boolean debugMode;
 
-    private boolean abilityUse = true;
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
 
@@ -426,11 +425,11 @@ public class McMMOPlayer implements Identified {
     }
 
     public boolean getAbilityUse() {
-        return abilityUse;
+        return !profile.isAbilityUseDisabled();
     }
 
     public void toggleAbilityUse() {
-        abilityUse = !abilityUse;
+        profile.toggleAbilityUseDisabled();
     }
 
     /*
