@@ -63,3 +63,7 @@
 
 # md
 *.md
+
+# Claude Code local config — never push
+/.claude/
+/.claude
