@@ -13,14 +13,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.NotNull;
 
 public class TreasureConfig extends BukkitConfig {
 
@@ -52,10 +56,9 @@ public class TreasureConfig extends BukkitConfig {
 
     @Override
     protected boolean validateKeys() {
-        // Validate all the settings!
-        List<String> reason = new ArrayList<>();
-
-        return noErrorsInConfig(reason);
+        // Treasure entries are validated individually while loading; a bad entry is skipped rather
+        // than failing startup, so there is nothing to validate here that could disable the plugin.
+        return true;
     }
 
     @Override
@@ -65,266 +68,315 @@ public class TreasureConfig extends BukkitConfig {
             return;
         }
 
-        loadTreasures("Excavation");
-        loadTreasures("Hylian_Luck");
+        logLoadSummary("Excavation", loadTreasures("Excavation"));
+        logLoadSummary("Hylian_Luck", loadTreasures("Hylian_Luck"));
     }
 
-    private void loadTreasures(String type) {
-        boolean shouldWeUpdateFile = false;
-        boolean isExcavation = type.equals("Excavation");
-        boolean isHylian = type.equals("Hylian_Luck");
+    private TreasureLoadTally loadTreasures(@NotNull String type) {
+        final boolean isExcavation = type.equals("Excavation");
+        final boolean isHylian = type.equals("Hylian_Luck");
 
-        ConfigurationSection treasureSection = config.getConfigurationSection(type);
-
+        final ConfigurationSection treasureSection = config.getConfigurationSection(type);
         if (treasureSection == null) {
-            return;
+            return TreasureLoadTally.empty();
         }
 
-        for (String treasureName : treasureSection.getKeys(false)) {
-            // Validate all the things!
-            List<String> reason = new ArrayList<>();
+        boolean fileNeedsUpdate = false;
+        int loaded = 0;
+        int incompatible = 0;
+        int invalid = 0;
 
-            String[] treasureInfo = treasureName.split("[|]");
-            String materialName = treasureInfo[0];
+        for (final String treasureName : treasureSection.getKeys(false)) {
+            try {
+                fileNeedsUpdate |= migrateLegacyDropLevel(type, treasureName);
 
-            /*
-             * Material, Amount, and Data
-             */
-            Material material;
-            material = Material.matchMaterial(materialName);
+                final TreasureLoadResult result = classifyExcavationTreasure(
+                        config, type, treasureName, mcMMO.isRetroModeEnabled(),
+                        mcMMO.p.getLogger());
 
-            int amount = config.getInt(type + "." + treasureName + ".Amount");
-            short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1])
-                    : (short) config.getInt(
-                            type + "." + treasureName + ".Data");
-
-            if (material == null) {
-                LogUtils.debug(mcMMO.p.getLogger(),
-                        String.format("Material '%s' for treasure '%s' is not recognized."
-                                        + " Skipping...", materialName, treasureName));
-                continue;
-            }
-
-            if (amount <= 0) {
-                amount = 1;
-            }
-
-            if (material != null && material.isBlock() && (data > 127 || data < -128)) {
-                reason.add("Data of " + treasureName + " is invalid! " + data);
-            }
-
-            /*
-             * XP, Drop Chance, and Drop Level
-             */
-
-            int xp = config.getInt(type + "." + treasureName + ".XP");
-            double dropChance = config.getDouble(type + "." + treasureName + ".Drop_Chance");
-            DropLevelKeyConversionType conversionType;
-
-            //Check for legacy drop level values and convert
-            if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.LEGACY) != -1) {
-                //Legacy Drop level, needs to be converted
-                shouldWeUpdateFile = processAutomaticKeyConversion(
-                        type, shouldWeUpdateFile, treasureName,
-                        DropLevelKeyConversionType.LEGACY);
-            }
-
-            //Check for a bad key that was accidentally shipped out to some users
-            if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.WRONG_KEY_STANDARD)
-                    != -1) {
-                //Partially converted to the new system, I had a dyslexic moment so some configs have this
-                shouldWeUpdateFile = processAutomaticKeyConversion(
-                        type, shouldWeUpdateFile, treasureName,
-                        DropLevelKeyConversionType.WRONG_KEY_STANDARD);
-            }
-
-            //Check for a bad key that was accidentally shipped out to some users
-            if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.WRONG_KEY_RETRO)
-                    != -1) {
-                //Partially converted to the new system, I had a dyslexic moment so some configs have this
-                shouldWeUpdateFile = processAutomaticKeyConversion(
-                        type, shouldWeUpdateFile, treasureName,
-                        DropLevelKeyConversionType.WRONG_KEY_RETRO);
-            }
-
-            int dropLevel = -1;
-
-            if (mcMMO.isRetroModeEnabled()) {
-                dropLevel = config.getInt(type + "." + treasureName + LEVEL_REQUIREMENT_RETRO_MODE,
-                        -1);
-            } else {
-                dropLevel = config.getInt(
-                        type + "." + treasureName + LEVEL_REQUIREMENT_STANDARD_MODE, -1);
-            }
-
-            if (dropLevel == -1) {
-                mcMMO.p.getLogger().severe("Could not find a Level_Requirement entry for treasure "
-                        + treasureName);
-                mcMMO.p.getLogger().severe("Skipping treasure");
-                continue;
-            }
-
-            if (xp < 0) {
-                reason.add(treasureName + " has an invalid XP value: " + xp);
-            }
-
-            if (dropChance < 0.0D) {
-                reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
-            }
-
-            /*
-             * Itemstack
-             */
-            ItemStack item = null;
-
-            if (materialName.contains("POTION")) {
-                Material mat = Material.matchMaterial(materialName);
-                if (mat == null) {
-                    reason.add("Potion format for " + FILENAME + " has changed");
-                    continue;
-                } else {
-                    item = new ItemStack(mat, amount, data);
-                    PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-                    if (potionMeta == null) {
-                        mcMMO.p.getLogger().severe(
-                                "Item meta when adding potion to treasure was null, contact the mcMMO devs!");
-                        reason.add(
-                                "Item meta when adding potion to treasure was null, contact the mcMMO devs!");
-                        continue;
-                    }
-
-                    String potionTypeStr;
-                    potionTypeStr = config.getString(
-                            type + "." + treasureName + ".PotionData.PotionType", "WATER");
-                    boolean extended = config.getBoolean(
-                            type + "." + treasureName + ".PotionData.Extended", false);
-                    boolean upgraded = config.getBoolean(
-                            type + "." + treasureName + ".PotionData.Upgraded", false);
-                    PotionType potionType = PotionUtil.matchPotionType(potionTypeStr, extended,
-                            upgraded);
-
-                    if (potionType == null) {
-                        reason.add(
-                                "Could not derive potion type from: " + potionTypeStr + ", "
-                                        + extended + ", " + upgraded);
-                        continue;
-                    }
-
-                    // Set the base potion type
-                    // NOTE: extended/upgraded are ignored in 1.20.5 and later
-                    PotionUtil.setBasePotionType(potionMeta, potionType, extended, upgraded);
-
-                    if (config.contains(type + "." + treasureName + ".Custom_Name")) {
-                        potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes(
-                                '&',
-                                config.getString(type + "." + treasureName + ".Custom_Name")));
-                    }
-
-                    if (config.contains(type + "." + treasureName + ".Lore")) {
-                        List<String> lore = new ArrayList<>();
-                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
-                            lore.add(ChatColor.translateAlternateColorCodes('&', s));
+                switch (result) {
+                    case INCOMPATIBLE -> incompatible++;
+                    case INVALID -> invalid++;
+                    case LOADED -> {
+                        if (buildAndRegisterTreasure(type, treasureName, isExcavation, isHylian)) {
+                            loaded++;
+                        } else {
+                            invalid++;
                         }
-                        potionMeta.setLore(lore);
-                    }
-                    item.setItemMeta(potionMeta);
-                }
-            } else if (material != null) {
-                item = new ItemStack(material, amount, data);
-
-                if (config.contains(type + "." + treasureName + ".Custom_Name")) {
-                    ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes(
-                            '&',
-                            config.getString(type + "." + treasureName + ".Custom_Name")));
-                    item.setItemMeta(itemMeta);
-                }
-
-                if (config.contains(type + "." + treasureName + ".Lore")) {
-                    ItemMeta itemMeta = item.getItemMeta();
-                    List<String> lore = new ArrayList<>();
-                    for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&', s));
-                    }
-                    itemMeta.setLore(lore);
-                    item.setItemMeta(itemMeta);
-                }
-            }
-
-            if (noErrorsInConfig(reason)) {
-                if (isExcavation) {
-                    ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp,
-                            dropChance, dropLevel);
-                    List<String> dropList = config.getStringList(
-                            type + "." + treasureName + ".Drops_From");
-
-                    for (String blockType : dropList) {
-                        if (!excavationMap.containsKey(blockType)) {
-                            excavationMap.put(blockType, new ArrayList<>());
-                        }
-                        excavationMap.get(blockType).add(excavationTreasure);
-                    }
-                } else if (isHylian) {
-                    HylianTreasure hylianTreasure = new HylianTreasure(item, xp, dropChance,
-                            dropLevel);
-                    List<String> dropList = config.getStringList(
-                            type + "." + treasureName + ".Drops_From");
-
-                    for (String dropper : dropList) {
-                        if (dropper.equals("Bushes")) {
-                            AddHylianTreasure(getMaterialConfigString(Material.FERN),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(BlockUtils.getShortGrass()),
-                                    hylianTreasure);
-                            for (Material species : Tag.SAPLINGS.getValues()) {
-                                AddHylianTreasure(getMaterialConfigString(species), hylianTreasure);
-                            }
-
-                            AddHylianTreasure(getMaterialConfigString(Material.DEAD_BUSH),
-                                    hylianTreasure);
-                            continue;
-                        }
-                        if (dropper.equals("Flowers")) {
-                            AddHylianTreasure(getMaterialConfigString(Material.POPPY),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.DANDELION),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.BLUE_ORCHID),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.ALLIUM),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.AZURE_BLUET),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.ORANGE_TULIP),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.PINK_TULIP),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.RED_TULIP),
-                                    hylianTreasure);
-                            AddHylianTreasure(getMaterialConfigString(Material.WHITE_TULIP),
-                                    hylianTreasure);
-                            continue;
-                        }
-                        if (dropper.equals("Pots")) {
-                            for (Material species : Tag.FLOWER_POTS.getValues()) {
-                                AddHylianTreasure(getMaterialConfigString(species), hylianTreasure);
-                            }
-                            continue;
-                        }
-                        AddHylianTreasure(dropper, hylianTreasure);
                     }
                 }
+            } catch (Exception e) {
+                mcMMO.p.getLogger().warning("Skipping malformed treasure '" + treasureName + "' in "
+                        + FILENAME + ": " + e.getMessage());
+                invalid++;
             }
         }
 
-        //Apply our fix
-        if (shouldWeUpdateFile) {
+        if (fileNeedsUpdate) {
             try {
                 config.save(getFile());
             } catch (IOException e) {
-                e.printStackTrace();
+                mcMMO.p.getLogger().log(Level.WARNING, "Unable to save " + FILENAME, e);
             }
         }
+
+        return new TreasureLoadTally(loaded, incompatible, invalid);
+    }
+
+    /**
+     * Classifies a single treasure entry without mutating state or building an {@link ItemStack},
+     * so it can be unit-tested directly against a {@link YamlConfiguration}.
+     *
+     * @param config      the loaded treasure configuration
+     * @param type        the treasure section (for example {@code Excavation})
+     * @param treasureName the entry key, optionally suffixed with {@code |data}
+     * @param retroMode   whether the server is running in Retro mode
+     * @param logger      logger used to report skipped entries
+     * @return whether the entry is loadable, incompatible with this MC version, or invalid
+     */
+    static @NotNull TreasureLoadResult classifyExcavationTreasure(
+            final @NotNull YamlConfiguration config, final @NotNull String type,
+            final @NotNull String treasureName, final boolean retroMode,
+            final @NotNull Logger logger) {
+        final String materialName = treasureName.split("[|]")[0];
+        final Material material = Material.matchMaterial(materialName);
+
+        if (material == null) {
+            LogUtils.debug(logger, "Skipping treasure '" + treasureName + "' in " + FILENAME
+                    + " because material '" + materialName
+                    + "' does not exist in this Minecraft version");
+            return TreasureLoadResult.INCOMPATIBLE;
+        }
+
+        final String base = type + "." + treasureName;
+        final short data = parseData(treasureName, config, base);
+
+        if (material.isBlock() && (data > Byte.MAX_VALUE || data < Byte.MIN_VALUE)) {
+            logInvalidTreasure(logger, treasureName, "data value " + data + " is out of range");
+            return TreasureLoadResult.INVALID;
+        }
+
+        final int dropLevel = retroMode
+                ? config.getInt(base + LEVEL_REQUIREMENT_RETRO_MODE, -1)
+                : config.getInt(base + LEVEL_REQUIREMENT_STANDARD_MODE, -1);
+        if (dropLevel < 0) {
+            logInvalidTreasure(logger, treasureName, "missing or invalid Level_Requirement");
+            return TreasureLoadResult.INVALID;
+        }
+
+        final int xp = config.getInt(base + ".XP");
+        if (xp < 0) {
+            logInvalidTreasure(logger, treasureName, "XP value " + xp + " is negative");
+            return TreasureLoadResult.INVALID;
+        }
+
+        final double dropChance = config.getDouble(base + ".Drop_Chance");
+        if (dropChance < 0.0D) {
+            logInvalidTreasure(logger, treasureName, "Drop_Chance " + dropChance + " is negative");
+            return TreasureLoadResult.INVALID;
+        }
+
+        return TreasureLoadResult.LOADED;
+    }
+
+    private static short parseData(final @NotNull String treasureName,
+            final @NotNull YamlConfiguration config, final @NotNull String base) {
+        final String[] parts = treasureName.split("[|]");
+        return (parts.length == 2)
+                ? Short.parseShort(parts[1])
+                : (short) config.getInt(base + ".Data");
+    }
+
+    private static void logInvalidTreasure(final @NotNull Logger logger,
+            final @NotNull String treasureName, final @NotNull String detail) {
+        logger.warning("Skipping invalid treasure '" + treasureName + "' in " + FILENAME + ": "
+                + detail);
+    }
+
+    private boolean buildAndRegisterTreasure(final @NotNull String type,
+            final @NotNull String treasureName, final boolean isExcavation,
+            final boolean isHylian) {
+        final String base = type + "." + treasureName;
+        final String materialName = treasureName.split("[|]")[0];
+        final Material material = Material.matchMaterial(materialName);
+
+        int amount = config.getInt(base + ".Amount");
+        if (amount <= 0) {
+            amount = 1;
+        }
+        final short data = parseData(treasureName, config, base);
+        final int xp = config.getInt(base + ".XP");
+        final double dropChance = config.getDouble(base + ".Drop_Chance");
+        final int dropLevel = mcMMO.isRetroModeEnabled()
+                ? config.getInt(base + LEVEL_REQUIREMENT_RETRO_MODE, -1)
+                : config.getInt(base + LEVEL_REQUIREMENT_STANDARD_MODE, -1);
+
+        final ItemStack item = buildItem(type, treasureName, materialName, material, amount, data);
+        if (item == null) {
+            return false;
+        }
+
+        if (isExcavation) {
+            final ExcavationTreasure treasure = new ExcavationTreasure(item, xp, dropChance,
+                    dropLevel);
+            for (final String blockType : config.getStringList(base + ".Drops_From")) {
+                excavationMap.computeIfAbsent(blockType, k -> new ArrayList<>()).add(treasure);
+            }
+        } else if (isHylian) {
+            registerHylianDrops(base, new HylianTreasure(item, xp, dropChance, dropLevel));
+        }
+
+        return true;
+    }
+
+    private ItemStack buildItem(final @NotNull String type, final @NotNull String treasureName,
+            final @NotNull String materialName, final @NotNull Material material, final int amount,
+            final short data) {
+        if (materialName.contains("POTION")) {
+            return buildPotionItem(type, treasureName, material, amount, data);
+        }
+
+        final ItemStack item = new ItemStack(material, amount, data);
+        applyCustomNameAndLore(type, treasureName, item);
+        return item;
+    }
+
+    private ItemStack buildPotionItem(final @NotNull String type, final @NotNull String treasureName,
+            final @NotNull Material material, final int amount, final short data) {
+        final ItemStack item = new ItemStack(material, amount, data);
+        final PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+
+        if (potionMeta == null) {
+            mcMMO.p.getLogger().warning("Skipping treasure '" + treasureName + "' in " + FILENAME
+                    + ": could not read potion metadata");
+            return null;
+        }
+
+        final String base = type + "." + treasureName;
+        final String potionTypeStr = config.getString(base + ".PotionData.PotionType", "WATER");
+        final boolean extended = config.getBoolean(base + ".PotionData.Extended", false);
+        final boolean upgraded = config.getBoolean(base + ".PotionData.Upgraded", false);
+        final PotionType potionType = PotionUtil.matchPotionType(potionTypeStr, extended, upgraded);
+
+        if (potionType == null) {
+            mcMMO.p.getLogger().warning("Skipping treasure '" + treasureName + "' in " + FILENAME
+                    + ": unknown potion type '" + potionTypeStr + "'");
+            return null;
+        }
+
+        // NOTE: extended/upgraded are ignored in 1.20.5 and later
+        PotionUtil.setBasePotionType(potionMeta, potionType, extended, upgraded);
+
+        if (config.contains(base + ".Custom_Name")) {
+            potionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
+                    config.getString(base + ".Custom_Name")));
+        }
+
+        if (config.contains(base + ".Lore")) {
+            final List<String> lore = new ArrayList<>();
+            for (final String s : config.getStringList(base + ".Lore")) {
+                lore.add(ChatColor.translateAlternateColorCodes('&', s));
+            }
+            potionMeta.setLore(lore);
+        }
+
+        item.setItemMeta(potionMeta);
+        return item;
+    }
+
+    private void applyCustomNameAndLore(final @NotNull String type,
+            final @NotNull String treasureName, final @NotNull ItemStack item) {
+        final String base = type + "." + treasureName;
+
+        if (config.contains(base + ".Custom_Name")) {
+            final ItemMeta itemMeta = item.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
+                    config.getString(base + ".Custom_Name")));
+            item.setItemMeta(itemMeta);
+        }
+
+        if (config.contains(base + ".Lore")) {
+            final ItemMeta itemMeta = item.getItemMeta();
+            final List<String> lore = new ArrayList<>();
+            for (final String s : config.getStringList(base + ".Lore")) {
+                lore.add(ChatColor.translateAlternateColorCodes('&', s));
+            }
+            itemMeta.setLore(lore);
+            item.setItemMeta(itemMeta);
+        }
+    }
+
+    private void registerHylianDrops(final @NotNull String base,
+            final @NotNull HylianTreasure treasure) {
+        for (final String dropper : config.getStringList(base + ".Drops_From")) {
+            switch (dropper) {
+                case "Bushes" -> {
+                    AddHylianTreasure(getMaterialConfigString(Material.FERN), treasure);
+                    AddHylianTreasure(getMaterialConfigString(BlockUtils.getShortGrass()), treasure);
+                    for (final Material species : Tag.SAPLINGS.getValues()) {
+                        AddHylianTreasure(getMaterialConfigString(species), treasure);
+                    }
+                    AddHylianTreasure(getMaterialConfigString(Material.DEAD_BUSH), treasure);
+                }
+                case "Flowers" -> {
+                    AddHylianTreasure(getMaterialConfigString(Material.POPPY), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.DANDELION), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.BLUE_ORCHID), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.ALLIUM), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.AZURE_BLUET), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.ORANGE_TULIP), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.PINK_TULIP), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.RED_TULIP), treasure);
+                    AddHylianTreasure(getMaterialConfigString(Material.WHITE_TULIP), treasure);
+                }
+                case "Pots" -> {
+                    for (final Material species : Tag.FLOWER_POTS.getValues()) {
+                        AddHylianTreasure(getMaterialConfigString(species), treasure);
+                    }
+                }
+                default -> AddHylianTreasure(dropper, treasure);
+            }
+        }
+    }
+
+    private void logLoadSummary(final @NotNull String type, final @NotNull TreasureLoadTally tally) {
+        mcMMO.p.getLogger().info("Loaded " + tally.loaded() + " of " + tally.attempted() + " " + type
+                + " treasures from " + FILENAME + ".");
+
+        if (tally.incompatible() > 0) {
+            mcMMO.p.getLogger().info("Skipped " + tally.incompatible() + " " + type
+                    + " treasure(s) in " + FILENAME + " that require a newer Minecraft version.");
+        }
+
+        if (tally.invalid() > 0) {
+            mcMMO.p.getLogger().info("Failed to load " + tally.invalid() + " misconfigured " + type
+                    + " treasure(s) in " + FILENAME + " (see warnings above).");
+        }
+    }
+
+    private boolean migrateLegacyDropLevel(final @NotNull String type,
+            final @NotNull String treasureName) {
+        boolean updated = false;
+
+        // Legacy Drop_Level, needs to be converted
+        if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.LEGACY) != -1) {
+            updated = processAutomaticKeyConversion(type, updated, treasureName,
+                    DropLevelKeyConversionType.LEGACY);
+        }
+
+        // Partially converted to the new system, some configs shipped with this bad key
+        if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.WRONG_KEY_STANDARD)
+                != -1) {
+            updated = processAutomaticKeyConversion(type, updated, treasureName,
+                    DropLevelKeyConversionType.WRONG_KEY_STANDARD);
+        }
+
+        if (getWrongKeyValue(type, treasureName, DropLevelKeyConversionType.WRONG_KEY_RETRO) != -1) {
+            updated = processAutomaticKeyConversion(type, updated, treasureName,
+                    DropLevelKeyConversionType.WRONG_KEY_RETRO);
+        }
+
+        return updated;
     }
 
     private boolean processAutomaticKeyConversion(String type, boolean shouldWeUpdateTheFile,

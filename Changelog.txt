@@ -4,15 +4,19 @@ Version 2.2.054
     Fixed Folia thread-check errors when ranged attacks triggered Taming wolf assist targeting
     Fixed right-click wood stripping triggering Tree Feller tool readying on affected blocks
     Fixed SuperBreaker activation to treat deepslate bricks and deepslate tiles like other pickaxe-target blocks
+    Fixed invalid or malformed treasure entries being able to disable mcMMO on startup (See notes)
     Added compatibility for new blocks and items from Chaos Cubed to mcMMO
     Added Mining XP values for the Cinnabar and Sulfur block sets, Potent Sulfur, and Sulfur Spike to experience.yml
     Added a Combat XP multiplier for the Sulfur Cube to experience.yml
     Added a Herbalism XP value for Golden Dandelion to experience.yml
     Added the 'Bounce' music disc as a very rare Excavation treasure to treasures.yml (See notes)
+    (Codebase) Reworked treasure config loading (TreasureConfig, FishingTreasureConfig) to classify each entry as loaded, incompatible, or invalid with a per-section load summary
+    (Codebase) Added unit tests for treasure entry classification and fishing drop-rate validation
 
     NOTES:
     experience.yml auto-updates on startup, so the new Mining, Combat, and Herbalism values are added to existing configs automatically.
     treasures.yml does not auto-update; to get the 'Bounce' Excavation treasure on an existing server, add the MUSIC_DISC_BOUNCE entry to treasures.yml manually or delete the file to regenerate it (a copy of the default is saved to defaults/treasures.yml).
+    Treasure configs (treasures.yml, fishing_treasures.yml) no longer fail startup on a bad entry. Entries whose material does not exist in your Minecraft version are skipped quietly; misconfigured entries are logged with their key so you can find and fix them, and each section reports how many treasures loaded.
 
 Version 2.2.053
     !! -- This build has important fixes for anyone using Paper (or forks of Paper), please read the notes carefully.

@@ -3,11 +3,17 @@ package com.gmail.nossr50.config.treasure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringReader;
+import java.util.List;
+import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class FishingTreasureConfigTest {
+
+    private static final Logger LOGGER = Logger.getLogger(FishingTreasureConfigTest.class.getName());
 
     // ---------------------------------------------------------------------------
     // YAML helpers
@@ -167,6 +173,222 @@ class FishingTreasureConfigTest {
             assertThat(config.getInt("Shake.MOOSHROOM.MILK_BUCKET.Amount"))
                     .as("Amount should be copied faithfully to MOOSHROOM")
                     .isEqualTo(1);
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Entry classification tests
+    // ---------------------------------------------------------------------------
+
+    @Nested
+    class ClassifyFishingTreasure {
+
+        @Test
+        void classifyShouldReturnLoadedForValidFishingEntry() {
+            // Given - a well-formed Fishing entry for a material present in this MC version
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  COD:\n"
+                            + "    Amount: 1\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: COMMON\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "COD", true, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.LOADED);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "MUSIC_DISC_FROM_THE_FUTURE", "TOTALLY_FAKE_MATERIAL_XYZ", "NOT_A_REAL_ITEM_123"})
+        void classifyShouldReturnIncompatibleWhenMaterialAbsentFromThisVersion(
+                final String material) {
+            /*
+             * Intent: an entry whose material does not exist in the running (older) MC version must
+             * be treated as harmless and skipped, never failing startup.
+             */
+
+            // Given - a Fishing entry referencing a material this MC version does not know
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  " + material + ":\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: COMMON\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", material, true, LOGGER);
+
+            // Then - incompatible (harmless), not invalid
+            assertThat(result).isEqualTo(TreasureLoadResult.INCOMPATIBLE);
+        }
+
+        @Test
+        void classifyShouldReturnLoadedForInventoryMagicEntryWithoutMaterial() {
+            /*
+             * Intent: the special INVENTORY shake entry has no real material; it must be recognized
+             * as loadable rather than being treated as an unknown material.
+             */
+
+            // Given - the magic INVENTORY entry under a Shake section
+            final YamlConfiguration config = loadYaml(
+                    "Shake:\n"
+                            + "  PLAYER:\n"
+                            + "    INVENTORY:\n"
+                            + "      Drop_Chance: 5.0\n"
+                            + "      Drop_Level: 0\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Shake.PLAYER", "INVENTORY", false, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.LOADED);
+        }
+
+        @Test
+        void classifyShouldReturnInvalidWhenFishingEntryMissingRarity() {
+            // Given - a Fishing entry with no Rarity (required for Fishing rewards)
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  COD:\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "COD", true, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.INVALID);
+        }
+
+        @Test
+        void classifyShouldNotRequireRarityForShakeEntries() {
+            /*
+             * Intent: Rarity is only meaningful for Fishing rewards. A Shake entry without a Rarity
+             * must still load.
+             */
+
+            // Given - a Shake entry with no Rarity
+            final YamlConfiguration config = loadYaml(
+                    "Shake:\n"
+                            + "  COW:\n"
+                            + "    LEATHER:\n"
+                            + "      XP: 0\n"
+                            + "      Drop_Chance: 5.0\n"
+                            + "      Drop_Level: 0\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Shake.COW", "LEATHER", false, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.LOADED);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"XP", "Drop_Chance", "Drop_Level"})
+        void classifyShouldReturnInvalidWhenNumericFieldNegative(final String field) {
+            // Given - a Fishing entry where exactly one numeric field is negative
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  COD:\n"
+                            + "    XP: " + ("XP".equals(field) ? "-1" : "100") + "\n"
+                            + "    Drop_Chance: " + ("Drop_Chance".equals(field) ? "-1.0" : "5.0")
+                            + "\n"
+                            + "    Drop_Level: " + ("Drop_Level".equals(field) ? "-1" : "0") + "\n"
+                            + "    Rarity: COMMON\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "COD", true, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.INVALID);
+        }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Drop-rate validation tests (non-fatal)
+    // ---------------------------------------------------------------------------
+
+    @Nested
+    class DropRateValidation {
+
+        @Test
+        void collectShouldReturnEmptyWhenRatesAreValid() {
+            // Given - drop rates within the valid 0..100 range
+            final YamlConfiguration config = loadYaml(
+                    "Enchantment_Drop_Rates:\n"
+                            + "  Tier_1:\n"
+                            + "    COMMON: 50.0\n"
+                            + "Item_Drop_Rates:\n"
+                            + "  Tier_1:\n"
+                            + "    COMMON: 50.0\n");
+
+            // When
+            final List<String> problems = FishingTreasureConfig.collectDropRateProblems(config);
+
+            // Then
+            assertThat(problems).isEmpty();
+        }
+
+        @Test
+        void collectShouldReturnEmptyWhenSectionAbsent() {
+            // Given - a config with no Enchantment_Drop_Rates section at all
+            final YamlConfiguration config = loadYaml("Fishing:\n  COD:\n    XP: 100\n");
+
+            // When
+            final List<String> problems = FishingTreasureConfig.collectDropRateProblems(config);
+
+            // Then
+            assertThat(problems).isEmpty();
+        }
+
+        @Test
+        void collectShouldFlagEnchantRateAboveOneHundredWithKeyIdentifier() {
+            // Given - an enchantment drop rate above 100
+            final YamlConfiguration config = loadYaml(
+                    "Enchantment_Drop_Rates:\n"
+                            + "  Tier_1:\n"
+                            + "    COMMON: 150.0\n");
+
+            // When
+            final List<String> problems = FishingTreasureConfig.collectDropRateProblems(config);
+
+            // Then - a problem is reported and it names the offending key so admins can find it
+            assertThat(problems)
+                    .isNotEmpty()
+                    .anyMatch(problem -> problem.contains("Enchantment_Drop_Rates.Tier_1.COMMON"));
+        }
+
+        @Test
+        void collectShouldFlagNegativeItemRate() {
+            // Given - a negative item drop rate
+            final YamlConfiguration config = loadYaml(
+                    "Enchantment_Drop_Rates:\n"
+                            + "  Tier_1:\n"
+                            + "    COMMON: 10.0\n"
+                            + "Item_Drop_Rates:\n"
+                            + "  Tier_1:\n"
+                            + "    COMMON: -5.0\n");
+
+            // When
+            final List<String> problems = FishingTreasureConfig.collectDropRateProblems(config);
+
+            // Then
+            assertThat(problems)
+                    .isNotEmpty()
+                    .anyMatch(problem -> problem.contains("Item_Drop_Rates.Tier_1.COMMON"));
         }
     }
 }
