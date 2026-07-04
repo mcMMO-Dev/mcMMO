@@ -186,6 +186,14 @@ Excavation:
             Standard_Mode: 25
             Retro_Mode: 250
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+    MUSIC_DISC_BOUNCE:
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.025
+        Level_Requirement:
+            Standard_Mode: 25
+            Retro_Mode: 250
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     DIAMOND:
         Amount: 1
         XP: 1000

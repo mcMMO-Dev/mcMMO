@@ -441,6 +441,7 @@ Experience_Values:
         Lily_Pad: 100
         White_Tulip: 150
         Dandelion: 100
+        Golden_Dandelion: 150
         Bamboo: 10
         Cornflower: 150
         Lily_Of_The_Valley: 150
@@ -548,6 +549,34 @@ Experience_Values:
         Packed_Mud: 30
         Mud_Bricks: 40
         Dripstone_Block: 35
+        Cinnabar: 40
+        Cinnabar_Stairs: 40
+        Cinnabar_Slab: 40
+        Cinnabar_Wall: 40
+        Polished_Cinnabar: 40
+        Polished_Cinnabar_Stairs: 40
+        Polished_Cinnabar_Slab: 40
+        Polished_Cinnabar_Wall: 40
+        Cinnabar_Bricks: 40
+        Cinnabar_Brick_Stairs: 40
+        Cinnabar_Brick_Slab: 40
+        Cinnabar_Brick_Wall: 40
+        Chiseled_Cinnabar: 40
+        Sulfur: 40
+        Sulfur_Stairs: 40
+        Sulfur_Slab: 40
+        Sulfur_Wall: 40
+        Polished_Sulfur: 40
+        Polished_Sulfur_Stairs: 40
+        Polished_Sulfur_Slab: 40
+        Polished_Sulfur_Wall: 40
+        Sulfur_Bricks: 40
+        Sulfur_Brick_Stairs: 40
+        Sulfur_Brick_Slab: 40
+        Sulfur_Brick_Wall: 40
+        Chiseled_Sulfur: 40
+        Potent_Sulfur: 60
+        Sulfur_Spike: 30
     Repair:
         Base: 1000.0
         Wood: 0.6
@@ -630,6 +659,7 @@ Experience_Values:
             Silverfish: 3.0
             Blaze: 3.0
             Magma_Cube: 2.0
+            Sulfur_Cube: 2.0
             Ender_Dragon: 1.0
             Wither: 1.0
             Witch: 0.1

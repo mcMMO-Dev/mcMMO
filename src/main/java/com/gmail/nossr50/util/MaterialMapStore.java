@@ -429,6 +429,36 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("deepslate");
         intendedToolPickAxe.add("cobbled_deepslate");
         intendedToolPickAxe.add("tuff");
+
+        //26.2 Chaos Cubed (sulfur caves)
+        intendedToolPickAxe.add("cinnabar");
+        intendedToolPickAxe.add("cinnabar_stairs");
+        intendedToolPickAxe.add("cinnabar_slab");
+        intendedToolPickAxe.add("cinnabar_wall");
+        intendedToolPickAxe.add("polished_cinnabar");
+        intendedToolPickAxe.add("polished_cinnabar_stairs");
+        intendedToolPickAxe.add("polished_cinnabar_slab");
+        intendedToolPickAxe.add("polished_cinnabar_wall");
+        intendedToolPickAxe.add("cinnabar_bricks");
+        intendedToolPickAxe.add("cinnabar_brick_stairs");
+        intendedToolPickAxe.add("cinnabar_brick_slab");
+        intendedToolPickAxe.add("cinnabar_brick_wall");
+        intendedToolPickAxe.add("chiseled_cinnabar");
+        intendedToolPickAxe.add("sulfur");
+        intendedToolPickAxe.add("sulfur_stairs");
+        intendedToolPickAxe.add("sulfur_slab");
+        intendedToolPickAxe.add("sulfur_wall");
+        intendedToolPickAxe.add("polished_sulfur");
+        intendedToolPickAxe.add("polished_sulfur_stairs");
+        intendedToolPickAxe.add("polished_sulfur_slab");
+        intendedToolPickAxe.add("polished_sulfur_wall");
+        intendedToolPickAxe.add("sulfur_bricks");
+        intendedToolPickAxe.add("sulfur_brick_stairs");
+        intendedToolPickAxe.add("sulfur_brick_slab");
+        intendedToolPickAxe.add("sulfur_brick_wall");
+        intendedToolPickAxe.add("chiseled_sulfur");
+        intendedToolPickAxe.add("potent_sulfur");
+        intendedToolPickAxe.add("sulfur_spike");
     }
 
     private void fillArmors() {
