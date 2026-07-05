@@ -26,12 +26,12 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import java.util.Set;
@@ -43,7 +43,6 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Endermite;
@@ -80,6 +79,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.world.EntitiesUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -89,13 +89,17 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class EntityListener implements Listener {
+    private static final String PIERCING = "piercing";
+    private static final String DEEPSLATE_REDSTONE_ORE = "deepslate_redstone_ore";
+    private static final Set<String> ARMOR_STAND = Set.of("ARMOR_STAND", "armor_stand");
+    private static final Set<String> MANNEQUIN = Set.of("mannequin", "MANNEQUIN");
     private final mcMMO pluginRef;
 
     /**
      * We can use this {@link NamespacedKey} for {@link Enchantment} comparisons to check if a
      * {@link Player} has a {@link Trident} enchanted with "Piercing".
      */
-    private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft("piercing");
+    private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft(PIERCING);
     private final static Set<EntityType> TRANSFORMABLE_ENTITIES
             = Set.of(EntityType.SLIME, EntityType.MAGMA_CUBE);
 
@@ -204,12 +208,9 @@ public class EntityListener implements Listener {
                 // Delayed metadata cleanup in case other cleanup hooks fail
                 CombatUtils.delayArrowMetaCleanup(arrow);
 
-                // If fired from an item with multi-shot, we need to track
-                if (ItemUtils.doesPlayerHaveEnchantmentInHands(player, "multishot")) {
-                    arrow.setMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW,
-                            MetadataConstants.MCMMO_METADATA_VALUE);
-                }
-
+                // Multi-shot pickup handling is managed natively by Paper/Spigot.
+                // All crossbow arrows inherit the same pickup mode unless in creative mode,
+                // and ricochet side-arrows inherit pickup status from the original arrow.
                 if (!arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)) {
                     arrow.setMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE,
                             new FixedMetadataValue(pluginRef, 1.0));
@@ -221,7 +222,7 @@ public class EntityListener implements Listener {
                 }
 
                 //Check both hands
-                if (ItemUtils.doesPlayerHaveEnchantmentInHands(player, "piercing")) {
+                if (ItemUtils.doesPlayerHaveEnchantmentInHands(player, PIERCING)) {
                     return;
                 }
 
@@ -275,14 +276,15 @@ public class EntityListener implements Listener {
                         MetadataConstants.MCMMO_METADATA_VALUE);
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity,
                         pluginRef);
-                mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(entity, metaCleanupTask, 20,
+                final Runnable retired = () -> entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
+                mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(entity, metaCleanupTask, retired, 20,
                         20 * 60); //6000 ticks is 5 minutes
             } else if (isTracked) {
                 BlockUtils.setUnnaturalBlock(block);
                 entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE || block.getType().getKey().getKey()
-                .equalsIgnoreCase("deepslate_redstone_ore"))) {
+                .equalsIgnoreCase(DEEPSLATE_REDSTONE_ORE))) {
             //Redstone ore fire this event and should be ignored
         } else {
             if (mcMMO.getUserBlockTracker().isIneligible(block)) {
@@ -352,11 +354,13 @@ public class EntityListener implements Listener {
             return;
         }
 
-        // Don't process this event for marked entities, for players this is handled above,
-        // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
-        // properly
+        if (ExperienceConfig.getInstance().isArmorStandInteractionPrevented()
+                && isArmorStandEntity(attacker)) {
+            return;
+        }
 
-        if (event.getEntity() instanceof ArmorStand) {
+        if (ExperienceConfig.getInstance().isMannequinInteractionPrevented()
+                && isMannequinEntity(attacker)) {
             return;
         }
 
@@ -385,8 +389,8 @@ public class EntityListener implements Listener {
             if (animalTamer != null && ((OfflinePlayer) animalTamer).isOnline()) {
                 attacker = (Entity) animalTamer;
             }
-        } else if (attacker instanceof TNTPrimed && defender instanceof Player) {
-            if (BlastMining.processBlastMiningExplosion(event, (TNTPrimed) attacker,
+        } else if (attacker instanceof TNTPrimed tntAttacker && defender instanceof Player) {
+            if (BlastMining.processBlastMiningExplosion(event, tntAttacker,
                     (Player) defender)) {
                 return;
             }
@@ -452,13 +456,7 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onEntityDamageMonitor(EntityDamageByEntityEvent entityDamageEvent) {
-        if (entityDamageEvent.getEntity() instanceof LivingEntity livingEntity) {
-
-            if (entityDamageEvent.getFinalDamage() >= livingEntity.getHealth()) {
-                //This sets entity names back to whatever they are supposed to be
-                CombatUtils.fixNames(livingEntity);
-            }
-        }
+        CombatUtils.restoreMobNameIfLethal(entityDamageEvent);
 
         if (entityDamageEvent.getDamager() instanceof Arrow arrow) {
             CombatUtils.delayArrowMetaCleanup(arrow);
@@ -527,6 +525,23 @@ public class EntityListener implements Listener {
                 }
             }
         }
+    }
+
+    /**
+     * Monitor non-entity damage for lethal hits.
+     *
+     * EntityDamageByEntityEvent already has its own monitor path above; this fills the gap for
+     * lethal environmental damage where Slime/MagmaCube split can still inherit temporary names.
+     *
+     * @param entityDamageEvent The event to monitor
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+    public void onEntityDamageMonitor(EntityDamageEvent entityDamageEvent) {
+        if (entityDamageEvent instanceof EntityDamageByEntityEvent) {
+            return;
+        }
+
+        CombatUtils.restoreMobNameIfLethal(entityDamageEvent);
     }
 
     public boolean checkIfInPartyOrSamePlayer(Cancellable event, Player defendingPlayer,
@@ -749,6 +764,17 @@ public class EntityListener implements Listener {
         }
 
         mcMMO.getTransientMetadataTools().cleanLivingEntityMetadata(entity);
+    }
+
+    @EventHandler
+    public void onEntitiesUnload(EntitiesUnloadEvent event) {
+        for (final Entity entity : event.getEntities()) {
+            if (entity instanceof LivingEntity livingEntity) {
+                // Remove any eventual health bar the mob might have.
+                // This event fires early enough where we can still modify entity state and clean up the display name.
+                MobHealthbarUtils.restoreNameFromSnapshot(livingEntity);
+            }
+        }
     }
 
     /**
@@ -1191,9 +1217,25 @@ public class EntityListener implements Listener {
         }
 
         if (event.getEntity() instanceof Arrow arrow) {
-            if (ProjectileUtils.isCrossbowProjectile(arrow)) {
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if (WorldGuardUtils.isWorldGuardLoaded()
+                    && arrow.getShooter() instanceof Player player
+                    && !WorldGuardManager.getInstance().hasMainFlag(player,
+                    arrow.getLocation())) {
+                return;
+            }
+
+            if (arrow.isShotFromCrossbow()) {
                 Crossbows.processCrossbows(event, pluginRef, arrow);
             }
         }
+    }
+
+    public static boolean isMannequinEntity(Entity attacker) {
+        return MANNEQUIN.contains(attacker.getType().toString());
+    }
+
+    public static boolean isArmorStandEntity(Entity attacker) {
+        return ARMOR_STAND.contains(attacker.getType().toString());
     }
 }

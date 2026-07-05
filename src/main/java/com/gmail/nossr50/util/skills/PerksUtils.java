@@ -51,9 +51,11 @@ public final class PerksUtils {
     public static float handleXpPerks(Player player, float xp, PrimarySkillType skill) {
         double modifier = 1.0F;
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        final boolean debugMode = mmoPlayer != null && mmoPlayer.isDebugMode();
+
         if (Permissions.customXpBoost(player, skill)) {
-            if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player)
-                    .isDebugMode()) {
+            if (debugMode) {
                 player.sendMessage(ChatColor.GOLD + "[DEBUG] " + ChatColor.DARK_GRAY
                         + "XP Perk Multiplier IS CUSTOM! ");
             }
@@ -77,7 +79,7 @@ public final class PerksUtils {
 
         float modifiedXP = (float) (xp * modifier);
 
-        if (UserManager.getPlayer(player) != null && UserManager.getPlayer(player).isDebugMode()) {
+        if (debugMode) {
             player.sendMessage(
                     ChatColor.GOLD + "[DEBUG] " + ChatColor.RESET + "XP Perk Multiplier - "
                             + ChatColor.GOLD + modifier);

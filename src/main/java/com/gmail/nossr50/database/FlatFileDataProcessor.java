@@ -9,6 +9,7 @@ import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_GREEN_
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_MACES;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SERRATED_STRIKES;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SKULL_SPLITTER;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SPEARS;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SUPER_BREAKER;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SUPER_SHOTGUN;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_TREE_FELLER;
@@ -25,6 +26,7 @@ import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_HERBALISM;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_MACES;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_MINING;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_REPAIR;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_SPEARS;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_SWORDS;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_TAMING;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_TRIDENTS;
@@ -45,6 +47,7 @@ import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_HERBALIS
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_MACES;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_MINING;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_REPAIR;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_SPEARS;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_SWORDS;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_TAMING;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_TRIDENTS;
@@ -318,27 +321,26 @@ public class FlatFileDataProcessor {
             throws IndexOutOfBoundsException {
         return switch (dataIndex) {
             case USERNAME_INDEX ->
-                    ExpectedType.STRING; //Assumption: Used to be for something, no longer used
-            //Assumption: Used to be for something, no longer used
-            //Assumption: Used to be used for something, no longer used
+                    ExpectedType.STRING;
             //Assumption: Used to be used for something, no longer used
             case 2, 3, 23, 33, HEALTHBAR, LEGACY_LAST_LOGIN -> ExpectedType.IGNORED;
             case SKILLS_MINING, SKILLS_REPAIR, SKILLS_UNARMED, SKILLS_HERBALISM, SKILLS_EXCAVATION,
                  SKILLS_ARCHERY,
                  SKILLS_SWORDS, SKILLS_AXES, SKILLS_WOODCUTTING, SKILLS_ACROBATICS, SKILLS_TAMING,
                  SKILLS_FISHING,
-                 SKILLS_ALCHEMY, SKILLS_CROSSBOWS, SKILLS_TRIDENTS, SKILLS_MACES, COOLDOWN_BERSERK,
+                 SKILLS_ALCHEMY, SKILLS_CROSSBOWS, SKILLS_TRIDENTS, SKILLS_MACES, SKILLS_SPEARS,
+                 COOLDOWN_BERSERK,
                  COOLDOWN_GIGA_DRILL_BREAKER, COOLDOWN_TREE_FELLER, COOLDOWN_GREEN_TERRA,
                  COOLDOWN_SERRATED_STRIKES,
                  COOLDOWN_SKULL_SPLITTER, COOLDOWN_SUPER_BREAKER, COOLDOWN_BLAST_MINING,
                  SCOREBOARD_TIPS,
                  COOLDOWN_CHIMAERA_WING, COOLDOWN_SUPER_SHOTGUN, COOLDOWN_TRIDENTS,
-                 COOLDOWN_ARCHERY, COOLDOWN_MACES -> ExpectedType.INTEGER;
+                 COOLDOWN_ARCHERY, COOLDOWN_MACES, COOLDOWN_SPEARS -> ExpectedType.INTEGER;
             case EXP_MINING, EXP_WOODCUTTING, EXP_REPAIR, EXP_UNARMED, EXP_HERBALISM,
                  EXP_EXCAVATION, EXP_ARCHERY,
                  EXP_SWORDS, EXP_AXES, EXP_ACROBATICS, EXP_TAMING, EXP_FISHING, EXP_ALCHEMY,
                  EXP_CROSSBOWS,
-                 EXP_TRIDENTS, EXP_MACES -> ExpectedType.FLOAT;
+                 EXP_TRIDENTS, EXP_MACES, EXP_SPEARS -> ExpectedType.FLOAT;
             case UUID_INDEX -> ExpectedType.UUID;
             case OVERHAUL_LAST_LOGIN -> ExpectedType.LONG;
             default -> throw new IndexOutOfBoundsException();

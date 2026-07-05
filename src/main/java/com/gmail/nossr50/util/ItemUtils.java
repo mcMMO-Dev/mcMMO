@@ -17,7 +17,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +30,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -35,20 +40,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ItemUtils {
-    // Reflection for setItemName only available in newer APIs
-    private static final Method setItemName;
+    private static final Map<Material, Boolean> oreSmeltingResults = new ConcurrentHashMap<>();
+    // Use custom name if available
+    private static final Method customName;
 
     static {
-        setItemName = getSetItemName();
+        customName = getCustomNameMethod();
     }
 
     private ItemUtils() {
         // private constructor
     }
 
-    private static Method getSetItemName() {
+    private static Method getCustomNameMethod() {
         try {
-            return ItemMeta.class.getMethod("setItemName", String.class);
+            return ItemMeta.class.getMethod("customName", Component.class);
         } catch (NoSuchMethodException e) {
             return null;
         }
@@ -60,17 +66,17 @@ public final class ItemUtils {
      * @param itemMeta The item meta to set the name on
      * @param name The name to set
      */
-    public static void setItemName(ItemMeta itemMeta, String name) {
-        if (setItemName != null) {
+    public static void customName(ItemMeta itemMeta, Component name, String fallbackName) {
+        if (customName != null) {
             setItemNameModern(itemMeta, name);
         } else {
-            itemMeta.setDisplayName(ChatColor.RESET + name);
+            itemMeta.setDisplayName(ChatColor.RESET + fallbackName);
         }
     }
 
-    private static void setItemNameModern(ItemMeta itemMeta, String name) {
+    private static void setItemNameModern(ItemMeta itemMeta, Component name) {
         try {
-            setItemName.invoke(itemMeta, name);
+            customName.invoke(itemMeta, name);
         } catch (IllegalAccessException | InvocationTargetException e) {
             mcMMO.p.getLogger().severe("Failed to set item name: " + e.getMessage());
             throw new RuntimeException(e);
@@ -147,36 +153,56 @@ public final class ItemUtils {
      */
     public static void removeItemIncludingOffHand(@NotNull Player player,
             @NotNull Material material, int amount) {
-        // Checks main inventory / item bar
-        if (player.getInventory().contains(material)) {
-            player.getInventory().removeItem(new ItemStack(material, amount));
+        final PlayerInventory playerInventory = player.getInventory();
+        int remainingAmount = removeItemFromStorageByMaterial(playerInventory, material, amount);
+
+        if (remainingAmount <= 0) {
             return;
         }
 
         // Check off-hand
-        final ItemStack offHandItem = player.getInventory().getItemInOffHand();
+        final ItemStack offHandItem = playerInventory.getItemInOffHand();
         if (offHandItem.getType() == material) {
-            int newAmount = offHandItem.getAmount() - amount;
+            int newAmount = offHandItem.getAmount() - remainingAmount;
             if (newAmount > 0) {
                 offHandItem.setAmount(newAmount);
             } else {
-                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                playerInventory.setItemInOffHand(new ItemStack(Material.AIR));
             }
         }
     }
 
-    // TODO: Unit tests
-    public static boolean isCrossbow(@NotNull ItemStack item) {
-        return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
-    }
+    private static int removeItemFromStorageByMaterial(@NotNull PlayerInventory playerInventory,
+            @NotNull Material material, int amount) {
+        final ItemStack[] storageContents = playerInventory.getStorageContents();
+        int remainingAmount = amount;
+        boolean updatedStorage = false;
 
-    // TODO: Unit tests
-    public static boolean isTrident(@NotNull ItemStack item) {
-        return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
-    }
+        for (int i = 0; i < storageContents.length && remainingAmount > 0; i++) {
+            final ItemStack storedItem = storageContents[i];
 
-    public static boolean isMace(@NotNull ItemStack item) {
-        return mcMMO.getMaterialMapStore().isMace(item.getType().getKey().getKey());
+            if (storedItem == null || storedItem.getType() != material) {
+                continue;
+            }
+
+            final int storedAmount = storedItem.getAmount();
+
+            if (storedAmount <= remainingAmount) {
+                storageContents[i] = null;
+                remainingAmount -= storedAmount;
+            } else {
+                storedItem.setAmount(storedAmount - remainingAmount);
+                remainingAmount = 0;
+            }
+
+            updatedStorage = true;
+        }
+
+        if (updatedStorage) {
+            playerInventory.setStorageContents(storageContents);
+        }
+
+        return remainingAmount;
     }
 
     public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {
@@ -276,6 +302,46 @@ public final class ItemUtils {
     }
 
     /**
+     * Checks if the item is a crossbow.
+     *
+     * @param item Item to check
+     * @return true if the item is a crossbow, false otherwise
+     */
+    public static boolean isCrossbow(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isCrossbow(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Checks if the item is a trident.
+     *
+     * @param item Item to check
+     * @return true if the item is a trident, false otherwise
+     */
+    public static boolean isTrident(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isTrident(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Checks if the item is a mace.
+     *
+     * @param item Item to check
+     * @return true if the item is a mace, false otherwise
+     */
+    public static boolean isMace(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isMace(item.getType().getKey().getKey());
+    }
+
+    /**
+     * Checks if the item is a spear.
+     * @param item Item to check
+     *
+     * @return true if the item is a spear, false otherwise
+     */
+    public static boolean isSpear(@NotNull ItemStack item) {
+        return mcMMO.getMaterialMapStore().isSpear(item.getType().getKey().getKey());
+    }
+
+    /**
      * Checks if the item is a sword.
      *
      * @param item Item to check
@@ -350,6 +416,53 @@ public final class ItemUtils {
     }
 
     /**
+     * Gets current damage from ItemMeta-backed durability.
+     *
+     * @param item Item to inspect
+     * @return current damage value, or 0 when the item does not support durability
+     */
+    public static int getItemDamage(@NotNull ItemStack item) {
+        final ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof Damageable damageable) {
+            return damageable.getDamage();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Sets current damage through ItemMeta-backed durability.
+     *
+     * @param item target item
+     * @param damage target damage
+     */
+    public static void setItemDamage(@NotNull ItemStack item, int damage) {
+        final ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof Damageable damageable) {
+            damageable.setDamage(Math.max(0, damage));
+            item.setItemMeta(meta);
+        }
+    }
+
+    /**
+     * Gets the effective max damage for an item.
+     *
+     * @param item target item
+     * @return max damage from ItemMeta when present, otherwise Material max durability
+     */
+    public static int getItemMaxDamage(@NotNull ItemStack item) {
+        final ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof Damageable damageable && damageable.hasMaxDamage()) {
+            return damageable.getMaxDamage();
+        }
+
+        return item.getType().getMaxDurability();
+    }
+
+    /**
      * Checks to see if an item is a leather armor piece.
      *
      * @param item Item to check
@@ -377,6 +490,10 @@ public final class ItemUtils {
      */
     public static boolean isIronArmor(ItemStack item) {
         return mcMMO.getMaterialMapStore().isIronArmor(item.getType().getKey().getKey());
+    }
+
+    public static boolean isCopperArmor(ItemStack item) {
+        return mcMMO.getMaterialMapStore().isCopperArmor(item.getType().getKey().getKey());
     }
 
     /**
@@ -451,6 +568,10 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isPrismarineTool(item.getType().getKey().getKey());
     }
 
+    public static boolean isCopperTool(ItemStack item) {
+        return mcMMO.getMaterialMapStore().isCopperTool(item.getType().getKey().getKey());
+    }
+
     /**
      * Checks to see if an item is a gold tool.
      *
@@ -500,7 +621,14 @@ public final class ItemUtils {
             return false;
         }
 
-        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(item)) {
+        // Recipes don't change during normal gameplay and getRecipesFor scans the entire
+        // recipe registry, so remember the verdict per result type
+        return oreSmeltingResults.computeIfAbsent(item.getType(),
+                ItemUtils::hasOreSmeltingRecipe);
+    }
+
+    private static boolean hasOreSmeltingRecipe(Material material) {
+        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(new ItemStack(material))) {
             if (recipe instanceof FurnaceRecipe
                     && ((FurnaceRecipe) recipe).getInput().getType().isBlock()
                     && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {

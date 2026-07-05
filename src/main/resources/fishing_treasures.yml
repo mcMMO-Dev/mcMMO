@@ -63,6 +63,26 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+    COPPER_SWORD:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    COPPER_SHOVEL:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    COPPER_PICKAXE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    COPPER_AXE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
+    COPPER_HOE:
+        Amount: 1
+        XP: 200
+        Rarity: UNCOMMON
     GOLDEN_SWORD:
         Amount: 1
         XP: 200
@@ -143,6 +163,22 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: RARE
+    COPPER_BOOTS:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    COPPER_HELMET:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    COPPER_LEGGINGS:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
+    COPPER_CHESTPLATE:
+        Amount: 1
+        XP: 200
+        Rarity: COMMON
     IRON_BOOTS:
         Amount: 1
         XP: 200
@@ -602,7 +638,7 @@ Shake:
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
-    MUSHROOM_COW:
+    MOOSHROOM:
         MILK_BUCKET:
             Amount: 1
             XP: 0

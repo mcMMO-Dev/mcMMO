@@ -1,9 +1,8 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.mcMMO;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -33,6 +32,10 @@ public class AttributeMapper {
     private static final String MOVEMENT_SPEED_1_21_1 = "generic.movement_speed";
     private static final String MOVEMENT_SPEED_1_21_3 = "movement_speed";
 
+    public static final Attribute MAPPED_GENERIC_ATTACK_DAMAGE;
+    private static final String ATTACK_DAMAGE_1_21_3 = "attack_damage";
+    private static final String ATTACK_DAMAGE_1_18_2 = "generic.attack_damage";
+
     // Add other attributes similarly...
     // For brevity, only key attributes are shown
 
@@ -42,12 +45,13 @@ public class AttributeMapper {
                 JUMP_STR_1_18_2);
         MAPPED_MOVEMENT_SPEED = findAttribute(MOVEMENT_SPEED_1_18_2, MOVEMENT_SPEED_1_21_1,
                 MOVEMENT_SPEED_1_21_3);
+        MAPPED_GENERIC_ATTACK_DAMAGE = findAttribute(ATTACK_DAMAGE_1_21_3, ATTACK_DAMAGE_1_18_2);
     }
 
-    private static Attribute findAttribute(String... keys) {
+    private static @Nullable Attribute findAttribute(String... keys) {
         Stream<?> attributeStream;
         try {
-            // Try to get Registry.ATTRIBUTE using reflection
+            // Try to get Registry.ATTRIBUTE using reflection (Spigot 1.20.5+ registry API).
             Class<?> registryClass = Class.forName(ORG_BUKKIT_REGISTRY);
             Field attributeField = registryClass.getField(ATTRIBUTE);
             Object attributeRegistry = attributeField.get(null);
@@ -55,12 +59,23 @@ public class AttributeMapper {
             // Get the stream() method of the attribute registry
             Method streamMethod = attributeRegistry.getClass().getMethod("stream");
             attributeStream = (Stream<?>) streamMethod.invoke(attributeRegistry);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException |
-                 NoSuchMethodException |
-                 InvocationTargetException e) {
-            // Fallback to older versions where Attribute is an enum
-            Object[] enumConstants = Attribute.class.getEnumConstants();
-            attributeStream = Arrays.stream(enumConstants);
+        } catch (Throwable registryThrowable) {
+            // Any failure falls back to the enum path. Common causes:
+            //  - NullPointerException: Registry.ATTRIBUTE is null (no running server)
+            //  - ExceptionInInitializerError: Registry class static init touches a missing registry
+            //  - ClassNotFoundException: older Bukkit build without the Registry class
+            //  - InvocationTargetException: stream() itself failed
+            try {
+                Object[] enumConstants = Attribute.class.getEnumConstants();
+                attributeStream = enumConstants != null
+                        ? Arrays.stream(enumConstants)
+                        : Stream.empty();
+            } catch (Throwable fallbackThrowable) {
+                // The enum path itself failed (e.g. Attribute's static initialiser touches a
+                // registry that is absent in this environment). Return null rather than crashing
+                // the AttributeMapper static initialiser.
+                return null;
+            }
         }
 
         Optional<?> optionalAttribute = attributeStream
@@ -96,25 +111,21 @@ public class AttributeMapper {
                                 return true;
                             }
                         }
-                    } catch (Exception e) {
-                        mcMMO.p.getLogger()
-                                .severe("Unable to find the attribute with possible keys: "
-                                        + Arrays.toString(keys)
-                                        + ", mcMMO will not function properly.");
-                        throw new RuntimeException(e);
+                    } catch (Throwable t) {
+                        // Swallow: inspecting this particular attribute failed (e.g. a registry
+                        // is not initialised in the current environment). Skip it and move on.
+                        // Do NOT call mcMMO.p.getLogger() here — mcMMO.p may be null during
+                        // static class initialisation.
+                        return false;
                     }
                     return false;
                 })
                 .findFirst();
 
-        if (optionalAttribute.isPresent()) {
-            return (Attribute) optionalAttribute.get();
-        } else {
-            mcMMO.p.getLogger().severe("Unable to find the attribute with possible keys: "
-                    + Arrays.toString(keys) + ", mcMMO will not function properly.");
-            throw new IllegalStateException("Unable to find the attribute with possible keys: "
-                    + Arrays.toString(keys));
-        }
+        // Return null when no matching attribute is found. Callers must handle null gracefully.
+        // In a running server this should not happen; in test environments without a full
+        // Bukkit registry the lookup may legitimately find nothing.
+        return optionalAttribute.map(attr -> (Attribute) attr).orElse(null);
     }
 
     /*

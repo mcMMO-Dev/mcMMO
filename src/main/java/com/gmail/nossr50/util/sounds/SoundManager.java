@@ -4,6 +4,8 @@ import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.util.Misc;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -11,12 +13,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class SoundManager {
+
+    private static final Map<SoundType, Sound> soundCache = new ConcurrentHashMap<>();
+    private static final String NULL_FALLBACK_ID = null;
     private static Sound CRIPPLE_SOUND;
-
     private static final String ITEM_MACE_SMASH_GROUND = "ITEM_MACE_SMASH_GROUND";
-
     private static final String VALUE_OF = "valueOf";
-
     private static final String ORG_BUKKIT_SOUND = "org.bukkit.Sound";
 
     /**
@@ -98,16 +100,78 @@ public class SoundManager {
     }
 
     private static float getPitch(SoundType soundType) {
-        if (soundType == SoundType.FIZZ) {
-            return getFizzPitch();
-        } else if (soundType == SoundType.POP) {
-            return getPopPitch();
-        } else {
-            return SoundConfig.getInstance().getPitch(soundType);
-        }
+        return switch (soundType)
+        {
+            case FIZZ -> getFizzPitch();
+            case POP -> getPopPitch();
+            default -> SoundConfig.getInstance().getPitch(soundType);
+        };
     }
 
     private static Sound getSound(SoundType soundType) {
+        final String soundId = SoundConfig.getInstance().getSound(soundType);
+
+        // Legacy versions use a different lookup method
+        if (SoundRegistryUtils.useLegacyLookup()) {
+            return getSoundLegacyCustom(soundId, soundType);
+        }
+
+        if (soundCache.containsKey(soundType)) {
+            return soundCache.get(soundType);
+        }
+
+        Sound sound;
+        if (soundId != null && !soundId.isEmpty()) {
+            sound = SoundRegistryUtils.getSound(soundId, soundType.id());
+        } else {
+            sound = SoundRegistryUtils.getSound(soundType.id(), NULL_FALLBACK_ID);
+        }
+
+        if (sound != null) {
+            soundCache.putIfAbsent(soundType, sound);
+            return sound;
+        }
+
+        throw new RuntimeException("Could not find Sound for SoundType: " + soundType);
+    }
+
+    private static Sound getSoundLegacyCustom(String id, SoundType soundType) {
+        if (soundCache.containsKey(soundType)) {
+            return soundCache.get(soundType);
+        }
+
+        // Try to look up a custom legacy sound
+        if (id != null && !id.isEmpty()) {
+            Sound sound;
+            if (Sound.class.isEnum()) {
+                // Sound is only an ENUM in legacy versions
+                // Use reflection to loop through the values, finding the first enum matching our ID
+                try {
+                    Method method = Sound.class.getMethod("getKey");
+                    for (Object legacyEnumEntry : Sound.class.getEnumConstants()) {
+                        // This enum extends Keyed which adds the getKey() method
+                        // we need to invoke this method to get the NamespacedKey and compare to our ID
+                        if (method.invoke(legacyEnumEntry).toString().equals(id)) {
+                            sound = (Sound) legacyEnumEntry;
+                            soundCache.putIfAbsent(soundType, sound);
+                            return sound;
+                        }
+                    }
+                } catch (NoSuchMethodException | InvocationTargetException |
+                         IllegalAccessException e) {
+                    // Ignore
+                }
+            }
+            throw new RuntimeException("Unable to find legacy sound by ID %s for SoundType %s"
+                    .formatted(id, soundType));
+        }
+        // Failsafe -- we haven't found a matching sound
+        final Sound sound = getSoundLegacyFallBack(soundType);
+        soundCache.putIfAbsent(soundType, sound);
+        return sound;
+    }
+
+    private static Sound getSoundLegacyFallBack(SoundType soundType) {
         return switch (soundType) {
             case ANVIL -> Sound.BLOCK_ANVIL_PLACE;
             case ITEM_BREAK -> Sound.ENTITY_ITEM_BREAK;
@@ -152,9 +216,5 @@ public class SoundManager {
 
     public static float getPopPitch() {
         return ((Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
-    }
-
-    public static float getKrakenPitch() {
-        return (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.2F + 1.0F;
     }
 }

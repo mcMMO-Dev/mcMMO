@@ -22,8 +22,8 @@ public class SwordsCommand extends SkillCommand {
     private String serratedStrikesLengthEndurance;
 
     private String rupturePureTickDamageAgainstPlayers, rupturePureTickDamageAgainstMobs,
-            ruptureExplosionDamageAgainstPlayers, ruptureExplosionDamageAgainstMobs,
-            ruptureLengthSecondsAgainstPlayers, ruptureLengthSecondsAgainstMobs, ruptureChanceToApply, ruptureChanceToApplyLucky;
+            ruptureLengthSecondsAgainstPlayers, ruptureLengthSecondsAgainstMobs,
+            ruptureChanceToApply, ruptureChanceToApplyLucky;
 
     private boolean canCounter;
     private boolean canSerratedStrike;
@@ -55,11 +55,6 @@ public class SwordsCommand extends SkillCommand {
                     mcMMO.p.getAdvancedConfig().getRuptureTickDamage(true, ruptureRank));
             rupturePureTickDamageAgainstMobs = String.valueOf(
                     mcMMO.p.getAdvancedConfig().getRuptureTickDamage(false, ruptureRank));
-
-            ruptureExplosionDamageAgainstPlayers = String.valueOf(
-                    mcMMO.p.getAdvancedConfig().getRuptureExplosionDamage(true, ruptureRank));
-            ruptureExplosionDamageAgainstMobs = String.valueOf(
-                    mcMMO.p.getAdvancedConfig().getRuptureExplosionDamage(false, ruptureRank));
 
             ruptureChanceToApply =
                     mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(ruptureRank) + "%";
@@ -105,7 +100,6 @@ public class SwordsCommand extends SkillCommand {
 
             messages.add(LocaleLoader.getString("Swords.SubSkill.Rupture.Stat.TickDamage",
                     rupturePureTickDamageAgainstPlayers, rupturePureTickDamageAgainstMobs));
-//            messages.add(LocaleLoader.getString("Swords.SubSkill.Rupture.Stat.ExplosionDamage", ruptureExplosionDamageAgainstPlayers, ruptureExplosionDamageAgainstMobs));
 
             messages.add(LocaleLoader.getString("Swords.Combat.Rupture.Note.Update.One"));
         }
@@ -134,7 +128,7 @@ public class SwordsCommand extends SkillCommand {
     protected List<Component> getTextComponents(Player player) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents,
+        TextComponentFactory.appendSubSkillTextComponents(player, textComponents,
                 PrimarySkillType.SWORDS);
 
         return textComponents;

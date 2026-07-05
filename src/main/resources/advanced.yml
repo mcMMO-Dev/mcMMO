@@ -121,12 +121,15 @@ Skills:
         Roll:
             # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
-            # DamageThreshold: The max damage a player can negate with a roll, graceful roll doubles this number
+            # DamageThreshold: The max damage a player can negate with a normal roll
             ChanceMax: 100.0
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
             DamageThreshold: 7.0
+        GracefulRoll:
+            # DamageThreshold: The max damage a player can negate with a graceful roll (sneaking)
+            DamageThreshold: 14.0
     #
     #  Settings for Alchemy
     ###
@@ -171,6 +174,16 @@ Skills:
 
         # ForceMultiplier: Multiply the force of the bow by this for an XP boost.
         ForceMultiplier: 2.0
+    #
+    #  Settings for Crossbows
+    ###
+    Crossbows:
+        PoweredShot:
+            # RankDamageMultiplier: The current rank of this subskill is multiplied by this value to determine bonus damage.
+            # RankDamageMultiplier is a percentage.
+            RankDamageMultiplier: 10.0
+            # MaxDamage: Maximum bonus damage added by PoweredShot.
+            MaxDamage: 9.0
     #
     #  Settings for Axes
     ###
@@ -389,6 +402,10 @@ Skills:
 
         ArcaneForging:
             May_Lose_Enchants: true
+            # MaxEnchantLevel: Maximum enchant level Arcane Forging will keep or downgrade to
+            # This defaults to vanilla behavior. Set it higher if you know what you are doing.
+            # Overridden by ExploitFix.UnsafeEnchantments in experience.yml if that is enabled.
+            MaxEnchantLevel: 5
             Keep_Enchants_Chance:
                 Rank_1: 10.0
                 Rank_2: 20.0
@@ -417,6 +434,10 @@ Skills:
             # EnchantDowngradeEnabled: When salvaging enchanted items, the enchants may be downgraded
             EnchantLossEnabled: true
             EnchantDowngradeEnabled: true
+            # MaxEnchantLevel: Maximum enchant level Arcane Salvage will keep or downgrade to
+            # This defaults to vanilla behavior. Set it higher if you know what you are doing.
+            # Overridden by ExploitFix.UnsafeEnchantments in experience.yml if that is enabled.
+            MaxEnchantLevel: 5
 
             # ExtractFullEnchant: Chance to extract the full enchant at each ArcaneSalvage rank
             ExtractFullEnchant:
@@ -642,9 +663,35 @@ Skills:
                 Standard: 100
                 RetroMode: 1000
     Maces:
+        Crush:
+            # Base_Damage: Flat damage bonus applied at rank 1.
+            Base_Damage: 0.5
+            # Rank_Damage_Multiplier: Additional damage bonus per rank.
+            Rank_Damage_Multiplier: 1.0
         Cripple:
             Chance_To_Apply_On_Hit:
                 Rank_1: 10
                 Rank_2: 15
                 Rank_3: 20
                 Rank_4: 33
+    Tridents:
+        Impale:
+            # Base_Damage: Flat damage bonus applied at rank 1.
+            Base_Damage: 1.0
+            # Rank_Damage_Multiplier: Additional damage bonus per rank after rank 1.
+            Rank_Damage_Multiplier: 0.5
+    Spears:
+        SpearMastery:
+            Rank_Damage_Multiplier: 0.4
+        Momentum:
+            Chance_To_Apply_On_Hit:
+                Rank_1: 5
+                Rank_2: 10
+                Rank_3: 15
+                Rank_4: 20
+                Rank_5: 25
+                Rank_6: 30
+                Rank_7: 35
+                Rank_8: 40
+                Rank_9: 45
+                Rank_10: 50

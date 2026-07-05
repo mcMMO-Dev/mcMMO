@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.text;
 
-import com.gmail.nossr50.mcMMO;
 import java.util.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentBuilder;
@@ -10,7 +9,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,29 +93,9 @@ public class TextUtils {
         return splitGroups;
     }
 
-    static void addChildWebComponent(@NotNull ComponentBuilder<?, ?> webTextComponent,
-            @NotNull String childName) {
-        TextComponent childComponent = Component.text(childName).color(NamedTextColor.BLUE);
-        webTextComponent.append(childComponent);
-    }
-
     static void addNewHoverComponentToTextComponent(@NotNull TextComponent.Builder textComponent,
             @NotNull Component baseComponent) {
         textComponent.hoverEvent(HoverEvent.showText(baseComponent));
-    }
-
-    public static BaseComponent[] convertToBungeeComponent(@NotNull String displayName) {
-        return net.md_5.bungee.api.chat.TextComponent.fromLegacyText(displayName);
-    }
-
-    public static @NotNull TextComponent ofBungeeComponents(@NotNull BaseComponent[] bungeeName) {
-        return TextComponent.ofChildren(
-                mcMMO.getCompatibilityManager().getBungeeSerializerCompatibilityLayer()
-                        .deserialize(bungeeName));
-    }
-
-    public static @NotNull TextComponent ofBungeeRawStrings(@NotNull String bungeeRawString) {
-        return ofBungeeComponents(convertToBungeeComponent(bungeeRawString));
     }
 
     public static @NotNull TextComponent ofLegacyTextRaw(@NotNull String rawString) {
@@ -157,5 +135,52 @@ public class TextUtils {
 
         TextComponent componentForm = ofLegacyTextRaw(string);
         return customLegacySerializer.serialize(componentForm);
+    }
+
+    /**
+     * Inserts literal message text between two unique markers in a pre-formatted legacy template.
+     *
+     * <p>Everything before and after the marker pair is parsed as legacy text, while the inserted
+     * message is kept literal so legacy color tokens are not interpreted.
+     */
+    public static @NotNull TextComponent insertLiteralTextAtMarkers(
+            @NotNull String formattedTemplate,
+            @NotNull String startMarker,
+            @NotNull String endMarker,
+            @NotNull String literalMessage) {
+        final int startMarkerIndex = formattedTemplate.indexOf(startMarker);
+
+        if (startMarkerIndex < 0) {
+            return ofLegacyTextRaw(formattedTemplate);
+        }
+
+        final int afterStartMarkerIndex = startMarkerIndex + startMarker.length();
+        final int endMarkerIndex = formattedTemplate.indexOf(endMarker, afterStartMarkerIndex);
+
+        if (endMarkerIndex < 0) {
+            return Component.text()
+                    .append(ofLegacyTextRaw(formattedTemplate.replace(startMarker, "")))
+                    .append(Component.text(literalMessage))
+                    .build();
+        }
+
+        final String prefixText = formattedTemplate.substring(0, startMarkerIndex);
+        final String suffixText = formattedTemplate.substring(endMarkerIndex + endMarker.length());
+
+        return Component.text()
+                .append(ofLegacyTextRaw(prefixText))
+                .append(Component.text(literalMessage))
+                .append(ofLegacyTextRaw(suffixText))
+                .build();
+    }
+
+    /**
+     * Converts section-sign legacy color prefixes to ampersands so formatting tokens are displayed
+     * as plain text instead of being applied.
+     *
+     * <p>This is intended for message inputs when a sender lacks permission to use chat colors.
+     */
+    public static @NotNull String literalizeLegacyColorCodes(@NotNull String text) {
+        return text.replace('\u00A7', '&');
     }
 }

@@ -28,8 +28,8 @@ public class DatabaseManagerFactory {
                             : "Flatfile") + " database");
         }
 
-        return mcMMO.p.getGeneralConfig().getUseMySQL() ? new SQLDatabaseManager(logger,
-                MYSQL_DRIVER)
+        return mcMMO.p.getGeneralConfig().getUseMySQL()
+                ? new SQLDatabaseManager(logger, MYSQL_DRIVER)
                 : new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
     }
 

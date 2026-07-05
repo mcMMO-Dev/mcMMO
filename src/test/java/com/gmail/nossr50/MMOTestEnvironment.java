@@ -3,6 +3,7 @@ package com.gmail.nossr50;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.spy;
@@ -29,7 +30,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TestPlayerMock;
 import com.gmail.nossr50.util.TransientEntityTracker;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -37,6 +37,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.sounds.SoundManager;
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
@@ -47,10 +49,13 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 public abstract class MMOTestEnvironment {
     protected MockedStatic<Bukkit> mockedBukkit;
@@ -76,22 +81,40 @@ public abstract class MMOTestEnvironment {
     protected Server server;
     protected PluginManager pluginManager;
     protected World world;
-    private FormulaManager formulaManager;
+
+    /* Mocks */
+    protected Player player;
+
+    protected UUID playerUUID = UUID.randomUUID();
+    protected ItemStack itemInMainHand;
+
+    protected PlayerInventory playerInventory;
+    protected PlayerProfile playerProfile;
+    protected McMMOPlayer mmoPlayer;
     protected ItemFactory itemFactory;
+
     protected ChunkManager chunkManager;
     protected MaterialMapStore materialMapStore;
-    protected CompatibilityManager compatibilityManager;
+
+    protected MinecraftGameVersion minecraftGameVersion;
+    protected File testDataFolder;
+    private FormulaManager formulaManager;
 
     protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
-        compatibilityManager = mock(CompatibilityManager.class);
-        final MinecraftGameVersion minecraftGameVersion = mock(MinecraftGameVersion.class);
-        when(compatibilityManager.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
-        // TODO: We should change minecraftGameVersion to be a passed in parameter instead of always returning true
-        when(minecraftGameVersion.isAtLeast(anyInt(), anyInt(), anyInt())).thenReturn(true);
         mockedMcMMO = mockStatic(mcMMO.class);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
         mcMMO.p = mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
+        try {
+            testDataFolder = java.nio.file.Files.createTempDirectory("mcmmo-test-data-").toFile();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create temp test data folder", e);
+        }
+        when(mcMMO.p.getDataFolder()).thenReturn(testDataFolder);
+
+        // Game version
+        minecraftGameVersion = mock(MinecraftGameVersion.class);
+        when(minecraftGameVersion.isAtLeast(anyInt(), anyInt(), anyInt())).thenReturn(true);
+        when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
 
         // formula manager
         formulaManager = new FormulaManager(FormulaType.UNKNOWN);
@@ -117,7 +140,7 @@ public abstract class MMOTestEnvironment {
         // wire advanced config
         mockAdvancedConfig();
 
-        // wire command level up config
+        // wire command on level up config
         mockLevelUpCommand();
 
         // wire experience config
@@ -129,6 +152,8 @@ public abstract class MMOTestEnvironment {
 
         this.transientEntityTracker = new TransientEntityTracker();
         when(mcMMO.getTransientEntityTracker()).thenReturn(transientEntityTracker);
+
+        mockPermissions();
 
         mockedRankUtils = mockStatic(RankUtils.class);
 
@@ -150,6 +175,11 @@ public abstract class MMOTestEnvironment {
         when(server.getPluginManager()).thenReturn(pluginManager);
         // wire Bukkit -> plugin manager
         when(Bukkit.getPluginManager()).thenReturn(pluginManager);
+        // return the argument provided when call event is invoked on plugin manager mock
+        doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return args[0];
+        }).when(pluginManager).callEvent(any(Event.class));
 
         // wire world
         this.world = mock(World.class);
@@ -159,8 +189,30 @@ public abstract class MMOTestEnvironment {
         when(Misc.getBlockCenter(any(Block.class))).thenReturn(new Location(world, 0, 0, 0));
         when(Misc.getBlockCenter(any(BlockState.class))).thenReturn(new Location(world, 0, 0, 0));
 
+        // setup player and player related mocks after everything else
+        this.player = mock(Player.class);
+        when(player.getUniqueId()).thenReturn(playerUUID);
+        when(player.isValid()).thenReturn(true);
+        when(player.isOnline()).thenReturn(true);
+        // health
+        when(player.getHealth()).thenReturn(20D);
+        // wire inventory
+        this.playerInventory = mock(PlayerInventory.class);
+        when(player.getInventory()).thenReturn(playerInventory);
+        // player location
+        Location playerLocation = mock(Location.class);
+        Block playerLocationBlock = mock(Block.class);
+        when(player.getLocation()).thenReturn(playerLocation);
+        when(playerLocation.getBlock()).thenReturn(playerLocationBlock);
+        // when(playerLocationBlock.getType()).thenReturn(Material.AIR);
+
+        // PlayerProfile and McMMOPlayer are partially mocked
+        playerProfile = new PlayerProfile("testPlayer", player.getUniqueId(), 0);
+        mmoPlayer = Mockito.spy(new McMMOPlayer(player, playerProfile));
+
         // wire user manager
         this.mockedUserManager = mockStatic(UserManager.class);
+        when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
 
         this.materialMapStore = new MaterialMapStore();
         when(mcMMO.getMaterialMapStore()).thenReturn(materialMapStore);
@@ -172,73 +224,10 @@ public abstract class MMOTestEnvironment {
         mockedSoundManager = mockStatic(SoundManager.class);
     }
 
-    private void mockPermissions(Player player) {
-        if (mockedPermissions == null) {
-            mockedPermissions = mockStatic(Permissions.class);
-        }
-        when(Permissions.isSubSkillEnabled(eq(player), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.canUseSubSkill(eq(player), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.isSubSkillEnabled(eq(player), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.canUseSubSkill(eq(player), any(SubSkillType.class))).thenReturn(true);
-        when(Permissions.skillEnabled(eq(player), any(PrimarySkillType.class))).thenReturn(true);
-    }
-
-    private void mockRankConfig() {
-        rankConfig = mock(RankConfig.class);
-    }
-
-    private void mockAdvancedConfig() {
-        this.advancedConfig = mock(AdvancedConfig.class);
-        when(mcMMO.p.getAdvancedConfig()).thenReturn(advancedConfig);
-    }
-
-    private void mockLevelUpCommand() {
-        this.commandOnLevelUpConfig = mock(CommandOnLevelUpConfig.class);
-        when(mcMMO.p.getCommandOnLevelUpConfig()).thenReturn(commandOnLevelUpConfig);
-
-        this.levelUpCommandManager = spy(new LevelUpCommandManager(mcMMO.p));
-        when(mcMMO.p.getLevelUpCommandManager()).thenReturn(levelUpCommandManager);
-    }
-
-    private void mockGeneralConfig() {
-        generalConfig = mock(GeneralConfig.class);
-        when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
-        when(generalConfig.getTreeFellerThreshold()).thenReturn(100);
-        when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING,
-                Material.OAK_LOG)).thenReturn(true);
-        when(generalConfig.getLocale()).thenReturn("en_US");
-        // Allows pseudo functional testing of experience gains
-        when(generalConfig.getPowerLevelCap())
-                .thenReturn(Integer.MAX_VALUE);
-        when(generalConfig.getLevelCap(any(PrimarySkillType.class)))
-                .thenReturn(Integer.MAX_VALUE);
-    }
-
-    private void mockPartyConfig() {
-        partyConfig = mock(PartyConfig.class);
-        when(partyConfig.isPartyEnabled()).thenReturn(false);
-        when(mcMMO.p.getPartyConfig()).thenReturn(partyConfig);
-    }
-
-    private void mockExperienceConfig() {
-        experienceConfig = mockStatic(ExperienceConfig.class);
-        experienceConfigInstance = mock(ExperienceConfig.class);
-        when(ExperienceConfig.getInstance()).thenReturn(experienceConfigInstance);
-        when(experienceConfigInstance.getFormulaType()).thenReturn(FormulaType.LINEAR);
-        when(experienceConfigInstance.getFormulaSkillModifier(any(PrimarySkillType.class)))
-                .thenReturn(1D);
-        when(experienceConfigInstance.getBase(any(FormulaType.class)))
-                .thenReturn(1000);
-        when(experienceConfigInstance.getExponent(any())).thenReturn(1D);
-        when(experienceConfigInstance.getExperienceGainsGlobalMultiplier())
-                .thenReturn(1D);
-        when(experienceConfigInstance.getMultiplier(any(FormulaType.class)))
-                .thenReturn(1D);
-        // Conversion
-        when(experienceConfigInstance.getExpModifier())
-                .thenReturn(1D);
-    }
-
+    /**
+     * Creates an additional fully wired player mock, independent of the shared {@link #player}.
+     * Useful for tests that need named players, custom starting levels, or several players.
+     */
     protected TestPlayerMock mockPlayer() {
         final UUID uuid = UUID.randomUUID();
         return mockPlayer(uuid, uuid.toString(), 0);
@@ -265,20 +254,91 @@ public abstract class MMOTestEnvironment {
         when(playerLocation.getBlock()).thenReturn(playerLocationBlock);
 
         // PlayerProfile and McMMOPlayer are partially mocked
-        final PlayerProfile playerProfile = spy(new PlayerProfile("testPlayer", player.getUniqueId(),
+        final PlayerProfile playerProfile = spy(new PlayerProfile(playerName, uuid,
                 startingLevel));
         when(playerProfile.isLoaded()).thenReturn(true);
         final McMMOPlayer mmoPlayer = spy(new McMMOPlayer(player, playerProfile));
         when(UserManager.getPlayer(player)).thenReturn(mmoPlayer);
 
-        // Permissions
-        mockPermissions(player);
-        // TODO: Move this to the woodcutting tests
-        when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(
-                false); // player is not lucky
+        // the XP gain path consults this permission per skill
+        when(Permissions.skillEnabled(eq(player), any(PrimarySkillType.class))).thenReturn(true);
 
         return new TestPlayerMock(player, playerInventory, playerLocation, playerProfile,
                 mmoPlayer);
+    }
+
+    private void mockPermissions() {
+        mockedPermissions = mockStatic(Permissions.class);
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.isSubSkillEnabled(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.canUseSubSkill(any(Player.class), any(SubSkillType.class))).thenReturn(
+                true);
+        when(Permissions.lucky(player, PrimarySkillType.WOODCUTTING)).thenReturn(
+                false); // player is not lucky
+    }
+
+    private void mockRankConfig() {
+        rankConfig = mock(RankConfig.class);
+    }
+
+    private void mockAdvancedConfig() {
+        this.advancedConfig = mock(AdvancedConfig.class);
+        when(mcMMO.p.getAdvancedConfig()).thenReturn(advancedConfig);
+    }
+
+    private void mockLevelUpCommand() {
+        this.commandOnLevelUpConfig = mock(CommandOnLevelUpConfig.class);
+        when(mcMMO.p.getCommandOnLevelUpConfig()).thenReturn(commandOnLevelUpConfig);
+
+        this.levelUpCommandManager = spy(new LevelUpCommandManager(mcMMO.p));
+        when(mcMMO.p.getLevelUpCommandManager()).thenReturn(levelUpCommandManager);
+    }
+
+    private void mockGeneralConfig() {
+        generalConfig = mock(GeneralConfig.class);
+        when(generalConfig.getTreeFellerThreshold()).thenReturn(100);
+        when(generalConfig.getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING,
+                Material.OAK_LOG)).thenReturn(true);
+        when(generalConfig.getLocale()).thenReturn("en_US");
+        when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
+        // Allows pseudo functional testing of experience gains up to high levels
+        when(generalConfig.getPowerLevelCap()).thenReturn(Integer.MAX_VALUE);
+        when(generalConfig.getLevelCap(any(PrimarySkillType.class)))
+                .thenReturn(Integer.MAX_VALUE);
+    }
+
+    private void mockPartyConfig() {
+        partyConfig = mock(PartyConfig.class);
+        when(partyConfig.isPartyEnabled()).thenReturn(false);
+        when(mcMMO.p.getPartyConfig()).thenReturn(partyConfig);
+    }
+
+    private void mockExperienceConfig() {
+        experienceConfig = mockStatic(ExperienceConfig.class);
+        experienceConfigInstance = mock(ExperienceConfig.class);
+        when(ExperienceConfig.getInstance()).thenReturn(experienceConfigInstance);
+
+        // Combat
+        when(experienceConfigInstance.getCombatXP("Cow")).thenReturn(1D);
+
+        // Experience formula wiring so XP gains can level players up in tests
+        when(experienceConfigInstance.getFormulaType()).thenReturn(FormulaType.LINEAR);
+        when(experienceConfigInstance.getFormulaSkillModifier(any(PrimarySkillType.class)))
+                .thenReturn(1D);
+        when(experienceConfigInstance.getBase(any(FormulaType.class)))
+                .thenReturn(1000);
+        when(experienceConfigInstance.getExponent(any())).thenReturn(1D);
+        when(experienceConfigInstance.getExperienceGainsGlobalMultiplier())
+                .thenReturn(1D);
+        when(experienceConfigInstance.getMultiplier(any(FormulaType.class)))
+                .thenReturn(1D);
+        // Conversion
+        when(experienceConfigInstance.getExpModifier())
+                .thenReturn(1D);
     }
 
     protected void cleanUpStaticMocks() {
@@ -316,5 +376,21 @@ public abstract class MMOTestEnvironment {
         if (mockedSoundManager != null) {
             mockedSoundManager.close();
         }
+        if (testDataFolder != null) {
+            deleteRecursively(testDataFolder);
+            testDataFolder = null;
+        }
+    }
+
+    private static void deleteRecursively(final File file) {
+        if (file.isDirectory()) {
+            final File[] children = file.listFiles();
+            if (children != null) {
+                for (final File child : children) {
+                    deleteRecursively(child);
+                }
+            }
+        }
+        file.delete();
     }
 }

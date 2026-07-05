@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -34,22 +37,28 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class FlatFileDatabaseManager implements DatabaseManager {
-    public static final String IGNORED = "IGNORED";
+
+    static final String IGNORED = "IGNORED";
     public static final String LEGACY_INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_'";
-    private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> leaderboardMap = new EnumMap<>(
-            PrimarySkillType.class);
+
+    private static final Object fileWritingLock = new Object();
+    private static final String LINE_ENDING = "\r\n";
+
+    private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> leaderboardMap =
+            new EnumMap<>(PrimarySkillType.class);
+
     private @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
-    private long lastUpdate = 0;
+    private long lastUpdate = 0L;
+
     private final @NotNull String usersFilePath;
+    private final @NotNull File usersFile;
     private final @NotNull Logger logger;
     private final long purgeTime;
     private final int startingLevel;
-    private final boolean testing;
 
-    private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
-    private final @NotNull File usersFile;
-    private static final Object fileWritingLock = new Object();
+    private static final long UPDATE_WAIT_TIME = 600_000L; // 10 minutes
 
+    // Flatfile indices
     public static final int USERNAME_INDEX = 0;
     public static final int SKILLS_MINING = 1;
     public static final int EXP_MINING = 4;
@@ -101,8 +110,75 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public static final int EXP_MACES = 52;
     public static final int SKILLS_MACES = 53;
     public static final int COOLDOWN_MACES = 54;
-    //Update this everytime new data is added
-    public static final int DATA_ENTRY_COUNT = COOLDOWN_MACES + 1;
+    public static final int EXP_SPEARS = 55;
+    public static final int SKILLS_SPEARS = 56;
+    public static final int COOLDOWN_SPEARS = 57;
+
+    // Update this everytime new data is added
+    public static final int DATA_ENTRY_COUNT = COOLDOWN_SPEARS + 1;
+
+    // Maps for cleaner parsing of skills / XP / cooldowns
+    private record SkillIndex(PrimarySkillType type, int index) {}
+    private record AbilityIndex(SuperAbilityType type, int index) {}
+
+    // All skill-level columns
+    private static final List<SkillIndex> SKILL_LEVEL_INDICES = List.of(
+            new SkillIndex(PrimarySkillType.ACROBATICS, SKILLS_ACROBATICS),
+            new SkillIndex(PrimarySkillType.TAMING, SKILLS_TAMING),
+            new SkillIndex(PrimarySkillType.MINING, SKILLS_MINING),
+            new SkillIndex(PrimarySkillType.REPAIR, SKILLS_REPAIR),
+            new SkillIndex(PrimarySkillType.WOODCUTTING, SKILLS_WOODCUTTING),
+            new SkillIndex(PrimarySkillType.UNARMED, SKILLS_UNARMED),
+            new SkillIndex(PrimarySkillType.HERBALISM, SKILLS_HERBALISM),
+            new SkillIndex(PrimarySkillType.EXCAVATION, SKILLS_EXCAVATION),
+            new SkillIndex(PrimarySkillType.ARCHERY, SKILLS_ARCHERY),
+            new SkillIndex(PrimarySkillType.SWORDS, SKILLS_SWORDS),
+            new SkillIndex(PrimarySkillType.AXES, SKILLS_AXES),
+            new SkillIndex(PrimarySkillType.FISHING, SKILLS_FISHING),
+            new SkillIndex(PrimarySkillType.ALCHEMY, SKILLS_ALCHEMY),
+            new SkillIndex(PrimarySkillType.CROSSBOWS, SKILLS_CROSSBOWS),
+            new SkillIndex(PrimarySkillType.TRIDENTS, SKILLS_TRIDENTS),
+            new SkillIndex(PrimarySkillType.MACES, SKILLS_MACES),
+            new SkillIndex(PrimarySkillType.SPEARS, SKILLS_SPEARS)
+    );
+
+    // All skill XP columns
+    private static final List<SkillIndex> SKILL_XP_INDICES = List.of(
+            new SkillIndex(PrimarySkillType.TAMING, EXP_TAMING),
+            new SkillIndex(PrimarySkillType.MINING, EXP_MINING),
+            new SkillIndex(PrimarySkillType.REPAIR, EXP_REPAIR),
+            new SkillIndex(PrimarySkillType.WOODCUTTING, EXP_WOODCUTTING),
+            new SkillIndex(PrimarySkillType.UNARMED, EXP_UNARMED),
+            new SkillIndex(PrimarySkillType.HERBALISM, EXP_HERBALISM),
+            new SkillIndex(PrimarySkillType.EXCAVATION, EXP_EXCAVATION),
+            new SkillIndex(PrimarySkillType.ARCHERY, EXP_ARCHERY),
+            new SkillIndex(PrimarySkillType.SWORDS, EXP_SWORDS),
+            new SkillIndex(PrimarySkillType.AXES, EXP_AXES),
+            new SkillIndex(PrimarySkillType.ACROBATICS, EXP_ACROBATICS),
+            new SkillIndex(PrimarySkillType.FISHING, EXP_FISHING),
+            new SkillIndex(PrimarySkillType.ALCHEMY, EXP_ALCHEMY),
+            new SkillIndex(PrimarySkillType.CROSSBOWS, EXP_CROSSBOWS),
+            new SkillIndex(PrimarySkillType.TRIDENTS, EXP_TRIDENTS),
+            new SkillIndex(PrimarySkillType.MACES, EXP_MACES),
+            new SkillIndex(PrimarySkillType.SPEARS, EXP_SPEARS)
+    );
+
+    // All ability cooldown columns
+    private static final List<AbilityIndex> ABILITY_COOLDOWN_INDICES = List.of(
+            new AbilityIndex(SuperAbilityType.SUPER_BREAKER, COOLDOWN_SUPER_BREAKER),
+            new AbilityIndex(SuperAbilityType.TREE_FELLER, COOLDOWN_TREE_FELLER),
+            new AbilityIndex(SuperAbilityType.BERSERK, COOLDOWN_BERSERK),
+            new AbilityIndex(SuperAbilityType.GREEN_TERRA, COOLDOWN_GREEN_TERRA),
+            new AbilityIndex(SuperAbilityType.GIGA_DRILL_BREAKER, COOLDOWN_GIGA_DRILL_BREAKER),
+            new AbilityIndex(SuperAbilityType.EXPLOSIVE_SHOT, COOLDOWN_ARCHERY),
+            new AbilityIndex(SuperAbilityType.SERRATED_STRIKES, COOLDOWN_SERRATED_STRIKES),
+            new AbilityIndex(SuperAbilityType.SKULL_SPLITTER, COOLDOWN_SKULL_SPLITTER),
+            new AbilityIndex(SuperAbilityType.BLAST_MINING, COOLDOWN_BLAST_MINING),
+            new AbilityIndex(SuperAbilityType.SUPER_SHOTGUN, COOLDOWN_SUPER_SHOTGUN),
+            new AbilityIndex(SuperAbilityType.TRIDENTS_SUPER_ABILITY, COOLDOWN_TRIDENTS),
+            new AbilityIndex(SuperAbilityType.MACES_SUPER_ABILITY, COOLDOWN_MACES),
+            new AbilityIndex(SuperAbilityType.SPEARS_SUPER_ABILITY, COOLDOWN_SPEARS)
+    );
 
     FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime,
             int startingLevel, boolean testing) {
@@ -111,7 +187,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         this.logger = logger;
         this.purgeTime = purgeTime;
         this.startingLevel = startingLevel;
-        this.testing = testing;
 
         if (!usersFile.exists()) {
             initEmptyDB();
@@ -120,467 +195,309 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         if (!testing) {
             List<FlatFileDataFlag> flatFileDataFlags = checkFileHealthAndStructure();
 
-            if (flatFileDataFlags != null) {
-                if (!flatFileDataFlags.isEmpty()) {
-                    logger.info("Detected " + flatFileDataFlags.size()
-                            + " data entries which need correction.");
-                }
+            if (flatFileDataFlags != null && !flatFileDataFlags.isEmpty()) {
+                logger.info("Detected " + flatFileDataFlags.size()
+                        + " data entries which need correction.");
             }
 
             updateLeaderboards();
         }
     }
 
-    FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime,
+    FlatFileDatabaseManager(@NotNull String usersFilePath,
+            @NotNull Logger logger,
+            long purgeTime,
             int startingLevel) {
         this(new File(usersFilePath), logger, purgeTime, startingLevel, false);
     }
 
+    // ------------------------------------------------------------------------
+    // Purge & cleanup
+    // ------------------------------------------------------------------------
 
     public int purgePowerlessUsers() {
         int purgedUsers = 0;
 
         LogUtils.debug(logger, "Purging powerless users...");
 
-        BufferedReader in = null;
-        FileWriter out = null;
-
         synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
+            StringBuilder writer = new StringBuilder();
 
+            try (BufferedReader in = newBufferedReader()) {
+                String line;
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
                     Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
 
-                    boolean powerless = true;
-                    for (int skill : skills.values()) {
-                        if (skill != 0) {
-                            powerless = false;
-                            break;
-                        }
-                    }
+                    boolean powerless = skills.values().stream().allMatch(skill -> skill == 0);
 
-                    // If they're still around, rewrite them to the file.
                     if (!powerless) {
-                        writer.append(line).append("\r\n");
+                        writer.append(line).append(LINE_ENDING);
                     } else {
                         purgedUsers++;
                     }
                 }
-
-                // Write the new file
-                out = new FileWriter(usersFilePath);
-                out.write(writer.toString());
             } catch (IOException e) {
                 logger.severe("Exception while reading " + usersFilePath
                         + " (Are you sure you formatted it correctly?)" + e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
             }
+
+            writeStringToFileSafely(writer.toString());
         }
 
         logger.info("Purged " + purgedUsers + " users from the database.");
         return purgedUsers;
     }
 
-    //TODO: Test this
     public void purgeOldUsers() {
-        int removedPlayers = 0;
+        int[] removedPlayers = {0};
         long currentTime = System.currentTimeMillis();
 
         LogUtils.debug(logger, "Purging old users...");
 
-        BufferedReader in = null;
-        FileWriter out = null;
+        rewriteUsersFile(line -> {
+            final FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
+            if (row == null) {
+                // Comment / empty / malformed: keep as-is
+                return line;
+            }
 
-        // This code is O(n) instead of O(n²)
-        synchronized (fileWritingLock) {
+            String[] data = row.fields();
+            if (data.length <= UUID_INDEX) {
+                // Not enough fields; preserve line
+                return line;
+            }
+
+            String uuidString = data[UUID_INDEX];
+            UUID uuid = parseUuidOrNull(uuidString);
+
+            long lastPlayed = 0L;
+            boolean rewrite = false;
+
             try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
+                lastPlayed = Long.parseLong(data[OVERHAUL_LAST_LOGIN]);
+            } catch (NumberFormatException e) {
+                logger.log(Level.SEVERE,
+                        "Could not parse last played time for user with UUID " + uuidString
+                                + ", attempting to correct...", e);
+            }
 
-                while ((line = in.readLine()) != null) {
-                    String[] character = line.split(":");
-                    String uuidString = character[UUID_INDEX];
-                    UUID uuid = UUID.fromString(uuidString);
-                    long lastPlayed = 0;
-                    boolean rewrite = false;
-
-                    try {
-                        lastPlayed = Long.parseLong(character[OVERHAUL_LAST_LOGIN]);
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (lastPlayed == -1) {
-                        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(uuid);
-
-                        if (player.getLastPlayed() != 0) {
-                            lastPlayed = player.getLastPlayed();
-                            rewrite = true;
-                        }
-                    }
-
-                    if (lastPlayed < 1 && (currentTime - lastPlayed > purgeTime)) {
-                        removedPlayers++;
-                    } else {
-                        if (rewrite) {
-                            // Rewrite their data with a valid time
-                            character[OVERHAUL_LAST_LOGIN] = Long.toString(lastPlayed);
-                            String newLine = org.apache.commons.lang3.StringUtils.join(character,
-                                    ":");
-                            writer.append(newLine).append("\r\n");
-                        } else {
-                            writer.append(line).append("\r\n");
-                        }
-                    }
-                }
-
-                // Write the new file
-                out = new FileWriter(usersFilePath);
-                out.write(writer.toString());
-
-                if (testing) {
-                    System.out.println(writer);
-                }
-            } catch (IOException e) {
-                logger.severe("Exception while reading " + usersFilePath
-                        + " (Are you sure you formatted it correctly?)" + e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
+            if (lastPlayed == -1 && uuid != null) {
+                OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(uuid);
+                if (player.getLastPlayed() != 0) {
+                    lastPlayed = player.getLastPlayed();
+                    rewrite = true;
                 }
             }
-        }
 
-        logger.info("Purged " + removedPlayers + " users from the database.");
+            if (lastPlayed < 1 && (currentTime - lastPlayed > purgeTime)) {
+                removedPlayers[0]++;
+                return null; // drop this user
+            }
+
+            if (rewrite) {
+                data[OVERHAUL_LAST_LOGIN] = Long.toString(lastPlayed);
+                return org.apache.commons.lang3.StringUtils.join(data, ":");
+            }
+
+            return line;
+        });
+
+        logger.info("Purged " + removedPlayers[0] + " users from the database.");
     }
 
     public boolean removeUser(String playerName, UUID uuid) {
-        //NOTE: UUID is unused for FlatFile for this interface implementation
-        boolean worked = false;
+        // NOTE: UUID is unused for FlatFile for this interface implementation
+        final String targetName = playerName;
+        final boolean[] worked = {false};
 
-        BufferedReader in = null;
-        FileWriter out = null;
-
-        synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
-
-                while ((line = in.readLine()) != null) {
-                    // Write out the same file but when we get to the player we want to remove, we skip his line.
-                    if (!worked && line.split(":")[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                        logger.info("User found, removing...");
-                        worked = true;
-                        continue; // Skip the player
-                    }
-
-                    writer.append(line).append("\r\n");
-                }
-
-                out = new FileWriter(usersFilePath); // Write out the new file
-                out.write(writer.toString());
-            } catch (Exception e) {
-                logger.severe("Exception while reading " + usersFilePath
-                        + " (Are you sure you formatted it correctly?)" + e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+        rewriteUsersFile(line -> {
+            FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
+            if (row == null) {
+                return line; // comments / malformed stay
             }
-        }
+
+            if (!worked[0] && row.username().equalsIgnoreCase(targetName)) {
+                logger.info("User found, removing...");
+                worked[0] = true;
+                return null; // drop this line
+            }
+
+            return line;
+        });
 
         Misc.profileCleanup(playerName);
-
-        return worked;
+        return worked[0];
     }
 
     @Override
     public void cleanupUser(UUID uuid) {
-        //Not used in FlatFile
+        // Not used in FlatFile
     }
+
+    // ------------------------------------------------------------------------
+    // Save / load users
+    // ------------------------------------------------------------------------
 
     public boolean saveUser(@NotNull PlayerProfile profile) {
         String playerName = profile.getPlayerName();
         UUID uuid = profile.getUniqueId();
 
-        BufferedReader in = null;
-        FileWriter out = null;
         boolean corruptDataFound = false;
 
         synchronized (fileWritingLock) {
-            try {
-                // Open the file
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
+            StringBuilder writer = new StringBuilder();
 
+            try (BufferedReader in = newBufferedReader()) {
+                String line;
                 boolean wroteUser = false;
-                // While not at the end of the file
+
                 while ((line = in.readLine()) != null) {
                     if (line.startsWith("#")) {
-                        writer.append(line).append("\r\n");
+                        writer.append(line).append(LINE_ENDING);
                         continue;
                     }
 
-                    //Check for incomplete or corrupted data
                     if (!line.contains(":")) {
-
-                        if (!corruptDataFound) {
-                            logger.severe(
-                                    "mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
-                            corruptDataFound = true;
-                        }
-
+                        corruptDataFound = logCorruptOnce(corruptDataFound);
                         continue;
                     }
 
                     String[] splitData = line.split(":");
 
-                    //This would be rare, but check the splitData for having enough entries to contain a UUID
-                    if (splitData.length
-                            < UUID_INDEX) { //UUID have been in mcMMO DB for a very long time so any user without
-
-                        if (!corruptDataFound) {
-                            logger.severe(
-                                    "mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
-                            corruptDataFound = true;
-                        }
-
+                    // Not enough entries to even contain a UUID
+                    if (splitData.length < UUID_INDEX) {
+                        corruptDataFound = logCorruptOnce(corruptDataFound);
                         continue;
                     }
 
-                    if (!(uuid != null
-                            && splitData[UUID_INDEX].equalsIgnoreCase(uuid.toString()))
-                            && !splitData[USERNAME_INDEX].equalsIgnoreCase(playerName)) {
-                        writer.append(line)
-                                .append("\r\n"); //Not the user so write it to file and move on
+                    boolean uuidMatches = uuid != null
+                            && splitData.length > UUID_INDEX
+                            && splitData[UUID_INDEX].equalsIgnoreCase(uuid.toString());
+                    boolean nameMatches = splitData.length > USERNAME_INDEX
+                            && splitData[USERNAME_INDEX].equalsIgnoreCase(playerName);
+
+                    if (!uuidMatches && !nameMatches) {
+                        // not the user, keep the line
+                        writer.append(line).append(LINE_ENDING);
                     } else {
-                        //User found
                         writeUserToLine(profile, writer);
                         wroteUser = true;
                     }
                 }
 
-                /*
-                 * If we couldn't find the user in the DB we need to add him
-                 */
                 if (!wroteUser) {
                     writeUserToLine(profile, writer);
                 }
 
-                // Write the new file
-                out = new FileWriter(usersFilePath);
-                out.write(writer.toString());
+                writeStringToFileSafely(writer.toString());
                 return true;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while reading " + usersFilePath, e);
                 return false;
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
             }
         }
     }
 
-    public void writeUserToLine(@NotNull PlayerProfile profile, @NotNull Appendable appendable)
-            throws IOException {
-        appendable.append(profile.getPlayerName()).append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MINING)))
-                .append(":");
-        appendable.append(IGNORED).append(":");
-        appendable.append(IGNORED).append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.MINING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.WOODCUTTING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.REPAIR)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.UNARMED)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.HERBALISM)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.EXCAVATION)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ARCHERY)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.SWORDS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.AXES))).append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ACROBATICS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.REPAIR)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.UNARMED)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.HERBALISM)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.EXCAVATION)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ARCHERY)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.SWORDS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.AXES)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ACROBATICS)))
-                .append(":");
-        appendable.append(IGNORED).append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TAMING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TAMING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BERSERK)))
-                .append(":");
-        appendable.append(
-                        String.valueOf(profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.TREE_FELLER)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER)))
-                .append(":");
-        appendable.append(IGNORED).append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.FISHING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.FISHING)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.BLAST_MINING)))
-                .append(":");
-        appendable.append(IGNORED).append(":"); //Legacy last login
-        appendable.append(IGNORED).append(":"); //mob health bar
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.ALCHEMY)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY)))
-                .append(":");
-        appendable.append(profile.getUniqueId() != null ? profile.getUniqueId().toString() : "NULL")
-                .append(":");
-        appendable.append(String.valueOf(profile.getScoreboardTipsShown())).append(":");
-        appendable.append(String.valueOf(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getLastLogin())).append(":"); //overhaul last login
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.CROSSBOWS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.TRIDENTS)))
-                .append(":");
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.TRIDENTS)))
-                .append(":");
-        //     public static final int COOLDOWN_SUPER_SHOTGUN = 49;
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.SUPER_SHOTGUN)))
-                .append(":");
-        //    public static final int COOLDOWN_TRIDENTS = 50;
-        appendable.append(
-                        String.valueOf(profile.getAbilityDATS(SuperAbilityType.TRIDENTS_SUPER_ABILITY)))
-                .append(":");
-        //    public static final int COOLDOWN_ARCHERY = 51;
-        appendable.append(String.valueOf(profile.getAbilityDATS(SuperAbilityType.EXPLOSIVE_SHOT)))
-                .append(":");
-        //    public static final int EXP_MACES = 52;
-        appendable.append(String.valueOf(profile.getSkillXpLevel(PrimarySkillType.MACES)))
-                .append(":");
-        //    public static final int SKILLS_MACES = 53;
-        appendable.append(String.valueOf(profile.getSkillLevel(PrimarySkillType.MACES)))
-                .append(":");
-        //    public static final int COOLDOWN_MACES = 54;
-        appendable.append(
-                        String.valueOf(profile.getAbilityDATS(SuperAbilityType.MACES_SUPER_ABILITY)))
-                .append(":");
-        appendable.append("\r\n");
-    }
-
-    public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType,
-            int pageNumber, int statsPerPage) throws InvalidSkillException {
-        //Fix for a plugin that people are using that is throwing SQL errors
-        if (primarySkillType != null && SkillTools.isChildSkill(primarySkillType)) {
+    private boolean logCorruptOnce(boolean alreadyLogged) {
+        if (!alreadyLogged) {
             logger.severe(
-                    "A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
-            throw new InvalidSkillException(
-                    "A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
+                    "mcMMO found some unexpected or corrupted data in mcmmo.users and is removing it, it is possible some data has been lost.");
         }
-
-        updateLeaderboards();
-        List<PlayerStat> statsList =
-                primarySkillType == null ? powerLevels : leaderboardMap.get(primarySkillType);
-        int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
-
-        return statsList.subList(Math.min(fromIndex, statsList.size()),
-                Math.min(fromIndex + statsPerPage, statsList.size()));
+        return true;
     }
 
-    public @NotNull HashMap<PrimarySkillType, Integer> readRank(String playerName) {
-        updateLeaderboards();
+    public void writeUserToLine(@NotNull PlayerProfile profile,
+            @NotNull Appendable out) throws IOException {
 
-        HashMap<PrimarySkillType, Integer> skills = new HashMap<>();
+        // Username
+        appendString(out, profile.getPlayerName());
 
-        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-            skills.put(skill, getPlayerRank(playerName, leaderboardMap.get(skill)));
-        }
+        // MINING level / placeholders / XP
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.MINING));
+        appendIgnored(out);  // old data
+        appendIgnored(out);  // old data
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.MINING));
 
-        skills.put(null, getPlayerRank(playerName, powerLevels));
+        // WOODCUTTING
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.WOODCUTTING));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.WOODCUTTING));
 
-        return skills;
+        // REPAIR / UNARMED / HERBALISM / EXCAVATION / ARCHERY / SWORDS / AXES / ACROBATICS
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.REPAIR));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.UNARMED));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.HERBALISM));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.EXCAVATION));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.ARCHERY));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.SWORDS));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.AXES));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.ACROBATICS));
+
+        // XP for same block
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.REPAIR));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.UNARMED));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.HERBALISM));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.EXCAVATION));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.ARCHERY));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.SWORDS));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.AXES));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.ACROBATICS));
+
+        // Placeholder, TAMING, TAMING XP
+        appendIgnored(out);
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.TAMING));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.TAMING));
+
+        // Ability cooldowns
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.BERSERK));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.TREE_FELLER));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER));
+
+        // Placeholder
+        appendIgnored(out);
+
+        // FISHING
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.FISHING));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.FISHING));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.BLAST_MINING));
+
+        // Legacy / mob health bar
+        appendIgnored(out); // Legacy last login
+        appendIgnored(out); // Mob health bar
+
+        // ALCHEMY
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.ALCHEMY));
+
+        // UUID
+        appendString(out, profile.getUniqueId() != null ? profile.getUniqueId().toString() : "NULL");
+
+        // Misc data
+        appendInt(out, profile.getScoreboardTipsShown());
+        appendLong(out, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
+        appendLong(out, profile.getLastLogin());
+
+        // CROSSBOWS / TRIDENTS / MACES / SPEARS XP + levels + ability cooldowns
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.CROSSBOWS));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.TRIDENTS));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.TRIDENTS));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.SUPER_SHOTGUN));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.TRIDENTS_SUPER_ABILITY));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.EXPLOSIVE_SHOT));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.MACES));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.MACES));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.MACES_SUPER_ABILITY));
+        appendInt(out, profile.getSkillXpLevel(PrimarySkillType.SPEARS));
+        appendInt(out, profile.getSkillLevel(PrimarySkillType.SPEARS));
+        appendLong(out, profile.getAbilityDATS(SuperAbilityType.SPEARS_SUPER_ABILITY));
+
+        out.append(LINE_ENDING);
     }
 
     public @NotNull PlayerProfile newUser(@NotNull Player player) {
@@ -591,25 +508,23 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         PlayerProfile playerProfile = new PlayerProfile(playerName, uuid, true, startingLevel);
 
         synchronized (fileWritingLock) {
-            try (BufferedReader bufferedReader = new BufferedReader(
-                    new FileReader(usersFilePath))) {
-                StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
+            try (BufferedReader bufferedReader = newBufferedReader()) {
                 String line;
-
-                //Build up the file
                 while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line).append("\r\n");
-                }
-
-                try (FileWriter fileWriter = new FileWriter(usersFile)) {
-                    writeUserToLine(playerProfile, stringBuilder);
-                    fileWriter.write(stringBuilder.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    stringBuilder.append(line).append(LINE_ENDING);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Unexpected Exception while reading " + usersFilePath, e);
+            }
+
+            try (FileWriter fileWriter = new FileWriter(usersFile)) {
+                writeUserToLine(playerProfile, stringBuilder);
+                fileWriter.write(stringBuilder.toString());
+            } catch (Exception e) {
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while writing to " + usersFilePath, e);
             }
         }
 
@@ -628,8 +543,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return processUserQuery(getUserQuery(uuid, null));
     }
 
-    private @NotNull UserQuery getUserQuery(@Nullable UUID uuid, @Nullable String playerName)
-            throws NullPointerException {
+    private @NotNull UserQuery getUserQuery(@Nullable UUID uuid,
+            @Nullable String playerName) {
         boolean hasName = playerName != null && !playerName.equalsIgnoreCase("null");
 
         if (hasName && uuid != null) {
@@ -644,15 +559,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    /**
-     * Find and load a player by UUID/Name If the name isn't null and doesn't match the name in the
-     * DB, the players name is then replaced/updated
-     *
-     * @param userQuery the query
-     * @return a profile with the targets data or an unloaded profile if no data was found
-     */
-    private @NotNull PlayerProfile processUserQuery(@NotNull UserQuery userQuery)
-            throws RuntimeException {
+    private @NotNull PlayerProfile processUserQuery(@NotNull UserQuery userQuery) {
         return switch (userQuery.getType()) {
             case UUID_AND_NAME -> queryByUUIDAndName((UserQueryFull) userQuery);
             case UUID -> queryByUUID((UserQueryUUID) userQuery);
@@ -662,12 +569,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     private @NotNull PlayerProfile queryByName(@NotNull UserQueryName userQuery) {
         String playerName = userQuery.getName();
-        BufferedReader in = null;
 
         synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
+            try (BufferedReader in = newBufferedReader()) {
                 String line;
 
                 while ((line = in.readLine()) != null) {
@@ -675,57 +579,39 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         continue;
                     }
 
-                    // Find if the line contains the player we want.
                     String[] rawSplitData = line.split(":");
 
-
-                    /* Don't read corrupt data */
                     if (rawSplitData.length < (USERNAME_INDEX + 1)) {
                         continue;
                     }
 
-                    // we found the player
                     if (playerName.equalsIgnoreCase(rawSplitData[USERNAME_INDEX])) {
                         return loadFromLine(rawSplitData);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                // I have no idea why it's necessary to inline tryClose() here, but it removes
-                // a resource leak warning, and I'm trusting the compiler on this one.
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while reading " + usersFilePath, e);
             }
         }
 
-        //Return a new blank profile
-        return new PlayerProfile(playerName, new UUID(0, 0), startingLevel);
+        return new PlayerProfile(playerName, new UUID(0L, 0L), startingLevel);
     }
 
     private @NotNull PlayerProfile queryByUUID(@NotNull UserQueryUUID userQuery) {
-        BufferedReader in = null;
         UUID uuid = userQuery.getUUID();
 
         synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
+            try (BufferedReader in = newBufferedReader()) {
                 String line;
 
                 while ((line = in.readLine()) != null) {
                     if (line.startsWith("#")) {
                         continue;
                     }
-                    // Find if the line contains the player we want.
+
                     String[] rawSplitData = line.split(":");
 
-                    /* Don't read corrupt data */
                     if (rawSplitData.length < (UUID_INDEX + 1)) {
                         continue;
                     }
@@ -736,52 +622,33 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             return loadFromLine(rawSplitData);
                         }
                     } catch (Exception e) {
-                        if (testing) {
-                            e.printStackTrace();
-                        }
+                        // Ignore malformed UUIDs
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                // I have no idea why it's necessary to inline tryClose() here, but it removes
-                // a resource leak warning, and I'm trusting the compiler on this one.
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while reading " + usersFilePath, e);
             }
         }
-
-        /*
-         * No match was found in the file
-         */
 
         return grabUnloadedProfile(uuid, "Player-Not-Found=" + uuid);
     }
 
     private @NotNull PlayerProfile queryByUUIDAndName(@NotNull UserQueryFull userQuery) {
-        BufferedReader in = null;
         String playerName = userQuery.getName();
         UUID uuid = userQuery.getUUID();
 
         synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
+            try (BufferedReader in = newBufferedReader()) {
                 String line;
 
                 while ((line = in.readLine()) != null) {
                     if (line.startsWith("#")) {
                         continue;
                     }
-                    // Find if the line contains the player we want.
+
                     String[] rawSplitData = line.split(":");
 
-                    /* Don't read corrupt data */
                     if (rawSplitData.length < (UUID_INDEX + 1)) {
                         continue;
                     }
@@ -789,74 +656,54 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     try {
                         UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
                         if (fromDataUUID.equals(uuid)) {
-                            //Matched UUID, now check if name matches
                             String dbPlayerName = rawSplitData[USERNAME_INDEX];
-
                             boolean matchingName = dbPlayerName.equalsIgnoreCase(playerName);
 
                             if (!matchingName) {
                                 logger.warning(
                                         "When loading user: " + playerName + " with UUID of ("
-                                                + uuid
-                                                + ") we found a mismatched name, the name in the DB will be replaced (DB name: "
+                                                + uuid + ") we found a mismatched name, the name in the DB will be replaced (DB name: "
                                                 + dbPlayerName + ")");
-                                //logger.info("Name updated for player: " + rawSplitData[USERNAME_INDEX] + " => " + playerName);
                                 rawSplitData[USERNAME_INDEX] = playerName;
                             }
 
-                            //TODO: Logic to replace name here
                             return loadFromLine(rawSplitData);
                         }
                     } catch (Exception e) {
-                        if (testing) {
-                            e.printStackTrace();
-                        }
+                        // Ignore malformed UUIDs
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                // I have no idea why it's necessary to inline tryClose() here, but it removes
-                // a resource leak warning, and I'm trusting the compiler on this one.
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+            } catch (IOException e) {
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while reading " + usersFilePath, e);
             }
         }
 
-        /*
-         * No match was found in the file
-         */
-
-        return grabUnloadedProfile(uuid, playerName); //Create an empty new profile and return
+        return grabUnloadedProfile(uuid, playerName);
     }
 
     private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid,
             @Nullable String playerName) {
-        if (playerName == null) {
-            playerName = ""; //No name for you boy!
-        }
-
-        return new PlayerProfile(playerName, uuid, 0);
+        String name = (playerName == null) ? "" : playerName;
+        return new PlayerProfile(name, uuid, 0);
     }
 
+    // ------------------------------------------------------------------------
+    // Conversion / UUID updates
+    // ------------------------------------------------------------------------
+
     public void convertUsers(DatabaseManager destination) {
-        BufferedReader in = null;
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
 
         synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
+            try (BufferedReader reader = newBufferedReader()) {
                 String line;
 
-                while ((line = in.readLine()) != null) {
-                    if (line.startsWith("#")) {
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+
+                    if (line.isEmpty() || line.startsWith("#")) {
                         continue;
                     }
 
@@ -865,390 +712,237 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     try {
                         destination.saveUser(loadFromLine(character));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        String username = (character.length > USERNAME_INDEX)
+                                ? character[USERNAME_INDEX]
+                                : "<unknown username>";
+                        logger.log(Level.SEVERE,
+                                "Could not convert user from FlatFile to SQL DB: " + username, e);
                     }
+
                     convertedUsers++;
                     Misc.printProgress(convertedUsers, progressInterval, startMillis);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+            } catch (IOException e) {
+                logger.log(Level.SEVERE,
+                        "Failed to convert users from FlatFile to SQL DB", e);
             }
         }
     }
 
     public boolean saveUserUUID(String userName, UUID uuid) {
         boolean worked = false;
-
-        int i = 0;
-        BufferedReader in = null;
-        FileWriter out = null;
+        int entriesWritten = 0;
 
         synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
+            StringBuilder writer = new StringBuilder();
+
+            try (BufferedReader in = newBufferedReader()) {
                 String line;
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    if (!worked && character[USERNAME_INDEX].equalsIgnoreCase(userName)) {
+
+                    if (!worked && character.length > USERNAME_INDEX
+                            && character[USERNAME_INDEX].equalsIgnoreCase(userName)) {
                         if (character.length < 42) {
                             logger.severe("Could not update UUID for " + userName + "!");
                             logger.severe("Database entry is invalid.");
-                            continue;
+                            // still append original line
+                        } else {
+                            line = line.replace(character[UUID_INDEX], uuid.toString());
+                            worked = true;
                         }
-
-                        line = line.replace(character[UUID_INDEX], uuid.toString());
-                        worked = true;
                     }
 
-                    i++;
-                    writer.append(line).append("\r\n");
+                    entriesWritten++;
+                    writer.append(line).append(LINE_ENDING);
                 }
-
-                out = new FileWriter(usersFilePath); // Write out the new file
-                out.write(writer.toString());
             } catch (Exception e) {
                 logger.severe("Exception while reading " + usersFilePath
                         + " (Are you sure you formatted it correctly?)" + e);
-            } finally {
-                LogUtils.debug(logger, i + " entries written while saving UUID for " + userName);
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
             }
+
+            LogUtils.debug(logger,
+                    entriesWritten + " entries written while saving UUID for " + userName);
+            writeStringToFileSafely(writer.toString());
         }
 
         return worked;
     }
 
     public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
-        BufferedReader in = null;
-        FileWriter out = null;
-        int i = 0;
+        int[] entriesWritten = {0};
 
-        synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
+        rewriteUsersFile(line -> {
+            FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
+            if (row == null) {
+                entriesWritten[0]++;
+                return line; // comments / empty / malformed unchanged
+            }
 
-                while (((line = in.readLine()) != null)) {
-                    String[] character = line.split(":");
-                    if (!fetchedUUIDs.isEmpty() && fetchedUUIDs.containsKey(
-                            character[USERNAME_INDEX])) {
-                        if (character.length < 42) {
-                            logger.severe(
-                                    "Could not update UUID for " + character[USERNAME_INDEX] + "!");
-                            logger.severe("Database entry is invalid.");
-                            continue;
-                        }
+            String[] character = row.fields();
+            String username = row.username();
 
-                        character[UUID_INDEX] = fetchedUUIDs.remove(character[USERNAME_INDEX])
-                                .toString();
-                        line = org.apache.commons.lang3.StringUtils.join(character, ":") + ":";
-                    }
-
-                    i++;
-                    writer.append(line).append("\r\n");
-                }
-
-                out = new FileWriter(usersFilePath); // Write out the new file
-                out.write(writer.toString());
-            } catch (Exception e) {
-                logger.severe("Exception while reading " + usersFilePath
-                        + " (Are you sure you formatted it correctly?)" + e);
-            } finally {
-                LogUtils.debug(logger, i + " entries written while saving UUID batch");
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
+            if (username != null && fetchedUUIDs.containsKey(username)) {
+                if (character.length < 42) {
+                    logger.severe("Could not update UUID for " + username + "!");
+                    logger.severe("Database entry is invalid.");
+                } else {
+                    character[UUID_INDEX] = fetchedUUIDs.remove(username).toString();
+                    String updated = org.apache.commons.lang3.StringUtils.join(character, ":") + ":";
+                    entriesWritten[0]++;
+                    return updated;
                 }
             }
-        }
 
+            entriesWritten[0]++;
+            return line;
+        });
+
+        LogUtils.debug(logger,
+                entriesWritten[0] + " entries written while saving UUID batch");
         return true;
     }
 
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<>();
-        BufferedReader in = null;
 
-        synchronized (fileWritingLock) {
-            try {
-                // Open the user file
-                in = new BufferedReader(new FileReader(usersFilePath));
-                String line;
-
-                while ((line = in.readLine()) != null) {
-                    String[] character = line.split(":");
-                    users.add(character[USERNAME_INDEX]);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
+        withUsersFileLines(line -> {
+            String[] character = line.split(":");
+            if (character.length > USERNAME_INDEX) {
+                users.add(character[USERNAME_INDEX]);
             }
-        }
+        });
+
         return users;
     }
 
-    /**
-     * Update the leader boards.
-     */
+    // ------------------------------------------------------------------------
+    // Leaderboards
+    // ------------------------------------------------------------------------
+
     public @NotNull LeaderboardStatus updateLeaderboards() {
-        // Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
-        if (System.currentTimeMillis() < lastUpdate + UPDATE_WAIT_TIME) {
+        long now = System.currentTimeMillis();
+        if (now < lastUpdate + UPDATE_WAIT_TIME) {
             return LeaderboardStatus.TOO_SOON_TO_UPDATE;
         }
 
-        lastUpdate = System.currentTimeMillis(); // Log when the last update was run
+        lastUpdate = now;
 
+        // Power level leaderboard
         TreeSet<PlayerStat> powerLevelStats = new TreeSet<>();
-        TreeSet<PlayerStat> mining = new TreeSet<>();
-        TreeSet<PlayerStat> woodcutting = new TreeSet<>();
-        TreeSet<PlayerStat> herbalism = new TreeSet<>();
-        TreeSet<PlayerStat> excavation = new TreeSet<>();
-        TreeSet<PlayerStat> acrobatics = new TreeSet<>();
-        TreeSet<PlayerStat> repair = new TreeSet<>();
-        TreeSet<PlayerStat> swords = new TreeSet<>();
-        TreeSet<PlayerStat> axes = new TreeSet<>();
-        TreeSet<PlayerStat> archery = new TreeSet<>();
-        TreeSet<PlayerStat> unarmed = new TreeSet<>();
-        TreeSet<PlayerStat> taming = new TreeSet<>();
-        TreeSet<PlayerStat> fishing = new TreeSet<>();
-        TreeSet<PlayerStat> alchemy = new TreeSet<>();
-        TreeSet<PlayerStat> crossbows = new TreeSet<>();
-        TreeSet<PlayerStat> tridents = new TreeSet<>();
-        TreeSet<PlayerStat> maces = new TreeSet<>();
 
-        BufferedReader in = null;
+        // Per-skill leaderboards
+        EnumMap<PrimarySkillType, TreeSet<PlayerStat>> perSkillSets =
+                new EnumMap<>(PrimarySkillType.class);
+
+        perSkillSets.put(PrimarySkillType.MINING,        new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.WOODCUTTING,   new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.REPAIR,        new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.UNARMED,       new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.HERBALISM,     new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.EXCAVATION,    new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.ARCHERY,       new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.SWORDS,        new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.AXES,          new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.ACROBATICS,    new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.TAMING,        new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.FISHING,       new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.ALCHEMY,       new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.CROSSBOWS,     new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.TRIDENTS,      new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.MACES,         new TreeSet<>());
+        perSkillSets.put(PrimarySkillType.SPEARS,        new TreeSet<>());
+
         String playerName = null;
-        // Read from the FlatFile database and fill our arrays with information
+
         synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
+            try (BufferedReader in = newBufferedReader()) {
                 String line;
-
                 while ((line = in.readLine()) != null) {
-
-                    if (line.startsWith("#")) {
-                        continue;
+                    FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
+                    if (row == null) {
+                        continue; // comment / empty / malformed
                     }
 
-                    String[] data = line.split(":");
-                    playerName = data[USERNAME_INDEX];
-                    int powerLevel = 0;
+                    playerName = row.username();
+                    String[] data = row.fields();
 
                     Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(data);
-
-                    powerLevel += putStat(acrobatics, playerName,
-                            skills.get(PrimarySkillType.ACROBATICS));
-                    powerLevel += putStat(alchemy, playerName,
-                            skills.get(PrimarySkillType.ALCHEMY));
-                    powerLevel += putStat(archery, playerName,
-                            skills.get(PrimarySkillType.ARCHERY));
-                    powerLevel += putStat(axes, playerName, skills.get(PrimarySkillType.AXES));
-                    powerLevel += putStat(excavation, playerName,
-                            skills.get(PrimarySkillType.EXCAVATION));
-                    powerLevel += putStat(fishing, playerName,
-                            skills.get(PrimarySkillType.FISHING));
-                    powerLevel += putStat(herbalism, playerName,
-                            skills.get(PrimarySkillType.HERBALISM));
-                    powerLevel += putStat(mining, playerName, skills.get(PrimarySkillType.MINING));
-                    powerLevel += putStat(repair, playerName, skills.get(PrimarySkillType.REPAIR));
-                    powerLevel += putStat(swords, playerName, skills.get(PrimarySkillType.SWORDS));
-                    powerLevel += putStat(taming, playerName, skills.get(PrimarySkillType.TAMING));
-                    powerLevel += putStat(unarmed, playerName,
-                            skills.get(PrimarySkillType.UNARMED));
-                    powerLevel += putStat(woodcutting, playerName,
-                            skills.get(PrimarySkillType.WOODCUTTING));
-                    powerLevel += putStat(crossbows, playerName,
-                            skills.get(PrimarySkillType.CROSSBOWS));
-                    powerLevel += putStat(tridents, playerName,
-                            skills.get(PrimarySkillType.TRIDENTS));
-                    powerLevel += putStat(maces, playerName, skills.get(PrimarySkillType.MACES));
-
+                    int powerLevel = addAllSkillStats(playerName, skills, perSkillSets);
                     putStat(powerLevelStats, playerName, powerLevel);
                 }
-            } catch (Exception e) {
-                logger.severe(
-                        "Exception while reading " + usersFilePath + " during user " + playerName
-                                + " (Are you sure you formatted it correctly?) " + e);
+            } catch (IOException e) {
+                logger.severe("Exception while reading " + usersFilePath + " during user "
+                        + playerName + " (Are you sure you formatted it correctly?) " + e);
                 return LeaderboardStatus.FAILED;
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
             }
-
         }
 
+        // Freeze current leaderboards as immutable lists
         powerLevels = List.copyOf(powerLevelStats);
-        leaderboardMap.put(PrimarySkillType.MINING, List.copyOf(mining));
-        leaderboardMap.put(PrimarySkillType.WOODCUTTING, List.copyOf(woodcutting));
-        leaderboardMap.put(PrimarySkillType.REPAIR, List.copyOf(repair));
-        leaderboardMap.put(PrimarySkillType.UNARMED, List.copyOf(unarmed));
-        leaderboardMap.put(PrimarySkillType.HERBALISM, List.copyOf(herbalism));
-        leaderboardMap.put(PrimarySkillType.EXCAVATION, List.copyOf(excavation));
-        leaderboardMap.put(PrimarySkillType.ARCHERY, List.copyOf(archery));
-        leaderboardMap.put(PrimarySkillType.SWORDS, List.copyOf(swords));
-        leaderboardMap.put(PrimarySkillType.AXES, List.copyOf(axes));
-        leaderboardMap.put(PrimarySkillType.ACROBATICS, List.copyOf(acrobatics));
-        leaderboardMap.put(PrimarySkillType.TAMING, List.copyOf(taming));
-        leaderboardMap.put(PrimarySkillType.FISHING, List.copyOf(fishing));
-        leaderboardMap.put(PrimarySkillType.ALCHEMY, List.copyOf(alchemy));
-        leaderboardMap.put(PrimarySkillType.CROSSBOWS, List.copyOf(crossbows));
-        leaderboardMap.put(PrimarySkillType.TRIDENTS, List.copyOf(tridents));
-        leaderboardMap.put(PrimarySkillType.MACES, List.copyOf(maces));
+
+        for (Map.Entry<PrimarySkillType, TreeSet<PlayerStat>> entry : perSkillSets.entrySet()) {
+            leaderboardMap.put(entry.getKey(), List.copyOf(entry.getValue()));
+        }
 
         return LeaderboardStatus.UPDATED;
     }
 
-    private void initEmptyDB() {
-        BufferedWriter bufferedWriter = null;
-        synchronized (fileWritingLock) {
-            try {
-                // Open the file to write the player
-                bufferedWriter = new BufferedWriter(new FileWriter(usersFilePath, true));
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
-                        "MM/dd/yyyy HH:mm");
-                LocalDateTime localDateTime = LocalDateTime.now();
-                bufferedWriter.append("# mcMMO Database created on ")
-                        .append(localDateTime.format(dateTimeFormatter))
-                        .append("\r\n"); //Empty file
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (bufferedWriter != null) {
-                    try {
-                        bufferedWriter.close();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                }
-            }
+    private int addAllSkillStats(String playerName,
+            Map<PrimarySkillType, Integer> skills,
+            Map<PrimarySkillType, TreeSet<PlayerStat>> perSkillSets) {
+        int powerLevel = 0;
+
+        for (Map.Entry<PrimarySkillType, TreeSet<PlayerStat>> entry : perSkillSets.entrySet()) {
+            PrimarySkillType skill = entry.getKey();
+            TreeSet<PlayerStat> set = entry.getValue();
+
+            int value = skills.getOrDefault(skill, 0);
+            powerLevel += putStat(set, playerName, value);
         }
+
+        return powerLevel;
     }
 
-    public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
-        ArrayList<FlatFileDataFlag> flagsFound = null;
-        LogUtils.debug(logger, "(" + usersFile.getPath() + ") Validating database file..");
-        FlatFileDataProcessor dataProcessor;
+    public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType,
+            int pageNumber,
+            int statsPerPage) throws InvalidSkillException {
 
-        if (usersFile.exists()) {
-            BufferedReader bufferedReader = null;
-            FileWriter fileWriter = null;
-
-            synchronized (fileWritingLock) {
-
-                dataProcessor = new FlatFileDataProcessor(logger);
-
-                try {
-                    String currentLine;
-                    String dbCommentDate = null;
-
-                    bufferedReader = new BufferedReader(new FileReader(usersFilePath));
-
-                    //Analyze the data
-                    while ((currentLine = bufferedReader.readLine()) != null) {
-                        //Commented lines
-                        if (currentLine.startsWith("#") && dbCommentDate
-                                == null) { //The first commented line in the file is likely to be our note about when the file was created
-                            dbCommentDate = currentLine;
-                            continue;
-                        }
-
-                        if (currentLine.isEmpty()) {
-                            continue;
-                        }
-
-                        //TODO: We are never passing empty lines, should we remove the flag for them?
-                        dataProcessor.processData(currentLine);
-                    }
-
-                    //Only update the file if needed
-                    if (!dataProcessor.getFlatFileDataFlags().isEmpty()) {
-                        flagsFound = new ArrayList<>(dataProcessor.getFlatFileDataFlags());
-                        logger.info("Updating FlatFile Database...");
-                        fileWriter = new FileWriter(usersFilePath);
-                        //Write data to file
-                        if (dbCommentDate != null) {
-                            fileWriter.write(dbCommentDate + "\r\n");
-                        }
-
-                        fileWriter.write(dataProcessor.processDataForSave().toString());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    closeResources(bufferedReader, fileWriter);
-                }
-            }
+        if (primarySkillType != null && SkillTools.isChildSkill(primarySkillType)) {
+            logger.severe(
+                    "A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
+            throw new InvalidSkillException(
+                    "A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
 
-        if (flagsFound == null || flagsFound.isEmpty()) {
-            return null;
-        } else {
-            return flagsFound;
+        updateLeaderboards();
+
+        List<PlayerStat> statsList =
+                (primarySkillType == null) ? powerLevels : leaderboardMap.get(primarySkillType);
+
+        if (statsList == null) {
+            return List.of();
         }
+
+        int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
+        int start = Math.min(fromIndex, statsList.size());
+        int end = Math.min(fromIndex + statsPerPage, statsList.size());
+
+        return statsList.subList(start, end);
     }
 
-    private void closeResources(BufferedReader bufferedReader, FileWriter fileWriter) {
-        if (bufferedReader != null) {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public @NotNull HashMap<PrimarySkillType, Integer> readRank(String playerName) {
+        updateLeaderboards();
+
+        HashMap<PrimarySkillType, Integer> skills = new HashMap<>();
+
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            skills.put(skill, getPlayerRank(playerName, leaderboardMap.get(skill)));
         }
 
-        if (fileWriter != null) {
-            try {
-                fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        skills.put(null, getPlayerRank(playerName, powerLevels));
+        return skills;
     }
 
     private Integer getPlayerRank(String playerName, List<PlayerStat> statsList) {
@@ -1257,15 +951,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         int currentPos = 1;
-
         for (PlayerStat stat : statsList) {
             if (stat.playerName().equalsIgnoreCase(playerName)) {
                 return currentPos;
             }
-
             currentPos++;
         }
-
         return null;
     }
 
@@ -1274,86 +965,118 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         return statValue;
     }
 
+    // ------------------------------------------------------------------------
+    // DB file creation / validation
+    // ------------------------------------------------------------------------
+
+    private void initEmptyDB() {
+        synchronized (fileWritingLock) {
+            try (BufferedWriter bufferedWriter =
+                    new BufferedWriter(new FileWriter(usersFilePath, true))) {
+
+                DateTimeFormatter dateTimeFormatter =
+                        DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+                LocalDateTime localDateTime = LocalDateTime.now();
+
+                bufferedWriter.append("# mcMMO Database created on ")
+                        .append(localDateTime.format(dateTimeFormatter))
+                        .append(LINE_ENDING);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while initializing " + usersFilePath, e);
+            }
+        }
+    }
+
+    public @Nullable List<FlatFileDataFlag> checkFileHealthAndStructure() {
+        ArrayList<FlatFileDataFlag> flagsFound = null;
+
+        LogUtils.debug(logger, "(" + usersFile.getPath() + ") Validating database file..");
+
+        if (!usersFile.exists()) {
+            return null;
+        }
+
+        synchronized (fileWritingLock) {
+            FlatFileDataProcessor dataProcessor = new FlatFileDataProcessor(logger);
+
+            String dbCommentDate = null;
+
+            try (BufferedReader bufferedReader = newBufferedReader()) {
+                String currentLine;
+
+                while ((currentLine = bufferedReader.readLine()) != null) {
+                    if (currentLine.startsWith("#") && dbCommentDate == null) {
+                        dbCommentDate = currentLine;
+                        continue;
+                    }
+
+                    if (currentLine.isEmpty()) {
+                        continue;
+                    }
+
+                    dataProcessor.processData(currentLine);
+                }
+            } catch (IOException e) {
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while validating " + usersFilePath, e);
+            }
+
+            if (!dataProcessor.getFlatFileDataFlags().isEmpty()) {
+                flagsFound = new ArrayList<>(dataProcessor.getFlatFileDataFlags());
+                logger.info("Updating FlatFile Database...");
+
+                try (FileWriter fileWriter = new FileWriter(usersFilePath)) {
+                    if (dbCommentDate != null) {
+                        fileWriter.write(dbCommentDate + LINE_ENDING);
+                    }
+                    fileWriter.write(dataProcessor.processDataForSave().toString());
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE,
+                            "Unexpected Exception while writing " + usersFilePath, e);
+                }
+            }
+        }
+
+        if (flagsFound == null || flagsFound.isEmpty()) {
+            return null;
+        }
+
+        return flagsFound;
+    }
+
+    // ------------------------------------------------------------------------
+    // Line parsing helpers
+    // ------------------------------------------------------------------------
+
     private PlayerProfile loadFromLine(@NotNull String[] character) {
-        Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);      // Skill levels
-        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(
-                PrimarySkillType.class);     // Skill & XP
-        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(
-                SuperAbilityType.class); // Ability & Cooldown
+        Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
+        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class);
+        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class);
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
-        int scoreboardTipsShown;
-        long lastLogin;
 
         String username = character[USERNAME_INDEX];
 
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.TAMING, EXP_TAMING,
-                username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.MINING, EXP_MINING,
-                username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.REPAIR, EXP_REPAIR,
-                username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.WOODCUTTING,
-                EXP_WOODCUTTING, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.UNARMED,
-                EXP_UNARMED, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.HERBALISM,
-                EXP_HERBALISM, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.EXCAVATION,
-                EXP_EXCAVATION, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ARCHERY,
-                EXP_ARCHERY, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.SWORDS, EXP_SWORDS,
-                username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.AXES, EXP_AXES,
-                username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ACROBATICS,
-                EXP_ACROBATICS, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.FISHING,
-                EXP_FISHING, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.ALCHEMY,
-                EXP_ALCHEMY, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.CROSSBOWS,
-                EXP_CROSSBOWS, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.TRIDENTS,
-                EXP_TRIDENTS, username);
-        tryLoadSkillFloatValuesFromRawData(skillsXp, character, PrimarySkillType.MACES, EXP_MACES,
-                username);
-
-        // Taming - Unused
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_BREAKER,
-                COOLDOWN_SUPER_BREAKER, username);
-        // Repair - Unused
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.TREE_FELLER,
-                COOLDOWN_TREE_FELLER, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BERSERK,
-                COOLDOWN_BERSERK, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.GREEN_TERRA,
-                COOLDOWN_GREEN_TERRA, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.GIGA_DRILL_BREAKER,
-                COOLDOWN_GIGA_DRILL_BREAKER, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.EXPLOSIVE_SHOT,
-                COOLDOWN_ARCHERY, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SERRATED_STRIKES,
-                COOLDOWN_SERRATED_STRIKES, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SKULL_SPLITTER,
-                COOLDOWN_SKULL_SPLITTER, username);
-        // Acrobatics - Unused
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.BLAST_MINING,
-                COOLDOWN_BLAST_MINING, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.SUPER_SHOTGUN,
-                COOLDOWN_SUPER_SHOTGUN, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character,
-                SuperAbilityType.TRIDENTS_SUPER_ABILITY, COOLDOWN_TRIDENTS, username);
-        tryLoadSkillCooldownFromRawData(skillsDATS, character, SuperAbilityType.MACES_SUPER_ABILITY,
-                COOLDOWN_MACES, username);
-
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(character[UUID_INDEX]);
-        } catch (Exception e) {
-            uuid = null;
+        // XP values
+        for (SkillIndex skillIndex : SKILL_XP_INDICES) {
+            tryLoadSkillFloatValuesFromRawData(
+                    skillsXp,
+                    character,
+                    skillIndex.type(),
+                    skillIndex.index(),
+                    username
+            );
         }
 
+        // Ability cooldowns
+        for (AbilityIndex abilityIndex : ABILITY_COOLDOWN_INDICES) {
+            tryLoadSkillCooldownFromRawData(skillsDATS, character, abilityIndex.type(),
+                    abilityIndex.index(), username);
+        }
+
+        UUID uuid = parseUuidOrNull(character[UUID_INDEX]);
+
+        int scoreboardTipsShown;
         try {
             scoreboardTipsShown = Integer.parseInt(character[SCOREBOARD_TIPS]);
         } catch (Exception e) {
@@ -1367,6 +1090,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
         }
 
+        long lastLogin;
         try {
             lastLogin = Long.parseLong(character[OVERHAUL_LAST_LOGIN]);
         } catch (Exception e) {
@@ -1383,8 +1107,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         try {
             cooldownMap.put(superAbilityType, Integer.valueOf(splitData[index]));
         } catch (IndexOutOfBoundsException e) {
-            // TODO: Add debug message
-            // set to 0 when data not found
             cooldownMap.put(superAbilityType, 0);
         } catch (NumberFormatException e) {
             throw new NumberFormatException(
@@ -1401,10 +1123,9 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             skillMap.put(primarySkillType, valueFromString);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0F);
-            logger.severe(
-                    "Data corruption when trying to load the value for skill " + primarySkillType
-                            + " for player named " + userName + " setting value to zero");
-            e.printStackTrace();
+            logger.severe("Data corruption when trying to load the value for skill "
+                    + primarySkillType + " for player named " + userName + " setting value to zero");
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -1415,59 +1136,98 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             int valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
         } catch (ArrayIndexOutOfBoundsException e) {
-            // TODO: Add debug message
-            // set to 0 when data not found
             skillMap.put(primarySkillType, 0);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0);
-            logger.severe(
-                    "Data corruption when trying to load the value for skill " + primarySkillType
-                            + " for player named " + userName + " setting value to zero");
-            e.printStackTrace();
+            logger.severe("Data corruption when trying to load the value for skill "
+                    + primarySkillType + " for player named " + userName + " setting value to zero");
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     private @NotNull Map<PrimarySkillType, Integer> getSkillMapFromLine(
             @NotNull String[] character) {
-        EnumMap<PrimarySkillType, Integer> skills = new EnumMap<>(
-                PrimarySkillType.class);   // Skill & Level
+
+        EnumMap<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class);
+
         String username = character[USERNAME_INDEX];
 
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ACROBATICS,
-                SKILLS_ACROBATICS, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.TAMING, SKILLS_TAMING,
-                username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.MINING, SKILLS_MINING,
-                username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.REPAIR, SKILLS_REPAIR,
-                username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.WOODCUTTING,
-                SKILLS_WOODCUTTING, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.UNARMED,
-                SKILLS_UNARMED, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.HERBALISM,
-                SKILLS_HERBALISM, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.EXCAVATION,
-                SKILLS_EXCAVATION, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ARCHERY,
-                SKILLS_ARCHERY, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.SWORDS, SKILLS_SWORDS,
-                username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.AXES, SKILLS_AXES,
-                username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.FISHING,
-                SKILLS_FISHING, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.ALCHEMY,
-                SKILLS_ALCHEMY, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.CROSSBOWS,
-                SKILLS_CROSSBOWS, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.TRIDENTS,
-                SKILLS_TRIDENTS, username);
-        tryLoadSkillIntValuesFromRawData(skills, character, PrimarySkillType.MACES, SKILLS_MACES,
-                username);
+        for (SkillIndex skillIndex : SKILL_LEVEL_INDICES) {
+            tryLoadSkillIntValuesFromRawData(skills, character, skillIndex.type(),
+                    skillIndex.index(), username);
+        }
 
         return skills;
     }
+
+    // ------------------------------------------------------------------------
+    // Type / IO helpers
+    // ------------------------------------------------------------------------
+
+    private @NotNull BufferedReader newBufferedReader() throws IOException {
+        return new BufferedReader(new FileReader(usersFilePath));
+    }
+
+    private void writeStringToFileSafely(String contents) {
+        try (FileWriter out = new FileWriter(usersFilePath)) {
+            out.write(contents);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE,
+                    "Unexpected Exception while writing " + usersFilePath, e);
+        }
+    }
+
+    private void withUsersFileLines(@NotNull Consumer<String> lineConsumer) {
+        synchronized (fileWritingLock) {
+            try (BufferedReader in = newBufferedReader()) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    lineConsumer.accept(line);
+                }
+            } catch (IOException e) {
+                logger.log(Level.SEVERE,
+                        "Unexpected Exception while reading " + usersFilePath, e);
+            }
+        }
+    }
+
+    private void rewriteUsersFile(@NotNull Function<String, String> lineMapper) {
+        synchronized (fileWritingLock) {
+            StringBuilder writer = new StringBuilder();
+
+            try (BufferedReader in = newBufferedReader()) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    String mapped = lineMapper.apply(line);
+                    if (mapped != null) {
+                        writer.append(mapped).append(LINE_ENDING);
+                    }
+                }
+            } catch (IOException e) {
+                logger.severe("Exception while reading " + usersFilePath
+                        + " (Are you sure you formatted it correctly?)" + e);
+            }
+
+            writeStringToFileSafely(writer.toString());
+        }
+    }
+
+    private @Nullable UUID parseUuidOrNull(@Nullable String uuidString) {
+        if (uuidString == null || uuidString.isEmpty()
+                || "NULL".equalsIgnoreCase(uuidString)) {
+            return null;
+        }
+
+        try {
+            return UUID.fromString(uuidString);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // DatabaseManager API
+    // ------------------------------------------------------------------------
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.FLATFILE;
@@ -1479,5 +1239,59 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() {
+        // nothing to do
     }
+
+    private void appendInt(@NotNull Appendable out, int value) throws IOException {
+        out.append(Integer.toString(value)).append(':');
+    }
+
+    private void appendLong(@NotNull Appendable out, long value) throws IOException {
+        out.append(Long.toString(value)).append(':');
+    }
+
+    private void appendString(@NotNull Appendable out, @NotNull String value) throws IOException {
+        out.append(value).append(':');
+    }
+
+    private void appendIgnored(@NotNull Appendable out) throws IOException {
+        out.append(IGNORED).append(':');
+    }
+
+    private record FlatFileRow(String rawLine, String[] fields, String username,
+                               @Nullable UUID uuid) {
+
+        static @Nullable FlatFileRow parse(@NotNull String line,
+                    @NotNull Logger logger,
+                    @NotNull String usersFilePath) {
+                String trimmed = line.trim();
+
+                // Skip comments and empty lines
+                if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                    return null;
+                }
+
+                String[] data = trimmed.split(":");
+                if (data.length <= USERNAME_INDEX) {
+                    // Not enough data to contain a username; treat as malformed and skip
+                    logger.warning("Skipping malformed line in " + usersFilePath + ": " + trimmed);
+                    return null;
+                }
+
+                String username = data[USERNAME_INDEX];
+                UUID uuid = null;
+                if (data.length > UUID_INDEX) {
+                    try {
+                        String uuidString = data[UUID_INDEX];
+                        if (!uuidString.isEmpty() && !"NULL".equalsIgnoreCase(uuidString)) {
+                            uuid = UUID.fromString(uuidString);
+                        }
+                    } catch (IllegalArgumentException ignored) {
+                        // Malformed UUID; we keep uuid = null
+                    }
+                }
+
+                return new FlatFileRow(line, data, username, uuid);
+            }
+        }
 }

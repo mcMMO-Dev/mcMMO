@@ -8,8 +8,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import java.util.HashSet;
@@ -86,6 +84,9 @@ public final class BlockUtils {
         // Failsafe against lingering metadata
         if (block.hasMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS)) {
             block.removeMetadata(MetadataConstants.METADATA_KEY_BONUS_DROPS, mcMMO.p);
+        }
+        if (block.hasMetadata(MetadataConstants.METADATA_KEY_EXCAVATION_TREASURE_ROLL)) {
+            block.removeMetadata(MetadataConstants.METADATA_KEY_EXCAVATION_TREASURE_ROLL, mcMMO.p);
         }
     }
 
@@ -232,8 +233,8 @@ public final class BlockUtils {
      */
     public static boolean canActivateTools(BlockState blockState) {
         return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(blockState.getType())
-                && blockState.getType() != Repair.anvilMaterial
-                && blockState.getType() != Salvage.anvilMaterial;
+                && blockState.getType() != mcMMO.p.getGeneralConfig().getRepairAnvilMaterial()
+                && blockState.getType() != mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial();
     }
 
     /**
@@ -443,7 +444,8 @@ public final class BlockUtils {
     public static boolean isMcMMOAnvil(BlockState blockState) {
         Material type = blockState.getType();
 
-        return type == Repair.anvilMaterial || type == Salvage.anvilMaterial;
+        return type == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial()
+                || type == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial();
     }
 
     public static boolean isPistonPiece(BlockState blockState) {

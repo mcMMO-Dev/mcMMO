@@ -32,7 +32,7 @@ public abstract class SkillManager {
      * @param xpGainReason the reason for the XP gain
      * @deprecated use applyXpGain(float, XPGainReason, XPGainSource)
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public void applyXpGain(float xp, XPGainReason xpGainReason) {
         mmoPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
     }

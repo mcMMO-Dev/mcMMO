@@ -10,6 +10,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.PaperUtil;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
@@ -20,6 +21,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.util.Vector;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager(McMMOPlayer mmoPlayer) {
@@ -93,7 +95,12 @@ public class ArcheryManager extends SkillManager {
     }
 
     /**
-     * Handle the effects of the Daze ability
+     * Handle the effects of the Daze ability.
+     * <p>
+     * On Paper and Paper forks (including Folia) the defender's view direction is changed via
+     * {@code Player.lookAt()} which does <b>not</b> teleport the player, avoiding race conditions
+     * with death or world-change events (see GitHub #5191). On Spigot the teleport is scheduled
+     * for the next tick via FoliaLib to shift Pitch reliably.
      *
      * @param defender The {@link Player} being affected by the ability
      */
@@ -102,10 +109,34 @@ public class ArcheryManager extends SkillManager {
             return 0;
         }
 
-        Location dazedLocation = defender.getLocation();
-        dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
+        final float randomPitch = 90 - Misc.getRandom().nextInt(181);
 
-        mcMMO.p.getFoliaLib().getScheduler().teleportAsync(defender, dazedLocation);
+        if (PaperUtil.canLookAt()) {
+            // Paper/Folia: use lookAt() to change view direction without teleporting
+            final Location eyeLocation = defender.getEyeLocation();
+            final double yawRad = Math.toRadians(eyeLocation.getYaw());
+            final double pitchRad = Math.toRadians(randomPitch);
+            final double cosPitch = Math.cos(pitchRad);
+            final Vector direction = new Vector(
+                    -cosPitch * Math.sin(yawRad),
+                    -Math.sin(pitchRad),
+                    cosPitch * Math.cos(yawRad));
+            final Location target = eyeLocation.add(direction.multiply(10));
+            PaperUtil.lookAt(defender, target.getX(), target.getY(), target.getZ());
+        } else {
+            // Spigot: schedule teleport for next tick — teleports during damage events are ignored
+            final Location dazedLocation = defender.getLocation();
+            dazedLocation.setPitch(randomPitch);
+            final var originalWorld = dazedLocation.getWorld();
+            mcMMO.p.getFoliaLib().getScheduler().runAtEntity(
+                    defender, task -> {
+                        if (defender.isValid()
+                                && defender.getWorld() == originalWorld) {
+                            defender.teleport(dazedLocation);
+                        }
+                    });
+        }
+
         defender.addPotionEffect(new PotionEffect(getNauseaPotionEffectType(), 20 * 10, 10));
 
         if (NotificationManager.doesPlayerUseNotifications(defender)) {

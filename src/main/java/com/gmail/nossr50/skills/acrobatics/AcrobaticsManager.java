@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.acrobatics;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.BlockLocationHistory;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -19,6 +20,8 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
+import java.util.function.Consumer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
@@ -118,10 +121,10 @@ public class AcrobaticsManager extends SkillManager {
 
                         if (count <= 5) {
                             applyXpGain((float) (damage * Acrobatics.dodgeXpModifier),
-                                    XPGainReason.PVE);
+                                    XPGainReason.PVE, XPGainSource.SELF);
                             mob.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER,
                                     new FixedMetadataValue(mcMMO.p, count + 1));
-                            MobDodgeMetaCleanup metaCleanupTask = new MobDodgeMetaCleanup(mob,
+                            final Consumer<WrappedTask> metaCleanupTask = new MobDodgeMetaCleanup(mob,
                                     mcMMO.p);
                             mcMMO.p.getFoliaLib().getScheduler()
                                     .runAtEntityTimer(mob, metaCleanupTask, 20,
@@ -129,7 +132,7 @@ public class AcrobaticsManager extends SkillManager {
                         }
                     } else {
                         applyXpGain((float) (damage * Acrobatics.dodgeXpModifier),
-                                XPGainReason.PVE);
+                                XPGainReason.PVE, XPGainSource.SELF);
                     }
                 }
             }

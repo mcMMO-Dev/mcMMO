@@ -8,7 +8,6 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.compat.CompatibilityManager;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import org.bukkit.potion.PotionType;
 import org.junit.jupiter.api.AfterEach;
@@ -23,11 +22,9 @@ class PotionUtilTest {
     @BeforeEach
     void setUp() {
         mockedStaticMcMMO = mockStatic(mcMMO.class);
-        CompatibilityManager compatibilityManager = mock(CompatibilityManager.class);
         MinecraftGameVersion minecraftGameVersion = mock(MinecraftGameVersion.class);
-        when(compatibilityManager.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
         when(minecraftGameVersion.isAtLeast(1, 20, 5)).thenReturn(true);
-        when(mcMMO.getCompatibilityManager()).thenReturn(compatibilityManager);
+        when(mcMMO.getMinecraftGameVersion()).thenReturn(minecraftGameVersion);
     }
 
     @AfterEach
@@ -54,6 +51,23 @@ class PotionUtilTest {
         final String potionTypeStr = "UNCRAFTABLE";
         final PotionType potionType = matchPotionType(potionTypeStr, false, false);
         assertEquals(PotionType.MUNDANE, potionType);
+    }
+
+    /**
+     * Guards the (isUpgraded, isExtended) parameter order: the treasure configs once passed
+     * (extended, upgraded) and handed out the wrong potion variant. An extended-only request must
+     * select the LONG_ variant, never the STRONG_ one.
+     */
+    @Test
+    void matchPotionTypeShouldSelectLongVariantWhenExtendedOnly() {
+        // Given - a potion requested as extended (longer duration) but not upgraded
+        final String potionTypeStr = "SWIFTNESS";
+
+        // When - matched with isUpgraded=false, isExtended=true
+        final PotionType potionType = matchPotionType(potionTypeStr, false, true);
+
+        // Then - the LONG_ (extended) variant is selected
+        assertEquals(PotionType.LONG_SWIFTNESS, potionType);
     }
 
     @Test

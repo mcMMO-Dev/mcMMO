@@ -8,7 +8,6 @@ import com.gmail.nossr50.commands.McnotifyCommand;
 import com.gmail.nossr50.commands.McrefreshCommand;
 import com.gmail.nossr50.commands.McscoreboardCommand;
 import com.gmail.nossr50.commands.XprateCommand;
-import com.gmail.nossr50.commands.admin.CompatibilityCommand;
 import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
@@ -41,6 +40,7 @@ import com.gmail.nossr50.commands.skills.MmoInfoCommand;
 import com.gmail.nossr50.commands.skills.RepairCommand;
 import com.gmail.nossr50.commands.skills.SalvageCommand;
 import com.gmail.nossr50.commands.skills.SmeltingCommand;
+import com.gmail.nossr50.commands.skills.SpearsCommand;
 import com.gmail.nossr50.commands.skills.SwordsCommand;
 import com.gmail.nossr50.commands.skills.TamingCommand;
 import com.gmail.nossr50.commands.skills.TridentsCommand;
@@ -63,9 +63,8 @@ public final class CommandRegistrationManager {
 
     private static void registerSkillCommands() {
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (primarySkillType == PrimarySkillType.MACES
-                    && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
-                    .isAtLeast(1, 21, 0)) {
+            if (primarySkillType == PrimarySkillType.SPEARS
+                    && !mcMMO.getMinecraftGameVersion().isAtLeast(1, 21, 11)) {
                 continue;
             }
 
@@ -101,6 +100,7 @@ public final class CommandRegistrationManager {
                 case REPAIR -> command.setExecutor(new RepairCommand());
                 case SALVAGE -> command.setExecutor(new SalvageCommand());
                 case SMELTING -> command.setExecutor(new SmeltingCommand());
+                case SPEARS -> command.setExecutor(new SpearsCommand());
                 case SWORDS -> command.setExecutor(new SwordsCommand());
                 case TAMING -> command.setExecutor(new TamingCommand());
                 case TRIDENTS -> command.setExecutor(new TridentsCommand());
@@ -403,13 +403,6 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McmmoReloadLocaleCommand());
     }
 
-    private static void registerCompatibilityCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mmocompat"); //TODO: Localize
-        command.setDescription(LocaleLoader.getString("Commands.Description.mmocompat"));
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmocompat"));
-        command.setExecutor(new CompatibilityCommand());
-    }
-
     private static void registerXPBarCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoxpbar"); //TODO: Localize
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoxpbar"));
@@ -465,8 +458,5 @@ public final class CommandRegistrationManager {
 
         // Admin commands
         registerReloadLocaleCommand();
-
-        // Misc
-        registerCompatibilityCommand();
     }
 }

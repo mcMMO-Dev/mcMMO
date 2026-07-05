@@ -11,8 +11,10 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.text.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -21,15 +23,28 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GeneralConfig extends BukkitConfig {
+    private @Nullable Material repairAnvilMaterial;
+    private @Nullable Material salvageAnvilMaterial;
+
+    /* Level caps resolved once and reused on the XP hot path; reset by loadKeys() */
+    private @Nullable Integer powerLevelCap;
+    private final Map<PrimarySkillType, Integer> levelCaps = new EnumMap<>(
+            PrimarySkillType.class);
 
     public GeneralConfig(@NotNull File dataFolder) {
         super("config.yml", dataFolder);
+        loadKeys();
         validate();
     }
 
     @Override
     protected void loadKeys() {
-
+        repairAnvilMaterial = Material.matchMaterial(
+                config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK"));
+        salvageAnvilMaterial = Material.matchMaterial(
+                config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK"));
+        powerLevelCap = null;
+        levelCaps.clear();
     }
 
     @Override
@@ -230,6 +245,10 @@ public class GeneralConfig extends BukkitConfig {
         return config.getBoolean("General.Refresh_Chunks", false);
     }
 
+    public boolean getRegionDataMigrationBackupsEnabled() {
+        return config.getBoolean("General.RegionDataMigrationBackups", true);
+    }
+
     public boolean getMobHealthbarEnabled() {
         return config.getBoolean("Mob_Healthbar.Enabled", true);
     }
@@ -246,7 +265,13 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     public int getMobHealthbarTime() {
-        return Math.max(1, config.getInt("Mob_Healthbar.Display_Time", 3));
+        final int configured = config.getInt("Mob_Healthbar.Display_Time", 3);
+        // Negative values (previously used as an undocumented "permanent display" mode) are no
+        // longer supported. Clamp them to 20× the default (60 s) so the healthbar still clears.
+        if (configured < 0) {
+            return 60;
+        }
+        return Math.max(1, configured);
     }
 
     /* Scoreboards */
@@ -422,10 +447,6 @@ public class GeneralConfig extends BukkitConfig {
 
     public boolean getMySQLSSL() {
         return config.getBoolean("MySQL.Server.SSL", true);
-    }
-
-    public boolean getMySQLDebug() {
-        return config.getBoolean("MySQL.Debug", false);
     }
 
     public boolean getMySQLPublicKeyRetrieval() {
@@ -804,6 +825,10 @@ public class GeneralConfig extends BukkitConfig {
         return config.getDouble("Skills.Fishing.Lure_Modifier", 4.0D);
     }
 
+    public boolean getFishingAllowConflictingEnchants() {
+        return config.getBoolean("Skills.Fishing.Allow_Conflicting_Enchants", false);
+    }
+
     /* Mining */
     public Material getDetonatorItem() {
         return Material.matchMaterial(
@@ -829,8 +854,7 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     public @Nullable Material getRepairAnvilMaterial() {
-        return Material.matchMaterial(
-                config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK"));
+        return repairAnvilMaterial;
     }
 
     public boolean getRepairConfirmRequired() {
@@ -863,8 +887,7 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     public @Nullable Material getSalvageAnvilMaterial() {
-        return Material.matchMaterial(
-                config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK"));
+        return salvageAnvilMaterial;
     }
 
     public boolean getSalvageConfirmRequired() {
@@ -872,8 +895,8 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     /* Unarmed */
-    public boolean getUnarmedBlockCrackerSmoothbrickToCracked() {
-        return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true);
+    public boolean isBlockCrackerAllowed() {
+        return config.getBoolean("Skills.Unarmed.Block_Cracker.Allow_Block_Cracker", true);
     }
 
     public boolean getUnarmedItemPickupDisabled() {
@@ -944,14 +967,20 @@ public class GeneralConfig extends BukkitConfig {
 
     /* Level Caps */
     public int getPowerLevelCap() {
-        int cap = config.getInt("General.Power_Level_Cap", 0);
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
+        if (powerLevelCap == null) {
+            int cap = config.getInt("General.Power_Level_Cap", 0);
+            powerLevelCap = (cap <= 0) ? Integer.MAX_VALUE : cap;
+        }
+
+        return powerLevelCap;
     }
 
     public int getLevelCap(PrimarySkillType skill) {
-        int cap = config.getInt(
-                "Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap");
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
+        return levelCaps.computeIfAbsent(skill, key -> {
+            int cap = config.getInt(
+                    "Skills." + StringUtils.getCapitalized(key.toString()) + ".Level_Cap");
+            return (cap <= 0) ? Integer.MAX_VALUE : cap;
+        });
     }
 
 

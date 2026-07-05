@@ -56,3 +56,14 @@
 # Atlassian Stuff
 /atlassian-ide-plugin.xml
 /nulllocale_override.properties
+
+# HTML
+/html
+*.html
+
+# md
+*.md
+
+# Claude Code local config — never push
+/.claude/
+/.claude

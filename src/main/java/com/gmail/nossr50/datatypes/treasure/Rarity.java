@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.treasure;
 
 import com.gmail.nossr50.mcMMO;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public enum Rarity {
     MYTHIC,
@@ -10,6 +11,23 @@ public enum Rarity {
     RARE,
     UNCOMMON,
     COMMON;
+
+    /**
+     * Matches a rarity string to a {@link Rarity}, or returns null when the string is not a
+     * recognized rarity. The legacy "Records" name maps to {@link #MYTHIC}. Unlike
+     * {@link #getRarity(String)} this never falls back to {@link #COMMON} and has no side
+     * effects, so callers can distinguish a misconfigured rarity from a real one.
+     */
+    public static @Nullable Rarity tryMatch(@NotNull String string) {
+        if (string.equalsIgnoreCase("Records")) {
+            return MYTHIC;
+        }
+        try {
+            return valueOf(string);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
+    }
 
     public static @NotNull Rarity getRarity(@NotNull String string) {
         if (string.equalsIgnoreCase("Records")) {

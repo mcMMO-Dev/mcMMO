@@ -40,6 +40,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
+import com.gmail.nossr50.skills.spears.SpearsManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.tridents.TridentsManager;
@@ -63,8 +64,10 @@ import com.gmail.nossr50.util.sounds.SoundType;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -170,73 +173,41 @@ public class McMMOPlayer implements Identified {
             try {
                 initManager(primarySkillType);
             } catch (InvalidSkillException e) {
-                e.printStackTrace();
+                mcMMO.p.getLogger().log(Level.SEVERE,
+                        "Invalid skill while initializing skill managers for player "
+                        + player.getName()
+                        + ". Contact the plugin developers.", e);
             }
         }
     }
 
-    //TODO: Add test
     private void initManager(PrimarySkillType primarySkillType) throws InvalidSkillException {
-        switch (primarySkillType) {
-            case ACROBATICS:
-                skillManagers.put(primarySkillType, new AcrobaticsManager(this));
-                break;
-            case ALCHEMY:
-                skillManagers.put(primarySkillType, new AlchemyManager(this));
-                break;
-            case ARCHERY:
-                skillManagers.put(primarySkillType, new ArcheryManager(this));
-                break;
-            case AXES:
-                skillManagers.put(primarySkillType, new AxesManager(this));
-                break;
-            case CROSSBOWS:
-                skillManagers.put(primarySkillType, new CrossbowsManager(this));
-                break;
-            case EXCAVATION:
-                skillManagers.put(primarySkillType, new ExcavationManager(this));
-                break;
-            case FISHING:
-                skillManagers.put(primarySkillType, new FishingManager(this));
-                break;
-            case HERBALISM:
-                skillManagers.put(primarySkillType, new HerbalismManager(this));
-                break;
-            case MINING:
-                skillManagers.put(primarySkillType, new MiningManager(this));
-                break;
-            case REPAIR:
-                skillManagers.put(primarySkillType, new RepairManager(this));
-                break;
-            case SALVAGE:
-                skillManagers.put(primarySkillType, new SalvageManager(this));
-                break;
-            case SMELTING:
-                skillManagers.put(primarySkillType, new SmeltingManager(this));
-                break;
-            case SWORDS:
-                skillManagers.put(primarySkillType, new SwordsManager(this));
-                break;
-            case TAMING:
-                skillManagers.put(primarySkillType, new TamingManager(this));
-                break;
-            case TRIDENTS:
-                skillManagers.put(primarySkillType, new TridentsManager(this));
-                break;
-            case UNARMED:
-                skillManagers.put(primarySkillType, new UnarmedManager(this));
-                break;
-            case WOODCUTTING:
-                skillManagers.put(primarySkillType, new WoodcuttingManager(this));
-                break;
-            case MACES:
-                if (mcMMO.getCompatibilityManager().getMinecraftGameVersion().isAtLeast(1, 21, 0)) {
-                    skillManagers.put(primarySkillType, new MacesManager(this));
-                }
-                break;
-            default:
-                throw new InvalidSkillException(
-                        "The skill named has no manager! Contact the devs!");
+        final SkillManager manager = switch (primarySkillType) {
+            case ACROBATICS -> new AcrobaticsManager(this);
+            case ALCHEMY -> new AlchemyManager(this);
+            case ARCHERY -> new ArcheryManager(this);
+            case AXES -> new AxesManager(this);
+            case CROSSBOWS -> new CrossbowsManager(this);
+            case EXCAVATION -> new ExcavationManager(this);
+            case FISHING -> new FishingManager(this);
+            case HERBALISM -> new HerbalismManager(this);
+            case MINING -> new MiningManager(this);
+            case REPAIR -> new RepairManager(this);
+            case SALVAGE -> new SalvageManager(this);
+            case SMELTING -> new SmeltingManager(this);
+            case SWORDS -> new SwordsManager(this);
+            case TAMING -> new TamingManager(this);
+            case TRIDENTS -> new TridentsManager(this);
+            case UNARMED -> new UnarmedManager(this);
+            case WOODCUTTING -> new WoodcuttingManager(this);
+            case MACES -> new MacesManager(this);
+            case SPEARS -> mcMMO.getMinecraftGameVersion().isAtLeast(1, 21, 11)
+                    ? new SpearsManager(this)
+                    : null;
+        };
+
+        if (manager != null) {
+            skillManagers.put(primarySkillType, manager);
         }
     }
 
@@ -262,11 +233,16 @@ public class McMMOPlayer implements Identified {
 
     public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin,
             XPGainSource xpGainSource) {
+        processPostXpEvent(primarySkillType, plugin, xpGainSource, getPowerLevelUpperBound());
+    }
+
+    private void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin,
+            XPGainSource xpGainSource, int powerLevelUpperBound) {
         //Check if they've reached the power level cap just now
-        if (hasReachedPowerLevelCap()) {
+        if (hasReachedPowerLevelCap(powerLevelUpperBound)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel",
                     String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
-        } else if (hasReachedLevelCap(primarySkillType)) {
+        } else if (hasReachedLevelCap(primarySkillType, powerLevelUpperBound)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill",
                     String.valueOf(mcMMO.p.getSkillTools().getLevelCap(primarySkillType)),
                     mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
@@ -366,6 +342,10 @@ public class McMMOPlayer implements Identified {
 
     public SmeltingManager getSmeltingManager() {
         return (SmeltingManager) skillManagers.get(PrimarySkillType.SMELTING);
+    }
+
+    public SpearsManager getSpearsManager() {
+        return (SpearsManager) skillManagers.get(PrimarySkillType.SPEARS);
     }
 
     public SwordsManager getSwordsManager() {
@@ -623,7 +603,12 @@ public class McMMOPlayer implements Identified {
      * @return
      */
     public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
-        if (hasReachedPowerLevelCap()) {
+        return hasReachedLevelCap(primarySkillType, getPowerLevelUpperBound());
+    }
+
+    private boolean hasReachedLevelCap(PrimarySkillType primarySkillType,
+            int powerLevelUpperBound) {
+        if (hasReachedPowerLevelCap(powerLevelUpperBound)) {
             return true;
         }
 
@@ -638,7 +623,31 @@ public class McMMOPlayer implements Identified {
      * @return true if they have reached the power level cap
      */
     public boolean hasReachedPowerLevelCap() {
-        return this.getPowerLevel() >= mcMMO.p.getGeneralConfig().getPowerLevelCap();
+        return hasReachedPowerLevelCap(getPowerLevelUpperBound());
+    }
+
+    private boolean hasReachedPowerLevelCap(int powerLevelUpperBound) {
+        final int powerLevelCap = mcMMO.p.getGeneralConfig().getPowerLevelCap();
+
+        // The bound over-counts skills the player lacks permission for, so the
+        // permission-aware count is only needed once the bound says the cap is in reach
+        return powerLevelUpperBound >= powerLevelCap && getPowerLevel() >= powerLevelCap;
+    }
+
+    /**
+     * Get an upper bound for the power level without any permission checks. Skill levels are
+     * never negative, so the permission-aware power level can never exceed this sum.
+     *
+     * @return the sum of all non-child skill levels, ignoring skill permissions
+     */
+    private int getPowerLevelUpperBound() {
+        int levelSum = 0;
+
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
+            levelSum += getSkillLevel(primarySkillType);
+        }
+
+        return levelSum;
     }
 
     /**
@@ -710,13 +719,13 @@ public class McMMOPlayer implements Identified {
      */
     public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason,
             XPGainSource xpGainSource) {
-        if (!Permissions.skillEnabled(player, primarySkillType)) {
+        if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, primarySkillType)) {
             return;
         }
 
         final McMMOPlayerPreXpGainEvent mmoPlayerPreXpGainEvent = new McMMOPlayerPreXpGainEvent(
                 player, primarySkillType, xp, xpGainReason);
-        mcMMO.p.getServer().getPluginManager().callEvent(mmoPlayerPreXpGainEvent);
+        Bukkit.getPluginManager().callEvent(mmoPlayerPreXpGainEvent);
         xp = mmoPlayerPreXpGainEvent.getXpGained();
 
         if (SkillTools.isChildSkill(primarySkillType)) {
@@ -744,12 +753,16 @@ public class McMMOPlayer implements Identified {
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason,
             XPGainSource xpGainSource) {
-        if (hasReachedLevelCap(primarySkillType)) {
+        // Compute the bound once and track level-ups locally instead of recounting
+        // on every cap check
+        final int powerLevelUpperBound = getPowerLevelUpperBound();
+
+        if (hasReachedLevelCap(primarySkillType, powerLevelUpperBound)) {
             return;
         }
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
+            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource, powerLevelUpperBound);
             return;
         }
 
@@ -757,7 +770,7 @@ public class McMMOPlayer implements Identified {
         float xpRemoved = 0;
 
         while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
-            if (hasReachedLevelCap(primarySkillType)) {
+            if (hasReachedLevelCap(primarySkillType, powerLevelUpperBound + levelsGained)) {
                 setSkillXpLevel(primarySkillType, 0);
                 break;
             }
@@ -783,7 +796,8 @@ public class McMMOPlayer implements Identified {
                 profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
+        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource,
+                powerLevelUpperBound + levelsGained);
     }
 
     /*
@@ -898,7 +912,7 @@ public class McMMOPlayer implements Identified {
         //TODO: A rare situation can occur where the default Power Level cap can prevent a player with one skill edited to something silly like Integer.MAX_VALUE from gaining XP in any skill, we may need to represent power level with another data type
         if ((mcMMO.p.getSkillTools().getLevelCap(primarySkillType) <= getSkillLevel(
                 primarySkillType))
-                || (mcMMO.p.getGeneralConfig().getPowerLevelCap() <= getPowerLevel())) {
+                || hasReachedPowerLevelCap(getPowerLevelUpperBound())) {
             return 0;
         }
 
@@ -1303,4 +1317,5 @@ public class McMMOPlayer implements Identified {
     public void setChatMode(@NotNull ChatChannel chatChannel) {
         this.chatChannel = chatChannel;
     }
+
 }

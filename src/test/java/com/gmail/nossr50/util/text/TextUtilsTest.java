@@ -1,8 +1,13 @@
 package com.gmail.nossr50.util.text;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,17 +20,115 @@ import org.junit.jupiter.api.Test;
  */
 class TextUtilsTest {
 
-    @Test
-    void testColorizeText() {
-        String inputText = "&4This text should be red.";
+    @Nested
+    class ColorizeText {
 
-        /*
-         * If this method raises an exception, we know Adventure is not set up correctly.
-         * This will also make the test fail and warn us about it.
-         */
-        TextComponent component = TextUtils.colorizeText(inputText);
+        @Test
+        void parsesLegacyColorCodes() {
+            // Given
+            final String inputText = "&4This text should be red.";
 
-        String message = "Looks like Adventure is not working correctly. We likely need to update our dependency!";
-        Assertions.assertEquals(NamedTextColor.DARK_RED, component.color(), message);
+            // When
+            final TextComponent component = TextUtils.colorizeText(inputText);
+
+            // Then
+            final String failureMessage = "Looks like Adventure is not working correctly. We likely need to update our dependency!";
+            assertThat(component.color()).withFailMessage(failureMessage)
+                    .isEqualTo(NamedTextColor.DARK_RED);
+        }
+    }
+
+    @Nested
+    class LiteralizeLegacyColorCodes {
+
+        @Test
+        void keepsAmpersandFormattingCodesLiteral() {
+            // Given
+            final String rawMessage = "&aHello &lWorld&r!";
+
+            // When
+            final String literalizedMessage = TextUtils.literalizeLegacyColorCodes(rawMessage);
+
+            // Then
+            assertThat(literalizedMessage).isEqualTo("&aHello &lWorld&r!");
+        }
+
+        @Test
+        void convertsSectionSignFormattingCodesToAmpersands() {
+            // Given
+            final String rawMessage = "\u00A7aHello \u00A7lWorld\u00A7r!";
+
+            // When
+            final String literalizedMessage = TextUtils.literalizeLegacyColorCodes(rawMessage);
+
+            // Then
+            assertThat(literalizedMessage).isEqualTo("&aHello &lWorld&r!");
+        }
+
+        @Test
+        void preservesHexTokensAndNormalAmpersandsAsLiteralText() {
+            // Given
+            final String rawMessage = "Color: &#12AB9FHello & welcome";
+
+            // When
+            final String literalizedMessage = TextUtils.literalizeLegacyColorCodes(rawMessage);
+
+            // Then
+            assertThat(literalizedMessage).isEqualTo("Color: &#12AB9FHello & welcome");
+        }
+    }
+
+    @Nested
+    class InsertLiteralTextAtMarkers {
+
+        @Test
+        void preservesLiteralColorTokensInInsertedMessage() {
+            // Given
+            final String startMarker = "\u0002START\u0003";
+            final String endMarker = "\u0002END\u0003";
+            final String template = "\u00A7aPrefix " + startMarker + endMarker + " \u00A7bSuffix";
+            final String literalMessage = "&cMessage &lTokens";
+
+            // When
+            final TextComponent formattedComponent = TextUtils.insertLiteralTextAtMarkers(template,
+                    startMarker, endMarker, literalMessage);
+            final String aggregatedContent = aggregateTextContent(formattedComponent);
+
+            // Then
+            assertThat(aggregatedContent).isEqualTo("Prefix &cMessage &lTokens Suffix");
+        }
+
+        @Test
+        void onlyReplacesTextBetweenMarkerBoundaries() {
+            // Given
+            final String startMarker = "\u0002START\u0003";
+            final String endMarker = "\u0002END\u0003";
+            final String template = "Header START " + startMarker + endMarker + " END Footer";
+            final String literalMessage = "payload";
+
+            // When
+            final TextComponent formattedComponent = TextUtils.insertLiteralTextAtMarkers(template,
+                    startMarker, endMarker, literalMessage);
+            final String aggregatedContent = aggregateTextContent(formattedComponent);
+
+            // Then
+            assertThat(aggregatedContent).isEqualTo("Header START payload END Footer");
+        }
+
+        private String aggregateTextContent(final Component rootComponent) {
+            final List<String> parts = new ArrayList<>();
+            collectTextContent(rootComponent, parts);
+            return String.join("", parts);
+        }
+
+        private void collectTextContent(final Component component, final List<String> parts) {
+            if (component instanceof TextComponent textComponent) {
+                parts.add(textComponent.content());
+            }
+
+            for (final Component childComponent : component.children()) {
+                collectTextContent(childComponent, parts);
+            }
+        }
     }
 }

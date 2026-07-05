@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -91,7 +90,7 @@ public final class LocaleLoader {
         bundle = null;
         filesystemBundle = null;
         enBundle = null;
-        bundleCache = new HashMap<>(); // Cheaper to replace than clear()
+        bundleCache = new ConcurrentHashMap<>();
         initialize();
     }
 
@@ -139,7 +138,49 @@ public final class LocaleLoader {
             string = formatter.format(messageArguments);
         }
 
-        return TextUtils.colorizeText(string);
+        return TextUtils.colorizeText(translateNamedColorTokens(string));
+    }
+
+    /**
+     * Translates {@code [[NAME]]} color tokens to their {@code &X} equivalents so that they can
+     * be processed by the Adventure {@link net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer}
+     * used in {@link TextUtils#colorizeText(String)}.
+     *
+     * <p>This mirrors the {@code [[NAME]]} handling in {@link #addColors(String)} but outputs
+     * {@code &} codes instead of {@code §} codes, keeping all three locale color formats usable
+     * in the {@link #formatComponent} / {@link #getTextComponent} path:
+     * <ol>
+     *   <li>{@code &X} codes (e.g. {@code &a}, {@code &l})</li>
+     *   <li>{@code &#RRGGBB} hex codes (e.g. {@code &#FF0000})</li>
+     *   <li>{@code [[NAME]]} tokens (e.g. {@code [[RED]]}, {@code [[DARK_AQUA]]})</li>
+     * </ol>
+     */
+    private static @NotNull String translateNamedColorTokens(@NotNull String input) {
+        // Colors
+        input = input.replace("[[BLACK]]",       "&0");
+        input = input.replace("[[DARK_BLUE]]",   "&1");
+        input = input.replace("[[DARK_GREEN]]",  "&2");
+        input = input.replace("[[DARK_AQUA]]",   "&3");
+        input = input.replace("[[DARK_RED]]",    "&4");
+        input = input.replace("[[DARK_PURPLE]]", "&5");
+        input = input.replace("[[GOLD]]",        "&6");
+        input = input.replace("[[GRAY]]",        "&7");
+        input = input.replace("[[DARK_GRAY]]",   "&8");
+        input = input.replace("[[BLUE]]",        "&9");
+        input = input.replace("[[GREEN]]",       "&a");
+        input = input.replace("[[AQUA]]",        "&b");
+        input = input.replace("[[RED]]",         "&c");
+        input = input.replace("[[LIGHT_PURPLE]]","&d");
+        input = input.replace("[[YELLOW]]",      "&e");
+        input = input.replace("[[WHITE]]",       "&f");
+        // Formatting
+        input = input.replace("[[BOLD]]",        "&l");
+        input = input.replace("[[UNDERLINE]]",   "&n");
+        input = input.replace("[[ITALIC]]",      "&o");
+        input = input.replace("[[STRIKE]]",      "&m");
+        input = input.replace("[[MAGIC]]",       "&k");
+        input = input.replace("[[RESET]]",       "&r");
+        return input;
     }
 
     public static Locale getCurrentLocale() {

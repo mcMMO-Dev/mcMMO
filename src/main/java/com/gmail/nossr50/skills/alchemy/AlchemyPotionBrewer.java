@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -18,11 +17,9 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.BrewerInventory;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -164,8 +161,7 @@ public final class AlchemyPotionBrewer {
                         ? 1 : mmoPlayer.getAlchemyManager().getTier());
     }
 
-    public static void finishBrewing(BlockState brewingStand, @Nullable McMMOPlayer mmoPlayer,
-            boolean forced) {
+    public static void finishBrewing(BlockState brewingStand, @Nullable McMMOPlayer mmoPlayer) {
         // Check if the brewing stand block state is an actual brewing stand
         if (!(brewingStand instanceof BrewingStand)) {
             return;
@@ -256,11 +252,6 @@ public final class AlchemyPotionBrewer {
                             .handlePotionBrewSuccesses(potionStage, 1);
                 }
             }
-        }
-
-        // If the brewing was not forced by external conditions, schedule a new update
-        if (!forced) {
-            scheduleUpdate(inventory);
         }
     }
 
@@ -355,14 +346,5 @@ public final class AlchemyPotionBrewer {
     public static void scheduleCheck(@NotNull BrewingStand brewingStand) {
         mcMMO.p.getFoliaLib().getScheduler().runAtLocation(
                 brewingStand.getLocation(), new AlchemyBrewCheckTask(brewingStand));
-    }
-
-    public static void scheduleUpdate(Inventory inventory) {
-        for (HumanEntity humanEntity : inventory.getViewers()) {
-            if (humanEntity instanceof Player) {
-                mcMMO.p.getFoliaLib().getScheduler().runAtEntity(humanEntity,
-                        new PlayerUpdateInventoryTask((Player) humanEntity));
-            }
-        }
     }
 }

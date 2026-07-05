@@ -29,7 +29,7 @@ public class SoundConfig extends BukkitConfig {
     @Override
     protected boolean validateKeys() {
         for (SoundType soundType : SoundType.values()) {
-            if (config.getDouble("Sounds." + soundType.toString() + ".Volume") < 0) {
+            if (config.getDouble("Sounds." + soundType + ".Volume") < 0) {
                 LogUtils.debug(mcMMO.p.getLogger(),
                         "[mcMMO] Sound volume cannot be below 0 for " + soundType);
                 return false;
@@ -52,17 +52,22 @@ public class SoundConfig extends BukkitConfig {
     }
 
     public float getVolume(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Volume";
+        String key = "Sounds." + soundType + ".Volume";
         return (float) config.getDouble(key, 1.0);
     }
 
     public float getPitch(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Pitch";
+        String key = "Sounds." + soundType + ".Pitch";
         return (float) config.getDouble(key, 1.0);
     }
 
+    public String getSound(SoundType soundType) {
+        final String key = "Sounds." + soundType + ".CustomSoundId";
+        return config.getString(key);
+    }
+
     public boolean getIsEnabled(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Enabled";
+        String key = "Sounds." + soundType + ".Enable";
         return config.getBoolean(key, true);
     }
 }

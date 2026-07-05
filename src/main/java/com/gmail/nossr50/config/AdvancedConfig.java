@@ -7,10 +7,10 @@ import com.gmail.nossr50.mcMMO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import net.md_5.bungee.api.ChatColor;
 
 public class AdvancedConfig extends BukkitConfig {
     int[] defaultCrippleValues = new int[]{10, 15, 20, 25};
+    int[] defaultMomentumValues = new int[]{5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 
     public AdvancedConfig(File dataFolder) {
         super("advanced.yml", dataFolder);
@@ -516,24 +516,6 @@ public class AdvancedConfig extends BukkitConfig {
                 true);
     }
 
-    private ChatColor getChatColorFromKey(String keyLocation) {
-        String colorName = config.getString(keyLocation);
-
-        return getChatColor(colorName);
-    }
-
-    private ChatColor getChatColor(String configColor) {
-        for (ChatColor chatColor : ChatColor.values()) {
-            if (configColor.equalsIgnoreCase(chatColor.getName())) {
-                return chatColor;
-            }
-        }
-
-        //Invalid Color
-        mcMMO.p.getLogger().warning(configColor + " is an invalid color value");
-        return ChatColor.WHITE;
-    }
-
     /* ACROBATICS */
     public double getDodgeDamageModifier() {
         return config.getDouble("Skills.Acrobatics.Dodge.DamageModifier", 2.0D);
@@ -625,7 +607,7 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public double getPoweredShotDamageMax() {
-        return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D);
+        return config.getDouble("Skills.Crossbows.PoweredShot.MaxDamage", 9.0D);
     }
 
     /* EXCAVATION */
@@ -638,6 +620,10 @@ public class AdvancedConfig extends BukkitConfig {
 
     public int getFishingVanillaXPModifier(int rank) {
         return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank);
+    }
+
+    public int getSmeltingVanillaXPModifier(int rank) {
+        return config.getInt("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank);
     }
 
     public int getFishingReductionMinWaitTicks() {
@@ -740,6 +726,10 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true);
     }
 
+    public int getArcaneForgingMaxEnchantLevel() {
+        return config.getInt("Skills.Repair.ArcaneForging.MaxEnchantLevel", 5);
+    }
+
     public double getArcaneForgingKeepEnchantsChance(int rank) {
         return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank);
     }
@@ -758,6 +748,10 @@ public class AdvancedConfig extends BukkitConfig {
 
     public boolean getArcaneSalvageEnchantLossEnabled() {
         return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true);
+    }
+
+    public int getArcaneSalvageMaxEnchantLevel() {
+        return config.getInt("Skills.Salvage.ArcaneSalvage.MaxEnchantLevel", 5);
     }
 
     public double getArcaneSalvageExtractFullEnchantsChance(int rank) {
@@ -883,8 +877,35 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     /* MACES */
+    public double getCrushBaseDamage() {
+        return config.getDouble("Skills.Maces.Crush.Base_Damage", 0.5D);
+    }
+
+    public double getCrushRankDamageMultiplier() {
+        return config.getDouble("Skills.Maces.Crush.Rank_Damage_Multiplier", 1.0D);
+    }
+
     public double getCrippleChanceToApplyOnHit(int rank) {
-        String root = "Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_";
-        return config.getDouble(root + rank, defaultCrippleValues[rank - 1]);
+        return config.getDouble("Skills.Maces.Cripple.Chance_To_Apply_On_Hit.Rank_" + rank,
+                defaultCrippleValues[rank - 1]);
+    }
+
+    /* TRIDENTS */
+    public double getImpaleBaseDamage() {
+        return config.getDouble("Skills.Tridents.Impale.Base_Damage", 1.0D);
+    }
+
+    public double getImpaleRankDamageMultiplier() {
+        return config.getDouble("Skills.Tridents.Impale.Rank_Damage_Multiplier", 0.5D);
+    }
+
+    /* SPEARS */
+    public double getMomentumChanceToApplyOnHit(int rank) {
+        return config.getDouble("Skills.Spears.Momentum.Chance_To_Apply_On_Hit.Rank_" + rank,
+                defaultMomentumValues[rank - 1]);
+    }
+
+    public double getSpearMasteryRankDamageMultiplier() {
+        return config.getDouble("Skills.Spears.SpearMastery.Rank_Damage_Multiplier", 0.4D);
     }
 }

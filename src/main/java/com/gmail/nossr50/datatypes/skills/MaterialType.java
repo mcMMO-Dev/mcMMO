@@ -8,6 +8,7 @@ public enum MaterialType {
     WOOD,
     STONE,
     IRON,
+    COPPER,
     GOLD,
     DIAMOND,
     NETHERITE,
@@ -45,6 +46,8 @@ public enum MaterialType {
                 }
             case PRISMARINE:
                 return Material.PRISMARINE_CRYSTALS;
+            case COPPER:
+                return Material.COPPER_INGOT;
 
             case OTHER:
             default:

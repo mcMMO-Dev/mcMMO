@@ -77,15 +77,14 @@ public class PartyChatMailer extends AbstractChatMailer {
                         message);
             }
         } else {
+            final String literalMessage = TextUtils.literalizeLegacyColorCodes(message);
+
             if (isLeader) {
-                return TextUtils.ofLegacyTextRaw(
-                        LocaleLoader.getString(
-                                "Chat.Style.Party.Leader",
-                                author.getAuthoredName(ChatChannel.PARTY), message));
+                return formatLocaleStyleWithLiteralMessage("Chat.Style.Party.Leader",
+                        author.getAuthoredName(ChatChannel.PARTY), literalMessage);
             } else {
-                return TextUtils.ofLegacyTextRaw(
-                        LocaleLoader.getString("Chat.Style.Party",
-                                author.getAuthoredName(ChatChannel.PARTY), message));
+                return formatLocaleStyleWithLiteralMessage("Chat.Style.Party",
+                        author.getAuthoredName(ChatChannel.PARTY), literalMessage);
             }
         }
     }

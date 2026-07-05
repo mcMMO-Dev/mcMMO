@@ -21,7 +21,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class UnarmedManager extends SkillManager {
+    public static final double BERSERK_DMG_MODIFIER = 1.5;
 
     public UnarmedManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.UNARMED);
@@ -79,28 +80,33 @@ public class UnarmedManager extends SkillManager {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
-    public void blockCrackerCheck(@NotNull BlockState blockState) {
+    public void blockCrackerCheck(@NotNull Block block) {
+        if (!mcMMO.p.getGeneralConfig().isBlockCrackerAllowed()) {
+            return;
+        }
         if (!ProbabilityUtil.isNonRNGSkillActivationSuccessful(SubSkillType.UNARMED_BLOCK_CRACKER,
                 mmoPlayer)) {
             return;
         }
 
-        switch (blockState.getType()) {
+        switch (block.getType()) {
             case STONE_BRICKS:
-                if (!Unarmed.blockCrackerSmoothBrick) {
-                    return;
-                }
-
-                blockState.getBlock().setType(Material.CRACKED_STONE_BRICKS);
-                blockState.update(true);
+                block.setType(Material.CRACKED_STONE_BRICKS);
                 return;
             case INFESTED_STONE_BRICKS:
-                if (!Unarmed.blockCrackerSmoothBrick) {
-                    return;
-                }
-
-                blockState.getBlock().setType(Material.INFESTED_CRACKED_STONE_BRICKS);
-                blockState.update(true);
+                block.setType(Material.INFESTED_CRACKED_STONE_BRICKS);
+                return;
+            case DEEPSLATE_BRICKS:
+                block.setType(Material.CRACKED_DEEPSLATE_BRICKS);
+                return;
+            case DEEPSLATE_TILES:
+                block.setType(Material.CRACKED_DEEPSLATE_TILES);
+                return;
+            case POLISHED_BLACKSTONE_BRICKS:
+                block.setType(Material.CRACKED_POLISHED_BLACKSTONE_BRICKS);
+                return;
+            case NETHER_BRICKS:
+                block.setType(Material.CRACKED_NETHER_BRICKS);
                 return;
             default:
         }
@@ -158,7 +164,7 @@ public class UnarmedManager extends SkillManager {
      */
     public double berserkDamage(double damage) {
         damage =
-                ((damage * Unarmed.berserkDamageModifier) * mmoPlayer.getAttackStrength()) - damage;
+                ((damage * BERSERK_DMG_MODIFIER) * mmoPlayer.getAttackStrength()) - damage;
 
         return damage;
     }

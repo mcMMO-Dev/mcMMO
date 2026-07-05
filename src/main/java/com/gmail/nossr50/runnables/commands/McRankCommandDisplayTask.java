@@ -49,12 +49,6 @@ public class McRankCommandDisplayTask extends CancellableRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-            // Check if the command is for Maces but the MC version is not correct
-            if (skill == PrimarySkillType.MACES
-                    && !mcMMO.getCompatibilityManager().getMinecraftGameVersion()
-                    .isAtLeast(1, 21, 0)) {
-                continue;
-            }
             rank = skills.get(skill);
             sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill",
                     mcMMO.p.getSkillTools().getLocalizedSkillName(skill),

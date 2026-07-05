@@ -1,8 +1,15 @@
 package com.gmail.nossr50.config.treasure;
 
-import static com.gmail.nossr50.util.PotionUtil.matchPotionType;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.applyCustomNameAndLore;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.buildPotionItem;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.isPotionTypeResolvable;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.logIncompatibleSummary;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.logInvalidTreasure;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.logLoadSummary;
+import static com.gmail.nossr50.config.treasure.TreasureEntryLoader.parseData;
 
 import com.gmail.nossr50.config.BukkitConfig;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasureBook;
@@ -11,24 +18,28 @@ import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.LogUtils;
-import com.gmail.nossr50.util.PotionUtil;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class FishingTreasureConfig extends BukkitConfig {
+
+    private static final Logger LOGGER = Logger.getLogger(FishingTreasureConfig.class.getName());
 
     public static final String FILENAME = "fishing_treasures.yml";
     private static FishingTreasureConfig instance;
@@ -53,54 +64,77 @@ public class FishingTreasureConfig extends BukkitConfig {
 
     @Override
     protected boolean validateKeys() {
-        // Validate all the settings!
-        List<String> reason = new ArrayList<>();
-        ConfigurationSection enchantment_drop_rates = config.getConfigurationSection(
+        final ConfigurationSection dropRates = config.getConfigurationSection(
                 "Enchantment_Drop_Rates");
 
-        if (enchantment_drop_rates != null) {
-            for (String tier : enchantment_drop_rates.getKeys(false)) {
-                double totalEnchantDropRate = 0;
-                double totalItemDropRate = 0;
-
-                for (Rarity rarity : Rarity.values()) {
-                    double enchantDropRate = config.getDouble(
-                            "Enchantment_Drop_Rates." + tier + "." + rarity.toString());
-                    double itemDropRate = config.getDouble(
-                            "Item_Drop_Rates." + tier + "." + rarity);
-
-                    if ((enchantDropRate < 0.0 || enchantDropRate > 100.0)) {
-                        reason.add(
-                                "The enchant drop rate for " + tier + " items that are " + rarity
-                                        + "should be between 0.0 and 100.0!");
-                    }
-
-                    if (itemDropRate < 0.0 || itemDropRate > 100.0) {
-                        reason.add(
-                                "The item drop rate for " + tier + " items that are " + rarity
-                                        + "should be between 0.0 and 100.0!");
-                    }
-
-                    totalEnchantDropRate += enchantDropRate;
-                    totalItemDropRate += itemDropRate;
-                }
-
-                if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
-                    reason.add("The total enchant drop rate for " + tier
-                            + " should be between 0.0 and 100.0!");
-                }
-
-                if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
-                    reason.add("The total item drop rate for " + tier
-                            + " should be between 0.0 and 100.0!");
-                }
-            }
-        } else {
-            mcMMO.p.getLogger().warning(
-                    "Your fishing treasures config is empty, is this intentional? Delete it to regenerate.");
+        if (dropRates == null) {
+            mcMMO.p.getLogger().warning("Your fishing treasures config is empty, is this"
+                    + " intentional? Delete it to regenerate.");
+            return true;
         }
 
-        return noErrorsInConfig(reason);
+        for (final String problem : collectDropRateProblems(config)) {
+            mcMMO.p.getLogger().warning("Drop rate issue in " + FILENAME + ": " + problem);
+        }
+
+        // Treasure configs never fail startup on invalid config; problems are reported, not fatal.
+        return true;
+    }
+
+    /**
+     * Collects human-readable problems with the {@code Enchantment_Drop_Rates} and
+     * {@code Item_Drop_Rates} sections without mutating state, so it can be unit-tested against a
+     * {@link YamlConfiguration}. Each problem names the offending key so an admin can find and fix
+     * it. Returns an empty list when the rates are valid or absent.
+     *
+     * @param config the loaded fishing treasure configuration
+     * @return a list of problem descriptions, each identifying the offending key
+     */
+    static @NotNull List<String> collectDropRateProblems(final @NotNull YamlConfiguration config) {
+        final List<String> problems = new ArrayList<>();
+        final ConfigurationSection dropRates = config.getConfigurationSection(
+                "Enchantment_Drop_Rates");
+
+        if (dropRates == null) {
+            return problems;
+        }
+
+        for (final String tier : dropRates.getKeys(false)) {
+            double totalEnchantDropRate = 0;
+            double totalItemDropRate = 0;
+
+            for (final Rarity rarity : Rarity.values()) {
+                final double enchantDropRate = config.getDouble(
+                        "Enchantment_Drop_Rates." + tier + "." + rarity);
+                final double itemDropRate = config.getDouble(
+                        "Item_Drop_Rates." + tier + "." + rarity);
+
+                if (enchantDropRate < 0.0 || enchantDropRate > 100.0) {
+                    problems.add("Enchantment_Drop_Rates." + tier + "." + rarity
+                            + " should be between 0.0 and 100.0 (found " + enchantDropRate + ")");
+                }
+
+                if (itemDropRate < 0.0 || itemDropRate > 100.0) {
+                    problems.add("Item_Drop_Rates." + tier + "." + rarity
+                            + " should be between 0.0 and 100.0 (found " + itemDropRate + ")");
+                }
+
+                totalEnchantDropRate += enchantDropRate;
+                totalItemDropRate += itemDropRate;
+            }
+
+            if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
+                problems.add("Enchantment_Drop_Rates." + tier + " total should be between 0.0 and"
+                        + " 100.0 (found " + totalEnchantDropRate + ")");
+            }
+
+            if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
+                problems.add("Item_Drop_Rates." + tier + " total should be between 0.0 and 100.0"
+                        + " (found " + totalItemDropRate + ")");
+            }
+        }
+
+        return problems;
     }
 
     @Override
@@ -110,244 +144,274 @@ public class FishingTreasureConfig extends BukkitConfig {
             return;
         }
 
-        loadTreasures("Fishing");
+        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_MOOSHROOM_ENTITY_ID)) {
+            mcMMO.p.getLogger().log(Level.INFO,
+                    "Fixing incorrect Mooshroom entity ID in fishing_treasures.yml,"
+                            + " this will only run once...");
+            final boolean patched = fixMooshroomEntityId(config);
+            if (patched) {
+                try {
+                    config.save(getFile());
+                    mcMMO.getUpgradeManager().setUpgradeCompleted(
+                            UpgradeType.FIX_MOOSHROOM_ENTITY_ID);
+                } catch (IOException e) {
+                    mcMMO.p.getLogger().log(Level.SEVERE,
+                            "Failed to save fishing_treasures.yml after patching Mooshroom entity"
+                                    + " ID. You may manually rename the 'Shake.MUSHROOM_COW'"
+                                    + " section to 'Shake.MOOSHROOM' in fishing_treasures.yml.", e);
+                }
+            } else {
+                // Nothing to patch (key absent or already correct) — mark complete so we
+                // don't check again on the next server startup.
+                mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.FIX_MOOSHROOM_ENTITY_ID);
+            }
+        }
+
+        logLoadSummary(mcMMO.p.getLogger(), FILENAME, "Fishing", loadTreasures("Fishing"));
         loadEnchantments();
 
+        TreasureLoadTally shakeTally = TreasureLoadTally.empty();
         for (EntityType entity : EntityType.values()) {
             if (entity.isAlive()) {
-                loadTreasures("Shake." + entity);
+                shakeTally = shakeTally.merge(loadTreasures("Shake." + entity));
             }
         }
+        logLoadSummary(mcMMO.p.getLogger(), FILENAME, "Shake", shakeTally);
     }
 
-    private void loadTreasures(@NotNull String type) {
-        boolean isFishing = type.equals("Fishing");
-        boolean isShake = type.contains("Shake");
+    /**
+     * Renames the {@code Shake.MUSHROOM_COW} section to {@code Shake.MOOSHROOM} in the supplied
+     * config. {@code MUSHROOM_COW} was shipped as the entity key in early versions of
+     * {@code fishing_treasures.yml} but is not a valid Spigot {@link EntityType} name; the correct
+     * name is {@code MOOSHROOM}.
+     *
+     * <p>The rename is skipped if {@code Shake.MUSHROOM_COW} is absent (already patched or never
+     * present) or if {@code Shake.MOOSHROOM} already exists (user has manual config).
+     *
+     * @param configuration the loaded YAML configuration to patch in-memory
+     * @return {@code true} if the section was renamed, {@code false} if no change was needed
+     */
+    @VisibleForTesting
+    static boolean fixMooshroomEntityId(
+            final @NotNull org.bukkit.configuration.file.YamlConfiguration configuration) {
+        final ConfigurationSection oldSection = configuration.getConfigurationSection(
+                "Shake.MUSHROOM_COW");
+        if (oldSection == null) {
+            return false;
+        }
 
-        ConfigurationSection treasureSection = config.getConfigurationSection(type);
+        // Don't overwrite intentional user config for the correct key.
+        if (configuration.getConfigurationSection("Shake.MOOSHROOM") == null) {
+            for (final String key : oldSection.getKeys(false)) {
+                configuration.set("Shake.MOOSHROOM." + key, oldSection.get(key));
+            }
+            LOGGER.info("Renamed Shake.MUSHROOM_COW to Shake.MOOSHROOM in fishing_treasures.yml.");
+        }
+        configuration.set("Shake.MUSHROOM_COW", null);
+        return true;
+    }
 
+    private TreasureLoadTally loadTreasures(@NotNull String type) {
+        final boolean isFishing = type.equals("Fishing");
+        final boolean isShake = type.contains("Shake");
+
+        final ConfigurationSection treasureSection = config.getConfigurationSection(type);
         if (treasureSection == null) {
-            return;
+            return TreasureLoadTally.empty();
         }
 
-        // Initialize fishing HashMap
-        for (Rarity rarity : Rarity.values()) {
-            if (!fishingRewards.containsKey(rarity)) {
-                fishingRewards.put(rarity, (new ArrayList<>()));
-            }
+        // Initialize fishing reward buckets
+        for (final Rarity rarity : Rarity.values()) {
+            fishingRewards.computeIfAbsent(rarity, k -> new ArrayList<>());
         }
 
-        for (String treasureName : treasureSection.getKeys(false)) {
-            // Validate all the things!
-            List<String> reason = new ArrayList<>();
+        int loaded = 0;
+        int invalid = 0;
+        final List<String> incompatibleNames = new ArrayList<>();
 
-            String[] treasureInfo = treasureName.split("[|]");
-            String materialName = treasureInfo[0];
+        for (final String treasureName : treasureSection.getKeys(false)) {
+            try {
+                final TreasureLoadResult result = classifyFishingTreasure(
+                        config, type, treasureName, isFishing, mcMMO.p.getLogger());
 
-            /*
-             * Material, Amount, and Data
-             */
-            Material material;
-
-            if (materialName.contains("INVENTORY")) {
-                // Use magic material BEDROCK to know that we're grabbing something from the inventory and not a normal treasure
-                addShakeTreasure(
-                        new ShakeTreasure(
-                                new ItemStack(Material.BEDROCK, 1, (byte) 0), 1,
-                                getInventoryStealDropChance(), getInventoryStealDropLevel()),
-                        EntityType.PLAYER);
-                continue;
-            } else {
-                material = Material.matchMaterial(materialName);
-            }
-
-            int amount = config.getInt(type + "." + treasureName + ".Amount");
-            short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1])
-                    : (short) config.getInt(
-                            type + "." + treasureName + ".Data");
-
-            if (material == null) {
-                reason.add("Cannot find matching item type in this version of MC, skipping - "
-                        + materialName);
-                continue;
-            }
-
-            if (amount <= 0) {
-                amount = 1;
-            }
-
-            if (material.isBlock() && (data > 127 || data < -128)) {
-                reason.add("Data of " + treasureName + " is invalid! " + data);
-            }
-
-            /*
-             * XP, Drop Chance, and Drop Level
-             */
-
-            int xp = config.getInt(type + "." + treasureName + ".XP");
-            double dropChance = config.getDouble(type + "." + treasureName + ".Drop_Chance");
-            int dropLevel = config.getInt(type + "." + treasureName + ".Drop_Level");
-
-            if (xp < 0) {
-                reason.add(treasureName + " has an invalid XP value: " + xp);
-            }
-
-            if (dropChance < 0.0D) {
-                reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
-            }
-
-            if (dropLevel < 0) {
-                reason.add("Fishing Config: " + treasureName + " has an invalid Drop_Level: "
-                        + dropLevel);
-            }
-
-            /*
-             * Specific Types
-             */
-            Rarity rarity = null;
-
-            if (isFishing) {
-                String rarityStr = config.getString(type + "." + treasureName + ".Rarity");
-
-                if (rarityStr != null) {
-                    rarity = Rarity.getRarity(rarityStr);
-                } else {
-                    mcMMO.p.getLogger().severe(
-                            "Please edit your config and add a Rarity definition for - "
-                                    + treasureName);
-                    mcMMO.p.getLogger().severe("Skipping this treasure until rarity is defined - "
-                            + treasureName);
-                    continue;
-                }
-            }
-
-            /*
-             * Itemstack
-             */
-            ItemStack item = null;
-
-            String customName = null;
-
-            if (hasCustomName(type, treasureName)) {
-                customName = config.getString(type + "." + treasureName + ".Custom_Name");
-            }
-
-            if (materialName.contains("POTION")) {
-                // Update for 1.20.5
-
-                Material mat = Material.matchMaterial(materialName);
-                if (mat == null) {
-                    reason.add("Potion format for " + FILENAME + " has changed");
-                    continue;
-                } else {
-                    item = new ItemStack(mat, amount, data);
-                    PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-
-                    if (potionMeta == null) {
-                        mcMMO.p.getLogger().severe(
-                                "FishingConfig: Item meta when adding potion to fishing treasure was null,"
-                                        + " contact the mcMMO devs!");
-                        reason.add(
-                                "FishingConfig: Item meta when adding potion to fishing treasure was null");
-                        continue;
-                    }
-
-                    String potionTypeStr;
-                    potionTypeStr = config.getString(
-                            type + "." + treasureName + ".PotionData.PotionType", "WATER");
-                    boolean extended = config.getBoolean(
-                            type + "." + treasureName + ".PotionData.Extended", false);
-                    boolean upgraded = config.getBoolean(
-                            type + "." + treasureName + ".PotionData.Upgraded", false);
-                    final PotionType potionType = matchPotionType(potionTypeStr, extended,
-                            upgraded);
-
-                    if (potionType == null) {
-                        reason.add(
-                                "FishingConfig: Could not derive potion type from: " + potionTypeStr
-                                        + ", " + extended + ", " + upgraded);
-                        continue;
-                    }
-
-                    // Set the base potion type
-                    // NOTE: Upgraded/Extended are ignored in 1.20.5 and later
-                    PotionUtil.setBasePotionType(potionMeta, potionType, upgraded, extended);
-
-                    if (customName != null) {
-                        potionMeta.setDisplayName(
-                                ChatColor.translateAlternateColorCodes('&', customName));
-                    }
-
-                    if (config.contains(type + "." + treasureName + ".Lore")) {
-                        List<String> lore = new ArrayList<>();
-                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
-                            lore.add(ChatColor.translateAlternateColorCodes('&', s));
+                switch (result) {
+                    case INCOMPATIBLE -> incompatibleNames.add(treasureName);
+                    case INVALID -> invalid++;
+                    case LOADED -> {
+                        if (buildAndRegisterTreasure(type, treasureName, isFishing, isShake)) {
+                            loaded++;
+                        } else {
+                            invalid++;
                         }
-                        potionMeta.setLore(lore);
                     }
-                    item.setItemMeta(potionMeta);
                 }
-            } else if (material == Material.ENCHANTED_BOOK) {
-                //If any whitelisted enchants exist we use whitelist-based matching
-                item = new ItemStack(material, 1);
-                ItemMeta itemMeta = item.getItemMeta();
-
-                List<String> allowedEnchantsList = config.getStringList(
-                        type + "." + treasureName + ".Enchantments_Whitelist");
-                List<String> disallowedEnchantsList = config.getStringList(
-                        type + "." + treasureName + ".Enchantments_Blacklist");
-
-                Set<Enchantment> blackListedEnchants = new HashSet<>();
-                Set<Enchantment> whiteListedEnchants = new HashSet<>();
-
-                matchAndFillSet(disallowedEnchantsList, blackListedEnchants);
-                matchAndFillSet(allowedEnchantsList, whiteListedEnchants);
-
-                if (customName != null && itemMeta != null) {
-                    itemMeta.setDisplayName(
-                            ChatColor.translateAlternateColorCodes('&', customName));
-                    item.setItemMeta(itemMeta);
-                }
-
-                FishingTreasureBook fishingTreasureBook = new FishingTreasureBook(
-                        item, xp, blackListedEnchants,
-                        whiteListedEnchants);
-                addFishingTreasure(rarity, fishingTreasureBook);
-                //TODO: Add book support for shake
-                continue; //The code in this whole file is a disaster, ignore this hacky solution :P
-            } else {
-                item = new ItemStack(material, amount, data);
-
-                if (customName != null) {
-                    ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(
-                            ChatColor.translateAlternateColorCodes('&', customName));
-                    item.setItemMeta(itemMeta);
-                }
-
-                if (config.contains(type + "." + treasureName + ".Lore")) {
-                    ItemMeta itemMeta = item.getItemMeta();
-                    List<String> lore = new ArrayList<>();
-                    for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&', s));
-                    }
-                    itemMeta.setLore(lore);
-                    item.setItemMeta(itemMeta);
-                }
-            }
-
-            if (noErrorsInConfig(reason)) {
-                if (isFishing) {
-                    addFishingTreasure(rarity, new FishingTreasure(item, xp));
-                } else if (isShake) {
-                    ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance,
-                            dropLevel);
-
-                    EntityType entityType = EntityType.valueOf(type.substring(6));
-                    addShakeTreasure(shakeTreasure, entityType);
-                }
+            } catch (Exception e) {
+                mcMMO.p.getLogger().warning("Skipping malformed treasure '" + treasureName + "' in "
+                        + FILENAME + ": " + e.getMessage());
+                invalid++;
             }
         }
+
+        logIncompatibleSummary(mcMMO.p.getLogger(), FILENAME, type, incompatibleNames);
+
+        return new TreasureLoadTally(loaded, incompatibleNames.size(), invalid);
+    }
+
+    /**
+     * Classifies a single fishing/shake treasure entry without mutating state or building an
+     * {@link ItemStack}, so it can be unit-tested directly against a {@link YamlConfiguration}.
+     *
+     * @param config       the loaded treasure configuration
+     * @param type         the treasure section (for example {@code Fishing} or {@code Shake.COW})
+     * @param treasureName the entry key, optionally suffixed with {@code |data}
+     * @param isFishing    whether this is a Fishing entry (which requires a Rarity)
+     * @param logger       logger used to report skipped entries
+     * @return whether the entry is loadable, incompatible with this MC version, or invalid
+     */
+    static @NotNull TreasureLoadResult classifyFishingTreasure(
+            final @NotNull YamlConfiguration config, final @NotNull String type,
+            final @NotNull String treasureName, final boolean isFishing,
+            final @NotNull Logger logger) {
+        final String materialName = treasureName.split("[|]")[0];
+
+        // Magic INVENTORY entry: a special shake treasure that steals from a player's inventory.
+        if (materialName.contains("INVENTORY")) {
+            return TreasureLoadResult.LOADED;
+        }
+
+        final Material material = Material.matchMaterial(materialName);
+        if (material == null) {
+            LogUtils.debug(logger, "Skipping treasure '" + treasureName + "' in " + FILENAME
+                    + " because material '" + materialName
+                    + "' does not exist in this Minecraft version");
+            return TreasureLoadResult.INCOMPATIBLE;
+        }
+
+        final String base = type + "." + treasureName;
+
+        if (materialName.contains("POTION") && !isPotionTypeResolvable(config, base)) {
+            LogUtils.debug(logger, "Skipping treasure '" + treasureName + "' in " + FILENAME
+                    + " because its potion type does not exist in this Minecraft version");
+            return TreasureLoadResult.INCOMPATIBLE;
+        }
+
+        final short data;
+        try {
+            data = parseData(treasureName, config, base);
+        } catch (NumberFormatException e) {
+            logInvalidTreasure(logger, FILENAME, treasureName, "data suffix '"
+                    + treasureName.split("[|]")[1] + "' is not a number");
+            return TreasureLoadResult.INVALID;
+        }
+
+        if (material.isBlock() && (data > Byte.MAX_VALUE || data < Byte.MIN_VALUE)) {
+            logInvalidTreasure(logger, FILENAME, treasureName, "data value " + data + " is out of range");
+            return TreasureLoadResult.INVALID;
+        }
+
+        final int xp = config.getInt(base + ".XP");
+        if (xp < 0) {
+            logInvalidTreasure(logger, FILENAME, treasureName, "XP value " + xp + " is negative");
+            return TreasureLoadResult.INVALID;
+        }
+
+        final double dropChance = config.getDouble(base + ".Drop_Chance");
+        if (dropChance < 0.0D) {
+            logInvalidTreasure(logger, FILENAME, treasureName, "Drop_Chance " + dropChance + " is negative");
+            return TreasureLoadResult.INVALID;
+        }
+
+        final int dropLevel = config.getInt(base + ".Drop_Level");
+        if (dropLevel < 0) {
+            logInvalidTreasure(logger, FILENAME, treasureName, "Drop_Level " + dropLevel + " is negative");
+            return TreasureLoadResult.INVALID;
+        }
+
+        if (isFishing) {
+            final String rarityStr = config.getString(base + ".Rarity");
+            if (rarityStr == null) {
+                logInvalidTreasure(logger, FILENAME, treasureName, "missing Rarity");
+                return TreasureLoadResult.INVALID;
+            }
+            if (Rarity.tryMatch(rarityStr) == null) {
+                logInvalidTreasure(logger, FILENAME, treasureName, "unknown Rarity '" + rarityStr + "'");
+                return TreasureLoadResult.INVALID;
+            }
+        }
+
+        return TreasureLoadResult.LOADED;
+    }
+
+    private boolean buildAndRegisterTreasure(final @NotNull String type,
+            final @NotNull String treasureName, final boolean isFishing, final boolean isShake) {
+        final String base = type + "." + treasureName;
+        final String materialName = treasureName.split("[|]")[0];
+
+        // Magic INVENTORY entry: steal from a player's inventory (uses BEDROCK as a sentinel).
+        if (materialName.contains("INVENTORY")) {
+            addShakeTreasure(new ShakeTreasure(new ItemStack(Material.BEDROCK, 1, (byte) 0), 1,
+                    getInventoryStealDropChance(), getInventoryStealDropLevel()), EntityType.PLAYER);
+            return true;
+        }
+
+        final Material material = Material.matchMaterial(materialName);
+        int amount = config.getInt(base + ".Amount");
+        if (amount <= 0) {
+            amount = 1;
+        }
+        final short data = parseData(treasureName, config, base);
+        final int xp = config.getInt(base + ".XP");
+        final double dropChance = config.getDouble(base + ".Drop_Chance");
+        final int dropLevel = config.getInt(base + ".Drop_Level");
+        final Rarity rarity = isFishing
+                ? Rarity.getRarity(config.getString(base + ".Rarity"))
+                : null;
+
+        if (isFishing && material == Material.ENCHANTED_BOOK) {
+            registerEnchantedBook(base, xp, rarity);
+            return true;
+        }
+
+        final ItemStack item;
+        if (materialName.contains("POTION")) {
+            item = buildPotionItem(config, type, treasureName, material, amount, data, FILENAME,
+                    mcMMO.p.getLogger());
+            if (item == null) {
+                return false;
+            }
+        } else {
+            item = new ItemStack(material, amount, data);
+            applyCustomNameAndLore(config, type, treasureName, item);
+        }
+
+        if (isFishing) {
+            addFishingTreasure(rarity, new FishingTreasure(item, xp));
+        } else if (isShake) {
+            addShakeTreasure(new ShakeTreasure(item, xp, dropChance, dropLevel),
+                    EntityType.valueOf(type.substring(6)));
+        }
+
+        return true;
+    }
+
+    private void registerEnchantedBook(final @NotNull String base, final int xp,
+            final @NotNull Rarity rarity) {
+        final ItemStack item = new ItemStack(Material.ENCHANTED_BOOK, 1);
+        final ItemMeta itemMeta = item.getItemMeta();
+
+        final Set<Enchantment> blackListedEnchants = new HashSet<>();
+        final Set<Enchantment> whiteListedEnchants = new HashSet<>();
+        matchAndFillSet(config.getStringList(base + ".Enchantments_Blacklist"), blackListedEnchants);
+        matchAndFillSet(config.getStringList(base + ".Enchantments_Whitelist"), whiteListedEnchants);
+
+        if (config.contains(base + ".Custom_Name") && itemMeta != null) {
+            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
+                    config.getString(base + ".Custom_Name")));
+            item.setItemMeta(itemMeta);
+        }
+
+        addFishingTreasure(rarity,
+                new FishingTreasureBook(item, xp, blackListedEnchants, whiteListedEnchants));
     }
 
     private void addShakeTreasure(@NotNull ShakeTreasure shakeTreasure,
@@ -361,10 +425,6 @@ public class FishingTreasureConfig extends BukkitConfig {
     private void addFishingTreasure(@NotNull Rarity rarity,
             @NotNull FishingTreasure fishingTreasure) {
         fishingRewards.get(rarity).add(fishingTreasure);
-    }
-
-    private boolean hasCustomName(@NotNull String type, @NotNull String treasureName) {
-        return config.contains(type + "." + treasureName + ".Custom_Name");
     }
 
     /**
@@ -409,7 +469,7 @@ public class FishingTreasureConfig extends BukkitConfig {
                     "Enchantments_Rarity." + rarity.toString());
 
             if (enchantmentSection == null) {
-                return;
+                continue;
             }
 
             for (String enchantmentName : enchantmentSection.getKeys(false)) {

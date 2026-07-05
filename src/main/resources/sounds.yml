@@ -4,71 +4,90 @@ Sounds:
     # 1.0 = Max volume
     # 0.0 = No Volume
     MasterVolume: 1.0
+    # If you want to use custom sounds, provide an ID for CustomSoundId
+    # Sound IDs are strings, such as minecraft:entity.player.levelup
     ITEM_CONSUMED:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
+        CustomSoundId: ''
     GLASS:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
+        CustomSoundId: ''
     ANVIL:
         Enable: true
         Volume: 1.0
         Pitch: 0.3
+        CustomSoundId: ''
     #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     FIZZ:
         Enable: true
         Volume: 0.5
+        CustomSoundId: ''
     LEVEL_UP:
         Enable: true
         Volume: 0.3
         Pitch: 0.5
+        CustomSoundId: ''
     ITEM_BREAK:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
+        CustomSoundId: ''
     #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     POP:
         Enable: true
         Volume: 0.2
+        CustomSoundId: ''
     CHIMAERA_WING:
         Enable: true
         Volume: 1.0
         Pitch: 0.6
+        CustomSoundId: ''
     ROLL_ACTIVATED:
         Enable: true
         Volume: 1.0
         Pitch: 0.7
+        CustomSoundId: ''
     SKILL_UNLOCKED:
         Enable: true
         Volume: 1.0
         Pitch: 1.4
+        CustomSoundId: ''
     DEFLECT_ARROWS:
         Enable: true
         Volume: 1.0
         Pitch: 2.0
+        CustomSoundId: ''
     TOOL_READY:
         Enable: true
         Volume: 1.0
         Pitch: 0.4
+        CustomSoundId: ''
     ABILITY_ACTIVATED_GENERIC:
         Enable: true
         Volume: 1.0
         Pitch: 0.1
+        CustomSoundId: ''
     ABILITY_ACTIVATED_BERSERK:
         Enable: true
         Volume: 0.5
         Pitch: 1.7
+        CustomSoundId: ''
     TIRED:
         Enable: true
         Volume: 1.0
         Pitch: 1.7
+        CustomSoundId: ''
     BLEED:
         Enable: true
         Volume: 2.0
         Pitch: 2.0
+        CustomSoundId: ''
     CRIPPLE:
         Enable: true
         Volume: 1.0
         Pitch: 0.5
+        CustomSoundId: ''

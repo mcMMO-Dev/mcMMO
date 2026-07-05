@@ -16,17 +16,25 @@ public interface SubSkill extends Skill {
     /**
      * Returns a collection of strings about how a skill works
      *
-     * @return
+     * @return mechanics description
+     * @deprecated unused; will be removed in a future version
      */
-    String getMechanics();
+    @Deprecated(forRemoval = true, since = "2.2.052")
+    default String getMechanics() {
+        return "";
+    }
 
     /**
      * Get an array of various stats for a player
      *
      * @param mmoPlayer target player
      * @return stat array for target player for this skill
+     * @deprecated unused; will be removed in a future version
      */
-    Double[] getStats(McMMOPlayer mmoPlayer);
+    @Deprecated(forRemoval = true, since = "2.2.052")
+    default Double[] getStats(McMMOPlayer mmoPlayer) {
+        return new Double[0];
+    }
 
     /**
      * Checks if a player has permission to use this skill

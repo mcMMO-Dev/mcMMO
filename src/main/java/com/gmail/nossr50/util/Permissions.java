@@ -8,7 +8,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.RankUtils;
+import java.util.EnumMap;
 import java.util.Locale;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -22,7 +24,38 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class Permissions {
+    private static final Map<PrimarySkillType, String> SKILL_ENABLED_NODES =
+            perSkillNodes("mcmmo.skills.");
+    private static final Map<PrimarySkillType, String> LUCKY_PERK_NODES =
+            perSkillNodes("mcmmo.perks.lucky.");
+    private static final Map<PrimarySkillType, String> XP_QUADRUPLE_NODES =
+            perSkillNodes("mcmmo.perks.xp.quadruple.");
+    private static final Map<PrimarySkillType, String> XP_TRIPLE_NODES =
+            perSkillNodes("mcmmo.perks.xp.triple.");
+    private static final Map<PrimarySkillType, String> XP_150_PERCENT_NODES =
+            perSkillNodes("mcmmo.perks.xp.150percentboost.");
+    private static final Map<PrimarySkillType, String> XP_DOUBLE_NODES =
+            perSkillNodes("mcmmo.perks.xp.double.");
+    private static final Map<PrimarySkillType, String> XP_50_PERCENT_NODES =
+            perSkillNodes("mcmmo.perks.xp.50percentboost.");
+    private static final Map<PrimarySkillType, String> XP_25_PERCENT_NODES =
+            perSkillNodes("mcmmo.perks.xp.25percentboost.");
+    private static final Map<PrimarySkillType, String> XP_10_PERCENT_NODES =
+            perSkillNodes("mcmmo.perks.xp.10percentboost.");
+    private static final Map<PrimarySkillType, String> XP_CUSTOM_BOOST_NODES =
+            perSkillNodes("mcmmo.perks.xp.customboost.");
+
     private Permissions() {
+    }
+
+    private static Map<PrimarySkillType, String> perSkillNodes(String prefix) {
+        final Map<PrimarySkillType, String> nodes = new EnumMap<>(PrimarySkillType.class);
+
+        for (PrimarySkillType skill : PrimarySkillType.values()) {
+            nodes.put(skill, prefix + skill.toString().toLowerCase(Locale.ENGLISH));
+        }
+
+        return nodes;
     }
 
     /*
@@ -245,57 +278,48 @@ public final class Permissions {
     }
 
     public static boolean lucky(Permissible permissible, PrimarySkillType skill) {
-        return permissible.hasPermission(
-                "mcmmo.perks.lucky." + skill.toString().toLowerCase(Locale.ENGLISH));
+        return permissible.hasPermission(LUCKY_PERK_NODES.get(skill));
     }
 
     /* XP PERKS */
     public static boolean quadrupleXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.quadruple.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.quadruple." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_QUADRUPLE_NODES.get(skill));
     }
 
     public static boolean tripleXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.triple.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.triple." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_TRIPLE_NODES.get(skill));
     }
 
     public static boolean doubleAndOneHalfXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.150percentboost.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.150percentboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_150_PERCENT_NODES.get(skill));
     }
 
     public static boolean doubleXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.double.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.double." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_DOUBLE_NODES.get(skill));
     }
 
     public static boolean oneAndOneHalfXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.50percentboost.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.50percentboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_50_PERCENT_NODES.get(skill));
     }
 
     public static boolean oneAndAQuarterXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.25percentboost.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.25percentboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_25_PERCENT_NODES.get(skill));
     }
 
     public static boolean oneAndOneTenthXp(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.10percentboost.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.10percentboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_10_PERCENT_NODES.get(skill));
     }
 
     public static boolean customXpBoost(Permissible permissible, PrimarySkillType skill) {
         return permissible.hasPermission("mcmmo.perks.xp.customboost.all")
-                || permissible.hasPermission(
-                "mcmmo.perks.xp.customboost." + skill.toString().toLowerCase(Locale.ENGLISH));
+                || permissible.hasPermission(XP_CUSTOM_BOOST_NODES.get(skill));
     }
 
 
@@ -330,8 +354,7 @@ public final class Permissions {
      */
 
     public static boolean skillEnabled(Permissible permissible, PrimarySkillType skill) {
-        return permissible.hasPermission(
-                "mcmmo.skills." + skill.toString().toLowerCase(Locale.ENGLISH));
+        return permissible.hasPermission(SKILL_ENABLED_NODES.get(skill));
     }
 
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkillType skill) {

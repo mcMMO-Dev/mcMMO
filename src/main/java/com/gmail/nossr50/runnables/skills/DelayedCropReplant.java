@@ -51,8 +51,7 @@ public class DelayedCropReplant extends CancellableRunnable {
 
     @Override
     public void run() {
-        Block cropBlock = cropLocation.getBlock();
-        BlockState currentState = cropBlock.getState();
+        final BlockState blockState = cropLocation.getBlock().getState();
         PlantAnchorType plantAnchorType = PlantAnchorType.NORMAL;
 
         //Remove the metadata marking the block as recently replanted
@@ -64,49 +63,42 @@ public class DelayedCropReplant extends CancellableRunnable {
             wasImmaturePlant = true;
         }
 
-        //Two kinds of air in Minecraft
-        if (currentState.getType().equals(cropMaterial) || currentState.getType()
-                .equals(Material.AIR) || currentState.getType().equals(Material.CAVE_AIR)) {
-//            if (currentState.getBlock().getRelative(BlockFace.DOWN))
-            //The space is not currently occupied by a block so we can fill it
-            cropBlock.setType(cropMaterial);
+        if (blockIsAirOrExpectedCrop(blockState)) {
+            // Modify the new state of the block, not any old snapshot of it
+            blockState.setType(cropMaterial);
+            final BlockData newData = blockState.getBlockData();
 
-            //Get new state (necessary?)
-            BlockState newState = cropBlock.getState();
-            BlockData newData = newState.getBlockData();
-
-            int age = 0;
-
-            //Crop age should always be 0 if the plant was immature
-            if (!wasImmaturePlant) {
-                age = desiredCropAge;
-                //Otherwise make the plant the desired age
-            }
+            // Immature plants should be age 0, others get the desired age
+            int age = wasImmaturePlant ? 0 : desiredCropAge;
 
             if (newData instanceof Directional) {
-                //Cocoa Version
-                Directional directional = (Directional) newState.getBlockData();
+                // Cocoa Version
+                Directional directional = (Directional) blockState.getBlockData();
                 directional.setFacing(cropFace);
 
-                newState.setBlockData(directional);
+                blockState.setBlockData(directional);
 
                 if (newData instanceof Cocoa) {
                     plantAnchorType = PlantAnchorType.COCOA;
                 }
             }
 
-            //Age the crop
-            Ageable ageable = (Ageable) newState.getBlockData();
-            ageable.setAge(age);
-            newState.setBlockData(ageable);
+            if (blockState.getBlockData() instanceof Ageable ageable) {
+                ageable.setAge(age);
+                blockState.setBlockData(ageable);
+                blockState.update(true, true);
 
-            newState.update(true, true);
-
-            //Play an effect
-            ParticleEffectUtils.playGreenThumbEffect(cropLocation);
-            mcMMO.p.getFoliaLib().getScheduler().runAtLocationLater(newState.getLocation(),
-                    new PhysicsBlockUpdate(newState.getBlock(), cropFace, plantAnchorType), 1);
+                //Play an effect
+                ParticleEffectUtils.playGreenThumbEffect(cropLocation);
+                mcMMO.p.getFoliaLib().getScheduler().runAtLocationLater(blockState.getLocation(),
+                        new PhysicsBlockUpdate(blockState.getBlock(), cropFace, plantAnchorType), 1);
+            }
         }
+    }
+
+    private boolean blockIsAirOrExpectedCrop(BlockState blockState) {
+        return blockState.getType().equals(cropMaterial) || blockState.getType()
+                .equals(Material.AIR) || blockState.getType().equals(Material.CAVE_AIR);
     }
 
     private enum PlantAnchorType {

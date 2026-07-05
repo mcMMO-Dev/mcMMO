@@ -27,7 +27,6 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,7 +40,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -113,26 +111,52 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public void processBonusDropCheck(@NotNull Block block) {
-        //TODO: Why isn't this using the item drop event? Potentially because of Tree Feller? This should be adjusted either way.
         if (mcMMO.p.getGeneralConfig()
                 .getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, block.getType())) {
-            //Mastery enabled for player
-            if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
-                if (checkCleanCutsActivation(block.getType())) {
-                    //Triple drops
-                    spawnHarvestLumberBonusDrops(block);
-                    spawnHarvestLumberBonusDrops(block);
-                } else {
-                    //Harvest Lumber Check
+            // Tree Feller sets this flag before calling into this method. Tree Feller removes
+            // blocks via setType(AIR) and never fires BlockDropItemEvent, so the
+            // markDropsAsBonus metadata approach would silently do nothing. Fall back to the
+            // legacy spawn path for Tree Feller blocks.
+            if (mmoPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER)) {
+                //Mastery enabled for player
+                if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
+                    if (checkCleanCutsActivation(block.getType())) {
+                        //Triple drops
+                        spawnHarvestLumberBonusDrops(block);
+                        spawnHarvestLumberBonusDrops(block);
+                    } else {
+                        //Harvest Lumber Check
+                        if (checkHarvestLumberActivation(block.getType())) {
+                            spawnHarvestLumberBonusDrops(block);
+                        }
+                    }
+                    //No Mastery (no Clean Cuts)
+                } else if (Permissions.canUseSubSkill(getPlayer(),
+                        SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
                     if (checkHarvestLumberActivation(block.getType())) {
                         spawnHarvestLumberBonusDrops(block);
                     }
                 }
-                //No Mastery (no Clean Cuts)
+                return;
+            }
+
+            // Normal single-block break: use the BlockDropItemEvent mechanism so that
+            // Telekinesis-style enchants (ExcellentEnchants, EcoEnchants, etc.) can intercept
+            // bonus drops just like any other block drop.
+            if (Permissions.canUseSubSkill(getPlayer(), SubSkillType.WOODCUTTING_CLEAN_CUTS)) {
+                if (checkCleanCutsActivation(block.getType())) {
+                    //Triple drops — mark as 2 extra copies
+                    BlockUtils.markDropsAsBonus(block, 2);
+                } else {
+                    //Harvest Lumber Check — mark as 1 extra copy
+                    if (checkHarvestLumberActivation(block.getType())) {
+                        BlockUtils.markDropsAsBonus(block, 1);
+                    }
+                }
             } else if (Permissions.canUseSubSkill(getPlayer(),
                     SubSkillType.WOODCUTTING_HARVEST_LUMBER)) {
                 if (checkHarvestLumberActivation(block.getType())) {
-                    spawnHarvestLumberBonusDrops(block);
+                    BlockUtils.markDropsAsBonus(block, 1);
                 }
             }
         }
@@ -210,18 +234,18 @@ public class WoodcuttingManager extends SkillManager {
      */
     @VisibleForTesting
     void processTree(Block block, Set<Block> treeFellerBlocks) {
-        Collection<Block> futureCenterBlocks = new ArrayList<>();
+        List<Block> futureCenterBlocks = new ArrayList<>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
         if (processTreeFellerTargetBlock(block.getRelative(BlockFace.UP), futureCenterBlocks,
                 treeFellerBlocks)) {
             for (int[] dir : directions) {
+                processTreeFellerTargetBlock(block.getRelative(dir[0], 0, dir[1]),
+                        futureCenterBlocks, treeFellerBlocks);
+
                 if (treeFellerReachedThreshold) {
                     return;
                 }
-
-                processTreeFellerTargetBlock(block.getRelative(dir[0], 0, dir[1]),
-                        futureCenterBlocks, treeFellerBlocks);
             }
         } else {
             // Cover DOWN
@@ -230,12 +254,12 @@ public class WoodcuttingManager extends SkillManager {
             // Search in a cube
             for (int y = -1; y <= 1; y++) {
                 for (int[] dir : directions) {
+                    processTreeFellerTargetBlock(block.getRelative(dir[0], y, dir[1]),
+                            futureCenterBlocks, treeFellerBlocks);
+
                     if (treeFellerReachedThreshold) {
                         return;
                     }
-
-                    processTreeFellerTargetBlock(block.getRelative(dir[0], y, dir[1]),
-                            futureCenterBlocks, treeFellerBlocks);
                 }
             }
         }
@@ -268,7 +292,6 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         int durabilityLoss = 0;
-        Material type = inHand.getType();
 
         for (Block block : treeFellerBlocks) {
             if (BlockUtils.hasWoodcuttingXP(block)) {
@@ -286,11 +309,9 @@ public class WoodcuttingManager extends SkillManager {
             return true;
         }
 
-        SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        int durability = meta instanceof Damageable ? ((Damageable) meta).getDamage() : 0;
-        return (durability < (mcMMO.getRepairableManager().isRepairable(type)
-                ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability()
-                : type.getMaxDurability()));
+        // Plugins may reduce the damage instead of cancelling (custom durability systems)
+        SkillUtils.handleDurabilityChange(inHand, event.getDamage());
+        return ItemUtils.getItemDamage(inHand) < ItemUtils.getItemMaxDamage(inHand);
     }
 
     /**
@@ -303,24 +324,23 @@ public class WoodcuttingManager extends SkillManager {
      * @return true if and only if the given block was a Log not already in treeFellerBlocks.
      */
     private boolean processTreeFellerTargetBlock(@NotNull Block block,
-            @NotNull Collection<Block> futureCenterBlocks,
-            @NotNull Collection<Block> treeFellerBlocks) {
+            @NotNull List<Block> futureCenterBlocks,
+            @NotNull Set<Block> treeFellerBlocks) {
         if (treeFellerBlocks.contains(block) || mcMMO.getUserBlockTracker().isIneligible(block)) {
             return false;
+        }
+
+        // Without this check Tree Feller propagates through leaves until the threshold is hit
+        if (treeFellerBlocks.size() > treeFellerThreshold) {
+            treeFellerReachedThreshold = true;
         }
 
         if (BlockUtils.hasWoodcuttingXP(block)) {
             treeFellerBlocks.add(block);
             futureCenterBlocks.add(block);
-            if (treeFellerBlocks.size() >= treeFellerThreshold) {
-                treeFellerReachedThreshold = true;
-            }
             return true;
         } else if (BlockUtils.isNonWoodPartOfTree(block)) {
             treeFellerBlocks.add(block);
-            if (treeFellerBlocks.size() >= treeFellerThreshold) {
-                treeFellerReachedThreshold = true;
-            }
             return false;
         }
         return false;
@@ -376,17 +396,20 @@ public class WoodcuttingManager extends SkillManager {
                             player
                     );
                 }
+            }
 
-                //Drop displaced non-woodcutting XP blocks
-                if (hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                    if (RankUtils.hasReachedRank(2, player,
-                            SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
-                        if (mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
-                            if (ProbabilityUtil.isStaticSkillRNGSuccessful(
-                                    PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
-                                int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
-                                Misc.spawnExperienceOrb(block.getLocation(), randOrbCount);
-                            }
+            // KnockOnWood XP orbs apply to any non-log tree component, including blocks that
+            // also grant woodcutting XP (e.g. nether/warped wart blocks). Previously this was
+            // nested inside the else-if above, which prevented orbs from spawning on nether tree
+            // caps because they have woodcutting XP and never reached the else-if branch.
+            if (BlockUtils.isNonWoodPartOfTree(block)
+                    && hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                if (RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                    if (mcMMO.p.getAdvancedConfig().isKnockOnWoodXPOrbEnabled()) {
+                        if (ProbabilityUtil.isStaticSkillRNGSuccessful(
+                                PrimarySkillType.WOODCUTTING, mmoPlayer, 10)) {
+                            int randOrbCount = Math.max(1, Misc.getRandom().nextInt(100));
+                            Misc.spawnExperienceOrb(block.getLocation(), randOrbCount);
                         }
                     }
                 }
@@ -472,6 +495,19 @@ public class WoodcuttingManager extends SkillManager {
         spawnHarvestLumberBonusDrops(blockState.getBlock());
     }
 
+    /**
+     * Spawns harvest lumber bonus drops directly into the world.
+     * <p>
+     * Used by the Tree Feller path, which removes blocks via {@code setType(AIR)} and never
+     * fires {@link org.bukkit.event.block.BlockDropItemEvent}. Normal single-block woodcutting
+     * uses {@link com.gmail.nossr50.util.BlockUtils#markDropsAsBonus} instead so that
+     * Telekinesis-style enchant plugins can intercept drops through
+     * {@code BlockDropItemEvent}.
+     *
+     * @deprecated Use {@link com.gmail.nossr50.util.BlockUtils#markDropsAsBonus} for non-Tree
+     *     Feller breaks so drops are routed through {@code BlockDropItemEvent}.
+     */
+    @Deprecated(since = "2.2.052")
     void spawnHarvestLumberBonusDrops(@NotNull Block block) {
         spawnItemsFromCollection(
                 getPlayer(),

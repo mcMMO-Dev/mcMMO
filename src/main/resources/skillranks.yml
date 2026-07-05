@@ -404,6 +404,72 @@ Smelting:
             Rank_6: 750
             Rank_7: 850
             Rank_8: 1000
+Spears:
+    SpearsLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
+    SpearMastery:
+        Standard:
+            Rank_1: 5
+            Rank_2: 15
+            Rank_3: 30
+            Rank_4: 45
+            Rank_5: 60
+            Rank_6: 75
+            Rank_7: 90
+            Rank_8: 100
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 150
+            Rank_3: 300
+            Rank_4: 450
+            Rank_5: 600
+            Rank_6: 750
+            Rank_7: 900
+            Rank_8: 1000
+    Momentum:
+        Standard:
+            Rank_1: 1
+            Rank_2: 10
+            Rank_3: 15
+            Rank_4: 20
+            Rank_5: 25
+            Rank_6: 40
+            Rank_7: 50
+            Rank_8: 60
+            Rank_9: 80
+            Rank_10: 95
+        RetroMode:
+            Rank_1: 1
+            Rank_2: 100
+            Rank_3: 150
+            Rank_4: 200
+            Rank_5: 250
+            Rank_6: 400
+            Rank_7: 500
+            Rank_8: 600
+            Rank_9: 800
+            Rank_10: 950
 Salvage:
     ScrapCollector:
         Standard:

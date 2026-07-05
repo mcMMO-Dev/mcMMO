@@ -1,9 +1,6 @@
 package com.gmail.nossr50.skills.crossbows;
 
-import static com.gmail.nossr50.util.MetadataConstants.MCMMO_METADATA_VALUE;
-import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE;
 import static com.gmail.nossr50.util.skills.CombatUtils.delayArrowMetaCleanup;
-import static com.gmail.nossr50.util.skills.ProjectileUtils.isCrossbowProjectile;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -16,9 +13,11 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ProjectileUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
@@ -32,7 +31,7 @@ public class CrossbowsManager extends SkillManager {
 
     public void handleRicochet(@NotNull Plugin pluginRef, @NotNull Arrow arrow,
             @NotNull Vector hitBlockNormal) {
-        if (!isCrossbowProjectile(arrow)) {
+        if (!arrow.isShotFromCrossbow()) {
             return;
         }
 
@@ -79,12 +78,17 @@ public class CrossbowsManager extends SkillManager {
         spawnedArrow.setPickupStatus(originalArrow.getPickupStatus());
         spawnedArrow.setKnockbackStrength(originalArrow.getKnockbackStrength());
 
+        // Copy tipped-arrow state: set the item type to TIPPED_ARROW before applying
+        // potion data so the pickup item has the correct POTION_DURATION_SCALE (0.125).
+        // Without this, spawnArrow() creates an Items.ARROW pickup item, defaulting
+        // the scale to 1.0 and making effects last 8× longer than intended.
         if (originalArrow.getBasePotionType() != null) {
+            spawnedArrow.setItem(new ItemStack(Material.TIPPED_ARROW));
             spawnedArrow.setBasePotionType(originalArrow.getBasePotionType());
         }
 
         if (originalArrow.hasCustomEffects()) {
-            for (var effect : originalArrow.getCustomEffects()) {
+            for (final var effect : originalArrow.getCustomEffects()) {
                 spawnedArrow.addCustomEffect(effect, true);
             }
         }
@@ -97,18 +101,11 @@ public class CrossbowsManager extends SkillManager {
                 new FixedMetadataValue(pluginRef, bounceCount + 1));
         spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_SPAWNED_ARROW,
                 new FixedMetadataValue(pluginRef, originalArrowShooter));
-        // Easy fix to recognize the arrow as a crossbow projectile
-        // TODO: Replace the hack with the new API for setting weapon on projectiles
-        if (!spawnedArrow.hasMetadata(METADATA_KEY_CROSSBOW_PROJECTILE)) {
-            spawnedArrow.setMetadata(MetadataConstants.METADATA_KEY_CROSSBOW_PROJECTILE,
-                    MCMMO_METADATA_VALUE);
-        }
-        // There are reasons to keep this despite using the metadata values above
+        // Persist crossbow identity across bounces.
         spawnedArrow.setShotFromCrossbow(true);
 
-        // Don't allow multi-shot or infinite arrows to be picked up
-        if (spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_MULTI_SHOT_ARROW)
-                || spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
+        // Don't allow infinite arrows to be picked up
+        if (spawnedArrow.hasMetadata(MetadataConstants.METADATA_KEY_INF_ARROW)) {
             spawnedArrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
         }
 
