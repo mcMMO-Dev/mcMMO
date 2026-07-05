@@ -40,7 +40,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -293,7 +292,6 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         int durabilityLoss = 0;
-        Material type = inHand.getType();
 
         for (Block block : treeFellerBlocks) {
             if (BlockUtils.hasWoodcuttingXP(block)) {
@@ -311,11 +309,9 @@ public class WoodcuttingManager extends SkillManager {
             return true;
         }
 
-        SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        int durability = meta instanceof Damageable ? ((Damageable) meta).getDamage() : 0;
-        return (durability < (mcMMO.getRepairableManager().isRepairable(type)
-                ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability()
-                : type.getMaxDurability()));
+        // Plugins may reduce the damage instead of cancelling (custom durability systems)
+        SkillUtils.handleDurabilityChange(inHand, event.getDamage());
+        return ItemUtils.getItemDamage(inHand) < ItemUtils.getItemMaxDamage(inHand);
     }
 
     /**

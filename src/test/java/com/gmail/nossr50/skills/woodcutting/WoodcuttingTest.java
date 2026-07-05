@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import static java.util.logging.Logger.getLogger;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,6 +29,7 @@ import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -38,16 +40,22 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -477,6 +485,100 @@ class WoodcuttingTest extends MMOTestEnvironment {
             } catch (Exception exception) {
                 throw new RuntimeException(exception);
             }
+        }
+    }
+
+    // Covers #5182: the Tree Feller splinter check must compare damage against the
+    // item's effective maximum (max_damage component when present), and must read the
+    // damage AFTER the durability loss is applied rather than from a stale ItemMeta copy.
+    private static Stream<Arguments> durabilityBoundaryScenarios() {
+        return Stream.of(
+                Arguments.of("custom max keeps tool alive past vanilla max", true, 3000, 1600,
+                        true),
+                Arguments.of("custom max reached splinters tool", true, 3000, 3000, false),
+                Arguments.of("vanilla tool below max survives", false, 0, 1000, true),
+                Arguments.of("vanilla tool at max splinters", false, 0, 1561, false));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("durabilityBoundaryScenarios")
+    void handleDurabilityLossShouldCompareDamageAgainstEffectiveMax(String description,
+            boolean hasMaxDamage, int maxDamage, int currentDamage, boolean expectedCanSustain) {
+        // Given - a diamond axe in the scenario's durability state (vanilla max is 1561)
+        final ItemStack axe = mock(ItemStack.class);
+        final Damageable damageableMeta = mock(Damageable.class);
+        Mockito.when(axe.getItemMeta()).thenReturn(damageableMeta);
+        Mockito.when(axe.getType()).thenReturn(Material.DIAMOND_AXE);
+        Mockito.when(damageableMeta.isUnbreakable()).thenReturn(false);
+        Mockito.when(damageableMeta.hasMaxDamage()).thenReturn(hasMaxDamage);
+        Mockito.when(damageableMeta.getMaxDamage()).thenReturn(maxDamage);
+        Mockito.when(damageableMeta.getDamage()).thenReturn(currentDamage);
+
+        // Given - durability application is stubbed out so the boundary check is isolated
+        try (MockedStatic<SkillUtils> ignoredSkillUtils = mockStatic(SkillUtils.class)) {
+            // When - Tree Feller resolves whether the tool survives the durability loss
+            final boolean canSustain = invokeHandleDurabilityLoss(Collections.emptySet(), axe);
+
+            // Then - the verdict is based on the item's effective maximum
+            assertThat(canSustain).as(description).isEqualTo(expectedCanSustain);
+        }
+    }
+
+    @Test
+    void handleDurabilityLossShouldAlwaysSustainUnbreakableTools() {
+        // Given - an unbreakable axe
+        final ItemStack axe = mock(ItemStack.class);
+        final Damageable damageableMeta = mock(Damageable.class);
+        Mockito.when(axe.getItemMeta()).thenReturn(damageableMeta);
+        Mockito.when(damageableMeta.isUnbreakable()).thenReturn(true);
+
+        // When - Tree Feller resolves whether the tool survives
+        final boolean canSustain = invokeHandleDurabilityLoss(Collections.emptySet(), axe);
+
+        // Then - unbreakable tools never splinter
+        assertThat(canSustain).isTrue();
+    }
+
+    @Test
+    void handleDurabilityLossShouldRespectEventDamageModifiedByPlugins() {
+        // Given - one log block that would cost 2 durability
+        Mockito.when(generalConfig.getAbilityToolDamage()).thenReturn(2);
+        final Block logBlock = mock(Block.class);
+        final ItemStack axe = mock(ItemStack.class);
+        final Damageable damageableMeta = mock(Damageable.class);
+        Mockito.when(axe.getItemMeta()).thenReturn(damageableMeta);
+        Mockito.when(axe.getType()).thenReturn(Material.DIAMOND_AXE);
+        Mockito.when(damageableMeta.isUnbreakable()).thenReturn(false);
+
+        // Given - a plugin listener that zeroes the damage without cancelling the event
+        // (the pattern used by custom-durability plugins such as Oraxen)
+        Mockito.doAnswer(invocation -> {
+            final PlayerItemDamageEvent event = invocation.getArgument(0);
+            event.setDamage(0);
+            return null;
+        }).when(pluginManager).callEvent(any(PlayerItemDamageEvent.class));
+
+        try (MockedStatic<BlockUtils> mockedBlockUtils = mockStatic(BlockUtils.class);
+                MockedStatic<SkillUtils> mockedSkillUtils = mockStatic(SkillUtils.class)) {
+            mockedBlockUtils.when(() -> BlockUtils.hasWoodcuttingXP(logBlock)).thenReturn(true);
+
+            // When - Tree Feller applies the durability loss
+            invokeHandleDurabilityLoss(Set.of(logBlock), axe);
+
+            // Then - the durability change uses the plugin-modified damage, not the original
+            mockedSkillUtils.verify(() -> SkillUtils.handleDurabilityChange(axe, 0));
+        }
+    }
+
+    private boolean invokeHandleDurabilityLoss(final Set<Block> treeFellerBlocks,
+            final ItemStack inHand) {
+        try {
+            final Method method = WoodcuttingManager.class.getDeclaredMethod(
+                    "handleDurabilityLoss", Set.class, ItemStack.class, Player.class);
+            method.setAccessible(true);
+            return (boolean) method.invoke(null, treeFellerBlocks, inHand, player);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
         }
     }
 

@@ -268,11 +268,7 @@ public final class SkillUtils {
             return;
         }
 
-        Material type = itemStack.getType();
-        int maxDurability =
-                mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager()
-                        .getRepairable(type).getMaximumDurability() : type.getMaxDurability();
-        maxDurability = Math.max(maxDurability, ItemUtils.getItemMaxDamage(itemStack));
+        final int maxDurability = ItemUtils.getItemMaxDamage(itemStack);
         durabilityModifier = (int) Math.min(durabilityModifier / (
                         itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1),
                 maxDurability * maxDamageModifier);
@@ -308,11 +304,7 @@ public final class SkillUtils {
             return;
         }
 
-        Material type = itemStack.getType();
-        int maxDurability =
-                mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager()
-                        .getRepairable(type).getMaximumDurability() : type.getMaxDurability();
-        maxDurability = Math.max(maxDurability, ItemUtils.getItemMaxDamage(itemStack));
+        final int maxDurability = ItemUtils.getItemMaxDamage(itemStack);
         durabilityModifier = (int) Math.min(durabilityModifier * (0.6 + 0.4 / (
                         itemStack.getEnchantmentLevel(mcMMO.p.getEnchantmentMapper().getUnbreaking()) + 1)),
                 maxDurability * maxDamageModifier);
