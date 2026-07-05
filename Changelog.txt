@@ -1,5 +1,5 @@
 Version 2.2.055
-    Added scoreboard support for Folia servers (See notes)
+    Added scoreboard support for Folia servers (Thanks albert4719) (See notes)
     Fixed the 'mcmmo.perks.xp.25percentboost' permission and its per-skill child nodes not being registered (See notes)
     Fixed Maces Cripple playing an extra anvil break sound that could not be disabled in sounds.yml (See notes)
     Fixed Super Breaker and Tree Feller mishandling durability on items with a custom max_damage component (See notes)
