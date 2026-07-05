@@ -5,6 +5,7 @@ Version 2.2.055
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
+    (Codebase) Added unit tests covering the power level cap and skill level cap checks
 
     NOTES:
     The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
