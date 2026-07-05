@@ -1786,87 +1786,87 @@ permissions:
         description: Multiplies incoming XP by 1.25
         children:
             mcmmo.perks.xp.25percentboost.all: true
-        mcmmo.perks.xp.25percentboost:
-            default: false
-            description: Multiplies incoming XP by 1.25
-            children:
-                mcmmo.perks.xp.25percentboost.all: true
-        mcmmo.perks.xp.25percentboost.all:
-            default: false
-            description: Multiplies incoming XP by 1.25
-            children:
-                mcmmo.perks.xp.25percentboost.acrobatics: true
-                mcmmo.perks.xp.25percentboost.alchemy: true
-                mcmmo.perks.xp.25percentboost.archery: true
-                mcmmo.perks.xp.25percentboost.axes: true
-                mcmmo.perks.xp.25percentboost.crossbows: true
-                mcmmo.perks.xp.25percentboost.excavation: true
-                mcmmo.perks.xp.25percentboost.fishing: true
-                mcmmo.perks.xp.25percentboost.herbalism: true
-                mcmmo.perks.xp.25percentboost.maces: true
-                mcmmo.perks.xp.25percentboost.mining: true
-                mcmmo.perks.xp.25percentboost.repair: true
-                mcmmo.perks.xp.25percentboost.smelting: true
-                mcmmo.perks.xp.25percentboost.spears: true
-                mcmmo.perks.xp.25percentboost.swords: true
-                mcmmo.perks.xp.25percentboost.taming: true
-                mcmmo.perks.xp.25percentboost.tridents: true
-                mcmmo.perks.xp.25percentboost.unarmed: true
-                mcmmo.perks.xp.25percentboost.woodcutting: true
-        mcmmo.perks.xp.25percentboost.acrobatics:
-            default: false
-            description: Multiplies incoming Acrobatics XP by 1.25
-        mcmmo.perks.xp.25percentboost.alchemy:
-            default: false
-            description: Multiplies incoming Acrobatics XP by 1.25
-        mcmmo.perks.xp.25percentboost.archery:
-            default: false
-            description: Multiplies incoming Archery XP by 1.25
-        mcmmo.perks.xp.25percentboost.axes:
-            default: false
-            description: Multiplies incoming Axes XP by 1.25
-        mcmmo.perks.xp.25percentboost.crossbows:
-            default: false
-            description: Multiplies incoming Crossbows XP by 1.25
-        mcmmo.perks.xp.25percentboost.excavation:
-            default: false
-            description: Multiplies incoming Excavation XP by 1.25
-        mcmmo.perks.xp.25percentboost.fishing:
-            default: false
-            description: Multiplies incoming Fishing XP by 1.25
-        mcmmo.perks.xp.25percentboost.herbalism:
-            default: false
-            description: Multiplies incoming Herbalism XP by 1.25
-        mcmmo.perks.xp.25percentboost.maces:
-            default: false
-            description: Multiplies incoming Maces XP by 1.25
-        mcmmo.perks.xp.25percentboost.mining:
-            default: false
-            description: Multiplies incoming Mining XP by 1.25
-        mcmmo.perks.xp.25percentboost.repair:
-            default: false
-            description: Multiplies incoming Repair XP by 1.25
-        mcmmo.perks.xp.25percentboost.smelting:
-            default: false
-            description: Multiplies incoming Smelting XP by 1.25
-        mcmmo.perks.xp.25percentboost.spears:
-            default: false
-            description: Multiplies incoming Spears XP by 1.25
-        mcmmo.perks.xp.25percentboost.swords:
-            default: false
-            description: Multiplies incoming Swords XP by 1.25
-        mcmmo.perks.xp.25percentboost.taming:
-            default: false
-            description: Multiplies incoming Taming XP by 1.25
-        mcmmo.perks.xp.25percentboost.tridents:
-            default: false
-            description: Multiplies incoming Tridents XP by 1.25
-        mcmmo.perks.xp.25percentboost.unarmed:
-            default: false
-            description: Multiplies incoming Unarmed XP by 1.5
-        mcmmo.perks.xp.25percentboost.woodcutting:
-            default: false
-            description: Multiplies incoming Woodcutting XP by 1.25
+    mcmmo.perks.xp.25percentboost:
+        default: false
+        description: Multiplies incoming XP by 1.25
+        children:
+            mcmmo.perks.xp.25percentboost.all: true
+    mcmmo.perks.xp.25percentboost.all:
+        default: false
+        description: Multiplies incoming XP by 1.25
+        children:
+            mcmmo.perks.xp.25percentboost.acrobatics: true
+            mcmmo.perks.xp.25percentboost.alchemy: true
+            mcmmo.perks.xp.25percentboost.archery: true
+            mcmmo.perks.xp.25percentboost.axes: true
+            mcmmo.perks.xp.25percentboost.crossbows: true
+            mcmmo.perks.xp.25percentboost.excavation: true
+            mcmmo.perks.xp.25percentboost.fishing: true
+            mcmmo.perks.xp.25percentboost.herbalism: true
+            mcmmo.perks.xp.25percentboost.maces: true
+            mcmmo.perks.xp.25percentboost.mining: true
+            mcmmo.perks.xp.25percentboost.repair: true
+            mcmmo.perks.xp.25percentboost.smelting: true
+            mcmmo.perks.xp.25percentboost.spears: true
+            mcmmo.perks.xp.25percentboost.swords: true
+            mcmmo.perks.xp.25percentboost.taming: true
+            mcmmo.perks.xp.25percentboost.tridents: true
+            mcmmo.perks.xp.25percentboost.unarmed: true
+            mcmmo.perks.xp.25percentboost.woodcutting: true
+    mcmmo.perks.xp.25percentboost.acrobatics:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 1.25
+    mcmmo.perks.xp.25percentboost.alchemy:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 1.25
+    mcmmo.perks.xp.25percentboost.archery:
+        default: false
+        description: Multiplies incoming Archery XP by 1.25
+    mcmmo.perks.xp.25percentboost.axes:
+        default: false
+        description: Multiplies incoming Axes XP by 1.25
+    mcmmo.perks.xp.25percentboost.crossbows:
+        default: false
+        description: Multiplies incoming Crossbows XP by 1.25
+    mcmmo.perks.xp.25percentboost.excavation:
+        default: false
+        description: Multiplies incoming Excavation XP by 1.25
+    mcmmo.perks.xp.25percentboost.fishing:
+        default: false
+        description: Multiplies incoming Fishing XP by 1.25
+    mcmmo.perks.xp.25percentboost.herbalism:
+        default: false
+        description: Multiplies incoming Herbalism XP by 1.25
+    mcmmo.perks.xp.25percentboost.maces:
+        default: false
+        description: Multiplies incoming Maces XP by 1.25
+    mcmmo.perks.xp.25percentboost.mining:
+        default: false
+        description: Multiplies incoming Mining XP by 1.25
+    mcmmo.perks.xp.25percentboost.repair:
+        default: false
+        description: Multiplies incoming Repair XP by 1.25
+    mcmmo.perks.xp.25percentboost.smelting:
+        default: false
+        description: Multiplies incoming Smelting XP by 1.25
+    mcmmo.perks.xp.25percentboost.spears:
+        default: false
+        description: Multiplies incoming Spears XP by 1.25
+    mcmmo.perks.xp.25percentboost.swords:
+        default: false
+        description: Multiplies incoming Swords XP by 1.25
+    mcmmo.perks.xp.25percentboost.taming:
+        default: false
+        description: Multiplies incoming Taming XP by 1.25
+    mcmmo.perks.xp.25percentboost.tridents:
+        default: false
+        description: Multiplies incoming Tridents XP by 1.25
+    mcmmo.perks.xp.25percentboost.unarmed:
+        default: false
+        description: Multiplies incoming Unarmed XP by 1.25
+    mcmmo.perks.xp.25percentboost.woodcutting:
+        default: false
+        description: Multiplies incoming Woodcutting XP by 1.25
     mcmmo.perks.xp.10percentboost.*:
         default: false
         description: Multiplies incoming XP by 1.1
