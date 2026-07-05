@@ -315,6 +315,135 @@ class FishingTreasureConfigTest {
             // Then
             assertThat(result).isEqualTo(TreasureLoadResult.INVALID);
         }
+
+        @Test
+        void classifyShouldReturnIncompatibleWhenPotionTypeAbsentFromThisVersion() {
+            /*
+             * Intent: newer game versions add new potion types and shipped default configs may
+             * reference them. On an older server such an entry is harmless — it must be skipped
+             * quietly as INCOMPATIBLE, never warned about as misconfigured (admins would file
+             * bug reports over a non-problem).
+             */
+
+            // Given - a potion entry whose PotionData.PotionType this MC version does not know
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  POTION:\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: COMMON\n"
+                            + "    PotionData:\n"
+                            + "      PotionType: POTION_TYPE_FROM_THE_FUTURE\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "POTION", true, LOGGER);
+
+            // Then - incompatible (harmless), not invalid
+            assertThat(result).isEqualTo(TreasureLoadResult.INCOMPATIBLE);
+        }
+
+        @Test
+        void classifyShouldReturnLoadedWhenPotionTypeResolvable() {
+            // Given - a potion entry with a potion type every MC version knows
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  POTION:\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: COMMON\n"
+                            + "    PotionData:\n"
+                            + "      PotionType: WATER\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "POTION", true, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.LOADED);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"COMON", "SUPER_RARE", "common"})
+        void classifyShouldReturnInvalidWhenRarityUnrecognized(final String rarity) {
+            /*
+             * Intent: a typo'd or unknown Rarity used to silently fall back to COMMON, dumping the
+             * treasure into the wrong reward pool with no log. It must be INVALID (skipped with a
+             * warning naming the key) so the admin can find and fix it. Note rarity matching is
+             * case-sensitive except the legacy "Records" alias — lowercase "common" is a typo.
+             */
+
+            // Given - a Fishing entry whose Rarity is not a recognized value
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  COD:\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: " + rarity + "\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "COD", true, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.INVALID);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Records", "RECORDS", "records"})
+        void classifyShouldAcceptLegacyRecordsRarityWhenCasingVaries(final String rarity) {
+            /*
+             * Intent: "Records" was renamed to MYTHIC long ago; configs copy-pasted from old
+             * servers still say Records (any casing) and must keep loading, not become INVALID.
+             */
+
+            // Given - a Fishing entry using the legacy Records rarity name
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  MUSIC_DISC_13:\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: " + rarity + "\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", "MUSIC_DISC_13", true, LOGGER);
+
+            // Then
+            assertThat(result).isEqualTo(TreasureLoadResult.LOADED);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"abc", "1.5", "99999"})
+        void classifyShouldReturnInvalidWhenDataSuffixNotNumeric(final String suffix) {
+            /*
+             * Intent: a key like COD|abc carries a data suffix that cannot parse as a short
+             * (non-numeric, fractional, or out of range). Classification must report INVALID
+             * naming the bad suffix rather than throwing NumberFormatException — the classify
+             * methods are contractually exception-free.
+             */
+
+            // Given - an otherwise valid Fishing entry whose key carries an unparseable suffix
+            final String treasureName = "COD|" + suffix;
+            final YamlConfiguration config = loadYaml(
+                    "Fishing:\n"
+                            + "  '" + treasureName + "':\n"
+                            + "    XP: 100\n"
+                            + "    Drop_Chance: 5.0\n"
+                            + "    Drop_Level: 0\n"
+                            + "    Rarity: COMMON\n");
+
+            // When
+            final TreasureLoadResult result = FishingTreasureConfig.classifyFishingTreasure(
+                    config, "Fishing", treasureName, true, LOGGER);
+
+            // Then - INVALID, not an exception
+            assertThat(result).isEqualTo(TreasureLoadResult.INVALID);
+        }
     }
 
     // ---------------------------------------------------------------------------

@@ -162,6 +162,61 @@ class TreasureConfigTest {
         }
 
         @Test
+        void classifyShouldReturnIncompatibleWhenPotionTypeAbsentFromThisVersion() {
+            /*
+             * Intent: newer game versions add new potion types and shipped default configs may
+             * reference them. On an older server such an entry is harmless — it must be skipped
+             * quietly as INCOMPATIBLE, never warned about as misconfigured.
+             */
+
+            // Given - a potion entry whose PotionData.PotionType this MC version does not know
+            final YamlConfiguration config = loadYaml(
+                    "Hylian_Luck:\n"
+                            + "  POTION:\n"
+                            + "    XP: 10\n"
+                            + "    Drop_Chance: 1.0\n"
+                            + "    Level_Requirement:\n"
+                            + "      Standard_Mode: 5\n"
+                            + "    PotionData:\n"
+                            + "      PotionType: POTION_TYPE_FROM_THE_FUTURE\n");
+
+            // When
+            final TreasureLoadResult result = TreasureConfig.classifyExcavationTreasure(
+                    config, "Hylian_Luck", "POTION", false, LOGGER);
+
+            // Then - incompatible (harmless), not invalid
+            assertThat(result).isEqualTo(TreasureLoadResult.INCOMPATIBLE);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"abc", "1.5", "99999"})
+        void classifyShouldReturnInvalidWhenDataSuffixNotNumeric(final String suffix) {
+            /*
+             * Intent: a key like STONE|abc carries a data suffix that cannot parse as a short
+             * (non-numeric, fractional, or out of range). Classification must report INVALID
+             * naming the bad suffix rather than throwing NumberFormatException — the classify
+             * methods are contractually exception-free.
+             */
+
+            // Given - an otherwise valid entry whose key carries an unparseable data suffix
+            final String treasureName = "STONE|" + suffix;
+            final YamlConfiguration config = loadYaml(
+                    "Excavation:\n"
+                            + "  '" + treasureName + "':\n"
+                            + "    XP: 10\n"
+                            + "    Drop_Chance: 1.0\n"
+                            + "    Level_Requirement:\n"
+                            + "      Standard_Mode: 5\n");
+
+            // When
+            final TreasureLoadResult result = TreasureConfig.classifyExcavationTreasure(
+                    config, "Excavation", treasureName, false, LOGGER);
+
+            // Then - INVALID, not an exception
+            assertThat(result).isEqualTo(TreasureLoadResult.INVALID);
+        }
+
+        @Test
         void classifyShouldReturnInvalidWhenBlockDataOutOfRange() {
             /*
              * Intent: legacy block data must fit in a signed byte. A block entry with an out-of-range

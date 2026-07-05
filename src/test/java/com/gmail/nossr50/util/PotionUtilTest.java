@@ -53,6 +53,23 @@ class PotionUtilTest {
         assertEquals(PotionType.MUNDANE, potionType);
     }
 
+    /**
+     * Guards the (isUpgraded, isExtended) parameter order: the treasure configs once passed
+     * (extended, upgraded) and handed out the wrong potion variant. An extended-only request must
+     * select the LONG_ variant, never the STRONG_ one.
+     */
+    @Test
+    void matchPotionTypeShouldSelectLongVariantWhenExtendedOnly() {
+        // Given - a potion requested as extended (longer duration) but not upgraded
+        final String potionTypeStr = "SWIFTNESS";
+
+        // When - matched with isUpgraded=false, isExtended=true
+        final PotionType potionType = matchPotionType(potionTypeStr, false, true);
+
+        // Then - the LONG_ (extended) variant is selected
+        assertEquals(PotionType.LONG_SWIFTNESS, potionType);
+    }
+
     @Test
     void testConvertLegacyNamesUncraftable() {
         final String potionTypeStr = "UNCRAFTABLE";
