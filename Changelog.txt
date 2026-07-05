@@ -1,4 +1,13 @@
 Version 2.2.055
+    Fixed the 'mcmmo.perks.xp.25percentboost' permission and its per-skill child nodes not being registered (See notes)
+    Fixed Maces Cripple playing an extra anvil break sound that could not be disabled in sounds.yml (See notes)
+    Fixed Super Breaker and Tree Feller mishandling durability on items with a custom max_damage component (See notes)
+    Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
+
+    NOTES:
+    The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
+    Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
+    Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
