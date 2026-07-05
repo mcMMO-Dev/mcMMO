@@ -1,3 +1,5 @@
+Version 2.2.055
+
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
     Fixed party/admin chat allowing players to use color codes without the 'mcmmo.chat.colors' permission
