@@ -11,8 +11,10 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.text.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -23,6 +25,11 @@ import org.jetbrains.annotations.Nullable;
 public class GeneralConfig extends BukkitConfig {
     private @Nullable Material repairAnvilMaterial;
     private @Nullable Material salvageAnvilMaterial;
+
+    /* Level caps resolved once and reused on the XP hot path; reset by loadKeys() */
+    private @Nullable Integer powerLevelCap;
+    private final Map<PrimarySkillType, Integer> levelCaps = new EnumMap<>(
+            PrimarySkillType.class);
 
     public GeneralConfig(@NotNull File dataFolder) {
         super("config.yml", dataFolder);
@@ -36,6 +43,8 @@ public class GeneralConfig extends BukkitConfig {
                 config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK"));
         salvageAnvilMaterial = Material.matchMaterial(
                 config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK"));
+        powerLevelCap = null;
+        levelCaps.clear();
     }
 
     @Override
@@ -958,14 +967,20 @@ public class GeneralConfig extends BukkitConfig {
 
     /* Level Caps */
     public int getPowerLevelCap() {
-        int cap = config.getInt("General.Power_Level_Cap", 0);
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
+        if (powerLevelCap == null) {
+            int cap = config.getInt("General.Power_Level_Cap", 0);
+            powerLevelCap = (cap <= 0) ? Integer.MAX_VALUE : cap;
+        }
+
+        return powerLevelCap;
     }
 
     public int getLevelCap(PrimarySkillType skill) {
-        int cap = config.getInt(
-                "Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap");
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
+        return levelCaps.computeIfAbsent(skill, key -> {
+            int cap = config.getInt(
+                    "Skills." + StringUtils.getCapitalized(key.toString()) + ".Level_Cap");
+            return (cap <= 0) ? Integer.MAX_VALUE : cap;
+        });
     }
 
 

@@ -233,11 +233,16 @@ public class McMMOPlayer implements Identified {
 
     public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin,
             XPGainSource xpGainSource) {
+        processPostXpEvent(primarySkillType, plugin, xpGainSource, getPowerLevel());
+    }
+
+    private void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin,
+            XPGainSource xpGainSource, int powerLevel) {
         //Check if they've reached the power level cap just now
-        if (hasReachedPowerLevelCap()) {
+        if (hasReachedPowerLevelCap(powerLevel)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel",
                     String.valueOf(mcMMO.p.getGeneralConfig().getPowerLevelCap()));
-        } else if (hasReachedLevelCap(primarySkillType)) {
+        } else if (hasReachedLevelCap(primarySkillType, powerLevel)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill",
                     String.valueOf(mcMMO.p.getSkillTools().getLevelCap(primarySkillType)),
                     mcMMO.p.getSkillTools().getLocalizedSkillName(primarySkillType));
@@ -598,7 +603,11 @@ public class McMMOPlayer implements Identified {
      * @return
      */
     public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
-        if (hasReachedPowerLevelCap()) {
+        return hasReachedLevelCap(primarySkillType, getPowerLevel());
+    }
+
+    private boolean hasReachedLevelCap(PrimarySkillType primarySkillType, int powerLevel) {
+        if (hasReachedPowerLevelCap(powerLevel)) {
             return true;
         }
 
@@ -613,7 +622,11 @@ public class McMMOPlayer implements Identified {
      * @return true if they have reached the power level cap
      */
     public boolean hasReachedPowerLevelCap() {
-        return this.getPowerLevel() >= mcMMO.p.getGeneralConfig().getPowerLevelCap();
+        return hasReachedPowerLevelCap(getPowerLevel());
+    }
+
+    private boolean hasReachedPowerLevelCap(int powerLevel) {
+        return powerLevel >= mcMMO.p.getGeneralConfig().getPowerLevelCap();
     }
 
     /**
@@ -719,12 +732,16 @@ public class McMMOPlayer implements Identified {
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason,
             XPGainSource xpGainSource) {
-        if (hasReachedLevelCap(primarySkillType)) {
+        // Computing the power level requires a permission check per skill, so compute it once
+        // and track level-ups locally instead of recounting on every cap check
+        final int powerLevel = getPowerLevel();
+
+        if (hasReachedLevelCap(primarySkillType, powerLevel)) {
             return;
         }
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
+            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource, powerLevel);
             return;
         }
 
@@ -732,7 +749,7 @@ public class McMMOPlayer implements Identified {
         float xpRemoved = 0;
 
         while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
-            if (hasReachedLevelCap(primarySkillType)) {
+            if (hasReachedLevelCap(primarySkillType, powerLevel + levelsGained)) {
                 setSkillXpLevel(primarySkillType, 0);
                 break;
             }
@@ -758,7 +775,7 @@ public class McMMOPlayer implements Identified {
                 profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
+        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource, powerLevel + levelsGained);
     }
 
     /*

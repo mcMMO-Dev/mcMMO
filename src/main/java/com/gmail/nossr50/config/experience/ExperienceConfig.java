@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.text.StringUtils;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,15 @@ import org.bukkit.entity.EntityType;
 public class ExperienceConfig extends BukkitConfig {
     private static ExperienceConfig instance;
     final private Map<PrimarySkillType, Map<Material, Integer>> blockExperienceMap = new HashMap<>();
+
+    /* Values resolved once and reused on the XP hot path; reset by loadKeys() */
+    private FormulaType formulaType;
+    private Boolean cumulativeCurveEnabled;
+    private Double experienceGainsGlobalMultiplier;
+    private Double customXpPerkBoost;
+    private Boolean diminishedReturnsEnabled;
+    private final Map<PrimarySkillType, Double> formulaSkillModifiers =
+            new EnumMap<>(PrimarySkillType.class);
 
     private ExperienceConfig() {
         super("experience.yml");
@@ -52,6 +62,12 @@ public class ExperienceConfig extends BukkitConfig {
 
     @Override
     protected void loadKeys() {
+        formulaType = null;
+        cumulativeCurveEnabled = null;
+        experienceGainsGlobalMultiplier = null;
+        customXpPerkBoost = null;
+        diminishedReturnsEnabled = null;
+        formulaSkillModifiers.clear();
     }
 
     @Override
@@ -227,11 +243,21 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Curve settings */
     public FormulaType getFormulaType() {
-        return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve"));
+        if (formulaType == null) {
+            formulaType = FormulaType.getFormulaType(
+                    config.getString("Experience_Formula.Curve"));
+        }
+
+        return formulaType;
     }
 
     public boolean getCumulativeCurveEnabled() {
-        return config.getBoolean("Experience_Formula.Cumulative_Curve", false);
+        if (cumulativeCurveEnabled == null) {
+            cumulativeCurveEnabled = config.getBoolean("Experience_Formula.Cumulative_Curve",
+                    false);
+        }
+
+        return cumulativeCurveEnabled;
     }
 
     /* Curve values */
@@ -254,11 +280,17 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Global modifier */
     public double getExperienceGainsGlobalMultiplier() {
-        return config.getDouble("Experience_Formula.Multiplier.Global", 1.0);
+        if (experienceGainsGlobalMultiplier == null) {
+            experienceGainsGlobalMultiplier = config.getDouble(
+                    "Experience_Formula.Multiplier.Global", 1.0);
+        }
+
+        return experienceGainsGlobalMultiplier;
     }
 
     public void setExperienceGainsGlobalMultiplier(double value) {
         config.set("Experience_Formula.Multiplier.Global", value);
+        experienceGainsGlobalMultiplier = value;
     }
 
     /* PVP modifier */
@@ -289,15 +321,19 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(PrimarySkillType skill) {
-        return config.getDouble(
+        return formulaSkillModifiers.computeIfAbsent(skill, key -> config.getDouble(
                 "Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(
-                        skill.toString()),
-                1);
+                        key.toString()),
+                1));
     }
 
     /* Custom XP perk */
     public double getCustomXpPerkBoost() {
-        return config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25);
+        if (customXpPerkBoost == null) {
+            customXpPerkBoost = config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25);
+        }
+
+        return customXpPerkBoost;
     }
 
     /* Diminished Returns */
@@ -306,7 +342,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean getDiminishedReturnsEnabled() {
-        return config.getBoolean("Diminished_Returns.Enabled", false);
+        if (diminishedReturnsEnabled == null) {
+            diminishedReturnsEnabled = config.getBoolean("Diminished_Returns.Enabled", false);
+        }
+
+        return diminishedReturnsEnabled;
     }
 
     public int getDiminishedReturnsThreshold(PrimarySkillType skill) {
