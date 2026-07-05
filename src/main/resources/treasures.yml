@@ -189,7 +189,7 @@ Excavation:
     MUSIC_DISC_BOUNCE:
         Amount: 1
         XP: 3000
-        Drop_Chance: 0.025
+        Drop_Chance: 0.01
         Level_Requirement:
             Standard_Mode: 25
             Retro_Mode: 250
