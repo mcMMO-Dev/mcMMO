@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -38,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ItemUtils {
+    private static final Map<Material, Boolean> oreSmeltingResults = new ConcurrentHashMap<>();
     // Use custom name if available
     private static final Method customName;
 
@@ -618,7 +621,14 @@ public final class ItemUtils {
             return false;
         }
 
-        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(item)) {
+        // Recipes don't change during normal gameplay and getRecipesFor scans the entire
+        // recipe registry, so remember the verdict per result type
+        return oreSmeltingResults.computeIfAbsent(item.getType(),
+                ItemUtils::hasOreSmeltingRecipe);
+    }
+
+    private static boolean hasOreSmeltingRecipe(Material material) {
+        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(new ItemStack(material))) {
             if (recipe instanceof FurnaceRecipe
                     && ((FurnaceRecipe) recipe).getInput().getType().isBlock()
                     && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {
