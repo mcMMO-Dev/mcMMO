@@ -5,6 +5,15 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+/**
+ * Fired when mcMMO's Bukkit scoreboard backend registers or unregisters the sidebar objective.
+ * <p>
+ * This event is backend-specific:
+ * <ul>
+ *     <li>Fired by the Bukkit backend (non-Folia servers).</li>
+ *     <li>Not fired by packet/no-op backends, which have no Bukkit {@link Objective}.</li>
+ * </ul>
+ */
 public class McMMOScoreboardObjectiveEvent extends McMMOScoreboardEvent implements Cancellable {
     protected boolean cancelled;
 

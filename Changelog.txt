@@ -1,13 +1,20 @@
 Version 2.2.055
+    Added scoreboard support for Folia servers (See notes)
     Fixed the 'mcmmo.perks.xp.25percentboost' permission and its per-skill child nodes not being registered (See notes)
     Fixed Maces Cripple playing an extra anvil break sound that could not be disabled in sounds.yml (See notes)
     Fixed Super Breaker and Tree Feller mishandling durability on items with a custom max_damage component (See notes)
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
+    (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
+    (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
+    (Codebase) Added ViaVersion to plugin.yml softdepend
     (Codebase) Added unit tests covering the power level cap and skill level cap checks
 
     NOTES:
+    Scoreboards on Folia (and Folia forks like Canvas) now use a packet-based implementation, since the Bukkit scoreboard API is not safe to use there. Paper and Spigot servers keep the existing Bukkit scoreboard implementation and are unaffected.
+    If a Folia server runs a newer Minecraft version than this mcMMO build supports for packet scoreboards (currently the 26.2.x line), scoreboards are disabled with a startup warning until mcMMO updates.
+    (API) The packet-based implementation still fires McMMOScoreboardMakeboardEvent and McMMOScoreboardRevertEvent, but there is no Bukkit Objective on Folia so McMMOScoreboardObjectiveEvent is not fired there.
     The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
     Gaining XP now does much less repeated work per gain, which reduces mcMMO's share of server thread time on busy servers; no behavior or config changes are involved.
     Taking smelted items out of a furnace no longer searches the full server recipe list every time.
