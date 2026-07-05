@@ -46,8 +46,6 @@ public final class ParticleEffectUtils {
 
         SoundManager.sendCategorizedSound(livingEntity.getLocation(), SoundType.CRIPPLE,
                 SoundCategory.PLAYERS, 0.2F);
-        livingEntity.getWorld()
-                .playEffect(getParticleLocation(livingEntity), Effect.ANVIL_BREAK, null, 20);
 
         if (livingEntity instanceof Player player) {
             final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
