@@ -82,6 +82,28 @@ General:
     # Set to false to disable region-data backup creation on shutdown.
     RegionDataMigrationBackups: true
 
+    # PlaceholderAPI settings.
+    PlaceholderAPI:
+        Leaderboards:
+            # Max rank position kept in mcMMO's PlaceholderAPI leaderboard cache.
+            # Requests above this number return an empty string.
+            # Higher values use more memory and read more database rows on every cache refresh.
+            # Clamped between 10 and 1000.
+            Max_Tracked_Rank: 100
+
+    # How often mcMMO refreshes cached leaderboard data.
+    Leaderboards:
+        # Intervals are in seconds and have a 60 second minimum; values below 60 are
+        # treated as 60.
+        Refresh_Interval_Seconds:
+            # How often the PlaceholderAPI leaderboard cache refreshes on SQL (MySQL/MariaDB)
+            # databases. /mctop and /mcrank on SQL are unaffected and always query live data.
+            SQL: 60
+            # How often FlatFile leaderboards are rebuilt. This affects /mctop, /mcrank, and
+            # the PlaceholderAPI leaderboard placeholders. Rebuilding scans the whole user
+            # file, which is expensive on large servers, so it refreshes far less often by default.
+            FlatFile: 600
+
 #
 #  Settings for the mcMMO scoreboards
 ###
