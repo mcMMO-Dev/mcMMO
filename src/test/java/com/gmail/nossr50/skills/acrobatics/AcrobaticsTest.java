@@ -4,22 +4,31 @@ import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.RankUtils;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
@@ -61,6 +70,7 @@ class AcrobaticsTest extends MMOTestEnvironment {
     @AfterEach
     void tearDown() {
         cleanUpStaticMocks();
+        DodgeXpTracker.clearAll();
     }
 
     @SuppressWarnings("deprecation")
@@ -200,6 +210,99 @@ class AcrobaticsTest extends MMOTestEnvironment {
                 Arguments.of(999),
                 Arguments.of(1000)
         );
+    }
+
+    /**
+     * Regression test for the Dodge anti-exploit tracker: a single mob may only hand out a
+     * limited number of Dodge XP rewards, so letting a trapped mob attack repeatedly must not
+     * farm unlimited XP.
+     */
+    @Test
+    void dodgeCheckShouldStopRewardingXpAtPerMobCapWhenExploitPreventionEnabled() {
+        // Given - Dodge exploit prevention is enabled
+        when(ExperienceConfig.getInstance().isAcrobaticsDodgeXpFarmingPrevented()).thenReturn(true);
+        final AcrobaticsManager acrobaticsManager = dodgeReadyAcrobaticsManager();
+        final Mob mob = mockMob();
+
+        // When - the same mob is dodged far more often than the reward cap allows
+        for (int i = 0; i < 20; i++) {
+            acrobaticsManager.dodgeCheck(mob, 10D);
+        }
+
+        // Then - XP is only granted up to the per-mob reward cap
+        verify(acrobaticsManager, times(DodgeXpTracker.MAX_XP_REWARDS_PER_MOB))
+                .applyXpGain(anyFloat(), any(XPGainReason.class), any(XPGainSource.class));
+    }
+
+    /**
+     * The reward cap is per mob, not global; a second mob must grant its own full set of Dodge
+     * XP rewards even when the first mob is already exhausted.
+     */
+    @Test
+    void dodgeCheckShouldTrackDodgeRewardsPerMobWhenExploitPreventionEnabled() {
+        // Given - Dodge exploit prevention is enabled and one mob is already at its cap
+        when(ExperienceConfig.getInstance().isAcrobaticsDodgeXpFarmingPrevented()).thenReturn(true);
+        final AcrobaticsManager acrobaticsManager = dodgeReadyAcrobaticsManager();
+        final Mob exhaustedMob = mockMob();
+        for (int i = 0; i < 20; i++) {
+            acrobaticsManager.dodgeCheck(exhaustedMob, 10D);
+        }
+
+        // When - a second mob is dodged just as often
+        final Mob freshMob = mockMob();
+        for (int i = 0; i < 20; i++) {
+            acrobaticsManager.dodgeCheck(freshMob, 10D);
+        }
+
+        // Then - both mobs granted a full reward cap each
+        verify(acrobaticsManager, times(DodgeXpTracker.MAX_XP_REWARDS_PER_MOB * 2))
+                .applyXpGain(anyFloat(), any(XPGainReason.class), any(XPGainSource.class));
+    }
+
+    /**
+     * With exploit prevention disabled every dodge grants XP, matching the behavior for servers
+     * that opt out of ExploitFix.AcrobaticsDodgeXpFarming.
+     */
+    @Test
+    void dodgeCheckShouldRewardXpEveryTimeWhenExploitPreventionDisabled() {
+        // Given - Dodge exploit prevention is disabled
+        when(ExperienceConfig.getInstance().isAcrobaticsDodgeXpFarmingPrevented()).thenReturn(false);
+        final AcrobaticsManager acrobaticsManager = dodgeReadyAcrobaticsManager();
+        final Mob mob = mockMob();
+
+        // When - the same mob is dodged ten times
+        for (int i = 0; i < 10; i++) {
+            acrobaticsManager.dodgeCheck(mob, 10D);
+        }
+
+        // Then - every dodge grants XP
+        verify(acrobaticsManager, times(10)).applyXpGain(anyFloat(), any(XPGainReason.class),
+                any(XPGainSource.class));
+    }
+
+    /**
+     * Builds an AcrobaticsManager whose dodge always procs: max skill level, guaranteed RNG,
+     * sane static modifiers, and XP application stubbed out so only the reward count matters.
+     */
+    private @NotNull AcrobaticsManager dodgeReadyAcrobaticsManager() {
+        when(advancedConfig.getMaximumProbability(SubSkillType.ACROBATICS_DODGE)).thenReturn(100D);
+        when(advancedConfig.getMaxBonusLevel(SubSkillType.ACROBATICS_DODGE)).thenReturn(1000);
+        mmoPlayer.modifySkill(PrimarySkillType.ACROBATICS, 1000);
+        Acrobatics.dodgeDamageModifier = 2.0;
+        Acrobatics.dodgeXpModifier = 120;
+        final AcrobaticsManager acrobaticsManager = spy(new AcrobaticsManager(mmoPlayer));
+        doNothing().when(acrobaticsManager).applyXpGain(anyFloat(), any(XPGainReason.class),
+                any(XPGainSource.class));
+        return acrobaticsManager;
+    }
+
+    /**
+     * Mocks a Mob with a real unique id, which the dodge tracker uses as its map key.
+     */
+    private @NotNull Mob mockMob() {
+        final Mob mob = mock(Mob.class);
+        when(mob.getUniqueId()).thenReturn(UUID.randomUUID());
+        return mob;
     }
 
     private @NotNull EntityDamageEvent mockEntityDamageEvent(double damage) {

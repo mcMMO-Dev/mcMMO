@@ -4,8 +4,10 @@ Version 2.2.055
     Fixed Maces Cripple playing an extra anvil break sound that could not be disabled in sounds.yml (See notes)
     Fixed Super Breaker and Tree Feller mishandling durability on items with a custom max_damage component (See notes)
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
+    Fixed Acrobatics Dodge exploit prevention never limiting Dodge XP from a single mob (See notes)
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
+    Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
@@ -20,6 +22,7 @@ Version 2.2.055
     Taking smelted items out of a furnace no longer searches the full server recipe list every time.
     Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
+    Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml; it is enabled by default and existing config files do not need to be updated. A single mob stops handing out Dodge XP after a handful of dodges, and the limit clears once that mob has gone about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO

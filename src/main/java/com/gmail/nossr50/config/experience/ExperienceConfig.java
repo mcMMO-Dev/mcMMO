@@ -237,6 +237,10 @@ public class ExperienceConfig extends BukkitConfig {
         return config.getBoolean("ExploitFix.Acrobatics", true);
     }
 
+    public boolean isAcrobaticsDodgeXpFarmingPrevented() {
+        return config.getBoolean("ExploitFix.AcrobaticsDodgeXpFarming", true);
+    }
+
     public boolean isTreeFellerXPReduced() {
         return config.getBoolean("ExploitFix.TreeFellerReducedXP", true);
     }

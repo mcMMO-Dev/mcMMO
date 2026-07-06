@@ -25,6 +25,8 @@ ExploitFix:
     Fishing: true
     EndermanEndermiteFarms: true
     Acrobatics: true
+    # Stops players from grinding Dodge XP off the same mobs over and over, each mob can only hand out so much Dodge XP at a time
+    AcrobaticsDodgeXpFarming: true
     LavaStoneAndCobbleFarming: true
     TreeFellerReducedXP: true
     PistonCheating: true

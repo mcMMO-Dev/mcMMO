@@ -19,8 +19,7 @@ public class MetadataConstants {
             MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN,
             MetadataConstants.METADATA_KEY_HEALTHBAR_SNAPSHOT,
             MetadataConstants.METADATA_KEY_RUPTURE,
-            MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE,
-            MetadataConstants.METADATA_KEY_DODGE_TRACKER
+            MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE
     );
 
     public static final @NotNull List<String> ARROW_METADATA_KEYS = List.of(
@@ -36,7 +35,6 @@ public class MetadataConstants {
 
     public static final @NotNull String METADATA_KEY_BOUNCE_COUNT = "mcMMO: Arrow Bounce Count";
     public static final @NotNull String METADATA_KEY_EXPLOSION_FROM_RUPTURE = "mcMMO: Rupture Explosion";
-    public static final @NotNull String METADATA_KEY_DODGE_TRACKER = "mcMMO: Dodge Tracker";
     public static final @NotNull String METADATA_KEY_CUSTOM_DAMAGE = "mcMMO: Custom Damage";
     public static final @NotNull String METADATA_KEY_TRAVELING_BLOCK = "mcMMO: Traveling Block";
     public static final @NotNull String METADATA_KEY_TRACKED_TNT = "mcMMO: Tracked TNT";

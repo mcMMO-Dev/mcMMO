@@ -9,9 +9,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.MobDodgeMetaCleanup;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -20,15 +18,11 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.tcoded.folialib.wrapper.task.WrappedTask;
-import java.util.function.Consumer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 
 public class AcrobaticsManager extends SkillManager {
 
@@ -111,26 +105,9 @@ public class AcrobaticsManager extends SkillManager {
             if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(),
                     Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 if (attacker instanceof Mob mob) {
-                    //Check to see how many dodge XP rewards this mob has handed out
-                    if (mob.hasMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER)
-                            && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
-                        //If Dodge XP has been handed out 5 times then consider it being exploited
-                        MetadataValue metadataValue = mob.getMetadata(
-                                MetadataConstants.METADATA_KEY_DODGE_TRACKER).get(0);
-                        int count = metadataValue.asInt();
-
-                        if (count <= 5) {
-                            applyXpGain((float) (damage * Acrobatics.dodgeXpModifier),
-                                    XPGainReason.PVE, XPGainSource.SELF);
-                            mob.setMetadata(MetadataConstants.METADATA_KEY_DODGE_TRACKER,
-                                    new FixedMetadataValue(mcMMO.p, count + 1));
-                            final Consumer<WrappedTask> metaCleanupTask = new MobDodgeMetaCleanup(mob,
-                                    mcMMO.p);
-                            mcMMO.p.getFoliaLib().getScheduler()
-                                    .runAtEntityTimer(mob, metaCleanupTask, 20,
-                                            20 * 60); //one minute
-                        }
-                    } else {
+                    //Limit how much Dodge XP a single mob can hand out
+                    if (!ExperienceConfig.getInstance().isAcrobaticsDodgeXpFarmingPrevented()
+                            || DodgeXpTracker.tryConsumeXpReward(mob)) {
                         applyXpGain((float) (damage * Acrobatics.dodgeXpModifier),
                                 XPGainReason.PVE, XPGainSource.SELF);
                     }
