@@ -37,9 +37,13 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.sounds.SoundManager;
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -48,6 +52,7 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFactory;
@@ -98,6 +103,7 @@ public abstract class MMOTestEnvironment {
 
     protected MinecraftGameVersion minecraftGameVersion;
     protected File testDataFolder;
+    protected FoliaLib foliaLib;
     private FormulaManager formulaManager;
 
     protected void mockBaseEnvironment(Logger logger) throws InvalidSkillException {
@@ -119,6 +125,9 @@ public abstract class MMOTestEnvironment {
         // formula manager
         formulaManager = new FormulaManager(FormulaType.UNKNOWN);
         when(mcMMO.p.getFormulaManager()).thenReturn(formulaManager);
+
+        // FoliaLib scheduler that runs tasks inline so scheduled work is observable in tests
+        mockFoliaLib();
 
         // place store
         chunkManager = mock(ChunkManager.class);
@@ -265,6 +274,23 @@ public abstract class MMOTestEnvironment {
 
         return new TestPlayerMock(player, playerInventory, playerLocation, playerProfile,
                 mmoPlayer);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void mockFoliaLib() {
+        foliaLib = mock(FoliaLib.class);
+        final PlatformScheduler scheduler = mock(PlatformScheduler.class);
+        when(foliaLib.getScheduler()).thenReturn(scheduler);
+        when(scheduler.runNextTick(any(Consumer.class))).thenAnswer(invocation -> {
+            invocation.getArgument(0, Consumer.class).accept(mock(WrappedTask.class));
+            return null;
+        });
+        when(scheduler.runAtEntity(any(Entity.class), any(Consumer.class)))
+                .thenAnswer(invocation -> {
+                    invocation.getArgument(1, Consumer.class).accept(mock(WrappedTask.class));
+                    return null;
+                });
+        when(mcMMO.p.getFoliaLib()).thenReturn(foliaLib);
     }
 
     private void mockPermissions() {

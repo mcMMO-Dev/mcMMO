@@ -1,23 +1,43 @@
+# Runs server commands when players reach chosen levels in mcMMO skills.
+#
+# Each entry under level_up_commands needs commands and at least one trigger:
+#     skills + levels     Fires when any listed skill reaches any listed level.
+#                         Use skill names like Mining or Herbalism, or 'all' for every skill.
+#     power_levels        Fires when the player's power level reaches a listed value.
+#                         (Power level is the sum of all skill levels.)
+#
+# Optional per entry:
+#     enabled: true       Set to false to keep an entry without it running. Default: true.
+#     run_as: CONSOLE     Who executes the commands, CONSOLE or PLAYER. Default: CONSOLE.
+#                         PLAYER runs the command as the player, using their permissions.
+#
+# Placeholders usable inside commands (no leading slash needed):
+#     {@player}           The player's name.
+#     {@skill}            The skill that leveled up (skill triggers only).
+#     {@level}            The milestone level that was reached (skill triggers only).
+#     {@power_level}      The milestone power level for power_levels triggers,
+#                         otherwise the player's current power level.
+#     {@mining_level}     The player's current level in that skill; works for every
+#                         skill, e.g. {@herbalism_level}, {@archery_level}, ...
+#
+# Commands run once per milestone reached, even when several levels are gained at once.
+# The examples below are disabled; flip enabled to true (or write your own) to use them.
 level_up_commands:
-    woodcutting_and_swords_command:
-        enabled: true
-        condition:
-            swords:
-                levels: [10, 100]
-            woodcutting:
-                levels: [10, 100]
+    mining_milestones:
+        enabled: false
+        skills: [ Mining ]
+        levels: [ 10, 50, 100 ]
         commands:
-            - "say {@player} reached level {@swords_level} in swords, and {@woodcutting_level} in woodcutting!"
-            - "say Isn't that nice?"
-        run_command_as: 'CONSOLE'
-        log_level: 'INFO'
+            - "say {@player} reached level {@level} in {@skill}!"
+    any_skill_mastery:
+        enabled: false
+        skills: all
+        levels: [ 100 ]
+        run_as: PLAYER
+        commands:
+            - "me just hit {@level} in {@skill}!"
     power_level_milestones:
-        enabled: true
-        condition:
-            power_level:
-                levels: [ 1000, 2000, 3000, 4000, 5000 ]
+        enabled: false
+        power_levels: [ 500, 1000, 2000 ]
         commands:
-            - "say {@player} has reached a power level milestone!"
             - "say {@player} is now at power level {@power_level}!"
-        run_command_as: 'CONSOLE'
-        log_level: 'DEBUG'

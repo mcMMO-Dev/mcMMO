@@ -1,77 +1,63 @@
 package com.gmail.nossr50.commands.levelup;
 
-import static java.util.Objects.requireNonNull;
-
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
-public class LevelUpCommandBuilder {
-    private LinkedList<String> commands = null;
-    private List<BiPredicate<PrimarySkillType, Integer>> conditions = null;
-    private Predicate<Integer> powerLevelCondition = null;
-    private boolean logInfo;
+/**
+ * Builds a {@link LevelUpCommand}. Provide at least one command and either skills with levels,
+ * power levels, or both.
+ */
+public final class LevelUpCommandBuilder {
+    private final Set<PrimarySkillType> skills = new LinkedHashSet<>();
+    private final Set<Integer> levels = new LinkedHashSet<>();
+    private final Set<Integer> powerLevels = new LinkedHashSet<>();
+    private final List<String> commands = new ArrayList<>();
+    private LevelUpCommand.RunAs runAs = LevelUpCommand.RunAs.CONSOLE;
 
-    public LevelUpCommandBuilder() {
-        this.logInfo = false;
-    }
-
-    public LevelUpCommandBuilder withPredicate(BiPredicate<PrimarySkillType, Integer> condition) {
-        if (this.conditions == null) {
-            this.conditions = new LinkedList<>();
-        }
-
-        conditions.add(condition);
+    public @NotNull LevelUpCommandBuilder withSkills(
+            @NotNull Collection<PrimarySkillType> skills) {
+        this.skills.addAll(skills);
         return this;
     }
 
-    public LevelUpCommandBuilder withPowerLevelCondition(Predicate<Integer> powerLevelCondition) {
-        if (this.powerLevelCondition != null) {
-            throw new IllegalStateException("power level condition already set");
-        }
-
-        this.powerLevelCondition = powerLevelCondition;
+    public @NotNull LevelUpCommandBuilder withSkill(@NotNull PrimarySkillType skill) {
+        this.skills.add(skill);
         return this;
     }
 
-    public LevelUpCommandBuilder withConditions(
-            @NotNull Collection<BiPredicate<PrimarySkillType, Integer>> conditions) {
-        if (this.conditions == null) {
-            this.conditions = new LinkedList<>();
-        } else {
-            throw new IllegalStateException("conditions already set");
-        }
-
-        this.conditions.addAll(conditions);
+    public @NotNull LevelUpCommandBuilder withLevels(@NotNull Collection<Integer> levels) {
+        this.levels.addAll(levels);
         return this;
     }
 
-    public LevelUpCommandBuilder withLogInfo(boolean logInfo) {
-        this.logInfo = logInfo;
+    public @NotNull LevelUpCommandBuilder withPowerLevels(
+            @NotNull Collection<Integer> powerLevels) {
+        this.powerLevels.addAll(powerLevels);
         return this;
     }
 
-    public LevelUpCommandBuilder command(@NotNull String command) {
-        this.commands = new LinkedList<>();
+    public @NotNull LevelUpCommandBuilder command(@NotNull String command) {
         this.commands.add(command);
         return this;
     }
 
-    public LevelUpCommandBuilder commands(@NotNull Collection<String> command) {
-        this.commands = new LinkedList<>(command);
+    public @NotNull LevelUpCommandBuilder commands(@NotNull Collection<String> commands) {
+        this.commands.addAll(commands);
         return this;
     }
 
-    public SimpleLevelUpCommand build() {
-        if (conditions == null && powerLevelCondition == null) {
-            throw new IllegalStateException("no conditions found for level up command");
-        }
-        requireNonNull(commands, "no commands found for level up command");
+    public @NotNull LevelUpCommandBuilder runAs(@NotNull LevelUpCommand.RunAs runAs) {
+        this.runAs = runAs;
+        return this;
+    }
 
-        return new SimpleLevelUpCommand(conditions, powerLevelCondition, commands, logInfo);
+    public @NotNull LevelUpCommand build() {
+        return new LevelUpCommand(LevelUpCondition.of(skills, levels, powerLevels), commands,
+                runAs);
     }
 }

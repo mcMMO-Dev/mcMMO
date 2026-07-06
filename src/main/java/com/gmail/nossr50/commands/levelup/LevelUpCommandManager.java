@@ -6,84 +6,149 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Manages commands to be executed on level up
+ * Registry of everything that reacts to level ups: commands loaded from
+ * {@code levelupcommands.yml} and commands or handlers registered by other plugins through
+ * {@link com.gmail.nossr50.api.LevelUpCommandAPI}. Each registration gets a {@link UUID} that
+ * can later be used to remove it. Config reloads clear only config-sourced registrations.
+ * <p>
+ * The registry is thread safe: on Folia, level up events fire on region threads while plugins
+ * register from the global thread.
  */
 public class LevelUpCommandManager {
-    private final @NotNull Set<SimpleLevelUpCommand> simpleLevelUpCommands;
+    private final @NotNull Map<UUID, Registration> registrations = new ConcurrentHashMap<>();
     private final @NotNull mcMMO plugin;
 
     public LevelUpCommandManager(@NotNull mcMMO plugin) {
         this.plugin = requireNonNull(plugin, "plugin cannot be null");
-        this.simpleLevelUpCommands = new HashSet<>();
-    }
-
-    public void registerCommand(@NotNull SimpleLevelUpCommand simpleLevelUpCommand) {
-        requireNonNull(simpleLevelUpCommand, "skillLevelUpCommand cannot be null");
-        simpleLevelUpCommands.add(simpleLevelUpCommand);
-        LogUtils.debug(mcMMO.p.getLogger(),
-                "Registered level up command - SkillLevelUpCommand: " + simpleLevelUpCommand);
     }
 
     /**
-     * Apply the level up commands to the player
+     * Registers an action to run on level ups.
      *
-     * @param mmoPlayer the player
-     * @param primarySkillType the skill type
-     * @param levelsGained the levels gained
+     * @param action the action to run
+     * @param source where the registration came from
+     * @return the id used to remove this registration later
      */
-    public void applySkillLevelUp(@NotNull McMMOPlayer mmoPlayer,
-            @NotNull PrimarySkillType primarySkillType,
-            Set<Integer> levelsGained, Set<Integer> powerLevelsGained) {
+    public @NotNull UUID register(@NotNull LevelUpAction action,
+            @NotNull RegistrationSource source) {
+        requireNonNull(action, "action cannot be null");
+        requireNonNull(source, "source cannot be null");
+        final UUID id = UUID.randomUUID();
+        registrations.put(id, new Registration(source, action));
+        LogUtils.debug(plugin.getLogger(),
+                "Registered level up action " + id + " from " + source + ": " + action);
+        return id;
+    }
+
+    /**
+     * Removes a registration by id.
+     *
+     * @param id the id returned when the registration was added
+     * @return true if a registration was removed
+     */
+    public boolean unregister(@NotNull UUID id) {
+        requireNonNull(id, "id cannot be null");
+        final Registration removed = registrations.remove(id);
+        if (removed != null) {
+            LogUtils.debug(plugin.getLogger(), "Removed level up action " + id);
+        }
+        return removed != null;
+    }
+
+    public boolean isRegistered(@NotNull UUID id) {
+        return registrations.containsKey(id);
+    }
+
+    public int registrationCount() {
+        return registrations.size();
+    }
+
+    /**
+     * Runs every registration against a level up.
+     *
+     * @param mmoPlayer the player who leveled up
+     * @param primarySkillType the skill that leveled up
+     * @param levelsGained every skill level reached during this level up
+     * @param powerLevelsGained every power level reached during this level up
+     */
+    public void applyLevelUp(@NotNull McMMOPlayer mmoPlayer,
+            @NotNull PrimarySkillType primarySkillType, @NotNull Set<Integer> levelsGained,
+            @NotNull Set<Integer> powerLevelsGained) {
         if (!mmoPlayer.getPlayer().isOnline()) {
             return;
         }
 
-        for (SimpleLevelUpCommand command : simpleLevelUpCommands) {
-            command.process(mmoPlayer, primarySkillType, levelsGained, powerLevelsGained);
+        for (Map.Entry<UUID, Registration> entry : registrations.entrySet()) {
+            try {
+                entry.getValue().action().onLevelUp(mmoPlayer, primarySkillType, levelsGained,
+                        powerLevelsGained);
+            } catch (RuntimeException e) {
+                plugin.getLogger().log(Level.SEVERE,
+                        "Level up action " + entry.getKey() + " threw an exception", e);
+            }
         }
-    }
-
-    public @NotNull Set<SimpleLevelUpCommand> getLevelUpCommands() {
-        return simpleLevelUpCommands;
     }
 
     /**
-     * Clear all registered commands
+     * Removes all registrations loaded from config. Called when the config (re)loads so API
+     * registrations from other plugins survive.
      */
-    public void clear() {
-        mcMMO.p.getLogger().info("Clearing registered commands on level up");
-        simpleLevelUpCommands.clear();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public void clearConfigRegistrations() {
+        final int before = registrations.size();
+        registrations.values().removeIf(registration ->
+                registration.source() == RegistrationSource.CONFIG);
+        final int removed = before - registrations.size();
+        if (removed > 0) {
+            LogUtils.debug(plugin.getLogger(),
+                    "Cleared " + removed + " config level up registrations");
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+    }
+
+    /**
+     * Removes every registration, including those registered by other plugins.
+     */
+    public void clearAll() {
+        registrations.clear();
+    }
+
+    /**
+     * The commands registered from the given source. Handler registrations are not included.
+     */
+    public @NotNull List<LevelUpCommand> getCommands(@NotNull RegistrationSource source) {
+        final List<LevelUpCommand> commands = new ArrayList<>();
+        for (Registration registration : registrations.values()) {
+            if (registration.source() == source
+                    && registration.action() instanceof LevelUpCommand command) {
+                commands.add(command);
+            }
         }
-        LevelUpCommandManager that = (LevelUpCommandManager) o;
-        return Objects.equals(simpleLevelUpCommands, that.simpleLevelUpCommands) && Objects.equals(plugin,
-                that.plugin);
+        return commands;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(simpleLevelUpCommands, plugin);
+    /**
+     * The command registered under the given id, or null when the id is unknown or belongs to
+     * a handler registration.
+     */
+    public @Nullable LevelUpCommand getCommand(@NotNull UUID id) {
+        final Registration registration = registrations.get(id);
+        if (registration != null && registration.action() instanceof LevelUpCommand command) {
+            return command;
+        }
+        return null;
     }
 
-    @Override
-    public String toString() {
-        return "LevelUpCommandManager{" +
-                "levelUpCommands=" + simpleLevelUpCommands +
-                ", plugin=" + plugin +
-                '}';
+    private record Registration(@NotNull RegistrationSource source,
+                                @NotNull LevelUpAction action) {
     }
 }

@@ -6,6 +6,9 @@ Version 2.2.055
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
+    Added support for running commands when players reach chosen skill levels or power levels (See notes)
+    Added new config file levelupcommands.yml to set up level up commands (See notes)
+    (API) Added LevelUpCommandAPI so other plugins can register level up commands or their own callbacks and unregister them later (See notes)
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
@@ -20,6 +23,9 @@ Version 2.2.055
     Taking smelted items out of a furnace no longer searches the full server recipe list every time.
     Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
+    Level up commands are configured in the new levelupcommands.yml file; each entry lists the commands to run plus a trigger, either skills with levels or power_levels, and an optional run_as of CONSOLE (default) or PLAYER. The shipped example entries are disabled by default.
+    Level up commands support placeholders: {@player}, {@skill}, {@level}, {@power_level}, and current-level placeholders like {@mining_level}. Commands run once per milestone reached, even when several levels are gained at once.
+    (API) LevelUpCommandAPI registrations return an id that can be used to unregister them later; registrations made by other plugins survive mcMMO config reloads.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
