@@ -473,7 +473,7 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public int getCombatHPCeiling() {
-        return config.getInt("ExploitFix.Combat.XPCeiling.HP_Modifier_Limit", 100);
+        return config.getInt("ExploitFix.Combat.XPCeiling.Damage_Limit", 100);
     }
 
     public boolean isExperienceBarsEnabled() {

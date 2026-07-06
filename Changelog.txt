@@ -5,6 +5,7 @@ Version 2.2.055
     Fixed Super Breaker and Tree Feller mishandling durability on items with a custom max_damage component (See notes)
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
     Fixed Acrobatics Dodge exploit prevention never limiting Dodge XP from a single mob (See notes)
+    Fixed 'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml being ignored (See notes)
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
     Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
@@ -23,6 +24,7 @@ Version 2.2.055
     Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
     Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml; it is enabled by default and existing config files do not need to be updated. A single mob stops handing out Dodge XP after a handful of dodges, and the limit clears once that mob has gone about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
+    'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml now works; before this fix the combat XP damage ceiling was always 100 no matter what the config said. Servers that customized this value will see it take effect after updating, no config changes are needed.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
