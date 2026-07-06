@@ -7,9 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A callback other plugins register through
- * {@link com.gmail.nossr50.api.LevelUpCommandAPI#registerHandler(LevelUpHandler)} to run their
- * own code when a player levels up. Handlers are invoked for every level up of every skill —
- * filter inside the handler for the skills and levels you care about.
+ * {@link com.gmail.nossr50.api.LevelUpCommandAPI#registerHandler(org.bukkit.plugin.Plugin,
+ * LevelUpHandler)} to run their own code when a player levels up. Handlers are invoked for
+ * every level up of every skill — filter inside the handler for the skills and levels you
+ * care about.
  */
 @FunctionalInterface
 public interface LevelUpHandler {

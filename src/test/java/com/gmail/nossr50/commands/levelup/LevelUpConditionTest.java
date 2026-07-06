@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -95,6 +96,54 @@ class LevelUpConditionTest {
 
         // Then - the skill trigger never matches
         assertThat(matched).isEmpty();
+    }
+
+    @ParameterizedTest(name = "{3}")
+    @MethodSource("unmatchableSkillLevelUps")
+    void matchedSkillLevelsShouldReturnSharedEmptySetWhenNothingMatches(
+            final LevelUpCondition condition, final PrimarySkillType skill,
+            final Set<Integer> levelsGained, final String description) {
+        // Given - a condition and a skill level up that cannot match it
+
+        // When - matched skill levels are computed
+        final var matched = condition.matchedSkillLevels(skill, levelsGained);
+
+        // Then - the shared immutable empty set comes back, no per-event set is allocated
+        assertThat(matched).isSameAs(Collections.emptySortedSet());
+    }
+
+    static Stream<Arguments> unmatchableSkillLevelUps() {
+        return Stream.of(
+                Arguments.of(LevelUpCondition.skillLevels(Set.of(MINING), Set.of(10)),
+                        WOODCUTTING, Set.of(10), "skill not listed"),
+                Arguments.of(LevelUpCondition.skillLevels(Set.of(MINING), Set.of(10)),
+                        MINING, Set.of(9, 11), "no listed level reached"),
+                Arguments.of(LevelUpCondition.powerLevels(Set.of(100)),
+                        HERBALISM, Set.of(100), "power level only condition")
+        );
+    }
+
+    @ParameterizedTest(name = "{2}")
+    @MethodSource("unmatchablePowerLevelUps")
+    void matchedPowerLevelsShouldReturnSharedEmptySetWhenNothingMatches(
+            final LevelUpCondition condition, final Set<Integer> powerLevelsGained,
+            final String description) {
+        // Given - a condition and power levels gained that cannot match it
+
+        // When - matched power levels are computed
+        final var matched = condition.matchedPowerLevels(powerLevelsGained);
+
+        // Then - the shared immutable empty set comes back, no per-event set is allocated
+        assertThat(matched).isSameAs(Collections.emptySortedSet());
+    }
+
+    static Stream<Arguments> unmatchablePowerLevelUps() {
+        return Stream.of(
+                Arguments.of(LevelUpCondition.skillLevels(Set.of(MINING), Set.of(10)),
+                        Set.of(100), "no power levels configured"),
+                Arguments.of(LevelUpCondition.powerLevels(Set.of(100)),
+                        Set.of(99, 101), "no listed power level reached")
+        );
     }
 
     @Test

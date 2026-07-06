@@ -232,7 +232,7 @@ class CommandOnLevelUpConfigTest extends MMOTestEnvironment {
                         commands: "say hi"
                 """;
         loadConfig(yaml);
-        LevelUpCommandAPI.registerHandler((player, skill, levelsGained, powerLevel) -> {
+        LevelUpCommandAPI.registerHandler(mcMMO.p, (player, skill, levelsGained, powerLevel) -> {
         });
         assertThat(levelUpCommandManager.registrationCount()).isEqualTo(2);
 

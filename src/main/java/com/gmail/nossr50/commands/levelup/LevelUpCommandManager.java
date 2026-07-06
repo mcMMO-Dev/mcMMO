@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,10 +43,24 @@ public class LevelUpCommandManager {
      */
     public @NotNull UUID register(@NotNull LevelUpAction action,
             @NotNull RegistrationSource source) {
+        return register(action, source, null);
+    }
+
+    /**
+     * Registers an action to run on level ups on behalf of a plugin. Registrations with an
+     * owner are removed automatically when that plugin is disabled.
+     *
+     * @param action the action to run
+     * @param source where the registration came from
+     * @param owner the plugin that owns this registration, or null for config entries
+     * @return the id used to remove this registration later
+     */
+    public @NotNull UUID register(@NotNull LevelUpAction action,
+            @NotNull RegistrationSource source, @Nullable Plugin owner) {
         requireNonNull(action, "action cannot be null");
         requireNonNull(source, "source cannot be null");
         final UUID id = UUID.randomUUID();
-        registrations.put(id, new Registration(source, action));
+        registrations.put(id, new Registration(source, action, owner));
         LogUtils.debug(plugin.getLogger(),
                 "Registered level up action " + id + " from " + source + ": " + action);
         return id;
@@ -72,6 +87,14 @@ public class LevelUpCommandManager {
 
     public int registrationCount() {
         return registrations.size();
+    }
+
+    /**
+     * Whether anything is registered at all. Lets callers skip level up bookkeeping entirely
+     * when nothing would react to it.
+     */
+    public boolean hasRegistrations() {
+        return !registrations.isEmpty();
     }
 
     /**
@@ -116,6 +139,23 @@ public class LevelUpCommandManager {
     }
 
     /**
+     * Removes every registration owned by the given plugin. Called when a plugin is disabled
+     * so its registrations never outlive it.
+     *
+     * @param owner the plugin whose registrations should be removed
+     */
+    public void clearPluginRegistrations(@NotNull Plugin owner) {
+        requireNonNull(owner, "owner cannot be null");
+        final int before = registrations.size();
+        registrations.values().removeIf(registration -> registration.owner() == owner);
+        final int removed = before - registrations.size();
+        if (removed > 0) {
+            LogUtils.debug(plugin.getLogger(), "Cleared " + removed
+                    + " level up registrations owned by " + owner.getName());
+        }
+    }
+
+    /**
      * Removes every registration, including those registered by other plugins.
      */
     public void clearAll() {
@@ -149,6 +189,6 @@ public class LevelUpCommandManager {
     }
 
     private record Registration(@NotNull RegistrationSource source,
-                                @NotNull LevelUpAction action) {
+                                @NotNull LevelUpAction action, @Nullable Plugin owner) {
     }
 }

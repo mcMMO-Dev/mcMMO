@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.commands.levelup.LevelUpCommandManager;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -21,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 
 public class SelfListener implements Listener {
     //Used in task scheduling and other things
@@ -58,6 +60,11 @@ public class SelfListener implements Listener {
             }
         }
 
+        final LevelUpCommandManager levelUpCommandManager = plugin.getLevelUpCommandManager();
+        if (!levelUpCommandManager.hasRegistrations()) {
+            return;
+        }
+
         final Set<Integer> levelsGained = new LinkedHashSet<>();
         final Set<Integer> powerLevelsGained = new LinkedHashSet<>();
         final int startingLevel = event.getSkillLevel() - event.getLevelsGained();
@@ -67,8 +74,17 @@ public class SelfListener implements Listener {
             powerLevelsGained.add(startingPowerLevel + i);
         }
 
-        plugin.getLevelUpCommandManager().applyLevelUp(mmoPlayer, skill, levelsGained,
-                powerLevelsGained);
+        levelUpCommandManager.applyLevelUp(mmoPlayer, skill, levelsGained, powerLevelsGained);
+    }
+
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent event) {
+        if (event.getPlugin() == plugin) {
+            // mcMMO shutting down is handled in onDisable
+            return;
+        }
+
+        plugin.getLevelUpCommandManager().clearPluginRegistrations(event.getPlugin());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

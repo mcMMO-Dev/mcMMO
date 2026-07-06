@@ -447,6 +447,9 @@ public class mcMMO extends JavaPlugin {
         try {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
+            if (levelUpCommandManager != null) {
+                levelUpCommandManager.clearAll();
+            }
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             if (partyConfig.isPartyEnabled()) {
                 getPartyManager().saveParties(); // Save our parties

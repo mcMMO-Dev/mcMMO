@@ -10,6 +10,7 @@ import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
@@ -29,6 +30,8 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -183,7 +186,7 @@ class LevelUpCommandTest extends MMOTestEnvironment {
     void commandShouldStopFiringAfterUnregister() {
         // Given - an API-registered command that fires on every Mining level
         final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
-        final UUID id = LevelUpCommandAPI.registerCommand(LevelUpCommand.builder()
+        final UUID id = LevelUpCommandAPI.registerCommand(mcMMO.p, LevelUpCommand.builder()
                 .withSkill(MINING)
                 .withLevels(Set.of(1, 2, 3, 4, 5))
                 .command("say hi")
@@ -227,11 +230,56 @@ class LevelUpCommandTest extends MMOTestEnvironment {
     }
 
     @Test
+    void onPlayerLevelUpShouldSkipPowerLevelWorkWhenNothingIsRegistered() {
+        // Given - a level up with no registrations of any kind
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        final McMMOPlayer mmoPlayer = playerMock.mmoPlayer();
+        assertThat(levelUpCommandManager.hasRegistrations()).isFalse();
+        Mockito.clearInvocations(mmoPlayer);
+
+        // When - the level up event reaches the listener
+        final McMMOPlayerLevelUpEvent event = new McMMOPlayerLevelUpEvent(mmoPlayer.getPlayer(),
+                MINING, 1, XPGainReason.PVE);
+        selfListener.onPlayerLevelUp(event);
+
+        // Then - the listener bailed out before computing the power level
+        verify(mmoPlayer, never()).getPowerLevel();
+        // And - nothing was dispatched
+        mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), any(String.class)), never());
+    }
+
+    @Test
+    void handlerShouldReceiveHighestPowerLevelWhenManyLevelsGainedAtOnce() {
+        // Given - two handlers and a player who reaches Mining 5 in a single level up event
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        final McMMOPlayer mmoPlayer = playerMock.mmoPlayer();
+        final List<Integer> firstHandlerPowerLevels = new ArrayList<>();
+        final List<Integer> secondHandlerPowerLevels = new ArrayList<>();
+        LevelUpCommandAPI.registerHandler(mcMMO.p, (player, skill, levelsGained, powerLevel) ->
+                firstHandlerPowerLevels.add(powerLevel));
+        LevelUpCommandAPI.registerHandler(mcMMO.p, (player, skill, levelsGained, powerLevel) ->
+                secondHandlerPowerLevels.add(powerLevel));
+        mmoPlayer.modifySkill(MINING, 5);
+        Mockito.clearInvocations(mmoPlayer);
+
+        // When - a single level up event reports five levels gained at once
+        final McMMOPlayerLevelUpEvent event = new McMMOPlayerLevelUpEvent(mmoPlayer.getPlayer(),
+                MINING, 5, XPGainReason.PVE);
+        selfListener.onPlayerLevelUp(event);
+
+        // Then - both handlers received the highest power level reached
+        assertThat(firstHandlerPowerLevels).containsExactly(5);
+        assertThat(secondHandlerPowerLevels).containsExactly(5);
+        // And - the power level was computed once by the listener, not once more per handler
+        verify(mmoPlayer, times(1)).getPowerLevel();
+    }
+
+    @Test
     void handlerShouldReceiveLevelUpDetailsAndStopAfterUnregister() {
         // Given - an API handler capturing every level up
         final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
         final List<String> captured = new ArrayList<>();
-        final UUID id = LevelUpCommandAPI.registerHandler(
+        final UUID id = LevelUpCommandAPI.registerHandler(mcMMO.p,
                 (player, skill, levelsGained, powerLevel) -> captured.add(
                         skill + ":" + levelsGained + ":power=" + powerLevel));
 
@@ -252,7 +300,7 @@ class LevelUpCommandTest extends MMOTestEnvironment {
     void throwingHandlerShouldNotBreakOtherRegistrationsOrTheLevelUp() {
         // Given - a third party handler that throws and a healthy command registration
         final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
-        LevelUpCommandAPI.registerHandler((player, skill, levelsGained, powerLevel) -> {
+        LevelUpCommandAPI.registerHandler(mcMMO.p, (player, skill, levelsGained, powerLevel) -> {
             throw new IllegalStateException("third party bug");
         });
         registerConfigCommand("say resilient", Set.of(MINING), Set.of(1));
@@ -272,7 +320,7 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
         registerConfigCommand("say config", Set.of(MINING), Set.of(1));
         final List<Integer> handlerCalls = new ArrayList<>();
-        LevelUpCommandAPI.registerHandler(
+        LevelUpCommandAPI.registerHandler(mcMMO.p,
                 (player, skill, levelsGained, powerLevel) -> handlerCalls.add(powerLevel));
 
         // When - config registrations are cleared (what a config reload does)
@@ -282,6 +330,50 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // Then - the config command is gone but the API handler still fires
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), eq("say config")), never());
         assertThat(handlerCalls).containsExactly(1);
+        assertThat(levelUpCommandManager.registrationCount()).isEqualTo(1);
+    }
+
+    @Test
+    void pluginDisableShouldPurgeOnlyThatPluginsRegistrations() {
+        // Given - registrations from two different plugins plus a config command
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        final Plugin disabledPlugin = mock(Plugin.class);
+        when(disabledPlugin.getName()).thenReturn("DisabledPlugin");
+        final Plugin survivingPlugin = mock(Plugin.class);
+        LevelUpCommandAPI.registerCommand(disabledPlugin, LevelUpCommand.builder()
+                .withSkill(MINING)
+                .withLevels(Set.of(1))
+                .command("say doomed")
+                .build());
+        final List<Integer> survivingHandlerCalls = new ArrayList<>();
+        LevelUpCommandAPI.registerHandler(survivingPlugin,
+                (player, skill, levelsGained, powerLevel) ->
+                        survivingHandlerCalls.add(powerLevel));
+        registerConfigCommand("say config", Set.of(MINING), Set.of(1));
+
+        // When - the first plugin is disabled and the player levels up afterwards
+        selfListener.onPluginDisable(new PluginDisableEvent(disabledPlugin));
+        levelPlayerViaXP(playerMock.mmoPlayer(), MINING, 1);
+
+        // Then - the disabled plugin's command is gone and never dispatched
+        assertThat(levelUpCommandManager.registrationCount()).isEqualTo(2);
+        mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), eq("say doomed")), never());
+        // And - the other plugin's handler and the config command still fired
+        assertThat(survivingHandlerCalls).containsExactly(1);
+        mockedBukkit.verify(() -> Bukkit.dispatchCommand(eq(consoleSender), eq("say config")),
+                times(1));
+    }
+
+    @Test
+    void pluginDisableForMcMMOItselfShouldLeaveRegistrationsAlone() {
+        // Given - an API registration owned by mcMMO itself
+        LevelUpCommandAPI.registerHandler(mcMMO.p, (player, skill, levelsGained, powerLevel) -> {
+        });
+
+        // When - the disable event for mcMMO itself reaches the listener
+        selfListener.onPluginDisable(new PluginDisableEvent(mcMMO.p));
+
+        // Then - the registration survives; mcMMO's own shutdown cleanup happens in onDisable
         assertThat(levelUpCommandManager.registrationCount()).isEqualTo(1);
     }
 

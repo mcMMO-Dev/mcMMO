@@ -7,7 +7,10 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -32,6 +35,18 @@ public final class LevelUpCommand implements LevelUpAction {
     public enum RunAs {
         CONSOLE,
         PLAYER
+    }
+
+    private static final String POWER_LEVEL_TOKEN = "{@power_level}";
+    private static final Map<PrimarySkillType, String> SKILL_LEVEL_TOKENS;
+
+    static {
+        final Map<PrimarySkillType, String> tokens = new EnumMap<>(PrimarySkillType.class);
+        for (PrimarySkillType nonChildSkill : SkillTools.NON_CHILD_SKILLS) {
+            tokens.put(nonChildSkill,
+                    "{@" + nonChildSkill.name().toLowerCase(Locale.ENGLISH) + "_level}");
+        }
+        SKILL_LEVEL_TOKENS = Map.copyOf(tokens);
     }
 
     private final @NotNull LevelUpCondition condition;
@@ -99,13 +114,18 @@ public final class LevelUpCommand implements LevelUpAction {
             replaceAll(builder, "{@level}", String.valueOf(matchedLevel));
         }
 
-        final int powerLevel = matchedPowerLevel != null
-                ? matchedPowerLevel : mmoPlayer.getPowerLevel();
-        replaceAll(builder, "{@power_level}", String.valueOf(powerLevel));
+        if (builder.indexOf(POWER_LEVEL_TOKEN) != -1) {
+            final int powerLevel = matchedPowerLevel != null
+                    ? matchedPowerLevel : mmoPlayer.getPowerLevel();
+            replaceAll(builder, POWER_LEVEL_TOKEN, String.valueOf(powerLevel));
+        }
 
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
-            replaceAll(builder, "{@" + primarySkillType.name().toLowerCase() + "_level}",
-                    String.valueOf(mmoPlayer.getSkillLevel(primarySkillType)));
+            final String token = SKILL_LEVEL_TOKENS.get(primarySkillType);
+            if (builder.indexOf(token) != -1) {
+                replaceAll(builder, token,
+                        String.valueOf(mmoPlayer.getSkillLevel(primarySkillType)));
+            }
         }
 
         return builder.toString();

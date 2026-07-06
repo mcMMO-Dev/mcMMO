@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.levelup;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
@@ -54,28 +55,38 @@ public final class LevelUpCondition {
      */
     public @NotNull SortedSet<Integer> matchedSkillLevels(@NotNull PrimarySkillType skill,
             @NotNull Set<Integer> levelsGained) {
-        final SortedSet<Integer> matched = new TreeSet<>();
-        if (skills.contains(skill)) {
-            for (int level : levelsGained) {
-                if (levels.contains(level)) {
-                    matched.add(level);
+        if (!skills.contains(skill)) {
+            return Collections.emptySortedSet();
+        }
+        SortedSet<Integer> matched = null;
+        for (int level : levelsGained) {
+            if (levels.contains(level)) {
+                if (matched == null) {
+                    matched = new TreeSet<>();
                 }
+                matched.add(level);
             }
         }
-        return matched;
+        return matched != null ? matched : Collections.emptySortedSet();
     }
 
     /**
      * The listed power levels that this level up reached, sorted ascending.
      */
     public @NotNull SortedSet<Integer> matchedPowerLevels(@NotNull Set<Integer> powerLevelsGained) {
-        final SortedSet<Integer> matched = new TreeSet<>();
+        if (powerLevels.isEmpty()) {
+            return Collections.emptySortedSet();
+        }
+        SortedSet<Integer> matched = null;
         for (int powerLevel : powerLevelsGained) {
             if (powerLevels.contains(powerLevel)) {
+                if (matched == null) {
+                    matched = new TreeSet<>();
+                }
                 matched.add(powerLevel);
             }
         }
-        return matched;
+        return matched != null ? matched : Collections.emptySortedSet();
     }
 
     public @NotNull Set<PrimarySkillType> getSkills() {
