@@ -14,6 +14,8 @@ Version 2.2.055
     Fixed the stats scoreboard including skills hidden by missing permissions in its power level
     Fixed localized skill commands being blocked by command whitelist plugins (See notes)
     Fixed 'Database_Purging.Old_User_Cutoff' never purging inactive users (See notes)
+    Fixed purging powerless users removing comment lines from the flatfile database
+    Fixed inspect scoreboards not refreshing when the inspected player levels up
     Fixed the Leaf Blower and Catalysis guides in the en_US locale showing wrong unlock levels
     Fixed 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml being ignored (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
