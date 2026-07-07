@@ -39,27 +39,42 @@ Version 2.2.055
     (Codebase) Added regression tests covering previously fixed bugs
 
     NOTES:
+    -- Scoreboards and power level tags --
     Scoreboards on Folia (and Folia forks like Canvas) now use a packet-based implementation, since the Bukkit scoreboard API is not safe to use there. Paper and Spigot servers keep the existing Bukkit scoreboard implementation and are unaffected.
     If a Folia server runs a newer Minecraft version than this mcMMO build supports for packet scoreboards (currently the 26.2.x line), scoreboards are disabled with a startup warning until mcMMO updates.
     (API) The packet-based implementation still fires McMMOScoreboardMakeboardEvent and McMMOScoreboardRevertEvent, but there is no Bukkit Objective on Folia so McMMOScoreboardObjectiveEvent is not fired there.
-    The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
-    Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
-    Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
-    Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml; it is enabled by default and existing config files do not need to be updated. A single mob stops handing out Dodge XP after a handful of dodges, and the limit clears once that mob has gone about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
-    'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml now works; before this fix the combat XP damage ceiling was always 100 no matter what the config said. Servers that customized this value will see it take effect after updating, no config changes are needed.
+    Power level tags could get stuck showing 0 for players whose data was still loading. Servers that ran older builds with 'Power_Level_Tags' enabled could also have an old power level display saved in world data that kept showing stale numbers; leftovers are now cleaned up automatically on startup. On Minecraft 26.1 clients the power level can still render on holograms and pets due to a client bug that Mojang fixed in 26.2.
+
+    -- Salvage and Repair --
     Items that only salvage into a single material (such as wooden shovels with the default salvage.vanilla.yml) previously could not be salvaged at all unless they were at full durability. Damaged items now always return at least one material unless the item is completely broken.
     The Salvage/Repair confirm click now has to be made with the same item that triggered the prompt; if the held item changes during the confirmation window you get a new prompt instead of the new item being instantly salvaged or repaired. While a confirmation is pending the prompted item also can't be used, which stops vanilla armor quick-swap from equipping or swapping armor mid-confirmation.
-    Power level tags could get stuck showing 0 for players whose data was still loading. Servers that ran older builds with 'Power_Level_Tags' enabled could also have an old power level display saved in world data that kept showing stale numbers; leftovers are now cleaned up automatically on startup. On Minecraft 26.1 clients the power level can still render on holograms and pets due to a client bug that Mojang fixed in 26.2.
+
+    -- XP and exploit fixes --
+    The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
+    Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml; it is enabled by default and existing config files do not need to be updated. A single mob stops handing out Dodge XP after a handful of dodges, and the limit clears once that mob has gone about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
+    'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml now works; before this fix the combat XP damage ceiling was always 100 no matter what the config said. Servers that customized this value will see it take effect after updating, no config changes are needed.
+
+    -- Commands --
     Localized skill commands (for example /faustkampf for /unarmed on a German locale) are now handed to other plugins in a way that lets command whitelist and command blocking plugins see the command exactly as the player typed it. If you use such a plugin, whitelist the localized command name.
-    'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.
-    The 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml now actually work. The shipped default for 'Enabled' is now false, which keeps the current chat-only behavior. If your existing advanced.yml already has 'Enabled: true' for SubSkillUnlocked, unlock messages will start using the action bar after updating, with a copy in chat when 'SendCopyOfMessageToChat' is true.
     Using /inspect on offline players now requires the 'mcmmo.commands.inspect.far' permission, the same node that gates inspecting far away players. If non-op players on your server relied on inspecting offline players, grant them that node.
-    Gaining XP now does much less repeated work per gain, which reduces mcMMO's share of server thread time on busy servers; no behavior or config changes are involved.
-    Taking smelted items out of a furnace no longer searches the full server recipe list every time.
     The /mclevelupsound toggle (alias /levelupsound) only affects the level-up sound, not level-up messages. Like /mcnotify, the toggle lasts until the player logs out.
     /xprate without arguments shows the current XP rate. Players get this through the new 'mcmmo.commands.xprate.show' node, which is granted by default since the rate is already broadcast at event start and shown on join.
+
+    -- Sounds and abilities --
+    Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
+    Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
+
+    -- Config --
+    The 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml now actually work. The shipped default for 'Enabled' is now false, which keeps the current chat-only behavior. If your existing advanced.yml already has 'Enabled: true' for SubSkillUnlocked, unlock messages will start using the action bar after updating, with a copy in chat when 'SendCopyOfMessageToChat' is true.
     'Skills.Mining.BlastMining.RemoteDetonationDistance' in advanced.yml controls how far away Blast Mining can remotely detonate TNT. It defaults to 100, which matches the old fixed distance, and advanced.yml auto-updates on startup so no manual config changes are needed.
     Leaf Blower only has one rank, so the unused Rank_2 and Rank_3 keys were removed from the default skillranks.yml; existing config files keep working and don't need to be updated.
+
+    -- Database --
+    'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.
+
+    -- Performance --
+    Gaining XP now does much less repeated work per gain, which reduces mcMMO's share of server thread time on busy servers; no behavior or config changes are involved.
+    Taking smelted items out of a furnace no longer searches the full server recipe list every time.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
