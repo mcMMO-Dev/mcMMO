@@ -701,6 +701,11 @@ public class PlayerListener implements Listener {
             }
         }
 
+        if (event.getAction() == Action.RIGHT_CLICK_AIR
+                || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            denyItemUseWhileAnvilConfirmationPending(event, player);
+        }
+
         if (event.getClickedBlock() == null) {
             return;
         }
@@ -748,7 +753,7 @@ public class PlayerListener implements Listener {
                         event.setCancelled(true);
 
                         // Make sure the player knows what he's doing when trying to repair an enchanted item
-                        if (repairManager.checkConfirmation(true)) {
+                        if (repairManager.checkConfirmation(heldItem, true)) {
                             repairManager.handleRepair(heldItem);
                         }
                     }
@@ -765,7 +770,7 @@ public class PlayerListener implements Listener {
                         event.setCancelled(true);
 
                         // Make sure the player knows what he's doing when trying to salvage an enchanted item
-                        if (salvageManager.checkConfirmation(true)) {
+                        if (salvageManager.checkConfirmation(heldItem, true)) {
                             SkillUtils.removeAbilityBoostsFromInventory(player);
                             salvageManager.handleSalvage(clickedBlock.getLocation(), heldItem);
                         }
@@ -820,6 +825,37 @@ public class PlayerListener implements Listener {
 
             default:
                 break;
+        }
+    }
+
+    /**
+     * Deny using the held item while a salvage or repair confirmation is pending for it.
+     * <p>
+     * The client follows up an anvil click with a use-item action for the same hand, and the
+     * server resolves that action as its own interact event (right-click air when its raytrace
+     * no longer hits the anvil). Without denying item use here, vanilla behavior such as armor
+     * quick-equipping can consume the item mid-confirmation, swapping worn armor into the
+     * player's hand.
+     *
+     * @param event The event to modify
+     * @param player The interacting player
+     */
+    private void denyItemUseWhileAnvilConfirmationPending(PlayerInteractEvent event,
+            Player player) {
+        if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player)
+                || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if (mmoPlayer == null) {
+            return;
+        }
+
+        final ItemStack heldItem = player.getInventory().getItemInMainHand();
+        if (mmoPlayer.getSalvageManager().isAwaitingConfirmation(heldItem)
+                || mmoPlayer.getRepairManager().isAwaitingConfirmation(heldItem)) {
+            event.setUseItemInHand(Event.Result.DENY);
         }
     }
 
