@@ -606,9 +606,12 @@ public class ScoreboardWrapper {
             lines.add(new SidebarLine(ScoreboardManager.skillLabels.get(skill), level));
         }
 
-        // Sort skills by level descending to mirror the old score-sorted Bukkit board
-        lines.sort((a, b) -> Integer.compare(b.value(), a.value()));
+        // Sort by value descending to mirror the old score-sorted Bukkit board. The power
+        // level line takes part in the sort: the sum is never smaller than any single row, so
+        // it ranks first and always survives the sidebar line cap, which would otherwise drop
+        // it whenever 15 or more skill rows are shown (a full-permission player has 17)
         lines.add(new SidebarLine(ScoreboardManager.LABEL_POWER_LEVEL, powerLevel));
+        lines.sort((a, b) -> Integer.compare(b.value(), a.value()));
     }
 
     private void renderRank(Player player, List<SidebarLine> lines) {

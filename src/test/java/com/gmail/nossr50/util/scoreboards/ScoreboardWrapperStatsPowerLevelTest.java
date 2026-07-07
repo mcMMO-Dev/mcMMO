@@ -118,6 +118,30 @@ class ScoreboardWrapperStatsPowerLevelTest extends MMOTestEnvironment {
         assertThat(powerLevelLineValue()).isEqualTo(600);
     }
 
+    /**
+     * Gotcha coverage: with every skill permitted (the default server setup) the board has 17
+     * skill rows plus the power level line, which exceeds the 15-line sidebar limit. The power
+     * level line must survive that truncation - on the old score-sorted Bukkit board it always
+     * ranked first because the sum can never be smaller than any single row.
+     */
+    @Test
+    void statsBoardShouldStillShowPowerLevelLineWhenAllSkillRowsExceedTheLineLimit() {
+        // Given - a player permitted to use every skill, with levels in two of them
+        when(Permissions.skillEnabled(any(Player.class), any(PrimarySkillType.class)))
+                .thenReturn(true);
+        mmoPlayer.modifySkill(PrimarySkillType.MINING, 600);
+        mmoPlayer.modifySkill(PrimarySkillType.HERBALISM, 400);
+
+        // When - the self stats board is rendered
+        final ScoreboardWrapper wrapper = new ScoreboardWrapper(player, playerBoard);
+        wrapper.setTypeSelfStats();
+
+        // Then - the board is capped at 15 lines and the power level line is one of them
+        assertThat(playerBoard.lastDrawnLines).hasSizeLessThanOrEqualTo(15);
+        assertThat(skillRowValue(PrimarySkillType.MINING)).isEqualTo(600);
+        assertThat(powerLevelLineValue()).isEqualTo(1000);
+    }
+
     private int powerLevelLineValue() {
         return playerBoard.lastDrawnLines.stream()
                 .filter(line -> line.label().equals(ScoreboardManager.LABEL_POWER_LEVEL))
