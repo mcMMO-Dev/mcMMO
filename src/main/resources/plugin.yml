@@ -172,6 +172,10 @@ commands:
         aliases: [ notify ]
         description: Toggle mcMMO abilities chat display notifications on/off
         permission: mcmmo.commands.mcnotify
+    mclevelupsound:
+        aliases: [ levelupsound ]
+        description: Toggle the mcMMO level-up sound on/off
+        permission: mcmmo.commands.mclevelupsound
     mcscoreboard:
         aliases: [ mcsb ]
         description: Manage your mcMMO Scoreboard
@@ -893,6 +897,7 @@ permissions:
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
             mcmmo.commands.mccooldown: true
+            mcmmo.commands.mclevelupsound: true
             mcmmo.commands.mcmmo.all: true
             mcmmo.commands.mcnotify: true
             mcmmo.commands.mcrank: true
@@ -1014,6 +1019,8 @@ permissions:
         description: Allows access to the mcchatspy command
     mcmmo.commands.mcchatspy.others:
         description: Allows access to the mcchatspy command for other players
+    mcmmo.commands.mclevelupsound:
+        description: Allows access to the mclevelupsound command
     mcmmo.commands.mcmmo.*:
         default: false
         description: Implies access to all mcmmo.commands.mcmmo permissions

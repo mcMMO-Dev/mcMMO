@@ -101,6 +101,7 @@ public class McMMOPlayer implements Identified {
     private PartyTeleportRecord ptpRecord;
 
     private boolean displaySkillNotifications = true;
+    private boolean playLevelUpSounds = true;
     private boolean debugMode;
 
     private boolean abilityUse = true;
@@ -578,6 +579,18 @@ public class McMMOPlayer implements Identified {
         displaySkillNotifications = !displaySkillNotifications;
     }
 
+    /*
+     * Level-up sounds
+     */
+
+    public boolean useLevelUpSounds() {
+        return playLevelUpSounds;
+    }
+
+    public void toggleLevelUpSounds() {
+        playLevelUpSounds = !playLevelUpSounds;
+    }
+
     /**
      * Gets the power level of this player.
      *
@@ -784,7 +797,7 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled()) {
+        if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled() && useLevelUpSounds()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         }
 

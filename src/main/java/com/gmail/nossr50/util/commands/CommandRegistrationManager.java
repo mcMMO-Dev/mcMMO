@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.commands;
 
+import com.gmail.nossr50.commands.McLevelUpSoundCommand;
 import com.gmail.nossr50.commands.McabilityCommand;
 import com.gmail.nossr50.commands.McconvertCommand;
 import com.gmail.nossr50.commands.McgodCommand;
@@ -381,6 +382,15 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McnotifyCommand());
     }
 
+    private static void registerMcLevelUpSoundCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mclevelupsound");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mclevelupsound"));
+        command.setPermission("mcmmo.commands.mclevelupsound");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mclevelupsound"));
+        command.setExecutor(new McLevelUpSoundCommand());
+    }
+
     private static void registerMcscoreboardCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcscoreboard");
         command.setDescription(
@@ -424,6 +434,7 @@ public final class CommandRegistrationManager {
         registerMcChatSpyCommand();
         registerMcmmoCommand();
         registerMcnotifyCommand();
+        registerMcLevelUpSoundCommand();
         registerMcrefreshCommand();
         registerMcscoreboardCommand();
         registerXprateCommand();

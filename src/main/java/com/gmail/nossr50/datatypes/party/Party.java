@@ -8,6 +8,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import java.text.DecimalFormat;
@@ -252,7 +253,9 @@ public class Party {
                 leader.sendMessage(
                         LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
-                if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled()) {
+                final McMMOPlayer mmoLeader = UserManager.getPlayer(leader);
+                if (mcMMO.p.getGeneralConfig().getLevelUpSoundsEnabled()
+                        && (mmoLeader == null || mmoLeader.useLevelUpSounds())) {
                     SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
                 }
             }
