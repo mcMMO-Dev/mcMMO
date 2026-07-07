@@ -9,8 +9,11 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,6 +22,11 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class XprateCommand implements TabExecutor {
+    // Matches how MessageFormat renders doubles in locale strings: no trailing ".0" on
+    // whole numbers, grouping separators, up to three decimal places
+    private static final DecimalFormat XP_RATE_FORMAT = new DecimalFormat("#,##0.###",
+            DecimalFormatSymbols.getInstance(Locale.US));
+
     private final double ORIGINAL_XP_RATE = ExperienceConfig.getInstance()
             .getExperienceGainsGlobalMultiplier();
 
@@ -63,12 +71,26 @@ public class XprateCommand implements TabExecutor {
                 return true;
 
             case 2:
-                if (CommandUtils.isInvalidInteger(sender, args[0])) {
+                if (CommandUtils.isInvalidDouble(sender, args[0])) {
                     return true;
                 }
 
                 if (!Permissions.xprateSet(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
+                final double newXpRate = Double.parseDouble(args[0]);
+
+                if (newXpRate < 0) {
+                    sender.sendMessage(
+                            ChatColor.RED + LocaleLoader.getString("Commands.NegativeNumberWarn"));
+                    return true;
+                }
+
+                if (newXpRate == 0 || !Double.isFinite(newXpRate)) {
+                    sender.sendMessage(
+                            ChatColor.RED + LocaleLoader.getString("Commands.xprate.invalid"));
                     return true;
                 }
 
@@ -80,20 +102,14 @@ public class XprateCommand implements TabExecutor {
                     return false;
                 }
 
-                int newXpRate = Integer.parseInt(args[0]);
-
-                if (newXpRate < 0) {
-                    sender.sendMessage(
-                            ChatColor.RED + LocaleLoader.getString("Commands.NegativeNumberWarn"));
-                    return true;
-                }
-
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
+
+                final String displayRate = XP_RATE_FORMAT.format(newXpRate);
 
                 if (mcMMO.p.getAdvancedConfig().useTitlesForXPEvent()) {
                     NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                             LocaleLoader.getString("Commands.Event.Start"),
-                            LocaleLoader.getString("Commands.Event.XP", newXpRate),
+                            LocaleLoader.getString("Commands.Event.XP", displayRate),
                             10, 10 * 20, 20);
                 }
 
@@ -101,12 +117,12 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.getServer()
                             .broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
                     mcMMO.p.getServer().broadcastMessage(
-                            LocaleLoader.getString("Commands.Event.XP", newXpRate));
+                            LocaleLoader.getString("Commands.Event.XP", displayRate));
                 }
 
                 //Admin notification
                 NotificationManager.processSensitiveCommandNotification(sender,
-                        SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
+                        SensitiveCommandType.XPRATE_MODIFY, displayRate);
 
                 return true;
 
@@ -120,7 +136,7 @@ public class XprateCommand implements TabExecutor {
             @NotNull String alias, String[] args) {
         switch (args.length) {
             case 1:
-                if (StringUtils.isInt(args[0])) {
+                if (StringUtils.isDouble(args[0])) {
                     return ImmutableList.of();
                 }
 

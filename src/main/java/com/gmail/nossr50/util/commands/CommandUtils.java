@@ -148,7 +148,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage("That is not a valid percentage."); // TODO: Localize
+        sender.sendMessage("That is not a valid number."); // TODO: Localize
         return true;
     }
 
