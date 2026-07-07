@@ -24,11 +24,19 @@ import org.jetbrains.annotations.NotNull;
 public class XprateCommand implements TabExecutor {
     // Matches how MessageFormat renders doubles in locale strings: no trailing ".0" on
     // whole numbers, grouping separators, up to three decimal places
-    private static final DecimalFormat XP_RATE_FORMAT = new DecimalFormat("#,##0.###",
-            DecimalFormatSymbols.getInstance(Locale.US));
+    private static final String XP_RATE_FORMAT_PATTERN = "#,##0.###";
 
     private final double ORIGINAL_XP_RATE = ExperienceConfig.getInstance()
             .getExperienceGainsGlobalMultiplier();
+
+    /**
+     * Formats an XP rate for display. Creates a new format per call because DecimalFormat is
+     * not thread safe and regionized servers run player commands on multiple threads.
+     */
+    static String formatXpRate(double xpRate) {
+        return new DecimalFormat(XP_RATE_FORMAT_PATTERN,
+                DecimalFormatSymbols.getInstance(Locale.US)).format(xpRate);
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
@@ -41,7 +49,7 @@ public class XprateCommand implements TabExecutor {
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Commands.xprate.current",
-                        XP_RATE_FORMAT.format(ExperienceConfig.getInstance()
+                        formatXpRate(ExperienceConfig.getInstance()
                                 .getExperienceGainsGlobalMultiplier())));
                 return true;
 
@@ -115,7 +123,7 @@ public class XprateCommand implements TabExecutor {
 
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
-                final String displayRate = XP_RATE_FORMAT.format(newXpRate);
+                final String displayRate = formatXpRate(newXpRate);
 
                 if (mcMMO.p.getAdvancedConfig().useTitlesForXPEvent()) {
                     NotificationManager.broadcastTitle(mcMMO.p.getServer(),

@@ -15,6 +15,15 @@ import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -219,6 +228,47 @@ class XprateCommandTest extends MMOTestEnvironment {
         // Then - only the permission message is sent
         assertThat(handled).isTrue();
         verify(sender).sendMessage("permission-denied");
+    }
+
+    /**
+     * Folia runs player commands on independent region threads, and every player holds the
+     * show permission by default, so the rate formatting used by /xprate must not garble its
+     * output when several senders format a rate at the same moment.
+     */
+    @Test
+    void formatXpRateShouldStayWellFormedUnderConcurrentUse() throws Exception {
+        // Given - several threads formatting the same grouping-heavy rate simultaneously
+        final int threadCount = 8;
+        final int iterationsPerThread = 20_000;
+        final ExecutorService pool = Executors.newFixedThreadPool(threadCount);
+        final CyclicBarrier startBarrier = new CyclicBarrier(threadCount);
+        final Queue<String> garbledResults = new ConcurrentLinkedQueue<>();
+
+        try {
+            // When - every thread formats the rate repeatedly at the same time
+            final List<Future<?>> futures = new ArrayList<>();
+            for (int i = 0; i < threadCount; i++) {
+                futures.add(pool.submit(() -> {
+                    startBarrier.await();
+                    for (int iteration = 0; iteration < iterationsPerThread; iteration++) {
+                        final String formatted = XprateCommand.formatXpRate(1234567.89);
+                        if (!"1,234,567.89".equals(formatted)) {
+                            garbledResults.add(formatted);
+                        }
+                    }
+                    return null;
+                }));
+            }
+
+            for (final Future<?> future : futures) {
+                future.get(30, TimeUnit.SECONDS);
+            }
+        } finally {
+            pool.shutdownNow();
+        }
+
+        // Then - no call ever observes a garbled rate
+        assertThat(garbledResults).isEmpty();
     }
 
     @Test
