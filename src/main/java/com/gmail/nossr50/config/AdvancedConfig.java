@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -241,6 +242,10 @@ public class AdvancedConfig extends BukkitConfig {
 
         if (getMaxBonusLevel(SubSkillType.MINING_DOUBLE_DROPS) < 1) {
             reason.add("Skills.Mining.DoubleDrops.MaxBonusLevel should be at least 1!");
+        }
+
+        if (getRemoteDetonationDistanceLimit() < 1) {
+            reason.add("Skills.Mining.BlastMining.RemoteDetonationDistance should be at least 1!");
         }
 
         /* REPAIR */
@@ -683,6 +688,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     public int getBlastMiningRankLevel(int rank) {
         return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank);
+    }
+
+    public int getRemoteDetonationDistanceLimit() {
+        return config.getInt("Skills.Mining.BlastMining.RemoteDetonationDistance",
+                BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
     }
 
     public double getBlastDamageDecrease(int rank) {

@@ -182,7 +182,7 @@ public class MiningManager extends SkillManager {
     public void remoteDetonation() {
         final Player player = getPlayer();
         final Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(),
-                BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
+                mcMMO.p.getAdvancedConfig().getRemoteDetonationDistanceLimit());
 
         //Blast mining cooldown check needs to be first so the player can be messaged
         if (!blastMiningCooldownOver()
