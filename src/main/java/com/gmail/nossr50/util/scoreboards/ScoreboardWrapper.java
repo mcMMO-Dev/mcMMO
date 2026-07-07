@@ -594,12 +594,14 @@ public class ScoreboardWrapper {
         int powerLevel = 0;
         // Don't include child skills, makes the list too long
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-            int level = newProfile.getSkillLevel(skill);
-            powerLevel += level;
-
+            // Skills hidden by permission stay out of the power level total so the
+            // total always matches the rows shown and the permission-aware power level
             if (!mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill)) {
                 continue;
             }
+
+            int level = newProfile.getSkillLevel(skill);
+            powerLevel += level;
 
             lines.add(new SidebarLine(ScoreboardManager.skillLabels.get(skill), level));
         }
