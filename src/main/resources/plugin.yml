@@ -34,7 +34,7 @@ commands:
         permission: mcmmo.commands.mmoinfo
     xprate:
         aliases: [ mcxprate ]
-        description: Modify the xp rate or start an event
+        description: View or modify the xp rate or start an event
         permission: mcmmo.commands.xprate
     mcmmo:
         description: Shows a brief mod description
