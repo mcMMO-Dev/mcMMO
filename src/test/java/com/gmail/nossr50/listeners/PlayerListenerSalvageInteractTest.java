@@ -21,6 +21,10 @@ import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import java.lang.reflect.Method;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -28,6 +32,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -38,10 +44,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
- * Covers the salvage anvil interaction flow in {@link PlayerListener#onPlayerInteractLowest}.
- * The confirmation flow must never salvage an item the player was not prompted for, and while a
- * confirmation is pending the held item must not be usable (vanilla armor quick-equip would
- * otherwise swap the held piece with worn armor mid-confirmation).
+ * Covers the salvage anvil interaction flow of {@link PlayerListener}. The confirmation flow
+ * must never salvage an item the player was not prompted for, and while a confirmation is
+ * pending the held item must not be usable (vanilla armor quick-equip would otherwise swap the
+ * held piece with worn armor mid-confirmation).
+ * <p>
+ * Events are dispatched through all of the listener's interact handlers honoring their real
+ * {@link EventHandler} settings, because those settings are load-bearing: interactions with air
+ * are cancelled by default, so a handler that ignores cancelled events never sees the follow-up
+ * use-item interaction the client sends after an anvil click.
  */
 class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
     private static final Logger logger =
@@ -112,8 +123,41 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
         when(playerInventory.getItemInMainHand()).thenReturn(heldItem);
         final PlayerInteractEvent event = new PlayerInteractEvent(player, action, heldItem, block,
                 BlockFace.SELF, EquipmentSlot.HAND);
-        playerListener.onPlayerInteractLowest(event);
+        dispatchLikeEventBus(event);
         return event;
+    }
+
+    /**
+     * Mirrors the Bukkit event bus contract for the listener's interact handlers: handlers run
+     * in priority order and handlers registered with ignoreCancelled are skipped once the event
+     * is cancelled. A {@link PlayerInteractEvent} with no clicked block reports itself as
+     * cancelled from the moment it is constructed, so right-click-air interactions only ever
+     * reach handlers that do not ignore cancelled events. Monitor handlers are excluded because
+     * they observe rather than modify the interaction outcome.
+     */
+    private void dispatchLikeEventBus(PlayerInteractEvent event) {
+        final List<Method> handlers = Arrays.stream(PlayerListener.class.getMethods())
+                .filter(method -> method.isAnnotationPresent(EventHandler.class))
+                .filter(method -> method.getParameterCount() == 1
+                        && method.getParameterTypes()[0] == PlayerInteractEvent.class)
+                .filter(method -> method.getAnnotation(EventHandler.class).priority()
+                        != EventPriority.MONITOR)
+                .sorted(Comparator.comparing(
+                        method -> method.getAnnotation(EventHandler.class).priority()))
+                .toList();
+
+        for (final Method handler : handlers) {
+            if (handler.getAnnotation(EventHandler.class).ignoreCancelled()
+                    && event.isCancelled()) {
+                continue;
+            }
+
+            try {
+                handler.invoke(playerListener, event);
+            } catch (ReflectiveOperationException e) {
+                throw new AssertionError("Failed to dispatch to " + handler.getName(), e);
+            }
+        }
     }
 
     @Test
@@ -192,6 +236,26 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
 
         // Then - the interaction is left alone so vanilla equipping still works
         assertThat(event.useItemInHand()).isNotEqualTo(Event.Result.DENY);
+    }
+
+    @Test
+    void anvilClickShouldNotEquipHeldItemWhenSneakIsReleasedMidConfirmation() {
+        // Given - salvage interactions require sneaking and the player was prompted to confirm
+        // salvaging the helmet while sneaking
+        when(generalConfig.getAbilitiesOnlyActivateWhenSneaking()).thenReturn(true);
+        when(player.isSneaking()).thenReturn(true);
+        fireRightClick(Action.RIGHT_CLICK_BLOCK, anvilBlock, helmet);
+
+        // When - the player releases sneak and right-clicks the anvil again with the helmet,
+        // which skips the salvage branch and leaves the anvil's use-item allowance in place
+        when(player.isSneaking()).thenReturn(false);
+        final PlayerInteractEvent event =
+                fireRightClick(Action.RIGHT_CLICK_BLOCK, anvilBlock, helmet);
+
+        // Then - using the held item stays denied so the helmet cannot be equipped
+        assertThat(event.useItemInHand()).isEqualTo(Event.Result.DENY);
+        // And - nothing is salvaged without a confirmation click
+        verify(salvageManager, never()).handleSalvage(any(), any());
     }
 
     @Test

@@ -701,11 +701,6 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (event.getAction() == Action.RIGHT_CLICK_AIR
-                || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            denyItemUseWhileAnvilConfirmationPending(event, player);
-        }
-
         if (event.getClickedBlock() == null) {
             return;
         }
@@ -829,13 +824,47 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Deny using the held item while a salvage or repair confirmation is pending for it.
+     * Handle PlayerInteractEvents that need to deny item use during a pending anvil
+     * confirmation.
      * <p>
      * The client follows up an anvil click with a use-item action for the same hand, and the
      * server resolves that action as its own interact event (right-click air when its raytrace
      * no longer hits the anvil). Without denying item use here, vanilla behavior such as armor
      * quick-equipping can consume the item mid-confirmation, swapping worn armor into the
      * player's hand.
+     * <p>
+     * This must be its own handler that does not ignore cancelled events: an interaction with
+     * air reports itself as cancelled from the moment it is constructed, so the follow-up
+     * use-item event never reaches a handler registered with ignoreCancelled. It also runs
+     * above LOWEST so the anvil use-item allowance set there cannot override the denial.
+     *
+     * @param event The event to modify
+     */
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPlayerInteractAnvilConfirmation(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR
+                && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+
+        /* WORLD BLACKLIST CHECK */
+        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
+            return;
+        }
+
+        final Player player = event.getPlayer();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if (WorldGuardUtils.isWorldGuardLoaded()
+                && !WorldGuardManager.getInstance().hasMainFlag(player)) {
+            return;
+        }
+
+        denyItemUseWhileAnvilConfirmationPending(event, player);
+    }
+
+    /**
+     * Deny using the held item while a salvage or repair confirmation is pending for it.
      *
      * @param event The event to modify
      * @param player The interacting player
