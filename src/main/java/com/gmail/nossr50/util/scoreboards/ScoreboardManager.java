@@ -174,6 +174,7 @@ public class ScoreboardManager {
             backendType = ScoreboardBackendType.NOOP;
             backend = new NoopScoreboardBackend();
             backend.init();
+            cleanUpLeftoverBukkitPowerObjective();
             return;
         }
 
@@ -182,6 +183,13 @@ public class ScoreboardManager {
                 isFolia,
                 mcMMO.getMinecraftGameVersion());
         backendType = selectedType;
+
+        if (selectedType != ScoreboardBackendType.BUKKIT) {
+            // The Bukkit backend owns the persisted main-scoreboard objective; when any other
+            // backend is selected, a leftover persisted objective would keep rendering below
+            // nametags unmanaged.
+            cleanUpLeftoverBukkitPowerObjective();
+        }
 
         switch (selectedType) {
             case BUKKIT -> backend = new BukkitScoreboardBackend();
@@ -276,6 +284,7 @@ public class ScoreboardManager {
         }
 
         backend.removePowerLevelTag(player);
+        dirtyPowerLevels.remove(player.getName());
 
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
         if (wrapper != null) {
@@ -587,19 +596,17 @@ public class ScoreboardManager {
             return false;
         }
 
-        for (String playerName : dirtyPowerLevels) {
-            final McMMOPlayer mmoPlayer = UserManager.getPlayer(playerName);
-
-            if (mmoPlayer == null) {
-                continue;
-            }
-
-            final int power = mmoPlayer.getPowerLevel();
-            backend.setPowerLevel(playerName, power);
-        }
-
-        dirtyPowerLevels.clear();
+        PowerLevelTagUpdater.applyPending(dirtyPowerLevels, ScoreboardManager::resolvePowerLevel,
+                playerName -> Bukkit.getPlayerExact(playerName) != null, backend::setPowerLevel);
         return true;
+    }
+
+    /**
+     * @return the player's current power level, or null while their profile has not loaded
+     */
+    private static @Nullable Integer resolvePowerLevel(final String playerName) {
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(playerName);
+        return mmoPlayer == null ? null : mmoPlayer.getPowerLevel();
     }
 
     /**
@@ -697,6 +704,20 @@ public class ScoreboardManager {
     public static void onPlayerBoardClosed(@NotNull String playerName) {
         ensureBackendReady();
         backend.onPlayerBoardClosed(playerName);
+    }
+
+    /**
+     * Removes a leftover persisted below-name power level objective from the main scoreboard.
+     * Guarded so scheduler thread restrictions (e.g. Folia off-thread scoreboard access when a
+     * backend is initialized lazily) can never break backend initialization.
+     */
+    private static void cleanUpLeftoverBukkitPowerObjective() {
+        try {
+            BukkitScoreboardBackend.removeLeftoverPowerObjective();
+        } catch (RuntimeException e) {
+            LogUtils.debug(mcMMO.p.getLogger(),
+                    "Skipped leftover power level objective cleanup: " + e.getMessage());
+        }
     }
 
     private static void ensureBackendReady() {
