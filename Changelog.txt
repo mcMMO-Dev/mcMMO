@@ -15,9 +15,18 @@ Version 2.2.055
     Fixed localized skill commands being blocked by command whitelist plugins (See notes)
     Fixed 'Database_Purging.Old_User_Cutoff' never purging inactive users (See notes)
     Fixed the Leaf Blower and Catalysis guides in the en_US locale showing wrong unlock levels
+    Fixed 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml being ignored (See notes)
+    Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
+    Added /mclevelupsound command for players to toggle the level-up sound (See notes)
+    Added decimal XP rate support to /xprate, rates like 1.5 now work
+    Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
     Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
+    Added 'Skills.Mining.BlastMining.RemoteDetonationDistance' to advanced.yml (See notes)
+    Added 'mcmmo.commands.mclevelupsound' permission node
+    Added 'mcmmo.commands.xprate.show' permission node
+    Added locale entries 'Commands.xprate.current', 'Commands.xprate.invalid', 'Commands.LevelUpSound.On', 'Commands.LevelUpSound.Off', and 'Commands.Description.mclevelupsound'
     Removed the unused Leaf Blower Rank_2 and Rank_3 entries from skillranks.yml (See notes)
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
@@ -41,6 +50,11 @@ Version 2.2.055
     Localized skill commands (for example /faustkampf for /unarmed on a German locale) are now handed to other plugins in a way that lets command whitelist and command blocking plugins see the command exactly as the player typed it. If you use such a plugin, whitelist the localized command name.
     'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.
     Leaf Blower only has one rank, so the unused Rank_2 and Rank_3 keys were removed from the default skillranks.yml; existing config files keep working and don't need to be updated.
+    The 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml now actually work. The shipped default for 'Enabled' is now false, which keeps the current chat-only behavior. If your existing advanced.yml already has 'Enabled: true' for SubSkillUnlocked, unlock messages will start using the action bar after updating, with a copy in chat when 'SendCopyOfMessageToChat' is true.
+    Using /inspect on offline players now requires the 'mcmmo.commands.inspect.far' permission, the same node that gates inspecting far away players. If non-op players on your server relied on inspecting offline players, grant them that node.
+    The /mclevelupsound toggle (alias /levelupsound) only affects the level-up sound, not level-up messages. Like /mcnotify, the toggle lasts until the player logs out.
+    /xprate without arguments shows the current XP rate. Players get this through the new 'mcmmo.commands.xprate.show' node, which is granted by default since the rate is already broadcast at event start and shown on join.
+    'Skills.Mining.BlastMining.RemoteDetonationDistance' in advanced.yml controls how far away Blast Mining can remotely detonate TNT. It defaults to 100, which matches the old fixed distance, and advanced.yml auto-updates on startup so no manual config changes are needed.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
