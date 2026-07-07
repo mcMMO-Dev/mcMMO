@@ -20,6 +20,7 @@ import com.gmail.nossr50.util.scoreboards.backend.PacketScoreboardBackend;
 import com.gmail.nossr50.util.scoreboards.backend.ScoreboardBackend;
 import com.gmail.nossr50.util.scoreboards.backend.ScoreboardBackendSelector;
 import com.gmail.nossr50.util.scoreboards.backend.ScoreboardBackendType;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -318,7 +319,7 @@ public class ScoreboardManager {
         }
 
         if (wrapper != null) {
-            if ((wrapper.isSkillScoreboard() && wrapper.targetSkill == skill)
+            if (isSkillBoardTracking(wrapper, skill)
                     || (wrapper.isStatsScoreboard()) && wrapper.isBoardShown()) {
                 wrapper.doSidebarUpdateSoon();
             }
@@ -350,10 +351,31 @@ public class ScoreboardManager {
         // Selfboards
         ScoreboardWrapper wrapper = getWrapper(player);
 
-        if (wrapper != null && wrapper.isSkillScoreboard() && wrapper.targetSkill == skill
-                && wrapper.isBoardShown()) {
+        if (wrapper != null && isSkillBoardTracking(wrapper, skill) && wrapper.isBoardShown()) {
             wrapper.doSidebarUpdateSoon();
         }
+    }
+
+    /**
+     * Whether a wrapper's skill sidebar displays data affected by a change to the given skill.
+     * <p>
+     * Child skills (Salvage, Smelting) never gain XP or levels directly; their sidebar shows
+     * levels derived from parent skills, so a child-skill board must also refresh when one of
+     * its parent skills changes.
+     */
+    private static boolean isSkillBoardTracking(ScoreboardWrapper wrapper,
+            PrimarySkillType skill) {
+        if (!wrapper.isSkillScoreboard() || wrapper.targetSkill == null) {
+            return false;
+        }
+
+        if (wrapper.targetSkill == skill) {
+            return true;
+        }
+
+        return SkillTools.isChildSkill(wrapper.targetSkill)
+                && mcMMO.p.getSkillTools().getChildSkillParents(wrapper.targetSkill)
+                        .contains(skill);
     }
 
     // Called by internal ability event listeners
