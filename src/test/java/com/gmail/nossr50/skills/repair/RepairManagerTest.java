@@ -7,9 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -168,5 +176,73 @@ class RepairManagerTest extends MMOTestEnvironment {
 
         // When / Then - a null item never matches the pending confirmation
         assertThat(repairManager.isAwaitingConfirmation(null)).isFalse();
+    }
+
+    /**
+     * A repair changes the item's damage, so the confirmation captured at prompt time no longer
+     * matches the repaired item. Partial repairs are the norm (one unit of material restores a
+     * fraction of the durability), so without rebinding the confirmation every other click would
+     * re-prompt instead of continuing the repair.
+     */
+    @Test
+    void confirmedRepairShouldNotRepromptWhenContinuingToRepairTheSameItem() {
+        // Given - confirmations are required and a damaged helmet whose clones snapshot the
+        // damage value at clone time, like real ItemStack copies do
+        Mockito.when(generalConfig.getRepairConfirmRequired()).thenReturn(true);
+
+        final AtomicInteger damage = new AtomicInteger(60);
+        final Damageable helmetMeta = Mockito.mock(Damageable.class);
+        Mockito.when(helmetMeta.getDamage()).thenAnswer(invocation -> damage.get());
+        Mockito.doAnswer(invocation -> {
+            damage.set(invocation.getArgument(0));
+            return null;
+        }).when(helmetMeta).setDamage(Mockito.anyInt());
+
+        final ItemStack helmet = Mockito.mock(ItemStack.class);
+        Mockito.when(helmet.getType()).thenReturn(Material.DIAMOND_HELMET);
+        Mockito.when(helmet.getAmount()).thenReturn(1);
+        Mockito.when(helmet.getItemMeta()).thenReturn(helmetMeta);
+        Mockito.when(helmet.clone()).thenAnswer(invocation -> {
+            final int damageSnapshot = damage.get();
+            final ItemStack helmetCopy = Mockito.mock(ItemStack.class);
+            Mockito.when(helmetCopy.isSimilar(helmet))
+                    .thenAnswer(similarity -> damage.get() == damageSnapshot);
+            return helmetCopy;
+        });
+
+        // And - the helmet is repairable with diamonds the player has, one diamond restoring
+        // part of the lost durability
+        final RepairableManager repairableManager = Mockito.mock(RepairableManager.class);
+        Mockito.when(mcMMO.getRepairableManager()).thenReturn(repairableManager);
+        final Repairable repairable = Mockito.mock(Repairable.class);
+        Mockito.when(repairableManager.getRepairable(Material.DIAMOND_HELMET))
+                .thenReturn(repairable);
+        Mockito.when(repairable.getRepairMaterial()).thenReturn(Material.DIAMOND);
+        Mockito.when(repairable.getBaseRepairDurability(helmet)).thenReturn((short) 30);
+        Mockito.when(repairable.getMaximumDurability()).thenReturn((short) 100);
+
+        Mockito.when(Permissions.repairMaterialType(Mockito.eq(player), Mockito.any()))
+                .thenReturn(true);
+        Mockito.when(Permissions.repairItemType(Mockito.eq(player), Mockito.any()))
+                .thenReturn(true);
+
+        final ItemStack diamonds = Mockito.mock(ItemStack.class);
+        Mockito.when(diamonds.clone()).thenReturn(diamonds);
+        Mockito.when(diamonds.getEnchantments()).thenReturn(Map.of());
+        Mockito.when(playerInventory.contains(Material.DIAMOND)).thenReturn(true);
+        Mockito.when(playerInventory.first(Material.DIAMOND)).thenReturn(0);
+        Mockito.when(playerInventory.getItem(0)).thenReturn(diamonds);
+
+        // And - the player confirmed the repair prompt for the helmet
+        repairManager.checkConfirmation(helmet, true);
+        assertThat(repairManager.checkConfirmation(helmet, true)).isTrue();
+
+        // When - the confirmed repair completes, restoring part of the durability
+        repairManager.handleRepair(helmet);
+
+        // Then - the repair happened
+        assertThat(damage.get()).isEqualTo(30);
+        // And - continuing to repair the same helmet within the window does not re-prompt
+        assertThat(repairManager.checkConfirmation(helmet, true)).isTrue();
     }
 }

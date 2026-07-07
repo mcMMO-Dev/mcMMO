@@ -148,6 +148,12 @@ public class RepairManager extends SkillManager {
             return;
         }
 
+        // Capture this before the item is modified below; the repair changes the item, so a
+        // matching pending confirmation must be rebound to the item's repaired state. Otherwise
+        // continuing to repair the same item would re-prompt after every repair, since partial
+        // repairs are the norm.
+        final boolean rebindConfirmation = isAwaitingConfirmation(item);
+
         // Clear ability buffs before trying to repair.
         SkillUtils.removeAbilityBuff(item);
 
@@ -230,6 +236,10 @@ public class RepairManager extends SkillManager {
 
         // Repair the item!
         ItemUtils.setItemDamage(item, newDurability);
+
+        if (rebindConfirmation) {
+            itemAwaitingConfirmation = item.clone();
+        }
     }
 
     private float getPercentageRepaired(short startDurability, short newDurability,
