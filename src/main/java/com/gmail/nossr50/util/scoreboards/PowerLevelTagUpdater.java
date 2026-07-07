@@ -21,8 +21,12 @@ final class PowerLevelTagUpdater {
      * Writes power levels for every pending player whose profile is loaded and removes those
      * names from the pending set. A name that cannot be resolved yet stays pending while the
      * player is online (their async profile load has not finished) and is discarded once the
-     * player is offline. Only processed names are removed, so a name marked pending while a
-     * pass is running survives to the next pass.
+     * player is offline. A name marked pending while a pass is running survives to the next
+     * pass, even when it is a re-mark of the name currently being processed.
+     *
+     * <p>Each name is removed from the set before it is resolved. Removing afterwards would
+     * erase a concurrent re-mark of the same name (a level-up landing between the resolve and
+     * the removal), leaving a stale tag until that player's next level-up.
      *
      * @param pendingPlayerNames names of players whose power level tag needs a refresh
      * @param powerLevelResolver resolves a player's current power level, or null while the
@@ -35,18 +39,19 @@ final class PowerLevelTagUpdater {
             final ObjIntConsumer<String> powerLevelWriter) {
         for (final Iterator<String> it = pendingPlayerNames.iterator(); it.hasNext(); ) {
             final String playerName = it.next();
+            it.remove();
+
             final Integer powerLevel = powerLevelResolver.apply(playerName);
 
             if (powerLevel == null) {
-                if (!onlineCheck.test(playerName)) {
-                    it.remove();
+                if (onlineCheck.test(playerName)) {
+                    pendingPlayerNames.add(playerName);
                 }
 
                 continue;
             }
 
             powerLevelWriter.accept(playerName, powerLevel);
-            it.remove();
         }
     }
 }

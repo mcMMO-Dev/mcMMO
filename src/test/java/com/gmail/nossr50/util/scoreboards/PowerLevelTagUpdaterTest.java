@@ -88,4 +88,30 @@ class PowerLevelTagUpdaterTest {
         // Then - the mid-pass arrival is still pending for the next pass
         assertThat(pending).containsExactly("Newcomer");
     }
+
+    /**
+     * Gotcha coverage: on Folia the heartbeat runs on the global scheduler while level-ups mark
+     * names dirty from region threads. A player who levels up while their own tag is being
+     * written must stay pending, or the write that just happened used the pre-level-up power
+     * level and the tag stays stale until their next level-up.
+     */
+    @Test
+    void applyPendingShouldKeepNameWhenSamePlayerIsMarkedPendingDuringWrite() {
+        // Given - a resolvable pending player whose tag write is about to happen
+        final Set<String> pending = pendingSetOf("Momshroom");
+        final Map<String, Integer> written = new HashMap<>();
+
+        // When - the same player levels up (re-marking themselves dirty) while their power
+        // level is being written out
+        PowerLevelTagUpdater.applyPending(pending, name -> 1500, name -> true,
+                (name, powerLevel) -> {
+                    written.put(name, powerLevel);
+                    pending.add(name);
+                });
+
+        // Then - the stale value was written, but the re-mark survives so the next pass
+        // writes the post-level-up power level
+        assertThat(written).containsEntry("Momshroom", 1500);
+        assertThat(pending).containsExactly("Momshroom");
+    }
 }
