@@ -6,9 +6,19 @@ Version 2.2.055
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
     Fixed Acrobatics Dodge exploit prevention never limiting Dodge XP from a single mob (See notes)
     Fixed 'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml being ignored (See notes)
+    Fixed Salvage giving nothing back for damaged items that salvage into a single material (See notes)
+    Fixed Salvage and Repair confirmations being able to act on a different item than the one prompted (See notes)
+    Fixed armor sometimes being equipped instead of salvaged when right-clicking a salvage anvil
+    Fixed scoreboards for Salvage and Smelting not updating until the skill command was used again
+    Fixed power level tags being able to get stuck showing 0 under player names (See notes)
+    Fixed the stats scoreboard including skills hidden by missing permissions in its power level
+    Fixed localized skill commands being blocked by command whitelist plugins (See notes)
+    Fixed 'Database_Purging.Old_User_Cutoff' never purging inactive users (See notes)
+    Fixed the Leaf Blower and Catalysis guides in the en_US locale showing wrong unlock levels
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
     Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
+    Removed the unused Leaf Blower Rank_2 and Rank_3 entries from skillranks.yml (See notes)
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
@@ -25,6 +35,12 @@ Version 2.2.055
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
     Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml; it is enabled by default and existing config files do not need to be updated. A single mob stops handing out Dodge XP after a handful of dodges, and the limit clears once that mob has gone about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
     'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml now works; before this fix the combat XP damage ceiling was always 100 no matter what the config said. Servers that customized this value will see it take effect after updating, no config changes are needed.
+    Items that only salvage into a single material (such as wooden tools with the default salvage.vanilla.yml) previously could not be salvaged at all unless they were at full durability. Damaged items now always return at least one material unless the item is completely broken.
+    The Salvage/Repair confirm click now has to be made with the same item that triggered the prompt; if the held item changes during the confirmation window you get a new prompt instead of the new item being instantly salvaged or repaired. While a confirmation is pending the prompted item also can't be used, which stops vanilla armor quick-swap from equipping or swapping armor mid-confirmation.
+    Power level tags could get stuck showing 0 for players whose data was still loading. Servers that ran older builds with 'Power_Level_Tags' enabled could also have an old power level display saved in world data that kept showing stale numbers; leftovers are now cleaned up automatically on startup. On Minecraft 26.1 clients the power level can still render on holograms and pets due to a client bug that Mojang fixed in 26.2.
+    Localized skill commands (for example /faustkampf for /unarmed on a German locale) are now handed to other plugins in a way that lets command whitelist and command blocking plugins see the command exactly as the player typed it. If you use such a plugin, whitelist the localized command name.
+    'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.
+    Leaf Blower only has one rank, so the unused Rank_2 and Rank_3 keys were removed from the default skillranks.yml; existing config files keep working and don't need to be updated.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
