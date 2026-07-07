@@ -1063,10 +1063,16 @@ public class PlayerListener implements Listener {
 
     /**
      * Handle "ugly" aliasing /skillname commands, since setAliases doesn't work.
+     * <p>
+     * Runs at LOW priority so command filtering plugins listening at LOWEST (command whitelists,
+     * blockers, etc.) inspect the command exactly as the player typed it, while later handlers
+     * and the server itself see the rewritten English skill command. Cancelled events are left
+     * untouched so a command blocked by such a plugin is not rewritten back into an executable
+     * form.
      *
      * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (!mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             String message = event.getMessage();
