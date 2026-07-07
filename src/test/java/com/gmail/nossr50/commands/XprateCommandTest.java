@@ -175,6 +175,53 @@ class XprateCommandTest extends MMOTestEnvironment {
     }
 
     @Test
+    void onCommandShouldShowCurrentRateWhenCalledWithNoArgs() {
+        // Given - a fractional rate is active and the sender may view the rate
+        when(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier())
+                .thenReturn(2.5);
+        when(Permissions.xprateShow(sender)).thenReturn(true);
+
+        // When - the sender runs /xprate with no arguments
+        final boolean handled = runCommand();
+
+        // Then - the sender is told the current rate
+        assertThat(handled).isTrue();
+        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+        verify(sender).sendMessage(messageCaptor.capture());
+        assertThat(messageCaptor.getValue()).contains("2.5");
+    }
+
+    @Test
+    void onCommandShouldShowWholeRateWithoutTrailingZeroWhenCalledWithNoArgs() {
+        // Given - a whole-number rate is active and the sender may view the rate
+        when(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier())
+                .thenReturn(2.0);
+        when(Permissions.xprateShow(sender)).thenReturn(true);
+
+        // When - the sender runs /xprate with no arguments
+        final boolean handled = runCommand();
+
+        // Then - the rate is shown as "2" rather than "2.0"
+        assertThat(handled).isTrue();
+        final ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+        verify(sender).sendMessage(messageCaptor.capture());
+        assertThat(messageCaptor.getValue()).contains("2").doesNotContain("2.0");
+    }
+
+    @Test
+    void onCommandShouldDenyRateViewWithoutShowPermission() {
+        // Given - a sender lacking the show permission
+        when(Permissions.xprateShow(sender)).thenReturn(false);
+
+        // When - the sender runs /xprate with no arguments
+        final boolean handled = runCommand();
+
+        // Then - only the permission message is sent
+        assertThat(handled).isTrue();
+        verify(sender).sendMessage("permission-denied");
+    }
+
+    @Test
     void onCommandShouldDenyRateChangeWithoutSetPermission() {
         // Given - a sender lacking the set permission
         when(Permissions.xprateSet(sender)).thenReturn(false);

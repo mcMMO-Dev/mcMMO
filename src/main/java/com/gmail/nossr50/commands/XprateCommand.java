@@ -34,6 +34,17 @@ public class XprateCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
             @NotNull String label, String[] args) {
         switch (args.length) {
+            case 0:
+                if (!Permissions.xprateShow(sender)) {
+                    sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
+                sender.sendMessage(LocaleLoader.getString("Commands.xprate.current",
+                        XP_RATE_FORMAT.format(ExperienceConfig.getInstance()
+                                .getExperienceGainsGlobalMultiplier())));
+                return true;
+
             case 1:
                 if (!args[0].equalsIgnoreCase("reset") && !args[0].equalsIgnoreCase("clear")) {
                     return false;

@@ -917,6 +917,7 @@ permissions:
             mcmmo.commands.unarmed: true
             mcmmo.commands.woodcutting: true
             mcmmo.commands.mmopower: true
+            mcmmo.commands.xprate.show: true
     mcmmo.commands.defaultsop:
         description: Implies all default op mcmmo.commands permissions.
         children:
@@ -1410,12 +1411,15 @@ permissions:
             mcmmo.commands.xprate: true
             mcmmo.commands.xprate.reset: true
             mcmmo.commands.xprate.set: true
+            mcmmo.commands.xprate.show: true
     mcmmo.commands.xprate:
         description: Allows access to the xprate command
     mcmmo.commands.xprate.reset:
         description: Allows access to the xprate reset command
     mcmmo.commands.xprate.set:
         description: Allows access to the xprate command to control xp events
+    mcmmo.commands.xprate.show:
+        description: Allows access to the xprate command to view the current xp rate
     mcmmo.item.*:
         default: true
         description: Implies all mcmmo.item permissions

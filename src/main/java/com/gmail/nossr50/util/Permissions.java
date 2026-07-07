@@ -247,6 +247,10 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.commands.xprate.reset");
     }
 
+    public static boolean xprateShow(Permissible permissible) {
+        return permissible.hasPermission("mcmmo.commands.xprate.show");
+    }
+
     public static boolean mcpurge(Permissible permissible) {
         return permissible.hasPermission("mcmmo.commands.mcpurge");
     }

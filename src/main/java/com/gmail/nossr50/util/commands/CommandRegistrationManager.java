@@ -215,14 +215,16 @@ public final class CommandRegistrationManager {
 
         PluginCommand command = mcMMO.p.getCommand("xprate");
         command.setDescription(LocaleLoader.getString("Commands.Description.xprate"));
-        command.setPermission(
-                "mcmmo.commands.xprate;mcmmo.commands.xprate.reset;mcmmo.commands.xprate.set");
+        command.setPermission("mcmmo.commands.xprate;mcmmo.commands.xprate.reset;"
+                + "mcmmo.commands.xprate.set;mcmmo.commands.xprate.show");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "xprate",
                 "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">", "<true|false>"));
         command.setUsage(
                 command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xprate",
                         "reset"));
+        command.setUsage(
+                command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.0", "xprate"));
         command.setAliases(aliasList);
         command.setExecutor(new XprateCommand());
     }
