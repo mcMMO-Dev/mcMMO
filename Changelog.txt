@@ -1,4 +1,7 @@
 Version 2.2.055
+    Fixed Berserk reducing damage instead of boosting it on Paper 26.1.2+ (See notes)
+    Fixed Disarm, Rupture, Cripple, Momentum, Critical Strikes, Armor Impact, and Greater Impact activating far less often than intended on Paper 26.1.2+ (See notes)
+    Fixed Skull Splitter dealing far less AoE damage than intended on Paper 26.1.2+ (See notes)
     Added scoreboard support for Folia servers (Thanks albert4719) (See notes)
     Fixed the 'mcmmo.perks.xp.25percentboost' permission and its per-skill child nodes not being registered (See notes)
     Fixed Maces Cripple playing an extra anvil break sound that could not be disabled in sounds.yml (See notes)
@@ -39,6 +42,10 @@ Version 2.2.055
     (Codebase) Added regression tests covering previously fixed bugs
 
     NOTES:
+    -- Combat abilities on Paper 26.1.2+ --
+    Paper 26.1.2 changed when the attack cooldown ticker resets during melee hits, which made the cooldown API report roughly zero while mcMMO was processing a hit. Version 2.2.053 fixed most damage bonuses, but several effects still read the cooldown directly and were silently crippled: Berserk actively reduced damage (its +50% bonus math turned negative), Skull Splitter dealt roughly a tenth of its intended AoE damage, and the on-hit activation odds for Disarm, Rupture (including Serrated Strikes), Cripple, Momentum, Critical Strikes, Armor Impact, and Greater Impact were scaled down to roughly a tenth of their configured rates. All of these now use the attack strength derived from the damage event itself. No config changes required.
+    (API) UnarmedManager#berserkDamage/disarmCheck, AxesManager#criticalHit/impactCheck/greaterImpact/skullSplitterCheck, SwordsManager#processRupture/serratedStrikes, MacesManager#processCripple, SpearsManager#potentiallyApplyMomentum, CombatUtils#applyAbilityAoE, and McMMOPlayer#getAttackStrength are deprecated in favor of overloads that take an attack strength scale.
+
     -- Scoreboards and power level tags --
     Scoreboards on Folia (and Folia forks like Canvas) now use a packet-based implementation, since the Bukkit scoreboard API is not safe to use there. Paper and Spigot servers keep the existing Bukkit scoreboard implementation and are unaffected.
     If a Folia server runs a newer Minecraft version than this mcMMO build supports for packet scoreboards (currently the 26.2.x line), scoreboards are disabled with a startup warning until mcMMO updates.

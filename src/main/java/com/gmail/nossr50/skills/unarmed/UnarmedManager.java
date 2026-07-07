@@ -116,10 +116,22 @@ public class UnarmedManager extends SkillManager {
      * Check for disarm.
      *
      * @param defender The defending player
+     * @deprecated use {@link #disarmCheck(Player, double)} instead; this overload reads the live
+     * attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public void disarmCheck(@NotNull Player defender) {
-        if (isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, mmoPlayer,
-                mmoPlayer.getAttackStrength())
+        disarmCheck(defender, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Check for disarm.
+     *
+     * @param defender The defending player
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public void disarmCheck(@NotNull Player defender, double attackStrengthScale) {
+        if (isSkillRNGSuccessful(SubSkillType.UNARMED_DISARM, mmoPlayer, attackStrengthScale)
                 && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
@@ -161,12 +173,23 @@ public class UnarmedManager extends SkillManager {
      * Handle the effects of the Berserk ability
      *
      * @param damage The amount of damage initially dealt by the event
+     * @deprecated use {@link #berserkDamage(double, double)} instead; this overload reads the
+     * live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public double berserkDamage(double damage) {
-        damage =
-                ((damage * BERSERK_DMG_MODIFIER) * mmoPlayer.getAttackStrength()) - damage;
+        return berserkDamage(damage, mmoPlayer.getAttackStrength());
+    }
 
-        return damage;
+    /**
+     * Handle the effects of the Berserk ability
+     *
+     * @param damage The amount of damage initially dealt by the event
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     * @return the bonus damage granted by Berserk, negative for weak (uncharged) hits
+     */
+    public double berserkDamage(double damage, double attackStrengthScale) {
+        return ((damage * BERSERK_DMG_MODIFIER) * attackStrengthScale) - damage;
     }
 
     /**

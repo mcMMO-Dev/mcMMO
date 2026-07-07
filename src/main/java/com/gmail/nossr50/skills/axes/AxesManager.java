@@ -95,10 +95,24 @@ public class AxesManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
+     * @deprecated use {@link #criticalHit(LivingEntity, double, double)} instead; this overload
+     * reads the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public double criticalHit(LivingEntity target, double damage) {
+        return criticalHit(target, damage, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Handle the effects of the Critical Hit ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public double criticalHit(LivingEntity target, double damage, double attackStrengthScale) {
         if (!isSkillRNGSuccessful(SubSkillType.AXES_CRITICAL_STRIKES, mmoPlayer,
-                mmoPlayer.getAttackStrength())) {
+                attackStrengthScale)) {
             return 0;
         }
 
@@ -128,8 +142,21 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Impact ability
      *
      * @param target The {@link LivingEntity} being affected by Impact
+     * @deprecated use {@link #impactCheck(LivingEntity, double)} instead; this overload reads the
+     * live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public void impactCheck(@NotNull LivingEntity target) {
+        impactCheck(target, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Handle the effects of the Impact ability
+     *
+     * @param target The {@link LivingEntity} being affected by Impact
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public void impactCheck(@NotNull LivingEntity target, double attackStrengthScale) {
         double durabilityDamage = getImpactDurabilityDamage();
         final EntityEquipment equipment = target.getEquipment();
 
@@ -140,7 +167,7 @@ public class AxesManager extends SkillManager {
         for (ItemStack armor : equipment.getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
                 if (isSkillRNGSuccessful(SubSkillType.AXES_ARMOR_IMPACT, mmoPlayer,
-                        mmoPlayer.getAttackStrength())) {
+                        attackStrengthScale)) {
                     handleArmorDurabilityChange(armor, durabilityDamage, 1);
                 }
             }
@@ -156,10 +183,23 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Greater Impact ability
      *
      * @param target The {@link LivingEntity} being affected by the ability
+     * @deprecated use {@link #greaterImpact(LivingEntity, double)} instead; this overload reads
+     * the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public double greaterImpact(@NotNull LivingEntity target) {
+        return greaterImpact(target, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Handle the effects of the Greater Impact ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public double greaterImpact(@NotNull LivingEntity target, double attackStrengthScale) {
         if (!isSkillRNGSuccessful(SubSkillType.AXES_GREATER_IMPACT, mmoPlayer,
-                mmoPlayer.getAttackStrength())) {
+                attackStrengthScale)) {
             return 0;
         }
 
@@ -191,9 +231,26 @@ public class AxesManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
+     * @deprecated use {@link #skullSplitterCheck(LivingEntity, double, double)} instead; this
+     * overload reads the live attack cooldown, which is unreliable during damage events on Paper
+     * 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public void skullSplitterCheck(@NotNull LivingEntity target, double damage) {
+        skullSplitterCheck(target, damage, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Handle the effects of the Skull Splitter ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public void skullSplitterCheck(@NotNull LivingEntity target, double damage,
+            double attackStrengthScale) {
         CombatUtils.applyAbilityAoE(getPlayer(), target,
-                (damage / Axes.skullSplitterModifier) * mmoPlayer.getAttackStrength(), skill);
+                (damage / Axes.skullSplitterModifier) * attackStrengthScale, attackStrengthScale,
+                skill);
     }
 }

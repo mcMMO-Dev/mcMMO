@@ -195,7 +195,7 @@ public final class CombatUtils {
         }
 
         if (swordsManager.canUseSerratedStrike()) {
-            swordsManager.serratedStrikes(target, event.getDamage());
+            swordsManager.serratedStrikes(target, event.getDamage(), attackStrengthScale);
         }
 
         if (canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
@@ -207,7 +207,7 @@ public final class CombatUtils {
         event.setDamage(boostedDamage);
 
         if (target.getHealth() - event.getFinalDamage() > 0) {
-            swordsManager.processRupture(target);
+            swordsManager.processRupture(target, attackStrengthScale);
         }
 
         processCombatXP(mmoPlayer, target, PrimarySkillType.SWORDS);
@@ -220,7 +220,6 @@ public final class CombatUtils {
         if (mmoPlayer.isDebugMode()) {
             player.sendMessage(
                     "Final Damage value after mcMMO modifiers: " + event.getFinalDamage());
-            player.sendMessage("Your current attack strength (cooldown): " + player.getAttackCooldown());
             if (extraInfoLines != null) {
                 for (String str : extraInfoLines) {
                     if (str != null) {
@@ -389,7 +388,7 @@ public final class CombatUtils {
 
         // Apply Cripple
         if (target.getHealth() - event.getFinalDamage() > 0) {
-            macesManager.processCripple(target);
+            macesManager.processCripple(target, attackStrengthScale);
         }
 
         processCombatXP(mmoPlayer, target, PrimarySkillType.MACES);
@@ -429,7 +428,7 @@ public final class CombatUtils {
         event.setDamage(boostedDamage);
 
         // Apply any non-damage effects here
-        spearsManager.potentiallyApplyMomentum();
+        spearsManager.potentiallyApplyMomentum(attackStrengthScale);
 
         processCombatXP(mmoPlayer, target, PrimarySkillType.SPEARS);
         printFinalDamageDebug(player, event, mmoPlayer, attackStrengthScale);
@@ -461,17 +460,18 @@ public final class CombatUtils {
         }
 
         if (axesManager.canImpact(target)) {
-            axesManager.impactCheck(target);
+            axesManager.impactCheck(target, attackStrengthScale);
         } else if (axesManager.canGreaterImpact(target)) {
-            boostedDamage += axesManager.greaterImpact(target) * attackStrengthScale;
+            boostedDamage += axesManager.greaterImpact(target, attackStrengthScale)
+                    * attackStrengthScale;
         }
 
         if (axesManager.canUseSkullSplitter(target)) {
-            axesManager.skullSplitterCheck(target, event.getDamage());
+            axesManager.skullSplitterCheck(target, event.getDamage(), attackStrengthScale);
         }
 
         if (axesManager.canCriticalHit(target)) {
-            boostedDamage += (axesManager.criticalHit(target, boostedDamage)
+            boostedDamage += (axesManager.criticalHit(target, boostedDamage, attackStrengthScale)
                     * attackStrengthScale);
         }
 
@@ -514,12 +514,12 @@ public final class CombatUtils {
         }
 
         if (unarmedManager.canUseBerserk()) {
-            boostedDamage += (unarmedManager.berserkDamage(boostedDamage)
+            boostedDamage += (unarmedManager.berserkDamage(boostedDamage, attackStrengthScale)
                     * attackStrengthScale);
         }
 
         if (unarmedManager.canDisarm(target)) {
-            unarmedManager.disarmCheck((Player) target);
+            unarmedManager.disarmCheck((Player) target, attackStrengthScale);
         }
 
         if (canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
@@ -987,9 +987,29 @@ public final class CombatUtils {
      * @param target The defending entity
      * @param damage The initial damage amount
      * @param type The type of skill being used
+     * @deprecated use {@link #applyAbilityAoE(Player, LivingEntity, double, double,
+     * PrimarySkillType)} instead; this overload reads the live attack cooldown, which is
+     * unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target,
             double damage, @NotNull PrimarySkillType type) {
+        final McMMOPlayer mmoAttacker = UserManager.getPlayer(attacker);
+        applyAbilityAoE(attacker, target, damage,
+                mmoAttacker != null ? mmoAttacker.getAttackStrength() : 1.0, type);
+    }
+
+    /**
+     * Apply Area-of-Effect ability actions.
+     *
+     * @param attacker The attacking player
+     * @param target The defending entity
+     * @param damage The initial damage amount
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     * @param type The type of skill being used
+     */
+    public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target,
+            double damage, double attackStrengthScale, @NotNull PrimarySkillType type) {
         int numberOfTargets = getTier(attacker.getInventory()
                 .getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
@@ -1017,7 +1037,8 @@ public final class CombatUtils {
                     final McMMOPlayer mmoAttacker = UserManager.getPlayer(attacker);
 
                     if (mmoAttacker != null) {
-                        mmoAttacker.getSwordsManager().processRupture(livingEntity);
+                        mmoAttacker.getSwordsManager()
+                                .processRupture(livingEntity, attackStrengthScale);
                     }
 
                     break;

@@ -216,6 +216,17 @@ public class McMMOPlayer implements Identified {
         return playerName;
     }
 
+    /**
+     * The player's live attack cooldown as reported by {@link Player#getAttackCooldown()}, or 1.0
+     * when attack cooldown scaling is disabled in advanced.yml.
+     *
+     * @return the live attack cooldown, from 0.0 to 1.0
+     * @deprecated unreliable during damage events — Paper 26.1.2+ resets the attack ticker before
+     * {@link org.bukkit.event.entity.EntityDamageByEntityEvent} fires, so this reads ~0 for the
+     * hit being processed. Combat code must use the attack strength scale that
+     * {@link com.gmail.nossr50.util.skills.CombatUtils} back-derives from the event instead.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public double getAttackStrength() {
         if (mcMMO.p.getAdvancedConfig().useAttackCooldown()) {
             return player.getAttackCooldown();

@@ -62,8 +62,21 @@ public class SwordsManager extends SkillManager {
      * Check for Bleed effect.
      *
      * @param target The defending entity
+     * @deprecated use {@link #processRupture(LivingEntity, double)} instead; this overload reads
+     * the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public void processRupture(@NotNull LivingEntity target) {
+        processRupture(target, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Check for Bleed effect.
+     *
+     * @param target The defending entity
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public void processRupture(@NotNull LivingEntity target, double attackStrengthScale) {
         if (!canUseRupture()) {
             return;
         }
@@ -84,7 +97,7 @@ public class SwordsManager extends SkillManager {
 
         double ruptureOdds =
                 mcMMO.p.getAdvancedConfig().getRuptureChanceToApplyOnHit(getRuptureRank())
-                        * mmoPlayer.getAttackStrength();
+                        * attackStrengthScale;
         if (ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.SWORDS, mmoPlayer,
                 ruptureOdds)) {
 
@@ -154,9 +167,25 @@ public class SwordsManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
+     * @deprecated use {@link #serratedStrikes(LivingEntity, double, double)} instead; this
+     * overload reads the live attack cooldown, which is unreliable during damage events on Paper
+     * 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public void serratedStrikes(@NotNull LivingEntity target, double damage) {
+        serratedStrikes(target, damage, mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Handle the effects of the Serrated Strikes ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public void serratedStrikes(@NotNull LivingEntity target, double damage,
+            double attackStrengthScale) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier,
-                skill);
+                attackStrengthScale, skill);
     }
 }

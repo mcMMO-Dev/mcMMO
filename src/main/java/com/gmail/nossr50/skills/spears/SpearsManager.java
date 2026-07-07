@@ -34,8 +34,21 @@ public class SpearsManager extends SkillManager {
 
     /**
      * Process Momentum activation.
+     *
+     * @deprecated use {@link #potentiallyApplyMomentum(double)} instead; this overload reads the
+     * live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public void potentiallyApplyMomentum() {
+        potentiallyApplyMomentum(mmoPlayer.getAttackStrength());
+    }
+
+    /**
+     * Process Momentum activation.
+     *
+     * @param attackStrengthScale the committed attack strength of the hit, from 0.0 to 1.0
+     */
+    public void potentiallyApplyMomentum(double attackStrengthScale) {
         // Lazy initialized to avoid some backwards compatibility issues
         if (swiftnessEffectType == null) {
             if (mockSpigotMatch("speed") == null) {
@@ -54,7 +67,7 @@ public class SpearsManager extends SkillManager {
         int momentumRank = getRank(getPlayer(), SubSkillType.SPEARS_MOMENTUM);
         // Chance to activate on hit is influence by the CD
         double momentumOdds = (mcMMO.p.getAdvancedConfig().getMomentumChanceToApplyOnHit(momentumRank)
-                * Math.min(mmoPlayer.getAttackStrength(), 1.0D));
+                * Math.min(attackStrengthScale, 1.0D));
 
         if (isStaticSkillRNGSuccessful(PrimarySkillType.SPEARS, mmoPlayer, momentumOdds)) {
             if (mmoPlayer.useChatNotifications()) {
