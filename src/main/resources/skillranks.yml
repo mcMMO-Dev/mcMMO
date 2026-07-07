@@ -902,12 +902,8 @@ Woodcutting:
     LeafBlower:
         Standard:
             Rank_1: 15
-            Rank_2: 35
-            Rank_3: 65
         RetroMode:
             Rank_1: 150
-            Rank_2: 350
-            Rank_3: 650
 Excavation:
     GigaDrillBreaker:
         Standard:
