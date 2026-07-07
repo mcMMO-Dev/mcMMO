@@ -20,7 +20,7 @@ Version 2.2.055
     Fixed purging powerless users removing comment lines from the flatfile database
     Fixed inspect scoreboards not refreshing when the inspected player levels up
     Fixed the Leaf Blower and Catalysis guides in the en_US locale showing wrong unlock levels
-    Fixed 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml being ignored (See notes)
+    Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.UseActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
@@ -72,7 +72,7 @@ Version 2.2.055
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
 
     -- Config --
-    The 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml now actually work. The shipped default for 'Enabled' is now false, which keeps the current chat-only behavior. If your existing advanced.yml already has 'Enabled: true' for SubSkillUnlocked, unlock messages will start using the action bar after updating, with a copy in chat when 'SendCopyOfMessageToChat' is true.
+    Skill rank unlock messages can now be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.UseActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. This is a deliberate opt-in and nothing changes unless you enable it; unlock messages stay in chat by default. Unlike the other action bar sections this one is controlled by 'UseActionBar' instead of 'Enabled', because configs from older versions already contain 'Enabled: true' for SubSkillUnlocked from back when the setting had no effect; that key is ignored for this section so updating cannot silently change behavior. advanced.yml auto-updates on startup, so the new key is added automatically.
     'Skills.Mining.BlastMining.RemoteDetonationDistance' in advanced.yml controls how far away Blast Mining can remotely detonate TNT. It defaults to 100, which matches the old fixed distance, and advanced.yml auto-updates on startup so no manual config changes are needed.
 
     -- Database --
