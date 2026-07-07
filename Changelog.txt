@@ -28,7 +28,7 @@ Version 2.2.055
     Added 'Skills.Mining.BlastMining.RemoteDetonationDistance' to advanced.yml (See notes)
     Added 'mcmmo.commands.mclevelupsound' permission node
     Added 'mcmmo.commands.xprate.show' permission node
-    Removed the unused Leaf Blower Rank_2 and Rank_3 entries from skillranks.yml (See notes)
+    Removed the unused Leaf Blower Rank_2 and Rank_3 entries from skillranks.yml
     Added locale entries 'Commands.xprate.current', 'Commands.xprate.invalid', 'Commands.LevelUpSound.On', 'Commands.LevelUpSound.Off', and 'Commands.Description.mclevelupsound'
     Updated locale entries 'Commands.xprate.proper.0' and 'Commands.Description.xprate' for the /xprate changes
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
@@ -67,7 +67,6 @@ Version 2.2.055
     -- Config --
     The 'Feedback.ActionBarNotifications.SubSkillUnlocked' settings in advanced.yml now actually work. The shipped default for 'Enabled' is now false, which keeps the current chat-only behavior. If your existing advanced.yml already has 'Enabled: true' for SubSkillUnlocked, unlock messages will start using the action bar after updating, with a copy in chat when 'SendCopyOfMessageToChat' is true.
     'Skills.Mining.BlastMining.RemoteDetonationDistance' in advanced.yml controls how far away Blast Mining can remotely detonate TNT. It defaults to 100, which matches the old fixed distance, and advanced.yml auto-updates on startup so no manual config changes are needed.
-    Leaf Blower only has one rank, so the unused Rank_2 and Rank_3 keys were removed from the default skillranks.yml; existing config files keep working and don't need to be updated.
 
     -- Database --
     'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.
