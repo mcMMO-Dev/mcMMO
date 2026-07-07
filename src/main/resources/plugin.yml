@@ -983,7 +983,7 @@ permissions:
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
     mcmmo.commands.inspect.far:
-        description: Allows access to the inspect command for far players
+        description: Allows access to the inspect command for far away or offline players
     mcmmo.commands.inspect.hidden:
         description: Allows access to the inspect command for hidden players
     mcmmo.commands.mcability:

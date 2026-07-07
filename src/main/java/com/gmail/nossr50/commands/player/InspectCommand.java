@@ -30,7 +30,14 @@ public class InspectCommand implements TabExecutor {
 
             // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mmoPlayer == null) {
-                PlayerProfile profile = mcMMO.getDatabaseManager()
+                // Inspecting offline players requires the same permission as inspecting
+                // players who are out of range
+                if (!Permissions.inspectFar(sender)) {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+                    return true;
+                }
+
+                final PlayerProfile profile = mcMMO.getDatabaseManager()
                         .loadPlayerProfile(playerName); // Temporary Profile
 
                 if (!CommandUtils.isLoaded(sender, profile)) {
@@ -75,6 +82,13 @@ public class InspectCommand implements TabExecutor {
                 Player target = mmoPlayer.getPlayer();
                 boolean isVanished = CommandUtils.hidden(sender, target,
                         Permissions.inspectHidden(sender));
+
+                // Vanished players are treated as offline, so inspecting them requires the
+                // same permission as inspecting offline players
+                if (isVanished && !Permissions.inspectFar(sender)) {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+                    return true;
+                }
 
                 //Only distance check players who are online and not vanished
                 if (!isVanished && CommandUtils.tooFar(sender, target,

@@ -99,6 +99,8 @@ public abstract class MMOTestEnvironment {
             throw new RuntimeException("Failed to create temp test data folder", e);
         }
         when(mcMMO.p.getDataFolder()).thenReturn(testDataFolder);
+        // Keep locale file creation inside the temp folder instead of the working directory
+        when(mcMMO.getLocalesDirectory()).thenReturn(testDataFolder.getPath() + File.separator);
 
         // Game version
         minecraftGameVersion = mock(MinecraftGameVersion.class);
