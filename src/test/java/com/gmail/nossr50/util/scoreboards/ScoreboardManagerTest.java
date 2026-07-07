@@ -185,6 +185,40 @@ class ScoreboardManagerTest {
     }
 
     @Test
+    void handleLevelUpShouldRefreshInspectStatsBoardWatchingTheLevelingPlayer() {
+        // Given - the leveling player's own board is hidden, while another player keeps an
+        // inspect stats board shown that targets the leveling player
+        final Player player = mockPlayer();
+        final ScoreboardWrapper ownWrapper = registerSkillBoard(PrimarySkillType.MINING, false);
+        final ScoreboardWrapper observerWrapper = registerObserverStatsBoard("Observer",
+                PLAYER_NAME, true);
+
+        // When - the watched player levels up any skill
+        ScoreboardManager.handleLevelUp(player, PrimarySkillType.EXCAVATION);
+
+        // Then - the observer's inspect board schedules a refresh, and the leveling player's
+        // own hidden board is left alone
+        verify(observerWrapper).doSidebarUpdateSoon();
+        verify(ownWrapper, never()).doSidebarUpdateSoon();
+    }
+
+    @Test
+    void handleLevelUpShouldNotRefreshHiddenInspectStatsBoardWatchingTheLevelingPlayer() {
+        // Given - another player has an inspect stats board targeting the leveling player,
+        // but that board is not currently shown
+        final Player player = mockPlayer();
+        registerSkillBoard(PrimarySkillType.MINING, false);
+        final ScoreboardWrapper observerWrapper = registerObserverStatsBoard("Observer",
+                PLAYER_NAME, false);
+
+        // When - the watched player levels up
+        ScoreboardManager.handleLevelUp(player, PrimarySkillType.EXCAVATION);
+
+        // Then - no refresh is scheduled for the hidden observer board
+        verify(observerWrapper, never()).doSidebarUpdateSoon();
+    }
+
+    @Test
     void handleXpShouldNotRefreshChildSkillBoardWhenBoardIsHidden() {
         // Given - a player has a child-skill sidebar that is currently not shown
         final Player player = mockPlayer();
@@ -215,6 +249,21 @@ class ScoreboardManagerTest {
         when(wrapper.isBoardShown()).thenReturn(shown);
         wrapper.targetSkill = boardSkill;
         ScoreboardManager.PLAYER_SCOREBOARDS.put(PLAYER_NAME, wrapper);
+        return wrapper;
+    }
+
+    /**
+     * Registers a stats board owned by {@code observerName} that inspects
+     * {@code watchedPlayerName} (e.g. /inspect), as tracked by the manager's otherboard scan.
+     */
+    private ScoreboardWrapper registerObserverStatsBoard(final String observerName,
+            final String watchedPlayerName, final boolean shown) {
+        final ScoreboardWrapper wrapper = mock(ScoreboardWrapper.class);
+        when(wrapper.isSkillScoreboard()).thenReturn(false);
+        when(wrapper.isStatsScoreboard()).thenReturn(true);
+        when(wrapper.isBoardShown()).thenReturn(shown);
+        wrapper.targetPlayer = watchedPlayerName;
+        ScoreboardManager.PLAYER_SCOREBOARDS.put(observerName, wrapper);
         return wrapper;
     }
 }

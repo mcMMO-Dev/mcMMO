@@ -338,8 +338,8 @@ public class ScoreboardManager {
 
             for (ScoreboardWrapper iWrapper : PLAYER_SCOREBOARDS.values()) {
                 if (iWrapper.isStatsScoreboard() && playerName.equals(iWrapper.targetPlayer)
-                        && wrapper.isBoardShown()) {
-                    wrapper.doSidebarUpdateSoon();
+                        && iWrapper.isBoardShown()) {
+                    iWrapper.doSidebarUpdateSoon();
                 }
             }
 
