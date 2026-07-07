@@ -226,6 +226,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             try (BufferedReader in = newBufferedReader()) {
                 String line;
                 while ((line = in.readLine()) != null) {
+                    // Comments and empty lines are not users; keep them as-is
+                    if (FlatFileRow.parse(line, logger, usersFilePath) == null) {
+                        writer.append(line).append(LINE_ENDING);
+                        continue;
+                    }
+
                     String[] character = line.split(":");
                     Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
 

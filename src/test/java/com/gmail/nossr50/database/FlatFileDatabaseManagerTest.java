@@ -1021,6 +1021,41 @@ class FlatFileDatabaseManagerTest {
         assertEquals(1, purgedCount); // 1 user should have been purged
     }
 
+    /**
+     * The users file starts with a generated comment header, and purging powerless users must
+     * not treat it as a user: comments have no skill data, so before this guard they looked
+     * "powerless", got deleted, and inflated the purge count.
+     */
+    @Test
+    void purgePowerlessUsersShouldPreserveCommentLinesAndNotCountThem() throws IOException {
+        // Given - a database with a comment header, a powerless user, and a normal user
+        final var databaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+        final String header = "# mcMMO Database created on 01/01/2020 00:00";
+        replaceDataInFile(databaseManager, new String[]{
+                header,
+                normalDatabaseData[0], // nossr50, has skills
+                normalDatabaseData[2]  // powerless, all skills zero
+        });
+
+        // When - purging powerless users
+        final int purgedCount = databaseManager.purgePowerlessUsers();
+
+        // Then - only the powerless user is counted and removed; the header survives
+        assertEquals(1, purgedCount);
+        final List<String> remainingLines = new ArrayList<>();
+        try (var reader = new BufferedReader(new FileReader(databaseManager.getUsersFile()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                remainingLines.add(line);
+            }
+        }
+        assertThat(remainingLines)
+                .contains(header)
+                .anyMatch(line -> line.startsWith("nossr50:"))
+                .noneMatch(line -> line.startsWith("powerless:"));
+    }
+
     @Test
     void checkFileHealthAndStructureOnBadDatabaseReturnsNonEmptyFlags() throws IOException {
         // Given
