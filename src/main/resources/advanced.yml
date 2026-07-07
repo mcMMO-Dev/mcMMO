@@ -57,8 +57,12 @@ Feedback:
         SubSkillFailed:
             Enabled: false
             SendCopyOfMessageToChat: true
+        # Controls where skill rank unlock messages are shown
+        ## Enabled: false keeps unlock messages in the chat (default behavior)
+        ## Enabled: true moves unlock messages to the action bar instead,
+        ## with SendCopyOfMessageToChat deciding whether the chat still gets a copy
         SubSkillUnlocked:
-            Enabled: true
+            Enabled: false
             SendCopyOfMessageToChat: true
         SuperAbilityInteraction:
             Enabled: true

@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.text.McMMOMessageType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
 import java.time.LocalDate;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
@@ -50,9 +49,7 @@ public class NotificationManager {
             return;
         }
 
-        McMMOMessageType destination
-                = mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType)
-                ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
+        McMMOMessageType destination = getNotificationDestination(notificationType);
 
         Component message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType,
@@ -117,9 +114,7 @@ public class NotificationManager {
             return;
         }
 
-        McMMOMessageType destination =
-                mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType)
-                        ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
+        McMMOMessageType destination = getNotificationDestination(notificationType);
 
         Component message = TextComponentFactory.getNotificationMultipleValues(key, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType,
@@ -147,6 +142,18 @@ public class NotificationManager {
         } else {
             audience.sendMessage(notificationTextComponent);
         }
+    }
+
+    /**
+     * Looks up where a notification should be displayed based on the advanced.yml settings
+     *
+     * @param notificationType type of notification
+     * @return the destination for the notification, either the action bar or the chat system
+     */
+    private static McMMOMessageType getNotificationDestination(
+            NotificationType notificationType) {
+        return mcMMO.p.getAdvancedConfig().doesNotificationUseActionBar(notificationType)
+                ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
     }
 
     private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player,
@@ -178,9 +185,7 @@ public class NotificationManager {
         }
 
         McMMOMessageType destination
-                = mcMMO.p.getAdvancedConfig()
-                .doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE)
-                ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
+                = getNotificationDestination(NotificationType.LEVEL_UP_MESSAGE);
 
         Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(
                 skillName, levelsGained, newLevel);
@@ -206,10 +211,15 @@ public class NotificationManager {
             return;
         }
 
-        //CHAT MESSAGE
-        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(Identity.nil(),
-                TextComponentFactory.getSubSkillUnlockedNotificationComponents(
-                        mmoPlayer.getPlayer(), subSkillType));
+        //Route the unlock message based on the SubSkillUnlocked settings in advanced.yml
+        final McMMOMessageType destination
+                = getNotificationDestination(NotificationType.SUBSKILL_UNLOCKED);
+        final Component message = TextComponentFactory.getSubSkillUnlockedNotificationComponents(
+                mmoPlayer.getPlayer(), subSkillType);
+        final McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(
+                mmoPlayer.getPlayer(), NotificationType.SUBSKILL_UNLOCKED, destination, message);
+
+        sendNotification(mmoPlayer.getPlayer(), customEvent);
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(),
