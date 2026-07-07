@@ -774,6 +774,77 @@ class SQLDatabaseManagerTest {
     }
 
     // ------------------------------------------------------------------------
+    // purgeOldUsers
+    // ------------------------------------------------------------------------
+
+    /**
+     * Regression test for GitHub issue #4251: the purge query compared a seconds-based
+     * lastlogin delta against a milliseconds-based cutoff, so old users were never purged.
+     */
+    @ParameterizedTest(name = "{0} - purgeOldUsers removes only users inactive past the cutoff")
+    @MethodSource("dbFlavors")
+    void whenPurgingOldUsersShouldRemoveOnlyUsersInactiveLongerThanCutoff(DbFlavor flavor)
+            throws Exception {
+        // GIVEN a six month purge cutoff and one long-inactive user plus one active user
+        SQLDatabaseManager databaseManager = createManagerFor(flavor);
+        truncateAllCoreTables(flavor);
+
+        final long sixMonthsInMillis = 2_630_000_000L * 6L;
+        when(mcMMO.p.getPurgeTime()).thenReturn(sixMonthsInMillis);
+
+        Player inactivePlayer = Mockito.mock(Player.class);
+        when(inactivePlayer.getUniqueId()).thenReturn(UUID.randomUUID());
+        when(inactivePlayer.getName()).thenReturn("inactive_" + flavor.name().toLowerCase());
+        databaseManager.newUser(inactivePlayer);
+
+        Player activePlayer = Mockito.mock(Player.class);
+        when(activePlayer.getUniqueId()).thenReturn(UUID.randomUUID());
+        when(activePlayer.getName()).thenReturn("active_" + flavor.name().toLowerCase());
+        databaseManager.newUser(activePlayer);
+
+        // AND the inactive user last logged in one year ago (in unix seconds)
+        final long oneYearInSeconds = 365L * 24L * 60L * 60L;
+        try (Connection connection =
+                databaseManager.getConnection(SQLDatabaseManager.PoolIdentifier.MISC);
+                Statement statement = connection.createStatement()) {
+
+            statement.executeUpdate("UPDATE mcmmo_users SET lastlogin = (UNIX_TIMESTAMP() - "
+                    + oneYearInSeconds + ") WHERE user = '" + inactivePlayer.getName() + "'");
+        }
+
+        // WHEN purging old users
+        databaseManager.purgeOldUsers();
+
+        JdbcDatabaseContainer<?> container = containerFor(flavor);
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                Statement statement = connection.createStatement()) {
+
+            // THEN the long-inactive user should be purged
+            try (ResultSet resultSet = statement.executeQuery(
+                    "SELECT COUNT(*) FROM mcmmo_users WHERE user = '"
+                            + inactivePlayer.getName() + "'")) {
+                assertThat(resultSet.next()).isTrue();
+                assertThat(resultSet.getInt(1))
+                        .as("User inactive longer than the cutoff should be purged")
+                        .isZero();
+            }
+
+            // AND the recently active user should survive
+            try (ResultSet resultSet = statement.executeQuery(
+                    "SELECT COUNT(*) FROM mcmmo_users WHERE user = '"
+                            + activePlayer.getName() + "'")) {
+                assertThat(resultSet.next()).isTrue();
+                assertThat(resultSet.getInt(1))
+                        .as("Recently active user should not be purged")
+                        .isEqualTo(1);
+            }
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    // ------------------------------------------------------------------------
     // Missing user / fallback behavior
     // ------------------------------------------------------------------------
 

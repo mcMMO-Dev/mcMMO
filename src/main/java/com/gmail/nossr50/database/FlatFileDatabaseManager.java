@@ -290,7 +290,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 }
             }
 
-            if (lastPlayed < 1 && (currentTime - lastPlayed > purgeTime)) {
+            if (lastPlayed != -1 && currentTime - lastPlayed > purgeTime) {
                 removedPlayers[0]++;
                 return null; // drop this user
             }

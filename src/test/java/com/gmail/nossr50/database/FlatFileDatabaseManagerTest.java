@@ -2,6 +2,7 @@ package com.gmail.nossr50.database;
 
 import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
 import static java.util.UUID.randomUUID;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -43,6 +44,7 @@ import java.util.UUID;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -608,6 +610,51 @@ class FlatFileDatabaseManagerTest {
         assertTrue(remainingNames.contains("mrfloris"), "Recent user must be kept");
         assertTrue(remainingNames.contains("shortUser"), "Short line must be preserved");
         assertFalse(remainingNames.contains("nossr50"), "Very old user must be purged");
+    }
+
+    /**
+     * Regression test for GitHub issue #4251: users with a real last-login timestamp older
+     * than the cutoff were never purged because the purge condition only matched users whose
+     * last login was unknown (0 or -1).
+     */
+    @Test
+    void purgeOldUsersShouldRemoveUsersWithRealLastLoginOlderThanCutoff() throws IOException {
+        // Given - a database with one user whose last login is a real timestamp older than
+        // the cutoff, one recently active user, and one user with an unknown last login (-1)
+        final var databaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+
+        final long now = System.currentTimeMillis();
+        // nossr50 - last seen twice the purge window ago
+        final String inactiveUser = lineWithLastLogin(normalDatabaseData[0], now - PURGE_TIME * 2);
+        // mrfloris - last seen just now
+        final String activeUser = lineWithLastLogin(normalDatabaseData[1], now);
+        // powerless - last login unknown (-1)
+        final String unknownLoginUser = lineWithLastLogin(normalDatabaseData[2], -1L);
+
+        // And - the unknown-login user cannot be resolved through the server's offline data
+        final OfflinePlayer unresolvedPlayer = mock(OfflinePlayer.class);
+        when(unresolvedPlayer.getLastPlayed()).thenReturn(0L);
+        when(mcMMO.p.getServer().getOfflinePlayer(any(UUID.class))).thenReturn(unresolvedPlayer);
+
+        replaceDataInFile(databaseManager,
+                new String[]{inactiveUser, activeUser, unknownLoginUser});
+
+        // When - purging old users
+        databaseManager.purgeOldUsers();
+
+        // Then - only the genuinely inactive user is removed; the active user survives and
+        // the unknown-login user is kept rather than being purged on missing data
+        final List<String> remainingNames = new ArrayList<>();
+        for (String[] split : getSplitDataFromFile(databaseManager.getUsersFile())) {
+            if (split.length > FlatFileDatabaseManager.USERNAME_INDEX) {
+                remainingNames.add(split[FlatFileDatabaseManager.USERNAME_INDEX]);
+            }
+        }
+
+        assertThat(remainingNames)
+                .contains("mrfloris", "powerless")
+                .doesNotContain("nossr50");
     }
 
     @Test
