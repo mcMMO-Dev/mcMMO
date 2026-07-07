@@ -271,12 +271,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             String uuidString = data[UUID_INDEX];
             UUID uuid = parseUuidOrNull(uuidString);
 
-            long lastPlayed = 0L;
+            long lastPlayed = -1L;
             boolean rewrite = false;
 
             try {
                 lastPlayed = Long.parseLong(data[OVERHAUL_LAST_LOGIN]);
             } catch (NumberFormatException e) {
+                // Treat an unparseable value as an unknown last login (-1) so the user is
+                // kept unless a real timestamp can be recovered below
                 logger.log(Level.SEVERE,
                         "Could not parse last played time for user with UUID " + uuidString
                                 + ", attempting to correct...", e);

@@ -657,6 +657,50 @@ class FlatFileDatabaseManagerTest {
                 .doesNotContain("nossr50");
     }
 
+    /**
+     * A last-login field that fails to parse means the last login can't be determined, so the
+     * user must be treated like an unknown last login (-1) and kept instead of being purged.
+     */
+    @Test
+    void purgeOldUsersShouldKeepUsersWithUnparseableLastLogin() throws IOException {
+        // Given - a database with one user whose last-login field is corrupt and one recently
+        // active user
+        final var databaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true);
+
+        // nossr50 - last-login field holds junk that cannot be parsed as a number
+        final String corruptLoginUser = corruptLastLoginLine(normalDatabaseData[0]);
+        // mrfloris - last seen just now
+        final String activeUser = lineWithLastLogin(normalDatabaseData[1],
+                System.currentTimeMillis());
+
+        // And - the corrupt user cannot be resolved through the server's offline data
+        final OfflinePlayer unresolvedPlayer = mock(OfflinePlayer.class);
+        when(unresolvedPlayer.getLastPlayed()).thenReturn(0L);
+        when(mcMMO.p.getServer().getOfflinePlayer(any(UUID.class))).thenReturn(unresolvedPlayer);
+
+        replaceDataInFile(databaseManager, new String[]{corruptLoginUser, activeUser});
+
+        // When - purging old users
+        databaseManager.purgeOldUsers();
+
+        // Then - the corrupt-login user is kept because their last login can't be determined
+        final List<String> remainingNames = new ArrayList<>();
+        for (String[] split : getSplitDataFromFile(databaseManager.getUsersFile())) {
+            if (split.length > FlatFileDatabaseManager.USERNAME_INDEX) {
+                remainingNames.add(split[FlatFileDatabaseManager.USERNAME_INDEX]);
+            }
+        }
+
+        assertThat(remainingNames).contains("nossr50", "mrfloris");
+    }
+
+    private String corruptLastLoginLine(String baseLine) {
+        final String[] data = baseLine.split(":");
+        data[FlatFileDatabaseManager.OVERHAUL_LAST_LOGIN] = "notanumber";
+        return String.join(":", data) + ":";
+    }
+
     @Test
     void removeUserWhenUserExistsRemovesLineAndReturnsTrue() throws IOException {
         // Given
