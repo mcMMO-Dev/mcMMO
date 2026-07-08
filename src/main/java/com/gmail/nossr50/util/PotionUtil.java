@@ -93,16 +93,20 @@ public final class PotionUtil {
     }
 
     public static String convertLegacyNames(String legacyPotionType) {
-        String modernized = legacyPotionType;
+        String prefix = "";
+        String baseName = legacyPotionType;
 
-        for (var key : legacyPotionTypes.keySet()) {
-            if (modernized.contains(key)) {
-                modernized = modernized.replace(key, legacyPotionTypes.get(key));
-                break;
-            }
+        // Only map the base name behind any strong/long prefix; exact matching keeps modern
+        // names that contain a legacy name as a substring (e.g. REGENERATION) untouched
+        if (baseName.startsWith(STRONG + "_")) {
+            prefix = STRONG + "_";
+            baseName = baseName.substring(prefix.length());
+        } else if (baseName.startsWith(LONG + "_")) {
+            prefix = LONG + "_";
+            baseName = baseName.substring(prefix.length());
         }
 
-        return modernized;
+        return prefix + legacyPotionTypes.getOrDefault(baseName, baseName);
     }
 
     public static boolean isStrong(@NotNull PotionMeta potionMeta) {

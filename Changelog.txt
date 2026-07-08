@@ -25,6 +25,7 @@ Version 2.2.055
     Fixed Disarm, Critical Strikes, Armor Impact, and Greater Impact ignoring attack strength for players without the Lucky perk (See notes)
     Fixed cancelled level change events corrupting skill levels changed with /mmoedit (See notes)
     Fixed an error when another plugin cancelled a level change for a player whose data was not loaded (See notes)
+    Fixed REGENERATION potion entries in potions.yml, treasures.yml, and fishing_treasures.yml failing to match their potion type (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
@@ -58,6 +59,9 @@ Version 2.2.055
 
     -- Level change events --
     These fixes only matter on servers running plugins that cancel mcMMO level change events. When such a plugin cancelled a level change made with /mmoedit, the skill was reset to level 0 (when raising) or set to the wrong level (when lowering) instead of being restored to its old level. Cancelling a level change for a player whose mcMMO data was not loaded threw an error; mcMMO now logs a warning that the change could not be reverted instead.
+
+    -- Potions --
+    Potion type names from configs are normalized while loading, and modern names that contain an old potion name as a prefix got mangled by that step. In practice this hit REGENERATION and its long/strong variants in potions.yml, treasures.yml, and fishing_treasures.yml, which could make those entries fail to load. Old names like REGEN still convert correctly, no config changes are needed.
     The activation chance of Disarm, Critical Strikes, Armor Impact, and Greater Impact scales with the vanilla attack cooldown, but that scaling was only being applied to players with the Lucky perk. Players without it rolled their full activation chance even when spam-clicking; weak attacks now lower the odds for everyone. This affects all server software, not just Paper.
 
     -- Scoreboards and power level tags --
