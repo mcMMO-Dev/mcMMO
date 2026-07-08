@@ -248,7 +248,7 @@ public class ProbabilityUtil {
         if (isLucky) {
             return probability.evaluate(LUCKY_MODIFIER, probabilityMultiplier);
         } else {
-            return probability.evaluate();
+            return probability.evaluate(probabilityMultiplier);
         }
     }
 

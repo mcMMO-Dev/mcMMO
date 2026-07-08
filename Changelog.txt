@@ -22,6 +22,7 @@ Version 2.2.055
     Fixed the Leaf Blower and Catalysis guides in the en_US locale showing wrong unlock levels
     Fixed placed-block tracking data being lost or corrupted when a world's height limits shrink (See notes)
     Fixed skill success chances modified by other plugins being 100 times smaller than intended (See notes)
+    Fixed Disarm, Critical Strikes, Armor Impact, and Greater Impact ignoring attack strength for players without the Lucky perk (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
@@ -51,6 +52,7 @@ Version 2.2.055
 
     -- Skill RNG --
     Plugins can adjust mcMMO skill success chances through the API (the SubSkillEvent result modifier). Any adjusted chance was previously reduced to roughly one hundredth of its intended value, making affected skills almost never succeed. Servers without plugins that hook into mcMMO skill outcomes are unaffected.
+    The activation chance of Disarm, Critical Strikes, Armor Impact, and Greater Impact scales with the vanilla attack cooldown, but that scaling was only being applied to players with the Lucky perk. Players without it rolled their full activation chance even when spam-clicking; weak attacks now lower the odds for everyone. This affects all server software, not just Paper.
 
     -- Scoreboards and power level tags --
     Scoreboards on Folia (and Folia forks like Canvas) now use a packet-based implementation, since the Bukkit scoreboard API is not safe to use there. Paper and Spigot servers keep the existing Bukkit scoreboard implementation and are unaffected.

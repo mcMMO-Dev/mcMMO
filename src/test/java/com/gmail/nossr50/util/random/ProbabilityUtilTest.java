@@ -450,4 +450,44 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         assertThat(probability.getValue()).isCloseTo(0.1D, within(1.0E-12));
     }
 
+    private static Stream<Arguments> probabilityMultiplierCases() {
+        return Stream.of(
+                // isLucky, probabilityMultiplier, shouldAlwaysSucceed
+                Arguments.of(false, 0.0D, false),
+                Arguments.of(true, 0.0D, false),
+                Arguments.of(false, 1.0D, true),
+                Arguments.of(true, 1.0D, true)
+        );
+    }
+
+    /**
+     * Regression coverage for the probability-multiplier overload: the multiplier must apply to
+     * players without the lucky perk too. It was previously discarded on the non-lucky branch,
+     * so a zero multiplier still let guaranteed skills succeed.
+     */
+    @ParameterizedTest
+    @MethodSource("probabilityMultiplierCases")
+    void skillRNGShouldApplyProbabilityMultiplierRegardlessOfLuck(boolean isLucky,
+            double probabilityMultiplier, boolean shouldAlwaysSucceed) {
+        // Given - Green Thumb is a guaranteed 100% chance at max bonus level
+        when(advancedConfig.getMaximumProbability(HERBALISM_GREEN_THUMB)).thenReturn(100D);
+        when(advancedConfig.getMaxBonusLevel(HERBALISM_GREEN_THUMB)).thenReturn(100);
+        mmoPlayer.modifySkill(HERBALISM, 100);
+        // And - the player's lucky perk state
+        when(Permissions.lucky(player, HERBALISM)).thenReturn(isLucky);
+
+        // When - the skill RNG is rolled many times with the given probability multiplier
+        int successCount = 0;
+        final int trials = 1_000;
+        for (int i = 0; i < trials; i++) {
+            if (ProbabilityUtil.isSkillRNGSuccessful(HERBALISM_GREEN_THUMB, mmoPlayer,
+                    probabilityMultiplier)) {
+                successCount++;
+            }
+        }
+
+        // Then - a zero multiplier fails every roll and a 1.0 multiplier succeeds every roll
+        assertThat(successCount).isEqualTo(shouldAlwaysSucceed ? trials : 0);
+    }
+
 }
