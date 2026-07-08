@@ -786,9 +786,8 @@ public class EntityListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         final LivingEntity entity = event.getEntity();
 
-        if (mcMMO.getTransientEntityTracker().isTransient(entity)) {
-            mcMMO.getTransientEntityTracker().killSummonAndCleanMobFlags(entity, null, false);
-        }
+        // A dying summon is no longer valid, so it has to be untracked here rather than killed
+        mcMMO.getTransientEntityTracker().removeTrackedEntity(entity);
 
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {

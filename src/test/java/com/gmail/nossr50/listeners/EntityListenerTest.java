@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import static java.util.logging.Logger.getLogger;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -9,15 +10,19 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
+import com.gmail.nossr50.skills.taming.TrackedTamingEntity;
 import com.gmail.nossr50.util.MobMetadataUtils;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -98,5 +103,32 @@ class EntityListenerTest extends MMOTestEnvironment {
         // Then - the non-player owner is ignored without an exception and nothing is flagged
         assertThatCode(() -> entityListener.onEntityTame(event)).doesNotThrowAnyException();
         mobMetadataMock.verifyNoInteractions();
+    }
+
+    /**
+     * Regression coverage for summon tracking: a Call of the Wild summon that dies is already
+     * invalid when the death event fires, so the old kill-based cleanup skipped it and the
+     * tracker kept a strong reference to the dead entity until the timer expired or the player
+     * logged out.
+     */
+    @Test
+    void entityDeathShouldUntrackCallOfTheWildSummon() {
+        // Given - a tracked Call of the Wild summon
+        final LivingEntity summon = mock(LivingEntity.class);
+        when(summon.getWorld()).thenReturn(world);
+        when(summon.getUniqueId()).thenReturn(UUID.randomUUID());
+        final TrackedTamingEntity trackedSummon = new TrackedTamingEntity(summon,
+                CallOfTheWildType.WOLF, player);
+        mcMMO.getTransientEntityTracker().addSummon(playerUUID, trackedSummon);
+
+        // And - the summon dies (a dying entity is no longer valid)
+        final EntityDeathEvent event = mock(EntityDeathEvent.class);
+        when(event.getEntity()).thenReturn(summon);
+
+        // When - the death is handled
+        entityListener.onEntityDeath(event);
+
+        // Then - the tracker no longer holds the dead summon
+        assertThat(mcMMO.getTransientEntityTracker().isTransient(summon)).isFalse();
     }
 }
