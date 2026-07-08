@@ -211,13 +211,18 @@ public class BitSetChunkStore implements ChunkStore {
         // The order in which the world height update code occurs here is important, the world max truncate math only holds up if done before adjusting for min changes
         // Lop off extra data if world max has shrunk
         if (currentWorldMax < worldMax) {
-            stored.clear(coordToIndex(16, currentWorldMax, 16, worldMin, worldMax),
-                    stored.length());
+            // Each Y plane is 16x16 bits; planes are stacked bottom-up starting at worldMin
+            int firstBitAboveNewMax = Math.max(0, 256 * (currentWorldMax - worldMin));
+            if (firstBitAboveNewMax < stored.length()) {
+                stored.clear(firstBitAboveNewMax, stored.length());
+            }
         }
-        // Left shift store if world min has shrunk
+        // Left shift store if world min has risen
         if (currentWorldMin > worldMin) {
-            stored = stored.get(currentWorldMin,
-                    stored.length()); // Because BitSet's aren't fixed size, a "substring" operation is equivalent to a left shift
+            int trimmedBottomBits = 256 * (currentWorldMin - worldMin);
+            // Because BitSets aren't fixed size, a "substring" operation is equivalent to a left shift
+            stored = trimmedBottomBits >= stored.length() ? new BitSet()
+                    : stored.get(trimmedBottomBits, stored.length());
         }
         // Right shift store if world min has expanded
         if (currentWorldMin < worldMin) {
