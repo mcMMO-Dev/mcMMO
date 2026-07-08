@@ -26,6 +26,7 @@ Version 2.2.055
     Fixed cancelled level change events corrupting skill levels changed with /mmoedit (See notes)
     Fixed an error when another plugin cancelled a level change for a player whose data was not loaded (See notes)
     Fixed REGENERATION potion entries in potions.yml, treasures.yml, and fishing_treasures.yml failing to match their potion type (See notes)
+    Fixed riders of spawner, egg, nether portal, and bred mobs not being tagged for reduced combat XP
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)

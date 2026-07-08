@@ -841,8 +841,8 @@ public class EntityListener implements Listener {
         flagMetadata(mobMetaFlagType, livingEntity);
 
         for (Entity passenger : livingEntity.getPassengers()) {
-            if (passenger != null) {
-                flagMetadata(mobMetaFlagType, livingEntity);
+            if (passenger instanceof LivingEntity livingPassenger) {
+                flagMetadata(mobMetaFlagType, livingPassenger);
             }
         }
     }
