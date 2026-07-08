@@ -54,6 +54,7 @@ Version 2.2.055
     (Codebase) Added ViaVersion to plugin.yml softdepend
     (Codebase) Added unit tests covering the power level cap and skill level cap checks
     (Codebase) Added regression tests covering previously fixed bugs
+    (Codebase) Cleaned up TransientEntityTracker internals (private fields, single-pass summon counting)
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
