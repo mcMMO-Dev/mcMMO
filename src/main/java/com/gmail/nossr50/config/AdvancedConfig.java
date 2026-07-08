@@ -506,7 +506,7 @@ public class AdvancedConfig extends BukkitConfig {
         // to chat, so the Enabled key does not express admin intent for this notification type.
         if (notificationType == NotificationType.SUBSKILL_UNLOCKED) {
             return config.getBoolean(
-                    "Feedback.ActionBarNotifications.SubSkillUnlocked.UseActionBar", false);
+                    "Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar", false);
         }
 
         return config.getBoolean(
