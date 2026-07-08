@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import static java.util.logging.Logger.getLogger;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
@@ -13,9 +14,11 @@ import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.util.MobMetadataUtils;
 import java.util.List;
 import java.util.logging.Logger;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,5 +78,25 @@ class EntityListenerTest extends MMOTestEnvironment {
                 () -> MobMetadataUtils.flagMetadata(MobMetaFlagType.MOB_SPAWNER_MOB, mount));
         mobMetadataMock.verify(
                 () -> MobMetadataUtils.flagMetadata(MobMetaFlagType.MOB_SPAWNER_MOB, passenger));
+    }
+
+    /**
+     * Regression coverage for taming through the API: EntityTameEvent owners are AnimalTamers
+     * and not necessarily players, and the handler previously cast the owner unchecked and
+     * crashed on non-player tamers.
+     */
+    @Test
+    void entityTameShouldIgnoreNonPlayerOwnersInsteadOfCrashing() {
+        // Given - an entity tamed by a non-player AnimalTamer (e.g. through another plugin)
+        final LivingEntity tamedEntity = mock(LivingEntity.class);
+        when(tamedEntity.getWorld()).thenReturn(world);
+        final EntityTameEvent event = mock(EntityTameEvent.class);
+        when(event.getEntity()).thenReturn(tamedEntity);
+        when(event.getOwner()).thenReturn(mock(AnimalTamer.class));
+
+        // When - the tame event is handled
+        // Then - the non-player owner is ignored without an exception and nothing is flagged
+        assertThatCode(() -> entityListener.onEntityTame(event)).doesNotThrowAnyException();
+        mobMetadataMock.verifyNoInteractions();
     }
 }

@@ -1109,7 +1109,10 @@ public class EntityListener implements Listener {
             return;
         }
 
-        final Player player = (Player) event.getOwner();
+        // Owners tamed through the API don't have to be players
+        if (!(event.getOwner() instanceof Player player)) {
+            return;
+        }
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
