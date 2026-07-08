@@ -295,9 +295,9 @@ public class ProbabilityUtil {
             // Result modifier
             double resultModifier = subSkillEvent.getResultModifier();
 
-            // Mutate probability
+            // Mutate probability, getValue() is already on the 0-1 scale
             if (resultModifier != 1.0D) {
-                probability = Probability.ofPercent(probability.getValue() * resultModifier);
+                probability = Probability.ofValue(probability.getValue() * resultModifier);
             }
         }
 

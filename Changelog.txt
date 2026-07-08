@@ -21,6 +21,7 @@ Version 2.2.055
     Fixed inspect scoreboards not refreshing when the inspected player levels up
     Fixed the Leaf Blower and Catalysis guides in the en_US locale showing wrong unlock levels
     Fixed placed-block tracking data being lost or corrupted when a world's height limits shrink (See notes)
+    Fixed skill success chances modified by other plugins being 100 times smaller than intended (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
@@ -47,6 +48,9 @@ Version 2.2.055
     -- Combat abilities on Paper 26.1.2+ --
     Paper 26.1.2 changed when the attack cooldown ticker resets during melee hits, which made the cooldown API report roughly zero while mcMMO was processing a hit. Version 2.2.053 fixed most damage bonuses, but several effects still read the cooldown directly and were silently crippled: Berserk actively reduced damage (its +50% bonus math turned negative), Skull Splitter dealt roughly a tenth of its intended AoE damage, and the on-hit activation odds for Disarm, Rupture (including Serrated Strikes), Cripple, Momentum, Critical Strikes, Armor Impact, and Greater Impact were scaled down to roughly a tenth of their configured rates. All of these now use the attack strength derived from the damage event itself. No config changes required.
     (API) UnarmedManager#berserkDamage/disarmCheck, AxesManager#criticalHit/impactCheck/greaterImpact/skullSplitterCheck, SwordsManager#processRupture/serratedStrikes, MacesManager#processCripple, SpearsManager#potentiallyApplyMomentum, CombatUtils#applyAbilityAoE, and McMMOPlayer#getAttackStrength are deprecated in favor of overloads that take an attack strength scale.
+
+    -- Skill RNG --
+    Plugins can adjust mcMMO skill success chances through the API (the SubSkillEvent result modifier). Any adjusted chance was previously reduced to roughly one hundredth of its intended value, making affected skills almost never succeed. Servers without plugins that hook into mcMMO skill outcomes are unaffected.
 
     -- Scoreboards and power level tags --
     Scoreboards on Folia (and Folia forks like Canvas) now use a packet-based implementation, since the Bukkit scoreboard API is not safe to use there. Paper and Spigot servers keep the existing Bukkit scoreboard implementation and are unaffected.

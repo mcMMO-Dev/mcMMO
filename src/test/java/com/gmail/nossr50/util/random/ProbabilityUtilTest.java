@@ -17,13 +17,17 @@ import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.util.Permissions;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import org.bukkit.event.Event;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -417,6 +421,33 @@ class ProbabilityUtilTest extends MMOTestEnvironment {
         final String[] rngDisplayValues = ProbabilityUtil.getRNGDisplayValues(mmoPlayer,
                 MINING_DOUBLE_DROPS);
         assertEquals("100.00%", rngDisplayValues[0]);
+    }
+
+    /**
+     * Regression coverage for the SubSkillEvent result modifier: a plugin halving a 20% chance
+     * must produce 10%. The modifier math previously ran the 0-1 probability value back through
+     * the percentage conversion, shrinking modified chances a further 100-fold.
+     */
+    @Test
+    void getSkillProbabilityShouldScaleByResultModifierWithoutShrinkingIt() {
+        // Given - Arrow Deflect has a 20% chance at max bonus level
+        when(advancedConfig.getMaximumProbability(UNARMED_ARROW_DEFLECT)).thenReturn(20D);
+        when(advancedConfig.getMaxBonusLevel(UNARMED_ARROW_DEFLECT)).thenReturn(0);
+        // And - another plugin halves the outcome through the SubSkillEvent result modifier
+        doAnswer(invocation -> {
+            final Object event = invocation.getArgument(0);
+            if (event instanceof SubSkillEvent subSkillEvent) {
+                subSkillEvent.setResultModifier(0.5D);
+            }
+            return event;
+        }).when(pluginManager).callEvent(any(Event.class));
+
+        // When - the skill probability is computed
+        final Probability probability = ProbabilityUtil.getSkillProbability(UNARMED_ARROW_DEFLECT,
+                mmoPlayer);
+
+        // Then - the 20% base chance is halved to 10%, not shrunk by another factor of 100
+        assertThat(probability.getValue()).isCloseTo(0.1D, within(1.0E-12));
     }
 
 }
