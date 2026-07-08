@@ -79,8 +79,8 @@ public abstract class MajorMinorPatchVersion implements Versioned {
     public String getVersionStr() {
         if (isPatch()) {
             return majorVersion.getVersionString() + "."
-                    + minorVersion + "."
-                    + patchVersion;
+                    + minorVersion.getVersionString() + "."
+                    + patchVersion.getVersionString();
         } else {
             return majorVersion.getVersionString() + "."
                     + minorVersion.getVersionString();
