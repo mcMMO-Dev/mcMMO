@@ -610,6 +610,8 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
+        fishingHandsByPlayer.remove(player.getUniqueId());
+
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }

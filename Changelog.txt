@@ -29,6 +29,7 @@ Version 2.2.055
     Fixed riders of spawner, egg, nether portal, and bred mobs not being tagged for reduced combat XP
     Fixed splash potions not applying saturation when another custom effect is listed before it
     Fixed the early game XP boost being able to award XP inside WorldGuard regions that deny mcMMO XP
+    Fixed a small memory leak from fishing hand tracking when players log out
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
