@@ -110,6 +110,8 @@ public class SelfListener implements Listener {
                         mmoPlayer.getPlayer().sendMessage(
                                 "No WG XP Flag - New Raw XP: " + event.getRawXpGained());
                     }
+
+                    return;
                 }
             }
         }

@@ -28,6 +28,7 @@ Version 2.2.055
     Fixed REGENERATION potion entries in potions.yml, treasures.yml, and fishing_treasures.yml failing to match their potion type (See notes)
     Fixed riders of spawner, egg, nether portal, and bred mobs not being tagged for reduced combat XP
     Fixed splash potions not applying saturation when another custom effect is listed before it
+    Fixed the early game XP boost being able to award XP inside WorldGuard regions that deny mcMMO XP
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
