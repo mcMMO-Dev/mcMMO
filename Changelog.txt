@@ -33,6 +33,8 @@ Version 2.2.055
     Fixed an error when another plugin tames an animal with a non-player owner
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
     Fixed an error when players below 5.5 hearts used a Chimaera Wing underground
+    Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)
+    Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
@@ -98,6 +100,8 @@ Version 2.2.055
 
     -- Sounds and abilities --
     Cripple now plays a single sound which can be adjusted or disabled with the CRIPPLE entry in sounds.yml.
+    Cripple's default sound is now the mace smash ground sound instead of an anvil sound. The mace sound only exists on Minecraft 1.21 and newer, the same versions maces exist on; set CustomSoundId under CRIPPLE in sounds.yml if you prefer a different sound.
+    Sounds that can't be resolved (for example a typo in a CustomSoundId) now log a single warning and are skipped instead of causing errors. On Spigot 1.21.3 and newer, custom sound IDs previously caused an error every time the sound tried to play.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
 
     -- Config --

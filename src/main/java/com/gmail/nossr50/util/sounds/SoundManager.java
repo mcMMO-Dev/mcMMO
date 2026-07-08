@@ -1,22 +1,27 @@
 package com.gmail.nossr50.util.sounds;
 
 import com.gmail.nossr50.config.SoundConfig;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 public class SoundManager {
 
     private static final Map<SoundType, Sound> soundCache = new ConcurrentHashMap<>();
+    private static final Set<SoundType> unresolvedSoundTypes = ConcurrentHashMap.newKeySet();
     private static final String NULL_FALLBACK_ID = null;
-    private static Sound CRIPPLE_SOUND;
+    private static Sound crippleSound;
+    private static boolean crippleSoundResolved;
     private static final String ITEM_MACE_SMASH_GROUND = "ITEM_MACE_SMASH_GROUND";
     private static final String VALUE_OF = "valueOf";
     private static final String ORG_BUKKIT_SOUND = "org.bukkit.Sound";
@@ -28,7 +33,11 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType) {
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
-            player.playSound(location, getSound(soundType),
+            final Sound sound = getSound(soundType);
+            if (sound == null) {
+                return;
+            }
+            player.playSound(location, sound,
                     SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
         }
     }
@@ -37,8 +46,9 @@ public class SoundManager {
             SoundCategory soundCategory) {
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
             final World world = location.getWorld();
-            if (world != null) {
-                world.playSound(location, getSound(soundType), soundCategory,
+            final Sound sound = getSound(soundType);
+            if (world != null && sound != null) {
+                world.playSound(location, sound, soundCategory,
                         getVolume(soundType), getPitch(soundType));
             }
         }
@@ -49,9 +59,10 @@ public class SoundManager {
             float pitchModifier) {
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
             final World world = location.getWorld();
-            if (world != null) {
+            final Sound sound = getSound(soundType);
+            if (world != null && sound != null) {
                 float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
-                world.playSound(location, getSound(soundType), soundCategory, getVolume(soundType),
+                world.playSound(location, sound, soundCategory, getVolume(soundType),
                         totalPitch);
             }
         }
@@ -60,7 +71,11 @@ public class SoundManager {
     public static void sendCategorizedSound(Player player, Location location,
             SoundType soundType, SoundCategory soundCategory) {
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
-            player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType),
+            final Sound sound = getSound(soundType);
+            if (sound == null) {
+                return;
+            }
+            player.playSound(location, sound, soundCategory, getVolume(soundType),
                     getPitch(soundType));
         }
     }
@@ -70,21 +85,33 @@ public class SoundManager {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
-            player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType),
+            final Sound sound = getSound(soundType);
+            if (sound == null) {
+                return;
+            }
+            player.playSound(location, sound, soundCategory, getVolume(soundType),
                     totalPitch);
         }
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType) {
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
-            world.playSound(location, getSound(soundType), getVolume(soundType),
+            final Sound sound = getSound(soundType);
+            if (sound == null) {
+                return;
+            }
+            world.playSound(location, sound, getVolume(soundType),
                     getPitch(soundType));
         }
     }
 
     public static void worldSendSoundMaxPitch(World world, Location location, SoundType soundType) {
         if (SoundConfig.getInstance().getIsEnabled(soundType)) {
-            world.playSound(location, getSound(soundType), getVolume(soundType), 2.0F);
+            final Sound sound = getSound(soundType);
+            if (sound == null) {
+                return;
+            }
+            world.playSound(location, sound, getVolume(soundType), 2.0F);
         }
     }
 
@@ -108,7 +135,7 @@ public class SoundManager {
         };
     }
 
-    private static Sound getSound(SoundType soundType) {
+    private static @Nullable Sound getSound(SoundType soundType) {
         final String soundId = SoundConfig.getInstance().getSound(soundType);
 
         // Legacy versions use a different lookup method
@@ -132,10 +159,11 @@ public class SoundManager {
             return sound;
         }
 
-        throw new RuntimeException("Could not find Sound for SoundType: " + soundType);
+        warnOnceAboutUnresolvedSound(soundType);
+        return null;
     }
 
-    private static Sound getSoundLegacyCustom(String id, SoundType soundType) {
+    private static @Nullable Sound getSoundLegacyCustom(String id, SoundType soundType) {
         if (soundCache.containsKey(soundType)) {
             return soundCache.get(soundType);
         }
@@ -162,16 +190,25 @@ public class SoundManager {
                     // Ignore
                 }
             }
-            throw new RuntimeException("Unable to find legacy sound by ID %s for SoundType %s"
-                    .formatted(id, soundType));
+            warnOnceAboutUnresolvedSound(soundType);
         }
         // Failsafe -- we haven't found a matching sound
         final Sound sound = getSoundLegacyFallBack(soundType);
+        if (sound == null) {
+            return null;
+        }
         soundCache.putIfAbsent(soundType, sound);
         return sound;
     }
 
-    private static Sound getSoundLegacyFallBack(SoundType soundType) {
+    private static void warnOnceAboutUnresolvedSound(SoundType soundType) {
+        if (unresolvedSoundTypes.add(soundType)) {
+            mcMMO.p.getLogger().warning("Could not resolve a sound for " + soundType
+                    + ", it will not be played. Check the " + soundType + " entry in sounds.yml.");
+        }
+    }
+
+    private static @Nullable Sound getSoundLegacyFallBack(SoundType soundType) {
         return switch (soundType) {
             case ANVIL -> Sound.BLOCK_ANVIL_PLACE;
             case ITEM_BREAK -> Sound.ENTITY_ITEM_BREAK;
@@ -191,23 +228,23 @@ public class SoundManager {
         };
     }
 
-    private static Sound getCrippleSound() {
-        if (CRIPPLE_SOUND != null) {
-            return CRIPPLE_SOUND;
+    private static @Nullable Sound getCrippleSound() {
+        if (crippleSoundResolved) {
+            return crippleSound;
         }
 
         try {
             // Spigot changed the class from enum to interface around 1.21.3
             final Class<?> clazz = Class.forName(ORG_BUKKIT_SOUND);
-            final Method valueOf = clazz.getMethod(VALUE_OF);
-            CRIPPLE_SOUND = (Sound) valueOf.invoke(null, ITEM_MACE_SMASH_GROUND);
-        } catch (IllegalArgumentException | ClassNotFoundException | NoSuchMethodException |
-                 InvocationTargetException
-                 | IllegalAccessException e) {
-            CRIPPLE_SOUND = Sound.BLOCK_ANVIL_PLACE;
+            final Method valueOf = clazz.getMethod(VALUE_OF, String.class);
+            crippleSound = (Sound) valueOf.invoke(null, ITEM_MACE_SMASH_GROUND);
+        } catch (ReflectiveOperationException | IllegalArgumentException e) {
+            // The sound doesn't exist before Minecraft 1.21, where Cripple can't trigger anyway
+            crippleSound = null;
         }
+        crippleSoundResolved = true;
 
-        return CRIPPLE_SOUND;
+        return crippleSound;
     }
 
     public static float getFizzPitch() {

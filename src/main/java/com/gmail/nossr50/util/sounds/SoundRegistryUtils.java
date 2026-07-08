@@ -32,9 +32,9 @@ public final class SoundRegistryUtils {
                 foundRegistry = true;
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 try {
-                    soundReg = registry.getField(SPIGOT_SOUND_REGISTRY_FIELD);
+                    soundReg = registry.getField(SPIGOT_SOUND_REGISTRY_FIELD).get(null);
                     foundRegistry = true;
-                } catch (NoSuchFieldException ex) {
+                } catch (NoSuchFieldException | IllegalAccessException ex) {
                     // ignored
                 }
             }
@@ -83,7 +83,6 @@ public final class SoundRegistryUtils {
                 } else {
                     mcMMO.p.getLogger().severe(format("Could not find sound with ID %s.", id));
                 }
-                throw new RuntimeException(e);
             }
         }
         return null;
