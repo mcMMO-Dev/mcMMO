@@ -1191,13 +1191,13 @@ public class EntityListener implements Listener {
 
         ItemMeta meta = event.getPotion().getItem().getItemMeta();
 
-        if (meta == null) {
+        if (!(meta instanceof PotionMeta potionMeta)) {
             return;
         }
 
-        for (PotionEffect effect : ((PotionMeta) meta).getCustomEffects()) {
+        for (PotionEffect effect : potionMeta.getCustomEffects()) {
             if (!effect.getType().equals(PotionEffectType.SATURATION)) {
-                return;
+                continue;
             }
 
             for (LivingEntity entity : event.getAffectedEntities()) {
