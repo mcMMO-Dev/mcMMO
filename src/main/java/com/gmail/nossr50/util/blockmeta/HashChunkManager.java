@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import com.gmail.nossr50.mcMMO;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -116,7 +117,10 @@ public class HashChunkManager implements ChunkManager {
     private @Nullable ChunkStore loadChunk(int cx, int cz, @NotNull World world) {
         try {
             return readChunkStore(world, cx, cz);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            mcMMO.p.getLogger().warning(
+                    "Failed to read placed-block data for chunk (" + cx + ", " + cz
+                            + ") in world '" + world.getName() + "', treating it as empty: " + e);
         }
 
         return null;

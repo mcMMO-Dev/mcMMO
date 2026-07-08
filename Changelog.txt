@@ -28,6 +28,7 @@ Version 2.2.055
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
     Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
+    Added a console warning when a chunk's placed-block data cannot be read, instead of resetting it silently
     Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
     Added 'Skills.Mining.BlastMining.RemoteDetonationDistance' to advanced.yml (See notes)
     Added 'mcmmo.commands.mclevelupsound' permission node

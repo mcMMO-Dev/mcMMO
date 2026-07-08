@@ -187,7 +187,8 @@ public class BitSetChunkStore implements ChunkStore {
         int fileVersionNumber = in.readInt();
 
         if (magic != MAGIC_NUMBER || fileVersionNumber < 8) {
-            throw new IOException();
+            throw new IOException("Bad chunk store header (magic: " + Integer.toHexString(magic)
+                    + ", format version: " + fileVersionNumber + ")");
         }
 
         long lsb = in.readLong();
