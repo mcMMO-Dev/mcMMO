@@ -336,32 +336,18 @@ public class PlayerListener implements Listener {
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
             return;
         }
-
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
         if (!(event.getCaught() instanceof Item caughtItem)) {
             return;
         }
 
         Player player = event.getPlayer();
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
-                return;
-            }
-        }
-
-        if (!UserManager.hasPlayerDataKey(player) || !mcMMO.p.getSkillTools()
+        if (mmoPlayer == null || !mcMMO.p.getSkillTools()
             .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
             return;
         }
 
-        //Profile not loaded
-        McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-        if (mmoPlayer == null) {
-            return;
-        }
         FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
