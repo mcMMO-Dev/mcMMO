@@ -38,8 +38,9 @@ public final class SoundRegistryUtils {
                     // ignored
                 }
             }
-        } catch (ClassNotFoundException e) {
-            // ignored
+        } catch (ClassNotFoundException | LinkageError e) {
+            // The registry class is missing or failed to initialize on this platform;
+            // fall back to the legacy enum-based lookup
         }
 
         if (foundRegistry) {
