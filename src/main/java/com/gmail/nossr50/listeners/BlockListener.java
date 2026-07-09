@@ -34,9 +34,7 @@ import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -98,41 +96,16 @@ public class BlockListener implements Listener {
 
         try {
             if (!bonusDropMeta.isEmpty()) {
-                int tileEntityTolerance = 1;
-
-                // beetroot hotfix, potentially other plants may need this fix
-                final Material blockType = block.getType();
-                if (blockType == Material.BEETROOTS) {
-                    tileEntityTolerance = 2;
-                }
-
-                //Track how many "things" are being dropped
-                final Set<Material> uniqueMaterials = new HashSet<>();
-                boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
-                int blockCount = 0;
-
                 final List<Item> eventItems = event.getItems();
+                final List<Material> droppedMaterials = new ArrayList<>(eventItems.size());
                 for (Item item : eventItems) {
-                    //Track unique materials
-                    uniqueMaterials.add(item.getItemStack().getType());
-
-                    //Count blocks as a second failsafe
-                    if (item.getItemStack().getType().isBlock()) {
-                        blockCount++;
-                    }
+                    droppedMaterials.add(item.getItemStack().getType());
                 }
 
-                if (uniqueMaterials.size() > tileEntityTolerance) {
-                    // Too many things are dropping, assume tile entities might be duped
-                    // Technically this would also prevent something like coal from being bonus dropped
-                    // if you placed a TE above a coal ore when mining it but that's pretty edge case
-                    // and this is a good solution for now
-                    dontRewardTE = true;
-                }
+                final BonusDrops.Analysis analysis = BonusDrops.analyze(block.getType(),
+                        droppedMaterials);
 
-                //If there are more than one block in the item list we can't really trust it
-                // and will back out of rewarding bonus drops
-                if (blockCount <= 1) {
+                if (analysis.rewardable()) {
                     final int amountToAddFromBonus = bonusDropMeta.get(0).asInt();
                     for (final Item item : eventItems) {
                         final ItemStack eventItemStack = item.getItemStack();
@@ -152,11 +125,9 @@ public class BlockListener implements Listener {
                             continue;
                         }
 
-                        //If we suspect TEs might be duped only reward block
-                        if (dontRewardTE) {
-                            if (!itemType.isBlock()) {
-                                continue;
-                            }
+                        //If we suspect tile entity contents might be mixed in only reward blocks
+                        if (analysis.onlyRewardBlocks() && !itemType.isBlock()) {
+                            continue;
                         }
 
                         final McMMOModifyBlockDropItemEvent modifyDropEvent
