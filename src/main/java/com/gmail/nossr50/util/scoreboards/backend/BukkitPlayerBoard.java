@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class BukkitPlayerBoard implements PlayerBoard {
     private static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
     private static final String SIDE_OBJECTIVE = "mcMMO_sideObjective";
-    private static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
+    private static final String POWER_OBJECTIVE = BukkitScoreboardBackend.POWER_OBJECTIVE;
 
     private final @NotNull Player owner;
     private @NotNull Scoreboard scoreboard;

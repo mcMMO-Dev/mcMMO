@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.mcMMO;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -9,18 +10,15 @@ import org.jetbrains.annotations.NotNull;
  * Stores our constants related to metadata
  */
 public class MetadataConstants {
+    /**
+     * Bukkit-metadata keys swept from a mob during entity cleanup. Mob spawn-tracking flags are
+     * not listed here because {@link MobMetadataUtils#removeMobFlags} owns them in whichever
+     * backend (Bukkit metadata or persistent data) is active, and the healthbar snapshot key is
+     * removed by {@link MobHealthbarUtils#restoreNameFromSnapshot}.
+     */
     public static final @NotNull Set<String> MOB_METADATA_KEYS = Set.of(
-            MetadataConstants.METADATA_KEY_MOB_SPAWNER_MOB,
-            MetadataConstants.METADATA_KEY_EGG_MOB,
-            MetadataConstants.METADATA_KEY_NETHER_PORTAL_MOB,
-            MetadataConstants.METADATA_KEY_COTW_SUMMONED_MOB,
-            MetadataConstants.METADATA_KEY_PLAYER_BRED_MOB,
-            MetadataConstants.METADATA_KEY_PLAYER_TAMED_MOB,
-            MetadataConstants.METADATA_KEY_EXPLOITED_ENDERMEN,
-            MetadataConstants.METADATA_KEY_HEALTHBAR_SNAPSHOT,
             MetadataConstants.METADATA_KEY_RUPTURE,
-            MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE,
-            MetadataConstants.METADATA_KEY_DODGE_TRACKER
+            MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE
     );
 
     public static final @NotNull List<String> ARROW_METADATA_KEYS = List.of(
@@ -36,7 +34,6 @@ public class MetadataConstants {
 
     public static final @NotNull String METADATA_KEY_BOUNCE_COUNT = "mcMMO: Arrow Bounce Count";
     public static final @NotNull String METADATA_KEY_EXPLOSION_FROM_RUPTURE = "mcMMO: Rupture Explosion";
-    public static final @NotNull String METADATA_KEY_DODGE_TRACKER = "mcMMO: Dodge Tracker";
     public static final @NotNull String METADATA_KEY_CUSTOM_DAMAGE = "mcMMO: Custom Damage";
     public static final @NotNull String METADATA_KEY_TRAVELING_BLOCK = "mcMMO: Traveling Block";
     public static final @NotNull String METADATA_KEY_TRACKED_TNT = "mcMMO: Tracked TNT";
@@ -71,5 +68,25 @@ public class MetadataConstants {
 
     public static final @NotNull String METADATA_KEY_RUPTURE = "mcmmo_rupture";
     public static final byte SIMPLE_FLAG_VALUE = (byte) 0x1;
+
+    /**
+     * @deprecated Not initialized until mcMMO enables, so early readers observe null; use
+     * {@link #getMcMMOMetadataValue()} instead.
+     */
+    @Deprecated(since = "2.3.000")
     public static FixedMetadataValue MCMMO_METADATA_VALUE;
+
+    /**
+     * The shared flag value used for mcMMO's boolean metadata marks. Created lazily so callers
+     * that run before plugin enable finishes can never observe null.
+     */
+    @SuppressWarnings("deprecation")
+    public static @NotNull FixedMetadataValue getMcMMOMetadataValue() {
+        FixedMetadataValue value = MCMMO_METADATA_VALUE;
+        if (value == null) {
+            value = new FixedMetadataValue(mcMMO.p, true);
+            MCMMO_METADATA_VALUE = value;
+        }
+        return value;
+    }
 }

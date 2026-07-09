@@ -2,6 +2,10 @@ package com.gmail.nossr50.util.nms;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @deprecated Unused since mcMMO stopped shipping NMS hooks; scheduled for removal.
+ */
+@Deprecated(forRemoval = true, since = "2.3.000")
 public class NMSConstants {
     public final static String BUKKIT_PACKAGE_PATH = "org.bukkit";
     public final static String CRAFT_BUKKIT_PACKAGE_PATH = "org.bukkit.craftbukkit";

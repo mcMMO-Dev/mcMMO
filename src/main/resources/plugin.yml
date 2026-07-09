@@ -23,8 +23,6 @@ commands:
     mmoxpbar:
         aliases: xpbarsettings
         description: Change XP bar settings
-    mmocompat:
-        description: Information about the server and whether its considered fully compatible or running in compatibility mode
     mmodebug:
         aliases: [ mcmmodebugmode ]
         description: Toggles a debug mode which will print useful information to chat
@@ -34,7 +32,7 @@ commands:
         permission: mcmmo.commands.mmoinfo
     xprate:
         aliases: [ mcxprate ]
-        description: Modify the xp rate or start an event
+        description: View or modify the xp rate or start an event
         permission: mcmmo.commands.xprate
     mcmmo:
         description: Shows a brief mod description
@@ -172,6 +170,10 @@ commands:
         aliases: [ notify ]
         description: Toggle mcMMO abilities chat display notifications on/off
         permission: mcmmo.commands.mcnotify
+    mclevelupsound:
+        aliases: [ levelupsound ]
+        description: Toggle the mcMMO level-up sound on/off
+        permission: mcmmo.commands.mclevelupsound
     mcscoreboard:
         aliases: [ mcsb ]
         description: Manage your mcMMO Scoreboard
@@ -893,6 +895,7 @@ permissions:
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
             mcmmo.commands.mccooldown: true
+            mcmmo.commands.mclevelupsound: true
             mcmmo.commands.mcmmo.all: true
             mcmmo.commands.mcnotify: true
             mcmmo.commands.mcrank: true
@@ -912,6 +915,7 @@ permissions:
             mcmmo.commands.unarmed: true
             mcmmo.commands.woodcutting: true
             mcmmo.commands.mmopower: true
+            mcmmo.commands.xprate.show: true
     mcmmo.commands.defaultsop:
         description: Implies all default op mcmmo.commands permissions.
         children:
@@ -983,7 +987,7 @@ permissions:
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
     mcmmo.commands.inspect.far:
-        description: Allows access to the inspect command for far players
+        description: Allows access to the inspect command for far away or offline players
     mcmmo.commands.inspect.hidden:
         description: Allows access to the inspect command for hidden players
     mcmmo.commands.mcability:
@@ -1014,6 +1018,8 @@ permissions:
         description: Allows access to the mcchatspy command
     mcmmo.commands.mcchatspy.others:
         description: Allows access to the mcchatspy command for other players
+    mcmmo.commands.mclevelupsound:
+        description: Allows access to the mclevelupsound command
     mcmmo.commands.mcmmo.*:
         default: false
         description: Implies access to all mcmmo.commands.mcmmo permissions
@@ -1403,12 +1409,15 @@ permissions:
             mcmmo.commands.xprate: true
             mcmmo.commands.xprate.reset: true
             mcmmo.commands.xprate.set: true
+            mcmmo.commands.xprate.show: true
     mcmmo.commands.xprate:
         description: Allows access to the xprate command
     mcmmo.commands.xprate.reset:
         description: Allows access to the xprate reset command
     mcmmo.commands.xprate.set:
         description: Allows access to the xprate command to control xp events
+    mcmmo.commands.xprate.show:
+        description: Allows access to the xprate command to view the current xp rate
     mcmmo.item.*:
         default: true
         description: Implies all mcmmo.item permissions

@@ -49,7 +49,8 @@ public class SelfListener implements Listener {
             for (int i = 0; i < event.getLevelsGained(); i++) {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
-                mmoPlayer.processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+                mmoPlayer.processUnlockNotifications(plugin, event.getSkill(),
+                        previousLevelGained);
             }
 
             //Reset the delay timer
@@ -139,6 +140,8 @@ public class SelfListener implements Listener {
                         mmoPlayer.getPlayer().sendMessage(
                                 "No WG XP Flag - New Raw XP: " + event.getRawXpGained());
                     }
+
+                    return;
                 }
             }
         }
@@ -178,38 +181,18 @@ public class SelfListener implements Listener {
             return;
         }
 
-        final float rawXp = event.getRawXpGained();
+        final DiminishedReturns.Result result = DiminishedReturns.apply(
+                event.getRawXpGained(),
+                mmoPlayer.getProfile().getRegisteredXpGain(primarySkillType),
+                threshold,
+                ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType),
+                ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier(),
+                ExperienceConfig.getInstance().getDiminishedReturnsCap());
 
-        float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
-
-        float modifiedThreshold = (float) (
-                threshold / ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType)
-                        * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-        float difference =
-                (mmoPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold)
-                        / modifiedThreshold;
-
-        if (difference > 0) {
-//            System.out.println("Total XP Earned: " + mmoPlayer.getProfile().getRegisteredXpGain(primarySkillType) + " / Threshold value: " + threshold);
-//            System.out.println(difference * 100 + "% over the threshold!");
-//            System.out.println("Previous: " + event.getRawXpGained());
-//            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));
-            float newValue = rawXp - (rawXp * difference);
-
-            /*
-             * Make sure players get a guaranteed minimum of XP
-             */
-            //If there is no guaranteed minimum proceed, otherwise only proceed if newValue would be higher than our guaranteed minimum
-            if (guaranteedMinimum <= 0 || newValue > guaranteedMinimum) {
-                if (newValue > 0) {
-                    event.setRawXpGained(newValue);
-                } else {
-                    event.setCancelled(true);
-                }
-            } else {
-                event.setRawXpGained(guaranteedMinimum);
-            }
-
+        if (result.cancelled()) {
+            event.setCancelled(true);
+        } else if (result.changed()) {
+            event.setRawXpGained(result.rawXp());
         }
 
         if (mmoPlayer.isDebugMode()) {

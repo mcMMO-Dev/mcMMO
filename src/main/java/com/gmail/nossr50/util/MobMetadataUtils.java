@@ -13,6 +13,7 @@ import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.google.common.collect.MapMaker;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -26,7 +27,11 @@ import org.jetbrains.annotations.NotNull;
 public final class MobMetadataUtils {
     private static final @NotNull ConcurrentMap<Entity, Set<MobMetaFlagType>> mobRegistry; // transient data
     private static final @NotNull EnumMap<MobMetaFlagType, NamespacedKey> mobFlagKeyMap; // used for persistent data
-    private static boolean isUsingPersistentData = false;
+    // Which flags use persistent storage never changes at runtime, so the config is read once;
+    // write-once at class load, read-only afterwards
+    private static final @NotNull EnumSet<MobMetaFlagType> persistentFlags =
+            EnumSet.noneOf(MobMetaFlagType.class);
+    private static final boolean isUsingPersistentData;
 
     private MobMetadataUtils() {
         // private constructor to prevent instantiation
@@ -46,10 +51,10 @@ public final class MobMetadataUtils {
 
         for (MobMetaFlagType metaFlagType : MobMetaFlagType.values()) {
             if (PersistentDataConfig.getInstance().isMobPersistent(metaFlagType)) {
-                isUsingPersistentData = true;
-                break;
+                persistentFlags.add(metaFlagType);
             }
         }
+        isUsingPersistentData = !persistentFlags.isEmpty();
     }
 
     /**
@@ -82,7 +87,7 @@ public final class MobMetadataUtils {
      */
     public static boolean hasMobFlag(@NotNull MobMetaFlagType flag,
             @NotNull LivingEntity livingEntity) {
-        if (PersistentDataConfig.getInstance().isMobPersistent(flag)) {
+        if (persistentFlags.contains(flag)) {
             return livingEntity.getPersistentDataContainer()
                     .has(mobFlagKeyMap.get(flag), PersistentDataType.BYTE);
         } else {
@@ -149,7 +154,7 @@ public final class MobMetadataUtils {
      */
     public static void flagMetadata(@NotNull MobMetaFlagType flag,
             @NotNull LivingEntity livingEntity) {
-        if (PersistentDataConfig.getInstance().isMobPersistent(flag)) {
+        if (persistentFlags.contains(flag)) {
             if (!hasMobFlag(flag, livingEntity)) {
                 PersistentDataContainer persistentDataContainer = livingEntity.getPersistentDataContainer();
                 persistentDataContainer.set(mobFlagKeyMap.get(flag), PersistentDataType.BYTE,
@@ -170,7 +175,7 @@ public final class MobMetadataUtils {
      */
     public static void removeMobFlag(@NotNull MobMetaFlagType flag,
             @NotNull LivingEntity livingEntity) {
-        if (PersistentDataConfig.getInstance().isMobPersistent(flag)) {
+        if (persistentFlags.contains(flag)) {
             if (hasMobFlag(flag, livingEntity)) {
                 PersistentDataContainer persistentDataContainer = livingEntity.getPersistentDataContainer();
                 persistentDataContainer.remove(mobFlagKeyMap.get(flag));

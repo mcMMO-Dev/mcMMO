@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.commands;
 
+import com.gmail.nossr50.commands.McLevelUpSoundCommand;
 import com.gmail.nossr50.commands.McabilityCommand;
 import com.gmail.nossr50.commands.McconvertCommand;
 import com.gmail.nossr50.commands.McgodCommand;
@@ -50,18 +51,250 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.text.StringUtils;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class CommandRegistrationManager {
     private CommandRegistrationManager() {
     }
 
-    private static final String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
+    /**
+     * Everything needed to wire one plugin.yml command declaration to its executor. Description
+     * and usage lines are suppliers so the table can be built without touching the locale or a
+     * running plugin instance.
+     */
+    private record CommandSpec(@NotNull String name, @NotNull Supplier<String> description,
+            @Nullable String permission, @NotNull Supplier<List<String>> usageLines,
+            @NotNull Supplier<? extends CommandExecutor> executor, @NotNull List<String> aliases,
+            boolean requiresParty) {
+    }
 
-    private static void registerSkillCommands() {
+    private static @NotNull CommandSpec spec(@NotNull String name, @Nullable String permission,
+            @NotNull Supplier<List<String>> usageLines,
+            @NotNull Supplier<? extends CommandExecutor> executor) {
+        return spec(name, () -> LocaleLoader.getString("Commands.Description." + name),
+                permission, usageLines, executor);
+    }
+
+    private static @NotNull CommandSpec spec(@NotNull String name,
+            @NotNull Supplier<String> description, @Nullable String permission,
+            @NotNull Supplier<List<String>> usageLines,
+            @NotNull Supplier<? extends CommandExecutor> executor) {
+        return new CommandSpec(name, description, permission, usageLines, executor, List.of(),
+                false);
+    }
+
+    private static final List<CommandSpec> COMMAND_SPECS = List.of(
+            // Generic Commands
+            spec("mmoxpbar", null, () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.1", "mmoxpbar", "<reset | disable>"),
+                    LocaleLoader.getString("Commands.Usage.2", "mmoxpbar",
+                            "<show | hide | disable>", "<skillname>")),
+                    XPBarCommand::new),
+            spec("mmoinfo", "mcmmo.commands.mmoinfo", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.1", "mmoinfo",
+                            "[" + LocaleLoader.getString("Commands.Usage.SubSkill") + "]")),
+                    MmoInfoCommand::new),
+            // No permission required on mmodebug to save support headaches
+            spec("mmodebug", null, () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.0", "mmodebug")),
+                    PlayerDebugCommand::new),
+            spec("mcability", "mcmmo.commands.mcability;mcmmo.commands.mcability.others",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.1", "mcability",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]")),
+                    McabilityCommand::new),
+            spec("mcgod", "mcmmo.commands.mcgod;mcmmo.commands.mcgod.others", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.1", "mcgod",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]")),
+                    McgodCommand::new),
+            spec("mcchatspy", "mcmmo.commands.mcchatspy;mcmmo.commands.mcchatspy.others",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.1", "mcchatspy",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]")),
+                    McChatSpy::new),
+            spec("mcmmo", "mcmmo.commands.mcmmo.description;mcmmo.commands.mcmmo.help",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.0", "mcmmo"),
+                            LocaleLoader.getString("Commands.Usage.1", "mcmmo", "help")),
+                    McmmoCommand::new),
+            spec("mcnotify", "mcmmo.commands.mcnotify", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.0", "mcnotify")),
+                    McnotifyCommand::new),
+            spec("mclevelupsound", "mcmmo.commands.mclevelupsound", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.0", "mclevelupsound")),
+                    McLevelUpSoundCommand::new),
+            spec("mcrefresh", "mcmmo.commands.mcrefresh;mcmmo.commands.mcrefresh.others",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.1", "mcrefresh",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]")),
+                    McrefreshCommand::new),
+            spec("mcscoreboard",
+                    () -> "Change the current mcMMO scoreboard being displayed", //TODO: Localize
+                    "mcmmo.commands.mcscoreboard", () -> List.of(
+                            LocaleLoader.getString("Commands.Usage.1", "mcscoreboard",
+                                    "<CLEAR | KEEP>"),
+                            LocaleLoader.getString("Commands.Usage.2", "mcscoreboard", "time",
+                                    "<seconds>")),
+                    McscoreboardCommand::new),
+            new CommandSpec("xprate",
+                    () -> LocaleLoader.getString("Commands.Description.xprate"),
+                    "mcmmo.commands.xprate;mcmmo.commands.xprate.reset;"
+                            + "mcmmo.commands.xprate.set;mcmmo.commands.xprate.show",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.2", "xprate",
+                                    "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">",
+                                    "<true|false>"),
+                            LocaleLoader.getString("Commands.Usage.1", "xprate", "reset"),
+                            LocaleLoader.getString("Commands.Usage.0", "xprate")),
+                    XprateCommand::new, List.of("mcxprate"), false),
+
+            // Database Commands
+            spec("mcpurge", () -> LocaleLoader.getString("Commands.Description.mcpurge",
+                    mcMMO.p.getGeneralConfig().getOldUsersCutoff()), "mcmmo.commands.mcpurge",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.0", "mcpurge")),
+                    McpurgeCommand::new),
+            spec("mcremove", "mcmmo.commands.mcremove", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.1", "mcremove",
+                            "<" + LocaleLoader.getString("Commands.Usage.Player") + ">")),
+                    McremoveCommand::new),
+            spec("mmoshowdb", "mcmmo.commands.mmoshowdb", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.0", "mmoshowdb")),
+                    MmoshowdbCommand::new),
+            spec("mcconvert",
+                    "mcmmo.commands.mcconvert;mcmmo.commands.mcconvert.experience;"
+                            + "mcmmo.commands.mcconvert.database",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.2", "mcconvert",
+                                    "database", "<flatfile|sql>"),
+                            LocaleLoader.getString("Commands.Usage.2", "mcconvert", "experience",
+                                    "<linear|exponential>")),
+                    McconvertCommand::new),
+
+            // Experience Commands
+            spec("addlevels", "mcmmo.commands.addlevels;mcmmo.commands.addlevels.others",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.3.XP", "addlevels",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
+                            "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">",
+                            "<" + LocaleLoader.getString("Commands.Usage.Level") + ">")),
+                    AddlevelsCommand::new),
+            spec("addxp", "mcmmo.commands.addxp;mcmmo.commands.addxp.others", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.3.XP", "addxp",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
+                            "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">",
+                            "<" + LocaleLoader.getString("Commands.Usage.XP") + ">")),
+                    AddxpCommand::new),
+            spec("mmoedit", "mcmmo.commands.mmoedit;mcmmo.commands.mmoedit.others",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.3.XP", "mmoedit",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
+                            "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">",
+                            "<" + LocaleLoader.getString("Commands.Usage.Level") + ">")),
+                    MmoeditCommand::new),
+            // Only the main permission nodes are needed here, not the per-skill ones
+            spec("skillreset", "mcmmo.commands.skillreset;mcmmo.commands.skillreset.others",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.2", "skillreset",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
+                            "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">")),
+                    SkillresetCommand::new),
+
+            // Party Commands (only registered while the party system is enabled)
+            new CommandSpec("party", () -> LocaleLoader.getString("Commands.Description.party"),
+                    "mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;"
+                            + "mcmmo.commands.party.disband;mcmmo.commands.party.xpshare;"
+                            + "mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;"
+                            + "mcmmo.commands.party.join;mcmmo.commands.party.kick;"
+                            + "mcmmo.commands.party.lock;mcmmo.commands.party.owner;"
+                            + "mcmmo.commands.party.password;mcmmo.commands.party.quit;"
+                            + "mcmmo.commands.party.rename;mcmmo.commands.party.unlock",
+                    List::of, PartyCommand::new, List.of(), true),
+            // Only the main ptp permission node is needed, not the toggle/accept/acceptall ones
+            new CommandSpec("ptp", () -> LocaleLoader.getString("Commands.Description.ptp"),
+                    "mcmmo.commands.ptp",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.1", "ptp",
+                                    "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"),
+                            LocaleLoader.getString("Commands.Usage.1", "ptp",
+                                    "<toggle|accept|acceptall>")),
+                    PtpCommand::new, List.of(), true),
+
+            // Player Commands
+            spec("inspect",
+                    "mcmmo.commands.inspect;mcmmo.commands.inspect.far;"
+                            + "mcmmo.commands.inspect.offline",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.1", "inspect",
+                            "<" + LocaleLoader.getString("Commands.Usage.Player") + ">")),
+                    InspectCommand::new),
+            spec("mccooldown", "mcmmo.commands.mccooldown", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.0", "mccooldowns")),
+                    MccooldownCommand::new),
+            spec("mcrank",
+                    "mcmmo.commands.mcrank;mcmmo.commands.mcrank.others;"
+                            + "mcmmo.commands.mcrank.others.far;"
+                            + "mcmmo.commands.mcrank.others.offline",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.1", "mcrank",
+                            "[" + LocaleLoader.getString("Commands.Usage.Player") + "]")),
+                    McRankCommand::new),
+            spec("mcstats", "mcmmo.commands.mcstats", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.0", "mcstats")),
+                    McstatsCommand::new),
+            // Only the main mctop permission node is needed, not the per-skill ones
+            spec("mctop", "mcmmo.commands.mctop", () -> List.of(
+                    LocaleLoader.getString("Commands.Usage.2", "mctop",
+                            "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]",
+                            "[" + LocaleLoader.getString("Commands.Usage.Page") + "]")),
+                    McTopCommand::new),
+
+            // Admin commands
+            spec("mcmmoreloadlocale", () -> "Reloads locale", // TODO: Localize
+                    "mcmmo.commands.reloadlocale", () -> List.of(
+                            LocaleLoader.getString("Commands.Usage.0", "mcmmoreloadlocale")),
+                    McmmoReloadLocaleCommand::new)
+    );
+
+    /**
+     * Command names wired by the spec table. Package-private so the registration coverage test
+     * can compare them against the plugin.yml declarations.
+     */
+    static @NotNull Set<String> specCommandNames() {
+        return COMMAND_SPECS.stream().map(CommandSpec::name)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Command names wired by the skill command loop. Package-private for the registration
+     * coverage test.
+     */
+    static @NotNull Set<String> skillCommandNames() {
+        return Arrays.stream(PrimarySkillType.values())
+                .map(skill -> skill.toString().toLowerCase(Locale.ENGLISH))
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private static void applySpec(@NotNull CommandSpec spec, @NotNull String permissionMessage) {
+        final PluginCommand command = mcMMO.p.getCommand(spec.name());
+        if (command == null) {
+            mcMMO.p.getLogger().severe("Command not found: " + spec.name());
+            return;
+        }
+
+        command.setDescription(spec.description().get());
+        command.setPermission(spec.permission());
+        command.setPermissionMessage(permissionMessage);
+
+        final List<String> usageLines = spec.usageLines().get();
+        if (!usageLines.isEmpty()) {
+            command.setUsage(String.join("\n", usageLines));
+        }
+
+        if (!spec.aliases().isEmpty()) {
+            command.setAliases(spec.aliases());
+        }
+
+        command.setExecutor(spec.executor().get());
+    }
+
+    private static void registerSkillCommands(@NotNull String permissionMessage) {
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             if (primarySkillType == PrimarySkillType.SPEARS
                     && !mcMMO.getMinecraftGameVersion().isAtLeast(1, 21, 11)) {
@@ -81,7 +314,7 @@ public final class CommandRegistrationManager {
             command.setDescription(LocaleLoader.getString("Commands.Description.Skill",
                     StringUtils.getCapitalized(localizedName)));
             command.setPermission("mcmmo.commands." + commandName);
-            command.setPermissionMessage(permissionsMessage);
+            command.setPermissionMessage(permissionMessage);
             command.setUsage(LocaleLoader.getString("Commands.Usage.0", commandName));
             command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2",
                     commandName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
@@ -111,352 +344,18 @@ public final class CommandRegistrationManager {
         }
     }
 
-    private static void registerAddlevelsCommand() {
-        PluginCommand command = mcMMO.p.getCommand("addlevels");
-        command.setDescription(LocaleLoader.getString("Commands.Description.addlevels"));
-        command.setPermission("mcmmo.commands.addlevels;mcmmo.commands.addlevels.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3.XP", "addlevels",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
-                "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">",
-                "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
-        command.setExecutor(new AddlevelsCommand());
-    }
-
-    private static void registerAddxpCommand() {
-        PluginCommand command = mcMMO.p.getCommand("addxp");
-        command.setDescription(LocaleLoader.getString("Commands.Description.addxp"));
-        command.setPermission("mcmmo.commands.addxp;mcmmo.commands.addxp.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3.XP", "addxp",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
-                "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">",
-                "<" + LocaleLoader.getString("Commands.Usage.XP") + ">"));
-        command.setExecutor(new AddxpCommand());
-    }
-
-    private static void registerMcgodCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcgod");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcgod"));
-        command.setPermission("mcmmo.commands.mcgod;mcmmo.commands.mcgod.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcgod",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McgodCommand());
-    }
-
-    private static void registerMmoInfoCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mmoinfo");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mmoinfo"));
-        command.setPermission("mcmmo.commands.mmoinfo");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoinfo",
-                "[" + LocaleLoader.getString("Commands.Usage.SubSkill") + "]"));
-        command.setExecutor(new MmoInfoCommand());
-    }
-
-    private static void registerMmoDebugCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mmodebug");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mmodebug"));
-        command.setPermission(null); //No perm required to save support headaches
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmodebug"));
-        command.setExecutor(new PlayerDebugCommand());
-    }
-
-    private static void registerMcChatSpyCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcchatspy");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcchatspy"));
-        command.setPermission("mcmmo.commands.mcchatspy;mcmmo.commands.mcchatspy.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcchatspy",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McChatSpy());
-    }
-
-    private static void registerMcrefreshCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcrefresh");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcrefresh"));
-        command.setPermission("mcmmo.commands.mcrefresh;mcmmo.commands.mcrefresh.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrefresh",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McrefreshCommand());
-    }
-
-    private static void registerMmoeditCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mmoedit");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mmoedit"));
-        command.setPermission("mcmmo.commands.mmoedit;mcmmo.commands.mmoedit.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3.XP", "mmoedit",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
-                "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">",
-                "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
-        command.setExecutor(new MmoeditCommand());
-    }
-
-    private static void registerSkillresetCommand() {
-        PluginCommand command = mcMMO.p.getCommand("skillreset");
-        command.setDescription(LocaleLoader.getString("Commands.Description.skillreset"));
-        command.setPermission(
-                "mcmmo.commands.skillreset;mcmmo.commands.skillreset.others"); // Only need the main ones, not the individual skill ones
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "skillreset",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]",
-                "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
-        command.setExecutor(new SkillresetCommand());
-    }
-
-    private static void registerXprateCommand() {
-        List<String> aliasList = new ArrayList<>();
-        aliasList.add("mcxprate");
-
-        PluginCommand command = mcMMO.p.getCommand("xprate");
-        command.setDescription(LocaleLoader.getString("Commands.Description.xprate"));
-        command.setPermission(
-                "mcmmo.commands.xprate;mcmmo.commands.xprate.reset;mcmmo.commands.xprate.set");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "xprate",
-                "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">", "<true|false>"));
-        command.setUsage(
-                command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xprate",
-                        "reset"));
-        command.setAliases(aliasList);
-        command.setExecutor(new XprateCommand());
-    }
-
-    private static void registerInspectCommand() {
-        PluginCommand command = mcMMO.p.getCommand("inspect");
-        command.setDescription(LocaleLoader.getString("Commands.Description.inspect"));
-        command.setPermission(
-                "mcmmo.commands.inspect;mcmmo.commands.inspect.far;mcmmo.commands.inspect.offline");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "inspect",
-                "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setExecutor(new InspectCommand());
-    }
-
-    private static void registerMccooldownCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mccooldown");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mccooldown"));
-        command.setPermission("mcmmo.commands.mccooldown");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mccooldowns"));
-        command.setExecutor(new MccooldownCommand());
-    }
-
-    private static void registerMcabilityCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcability");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcability"));
-        command.setPermission("mcmmo.commands.mcability;mcmmo.commands.mcability.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcability",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McabilityCommand());
-    }
-
-    private static void registerMcmmoCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcmmo");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcmmo"));
-        command.setPermission("mcmmo.commands.mcmmo.description;mcmmo.commands.mcmmo.help");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmo"));
-        command.setUsage(
-                command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "mcmmo",
-                        "help"));
-        command.setExecutor(new McmmoCommand());
-    }
-
-    private static void registerMcrankCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcrank");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcrank"));
-        command.setPermission(
-                "mcmmo.commands.mcrank;mcmmo.commands.mcrank.others;mcmmo.commands.mcrank.others.far;mcmmo.commands.mcrank.others.offline");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrank",
-                "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McRankCommand());
-    }
-
-    private static void registerMcstatsCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcstats");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcstats"));
-        command.setPermission("mcmmo.commands.mcstats");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcstats"));
-        command.setExecutor(new McstatsCommand());
-    }
-
-    private static void registerMctopCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mctop");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mctop"));
-        command.setPermission(
-                "mcmmo.commands.mctop"); // Only need the main one, not the individual skill ones
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mctop",
-                "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]",
-                "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
-        command.setExecutor(new McTopCommand());
-    }
-
-    private static void registerMcpurgeCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcpurge");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge",
-                mcMMO.p.getGeneralConfig().getOldUsersCutoff()));
-        command.setPermission("mcmmo.commands.mcpurge");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcpurge"));
-        command.setExecutor(new McpurgeCommand());
-    }
-
-    private static void registerMcremoveCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcremove");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcremove"));
-        command.setPermission("mcmmo.commands.mcremove");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcremove",
-                "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setExecutor(new McremoveCommand());
-    }
-
-    private static void registerMmoshowdbCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mmoshowdb");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mmoshowdb"));
-        command.setPermission("mcmmo.commands.mmoshowdb");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmoshowdb"));
-        command.setExecutor(new MmoshowdbCommand());
-    }
-
-    private static void registerMcconvertCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcconvert");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcconvert"));
-        command.setPermission(
-                "mcmmo.commands.mcconvert;mcmmo.commands.mcconvert.experience;mcmmo.commands.mcconvert.database");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mcconvert", "database",
-                "<flatfile|sql>"));
-        command.setUsage(
-                command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", "mcconvert",
-                        "experience", "<linear|exponential>"));
-        command.setExecutor(new McconvertCommand());
-    }
-
-    private static void registerPartyCommand() {
-        PluginCommand command = mcMMO.p.getCommand("party");
-        command.setDescription(LocaleLoader.getString("Commands.Description.party"));
-        command.setPermission(
-                "mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;mcmmo.commands.party.disband;"
-                        +
-                        "mcmmo.commands.party.xpshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;"
-                        +
-                        "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;"
-                        +
-                        "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
-        command.setPermissionMessage(permissionsMessage);
-        command.setExecutor(new PartyCommand());
-    }
-
-    private static void registerPtpCommand() {
-        PluginCommand command = mcMMO.p.getCommand("ptp");
-        command.setDescription(LocaleLoader.getString("Commands.Description.ptp"));
-        command.setPermission(
-                "mcmmo.commands.ptp"); // Only need the main one, not the individual ones for toggle/accept/acceptall
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "ptp",
-                "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setUsage(
-                command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "ptp",
-                        "<toggle|accept|acceptall>"));
-        command.setExecutor(new PtpCommand());
-    }
-
-    private static void registerMcnotifyCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcnotify");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcnotify"));
-        command.setPermission("mcmmo.commands.mcnotify");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
-        command.setExecutor(new McnotifyCommand());
-    }
-
-    private static void registerMcscoreboardCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcscoreboard");
-        command.setDescription(
-                "Change the current mcMMO scoreboard being displayed"); //TODO: Localize
-        command.setPermission("mcmmo.commands.mcscoreboard");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(
-                LocaleLoader.getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | KEEP>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2",
-                "mcscoreboard", "time", "<seconds>"));
-        command.setExecutor(new McscoreboardCommand());
-    }
-
-    private static void registerReloadLocaleCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mcmmoreloadlocale");
-        command.setDescription("Reloads locale"); // TODO: Localize
-        command.setPermission("mcmmo.commands.reloadlocale");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmoreloadlocale"));
-        command.setExecutor(new McmmoReloadLocaleCommand());
-    }
-
-    private static void registerXPBarCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mmoxpbar"); //TODO: Localize
-        command.setDescription(LocaleLoader.getString("Commands.Description.mmoxpbar"));
-        command.setUsage(
-                LocaleLoader.getString("Commands.Usage.1", "mmoxpbar", "<reset | disable>"));
-        command.setUsage(
-                command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", "mmoxpbar",
-                        "<show | hide | disable>", "<skillname>"));
-        command.setExecutor(new XPBarCommand());
-    }
-
     public static void registerCommands() {
-        // Generic Commands
-        registerXPBarCommand();
-        registerMmoInfoCommand();
-        registerMmoDebugCommand();
-        registerMcabilityCommand();
-        registerMcgodCommand();
-        registerMcChatSpyCommand();
-        registerMcmmoCommand();
-        registerMcnotifyCommand();
-        registerMcrefreshCommand();
-        registerMcscoreboardCommand();
-        registerXprateCommand();
+        final String permissionMessage = LocaleLoader.getString("mcMMO.NoPermission");
+        final boolean partyEnabled = mcMMO.p.getPartyConfig().isPartyEnabled();
 
-        // Database Commands
-        registerMcpurgeCommand();
-        registerMcremoveCommand();
-        registerMmoshowdbCommand();
-        registerMcconvertCommand();
-
-        // Experience Commands
-        registerAddlevelsCommand();
-        registerAddxpCommand();
-        registerMmoeditCommand();
-        registerSkillresetCommand();
-
-        // Party Commands
-        if (mcMMO.p.getPartyConfig().isPartyEnabled()) {
-            registerPartyCommand();
-            registerPtpCommand();
+        for (CommandSpec spec : COMMAND_SPECS) {
+            if (spec.requiresParty() && !partyEnabled) {
+                continue;
+            }
+            applySpec(spec, permissionMessage);
         }
 
-        // Player Commands
-        registerInspectCommand();
-        registerMccooldownCommand();
-        registerMcrankCommand();
-        registerMcstatsCommand();
-        registerMctopCommand();
-
         // Skill Commands
-        registerSkillCommands();
-
-        // Admin commands
-        registerReloadLocaleCommand();
+        registerSkillCommands(permissionMessage);
     }
 }

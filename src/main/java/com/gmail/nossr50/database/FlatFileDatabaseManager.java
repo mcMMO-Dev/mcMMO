@@ -226,6 +226,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             try (BufferedReader in = newBufferedReader()) {
                 String line;
                 while ((line = in.readLine()) != null) {
+                    // Comments and empty lines are not users; keep them as-is
+                    if (FlatFileRow.parse(line, logger, usersFilePath) == null) {
+                        writer.append(line).append(LINE_ENDING);
+                        continue;
+                    }
+
                     String[] character = line.split(":");
                     Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
 
@@ -271,12 +277,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             String uuidString = data[UUID_INDEX];
             UUID uuid = parseUuidOrNull(uuidString);
 
-            long lastPlayed = 0L;
+            long lastPlayed = -1L;
             boolean rewrite = false;
 
             try {
                 lastPlayed = Long.parseLong(data[OVERHAUL_LAST_LOGIN]);
             } catch (NumberFormatException e) {
+                // Treat an unparseable value as an unknown last login (-1) so the user is
+                // kept unless a real timestamp can be recovered below
                 logger.log(Level.SEVERE,
                         "Could not parse last played time for user with UUID " + uuidString
                                 + ", attempting to correct...", e);
@@ -290,7 +298,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 }
             }
 
-            if (lastPlayed < 1 && (currentTime - lastPlayed > purgeTime)) {
+            if (lastPlayed != -1 && currentTime - lastPlayed > purgeTime) {
                 removedPlayers[0]++;
                 return null; // drop this user
             }

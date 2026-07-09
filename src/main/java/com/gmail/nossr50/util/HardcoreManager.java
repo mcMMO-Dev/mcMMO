@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -10,6 +11,7 @@ import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import java.util.HashMap;
+import java.util.function.Predicate;
 import org.bukkit.entity.Player;
 
 public final class HardcoreManager {
@@ -28,11 +30,13 @@ public final class HardcoreManager {
                 .getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = mcMMO.p.getGeneralConfig().getHardcoreDeathStatPenaltyLevelThreshold();
 
-        if (UserManager.getPlayer(player) == null) {
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+        if (mmoPlayer == null) {
             return;
         }
 
-        PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+        PlayerProfile playerProfile = mmoPlayer.getProfile();
         int totalLevelsLost = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();
@@ -40,8 +44,7 @@ public final class HardcoreManager {
 
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (!mcMMO.p.getGeneralConfig().getHardcoreStatLossEnabled(primarySkillType)) {
-                levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                putNoChange(levelChanged, experienceChanged, primarySkillType);
                 continue;
             }
 
@@ -49,8 +52,7 @@ public final class HardcoreManager {
             int playerSkillXpLevel = playerProfile.getSkillXpLevel(primarySkillType);
 
             if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
-                levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                putNoChange(levelChanged, experienceChanged, primarySkillType);
                 continue;
             }
 
@@ -85,12 +87,15 @@ public final class HardcoreManager {
                 .getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = mcMMO.p.getGeneralConfig().getHardcoreVampirismLevelThreshold();
 
-        if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null) {
+        final McMMOPlayer mmoKiller = UserManager.getPlayer(killer);
+        final McMMOPlayer mmoVictim = UserManager.getPlayer(victim);
+
+        if (mmoKiller == null || mmoVictim == null) {
             return;
         }
 
-        PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
-        PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
+        PlayerProfile killerProfile = mmoKiller.getProfile();
+        PlayerProfile victimProfile = mmoVictim.getProfile();
         int totalLevelsStolen = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();
@@ -98,8 +103,7 @@ public final class HardcoreManager {
 
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             if (!mcMMO.p.getGeneralConfig().getHardcoreVampirismEnabled(primarySkillType)) {
-                levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                putNoChange(levelChanged, experienceChanged, primarySkillType);
                 continue;
             }
 
@@ -108,8 +112,7 @@ public final class HardcoreManager {
 
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2
                     || victimSkillLevel <= levelThreshold) {
-                levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                putNoChange(levelChanged, experienceChanged, primarySkillType);
                 continue;
             }
 
@@ -143,22 +146,20 @@ public final class HardcoreManager {
         }
     }
 
+    private static void putNoChange(HashMap<String, Integer> levelChanged,
+            HashMap<String, Float> experienceChanged, PrimarySkillType primarySkillType) {
+        levelChanged.put(primarySkillType.toString(), 0);
+        experienceChanged.put(primarySkillType.toString(), 0F);
+    }
+
     /**
      * Check if Hardcore Stat Loss is enabled for one or more skill types
      *
      * @return true if Stat Loss is enabled for one or more skill types
      */
     public static boolean isStatLossEnabled() {
-        boolean enabled = false;
-
-        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
-            if (mcMMO.p.getGeneralConfig().getHardcoreStatLossEnabled(primarySkillType)) {
-                enabled = true;
-                break;
-            }
-        }
-
-        return enabled;
+        return isEnabledForAnySkill(
+                skill -> mcMMO.p.getGeneralConfig().getHardcoreStatLossEnabled(skill));
     }
 
     /**
@@ -167,15 +168,17 @@ public final class HardcoreManager {
      * @return true if Vampirism is enabled for one or more skill types
      */
     public static boolean isVampirismEnabled() {
-        boolean enabled = false;
+        return isEnabledForAnySkill(
+                skill -> mcMMO.p.getGeneralConfig().getHardcoreVampirismEnabled(skill));
+    }
 
+    private static boolean isEnabledForAnySkill(Predicate<PrimarySkillType> enabledForSkill) {
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
-            if (mcMMO.p.getGeneralConfig().getHardcoreVampirismEnabled(primarySkillType)) {
-                enabled = true;
-                break;
+            if (enabledForSkill.test(primarySkillType)) {
+                return true;
             }
         }
 
-        return enabled;
+        return false;
     }
 }

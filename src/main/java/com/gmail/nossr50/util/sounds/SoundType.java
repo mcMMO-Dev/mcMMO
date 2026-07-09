@@ -17,7 +17,9 @@ public enum SoundType {
     BLEED("minecraft:entity.ender_eye.death"),
     GLASS("minecraft:block.glass.break"),
     ITEM_CONSUMED("minecraft:item.bottle.empty"),
-    CRIPPLE("minecraft:block.anvil.place");
+    // The mace smash sound only exists on 1.21+, where Cripple can trigger; on older
+    // versions the unresolvable ID makes the sound a silent no-op instead of an anvil noise
+    CRIPPLE("minecraft:item.mace.smash_ground");
     
     private final String soundRegistryId;
 

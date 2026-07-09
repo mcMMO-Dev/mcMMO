@@ -838,7 +838,8 @@ class McMMORegionBackupStoreTest {
             createCompleteSnapshot(worldBackupRoot, "2026-05-30T10:00:00Z");
 
             // When asking for the newest complete snapshot
-            final Path newest = McMMORegionBackupStore.newestCompleteSnapshot(worldBackupRoot);
+            final Path newest = McMMORegionBackupStore.newestCompleteSnapshot(worldBackupRoot,
+                    silentLogger);
 
             // Then the 2026-05-30 snapshot wins (the 31st is incomplete and has no stamp)
             assertThat(newest).isNotNull();
@@ -854,7 +855,8 @@ class McMMORegionBackupStoreTest {
 
             // When asking for the newest complete snapshot
             // Then null is returned
-            assertThat(McMMORegionBackupStore.newestCompleteSnapshot(worldBackupRoot)).isNull();
+            assertThat(McMMORegionBackupStore.newestCompleteSnapshot(worldBackupRoot,
+                    silentLogger)).isNull();
         }
 
         @Test
@@ -863,7 +865,7 @@ class McMMORegionBackupStoreTest {
             // When asking for the newest complete snapshot
             // Then null is returned without throwing
             assertThat(McMMORegionBackupStore.newestCompleteSnapshot(
-                    worldBackupRoot("nonexistent"))).isNull();
+                    worldBackupRoot("nonexistent"), silentLogger)).isNull();
         }
 
         private void createCompleteSnapshot(Path root, String iso) throws IOException {

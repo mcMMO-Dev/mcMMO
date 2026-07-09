@@ -20,9 +20,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public final class ChimaeraWing {
     private ChimaeraWing() {
+    }
+
+    /**
+     * Rolls the punishment damage for using a Chimaera Wing underground, scaled to how much
+     * health the player has above 10.
+     */
+    @VisibleForTesting
+    static int rollUndergroundPenaltyDamage(double health) {
+        return Misc.getRandom().nextInt(Math.max(1, (int) (health - 10)));
     }
 
     /**
@@ -104,7 +114,7 @@ public final class ChimaeraWing {
                 NotificationManager.sendPlayerInformation(player,
                         NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.setVelocity(new Vector(0, 0.5D, 0));
-                final int dmg = Misc.getRandom().nextInt((int) (player.getHealth() - 10));
+                final int dmg = rollUndergroundPenaltyDamage(player.getHealth());
                 CombatUtils.safeDealDamage(player, dmg);
                 mmoPlayer.actualizeChimeraWingLastUse();
                 return;

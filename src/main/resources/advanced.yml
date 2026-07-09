@@ -57,8 +57,16 @@ Feedback:
         SubSkillFailed:
             Enabled: false
             SendCopyOfMessageToChat: true
+        # Controls where skill rank unlock messages are shown
+        ## SendToActionBar: false keeps unlock messages in the chat (default behavior)
+        ## SendToActionBar: true is an opt-in that moves unlock messages to the action bar instead,
+        ## with SendCopyOfMessageToChat deciding whether the chat still gets a copy
+        ## Unlike the other sections here, this one is controlled by SendToActionBar instead of
+        ## Enabled: configs from older versions already contain 'Enabled: true' for this section
+        ## from back when the setting had no effect, so that key is ignored to keep updates from
+        ## changing behavior
         SubSkillUnlocked:
-            Enabled: true
+            SendToActionBar: false
             SendCopyOfMessageToChat: true
         SuperAbilityInteraction:
             Enabled: true
@@ -324,6 +332,8 @@ Skills:
                 RetroMode: 1000
 
         BlastMining:
+            # RemoteDetonationDistance: Max distance in blocks for remotely detonating TNT
+            RemoteDetonationDistance: 100
             Bonus_Drops:
                 Enabled: true
             # BlastDamageDecrease Ranks: % of damage reduced from TNT explosions

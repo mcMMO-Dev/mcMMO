@@ -42,7 +42,9 @@ public class BitSetChunkStore implements ChunkStore {
         this.worldUid = worldUid;
         this.worldMin = worldMin;
         this.worldMax = worldMax;
-        this.store = new BitSet(16 * 16 * (worldMax - worldMin));
+        // Grows on demand; sizing it for the full world height would pin ~12KB per chunk
+        // even for chunks with no tracked blocks
+        this.store = new BitSet();
     }
 
     @Override
@@ -187,7 +189,8 @@ public class BitSetChunkStore implements ChunkStore {
         int fileVersionNumber = in.readInt();
 
         if (magic != MAGIC_NUMBER || fileVersionNumber < 8) {
-            throw new IOException();
+            throw new IOException("Bad chunk store header (magic: " + Integer.toHexString(magic)
+                    + ", format version: " + fileVersionNumber + ")");
         }
 
         long lsb = in.readLong();
@@ -211,13 +214,18 @@ public class BitSetChunkStore implements ChunkStore {
         // The order in which the world height update code occurs here is important, the world max truncate math only holds up if done before adjusting for min changes
         // Lop off extra data if world max has shrunk
         if (currentWorldMax < worldMax) {
-            stored.clear(coordToIndex(16, currentWorldMax, 16, worldMin, worldMax),
-                    stored.length());
+            // Each Y plane is 16x16 bits; planes are stacked bottom-up starting at worldMin
+            int firstBitAboveNewMax = Math.max(0, 256 * (currentWorldMax - worldMin));
+            if (firstBitAboveNewMax < stored.length()) {
+                stored.clear(firstBitAboveNewMax, stored.length());
+            }
         }
-        // Left shift store if world min has shrunk
+        // Left shift store if world min has risen
         if (currentWorldMin > worldMin) {
-            stored = stored.get(currentWorldMin,
-                    stored.length()); // Because BitSet's aren't fixed size, a "substring" operation is equivalent to a left shift
+            int trimmedBottomBits = 256 * (currentWorldMin - worldMin);
+            // Because BitSets aren't fixed size, a "substring" operation is equivalent to a left shift
+            stored = trimmedBottomBits >= stored.length() ? new BitSet()
+                    : stored.get(trimmedBottomBits, stored.length());
         }
         // Right shift store if world min has expanded
         if (currentWorldMin < worldMin) {

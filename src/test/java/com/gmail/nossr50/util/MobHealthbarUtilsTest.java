@@ -8,11 +8,13 @@ import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.HealthbarSnapshot;
 import com.gmail.nossr50.mcMMO;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +45,32 @@ class MobHealthbarUtilsTest extends MMOTestEnvironment {
     @AfterEach
     void tearDown() {
         cleanUpStaticMocks();
+    }
+
+    @Nested
+    class WhenDisplayTypeDisabled {
+
+        /**
+         * Regression coverage for Display_Type DISABLED: the handler used to fall through with
+         * a null healthbar string, wiping a named mob's custom name and forcing name visibility
+         * on for the whole display window.
+         */
+        @Test
+        void handleMobHealthbarsShouldNotTouchTheEntity() {
+            // Given - healthbars are enabled overall but the display type is DISABLED
+            when(generalConfig.getMobHealthbarEnabled()).thenReturn(true);
+            when(generalConfig.getMobHealthbarDefault()).thenReturn(MobHealthbarType.DISABLED);
+            // And - a valid, non-boss mob
+            when(entity.getType()).thenReturn(EntityType.ZOMBIE);
+            when(entity.isValid()).thenReturn(true);
+
+            // When - the healthbar handler runs for a hit
+            MobHealthbarUtils.handleMobHealthbars(entity, 1.0D, mcMMO.p);
+
+            // Then - the mob's name state is never modified
+            verify(entity, never()).setCustomName(Mockito.any());
+            verify(entity, never()).setCustomNameVisible(Mockito.anyBoolean());
+        }
     }
 
     @Nested

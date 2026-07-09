@@ -19,8 +19,16 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 public class ProbabilityUtil {
+    /**
+     * @deprecated DecimalFormat is not safe to share between threads; no longer used internally
+     */
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%",
             DecimalFormatSymbols.getInstance(Locale.US));
+    // DecimalFormat is not thread-safe, and display values are formatted from region threads
+    // on Folia
+    private static final ThreadLocal<DecimalFormat> percentFormat = ThreadLocal.withInitial(
+            () -> new DecimalFormat("##0.00%", DecimalFormatSymbols.getInstance(Locale.US)));
     public static final double LUCKY_MODIFIER = 1.333D;
 
     /**
@@ -248,7 +256,7 @@ public class ProbabilityUtil {
         if (isLucky) {
             return probability.evaluate(LUCKY_MODIFIER, probabilityMultiplier);
         } else {
-            return probability.evaluate();
+            return probability.evaluate(probabilityMultiplier);
         }
     }
 
@@ -295,9 +303,9 @@ public class ProbabilityUtil {
             // Result modifier
             double resultModifier = subSkillEvent.getResultModifier();
 
-            // Mutate probability
+            // Mutate probability, getValue() is already on the 0-1 scale
             if (resultModifier != 1.0D) {
-                probability = Probability.ofPercent(probability.getValue() * resultModifier);
+                probability = Probability.ofValue(probability.getValue() * resultModifier);
             }
         }
 
@@ -443,14 +451,16 @@ public class ProbabilityUtil {
         double firstValue = chanceOfSuccessPercentage(mmoPlayer, subSkill, false);
         double secondValue = chanceOfSuccessPercentage(mmoPlayer, subSkill, true);
 
-        return new String[]{percent.format(firstValue), percent.format(secondValue)};
+        final DecimalFormat format = percentFormat.get();
+        return new String[]{format.format(firstValue), format.format(secondValue)};
     }
 
     public static @NotNull String[] getRNGDisplayValues(@NotNull Probability probability) {
         double firstValue = chanceOfSuccessPercentage(probability, false);
         double secondValue = chanceOfSuccessPercentage(probability, true);
 
-        return new String[]{percent.format(firstValue), percent.format(secondValue)};
+        final DecimalFormat format = percentFormat.get();
+        return new String[]{format.format(firstValue), format.format(secondValue)};
     }
 
     /**

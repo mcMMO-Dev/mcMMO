@@ -8,6 +8,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * @deprecated The NETHERRITE misspelling cleanup it performed is no longer wired into any
+ * upgrade path; scheduled for removal.
+ */
+@Deprecated(forRemoval = true, since = "2.3.000")
 public class FixSpellingNetheriteUtil {
 
     public static void processFileCheck(mcMMO pluginRef, String fileName, UpgradeType upgradeType) {

@@ -16,6 +16,8 @@ public class LogFilter implements Filter {
 
     @Override
     public boolean isLoggable(LogRecord record) {
-        return !(record.getMessage().contains(DEBUG_STR) && !debug);
+        final String message = record.getMessage();
+        // Debug messages carry the marker as a prefix; a mid-string match is a normal message
+        return message == null || debug || !message.startsWith(DEBUG_STR);
     }
 }

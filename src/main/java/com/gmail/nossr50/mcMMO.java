@@ -200,6 +200,11 @@ public class mcMMO extends JavaPlugin {
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
+
+            //Store this value so other plugins can check it
+            //Must be set before AdvancedConfig loads, its level scaling reads this flag
+            isRetroModeEnabled = generalConfig.getIsRetroMode();
+
             skillTools = new SkillTools(this); //Load after general config
 
             //Init configs
@@ -209,10 +214,8 @@ public class mcMMO extends JavaPlugin {
             partyConfig = new PartyConfig(getDataFolder());
             customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
 
-            //Store this value so other plugins can check it
-            isRetroModeEnabled = generalConfig.getIsRetroMode();
-
-            MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
+            // Prime the shared metadata flag value (also populates the deprecated public field)
+            MetadataConstants.getMcMMOMetadataValue();
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
@@ -733,14 +736,10 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
-        InteractionManager.initMaps(); //Init maps
-
         if (CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS)) {
             LogUtils.debug(mcMMO.p.getLogger(), "Enabling Acrobatics Skills");
 
             //TODO: Should do this differently
-            Roll roll = new Roll();
-            CoreSkillsConfig.getInstance().isSkillEnabled(roll);
             InteractionManager.registerSubSkill(new Roll());
         }
     }

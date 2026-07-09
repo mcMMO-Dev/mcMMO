@@ -128,6 +128,10 @@ public enum SubSkillType {
     WOODCUTTING_CLEAN_CUTS(1);
 
     private final int numRanks;
+    // Built on first use because the parent skill lookup needs the plugin to be loaded; the
+    // benign race between threads just rebuilds the same string
+    private String permissionNodeAddress;
+    private String advConfigAddress;
     //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.
 
     /**
@@ -163,8 +167,12 @@ public enum SubSkillType {
      * @return the root address for this skill in advanced.yml
      */
     public String getAdvConfigAddress() {
-        return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "."
-                + getConfigName(toString());
+        if (advConfigAddress == null) {
+            advConfigAddress = "Skills." + StringUtils.getCapitalized(getParentSkill().toString())
+                    + "." + getConfigName(toString());
+        }
+
+        return advConfigAddress;
     }
 
     /**
@@ -183,9 +191,13 @@ public enum SubSkillType {
      * @return the permission node for this subskill
      */
     public String getPermissionNodeAddress() {
-        //TODO: This could be optimized
-        return "mcmmo.ability." + getParentSkill().toString().toLowerCase(Locale.ENGLISH) + "."
-                + getConfigName(toString()).toLowerCase(Locale.ENGLISH);
+        if (permissionNodeAddress == null) {
+            permissionNodeAddress =
+                    "mcmmo.ability." + getParentSkill().toString().toLowerCase(Locale.ENGLISH)
+                            + "." + getConfigName(toString()).toLowerCase(Locale.ENGLISH);
+        }
+
+        return permissionNodeAddress;
     }
 
     /**

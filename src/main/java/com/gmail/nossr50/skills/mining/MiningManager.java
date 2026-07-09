@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.mining;
 import static com.gmail.nossr50.util.ItemUtils.isPickaxe;
 import static com.gmail.nossr50.util.Misc.getBlockCenter;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -182,12 +183,13 @@ public class MiningManager extends SkillManager {
     public void remoteDetonation() {
         final Player player = getPlayer();
         final Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(),
-                BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
+                mcMMO.p.getAdvancedConfig().getRemoteDetonationDistanceLimit());
 
         //Blast mining cooldown check needs to be first so the player can be messaged
         if (!blastMiningCooldownOver()
                 || targetBlock.getType() != Material.TNT
-                || !EventUtils.simulateBlockBreak(targetBlock, player)) {
+                || !EventUtils.simulateBlockBreak(targetBlock, player,
+                FakeBlockBreakEventType.FAKE)) {
             return;
         }
 

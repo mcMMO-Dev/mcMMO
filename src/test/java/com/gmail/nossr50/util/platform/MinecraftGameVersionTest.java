@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.platform;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,10 +14,33 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 class MinecraftGameVersionTest {
+
+    /**
+     * The unsupported-version scoreboard warning prints this string; the patch branch used to
+     * concatenate the version objects directly and produced output like
+     * "26.SimpleNumericVersion@4d5e6f" instead of the version number.
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "1, 21, 4, 1.21.4",
+            "26, 2, 1, 26.2.1",
+            "1, 21, 0, 1.21",
+            "26, 1, 0, 26.1",
+    })
+    void getVersionStrShouldPrintDottedVersionNumbers(int major, int minor, int patch,
+            String expected) {
+        // Given - a Minecraft version with or without a patch component
+        final MinecraftGameVersion version = new MinecraftGameVersion(major, minor, patch);
+
+        // When - the version string is built
+        // Then - it is the dotted numeric form
+        assertThat(version.getVersionStr()).isEqualTo(expected);
+    }
 
     @Test
     void testAtLeast() {

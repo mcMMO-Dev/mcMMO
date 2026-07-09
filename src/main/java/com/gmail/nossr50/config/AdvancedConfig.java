@@ -4,13 +4,23 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 public class AdvancedConfig extends BukkitConfig {
     int[] defaultCrippleValues = new int[]{10, 15, 20, 25};
     int[] defaultMomentumValues = new int[]{5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
+
+    /* Values resolved once and reused on hot combat/RNG paths; reset by loadKeys() */
+    private @Nullable Boolean adjustSkillsForAttackCooldown;
+    private @Nullable Double archeryForceMultiplier;
+    private final Map<SubSkillType, Integer> maxBonusLevel = new EnumMap<>(SubSkillType.class);
+    private final Map<SubSkillType, Double> maximumProbability = new EnumMap<>(SubSkillType.class);
 
     public AdvancedConfig(File dataFolder) {
         super("advanced.yml", dataFolder);
@@ -243,6 +253,10 @@ public class AdvancedConfig extends BukkitConfig {
             reason.add("Skills.Mining.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
+        if (getRemoteDetonationDistanceLimit() < 1) {
+            reason.add("Skills.Mining.BlastMining.RemoteDetonationDistance should be at least 1!");
+        }
+
         /* REPAIR */
         if (getRepairMasteryMaxBonus() < 1) {
             reason.add("Skills.Repair.RepairMastery.MaxBonusPercentage should be at least 1!");
@@ -406,13 +420,21 @@ public class AdvancedConfig extends BukkitConfig {
 
     @Override
     protected void loadKeys() {
+        adjustSkillsForAttackCooldown = null;
+        archeryForceMultiplier = null;
+        maxBonusLevel.clear();
+        maximumProbability.clear();
     }
 
     /* GENERAL */
 
     public boolean useAttackCooldown() {
-        return config.getBoolean("Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown",
-                true);
+        if (adjustSkillsForAttackCooldown == null) {
+            adjustSkillsForAttackCooldown = config.getBoolean(
+                    "Skills.General.Attack_Cooldown.Adjust_Skills_For_Attack_Cooldown", true);
+        }
+
+        return adjustSkillsForAttackCooldown;
     }
 
     public boolean canApplyLimitBreakPVE() {
@@ -470,10 +492,11 @@ public class AdvancedConfig extends BukkitConfig {
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
-        String keyPath = subSkillType.getAdvConfigAddress() + ".MaxBonusLevel.";
-        return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath + "RetroMode", 1000)
-                : config.getInt(
-                        keyPath + "Standard", 100);
+        return maxBonusLevel.computeIfAbsent(subSkillType, key -> {
+            final String keyPath = key.getAdvConfigAddress() + ".MaxBonusLevel.";
+            return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath + "RetroMode", 1000)
+                    : config.getInt(keyPath + "Standard", 100);
+        });
     }
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
@@ -481,8 +504,8 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public double getMaximumProbability(SubSkillType subSkillType) {
-
-        return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
+        return maximumProbability.computeIfAbsent(subSkillType,
+                key -> config.getDouble(key.getAdvConfigAddress() + ".ChanceMax", 100.0D));
     }
 
     public double getMaximumProbability(AbstractSubSkill abstractSubSkill) {
@@ -496,6 +519,14 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public boolean doesNotificationUseActionBar(NotificationType notificationType) {
+        // Unlock messages route through their own opt-in key: configs from before 2.3.000
+        // shipped with 'SubSkillUnlocked.Enabled: true' while unlock messages were hardcoded
+        // to chat, so the Enabled key does not express admin intent for this notification type.
+        if (notificationType == NotificationType.SUBSKILL_UNLOCKED) {
+            return config.getBoolean(
+                    "Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar", false);
+        }
+
         return config.getBoolean(
                 "Feedback.ActionBarNotifications." + notificationType.toString() + ".Enabled",
                 true);
@@ -561,7 +592,11 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public double getForceMultiplier() {
-        return config.getDouble("Skills.Archery.ForceMultiplier", 2.0D);
+        if (archeryForceMultiplier == null) {
+            archeryForceMultiplier = config.getDouble("Skills.Archery.ForceMultiplier", 2.0D);
+        }
+
+        return archeryForceMultiplier;
     }
 
     /* AXES */
@@ -683,6 +718,11 @@ public class AdvancedConfig extends BukkitConfig {
 
     public int getBlastMiningRankLevel(int rank) {
         return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank);
+    }
+
+    public int getRemoteDetonationDistanceLimit() {
+        return config.getInt("Skills.Mining.BlastMining.RemoteDetonationDistance",
+                BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
     }
 
     public double getBlastDamageDecrease(int rank) {

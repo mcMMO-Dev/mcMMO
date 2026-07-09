@@ -19,8 +19,9 @@ public class BukkitScoreboardBackend implements ScoreboardBackend {
     // Fixed name for compatibility: this objective lives on the main scoreboard, which is
     // persisted to the world's scoreboard data. Reusing the historical name means servers
     // upgrading from older mcMMO builds keep their existing objective instead of accumulating
-    // orphans after crashes or restarts.
-    private static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
+    // orphans after crashes or restarts. BukkitPlayerBoard reuses this name for its per-board
+    // below-name objective; removeLeftoverPowerObjective() cleans up by this exact name.
+    static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
     private static final String DISPLAY_NAME = "powerLevel";
 
     private final Map<String, BukkitPlayerBoard> activeBoards = new ConcurrentHashMap<>();
@@ -96,7 +97,7 @@ public class BukkitScoreboardBackend implements ScoreboardBackend {
 
     private @Nullable Objective getOrCreatePowerObjective() {
         if (!mcMMO.p.getGeneralConfig().getPowerLevelTagsEnabled()) {
-            unregisterLeftoverPowerObjective();
+            removeLeftoverPowerObjective();
             powerObjective = null;
             return null;
         }
@@ -122,8 +123,14 @@ public class BukkitScoreboardBackend implements ScoreboardBackend {
     /**
      * Unregisters the power level objective from the main scoreboard, including a leftover
      * objective persisted in the world's scoreboard data from a previous run.
+     * <p>
+     * This must also run when another backend is active: main-scoreboard objectives and their
+     * below-name display slot persist in the world's scoreboard data, so a leftover objective
+     * from an older run would otherwise keep rendering below nametags forever (as stale power
+     * levels, or as 0 on clients older than Minecraft 26.2 for players without a score) with
+     * nothing left in mcMMO managing it.
      */
-    private void unregisterLeftoverPowerObjective() {
+    public static void removeLeftoverPowerObjective() {
         final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
         if (scoreboardManager == null) {
             return;

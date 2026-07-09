@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.fishing;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
@@ -192,7 +193,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        return EventUtils.simulateBlockBreak(block, player);
+        return EventUtils.simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
     }
 
     /**

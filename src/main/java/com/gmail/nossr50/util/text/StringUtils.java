@@ -8,7 +8,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -21,8 +20,10 @@ public class StringUtils {
 
     protected static final DecimalFormat percent = new DecimalFormat("##0.00%",
             DecimalFormatSymbols.getInstance(Locale.US));
-    protected static final DecimalFormat shortDecimal = new DecimalFormat("##0.0",
-            DecimalFormatSymbols.getInstance(Locale.US));
+    // DecimalFormat is not thread-safe, and tick displays are formatted from region threads
+    // on Folia
+    private static final ThreadLocal<DecimalFormat> shortDecimal = ThreadLocal.withInitial(
+            () -> new DecimalFormat("##0.0", DecimalFormatSymbols.getInstance(Locale.US)));
 
     // Using concurrent hash maps to avoid concurrency issues (Folia)
     private static final Map<EntityType, String> formattedEntityStrings = new ConcurrentHashMap<>();
@@ -50,7 +51,7 @@ public class StringUtils {
      * @return String representation of seconds
      */
     public static String ticksToSeconds(double ticks) {
-        return shortDecimal.format(ticks / 20);
+        return shortDecimal.get().format(ticks / 20);
     }
 
     /**
@@ -119,35 +120,34 @@ public class StringUtils {
      * @return Pretty string
      */
     private static String createPrettyString(String baseString) {
-        return PRETTY_STRING_FUNC.apply(baseString);
+        return capitalizeAndRejoin(baseString, ' ');
     }
 
     /**
-     * Function to create a pretty string from a base string.
+     * Splits the string on underscores or spaces, capitalizes each word, and rejoins the words
+     * with the given delimiter. Shared by the pretty-string and config-string formatters.
      */
-    private static final Function<String, String> PRETTY_STRING_FUNC = baseString -> {
+    static @NotNull String capitalizeAndRejoin(@NotNull String baseString, char delimiter) {
         if (baseString.contains("_") && !baseString.contains(" ")) {
-            return prettify(baseString.split("_"));
+            return capitalizeWords(baseString.split("_"), delimiter);
+        } else if (baseString.contains(" ")) {
+            return capitalizeWords(baseString.split(" "), delimiter);
         } else {
-            if (baseString.contains(" ")) {
-                return prettify(baseString.split(" "));
-            } else {
-                return getCapitalized(baseString);
-            }
+            return getCapitalized(baseString);
         }
-    };
+    }
 
-    private static @NotNull String prettify(String[] substrings) {
-        final StringBuilder prettyString = new StringBuilder();
+    private static @NotNull String capitalizeWords(String[] words, char delimiter) {
+        final StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < substrings.length; i++) {
-            prettyString.append(getCapitalized(substrings[i]));
-            if (i < substrings.length - 1) {
-                prettyString.append(' ');
+        for (int i = 0; i < words.length; i++) {
+            result.append(getCapitalized(words[i]));
+            if (i < words.length - 1) {
+                result.append(delimiter);
             }
         }
 
-        return prettyString.toString();
+        return result.toString();
     }
 
     /**

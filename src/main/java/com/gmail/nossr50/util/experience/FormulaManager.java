@@ -164,13 +164,13 @@ public class FormulaManager {
      * @return raw xp needed to reach the next level
      */
     private int processStandardXPToNextLevel(int level, FormulaType formulaType) {
-        Map<Integer, Integer> experienceMapRef =
+        final Map<Integer, Integer> experienceMapRef =
                 formulaType == FormulaType.LINEAR ? experienceNeededStandardLinear
                         : experienceNeededStandardExponential;
 
-        if (!experienceMapRef.containsKey(level)) {
+        return experienceMapRef.computeIfAbsent(level, key -> {
             int experienceSum = 0;
-            int retroIndex = (level * 10) + 1;
+            final int retroIndex = (key * 10) + 1;
 
             //Sum the range of levels in Retro that this Standard level would represent
             for (int x = retroIndex; x < (retroIndex + 10); x++) {
@@ -178,10 +178,8 @@ public class FormulaManager {
                 experienceSum += calculateXPNeeded(x, formulaType);
             }
 
-            experienceMapRef.put(level, experienceSum);
-        }
-
-        return experienceMapRef.get(level);
+            return experienceSum;
+        });
     }
 
     /**
@@ -193,16 +191,12 @@ public class FormulaManager {
      * @return raw xp needed to reach the next level based on formula type
      */
     private int processXPRetroToNextLevel(int level, FormulaType formulaType) {
-        Map<Integer, Integer> experienceMapRef =
+        final Map<Integer, Integer> experienceMapRef =
                 formulaType == FormulaType.LINEAR ? experienceNeededRetroLinear
                         : experienceNeededRetroExponential;
 
-        if (!experienceMapRef.containsKey(level)) {
-            int experience = calculateXPNeeded(level, formulaType);
-            experienceMapRef.put(level, experience);
-        }
-
-        return experienceMapRef.get(level);
+        return experienceMapRef.computeIfAbsent(level,
+                key -> calculateXPNeeded(key, formulaType));
     }
 
     /**
@@ -214,21 +208,22 @@ public class FormulaManager {
      * @return the raw XP needed for the next level based on formula type
      */
     private int calculateXPNeeded(int level, FormulaType formulaType) {
-        int base = ExperienceConfig.getInstance().getBase(formulaType);
-        double multiplier = ExperienceConfig.getInstance().getMultiplier(formulaType);
-
-        switch (formulaType) {
-            case LINEAR:
-                return (int) Math.floor(base + level * multiplier);
-            case EXPONENTIAL:
-                double exponent = ExperienceConfig.getInstance().getExponent(formulaType);
-                return (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
-            default:
-                //TODO: Should never be called
-                mcMMO.p.getLogger()
-                        .severe("Invalid formula specified for calculation, defaulting to Linear");
-                return calculateXPNeeded(level, FormulaType.LINEAR);
+        if (formulaType != FormulaType.LINEAR && formulaType != FormulaType.EXPONENTIAL) {
+            //TODO: Should never be called
+            mcMMO.p.getLogger()
+                    .severe("Invalid formula specified for calculation, defaulting to Linear");
+            formulaType = FormulaType.LINEAR;
         }
+
+        final int base = ExperienceConfig.getInstance().getBase(formulaType);
+        final double multiplier = ExperienceConfig.getInstance().getMultiplier(formulaType);
+
+        if (formulaType == FormulaType.EXPONENTIAL) {
+            final double exponent = ExperienceConfig.getInstance().getExponent(formulaType);
+            return (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
+        }
+
+        return (int) Math.floor(base + level * multiplier);
     }
 
     /**

@@ -9,6 +9,7 @@ import static com.gmail.nossr50.util.skills.RankUtils.hasUnlockedSubskill;
 import static com.gmail.nossr50.util.text.ConfigStringUtils.getMaterialConfigString;
 import static java.util.Objects.requireNonNull;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
 import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
@@ -779,7 +780,8 @@ public class HerbalismManager extends SkillManager {
             if (skillLevel >= treasure.getDropLevel()
                     && ProbabilityUtil.isStaticSkillRNGSuccessful(PrimarySkillType.HERBALISM,
                     mmoPlayer, treasure.getDropChance())) {
-                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), mmoPlayer.getPlayer())) {
+                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), mmoPlayer.getPlayer(),
+                        FakeBlockBreakEventType.FAKE)) {
                     return false;
                 }
                 blockState.setType(Material.AIR);

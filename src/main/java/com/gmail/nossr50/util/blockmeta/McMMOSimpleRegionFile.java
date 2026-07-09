@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
  * future use bytes 12288+ contain the data segments, by default 1024 byte segments. Chunk data is
  * compressed and stored in 1 or more segments as needed.
  */
-public class McMMOSimpleRegionFile {
+public class McMMOSimpleRegionFile implements AutoCloseable {
     private static final int DEFAULT_SEGMENT_EXPONENT = 10; // TODO, analyze real world usage and determine if a smaller segment(512) is worth it or not. (need to know average chunkstore bytesize)
     private static final int DEFAULT_SEGMENT_SIZE = (int) Math.pow(2,
             DEFAULT_SEGMENT_EXPONENT); // 1024
@@ -74,18 +74,19 @@ public class McMMOSimpleRegionFile {
         this.rz = rz;
         this.parent = f;
 
+        RandomAccessFile raf = null;
         try {
-            this.file = new RandomAccessFile(parent, "rw");
+            raf = new RandomAccessFile(parent, "rw");
 
             // New file, write out header bytes
-            if (file.length() < RESERVED_HEADER_BYTES) {
-                file.write(new byte[RESERVED_HEADER_BYTES]);
-                file.seek(SEEK_FILE_INFO);
-                file.writeInt(DEFAULT_SEGMENT_EXPONENT);
+            if (raf.length() < RESERVED_HEADER_BYTES) {
+                raf.write(new byte[RESERVED_HEADER_BYTES]);
+                raf.seek(SEEK_FILE_INFO);
+                raf.writeInt(DEFAULT_SEGMENT_EXPONENT);
             }
 
-            file.seek(SEEK_FILE_INFO);
-            this.segmentExponent = file.readInt();
+            raf.seek(SEEK_FILE_INFO);
+            this.segmentExponent = raf.readInt();
             this.segmentMask = (1 << segmentExponent) - 1;
 
             // Mark reserved segments reserved
@@ -93,21 +94,34 @@ public class McMMOSimpleRegionFile {
             segments.set(0, reservedSegments, true);
 
             // Read chunk header data
-            file.seek(SEEK_CHUNK_SEGMENT_INDICES);
+            raf.seek(SEEK_CHUNK_SEGMENT_INDICES);
             for (int i = 0; i < NUM_CHUNKS; i++) {
-                chunkSegmentIndex[i] = file.readInt();
+                chunkSegmentIndex[i] = raf.readInt();
             }
 
-            file.seek(SEEK_CHUNK_BYTE_LENGTHS);
+            raf.seek(SEEK_CHUNK_BYTE_LENGTHS);
             for (int i = 0; i < NUM_CHUNKS; i++) {
-                chunkNumBytes[i] = file.readInt();
+                chunkNumBytes[i] = raf.readInt();
+                if (chunkSegmentIndex[i] < 0 || chunkNumBytes[i] < 0) {
+                    throw new IOException("Corrupt chunk header at index " + i + " (segment="
+                            + chunkSegmentIndex[i] + ", bytes=" + chunkNumBytes[i] + ")");
+                }
                 chunkNumSegments[i] = bytesToSegments(chunkNumBytes[i]);
                 markChunkSegments(i, true);
             }
 
+            this.file = raf;
             fixFileLength();
-        } catch (IOException fnfe) {
-            throw new RuntimeException(fnfe);
+        } catch (IOException | RuntimeException e) {
+            // A failed open must not keep the handle; a leaked RandomAccessFile keeps the
+            // region file locked on Windows until it is garbage collected
+            if (raf != null) {
+                try {
+                    raf.close();
+                } catch (IOException ignored) {
+                }
+            }
+            throw new RuntimeException("Unable to open region file " + parent, e);
         }
     }
 
@@ -162,6 +176,11 @@ public class McMMOSimpleRegionFile {
             return null;
         }
 
+        if (byteLength < 0 || byteLength > file.length()) {
+            throw new IOException("Corrupt chunk data in " + parent + " for chunk (" + x + ", "
+                    + z + "): impossible byte length " + byteLength);
+        }
+
         byte[] data = new byte[byteLength];
 
         file.seek((long) chunkSegmentIndex[index] << segmentExponent); // Seek to file location
@@ -169,12 +188,12 @@ public class McMMOSimpleRegionFile {
         return new DataInputStream(new InflaterInputStream(new ByteArrayInputStream(data)));
     }
 
+    @Override
     public synchronized void close() {
         try {
             file.close();
-            segments.clear();
         } catch (IOException ioe) {
-            throw new RuntimeException("Unable to close file", ioe);
+            throw new RuntimeException("Unable to close region file " + parent, ioe);
         }
     }
 

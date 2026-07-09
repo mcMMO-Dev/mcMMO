@@ -66,11 +66,22 @@ public class ExperienceBarManager {
         experienceBarWrapper.showExperienceBar();
 
         //Setup Hide Bar Task
-        if (experienceBarHideTaskHashMap.get(primarySkillType) != null) {
-            experienceBarHideTaskHashMap.get(primarySkillType).cancel();
-        }
-
+        cancelHideTask(primarySkillType);
         scheduleHideTask(primarySkillType, plugin);
+    }
+
+    /**
+     * Cancels and forgets any pending hide task for the skill. Hide tasks only remove
+     * themselves from the map when they actually run, so cancellation has to remove the entry
+     * too or cancelled tasks linger in the map.
+     */
+    private void cancelHideTask(PrimarySkillType primarySkillType) {
+        final ExperienceBarHideTask lingeringTask =
+                experienceBarHideTaskHashMap.remove(primarySkillType);
+
+        if (lingeringTask != null) {
+            lingeringTask.cancel();
+        }
     }
 
     private void scheduleHideTask(PrimarySkillType primarySkillType, Plugin plugin) {
@@ -97,8 +108,9 @@ public class ExperienceBarManager {
     }
 
     public void disableAllBars() {
+        // Apply without the per-skill chat confirmations; the summary line covers them all
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            xpBarSettingToggle(XPBarSettingTarget.HIDE, primarySkillType);
+            applyBarSetting(XPBarSettingTarget.HIDE, primarySkillType);
         }
 
         NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(),
@@ -107,35 +119,31 @@ public class ExperienceBarManager {
 
     public void xpBarSettingToggle(@NotNull XPBarSettingTarget settingTarget,
             @Nullable PrimarySkillType skillType) {
+        applyBarSetting(settingTarget, skillType);
+        informPlayer(settingTarget, skillType);
+    }
+
+    private void applyBarSetting(@NotNull XPBarSettingTarget settingTarget,
+            @Nullable PrimarySkillType skillType) {
         switch (settingTarget) {
             case SHOW:
                 disabledBars.remove(skillType);
                 alwaysVisible.add(skillType);
 
-                //Remove lingering tasks
-                if (experienceBarHideTaskHashMap.containsKey(skillType)) {
-                    experienceBarHideTaskHashMap.get(skillType).cancel();
-                }
-
+                cancelHideTask(skillType);
                 updateExperienceBar(skillType, mcMMO.p);
                 break;
             case HIDE:
                 alwaysVisible.remove(skillType);
                 disabledBars.add(skillType);
 
-                //Remove lingering tasks
-                if (experienceBarHideTaskHashMap.containsKey(skillType)) {
-                    experienceBarHideTaskHashMap.get(skillType).cancel();
-                }
-
+                cancelHideTask(skillType);
                 hideExperienceBar(skillType);
                 break;
             case RESET:
                 resetBarSettings();
                 break;
         }
-
-        informPlayer(settingTarget, skillType);
     }
 
     private void resetBarSettings() {

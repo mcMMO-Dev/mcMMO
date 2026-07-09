@@ -5,9 +5,12 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BlastMining {
     public static final int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
@@ -41,6 +44,22 @@ public class BlastMining {
         return 0;
     }
 
+    /**
+     * Resolves the online owner of an mcMMO-tracked TNT entity.
+     *
+     * @param tnt the TNT entity to resolve the owner of
+     * @return the owner, or null when the TNT is not tracked by mcMMO or the owner is offline
+     */
+    public static @Nullable Player resolveTntOwner(@NotNull Entity tnt) {
+        if (!tnt.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT)) {
+            return null;
+        }
+
+        // We can make this assumption because we (should) be the only ones using this exact metadata
+        return mcMMO.p.getServer().getPlayerExact(
+                tnt.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+    }
+
     public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event,
             TNTPrimed tntAttacker, Player defender) {
         if (!tntAttacker.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT)
@@ -48,9 +67,7 @@ public class BlastMining {
             return false;
         }
 
-        // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = mcMMO.p.getServer().getPlayerExact(
-                tntAttacker.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        final Player player = resolveTntOwner(tntAttacker);
 
         if (!(player != null && player.equals(defender))) {
             double cappedDamage = Math.min(event.getDamage(), BLAST_MINING_PVP_DAMAGE_CAP);

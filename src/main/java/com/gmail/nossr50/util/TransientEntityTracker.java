@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util;
 
-import static java.util.stream.Collectors.toSet;
-
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.skills.taming.TrackedTamingEntity;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -22,9 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class TransientEntityTracker {
-    final @NotNull Map<UUID, Set<TrackedTamingEntity>> playerSummonedEntityTracker;
+    private final @NotNull Map<UUID, Set<TrackedTamingEntity>> playerSummonedEntityTracker;
     // used for fast lookups during chunk unload events
-    final @NotNull Set<LivingEntity> entityLookupCache;
+    private final @NotNull Set<LivingEntity> entityLookupCache;
 
     public TransientEntityTracker() {
         this.playerSummonedEntityTracker = new ConcurrentHashMap<>();
@@ -42,10 +40,19 @@ public class TransientEntityTracker {
 
     public int getActiveSummonsForPlayerOfType(@NotNull UUID playerUUID,
             @NotNull CallOfTheWildType callOfTheWildType) {
-        return getTrackedEntities(playerUUID, callOfTheWildType).stream()
-                .filter(tte -> tte.getLivingEntity().isValid())
-                .mapToInt(tte -> 1)
-                .sum();
+        final Set<TrackedTamingEntity> entities = playerSummonedEntityTracker.get(playerUUID);
+        if (entities == null) {
+            return 0;
+        }
+
+        int activeSummons = 0;
+        for (TrackedTamingEntity trackedTamingEntity : entities) {
+            if (trackedTamingEntity.getCallOfTheWildType() == callOfTheWildType
+                    && trackedTamingEntity.getLivingEntity().isValid()) {
+                activeSummons++;
+            }
+        }
+        return activeSummons;
     }
 
     public void addSummon(@NotNull UUID playerUUID,
@@ -86,17 +93,6 @@ public class TransientEntityTracker {
 
     public boolean isTransient(@NotNull LivingEntity livingEntity) {
         return entityLookupCache.contains(livingEntity);
-    }
-
-    private @NotNull Set<TrackedTamingEntity> getTrackedEntities(@NotNull UUID playerUUID,
-            @NotNull CallOfTheWildType callOfTheWildType) {
-        final Set<TrackedTamingEntity> entities =
-                playerSummonedEntityTracker.computeIfAbsent(playerUUID,
-                        __ -> ConcurrentHashMap.newKeySet());
-        return entities.stream()
-                .filter(trackedTamingEntity -> trackedTamingEntity.getCallOfTheWildType()
-                        == callOfTheWildType)
-                .collect(toSet());
     }
 
     private void cleanPlayer(@Nullable Player player, @NotNull UUID playerUUID) {

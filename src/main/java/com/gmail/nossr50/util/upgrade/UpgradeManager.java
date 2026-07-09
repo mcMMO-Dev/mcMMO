@@ -48,7 +48,8 @@ public class UpgradeManager extends BukkitConfig {
         try {
             config.save(getFile());
         } catch (Exception e) {
-            e.printStackTrace();
+            mcMMO.p.getLogger().severe(
+                    "Could not save upgrade status for type " + type + ": " + e);
         }
     }
 

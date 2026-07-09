@@ -33,8 +33,11 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class SalvageManager extends SkillManager {
+    private static final int CONFIRMATION_WINDOW_SECONDS = 3;
+
     private boolean placedAnvil;
     private int lastClick;
+    private ItemStack itemAwaitingConfirmation;
 
     public SalvageManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.SALVAGE);
@@ -284,8 +287,8 @@ public class SalvageManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !mcMMO.p.getGeneralConfig()
-                .getSalvageConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, CONFIRMATION_WINDOW_SECONDS)
+                || !mcMMO.p.getGeneralConfig().getSalvageConfirmRequired()) {
             return true;
         }
 
@@ -299,6 +302,50 @@ public class SalvageManager extends SkillManager {
                 "Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name"));
 
         return false;
+    }
+
+    /**
+     * Check if the player has confirmed salvaging the given item. A confirmation only applies to
+     * items matching the one the player was prompted for, so a held item that changed since the
+     * prompt (for example through vanilla armor quick-equipping) starts a new confirmation
+     * instead of being salvaged.
+     *
+     * @param item the item the player is attempting to salvage
+     * @param actualize whether to start a new confirmation when none applies to the item
+     * @return true if the player has confirmed salvaging the given item
+     */
+    public boolean checkConfirmation(ItemStack item, boolean actualize) {
+        if (!mcMMO.p.getGeneralConfig().getSalvageConfirmRequired()) {
+            return true;
+        }
+
+        if (isAwaitingConfirmation(item)) {
+            return true;
+        }
+
+        if (!actualize) {
+            return false;
+        }
+
+        actualizeLastAnvilUse();
+        itemAwaitingConfirmation = item.clone();
+
+        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE,
+                "Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name"));
+
+        return false;
+    }
+
+    /**
+     * Check whether a salvage confirmation prompt is active for an item matching the given one.
+     *
+     * @param item the item to compare against the prompted item
+     * @return true if the given item matches an active salvage confirmation
+     */
+    public boolean isAwaitingConfirmation(ItemStack item) {
+        return itemAwaitingConfirmation != null && item != null
+                && !SkillUtils.cooldownExpired(getLastAnvilUse(), CONFIRMATION_WINDOW_SECONDS)
+                && itemAwaitingConfirmation.isSimilar(item);
     }
 
     /*

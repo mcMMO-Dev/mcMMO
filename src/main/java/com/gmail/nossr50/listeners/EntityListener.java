@@ -91,20 +91,31 @@ import org.bukkit.projectiles.ProjectileSource;
 public class EntityListener implements Listener {
     private static final String PIERCING = "piercing";
     private static final String DEEPSLATE_REDSTONE_ORE = "deepslate_redstone_ore";
-    private static final Set<String> ARMOR_STAND = Set.of("ARMOR_STAND", "armor_stand");
+    // String-matched because the entity type does not exist in the oldest supported API
     private static final Set<String> MANNEQUIN = Set.of("mannequin", "MANNEQUIN");
     private final mcMMO pluginRef;
 
     /**
-     * We can use this {@link NamespacedKey} for {@link Enchantment} comparisons to check if a
-     * {@link Player} has a {@link Trident} enchanted with "Piercing".
+     * Used to check if a {@link Player} has a {@link Trident} enchanted with "Piercing".
+     * Resolved on first use because the enchantment registry isn't available when listeners are
+     * constructed in tests; the benign race just re-resolves the same enchantment.
      */
-    private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft(PIERCING);
+    private Enchantment piercingEnchantment;
+    private boolean piercingEnchantmentResolved;
     private final static Set<EntityType> TRANSFORMABLE_ENTITIES
             = Set.of(EntityType.SLIME, EntityType.MAGMA_CUBE);
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+    }
+
+    private Enchantment resolvePiercingEnchantment() {
+        if (!piercingEnchantmentResolved) {
+            piercingEnchantment = Enchantment.getByKey(NamespacedKey.minecraft(PIERCING));
+            piercingEnchantmentResolved = true;
+        }
+
+        return piercingEnchantment;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -149,6 +160,9 @@ public class EntityListener implements Listener {
         }
     }
 
+    // ignoreCancelled is deliberately false (changed from true in the 2.2 Endgame Update):
+    // arrow metadata must be applied even for shots other plugins cancel, so the delayed
+    // metadata cleanup still runs for those arrows
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onEntityShootBow(EntityShootBowEvent event) {
         /* WORLD BLACKLIST CHECK */
@@ -172,7 +186,7 @@ public class EntityListener implements Listener {
 
             if (bow.containsEnchantment(mcMMO.p.getEnchantmentMapper().getInfinity())) {
                 projectile.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW,
-                        MetadataConstants.MCMMO_METADATA_VALUE);
+                        MetadataConstants.getMcMMOMetadataValue());
             }
 
             // Set BowType, Force, and Distance metadata
@@ -222,14 +236,16 @@ public class EntityListener implements Listener {
                 }
 
                 //Check both hands
-                if (ItemUtils.doesPlayerHaveEnchantmentInHands(player, PIERCING)) {
+                final Enchantment piercing = resolvePiercingEnchantment();
+                if (piercing != null
+                        && ItemUtils.doesPlayerHaveEnchantmentInHands(player, piercing)) {
                     return;
                 }
 
                 if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL,
                         UserManager.getPlayer(player))) {
                     arrow.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW,
-                            MetadataConstants.MCMMO_METADATA_VALUE);
+                            MetadataConstants.getMcMMOMetadataValue());
                 }
             }
         }
@@ -255,7 +271,7 @@ public class EntityListener implements Listener {
         // When the event is fired for the falling block that changes back to a
         // normal block
         // event.getBlock().getType() returns AIR
-        if (!BlockUtils.shouldBeWatched(block.getState())
+        if (!BlockUtils.shouldBeWatched(notYetReplacedType)
                 && notYetReplacedType != Material.WATER && notYetReplacedType != Material.LAVA
                 && block.getType() != Material.AIR && block.getType() != Material.CAVE_AIR) {
             return;
@@ -273,7 +289,7 @@ public class EntityListener implements Listener {
                 mcMMO.getUserBlockTracker().setEligible(block);
 
                 entity.setMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK,
-                        MetadataConstants.MCMMO_METADATA_VALUE);
+                        MetadataConstants.getMcMMOMetadataValue());
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity,
                         pluginRef);
                 final Runnable retired = () -> entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
@@ -297,19 +313,26 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {
         //Prevent players from setting fire to each other if they are in the same party
-        if (event.getEntity() instanceof Player defender) {
+        if (!(event.getEntity() instanceof Player defender)) {
+            return;
+        }
 
-            if (event.getCombuster() instanceof Projectile projectile) {
-                if (projectile.getShooter() instanceof Player attacker) {
-                    if (checkIfInPartyOrSamePlayer(event, defender, attacker)) {
-                        event.setCancelled(true);
-                    }
-                }
-            } else if (event.getCombuster() instanceof Player attacker) {
-                if (checkIfInPartyOrSamePlayer(event, defender, attacker)) {
-                    event.setCancelled(true);
-                }
-            }
+        final Player attacker;
+        if (event.getCombuster() instanceof Projectile projectile
+                && projectile.getShooter() instanceof Player shooter) {
+            attacker = shooter;
+        } else if (event.getCombuster() instanceof Player playerCombuster) {
+            attacker = playerCombuster;
+        } else {
+            return;
+        }
+
+        // Cancel only genuine friendly fire (self-ignition or disallowed party fire); a player
+        // whose data has not loaded yet is not friendly fire and must burn normally
+        final FriendlyFire.Outcome outcome = resolveFriendlyFire(defender, attacker);
+        if (outcome == FriendlyFire.Outcome.SELF
+                || outcome == FriendlyFire.Outcome.CANCEL_FRIENDLY_FIRE) {
+            event.setCancelled(true);
         }
     }
 
@@ -320,16 +343,41 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof LivingEntity livingEntity) {
-            if (CombatUtils.hasIgnoreDamageMetadata(livingEntity)) {
-                return;
-            }
+        /* WORLD BLACKLIST CHECK */
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
+            return;
         }
 
-        double damage = event.getFinalDamage();
-        Entity defender = event.getEntity();
+        final Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
 
+        if (isArmorStandEntity(attacker)
+                && ExperienceConfig.getInstance().isArmorStandInteractionPrevented()) {
+            return;
+        }
+
+        if (isMannequinEntity(attacker)
+                && ExperienceConfig.getInstance().isMannequinInteractionPrevented()) {
+            return;
+        }
+
+        final boolean npcInteractionPrevented =
+                ExperienceConfig.getInstance().isNPCInteractionPrevented();
+
+        if ((npcInteractionPrevented && Misc.isNPCEntityExcludingVillagers(defender))
+                || !defender.isValid() || !(defender instanceof LivingEntity target)) {
+            return;
+        }
+
+        if (CombatUtils.hasIgnoreDamageMetadata(target)) {
+            return;
+        }
+
+        if (npcInteractionPrevented && Misc.isNPCEntityExcludingVillagers(attacker)) {
+            return;
+        }
+
+        /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (attacker instanceof Player) {
 
@@ -349,37 +397,9 @@ public class EntityListener implements Listener {
             }
         }
 
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
-            return;
-        }
-
-        if (ExperienceConfig.getInstance().isArmorStandInteractionPrevented()
-                && isArmorStandEntity(attacker)) {
-            return;
-        }
-
-        if (ExperienceConfig.getInstance().isMannequinInteractionPrevented()
-                && isMannequinEntity(attacker)) {
-            return;
-        }
-
-        if ((ExperienceConfig.getInstance().isNPCInteractionPrevented()
-                && Misc.isNPCEntityExcludingVillagers(defender)) || !defender.isValid()
-                || !(defender instanceof LivingEntity target)) {
-            return;
-        }
+        final double damage = event.getFinalDamage();
 
         if (CombatUtils.isInvincible(target, damage)) {
-            return;
-        }
-
-        if (ExperienceConfig.getInstance().isNPCInteractionPrevented()
-                && Misc.isNPCEntityExcludingVillagers(attacker)) {
-            return;
-        }
-
-        if (CombatUtils.hasIgnoreDamageMetadata(target)) {
             return;
         }
 
@@ -546,31 +566,28 @@ public class EntityListener implements Listener {
 
     public boolean checkIfInPartyOrSamePlayer(Cancellable event, Player defendingPlayer,
             Player attackingPlayer) {
-        // This check is probably necessary outside of the party system
-        if (defendingPlayer.equals(attackingPlayer)) {
-            return true;
+        final FriendlyFire.Outcome outcome = resolveFriendlyFire(defendingPlayer,
+                attackingPlayer);
+
+        if (outcome == FriendlyFire.Outcome.CANCEL_FRIENDLY_FIRE) {
+            event.setCancelled(true);
         }
 
-        if (!pluginRef.isPartySystemEnabled()) {
-            return false;
-        }
+        return outcome != FriendlyFire.Outcome.PROCESS;
+    }
 
-        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(
-                attackingPlayer)) {
-            return true;
-        }
-
-        //Party Friendly Fire
-        if (!mcMMO.p.getGeneralConfig().getPartyFriendlyFire()) {
-            if ((mcMMO.p.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
-                    || mcMMO.p.getPartyManager().areAllies(defendingPlayer, attackingPlayer))
-                    && !(Permissions.friendlyFire(attackingPlayer)
-                    && Permissions.friendlyFire(defendingPlayer))) {
-                event.setCancelled(true);
-                return true;
-            }
-        }
-        return false;
+    private FriendlyFire.Outcome resolveFriendlyFire(Player defendingPlayer,
+            Player attackingPlayer) {
+        return FriendlyFire.resolve(
+                defendingPlayer.equals(attackingPlayer),
+                pluginRef.isPartySystemEnabled(),
+                () -> UserManager.hasPlayerDataKey(defendingPlayer)
+                        && UserManager.hasPlayerDataKey(attackingPlayer),
+                () -> mcMMO.p.getGeneralConfig().getPartyFriendlyFire(),
+                () -> mcMMO.p.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
+                        || mcMMO.p.getPartyManager().areAllies(defendingPlayer, attackingPlayer),
+                () -> Permissions.friendlyFire(attackingPlayer)
+                        && Permissions.friendlyFire(defendingPlayer));
     }
 
     /**
@@ -622,14 +639,6 @@ public class EntityListener implements Listener {
         }
 
         Entity entity = event.getEntity();
-
-        /*
-        As far as I can tell at one point we registered meta-data about custom damage and we no longer do that.
-        if (entity.hasMetadata(mcMMO.customDamageKey)) {
-            entity.removeMetadata(mcMMO.customDamageKey, plugin);
-            return;
-        }
-        */
 
         if ((ExperienceConfig.getInstance().isNPCInteractionPrevented()
                 && Misc.isNPCEntityExcludingVillagers(entity)) || !entity.isValid()
@@ -683,12 +692,14 @@ public class EntityListener implements Listener {
                 final Player player = (Player) owner;
                 Wolf wolf = (Wolf) pet;
 
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
                 //Profile not loaded
-                if (UserManager.getPlayer(player) == null) {
+                if (mmoPlayer == null) {
                     return;
                 }
 
-                TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
+                TamingManager tamingManager = mmoPlayer.getTamingManager();
 
                 switch (cause) {
                     case CONTACT:
@@ -786,9 +797,8 @@ public class EntityListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         final LivingEntity entity = event.getEntity();
 
-        if (mcMMO.getTransientEntityTracker().isTransient(entity)) {
-            mcMMO.getTransientEntityTracker().killSummonAndCleanMobFlags(entity, null, false);
-        }
+        // A dying summon is no longer valid, so it has to be untracked here rather than killed
+        mcMMO.getTransientEntityTracker().removeTrackedEntity(entity);
 
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
@@ -841,8 +851,8 @@ public class EntityListener implements Listener {
         flagMetadata(mobMetaFlagType, livingEntity);
 
         for (Entity passenger : livingEntity.getPassengers()) {
-            if (passenger != null) {
-                flagMetadata(mobMetaFlagType, livingEntity);
+            if (passenger instanceof LivingEntity livingPassenger) {
+                flagMetadata(mobMetaFlagType, livingPassenger);
             }
         }
     }
@@ -883,22 +893,20 @@ public class EntityListener implements Listener {
 
         final Entity entity = event.getEntity();
 
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(
-                MetadataConstants.METADATA_KEY_TRACKED_TNT)) {
+        if (!(entity instanceof TNTPrimed)) {
             return;
         }
 
-        // We can make this assumption because we (should) be the only ones
-        // using this exact metadata
-        final Player player = pluginRef.getServer().getPlayerExact(
-                entity.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        final Player player = BlastMining.resolveTntOwner(entity);
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         // Profile is not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
@@ -909,7 +917,7 @@ public class EntityListener implements Listener {
             }
         }
 
-        final MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        final MiningManager miningManager = mmoPlayer.getMiningManager();
 
         if (miningManager.canUseBiggerBombs()) {
             event.setRadius(miningManager.biggerBombs(event.getRadius()));
@@ -930,15 +938,11 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(
-                MetadataConstants.METADATA_KEY_TRACKED_TNT)) {
+        if (!(entity instanceof TNTPrimed)) {
             return;
         }
 
-        // We can make this assumption because we (should) be the only ones
-        // using this exact metadata
-        Player player = pluginRef.getServer().getPlayerExact(
-                entity.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        final Player player = BlastMining.resolveTntOwner(entity);
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
@@ -951,12 +955,14 @@ public class EntityListener implements Listener {
             }
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        MiningManager miningManager = mmoPlayer.getMiningManager();
 
         if (miningManager.canUseBlastMining()) {
             miningManager.blastMiningDropProcessing(event.getYield(), event);
@@ -982,8 +988,10 @@ public class EntityListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
@@ -1006,90 +1014,31 @@ public class EntityListener implements Listener {
             return;
         }
 
-        //Determine which hand is eating food
-        //The main hand is used over the off hand if they both have food, so check the main hand first
-        Material foodInHand;
+        //The main hand is used over the off hand if they both have food
+        final Material foodInHand = DietFoods.eatenFood(
+                player.getInventory().getItemInMainHand().getType(),
+                player.getInventory().getItemInOffHand().getType(),
+                mcMMO.getMaterialMapStore()::isFood);
 
-        if (mcMMO.getMaterialMapStore()
-                .isFood(player.getInventory().getItemInMainHand().getType())) {
-            foodInHand = player.getInventory().getItemInMainHand().getType();
-        } else if (mcMMO.getMaterialMapStore()
-                .isFood(player.getInventory().getItemInOffHand().getType())) {
-            foodInHand = player.getInventory().getItemInOffHand().getType();
-        } else {
+        if (foodInHand == null) {
             return; //Not Food
         }
 
-        /*
-         * Some foods have 3 ranks Some foods have 5 ranks The number of ranks
-         * is based on how 'common' the item is We can adjust this quite easily
-         * if we find something is giving too much of a bonus
-         */
-
-        //Hacky 1.17 support
-        if (foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
-            if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager()
-                        .farmersDiet(newFoodLevel));
+        switch (DietFoods.dietFor(foodInHand)) {
+            case FARMERS -> {
+                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
+                    event.setFoodLevel(
+                            mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
+                }
             }
-
-            return;
-        }
-
-        switch (foodInHand) {
-            case BAKED_POTATO: /*
-             * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-             * 1000
-             */
-            case BEETROOT:
-            case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-            case CARROT: /*
-             * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
-             * 1000
-             */
-            case GOLDEN_CARROT: /*
-             * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-             * 1000
-             */
-            case MUSHROOM_STEW: /*
-             * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-             * 1000
-             */
-            case PUMPKIN_PIE: /*
-             * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-             * 1000
-             */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager()
-                            .farmersDiet(newFoodLevel));
-                }
-                return;
-
-            case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-            case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-            case POISONOUS_POTATO: /*
-             * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
-             * @ 1000
-             */
-            case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager()
-                            .farmersDiet(newFoodLevel));
-                }
-                return;
-            case COD:
-            case SALMON:
-            case TROPICAL_FISH:
-            case COOKED_COD:
-            case COOKED_SALMON:
-
+            case FISHERMANS -> {
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager()
-                            .handleFishermanDiet(newFoodLevel));
+                    event.setFoodLevel(
+                            mmoPlayer.getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
-                return;
-
-            default:
+            }
+            case NONE -> {
+            }
         }
     }
 
@@ -1109,7 +1058,10 @@ public class EntityListener implements Listener {
             return;
         }
 
-        final Player player = (Player) event.getOwner();
+        // Owners tamed through the API don't have to be players
+        if (!(event.getOwner() instanceof Player player)) {
+            return;
+        }
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
@@ -1130,12 +1082,14 @@ public class EntityListener implements Listener {
 
         flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        UserManager.getPlayer(player).getTamingManager().awardTamingXP(livingEntity);
+        mmoPlayer.getTamingManager().awardTamingXP(livingEntity);
     }
 
     /**
@@ -1191,13 +1145,13 @@ public class EntityListener implements Listener {
 
         ItemMeta meta = event.getPotion().getItem().getItemMeta();
 
-        if (meta == null) {
+        if (!(meta instanceof PotionMeta potionMeta)) {
             return;
         }
 
-        for (PotionEffect effect : ((PotionMeta) meta).getCustomEffects()) {
+        for (PotionEffect effect : potionMeta.getCustomEffects()) {
             if (!effect.getType().equals(PotionEffectType.SATURATION)) {
-                return;
+                continue;
             }
 
             for (LivingEntity entity : event.getAffectedEntities()) {
@@ -1236,6 +1190,6 @@ public class EntityListener implements Listener {
     }
 
     public static boolean isArmorStandEntity(Entity attacker) {
-        return ARMOR_STAND.contains(attacker.getType().toString());
+        return attacker.getType() == EntityType.ARMOR_STAND;
     }
 }

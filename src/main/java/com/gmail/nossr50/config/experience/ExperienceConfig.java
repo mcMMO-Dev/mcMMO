@@ -32,7 +32,28 @@ public class ExperienceConfig extends BukkitConfig {
     private Double experienceGainsGlobalMultiplier;
     private Double customXpPerkBoost;
     private Boolean diminishedReturnsEnabled;
+    private Boolean earlyGameBoostEnabled;
+    private Boolean npcInteractionPrevented;
+    private Boolean armorStandInteractionPrevented;
+    private Boolean mannequinInteractionPrevented;
+    private Boolean snowExploitPrevented;
+    private Boolean endermanEndermiteFarmingPrevented;
+    private Boolean pistonCheatingPrevented;
+    private Boolean pistonExploitPrevented;
+    private Boolean stoneLavaFarmingPrevented;
+    private Boolean tallPlantXPLimited;
+    private Float diminishedReturnsCap;
+    private Integer diminishedReturnsTimeInterval;
+    private Boolean experienceBarsEnabled;
     private final Map<PrimarySkillType, Double> formulaSkillModifiers =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, Integer> diminishedReturnsThresholds =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, Boolean> experienceBarEnabled =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, BarColor> experienceBarColors =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, BarStyle> experienceBarStyles =
             new EnumMap<>(PrimarySkillType.class);
 
     private ExperienceConfig() {
@@ -67,7 +88,24 @@ public class ExperienceConfig extends BukkitConfig {
         experienceGainsGlobalMultiplier = null;
         customXpPerkBoost = null;
         diminishedReturnsEnabled = null;
+        earlyGameBoostEnabled = null;
+        npcInteractionPrevented = null;
+        armorStandInteractionPrevented = null;
+        mannequinInteractionPrevented = null;
+        snowExploitPrevented = null;
+        endermanEndermiteFarmingPrevented = null;
+        pistonCheatingPrevented = null;
+        pistonExploitPrevented = null;
+        stoneLavaFarmingPrevented = null;
+        tallPlantXPLimited = null;
+        diminishedReturnsCap = null;
+        diminishedReturnsTimeInterval = null;
+        experienceBarsEnabled = null;
         formulaSkillModifiers.clear();
+        diminishedReturnsThresholds.clear();
+        experienceBarEnabled.clear();
+        experienceBarColors.clear();
+        experienceBarStyles.clear();
     }
 
     @Override
@@ -177,7 +215,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean isEarlyGameBoostEnabled() {
-        return config.getBoolean("EarlyGameBoost.Enabled", true);
+        if (earlyGameBoostEnabled == null) {
+            earlyGameBoostEnabled = config.getBoolean("EarlyGameBoost.Enabled", true);
+        }
+
+        return earlyGameBoostEnabled;
     }
 
     /*
@@ -186,19 +228,36 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* EXPLOIT TOGGLES */
     public boolean isSnowExploitPrevented() {
-        return config.getBoolean("ExploitFix.SnowGolemExcavation", true);
+        if (snowExploitPrevented == null) {
+            snowExploitPrevented = config.getBoolean("ExploitFix.SnowGolemExcavation", true);
+        }
+
+        return snowExploitPrevented;
     }
 
     public boolean isEndermanEndermiteFarmingPrevented() {
-        return config.getBoolean("ExploitFix.EndermanEndermiteFarms", true);
+        if (endermanEndermiteFarmingPrevented == null) {
+            endermanEndermiteFarmingPrevented = config.getBoolean(
+                    "ExploitFix.EndermanEndermiteFarms", true);
+        }
+
+        return endermanEndermiteFarmingPrevented;
     }
 
     public boolean isPistonCheatingPrevented() {
-        return config.getBoolean("ExploitFix.PistonCheating", true);
+        if (pistonCheatingPrevented == null) {
+            pistonCheatingPrevented = config.getBoolean("ExploitFix.PistonCheating", true);
+        }
+
+        return pistonCheatingPrevented;
     }
 
     public boolean isPistonExploitPrevented() {
-        return config.getBoolean("ExploitFix.Pistons", false);
+        if (pistonExploitPrevented == null) {
+            pistonExploitPrevented = config.getBoolean("ExploitFix.Pistons", false);
+        }
+
+        return pistonExploitPrevented;
     }
 
     public boolean allowUnsafeEnchantments() {
@@ -210,15 +269,30 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean isNPCInteractionPrevented() {
-        return config.getBoolean("ExploitFix.PreventPluginNPCInteraction", true);
+        if (npcInteractionPrevented == null) {
+            npcInteractionPrevented = config.getBoolean("ExploitFix.PreventPluginNPCInteraction",
+                    true);
+        }
+
+        return npcInteractionPrevented;
     }
 
     public boolean isArmorStandInteractionPrevented() {
-        return config.getBoolean("ExploitFix.PreventArmorStandInteraction", true);
+        if (armorStandInteractionPrevented == null) {
+            armorStandInteractionPrevented = config.getBoolean(
+                    "ExploitFix.PreventArmorStandInteraction", true);
+        }
+
+        return armorStandInteractionPrevented;
     }
 
     public boolean isMannequinInteractionPrevented() {
-        return config.getBoolean("ExploitFix.PreventMannequinInteraction", true);
+        if (mannequinInteractionPrevented == null) {
+            mannequinInteractionPrevented = config.getBoolean(
+                    "ExploitFix.PreventMannequinInteraction", true);
+        }
+
+        return mannequinInteractionPrevented;
     }
 
     public boolean isFishingExploitingPrevented() {
@@ -235,6 +309,10 @@ public class ExperienceConfig extends BukkitConfig {
 
     public boolean isAcrobaticsExploitingPrevented() {
         return config.getBoolean("ExploitFix.Acrobatics", true);
+    }
+
+    public boolean isAcrobaticsDodgeXpFarmingPrevented() {
+        return config.getBoolean("ExploitFix.AcrobaticsDodgeXpFarming", true);
     }
 
     public boolean isTreeFellerXPReduced() {
@@ -340,7 +418,12 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Diminished Returns */
     public float getDiminishedReturnsCap() {
-        return (float) config.getDouble("Diminished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
+        if (diminishedReturnsCap == null) {
+            diminishedReturnsCap = (float) config.getDouble(
+                    "Diminished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
+        }
+
+        return diminishedReturnsCap;
     }
 
     public boolean getDiminishedReturnsEnabled() {
@@ -352,13 +435,17 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public int getDiminishedReturnsThreshold(PrimarySkillType skill) {
-        return config.getInt(
-                "Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()),
-                20000);
+        return diminishedReturnsThresholds.computeIfAbsent(skill, key -> config.getInt(
+                "Diminished_Returns.Threshold." + StringUtils.getCapitalized(key.toString()),
+                20000));
     }
 
     public int getDiminishedReturnsTimeInterval() {
-        return config.getInt("Diminished_Returns.Time_Interval", 10);
+        if (diminishedReturnsTimeInterval == null) {
+            diminishedReturnsTimeInterval = config.getInt("Diminished_Returns.Time_Interval", 10);
+        }
+
+        return diminishedReturnsTimeInterval;
     }
 
     /* Conversion */
@@ -471,20 +558,29 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public int getCombatHPCeiling() {
-        return config.getInt("ExploitFix.Combat.XPCeiling.HP_Modifier_Limit", 100);
+        return config.getInt("ExploitFix.Combat.XPCeiling.Damage_Limit", 100);
     }
 
     public boolean isExperienceBarsEnabled() {
-        return config.getBoolean("Experience_Bars.Enable", true);
+        if (experienceBarsEnabled == null) {
+            experienceBarsEnabled = config.getBoolean("Experience_Bars.Enable", true);
+        }
+
+        return experienceBarsEnabled;
     }
 
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) {
-        return config.getBoolean(
-                "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
-                        + ".Enable", true);
+        return experienceBarEnabled.computeIfAbsent(primarySkillType, key -> config.getBoolean(
+                "Experience_Bars." + StringUtils.getCapitalized(key.toString()) + ".Enable",
+                true));
     }
 
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType) {
+        return experienceBarColors.computeIfAbsent(primarySkillType,
+                this::resolveExperienceBarColor);
+    }
+
+    private BarColor resolveExperienceBarColor(PrimarySkillType primarySkillType) {
         String colorValueFromConfig = config.getString(
                 "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
                         + ".Color");
@@ -500,6 +596,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType) {
+        return experienceBarStyles.computeIfAbsent(primarySkillType,
+                this::resolveExperienceBarStyle);
+    }
+
+    private BarStyle resolveExperienceBarStyle(PrimarySkillType primarySkillType) {
         String colorValueFromConfig = config.getString(
                 "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
                         + ".BarStyle");
@@ -564,10 +665,19 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean preventStoneLavaFarming() {
-        return config.getBoolean("ExploitFix.LavaStoneAndCobbleFarming", true);
+        if (stoneLavaFarmingPrevented == null) {
+            stoneLavaFarmingPrevented = config.getBoolean(
+                    "ExploitFix.LavaStoneAndCobbleFarming", true);
+        }
+
+        return stoneLavaFarmingPrevented;
     }
 
     public boolean limitXPOnTallPlants() {
-        return config.getBoolean("ExploitFix.LimitTallPlantFarming", true);
+        if (tallPlantXPLimited == null) {
+            tallPlantXPLimited = config.getBoolean("ExploitFix.LimitTallPlantFarming", true);
+        }
+
+        return tallPlantXPLimited;
     }
 }

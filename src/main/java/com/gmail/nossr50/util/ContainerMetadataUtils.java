@@ -26,13 +26,18 @@ public class ContainerMetadataUtils {
             return;
         }
 
+        changeContainerOwnership(blockState, getContainerOwner(blockState), player);
+    }
+
+    private static void changeContainerOwnership(@NotNull BlockState blockState,
+            @Nullable OfflinePlayer previousOwner, @NotNull Player player) {
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         /*
             Debug output
          */
         printOwnershipGainDebug(blockState, mmoPlayer);
-        printOwnershipLossDebug(blockState);
+        printOwnershipLossDebug(blockState, previousOwner);
         setOwner(blockState, player.getUniqueId());
     }
 
@@ -46,17 +51,18 @@ public class ContainerMetadataUtils {
     }
 
     public static void printOwnershipLossDebug(BlockState blockState) {
-        OfflinePlayer containerOwner = getContainerOwner(blockState);
+        printOwnershipLossDebug(blockState, getContainerOwner(blockState));
+    }
 
+    private static void printOwnershipLossDebug(@NotNull BlockState blockState,
+            @Nullable OfflinePlayer containerOwner) {
         if (containerOwner != null && containerOwner.isOnline()) {
             final McMMOPlayer mmoContainerOwner = UserManager.getPlayer(containerOwner.getPlayer());
 
-            if (mmoContainerOwner != null) {
-                if (mmoContainerOwner.isDebugMode()) {
-                    mmoContainerOwner.getPlayer().sendMessage("Container ownership " +
-                            ChatColor.RED + "lost " + ChatColor.RESET +
-                            "at location: " + blockState.getLocation());
-                }
+            if (mmoContainerOwner != null && mmoContainerOwner.isDebugMode()) {
+                mmoContainerOwner.getPlayer().sendMessage("Container ownership " +
+                        ChatColor.RED + "lost " + ChatColor.RESET +
+                        "at location: " + blockState.getLocation());
             }
         }
     }
@@ -84,13 +90,13 @@ public class ContainerMetadataUtils {
             return;
         }
 
-        if (getContainerOwner(blockState) != null) {
-            if (getContainerOwner(blockState).getUniqueId().equals(player.getUniqueId())) {
-                return;
-            }
+        final OfflinePlayer containerOwner = getContainerOwner(blockState);
+
+        if (containerOwner != null && containerOwner.getUniqueId().equals(player.getUniqueId())) {
+            return;
         }
 
-        changeContainerOwnership(blockState, player);
+        changeContainerOwnership(blockState, containerOwner, player);
     }
 
     public static @Nullable UUID getOwner(@NotNull PersistentDataHolder persistentDataHolder) {

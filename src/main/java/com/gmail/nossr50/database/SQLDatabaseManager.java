@@ -253,6 +253,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         int purged = 0;
 
+        // lastlogin is stored in unix seconds, but the purge time is tracked in milliseconds
+        final long purgeTimeSeconds = mcMMO.p.getPurgeTime() / 1000L;
+
         try (Connection connection = getConnection(PoolIdentifier.MISC);
                 Statement statement = connection.createStatement()) {
 
@@ -262,8 +265,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                             "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                             "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                            "WHERE ((UNIX_TIMESTAMP() - lastlogin) > " + mcMMO.p.getPurgeTime()
-                            + ")"
+                            "WHERE ((UNIX_TIMESTAMP() - lastlogin) > " + purgeTimeSeconds + ")"
             );
         } catch (SQLException ex) {
             logSQLException(ex);
