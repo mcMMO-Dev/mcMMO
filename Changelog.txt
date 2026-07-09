@@ -9,7 +9,6 @@ Version 2.3.000
     Fixed Tree Feller ignoring durability damage changes made by other plugins via PlayerItemDamageEvent
     Fixed Acrobatics Dodge exploit prevention never limiting Dodge XP from a single mob (See notes)
     Fixed 'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml being ignored (See notes)
-    Fixed Salvage giving nothing back for damaged items that salvage into a single material (See notes)
     Fixed Salvage and Repair confirmations being able to act on a different item than the one prompted (See notes)
     Fixed armor sometimes being equipped instead of salvaged when right-clicking a salvage anvil
     Fixed scoreboards for Salvage and Smelting not updating until the skill command was used again
@@ -77,7 +76,7 @@ Version 2.3.000
     (API) ProbabilityUtil.percent is deprecated and no longer used internally
     (API) EventUtils.simulateBlockBreak overloads without a FakeBlockBreakEventType are deprecated in favor of the variant that takes one
     (API) The no-op ScoreboardManager.enablePlayerSkillLevelUpScoreboard is deprecated for removal
-    (API) MaterialMapStore getters now return copies instead of live internal collections
+    (API) mcMMO now prevents other plugins from modifying its internal material maps
     (API) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
     (API) Deprecated unused public utility methods and fields
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
@@ -106,7 +105,6 @@ Version 2.3.000
     Power level tags could get stuck showing 0 for players whose data was still loading. Servers that ran older builds with 'Power_Level_Tags' enabled could also have an old power level display saved in world data that kept showing stale numbers; leftovers are now cleaned up automatically on startup. On Minecraft 26.1 clients the power level can still render on holograms and pets due to a client bug that Mojang fixed in 26.2.
 
     -- Salvage and Repair --
-    Items that only salvage into a single material (such as wooden shovels with the default salvage.vanilla.yml) previously could not be salvaged at all unless they were at full durability. Damaged items now always return at least one material unless the item is completely broken.
     The Salvage/Repair confirm click now has to be made with the same item that triggered the prompt; if the held item changes during the confirmation window you get a new prompt instead of the new item being instantly salvaged or repaired. While a confirmation is pending the prompted item also can't be used, which stops vanilla armor quick-swap from equipping or swapping armor mid-confirmation.
 
     -- XP and exploit fixes --
