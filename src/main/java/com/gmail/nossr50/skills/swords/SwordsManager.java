@@ -65,7 +65,7 @@ public class SwordsManager extends SkillManager {
      * @deprecated use {@link #processRupture(LivingEntity, double)} instead; this overload reads
      * the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void processRupture(@NotNull LivingEntity target) {
         processRupture(target, mmoPlayer.getAttackStrength());
     }
@@ -171,7 +171,7 @@ public class SwordsManager extends SkillManager {
      * overload reads the live attack cooldown, which is unreliable during damage events on Paper
      * 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void serratedStrikes(@NotNull LivingEntity target, double damage) {
         serratedStrikes(target, damage, mmoPlayer.getAttackStrength());
     }

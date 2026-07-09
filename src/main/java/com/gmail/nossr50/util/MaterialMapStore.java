@@ -1539,7 +1539,7 @@ public class MaterialMapStore {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public @NotNull HashSet<String> getNetheriteTools() {
         return new HashSet<>(netheriteTools);
     }

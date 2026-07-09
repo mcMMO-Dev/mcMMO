@@ -393,7 +393,7 @@ public class GeneralConfig extends BukkitConfig {
      * @deprecated The level-up scoreboard feature this key belonged to never worked; the key
      * was removed from config.yml and this getter is scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public boolean getSkillLevelUpBoard() {
         return config.getBoolean("Scoreboard.Types.Skill.LevelUp_Board", true);
     }
@@ -402,7 +402,7 @@ public class GeneralConfig extends BukkitConfig {
      * @deprecated The level-up scoreboard feature this key belonged to never worked; the key
      * was removed from config.yml and this getter is scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public int getSkillLevelUpTime() {
         return config.getInt("Scoreboard.Types.Skill.LevelUp_Time", 5);
     }

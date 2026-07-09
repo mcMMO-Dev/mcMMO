@@ -38,7 +38,7 @@ public class SpearsManager extends SkillManager {
      * @deprecated use {@link #potentiallyApplyMomentum(double)} instead; this overload reads the
      * live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void potentiallyApplyMomentum() {
         potentiallyApplyMomentum(mmoPlayer.getAttackStrength());
     }

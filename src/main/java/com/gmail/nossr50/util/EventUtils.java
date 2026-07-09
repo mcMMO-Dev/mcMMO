@@ -340,7 +340,7 @@ public final class EventUtils {
      * @return true if the event wasn't cancelled, false otherwise
      * @deprecated Use {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean simulateBlockBreak(Block block, Player player, boolean shouldArmSwing) {
         return simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
     }
@@ -353,7 +353,7 @@ public final class EventUtils {
      * @return true if the event wasn't cancelled, false otherwise
      * @deprecated Use {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean simulateBlockBreak(Block block, Player player) {
         return simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
     }

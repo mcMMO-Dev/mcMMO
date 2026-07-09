@@ -145,7 +145,7 @@ public final class ParticleEffectUtils {
      * @deprecated Has not produced an effect since the firework shower was disabled; scheduled
      * for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void playAbilityDisabledEffect(Player player) {
     }
 }

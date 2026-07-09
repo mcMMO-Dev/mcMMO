@@ -1,4 +1,4 @@
-Version 2.2.055
+Version 2.3.000
     Fixed Berserk reducing damage instead of boosting it on Paper 26.1.2+ (See notes)
     Fixed Disarm, Rupture, Cripple, Momentum, Critical Strikes, Armor Impact, and Greater Impact activating far less often than intended on Paper 26.1.2+ (See notes)
     Fixed Skull Splitter dealing far less AoE damage than intended on Paper 26.1.2+ (See notes)

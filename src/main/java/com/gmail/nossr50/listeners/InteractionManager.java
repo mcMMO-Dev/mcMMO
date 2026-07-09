@@ -22,7 +22,7 @@ public class InteractionManager {
      * @deprecated The registration maps are initialized statically; calling this is no longer
      * needed and has no effect.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void initMaps() {
     }
 

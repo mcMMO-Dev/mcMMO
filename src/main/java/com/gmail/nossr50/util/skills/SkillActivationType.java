@@ -5,7 +5,7 @@ package com.gmail.nossr50.util.skills;
  *
  * @deprecated No longer consulted by skill RNG; scheduled for removal.
  */
-@Deprecated(forRemoval = true, since = "2.2.055")
+@Deprecated(forRemoval = true, since = "2.3.000")
 public enum SkillActivationType {
     //RANDOM_LINEAR_100_SCALE_NO_CAP, //A skill level of 100 would guarantee the proc with this
     RANDOM_LINEAR_100_SCALE_WITH_CAP, //This one is based on a scale of 1-100 but with a specified cap for max bonus

@@ -481,7 +481,7 @@ public class ScoreboardManager {
      * was removed along with its 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time'
      * config keys. No internal callers remain.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void enablePlayerSkillLevelUpScoreboard(Player player, PrimarySkillType skill) {
         ScoreboardWrapper wrapper = getWrapper(player);
 

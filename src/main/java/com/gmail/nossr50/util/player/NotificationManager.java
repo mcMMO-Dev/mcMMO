@@ -75,7 +75,7 @@ public class NotificationManager {
      * @deprecated Use {@link #sendPlayerInformation(Player, NotificationType, String,
      * String...)} directly; despite the name this never messaged nearby players.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void sendNearbyPlayersInformation(Player targetPlayer,
             NotificationType notificationType, String key,
             String... values) {

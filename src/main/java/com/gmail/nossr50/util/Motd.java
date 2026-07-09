@@ -15,7 +15,7 @@ public final class Motd {
      * @deprecated Captures the locale string at class initialization, so it goes stale after a
      * locale reload. Scheduled for removal; resolve 'MOTD.PerksPrefix' per call instead.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static final String PERK_PREFIX = LocaleLoader.getString("MOTD.PerksPrefix") + " ";
 
     private Motd() {

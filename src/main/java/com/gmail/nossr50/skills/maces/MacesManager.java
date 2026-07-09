@@ -61,7 +61,7 @@ public class MacesManager extends SkillManager {
      * @deprecated use {@link #processCripple(LivingEntity, double)} instead; this overload reads
      * the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void processCripple(@NotNull LivingEntity target) {
         processCripple(target, mmoPlayer.getAttackStrength());
     }

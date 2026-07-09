@@ -226,7 +226,7 @@ public class McMMOPlayer implements Identified {
      * hit being processed. Combat code must use the attack strength scale that
      * {@link com.gmail.nossr50.util.skills.CombatUtils} back-derives from the event instead.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public double getAttackStrength() {
         if (mcMMO.p.getAdvancedConfig().useAttackCooldown()) {
             return player.getAttackCooldown();

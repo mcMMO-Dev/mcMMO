@@ -22,7 +22,7 @@ public class ProbabilityUtil {
     /**
      * @deprecated DecimalFormat is not safe to share between threads; no longer used internally
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static final @NotNull DecimalFormat percent = new DecimalFormat("##0.00%",
             DecimalFormatSymbols.getInstance(Locale.US));
     // DecimalFormat is not thread-safe, and display values are formatted from region threads

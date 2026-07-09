@@ -988,7 +988,7 @@ public final class CombatUtils {
      * PrimarySkillType)} instead; this overload reads the live attack cooldown, which is
      * unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void applyAbilityAoE(@NotNull Player attacker, @NotNull LivingEntity target,
             double damage, @NotNull PrimarySkillType type) {
         final McMMOPlayer mmoAttacker = UserManager.getPlayer(attacker);

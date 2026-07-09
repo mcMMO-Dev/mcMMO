@@ -215,7 +215,7 @@ public final class ItemUtils {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean doesPlayerHaveEnchantmentOnArmor(@NotNull Player player,
             @NotNull String enchantmentByName) {
         Enchantment enchantment = getEnchantment(enchantmentByName);
@@ -230,7 +230,7 @@ public final class ItemUtils {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean doesPlayerHaveEnchantmentOnArmor(@NotNull Player player,
             @NotNull Enchantment enchantment) {
         for (ItemStack itemStack : player.getInventory().getArmorContents()) {
@@ -247,7 +247,7 @@ public final class ItemUtils {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean doesPlayerHaveEnchantmentOnArmorOrHands(@NotNull Player player,
             @NotNull String enchantmentName) {
         Enchantment enchantment = getEnchantment(enchantmentName);
@@ -262,7 +262,7 @@ public final class ItemUtils {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean doesPlayerHaveEnchantmentOnArmorOrHands(@NotNull Player player,
             @NotNull Enchantment enchantment) {
         if (doesPlayerHaveEnchantmentOnArmor(player, enchantment)) {
@@ -275,7 +275,7 @@ public final class ItemUtils {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean doesPlayerHaveEnchantmentInHands(@NotNull Player player,
             @NotNull NamespacedKey enchantmentNameKey) {
         Enchantment enchantment = Enchantment.getByKey(enchantmentNameKey);
@@ -290,7 +290,7 @@ public final class ItemUtils {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static boolean doesPlayerHaveEnchantmentInHands(@NotNull Player player,
             @NotNull String enchantmentName) {
         Enchantment enchantment = getEnchantment(enchantmentName);
@@ -1087,7 +1087,7 @@ public final class ItemUtils {
      * @param sizeLimit the number of drops to process
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void spawnItemsFromCollection(@Nullable Player player,
             @NotNull Location location,
             @NotNull Collection<ItemStack> drops,

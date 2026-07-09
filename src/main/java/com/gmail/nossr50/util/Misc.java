@@ -136,7 +136,7 @@ public final class Misc {
     /**
      * @deprecated Legacy mod-support leftover with no remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static String getModName(@NotNull String materialName) {
         for (String mod : modNames) {
             if (materialName.contains(mod)) {

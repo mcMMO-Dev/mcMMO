@@ -73,7 +73,7 @@ public class MetadataConstants {
      * @deprecated Not initialized until mcMMO enables, so early readers observe null; use
      * {@link #getMcMMOMetadataValue()} instead.
      */
-    @Deprecated(since = "2.2.055")
+    @Deprecated(since = "2.3.000")
     public static FixedMetadataValue MCMMO_METADATA_VALUE;
 
     /**

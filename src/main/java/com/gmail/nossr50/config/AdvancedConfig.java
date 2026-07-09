@@ -519,7 +519,7 @@ public class AdvancedConfig extends BukkitConfig {
     }
 
     public boolean doesNotificationUseActionBar(NotificationType notificationType) {
-        // Unlock messages route through their own opt-in key: configs from before 2.2.055
+        // Unlock messages route through their own opt-in key: configs from before 2.3.000
         // shipped with 'SubSkillUnlocked.Enabled: true' while unlock messages were hardcoded
         // to chat, so the Enabled key does not express admin intent for this notification type.
         if (notificationType == NotificationType.SUBSKILL_UNLOCKED) {

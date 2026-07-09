@@ -3,7 +3,7 @@ package com.gmail.nossr50.util.nms;
 /**
  * @deprecated Unused since mcMMO stopped shipping NMS hooks; scheduled for removal.
  */
-@Deprecated(forRemoval = true, since = "2.2.055")
+@Deprecated(forRemoval = true, since = "2.3.000")
 public enum NMSVersion {
     //1.8
     NMS_1_8_8("1.8.8"),

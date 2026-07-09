@@ -70,7 +70,7 @@ public final class PotionUtil {
      *
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static @NotNull String getKeyGetKey(@NotNull PotionType potionType) {
         final NamespacedKey key = potionType.getKey();
         return key != null ? key.getKey() : potionType.name();
@@ -79,7 +79,7 @@ public final class PotionUtil {
     /**
      * @deprecated No remaining callers; scheduled for removal.
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static String convertPotionConfigName(String legacyName) {
         String replacementName = legacyName;
 

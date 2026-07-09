@@ -119,7 +119,7 @@ public class UnarmedManager extends SkillManager {
      * @deprecated use {@link #disarmCheck(Player, double)} instead; this overload reads the live
      * attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void disarmCheck(@NotNull Player defender) {
         disarmCheck(defender, mmoPlayer.getAttackStrength());
     }
@@ -176,7 +176,7 @@ public class UnarmedManager extends SkillManager {
      * @deprecated use {@link #berserkDamage(double, double)} instead; this overload reads the
      * live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public double berserkDamage(double damage) {
         return berserkDamage(damage, mmoPlayer.getAttackStrength());
     }

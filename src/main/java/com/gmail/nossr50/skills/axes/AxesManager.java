@@ -98,7 +98,7 @@ public class AxesManager extends SkillManager {
      * @deprecated use {@link #criticalHit(LivingEntity, double, double)} instead; this overload
      * reads the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public double criticalHit(LivingEntity target, double damage) {
         return criticalHit(target, damage, mmoPlayer.getAttackStrength());
     }
@@ -145,7 +145,7 @@ public class AxesManager extends SkillManager {
      * @deprecated use {@link #impactCheck(LivingEntity, double)} instead; this overload reads the
      * live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void impactCheck(@NotNull LivingEntity target) {
         impactCheck(target, mmoPlayer.getAttackStrength());
     }
@@ -186,7 +186,7 @@ public class AxesManager extends SkillManager {
      * @deprecated use {@link #greaterImpact(LivingEntity, double)} instead; this overload reads
      * the live attack cooldown, which is unreliable during damage events on Paper 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public double greaterImpact(@NotNull LivingEntity target) {
         return greaterImpact(target, mmoPlayer.getAttackStrength());
     }
@@ -235,7 +235,7 @@ public class AxesManager extends SkillManager {
      * overload reads the live attack cooldown, which is unreliable during damage events on Paper
      * 26.1.2+
      */
-    @Deprecated(forRemoval = true, since = "2.2.055")
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void skullSplitterCheck(@NotNull LivingEntity target, double damage) {
         skullSplitterCheck(target, damage, mmoPlayer.getAttackStrength());
     }
