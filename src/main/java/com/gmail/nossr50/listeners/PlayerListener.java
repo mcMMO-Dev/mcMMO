@@ -361,6 +361,9 @@ public class PlayerListener implements Listener {
                     .getFishingExploitingOptionMoveRange()));
             event.setExpToDrop(0);
             caughtItem.remove();
+        } else if (fishingManager.isFishingTooOften()) {
+            event.setExpToDrop(0);
+            caughtItem.remove();
         }
     }
 
@@ -465,20 +468,6 @@ public class PlayerListener implements Listener {
 
         Entity caught = event.getCaught();
         FishingManager fishingManager = mmoPlayer.getFishingManager();
-
-        if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
-            //Spam Fishing
-            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH
-                    && fishingManager.isFishingTooOften()) {
-                event.setExpToDrop(0);
-
-                if (caught instanceof Item caughtItem) {
-                    caughtItem.remove();
-                }
-
-                return;
-            }
-        }
 
         switch (event.getState()) {
             case FISHING:
