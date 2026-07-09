@@ -12,6 +12,7 @@ import com.gmail.nossr50.util.text.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +32,16 @@ public class GeneralConfig extends BukkitConfig {
     private final Map<PrimarySkillType, Integer> levelCaps = new EnumMap<>(
             PrimarySkillType.class);
 
+    /* Values resolved once and reused on hot event paths; reset by loadKeys() */
+    private @Nullable Boolean abilitiesEnabled;
+    private @Nullable Boolean abilityMessagesEnabled;
+    private @Nullable Boolean abilitiesOnlyActivateWhenSneaking;
+    private @Nullable Boolean abilitiesGateEnabled;
+    private final Map<PrimarySkillType, Map<Material, Boolean>> doubleDropsEnabled =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<Material, Boolean> woodcuttingDoubleDropsEnabled = new HashMap<>();
+    private final Map<String, Material> tamingCOTWMaterials = new HashMap<>();
+
     public GeneralConfig(@NotNull File dataFolder) {
         super("config.yml", dataFolder);
         loadKeys();
@@ -45,6 +56,13 @@ public class GeneralConfig extends BukkitConfig {
                 config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK"));
         powerLevelCap = null;
         levelCaps.clear();
+        abilitiesEnabled = null;
+        abilityMessagesEnabled = null;
+        abilitiesOnlyActivateWhenSneaking = null;
+        abilitiesGateEnabled = null;
+        doubleDropsEnabled.clear();
+        woodcuttingDoubleDropsEnabled.clear();
+        tamingCOTWMaterials.clear();
     }
 
     @Override
@@ -714,19 +732,36 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     public boolean getAbilityMessagesEnabled() {
-        return config.getBoolean("Abilities.Messages", true);
+        if (abilityMessagesEnabled == null) {
+            abilityMessagesEnabled = config.getBoolean("Abilities.Messages", true);
+        }
+
+        return abilityMessagesEnabled;
     }
 
     public boolean getAbilitiesEnabled() {
-        return config.getBoolean("Abilities.Enabled", true);
+        if (abilitiesEnabled == null) {
+            abilitiesEnabled = config.getBoolean("Abilities.Enabled", true);
+        }
+
+        return abilitiesEnabled;
     }
 
     public boolean getAbilitiesOnlyActivateWhenSneaking() {
-        return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false);
+        if (abilitiesOnlyActivateWhenSneaking == null) {
+            abilitiesOnlyActivateWhenSneaking = config.getBoolean(
+                    "Abilities.Activation.Only_Activate_When_Sneaking", false);
+        }
+
+        return abilitiesOnlyActivateWhenSneaking;
     }
 
     public boolean getAbilitiesGateEnabled() {
-        return config.getBoolean("Abilities.Activation.Level_Gate_Abilities");
+        if (abilitiesGateEnabled == null) {
+            abilitiesGateEnabled = config.getBoolean("Abilities.Activation.Level_Gate_Abilities");
+        }
+
+        return abilitiesGateEnabled;
     }
 
     public int getCooldown(SuperAbilityType ability) {
@@ -756,10 +791,10 @@ public class GeneralConfig extends BukkitConfig {
             return false;
         }
 
-        return config.getBoolean(
-                "Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "."
-                        + getMaterialConfigString(
-                        material).replace(" ", "_"));
+        return doubleDropsEnabled.computeIfAbsent(skill, key -> new HashMap<>())
+                .computeIfAbsent(material, key -> config.getBoolean(
+                        "Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "."
+                                + getMaterialConfigString(key).replace(" ", "_")));
     }
 
     public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
@@ -924,9 +959,11 @@ public class GeneralConfig extends BukkitConfig {
     //    public int getTamingCOTWMaxAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Max_Amount"); }
 
     public Material getTamingCOTWMaterial(String cotwEntity) {
-        return Material.matchMaterial(
-                config.getString(
-                        "Skills.Taming.Call_Of_The_Wild." + cotwEntity + ".Item_Material"));
+        // computeIfAbsent doesn't store null mappings, so a misconfigured material is simply
+        // looked up again on the next call
+        return tamingCOTWMaterials.computeIfAbsent(cotwEntity,
+                key -> Material.matchMaterial(config.getString(
+                        "Skills.Taming.Call_Of_The_Wild." + key + ".Item_Material")));
     }
 
     public int getTamingCOTWCost(String cotwEntity) {
@@ -948,8 +985,9 @@ public class GeneralConfig extends BukkitConfig {
 
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(BlockData blockData) {
-        return config.getBoolean(
-                "Bonus_Drops.Woodcutting." + getMaterialConfigString(blockData.getMaterial()));
+        return woodcuttingDoubleDropsEnabled.computeIfAbsent(blockData.getMaterial(),
+                key -> config.getBoolean("Bonus_Drops.Woodcutting."
+                        + getMaterialConfigString(key)));
     }
 
     public boolean getTreeFellerSoundsEnabled() {
