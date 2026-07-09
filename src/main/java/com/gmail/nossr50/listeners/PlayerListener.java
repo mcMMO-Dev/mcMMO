@@ -325,6 +325,46 @@ public class PlayerListener implements Listener {
     }
 
     /**
+     * Handle PlayerFishEvents at the lowest priority.
+     * <p>
+     * These events are used for tracking fish exploits.
+     *
+     * @param event The event to modify
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerFishLowest(PlayerFishEvent event) {
+        if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
+            return;
+        }
+        if (!(event.getCaught() instanceof Item caughtItem)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
+
+        if (mmoPlayer == null || !mcMMO.p.getSkillTools()
+            .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
+            return;
+        }
+
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
+
+        if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+
+            fishingManager.processExploiting(event.getHook().getLocation().toVector());
+
+            if (fishingManager.isExploitingFishing()) {
+                player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
+                    ExperienceConfig.getInstance()
+                        .getFishingExploitingOptionMoveRange()));
+                event.setExpToDrop(0);
+                caughtItem.remove();
+            }
+        }
+    }
+
+    /**
      * Handle PlayerFishEvents at the highest priority.
      * <p>
      * These events are used for the purpose of handling our anti-exploit code, as well as dealing
@@ -455,24 +495,12 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
+                if (ExperienceConfig.getInstance().isFishingExploitingPrevented() && fishingManager.isExploitingFishing()) {
+                    return;
+                }
+
                 EquipmentSlot caughtFishingHand = getFishingHandForEvent(player, event.getHand());
-
                 if (caught instanceof Item caughtItem) {
-                    if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
-
-                        fishingManager.processExploiting(event.getHook().getLocation().toVector());
-
-                        if (fishingManager.isExploitingFishing()) {
-                            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
-                                    ExperienceConfig.getInstance()
-                                            .getFishingExploitingOptionMoveRange()));
-                            event.setExpToDrop(0);
-                            caughtItem.remove();
-
-                            return;
-                        }
-                    }
-
                     fishingManager.processFishing(caughtItem, caughtFishingHand);
                     fishingManager.setFishingTarget();
                 }
