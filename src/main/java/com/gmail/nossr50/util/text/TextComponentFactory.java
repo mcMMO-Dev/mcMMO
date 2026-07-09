@@ -293,10 +293,9 @@ public class TextComponentFactory {
                     .clickEvent(ClickEvent.runCommand("/mmoinfo ???"));
         }
 
-        final boolean isMaxRank = subSkillType.getNumRanks() > 1
-                && RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player,
-                subSkillType);
-        final String localeKey = isMaxRank ? "JSON.Hover.MaxRankSkillName" : "JSON.Hover.SkillName";
+        final String localeKey = isMaxRank(player, subSkillType)
+                ? "JSON.Hover.MaxRankSkillName"
+                : "JSON.Hover.SkillName";
 
         return Component.text()
                 .append(LocaleLoader.getTextComponent(localeKey, skillName))
@@ -397,9 +396,7 @@ public class TextComponentFactory {
         if (!unlocked) {
             localeKey = "JSON.Hover.Mystery";
             nameArg = String.valueOf(RankUtils.getUnlockLevel(subSkillType));
-        } else if (subSkillType.getNumRanks() > 1
-                && RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player,
-                subSkillType)) {
+        } else if (isMaxRank(player, subSkillType)) {
             localeKey = "JSON.Hover.MaxRankSkillName";
             nameArg = skillName;
         } else {
@@ -410,6 +407,15 @@ public class TextComponentFactory {
         return Component.text()
                 .append(LocaleLoader.getTextComponent(localeKey, nameArg))
                 .append(Component.newline());
+    }
+
+    /**
+     * Whether the player has reached the final rank of a multi-rank sub-skill.
+     */
+    private static boolean isMaxRank(@NotNull Player player, @NotNull SubSkillType subSkillType) {
+        return subSkillType.getNumRanks() > 1
+                && RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player,
+                subSkillType);
     }
 
     /**

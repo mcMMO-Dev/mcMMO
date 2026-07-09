@@ -126,6 +126,7 @@ Version 2.2.055
     (Codebase) The migration backup store now logs directory listing failures, threads its injectable clock into archive naming, and merges region files with try-with-resources
     (Codebase) Command registration is now a data-driven table with one shared wiring path that skips missing commands instead of erroring
     (Codebase) Added a test cross-checking plugin.yml command declarations against the executors the plugin registers
+    (Codebase) Deduplicated the pretty-string and config-string word formatters, the max-rank hover predicate, and moved chat messages off deprecated Adventure APIs; MOTD strings now resolve per display instead of at class load
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
