@@ -1,6 +1,7 @@
 package com.gmail.nossr50.placeholders;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import java.util.Locale;
 import org.bukkit.entity.Player;
 
 public class SkillRankPlaceholder implements Placeholder {
@@ -20,6 +21,6 @@ public class SkillRankPlaceholder implements Placeholder {
 
     @Override
     public String getName() {
-        return "rank_" + skill.toString().toLowerCase();
+        return "rank_" + skill.toString().toLowerCase(Locale.ENGLISH);
     }
 }

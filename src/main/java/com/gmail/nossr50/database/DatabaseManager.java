@@ -2,9 +2,12 @@ package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.datatypes.database.LeaderboardSnapshot;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.skills.SkillTools;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -61,6 +64,40 @@ public interface DatabaseManager {
      */
     @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber,
             int statsPerPage) throws InvalidSkillException;
+
+    /**
+     * Retrieve the top rows of every leaderboard scope (each non-child skill plus the power level
+     * leaderboard) directly from the backend in one bulk call, for callers that build caches from
+     * the result.
+     * <p>
+     * Unlike {@link #readLeaderboard(PrimarySkillType, int, int)}, implementations must propagate
+     * backend read failures instead of returning a partial or empty result, so callers can tell a
+     * failed read apart from genuinely empty leaderboards. Implementations should also bypass any
+     * backend-level result caching so callers always observe current data. The default
+     * implementation reads each scope through
+     * {@link #readLeaderboard(PrimarySkillType, int, int)} and therefore inherits that method's
+     * failure handling; custom database managers should override it to honor this contract.
+     *
+     * @param perScopeLimit The maximum number of rows to include per leaderboard scope
+     * @return the top rows of every leaderboard scope
+     * @throws RuntimeException when the backend read fails
+     */
+    default @NotNull LeaderboardSnapshot readLeaderboardSnapshot(int perScopeLimit) {
+        final Map<PrimarySkillType, List<PlayerStat>> skillLeaderboards =
+                new EnumMap<>(PrimarySkillType.class);
+
+        try {
+            for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+                skillLeaderboards.put(skill, readLeaderboard(skill, 1, perScopeLimit));
+            }
+
+            return new LeaderboardSnapshot(skillLeaderboards,
+                    readLeaderboard(null, 1, perScopeLimit));
+        } catch (InvalidSkillException e) {
+            // Scopes are fixed to non-child skills plus overall, so this cannot happen.
+            throw new IllegalStateException(e);
+        }
+    }
 
     /**
      * Retrieve rank info into a HashMap from PrimarySkillType to the rank.

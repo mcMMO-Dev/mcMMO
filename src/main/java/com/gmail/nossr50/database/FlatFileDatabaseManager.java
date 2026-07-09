@@ -1,8 +1,10 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.database.flatfile.LeaderboardStatus;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.datatypes.database.LeaderboardSnapshot;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -44,11 +47,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     private static final Object fileWritingLock = new Object();
     private static final String LINE_ENDING = "\r\n";
 
-    private final @NotNull EnumMap<PrimarySkillType, List<PlayerStat>> leaderboardMap =
-            new EnumMap<>(PrimarySkillType.class);
-
-    private @NotNull List<PlayerStat> powerLevels = new ArrayList<>();
-    private long lastUpdate = 0L;
+    // One immutable generation holding every leaderboard scope, swapped atomically so async
+    // readers (PlaceholderAPI cache, /mctop, /mcrank) never observe lists from two different
+    // file scans. Null until the first successful rebuild.
+    private volatile @Nullable LeaderboardSnapshot leaderboards;
+    // Atomic so concurrent callers race the throttle with a CAS instead of both passing a
+    // check-then-act window and performing duplicate full-file scans. Only a successful rebuild
+    // keeps the claimed timestamp; failures roll it back so retries are not throttled.
+    private final @NotNull AtomicLong lastUpdate = new AtomicLong(0L);
 
     private final @NotNull String usersFilePath;
     private final @NotNull File usersFile;
@@ -56,7 +62,12 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     private final long purgeTime;
     private final int startingLevel;
 
-    private static final long UPDATE_WAIT_TIME = 600_000L; // 10 minutes
+    // Minimum spacing between leaderboard rebuilds. Rebuilding scans the whole user file, so
+    // refreshing more than once a minute is pointless overhead on large servers.
+    private static final long MIN_UPDATE_WAIT_TIME =
+            1000L * GeneralConfig.MIN_LEADERBOARD_REFRESH_INTERVAL_SECONDS;
+    private static final long DEFAULT_UPDATE_WAIT_TIME = 600_000L; // 10 minutes
+    private final long updateWaitTimeMillis;
 
     // Flatfile indices
     public static final int USERNAME_INDEX = 0;
@@ -182,11 +193,17 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
     FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime,
             int startingLevel, boolean testing) {
+        this(usersFile, logger, purgeTime, startingLevel, testing, DEFAULT_UPDATE_WAIT_TIME);
+    }
+
+    FlatFileDatabaseManager(@NotNull File usersFile, @NotNull Logger logger, long purgeTime,
+            int startingLevel, boolean testing, long updateWaitTimeMillis) {
         this.usersFile = usersFile;
         this.usersFilePath = usersFile.getPath();
         this.logger = logger;
         this.purgeTime = purgeTime;
         this.startingLevel = startingLevel;
+        this.updateWaitTimeMillis = Math.max(MIN_UPDATE_WAIT_TIME, updateWaitTimeMillis);
 
         if (!usersFile.exists()) {
             initEmptyDB();
@@ -204,11 +221,14 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    FlatFileDatabaseManager(@NotNull String usersFilePath,
-            @NotNull Logger logger,
-            long purgeTime,
+    FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime,
             int startingLevel) {
         this(new File(usersFilePath), logger, purgeTime, startingLevel, false);
+    }
+
+    FlatFileDatabaseManager(@NotNull String usersFilePath, @NotNull Logger logger, long purgeTime,
+            int startingLevel, long updateWaitTimeMillis) {
+        this(new File(usersFilePath), logger, purgeTime, startingLevel, false, updateWaitTimeMillis);
     }
 
     // ------------------------------------------------------------------------
@@ -830,37 +850,36 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     // ------------------------------------------------------------------------
 
     public @NotNull LeaderboardStatus updateLeaderboards() {
-        long now = System.currentTimeMillis();
-        if (now < lastUpdate + UPDATE_WAIT_TIME) {
+        final long now = System.currentTimeMillis();
+        final long last = lastUpdate.get();
+        // Never-populated leaderboards bypass the throttle entirely: serving empty boards for a
+        // full window after a failed cold start is worse than an extra rebuild attempt.
+        // Otherwise the CAS makes the throttle single-winner: when two callers pass the time
+        // check together, only one performs the rebuild and the other returns immediately.
+        if (leaderboards != null
+                && (now < last + updateWaitTimeMillis || !lastUpdate.compareAndSet(last, now))) {
             return LeaderboardStatus.TOO_SOON_TO_UPDATE;
         }
 
-        lastUpdate = now;
+        final LeaderboardStatus status = rebuildLeaderboards();
+        if (status == LeaderboardStatus.FAILED) {
+            // A failed rebuild must not consume the throttle window; undo the claim so the next
+            // caller may retry immediately (unless another rebuild advanced it meanwhile).
+            lastUpdate.compareAndSet(now, last);
+        }
+        return status;
+    }
 
+    private @NotNull LeaderboardStatus rebuildLeaderboards() {
         // Power level leaderboard
-        TreeSet<PlayerStat> powerLevelStats = new TreeSet<>();
+        final TreeSet<PlayerStat> powerLevelStats = new TreeSet<>();
 
         // Per-skill leaderboards
-        EnumMap<PrimarySkillType, TreeSet<PlayerStat>> perSkillSets =
+        final EnumMap<PrimarySkillType, TreeSet<PlayerStat>> perSkillSets =
                 new EnumMap<>(PrimarySkillType.class);
-
-        perSkillSets.put(PrimarySkillType.MINING,        new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.WOODCUTTING,   new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.REPAIR,        new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.UNARMED,       new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.HERBALISM,     new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.EXCAVATION,    new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.ARCHERY,       new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.SWORDS,        new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.AXES,          new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.ACROBATICS,    new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.TAMING,        new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.FISHING,       new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.ALCHEMY,       new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.CROSSBOWS,     new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.TRIDENTS,      new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.MACES,         new TreeSet<>());
-        perSkillSets.put(PrimarySkillType.SPEARS,        new TreeSet<>());
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            perSkillSets.put(skill, new TreeSet<>());
+        }
 
         String playerName = null;
 
@@ -885,13 +904,20 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         + playerName + " (Are you sure you formatted it correctly?) " + e);
                 return LeaderboardStatus.FAILED;
             }
-        }
 
-        // Freeze current leaderboards as immutable lists
-        powerLevels = List.copyOf(powerLevelStats);
+            // Publish the whole generation while still holding the lock: rebuilds stay
+            // serialized scan-to-publish, so a slower older scan can never overwrite a newer
+            // one, and readers always observe lists from a single file scan.
+            final Map<PrimarySkillType, List<PlayerStat>> skillLeaderboards =
+                    new EnumMap<>(PrimarySkillType.class);
+            for (Map.Entry<PrimarySkillType, TreeSet<PlayerStat>> entry : perSkillSets.entrySet()) {
+                skillLeaderboards.put(entry.getKey(), List.copyOf(entry.getValue()));
+            }
 
-        for (Map.Entry<PrimarySkillType, TreeSet<PlayerStat>> entry : perSkillSets.entrySet()) {
-            leaderboardMap.put(entry.getKey(), List.copyOf(entry.getValue()));
+            leaderboards = new LeaderboardSnapshot(skillLeaderboards, List.copyOf(powerLevelStats));
+            // Only successful rebuilds arm the throttle; failures leave it untouched so the
+            // next caller may retry immediately.
+            lastUpdate.set(System.currentTimeMillis());
         }
 
         return LeaderboardStatus.UPDATED;
@@ -916,18 +942,58 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType primarySkillType,
             int pageNumber,
             int statsPerPage) throws InvalidSkillException {
+        validateNonChildSkill(primarySkillType);
 
+        updateLeaderboards();
+
+        return readLeaderboardPage(leaderboards, primarySkillType, pageNumber, statsPerPage);
+    }
+
+    /**
+     * Reads the top rows of every leaderboard scope after forcing a single rebuild, bypassing
+     * the wall-clock throttle that spaces out command-triggered rebuilds. One full users-file
+     * scan populates all scopes. Rebuild failures propagate so callers building caches from the
+     * result can keep their last good data.
+     */
+    @Override
+    public @NotNull LeaderboardSnapshot readLeaderboardSnapshot(int perScopeLimit) {
+        if (rebuildLeaderboards() == LeaderboardStatus.FAILED) {
+            throw new RuntimeException(
+                    "Failed to rebuild FlatFile leaderboards from " + usersFilePath);
+        }
+
+        // Slice every scope from one generation so the result cannot mix two file scans.
+        final LeaderboardSnapshot generation = leaderboards;
+        final Map<PrimarySkillType, List<PlayerStat>> skillLeaderboards =
+                new EnumMap<>(PrimarySkillType.class);
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            skillLeaderboards.put(skill, readLeaderboardPage(generation, skill, 1, perScopeLimit));
+        }
+
+        return new LeaderboardSnapshot(skillLeaderboards,
+                readLeaderboardPage(generation, null, 1, perScopeLimit));
+    }
+
+    private void validateNonChildSkill(@Nullable PrimarySkillType primarySkillType)
+            throws InvalidSkillException {
         if (primarySkillType != null && SkillTools.isChildSkill(primarySkillType)) {
             logger.severe(
                     "A plugin hooking into mcMMO is being naughty with our database commands, update all plugins that hook into mcMMO and contact their devs!");
             throw new InvalidSkillException(
                     "A plugin hooking into mcMMO that you are using is attempting to read leaderboard skills for child skills, child skills do not have leaderboards! This is NOT an mcMMO error!");
         }
+    }
 
-        updateLeaderboards();
+    private @NotNull List<PlayerStat> readLeaderboardPage(
+            @Nullable LeaderboardSnapshot generation, @Nullable PrimarySkillType primarySkillType,
+            int pageNumber, int statsPerPage) {
+        if (generation == null) {
+            return List.of();
+        }
 
-        List<PlayerStat> statsList =
-                (primarySkillType == null) ? powerLevels : leaderboardMap.get(primarySkillType);
+        final List<PlayerStat> statsList = (primarySkillType == null)
+                ? generation.powerLevels()
+                : generation.skillLeaderboards().get(primarySkillType);
 
         if (statsList == null) {
             return List.of();
@@ -943,13 +1009,17 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public @NotNull HashMap<PrimarySkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        HashMap<PrimarySkillType, Integer> skills = new HashMap<>();
+        // One generation reference so every rank comes from the same file scan.
+        final LeaderboardSnapshot generation = leaderboards;
+        final HashMap<PrimarySkillType, Integer> skills = new HashMap<>();
 
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-            skills.put(skill, getPlayerRank(playerName, leaderboardMap.get(skill)));
+            skills.put(skill, getPlayerRank(playerName,
+                    generation == null ? null : generation.skillLeaderboards().get(skill)));
         }
 
-        skills.put(null, getPlayerRank(playerName, powerLevels));
+        skills.put(null, getPlayerRank(playerName,
+                generation == null ? null : generation.powerLevels()));
         return skills;
     }
 
