@@ -75,13 +75,17 @@ public final class MobHealthbarUtils {
             return;
         }
 
+        final MobHealthbarType healthbarType = mcMMO.p.getGeneralConfig().getMobHealthbarDefault();
+        if (healthbarType == MobHealthbarType.DISABLED) {
+            return;
+        }
+
         // Capture the pre-healthbar name state. null is preserved as null — never coerced to ""
         // so that restoration calls setCustomName(null) and correctly clears the custom name slot.
         final @Nullable String previousCustomName = target.getCustomName();
         final boolean previousNameVisible = target.isCustomNameVisible();
 
-        final String newName = createHealthDisplay(mcMMO.p.getGeneralConfig().getMobHealthbarDefault(),
-                target, damage);
+        final String newName = createHealthDisplay(healthbarType, target, damage);
 
         target.setCustomName(newName);
         target.setCustomNameVisible(true);
