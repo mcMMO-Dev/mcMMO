@@ -108,6 +108,7 @@ Version 2.2.055
     (Codebase) Consolidated the XP perk multiplier tiers into a single ordered table, permission nodes are unchanged
     (Codebase) Deduplicated the level-up and power-level milestone broadcasts and deprecated the misleadingly named sendNearbyPlayersInformation
     (Codebase) Scoreboard labels are now built during plugin startup instead of in a static initializer, and refresh when the plugin reloads
+    (Codebase) Scoreboard teardown paths no longer construct a scoreboard backend just to tear it down
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

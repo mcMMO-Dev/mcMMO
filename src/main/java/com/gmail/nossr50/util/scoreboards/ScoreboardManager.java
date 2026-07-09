@@ -328,21 +328,24 @@ public class ScoreboardManager {
 
     // Called by PlayerQuitEvent listener and OnPlayerTeleport under certain circumstances
     public static void teardownPlayer(Player player) {
-        ensureBackendReady();
-
         if (player == null) {
             return;
         }
 
-        if (isBukkitBackendActive() && player.isOnline() && player.isValid()
-                && Bukkit.getScoreboardManager() != null) {
-            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        // Plain null checks here: teardown must never construct a backend just to tear it
+        // down, and straggler quit events after teardownAll() must not re-initialize one.
+        if (backend != null) {
+            if (backendType == ScoreboardBackendType.BUKKIT && player.isOnline()
+                    && player.isValid() && Bukkit.getScoreboardManager() != null) {
+                player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            }
+
+            backend.removePowerLevelTag(player);
         }
 
-        backend.removePowerLevelTag(player);
         dirtyPowerLevels.remove(player.getName());
 
-        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
+        final ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
         if (wrapper != null) {
             wrapper.close();
         }
@@ -350,7 +353,6 @@ public class ScoreboardManager {
 
     // Called in onDisable()
     public static void teardownAll() {
-        ensureBackendReady();
         ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(
                 mcMMO.p.getServer().getOnlinePlayers());
         LogUtils.debug(mcMMO.p.getLogger(),
@@ -368,7 +370,6 @@ public class ScoreboardManager {
 
     // Called by ScoreboardWrapper when its Player logs off and an action tries to be performed
     public static void cleanup(ScoreboardWrapper wrapper) {
-        ensureBackendReady();
         PLAYER_SCOREBOARDS.remove(wrapper.playerName);
         wrapper.close();
     }
@@ -758,8 +759,9 @@ public class ScoreboardManager {
     }
 
     public static void onPlayerBoardClosed(@NotNull String playerName) {
-        ensureBackendReady();
-        backend.onPlayerBoardClosed(playerName);
+        if (backend != null) {
+            backend.onPlayerBoardClosed(playerName);
+        }
     }
 
     /**
