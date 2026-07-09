@@ -60,6 +60,7 @@ Version 2.2.055
     Improved performance of tree and transparent-block checks (See notes)
     Improved performance and memory use of placed-block tracking lookups (See notes)
     Improved performance when looking up the XP needed for the next level
+    Improved performance of container ownership tracking and super ability tool updates
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
     Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
