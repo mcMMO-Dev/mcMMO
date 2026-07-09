@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_BONUS_DROPS;
 import static com.gmail.nossr50.util.MetadataConstants.METADATA_KEY_EXCAVATION_TREASURE_ROLL;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -686,7 +687,7 @@ public class BlockListener implements Listener {
 
                 if (mmoPlayer.getAbilityMode(SuperAbilityType.BERSERK)) {
                     if (SuperAbilityType.BERSERK.blockCheck(block) && EventUtils.simulateBlockBreak(
-                            block, player)) {
+                            block, player, FakeBlockBreakEventType.FAKE)) {
                         event.setInstaBreak(true);
 
                         if (block.getType().getKey().getKey().contains("glass")) {
@@ -764,11 +765,12 @@ public class BlockListener implements Listener {
                         .getUnarmedItemsAsUnarmed())) {
             if (mmoPlayer.getUnarmedManager().canUseBlockCracker()
                     && BlockUtils.affectedByBlockCracker(block)) {
-                if (EventUtils.simulateBlockBreak(block, player)) {
+                if (EventUtils.simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE)) {
                     mmoPlayer.getUnarmedManager().blockCrackerCheck(block);
                 }
             } else if (!event.getInstaBreak() && SuperAbilityType.BERSERK.blockCheck(block)
-                    && EventUtils.simulateBlockBreak(block, player)) {
+                    && EventUtils.simulateBlockBreak(block, player,
+                    FakeBlockBreakEventType.FAKE)) {
                 event.setInstaBreak(true);
 
                 if (block.getType().getKey().getKey().contains("glass")) {
@@ -780,7 +782,7 @@ public class BlockListener implements Listener {
             }
         } else if (mmoPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem)
                 && BlockUtils.isNonWoodPartOfTree(block) && EventUtils.simulateBlockBreak(block,
-                player)) {
+                player, FakeBlockBreakEventType.FAKE)) {
             event.setInstaBreak(true);
             SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
         }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.api.FakeBlockBreakEventType;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
@@ -1010,7 +1011,8 @@ public class PlayerListener implements Listener {
                             player.getInventory().getItemInMainHand()
                                     .setAmount(heldItem.getAmount() - 1);
                             if (herbalismManager.processGreenThumbBlocks(blockState)
-                                    && EventUtils.simulateBlockBreak(block, player)) {
+                                    && EventUtils.simulateBlockBreak(block, player,
+                                    FakeBlockBreakEventType.FAKE)) {
                                 blockState.update(true);
                             }
                         }
@@ -1022,7 +1024,8 @@ public class PlayerListener implements Listener {
                             // Bukkit.getPluginManager().callEvent(fakeSwing);
                             event.setCancelled(true);
                             if (herbalismManager.processShroomThumb(blockState)
-                                    && EventUtils.simulateBlockBreak(block, player)) {
+                                    && EventUtils.simulateBlockBreak(block, player,
+                                    FakeBlockBreakEventType.FAKE)) {
                                 blockState.update(true);
                             }
                         }

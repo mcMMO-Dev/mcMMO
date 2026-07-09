@@ -48,7 +48,7 @@ public class AbilityDisableTask extends CancellableRunnable {
                 break;
         }
 
-        EventUtils.callAbilityDeactivateEvent(player, ability);
+        EventUtils.callAbilityDeactivateEvent(mmoPlayer, ability);
 
         mmoPlayer.setAbilityMode(ability, false);
         mmoPlayer.setAbilityInformed(ability, false);

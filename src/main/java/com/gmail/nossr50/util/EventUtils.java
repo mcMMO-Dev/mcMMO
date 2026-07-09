@@ -326,11 +326,12 @@ public final class EventUtils {
      * @param block The block to break
      * @param player The player breaking the block
      * @param shouldArmSwing ignored (here for API compatibility)
-     * @return true if the event wasn't cancelled, false otherwise {@code @Deprecated} use
-     * {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
+     * @return true if the event wasn't cancelled, false otherwise
+     * @deprecated Use {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static boolean simulateBlockBreak(Block block, Player player, boolean shouldArmSwing) {
-        return simulateBlockBreak(block, player);
+        return simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
     }
 
     /**
@@ -338,9 +339,10 @@ public final class EventUtils {
      *
      * @param block The block to break
      * @param player The player breaking the block
-     * @return true if the event wasn't cancelled, false otherwise {@code @Deprecated} use
-     * {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
+     * @return true if the event wasn't cancelled, false otherwise
+     * @deprecated Use {@link #simulateBlockBreak(Block, Player, FakeBlockBreakEventType)} instead
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static boolean simulateBlockBreak(Block block, Player player) {
         return simulateBlockBreak(block, player, FakeBlockBreakEventType.FAKE);
     }
