@@ -11,8 +11,11 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.google.common.io.Files;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -212,6 +215,91 @@ class UserBlockTrackerTest {
         assertTrue(chunkManager.isIneligible(mockBlockA));
 
         chunkManager.chunkUnloaded(0, 0, mockWorld);
+    }
+
+    /**
+     * Full disk round-trip: markers must survive the chunk being unloaded (which writes the
+     * region file) and must be readable by a completely fresh manager instance, proving the
+     * data actually lives on disk rather than in the manager's in-memory maps.
+     */
+    @Test
+    void setIneligibleShouldSurviveChunkUnloadAndReloadFromDisk() {
+        // Given - an isolated world folder and markers in a positive and a negative chunk
+        when(mockWorld.getWorldFolder()).thenReturn(new File(tempDir, "roundTripWorld"));
+        final HashChunkManager writingManager = new HashChunkManager();
+        final Block positiveBlock = initMockBlock(1337, 42, 1337);
+        final Block negativeBlock = initMockBlock(-1337, 42, -1337);
+        final Block untouchedBlock = initMockBlock(1338, 42, 1337);
+        writingManager.setIneligible(positiveBlock);
+        writingManager.setIneligible(negativeBlock);
+
+        // When - the chunks are unloaded (persisting them) and a fresh manager reads the disk
+        writingManager.chunkUnloaded(1337 >> 4, 1337 >> 4, mockWorld);
+        writingManager.chunkUnloaded(-1337 >> 4, -1337 >> 4, mockWorld);
+        final HashChunkManager readingManager = new HashChunkManager();
+
+        // Then - the markers are still present and untouched neighbors stay eligible
+        assertTrue(readingManager.isIneligible(positiveBlock));
+        assertTrue(readingManager.isIneligible(negativeBlock));
+        assertFalse(readingManager.isIneligible(untouchedBlock));
+    }
+
+    /**
+     * Region files store chunk data in fixed-size segments; rewriting a chunk with more data
+     * than its old segments can hold forces a relocation past its neighbor. Both chunks must
+     * survive that relocation and a close/reopen cycle intact.
+     */
+    @Test
+    void regionFileShouldPreserveChunksWhenRewrittenDataGrowsAcrossSegments()
+            throws IOException {
+        // Given - two neighboring chunks, the first holding a small single-segment payload
+        final File regionFile = new File(tempDir, "SegmentGrowth.mcm");
+        final byte[] smallPayload = payload(100, (byte) 1);
+        final byte[] neighborPayload = payload(200, (byte) 2);
+        final byte[] grownPayload = payload(5000, (byte) 3);
+
+        McMMOSimpleRegionFile region = new McMMOSimpleRegionFile(regionFile, 0, 0);
+        writeChunkPayload(region, 0, 0, smallPayload);
+        writeChunkPayload(region, 0, 1, neighborPayload);
+
+        // When - the first chunk is rewritten with a payload spanning several segments,
+        // forcing it to relocate past its neighbor, and the file is closed and reopened
+        writeChunkPayload(region, 0, 0, grownPayload);
+        region.close();
+        region = new McMMOSimpleRegionFile(regionFile, 0, 0);
+
+        // Then - both chunks read back their latest payloads intact
+        Assertions.assertArrayEquals(grownPayload, readChunkPayload(region, 0, 0));
+        Assertions.assertArrayEquals(neighborPayload, readChunkPayload(region, 0, 1));
+        region.close();
+    }
+
+    private static byte[] payload(int size, byte fill) {
+        final byte[] data = new byte[size];
+        Arrays.fill(data, fill);
+        // Vary the tail so compression cannot collapse payloads into identical streams
+        for (int i = 0; i < Math.min(size, 32); i++) {
+            data[size - 1 - i] = (byte) (fill + i);
+        }
+        return data;
+    }
+
+    private static void writeChunkPayload(McMMOSimpleRegionFile region, int cx, int cz,
+            byte[] payload) throws IOException {
+        try (DataOutputStream out = region.getOutputStream(cx, cz)) {
+            out.writeInt(payload.length);
+            out.write(payload);
+        }
+    }
+
+    private static byte[] readChunkPayload(McMMOSimpleRegionFile region, int cx, int cz)
+            throws IOException {
+        try (DataInputStream in = region.getInputStream(cx, cz)) {
+            Assertions.assertNotNull(in, "expected chunk data at (" + cx + ", " + cz + ")");
+            final byte[] data = new byte[in.readInt()];
+            in.readFully(data);
+            return data;
+        }
     }
 
     @NotNull
