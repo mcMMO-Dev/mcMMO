@@ -128,6 +128,7 @@ Version 2.2.055
     (Codebase) Added a test cross-checking plugin.yml command declarations against the executors the plugin registers
     (Codebase) Deduplicated the pretty-string and config-string word formatters, the max-rank hover predicate, and moved chat messages off deprecated Adventure APIs; MOTD strings now resolve per display instead of at class load
     (Codebase) Funneled the seven sound send methods through one enabled/resolve/play core
+    (Codebase) Subskill registration maps are statically initialized and duplicate registrations are rejected instead of double-firing
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

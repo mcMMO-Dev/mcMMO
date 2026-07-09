@@ -12,23 +12,18 @@ import java.util.Locale;
 import org.bukkit.event.Event;
 
 public class InteractionManager {
-    private static HashMap<InteractType, ArrayList<Interaction>> interactRegister;
-    private static HashMap<String, AbstractSubSkill> subSkillNameMap; //Used for mmoinfo optimization
-    private static ArrayList<AbstractSubSkill> subSkillList;
+    private static final HashMap<InteractType, ArrayList<Interaction>> interactRegister =
+            new HashMap<>();
+    //Used for mmoinfo optimization
+    private static final HashMap<String, AbstractSubSkill> subSkillNameMap = new HashMap<>();
+    private static final ArrayList<AbstractSubSkill> subSkillList = new ArrayList<>();
 
+    /**
+     * @deprecated The registration maps are initialized statically; calling this is no longer
+     * needed and has no effect.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static void initMaps() {
-        /* INIT MAPS */
-        if (interactRegister == null) {
-            interactRegister = new HashMap<>();
-        }
-
-        if (subSkillList == null) {
-            subSkillList = new ArrayList<>();
-        }
-
-        if (subSkillNameMap == null) {
-            subSkillNameMap = new HashMap<>();
-        }
     }
 
     /**
@@ -37,25 +32,20 @@ public class InteractionManager {
      * @param abstractSubSkill the target subskill to register
      */
     public static void registerSubSkill(AbstractSubSkill abstractSubSkill) {
-        //Store a unique copy of each subskill
-        if (!subSkillList.contains(abstractSubSkill)) {
-            subSkillList.add(abstractSubSkill);
+        final String lowerCaseName = abstractSubSkill.getConfigKeyName()
+                .toLowerCase(Locale.ENGLISH);
+
+        // A second registration under the same name would double-fire doInteraction on every
+        // matching event, so registration is idempotent per config key name
+        if (subSkillNameMap.putIfAbsent(lowerCaseName, abstractSubSkill) != null) {
+            mcMMO.p.getLogger().warning("Ignoring duplicate subskill registration: "
+                    + abstractSubSkill.getConfigKeyName());
+            return;
         }
 
-        //Init ArrayList
+        subSkillList.add(abstractSubSkill);
         interactRegister.computeIfAbsent(abstractSubSkill.getInteractType(),
-                k -> new ArrayList<>());
-
-        //Registration array reference
-        ArrayList<Interaction> arrayRef = interactRegister.get(abstractSubSkill.getInteractType());
-
-        //Register skill
-        arrayRef.add(abstractSubSkill);
-
-        String lowerCaseName = abstractSubSkill.getConfigKeyName().toLowerCase(Locale.ENGLISH);
-
-        //Register in name map
-        subSkillNameMap.putIfAbsent(lowerCaseName, abstractSubSkill);
+                k -> new ArrayList<>()).add(abstractSubSkill);
 
         LogUtils.debug(mcMMO.p.getLogger(),
                 "Registered subskill: " + abstractSubSkill.getConfigKeyName());
@@ -79,11 +69,12 @@ public class InteractionManager {
      * @param curInteractType the associated interaction type
      */
     public static void processEvent(Event event, mcMMO plugin, InteractType curInteractType) {
-        if (interactRegister.get(curInteractType) == null) {
+        final ArrayList<Interaction> interactions = interactRegister.get(curInteractType);
+        if (interactions == null) {
             return;
         }
 
-        for (Interaction interaction : interactRegister.get(curInteractType)) {
+        for (Interaction interaction : interactions) {
             interaction.doInteraction(event, plugin);
         }
     }
