@@ -39,6 +39,7 @@ Version 2.2.055
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off
+    Fixed skill chance and duration display formatting not being thread-safe on Folia
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
@@ -58,6 +59,7 @@ Version 2.2.055
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
     (API) Skill rank unlock notifications now fire McMMOPlayerNotificationEvent like other notification types
     (API) McMMOPlayerLevelDownEvent fired by /mmoedit now reports the number of levels lost instead of the new absolute level
+    (API) ProbabilityUtil.percent is deprecated and no longer used internally
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
     (Codebase) Added unit tests covering the power level cap and skill level cap checks

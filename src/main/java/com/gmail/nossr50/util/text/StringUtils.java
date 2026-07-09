@@ -21,8 +21,10 @@ public class StringUtils {
 
     protected static final DecimalFormat percent = new DecimalFormat("##0.00%",
             DecimalFormatSymbols.getInstance(Locale.US));
-    protected static final DecimalFormat shortDecimal = new DecimalFormat("##0.0",
-            DecimalFormatSymbols.getInstance(Locale.US));
+    // DecimalFormat is not thread-safe, and tick displays are formatted from region threads
+    // on Folia
+    private static final ThreadLocal<DecimalFormat> shortDecimal = ThreadLocal.withInitial(
+            () -> new DecimalFormat("##0.0", DecimalFormatSymbols.getInstance(Locale.US)));
 
     // Using concurrent hash maps to avoid concurrency issues (Folia)
     private static final Map<EntityType, String> formattedEntityStrings = new ConcurrentHashMap<>();
@@ -50,7 +52,7 @@ public class StringUtils {
      * @return String representation of seconds
      */
     public static String ticksToSeconds(double ticks) {
-        return shortDecimal.format(ticks / 20);
+        return shortDecimal.get().format(ticks / 20);
     }
 
     /**
