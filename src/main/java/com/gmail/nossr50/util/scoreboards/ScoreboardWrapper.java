@@ -319,7 +319,7 @@ public class ScoreboardWrapper {
         targetProfile = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.skillLabels.get(skill));
+        loadObjective(ScoreboardManager.getSkillLabels().get(skill));
     }
 
     public void setTypeSelfStats() {
@@ -330,7 +330,7 @@ public class ScoreboardWrapper {
         targetProfile = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.HEADER_STATS);
+        loadObjective(ScoreboardManager.getHeaderStats());
     }
 
     public void setTypeInspectStats(PlayerProfile profile) {
@@ -363,7 +363,7 @@ public class ScoreboardWrapper {
         targetProfile = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.HEADER_COOLDOWNS);
+        loadObjective(ScoreboardManager.getHeaderCooldowns());
     }
 
     public void setTypeSelfRank() {
@@ -374,7 +374,7 @@ public class ScoreboardWrapper {
         targetProfile = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.HEADER_RANK);
+        loadObjective(ScoreboardManager.getHeaderRank());
     }
 
     public void setTypeInspectRank(String otherPlayer) {
@@ -385,7 +385,7 @@ public class ScoreboardWrapper {
         targetProfile = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.HEADER_RANK);
+        loadObjective(ScoreboardManager.getHeaderRank());
     }
 
     public void setTypeTopPower(int page) {
@@ -398,8 +398,8 @@ public class ScoreboardWrapper {
 
         int endPosition = page * 10;
         int startPosition = endPosition - 9;
-        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.POWER_LEVEL, startPosition,
-                endPosition));
+        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.getPowerLevelLabel(),
+                startPosition, endPosition));
     }
 
     public void setTypeTop(PrimarySkillType skill, int page) {
@@ -412,7 +412,7 @@ public class ScoreboardWrapper {
 
         int endPosition = page * 10;
         int startPosition = endPosition - 9;
-        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.skillLabels.get(skill),
+        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.getSkillLabels().get(skill),
                 startPosition, endPosition));
     }
 
@@ -508,22 +508,24 @@ public class ScoreboardWrapper {
     private void renderSkill(Player player, McMMOPlayer mmoPlayer, List<SidebarLine> lines) {
         if (!SkillTools.isChildSkill(targetSkill)) {
             int currentXP = mmoPlayer.getSkillXpLevel(targetSkill);
-            lines.add(new SidebarLine(ScoreboardManager.LABEL_LEVEL,
+            lines.add(new SidebarLine(ScoreboardManager.getLevelLabel(),
                     mmoPlayer.getSkillLevel(targetSkill)));
-            lines.add(new SidebarLine(ScoreboardManager.LABEL_CURRENT_XP, currentXP));
-            lines.add(new SidebarLine(ScoreboardManager.LABEL_REMAINING_XP,
+            lines.add(new SidebarLine(ScoreboardManager.getCurrentXpLabel(), currentXP));
+            lines.add(new SidebarLine(ScoreboardManager.getRemainingXpLabel(),
                     mmoPlayer.getXpToLevel(targetSkill) - currentXP));
         } else {
             for (PrimarySkillType parentSkill : mcMMO.p.getSkillTools()
                     .getChildSkillParents(targetSkill)) {
-                lines.add(new SidebarLine(ScoreboardManager.skillLabels.get(parentSkill),
+                lines.add(new SidebarLine(ScoreboardManager.getSkillLabels().get(parentSkill),
                         mmoPlayer.getSkillLevel(parentSkill)));
             }
-            lines.add(new SidebarLine(ScoreboardManager.LABEL_LEVEL,
+            lines.add(new SidebarLine(ScoreboardManager.getLevelLabel(),
                     mmoPlayer.getSkillLevel(targetSkill)));
         }
 
         if (mcMMO.p.getSkillTools().getSuperAbility(targetSkill) != null) {
+            final Map<SuperAbilityType, String> abilityLabels =
+                    ScoreboardManager.getAbilityLabelsSkill();
             boolean stopUpdating;
 
             if (targetSkill == PrimarySkillType.MINING) {
@@ -533,11 +535,9 @@ public class ScoreboardWrapper {
                 int secondsBM = Math.max(
                         mmoPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING), 0);
 
-                lines.add(new SidebarLine(
-                        ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.SUPER_BREAKER),
+                lines.add(new SidebarLine(abilityLabels.get(SuperAbilityType.SUPER_BREAKER),
                         secondsSB));
-                lines.add(new SidebarLine(
-                        ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.BLAST_MINING),
+                lines.add(new SidebarLine(abilityLabels.get(SuperAbilityType.BLAST_MINING),
                         secondsBM));
 
                 stopUpdating = (secondsSB == 0 && secondsBM == 0);
@@ -545,8 +545,7 @@ public class ScoreboardWrapper {
                 SuperAbilityType ability = mcMMO.p.getSkillTools().getSuperAbility(targetSkill);
                 int seconds = Math.max(mmoPlayer.calculateTimeRemaining(ability), 0);
 
-                lines.add(new SidebarLine(ScoreboardManager.abilityLabelsSkill.get(ability),
-                        seconds));
+                lines.add(new SidebarLine(abilityLabels.get(ability), seconds));
 
                 stopUpdating = seconds == 0;
             }
@@ -560,6 +559,8 @@ public class ScoreboardWrapper {
     }
 
     private void renderCooldowns(McMMOPlayer mmoPlayer, List<SidebarLine> lines) {
+        final Map<SuperAbilityType, String> abilityLabels =
+                ScoreboardManager.getAbilityLabelsColored();
         boolean anyCooldownsActive = false;
 
         for (SuperAbilityType ability : SuperAbilityType.values()) {
@@ -569,7 +570,7 @@ public class ScoreboardWrapper {
                 anyCooldownsActive = true;
             }
 
-            lines.add(new SidebarLine(ScoreboardManager.abilityLabelsColored.get(ability), seconds));
+            lines.add(new SidebarLine(abilityLabels.get(ability), seconds));
         }
 
         if (anyCooldownsActive) {
@@ -603,14 +604,14 @@ public class ScoreboardWrapper {
             int level = newProfile.getSkillLevel(skill);
             powerLevel += level;
 
-            lines.add(new SidebarLine(ScoreboardManager.skillLabels.get(skill), level));
+            lines.add(new SidebarLine(ScoreboardManager.getSkillLabels().get(skill), level));
         }
 
         // Sort by value descending to mirror the old score-sorted Bukkit board. The power
         // level line takes part in the sort: the sum is never smaller than any single row, so
         // it ranks first and always survives the sidebar line cap, which would otherwise drop
         // it whenever 15 or more skill rows are shown (a full-permission player has 17)
-        lines.add(new SidebarLine(ScoreboardManager.LABEL_POWER_LEVEL, powerLevel));
+        lines.add(new SidebarLine(ScoreboardManager.getPowerLevelLabel(), powerLevel));
         lines.sort((a, b) -> Integer.compare(b.value(), a.value()));
     }
 
@@ -626,13 +627,13 @@ public class ScoreboardWrapper {
 
             Integer rank = rankData.get(skill);
             if (rank != null) {
-                lines.add(new SidebarLine(ScoreboardManager.skillLabels.get(skill), rank));
+                lines.add(new SidebarLine(ScoreboardManager.getSkillLabels().get(skill), rank));
             }
         }
 
         Integer powerRank = rankData.get(null);
         if (powerRank != null) {
-            lines.add(new SidebarLine(ScoreboardManager.LABEL_POWER_LEVEL, powerRank));
+            lines.add(new SidebarLine(ScoreboardManager.getPowerLevelLabel(), powerRank));
         }
     }
 

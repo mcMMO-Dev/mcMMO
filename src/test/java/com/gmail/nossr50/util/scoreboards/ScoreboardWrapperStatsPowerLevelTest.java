@@ -144,12 +144,12 @@ class ScoreboardWrapperStatsPowerLevelTest extends MMOTestEnvironment {
 
     private int powerLevelLineValue() {
         return playerBoard.lastDrawnLines.stream()
-                .filter(line -> line.label().equals(ScoreboardManager.LABEL_POWER_LEVEL))
+                .filter(line -> line.label().equals(ScoreboardManager.getPowerLevelLabel()))
                 .findFirst().orElseThrow().value();
     }
 
     private @Nullable SidebarLine findSkillRow(PrimarySkillType skill) {
-        final String label = ScoreboardManager.skillLabels.get(skill);
+        final String label = ScoreboardManager.getSkillLabels().get(skill);
         return playerBoard.lastDrawnLines.stream()
                 .filter(line -> line.label().equals(label))
                 .findFirst().orElse(null);

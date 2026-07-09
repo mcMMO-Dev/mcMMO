@@ -62,8 +62,8 @@ class ScoreboardManagerTest {
         when(generalConfig.getPowerLevelTagsEnabled()).thenReturn(false);
         when(generalConfig.getSkillLevelUpBoard()).thenReturn(false);
 
-        // Echo locale keys back so label building in ScoreboardManager's static init is
-        // deterministic without touching real locale files
+        // Echo locale keys back so ScoreboardManager's label building (run lazily on first
+        // label read) is deterministic without touching real locale files
         mockedLocaleLoader.when(() -> LocaleLoader.getString(anyString()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 

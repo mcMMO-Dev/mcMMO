@@ -41,37 +41,35 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ScoreboardManager {
     static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new ConcurrentHashMap<>();
 
-    static final String HEADER_STATS = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
-    static final String HEADER_COOLDOWNS = LocaleLoader.getString(
-            "Scoreboard.Header.PlayerCooldowns");
-    static final String HEADER_RANK = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    static final String TAG_POWER_LEVEL = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+    // Locale/config-derived labels. Built by init() (or lazily on first read) rather than a
+    // static initializer for the same reason backends are: label building reads the general
+    // config and locale, and a failure inside a static initializer would surface as an
+    // ExceptionInInitializerError poisoning the whole class. Rebuilding on init() also picks up
+    // locale and config changes when the plugin re-initializes after a reload.
+    private static String headerStats;
+    private static String headerCooldowns;
+    private static String headerRank;
+    private static String powerLevelLabel;
+    private static String levelLabel;
+    private static String currentXpLabel;
+    private static String remainingXpLabel;
 
-    static final String POWER_LEVEL = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
-
-    static final String LABEL_POWER_LEVEL = POWER_LEVEL;
-    static final String LABEL_LEVEL = LocaleLoader.getString("Scoreboard.Misc.Level");
-    static final String LABEL_CURRENT_XP = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
-    static final String LABEL_REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
-//    static final String LABEL_ABILITY_COOLDOWN = LocaleLoader.getString("Scoreboard.Misc.Cooldown");
-//    static final String LABEL_OVERALL = LocaleLoader.getString("Scoreboard.Misc.Overall");
-
-    static final Map<PrimarySkillType, String> skillLabels;
-    static final Map<SuperAbilityType, String> abilityLabelsColored;
-    static final Map<SuperAbilityType, String> abilityLabelsSkill;
+    private static Map<PrimarySkillType, String> skillLabels;
+    private static Map<SuperAbilityType, String> abilityLabelsColored;
+    private static Map<SuperAbilityType, String> abilityLabelsSkill;
 
     private static ScoreboardBackend backend;
     private static ScoreboardBackendType backendType = ScoreboardBackendType.NOOP;
 
-    /*
-     * Initializes the static label maps for our scoreboards.
-     *
-     * Note: backend resources are not loaded here. Loading packet adapters can fail on unsupported
-     * server versions, and doing that inside a static initializer would turn failures into
-     * ExceptionInInitializerError on first access. Backends are initialized explicitly via
-     * {@link #init()} during onEnable, guarded by the scoreboards-enabled config.
-     */
-    static {
+    private static void buildLabels() {
+        headerStats = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
+        headerCooldowns = LocaleLoader.getString("Scoreboard.Header.PlayerCooldowns");
+        headerRank = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
+        powerLevelLabel = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
+        levelLabel = LocaleLoader.getString("Scoreboard.Misc.Level");
+        currentXpLabel = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
+        remainingXpLabel = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
+
         /*
          * We need immutable objects for our Scoreboard's labels
          */
@@ -163,12 +161,70 @@ public class ScoreboardManager {
         abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
+    private static void ensureLabelsBuilt() {
+        if (skillLabels == null) {
+            buildLabels();
+        }
+    }
+
+    static String getHeaderStats() {
+        ensureLabelsBuilt();
+        return headerStats;
+    }
+
+    static String getHeaderCooldowns() {
+        ensureLabelsBuilt();
+        return headerCooldowns;
+    }
+
+    static String getHeaderRank() {
+        ensureLabelsBuilt();
+        return headerRank;
+    }
+
+    static String getPowerLevelLabel() {
+        ensureLabelsBuilt();
+        return powerLevelLabel;
+    }
+
+    static String getLevelLabel() {
+        ensureLabelsBuilt();
+        return levelLabel;
+    }
+
+    static String getCurrentXpLabel() {
+        ensureLabelsBuilt();
+        return currentXpLabel;
+    }
+
+    static String getRemainingXpLabel() {
+        ensureLabelsBuilt();
+        return remainingXpLabel;
+    }
+
+    static Map<PrimarySkillType, String> getSkillLabels() {
+        ensureLabelsBuilt();
+        return skillLabels;
+    }
+
+    static Map<SuperAbilityType, String> getAbilityLabelsColored() {
+        ensureLabelsBuilt();
+        return abilityLabelsColored;
+    }
+
+    static Map<SuperAbilityType, String> getAbilityLabelsSkill() {
+        ensureLabelsBuilt();
+        return abilityLabelsSkill;
+    }
+
     private static final Set<String> dirtyPowerLevels = ConcurrentHashMap.newKeySet();
 
     public static void init() {
         if (backend != null) {
             return;
         }
+
+        buildLabels();
 
         if (!mcMMO.p.getGeneralConfig().getScoreboardsEnabled()) {
             backendType = ScoreboardBackendType.NOOP;
