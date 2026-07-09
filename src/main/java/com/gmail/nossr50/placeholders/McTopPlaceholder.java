@@ -1,6 +1,7 @@
 package com.gmail.nossr50.placeholders;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import java.util.Locale;
 import java.util.function.IntFunction;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +76,7 @@ public class McTopPlaceholder implements Placeholder {
     }
 
     private static String token(@Nullable PrimarySkillType skill, String overallToken) {
-        return skill == null ? overallToken : skill.toString().toLowerCase();
+        return skill == null ? overallToken : skill.toString().toLowerCase(Locale.ENGLISH);
     }
 
     @Override
