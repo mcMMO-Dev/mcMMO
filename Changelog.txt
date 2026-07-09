@@ -86,6 +86,8 @@ Version 2.2.055
     (Codebase) Hardened cold biome detection against biomes missing from the server's Minecraft version
     (Codebase) Fixed text component grouping ignoring group sizes other than three
     (Codebase) Upgrade tracking save errors now go through the plugin logger
+    (Codebase) Removed the ModManager class, which had been fully commented out for years
+    (Codebase) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
