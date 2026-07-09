@@ -45,6 +45,7 @@ Version 2.2.055
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Improved performance when players gain skill XP (See notes)
     Improved performance when checking skill ranks (See notes)
+    Improved performance of frequent permission checks (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
@@ -126,6 +127,7 @@ Version 2.2.055
     Gaining XP now does much less repeated work per gain, which reduces mcMMO's share of server thread time on busy servers; no behavior or config changes are involved.
     Taking smelted items out of a furnace no longer searches the full server recipe list every time.
     Skill rank checks (which run constantly during combat, gathering, and displays) no longer re-read the rank config every time; unlock levels are loaded once at startup and refreshed when configs reload. No behavior or config changes are involved.
+    Permission node names used by frequent checks (subskill abilities, vanilla XP boost, Green Thumb, repair/salvage types, Call of the Wild) are now precomputed instead of being rebuilt on every check. Only the node name strings are precomputed; the permission checks themselves still run every time, so permission plugins keep working exactly as before.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
