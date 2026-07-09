@@ -56,6 +56,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public final class CombatUtils {
 
@@ -630,6 +631,51 @@ public final class CombatUtils {
      *
      * @param event The event to run the combat checks on.
      */
+    /**
+     * Resolves which melee skill claims a hit, preserving the historical predicate order:
+     * the spear damage type wins outright, then the held item is tested as sword, axe,
+     * unarmed, trident, and mace.
+     *
+     * @param isDamageTypeSpear whether the hit carries the spear damage type
+     * @param heldItem the attacker's main hand item
+     * @return the melee skill for the hit, or null when no melee skill claims it
+     */
+    @VisibleForTesting
+    static @Nullable PrimarySkillType resolveMeleeSkill(boolean isDamageTypeSpear,
+            @NotNull ItemStack heldItem) {
+        if (isDamageTypeSpear) {
+            return PrimarySkillType.SPEARS;
+        } else if (ItemUtils.isSword(heldItem)) {
+            return PrimarySkillType.SWORDS;
+        } else if (ItemUtils.isAxe(heldItem)) {
+            return PrimarySkillType.AXES;
+        } else if (ItemUtils.isUnarmed(heldItem)) {
+            return PrimarySkillType.UNARMED;
+        } else if (ItemUtils.isTrident(heldItem)) {
+            return PrimarySkillType.TRIDENTS;
+        } else if (ItemUtils.isMace(heldItem)) {
+            return PrimarySkillType.MACES;
+        }
+
+        return null;
+    }
+
+    private static void processMeleeCombat(@NotNull PrimarySkillType meleeSkill,
+            @NotNull LivingEntity target, @NotNull Player player,
+            @NotNull EntityDamageByEntityEvent event, double attackStrengthScale) {
+        switch (meleeSkill) {
+            case SPEARS -> processSpearsCombat(target, player, event, attackStrengthScale);
+            case SWORDS -> processSwordCombat(target, player, event, attackStrengthScale);
+            case AXES -> processAxeCombat(target, player, event, attackStrengthScale);
+            case UNARMED -> processUnarmedCombat(target, player, event, attackStrengthScale);
+            case TRIDENTS -> processTridentCombatMelee(target, player, event,
+                    attackStrengthScale);
+            case MACES -> processMacesCombat(target, player, event, attackStrengthScale);
+            default -> {
+            }
+        }
+    }
+
     public static void processCombatAttack(@NotNull EntityDamageByEntityEvent event, @NotNull Entity painSourceRoot,
             @NotNull LivingEntity target) {
         final Entity painSource = event.getDamager();
@@ -703,64 +749,16 @@ public final class CombatUtils {
             // here on Paper 26.1.2+ because the ticker is reset before the event fires (PR #13856).
             final double attackStrengthScale = computeAttackStrengthScale(player, event);
 
-            if (isDamageTypeSpear) {
-                if (!mcMMO.p.getSkillTools()
-                        .canCombatSkillsTrigger(PrimarySkillType.SPEARS, target)) {
-                    return;
-                }
-                if (mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.SPEARS)) {
-                    processSpearsCombat(target, player, event, attackStrengthScale);
-                }
-            } if (ItemUtils.isSword(heldItem)) {
-                if (!mcMMO.p.getSkillTools()
-                        .canCombatSkillsTrigger(PrimarySkillType.SWORDS, target)) {
+            final PrimarySkillType meleeSkill = resolveMeleeSkill(isDamageTypeSpear, heldItem);
+
+            if (meleeSkill != null) {
+                if (!mcMMO.p.getSkillTools().canCombatSkillsTrigger(meleeSkill, target)) {
                     return;
                 }
 
                 if (mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.SWORDS)) {
-                    processSwordCombat(target, player, event, attackStrengthScale);
-                }
-            } else if (ItemUtils.isAxe(heldItem)) {
-                if (!mcMMO.p.getSkillTools()
-                        .canCombatSkillsTrigger(PrimarySkillType.AXES, target)) {
-                    return;
-                }
-
-                if (mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.AXES)) {
-                    processAxeCombat(target, player, event, attackStrengthScale);
-                }
-            } else if (ItemUtils.isUnarmed(heldItem)) {
-                if (!mcMMO.p.getSkillTools()
-                        .canCombatSkillsTrigger(PrimarySkillType.UNARMED, target)) {
-                    return;
-                }
-
-                if (mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.UNARMED)) {
-                    processUnarmedCombat(target, player, event, attackStrengthScale);
-                }
-            } else if (ItemUtils.isTrident(heldItem)) {
-                if (!mcMMO.p.getSkillTools()
-                        .canCombatSkillsTrigger(PrimarySkillType.TRIDENTS, target)) {
-                    return;
-                }
-
-                if (mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.TRIDENTS)) {
-                    processTridentCombatMelee(target, player, event, attackStrengthScale);
-                }
-            } else if (ItemUtils.isMace(heldItem)) {
-                if (!mcMMO.p.getSkillTools()
-                        .canCombatSkillsTrigger(PrimarySkillType.MACES, target)) {
-                    return;
-                }
-
-                if (mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.MACES)) {
-                    processMacesCombat(target, player, event, attackStrengthScale);
+                        .doesPlayerHaveSkillPermission(player, meleeSkill)) {
+                    processMeleeCombat(meleeSkill, target, player, event, attackStrengthScale);
                 }
             }
         } else if (entityType == EntityType.WOLF) {
@@ -1082,75 +1080,86 @@ public final class CombatUtils {
      */
     public static void processCombatXP(@NotNull McMMOPlayer mmoPlayer, @NotNull LivingEntity target,
             @NotNull PrimarySkillType primarySkillType, double multiplier) {
-        double baseXP = 0;
-        XPGainReason xpGainReason;
+        final double baseXP;
+        final XPGainReason xpGainReason;
 
         if (target instanceof Player defender) {
-            if (defender.equals(mmoPlayer.getPlayer())
-                    || !ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()
-                    ||
-                    (mcMMO.p.getPartyConfig().isPartyEnabled()
-                            && mcMMO.p.getPartyManager()
-                            .inSameParty(mmoPlayer.getPlayer(), defender))) {
+            if (isPvpXpIneligible(mmoPlayer, defender)) {
                 return;
             }
 
             xpGainReason = PVP;
-
-            if (defender.isOnline()
-                    && SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(),
-                    Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                baseXP = 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
-            }
+            baseXP = calculatePvpBaseXP(mmoPlayer, defender);
         } else {
-            if (target instanceof Animals) {
-                EntityType type = target.getType();
-                baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
-            } else if (target instanceof Monster) {
-                EntityType type = target.getType();
-                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-            } else {
-                EntityType type = target.getType();
+            xpGainReason = XPGainReason.PVE;
+            baseXP = calculatePveBaseXP(target);
+        }
 
-                if (ExperienceConfig.getInstance().hasCombatXP(type)) {
-                    if (type == EntityType.IRON_GOLEM && target instanceof IronGolem ironGolem) {
-                        if (!ironGolem.isPlayerCreated()) {
-                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                        }
-                    } else {
+        final double finalXP = baseXP * multiplier;
+
+        if (finalXP > 0) {
+            mcMMO.p.getFoliaLib().getScheduler().runAtEntity(target,
+                    new AwardCombatXpTask(mmoPlayer, primarySkillType, finalXP, target,
+                            xpGainReason));
+        }
+    }
+
+    private static boolean isPvpXpIneligible(@NotNull McMMOPlayer mmoPlayer,
+            @NotNull Player defender) {
+        return defender.equals(mmoPlayer.getPlayer())
+                || !ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()
+                || (mcMMO.p.getPartyConfig().isPartyEnabled()
+                && mcMMO.p.getPartyManager().inSameParty(mmoPlayer.getPlayer(), defender));
+    }
+
+    private static double calculatePvpBaseXP(@NotNull McMMOPlayer mmoPlayer,
+            @NotNull Player defender) {
+        if (defender.isOnline() && SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(),
+                Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            return 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
+        }
+
+        return 0;
+    }
+
+    private static double calculatePveBaseXP(@NotNull LivingEntity target) {
+        double baseXP = 0;
+        final EntityType type = target.getType();
+
+        if (target instanceof Animals) {
+            baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
+        } else if (target instanceof Monster) {
+            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+        } else {
+            if (ExperienceConfig.getInstance().hasCombatXP(type)) {
+                if (type == EntityType.IRON_GOLEM && target instanceof IronGolem ironGolem) {
+                    if (!ironGolem.isPlayerCreated()) {
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                     }
                 } else {
-                    baseXP = 1.0;
+                    baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                 }
+            } else {
+                baseXP = 1.0;
             }
-
-            if (hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
-                baseXP = 0;
-            } else if (hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata(
-                    "ES")) {
-                baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
-            } else if (hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
-                baseXP *= ExperienceConfig.getInstance().getNetherPortalXpMultiplier();
-            } else if (hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
-                baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
-            } else if (hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
-                baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
-            } else if (hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
-                baseXP *= ExperienceConfig.getInstance().getTamedMobXpMultiplier();
-            }
-
-            baseXP *= 10;
-            xpGainReason = XPGainReason.PVE;
         }
 
-        baseXP *= multiplier;
-
-        if (baseXP > 0) {
-            mcMMO.p.getFoliaLib().getScheduler().runAtEntity(target,
-                    new AwardCombatXpTask(mmoPlayer, primarySkillType, baseXP, target,
-                            xpGainReason));
+        if (hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
+            baseXP = 0;
+        } else if (hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target)
+                || target.hasMetadata("ES")) {
+            baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
+        } else if (hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
+            baseXP *= ExperienceConfig.getInstance().getNetherPortalXpMultiplier();
+        } else if (hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
+            baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
+        } else if (hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
+            baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
+        } else if (hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
+            baseXP *= ExperienceConfig.getInstance().getTamedMobXpMultiplier();
         }
+
+        return baseXP * 10;
     }
 
     /**

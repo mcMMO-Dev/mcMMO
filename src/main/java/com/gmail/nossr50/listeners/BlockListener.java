@@ -637,7 +637,7 @@ public class BlockListener implements Listener {
         /*
          * ABILITY PREPARATION CHECKS
          *
-         * We check permissions here before processing activation.
+         * Permissions are checked inside checkAbilityActivation.
          */
         if (BlockUtils.canActivateAbilities(block)) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -645,27 +645,23 @@ public class BlockListener implements Listener {
             if (mmoPlayer.getToolPreparationMode(ToolType.HOE)
                     && ItemUtils.isHoe(heldItem)
                     && (BlockUtils.affectedByGreenTerra(block)
-                    || BlockUtils.canMakeMossy(block))
-                    && Permissions.greenTerra(player)) {
+                    || BlockUtils.canMakeMossy(block))) {
                 mmoPlayer.checkAbilityActivation(PrimarySkillType.HERBALISM);
             } else if (mmoPlayer.getToolPreparationMode(ToolType.AXE) && ItemUtils.isAxe(heldItem)
-                    && BlockUtils.hasWoodcuttingXP(block) && Permissions.treeFeller(player)) {
+                    && BlockUtils.hasWoodcuttingXP(block)) {
                 mmoPlayer.checkAbilityActivation(PrimarySkillType.WOODCUTTING);
             } else if (mmoPlayer.getToolPreparationMode(ToolType.PICKAXE) && ItemUtils.isPickaxe(
-                    heldItem) && BlockUtils.affectedBySuperBreaker(block)
-                    && Permissions.superBreaker(player)) {
+                    heldItem) && BlockUtils.affectedBySuperBreaker(block)) {
                 mmoPlayer.checkAbilityActivation(PrimarySkillType.MINING);
             } else if (mmoPlayer.getToolPreparationMode(ToolType.SHOVEL) && ItemUtils.isShovel(
-                    heldItem) && BlockUtils.affectedByGigaDrillBreaker(block)
-                    && Permissions.gigaDrillBreaker(player)) {
+                    heldItem) && BlockUtils.affectedByGigaDrillBreaker(block)) {
                 mmoPlayer.checkAbilityActivation(PrimarySkillType.EXCAVATION);
             } else if (mmoPlayer.getToolPreparationMode(ToolType.FISTS)
                     && heldItem.getType() == Material.AIR && (
                     BlockUtils.affectedByGigaDrillBreaker(block)
                             || mcMMO.getMaterialMapStore().isGlass(block.getType())
                             || block.getType() == Material.SNOW
-                            || BlockUtils.affectedByBlockCracker(block) && Permissions.berserk(
-                            player))) {
+                            || BlockUtils.affectedByBlockCracker(block))) {
                 mmoPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
 
                 if (mmoPlayer.getAbilityMode(SuperAbilityType.BERSERK)) {

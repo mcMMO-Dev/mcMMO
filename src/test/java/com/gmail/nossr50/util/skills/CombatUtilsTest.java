@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
 import static java.util.logging.Logger.getLogger;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -9,16 +10,18 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.meta.HealthbarSnapshot;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.AttributeMapper;
 import com.gmail.nossr50.util.MetadataConstants;
 import java.util.Collections;
 import java.util.List;
+import org.bukkit.Material;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,52 @@ class CombatUtilsTest extends MMOTestEnvironment {
     @AfterEach
     void tearDown() {
         cleanUpStaticMocks();
+    }
+
+    @Nested
+    class ResolveMeleeSkill {
+
+        private final ItemStack heldItem = Mockito.mock(ItemStack.class);
+
+        /**
+         * The melee dispatch keeps its historical predicate order (spear damage type first,
+         * then sword, axe, unarmed, trident, mace by held item); a spear-typed hit resolves to
+         * Spears alone even when the held item would match a later weapon predicate.
+         */
+        @ParameterizedTest
+        @CsvSource({
+                "true, DIAMOND_SWORD, SPEARS",
+                "true, AIR, SPEARS",
+                "false, DIAMOND_SWORD, SWORDS",
+                "false, IRON_AXE, AXES",
+                "false, AIR, UNARMED",
+                "false, TRIDENT, TRIDENTS",
+                "false, MACE, MACES",
+        })
+        void resolveMeleeSkillShouldFollowPredicateOrder(boolean isDamageTypeSpear,
+                Material heldItemType, PrimarySkillType expectedSkill) {
+            // Given - a held item of the given type
+            when(heldItem.getType()).thenReturn(heldItemType);
+
+            // When - the melee skill is resolved
+            final PrimarySkillType resolved = CombatUtils.resolveMeleeSkill(isDamageTypeSpear,
+                    heldItem);
+
+            // Then - the hit routes to the expected skill
+            assertThat(resolved).isEqualTo(expectedSkill);
+        }
+
+        @Test
+        void resolveMeleeSkillShouldReturnNullWhenNoWeaponPredicateMatches() {
+            // Given - a held item no melee predicate claims
+            when(heldItem.getType()).thenReturn(Material.BOW);
+
+            // When - the melee skill is resolved
+            final PrimarySkillType resolved = CombatUtils.resolveMeleeSkill(false, heldItem);
+
+            // Then - no melee skill claims the hit
+            assertThat(resolved).isNull();
+        }
     }
 
     @Nested
