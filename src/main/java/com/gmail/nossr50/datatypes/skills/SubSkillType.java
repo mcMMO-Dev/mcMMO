@@ -131,6 +131,7 @@ public enum SubSkillType {
     // Built on first use because the parent skill lookup needs the plugin to be loaded; the
     // benign race between threads just rebuilds the same string
     private String permissionNodeAddress;
+    private String advConfigAddress;
     //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.
 
     /**
@@ -166,8 +167,12 @@ public enum SubSkillType {
      * @return the root address for this skill in advanced.yml
      */
     public String getAdvConfigAddress() {
-        return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "."
-                + getConfigName(toString());
+        if (advConfigAddress == null) {
+            advConfigAddress = "Skills." + StringUtils.getCapitalized(getParentSkill().toString())
+                    + "." + getConfigName(toString());
+        }
+
+        return advConfigAddress;
     }
 
     /**

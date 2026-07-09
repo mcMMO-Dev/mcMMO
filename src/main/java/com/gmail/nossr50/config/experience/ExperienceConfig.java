@@ -36,6 +36,12 @@ public class ExperienceConfig extends BukkitConfig {
     private Boolean npcInteractionPrevented;
     private Boolean armorStandInteractionPrevented;
     private Boolean mannequinInteractionPrevented;
+    private Boolean snowExploitPrevented;
+    private Boolean endermanEndermiteFarmingPrevented;
+    private Boolean pistonCheatingPrevented;
+    private Boolean pistonExploitPrevented;
+    private Boolean stoneLavaFarmingPrevented;
+    private Boolean tallPlantXPLimited;
     private Float diminishedReturnsCap;
     private Integer diminishedReturnsTimeInterval;
     private Boolean experienceBarsEnabled;
@@ -86,6 +92,12 @@ public class ExperienceConfig extends BukkitConfig {
         npcInteractionPrevented = null;
         armorStandInteractionPrevented = null;
         mannequinInteractionPrevented = null;
+        snowExploitPrevented = null;
+        endermanEndermiteFarmingPrevented = null;
+        pistonCheatingPrevented = null;
+        pistonExploitPrevented = null;
+        stoneLavaFarmingPrevented = null;
+        tallPlantXPLimited = null;
         diminishedReturnsCap = null;
         diminishedReturnsTimeInterval = null;
         experienceBarsEnabled = null;
@@ -216,19 +228,36 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* EXPLOIT TOGGLES */
     public boolean isSnowExploitPrevented() {
-        return config.getBoolean("ExploitFix.SnowGolemExcavation", true);
+        if (snowExploitPrevented == null) {
+            snowExploitPrevented = config.getBoolean("ExploitFix.SnowGolemExcavation", true);
+        }
+
+        return snowExploitPrevented;
     }
 
     public boolean isEndermanEndermiteFarmingPrevented() {
-        return config.getBoolean("ExploitFix.EndermanEndermiteFarms", true);
+        if (endermanEndermiteFarmingPrevented == null) {
+            endermanEndermiteFarmingPrevented = config.getBoolean(
+                    "ExploitFix.EndermanEndermiteFarms", true);
+        }
+
+        return endermanEndermiteFarmingPrevented;
     }
 
     public boolean isPistonCheatingPrevented() {
-        return config.getBoolean("ExploitFix.PistonCheating", true);
+        if (pistonCheatingPrevented == null) {
+            pistonCheatingPrevented = config.getBoolean("ExploitFix.PistonCheating", true);
+        }
+
+        return pistonCheatingPrevented;
     }
 
     public boolean isPistonExploitPrevented() {
-        return config.getBoolean("ExploitFix.Pistons", false);
+        if (pistonExploitPrevented == null) {
+            pistonExploitPrevented = config.getBoolean("ExploitFix.Pistons", false);
+        }
+
+        return pistonExploitPrevented;
     }
 
     public boolean allowUnsafeEnchantments() {
@@ -634,10 +663,19 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean preventStoneLavaFarming() {
-        return config.getBoolean("ExploitFix.LavaStoneAndCobbleFarming", true);
+        if (stoneLavaFarmingPrevented == null) {
+            stoneLavaFarmingPrevented = config.getBoolean(
+                    "ExploitFix.LavaStoneAndCobbleFarming", true);
+        }
+
+        return stoneLavaFarmingPrevented;
     }
 
     public boolean limitXPOnTallPlants() {
-        return config.getBoolean("ExploitFix.LimitTallPlantFarming", true);
+        if (tallPlantXPLimited == null) {
+            tallPlantXPLimited = config.getBoolean("ExploitFix.LimitTallPlantFarming", true);
+        }
+
+        return tallPlantXPLimited;
     }
 }

@@ -195,15 +195,17 @@ public class mcMMO extends JavaPlugin {
 
             setupFilePaths();
             generalConfig = new GeneralConfig(getDataFolder()); //Load before skillTools
+
+            //Store this value so other plugins can check it
+            //Must be set before AdvancedConfig loads, its level scaling reads this flag
+            isRetroModeEnabled = generalConfig.getIsRetroMode();
+
             skillTools = new SkillTools(this); //Load after general config
 
             //Init configs
             advancedConfig = new AdvancedConfig(getDataFolder());
             partyConfig = new PartyConfig(getDataFolder());
             customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
-
-            //Store this value so other plugins can check it
-            isRetroModeEnabled = generalConfig.getIsRetroMode();
 
             MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
 

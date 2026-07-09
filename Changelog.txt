@@ -62,6 +62,7 @@ Version 2.2.055
     Improved performance when looking up the XP needed for the next level
     Improved performance of container ownership tracking and super ability tool updates
     Improved performance of inventory clicks, fishing catches, and command handling on localized servers (See notes)
+    Improved performance of skill chance rolls and frequently checked advanced.yml settings (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
     Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
@@ -155,6 +156,7 @@ Version 2.2.055
     Tree checks during block placement and axe readying no longer capture block snapshots, the transparent-block list used by fishing and Blast Mining targeting is built once instead of on every use, and falling-block tracking takes one fewer block snapshot per event; no behavior changes are involved.
     Placed-block tracking now does less work per lookup, and its in-memory chunk data only grows to fit the heights that actually contain tracked blocks instead of always covering the full world height; saved data is unaffected.
     Inventory clicks outside furnaces and brewing stands now exit before any player data or permission work happens, fishing catches read the caught item once, and on servers with a non-English locale the localized skill command lookup is built once per locale instead of on every command (it rebuilds automatically after /mcmmoreloadlocale); no behavior changes are involved.
+    Skill chance rolls no longer rebuild config key names or re-read the advanced.yml chance caps and bonus levels on every roll, the attack cooldown adjustment toggle and the Archery force multiplier are read once, and the per-event exploit-fix toggles in experience.yml are resolved once and reused; values still refresh when configs reload.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
