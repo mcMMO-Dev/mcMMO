@@ -1532,11 +1532,16 @@ public class MaterialMapStore {
     }
 
     public @NotNull HashSet<String> getNetheriteArmor() {
-        return netheriteArmor;
+        // Copied so callers can't modify the register
+        return new HashSet<>(netheriteArmor);
     }
 
+    /**
+     * @deprecated No remaining callers; scheduled for removal.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public @NotNull HashSet<String> getNetheriteTools() {
-        return netheriteTools;
+        return new HashSet<>(netheriteTools);
     }
 
 

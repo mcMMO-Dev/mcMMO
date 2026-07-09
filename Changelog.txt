@@ -98,6 +98,7 @@ Version 2.2.055
     (Codebase) Added mangrove and cherry logs to the woodcutting drop list used by the currently disabled party item sharing
     (Codebase) Removed material name entries that could never match anything (pre-1.13 wood/gold tool and armor names, pre-release copper names, stair variants that never existed)
     (Codebase) Added a unit test ensuring every registered material name resolves to a real Material or is a documented cross-edition or future-version name
+    (Codebase) Material register getters return copies, and the unused netherite tools getter is deprecated for removal
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
