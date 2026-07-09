@@ -19,8 +19,9 @@ public class BukkitScoreboardBackend implements ScoreboardBackend {
     // Fixed name for compatibility: this objective lives on the main scoreboard, which is
     // persisted to the world's scoreboard data. Reusing the historical name means servers
     // upgrading from older mcMMO builds keep their existing objective instead of accumulating
-    // orphans after crashes or restarts.
-    private static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
+    // orphans after crashes or restarts. BukkitPlayerBoard reuses this name for its per-board
+    // below-name objective; removeLeftoverPowerObjective() cleans up by this exact name.
+    static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
     private static final String DISPLAY_NAME = "powerLevel";
 
     private final Map<String, BukkitPlayerBoard> activeBoards = new ConcurrentHashMap<>();
