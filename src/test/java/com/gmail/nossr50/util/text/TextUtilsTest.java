@@ -79,6 +79,48 @@ class TextUtilsTest {
     }
 
     @Nested
+    class SplitComponentsIntoGroups {
+
+        /**
+         * Regression coverage: the group offset was hardcoded to 3, so any other group size
+         * grouped the wrong components together.
+         */
+        @Test
+        void shouldHonorGroupSizesOtherThanThree() {
+            // Given - five components split into groups of two
+            final List<Component> components = List.of(Component.text("a"), Component.text("b"),
+                    Component.text("c"), Component.text("d"), Component.text("e"));
+
+            // When - the components are split
+            final Component[][] groups = TextUtils.splitComponentsIntoGroups(components, 2);
+
+            // Then - the groups are [a,b], [c,d], [e,null]
+            assertThat(groups).hasNumberOfRows(3);
+            assertThat(groups[0][0]).isEqualTo(components.get(0));
+            assertThat(groups[0][1]).isEqualTo(components.get(1));
+            assertThat(groups[1][0]).isEqualTo(components.get(2));
+            assertThat(groups[1][1]).isEqualTo(components.get(3));
+            assertThat(groups[2][0]).isEqualTo(components.get(4));
+            assertThat(groups[2][1]).isNull();
+        }
+
+        /** Guard: the group size of three used by the skill hover display keeps working. */
+        @Test
+        void shouldSplitIntoGroupsOfThree() {
+            // Given - four components split into groups of three
+            final List<Component> components = List.of(Component.text("a"), Component.text("b"),
+                    Component.text("c"), Component.text("d"));
+
+            // When - the components are split
+            final Component[][] groups = TextUtils.splitComponentsIntoGroups(components, 3);
+
+            // Then - the second group starts with the fourth component
+            assertThat(groups).hasNumberOfRows(2);
+            assertThat(groups[1][0]).isEqualTo(components.get(3));
+        }
+    }
+
+    @Nested
     class InsertLiteralTextAtMarkers {
 
         @Test

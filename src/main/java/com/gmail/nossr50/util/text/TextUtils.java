@@ -71,7 +71,7 @@ public class TextUtils {
             //Fill group with members
             for (int i = 0; i < groupsSize; i++) {
                 int indexOfPotentialMember =
-                        i + (groupsFinished * 3); //Groups don't always fill all members neatly
+                        i + (groupsFinished * groupsSize); //Groups don't always fill all members neatly
 
                 //Some groups won't have entirely non-null elements
                 if (indexOfPotentialMember > components.size() - 1) {
