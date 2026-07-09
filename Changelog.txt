@@ -138,6 +138,7 @@ Version 2.2.055
     (Codebase) Extracted the friendly-fire decision into a pure, contract-tested resolver shared by the damage and combust listeners
     (Codebase) Extracted the diet food tables and eaten-hand resolution from the food listener into a tested mapping
     (Codebase) Extracted the tracked-TNT owner resolution shared by the explosion listeners and blast mining damage handling, with tests
+    (Codebase) Extracted the diminished-returns XP math into a pure, contract-tested formula
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
