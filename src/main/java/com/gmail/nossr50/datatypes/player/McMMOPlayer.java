@@ -942,7 +942,8 @@ public class McMMOPlayer implements Identified {
 
         xp = (float) (
                 (xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType))
-                        * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+                        * ExperienceConfig.getInstance()
+                        .getExperienceGainsMultiplier(primarySkillType));
 
         return PerksUtils.handleXpPerks(player, xp, primarySkillType);
     }

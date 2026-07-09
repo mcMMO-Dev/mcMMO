@@ -156,7 +156,7 @@ public class SelfListener implements Listener {
                 mmoPlayer.getProfile().getRegisteredXpGain(primarySkillType),
                 threshold,
                 ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType),
-                ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier(),
+                ExperienceConfig.getInstance().getExperienceGainsMultiplier(primarySkillType),
                 ExperienceConfig.getInstance().getDiminishedReturnsCap());
 
         if (result.cancelled()) {

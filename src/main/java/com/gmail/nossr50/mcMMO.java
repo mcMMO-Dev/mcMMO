@@ -269,10 +269,10 @@ public class mcMMO extends JavaPlugin {
                                 "You are potentially running an outdated version of your server software"
                                         + ", mcMMO will not work unless you update to a newer version!"),
                         20, 20 * 60 * 30);
-                if (!minecraftGameVersion.isAtLeast(1, 20, 4)) {
+                if (!minecraftGameVersion.isAtLeast(1, 20, 5)) {
                     foliaLib.getScheduler().runTimer(
                             () -> getLogger().severe(
-                                    "This version of mcMMO requires at least Minecraft 1.20.4 to"
+                                    "This version of mcMMO requires at least Minecraft 1.20.5 to"
                                             + " function properly, please update your software or use an older version of mcMMO!"),
                             20, 20 * 60 * 30);
                 }

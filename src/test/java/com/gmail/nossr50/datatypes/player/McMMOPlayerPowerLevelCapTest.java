@@ -178,7 +178,8 @@ class McMMOPlayerPowerLevelCapTest extends MMOTestEnvironment {
         when(generalConfig.getLevelCap(PrimarySkillType.MINING)).thenReturn(10000);
         when(ExperienceConfig.getInstance().getFormulaSkillModifier(PrimarySkillType.MINING))
                 .thenReturn(1.0);
-        when(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()).thenReturn(1.0);
+        when(ExperienceConfig.getInstance()
+                .getExperienceGainsMultiplier(PrimarySkillType.MINING)).thenReturn(1.0);
         mmoPlayer.modifySkill(PrimarySkillType.MINING, 5000);
 
         // When - an XP gain is modified

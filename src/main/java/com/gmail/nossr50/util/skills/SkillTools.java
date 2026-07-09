@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import org.bukkit.entity.Entity;
@@ -338,8 +339,11 @@ public class SkillTools {
     private @NotNull ArrayList<String> buildLocalizedPrimarySkillNames() {
         ArrayList<String> localizedSkillNameList = new ArrayList<>();
 
+        // Lowercased for tab completion, where suggestions read like the other completion
+        // keywords; skill matching is case-insensitive so completed names still resolve
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            localizedSkillNameList.add(getLocalizedSkillName(primarySkillType));
+            localizedSkillNameList.add(getLocalizedSkillName(primarySkillType)
+                    .toLowerCase(Locale.ENGLISH));
         }
 
         Collections.sort(localizedSkillNameList);

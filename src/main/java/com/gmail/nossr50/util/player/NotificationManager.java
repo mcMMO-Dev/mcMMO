@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.function.Predicate;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -29,6 +30,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NotificationManager {
 
@@ -227,23 +229,45 @@ public class NotificationManager {
      * Sends a message to all admins with the admin notification formatting from the locale Admins
      * are currently players with either Operator status or Admin Chat permission
      *
-     * @param msg message fetched from locale
+     * @param msg message fetched from locale, built with the sender's plain name
+     * @param consoleMsg console variant of msg with the sender's UUID inline, since the console
+     * cannot show the hover
+     * @param senderName plain name of the command sender shown in the message, or null when the
+     * message has no sender to decorate
+     * @param senderUuidHover hover contents identifying the sender, attached to senderName in the
+     * chat message, or null to send the message undecorated
      */
-    private static void sendAdminNotification(String msg) {
+    private static void sendAdminNotification(String msg, String consoleMsg,
+            @Nullable String senderName, @Nullable Component senderUuidHover) {
         //If its not enabled exit
         if (!mcMMO.p.getGeneralConfig().adminNotifications()) {
             return;
         }
 
+        final String formatted = LocaleLoader.getString("Notifications.Admin.Format.Others", msg);
+        Component chatMessage = LegacyComponentSerializer.legacySection().deserialize(formatted);
+
+        if (senderName != null && senderUuidHover != null) {
+            // The @ prefix and accent color mark the name as hoverable, like skill command links
+            final Component senderDisplay = LegacyComponentSerializer.legacySection()
+                    .deserialize(LocaleLoader.getString("Notifications.Admin.Sender.Display",
+                            senderName))
+                    .hoverEvent(HoverEvent.showText(senderUuidHover));
+            chatMessage = chatMessage.replaceText(TextReplacementConfig.builder()
+                    .matchLiteral(senderName)
+                    .replacement(senderDisplay)
+                    .build());
+        }
+
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             if (player.isOp() || Permissions.adminChat(player)) {
-                player.sendMessage(
-                        LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+                mcMMO.getAudiences().player(player).sendMessage(chatMessage);
             }
         }
 
         //Copy it out to Console too
-        mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+        mcMMO.p.getLogger()
+                .info(LocaleLoader.getString("Notifications.Admin.Format.Others", consoleMsg));
     }
 
     /**
@@ -266,12 +290,21 @@ public class NotificationManager {
             SensitiveCommandType sensitiveCommandType, String... args) {
         /*
          * Determine the 'identity' of the one who executed the command to pass as a parameters
+         * Chat messages show the sender's plain name with the UUID on a hover attached to it;
+         * the console cannot hover so its copy carries the UUID inline
          */
         String senderName = LocaleLoader.getString("Server.ConsoleName");
+        String consoleSenderName = senderName;
+        Component senderUuidHover = null;
 
         if (commandSender instanceof Player) {
-            senderName = ((Player) commandSender).getDisplayName()
-                    + ChatColor.RESET + "-" + ((Player) commandSender).getUniqueId();
+            final Player player = (Player) commandSender;
+            senderName = ChatColor.stripColor(player.getDisplayName());
+            senderUuidHover = LegacyComponentSerializer.legacySection().deserialize(
+                    LocaleLoader.getString("Notifications.Admin.Sender.UUID.Hover", senderName,
+                            player.getUniqueId()));
+            consoleSenderName = LocaleLoader.getString("Notifications.Admin.Sender.UUID.Console",
+                    senderName, player.getUniqueId());
         }
 
         //Send the notification
@@ -279,16 +312,34 @@ public class NotificationManager {
             case XPRATE_MODIFY:
                 sendAdminNotification(
                         LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others",
-                                addItemToFirstPositionOfArray(senderName, args)));
+                                addItemToFirstPositionOfArray(senderName, args)),
+                        LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others",
+                                addItemToFirstPositionOfArray(consoleSenderName, args)),
+                        senderName, senderUuidHover);
                 sendAdminCommandConfirmation(
                         commandSender,
                         LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", args));
+                break;
+            case XPRATE_MODIFY_SKILL:
+                sendAdminNotification(
+                        LocaleLoader.getString("Notifications.Admin.XPRate.Skill.Start.Others",
+                                addItemToFirstPositionOfArray(senderName, args)),
+                        LocaleLoader.getString("Notifications.Admin.XPRate.Skill.Start.Others",
+                                addItemToFirstPositionOfArray(consoleSenderName, args)),
+                        senderName, senderUuidHover);
+                sendAdminCommandConfirmation(commandSender,
+                        LocaleLoader.getString("Notifications.Admin.XPRate.Skill.Start.Self",
+                                args));
                 break;
             case XPRATE_END:
                 sendAdminNotification(
                         LocaleLoader.getString(
                                 "Notifications.Admin.XPRate.End.Others",
-                                addItemToFirstPositionOfArray(senderName, args)));
+                                addItemToFirstPositionOfArray(senderName, args)),
+                        LocaleLoader.getString(
+                                "Notifications.Admin.XPRate.End.Others",
+                                addItemToFirstPositionOfArray(consoleSenderName, args)),
+                        senderName, senderUuidHover);
                 sendAdminCommandConfirmation(commandSender,
                         LocaleLoader.getString("Notifications.Admin.XPRate.End.Self", args));
                 break;

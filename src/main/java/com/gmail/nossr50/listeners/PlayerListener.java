@@ -32,6 +32,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import java.util.HashMap;
@@ -626,6 +627,13 @@ public class PlayerListener implements Listener {
         if (plugin.isXPEventEnabled() && mcMMO.p.getGeneralConfig().playerJoinEventInfo()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event",
                     ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+
+            ExperienceConfig.getInstance().getExperienceGainsSkillMultiplierOverrides()
+                    .forEach((skill, rate) -> player.sendMessage(
+                            LocaleLoader.getString("XPRate.Event.Skill",
+                                    LocaleLoader.getString("Overhaul.Name."
+                                            + StringUtils.getCapitalized(skill.toString())),
+                                    rate)));
         }
     }
 

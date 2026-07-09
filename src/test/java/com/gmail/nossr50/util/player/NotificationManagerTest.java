@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.player;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
@@ -12,7 +13,9 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.GeneralConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
@@ -21,10 +24,19 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.util.text.McMMOMessageType;
 import com.gmail.nossr50.util.text.TextComponentFactory;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Logger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -37,6 +49,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
@@ -55,7 +68,9 @@ class NotificationManagerTest {
     private MockedStatic<SoundManager> mockedSoundManager;
 
     private AdvancedConfig advancedConfig;
+    private Server server;
     private PluginManager pluginManager;
+    private BukkitAudiences audiences;
     private Audience audience;
     private Player player;
     private Location playerLocation;
@@ -76,12 +91,12 @@ class NotificationManagerTest {
         when(mmoPlayer.getPlayer()).thenReturn(player);
         when(mmoPlayer.useChatNotifications()).thenReturn(true);
 
-        final BukkitAudiences audiences = mock(BukkitAudiences.class);
+        audiences = mock(BukkitAudiences.class);
         audience = mock(Audience.class);
         when(audiences.player(player)).thenReturn(audience);
         mockedMcMMO.when(mcMMO::getAudiences).thenReturn(audiences);
 
-        final Server server = mock(Server.class);
+        server = mock(Server.class);
         pluginManager = mock(PluginManager.class);
         when(server.getPluginManager()).thenReturn(pluginManager);
         mockedBukkit = mockStatic(Bukkit.class);
@@ -192,6 +207,81 @@ class NotificationManagerTest {
         verifyNoInteractions(pluginManager);
         verifyNoInteractions(audience);
         mockedSoundManager.verifyNoInteractions();
+    }
+
+    /**
+     * Pins the admin notification identity format: admins need to know who ran a sensitive
+     * command, but chat messages must never print the sender's UUID. The UUID lives on a
+     * hover event attached to the sender's name instead. The console has no hover, so its
+     * copy keeps the UUID inline in a readable format.
+     */
+    @ParameterizedTest
+    @EnumSource(value = SensitiveCommandType.class, names = {"XPRATE_MODIFY", "XPRATE_END"})
+    void sensitiveCommandNotificationShouldHideSenderUuidBehindHover(
+            SensitiveCommandType commandType) throws IOException {
+        // Given - locale bootstrap plus admin notifications enabled with one op online
+        final GeneralConfig generalConfig = mock(GeneralConfig.class);
+        when(mcMMO.p.getGeneralConfig()).thenReturn(generalConfig);
+        when(generalConfig.getLocale()).thenReturn("en_US");
+        when(generalConfig.adminNotifications()).thenReturn(true);
+        mockedMcMMO.when(mcMMO::getLocalesDirectory)
+                .thenReturn(Files.createTempDirectory("mcmmo-test-locales") + File.separator);
+        final Logger logger = mock(Logger.class);
+        when(mcMMO.p.getLogger()).thenReturn(logger);
+
+        final Player adminViewer = mock(Player.class);
+        when(adminViewer.isOp()).thenReturn(true);
+        doReturn(List.of(adminViewer)).when(server).getOnlinePlayers();
+        final Audience adminAudience = mock(Audience.class);
+        when(audiences.player(adminViewer)).thenReturn(adminAudience);
+
+        // And - a player who runs the sensitive command
+        final UUID senderUuid = UUID.fromString("588fe472-1c82-4c4e-9aa1-7eefccb277e3");
+        final Player commandSender = mock(Player.class);
+        when(commandSender.getDisplayName()).thenReturn("nossr50");
+        when(commandSender.getUniqueId()).thenReturn(senderUuid);
+
+        // When - the admin notification for that command goes out
+        NotificationManager.processSensitiveCommandNotification(commandSender, commandType,
+                "1.5");
+
+        // Then - the chat message marks the sender's name as hoverable with an @ prefix and
+        // never prints the UUID
+        final ArgumentCaptor<Component> messageCaptor = ArgumentCaptor.forClass(Component.class);
+        verify(adminAudience).sendMessage(messageCaptor.capture());
+        final Component chatMessage = messageCaptor.getValue();
+        assertThat(LegacyComponentSerializer.legacySection().serialize(chatMessage))
+                .contains("@nossr50")
+                .doesNotContain(senderUuid.toString());
+
+        // And - the UUID is available to admins on a hover attached to the sender's name
+        assertThat(hoverContents(chatMessage)).anySatisfy(hover -> assertThat(
+                LegacyComponentSerializer.legacySection().serialize(hover))
+                .contains("UUID of ")
+                .contains("nossr50")
+                .contains(senderUuid.toString()));
+
+        // And - the console has no hover, so its copy keeps the UUID inline but readable
+        final ArgumentCaptor<String> consoleCaptor = ArgumentCaptor.forClass(String.class);
+        verify(logger).info(consoleCaptor.capture());
+        assertThat(consoleCaptor.getValue())
+                .contains("nossr50 (" + senderUuid + ")");
+    }
+
+    private static List<Component> hoverContents(Component root) {
+        final List<Component> hovers = new ArrayList<>();
+        collectHoverContents(root, hovers);
+        return hovers;
+    }
+
+    private static void collectHoverContents(Component component, List<Component> hovers) {
+        final HoverEvent<?> hoverEvent = component.hoverEvent();
+        if (hoverEvent != null && hoverEvent.value() instanceof Component) {
+            hovers.add((Component) hoverEvent.value());
+        }
+        for (final Component child : component.children()) {
+            collectHoverContents(child, hovers);
+        }
     }
 
     private void stubUnlockNotificationConfig(boolean useActionBar, boolean sendCopyToChat) {

@@ -6,9 +6,14 @@ Version 2.3.000
     Changed SQL leaderboard ordering for players with identical levels (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
-    Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
+    Added per-skill XP rates to /xprate, for example /xprate mining 5.3 (See notes)
+    Added a no-argument /xprate (also usable as /xprate show) that shows the current XP rates and how long each has been active (See notes)
+    Changed /xprate to no longer require the true/false event argument, it defaults to true (See notes)
+    Changed /xprate to reject rates below the configured XP rate (See notes)
     Added a console warning when a chunk's placed-block data cannot be read, instead of resetting it silently
     Changed Cripple's default sound to the mace smash ground sound (See notes)
+    Changed XP rate event admin notifications to show the command sender as a hoverable @name with their UUID on hover in chat, and as name (UUID) in the console, instead of appending the UUID to their name
+    Changed skill name tab completion to suggest lowercase names in commands like /mctop, /skillreset, and /mmoxpbar
     Improved performance when gaining XP, rolling skill chances, checking skill ranks, and reading config settings and permissions
     Improved performance of combat processing, block and placed-block handling, and many other event handlers including furnaces, fishing, inventories, pets, and commands
     Fixed an exploit where breaking and quickly replacing multi-block plants granted Herbalism XP without the plants breaking (See notes)
@@ -66,6 +71,7 @@ Version 2.3.000
     Fixed a thread-safety issue that could cause incorrect FlatFile leaderboard results
     Fixed renamed players' leftover database rows showing up in /mctop and being counted by /mcrank on SQL databases (See notes)
     Fixed FlatFile leaderboards not retrying a failed rebuild until the next refresh interval
+    Fixed the outdated-server startup warning naming Minecraft 1.20.4 instead of the required 1.20.5
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
     Added 'Skills.Mining.BlastMining.RemoteDetonationDistance' to advanced.yml (See notes)
@@ -78,7 +84,13 @@ Version 2.3.000
     Removed the /mmocompat command, it has been non-functional for years
     Removed the 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings from config.yml, they had no effect (See notes)
     Added locale entries 'Commands.xprate.current', 'Commands.xprate.invalid', 'Commands.LevelUpSound.On', 'Commands.LevelUpSound.Off', and 'Commands.Description.mclevelupsound'
-    Updated locale entries 'Commands.xprate.proper.0' and 'Commands.Description.xprate' for the /xprate changes
+    Added locale entries 'Commands.xprate.none', 'Commands.xprate.current.skill', 'Commands.xprate.tooLow', 'Commands.xprate.duration', 'Commands.xprate.skill.globalApplies', 'Commands.xprate.skill.cleared', 'Commands.Event.XP.Skill', and 'XPRate.Event.Skill' for the /xprate changes
+    Updated locale entries 'Commands.Event.XP' and 'XPRate.Event' to name the global XP rate
+    Added locale entries 'Notifications.Admin.XPRate.Skill.Start.Self' and 'Notifications.Admin.XPRate.Skill.Start.Others'
+    Added locale entries 'Notifications.Admin.Sender.Display', 'Notifications.Admin.Sender.UUID.Hover', and 'Notifications.Admin.Sender.UUID.Console' for the admin notification sender identity
+    Updated locale entry 'Commands.Description.xprate' for the /xprate changes
+    Removed unused locale entries 'Commands.xprate.proper.0', 'Commands.xprate.proper.1', 'Commands.xprate.proper.2', 'Commands.xprate.modified', 'Commands.xprate.over', 'Commands.xprate.started.0', and 'Commands.xprate.started.1'
+    (API) Added XPRATE_MODIFY_SKILL to SensitiveCommandType for per-skill XP rate admin notifications
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
     (API) Skill rank unlock notifications now fire McMMOPlayerNotificationEvent like other notification types
     (API) McMMOPlayerLevelDownEvent fired by /mmoedit now reports the number of levels lost instead of the new absolute level
@@ -132,6 +144,15 @@ Version 2.3.000
     Using /inspect on offline players now requires the 'mcmmo.commands.inspect.far' permission, the same node that gates inspecting far away players. Grant that node if non-op players on your server relied on inspecting offline players.
     The /mclevelupsound toggle (alias /levelupsound) only affects the level-up sound, not level-up messages, and lasts until logout like /mcnotify.
     /xprate without arguments shows the current XP rate. Players get this through the new 'mcmmo.commands.xprate.show' node, granted by default since the rate is already broadcast at event start and shown on join.
+
+    -- XP rate events --
+    /xprate now accepts a skill name: /xprate mining 5.3 boosts only Mining, and 'all' targets the global rate like before. Child skills (Salvage, Smelting) have no XP of their own and are rejected. The true/false event argument is optional and defaults to true.
+    Changes made with false never start or end an event. They are still announced, but without the event banner, and if a higher global event rate keeps applying to that skill the broadcast says so.
+    Per-skill rates and the global /xprate rate do not stack with each other; whichever is higher applies. Multipliers from experience.yml and XP perks still apply on top as usual.
+    Rates below the configured rate in experience.yml are rejected to prevent accidentally lowering XP. /xprate reset restores the configured rates and clears every per-skill rate at once.
+    Setting a global rate also clears any per-skill rates at or below it, since the higher rate always wins; the sender is told which rates were cleared.
+    /xprate with no arguments (or /xprate show) reports when no XP rate event is active, and otherwise lists the global and per-skill rates with how long each has been active.
+    During an event, joining players are told about active per-skill rates alongside the global rate.
 
     -- Sounds and abilities --
     Cripple now plays a single sound, the mace smash ground sound by default instead of an anvil sound; adjust or disable it with the CRIPPLE entry in sounds.yml. The mace sound only exists on Minecraft 1.21 and newer, the same versions maces exist on.

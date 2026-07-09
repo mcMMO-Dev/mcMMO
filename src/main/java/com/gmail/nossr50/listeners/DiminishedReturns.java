@@ -35,7 +35,7 @@ final class DiminishedReturns {
      * @param registeredXpGain the player's recently registered XP for the skill
      * @param threshold the configured diminished-returns threshold for the skill
      * @param formulaSkillModifier the skill's formula modifier from experience.yml
-     * @param globalMultiplier the global XP multiplier from experience.yml
+     * @param globalMultiplier the effective XP rate multiplier for the skill
      * @param guaranteedMinimumFraction the cap setting: the fraction of the raw gain a player
      * always keeps, or 0 or less for no guaranteed minimum
      */

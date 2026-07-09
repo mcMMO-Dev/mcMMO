@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.text.StringUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,12 @@ public class ExperienceConfig extends BukkitConfig {
     private FormulaType formulaType;
     private Boolean cumulativeCurveEnabled;
     private Double experienceGainsGlobalMultiplier;
+    // Runtime /xprate per-skill overrides indexed by skill ordinal, NaN = no override; the
+    // array is replaced wholesale on writes so XP gain reads never see a half-updated state
+    private double[] skillXpRateOverrides;
+    // When each /xprate rate was set (epoch millis, 0 = never), read only by /xprate show
+    private long globalXpRateSetMillis;
+    private long[] skillXpRateSetMillis;
     private Double customXpPerkBoost;
     private Boolean diminishedReturnsEnabled;
     private Boolean earlyGameBoostEnabled;
@@ -86,6 +93,9 @@ public class ExperienceConfig extends BukkitConfig {
         formulaType = null;
         cumulativeCurveEnabled = null;
         experienceGainsGlobalMultiplier = null;
+        skillXpRateOverrides = null;
+        globalXpRateSetMillis = 0;
+        skillXpRateSetMillis = null;
         customXpPerkBoost = null;
         diminishedReturnsEnabled = null;
         earlyGameBoostEnabled = null;
@@ -369,6 +379,110 @@ public class ExperienceConfig extends BukkitConfig {
     public void setExperienceGainsGlobalMultiplier(double value) {
         config.set("Experience_Formula.Multiplier.Global", value);
         experienceGainsGlobalMultiplier = value;
+        globalXpRateSetMillis = System.currentTimeMillis();
+    }
+
+    /**
+     * When the global multiplier was last changed at runtime (epoch millis), or 0 if it still
+     * holds the value loaded from experience.yml.
+     */
+    public long getExperienceGainsGlobalMultiplierSetMillis() {
+        return globalXpRateSetMillis;
+    }
+
+    /**
+     * The effective XP rate multiplier for a skill. Per-skill /xprate rates do not stack with
+     * the global multiplier; whichever is higher wins.
+     */
+    public double getExperienceGainsMultiplier(PrimarySkillType skill) {
+        final double global = getExperienceGainsGlobalMultiplier();
+        final double[] overrides = skillXpRateOverrides;
+
+        if (overrides != null) {
+            final double override = overrides[skill.ordinal()];
+            if (!Double.isNaN(override)) {
+                return Math.max(override, global);
+            }
+        }
+
+        return global;
+    }
+
+    /**
+     * Overrides the XP rate multiplier for a single skill until cleared by
+     * {@link #clearExperienceGainsSkillMultipliers()} or a config reload. Runtime state only,
+     * nothing is written to experience.yml.
+     */
+    public void setExperienceGainsSkillMultiplier(PrimarySkillType skill, double value) {
+        final double[] current = skillXpRateOverrides;
+        final double[] updated;
+
+        if (current == null) {
+            updated = new double[PrimarySkillType.values().length];
+            Arrays.fill(updated, Double.NaN);
+        } else {
+            updated = current.clone();
+        }
+
+        updated[skill.ordinal()] = value;
+
+        final long[] currentTimes = skillXpRateSetMillis;
+        final long[] updatedTimes = currentTimes != null ? currentTimes.clone()
+                : new long[PrimarySkillType.values().length];
+        updatedTimes[skill.ordinal()] = System.currentTimeMillis();
+
+        skillXpRateOverrides = updated;
+        skillXpRateSetMillis = updatedTimes;
+    }
+
+    public void clearExperienceGainsSkillMultiplier(PrimarySkillType skill) {
+        final double[] current = skillXpRateOverrides;
+        if (current == null || Double.isNaN(current[skill.ordinal()])) {
+            return;
+        }
+
+        final double[] updated = current.clone();
+        updated[skill.ordinal()] = Double.NaN;
+
+        final long[] currentTimes = skillXpRateSetMillis;
+        final long[] updatedTimes = currentTimes != null ? currentTimes.clone()
+                : new long[PrimarySkillType.values().length];
+        updatedTimes[skill.ordinal()] = 0;
+
+        skillXpRateOverrides = updated;
+        skillXpRateSetMillis = updatedTimes;
+    }
+
+    public void clearExperienceGainsSkillMultipliers() {
+        skillXpRateOverrides = null;
+        skillXpRateSetMillis = null;
+    }
+
+    /**
+     * When a skill's /xprate rate was set (epoch millis), or 0 if the skill has no active rate.
+     */
+    public long getExperienceGainsSkillMultiplierSetMillis(PrimarySkillType skill) {
+        final long[] setTimes = skillXpRateSetMillis;
+        return setTimes != null ? setTimes[skill.ordinal()] : 0;
+    }
+
+    /**
+     * Snapshot of the per-skill XP rate overrides currently in effect, for display.
+     */
+    public Map<PrimarySkillType, Double> getExperienceGainsSkillMultiplierOverrides() {
+        final Map<PrimarySkillType, Double> snapshot = new EnumMap<>(PrimarySkillType.class);
+        final double[] overrides = skillXpRateOverrides;
+
+        if (overrides != null) {
+            for (PrimarySkillType skill : PrimarySkillType.values()) {
+                final double override = overrides[skill.ordinal()];
+                if (!Double.isNaN(override)) {
+                    snapshot.put(skill, override);
+                }
+            }
+        }
+
+        return snapshot;
     }
 
     /* PVP modifier */

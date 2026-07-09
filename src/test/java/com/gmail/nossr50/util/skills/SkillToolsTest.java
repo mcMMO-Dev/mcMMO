@@ -347,4 +347,19 @@ class SkillToolsTest {
         Collections.sort(sorted);
         assertThat(names).isEqualTo(sorted);
     }
+
+    /**
+     * The list feeds tab completion across commands, where lowercase suggestions read like
+     * the other completion keywords instead of shouting the en_US all-caps skill names.
+     */
+    @Test
+    void localizedSkillNamesShouldBeLowercase() throws Exception {
+        // Given - a SkillTools built against the current game version
+        SkillTools skillTools = newSkillToolsForVersion(1, 21, 11);
+
+        // When - the localized skill name list is inspected
+        // Then - every entry is fully lowercase
+        assertThat(skillTools.LOCALIZED_SKILL_NAMES).allSatisfy(name ->
+                assertThat(name).isEqualTo(name.toLowerCase(Locale.ENGLISH)));
+    }
 }

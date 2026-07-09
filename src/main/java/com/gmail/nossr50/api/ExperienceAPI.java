@@ -227,9 +227,10 @@ public final class ExperienceAPI {
      */
     public static void addMultipliedXP(Player player, String skillType, int XP,
             String xpGainReason) {
+        final PrimarySkillType skill = getSkillType(skillType);
         getPlayer(player).applyXpGain(
-                getSkillType(skillType),
-                (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()),
+                skill,
+                (int) (XP * ExperienceConfig.getInstance().getExperienceGainsMultiplier(skill)),
                 getXPGainReason(xpGainReason), CUSTOM);
     }
 
@@ -246,9 +247,10 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void addMultipliedXPOffline(String playerName, String skillType, int XP) {
+        final PrimarySkillType skill = getSkillType(skillType);
         addOfflineXP(
-                playerName, getSkillType(skillType),
-                (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+                playerName, skill,
+                (int) (XP * ExperienceConfig.getInstance().getExperienceGainsMultiplier(skill)));
     }
 
     /**
@@ -303,14 +305,14 @@ public final class ExperienceAPI {
         if (isUnshared) {
             getPlayer(player).beginUnsharedXpGain(
                     skill, (int) (XP / expConf.getFormulaSkillModifier(
-                            skill) * expConf.getExperienceGainsGlobalMultiplier()),
+                            skill) * expConf.getExperienceGainsMultiplier(skill)),
                     getXPGainReason(xpGainReason), CUSTOM);
             return;
         }
 
         getPlayer(player).applyXpGain(
                 skill, (int) (XP / expConf.getFormulaSkillModifier(
-                        skill) * expConf.getExperienceGainsGlobalMultiplier()),
+                        skill) * expConf.getExperienceGainsMultiplier(skill)),
                 getXPGainReason(xpGainReason), CUSTOM);
     }
 
@@ -333,7 +335,7 @@ public final class ExperienceAPI {
                 playerName, skill,
                 (int) (XP / ExperienceConfig.getInstance().getFormulaSkillModifier(
                         skill) * ExperienceConfig.getInstance()
-                        .getExperienceGainsGlobalMultiplier()));
+                        .getExperienceGainsMultiplier(skill)));
     }
 
     /**
