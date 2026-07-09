@@ -67,6 +67,7 @@ Version 2.2.055
     (Codebase) Cleaned up TransientEntityTracker internals (private fields, single-pass summon counting)
     (Codebase) Hardened cold biome detection against biomes missing from the server's Minecraft version
     (Codebase) Fixed text component grouping ignoring group sizes other than three
+    (Codebase) Upgrade tracking save errors now go through the plugin logger
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
