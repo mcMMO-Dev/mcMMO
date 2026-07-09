@@ -334,8 +334,7 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent event) {
-        BlockState blockState = event.getBlock().getState();
-        Block block = blockState.getBlock();
+        final Block block = event.getBlock();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
 //      if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
@@ -364,10 +363,13 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (blockState.getType() == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial() && mcMMO.p.getSkillTools()
+        final Material blockType = block.getType();
+        if (blockType == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial()
+                && mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)) {
             mmoPlayer.getRepairManager().placedAnvilCheck();
-        } else if (blockState.getType() == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial() && mcMMO.p.getSkillTools()
+        } else if (blockType == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial()
+                && mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)) {
             mmoPlayer.getSalvageManager().placedAnvilCheck();
         }
@@ -380,23 +382,28 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
+        /* Check if the blocks placed should be monitored so they do not give out XP in the future */
+        boolean anyWithinWorldBounds = false;
         for (BlockState replacedBlockState : event.getReplacedBlockStates()) {
-            BlockState blockState = replacedBlockState.getBlock().getState();
-            Block block = blockState.getBlock();
-
-            /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-            if (BlockUtils.isWithinWorldBounds(block)) {
-                //Updated: 10/5/2021
-                //Note: For some reason Azalea trees trigger this event but no other tree does (as of 10/5/2021) but if this changes in the future we may need to update this
-                if (BlockUtils.isPartOfTree(event.getBlockPlaced())) {
-                    return;
-                }
-
-                //Track unnatural blocks
-                for (BlockState replacedState : event.getReplacedBlockStates()) {
-                    BlockUtils.setUnnaturalBlock(replacedState.getBlock());
-                }
+            if (BlockUtils.isWithinWorldBounds(replacedBlockState.getBlock())) {
+                anyWithinWorldBounds = true;
+                break;
             }
+        }
+
+        if (!anyWithinWorldBounds) {
+            return;
+        }
+
+        //Updated: 10/5/2021
+        //Note: For some reason Azalea trees trigger this event but no other tree does (as of 10/5/2021) but if this changes in the future we may need to update this
+        if (BlockUtils.isPartOfTree(event.getBlockPlaced())) {
+            return;
+        }
+
+        //Track unnatural blocks
+        for (BlockState replacedState : event.getReplacedBlockStates()) {
+            BlockUtils.setUnnaturalBlock(replacedState.getBlock());
         }
     }
 
@@ -577,18 +584,20 @@ public class BlockListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        BlockState blockState = event.getBlock().getState();
-        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        final ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         if (ItemUtils.isSword(heldItem)) {
-            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
+            final HerbalismManager herbalismManager = mmoPlayer.getHerbalismManager();
 
             if (herbalismManager.canUseHylianLuck()) {
+                final BlockState blockState = event.getBlock().getState();
                 if (herbalismManager.processHylianLuck(blockState)) {
                     blockState.update(true);
                     event.setCancelled(true);
