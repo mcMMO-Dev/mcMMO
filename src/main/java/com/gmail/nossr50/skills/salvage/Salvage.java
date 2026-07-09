@@ -37,9 +37,16 @@ public final class Salvage {
 
     static int calculateSalvageableAmount(int currentDurability, short maxDurability,
             int baseAmount) {
-        double percentDamaged = (maxDurability <= 0) ? 1D
+        double percentRemaining = (maxDurability <= 0) ? 1D
                 : (double) (maxDurability - currentDurability) / maxDurability;
 
-        return (int) Math.floor(baseAmount * percentDamaged);
+        if (percentRemaining <= 0) {
+            return 0;
+        }
+
+        // Deliberately floors to zero: full materials only come back from a fully repaired
+        // item. Guaranteeing a minimum yield for damaged items would let players re-craft a
+        // brand-new full-durability item from a nearly broken one.
+        return (int) Math.floor(baseAmount * percentRemaining);
     }
 }
