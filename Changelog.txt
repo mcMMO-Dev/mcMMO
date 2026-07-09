@@ -53,26 +53,11 @@ Version 2.3.000
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
-    Improved performance when players gain skill XP (See notes)
-    Improved performance when checking skill ranks (See notes)
-    Improved performance of frequent permission checks (See notes)
-    Improved performance when checking mob spawn-tracking flags (See notes)
-    Improved performance of frequently checked experience.yml settings (See notes)
-    Improved performance of frequently checked config.yml settings (See notes)
-    Improved performance when processing combat damage events (See notes)
-    Improved performance when broken blocks drop items (See notes)
-    Improved performance of Tree Feller and other abilities that break many blocks at once (See notes)
-    Improved performance when placing and breaking blocks (See notes)
-    Improved performance when chunks unload and when brewing stands are checked
-    Improved performance when taking smelted items out of furnaces (See notes)
-    Improved performance of many player, pet, and ability event handlers (See notes)
-    Improved performance of enchantment and item checks during combat, fishing, and item use (See notes)
-    Improved performance of tree and transparent-block checks (See notes)
-    Improved performance and memory use of placed-block tracking lookups (See notes)
-    Improved performance when looking up the XP needed for the next level
-    Improved performance of container ownership tracking and super ability tool updates
-    Improved performance of inventory clicks, fishing catches, and command handling on localized servers (See notes)
-    Improved performance of skill chance rolls and frequently checked advanced.yml settings (See notes)
+    Improved performance when gaining XP, rolling skill chances, and checking skill ranks
+    Improved performance of frequently checked config settings and permission checks
+    Improved performance when processing combat damage and combat-related item checks
+    Improved performance of block break, block place, and placed-block tracking handling
+    Improved performance of many other event handlers, including furnaces, fishing, inventories, pets, and commands
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
     Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
@@ -92,60 +77,17 @@ Version 2.3.000
     (API) ProbabilityUtil.percent is deprecated and no longer used internally
     (API) EventUtils.simulateBlockBreak overloads without a FakeBlockBreakEventType are deprecated in favor of the variant that takes one
     (API) The no-op ScoreboardManager.enablePlayerSkillLevelUpScoreboard is deprecated for removal
+    (API) MaterialMapStore getters now return copies instead of live internal collections
+    (API) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
+    (API) Deprecated unused public utility methods and fields
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
-    (Codebase) Added unit tests covering the power level cap and skill level cap checks
-    (Codebase) Added regression tests covering previously fixed bugs
-    (Codebase) Cleaned up TransientEntityTracker internals (private fields, single-pass summon counting)
-    (Codebase) Hardened cold biome detection against biomes missing from the server's Minecraft version
-    (Codebase) Fixed text component grouping ignoring group sizes other than three
-    (Codebase) Upgrade tracking save errors now go through the plugin logger
-    (Codebase) Removed the ModManager class, which had been fully commented out for years
-    (Codebase) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
-    (Codebase) Removed long-dead commented-out code blocks, unused private helpers, and a crafting event handler that had no remaining effect
-    (Codebase) Deprecated unused public utility methods and fields for removal
-    (Codebase) Migrated internal code off deprecated event helper overloads
-    (Codebase) Added mangrove and cherry logs to the woodcutting drop list used by the currently disabled party item sharing
-    (Codebase) Removed material name entries that could never match anything (pre-1.13 wood/gold tool and armor names, pre-release copper names, stair variants that never existed)
-    (Codebase) Added a unit test ensuring every registered material name resolves to a real Material or is a documented cross-edition or future-version name
-    (Codebase) Material register getters return copies, and the unused netherite tools getter is deprecated for removal
-    (Codebase) Removed pre-1.20.5 compatibility shims (reflective potion effect and enchantment lookups, glow berries special casing, armor stand name matching)
-    (Codebase) Added a shared guard preamble helper for event handlers that codifies the cheap-to-expensive gate ordering
-    (Codebase) Consolidated the melee combat dispatch into a table-driven resolver with unit tests and extracted the combat XP calculation helpers
-    (Codebase) Removed redundant permission checks from ability preparation branches, the activation path already checks them
-    (Codebase) Consolidated event firing boilerplate behind a shared helper and deduplicated the hardcore penalty skeletons
-    (Codebase) Consolidated the XP perk multiplier tiers into a single ordered table, permission nodes are unchanged
-    (Codebase) Deduplicated the level-up and power-level milestone broadcasts and deprecated the misleadingly named sendNearbyPlayersInformation
-    (Codebase) Scoreboard labels are now built during plugin startup instead of in a static initializer, and refresh when the plugin reloads
-    (Codebase) Scoreboard teardown paths no longer construct a scoreboard backend just to tear it down
-    (Codebase) Hidden skill scoreboards no longer schedule sidebar redraws when their skill levels up
-    (Codebase) Consolidated the nine near-identical scoreboard enable/show methods behind a single helper
-    (Codebase) Deduplicated the scoreboard show-and-capture logic and removed an unreachable stats board branch
-    (Codebase) Consolidated scoreboard task cancellation behind a shared helper and made board close-out exception-safe
-    (Codebase) The persisted power level objective name is now defined once and shared across the Bukkit scoreboard classes
-    (Codebase) Cancelled XP bar hide tasks are no longer kept in memory until the next bar update
-    (Codebase) Added placed-block tracking disk round-trip and region file segment growth tests
-    (Codebase) Deduplicated the placed-block chunk store load logic and documented the on-disk negative-coordinate mapping invariant
-    (Codebase) The migration backup store now logs directory listing failures, threads its injectable clock into archive naming, and merges region files with try-with-resources
-    (Codebase) Command registration is now a data-driven table with one shared wiring path that skips missing commands instead of erroring
-    (Codebase) Added a test cross-checking plugin.yml command declarations against the executors the plugin registers
-    (Codebase) Deduplicated the pretty-string and config-string word formatters, the max-rank hover predicate, and moved chat messages off deprecated Adventure APIs; MOTD strings now resolve per display instead of at class load
-    (Codebase) Funneled the seven sound send methods through one enabled/resolve/play core
-    (Codebase) Subskill registration maps are statically initialized and duplicate registrations are rejected instead of double-firing
-    (Codebase) Deduplicated the can-use-subskill checks, froze the subskill lookup sets, and renamed a whitelist that was labeled as a blacklist
-    (Codebase) Trimmed redundant keys from the mob metadata cleanup sweep, made the shared metadata flag value lazily created, and fixed attribute mapping constant names
-    (Codebase) Added a shared graceful reflective valueOf helper used by the version-compatibility shims
-    (Codebase) Restructured the furnace fuel-efficiency handler into flat guards, deduplicated the item spawn methods, and removed redundant vector copies
-    (Codebase) Extracted the friendly-fire decision into a pure, contract-tested resolver shared by the damage and combust listeners
-    (Codebase) Extracted the diet food tables and eaten-hand resolution from the food listener into a tested mapping
-    (Codebase) Extracted the tracked-TNT owner resolution shared by the explosion listeners and blast mining damage handling, with tests
-    (Codebase) Extracted the diminished-returns XP math into a pure, contract-tested formula
-    (Codebase) Extracted the bonus-drop trust analysis (tile-entity dupe protection) into a tested helper
-    (Codebase) Extracted the repair/salvage anvil decision ladder into a tested resolver
+    (Codebase) Large internal cleanup and refactor of the listener and utility classes
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
-    Paper 26.1.2 changed when the attack cooldown ticker resets during melee hits, which made the cooldown API report roughly zero while mcMMO was processing a hit. Version 2.2.053 fixed most damage bonuses, but several effects still read the cooldown directly and were silently crippled: Berserk actively reduced damage (its +50% bonus math turned negative), Skull Splitter dealt roughly a tenth of its intended AoE damage, and the on-hit activation odds for Disarm, Rupture (including Serrated Strikes), Cripple, Momentum, Critical Strikes, Armor Impact, and Greater Impact were scaled down to roughly a tenth of their configured rates. All of these now use the attack strength derived from the damage event itself. No config changes required.
+    Paper 26.1.2 changed attack cooldown timing during melee hits, which silently weakened these effects to a fraction of their configured damage and activation rates. Version 2.2.053 fixed most damage bonuses; this build fixes the remaining effects. No config changes required.
+    The activation chance of Disarm, Critical Strikes, Armor Impact, and Greater Impact scales with the vanilla attack cooldown, but that scaling was only being applied to players with the Lucky perk. Weak attacks now lower the odds for everyone; this affects all server software, not just Paper.
     (API) UnarmedManager#berserkDamage/disarmCheck, AxesManager#criticalHit/impactCheck/greaterImpact/skullSplitterCheck, SwordsManager#processRupture/serratedStrikes, MacesManager#processCripple, SpearsManager#potentiallyApplyMomentum, CombatUtils#applyAbilityAoE, and McMMOPlayer#getAttackStrength are deprecated in favor of overloads that take an attack strength scale.
 
     -- Skill RNG --
@@ -155,8 +97,7 @@ Version 2.3.000
     These fixes only matter on servers running plugins that cancel mcMMO level change events. When such a plugin cancelled a level change made with /mmoedit, the skill was reset to level 0 (when raising) or set to the wrong level (when lowering) instead of being restored to its old level. Cancelling a level change for a player whose mcMMO data was not loaded threw an error; mcMMO now logs a warning that the change could not be reverted instead.
 
     -- Potions --
-    Potion type names from configs are normalized while loading, and modern names that contain an old potion name as a prefix got mangled by that step. In practice this hit REGENERATION and its long/strong variants in potions.yml, treasures.yml, and fishing_treasures.yml, which could make those entries fail to load. Old names like REGEN still convert correctly, no config changes are needed.
-    The activation chance of Disarm, Critical Strikes, Armor Impact, and Greater Impact scales with the vanilla attack cooldown, but that scaling was only being applied to players with the Lucky perk. Players without it rolled their full activation chance even when spam-clicking; weak attacks now lower the odds for everyone. This affects all server software, not just Paper.
+    REGENERATION potion entries and their long/strong variants in potions.yml, treasures.yml, and fishing_treasures.yml could fail to load. Old names like REGEN still convert correctly, no config changes are needed.
 
     -- Scoreboards and power level tags --
     Scoreboards on Folia (and Folia forks like Canvas) now use a packet-based implementation, since the Bukkit scoreboard API is not safe to use there. Paper and Spigot servers keep the existing Bukkit scoreboard implementation and are unaffected.
@@ -187,37 +128,18 @@ Version 2.3.000
     Cripple's default sound is now the mace smash ground sound instead of an anvil sound. The mace sound only exists on Minecraft 1.21 and newer, the same versions maces exist on; set CustomSoundId under CRIPPLE in sounds.yml if you prefer a different sound.
     Sounds that can't be resolved (for example a typo in a CustomSoundId) now log a single warning and are skipped instead of causing errors. On Spigot 1.21.3 and newer, custom sound IDs previously caused an error every time the sound tried to play.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
-    Super Breaker's block list still used pre-release names for the cut copper family from before their 1.17 rename, so the exposed, weathered, oxidized, and waxed variants never triggered it. The list now covers the full copper block and cut copper families including their slabs and stairs. Blocks with Mining XP configured in experience.yml were unaffected.
+    Super Breaker now covers the full copper block and cut copper families including their slabs and stairs. Blocks with Mining XP configured in experience.yml were unaffected.
 
     -- Event handling --
-    A few mcMMO handlers changed events at MONITOR priority, which the Bukkit event contract forbids because other plugins observing the final outcome at MONITOR could no longer trust what they saw. The fishing rewards handler (vanilla XP removal and caught-item replacement), the interaction handler that activates abilities and consumes items, and the Berserk insta-break on block damage now run at HIGHEST priority instead. Plugins that read these events at MONITOR now reliably see mcMMO's changes. If another plugin also modifies these events at HIGHEST priority, its ordering relative to mcMMO may have changed; please report any new conflicts with other plugins after updating.
+    The fishing rewards handler (vanilla XP removal and caught-item replacement), the interaction handler that activates abilities and consumes items, and the Berserk insta-break on block damage now run at HIGHEST priority instead of MONITOR. Plugins that read these events at MONITOR now reliably see mcMMO's changes. If another plugin also modifies these events at HIGHEST priority, its ordering relative to mcMMO may have changed; please report any new conflicts with other plugins after updating.
 
     -- Config --
-    Skill rank unlock messages can now be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. This is a deliberate opt-in and nothing changes unless you enable it; unlock messages stay in chat by default. Unlike the other action bar sections this one is controlled by 'SendToActionBar' instead of 'Enabled', because configs from older versions already contain 'Enabled: true' for SubSkillUnlocked from back when the setting had no effect; that key is ignored for this section so updating cannot silently change behavior. advanced.yml auto-updates on startup, so the new key is added automatically.
+    Skill rank unlock messages can now be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. This is an opt-in; nothing changes unless you enable it. The section uses 'SendToActionBar' instead of 'Enabled' because older configs already contain 'Enabled: true' from back when the setting had no effect; that key is ignored so updating cannot silently change behavior. advanced.yml auto-updates on startup.
     'Skills.Mining.BlastMining.RemoteDetonationDistance' in advanced.yml controls how far away Blast Mining can remotely detonate TNT. It defaults to 100, which matches the old fixed distance, and advanced.yml auto-updates on startup so no manual config changes are needed.
-    The 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings were supposed to briefly show the skill scoreboard on level up, but the feature has been broken for years and did nothing regardless of the setting. Rather than silently re-enabling something no current server has seen, the feature and its keys have been removed. Leftover keys in existing config files are ignored and can be deleted; no action is needed and no visible behavior changes.
+    The 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings were supposed to briefly show the skill scoreboard on level up, but the feature had been broken for years and did nothing regardless of the setting. Leftover keys in existing config files are ignored and can be deleted; no action is needed and nothing visible changes.
 
     -- Database --
     'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.
-
-    -- Performance --
-    Gaining XP now does much less repeated work per gain, which reduces mcMMO's share of server thread time on busy servers; no behavior or config changes are involved.
-    Taking smelted items out of a furnace no longer searches the full server recipe list every time.
-    Skill rank checks (which run constantly during combat, gathering, and displays) no longer re-read the rank config every time; unlock levels are loaded once at startup and refreshed when configs reload. No behavior or config changes are involved.
-    Permission node names used by frequent checks (subskill abilities, vanilla XP boost, Green Thumb, repair/salvage types, Call of the Wild) are now precomputed instead of being rebuilt on every check. Only the node name strings are precomputed; the permission checks themselves still run every time, so permission plugins keep working exactly as before.
-    Mob spawn-tracking flag checks (spawner/egg/bred/tamed markers consulted on every combat XP calculation) no longer re-read persistentdata.yml on each check; which flags use persistent storage is read once at startup, matching how that file already required a restart to take effect.
-    Frequently checked experience.yml settings (exploit-fix toggles, early game boost, diminished returns, XP bar settings) are now resolved once and reused instead of being re-parsed on every event; values still refresh when configs reload.
-    Frequently checked config.yml settings (ability toggles, Bonus_Drops tables, Call of the Wild items) are also resolved once and reused, with the same reload behavior.
-    Combat damage events now run their cheap eligibility checks (world blacklist, entity types) before expensive ones (WorldGuard region lookups, damage computation), and duplicate checks were removed; which hits mcMMO processes is unchanged.
-    Block drops with no mcMMO bonus drops or treasure attached now exit immediately instead of counting and classifying every dropped item first.
-    Abilities that break many blocks fire internal block-damage events per block; those are now recognized and skipped before any world or region checks run.
-    Placing blocks no longer captures unnecessary block state snapshots, multi-block placements (like beds and doors) no longer re-track every placed block once per block placed, and Hylian Luck only snapshots the block when it can actually trigger.
-    Many event handlers (interactions, respawns, eating, pet damage, explosions, taming, ability area-of-effect hits, notifications) now look up a player's mcMMO data once per event instead of several times; no behavior changes are involved.
-    Enchantment checks on held items and armor no longer copy item data, enchantment name lookups are remembered instead of rescanning the registry each time, Chimaera Wing checks read item data once, and fishing enchanted-book rolls no longer reshuffle the possible enchantment list on every catch; no behavior changes are involved.
-    Tree checks during block placement and axe readying no longer capture block snapshots, the transparent-block list used by fishing and Blast Mining targeting is built once instead of on every use, and falling-block tracking takes one fewer block snapshot per event; no behavior changes are involved.
-    Placed-block tracking now does less work per lookup, and its in-memory chunk data only grows to fit the heights that actually contain tracked blocks instead of always covering the full world height; saved data is unaffected.
-    Inventory clicks outside furnaces and brewing stands now exit before any player data or permission work happens, fishing catches read the caught item once, and on servers with a non-English locale the localized skill command lookup is built once per locale instead of on every command (it rebuilds automatically after /mcmmoreloadlocale); no behavior changes are involved.
-    Skill chance rolls no longer rebuild config key names or re-read the advanced.yml chance caps and bonus levels on every roll, the attack cooldown adjustment toggle and the Archery force multiplier are read once, and the per-event exploit-fix toggles in experience.yml are resolved once and reused; values still refresh when configs reload.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
