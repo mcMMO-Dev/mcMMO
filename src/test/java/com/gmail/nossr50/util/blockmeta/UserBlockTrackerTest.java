@@ -2,9 +2,11 @@ package com.gmail.nossr50.util.blockmeta;
 
 import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.LEGACY_WORLD_HEIGHT_MAX;
 import static com.gmail.nossr50.util.blockmeta.BlockStoreTestUtils.LEGACY_WORLD_HEIGHT_MIN;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.bukkit.Bukkit.getWorld;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -15,8 +17,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -64,6 +68,8 @@ class UserBlockTrackerTest {
         bukkitMock.when(() -> getWorld(worldUUID)).thenReturn(mockWorld);
 
         mcMMOMock = mockStatic(mcMMO.class);
+        mcMMO.p = mock(mcMMO.class);
+        when(mcMMO.p.getLogger()).thenReturn(Logger.getLogger(UserBlockTrackerTest.class.getName()));
 
         when(mockWorld.getMinHeight()).thenReturn(LEGACY_WORLD_HEIGHT_MIN);
         when(mockWorld.getMaxHeight()).thenReturn(LEGACY_WORLD_HEIGHT_MAX);
@@ -73,6 +79,7 @@ class UserBlockTrackerTest {
     void teardownMock() {
         bukkitMock.close();
         mcMMOMock.close();
+        mcMMO.p = null;
     }
 
     @Test
@@ -272,6 +279,60 @@ class UserBlockTrackerTest {
         Assertions.assertArrayEquals(grownPayload, readChunkPayload(region, 0, 0));
         Assertions.assertArrayEquals(neighborPayload, readChunkPayload(region, 0, 1));
         region.close();
+    }
+
+    /**
+     * A corrupt header (impossible negative chunk byte length) must fail cleanly: the error
+     * should name the file, and the failed open must release its file handle - a leaked
+     * RandomAccessFile keeps the region file locked on Windows until GC.
+     */
+    @Test
+    void regionFileOpenShouldFailCleanlyOnCorruptHeader() throws IOException {
+        // Given - a region file whose header claims a negative byte length for chunk 0
+        final File regionFile = new File(tempDir, "CorruptHeader.mcm");
+        try (RandomAccessFile raf = new RandomAccessFile(regionFile, "rw")) {
+            raf.write(new byte[12288]);
+            raf.seek(8192);
+            raf.writeInt(10); // segment exponent
+            raf.seek(4096);
+            raf.writeInt(-100); // chunkNumBytes[0] - impossible value
+        }
+
+        // When / Then - opening it fails with an error that names the file
+        assertThatThrownBy(() -> new McMMOSimpleRegionFile(regionFile, 0, 0))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining(regionFile.getName());
+
+        // And - the handle was released, so the corrupt file can still be deleted or replaced
+        assertTrue(regionFile.delete());
+    }
+
+    /**
+     * Corrupt on-disk data must degrade to "no data" at the manager boundary; eligibility
+     * checks and later writes must keep working rather than propagate the read failure.
+     */
+    @Test
+    void isIneligibleShouldTreatCorruptRegionDataAsEmpty() throws IOException {
+        // Given - a corrupt region file sitting where the manager expects chunk (0, 0)'s region
+        final File worldFolder = new File(tempDir, "corruptRegionWorld");
+        when(mockWorld.getWorldFolder()).thenReturn(worldFolder);
+        final File regionFolder = new File(worldFolder, "mcmmo_regions");
+        assertTrue(regionFolder.mkdirs());
+        try (RandomAccessFile raf = new RandomAccessFile(new File(regionFolder, "mcmmo_0_0_.mcm"),
+                "rw")) {
+            raf.write(new byte[12288]);
+            raf.seek(8192);
+            raf.writeInt(10); // segment exponent
+            raf.seek(4096);
+            raf.writeInt(-100); // chunkNumBytes[0] - impossible value
+        }
+
+        // When - a block in that region is checked
+        final HashChunkManager hashChunkManager = new HashChunkManager();
+        final Block block = initMockBlock(1, 42, 1);
+
+        // Then - the corrupt data reads as empty instead of throwing
+        assertFalse(hashChunkManager.isIneligible(block));
     }
 
     private static byte[] payload(int size, byte fill) {
