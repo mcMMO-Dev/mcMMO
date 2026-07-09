@@ -37,6 +37,7 @@ Version 2.2.055
     Fixed the unsupported-version scoreboard warning printing gibberish instead of the Minecraft version
     Fixed mcMMO command tab-completion never suggesting player names to the console
     Fixed Green Terra and Green Thumb not converting dirt paths to grass
+    Fixed Super Breaker not activating on copper blocks, cut copper, and their slab and stair variants (See notes)
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off
@@ -138,6 +139,7 @@ Version 2.2.055
     Cripple's default sound is now the mace smash ground sound instead of an anvil sound. The mace sound only exists on Minecraft 1.21 and newer, the same versions maces exist on; set CustomSoundId under CRIPPLE in sounds.yml if you prefer a different sound.
     Sounds that can't be resolved (for example a typo in a CustomSoundId) now log a single warning and are skipped instead of causing errors. On Spigot 1.21.3 and newer, custom sound IDs previously caused an error every time the sound tried to play.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
+    Super Breaker's block list still used pre-release names for the cut copper family from before their 1.17 rename, so the exposed, weathered, oxidized, and waxed variants never triggered it. The list now covers the full copper block and cut copper families including their slabs and stairs. Blocks with Mining XP configured in experience.yml were unaffected.
 
     -- Config --
     Skill rank unlock messages can now be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. This is a deliberate opt-in and nothing changes unless you enable it; unlock messages stay in chat by default. Unlike the other action bar sections this one is controlled by 'SendToActionBar' instead of 'Enabled', because configs from older versions already contain 'Enabled: true' for SubSkillUnlocked from back when the setting had no effect; that key is ignored for this section so updating cannot silently change behavior. advanced.yml auto-updates on startup, so the new key is added automatically.

@@ -258,7 +258,22 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("weighted_pressure_plates");
         intendedToolPickAxe.add("block_of_iron");
         intendedToolPickAxe.add("copper_blocks");
+        intendedToolPickAxe.add("copper_block");
+        intendedToolPickAxe.add("exposed_copper");
+        intendedToolPickAxe.add("weathered_copper");
+        intendedToolPickAxe.add("oxidized_copper");
+        intendedToolPickAxe.add("waxed_copper_block");
+        intendedToolPickAxe.add("waxed_exposed_copper");
+        intendedToolPickAxe.add("waxed_weathered_copper");
+        intendedToolPickAxe.add("waxed_oxidized_copper");
         intendedToolPickAxe.add("cut_copper");
+        intendedToolPickAxe.add("exposed_cut_copper");
+        intendedToolPickAxe.add("weathered_cut_copper");
+        intendedToolPickAxe.add("oxidized_cut_copper");
+        intendedToolPickAxe.add("waxed_cut_copper");
+        intendedToolPickAxe.add("waxed_exposed_cut_copper");
+        intendedToolPickAxe.add("waxed_weathered_cut_copper");
+        intendedToolPickAxe.add("waxed_oxidized_cut_copper");
         intendedToolPickAxe.add("cut_copper_slab");
         intendedToolPickAxe.add("cut_copper_stairs");
         intendedToolPickAxe.add("lapis_lazuli_block");
@@ -371,12 +386,13 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("blackstone_slab");
         intendedToolPickAxe.add("polished_blackstone_slab");
         intendedToolPickAxe.add("polished_blackstone_brick_slab");
-        intendedToolPickAxe.add("lightly_weathered_cut_copper_slab");
-        intendedToolPickAxe.add("semi_weathered_cut_copper_slab");
-        intendedToolPickAxe.add("waxed_semi_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("exposed_cut_copper_slab");
         intendedToolPickAxe.add("weathered_cut_copper_slab");
+        intendedToolPickAxe.add("oxidized_cut_copper_slab");
         intendedToolPickAxe.add("waxed_cut_copper_slab");
-        intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_exposed_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_weathered_cut_copper_slab");
+        intendedToolPickAxe.add("waxed_oxidized_cut_copper_slab");
 
         //stairs (not all of these exist, just copied the above list and replaced slab with stairs)
         intendedToolPickAxe.add("petrified_oak_stairs");
@@ -410,12 +426,13 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("blackstone_stairs");
         intendedToolPickAxe.add("polished_blackstone_stairs");
         intendedToolPickAxe.add("polished_blackstone_brick_stairs");
-        intendedToolPickAxe.add("lightly_weathered_cut_copper_stairs");
-        intendedToolPickAxe.add("semi_weathered_cut_copper_stairs");
-        intendedToolPickAxe.add("waxed_semi_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("exposed_cut_copper_stairs");
         intendedToolPickAxe.add("weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("oxidized_cut_copper_stairs");
         intendedToolPickAxe.add("waxed_cut_copper_stairs");
-        intendedToolPickAxe.add("waxed_lightly_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_exposed_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_weathered_cut_copper_stairs");
+        intendedToolPickAxe.add("waxed_oxidized_cut_copper_stairs");
 
         //1.17 Mining (non-ores)
         intendedToolPickAxe.add("calcite");
