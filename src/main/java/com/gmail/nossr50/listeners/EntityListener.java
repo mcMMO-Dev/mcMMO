@@ -96,15 +96,26 @@ public class EntityListener implements Listener {
     private final mcMMO pluginRef;
 
     /**
-     * We can use this {@link NamespacedKey} for {@link Enchantment} comparisons to check if a
-     * {@link Player} has a {@link Trident} enchanted with "Piercing".
+     * Used to check if a {@link Player} has a {@link Trident} enchanted with "Piercing".
+     * Resolved on first use because the enchantment registry isn't available when listeners are
+     * constructed in tests; the benign race just re-resolves the same enchantment.
      */
-    private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft(PIERCING);
+    private Enchantment piercingEnchantment;
+    private boolean piercingEnchantmentResolved;
     private final static Set<EntityType> TRANSFORMABLE_ENTITIES
             = Set.of(EntityType.SLIME, EntityType.MAGMA_CUBE);
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+    }
+
+    private Enchantment resolvePiercingEnchantment() {
+        if (!piercingEnchantmentResolved) {
+            piercingEnchantment = Enchantment.getByKey(NamespacedKey.minecraft(PIERCING));
+            piercingEnchantmentResolved = true;
+        }
+
+        return piercingEnchantment;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -222,7 +233,9 @@ public class EntityListener implements Listener {
                 }
 
                 //Check both hands
-                if (ItemUtils.doesPlayerHaveEnchantmentInHands(player, PIERCING)) {
+                final Enchantment piercing = resolvePiercingEnchantment();
+                if (piercing != null
+                        && ItemUtils.doesPlayerHaveEnchantmentInHands(player, piercing)) {
                     return;
                 }
 
@@ -320,16 +333,41 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof LivingEntity livingEntity) {
-            if (CombatUtils.hasIgnoreDamageMetadata(livingEntity)) {
-                return;
-            }
+        /* WORLD BLACKLIST CHECK */
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
+            return;
         }
 
-        double damage = event.getFinalDamage();
-        Entity defender = event.getEntity();
+        final Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
 
+        if (isArmorStandEntity(attacker)
+                && ExperienceConfig.getInstance().isArmorStandInteractionPrevented()) {
+            return;
+        }
+
+        if (isMannequinEntity(attacker)
+                && ExperienceConfig.getInstance().isMannequinInteractionPrevented()) {
+            return;
+        }
+
+        final boolean npcInteractionPrevented =
+                ExperienceConfig.getInstance().isNPCInteractionPrevented();
+
+        if ((npcInteractionPrevented && Misc.isNPCEntityExcludingVillagers(defender))
+                || !defender.isValid() || !(defender instanceof LivingEntity target)) {
+            return;
+        }
+
+        if (CombatUtils.hasIgnoreDamageMetadata(target)) {
+            return;
+        }
+
+        if (npcInteractionPrevented && Misc.isNPCEntityExcludingVillagers(attacker)) {
+            return;
+        }
+
+        /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
             if (attacker instanceof Player) {
 
@@ -349,37 +387,9 @@ public class EntityListener implements Listener {
             }
         }
 
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
-            return;
-        }
-
-        if (ExperienceConfig.getInstance().isArmorStandInteractionPrevented()
-                && isArmorStandEntity(attacker)) {
-            return;
-        }
-
-        if (ExperienceConfig.getInstance().isMannequinInteractionPrevented()
-                && isMannequinEntity(attacker)) {
-            return;
-        }
-
-        if ((ExperienceConfig.getInstance().isNPCInteractionPrevented()
-                && Misc.isNPCEntityExcludingVillagers(defender)) || !defender.isValid()
-                || !(defender instanceof LivingEntity target)) {
-            return;
-        }
+        final double damage = event.getFinalDamage();
 
         if (CombatUtils.isInvincible(target, damage)) {
-            return;
-        }
-
-        if (ExperienceConfig.getInstance().isNPCInteractionPrevented()
-                && Misc.isNPCEntityExcludingVillagers(attacker)) {
-            return;
-        }
-
-        if (CombatUtils.hasIgnoreDamageMetadata(target)) {
             return;
         }
 
