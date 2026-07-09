@@ -39,6 +39,7 @@ Version 2.2.055
     Fixed Green Terra and Green Thumb not converting dirt paths to grass
     Fixed Super Breaker not activating on copper blocks, cut copper, and their slab and stair variants (See notes)
     Fixed twisting vines not being handled as multi-block plants by Herbalism
+    Fixed using bone meal on a placed nether wart block clearing its placed-block tracking
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off
@@ -99,6 +100,7 @@ Version 2.2.055
     (Codebase) Removed material name entries that could never match anything (pre-1.13 wood/gold tool and armor names, pre-release copper names, stair variants that never existed)
     (Codebase) Added a unit test ensuring every registered material name resolves to a real Material or is a documented cross-edition or future-version name
     (Codebase) Material register getters return copies, and the unused netherite tools getter is deprecated for removal
+    (Codebase) Removed pre-1.20.5 compatibility shims (reflective potion effect and enchantment lookups, glow berries special casing, armor stand name matching)
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

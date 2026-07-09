@@ -91,7 +91,7 @@ import org.bukkit.projectiles.ProjectileSource;
 public class EntityListener implements Listener {
     private static final String PIERCING = "piercing";
     private static final String DEEPSLATE_REDSTONE_ORE = "deepslate_redstone_ore";
-    private static final Set<String> ARMOR_STAND = Set.of("ARMOR_STAND", "armor_stand");
+    // String-matched because the entity type does not exist in the oldest supported API
     private static final Set<String> MANNEQUIN = Set.of("mannequin", "MANNEQUIN");
     private final mcMMO pluginRef;
 
@@ -1035,16 +1035,8 @@ public class EntityListener implements Listener {
          * if we find something is giving too much of a bonus
          */
 
-        //Hacky 1.17 support
-        if (foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
-            if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                event.setFoodLevel(mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
-            }
-
-            return;
-        }
-
         switch (foodInHand) {
+            case GLOW_BERRIES:
             case BAKED_POTATO: /*
              * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
              * 1000
@@ -1249,6 +1241,6 @@ public class EntityListener implements Listener {
     }
 
     public static boolean isArmorStandEntity(Entity attacker) {
-        return ARMOR_STAND.contains(attacker.getType().toString());
+        return attacker.getType() == EntityType.ARMOR_STAND;
     }
 }
