@@ -32,7 +32,7 @@ Version 2.3.000
     Fixed a small memory leak from fishing hand tracking when players log out
     Fixed an error when another plugin tames an animal with a non-player owner
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
-    Fixed an error when players below 5.5 hearts used a Chimaera Wing underground
+    Fixed an error when players below 11 HP used a Chimaera Wing underground
     Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)
     Fixed the unsupported-version scoreboard warning printing gibberish instead of the Minecraft version
     Fixed mcMMO command tab-completion never suggesting player names to the console
