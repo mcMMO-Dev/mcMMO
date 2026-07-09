@@ -104,6 +104,7 @@ Version 2.2.055
     (Codebase) Added a shared guard preamble helper for event handlers that codifies the cheap-to-expensive gate ordering
     (Codebase) Consolidated the melee combat dispatch into a table-driven resolver with unit tests and extracted the combat XP calculation helpers
     (Codebase) Removed redundant permission checks from ability preparation branches, the activation path already checks them
+    (Codebase) Consolidated event firing boilerplate behind a shared helper and deduplicated the hardcore penalty skeletons
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
