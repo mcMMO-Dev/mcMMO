@@ -15,6 +15,7 @@ import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEvent;
 import com.gmail.nossr50.events.items.McMMOModifyBlockDropItemEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -453,11 +454,11 @@ public class BlockListener implements Listener {
         final Location location = block.getLocation();
 
         /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
-        if (block.getType() == Material.BREWING_STAND) {
-            final BlockState blockState = block.getState();
-            if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(
-                    location)) {
-                Alchemy.brewingStandMap.get(location).cancelBrew();
+        if (block.getType() == Material.BREWING_STAND
+                && block.getState() instanceof BrewingStand) {
+            final AlchemyBrewTask alchemyBrewTask = Alchemy.brewingStandMap.get(location);
+            if (alchemyBrewTask != null) {
+                alchemyBrewTask.cancelBrew();
             }
         }
 

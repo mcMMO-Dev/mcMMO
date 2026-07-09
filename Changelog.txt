@@ -53,6 +53,7 @@ Version 2.2.055
     Improved performance when broken blocks drop items (See notes)
     Improved performance of Tree Feller and other abilities that break many blocks at once (See notes)
     Improved performance when placing and breaking blocks (See notes)
+    Improved performance when chunks unload and when brewing stands are checked
     Improved performance when taking smelted items out of furnaces (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work

@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ContainerMetadataUtils;
@@ -383,8 +384,9 @@ public class InventoryListener implements Listener {
         }
 
         Location location = event.getBlock().getLocation();
-        if (Alchemy.brewingStandMap.containsKey(location)) {
-            Alchemy.brewingStandMap.get(location).finishImmediately();
+        final AlchemyBrewTask alchemyBrewTask = Alchemy.brewingStandMap.get(location);
+        if (alchemyBrewTask != null) {
+            alchemyBrewTask.finishImmediately();
             event.setCancelled(true);
         }
     }
