@@ -140,6 +140,7 @@ Version 2.2.055
     (Codebase) Extracted the tracked-TNT owner resolution shared by the explosion listeners and blast mining damage handling, with tests
     (Codebase) Extracted the diminished-returns XP math into a pure, contract-tested formula
     (Codebase) Extracted the bonus-drop trust analysis (tile-entity dupe protection) into a tested helper
+    (Codebase) Extracted the repair/salvage anvil decision ladder into a tested resolver
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

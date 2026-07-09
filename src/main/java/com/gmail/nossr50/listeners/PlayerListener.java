@@ -507,6 +507,27 @@ public class PlayerListener implements Listener {
         return itemStack != null && itemStack.getType() == Material.FISHING_ROD;
     }
 
+    /**
+     * Decides whether a click on the given block is a repair or salvage anvil use. The perform
+     * path (right click) additionally requires a single held item and the Scrap Collector rank
+     * for salvage; the cancel-confirmation path (left click) does not.
+     */
+    private AnvilInteraction.Use resolveAnvilUse(Player player, Material clickedType,
+            ItemStack heldItem, boolean performingUse) {
+        return AnvilInteraction.resolve(clickedType,
+                mcMMO.p.getGeneralConfig().getRepairAnvilMaterial(),
+                mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial(),
+                performingUse, heldItem.getAmount(),
+                () -> mcMMO.p.getSkillTools()
+                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR),
+                () -> mcMMO.getRepairableManager().isRepairable(heldItem),
+                () -> mcMMO.p.getSkillTools()
+                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
+                        && (!performingUse || RankUtils.hasUnlockedSubskill(player,
+                                SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
+                () -> mcMMO.getSalvageableManager().isSalvageable(heldItem));
+    }
+
     private EquipmentSlot getFishingHandForEvent(Player player, EquipmentSlot eventHand) {
         if (eventHand == EquipmentSlot.HAND || eventHand == EquipmentSlot.OFF_HAND) {
             fishingHandsByPlayer.put(player.getUniqueId(), eventHand);
@@ -701,38 +722,29 @@ public class PlayerListener implements Listener {
 
                 if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking()
                         || player.isSneaking()) {
-                    /* REPAIR CHECKS */
-                    if (type == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial()
-                            && mcMMO.p.getSkillTools()
-                            .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)
-                            && mcMMO.getRepairableManager().isRepairable(heldItem)
-                            && heldItem.getAmount() <= 1) {
-                        RepairManager repairManager = mmoPlayer.getRepairManager();
-                        event.setCancelled(true);
+                    switch (resolveAnvilUse(player, type, heldItem, true)) {
+                        case REPAIR -> {
+                            RepairManager repairManager = mmoPlayer.getRepairManager();
+                            event.setCancelled(true);
 
-                        // Make sure the player knows what he's doing when trying to repair an enchanted item
-                        if (repairManager.checkConfirmation(heldItem, true)) {
-                            repairManager.handleRepair(heldItem);
+                            // Make sure the player knows what he's doing when trying to repair an enchanted item
+                            if (repairManager.checkConfirmation(heldItem, true)) {
+                                repairManager.handleRepair(heldItem);
+                            }
+                        }
+                        case SALVAGE -> {
+                            SalvageManager salvageManager = mmoPlayer.getSalvageManager();
+                            event.setCancelled(true);
+
+                            // Make sure the player knows what he's doing when trying to salvage an enchanted item
+                            if (salvageManager.checkConfirmation(heldItem, true)) {
+                                SkillUtils.removeAbilityBoostsFromInventory(player);
+                                salvageManager.handleSalvage(clickedBlock.getLocation(), heldItem);
+                            }
+                        }
+                        case NONE -> {
                         }
                     }
-                    /* SALVAGE CHECKS */
-                    else if (type == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial()
-                            && mcMMO.p.getSkillTools()
-                            .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
-                            && RankUtils.hasUnlockedSubskill(player,
-                            SubSkillType.SALVAGE_SCRAP_COLLECTOR)
-                            && mcMMO.getSalvageableManager().isSalvageable(heldItem)
-                            && heldItem.getAmount() <= 1) {
-                        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
-                        event.setCancelled(true);
-
-                        // Make sure the player knows what he's doing when trying to salvage an enchanted item
-                        if (salvageManager.checkConfirmation(heldItem, true)) {
-                            SkillUtils.removeAbilityBoostsFromInventory(player);
-                            salvageManager.handleSalvage(clickedBlock.getLocation(), heldItem);
-                        }
-                    }
-
                 }
                 /* BLAST MINING CHECK */
                 else if (miningManager.canDetonate()) {
@@ -750,30 +762,28 @@ public class PlayerListener implements Listener {
 
                 if (!mcMMO.p.getGeneralConfig().getAbilitiesOnlyActivateWhenSneaking()
                         || player.isSneaking()) {
-                    /* REPAIR CHECKS */
-                    if (type == mcMMO.p.getGeneralConfig().getRepairAnvilMaterial() && mcMMO.p.getSkillTools()
-                            .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR)
-                            && mcMMO.getRepairableManager().isRepairable(heldItem)) {
-                        RepairManager repairManager = mmoPlayer.getRepairManager();
+                    switch (resolveAnvilUse(player, type, heldItem, false)) {
+                        case REPAIR -> {
+                            RepairManager repairManager = mmoPlayer.getRepairManager();
 
-                        // Cancel repairing an enchanted item
-                        if (repairManager.checkConfirmation(false)) {
-                            repairManager.setLastAnvilUse(0);
-                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled",
-                                    LocaleLoader.getString("Repair.Pretty.Name")));
+                            // Cancel repairing an enchanted item
+                            if (repairManager.checkConfirmation(false)) {
+                                repairManager.setLastAnvilUse(0);
+                                player.sendMessage(LocaleLoader.getString("Skills.Cancelled",
+                                        LocaleLoader.getString("Repair.Pretty.Name")));
+                            }
                         }
-                    }
-                    /* SALVAGE CHECKS */
-                    else if (type == mcMMO.p.getGeneralConfig().getSalvageAnvilMaterial() && mcMMO.p.getSkillTools()
-                            .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
-                            && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
-                        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
+                        case SALVAGE -> {
+                            SalvageManager salvageManager = mmoPlayer.getSalvageManager();
 
-                        // Cancel salvaging an enchanted item
-                        if (salvageManager.checkConfirmation(false)) {
-                            salvageManager.setLastAnvilUse(0);
-                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled",
-                                    LocaleLoader.getString("Salvage.Pretty.Name")));
+                            // Cancel salvaging an enchanted item
+                            if (salvageManager.checkConfirmation(false)) {
+                                salvageManager.setLastAnvilUse(0);
+                                player.sendMessage(LocaleLoader.getString("Skills.Cancelled",
+                                        LocaleLoader.getString("Salvage.Pretty.Name")));
+                            }
+                        }
+                        case NONE -> {
                         }
                     }
                 }
