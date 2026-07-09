@@ -51,6 +51,7 @@ Version 2.2.055
     Improved performance of frequently checked config.yml settings (See notes)
     Improved performance when processing combat damage events (See notes)
     Improved performance when broken blocks drop items (See notes)
+    Improved performance of Tree Feller and other abilities that break many blocks at once (See notes)
     Improved performance when taking smelted items out of furnaces (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
@@ -138,6 +139,7 @@ Version 2.2.055
     Frequently checked config.yml settings (ability toggles, Bonus_Drops tables, Call of the Wild items) are also resolved once and reused, with the same reload behavior.
     Combat damage events now run their cheap eligibility checks (world blacklist, entity types) before expensive ones (WorldGuard region lookups, damage computation), and duplicate checks were removed; which hits mcMMO processes is unchanged.
     Block drops with no mcMMO bonus drops or treasure attached now exit immediately instead of counting and classifying every dropped item first.
+    Abilities that break many blocks fire internal block-damage events per block; those are now recognized and skipped before any world or region checks run.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO

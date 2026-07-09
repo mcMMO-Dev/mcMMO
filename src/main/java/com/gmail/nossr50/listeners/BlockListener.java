@@ -618,6 +618,12 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
+        // Abilities like Tree Feller fire one fake damage event per block, skip those before
+        // paying for world checks
+        if (event instanceof FakeBlockDamageEvent) {
+            return;
+        }
+
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
 
@@ -633,9 +639,6 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (event instanceof FakeBlockDamageEvent) {
-            return;
-        }
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
@@ -715,6 +718,12 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamageHigher(BlockDamageEvent event) {
+        // Abilities like Tree Feller fire one fake damage event per block, skip those before
+        // paying for world checks
+        if (event instanceof FakeBlockDamageEvent) {
+            return;
+        }
+
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
             return;
@@ -725,10 +734,6 @@ public class BlockListener implements Listener {
             if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer())) {
                 return;
             }
-        }
-
-        if (event instanceof FakeBlockDamageEvent) {
-            return;
         }
 
         Player player = event.getPlayer();
@@ -787,7 +792,7 @@ public class BlockListener implements Listener {
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
