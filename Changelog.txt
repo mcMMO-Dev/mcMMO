@@ -59,6 +59,7 @@ Version 2.2.055
     (Codebase) Added unit tests covering the power level cap and skill level cap checks
     (Codebase) Added regression tests covering previously fixed bugs
     (Codebase) Cleaned up TransientEntityTracker internals (private fields, single-pass summon counting)
+    (Codebase) Hardened cold biome detection against biomes missing from the server's Minecraft version
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
