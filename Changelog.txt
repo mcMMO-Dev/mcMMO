@@ -77,7 +77,7 @@ Version 2.2.055
     Added 'mcmmo.commands.mclevelupsound' permission node
     Added 'mcmmo.commands.xprate.show' permission node
     Removed the unused Leaf Blower Rank_2 and Rank_3 entries from skillranks.yml
-    Deprecated the 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings in config.yml, they have no effect (See notes)
+    Removed the 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings from config.yml, they had no effect (See notes)
     Added locale entries 'Commands.xprate.current', 'Commands.xprate.invalid', 'Commands.LevelUpSound.On', 'Commands.LevelUpSound.Off', and 'Commands.Description.mclevelupsound'
     Updated locale entries 'Commands.xprate.proper.0' and 'Commands.Description.xprate' for the /xprate changes
     (API) McMMOScoreboardObjectiveEvent is only fired on non-Folia servers (See notes)
@@ -168,7 +168,7 @@ Version 2.2.055
     -- Config --
     Skill rank unlock messages can now be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. This is a deliberate opt-in and nothing changes unless you enable it; unlock messages stay in chat by default. Unlike the other action bar sections this one is controlled by 'SendToActionBar' instead of 'Enabled', because configs from older versions already contain 'Enabled: true' for SubSkillUnlocked from back when the setting had no effect; that key is ignored for this section so updating cannot silently change behavior. advanced.yml auto-updates on startup, so the new key is added automatically.
     'Skills.Mining.BlastMining.RemoteDetonationDistance' in advanced.yml controls how far away Blast Mining can remotely detonate TNT. It defaults to 100, which matches the old fixed distance, and advanced.yml auto-updates on startup so no manual config changes are needed.
-    The 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings were supposed to briefly show the skill scoreboard on level up, but the feature has been broken for years and did nothing regardless of the setting. Rather than silently re-enabling something no current server has seen, the keys are now deprecated and will be removed in a future release. No action is needed and no visible behavior changes.
+    The 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings were supposed to briefly show the skill scoreboard on level up, but the feature has been broken for years and did nothing regardless of the setting. Rather than silently re-enabling something no current server has seen, the feature and its keys have been removed. Leftover keys in existing config files are ignored and can be deleted; no action is needed and no visible behavior changes.
 
     -- Database --
     'Database_Purging.Old_User_Cutoff' now actually removes inactive users on both FlatFile and SQL databases. If you have purging enabled, expect the first purge after updating to remove old users that should have been purged before. Users whose last login can't be determined are kept.

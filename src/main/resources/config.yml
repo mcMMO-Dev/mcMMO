@@ -146,10 +146,6 @@ Scoreboard:
             Board: true
             Display_Time: 30
 
-            # Deprecated: these settings have no effect and will be removed in a future release.
-            LevelUp_Board: true
-            LevelUp_Time: 5
-
 Mob_Healthbar:
     # Enabled: Whether the feature is enabled at all
     # Display_Type: Per player Default display for mob health bars - HEARTS, BAR, or DISABLED
