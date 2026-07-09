@@ -331,7 +331,7 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerFishLowest(PlayerFishEvent event) {
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
             return;
