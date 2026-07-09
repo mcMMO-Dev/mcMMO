@@ -60,7 +60,6 @@ class ScoreboardManagerTest {
         when(generalConfig.getScoreboardRainbows()).thenReturn(false);
         when(generalConfig.getShowAbilityNames()).thenReturn(false);
         when(generalConfig.getPowerLevelTagsEnabled()).thenReturn(false);
-        when(generalConfig.getSkillLevelUpBoard()).thenReturn(false);
 
         // Echo locale keys back so ScoreboardManager's label building (run lazily on first
         // label read) is deterministic without touching real locale files

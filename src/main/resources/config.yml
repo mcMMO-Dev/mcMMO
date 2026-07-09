@@ -146,8 +146,7 @@ Scoreboard:
             Board: true
             Display_Time: 30
 
-            # Should the board be shown when a player levels up, and for how long?
-            # It is recommended to NOT have LevelUp_Time be -1, as this may confuse players.
+            # Deprecated: these settings have no effect and will be removed in a future release.
             LevelUp_Board: true
             LevelUp_Time: 5
 

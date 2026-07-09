@@ -404,11 +404,6 @@ public class ScoreboardManager {
                     playerName)) {
                 dirtyPowerLevels.add(playerName);
             }
-
-            if (mcMMO.p.getGeneralConfig().getSkillLevelUpBoard()) {
-                enablePlayerSkillLevelUpScoreboard(player, skill);
-            }
-
         }
     }
 
@@ -483,6 +478,13 @@ public class ScoreboardManager {
         }
     }
 
+    /**
+     * @deprecated Has never worked: its guard required the board to already be shown and then
+     * returned if it was shown, so it never changed any board. The level-up scoreboard feature
+     * is scheduled for removal along with the 'Scoreboard.Types.Skill.LevelUp_Board' and
+     * 'LevelUp_Time' config keys. No internal callers remain.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static void enablePlayerSkillLevelUpScoreboard(Player player, PrimarySkillType skill) {
         ScoreboardWrapper wrapper = getWrapper(player);
 

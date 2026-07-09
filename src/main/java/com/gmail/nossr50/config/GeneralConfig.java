@@ -389,10 +389,20 @@ public class GeneralConfig extends BukkitConfig {
         return config.getInt("Scoreboard.Types.Skill.Display_Time", 30);
     }
 
+    /**
+     * @deprecated The level-up scoreboard feature this key belonged to never worked and is
+     * scheduled for removal; the setting has no effect.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public boolean getSkillLevelUpBoard() {
         return config.getBoolean("Scoreboard.Types.Skill.LevelUp_Board", true);
     }
 
+    /**
+     * @deprecated The level-up scoreboard feature this key belonged to never worked and is
+     * scheduled for removal; the setting has no effect.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public int getSkillLevelUpTime() {
         return config.getInt("Scoreboard.Types.Skill.LevelUp_Time", 5);
     }
