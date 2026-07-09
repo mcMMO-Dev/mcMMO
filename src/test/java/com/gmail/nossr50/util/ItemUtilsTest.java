@@ -13,6 +13,10 @@ import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import org.bukkit.Material;
@@ -136,6 +140,30 @@ class ItemUtilsTest extends MMOTestEnvironment {
 
         // Then - the vanilla material maximum applies
         assertThat(maxDamage).isEqualTo((int) Material.DIAMOND_PICKAXE.getMaxDurability());
+    }
+
+    /**
+     * FishingTreasureBook hands out its live internal enchantment list, so the random roll
+     * must never reorder or otherwise mutate what it is given.
+     */
+    @Test
+    void getRandomEnchantmentShouldNotMutateTheProvidedList() {
+        // Given - a treasure book's legal-enchantment list shared between catches
+        // (wrappers are mocked because Enchantment cannot initialize without a live registry)
+        when(Misc.getRandom()).thenReturn(new Random(42));
+        final List<EnchantmentWrapper> legalEnchantments = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            legalEnchantments.add(mock(EnchantmentWrapper.class));
+        }
+        final List<EnchantmentWrapper> orderBeforeRoll = List.copyOf(legalEnchantments);
+
+        // When - a random enchantment is rolled from the list
+        final EnchantmentWrapper selected = ItemUtils.getRandomEnchantment(legalEnchantments);
+
+        // Then - the roll picks an element of the list
+        assertThat(selected).isIn(legalEnchantments);
+        // And - the shared list keeps its original order
+        assertThat(legalEnchantments).containsExactlyElementsOf(orderBeforeRoll);
     }
 
     @Test

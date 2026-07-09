@@ -148,7 +148,7 @@ public class InventoryListener implements Listener {
 
         BlockState furnaceBlock = event.getBlock().getState();
 
-        if (!ItemUtils.isSmelted(new ItemStack(event.getItemType(), event.getItemAmount()))) {
+        if (!ItemUtils.isSmelted(event.getItemType())) {
             return;
         }
 
