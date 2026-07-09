@@ -23,8 +23,6 @@ commands:
     mmoxpbar:
         aliases: xpbarsettings
         description: Change XP bar settings
-    mmocompat:
-        description: Information about the server and whether its considered fully compatible or running in compatibility mode
     mmodebug:
         aliases: [ mcmmodebugmode ]
         description: Toggles a debug mode which will print useful information to chat

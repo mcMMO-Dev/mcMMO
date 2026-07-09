@@ -79,6 +79,7 @@ Version 2.2.055
     Added 'mcmmo.commands.mclevelupsound' permission node
     Added 'mcmmo.commands.xprate.show' permission node
     Removed the unused Leaf Blower Rank_2 and Rank_3 entries from skillranks.yml
+    Removed the /mmocompat command, it has been non-functional for years
     Removed the 'Scoreboard.Types.Skill.LevelUp_Board' and 'LevelUp_Time' settings from config.yml, they had no effect (See notes)
     Added locale entries 'Commands.xprate.current', 'Commands.xprate.invalid', 'Commands.LevelUpSound.On', 'Commands.LevelUpSound.Off', and 'Commands.Description.mclevelupsound'
     Updated locale entries 'Commands.xprate.proper.0' and 'Commands.Description.xprate' for the /xprate changes
@@ -124,6 +125,7 @@ Version 2.2.055
     (Codebase) Deduplicated the placed-block chunk store load logic and documented the on-disk negative-coordinate mapping invariant
     (Codebase) The migration backup store now logs directory listing failures, threads its injectable clock into archive naming, and merges region files with try-with-resources
     (Codebase) Command registration is now a data-driven table with one shared wiring path that skips missing commands instead of erroring
+    (Codebase) Added a test cross-checking plugin.yml command declarations against the executors the plugin registers
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
