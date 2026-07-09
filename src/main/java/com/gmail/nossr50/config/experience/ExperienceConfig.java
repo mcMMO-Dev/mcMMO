@@ -32,7 +32,22 @@ public class ExperienceConfig extends BukkitConfig {
     private Double experienceGainsGlobalMultiplier;
     private Double customXpPerkBoost;
     private Boolean diminishedReturnsEnabled;
+    private Boolean earlyGameBoostEnabled;
+    private Boolean npcInteractionPrevented;
+    private Boolean armorStandInteractionPrevented;
+    private Boolean mannequinInteractionPrevented;
+    private Float diminishedReturnsCap;
+    private Integer diminishedReturnsTimeInterval;
+    private Boolean experienceBarsEnabled;
     private final Map<PrimarySkillType, Double> formulaSkillModifiers =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, Integer> diminishedReturnsThresholds =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, Boolean> experienceBarEnabled =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, BarColor> experienceBarColors =
+            new EnumMap<>(PrimarySkillType.class);
+    private final Map<PrimarySkillType, BarStyle> experienceBarStyles =
             new EnumMap<>(PrimarySkillType.class);
 
     private ExperienceConfig() {
@@ -67,7 +82,18 @@ public class ExperienceConfig extends BukkitConfig {
         experienceGainsGlobalMultiplier = null;
         customXpPerkBoost = null;
         diminishedReturnsEnabled = null;
+        earlyGameBoostEnabled = null;
+        npcInteractionPrevented = null;
+        armorStandInteractionPrevented = null;
+        mannequinInteractionPrevented = null;
+        diminishedReturnsCap = null;
+        diminishedReturnsTimeInterval = null;
+        experienceBarsEnabled = null;
         formulaSkillModifiers.clear();
+        diminishedReturnsThresholds.clear();
+        experienceBarEnabled.clear();
+        experienceBarColors.clear();
+        experienceBarStyles.clear();
     }
 
     @Override
@@ -177,7 +203,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean isEarlyGameBoostEnabled() {
-        return config.getBoolean("EarlyGameBoost.Enabled", true);
+        if (earlyGameBoostEnabled == null) {
+            earlyGameBoostEnabled = config.getBoolean("EarlyGameBoost.Enabled", true);
+        }
+
+        return earlyGameBoostEnabled;
     }
 
     /*
@@ -210,15 +240,30 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean isNPCInteractionPrevented() {
-        return config.getBoolean("ExploitFix.PreventPluginNPCInteraction", true);
+        if (npcInteractionPrevented == null) {
+            npcInteractionPrevented = config.getBoolean("ExploitFix.PreventPluginNPCInteraction",
+                    true);
+        }
+
+        return npcInteractionPrevented;
     }
 
     public boolean isArmorStandInteractionPrevented() {
-        return config.getBoolean("ExploitFix.PreventArmorStandInteraction", true);
+        if (armorStandInteractionPrevented == null) {
+            armorStandInteractionPrevented = config.getBoolean(
+                    "ExploitFix.PreventArmorStandInteraction", true);
+        }
+
+        return armorStandInteractionPrevented;
     }
 
     public boolean isMannequinInteractionPrevented() {
-        return config.getBoolean("ExploitFix.PreventMannequinInteraction", true);
+        if (mannequinInteractionPrevented == null) {
+            mannequinInteractionPrevented = config.getBoolean(
+                    "ExploitFix.PreventMannequinInteraction", true);
+        }
+
+        return mannequinInteractionPrevented;
     }
 
     public boolean isFishingExploitingPrevented() {
@@ -342,7 +387,12 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Diminished Returns */
     public float getDiminishedReturnsCap() {
-        return (float) config.getDouble("Diminished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
+        if (diminishedReturnsCap == null) {
+            diminishedReturnsCap = (float) config.getDouble(
+                    "Diminished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
+        }
+
+        return diminishedReturnsCap;
     }
 
     public boolean getDiminishedReturnsEnabled() {
@@ -354,13 +404,17 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public int getDiminishedReturnsThreshold(PrimarySkillType skill) {
-        return config.getInt(
-                "Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()),
-                20000);
+        return diminishedReturnsThresholds.computeIfAbsent(skill, key -> config.getInt(
+                "Diminished_Returns.Threshold." + StringUtils.getCapitalized(key.toString()),
+                20000));
     }
 
     public int getDiminishedReturnsTimeInterval() {
-        return config.getInt("Diminished_Returns.Time_Interval", 10);
+        if (diminishedReturnsTimeInterval == null) {
+            diminishedReturnsTimeInterval = config.getInt("Diminished_Returns.Time_Interval", 10);
+        }
+
+        return diminishedReturnsTimeInterval;
     }
 
     /* Conversion */
@@ -477,16 +531,25 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public boolean isExperienceBarsEnabled() {
-        return config.getBoolean("Experience_Bars.Enable", true);
+        if (experienceBarsEnabled == null) {
+            experienceBarsEnabled = config.getBoolean("Experience_Bars.Enable", true);
+        }
+
+        return experienceBarsEnabled;
     }
 
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) {
-        return config.getBoolean(
-                "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
-                        + ".Enable", true);
+        return experienceBarEnabled.computeIfAbsent(primarySkillType, key -> config.getBoolean(
+                "Experience_Bars." + StringUtils.getCapitalized(key.toString()) + ".Enable",
+                true));
     }
 
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType) {
+        return experienceBarColors.computeIfAbsent(primarySkillType,
+                this::resolveExperienceBarColor);
+    }
+
+    private BarColor resolveExperienceBarColor(PrimarySkillType primarySkillType) {
         String colorValueFromConfig = config.getString(
                 "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
                         + ".Color");
@@ -502,6 +565,11 @@ public class ExperienceConfig extends BukkitConfig {
     }
 
     public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType) {
+        return experienceBarStyles.computeIfAbsent(primarySkillType,
+                this::resolveExperienceBarStyle);
+    }
+
+    private BarStyle resolveExperienceBarStyle(PrimarySkillType primarySkillType) {
         String colorValueFromConfig = config.getString(
                 "Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString())
                         + ".BarStyle");
