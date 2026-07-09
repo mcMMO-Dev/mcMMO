@@ -137,8 +137,9 @@ public final class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return mcMMO.p.getGeneralConfig().getLocale().equalsIgnoreCase("en_US") ?
-                mcMMO.p.getSkillTools().matchSkill(skillName) != null : isLocalizedSkill(skillName);
+        // matchSkill accepts both localized and English names, keeping this consistent with
+        // the skill resolution the commands do right after this check
+        return mcMMO.p.getSkillTools().matchSkill(skillName) != null;
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType,
@@ -283,18 +284,6 @@ public final class SkillUtils {
             (int) Math.min(currentDamage + durabilityModifier, maxDurability));
     }
 
-    private static boolean isLocalizedSkill(String skillName) {
-        for (PrimarySkillType skill : PrimarySkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(
-                    StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
     /**
      * Modify the durability of an ItemStack, using Armor specific formula for unbreaking enchant
      * damage reduction
@@ -399,7 +388,6 @@ public final class SkillUtils {
      * @return true if the player has permission and has the skill unlocked
      */
     public static boolean canUseSubskill(Player player, @NotNull SubSkillType subSkillType) {
-        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(
-                player, subSkillType);
+        return Permissions.canUseSubSkill(player, subSkillType);
     }
 }

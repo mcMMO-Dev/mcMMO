@@ -176,6 +176,9 @@ public class SkillTools {
             }
         }
 
+        // Freeze the sets so getSubSkills never hands out mutable internals
+        tempPrimaryChildMap.replaceAll((skill, subSkills) -> ImmutableSet.copyOf(subSkills));
+
         return ImmutableMap.copyOf(tempPrimaryChildMap);
     }
 

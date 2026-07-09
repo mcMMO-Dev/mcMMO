@@ -47,6 +47,7 @@ Version 2.2.055
     Fixed /mmoxpbar disable sending a chat message for every skill instead of just the summary
     Fixed corrupt placed-block region files being kept locked after a failed load and producing errors that did not name the file
     Fixed a single unwritable chunk being able to abort the remaining placed-block saves during shutdown and chunk unload
+    Fixed skill name arguments in commands not accepting English skill names on servers using a non-English locale
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
@@ -129,6 +130,7 @@ Version 2.2.055
     (Codebase) Deduplicated the pretty-string and config-string word formatters, the max-rank hover predicate, and moved chat messages off deprecated Adventure APIs; MOTD strings now resolve per display instead of at class load
     (Codebase) Funneled the seven sound send methods through one enabled/resolve/play core
     (Codebase) Subskill registration maps are statically initialized and duplicate registrations are rejected instead of double-firing
+    (Codebase) Deduplicated the can-use-subskill checks, froze the subskill lookup sets, and renamed a whitelist that was labeled as a blacklist
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

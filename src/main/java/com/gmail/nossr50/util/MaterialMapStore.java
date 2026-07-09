@@ -17,7 +17,7 @@ public class MaterialMapStore {
     private final @NotNull HashSet<String> toolBlackList;
     private final @NotNull HashSet<String> mossyWhiteList;
     private final @NotNull HashSet<String> treeFellerDestructibleWhiteList;
-    private final @NotNull HashSet<String> herbalismAbilityBlackList;
+    private final @NotNull HashSet<String> herbalismAbilityWhiteList;
     private final @NotNull HashSet<String> blockCrackerWhiteList;
     private final @NotNull HashSet<String> canMakeShroomyWhiteList;
     private final @NotNull HashSet<String> multiBlockPlant;
@@ -68,7 +68,7 @@ public class MaterialMapStore {
         toolBlackList = new HashSet<>();
         mossyWhiteList = new HashSet<>();
         treeFellerDestructibleWhiteList = new HashSet<>();
-        herbalismAbilityBlackList = new HashSet<>();
+        herbalismAbilityWhiteList = new HashSet<>();
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
         multiBlockPlant = new HashSet<>();
@@ -164,7 +164,7 @@ public class MaterialMapStore {
     }
 
     public boolean isHerbalismAbilityWhiteListed(@NotNull Material material) {
-        return herbalismAbilityBlackList.contains(material.getKey().getKey());
+        return herbalismAbilityWhiteList.contains(material.getKey().getKey());
     }
 
     public boolean isBlockCrackerWhiteListed(@NotNull Material material) {
@@ -1131,10 +1131,10 @@ public class MaterialMapStore {
     }
 
     private void fillHerbalismAbilityBlackList() {
-        herbalismAbilityBlackList.add("dirt");
-        herbalismAbilityBlackList.add("grass_block");
-        herbalismAbilityBlackList.add("dirt_path");
-        herbalismAbilityBlackList.add("farmland");
+        herbalismAbilityWhiteList.add("dirt");
+        herbalismAbilityWhiteList.add("grass_block");
+        herbalismAbilityWhiteList.add("dirt_path");
+        herbalismAbilityWhiteList.add("farmland");
     }
 
     private void fillTreeFellerDestructibleWhiteList() {
