@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.adapter;
 
-import java.lang.reflect.Method;
+import com.gmail.nossr50.util.ReflectionUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,16 +32,9 @@ public class BiomeAdapter {
 
     @VisibleForTesting
     static @NotNull Function<String, Biome> biomeFromString() {
-        return potentialBiome -> {
-            try {
-                final Class<?> biomeClass = Class.forName("org.bukkit.block.Biome");
-                final Method methodValueOf = biomeClass.getMethod("valueOf", String.class);
-                return (Biome) methodValueOf.invoke(null, potentialBiome);
-            } catch (ReflectiveOperationException | RuntimeException e) {
-                // The biome doesn't exist in this Minecraft version, or Biome no longer has a
-                // valueOf method; a throw here would abort the class initializer
-                return null;
-            }
-        };
+        // Null when the biome doesn't exist in this Minecraft version, or Biome no longer has
+        // a valueOf method; a throw here would abort the class initializer
+        return potentialBiome -> ReflectionUtils.staticValueOf("org.bukkit.block.Biome",
+                potentialBiome);
     }
 }

@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.sounds;
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ReflectionUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -25,7 +26,6 @@ public class SoundManager {
     private static Sound crippleSound;
     private static boolean crippleSoundResolved;
     private static final String ITEM_MACE_SMASH_GROUND = "ITEM_MACE_SMASH_GROUND";
-    private static final String VALUE_OF = "valueOf";
     private static final String ORG_BUKKIT_SOUND = "org.bukkit.Sound";
 
     /**
@@ -236,15 +236,9 @@ public class SoundManager {
             return crippleSound;
         }
 
-        try {
-            // Spigot changed the class from enum to interface around 1.21.3
-            final Class<?> clazz = Class.forName(ORG_BUKKIT_SOUND);
-            final Method valueOf = clazz.getMethod(VALUE_OF, String.class);
-            crippleSound = (Sound) valueOf.invoke(null, ITEM_MACE_SMASH_GROUND);
-        } catch (ReflectiveOperationException | IllegalArgumentException e) {
-            // The sound doesn't exist before Minecraft 1.21, where Cripple can't trigger anyway
-            crippleSound = null;
-        }
+        // Reflective because Spigot changed Sound from enum to interface around 1.21.3; null
+        // when the sound doesn't exist (before Minecraft 1.21, where Cripple can't trigger)
+        crippleSound = ReflectionUtils.staticValueOf(ORG_BUKKIT_SOUND, ITEM_MACE_SMASH_GROUND);
         crippleSoundResolved = true;
 
         return crippleSound;
