@@ -547,8 +547,8 @@ public class PlayerListener implements Listener {
     /**
      * Handle PlayerPickupItemEvents at the highest priority.
      * <p>
-     * These events are used to handle item sharing between party members and are also used to
-     * handle item pickup for the Unarmed skill.
+     * These events are used to clear tracking metadata from picked-up drops and to stop players
+     * from picking up items knocked loose by Disarm before their owner can.
      *
      * @param event The event to modify
      */
@@ -598,25 +598,6 @@ public class PlayerListener implements Listener {
 
             }
 
-            // TODO: Temporarily disabling sharing items...
-            /*if (!drop.hasMetadata(MetadataConstants.METADATA_KEY_TRACKED_ITEM) && mmoPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
-                event.setCancelled(ShareHandler.handleItemShare(drop, mmoPlayer));
-
-                if (event.isCancelled()) {
-                    SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
-                }
-            }*/
-
-            /*if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
-                Unarmed.handleItemPickup(player, event);
-                *//*boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
-                event.setCancelled(cancel);
-
-                if (pickupSuccess) {
-
-                    return;
-                }*//*
-            }*/
         }
     }
 

@@ -98,7 +98,10 @@ public final class PerksUtils {
      * @param player Player to check the activation chance for
      * @param skill PrimarySkillType to check the activation chance of
      * @return the activation chance with "lucky perk" accounted for
+     * @deprecated The lucky perk is applied inside the skill RNG; no remaining callers.
+     * Scheduled for removal.
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static int handleLuckyPerks(Player player, PrimarySkillType skill) {
         if (Permissions.lucky(player, skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;
@@ -113,7 +116,10 @@ public final class PerksUtils {
      * @param mmoPlayer Player to check the activation chance for
      * @param skill PrimarySkillType to check the activation chance of
      * @return the activation chance with "lucky perk" accounted for
+     * @deprecated The lucky perk is applied inside the skill RNG; no remaining callers.
+     * Scheduled for removal.
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static int handleLuckyPerks(McMMOPlayer mmoPlayer, PrimarySkillType skill) {
         if (Permissions.lucky(mmoPlayer.getPlayer(), skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;

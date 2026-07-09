@@ -88,6 +88,8 @@ Version 2.2.055
     (Codebase) Upgrade tracking save errors now go through the plugin logger
     (Codebase) Removed the ModManager class, which had been fully commented out for years
     (Codebase) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
+    (Codebase) Removed long-dead commented-out code blocks, unused private helpers, and a crafting event handler that had no remaining effect
+    (Codebase) Deprecated unused public utility methods and fields for removal
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

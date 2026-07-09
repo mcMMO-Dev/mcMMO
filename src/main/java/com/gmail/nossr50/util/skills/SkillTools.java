@@ -31,6 +31,10 @@ public class SkillTools {
     // TODO: Java has immutable types now, switch to those
     // TODO: Figure out which ones we don't need, this was copy pasted from a diff branch
     public final @NotNull ImmutableList<String> LOCALIZED_SKILL_NAMES;
+    /**
+     * @deprecated No remaining callers; scheduled for removal.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public final @NotNull ImmutableList<String> FORMATTED_SUBSKILL_NAMES;
     public final @NotNull ImmutableSet<String> EXACT_SUBSKILL_NAMES;
     public final @NotNull ImmutableList<PrimarySkillType> CHILD_SKILLS;

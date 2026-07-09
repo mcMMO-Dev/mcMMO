@@ -29,17 +29,6 @@ public final class Misc {
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
-    // Sound Pitches & Volumes from CB
-/*    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
-    public static final float ANVIL_USE_VOLUME = 1.0F * Config.getInstance().getMasterVolume();  // Not in CB directly, I went off the place sound values
-    public static final float FIZZ_VOLUME      = 0.5F * Config.getInstance().getMasterVolume();
-    public static final float POP_VOLUME       = 0.2F * Config.getInstance().getMasterVolume();
-    public static final float BAT_VOLUME       = 1.0F * Config.getInstance().getMasterVolume();
-    public static final float BAT_PITCH        = 0.6F;
-    public static final float GHAST_VOLUME     = 1.0F * Config.getInstance().getMasterVolume();
-    public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
-    public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always*/
-
     public static final @NotNull Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT",
             "ENDERIO",
             "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT",
@@ -144,6 +133,10 @@ public final class Misc {
         }
     }
 
+    /**
+     * @deprecated Legacy mod-support leftover with no remaining callers; scheduled for removal.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static String getModName(@NotNull String materialName) {
         for (String mod : modNames) {
             if (materialName.contains(mod)) {
@@ -192,12 +185,6 @@ public final class Misc {
                 .equals(mmoPlayer.getPlayer().getUniqueId());
     }
 
-//    public static void spawnExperienceOrb(@NotNull Location location, int orbAmount, int experienceValue) {
-//        for (int i = 0; i < orbAmount; i++) {
-//            new SpawnOrbTask(location, experienceValue).runTaskLater(mcMMO.p, 20);
-//        }
-//    }
-
     public static void spawnExperienceOrb(@NotNull Location location, int experienceValue) {
         if (location.getWorld() == null) {
             return;
@@ -207,47 +194,5 @@ public final class Misc {
                 .spawnEntity(location, EntityType.EXPERIENCE_ORB);
         experienceOrb.setExperience(experienceValue);
     }
-
-    private static class SpawnOrbTask implements Runnable {
-        private final Location location;
-        private final int orbExpValue;
-
-        private SpawnOrbTask(Location location, int orbExpValue) {
-            this.location = location;
-            this.orbExpValue = orbExpValue;
-        }
-
-        @Override
-        public void run() {
-            if (location == null || location.getWorld() == null) {
-                return;
-            }
-
-            ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld()
-                    .spawnEntity(location, EntityType.EXPERIENCE_ORB);
-            experienceOrb.setExperience(orbExpValue);
-        }
-    }
-
-//    public static void hackyUnitTest(@NotNull McMMOPlayer normalPlayer) {
-//        mcMMO.p.getLogger().info("Starting hacky unit test...");
-//        int iterations = 1000000;
-//        double ratioDivisor = 10000; //10000 because we run the test 1,000,000 times
-//        double expectedFailRate = 100.0D - RandomChanceUtil.getRandomChanceExecutionSuccess(normalPlayer.getPlayer(), SubSkillType.MINING_MOTHER_LODE, true);
-//
-//        double win = 0, loss = 0;
-//        for(int x = 0; x < iterations; x++) {
-//            if (RandomChanceUtil.checkRandomChanceExecutionSuccess(normalPlayer.getPlayer(), SubSkillType.MINING_MOTHER_LODE, true)) {
-//                win++;
-//            } else {
-//                loss++;
-//            }
-//        }
-//
-//        double lossRatio = (loss / ratioDivisor);
-//        mcMMO.p.getLogger().info("Expected Fail Rate: "+expectedFailRate);
-//        mcMMO.p.getLogger().info("Loss Ratio for hacky test: "+lossRatio);
-////        Assert.assertEquals(lossRatio, expectedFailRate, 0.01D);
-//    }
 
 }

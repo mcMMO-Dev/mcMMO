@@ -483,34 +483,4 @@ public class InventoryListener implements Listener {
         SkillUtils.removeAbilityBuff(event.getPlayer().getInventory().getItemInMainHand());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCraftItem(CraftItemEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld())) {
-            return;
-        }
-
-        final HumanEntity whoClicked = event.getWhoClicked();
-
-        if (!whoClicked.hasMetadata(MetadataConstants.METADATA_KEY_PLAYER_DATA)) {
-            return;
-        }
-
-        ItemStack result = event.getRecipe().getResult();
-
-        //TODO: Used for Chimaera Wing, but not sure it is still necessary
-        if (!ItemUtils.isMcMMOItem(result)) {
-            return;
-        }
-
-        final Player player = (Player) whoClicked;
-
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
-                return;
-            }
-        }
-    }
-
 }

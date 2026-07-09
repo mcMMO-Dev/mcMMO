@@ -633,14 +633,6 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        /*
-        As far as I can tell at one point we registered meta-data about custom damage and we no longer do that.
-        if (entity.hasMetadata(mcMMO.customDamageKey)) {
-            entity.removeMetadata(mcMMO.customDamageKey, plugin);
-            return;
-        }
-        */
-
         if ((ExperienceConfig.getInstance().isNPCInteractionPrevented()
                 && Misc.isNPCEntityExcludingVillagers(entity)) || !entity.isValid()
                 || !(entity instanceof LivingEntity livingEntity)) {

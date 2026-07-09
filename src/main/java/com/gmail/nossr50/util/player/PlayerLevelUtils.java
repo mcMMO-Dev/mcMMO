@@ -5,30 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 
 public class PlayerLevelUtils {
-//    HashMap<PrimarySkillType, Integer> earlyGameBoostCutoffs;
-//
-//    public PlayerLevelUtils()
-//    {
-//        earlyGameBoostCutoffs = new HashMap<>();
-//        calculateEarlyGameBoostCutoffs();
-//    }
-//    private void calculateEarlyGameBoostCutoffs()
-//    {
-//        for(PrimarySkillType primarySkillType : PrimarySkillType.values())
-//        {
-//            int levelCap = Config.getInstance().getLevelCap(primarySkillType);
-//            int cap;
-//
-//            if (levelCap == Integer.MAX_VALUE || levelCap <= 0)
-//            {
-//                cap = Config.getInstance().getIsRetroMode() ? 50 : 5;
-//            } else {
-//                cap = (int) (levelCap * ExperienceConfig.getInstance().getEarlyGameBoostMultiplier());
-//            }
-//
-//            earlyGameBoostCutoffs.put(primarySkillType, cap);
-//        }
-//    }
 
     public int getEarlyGameCutoff(PrimarySkillType primarySkillType) {
         return 1;

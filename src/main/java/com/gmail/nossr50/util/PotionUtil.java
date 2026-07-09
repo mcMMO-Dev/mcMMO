@@ -67,12 +67,19 @@ public final class PotionUtil {
 
     /**
      * Returns the NamespacedKey key string portion for this potion type (e.g. "swiftness").
+     *
+     * @deprecated No remaining callers; scheduled for removal.
      */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static @NotNull String getKeyGetKey(@NotNull PotionType potionType) {
         final NamespacedKey key = potionType.getKey();
         return key != null ? key.getKey() : potionType.name();
     }
 
+    /**
+     * @deprecated No remaining callers; scheduled for removal.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static String convertPotionConfigName(String legacyName) {
         String replacementName = legacyName;
 

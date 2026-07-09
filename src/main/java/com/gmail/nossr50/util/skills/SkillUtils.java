@@ -59,6 +59,11 @@ public final class SkillUtils {
      * Skill Stat Calculations
      */
 
+    /**
+     * @deprecated Skill commands use their own length display calculation; no remaining callers.
+     * Scheduled for removal.
+     */
+    @Deprecated(forRemoval = true, since = "2.2.055")
     public static String[] calculateLengthDisplayValues(Player player, float skillValue,
             PrimarySkillType skill) {
         int maxLength = mcMMO.p.getSkillTools()

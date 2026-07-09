@@ -381,23 +381,6 @@ public final class BlockUtils {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(material);
     }
 
-//    /**
-//     * Determine if a given block should be affected by Flux Mining
-//     *
-//     * @param blockState The {@link BlockState} of the block to check
-//     * @return true if the block should affected by Flux Mining, false otherwise
-//     */
-//    public static boolean affectedByFluxMining(BlockState blockState) {
-//        switch (blockState.getType()) {
-//            case IRON_ORE:
-//            case GOLD_ORE:
-//                return true;
-//
-//            default:
-//                return false;
-//        }
-//    }
-
     /**
      * Determine if a given block can activate Herbalism abilities
      *
