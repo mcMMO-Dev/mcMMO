@@ -890,15 +890,11 @@ public class EntityListener implements Listener {
 
         final Entity entity = event.getEntity();
 
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(
-                MetadataConstants.METADATA_KEY_TRACKED_TNT)) {
+        if (!(entity instanceof TNTPrimed)) {
             return;
         }
 
-        // We can make this assumption because we (should) be the only ones
-        // using this exact metadata
-        final Player player = pluginRef.getServer().getPlayerExact(
-                entity.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        final Player player = BlastMining.resolveTntOwner(entity);
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
@@ -939,15 +935,11 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(
-                MetadataConstants.METADATA_KEY_TRACKED_TNT)) {
+        if (!(entity instanceof TNTPrimed)) {
             return;
         }
 
-        // We can make this assumption because we (should) be the only ones
-        // using this exact metadata
-        Player player = pluginRef.getServer().getPlayerExact(
-                entity.getMetadata(MetadataConstants.METADATA_KEY_TRACKED_TNT).get(0).asString());
+        final Player player = BlastMining.resolveTntOwner(entity);
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
