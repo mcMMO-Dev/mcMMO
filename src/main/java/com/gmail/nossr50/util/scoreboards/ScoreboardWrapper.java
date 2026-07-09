@@ -62,7 +62,7 @@ public class ScoreboardWrapper {
         this.playerBoard = playerBoard;
     }
 
-    public WrappedTask updateTask = null;
+    private WrappedTask updateTask = null;
 
     private class ScoreboardQuickUpdate implements Runnable {
         @Override
@@ -72,7 +72,7 @@ public class ScoreboardWrapper {
         }
     }
 
-    public WrappedTask revertTask = null;
+    private WrappedTask revertTask = null;
 
     private class ScoreboardChangeTask implements Runnable {
         @Override
@@ -82,7 +82,7 @@ public class ScoreboardWrapper {
         }
     }
 
-    public WrappedTask cooldownTask = null;
+    private WrappedTask cooldownTask = null;
 
     private class ScoreboardCooldownTask implements Runnable {
         @Override
@@ -115,17 +115,24 @@ public class ScoreboardWrapper {
     }
 
     private void stopCooldownUpdating() {
-        if (cooldownTask != null) {
-            try {
-                cooldownTask.cancel();
-            } catch (Exception e) {
-                LogUtils.debug(mcMMO.p.getLogger(),
-                        "Unable to cancel cooldown scoreboard task for " + playerName + ": "
-                                + e.getMessage());
-            }
+        cooldownTask = cancelQuietly(cooldownTask, "cooldown scoreboard task");
+    }
 
-            cooldownTask = null;
+    /**
+     * Cancels a scheduled task, logging instead of throwing if the scheduler refuses. Always
+     * returns null so callers can clear the task field in the same statement.
+     */
+    private @Nullable WrappedTask cancelQuietly(@Nullable WrappedTask task, String taskName) {
+        if (task != null) {
+            try {
+                task.cancel();
+            } catch (Exception e) {
+                LogUtils.debug(mcMMO.p.getLogger(), "Unable to cancel " + taskName + " for "
+                        + playerName + ": " + e.getMessage());
+            }
         }
+
+        return null;
     }
 
     public boolean isSkillScoreboard() {
@@ -267,31 +274,23 @@ public class ScoreboardWrapper {
     }
 
     public void cancelRevert() {
-        if (revertTask == null) {
-            return;
-        }
-
-        revertTask.cancel();
-        revertTask = null;
+        revertTask = cancelQuietly(revertTask, "scoreboard revert task");
     }
 
     /**
      * Releases backend resources and scheduled tasks.
      */
     public void close() {
-        try {
-            stopCooldownUpdating();
-            cancelRevert();
-            if (updateTask != null) {
-                updateTask.cancel();
-                updateTask = null;
-            }
-        } catch (Exception ignored) {
-            // best-effort task cleanup
-        }
+        stopCooldownUpdating();
+        cancelRevert();
+        updateTask = cancelQuietly(updateTask, "sidebar update task");
 
-        playerBoard.close();
-        ScoreboardManager.onPlayerBoardClosed(playerName);
+        try {
+            playerBoard.close();
+        } finally {
+            // Always drop the backend's bookkeeping entry, even if closing the board throws
+            ScoreboardManager.onPlayerBoardClosed(playerName);
+        }
     }
 
     // Board Type Changing 'API' methods
@@ -439,17 +438,7 @@ public class ScoreboardWrapper {
      * {@code updateSidebar()}; the data sources and per-type logic mirror the original board.
      */
     private void render() {
-        if (updateTask != null) {
-            try {
-                updateTask.cancel();
-            } catch (Exception e) {
-                LogUtils.debug(mcMMO.p.getLogger(),
-                        "Unable to cancel sidebar update task for " + playerName + ": "
-                                + e.getMessage());
-            }
-
-            updateTask = null;
-        }
+        updateTask = cancelQuietly(updateTask, "sidebar update task");
 
         if (sidebarType == SidebarType.NONE) {
             return;

@@ -114,6 +114,7 @@ Version 2.2.055
     (Codebase) Hidden skill scoreboards no longer schedule sidebar redraws when their skill levels up
     (Codebase) Consolidated the nine near-identical scoreboard enable/show methods behind a single helper
     (Codebase) Deduplicated the scoreboard show-and-capture logic and removed an unreachable stats board branch
+    (Codebase) Consolidated scoreboard task cancellation behind a shared helper and made board close-out exception-safe
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
