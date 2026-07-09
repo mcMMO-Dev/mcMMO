@@ -25,6 +25,7 @@ public final class BlockUtils {
 
     public static final String SHORT_GRASS = "SHORT_GRASS";
     public static final String GRASS = "GRASS";
+    private static final HashSet<Material> TRANSPARENT_BLOCKS = buildTransparentBlocks();
 
     private BlockUtils() {
     }
@@ -457,10 +458,14 @@ public final class BlockUtils {
     /**
      * Get a HashSet containing every transparent block
      *
-     * @return HashSet with the IDs of every transparent block
+     * @return HashSet with the IDs of every transparent block; callers must not modify it
      */
     public static HashSet<Material> getTransparentBlocks() {
-        HashSet<Material> transparentBlocks = new HashSet<>();
+        return TRANSPARENT_BLOCKS;
+    }
+
+    private static HashSet<Material> buildTransparentBlocks() {
+        final HashSet<Material> transparentBlocks = new HashSet<>();
 
         for (Material material : Material.values()) {
             if (material.isTransparent()) {
@@ -483,7 +488,8 @@ public final class BlockUtils {
     }
 
     public static boolean isPartOfTree(Block block) {
-        return hasWoodcuttingXP(block.getState()) || isNonWoodPartOfTree(block.getType());
+        final Material material = block.getType();
+        return hasWoodcuttingXP(material) || isNonWoodPartOfTree(material);
     }
 
     /**
