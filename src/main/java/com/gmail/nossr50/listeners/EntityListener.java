@@ -310,19 +310,26 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {
         //Prevent players from setting fire to each other if they are in the same party
-        if (event.getEntity() instanceof Player defender) {
+        if (!(event.getEntity() instanceof Player defender)) {
+            return;
+        }
 
-            if (event.getCombuster() instanceof Projectile projectile) {
-                if (projectile.getShooter() instanceof Player attacker) {
-                    if (checkIfInPartyOrSamePlayer(event, defender, attacker)) {
-                        event.setCancelled(true);
-                    }
-                }
-            } else if (event.getCombuster() instanceof Player attacker) {
-                if (checkIfInPartyOrSamePlayer(event, defender, attacker)) {
-                    event.setCancelled(true);
-                }
-            }
+        final Player attacker;
+        if (event.getCombuster() instanceof Projectile projectile
+                && projectile.getShooter() instanceof Player shooter) {
+            attacker = shooter;
+        } else if (event.getCombuster() instanceof Player playerCombuster) {
+            attacker = playerCombuster;
+        } else {
+            return;
+        }
+
+        // Cancel only genuine friendly fire (self-ignition or disallowed party fire); a player
+        // whose data has not loaded yet is not friendly fire and must burn normally
+        final FriendlyFire.Outcome outcome = resolveFriendlyFire(defender, attacker);
+        if (outcome == FriendlyFire.Outcome.SELF
+                || outcome == FriendlyFire.Outcome.CANCEL_FRIENDLY_FIRE) {
+            event.setCancelled(true);
         }
     }
 
@@ -556,31 +563,28 @@ public class EntityListener implements Listener {
 
     public boolean checkIfInPartyOrSamePlayer(Cancellable event, Player defendingPlayer,
             Player attackingPlayer) {
-        // This check is probably necessary outside of the party system
-        if (defendingPlayer.equals(attackingPlayer)) {
-            return true;
+        final FriendlyFire.Outcome outcome = resolveFriendlyFire(defendingPlayer,
+                attackingPlayer);
+
+        if (outcome == FriendlyFire.Outcome.CANCEL_FRIENDLY_FIRE) {
+            event.setCancelled(true);
         }
 
-        if (!pluginRef.isPartySystemEnabled()) {
-            return false;
-        }
+        return outcome != FriendlyFire.Outcome.PROCESS;
+    }
 
-        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(
-                attackingPlayer)) {
-            return true;
-        }
-
-        //Party Friendly Fire
-        if (!mcMMO.p.getGeneralConfig().getPartyFriendlyFire()) {
-            if ((mcMMO.p.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
-                    || mcMMO.p.getPartyManager().areAllies(defendingPlayer, attackingPlayer))
-                    && !(Permissions.friendlyFire(attackingPlayer)
-                    && Permissions.friendlyFire(defendingPlayer))) {
-                event.setCancelled(true);
-                return true;
-            }
-        }
-        return false;
+    private FriendlyFire.Outcome resolveFriendlyFire(Player defendingPlayer,
+            Player attackingPlayer) {
+        return FriendlyFire.resolve(
+                defendingPlayer.equals(attackingPlayer),
+                pluginRef.isPartySystemEnabled(),
+                () -> UserManager.hasPlayerDataKey(defendingPlayer)
+                        && UserManager.hasPlayerDataKey(attackingPlayer),
+                () -> mcMMO.p.getGeneralConfig().getPartyFriendlyFire(),
+                () -> mcMMO.p.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
+                        || mcMMO.p.getPartyManager().areAllies(defendingPlayer, attackingPlayer),
+                () -> Permissions.friendlyFire(attackingPlayer)
+                        && Permissions.friendlyFire(defendingPlayer));
     }
 
     /**

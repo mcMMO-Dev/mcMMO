@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
@@ -13,15 +15,19 @@ import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metadata.MobMetaFlagType;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.taming.TrackedTamingEntity;
 import com.gmail.nossr50.util.MobMetadataUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.junit.jupiter.api.AfterEach;
@@ -103,6 +109,55 @@ class EntityListenerTest extends MMOTestEnvironment {
         // Then - the non-player owner is ignored without an exception and nothing is flagged
         assertThatCode(() -> entityListener.onEntityTame(event)).doesNotThrowAnyException();
         mobMetadataMock.verifyNoInteractions();
+    }
+
+    /**
+     * A player whose mcMMO data has not loaded yet is not friendly fire: combust events between
+     * unrelated players must burn normally instead of being cancelled just because a profile is
+     * still loading.
+     */
+    @Test
+    void combustShouldNotBeCancelledWhenPlayerDataIsNotLoaded() {
+        // Given - two unrelated players, the attacker's mcMMO data still loading
+        when(mcMMO.p.isPartySystemEnabled()).thenReturn(true);
+        final Player attacker = mock(Player.class);
+        mockedUserManager.when(() -> UserManager.hasPlayerDataKey(player)).thenReturn(true);
+        mockedUserManager.when(() -> UserManager.hasPlayerDataKey(attacker)).thenReturn(false);
+        final EntityCombustByEntityEvent event = mock(EntityCombustByEntityEvent.class);
+        when(event.getEntity()).thenReturn(player);
+        when(event.getCombuster()).thenReturn(attacker);
+
+        // When - the combust event is handled
+        entityListener.onEntityCombustByEntityEvent(event);
+
+        // Then - the fire is not cancelled
+        verify(event, never()).setCancelled(true);
+    }
+
+    /**
+     * Genuine party friendly fire keeps being blocked: same party, friendly fire disabled in
+     * the config, and neither player holding the friendly-fire permission.
+     */
+    @Test
+    void combustShouldBeCancelledForBlockedPartyFriendlyFire() {
+        // Given - two party members with loaded data and friendly fire disallowed
+        when(mcMMO.p.isPartySystemEnabled()).thenReturn(true);
+        final Player attacker = mock(Player.class);
+        mockedUserManager.when(() -> UserManager.hasPlayerDataKey(player)).thenReturn(true);
+        mockedUserManager.when(() -> UserManager.hasPlayerDataKey(attacker)).thenReturn(true);
+        when(generalConfig.getPartyFriendlyFire()).thenReturn(false);
+        final PartyManager partyManager = mock(PartyManager.class);
+        when(mcMMO.p.getPartyManager()).thenReturn(partyManager);
+        when(partyManager.inSameParty(player, attacker)).thenReturn(true);
+        final EntityCombustByEntityEvent event = mock(EntityCombustByEntityEvent.class);
+        when(event.getEntity()).thenReturn(player);
+        when(event.getCombuster()).thenReturn(attacker);
+
+        // When - the combust event is handled
+        entityListener.onEntityCombustByEntityEvent(event);
+
+        // Then - the friendly fire is cancelled
+        verify(event, org.mockito.Mockito.atLeastOnce()).setCancelled(true);
     }
 
     /**
