@@ -417,7 +417,10 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to monitor
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    // HIGHEST instead of MONITOR: this handler mutates the event (vanilla XP removal, caught
+    // item replacement), which the MONITOR contract forbids and which hid those changes from
+    // plugins observing the final result. The name is historical.
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerFishMonitor(PlayerFishEvent event) {
         Player player = event.getPlayer();
         final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
@@ -865,7 +868,11 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to monitor
      */
-    @EventHandler(priority = EventPriority.MONITOR)
+    // HIGHEST instead of MONITOR: this handler mutates the event and world state (ability
+    // activation, item consumption, event cancellation), which the MONITOR contract forbids.
+    // ignoreCancelled stays false because interact events arrive "cancelled" for air clicks by
+    // design. The name is historical.
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteractMonitor(PlayerInteractEvent event) {
         if (event.getAction() == Action.PHYSICAL) {
             return;

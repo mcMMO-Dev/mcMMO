@@ -584,27 +584,13 @@ public class BlockListener implements Listener {
     }
 
     /**
-     * Monitor BlockDamage events.
-     *
-     * @param event The event to watch
+     * Handles ability preparation and the Berserk activation-hit insta-break. Runs from the
+     * end of {@link #onBlockDamageHigher} so the mutation happens at HIGHEST rather than
+     * MONITOR (which forbids event mutation), while keeping the historical execution order of
+     * trigger checks before preparation deterministic.
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockDamage(BlockDamageEvent event) {
-        // Abilities like Tree Feller fire one fake damage event per block, skip those before
-        // paying for world checks
-        if (event instanceof FakeBlockDamageEvent) {
-            return;
-        }
-
-        final Player player = event.getPlayer();
-        final Block block = event.getBlock();
-
-        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
-
-        if (mmoPlayer == null) {
-            return;
-        }
-
+    private void processAbilityPreparation(BlockDamageEvent event, Player player,
+            McMMOPlayer mmoPlayer, Block block) {
         /*
          * ABILITY PREPARATION CHECKS
          *
@@ -719,6 +705,10 @@ public class BlockListener implements Listener {
             event.setInstaBreak(true);
             SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
         }
+
+        // Ability preparation runs after the trigger checks, matching the execution order the
+        // two handlers had when preparation still ran at MONITOR priority
+        processAbilityPreparation(event, player, mmoPlayer, block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

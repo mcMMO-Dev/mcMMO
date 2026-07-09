@@ -49,6 +49,7 @@ Version 2.2.055
     Fixed a single unwritable chunk being able to abort the remaining placed-block saves during shutdown and chunk unload
     Fixed skill name arguments in commands not accepting English skill names on servers using a non-English locale
     Fixed players being fireproof against other players while their mcMMO data was still loading
+    Fixed several event handlers modifying fishing, block damage, and interaction events at MONITOR priority (See notes)
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
@@ -187,6 +188,9 @@ Version 2.2.055
     Sounds that can't be resolved (for example a typo in a CustomSoundId) now log a single warning and are skipped instead of causing errors. On Spigot 1.21.3 and newer, custom sound IDs previously caused an error every time the sound tried to play.
     Items with a custom maximum durability (set through the max_damage item component by data packs or item plugins) previously could make super abilities stop working or appear to restore durability; ability durability loss now always uses the item's own maximum.
     Super Breaker's block list still used pre-release names for the cut copper family from before their 1.17 rename, so the exposed, weathered, oxidized, and waxed variants never triggered it. The list now covers the full copper block and cut copper families including their slabs and stairs. Blocks with Mining XP configured in experience.yml were unaffected.
+
+    -- Event handling --
+    A few mcMMO handlers changed events at MONITOR priority, which the Bukkit event contract forbids because other plugins observing the final outcome at MONITOR could no longer trust what they saw. The fishing rewards handler (vanilla XP removal and caught-item replacement), the interaction handler that activates abilities and consumes items, and the Berserk insta-break on block damage now run at HIGHEST priority instead. Plugins that read these events at MONITOR now reliably see mcMMO's changes. If another plugin also modifies these events at HIGHEST priority, its ordering relative to mcMMO may have changed; please report any new conflicts with other plugins after updating.
 
     -- Config --
     Skill rank unlock messages can now be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. This is a deliberate opt-in and nothing changes unless you enable it; unlock messages stay in chat by default. Unlike the other action bar sections this one is controlled by 'SendToActionBar' instead of 'Enabled', because configs from older versions already contain 'Enabled: true' for SubSkillUnlocked from back when the setting had no effect; that key is ignored for this section so updating cannot silently change behavior. advanced.yml auto-updates on startup, so the new key is added automatically.

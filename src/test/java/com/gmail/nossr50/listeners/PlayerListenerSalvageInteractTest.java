@@ -132,8 +132,9 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
      * in priority order and handlers registered with ignoreCancelled are skipped once the event
      * is cancelled. A {@link PlayerInteractEvent} with no clicked block reports itself as
      * cancelled from the moment it is constructed, so right-click-air interactions only ever
-     * reach handlers that do not ignore cancelled events. Monitor handlers are excluded because
-     * they observe rather than modify the interaction outcome.
+     * reach handlers that do not ignore cancelled events. The ability/item activation handler
+     * (HIGHEST) and monitor handlers are excluded: this suite covers the anvil confirmation
+     * flow, and the activation handler needs world and skill state this harness does not mock.
      */
     private void dispatchLikeEventBus(PlayerInteractEvent event) {
         final List<Method> handlers = Arrays.stream(PlayerListener.class.getMethods())
@@ -141,7 +142,9 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
                 .filter(method -> method.getParameterCount() == 1
                         && method.getParameterTypes()[0] == PlayerInteractEvent.class)
                 .filter(method -> method.getAnnotation(EventHandler.class).priority()
-                        != EventPriority.MONITOR)
+                        != EventPriority.MONITOR
+                        && method.getAnnotation(EventHandler.class).priority()
+                        != EventPriority.HIGHEST)
                 .sorted(Comparator.comparing(
                         method -> method.getAnnotation(EventHandler.class).priority()))
                 .toList();

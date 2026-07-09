@@ -160,6 +160,9 @@ public class EntityListener implements Listener {
         }
     }
 
+    // ignoreCancelled is deliberately false (changed from true in the 2.2 Endgame Update):
+    // arrow metadata must be applied even for shots other plugins cancel, so the delayed
+    // metadata cleanup still runs for those arrows
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onEntityShootBow(EntityShootBowEvent event) {
         /* WORLD BLACKLIST CHECK */
