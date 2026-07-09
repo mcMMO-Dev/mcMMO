@@ -219,6 +219,20 @@ class ScoreboardManagerTest {
     }
 
     @Test
+    void handleLevelUpShouldNotRefreshHiddenSkillBoardWhenDisplayedSkillLevelsUp() {
+        // Given - a player has a skill sidebar for a skill, but the board is currently hidden
+        final Player player = mockPlayer();
+        final ScoreboardWrapper wrapper = registerSkillBoard(PrimarySkillType.MINING, false);
+
+        // When - the player levels up the displayed skill
+        ScoreboardManager.handleLevelUp(player, PrimarySkillType.MINING);
+
+        // Then - no refresh is scheduled; hidden boards have nothing to redraw (mirrors the
+        // handleXp grouping, which already skips hidden boards)
+        verify(wrapper, never()).doSidebarUpdateSoon();
+    }
+
+    @Test
     void handleXpShouldNotRefreshChildSkillBoardWhenBoardIsHidden() {
         // Given - a player has a child-skill sidebar that is currently not shown
         final Player player = mockPlayer();

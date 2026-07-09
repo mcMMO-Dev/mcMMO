@@ -385,8 +385,8 @@ public class ScoreboardManager {
         }
 
         if (wrapper != null) {
-            if (isSkillBoardTracking(wrapper, skill)
-                    || (wrapper.isStatsScoreboard()) && wrapper.isBoardShown()) {
+            if ((isSkillBoardTracking(wrapper, skill) || wrapper.isStatsScoreboard())
+                    && wrapper.isBoardShown()) {
                 wrapper.doSidebarUpdateSoon();
             }
 
