@@ -36,6 +36,7 @@ Version 2.2.055
     Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)
     Fixed the unsupported-version scoreboard warning printing gibberish instead of the Minecraft version
     Fixed mcMMO command tab-completion never suggesting player names to the console
+    Fixed Green Terra and Green Thumb not converting dirt paths to grass
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off

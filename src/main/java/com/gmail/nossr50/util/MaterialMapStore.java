@@ -1178,7 +1178,7 @@ public class MaterialMapStore {
     private void fillMossyWhiteList() {
         mossyWhiteList.add("cobblestone");
         mossyWhiteList.add("dirt");
-        mossyWhiteList.add("grass_path");
+        mossyWhiteList.add("dirt_path");
         mossyWhiteList.add("stone_bricks");
         mossyWhiteList.add("cobblestone_wall");
     }
