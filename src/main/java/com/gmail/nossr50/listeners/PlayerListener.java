@@ -333,6 +333,9 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerFishLowest(PlayerFishEvent event) {
+        if (!ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+            return;
+        }
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
             return;
         }
@@ -350,17 +353,14 @@ public class PlayerListener implements Listener {
 
         FishingManager fishingManager = mmoPlayer.getFishingManager();
 
-        if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+        fishingManager.processExploiting(event.getHook().getLocation().toVector());
 
-            fishingManager.processExploiting(event.getHook().getLocation().toVector());
-
-            if (fishingManager.isExploitingFishing()) {
-                player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
-                    ExperienceConfig.getInstance()
-                        .getFishingExploitingOptionMoveRange()));
-                event.setExpToDrop(0);
-                caughtItem.remove();
-            }
+        if (fishingManager.isExploitingFishing()) {
+            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
+                ExperienceConfig.getInstance()
+                    .getFishingExploitingOptionMoveRange()));
+            event.setExpToDrop(0);
+            caughtItem.remove();
         }
     }
 
