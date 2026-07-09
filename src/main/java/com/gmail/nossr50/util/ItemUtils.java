@@ -951,24 +951,11 @@ public final class ItemUtils {
             @NotNull Location location,
             @NotNull ItemStack itemStack,
             @NotNull ItemSpawnReason itemSpawnReason) {
-        if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
-            return null;
-        }
-
-        // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        final McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack,
-                itemSpawnReason, player);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return null;
-        }
-
-        return location.getWorld().dropItem(location, event.getItemStack());
+        return dropAfterItemSpawnEvent(player, location, itemStack, itemSpawnReason, false);
     }
 
     /**
-     * Drop an item at a given location.
+     * Drop an item at a given location with natural spawn randomness.
      *
      * @param location The location to drop the item at
      * @param itemStack The item to drop
@@ -979,6 +966,15 @@ public final class ItemUtils {
             @NotNull Location location,
             @NotNull ItemStack itemStack,
             @NotNull ItemSpawnReason itemSpawnReason) {
+        return dropAfterItemSpawnEvent(player, location, itemStack, itemSpawnReason, true);
+    }
+
+    /**
+     * Fires the cancellable McMMOItemSpawnEvent and drops the (possibly replaced) item.
+     */
+    private static @Nullable Item dropAfterItemSpawnEvent(@Nullable Player player,
+            @NotNull Location location, @NotNull ItemStack itemStack,
+            @NotNull ItemSpawnReason itemSpawnReason, boolean dropNaturally) {
         if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
@@ -992,7 +988,9 @@ public final class ItemUtils {
             return null;
         }
 
-        return location.getWorld().dropItemNaturally(location, event.getItemStack());
+        return dropNaturally
+                ? location.getWorld().dropItemNaturally(location, event.getItemStack())
+                : location.getWorld().dropItem(location, event.getItemStack());
     }
 
     /**
@@ -1057,8 +1055,9 @@ public final class ItemUtils {
 
         //Use the item from the event
         Item spawnedItem = spawnLocation.getWorld().dropItem(spawnLocation, clonedItem);
-        Vector vecFrom = spawnLocation.clone().toVector().clone();
-        Vector vecTo = targetLocation.clone().toVector().clone();
+        // toVector() already returns a fresh Vector
+        Vector vecFrom = spawnLocation.toVector();
+        Vector vecTo = targetLocation.toVector();
 
         //Vector which is pointing towards out target location
         Vector direction = vecTo.subtract(vecFrom).normalize();

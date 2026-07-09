@@ -62,49 +62,48 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        Block furnaceBlock = event.getBlock();
-        BlockState furnaceState = furnaceBlock.getState();
-        ItemStack smelting =
-                furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory()
-                        .getSmelting() : null;
-
-        if (!ItemUtils.isSmeltable(smelting) || event.getBurnTime() <= 0) {
+        if (!(event.getBlock().getState() instanceof Furnace furnace)) {
             return;
         }
 
-        Furnace furnace = (Furnace) furnaceState;
-        OfflinePlayer offlinePlayer = ContainerMetadataUtils.getContainerOwner(furnace);
-        Player player;
+        if (!ItemUtils.isSmeltable(furnace.getInventory().getSmelting())
+                || event.getBurnTime() <= 0) {
+            return;
+        }
 
-        if (offlinePlayer != null && offlinePlayer.isOnline() && offlinePlayer instanceof Player) {
-            player = (Player) offlinePlayer;
+        final OfflinePlayer offlinePlayer = ContainerMetadataUtils.getContainerOwner(furnace);
 
-            if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
-                return;
-            }
+        // Fuel efficiency only applies while the furnace owner is online
+        if (!(offlinePlayer instanceof Player player) || !player.isOnline()) {
+            return;
+        }
 
-            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if (!Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
+            return;
+        }
 
-            if (mmoPlayer != null) {
-                boolean debugMode = mmoPlayer.isDebugMode();
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-                if (debugMode) {
-                    player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
-                    player.sendMessage("Furnace - " + furnace.hashCode());
-                    player.sendMessage("Furnace Type: " + furnaceBlock.getType());
-                    player.sendMessage("Burn Length before Fuel Efficiency is applied - "
-                            + event.getBurnTime());
-                }
+        if (mmoPlayer == null) {
+            return;
+        }
 
-                event.setBurnTime(
-                        mmoPlayer.getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+        final boolean debugMode = mmoPlayer.isDebugMode();
 
-                if (debugMode) {
-                    player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "
-                            + event.getBurnTime());
-                    player.sendMessage("");
-                }
-            }
+        if (debugMode) {
+            player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
+            player.sendMessage("Furnace - " + furnace.hashCode());
+            player.sendMessage("Furnace Type: " + event.getBlock().getType());
+            player.sendMessage("Burn Length before Fuel Efficiency is applied - "
+                    + event.getBurnTime());
+        }
+
+        event.setBurnTime(mmoPlayer.getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+
+        if (debugMode) {
+            player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "
+                    + event.getBurnTime());
+            player.sendMessage("");
         }
     }
 
@@ -393,16 +392,6 @@ public class InventoryListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-//    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-//    public void onBrewStart(BrewingStartEvent event) {
-//        /* WORLD BLACKLIST CHECK */
-//        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-//            return;
-//
-//        if (event instanceof FakeEvent)
-//            return;
-//    }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {

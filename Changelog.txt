@@ -133,6 +133,7 @@ Version 2.2.055
     (Codebase) Deduplicated the can-use-subskill checks, froze the subskill lookup sets, and renamed a whitelist that was labeled as a blacklist
     (Codebase) Trimmed redundant keys from the mob metadata cleanup sweep, made the shared metadata flag value lazily created, and fixed attribute mapping constant names
     (Codebase) Added a shared graceful reflective valueOf helper used by the version-compatibility shims
+    (Codebase) Restructured the furnace fuel-efficiency handler into flat guards, deduplicated the item spawn methods, and removed redundant vector copies
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
