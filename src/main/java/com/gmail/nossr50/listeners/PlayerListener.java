@@ -34,11 +34,9 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
@@ -84,11 +82,6 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerListener implements Listener {
     // Marks commands that match an English skill name and must be left untouched
     private static final String KEEP_COMMAND = "";
-
-    // Crops whose player-placed marker is cleared again when bone meal is applied to them
-    private static final Set<Material> BONE_MEAL_RESET_CROPS = EnumSet.of(Material.BEETROOTS,
-            Material.CARROT, Material.COCOA, Material.WHEAT, Material.POTATO,
-            Material.MANGROVE_PROPAGULE);
 
     private final mcMMO plugin;
     private final Map<UUID, EquipmentSlot> fishingHandsByPlayer = new ConcurrentHashMap<>();
@@ -959,12 +952,6 @@ public class PlayerListener implements Listener {
                 HerbalismManager herbalismManager = mmoPlayer.getHerbalismManager();
 
                 if (!event.isCancelled() || event.useInteractedBlock() != Event.Result.DENY) {
-                    //TODO: Is this code to set false from bone meal even needed? I'll have to double check later.
-                    if (heldItem.getType() == Material.BONE_MEAL
-                            && BONE_MEAL_RESET_CROPS.contains(blockState.getType())) {
-                        mcMMO.getUserBlockTracker().setEligible(blockState);
-                    }
-
                     if (herbalismManager.canGreenThumbBlock(blockState)) {
                         //call event for Green Thumb Block
                         if (!EventUtils.callSubSkillBlockEvent(player,
