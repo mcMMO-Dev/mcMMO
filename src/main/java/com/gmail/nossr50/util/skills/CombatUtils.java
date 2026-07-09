@@ -970,7 +970,7 @@ public final class CombatUtils {
 
     public static void applyIgnoreDamageMetadata(@NotNull LivingEntity target) {
         target.setMetadata(MetadataConstants.METADATA_KEY_CUSTOM_DAMAGE,
-                MetadataConstants.MCMMO_METADATA_VALUE);
+                MetadataConstants.getMcMMOMetadataValue());
     }
 
     public static boolean hasIgnoreDamageMetadata(@NotNull LivingEntity target) {

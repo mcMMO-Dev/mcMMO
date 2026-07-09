@@ -183,7 +183,7 @@ public class EntityListener implements Listener {
 
             if (bow.containsEnchantment(mcMMO.p.getEnchantmentMapper().getInfinity())) {
                 projectile.setMetadata(MetadataConstants.METADATA_KEY_INF_ARROW,
-                        MetadataConstants.MCMMO_METADATA_VALUE);
+                        MetadataConstants.getMcMMOMetadataValue());
             }
 
             // Set BowType, Force, and Distance metadata
@@ -242,7 +242,7 @@ public class EntityListener implements Listener {
                 if (ProbabilityUtil.isSkillRNGSuccessful(SubSkillType.ARCHERY_ARROW_RETRIEVAL,
                         UserManager.getPlayer(player))) {
                     arrow.setMetadata(MetadataConstants.METADATA_KEY_TRACKED_ARROW,
-                            MetadataConstants.MCMMO_METADATA_VALUE);
+                            MetadataConstants.getMcMMOMetadataValue());
                 }
             }
         }
@@ -286,7 +286,7 @@ public class EntityListener implements Listener {
                 mcMMO.getUserBlockTracker().setEligible(block);
 
                 entity.setMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK,
-                        MetadataConstants.MCMMO_METADATA_VALUE);
+                        MetadataConstants.getMcMMOMetadataValue());
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity,
                         pluginRef);
                 final Runnable retired = () -> entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);

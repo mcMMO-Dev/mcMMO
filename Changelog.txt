@@ -131,6 +131,7 @@ Version 2.2.055
     (Codebase) Funneled the seven sound send methods through one enabled/resolve/play core
     (Codebase) Subskill registration maps are statically initialized and duplicate registrations are rejected instead of double-firing
     (Codebase) Deduplicated the can-use-subskill checks, froze the subskill lookup sets, and renamed a whitelist that was labeled as a blacklist
+    (Codebase) Trimmed redundant keys from the mob metadata cleanup sweep, made the shared metadata flag value lazily created, and fixed attribute mapping constant names
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

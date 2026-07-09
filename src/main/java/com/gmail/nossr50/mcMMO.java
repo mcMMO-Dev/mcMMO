@@ -207,7 +207,8 @@ public class mcMMO extends JavaPlugin {
             partyConfig = new PartyConfig(getDataFolder());
             customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
 
-            MetadataConstants.MCMMO_METADATA_VALUE = new FixedMetadataValue(this, true);
+            // Prime the shared metadata flag value (also populates the deprecated public field)
+            MetadataConstants.getMcMMOMetadataValue();
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;

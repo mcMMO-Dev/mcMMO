@@ -17,22 +17,23 @@ public class AttributeMapper {
     private AttributeMapper() {
     }
 
-    // Define constants for attribute keys and their legacy counterparts
+    // Define constants for attribute keys and their legacy counterparts.
+    // The mapped attributes are null when no running server registry is available (tests) or
+    // the attribute does not exist on this server version; callers must handle null.
     private static final String MAX_HEALTH_1_21_3_STR = "max_health";
     private static final String MAX_HEALTH_1_18_2_STR = "generic.max_health";
-    public static final Attribute MAPPED_MAX_HEALTH;
+    public static final @Nullable Attribute MAPPED_MAX_HEALTH;
 
-    private static final String JUMP_STRENGTH_1_23_1 = "jump_strength";
+    private static final String JUMP_STRENGTH_1_21_3 = "jump_strength";
     private static final String JUMP_STRENGTH_1_21_1 = "generic.jump_strength";
     private static final String JUMP_STR_1_18_2 = "horse.jump_strength";
-    public static final Attribute MAPPED_JUMP_STRENGTH;
+    public static final @Nullable Attribute MAPPED_JUMP_STRENGTH;
 
-    public static final Attribute MAPPED_MOVEMENT_SPEED;
+    public static final @Nullable Attribute MAPPED_MOVEMENT_SPEED;
     private static final String MOVEMENT_SPEED_1_18_2 = "generic.movement_speed";
-    private static final String MOVEMENT_SPEED_1_21_1 = "generic.movement_speed";
     private static final String MOVEMENT_SPEED_1_21_3 = "movement_speed";
 
-    public static final Attribute MAPPED_GENERIC_ATTACK_DAMAGE;
+    public static final @Nullable Attribute MAPPED_GENERIC_ATTACK_DAMAGE;
     private static final String ATTACK_DAMAGE_1_21_3 = "attack_damage";
     private static final String ATTACK_DAMAGE_1_18_2 = "generic.attack_damage";
 
@@ -41,10 +42,9 @@ public class AttributeMapper {
 
     static {
         MAPPED_MAX_HEALTH = findAttribute(MAX_HEALTH_1_21_3_STR, MAX_HEALTH_1_18_2_STR);
-        MAPPED_JUMP_STRENGTH = findAttribute(JUMP_STRENGTH_1_23_1, JUMP_STRENGTH_1_21_1,
+        MAPPED_JUMP_STRENGTH = findAttribute(JUMP_STRENGTH_1_21_3, JUMP_STRENGTH_1_21_1,
                 JUMP_STR_1_18_2);
-        MAPPED_MOVEMENT_SPEED = findAttribute(MOVEMENT_SPEED_1_18_2, MOVEMENT_SPEED_1_21_1,
-                MOVEMENT_SPEED_1_21_3);
+        MAPPED_MOVEMENT_SPEED = findAttribute(MOVEMENT_SPEED_1_18_2, MOVEMENT_SPEED_1_21_3);
         MAPPED_GENERIC_ATTACK_DAMAGE = findAttribute(ATTACK_DAMAGE_1_21_3, ATTACK_DAMAGE_1_18_2);
     }
 
