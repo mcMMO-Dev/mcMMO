@@ -38,6 +38,7 @@ Version 2.2.055
     Fixed mcMMO command tab-completion never suggesting player names to the console
     Fixed Green Terra and Green Thumb not converting dirt paths to grass
     Fixed Super Breaker not activating on copper blocks, cut copper, and their slab and stair variants (See notes)
+    Fixed twisting vines not being handled as multi-block plants by Herbalism
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off
@@ -95,6 +96,8 @@ Version 2.2.055
     (Codebase) Deprecated unused public utility methods and fields for removal
     (Codebase) Migrated internal code off deprecated event helper overloads
     (Codebase) Added mangrove and cherry logs to the woodcutting drop list used by the currently disabled party item sharing
+    (Codebase) Removed material name entries that could never match anything (pre-1.13 wood/gold tool and armor names, pre-release copper names, stair variants that never existed)
+    (Codebase) Added a unit test ensuring every registered material name resolves to a real Material or is a documented cross-edition or future-version name
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

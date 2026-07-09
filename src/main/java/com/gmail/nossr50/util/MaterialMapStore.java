@@ -257,7 +257,6 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("lantern");
         intendedToolPickAxe.add("weighted_pressure_plates");
         intendedToolPickAxe.add("block_of_iron");
-        intendedToolPickAxe.add("copper_blocks");
         intendedToolPickAxe.add("copper_block");
         intendedToolPickAxe.add("exposed_copper");
         intendedToolPickAxe.add("weathered_copper");
@@ -394,10 +393,8 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("waxed_weathered_cut_copper_slab");
         intendedToolPickAxe.add("waxed_oxidized_cut_copper_slab");
 
-        //stairs (not all of these exist, just copied the above list and replaced slab with stairs)
-        intendedToolPickAxe.add("petrified_oak_stairs");
+        //stairs
         intendedToolPickAxe.add("stone_stairs");
-        intendedToolPickAxe.add("smooth_stone_stairs");
         intendedToolPickAxe.add("cobblestone_stairs");
         intendedToolPickAxe.add("mossy_cobblestone_stairs");
         intendedToolPickAxe.add("stone_brick_stairs");
@@ -409,10 +406,8 @@ public class MaterialMapStore {
         intendedToolPickAxe.add("granite_stairs");
         intendedToolPickAxe.add("polished_granite_stairs");
         intendedToolPickAxe.add("sandstone_stairs");
-        intendedToolPickAxe.add("cut_sandstone_stairs");
         intendedToolPickAxe.add("smooth_sandstone_stairs");
         intendedToolPickAxe.add("red_sandstone_stairs");
-        intendedToolPickAxe.add("cut_red_sandstone_stairs");
         intendedToolPickAxe.add("smooth_red_sandstone_stairs");
         intendedToolPickAxe.add("brick_stairs");
         intendedToolPickAxe.add("prismarine_brick_stairs");
@@ -595,60 +590,50 @@ public class MaterialMapStore {
     }
 
     private void fillSwords() {
-        swords.add("wood_sword");
         swords.add("wooden_sword");
         swords.add("stone_sword");
         swords.add("copper_sword");
         swords.add("iron_sword");
-        swords.add("gold_sword");
         swords.add("golden_sword");
         swords.add("diamond_sword");
         swords.add("netherite_sword");
     }
 
     private void fillAxes() {
-        axes.add("wood_axe");
         axes.add("wooden_axe");
         axes.add("stone_axe");
         axes.add("copper_axe");
         axes.add("iron_axe");
-        axes.add("gold_axe");
         axes.add("golden_axe");
         axes.add("diamond_axe");
         axes.add("netherite_axe");
     }
 
     private void fillPickAxes() {
-        pickAxes.add("wood_pickaxe");
         pickAxes.add("wooden_pickaxe");
         pickAxes.add("stone_pickaxe");
         pickAxes.add("copper_pickaxe");
         pickAxes.add("iron_pickaxe");
-        pickAxes.add("gold_pickaxe");
         pickAxes.add("golden_pickaxe");
         pickAxes.add("diamond_pickaxe");
         pickAxes.add("netherite_pickaxe");
     }
 
     private void fillHoes() {
-        hoes.add("wood_hoe");
         hoes.add("wooden_hoe");
         hoes.add("stone_hoe");
         hoes.add("copper_hoe");
         hoes.add("iron_hoe");
-        hoes.add("gold_hoe");
         hoes.add("golden_hoe");
         hoes.add("diamond_hoe");
         hoes.add("netherite_hoe");
     }
 
     private void fillShovels() {
-        shovels.add("wood_shovel");
         shovels.add("wooden_shovel");
         shovels.add("stone_shovel");
         shovels.add("copper_shovel");
         shovels.add("iron_shovel");
-        shovels.add("gold_shovel");
         shovels.add("golden_shovel");
         shovels.add("diamond_shovel");
         shovels.add("netherite_shovel");
@@ -683,12 +668,6 @@ public class MaterialMapStore {
     }
 
     private void fillGoldArmorWhiteList() {
-        goldArmor.add("gold_helmet");
-        goldArmor.add("gold_chestplate");
-        goldArmor.add("gold_leggings");
-        goldArmor.add("gold_boots");
-
-        //Gold became Golden post 1.13
         goldArmor.add("golden_helmet");
         goldArmor.add("golden_chestplate");
         goldArmor.add("golden_leggings");
@@ -710,13 +689,6 @@ public class MaterialMapStore {
     }
 
     private void fillWoodToolsWhiteList() {
-        woodTools.add("wood_sword");
-        woodTools.add("wood_axe");
-        woodTools.add("wood_hoe");
-        woodTools.add("wood_pickaxe");
-        woodTools.add("wood_shovel");
-
-        //Wood became wooden post 1.13
         woodTools.add("wooden_sword");
         woodTools.add("wooden_axe");
         woodTools.add("wooden_hoe");
@@ -759,13 +731,6 @@ public class MaterialMapStore {
     }
 
     private void fillGoldToolsWhiteList() {
-        goldTools.add("gold_sword");
-        goldTools.add("gold_axe");
-        goldTools.add("gold_hoe");
-        goldTools.add("gold_pickaxe");
-        goldTools.add("gold_shovel");
-
-        //Gold became golden post 1.13
         goldTools.add("golden_sword");
         goldTools.add("golden_axe");
         goldTools.add("golden_hoe");
@@ -1145,7 +1110,7 @@ public class MaterialMapStore {
 
     private void fillMultiBlockHangingPlantSet() {
         multiBlockHangingPlant.add("weeping_vines_plant");
-        multiBlockHangingPlant.add("twisted_vines_plant");
+        multiBlockHangingPlant.add("twisting_vines_plant");
         multiBlockHangingPlant.add("cave_vines_plant");
         multiBlockHangingPlant.add("pale_hanging_moss");
     }
