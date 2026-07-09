@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -82,7 +81,7 @@ public class HashChunkManager implements ChunkManager {
         return regionMap.computeIfAbsent(regionKey, k -> {
             File regionFile = getRegionFile(world, regionKey);
             regionFile.getParentFile().mkdirs();
-            return new McMMOSimpleRegionFile(regionFile, regionKey.x, regionKey.z);
+            return new McMMOSimpleRegionFile(regionFile, regionKey.x(), regionKey.z());
         });
     }
 
@@ -105,13 +104,13 @@ public class HashChunkManager implements ChunkManager {
      * been removed.
      */
     private @NotNull File getRegionFile(@NotNull World world, @NotNull CoordinateKey regionKey) {
-        if (world.getUID() != regionKey.worldID) {
+        if (world.getUID() != regionKey.worldID()) {
             throw new IllegalArgumentException();
         }
         final File worldRegionRoot = new File(world.getWorldFolder(),
                 McMMORegionBackupStore.IN_WORLD_FOLDER_NAME);
         return new File(worldRegionRoot,
-                "mcmmo_" + regionKey.x + "_" + regionKey.z + "_.mcm");
+                "mcmmo_" + regionKey.x() + "_" + regionKey.z() + "_.mcm");
     }
 
     private @Nullable ChunkStore loadChunk(int cx, int cz, @NotNull World world) {
@@ -159,7 +158,7 @@ public class HashChunkManager implements ChunkManager {
         // Save and remove all the chunks
         List<CoordinateKey> chunkKeys = new ArrayList<>(chunkMap.keySet());
         for (CoordinateKey chunkKey : chunkKeys) {
-            if (!wID.equals(chunkKey.worldID)) {
+            if (!wID.equals(chunkKey.worldID())) {
                 continue;
             }
             ChunkStore chunkStore = chunkMap.remove(chunkKey);
@@ -174,7 +173,7 @@ public class HashChunkManager implements ChunkManager {
         // Clear all the region files
         List<CoordinateKey> regionKeys = new ArrayList<>(regionMap.keySet());
         for (CoordinateKey regionKey : regionKeys) {
-            if (!wID.equals(regionKey.worldID)) {
+            if (!wID.equals(regionKey.worldID())) {
                 continue;
             }
             regionMap.remove(regionKey).close();
@@ -189,17 +188,17 @@ public class HashChunkManager implements ChunkManager {
         // Get/Load/Create chunkstore
         ChunkStore check = chunkMap.computeIfAbsent(chunkKey, k -> {
             // Load from file
-            ChunkStore loaded = loadChunk(chunkKey.x, chunkKey.z, world);
+            ChunkStore loaded = loadChunk(chunkKey.x(), chunkKey.z(), world);
             if (loaded != null) {
-                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z),
+                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
                         j -> new HashSet<>()).add(chunkKey);
                 return loaded;
             }
             // Mark chunk in-use for region tracking
-            chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z),
+            chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
                     j -> new HashSet<>()).add(chunkKey);
             // Create a new chunkstore
-            return new BitSetChunkStore(world, chunkKey.x, chunkKey.z);
+            return new BitSetChunkStore(world, chunkKey.x(), chunkKey.z());
         });
 
         int ix = Math.abs(x) % 16;
@@ -255,17 +254,17 @@ public class HashChunkManager implements ChunkManager {
         // Get/Load/Create chunkstore
         ChunkStore cStore = chunkMap.computeIfAbsent(chunkKey, k -> {
             // Load from file
-            ChunkStore loaded = loadChunk(chunkKey.x, chunkKey.z, world);
+            ChunkStore loaded = loadChunk(chunkKey.x(), chunkKey.z(), world);
             if (loaded != null) {
-                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z),
+                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
                         j -> new HashSet<>()).add(chunkKey);
                 return loaded;
             }
             // Mark chunk in-use for region tracking
-            chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID, chunkKey.x, chunkKey.z),
+            chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
                     j -> new HashSet<>()).add(chunkKey);
             // Create a new chunkstore
-            return new BitSetChunkStore(world, chunkKey.x, chunkKey.z);
+            return new BitSetChunkStore(world, chunkKey.x(), chunkKey.z());
         });
 
         // Get block offset (offset from chunk corner)
@@ -292,34 +291,6 @@ public class HashChunkManager implements ChunkManager {
         return new CoordinateKey(worldUid, rx, rz);
     }
 
-    private static final class CoordinateKey {
-        public final @NotNull UUID worldID;
-        public final int x;
-        public final int z;
-
-        private CoordinateKey(@NotNull UUID worldID, int x, int z) {
-            this.worldID = worldID;
-            this.x = x;
-            this.z = z;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            CoordinateKey coordinateKey = (CoordinateKey) o;
-            return x == coordinateKey.x &&
-                    z == coordinateKey.z &&
-                    worldID.equals(coordinateKey.worldID);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(worldID, x, z);
-        }
+    private record CoordinateKey(@NotNull UUID worldID, int x, int z) {
     }
 }

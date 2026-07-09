@@ -42,7 +42,9 @@ public class BitSetChunkStore implements ChunkStore {
         this.worldUid = worldUid;
         this.worldMin = worldMin;
         this.worldMax = worldMax;
-        this.store = new BitSet(16 * 16 * (worldMax - worldMin));
+        // Grows on demand; sizing it for the full world height would pin ~12KB per chunk
+        // even for chunks with no tracked blocks
+        this.store = new BitSet();
     }
 
     @Override

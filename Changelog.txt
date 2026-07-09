@@ -58,6 +58,7 @@ Version 2.2.055
     Improved performance of many player, pet, and ability event handlers (See notes)
     Improved performance of enchantment and item checks during combat, fishing, and item use (See notes)
     Improved performance of tree and transparent-block checks (See notes)
+    Improved performance and memory use of placed-block tracking lookups (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
     Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
@@ -149,6 +150,7 @@ Version 2.2.055
     Many event handlers (interactions, respawns, eating, pet damage, explosions, taming, ability area-of-effect hits, notifications) now look up a player's mcMMO data once per event instead of several times; no behavior changes are involved.
     Enchantment checks on held items and armor no longer copy item data, enchantment name lookups are remembered instead of rescanning the registry each time, Chimaera Wing checks read item data once, and fishing enchanted-book rolls no longer reshuffle the possible enchantment list on every catch; no behavior changes are involved.
     Tree checks during block placement and axe readying no longer capture block snapshots, the transparent-block list used by fishing and Blast Mining targeting is built once instead of on every use, and falling-block tracking takes one fewer block snapshot per event; no behavior changes are involved.
+    Placed-block tracking now does less work per lookup, and its in-memory chunk data only grows to fit the heights that actually contain tracked blocks instead of always covering the full world height; saved data is unaffected.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
