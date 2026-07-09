@@ -122,6 +122,7 @@ Version 2.2.055
     (Codebase) Cancelled XP bar hide tasks are no longer kept in memory until the next bar update
     (Codebase) Added placed-block tracking disk round-trip and region file segment growth tests
     (Codebase) Deduplicated the placed-block chunk store load logic and documented the on-disk negative-coordinate mapping invariant
+    (Codebase) The migration backup store now logs directory listing failures, threads its injectable clock into archive naming, and merges region files with try-with-resources
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

@@ -223,7 +223,7 @@ class McMMORegionBackupStoreStressTest {
                 endLegacyFolder, silentLogger, backupClock);
 
         final Path newestOverworldSnapshot = McMMORegionBackupStore.newestCompleteSnapshot(
-                worldBackupRoot(overworldName));
+                worldBackupRoot(overworldName), silentLogger);
         assertThat(newestOverworldSnapshot).isNotNull();
         final Path corruptSnapshotFile = newestOverworldSnapshot.resolve("mcmmo_0_0_.mcm");
         Files.writeString(corruptSnapshotFile, "corrupt-data");
