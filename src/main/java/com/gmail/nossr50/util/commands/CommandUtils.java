@@ -264,7 +264,8 @@ public final class CommandUtils {
         List<String> onlinePlayerNames = new ArrayList<>();
 
         for (Player onlinePlayer : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (player != null && player.canSee(onlinePlayer)) {
+            // Non-player senders such as the console see everyone
+            if (player == null || player.canSee(onlinePlayer)) {
                 onlinePlayerNames.add(onlinePlayer.getName());
             }
         }
@@ -314,8 +315,8 @@ public final class CommandUtils {
 
             if (playerName
                     == null) { //Do null checking here to detect corrupted data before sending it throuogh .equals
-                System.err.println(
-                        "[McMMO] Player data file with UIID " + offlinePlayer.getUniqueId()
+                mcMMO.p.getLogger().warning(
+                        "Player data file with UUID " + offlinePlayer.getUniqueId()
                                 + " is missing a player name. This may be a legacy file from before bukkit.lastKnownName. This should be okay to ignore.");
                 continue; //Don't let an error here interrupt the loop
             }

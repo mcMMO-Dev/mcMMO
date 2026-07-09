@@ -35,6 +35,7 @@ Version 2.2.055
     Fixed an error when players below 5.5 hearts used a Chimaera Wing underground
     Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)
     Fixed the unsupported-version scoreboard warning printing gibberish instead of the Minecraft version
+    Fixed mcMMO command tab-completion never suggesting player names to the console
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
