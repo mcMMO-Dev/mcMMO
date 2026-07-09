@@ -495,8 +495,11 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                EquipmentSlot caughtFishingHand = getFishingHandForEvent(player, event.getHand());
+                if (ExperienceConfig.getInstance().isFishingExploitingPrevented() && fishingManager.isExploitingFishing()) {
+                    return;
+                }
 
+                EquipmentSlot caughtFishingHand = getFishingHandForEvent(player, event.getHand());
                 if (caught instanceof Item caughtItem) {
                     fishingManager.processFishing(caughtItem, caughtFishingHand);
                     fishingManager.setFishingTarget();
