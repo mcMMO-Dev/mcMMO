@@ -22,6 +22,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,17 +140,21 @@ public class ScoreboardWrapper {
         return sidebarType == SidebarType.STATS_BOARD;
     }
 
-    public void showBoardWithNoRevert() {
+    /**
+     * Cancels any pending revert, shows the backend board, and, on the Bukkit backend, captures
+     * the board to restore when this one is reverted.
+     *
+     * @return the online player, or null if the player is gone and this wrapper was cleaned up
+     */
+    private @Nullable Player showBoardCapturingOldBoard() {
         final Player onlinePlayer = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (onlinePlayer == null) {
             ScoreboardManager.cleanup(this);
-            return;
+            return null;
         }
 
-        if (revertTask != null) {
-            revertTask.cancel();
-        }
+        cancelRevert();
 
         final boolean alreadyShown = playerBoard.isShown();
         final Scoreboard previousBoard = playerBoard.show();
@@ -162,39 +167,30 @@ public class ScoreboardWrapper {
             }
         }
 
-        revertTask = null;
+        return onlinePlayer;
+    }
+
+    public void showBoardWithNoRevert() {
+        showBoardCapturingOldBoard();
     }
 
     public void showBoardAndScheduleRevert(int ticks) {
-        final Player onlinePlayer = mcMMO.p.getServer().getPlayerExact(playerName);
+        final Player onlinePlayer = showBoardCapturingOldBoard();
 
         if (onlinePlayer == null) {
-            ScoreboardManager.cleanup(this);
             return;
-        }
-
-        if (revertTask != null) {
-            revertTask.cancel();
-        }
-
-        final boolean alreadyShown = playerBoard.isShown();
-        final Scoreboard previousBoard = playerBoard.show();
-        if (ScoreboardManager.isBukkitBackendActive()) {
-            if (alreadyShown && oldBoard == null && Bukkit.getScoreboardManager() != null) {
-                oldBoard = Bukkit.getScoreboardManager().getMainScoreboard();
-            } else if (!alreadyShown) {
-                oldBoard = previousBoard;
-            }
         }
 
         revertTask = mcMMO.p.getFoliaLib().getScheduler()
                 .runAtEntityLater(onlinePlayer, new ScoreboardChangeTask(), ticks);
 
-        if (UserManager.getPlayer(playerName) == null) {
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(onlinePlayer);
+
+        if (mmoPlayer == null) {
             return;
         }
 
-        PlayerProfile profile = UserManager.getPlayer(onlinePlayer).getProfile();
+        final PlayerProfile profile = mmoPlayer.getProfile();
 
         if (profile.getScoreboardTipsShown() >= mcMMO.p.getGeneralConfig().getTipsAmount()) {
             return;
@@ -581,16 +577,11 @@ public class ScoreboardWrapper {
     }
 
     private void renderStats(Player player, McMMOPlayer mmoPlayer, List<SidebarLine> lines) {
-        // Select the profile to read from
-        PlayerProfile newProfile;
-
-        if (targetProfile != null) {
-            newProfile = targetProfile; // offline
-        } else if (targetPlayer == null) {
-            newProfile = mmoPlayer.getProfile(); // self
-        } else {
-            newProfile = UserManager.getPlayer(targetPlayer).getProfile(); // online
-        }
+        // Both setTypeInspectStats overloads set targetProfile, so the only case without one
+        // is the self stats board
+        final PlayerProfile newProfile = targetProfile != null
+                ? targetProfile
+                : mmoPlayer.getProfile();
 
         int powerLevel = 0;
         // Don't include child skills, makes the list too long
