@@ -101,6 +101,7 @@ Version 2.2.055
     (Codebase) Added a unit test ensuring every registered material name resolves to a real Material or is a documented cross-edition or future-version name
     (Codebase) Material register getters return copies, and the unused netherite tools getter is deprecated for removal
     (Codebase) Removed pre-1.20.5 compatibility shims (reflective potion effect and enchantment lookups, glow berries special casing, armor stand name matching)
+    (Codebase) Added a shared guard preamble helper for event handlers that codifies the cheap-to-expensive gate ordering
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

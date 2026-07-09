@@ -341,29 +341,11 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerFishHighest(PlayerFishEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
-            return;
-        }
-
         Player player = event.getPlayer();
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
-                return;
-            }
-        }
-
-        if (!UserManager.hasPlayerDataKey(player) || !mcMMO.p.getSkillTools()
+        if (mmoPlayer == null || !mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
-            return;
-        }
-
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-
-        //Profile not loaded
-        if (mmoPlayer == null) {
             return;
         }
 
@@ -437,29 +419,11 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFishMonitor(PlayerFishEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
-            return;
-        }
-
         Player player = event.getPlayer();
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
-                return;
-            }
-        }
-
-        if (!UserManager.hasPlayerDataKey(player) || !mcMMO.p.getSkillTools()
+        if (mmoPlayer == null || !mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
-            return;
-        }
-
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-
-        //Profile not loaded
-        if (mmoPlayer == null) {
             return;
         }
 
@@ -562,30 +526,13 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(EntityPickupItemEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
-            return;
-        }
-
         if (Misc.isNPCEntityExcludingVillagers(event.getEntity())) {
             return;
         }
 
         if (event.getEntity() instanceof Player player) {
+            final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
-            /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
-                    return;
-                }
-            }
-
-            if (!UserManager.hasPlayerDataKey(player)) {
-                return;
-            }
-
-            //Profile not loaded
-            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
             if (mmoPlayer == null) {
                 return;
             }

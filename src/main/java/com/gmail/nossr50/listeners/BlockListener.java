@@ -628,25 +628,8 @@ public class BlockListener implements Listener {
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
 
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
-            return;
-        }
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer())) {
-                return;
-            }
-        }
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-
-        //Profile not loaded
         if (mmoPlayer == null) {
             return;
         }
@@ -725,25 +708,8 @@ public class BlockListener implements Listener {
             return;
         }
 
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
-            return;
-        }
-
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer())) {
-                return;
-            }
-        }
-
         Player player = event.getPlayer();
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
         if (mmoPlayer == null) {
             return;
