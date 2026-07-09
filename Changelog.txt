@@ -44,6 +44,7 @@ Version 2.2.055
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off
     Fixed skill chance and duration display formatting not being thread-safe on Folia
+    Fixed /mmoxpbar disable sending a chat message for every skill instead of just the summary
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)

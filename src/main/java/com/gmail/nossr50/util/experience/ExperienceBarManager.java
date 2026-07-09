@@ -108,8 +108,9 @@ public class ExperienceBarManager {
     }
 
     public void disableAllBars() {
+        // Apply without the per-skill chat confirmations; the summary line covers them all
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            xpBarSettingToggle(XPBarSettingTarget.HIDE, primarySkillType);
+            applyBarSetting(XPBarSettingTarget.HIDE, primarySkillType);
         }
 
         NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(),
@@ -117,6 +118,12 @@ public class ExperienceBarManager {
     }
 
     public void xpBarSettingToggle(@NotNull XPBarSettingTarget settingTarget,
+            @Nullable PrimarySkillType skillType) {
+        applyBarSetting(settingTarget, skillType);
+        informPlayer(settingTarget, skillType);
+    }
+
+    private void applyBarSetting(@NotNull XPBarSettingTarget settingTarget,
             @Nullable PrimarySkillType skillType) {
         switch (settingTarget) {
             case SHOW:
@@ -137,8 +144,6 @@ public class ExperienceBarManager {
                 resetBarSettings();
                 break;
         }
-
-        informPlayer(settingTarget, skillType);
     }
 
     private void resetBarSettings() {
