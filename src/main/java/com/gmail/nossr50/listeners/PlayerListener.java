@@ -333,12 +333,13 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onPlayerFishLowest(PlayerFishEvent event) {
-        if (!(event.getCaught() instanceof Item caughtItem)) {
+        if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
             return;
         }
 
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
+        if (!(event.getCaught() instanceof Item caughtItem)) {
             return;
         }
 
