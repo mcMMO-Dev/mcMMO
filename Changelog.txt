@@ -46,6 +46,7 @@ Version 2.2.055
     Fixed skill chance and duration display formatting not being thread-safe on Folia
     Fixed /mmoxpbar disable sending a chat message for every skill instead of just the summary
     Fixed corrupt placed-block region files being kept locked after a failed load and producing errors that did not name the file
+    Fixed a single unwritable chunk being able to abort the remaining placed-block saves during shutdown and chunk unload
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
     Fixed /inspect not checking permissions when used on offline players (See notes)
@@ -120,6 +121,7 @@ Version 2.2.055
     (Codebase) The persisted power level objective name is now defined once and shared across the Bukkit scoreboard classes
     (Codebase) Cancelled XP bar hide tasks are no longer kept in memory until the next bar update
     (Codebase) Added placed-block tracking disk round-trip and region file segment growth tests
+    (Codebase) Deduplicated the placed-block chunk store load logic and documented the on-disk negative-coordinate mapping invariant
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --

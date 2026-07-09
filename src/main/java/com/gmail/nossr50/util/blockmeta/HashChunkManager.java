@@ -24,7 +24,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void closeAll() {
-        // Save all dirty chunkstores
+        // Save all dirty chunkstores; one failing chunk must not abort the rest of shutdown
         for (ChunkStore chunkStore : chunkMap.values()) {
             if (!chunkStore.isDirty()) {
                 continue;
@@ -33,16 +33,38 @@ public class HashChunkManager implements ChunkManager {
             if (world == null) {
                 continue; // Oh well
             }
-            writeChunkStore(world, chunkStore);
+            try {
+                writeChunkStore(world, chunkStore);
+            } catch (Exception e) {
+                logChunkSaveFailure(chunkStore.getChunkX(), chunkStore.getChunkZ(),
+                        world.getName(), e);
+            }
         }
         // Clear in memory chunks
         chunkMap.clear();
         chunkUsageMap.clear();
         // Close all region files
         for (McMMOSimpleRegionFile rf : regionMap.values()) {
-            rf.close();
+            closeQuietly(rf);
         }
         regionMap.clear();
+    }
+
+    private static void logChunkSaveFailure(int cx, int cz, @NotNull String worldName,
+            @NotNull Exception e) {
+        mcMMO.p.getLogger().warning("Failed to save placed-block data for chunk (" + cx + ", "
+                + cz + ") in world '" + worldName + "': " + e);
+    }
+
+    private static void closeQuietly(@Nullable McMMOSimpleRegionFile regionFile) {
+        if (regionFile == null) {
+            return;
+        }
+        try {
+            regionFile.close();
+        } catch (Exception e) {
+            mcMMO.p.getLogger().warning("Failed to close placed-block region file: " + e);
+        }
     }
 
     private synchronized @Nullable ChunkStore readChunkStore(@NotNull World world, int cx, int cz)
@@ -104,8 +126,10 @@ public class HashChunkManager implements ChunkManager {
      * been removed.
      */
     private @NotNull File getRegionFile(@NotNull World world, @NotNull CoordinateKey regionKey) {
-        if (world.getUID() != regionKey.worldID()) {
-            throw new IllegalArgumentException();
+        if (!world.getUID().equals(regionKey.worldID())) {
+            throw new IllegalArgumentException(
+                    "Region key world " + regionKey.worldID() + " does not match world "
+                            + world.getUID());
         }
         final File worldRegionRoot = new File(world.getWorldFolder(),
                 McMMORegionBackupStore.IN_WORLD_FOLDER_NAME);
@@ -132,17 +156,25 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        if (chunkStore.isDirty()) {
-            writeChunkStore(world, chunkStore);
-        }
-
-        CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
-        HashSet<CoordinateKey> chunkKeys = chunkUsageMap.get(regionKey);
-        chunkKeys.remove(chunkKey); // remove from region file in-use set
-        // If it was last chunk in the region, close the region file and remove it from memory
-        if (chunkKeys.isEmpty()) {
-            chunkUsageMap.remove(regionKey);
-            regionMap.remove(regionKey).close();
+        try {
+            if (chunkStore.isDirty()) {
+                writeChunkStore(world, chunkStore);
+            }
+        } catch (Exception e) {
+            // Log-and-degrade: a failed save must not escape into the chunk unload event or
+            // strand the region bookkeeping below
+            logChunkSaveFailure(cx, cz, world.getName(), e);
+        } finally {
+            CoordinateKey regionKey = toRegionKey(world.getUID(), cx, cz);
+            HashSet<CoordinateKey> chunkKeys = chunkUsageMap.get(regionKey);
+            if (chunkKeys != null) {
+                chunkKeys.remove(chunkKey); // remove from region file in-use set
+                // If it was the last chunk in the region, close the region file and forget it
+                if (chunkKeys.isEmpty()) {
+                    chunkUsageMap.remove(regionKey);
+                    closeQuietly(regionMap.remove(regionKey));
+                }
+            }
         }
     }
 
@@ -167,7 +199,8 @@ public class HashChunkManager implements ChunkManager {
             }
             try {
                 writeChunkStore(world, chunkStore);
-            } catch (Exception ignore) {
+            } catch (Exception e) {
+                logChunkSaveFailure(chunkKey.x(), chunkKey.z(), world.getName(), e);
             }
         }
         // Clear all the region files
@@ -176,35 +209,46 @@ public class HashChunkManager implements ChunkManager {
             if (!wID.equals(regionKey.worldID())) {
                 continue;
             }
-            regionMap.remove(regionKey).close();
+            closeQuietly(regionMap.remove(regionKey));
             chunkUsageMap.remove(regionKey);
         }
     }
 
+    /**
+     * Gets the chunk store for the chunk, loading it from disk or creating a fresh one when
+     * absent, and marks the chunk in-use for region file tracking.
+     */
+    private @NotNull ChunkStore getOrLoadChunkStore(@NotNull World world,
+            @NotNull CoordinateKey chunkKey) {
+        return chunkMap.computeIfAbsent(chunkKey, k -> {
+            // Mark chunk in-use for region tracking
+            chunkUsageMap.computeIfAbsent(
+                    toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
+                    j -> new HashSet<>()).add(chunkKey);
+            // Load from file, or create a new chunkstore when the chunk has no stored data
+            ChunkStore loaded = loadChunk(chunkKey.x(), chunkKey.z(), world);
+            return loaded != null ? loaded
+                    : new BitSetChunkStore(world, chunkKey.x(), chunkKey.z());
+        });
+    }
+
+    /**
+     * Maps a world coordinate to this plugin's chunk-local index.
+     *
+     * <p>The mirrored mapping for negative coordinates (Math.abs instead of a proper floor
+     * modulo) is load-bearing for on-disk compatibility: every existing region file was written
+     * with it. Changing it to the mathematically correct {@code coordinate & 0xF} would
+     * silently corrupt the stored markers of every chunk with negative coordinates.
+     */
+    private static int toChunkLocal(int worldCoordinate) {
+        return Math.abs(worldCoordinate) % 16;
+    }
+
     private synchronized boolean isIneligible(int x, int y, int z, @NotNull World world) {
         CoordinateKey chunkKey = blockCoordinateToChunkKey(world.getUID(), x, y, z);
+        ChunkStore check = getOrLoadChunkStore(world, chunkKey);
 
-        // Get chunk, load from file if necessary
-        // Get/Load/Create chunkstore
-        ChunkStore check = chunkMap.computeIfAbsent(chunkKey, k -> {
-            // Load from file
-            ChunkStore loaded = loadChunk(chunkKey.x(), chunkKey.z(), world);
-            if (loaded != null) {
-                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
-                        j -> new HashSet<>()).add(chunkKey);
-                return loaded;
-            }
-            // Mark chunk in-use for region tracking
-            chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
-                    j -> new HashSet<>()).add(chunkKey);
-            // Create a new chunkstore
-            return new BitSetChunkStore(world, chunkKey.x(), chunkKey.z());
-        });
-
-        int ix = Math.abs(x) % 16;
-        int iz = Math.abs(z) % 16;
-
-        return check.isTrue(ix, y, iz);
+        return check.isTrue(toChunkLocal(x), y, toChunkLocal(z));
     }
 
     @Override
@@ -250,29 +294,9 @@ public class HashChunkManager implements ChunkManager {
 
     private synchronized void set(int x, int y, int z, @NotNull World world, boolean value) {
         CoordinateKey chunkKey = blockCoordinateToChunkKey(world.getUID(), x, y, z);
+        ChunkStore cStore = getOrLoadChunkStore(world, chunkKey);
 
-        // Get/Load/Create chunkstore
-        ChunkStore cStore = chunkMap.computeIfAbsent(chunkKey, k -> {
-            // Load from file
-            ChunkStore loaded = loadChunk(chunkKey.x(), chunkKey.z(), world);
-            if (loaded != null) {
-                chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
-                        j -> new HashSet<>()).add(chunkKey);
-                return loaded;
-            }
-            // Mark chunk in-use for region tracking
-            chunkUsageMap.computeIfAbsent(toRegionKey(chunkKey.worldID(), chunkKey.x(), chunkKey.z()),
-                    j -> new HashSet<>()).add(chunkKey);
-            // Create a new chunkstore
-            return new BitSetChunkStore(world, chunkKey.x(), chunkKey.z());
-        });
-
-        // Get block offset (offset from chunk corner)
-        int ix = Math.abs(x) % 16;
-        int iz = Math.abs(z) % 16;
-
-        // Set chunk store value
-        cStore.set(ix, y, iz, value);
+        cStore.set(toChunkLocal(x), y, toChunkLocal(z), value);
     }
 
     private @NotNull CoordinateKey blockCoordinateToChunkKey(@NotNull UUID worldUid, int x, int y,
