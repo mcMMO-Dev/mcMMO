@@ -1019,81 +1019,31 @@ public class EntityListener implements Listener {
             return;
         }
 
-        //Determine which hand is eating food
-        //The main hand is used over the off hand if they both have food, so check the main hand first
-        Material foodInHand;
+        //The main hand is used over the off hand if they both have food
+        final Material foodInHand = DietFoods.eatenFood(
+                player.getInventory().getItemInMainHand().getType(),
+                player.getInventory().getItemInOffHand().getType(),
+                mcMMO.getMaterialMapStore()::isFood);
 
-        if (mcMMO.getMaterialMapStore()
-                .isFood(player.getInventory().getItemInMainHand().getType())) {
-            foodInHand = player.getInventory().getItemInMainHand().getType();
-        } else if (mcMMO.getMaterialMapStore()
-                .isFood(player.getInventory().getItemInOffHand().getType())) {
-            foodInHand = player.getInventory().getItemInOffHand().getType();
-        } else {
+        if (foodInHand == null) {
             return; //Not Food
         }
 
-        /*
-         * Some foods have 3 ranks Some foods have 5 ranks The number of ranks
-         * is based on how 'common' the item is We can adjust this quite easily
-         * if we find something is giving too much of a bonus
-         */
-
-        switch (foodInHand) {
-            case GLOW_BERRIES:
-            case BAKED_POTATO: /*
-             * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-             * 1000
-             */
-            case BEETROOT:
-            case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-            case CARROT: /*
-             * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
-             * 1000
-             */
-            case GOLDEN_CARROT: /*
-             * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-             * 1000
-             */
-            case MUSHROOM_STEW: /*
-             * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-             * 1000
-             */
-            case PUMPKIN_PIE: /*
-             * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-             * 1000
-             */
+        switch (DietFoods.dietFor(foodInHand)) {
+            case FARMERS -> {
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(
                             mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
                 }
-                return;
-
-            case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-            case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-            case POISONOUS_POTATO: /*
-             * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
-             * @ 1000
-             */
-            case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(
-                            mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
-                }
-                return;
-            case COD:
-            case SALMON:
-            case TROPICAL_FISH:
-            case COOKED_COD:
-            case COOKED_SALMON:
-
+            }
+            case FISHERMANS -> {
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(
                             mmoPlayer.getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
-                return;
-
-            default:
+            }
+            case NONE -> {
+            }
         }
     }
 

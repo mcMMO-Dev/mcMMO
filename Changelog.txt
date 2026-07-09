@@ -136,6 +136,7 @@ Version 2.2.055
     (Codebase) Added a shared graceful reflective valueOf helper used by the version-compatibility shims
     (Codebase) Restructured the furnace fuel-efficiency handler into flat guards, deduplicated the item spawn methods, and removed redundant vector copies
     (Codebase) Extracted the friendly-fire decision into a pure, contract-tested resolver shared by the damage and combust listeners
+    (Codebase) Extracted the diet food tables and eaten-hand resolution from the food listener into a tested mapping
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
