@@ -33,6 +33,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -78,11 +79,24 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
+    // Marks commands that match an English skill name and must be left untouched
+    private static final String KEEP_COMMAND = "";
+
     private final mcMMO plugin;
     private final Map<UUID, EquipmentSlot> fishingHandsByPlayer = new ConcurrentHashMap<>();
+    // volatile so command handling on other region threads (Folia) sees a fully built cache
+    private volatile SkillCommandAliasCache skillCommandAliases;
 
     public PlayerListener(final mcMMO plugin) {
         this.plugin = plugin;
+    }
+
+    /**
+     * Localized-skill-command lookup derived from the loaded locale; rebuilt whenever the
+     * locale generation changes (e.g. after /mcmmoreloadlocale).
+     */
+    private record SkillCommandAliasCache(int localeGeneration,
+            Map<String, String> replacementByCommand) {
     }
 
     /**
@@ -352,12 +366,13 @@ public class PlayerListener implements Listener {
             case CAUGHT_FISH:
                 if (event.getCaught() != null) {
                     Item fishingCatch = (Item) event.getCaught();
+                    final Material caughtType = fishingCatch.getItemStack().getType();
 
                     if (mcMMO.p.getGeneralConfig().getFishingOverrideTreasures() &&
-                            fishingCatch.getItemStack().getType() != Material.SALMON &&
-                            fishingCatch.getItemStack().getType() != Material.COD &&
-                            fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
-                            fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
+                            caughtType != Material.SALMON &&
+                            caughtType != Material.COD &&
+                            caughtType != Material.TROPICAL_FISH &&
+                            caughtType != Material.PUFFERFISH) {
 
                         ItemStack replacementCatch = new ItemStack(Material.SALMON, 1);
 
@@ -372,9 +387,10 @@ public class PlayerListener implements Listener {
 
                     if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
                         //Don't modify XP below vanilla values
-                        if (fishingManager.handleVanillaXpBoost(event.getExpToDrop()) > 1) {
-                            event.setExpToDrop(
-                                    fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
+                        final int boostedXp = fishingManager.handleVanillaXpBoost(
+                                event.getExpToDrop());
+                        if (boostedXp > 1) {
+                            event.setExpToDrop(boostedXp);
                         }
                     }
                 }
@@ -1151,22 +1167,42 @@ public class PlayerListener implements Listener {
             String command = message.substring(1).split(" ")[0];
             String lowerCaseCommand = command.toLowerCase(Locale.ENGLISH);
 
-            // Do these ACTUALLY have to be lower case to work properly?
-            for (PrimarySkillType skill : PrimarySkillType.values()) {
-                String skillName = skill.toString().toLowerCase(Locale.ENGLISH);
-                String localizedName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill)
-                        .toLowerCase(Locale.ENGLISH);
+            final String replacement = getSkillCommandReplacements().get(lowerCaseCommand);
 
-                if (lowerCaseCommand.equals(localizedName)) {
-                    event.setMessage(message.replace(command, skillName));
-                    break;
-                }
-
-                if (lowerCaseCommand.equals(skillName)) {
-                    break;
-                }
+            if (replacement != null && !replacement.equals(KEEP_COMMAND)) {
+                event.setMessage(message.replace(command, replacement));
             }
         }
+    }
+
+    private Map<String, String> getSkillCommandReplacements() {
+        SkillCommandAliasCache aliases = skillCommandAliases;
+
+        if (aliases == null
+                || aliases.localeGeneration() != LocaleLoader.getLocaleGeneration()) {
+            aliases = new SkillCommandAliasCache(LocaleLoader.getLocaleGeneration(),
+                    buildSkillCommandReplacements());
+            skillCommandAliases = aliases;
+        }
+
+        return aliases.replacementByCommand();
+    }
+
+    private Map<String, String> buildSkillCommandReplacements() {
+        final Map<String, String> replacementByCommand = new HashMap<>();
+
+        // Do these ACTUALLY have to be lower case to work properly?
+        for (PrimarySkillType skill : PrimarySkillType.values()) {
+            String skillName = skill.toString().toLowerCase(Locale.ENGLISH);
+            String localizedName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill)
+                    .toLowerCase(Locale.ENGLISH);
+
+            // First mapping wins, matching the old first-match-breaks loop order
+            replacementByCommand.putIfAbsent(localizedName, skillName);
+            replacementByCommand.putIfAbsent(skillName, KEEP_COMMAND);
+        }
+
+        return replacementByCommand;
     }
 
     /**

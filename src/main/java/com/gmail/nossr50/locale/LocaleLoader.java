@@ -41,6 +41,8 @@ public final class LocaleLoader {
     private static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
     private static final Pattern minecraftHexPattern = Pattern.compile(
             "§x(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])(§[A-Fa-f0-9])");
+    // Bumped on reload so consumers caching derived locale data know to rebuild
+    private static volatile int localeGeneration = 0;
 
     private LocaleLoader() {
     }
@@ -91,7 +93,17 @@ public final class LocaleLoader {
         filesystemBundle = null;
         enBundle = null;
         bundleCache = new ConcurrentHashMap<>();
+        localeGeneration++;
         initialize();
+    }
+
+    /**
+     * Generation counter for the loaded locale, bumped on every reload.
+     *
+     * @return the current locale generation
+     */
+    public static int getLocaleGeneration() {
+        return localeGeneration;
     }
 
     private static String getRawString(String key) {

@@ -193,30 +193,30 @@ public class InventoryListener implements Listener {
 
         Inventory inventory = event.getInventory();
 
-        Player player = ((Player) event.getWhoClicked()).getPlayer();
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if (inventory instanceof FurnaceInventory furnaceInventory) {
+            final Player player = ((Player) event.getWhoClicked()).getPlayer();
 
-        if (event.getInventory() instanceof FurnaceInventory furnaceInventory) {
             if (!mcMMO.p.getSkillTools()
                     .doesPlayerHaveSkillPermission(player, PrimarySkillType.SMELTING)) {
                 return;
             }
             //Switch owners
             ContainerMetadataUtils.processContainerOwnership(furnaceInventory.getHolder(), player);
-        }
-
-        if (event.getInventory() instanceof BrewerInventory brewerInventory) {
-            if (!mcMMO.p.getSkillTools()
-                    .doesPlayerHaveSkillPermission(player, PrimarySkillType.ALCHEMY)) {
-                return;
-            }
-            // switch owners
-            ContainerMetadataUtils.processContainerOwnership(brewerInventory.getHolder(), player);
-        }
-
-        if (!(inventory instanceof BrewerInventory)) {
             return;
         }
+
+        if (!(inventory instanceof BrewerInventory brewerInventory)) {
+            return;
+        }
+
+        final Player player = ((Player) event.getWhoClicked()).getPlayer();
+
+        if (!mcMMO.p.getSkillTools()
+                .doesPlayerHaveSkillPermission(player, PrimarySkillType.ALCHEMY)) {
+            return;
+        }
+        // switch owners
+        ContainerMetadataUtils.processContainerOwnership(brewerInventory.getHolder(), player);
 
         InventoryHolder holder = inventory.getHolder();
 
@@ -225,6 +225,7 @@ public class InventoryListener implements Listener {
         }
 
         HumanEntity whoClicked = event.getWhoClicked();
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         if (mmoPlayer == null || !Permissions.isSubSkillEnabled(whoClicked,
                 SubSkillType.ALCHEMY_CONCOCTIONS)) {
