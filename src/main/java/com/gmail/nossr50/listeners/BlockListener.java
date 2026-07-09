@@ -86,45 +86,52 @@ public class BlockListener implements Listener {
             return;
         }
 
+        // Most block drops have no mcMMO involvement at all, get out before any other work
+        final List<MetadataValue> bonusDropMeta = block.getMetadata(METADATA_KEY_BONUS_DROPS);
+        final boolean hasExcavationTreasureRoll =
+                block.hasMetadata(METADATA_KEY_EXCAVATION_TREASURE_ROLL);
+        if (bonusDropMeta.isEmpty() && !hasExcavationTreasureRoll) {
+            return;
+        }
+
         try {
-            int tileEntityTolerance = 1;
+            if (!bonusDropMeta.isEmpty()) {
+                int tileEntityTolerance = 1;
 
-            // beetroot hotfix, potentially other plants may need this fix
-            final Material blockType = block.getType();
-            if (blockType == Material.BEETROOTS) {
-                tileEntityTolerance = 2;
-            }
-
-            //Track how many "things" are being dropped
-            final Set<Material> uniqueMaterials = new HashSet<>();
-            boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
-            int blockCount = 0;
-
-            final List<Item> eventItems = event.getItems();
-            for (Item item : eventItems) {
-                //Track unique materials
-                uniqueMaterials.add(item.getItemStack().getType());
-
-                //Count blocks as a second failsafe
-                if (item.getItemStack().getType().isBlock()) {
-                    blockCount++;
+                // beetroot hotfix, potentially other plants may need this fix
+                final Material blockType = block.getType();
+                if (blockType == Material.BEETROOTS) {
+                    tileEntityTolerance = 2;
                 }
-            }
 
-            if (uniqueMaterials.size() > tileEntityTolerance) {
-                // Too many things are dropping, assume tile entities might be duped
-                // Technically this would also prevent something like coal from being bonus dropped
-                // if you placed a TE above a coal ore when mining it but that's pretty edge case
-                // and this is a good solution for now
-                dontRewardTE = true;
-            }
+                //Track how many "things" are being dropped
+                final Set<Material> uniqueMaterials = new HashSet<>();
+                boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
+                int blockCount = 0;
 
-            //If there are more than one block in the item list we can't really trust it
-            // and will back out of rewarding bonus drops
-            if (!block.getMetadata(METADATA_KEY_BONUS_DROPS).isEmpty()) {
-                final MetadataValue bonusDropMeta = block
-                        .getMetadata(METADATA_KEY_BONUS_DROPS).get(0);
+                final List<Item> eventItems = event.getItems();
+                for (Item item : eventItems) {
+                    //Track unique materials
+                    uniqueMaterials.add(item.getItemStack().getType());
+
+                    //Count blocks as a second failsafe
+                    if (item.getItemStack().getType().isBlock()) {
+                        blockCount++;
+                    }
+                }
+
+                if (uniqueMaterials.size() > tileEntityTolerance) {
+                    // Too many things are dropping, assume tile entities might be duped
+                    // Technically this would also prevent something like coal from being bonus dropped
+                    // if you placed a TE above a coal ore when mining it but that's pretty edge case
+                    // and this is a good solution for now
+                    dontRewardTE = true;
+                }
+
+                //If there are more than one block in the item list we can't really trust it
+                // and will back out of rewarding bonus drops
                 if (blockCount <= 1) {
+                    final int amountToAddFromBonus = bonusDropMeta.get(0).asInt();
                     for (final Item item : eventItems) {
                         final ItemStack eventItemStack = item.getItemStack();
                         int originalAmount = eventItemStack.getAmount();
@@ -150,7 +157,6 @@ public class BlockListener implements Listener {
                             }
                         }
 
-                        int amountToAddFromBonus = bonusDropMeta.asInt();
                         final McMMOModifyBlockDropItemEvent modifyDropEvent
                                 = new McMMOModifyBlockDropItemEvent(event, item, amountToAddFromBonus);
                         plugin.getServer().getPluginManager().callEvent(modifyDropEvent);
@@ -172,7 +178,7 @@ public class BlockListener implements Listener {
             // isIneligible() would always return false regardless of whether the block was placed
             // by a player. The material is stored in the metadata because block.getType() is AIR
             // by the time this event fires.
-            if (block.hasMetadata(METADATA_KEY_EXCAVATION_TREASURE_ROLL)) {
+            if (hasExcavationTreasureRoll) {
                 final Material excavationBlockMaterial = (Material) block
                         .getMetadata(METADATA_KEY_EXCAVATION_TREASURE_ROLL).get(0).value();
                 final McMMOPlayer excavationMmoPlayer = UserManager.getPlayer(event.getPlayer());
