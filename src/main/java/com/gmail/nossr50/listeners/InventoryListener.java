@@ -167,13 +167,15 @@ public class InventoryListener implements Listener {
                 return;
             }
 
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
             //Profile not loaded
-            if (UserManager.getPlayer(player) == null) {
+            if (mmoPlayer == null) {
                 return;
             }
 
             int xpToDrop = event.getExpToDrop();
-            int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+            int exp = mmoPlayer.getSmeltingManager().vanillaXPBoost(xpToDrop);
             event.setExpToDrop(exp);
         }
     }

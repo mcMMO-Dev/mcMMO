@@ -44,8 +44,7 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(Player player, NotificationType notificationType,
             String key) {
-        if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player)
-                .useChatNotifications()) {
+        if (!doesPlayerUseNotifications(player)) {
             return;
         }
 
@@ -60,11 +59,8 @@ public class NotificationManager {
 
 
     public static boolean doesPlayerUseNotifications(Player player) {
-        if (UserManager.getPlayer(player) == null) {
-            return false;
-        } else {
-            return UserManager.getPlayer(player).useChatNotifications();
-        }
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        return mmoPlayer != null && mmoPlayer.useChatNotifications();
     }
 
     /**
@@ -84,8 +80,7 @@ public class NotificationManager {
     }
 
     public static void sendPlayerInformationChatOnly(Player player, String key, String... values) {
-        if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player)
-                .useChatNotifications()) {
+        if (!doesPlayerUseNotifications(player)) {
             return;
         }
 
@@ -95,8 +90,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key,
             String... values) {
-        if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player)
-                .useChatNotifications()) {
+        if (!doesPlayerUseNotifications(player)) {
             return;
         }
 
@@ -109,8 +103,7 @@ public class NotificationManager {
     public static void sendPlayerInformation(Player player, NotificationType notificationType,
             String key,
             String... values) {
-        if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player)
-                .useChatNotifications()) {
+        if (!doesPlayerUseNotifications(player)) {
             return;
         }
 

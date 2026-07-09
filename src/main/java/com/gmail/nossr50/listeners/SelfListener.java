@@ -45,8 +45,8 @@ public class SelfListener implements Listener {
             for (int i = 0; i < event.getLevelsGained(); i++) {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
-                UserManager.getPlayer(player)
-                        .processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+                mmoPlayer.processUnlockNotifications(plugin, event.getSkill(),
+                        previousLevelGained);
             }
 
             //Reset the delay timer

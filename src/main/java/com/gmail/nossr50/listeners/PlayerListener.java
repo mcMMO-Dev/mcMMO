@@ -125,12 +125,14 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        UserManager.getPlayer(player).actualizeTeleportATS();
+        mmoPlayer.actualizeTeleportATS();
     }
 
     /**
@@ -264,12 +266,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
-
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
         mmoPlayer.checkGodMode();
         mmoPlayer.checkParty();
@@ -336,12 +338,14 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         switch (event.getState()) {
             // CAUGHT_FISH happens for any item caught (including junk and treasure)
@@ -428,13 +432,15 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
         Entity caught = event.getCaught();
-        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
             //Spam Fishing
@@ -670,12 +676,14 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        UserManager.getPlayer(player).actualizeRespawnATS();
+        mmoPlayer.actualizeRespawnATS();
     }
 
     /**
@@ -725,12 +733,13 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
         MiningManager miningManager = mmoPlayer.getMiningManager();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -762,8 +771,7 @@ public class PlayerListener implements Listener {
                             SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && mcMMO.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
-                        SalvageManager salvageManager = UserManager.getPlayer(player)
-                                .getSalvageManager();
+                        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
                         event.setCancelled(true);
 
                         // Make sure the player knows what he's doing when trying to salvage an enchanted item
@@ -921,12 +929,9 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
-            return;
-        }
-
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
         if (mmoPlayer == null) {
             return;
         }

@@ -693,12 +693,14 @@ public class EntityListener implements Listener {
                 final Player player = (Player) owner;
                 Wolf wolf = (Wolf) pet;
 
+                final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
                 //Profile not loaded
-                if (UserManager.getPlayer(player) == null) {
+                if (mmoPlayer == null) {
                     return;
                 }
 
-                TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
+                TamingManager tamingManager = mmoPlayer.getTamingManager();
 
                 switch (cause) {
                     case CONTACT:
@@ -906,8 +908,10 @@ public class EntityListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         // Profile is not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
@@ -918,7 +922,7 @@ public class EntityListener implements Listener {
             }
         }
 
-        final MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        final MiningManager miningManager = mmoPlayer.getMiningManager();
 
         if (miningManager.canUseBiggerBombs()) {
             event.setRadius(miningManager.biggerBombs(event.getRadius()));
@@ -960,12 +964,14 @@ public class EntityListener implements Listener {
             }
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        MiningManager miningManager = mmoPlayer.getMiningManager();
 
         if (miningManager.canUseBlastMining()) {
             miningManager.blastMiningDropProcessing(event.getYield(), event);
@@ -991,8 +997,10 @@ public class EntityListener implements Listener {
             return;
         }
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
@@ -1038,8 +1046,7 @@ public class EntityListener implements Listener {
         //Hacky 1.17 support
         if (foodInHand.getKey().getKey().equalsIgnoreCase("glow_berries")) {
             if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager()
-                        .farmersDiet(newFoodLevel));
+                event.setFoodLevel(mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
             }
 
             return;
@@ -1069,8 +1076,8 @@ public class EntityListener implements Listener {
              * 1000
              */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager()
-                            .farmersDiet(newFoodLevel));
+                    event.setFoodLevel(
+                            mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
 
@@ -1082,8 +1089,8 @@ public class EntityListener implements Listener {
              */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager()
-                            .farmersDiet(newFoodLevel));
+                    event.setFoodLevel(
+                            mmoPlayer.getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
             case COD:
@@ -1093,8 +1100,8 @@ public class EntityListener implements Listener {
             case COOKED_SALMON:
 
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager()
-                            .handleFishermanDiet(newFoodLevel));
+                    event.setFoodLevel(
+                            mmoPlayer.getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
                 return;
 
@@ -1142,12 +1149,14 @@ public class EntityListener implements Listener {
 
         flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (mmoPlayer == null) {
             return;
         }
 
-        UserManager.getPlayer(player).getTamingManager().awardTamingXP(livingEntity);
+        mmoPlayer.getTamingManager().awardTamingXP(livingEntity);
     }
 
     /**

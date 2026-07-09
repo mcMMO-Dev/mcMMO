@@ -55,6 +55,7 @@ Version 2.2.055
     Improved performance when placing and breaking blocks (See notes)
     Improved performance when chunks unload and when brewing stands are checked
     Improved performance when taking smelted items out of furnaces (See notes)
+    Improved performance of many player, pet, and ability event handlers (See notes)
     Added /mclevelupsound command for players to toggle the level-up sound (See notes)
     Added decimal XP rate support to /xprate, rates like 1.5 now work
     Added a no-argument /xprate that shows the current XP rate to the sender (See notes)
@@ -143,6 +144,7 @@ Version 2.2.055
     Block drops with no mcMMO bonus drops or treasure attached now exit immediately instead of counting and classifying every dropped item first.
     Abilities that break many blocks fire internal block-damage events per block; those are now recognized and skipped before any world or region checks run.
     Placing blocks no longer captures unnecessary block state snapshots, multi-block placements (like beds and doors) no longer re-track every placed block once per block placed, and Hylian Luck only snapshots the block when it can actually trigger.
+    Many event handlers (interactions, respawns, eating, pet damage, explosions, taming, ability area-of-effect hits, notifications) now look up a player's mcMMO data once per event instead of several times; no behavior changes are involved.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO

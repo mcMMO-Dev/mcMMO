@@ -1014,13 +1014,16 @@ public final class CombatUtils {
                 .getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
+        final boolean npcInteractionPrevented =
+                ExperienceConfig.getInstance().isNPCInteractionPrevented();
+        final McMMOPlayer mmoAttacker = UserManager.getPlayer(attacker);
+
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
             if (numberOfTargets <= 0) {
                 break;
             }
 
-            if ((ExperienceConfig.getInstance().isNPCInteractionPrevented()
-                    && Misc.isNPCEntityExcludingVillagers(entity))
+            if ((npcInteractionPrevented && Misc.isNPCEntityExcludingVillagers(entity))
                     || !(entity instanceof LivingEntity livingEntity) || !shouldBeAffected(attacker,
                     entity)) {
                 continue;
@@ -1033,8 +1036,6 @@ public final class CombatUtils {
                                 NotificationType.SUBSKILL_MESSAGE,
                                 "Swords.Combat.SS.Struck");
                     }
-
-                    final McMMOPlayer mmoAttacker = UserManager.getPlayer(attacker);
 
                     if (mmoAttacker != null) {
                         mmoAttacker.getSwordsManager()
@@ -1163,12 +1164,13 @@ public final class CombatUtils {
     private static boolean shouldBeAffected(@NotNull Player player, @NotNull Entity entity) {
         if (entity instanceof Player defender) {
             //TODO: NPC Interaction?
-            if (UserManager.getPlayer(defender) == null) {
+            final McMMOPlayer mmoDefender = UserManager.getPlayer(defender);
+            if (mmoDefender == null) {
                 return true;
             }
 
-            if (!defender.getWorld().getPVP() || defender == player || UserManager.getPlayer(
-                    defender).getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player
+                    || mmoDefender.getGodMode()) {
                 return false;
             }
 
