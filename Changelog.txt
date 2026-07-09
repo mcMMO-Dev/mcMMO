@@ -94,6 +94,7 @@ Version 2.2.055
     (Codebase) Removed long-dead commented-out code blocks, unused private helpers, and a crafting event handler that had no remaining effect
     (Codebase) Deprecated unused public utility methods and fields for removal
     (Codebase) Migrated internal code off deprecated event helper overloads
+    (Codebase) Added mangrove and cherry logs to the woodcutting drop list used by the currently disabled party item sharing
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
