@@ -1,4 +1,6 @@
 Version 2.3.000
+    Fixed an exploit where breaking and quickly replacing multi-block plants granted Herbalism XP without the plants breaking (See notes)
+    Fixed cactus and chorus plants only granting Herbalism XP for the block that was hit (See notes)
     Fixed Berserk reducing damage instead of boosting it on Paper 26.1.2+ (See notes)
     Fixed Disarm, Rupture, Cripple, Momentum, Critical Strikes, Armor Impact, and Greater Impact activating far less often than intended on Paper 26.1.2+ (See notes)
     Fixed Skull Splitter dealing far less AoE damage than intended on Paper 26.1.2+ (See notes)
@@ -78,6 +80,7 @@ Version 2.3.000
     (API) The no-op ScoreboardManager.enablePlayerSkillLevelUpScoreboard is deprecated for removal
     (API) mcMMO now prevents other plugins from modifying its internal material maps
     (API) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
+    (API) Deprecated DelayedHerbalismXPCheckTask and HerbalismManager#awardXPForBlockSnapshots for removal
     (API) Deprecated unused public utility methods and fields
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
@@ -108,6 +111,7 @@ Version 2.3.000
     The Salvage/Repair confirm click now has to be made with the same item that triggered the prompt; if the held item changes during the confirmation window you get a new prompt instead of the new item being instantly salvaged or repaired. While a confirmation is pending the prompted item also can't be used, which stops vanilla armor quick-swap from equipping or swapping armor mid-confirmation.
 
     -- XP and exploit fixes --
+    Multi-block plants (bamboo, sugar cane, kelp, cactus, chorus trees, and hanging vines) now grant XP for the rest of the plant only after those blocks have actually broken, which normally happens within a second of the break. Breaking a segment and instantly replacing it with an auto clicker no longer pays XP for blocks that never broke. Cactus and chorus trees also now correctly grant XP for the whole plant instead of just the block that was hit. No config changes are needed.
     The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
     Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml; it is enabled by default and existing config files do not need to be updated. A single mob stops handing out Dodge XP after a handful of dodges, and the limit clears once that mob has gone about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
     'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml now works; before this fix the combat XP damage ceiling was always 100 no matter what the config said. Servers that customized this value will see it take effect after updating, no config changes are needed.

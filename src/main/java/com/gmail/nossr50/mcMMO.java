@@ -41,6 +41,7 @@ import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
+import com.gmail.nossr50.runnables.skills.PlantCollapseXpTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
@@ -516,6 +517,7 @@ public class mcMMO extends JavaPlugin {
 
         LogUtils.debug(mcMMO.p.getLogger(), "Canceling all tasks...");
         getFoliaLib().getScheduler().cancelAllTasks(); // This removes our tasks
+        PlantCollapseXpTask.clearPendingVerifications();
         LogUtils.debug(mcMMO.p.getLogger(), "Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 

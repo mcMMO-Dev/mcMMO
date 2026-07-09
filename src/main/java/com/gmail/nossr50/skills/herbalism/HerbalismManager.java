@@ -26,7 +26,7 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.DelayedCropReplant;
-import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
+import com.gmail.nossr50.runnables.skills.PlantCollapseXpTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.CancellableRunnable;
@@ -308,73 +308,97 @@ public class HerbalismManager extends SkillManager {
         }
 
         final BlockState originalBreak = blockBreakEvent.getBlock().getState();
-        // TODO: Storing this boolean for no reason, refactor
-        boolean greenThumbActivated = false;
 
         //TODO: The design of Green Terra needs to change, this is a mess
         if (Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
             if (mcMMO.p.getGeneralConfig().isGreenThumbReplantableCrop(originalBreak.getType())) {
                 if (!getPlayer().isSneaking()) {
-                    greenThumbActivated = processGreenThumbPlants(originalBreak, blockBreakEvent,
-                            isGreenTerraActive());
+                    processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
                 }
             }
         }
 
-        /*
-         * Mark blocks for double drops
-         * Be aware of the hacky interactions we are doing with Chorus Plants
-         */
-        checkDoubleDropsOnBrokenPlants(blockBreakEvent.getPlayer(), brokenPlants);
+        final Block originBlock = originalBreak.getBlock();
 
-        //It would take an expensive algorithm to predict which parts of a Chorus Tree will break as a result of root break
-        //So this hacky method is used instead
-        ArrayList<BlockSnapshot> delayedChorusBlocks = new ArrayList<>(); //Blocks that will be checked in future ticks
-        HashSet<Block> noDelayPlantBlocks = new HashSet<>(); //Blocks that will be checked immediately
+        // This break event is now the authoritative source of rewards for this position; any
+        // older collapse verification still watching it must not also pay for it
+        PlantCollapseXpTask.revokeClaim(originBlock);
+
+        // Only the origin block is marked for bonus drops. The connected blocks vanilla pops
+        // on later ticks never fire BlockDropItemEvent, so marking them never doubled anything
+        // and only left stale metadata behind on blocks that survived the break
+        checkDoubleDropsOnBrokenPlants(blockBreakEvent.getPlayer(), List.of(originBlock));
+
+        // The tall-plant XP limit spans the whole plant, so the budget for the connected
+        // blocks depends on what the origin pays out right now
+        final int collapseXpBudget = calculateCollapseXpBudget(originalBreak);
+
+        // The origin block is guaranteed broken by this event and pays out immediately. The
+        // rest of the plant is only destroyed by scheduled block ticks on later ticks - if it
+        // is destroyed at all - so its XP is paid once the blocks have verifiably broken
+        final HashSet<Block> originOnly = new HashSet<>();
+        originOnly.add(originBlock);
+        awardXPForPlantBlocks(originOnly);
+
+        scheduleCollapseVerification(originalBreak, brokenPlants, collapseXpBudget);
+    }
+
+    /**
+     * Claims every connected plant block for deferred XP verification and starts the collapse
+     * verification task if any claims were made. Blocks already claimed by an earlier break are
+     * skipped, so rapid re-breaks cannot collect XP for the same blocks twice.
+     *
+     * @param originalBreak the block broken by the event
+     * @param brokenPlants all plant blocks expected to break because of the event
+     * @param collapseXpBudget the most XP the verification task may pay out
+     */
+    private void scheduleCollapseVerification(BlockState originalBreak,
+            HashSet<Block> brokenPlants, int collapseXpBudget) {
+        if (brokenPlants.size() <= 1) {
+            // Single-block plants have nothing left to verify
+            return;
+        }
+
+        final PlantCollapseXpTask collapseXpTask = new PlantCollapseXpTask(mmoPlayer,
+                collapseXpBudget);
+        final Location originLocation = originalBreak.getLocation();
 
         for (Block brokenPlant : brokenPlants) {
-            /*
-             * This check is to make XP bars appear to work properly with Chorus Trees by giving XP for the originalBreak immediately instead of later
-             */
-            if (brokenPlant.getLocation().equals(originalBreak.getBlock().getLocation())) {
-                //If its the same block as the original, we are going to directly check it for being a valid XP gain and add it to the nonChorusBlocks list even if its a chorus block
-                //This stops a delay from happening when bringing up the XP bar for chorus trees
-                if (!mcMMO.getUserBlockTracker().isIneligible(originalBreak)) {
-                    //Even if its a chorus block, the original break will be moved to nonChorusBlocks for immediate XP rewards
-                    noDelayPlantBlocks.add(brokenPlant);
-                } else {
-                    if (isChorusTree(brokenPlant.getType())) {
-                        //If its a chorus tree AND it was marked as true in the placestore then we add this block to the list of chorus blocks
-                        delayedChorusBlocks.add(
-                                new BlockSnapshot(brokenPlant.getType(), brokenPlant));
-                    } else {
-                        noDelayPlantBlocks.add(
-                                brokenPlant); //If its not a chorus plant that was marked as unnatural but it was marked unnatural, put it in the nodelay list to be handled
-                    }
-                }
-            } else if (isChorusTree(brokenPlant.getType())) {
-                //Chorus Blocks get checked for XP several ticks later to avoid expensive calculations
-                delayedChorusBlocks.add(new BlockSnapshot(brokenPlant.getType(), brokenPlant));
-            } else {
-                noDelayPlantBlocks.add(brokenPlant);
+            if (brokenPlant.getLocation().equals(originLocation)) {
+                continue;
             }
+
+            final BlockState plantState = brokenPlant.getState();
+            collapseXpTask.claimBlock(brokenPlant, calculatePlantXp(plantState),
+                    mcMMO.getUserBlockTracker().isIneligible(plantState));
         }
 
-        //Give out XP to the non-chorus blocks
-        if (!noDelayPlantBlocks.isEmpty()) {
-            //Note: Will contain 1 chorus block if the original block was a chorus block, this is to prevent delays for the XP bar
-            awardXPForPlantBlocks(noDelayPlantBlocks);
+        if (collapseXpTask.hasPendingBlocks()) {
+            collapseXpTask.schedule(originLocation);
+        }
+    }
+
+    /**
+     * Calculates how much XP the collapse verification task may still pay out after the origin
+     * block's immediate reward, honoring the tall-plant XP limit.
+     *
+     * @param originalBreak the block broken by the event
+     * @return the remaining XP budget for the rest of the plant
+     */
+    private int calculateCollapseXpBudget(BlockState originalBreak) {
+        if (!ExperienceConfig.getInstance().limitXPOnTallPlants()) {
+            return Integer.MAX_VALUE;
         }
 
-        if (!delayedChorusBlocks.isEmpty()) {
-            //Check XP for chorus blocks
-            DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(
-                    mmoPlayer, delayedChorusBlocks);
-
-            //Large delay because the tree takes a while to break
-            mcMMO.p.getFoliaLib().getScheduler().runAtEntity(mmoPlayer.getPlayer(),
-                    delayedHerbalismXPCheckTask); //Calculate Chorus XP + Bonus Drops 1 tick later
+        final Integer plantLimit = plantBreakLimits.get(
+                originalBreak.getType().getKey().getKey());
+        if (plantLimit == null) {
+            return Integer.MAX_VALUE;
         }
+
+        final int xpPerBlock = ExperienceConfig.getInstance()
+                .getXp(PrimarySkillType.HERBALISM, originalBreak.getType());
+        return Math.max(0, plantLimit * xpPerBlock - calculatePlantXp(originalBreak));
     }
 
     /**
@@ -479,46 +503,19 @@ public class HerbalismManager extends SkillManager {
         int firstXpReward = -1;
 
         for (Block brokenPlantBlock : brokenPlants) {
-            BlockState brokenBlockNewState = brokenPlantBlock.getState();
-            BlockData plantData = brokenBlockNewState.getBlockData();
+            final BlockState brokenBlockNewState = brokenPlantBlock.getState();
+            final int plantXp = calculatePlantXp(brokenBlockNewState);
 
+            if (plantXp > 0) {
+                xpToReward += plantXp;
+                if (firstXpReward == -1) {
+                    firstXpReward = plantXp;
+                }
+            }
+
+            //Mark it as natural again as it is being broken
             if (mcMMO.getUserBlockTracker().isIneligible(brokenBlockNewState)) {
-                /*
-                 * Unnatural Blocks
-                 */
-                //If it's a Crop we need to reward XP when its fully grown
-                if (isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
-                    xpToReward += ExperienceConfig.getInstance()
-                            .getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
-                    if (firstXpReward == -1) {
-                        firstXpReward = xpToReward;
-                    }
-                }
-
-                //Mark it as natural again as it is being broken
                 mcMMO.getUserBlockTracker().setEligible(brokenBlockNewState);
-            } else {
-                /*
-                 * Natural Blocks
-                 */
-                // Calculate XP
-                if (plantData instanceof Ageable plantAgeable) {
-
-                    if (isAgeableMature(plantAgeable) || isBizarreAgeable(plantData)) {
-                        xpToReward += ExperienceConfig.getInstance()
-                                .getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
-                        if (firstXpReward == -1) {
-                            firstXpReward = xpToReward;
-                        }
-                    }
-
-                } else {
-                    xpToReward += ExperienceConfig.getInstance()
-                            .getXp(PrimarySkillType.HERBALISM, brokenPlantBlock.getType());
-                    if (firstXpReward == -1) {
-                        firstXpReward = xpToReward;
-                    }
-                }
             }
         }
 
@@ -543,6 +540,34 @@ public class HerbalismManager extends SkillManager {
         }
     }
 
+    /**
+     * Calculates the Herbalism XP a single plant block is worth under the natural/unnatural and
+     * maturity rules. Player-placed blocks only reward XP for fully grown crops whose age can be
+     * trusted; natural ageable blocks must be mature unless their age is untrustworthy.
+     *
+     * @param plantState the state of the plant block
+     * @return the XP the block is worth, or 0 when it rewards nothing
+     */
+    private int calculatePlantXp(BlockState plantState) {
+        final BlockData plantData = plantState.getBlockData();
+
+        if (mcMMO.getUserBlockTracker().isIneligible(plantState)) {
+            if (isAgeableAndFullyMature(plantData) && !isBizarreAgeable(plantData)) {
+                return ExperienceConfig.getInstance()
+                        .getXp(PrimarySkillType.HERBALISM, plantState.getType());
+            }
+            return 0;
+        }
+
+        if (plantData instanceof Ageable plantAgeable && !isAgeableMature(plantAgeable)
+                && !isBizarreAgeable(plantData)) {
+            return 0;
+        }
+
+        return ExperienceConfig.getInstance()
+                .getXp(PrimarySkillType.HERBALISM, plantState.getType());
+    }
+
     public boolean isAgeableMature(Ageable ageable) {
         // Sweet berry bush is harvestable at age 2 and 3 (max is 3)
         if (ageable.getMaterial() == Material.SWEET_BERRY_BUSH) {
@@ -556,7 +581,10 @@ public class HerbalismManager extends SkillManager {
      * Award XP for any blocks that used to be something else but are now AIR
      *
      * @param brokenPlants snapshot of broken blocks
+     * @deprecated XP for multi-block plants, chorus trees included, is verified and awarded by
+     *         {@link com.gmail.nossr50.runnables.skills.PlantCollapseXpTask}
      */
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public void awardXPForBlockSnapshots(ArrayList<BlockSnapshot> brokenPlants) {
         /*
          * This handles XP for blocks that we need to check are broken after the fact
@@ -652,9 +680,15 @@ public class HerbalismManager extends SkillManager {
     protected void addBrokenBlocksMultiBlockPlants(BlockState brokenBlock,
             Set<Block> brokenBlocks) {
         if (isChorusBranch(brokenBlock.getType())) {
-            addChorusTreeBrokenBlocks(brokenBlock.getBlock(), brokenBlocks);
+            // Traverse with a fresh set: the origin block is already in brokenBlocks, and the
+            // traversal's visited-check would otherwise stop before collecting anything
+            final Set<Block> traversed = new HashSet<>();
+            addChorusTreeBrokenBlocks(brokenBlock.getBlock(), traversed);
+            brokenBlocks.addAll(traversed);
         } else if (isCactus(brokenBlock.getType())) {
-            addCactusBlocks(brokenBlock.getBlock(), brokenBlocks);
+            final Set<Block> traversed = new HashSet<>();
+            addCactusBlocks(brokenBlock.getBlock(), traversed);
+            brokenBlocks.addAll(traversed);
         } else {
             addBlocksBrokenAboveOrBelow(brokenBlock.getBlock(), brokenBlocks,
                     mcMMO.getMaterialMapStore().isMultiBlockHangingPlant(brokenBlock.getType()));
