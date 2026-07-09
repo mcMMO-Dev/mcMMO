@@ -116,6 +116,7 @@ Version 2.2.055
     (Codebase) Deduplicated the scoreboard show-and-capture logic and removed an unreachable stats board branch
     (Codebase) Consolidated scoreboard task cancellation behind a shared helper and made board close-out exception-safe
     (Codebase) The persisted power level objective name is now defined once and shared across the Bukkit scoreboard classes
+    (Codebase) Cancelled XP bar hide tasks are no longer kept in memory until the next bar update
 
     NOTES:
     -- Combat abilities on Paper 26.1.2+ --
