@@ -14,6 +14,7 @@ Version 2.3.000
     Changed Cripple's default sound to the mace smash ground sound (See notes)
     Changed XP rate event admin notifications to show the command sender as a hoverable @name with their UUID on hover in chat, and as name (UUID) in the console, instead of appending the UUID to their name
     Changed skill name tab completion to suggest lowercase names in commands like /mctop, /skillreset, and /mmoxpbar
+    Changed fishing anti-exploit checks to run before other plugins see the catch (Thanks FireML) (See notes)
     Improved performance when gaining XP, rolling skill chances, checking skill ranks, and reading config settings and permissions
     Improved performance of combat processing, block and placed-block handling, and many other event handlers including furnaces, fishing, inventories, pets, and commands
     Fixed an exploit where breaking and quickly replacing multi-block plants granted Herbalism XP without the plants breaking (See notes)
@@ -136,6 +137,7 @@ Version 2.3.000
     The mcmmo.perks.xp.25percentboost permission family now behaves like the 10, 50, and 150 percent variants; previously only mcmmo.perks.xp.25percentboost.all had any effect.
     Dodge XP farming prevention now has its own 'ExploitFix.AcrobaticsDodgeXpFarming' setting in experience.yml, enabled by default; existing config files do not need updating. A single mob stops handing out Dodge XP after a handful of dodges and recovers after about a minute without being dodged. 'ExploitFix.Acrobatics' continues to control the Roll anti-exploit checks.
     'ExploitFix.Combat.XPCeiling.Damage_Limit' in experience.yml now works; the combat XP damage ceiling was previously always 100 no matter what the config said. Customized values take effect after updating, no config changes are needed.
+    Fishing's overfishing and spam-fishing checks now run before other plugins process the catch, so fishing plugins (for example EvenMoreFish) can tell when mcMMO denies a catch instead of having their custom catches deleted after the fact. Denied catches still pay no mcMMO rewards. No config changes are needed.
 
     -- Placed-block tracking --
     If a world's build height limits were ever reduced (for example after removing a data pack that raised them), loading that world's placed-block data could fail or mark the wrong blocks as player-placed. Markers inside the new limits are kept at their correct positions; only blocks outside the new limits are forgotten.

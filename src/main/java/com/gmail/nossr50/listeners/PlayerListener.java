@@ -348,7 +348,7 @@ public class PlayerListener implements Listener {
         final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
 
         if (mmoPlayer == null || !mcMMO.p.getSkillTools()
-            .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
+                .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
             return;
         }
 
@@ -358,8 +358,7 @@ public class PlayerListener implements Listener {
 
         if (fishingManager.isExploitingFishing()) {
             player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
-                ExperienceConfig.getInstance()
-                    .getFishingExploitingOptionMoveRange()));
+                    ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange()));
             event.setExpToDrop(0);
             caughtItem.remove();
         } else if (fishingManager.isFishingTooOften()) {
@@ -485,7 +484,11 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                if (ExperienceConfig.getInstance().isFishingExploitingPrevented() && fishingManager.isExploitingFishing()) {
+                // The LOWEST-priority handler already flagged this catch; re-reading the
+                // verdicts here keeps denied catches from paying skill XP and treasure
+                if (ExperienceConfig.getInstance().isFishingExploitingPrevented()
+                        && (fishingManager.isExploitingFishing()
+                        || fishingManager.wasFishingTooOften())) {
                     return;
                 }
 

@@ -65,6 +65,7 @@ public class FishingManager extends SkillManager {
     protected long lastWarned = 0L;
     private BoundingBox lastFishingBoundingBox;
     private boolean sameTarget;
+    private boolean fishingTooOften;
     private int fishCaughtCounter = 1;
     private final int masterAnglerMinWaitLowerBound;
     private final int masterAnglerMaxWaitLowerBound;
@@ -104,8 +105,19 @@ public class FishingManager extends SkillManager {
         }
 
         lastFishCaughtTimestamp = currentTime;
+        fishingTooOften = hasFishedRecently;
 
         return hasFishedRecently;
+    }
+
+    /**
+     * {@return the verdict of the most recent {@link #isFishingTooOften()} check}
+     * Unlike {@link #isFishingTooOften()} this does not update the catch timestamp, so
+     * handlers running later in the same event chain can re-read the verdict without every
+     * catch being treated as a repeat.
+     */
+    public boolean wasFishingTooOften() {
+        return fishingTooOften;
     }
 
     public void processExploiting(Vector centerOfCastVector) {
