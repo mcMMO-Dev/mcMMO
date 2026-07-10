@@ -326,6 +326,49 @@ public class PlayerListener implements Listener {
     }
 
     /**
+     * Handle PlayerFishEvents at the lowest priority.
+     * <p>
+     * These events are used for tracking fish exploits.
+     *
+     * @param event The event to modify
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerFishLowest(PlayerFishEvent event) {
+        if (!ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+            return;
+        }
+        if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
+            return;
+        }
+        if (!(event.getCaught() instanceof Item caughtItem)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
+
+        if (mmoPlayer == null || !mcMMO.p.getSkillTools()
+            .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
+            return;
+        }
+
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
+
+        fishingManager.processExploiting(event.getHook().getLocation().toVector());
+
+        if (fishingManager.isExploitingFishing()) {
+            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
+                ExperienceConfig.getInstance()
+                    .getFishingExploitingOptionMoveRange()));
+            event.setExpToDrop(0);
+            caughtItem.remove();
+        } else if (fishingManager.isFishingTooOften()) {
+            event.setExpToDrop(0);
+            caughtItem.remove();
+        }
+    }
+
+    /**
      * Handle PlayerFishEvents at the highest priority.
      * <p>
      * These events are used for the purpose of handling our anti-exploit code, as well as dealing
@@ -427,20 +470,6 @@ public class PlayerListener implements Listener {
         Entity caught = event.getCaught();
         FishingManager fishingManager = mmoPlayer.getFishingManager();
 
-        if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
-            //Spam Fishing
-            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH
-                    && fishingManager.isFishingTooOften()) {
-                event.setExpToDrop(0);
-
-                if (caught instanceof Item caughtItem) {
-                    caughtItem.remove();
-                }
-
-                return;
-            }
-        }
-
         switch (event.getState()) {
             case FISHING:
                 EquipmentSlot fishingHand = getFishingHandForEvent(player, event.getHand());
@@ -456,24 +485,12 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
+                if (ExperienceConfig.getInstance().isFishingExploitingPrevented() && fishingManager.isExploitingFishing()) {
+                    return;
+                }
+
                 EquipmentSlot caughtFishingHand = getFishingHandForEvent(player, event.getHand());
-
                 if (caught instanceof Item caughtItem) {
-                    if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
-
-                        fishingManager.processExploiting(event.getHook().getLocation().toVector());
-
-                        if (fishingManager.isExploitingFishing()) {
-                            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
-                                    ExperienceConfig.getInstance()
-                                            .getFishingExploitingOptionMoveRange()));
-                            event.setExpToDrop(0);
-                            caughtItem.remove();
-
-                            return;
-                        }
-                    }
-
                     fishingManager.processFishing(caughtItem, caughtFishingHand);
                     fishingManager.setFishingTarget();
                 }
