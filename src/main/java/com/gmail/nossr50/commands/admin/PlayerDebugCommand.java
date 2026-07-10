@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.admin;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
@@ -15,8 +16,13 @@ public class PlayerDebugCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
             @NotNull String label,
             String[] args) {
-        if (sender instanceof Player) {
-            final McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
+        if (sender instanceof Player player) {
+            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+            if (mmoPlayer == null) {
+                player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                return true;
+            }
+
             mmoPlayer.toggleDebugMode(); //Toggle debug mode
             NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(),
                     "Commands.Mmodebug.Toggle", String.valueOf(mmoPlayer.isDebugMode()));
