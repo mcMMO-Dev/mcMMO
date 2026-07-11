@@ -171,8 +171,7 @@ public class PlayerProfile {
     }
 
     /**
-     * Get this users last login, will return current java.lang.System#currentTimeMillis() if it
-     * doesn't exist
+     * Get this users last login, will return -1 if it doesn't exist
      *
      * @return the last login
      * @deprecated This is only function for FlatFileDB atm, and it's only here for unit testing
@@ -450,10 +449,31 @@ public class PlayerProfile {
         }
 
         int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled())
-                ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
+                ? getPowerLevelForCumulativeCurve() : skills.get(primarySkillType);
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
 
         return mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType);
+    }
+
+    /**
+     * The cumulative curve levels against the player's power level. Offline-loaded profiles
+     * have no online player to ask, so the profile's own level sum stands in (the online power
+     * level is permission-aware, which cannot be evaluated offline).
+     */
+    private int getPowerLevelForCumulativeCurve() {
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(playerName);
+
+        if (mmoPlayer != null) {
+            return mmoPlayer.getPowerLevel();
+        }
+
+        int levelSum = 0;
+
+        for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
+            levelSum += skills.get(primarySkillType);
+        }
+
+        return levelSum;
     }
 
     private int getChildSkillLevel(@NotNull PrimarySkillType primarySkillType)

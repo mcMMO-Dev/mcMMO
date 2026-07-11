@@ -56,6 +56,7 @@ Version 2.3.000
     Fixed an error when a non-player entity clicks or drags in a furnace or brewing stand inventory
     Fixed an error when another plugin fires a fish catch carrying a non-item entity
     Fixed an error when adding levels to Salvage or Smelting (See notes)
+    Fixed an error when reading XP requirements for offline players while 'Experience_Formula.Cumulative_Curve' is enabled
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
     Fixed an error when players below 11 HP used a Chimaera Wing underground
     Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)

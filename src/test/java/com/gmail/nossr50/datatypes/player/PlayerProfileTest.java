@@ -2,10 +2,16 @@ package com.gmail.nossr50.datatypes.player;
 
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.experience.FormulaManager;
+import com.gmail.nossr50.util.skills.SkillTools;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -49,6 +55,46 @@ class PlayerProfileTest extends MMOTestEnvironment {
         for (final PrimarySkillType parent : parents) {
             assertThat(profile.getSkillLevel(parent)).isEqualTo(STARTING_LEVEL + 2);
         }
+    }
+
+    /**
+     * Regression coverage for the cumulative XP curve on offline-loaded profiles: the curve
+     * levels against the player's power level, which was read through UserManager and crashed
+     * for profiles without an online player (offline /inspect, ExperienceAPI offline lookups).
+     * The profile's own level sum stands in when nobody is online.
+     */
+    @Test
+    void getXpToLevelShouldUseOwnLevelSumForOfflineProfilesWithCumulativeCurve() {
+        // Given - the cumulative curve is enabled and this profile has no online player
+        when(ExperienceConfig.getInstance().getCumulativeCurveEnabled()).thenReturn(true);
+        when(ExperienceConfig.getInstance().getFormulaType()).thenReturn(FormulaType.LINEAR);
+
+        final FormulaManager formulaManager = mock(FormulaManager.class);
+        mockedMcMMO.when(mcMMO::getFormulaManager).thenReturn(formulaManager);
+        final int levelSum = SkillTools.NON_CHILD_SKILLS.size() * STARTING_LEVEL;
+        when(formulaManager.getXPtoNextLevel(levelSum, FormulaType.LINEAR)).thenReturn(4242);
+
+        // When - the XP to the next level is requested
+        final int xpToLevel = profile.getXpToLevel(PrimarySkillType.MINING);
+
+        // Then - the curve levels against the profile's own level sum instead of crashing
+        assertThat(xpToLevel).isEqualTo(4242);
+    }
+
+    @Test
+    void getXpToLevelShouldUseTheSkillLevelWhenCumulativeCurveIsDisabled() {
+        // Given - the default curve
+        when(ExperienceConfig.getInstance().getFormulaType()).thenReturn(FormulaType.LINEAR);
+        final FormulaManager formulaManager = mock(FormulaManager.class);
+        mockedMcMMO.when(mcMMO::getFormulaManager).thenReturn(formulaManager);
+        when(formulaManager.getXPtoNextLevel(STARTING_LEVEL, FormulaType.LINEAR))
+                .thenReturn(1000);
+
+        // When - the XP to the next level is requested
+        final int xpToLevel = profile.getXpToLevel(PrimarySkillType.MINING);
+
+        // Then - the curve levels against the skill's own level
+        assertThat(xpToLevel).isEqualTo(1000);
     }
 
     @Test
