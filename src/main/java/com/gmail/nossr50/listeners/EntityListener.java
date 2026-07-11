@@ -291,9 +291,12 @@ public class EntityListener implements Listener {
                         MetadataConstants.getMcMMOMetadataValue());
                 TravelingBlockMetaCleanup metaCleanupTask = new TravelingBlockMetaCleanup(entity,
                         pluginRef);
-                final Runnable retired = () -> entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
-                mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(entity, metaCleanupTask, retired, 20,
-                        20 * 60); //6000 ticks is 5 minutes
+                final Runnable retired = () -> entity.removeMetadata(
+                        MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
+                // Re-check every 60 seconds; the task cancels itself once the entity dies or
+                // the metadata is gone
+                mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(entity, metaCleanupTask,
+                        retired, 20, 20 * 60);
             } else if (isTracked) {
                 BlockUtils.setUnnaturalBlock(block);
                 entity.removeMetadata(MetadataConstants.METADATA_KEY_TRAVELING_BLOCK, pluginRef);
@@ -480,69 +483,52 @@ public class EntityListener implements Listener {
             CombatUtils.delayArrowMetaCleanup(arrow);
         }
 
-        if (entityDamageEvent.getEntity() instanceof Player player
-                && entityDamageEvent.getDamager() instanceof Player) {
-            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-            if (mmoPlayer != null) {
-                if (mmoPlayer.isDebugMode()) {
-                    player.sendMessage(ChatColor.GOLD
-                            + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
-                    player.sendMessage("You are being damaged by another player in this event");
-                    player.sendMessage("Raw Damage: " + entityDamageEvent.getDamage());
-                    player.sendMessage("Your max health: " + player.getAttribute(MAPPED_MAX_HEALTH)
-                            .getValue());
-                    player.sendMessage("Your current health: " + player.getHealth());
+        if (entityDamageEvent.getEntity() instanceof Player defender
+                && entityDamageEvent.getDamager() instanceof Player attacker) {
+            sendCombatDebugReport(defender, "You are being damaged by another player in this event",
+                    "Your", defender, entityDamageEvent);
+            sendCombatDebugReport(attacker, "You are dealing damage to another player in this event",
+                    "Target players", defender, entityDamageEvent);
+        }
+    }
 
-                    player.sendMessage(ChatColor.GREEN + "Damage Modifiers (final damage)");
-                    for (EntityDamageEvent.DamageModifier modifier : EntityDamageEvent.DamageModifier.values()) {
-                        player.sendMessage(
-                                "Modifier " + modifier.name() + ": " + entityDamageEvent.getDamage(
-                                        modifier));
-                    }
-
-                    player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
-
-                    if (entityDamageEvent.isCancelled()) {
-                        player.sendMessage(
-                                "Event was cancelled, which means no damage should be done.");
-                    }
-
-                    player.sendMessage(ChatColor.RED + "(mmodebug end of combat report)");
-                }
-            }
+    /**
+     * Sends the PvP combat debug report to the given viewer when they have debug mode enabled.
+     *
+     * @param viewer the player receiving the report
+     * @param roleDescription the viewer's role in the damage event
+     * @param healthOwnerLabel possessive label for the health lines ("Your", "Target players")
+     * @param healthOwner the player whose health is reported
+     * @param event the damage event being reported
+     */
+    private void sendCombatDebugReport(Player viewer, String roleDescription,
+            String healthOwnerLabel, Player healthOwner, EntityDamageByEntityEvent event) {
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(viewer);
+        if (mmoPlayer == null || !mmoPlayer.isDebugMode()) {
+            return;
         }
 
-        if (entityDamageEvent.getDamager() instanceof Player player
-                && entityDamageEvent.getEntity() instanceof Player otherPlayer) {
-            final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
-            if (mmoPlayer != null) {
-                if (mmoPlayer.isDebugMode()) {
-                    player.sendMessage(ChatColor.GOLD
-                            + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
-                    player.sendMessage("You are dealing damage to another player in this event");
-                    player.sendMessage("Raw Damage: " + entityDamageEvent.getDamage());
+        viewer.sendMessage(ChatColor.GOLD
+                + "(mmodebug start of combat report) EntityDamageByEntityEvent DEBUG Info:");
+        viewer.sendMessage(roleDescription);
+        viewer.sendMessage("Raw Damage: " + event.getDamage());
+        viewer.sendMessage(healthOwnerLabel + " max health: "
+                + healthOwner.getAttribute(MAPPED_MAX_HEALTH).getValue());
+        viewer.sendMessage(healthOwnerLabel + " current health: " + healthOwner.getHealth());
 
-                    player.sendMessage(ChatColor.GREEN + "Damage Modifiers (final damage)");
-                    for (EntityDamageEvent.DamageModifier modifier : EntityDamageEvent.DamageModifier.values()) {
-                        player.sendMessage(
-                                "Modifier " + modifier.name() + ": " + entityDamageEvent.getDamage(
-                                        modifier));
-                    }
-
-                    player.sendMessage("Final damage: " + entityDamageEvent.getFinalDamage());
-                    player.sendMessage("Target players max health: " + otherPlayer.getAttribute(
-                            MAPPED_MAX_HEALTH).getValue());
-                    player.sendMessage("Target players current health: " + otherPlayer.getHealth());
-
-                    if (entityDamageEvent.isCancelled()) {
-                        player.sendMessage(
-                                "Event was cancelled, which means no damage should be done.");
-                    }
-
-                    player.sendMessage(ChatColor.RED + "(mmodebug end of combat report)");
-                }
-            }
+        viewer.sendMessage(ChatColor.GREEN + "Damage Modifiers (final damage)");
+        for (EntityDamageEvent.DamageModifier modifier
+                : EntityDamageEvent.DamageModifier.values()) {
+            viewer.sendMessage("Modifier " + modifier.name() + ": " + event.getDamage(modifier));
         }
+
+        viewer.sendMessage("Final damage: " + event.getFinalDamage());
+
+        if (event.isCancelled()) {
+            viewer.sendMessage("Event was cancelled, which means no damage should be done.");
+        }
+
+        viewer.sendMessage(ChatColor.RED + "(mmodebug end of combat report)");
     }
 
     /**
@@ -928,7 +914,7 @@ public class EntityListener implements Listener {
      * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEnitityExplode(EntityExplodeEvent event) {
+    public void onEntityExplode(EntityExplodeEvent event) {
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
             return;

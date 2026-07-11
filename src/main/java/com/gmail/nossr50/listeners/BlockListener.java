@@ -224,7 +224,6 @@ public class BlockListener implements Listener {
             return;
         }
 
-        // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
 
