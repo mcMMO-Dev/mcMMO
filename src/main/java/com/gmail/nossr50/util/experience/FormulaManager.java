@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class FormulaManager {
     private static final File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
@@ -25,6 +26,13 @@ public class FormulaManager {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
         initExperienceNeededMaps();
         loadFormula();
+    }
+
+    @VisibleForTesting
+    public FormulaManager(FormulaType previousFormulaType) {
+        /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
+        initExperienceNeededMaps();
+        this.previousFormula = previousFormulaType;
     }
 
     /**
@@ -119,7 +127,7 @@ public class FormulaManager {
          */
 
         //TODO: When the heck is Unknown used?
-        if (formulaType == FormulaType.UNKNOWN) {
+        if (formulaType == null || formulaType == FormulaType.UNKNOWN) {
             formulaType = FormulaType.LINEAR;
         }
 

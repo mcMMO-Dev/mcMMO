@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 public class SkillTools {
@@ -363,7 +365,8 @@ public class SkillTools {
      * @param skillName target skill name
      * @return the matching PrimarySkillType if one is found, otherwise null
      */
-    public PrimarySkillType matchSkill(String skillName) {
+    @Nullable
+    public PrimarySkillType matchSkill(@NotNull String skillName) {
         if (!pluginRef.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : PrimarySkillType.values()) {
                 String localized = LocaleLoader.getString(
@@ -387,6 +390,30 @@ public class SkillTools {
         }
 
         return null;
+    }
+
+    /**
+     * Matches a collection of skill name strings to skills.
+     * This is NOT case-sensitive.
+     * <p>
+     * First it checks the locale file and tries to match by the localized name of the skill.
+     * Then if nothing is found it checks against the hard coded "name" of the skill,
+     * which is just its name in English.
+     *
+     * @param skills target skill names
+     * @return the set of matching PrimarySkillTypes, skipping names that don't match
+     */
+    @NotNull
+    public Set<PrimarySkillType> matchSkills(@NotNull Collection<String> skills) {
+        final Set<PrimarySkillType> matchingSkills = new HashSet<>();
+        for (String skillName : skills) {
+            final PrimarySkillType primarySkillType = matchSkill(skillName);
+            if (primarySkillType != null) {
+                matchingSkills.add(primarySkillType);
+            }
+        }
+
+        return matchingSkills;
     }
 
     /**

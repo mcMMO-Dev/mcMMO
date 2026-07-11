@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.commands.levelup.LevelUpCommandManager;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -15,10 +16,13 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 
 public class SelfListener implements Listener {
     //Used in task scheduling and other things
@@ -28,10 +32,10 @@ public class SelfListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
-        Player player = event.getPlayer();
-        PrimarySkillType skill = event.getSkill();
+        final Player player = event.getPlayer();
+        final PrimarySkillType skill = event.getSkill();
 
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
@@ -56,6 +60,39 @@ public class SelfListener implements Listener {
                 ScoreboardManager.handleLevelUp(player, skill);
             }
         }
+
+        final LevelUpCommandManager levelUpCommandManager = plugin.getLevelUpCommandManager();
+        if (!levelUpCommandManager.hasRegistrations()) {
+            return;
+        }
+
+        final Set<Integer> levelsGained = new LinkedHashSet<>();
+        final Set<Integer> powerLevelsGained = new LinkedHashSet<>();
+        final int startingLevel = event.getSkillLevel() - event.getLevelsGained();
+        // The power level only counts non-child skills the player has permission for, so a
+        // level up in a skill that does not count leaves the power level where it was
+        final boolean countsTowardPowerLevel = !SkillTools.isChildSkill(skill)
+                && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill);
+        final int startingPowerLevel = countsTowardPowerLevel
+                ? mmoPlayer.getPowerLevel() - event.getLevelsGained() : 0;
+        for (int i = 1; i <= event.getLevelsGained(); i++) {
+            levelsGained.add(startingLevel + i);
+            if (countsTowardPowerLevel) {
+                powerLevelsGained.add(startingPowerLevel + i);
+            }
+        }
+
+        levelUpCommandManager.applyLevelUp(mmoPlayer, skill, levelsGained, powerLevelsGained);
+    }
+
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent event) {
+        if (event.getPlugin() == plugin) {
+            // mcMMO shutting down is handled in onDisable
+            return;
+        }
+
+        plugin.getLevelUpCommandManager().clearPluginRegistrations(event.getPlugin());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

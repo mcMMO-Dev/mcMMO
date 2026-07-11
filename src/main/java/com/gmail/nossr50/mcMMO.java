@@ -2,7 +2,9 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.commands.CommandManager;
+import com.gmail.nossr50.commands.levelup.LevelUpCommandManager;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.CommandOnLevelUpConfig;
 import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.CustomItemSupportConfig;
 import com.gmail.nossr50.config.GeneralConfig;
@@ -103,6 +105,7 @@ public class mcMMO extends JavaPlugin {
     private static DatabaseManager databaseManager;
     private static FormulaManager formulaManager;
     private static UpgradeManager upgradeManager;
+    private static LevelUpCommandManager levelUpCommandManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static TransientMetadataTools transientMetadataTools;
@@ -164,6 +167,8 @@ public class mcMMO extends JavaPlugin {
     private FoliaLib foliaLib;
     private PartyManager partyManager;
 
+    private CommandOnLevelUpConfig commandOnLevelUpConfig;
+
     public mcMMO() {
         p = this;
     }
@@ -208,7 +213,9 @@ public class mcMMO extends JavaPlugin {
             skillTools = new SkillTools(this); //Load after general config
 
             //Init configs
+            levelUpCommandManager = new LevelUpCommandManager(this);
             advancedConfig = new AdvancedConfig(getDataFolder());
+            commandOnLevelUpConfig = new CommandOnLevelUpConfig(getDataFolder());
             partyConfig = new PartyConfig(getDataFolder());
             customItemSupportConfig = new CustomItemSupportConfig(getDataFolder());
 
@@ -459,6 +466,9 @@ public class mcMMO extends JavaPlugin {
         try {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
+            if (levelUpCommandManager != null) {
+                levelUpCommandManager.clearAll();
+            }
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             if (partyConfig.isPartyEnabled()) {
                 getPartyManager().saveParties(); // Save our parties
@@ -980,6 +990,14 @@ public class mcMMO extends JavaPlugin {
 
     public @NotNull FoliaLib getFoliaLib() {
         return foliaLib;
+    }
+
+    public @NotNull CommandOnLevelUpConfig getCommandOnLevelUpConfig() {
+        return commandOnLevelUpConfig;
+    }
+
+    public @NotNull LevelUpCommandManager getLevelUpCommandManager() {
+        return levelUpCommandManager;
     }
 
     /**

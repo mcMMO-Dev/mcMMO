@@ -333,7 +333,7 @@ public class ExperienceConfig extends BukkitConfig {
     public FormulaType getFormulaType() {
         if (formulaType == null) {
             formulaType = FormulaType.getFormulaType(
-                    config.getString("Experience_Formula.Curve"));
+                    config.getString("Experience_Formula.Curve", "LINEAR"));
         }
 
         return formulaType;
@@ -350,14 +350,16 @@ public class ExperienceConfig extends BukkitConfig {
 
     /* Curve values */
     public double getMultiplier(FormulaType type) {
+        double def = type == FormulaType.LINEAR ? 20D : 0.1D;
         return config.getDouble(
                 "Experience_Formula." + StringUtils.getCapitalized(type.toString())
-                        + "_Values.multiplier");
+                        + "_Values.multiplier", def);
     }
 
     public int getBase(FormulaType type) {
+        int def = type == FormulaType.LINEAR ? 1020 : 2000;
         return config.getInt("Experience_Formula." + StringUtils.getCapitalized(type.toString())
-                + "_Values.base");
+                + "_Values.base", def);
     }
 
     public double getExponent(FormulaType type) {
@@ -516,7 +518,7 @@ public class ExperienceConfig extends BukkitConfig {
         return formulaSkillModifiers.computeIfAbsent(skill, key -> config.getDouble(
                 "Experience_Formula.Skill_Multiplier." + StringUtils.getCapitalized(
                         key.toString()),
-                1));
+                1D));
     }
 
     /* Custom XP perk */
