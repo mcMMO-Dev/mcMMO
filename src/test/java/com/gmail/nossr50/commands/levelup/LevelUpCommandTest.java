@@ -22,6 +22,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TestPlayerMock;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +180,56 @@ class LevelUpCommandTest extends MMOTestEnvironment {
 
         // Then - the command fired exactly once with the milestone injected
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(eq(consoleSender), eq("say power 3")),
+                times(1));
+    }
+
+    /**
+     * The power level only counts skills the player has permission for, so leveling a skill
+     * that does not count must not report the unchanged power level as a freshly crossed
+     * milestone. Before the fix every such level up re-reported the current power level,
+     * firing power level commands that had already run (or should never run).
+     */
+    @Test
+    void powerLevelMilestoneShouldNotFireWhenLeveledSkillDoesNotCountTowardPowerLevel() {
+        // Given - a player whose power level comes entirely from Woodcutting because they
+        // lack permission for Mining, and a command watching their current power level
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        final McMMOPlayer mmoPlayer = playerMock.mmoPlayer();
+        when(Permissions.skillEnabled(playerMock.player(), MINING)).thenReturn(false);
+        mmoPlayer.modifySkill(WOODCUTTING, 3);
+        assertThat(mmoPlayer.getPowerLevel()).isEqualTo(3);
+        levelUpCommandManager.register(LevelUpCommand.builder()
+                        .withPowerLevels(Set.of(3))
+                        .command("say power {@power_level}")
+                        .build(),
+                RegistrationSource.CONFIG);
+
+        // When - Mining levels up without moving the power level
+        mmoPlayer.modifySkill(MINING, 1);
+        final McMMOPlayerLevelUpEvent event = new McMMOPlayerLevelUpEvent(mmoPlayer.getPlayer(),
+                MINING, 1, XPGainReason.COMMAND);
+        selfListener.onPlayerLevelUp(event);
+
+        // Then - the unchanged power level is not reported as a crossed milestone
+        mockedBukkit.verify(() -> Bukkit.dispatchCommand(any(), any(String.class)), never());
+    }
+
+    @Test
+    void skillMilestoneShouldStillFireWhenLeveledSkillDoesNotCountTowardPowerLevel() {
+        // Given - a command watching Mining level 1 for a player without Mining permission
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        final McMMOPlayer mmoPlayer = playerMock.mmoPlayer();
+        when(Permissions.skillEnabled(playerMock.player(), MINING)).thenReturn(false);
+        registerConfigCommand("say mining", Set.of(MINING), Set.of(1));
+
+        // When - Mining levels up anyway (commands and the API can level gated skills)
+        mmoPlayer.modifySkill(MINING, 1);
+        final McMMOPlayerLevelUpEvent event = new McMMOPlayerLevelUpEvent(mmoPlayer.getPlayer(),
+                MINING, 1, XPGainReason.COMMAND);
+        selfListener.onPlayerLevelUp(event);
+
+        // Then - the skill milestone still fires; only power level accounting is skipped
+        mockedBukkit.verify(() -> Bukkit.dispatchCommand(eq(consoleSender), eq("say mining")),
                 times(1));
     }
 

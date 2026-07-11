@@ -69,10 +69,17 @@ public class SelfListener implements Listener {
         final Set<Integer> levelsGained = new LinkedHashSet<>();
         final Set<Integer> powerLevelsGained = new LinkedHashSet<>();
         final int startingLevel = event.getSkillLevel() - event.getLevelsGained();
-        final int startingPowerLevel = mmoPlayer.getPowerLevel() - event.getLevelsGained();
+        // The power level only counts non-child skills the player has permission for, so a
+        // level up in a skill that does not count leaves the power level where it was
+        final boolean countsTowardPowerLevel = !SkillTools.isChildSkill(skill)
+                && mcMMO.p.getSkillTools().doesPlayerHaveSkillPermission(player, skill);
+        final int startingPowerLevel = countsTowardPowerLevel
+                ? mmoPlayer.getPowerLevel() - event.getLevelsGained() : 0;
         for (int i = 1; i <= event.getLevelsGained(); i++) {
             levelsGained.add(startingLevel + i);
-            powerLevelsGained.add(startingPowerLevel + i);
+            if (countsTowardPowerLevel) {
+                powerLevelsGained.add(startingPowerLevel + i);
+            }
         }
 
         levelUpCommandManager.applyLevelUp(mmoPlayer, skill, levelsGained, powerLevelsGained);
