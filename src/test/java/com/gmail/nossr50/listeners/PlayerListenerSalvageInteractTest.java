@@ -17,8 +17,10 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.lang.reflect.Method;
@@ -60,6 +62,7 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
 
     private PlayerListener playerListener;
     private SalvageManager salvageManager;
+    private SalvageableManager salvageableManager;
     private Block anvilBlock;
     private Block dirtBlock;
     private ItemStack helmet;
@@ -83,7 +86,7 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
         when(RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR))
                 .thenReturn(true);
 
-        final SalvageableManager salvageableManager = mock(SalvageableManager.class);
+        salvageableManager = mock(SalvageableManager.class);
         when(mcMMO.getSalvageableManager()).thenReturn(salvageableManager);
 
         helmet = mockSalvageableItem(salvageableManager);
@@ -117,6 +120,12 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
         when(item.clone()).thenReturn(item);
         when(salvageableManager.isSalvageable(item)).thenReturn(true);
         return item;
+    }
+
+    private void mockSalvageableConfig(Material material, int minimumLevel) {
+        final Salvageable salvageable = mock(Salvageable.class);
+        when(salvageable.getMinimumLevel()).thenReturn(minimumLevel);
+        when(salvageableManager.getSalvageable(material)).thenReturn(salvageable);
     }
 
     private PlayerInteractEvent fireRightClick(Action action, Block block, ItemStack heldItem) {
@@ -259,6 +268,70 @@ class PlayerListenerSalvageInteractTest extends MMOTestEnvironment {
         assertThat(event.useItemInHand()).isEqualTo(Event.Result.DENY);
         // And - nothing is salvaged without a confirmation click
         verify(salvageManager, never()).handleSalvage(any(), any());
+    }
+
+    @Test
+    void anvilClickShouldExplainLockedScrapCollectorInsteadOfEquipping() {
+        // Given - a salvageable helmet whose item level requirement the player already meets,
+        // held by a player who has not unlocked Scrap Collector
+        when(RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR))
+                .thenReturn(false);
+        when(RankUtils.getRankUnlockLevel(SubSkillType.SALVAGE_SCRAP_COLLECTOR, 1))
+                .thenReturn(20);
+        when(helmet.getType()).thenReturn(Material.DIAMOND_HELMET);
+        mockSalvageableConfig(Material.DIAMOND_HELMET, 0);
+        when(mmoPlayer.getSkillLevel(PrimarySkillType.SALVAGE)).thenReturn(5);
+
+        // When - the player right-clicks the salvage anvil
+        final PlayerInteractEvent event =
+                fireRightClick(Action.RIGHT_CLICK_BLOCK, anvilBlock, helmet);
+
+        // Then - the interaction is fully cancelled so the helmet is not equipped
+        assertThat(event.useInteractedBlock()).isEqualTo(Event.Result.DENY);
+        assertThat(event.useItemInHand()).isEqualTo(Event.Result.DENY);
+        // And - the chat message only covers Scrap Collector, the one requirement still missing
+        notificationManager.verify(() -> NotificationManager.sendPlayerInformationChatOnly(
+                player, "Salvage.Skills.ScrapCollector.Locked", "20"));
+        verify(salvageManager, never()).handleSalvage(any(), any());
+    }
+
+    @Test
+    void lockedScrapCollectorMessageShouldIncludeItemLevelWhenThatIsAlsoMissing() {
+        // Given - a salvageable helmet with an item level requirement the player has not
+        // reached, held by a player who has not unlocked Scrap Collector either
+        when(RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR))
+                .thenReturn(false);
+        when(RankUtils.getRankUnlockLevel(SubSkillType.SALVAGE_SCRAP_COLLECTOR, 1))
+                .thenReturn(20);
+        when(helmet.getType()).thenReturn(Material.DIAMOND_HELMET);
+        mockSalvageableConfig(Material.DIAMOND_HELMET, 50);
+        when(mmoPlayer.getSkillLevel(PrimarySkillType.SALVAGE)).thenReturn(5);
+
+        // When - the player right-clicks the salvage anvil
+        fireRightClick(Action.RIGHT_CLICK_BLOCK, anvilBlock, helmet);
+
+        // Then - the chat message names both missing requirements and the item
+        notificationManager.verify(() -> NotificationManager.sendPlayerInformationChatOnly(
+                player, "Salvage.Skills.ScrapCollector.LockedAndItem", "20", "50",
+                "Diamond Helmet"));
+        verify(salvageManager, never()).handleSalvage(any(), any());
+    }
+
+    @Test
+    void anvilClickWithUnsalvageableItemShouldStayVanillaWhenScrapCollectorLocked() {
+        // Given - Scrap Collector locked and a held item no salvage config covers
+        when(RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR))
+                .thenReturn(false);
+        final ItemStack stone = mock(ItemStack.class);
+        when(stone.getAmount()).thenReturn(1);
+
+        // When - the player right-clicks the salvage anvil
+        final PlayerInteractEvent event =
+                fireRightClick(Action.RIGHT_CLICK_BLOCK, anvilBlock, stone);
+
+        // Then - the click stays vanilla and no locked message is sent
+        assertThat(event.useItemInHand()).isNotEqualTo(Event.Result.DENY);
+        notificationManager.verifyNoInteractions();
     }
 
     @Test

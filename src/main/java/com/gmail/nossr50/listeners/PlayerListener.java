@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
@@ -28,6 +29,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -525,6 +527,31 @@ public class PlayerListener implements Listener {
     }
 
     /**
+     * Tells a player which Salvage requirements they are missing for the held item. Scrap
+     * Collector is always locked on this path; the item's configured minimum level is only
+     * mentioned when the player has not reached it either.
+     */
+    private static void sendSalvageLockedRequirements(Player player, McMMOPlayer mmoPlayer,
+            ItemStack heldItem) {
+        final String scrapCollectorUnlockLevel = String.valueOf(
+                RankUtils.getRankUnlockLevel(SubSkillType.SALVAGE_SCRAP_COLLECTOR, 1));
+        final Salvageable salvageable = mcMMO.getSalvageableManager()
+                .getSalvageable(heldItem.getType());
+        final int itemMinimumLevel = salvageable == null ? 0 : salvageable.getMinimumLevel();
+
+        // Chat rather than the action bar; these messages are too long for the action bar
+        if (mmoPlayer.getSkillLevel(PrimarySkillType.SALVAGE) < itemMinimumLevel) {
+            NotificationManager.sendPlayerInformationChatOnly(player,
+                    "Salvage.Skills.ScrapCollector.LockedAndItem", scrapCollectorUnlockLevel,
+                    String.valueOf(itemMinimumLevel),
+                    StringUtils.getPrettyMaterialString(heldItem.getType()));
+        } else {
+            NotificationManager.sendPlayerInformationChatOnly(player,
+                    "Salvage.Skills.ScrapCollector.Locked", scrapCollectorUnlockLevel);
+        }
+    }
+
+    /**
      * Decides whether a click on the given block is a repair or salvage anvil use. The perform
      * path (right click) additionally requires a single held item and the Scrap Collector rank
      * for salvage; the cancel-confirmation path (left click) does not.
@@ -539,10 +566,10 @@ public class PlayerListener implements Listener {
                         .doesPlayerHaveSkillPermission(player, PrimarySkillType.REPAIR),
                 () -> mcMMO.getRepairableManager().isRepairable(heldItem),
                 () -> mcMMO.p.getSkillTools()
-                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE)
-                        && (!performingUse || RankUtils.hasUnlockedSubskill(player,
-                                SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
-                () -> mcMMO.getSalvageableManager().isSalvageable(heldItem));
+                        .doesPlayerHaveSkillPermission(player, PrimarySkillType.SALVAGE),
+                () -> mcMMO.getSalvageableManager().isSalvageable(heldItem),
+                () -> RankUtils.hasUnlockedSubskill(player,
+                        SubSkillType.SALVAGE_SCRAP_COLLECTOR));
     }
 
     private EquipmentSlot getFishingHandForEvent(Player player, EquipmentSlot eventHand) {
@@ -765,6 +792,12 @@ public class PlayerListener implements Listener {
                                 SkillUtils.removeAbilityBoostsFromInventory(player);
                                 salvageManager.handleSalvage(clickedBlock.getLocation(), heldItem);
                             }
+                        }
+                        case SALVAGE_LOCKED -> {
+                            // Tell the player why nothing salvaged; without the cancel the
+                            // click falls through to vanilla behavior like armor equipping
+                            event.setCancelled(true);
+                            sendSalvageLockedRequirements(player, mmoPlayer, heldItem);
                         }
                         case NONE -> {
                         }
