@@ -28,7 +28,8 @@ public class Archery {
             .getArcheryDistanceMultiplier();
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
-        final TrackedEntity trackedEntity = trackedEntities.computeIfAbsent(livingEntity.getUniqueId(), k -> new TrackedEntity(livingEntity));
+        final TrackedEntity trackedEntity = trackedEntities.computeIfAbsent(
+                livingEntity.getUniqueId(), k -> new TrackedEntity(livingEntity));
         trackedEntity.incrementArrowCount();
     }
 
@@ -51,9 +52,9 @@ public class Archery {
     }
 
     public static double getSkillShotBonusDamage(Player player, double oldDamage) {
-        double damageBonusPercent = getDamageBonusPercent(player);
-        double newDamage = oldDamage + (oldDamage * damageBonusPercent);
-        return Math.min(newDamage, (oldDamage + Archery.skillShotMaxBonusDamage));
+        final double damageBonusPercent = getDamageBonusPercent(player);
+        final double newDamage = oldDamage + (oldDamage * damageBonusPercent);
+        return Math.min(newDamage, oldDamage + Archery.skillShotMaxBonusDamage);
     }
 
     public static double getDamageBonusPercent(Player player) {

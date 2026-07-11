@@ -65,9 +65,9 @@ public class ArcheryManager extends SkillManager {
             return 1;
         }
 
-        Location firedLocation = (Location) arrow.getMetadata(
+        final Location firedLocation = (Location) arrow.getMetadata(
                 MetadataConstants.METADATA_KEY_ARROW_DISTANCE).get(0).value();
-        Location targetLocation = target.getLocation();
+        final Location targetLocation = target.getLocation();
 
         if (firedLocation == null || firedLocation.getWorld() == null) {
             return 1;
