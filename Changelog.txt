@@ -1,3 +1,5 @@
+Version 2.3.001
+
 Version 2.3.000
     Added support for running commands when players reach chosen skill levels or power levels (See notes)
     Added scoreboard support for Folia servers (Thanks albert4719) (See notes)
