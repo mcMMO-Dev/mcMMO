@@ -2,21 +2,33 @@ package com.gmail.nossr50.datatypes.player;
 
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.skills.SkillTools;
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 class PlayerProfileTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(PlayerProfileTest.class.getName());
@@ -109,4 +121,142 @@ class PlayerProfileTest extends MMOTestEnvironment {
         assertThat(profile.getSkillLevel(PrimarySkillType.HERBALISM)).isEqualTo(STARTING_LEVEL);
     }
 
+    @Test
+    void addXpShouldSplitChildSkillXpAcrossParents() {
+        // Given - the child skill Smelting with its two parents at zero XP
+        final var parents = mcMMO.p.getSkillTools()
+                .getChildSkillParents(PrimarySkillType.SMELTING);
+
+        // When - XP is added to the child skill
+        profile.addXp(PrimarySkillType.SMELTING, 10F);
+
+        // Then - each parent receives an equal share
+        for (final PrimarySkillType parent : parents) {
+            assertThat(profile.getSkillXpLevelRaw(parent)).isEqualTo(5F);
+        }
+    }
+
+    @Test
+    void modifySkillShouldClampNegativeLevelsToZeroAndResetXp() {
+        // Given - a skill with some XP progress
+        profile.setSkillXpLevel(PrimarySkillType.MINING, 250F);
+
+        // When - the skill is modified to a negative level
+        profile.modifySkill(PrimarySkillType.MINING, -5);
+
+        // Then - the level clamps to zero and the XP progress resets
+        assertThat(profile.getSkillLevel(PrimarySkillType.MINING)).isZero();
+        assertThat(profile.getSkillXpLevelRaw(PrimarySkillType.MINING)).isZero();
+    }
+
+    /**
+     * Covers the save retry ladder: saves only run for dirty loaded profiles, a success clears
+     * the dirty flag, and a failure schedules retries that give up after ten attempts instead
+     * of retrying forever.
+     */
+    @Nested
+    class SaveBehavior {
+        private PlayerProfile loadedProfile;
+        private DatabaseManager databaseManager;
+        private PlatformScheduler scheduler;
+
+        @BeforeEach
+        void setUpSaveCollaborators() {
+            loadedProfile = new PlayerProfile("Herb", UUID.randomUUID(), true, STARTING_LEVEL);
+            databaseManager = mock(DatabaseManager.class);
+            mockedMcMMO.when(mcMMO::getDatabaseManager).thenReturn(databaseManager);
+            final FoliaLib foliaLib = mock(FoliaLib.class);
+            scheduler = mock(PlatformScheduler.class);
+            when(mcMMO.p.getFoliaLib()).thenReturn(foliaLib);
+            when(foliaLib.getScheduler()).thenReturn(scheduler);
+        }
+
+        @Test
+        void skipsTheDatabaseWhenNothingChanged() {
+            // Given - a loaded profile with no changes
+            // When - a save runs
+            loadedProfile.save(false);
+
+            // Then - the database is never touched
+            verifyNoInteractions(databaseManager);
+        }
+
+        @Test
+        void skipsTheDatabaseForUnloadedProfiles() {
+            // Given - a dirty profile whose data never finished loading
+            final PlayerProfile unloadedProfile =
+                    new PlayerProfile("Herb", UUID.randomUUID(), STARTING_LEVEL);
+            unloadedProfile.markProfileDirty();
+
+            // When - a save runs
+            unloadedProfile.save(false);
+
+            // Then - the incomplete data is never written over the stored profile
+            verifyNoInteractions(databaseManager);
+        }
+
+        @Test
+        void persistsACopyOnceAndClearsTheDirtyFlag() {
+            // Given - a dirty profile and a database accepting the save
+            loadedProfile.addLevels(PrimarySkillType.MINING, 5);
+            when(databaseManager.saveUser(argThat(saved -> saved.getPlayerName().equals("Herb"))))
+                    .thenReturn(true);
+
+            // When - the profile saves twice
+            loadedProfile.save(false);
+            loadedProfile.save(false);
+
+            // Then - only the first save writes, and the written copy carries the data
+            final ArgumentCaptor<PlayerProfile> savedCopy =
+                    ArgumentCaptor.forClass(PlayerProfile.class);
+            verify(databaseManager).saveUser(savedCopy.capture());
+            assertThat(savedCopy.getValue().getSkillLevel(PrimarySkillType.MINING))
+                    .isEqualTo(STARTING_LEVEL + 5);
+        }
+
+        @Test
+        void schedulesAnAsyncRetryWhenTheSaveFails() {
+            // Given - a dirty profile and a database rejecting the save
+            loadedProfile.markProfileDirty();
+            when(databaseManager.saveUser(argThat(saved -> saved.getPlayerName().equals("Herb"))))
+                    .thenReturn(false);
+
+            // When - an async save fails
+            loadedProfile.save(false);
+
+            // Then - a retry is scheduled off the main thread
+            verify(scheduler).runAsync(any(PlayerProfileSaveTask.class));
+        }
+
+        @Test
+        void retriesSynchronouslyWhenASyncSaveFails() {
+            // Given - a dirty profile and a database rejecting the save
+            loadedProfile.markProfileDirty();
+            when(databaseManager.saveUser(argThat(saved -> saved.getPlayerName().equals("Herb"))))
+                    .thenReturn(false);
+
+            // When - a sync save (shutdown path) fails
+            loadedProfile.save(true);
+
+            // Then - the retry stays on the next tick instead of going async
+            verify(scheduler).runNextTick(any(PlayerProfileSaveTask.class));
+            verify(scheduler, never()).runAsync(any(PlayerProfileSaveTask.class));
+        }
+
+        @Test
+        void givesUpRetryingAfterTenFailedAttempts() {
+            // Given - a dirty profile and a database that always rejects the save
+            loadedProfile.markProfileDirty();
+            when(databaseManager.saveUser(argThat(saved -> saved.getPlayerName().equals("Herb"))))
+                    .thenReturn(false);
+
+            // When - the save fails more times than the retry budget allows
+            for (int attempt = 0; attempt < 11; attempt++) {
+                loadedProfile.save(false);
+            }
+
+            // Then - exactly ten retries were scheduled and the eleventh failure gave up
+            verify(scheduler, times(10)).runAsync(any(PlayerProfileSaveTask.class));
+        }
+    }
 }
