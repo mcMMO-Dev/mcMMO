@@ -340,9 +340,9 @@ public class MiningManager extends SkillManager {
     }
 
     /**
-     * Gets the Blast Mining tier
+     * Gets the ore yield bonus for the player's Blast Mining tier, as a fraction.
      *
-     * @return the Blast Mining tier
+     * @return the ore bonus fraction
      */
     public float getOreBonus() {
         return (float) (mcMMO.p.getAdvancedConfig().getOreBonus(getBlastMiningTier()) / 100F);
@@ -358,9 +358,9 @@ public class MiningManager extends SkillManager {
     }
 
     /**
-     * Gets the Blast Mining tier
+     * Gets the debris reduction for the player's Blast Mining tier.
      *
-     * @return the Blast Mining tier
+     * @return the debris reduction
      */
     public double getDebrisReduction() {
         return getDebrisReduction(getBlastMiningTier());
@@ -371,9 +371,9 @@ public class MiningManager extends SkillManager {
     }
 
     /**
-     * Gets the Blast Mining tier
+     * Gets the bonus drop multiplier for the player's Blast Mining tier.
      *
-     * @return the Blast Mining tier
+     * @return the bonus drop multiplier, or 0 when bonus drops are disabled
      */
     public int getDropMultiplier() {
         if (!mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
@@ -389,18 +389,18 @@ public class MiningManager extends SkillManager {
     }
 
     /**
-     * Gets the Blast Mining tier
+     * Gets the blast radius modifier for the player's Blast Mining tier.
      *
-     * @return the Blast Mining tier
+     * @return the blast radius modifier
      */
     public double getBlastRadiusModifier() {
         return BlastMining.getBlastRadiusModifier(getBlastMiningTier());
     }
 
     /**
-     * Gets the Blast Mining tier
+     * Gets the blast damage decrease for the player's Blast Mining tier.
      *
-     * @return the Blast Mining tier
+     * @return the blast damage decrease, in percent
      */
     public double getBlastDamageModifier() {
         return BlastMining.getBlastDamageDecrease(getBlastMiningTier());

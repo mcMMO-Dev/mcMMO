@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
+import com.gmail.nossr50.TestRegistryBootstrap;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -24,7 +25,6 @@ import com.gmail.nossr50.util.random.ProbabilityUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.potion.PotionEffect;
@@ -42,11 +42,7 @@ import org.mockito.MockedStatic;
  * attack-strength-scaled odds, the do-not-downgrade guard against stronger existing buffs)
  * and the Spear Mastery bonus damage math.
  *
- * <p>Bukkit's Registry cannot exist off-server, so the first test run bootstraps the Registry
- * interface with a shared mock: while {@code Registry.<clinit>} executes, the JVM treats the
- * in-progress initialization as complete for re-entrant references, which lets the
- * {@code Bukkit.getRegistry} answer create Registry mocks mid-initialization. Every
- * registry-backed lookup in these tests goes through that shared mock.</p>
+ * <p>Registry-backed effect types come from {@link TestRegistryBootstrap}.</p>
  */
 class SpearsManagerTest extends MMOTestEnvironment {
     private static final Logger logger = getLogger(SpearsManagerTest.class.getName());
@@ -54,32 +50,13 @@ class SpearsManagerTest extends MMOTestEnvironment {
     private static final int MOMENTUM_RANK = 3;
     private static final double MOMENTUM_CHANCE_AT_FULL_STRENGTH = 20.0;
 
-    /** The shared registry mock installed into every {@code Registry} constant at bootstrap. */
-    private static Registry<?> sharedRegistry;
-
     private SpearsManager spearsManager;
     private PotionEffectType swiftness;
 
     @BeforeEach
     void setUp() throws ReflectiveOperationException {
         mockBaseEnvironment(logger);
-
-        mockedBukkit.when(() -> Bukkit.getRegistry(any())).thenAnswer(invocation -> {
-            if (sharedRegistry == null) {
-                @SuppressWarnings("unchecked")
-                final Registry<PotionEffectType> registryMock = mock(Registry.class);
-                // PotionEffectType's own static initializer resolves its constants through
-                // the registry; minting a mock per constant mid-initialization keeps it alive
-                when(registryMock.get(any(NamespacedKey.class)))
-                        .thenAnswer(lookup -> mock(PotionEffectType.class));
-                sharedRegistry = registryMock;
-            }
-            return sharedRegistry;
-        });
-        // Force Registry and PotionEffectType to initialize while the answers are active
-        Class.forName("org.bukkit.Registry");
-        Class.forName("org.bukkit.potion.PotionEffectType");
-        assertThat(Registry.EFFECT).isSameAs(sharedRegistry);
+        TestRegistryBootstrap.bootstrap(mockedBukkit);
 
         swiftness = mock(PotionEffectType.class);
         setResolvedSwiftnessType(swiftness);
@@ -105,9 +82,8 @@ class SpearsManagerTest extends MMOTestEnvironment {
         field.set(null, effectType);
     }
 
-    @SuppressWarnings("unchecked")
     private Registry<PotionEffectType> effectRegistry() {
-        return (Registry<PotionEffectType>) sharedRegistry;
+        return TestRegistryBootstrap.registryFor(PotionEffectType.class);
     }
 
     @Nested
