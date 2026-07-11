@@ -446,7 +446,9 @@ public class InventoryListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    // HIGHEST instead of MONITOR: this handler mutates item state (stripping ability buffs),
+    // which the MONITOR contract forbids
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
         if (event.getCurrentItem() == null) {
             return;
@@ -467,7 +469,9 @@ public class InventoryListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    // HIGHEST instead of MONITOR: this handler mutates item state (stripping ability buffs),
+    // which the MONITOR contract forbids
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryOpenEvent(InventoryOpenEvent event) {
         SkillUtils.removeAbilityBuff(event.getPlayer().getInventory().getItemInMainHand());
     }

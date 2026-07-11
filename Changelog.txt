@@ -76,7 +76,7 @@ Version 2.3.000
     Fixed skill name arguments in commands not accepting English skill names on servers using a non-English locale
     Fixed localized skill commands rewriting command arguments that repeat the skill name
     Fixed players being fireproof against other players while their mcMMO data was still loading
-    Fixed several event handlers modifying fishing, block damage, and interaction events at MONITOR priority (See notes)
+    Fixed several event handlers modifying fishing, block damage, interaction, and inventory events at MONITOR priority (See notes)
     Fixed the Shake ability's McMMOPlayerShakeEvent never being fired to other plugins
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Fixed a thread-safety issue that could cause incorrect FlatFile leaderboard results
@@ -173,7 +173,7 @@ Version 2.3.000
     Ability durability loss now always uses the item's own maximum durability, so items with a custom max_damage component (from data packs or item plugins) no longer break super abilities or appear to restore durability.
 
     -- Event handling --
-    The fishing rewards handler, the interaction handler that activates abilities and consumes items, and the Berserk insta-break on block damage now run at HIGHEST priority instead of MONITOR, so plugins reading these events at MONITOR reliably see mcMMO's changes. If another plugin also modifies these events at HIGHEST priority, its ordering relative to mcMMO may have changed; please report any new conflicts with other plugins after updating.
+    The fishing rewards handler, the interaction handler that activates abilities and consumes items, the Berserk insta-break on block damage, and the inventory click and open handlers that strip ability buffs now run at HIGHEST priority instead of MONITOR, so plugins reading these events at MONITOR reliably see mcMMO's changes. If another plugin also modifies these events at HIGHEST priority, its ordering relative to mcMMO may have changed; please report any new conflicts with other plugins after updating.
 
     -- Config --
     Skill rank unlock messages can be shown on the action bar by setting 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to true in advanced.yml, with 'SendCopyOfMessageToChat' deciding whether the chat still gets a copy. Nothing changes unless you enable it. The section uses 'SendToActionBar' instead of 'Enabled' because older configs already contain a leftover 'Enabled: true'; that key is ignored so updating cannot silently change behavior. advanced.yml auto-updates on startup.
