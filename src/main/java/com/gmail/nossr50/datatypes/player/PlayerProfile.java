@@ -286,6 +286,11 @@ public class PlayerProfile {
     }
 
     public float getSkillXpLevelRaw(PrimarySkillType skill) {
+        // Child skills store no XP of their own; zero matches getSkillXpLevel
+        if (SkillTools.isChildSkill(skill)) {
+            return 0F;
+        }
+
         return skillsXp.get(skill);
     }
 

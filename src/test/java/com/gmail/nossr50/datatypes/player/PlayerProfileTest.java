@@ -136,6 +136,19 @@ class PlayerProfileTest extends MMOTestEnvironment {
         }
     }
 
+    /**
+     * Regression coverage for reading raw XP on a child skill: child skills store no XP of
+     * their own and the raw read crashed on the missing entry. Other plugins can reach this
+     * through the profile API; zero matches what the non-raw XP read reports.
+     */
+    @Test
+    void getSkillXpLevelRawShouldReturnZeroForChildSkills() {
+        // Given - a child skill, which stores no XP of its own
+        // When - the raw XP is read
+        // Then - zero is returned instead of an error
+        assertThat(profile.getSkillXpLevelRaw(PrimarySkillType.SMELTING)).isZero();
+    }
+
     @Test
     void modifySkillShouldClampNegativeLevelsToZeroAndResetXp() {
         // Given - a skill with some XP progress
