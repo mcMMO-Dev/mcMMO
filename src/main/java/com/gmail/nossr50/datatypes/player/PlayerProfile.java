@@ -132,41 +132,53 @@ public class PlayerProfile {
             return;
         }
 
-        // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills),
-                ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS),
-                scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData), lastLogin);
-        changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
+        // Clear the dirty flag before copying: a change that lands while the copy is being
+        // written re-marks the profile dirty and is picked up by the next save, instead of
+        // being wiped by an unconditional flag write once the database returns
+        changed = false;
+        boolean saved = false;
 
-        if (changed) {
-            mcMMO.p.getLogger()
-                    .severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
-
-            if (saveAttempts > 0) {
-                mcMMO.p.getLogger().severe("Attempted to save profile for player " + getPlayerName()
-                        + " resulted in failure. " + saveAttempts + " have been made so far.");
+        try {
+            final PlayerProfile profileCopy = new PlayerProfile(playerName, uuid,
+                    ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp),
+                    ImmutableMap.copyOf(abilityDATS), scoreboardTipsShown,
+                    ImmutableMap.copyOf(uniquePlayerData), lastLogin);
+            saved = mcMMO.getDatabaseManager().saveUser(profileCopy);
+        } finally {
+            if (!saved) {
+                changed = true;
             }
+        }
 
-            if (saveAttempts < 10) {
-                saveAttempts++;
+        if (saved) {
+            saveAttempts = 0;
+            return;
+        }
 
-                //Back out of async saving if we detect a server shutdown, this is not always going to be caught
-                if (mcMMO.isServerShutdownExecuted() || useSync) {
-                    mcMMO.p.getFoliaLib().getScheduler()
-                            .runNextTick(new PlayerProfileSaveTask(this, true));
-                } else {
-                    scheduleAsyncSave();
-                }
+        mcMMO.p.getLogger()
+                .severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
 
+        if (saveAttempts > 0) {
+            mcMMO.p.getLogger().severe("Attempted to save profile for player " + getPlayerName()
+                    + " resulted in failure. " + saveAttempts + " have been made so far.");
+        }
+
+        if (saveAttempts < 10) {
+            saveAttempts++;
+
+            //Back out of async saving if we detect a server shutdown, this is not always going to be caught
+            if (mcMMO.isServerShutdownExecuted() || useSync) {
+                mcMMO.p.getFoliaLib().getScheduler()
+                        .runNextTick(new PlayerProfileSaveTask(this, true));
             } else {
-                mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
-                        + getPlayerName() + " numerous times." +
-                        " mcMMO will now stop attempting to save this profile." +
-                        " Check your console for errors and inspect your DB for issues.");
+                scheduleAsyncSave();
             }
 
         } else {
-            saveAttempts = 0;
+            mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
+                    + getPlayerName() + " numerous times." +
+                    " mcMMO will now stop attempting to save this profile." +
+                    " Check your console for errors and inspect your DB for issues.");
         }
     }
 

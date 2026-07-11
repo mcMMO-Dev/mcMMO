@@ -256,6 +256,33 @@ class PlayerProfileTest extends MMOTestEnvironment {
             verify(scheduler, never()).runAsync(any(PlayerProfileSaveTask.class));
         }
 
+        /**
+         * Regression coverage for the dirty-flag race on async saves: the flag was overwritten
+         * unconditionally once the database returned, so a change that landed while the copy
+         * was being written was marked clean and silently skipped by later saves.
+         */
+        @Test
+        void changesMadeDuringAnInFlightSaveShouldSurviveForTheNextSave() {
+            // Given - a dirty profile and a database write during which another change lands
+            loadedProfile.addLevels(PrimarySkillType.MINING, 1);
+            when(databaseManager.saveUser(argThat(saved -> saved.getPlayerName().equals("Herb"))))
+                    .thenAnswer(invocation -> {
+                        loadedProfile.addLevels(PrimarySkillType.MINING, 1);
+                        return true;
+                    });
+
+            // When - the save completes and a later save runs
+            loadedProfile.save(false);
+            loadedProfile.save(false);
+
+            // Then - the second save writes the change made during the first save
+            final ArgumentCaptor<PlayerProfile> savedCopies =
+                    ArgumentCaptor.forClass(PlayerProfile.class);
+            verify(databaseManager, times(2)).saveUser(savedCopies.capture());
+            assertThat(savedCopies.getAllValues().get(1).getSkillLevel(PrimarySkillType.MINING))
+                    .isEqualTo(STARTING_LEVEL + 2);
+        }
+
         @Test
         void givesUpRetryingAfterTenFailedAttempts() {
             // Given - a dirty profile and a database that always rejects the save

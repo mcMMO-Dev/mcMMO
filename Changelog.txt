@@ -70,6 +70,7 @@ Version 2.3.000
     Fixed Herbalism double drops not working on beetroots
     Fixed using bone meal on a placed nether wart block clearing its placed-block tracking
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
+    Fixed player data changes made while a save was in progress sometimes being lost
     Fixed player data tracking for shutdown saves not being thread-safe on Folia
     Fixed console messages mentioning '[D] ' mid-message being hidden when Verbose_Logging is off
     Fixed skill chance and duration display formatting not being thread-safe on Folia
