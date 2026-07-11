@@ -212,6 +212,37 @@ class TamingManagerTest extends MMOTestEnvironment {
     }
 
     @Nested
+    class AbilityGates {
+        /**
+         * Holy Hound has its own rank configuration (level 35 Standard / 350 RetroMode) and
+         * must gate on its own unlock, not on Environmentally Aware's much earlier one.
+         */
+        @Test
+        void holyHoundShouldStayLockedUntilItsOwnUnlock() {
+            // Given - Environmentally Aware is unlocked but Holy Hound is not
+            when(RankUtils.hasUnlockedSubskill(player,
+                    SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)).thenReturn(true);
+            when(RankUtils.hasUnlockedSubskill(player, SubSkillType.TAMING_HOLY_HOUND))
+                    .thenReturn(false);
+
+            // When / Then - Holy Hound is still locked
+            assertThat(tamingManager.canUseHolyHound()).isFalse();
+        }
+
+        @Test
+        void holyHoundShouldUnlockWithItsOwnRank() {
+            // Given - Holy Hound is unlocked while Environmentally Aware is not
+            when(RankUtils.hasUnlockedSubskill(player,
+                    SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)).thenReturn(false);
+            when(RankUtils.hasUnlockedSubskill(player, SubSkillType.TAMING_HOLY_HOUND))
+                    .thenReturn(true);
+
+            // When / Then - Holy Hound works
+            assertThat(tamingManager.canUseHolyHound()).isTrue();
+        }
+    }
+
+    @Nested
     class TamingXp {
         @Test
         void tamingShouldPayTheConfiguredXp() {

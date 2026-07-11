@@ -57,6 +57,7 @@ Version 2.3.000
     Fixed the unsupported-version scoreboard warning printing gibberish instead of the Minecraft version
     Fixed mcMMO command tab-completion never suggesting player names to the console
     Fixed Green Terra and Green Thumb not converting dirt paths to grass
+    Fixed Holy Hound activating at Environmentally Aware's unlock level instead of its own
     Fixed Super Breaker not activating on copper blocks, cut copper, and their slab and stair variants
     Fixed twisting vines not being handled as multi-block plants by Herbalism
     Fixed using bone meal on a placed nether wart block clearing its placed-block tracking
