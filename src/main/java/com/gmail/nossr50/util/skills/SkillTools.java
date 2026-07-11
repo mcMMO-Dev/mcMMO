@@ -345,7 +345,7 @@ public class SkillTools {
         // Lowercased for tab completion, where suggestions read like the other completion
         // keywords; skill matching is case-insensitive so completed names still resolve
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            localizedSkillNameList.add(getLocalizedSkillName(primarySkillType)
+            localizedSkillNameList.add(getHeaderBannerSkillName(primarySkillType)
                     .toLowerCase(Locale.ENGLISH));
         }
 
@@ -369,8 +369,7 @@ public class SkillTools {
     public PrimarySkillType matchSkill(@NotNull String skillName) {
         if (!pluginRef.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : PrimarySkillType.values()) {
-                String localized = LocaleLoader.getString(
-                        StringUtils.getCapitalized(type.name()) + ".SkillName");
+                String localized = getHeaderBannerSkillName(type);
                 if (skillName.equalsIgnoreCase(localized)) {
                     return type;
                 }
@@ -488,12 +487,30 @@ public class SkillTools {
     }
 
     /**
-     * Get the localized name for a {@link PrimarySkillType}
+     * The localized skill name meant for messages sent to players, from the locale's
+     * {@code Overhaul.Name} keys. In the English locales this is nicely capitalized (like
+     * "Mining"), but other locales may style it differently. For the stylized headers use
+     * {@link #getHeaderBannerSkillName(PrimarySkillType)} instead.
      *
      * @param primarySkillType target {@link PrimarySkillType}
-     * @return the localized name for a {@link PrimarySkillType}
+     * @return the localized skill name for messages
      */
     public String getLocalizedSkillName(PrimarySkillType primarySkillType) {
+        return LocaleLoader.getString(
+                "Overhaul.Name." + StringUtils.getCapitalized(primarySkillType.toString()));
+    }
+
+    /**
+     * The localized skill name meant for the stylized headers (skill command screens, guide
+     * headers, scoreboards), from the locale's {@code <Skill>.SkillName} keys. In the English
+     * locales this is FULL CAPS (like "MINING"), but it can differ by locale. This value is
+     * also the matching surface for localized skill commands and tab completion, so renaming a
+     * skill through these keys renames its command too.
+     *
+     * @param primarySkillType target {@link PrimarySkillType}
+     * @return the localized skill name for headers and skill command matching
+     */
+    public String getHeaderBannerSkillName(PrimarySkillType primarySkillType) {
         return LocaleLoader.getString(
                 StringUtils.getCapitalized(primarySkillType.toString()) + ".SkillName");
     }

@@ -305,7 +305,7 @@ public final class CommandRegistrationManager {
 
             final String commandName = primarySkillType.toString().toLowerCase(Locale.ENGLISH);
             final String localizedName = mcMMO.p.getSkillTools()
-                    .getLocalizedSkillName(primarySkillType).toLowerCase(Locale.ENGLISH);
+                    .getHeaderBannerSkillName(primarySkillType).toLowerCase(Locale.ENGLISH);
 
             final PluginCommand command = mcMMO.p.getCommand(commandName);
             if (command == null) {

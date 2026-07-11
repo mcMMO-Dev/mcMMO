@@ -145,7 +145,9 @@ class TextComponentFactoryTest {
      */
     @Test
     void getNotificationLevelUpTextComponentShouldNotLeakLegacySectionCodes() {
-        // Given - the bundled en_US locale entry Overhaul.Levelup, which uses & color codes
+        // Given - the bundled en_US locale entry Overhaul.Levelup, which uses & color codes,
+        // and the localized skill name resolving to "Mining"
+        when(skillTools.getLocalizedSkillName(PrimarySkillType.MINING)).thenReturn("Mining");
 
         // When - a level up component is built for Mining reaching level 2
         final Component component = TextComponentFactory.getNotificationLevelUpTextComponent(

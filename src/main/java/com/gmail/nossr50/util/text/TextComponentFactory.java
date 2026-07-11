@@ -67,8 +67,7 @@ public class TextComponentFactory {
 
     public static Component getNotificationLevelUpTextComponent(
             @NotNull PrimarySkillType skill, int levelsGained, int currentLevel) {
-        final String skillName = LocaleLoader.getString(
-                "Overhaul.Name." + StringUtils.getCapitalized(skill.toString()));
+        final String skillName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill);
         return LocaleLoader.getTextComponent("Overhaul.Levelup", skillName, levelsGained,
                 currentLevel);
     }

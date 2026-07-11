@@ -19,7 +19,7 @@ public class SkillGuideCommand implements CommandExecutor {
 
     public SkillGuideCommand(PrimarySkillType skill) {
         header = LocaleLoader.getString("Guides.Header",
-                mcMMO.p.getSkillTools().getLocalizedSkillName(skill));
+                mcMMO.p.getSkillTools().getHeaderBannerSkillName(skill));
         guide = getGuide(skill);
     }
 

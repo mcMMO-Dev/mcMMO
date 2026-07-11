@@ -233,13 +233,13 @@ public enum PrimarySkillType {
      * instead
      *
      * @return the max level of this skill
-     * @see SkillTools#getLocalizedSkillName(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
+     * @see SkillTools#getHeaderBannerSkillName(com.gmail.nossr50.datatypes.skills.PrimarySkillType)
      * @deprecated this is being removed in an upcoming update, you should be using
      * mcMMO.getSkillTools() instead
      */
     @Deprecated
     public String getName() {
-        return mcMMO.p.getSkillTools().getLocalizedSkillName(this);
+        return mcMMO.p.getSkillTools().getHeaderBannerSkillName(this);
     }
 
     /**

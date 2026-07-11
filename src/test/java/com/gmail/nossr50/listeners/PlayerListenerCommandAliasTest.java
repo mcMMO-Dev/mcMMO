@@ -58,7 +58,7 @@ class PlayerListenerCommandAliasTest {
         // just echoes its English name so it can never accidentally match the tested alias
         final SkillTools skillTools = mock(SkillTools.class);
         when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
-        when(skillTools.getLocalizedSkillName(any(PrimarySkillType.class))).thenAnswer(
+        when(skillTools.getHeaderBannerSkillName(any(PrimarySkillType.class))).thenAnswer(
                 invocation -> {
                     final PrimarySkillType skill = invocation.getArgument(0);
                     return skill == PrimarySkillType.UNARMED ? "Faustkampf" : skill.toString();

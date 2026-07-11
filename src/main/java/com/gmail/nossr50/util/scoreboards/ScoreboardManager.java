@@ -107,7 +107,7 @@ public class ScoreboardManager {
                 // Include child skills
                 skillLabelBuilder.put(primarySkillType, getShortenedName(
                         colors.get(i) + mcMMO.p.getSkillTools()
-                                .getLocalizedSkillName(primarySkillType), false));
+                                .getHeaderBannerSkillName(primarySkillType), false));
 
                 if (mcMMO.p.getSkillTools().getSuperAbility(primarySkillType) != null) {
                     abilityLabelBuilder.put(
@@ -135,7 +135,7 @@ public class ScoreboardManager {
                 // Include child skills
                 skillLabelBuilder.put(primarySkillType, getShortenedName(
                         ChatColor.GREEN + mcMMO.p.getSkillTools()
-                                .getLocalizedSkillName(primarySkillType)));
+                                .getHeaderBannerSkillName(primarySkillType)));
 
                 if (mcMMO.p.getSkillTools().getSuperAbility(primarySkillType) != null) {
                     abilityLabelBuilder.put(

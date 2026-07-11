@@ -113,7 +113,7 @@ public final class LevelUpCommand implements LevelUpAction {
         replaceAll(builder, "{@player}", mmoPlayer.getPlayer().getName());
 
         if (skill != null) {
-            replaceAll(builder, "{@skill}", skill.getName());
+            replaceAll(builder, "{@skill}", mcMMO.p.getSkillTools().getLocalizedSkillName(skill));
         }
         if (matchedLevel != null) {
             replaceAll(builder, "{@level}", String.valueOf(matchedLevel));

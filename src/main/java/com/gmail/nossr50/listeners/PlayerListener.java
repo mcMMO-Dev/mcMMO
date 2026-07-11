@@ -678,8 +678,7 @@ public class PlayerListener implements Listener {
             ExperienceConfig.getInstance().getExperienceGainsSkillMultiplierOverrides()
                     .forEach((skill, rate) -> player.sendMessage(
                             LocaleLoader.getString("XPRate.Event.Skill",
-                                    LocaleLoader.getString("Overhaul.Name."
-                                            + StringUtils.getCapitalized(skill.toString())),
+                                    mcMMO.p.getSkillTools().getLocalizedSkillName(skill),
                                     rate)));
         }
     }
@@ -1189,7 +1188,7 @@ public class PlayerListener implements Listener {
         // Do these ACTUALLY have to be lower case to work properly?
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             String skillName = skill.toString().toLowerCase(Locale.ENGLISH);
-            String localizedName = mcMMO.p.getSkillTools().getLocalizedSkillName(skill)
+            String localizedName = mcMMO.p.getSkillTools().getHeaderBannerSkillName(skill)
                     .toLowerCase(Locale.ENGLISH);
 
             // First mapping wins, matching the old first-match-breaks loop order

@@ -49,19 +49,14 @@ public class XprateCommand implements TabExecutor {
         completions.add(ALL_SKILLS_TOKEN);
         // Lowercased to read like the other keywords; matching stays case-insensitive
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
-            completions.add(mcMMO.p.getSkillTools().getLocalizedSkillName(skill)
+            completions.add(mcMMO.p.getSkillTools().getHeaderBannerSkillName(skill)
                     .toLowerCase(Locale.ENGLISH));
         }
         firstArgumentCompletions = ImmutableList.copyOf(completions);
     }
 
-    /**
-     * The locale's display-cased skill name from the Overhaul.Name keys, matching what
-     * level-up messages show, rather than the all-caps SkillName value used for matching.
-     */
     private static String displaySkillName(PrimarySkillType skill) {
-        return LocaleLoader.getString(
-                "Overhaul.Name." + StringUtils.getCapitalized(skill.toString()));
+        return mcMMO.p.getSkillTools().getLocalizedSkillName(skill);
     }
 
     /**
