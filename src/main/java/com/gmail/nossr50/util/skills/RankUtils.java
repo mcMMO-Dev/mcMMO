@@ -13,7 +13,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -23,7 +22,6 @@ public class RankUtils {
     private static final Map<SubSkillType, int[]> subSkillUnlockLevels = new ConcurrentHashMap<>();
     private static final Map<String, int[]> abstractSubSkillUnlockLevels =
             new ConcurrentHashMap<>();
-    private static final AtomicInteger unlockNotificationCount = new AtomicInteger();
 
     /**
      * @param plugin plugin instance ref
@@ -52,21 +50,25 @@ public class RankUtils {
 
             //The players level is the exact level requirement for this skill
             if (newLevel == getUnlockLevels(subSkillType)[playerRankInSkill - 1]) {
-                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(
-                        mmoPlayer, subSkillType, newLevel);
+                final long delayTicks = SkillUnlockNotificationPacer.reserveSlotDelayTicks(
+                        mmoPlayer.getPlayer().getUniqueId());
 
                 mcMMO.p.getFoliaLib().getScheduler()
-                        .runAtEntityLater(mmoPlayer.getPlayer(), skillUnlockNotificationTask,
-                                (unlockNotificationCount.getAndIncrement() * 100L));
+                        .runAtEntityLater(mmoPlayer.getPlayer(),
+                                new SkillUnlockNotificationTask(mmoPlayer, subSkillType,
+                                        newLevel), delayTicks);
             }
         }
     }
 
     /**
      * Reset the interval between skill unlock notifications
+     *
+     * @deprecated Unlock notification pacing is handled automatically per player; this does
+     * nothing anymore.
      */
+    @Deprecated(forRemoval = true, since = "2.3.000")
     public static void resetUnlockDelayTimer() {
-        unlockNotificationCount.set(0);
     }
 
     /**
