@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Loads {@code levelupcommands.yml} and registers each valid entry with the
+ * Loads {@code level_up_commands.yml} and registers each valid entry with the
  * {@link LevelUpCommandManager} as a {@link RegistrationSource#CONFIG} registration. Loading
  * clears previous config registrations first, so reloading this config never disturbs
  * registrations other plugins added through the API.
@@ -35,7 +35,7 @@ public class CommandOnLevelUpConfig extends BukkitConfig {
     public static final String ALL_SKILLS = "all";
 
     public CommandOnLevelUpConfig(@NotNull File dataFolder) {
-        super("levelupcommands.yml", dataFolder);
+        super("level_up_commands.yml", dataFolder);
         // TODO: loadKeys() should really get called in super
         loadKeys();
     }

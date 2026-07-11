@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Parsing tests for {@link CommandOnLevelUpConfig}. The loader is the bridge between what
- * server owners write in levelupcommands.yml and what actually fires, so malformed entries
+ * server owners write in level_up_commands.yml and what actually fires, so malformed entries
  * must be skipped with warnings instead of half-registering.
  */
 class CommandOnLevelUpConfigTest extends MMOTestEnvironment {
@@ -245,9 +245,9 @@ class CommandOnLevelUpConfigTest extends MMOTestEnvironment {
     }
 
     private void loadConfig(@NotNull String yaml) throws IOException {
-        final File configFile = new File(testDataFolder, "levelupcommands.yml");
+        final File configFile = new File(testDataFolder, "level_up_commands.yml");
         Files.writeString(configFile.toPath(), yaml);
-        when(mcMMO.p.getResource("levelupcommands.yml")).thenAnswer(invocation ->
+        when(mcMMO.p.getResource("level_up_commands.yml")).thenAnswer(invocation ->
                 new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8)));
         new CommandOnLevelUpConfig(testDataFolder);
     }

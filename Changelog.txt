@@ -92,7 +92,7 @@ Version 2.3.000
     Fixed the outdated-server startup warning naming Minecraft 1.20.4 instead of the required 1.20.5
     Fixed an error when /mmodebug was used before the player's data finished loading (Thanks Warriorrrr)
     Added 'Feedback.ActionBarNotifications.SubSkillUnlocked.SendToActionBar' to advanced.yml, an opt-in to show skill rank unlock messages on the action bar (See notes)
-    Added new config file levelupcommands.yml to set up level up commands (See notes)
+    Added new config file level_up_commands.yml to set up level up commands (See notes)
     Added 'ExploitFix.AcrobaticsDodgeXpFarming' to experience.yml (See notes)
     Added 'Skills.Mining.BlastMining.RemoteDetonationDistance' to advanced.yml (See notes)
     Added 'General.PlaceholderAPI.Leaderboards.Max_Tracked_Rank' to config.yml
@@ -185,7 +185,7 @@ Version 2.3.000
     During an event, joining players are told about active per-skill rates alongside the global rate.
 
     -- Level up commands --
-    Level up commands are configured in the new levelupcommands.yml file; each entry lists the commands to run plus a trigger, either skills with levels or power_levels, and an optional run_as of CONSOLE (default) or PLAYER. The shipped example entries are disabled by default.
+    Level up commands are configured in the new level_up_commands.yml file; each entry lists the commands to run plus a trigger, either skills with levels or power_levels, and an optional run_as of CONSOLE (default) or PLAYER. The shipped example entries are disabled by default.
     Level up commands support placeholders: {@player}, {@skill}, {@level}, {@power_level}, and current-level placeholders like {@mining_level}. Commands run once per milestone reached, even when several levels are gained at once.
     (API) LevelUpCommandAPI registrations return an id that can be used to unregister them later; registrations made by other plugins survive mcMMO config reloads.
 

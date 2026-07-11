@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Registry of everything that reacts to level ups: commands loaded from
- * {@code levelupcommands.yml} and commands or handlers registered by other plugins through
+ * {@code level_up_commands.yml} and commands or handlers registered by other plugins through
  * {@link com.gmail.nossr50.api.LevelUpCommandAPI}. Each registration gets a {@link UUID} that
  * can later be used to remove it. Config reloads clear only config-sourced registrations.
  * <p>
