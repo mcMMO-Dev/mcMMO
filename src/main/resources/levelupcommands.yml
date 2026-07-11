@@ -4,12 +4,16 @@
 #     skills + levels     Fires when any listed skill reaches any listed level.
 #                         Use skill names like Mining or Herbalism, or 'all' for every skill.
 #     power_levels        Fires when the player's power level reaches a listed value.
-#                         (Power level is the sum of all skill levels.)
+#                         (Power level is the sum of the player's skill levels, counting
+#                         only skills they have permission for.)
+# An entry may list both triggers; it fires on either.
 #
 # Optional per entry:
 #     enabled: true       Set to false to keep an entry without it running. Default: true.
 #     run_as: CONSOLE     Who executes the commands, CONSOLE or PLAYER. Default: CONSOLE.
 #                         PLAYER runs the command as the player, using their permissions.
+#
+# skills and commands accept either a single value or a list.
 #
 # Placeholders usable inside commands (no leading slash needed):
 #     {@player}           The player's name.
@@ -23,21 +27,40 @@
 # Commands run once per milestone reached, even when several levels are gained at once.
 # The examples below are disabled; flip enabled to true (or write your own) to use them.
 level_up_commands:
+    # Announce and reward milestones in the listed skills
     mining_milestones:
         enabled: false
-        skills: [ Mining ]
+        skills: [ Mining, Excavation ]
         levels: [ 10, 50, 100 ]
         commands:
             - "say {@player} reached level {@level} in {@skill}!"
+            - "give {@player} minecraft:diamond 1"
+    # Single-string shorthand for skills and commands
+    herbalism_reward:
+        enabled: false
+        skills: Herbalism
+        levels: [ 25 ]
+        commands: "broadcast {@player} has reached level {@herbalism_level} in Herbalism!"
+    # 'all' covers every skill; run_as PLAYER runs the command as the player
     any_skill_mastery:
         enabled: false
         skills: all
         levels: [ 100 ]
         run_as: PLAYER
         commands:
-            - "me just hit {@level} in {@skill}!"
+            - "me just reached level {@level} in {@skill}!"
+    # Power level triggers need no skills or levels
     power_level_milestones:
         enabled: false
         power_levels: [ 500, 1000, 2000 ]
         commands:
-            - "say {@player} is now at power level {@power_level}!"
+            - "say {@player} has reached power level {@power_level}!"
+            - "lp user {@player} permission set some.reward.node true"
+    # An entry can use both trigger types; it fires when either one matches
+    combined_triggers:
+        enabled: false
+        skills: [ Swords, Axes ]
+        levels: [ 50 ]
+        power_levels: [ 750 ]
+        commands:
+            - "say {@player} reached a combat milestone! Swords: {@swords_level}, Axes: {@axes_level}, power level: {@power_level}"
