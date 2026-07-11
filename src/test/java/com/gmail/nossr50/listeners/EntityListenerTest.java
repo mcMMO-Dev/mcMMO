@@ -22,12 +22,18 @@ import com.gmail.nossr50.util.player.UserManager;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
+import org.bukkit.NamespacedKey;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.junit.jupiter.api.AfterEach;
@@ -109,6 +115,42 @@ class EntityListenerTest extends MMOTestEnvironment {
         // Then - the non-player owner is ignored without an exception and nothing is flagged
         assertThatCode(() -> entityListener.onEntityTame(event)).doesNotThrowAnyException();
         mobMetadataMock.verifyNoInteractions();
+    }
+
+    /**
+     * Regression coverage for pet attacks whose owner came through the API: Tameable owners
+     * are AnimalTamers and not necessarily players, and the damage handler previously cast the
+     * owner to OfflinePlayer unchecked and crashed on non-player tamers.
+     */
+    @Test
+    void petAttackOwnedByNonPlayerTamerShouldNotCrash() {
+        // Given - a tamed wolf owned by a non-player AnimalTamer attacking a player
+        final Wolf wolf = mock(Wolf.class);
+        when(wolf.getType()).thenReturn(EntityType.WOLF);
+        when(wolf.getOwner()).thenReturn(mock(AnimalTamer.class));
+        when(player.isValid()).thenReturn(true);
+        final EntityDamageByEntityEvent event = mock(EntityDamageByEntityEvent.class);
+        when(event.getEntity()).thenReturn(player);
+        when(event.getDamager()).thenReturn(wolf);
+        when(event.getFinalDamage()).thenReturn(5.0);
+        mockDamageSource(event);
+
+        // When - the damage event is handled
+        // Then - the non-player owner is tolerated without an exception
+        assertThatCode(() -> entityListener.onEntityDamageByEntity(event))
+                .doesNotThrowAnyException();
+    }
+
+    /**
+     * Combat processing needs a damage type from the event's damage source; safety-net stubs so
+     * the handler can run past the guard under test.
+     */
+    private void mockDamageSource(EntityDamageByEntityEvent event) {
+        final DamageSource damageSource = mock(DamageSource.class);
+        final DamageType damageType = mock(DamageType.class);
+        when(event.getDamageSource()).thenReturn(damageSource);
+        when(damageSource.getDamageType()).thenReturn(damageType);
+        when(damageType.getKey()).thenReturn(NamespacedKey.minecraft("generic"));
     }
 
     /**

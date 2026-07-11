@@ -51,6 +51,7 @@ Version 2.3.000
     Fixed the early game XP boost being able to award XP inside WorldGuard regions that deny mcMMO XP
     Fixed a small memory leak from fishing hand tracking when players log out
     Fixed an error when another plugin tames an animal with a non-player owner
+    Fixed an error when a pet owned by a non-player deals damage
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
     Fixed an error when players below 11 HP used a Chimaera Wing underground
     Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)

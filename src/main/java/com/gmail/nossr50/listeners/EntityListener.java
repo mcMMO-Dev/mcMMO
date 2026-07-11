@@ -38,7 +38,6 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
@@ -403,11 +402,10 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (attacker instanceof Tameable) {
-            AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
-
-            if (animalTamer != null && ((OfflinePlayer) animalTamer).isOnline()) {
-                attacker = (Entity) animalTamer;
+        if (attacker instanceof Tameable tameable) {
+            // Owners tamed through the API don't have to be players
+            if (tameable.getOwner() instanceof Player owner && owner.isOnline()) {
+                attacker = owner;
             }
         } else if (attacker instanceof TNTPrimed tntAttacker && defender instanceof Player) {
             if (BlastMining.processBlastMiningExplosion(event, tntAttacker,
