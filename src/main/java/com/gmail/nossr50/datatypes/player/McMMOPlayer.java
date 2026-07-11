@@ -1241,12 +1241,41 @@ public class McMMOPlayer implements Identified {
         profile.modifySkill(skill, level);
     }
 
+    /**
+     * Adds levels to a skill and fires the level change events, like the /addlevels command.
+     * Levels added to a child skill split evenly across its parent skills.
+     *
+     * @param skill the skill to add levels to
+     * @param levels the number of levels to add
+     */
     public void addLevels(PrimarySkillType skill, int levels) {
+        if (SkillTools.isChildSkill(skill)) {
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
+            int dividedLevels = levels / parentSkills.size();
+
+            for (PrimarySkillType parentSkill : parentSkills) {
+                addLevels(parentSkill, dividedLevels);
+            }
+
+            return;
+        }
+
+        final float xpRemoved = profile.getSkillXpLevelRaw(skill);
         profile.addLevels(skill, levels);
+        EventUtils.tryLevelChangeEvent(this, skill, levels, xpRemoved, true,
+                XPGainReason.UNKNOWN);
     }
 
+    /**
+     * Adds XP as a normal gain: fires the XP gain events, awards level ups, and updates the
+     * XP bar. The amount is applied as-is, without the rate and perk modifiers that
+     * {@link #beginXpGain(PrimarySkillType, float, XPGainReason, XPGainSource)} applies.
+     *
+     * @param skill the skill to add XP to
+     * @param xp the amount of XP to add
+     */
     public void addXp(PrimarySkillType skill, float xp) {
-        profile.addXp(skill, xp);
+        applyXpGain(skill, xp, XPGainReason.UNKNOWN, XPGainSource.SELF);
     }
 
     public void setAbilityDATS(SuperAbilityType ability, long DATS) {

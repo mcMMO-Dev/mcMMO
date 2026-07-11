@@ -120,6 +120,7 @@ Version 2.3.000
     (API) Deprecated DelayedHerbalismXPCheckTask and HerbalismManager#awardXPForBlockSnapshots for removal
     (API) Deprecated unused public utility methods and fields
     (API) Deprecated the misspelled PlayerProfile#getChimaerWingDATS in favor of getChimaeraWingDATS
+    (API) McMMOPlayer#addXp and McMMOPlayer#addLevels now fire the XP and level change events and process level ups instead of writing raw values (See notes)
     (API) Added DatabaseManager#readLeaderboardSnapshot for reading every leaderboard scope in one call
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend
@@ -215,6 +216,9 @@ Version 2.3.000
 
     -- Child skill levels through the API --
     Adding levels to Salvage or Smelting through the mcMMO API caused an error for online players. Child skills have no levels of their own, so added levels now split evenly across the skill's parent skills, matching how child skill XP and the offline API variants already behaved.
+
+    -- XP and levels added through the API --
+    (API) Only matters on servers running plugins that give out mcMMO XP or levels through McMMOPlayer#addXp or McMMOPlayer#addLevels. These previously wrote raw values without awarding level ups, leaving skills stuck over their XP threshold with no level up message, sound, or scoreboard update. They now behave like any normal gain and fire the usual events, so plugins listening for mcMMO XP and level changes will start seeing these gains too.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO
