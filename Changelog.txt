@@ -60,6 +60,7 @@ Version 2.3.000
     Fixed Holy Hound activating at Environmentally Aware's unlock level instead of its own
     Fixed Super Breaker not activating on copper blocks, cut copper, and their slab and stair variants
     Fixed twisting vines not being handled as multi-block plants by Herbalism
+    Fixed Herbalism double drops not working on beetroots
     Fixed using bone meal on a placed nether wart block clearing its placed-block tracking
     Fixed mobs losing their custom names when hit while 'Mob_Healthbar.Display_Type' is DISABLED
     Fixed player data tracking for shutdown saves not being thread-safe on Folia

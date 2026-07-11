@@ -102,8 +102,10 @@ public class BlockListener implements Listener {
                     droppedMaterials.add(item.getItemStack().getType());
                 }
 
-                final BonusDrops.Analysis analysis = BonusDrops.analyze(block.getType(),
-                        droppedMaterials);
+                // The block is already broken (its live type reads as AIR), so the broken type
+                // must come from the event's captured pre-break state
+                final BonusDrops.Analysis analysis = BonusDrops.analyze(
+                        event.getBlockState().getType(), droppedMaterials);
 
                 if (analysis.rewardable()) {
                     final int amountToAddFromBonus = bonusDropMeta.get(0).asInt();
