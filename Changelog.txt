@@ -57,6 +57,7 @@ Version 2.3.000
     Fixed an error when another plugin fires a fish catch carrying a non-item entity
     Fixed an error when adding levels to Salvage or Smelting (See notes)
     Fixed an error when another plugin reads raw skill XP for Salvage or Smelting
+    Fixed the -s flag on /addxp, /addlevels, and /mmoedit not silencing the confirmation sent to the command sender (See notes)
     Fixed 'Invalid mcMMO skill' console spam when other plugins check skill names through the API (See notes)
     Fixed an error when reading XP requirements for offline players while 'Experience_Formula.Cumulative_Curve' is enabled
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
@@ -135,6 +136,9 @@ Version 2.3.000
 
     -- Level change events --
     Only matters on servers running plugins that cancel mcMMO level change events. A cancelled /mmoedit change could reset the skill to level 0 or the wrong level instead of restoring the old one, and cancelling a change for a player whose data was not loaded threw an error; mcMMO now logs a warning instead.
+
+    -- Silent flag for XP commands --
+    /addxp, /addlevels, and /mmoedit accept -s as the last argument to run silently; the flag now also silences the confirmation echoed back to the command sender. Plugins that award XP by dispatching these commands from the console should append -s to keep the server log quiet.
 
     -- Invalid skill name messages --
     Skill name lookups that do not match any skill (usually other plugins validating names through the API, but also command typos) no longer print an 'Invalid mcMMO skill' warning to the console. The message is now debug output, visible by enabling 'General.Verbose_Logging' in config.yml.
