@@ -722,7 +722,10 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
+        // The party share deliberately reuses the same modified value: the pre-XP-gain event
+        // fired inside applyXpGain only affects the player's own gain
+        final float modifiedXp = modifyXpGain(skill, xp);
+        applyXpGain(skill, modifiedXp, xpGainReason, xpGainSource);
 
         if (!mcMMO.p.getPartyConfig().isPartyEnabled() || party == null
                 || party.hasReachedLevelCap()) {
@@ -731,7 +734,7 @@ public class McMMOPlayer implements Identified {
 
         if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !mcMMO.p.getPartyManager()
                 .getNearMembers(this).isEmpty()) {
-            party.applyXpGain(modifyXpGain(skill, xp));
+            party.applyXpGain(modifiedXp);
         }
     }
 
@@ -1265,17 +1268,16 @@ public class McMMOPlayer implements Identified {
      */
     public void logout(boolean syncSave) {
         final Player thisPlayer = getPlayer();
-        if (getPlayer() != null && getPlayer().hasMetadata(
-                MetadataConstants.METADATA_KEY_RUPTURE)) {
+        if (thisPlayer.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
             final RuptureTaskMeta ruptureTaskMeta
-                    = (RuptureTaskMeta) getPlayer().getMetadata(
+                    = (RuptureTaskMeta) thisPlayer.getMetadata(
                     MetadataConstants.METADATA_KEY_RUPTURE).get(0);
             if (ruptureTaskMeta != null) {
                 final RuptureTask ruptureTimerTask = ruptureTaskMeta.getRuptureTimerTask();
                 if (ruptureTimerTask != null) {
                     ruptureTimerTask.cancel();
                 }
-                getPlayer().removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
+                thisPlayer.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
             }
         }
 
