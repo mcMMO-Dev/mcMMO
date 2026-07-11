@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
+import org.bukkit.potion.PotionEffectType;
 import org.mockito.MockedStatic;
 
 /**
@@ -44,12 +45,35 @@ public final class TestRegistryBootstrap {
                 // Force the registry holder and its heaviest consumers to initialize while
                 // the answer above is active
                 Class.forName("org.bukkit.Registry");
+                verifyLookupPipeline();
                 Class.forName("org.bukkit.potion.PotionEffectType");
                 Class.forName("org.bukkit.enchantments.Enchantment");
             } catch (ClassNotFoundException e) {
                 throw new AssertionError(e);
             }
             coreClassesInitialized = true;
+        }
+    }
+
+    /**
+     * Fails fast with a precise message when the intercepted lookup pipeline is broken,
+     * BEFORE a registry-backed class initializer reads a null lookup and poisons its class
+     * for the whole JVM. A poisoned class surfaces as NoClassDefFoundError in every later
+     * test, far away from the actual break.
+     */
+    private static void verifyLookupPipeline() {
+        final Registry<PotionEffectType> effect = Registry.EFFECT;
+        final Registry<PotionEffectType> expected = registryFor(PotionEffectType.class);
+        if (effect != expected) {
+            throw new IllegalStateException("Registry.EFFECT was not resolved through the "
+                    + "bootstrap answer; it was initialized as " + effect + " ("
+                    + (effect == null ? "null" : effect.getClass().getName())
+                    + "), so Bukkit.getRegistry was not intercepted during Registry class "
+                    + "initialization");
+        }
+        if (effect.get(NamespacedKey.minecraft("speed")) == null) {
+            throw new IllegalStateException("The bootstrap registry returned null for a "
+                    + "lookup; the minting default answer is not in effect on this mock");
         }
     }
 
