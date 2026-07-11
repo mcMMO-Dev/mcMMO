@@ -821,8 +821,6 @@ public class HerbalismManager extends SkillManager {
                 blockState.setType(Material.AIR);
                 ItemUtils.spawnItem(getPlayer(), centerOfBlock, treasure.getDrop(),
                         ItemSpawnReason.HYLIAN_LUCK_TREASURE);
-                NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(),
-                        NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }
         }
