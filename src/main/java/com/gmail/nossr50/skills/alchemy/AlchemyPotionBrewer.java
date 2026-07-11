@@ -171,22 +171,20 @@ public final class AlchemyPotionBrewer {
         final BrewerInventory inventory = ((BrewingStand) brewingStand).getInventory();
         final ItemStack ingredient =
                 inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
-        Player player = mmoPlayer != null ? mmoPlayer.getPlayer() : null;
+        final Player player = mmoPlayer != null ? mmoPlayer.getPlayer() : null;
 
         if (ingredient == null) {
             return;
         }
 
         // Check if the brewing stand has a valid ingredient; if not, exit the method
-        if (player == null
-                || !hasIngredient(inventory, player)) {
-            // debug
+        if (player == null || !hasIngredient(inventory, player)) {
             return;
         }
 
         // Initialize lists to hold the potions before and after brewing, initially setting them to null
-        List<AlchemyPotion> inputList = new ArrayList<>(Collections.nCopies(3, null));
-        List<ItemStack> outputList = new ArrayList<>(Collections.nCopies(3, null));
+        final List<AlchemyPotion> inputList = new ArrayList<>(Collections.nCopies(3, null));
+        final List<ItemStack> outputList = new ArrayList<>(Collections.nCopies(3, null));
 
         // Process each of the three slots in the brewing stand
         for (int i = 0; i < 3; i++) {
@@ -196,13 +194,13 @@ public final class AlchemyPotionBrewer {
             if (isEmpty(potionInBrewStandInputSlot)
                     || potionInBrewStandInputSlot.getType() == Material.GLASS_BOTTLE
                     || !mcMMO.p.getPotionConfig().isValidPotion(potionInBrewStandInputSlot)) {
-                // debug
                 continue;
             }
 
             // Retrieve the potion configurations for the input and resulting output potion
-            AlchemyPotion input = mcMMO.p.getPotionConfig().getPotion(potionInBrewStandInputSlot);
-            AlchemyPotion output = input.getChild(ingredient);
+            final AlchemyPotion input =
+                    mcMMO.p.getPotionConfig().getPotion(potionInBrewStandInputSlot);
+            final AlchemyPotion output = input.getChild(ingredient);
 
             // Update the input list with the current potion
             inputList.set(i, input);
@@ -215,13 +213,12 @@ public final class AlchemyPotionBrewer {
         }
 
         // Create a fake brewing event and pass it to the plugin's event system
-        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, outputList,
-                ((BrewingStand) brewingStand).getFuelLevel());
+        final FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory,
+                outputList, ((BrewingStand) brewingStand).getFuelLevel());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        // If the event is cancelled or there are no potions processed, exit the method
-        if (event.isCancelled() || inputList.isEmpty()) {
-            // debug
+        // If another plugin cancelled the brew, exit without touching the stand
+        if (event.isCancelled()) {
             return;
         }
 
@@ -236,15 +233,15 @@ public final class AlchemyPotionBrewer {
         removeIngredient(inventory, player);
 
         // Handle potion brewing success and related effects for each potion processed
-        for (AlchemyPotion input : inputList) {
+        for (final AlchemyPotion input : inputList) {
             if (input == null) {
                 continue;
             }
 
-            AlchemyPotion output = input.getChild(ingredient);
+            final AlchemyPotion output = input.getChild(ingredient);
 
             if (output != null && player != null) {
-                PotionStage potionStage = PotionStage.getPotionStage(input, output);
+                final PotionStage potionStage = PotionStage.getPotionStage(input, output);
 
                 // Update player alchemy skills or effects based on brewing success
                 if (UserManager.getPlayer(player) != null) {
@@ -280,8 +277,8 @@ public final class AlchemyPotionBrewer {
             return false;
         }
 
-        boolean emptyTo = isEmpty(to);
-        int fromAmount = from.getAmount();
+        final boolean emptyTo = isEmpty(to);
+        final int fromAmount = from.getAmount();
 
         if (!emptyTo && fromAmount >= from.getType().getMaxStackSize()) {
             return false;
@@ -317,12 +314,12 @@ public final class AlchemyPotionBrewer {
             setItem.invoke(view, fromSlot, null);
             return true;
         } else if (from.isSimilar(to)) {
-            int fromAmount = from.getAmount();
-            int toAmount = to.getAmount();
-            int maxSize = to.getType().getMaxStackSize();
+            final int fromAmount = from.getAmount();
+            final int toAmount = to.getAmount();
+            final int maxSize = to.getType().getMaxStackSize();
 
             if (fromAmount + toAmount > maxSize) {
-                int left = fromAmount + toAmount - maxSize;
+                final int left = fromAmount + toAmount - maxSize;
 
                 to.setAmount(maxSize);
                 setItem.invoke(view, Alchemy.INGREDIENT_SLOT, to);

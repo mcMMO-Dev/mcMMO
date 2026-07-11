@@ -78,14 +78,7 @@ public class AlchemyPotion {
             return false;
         }
 
-        @NotNull PotionMeta potionMeta = getAlchemyPotionMeta();
-        if (!(potionMeta.getBasePotionType() == otherPotionMeta.getBasePotionType())) {
-            return false;
-        }
-
-        // Legacy only comparison, compare PotionData
-        @NotNull PotionMeta potionMeta1 = getAlchemyPotionMeta();
-        if (!(potionMeta1.getBasePotionType() == otherPotionMeta.getBasePotionType())) {
+        if (getAlchemyPotionMeta().getBasePotionType() != otherPotionMeta.getBasePotionType()) {
             return false;
         }
 
