@@ -280,7 +280,8 @@ public final class AlchemyPotionBrewer {
         final boolean emptyTo = isEmpty(to);
         final int fromAmount = from.getAmount();
 
-        if (!emptyTo && fromAmount >= from.getType().getMaxStackSize()) {
+        // The ingredient slot's remaining room decides whether one more item fits
+        if (!emptyTo && to.getAmount() >= to.getMaxStackSize()) {
             return false;
         } else if (emptyTo || from.isSimilar(to)) {
             if (emptyTo) {
@@ -316,7 +317,7 @@ public final class AlchemyPotionBrewer {
         } else if (from.isSimilar(to)) {
             final int fromAmount = from.getAmount();
             final int toAmount = to.getAmount();
-            final int maxSize = to.getType().getMaxStackSize();
+            final int maxSize = to.getMaxStackSize();
 
             if (fromAmount + toAmount > maxSize) {
                 final int left = fromAmount + toAmount - maxSize;
