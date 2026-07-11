@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
+import com.gmail.nossr50.TestRegistryBootstrap;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -28,6 +30,7 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -46,7 +49,8 @@ import org.mockito.Mockito;
 
 /**
  * Covers the non-exploit fishing flow of {@link PlayerListener}: the vanilla treasure
- * override, the vanilla XP boost, the Shake wiring for reeled-in entities, and the Ice Fishing
+ * override, the vanilla XP boost, the Shake wiring for reeled-in entities, the Master Angler
+ * cast wiring that feeds the rod's Lure level into the scheduler, and the Ice Fishing
  * wiring including the cancel-and-refund of the fish event. Events are dispatched through
  * every {@link PlayerFishEvent} handler honoring their real {@link EventHandler} settings,
  * because the ice fishing handler cancels the event and later handlers must not run on it.
@@ -95,8 +99,12 @@ class PlayerListenerFishingTest extends MMOTestEnvironment {
     }
 
     private PlayerFishEvent dispatchFishEvent(Entity caught, PlayerFishEvent.State state) {
-        final PlayerFishEvent event = new PlayerFishEvent(player, caught, hook,
-                EquipmentSlot.HAND, state);
+        return dispatchFishEvent(caught, state, EquipmentSlot.HAND);
+    }
+
+    private PlayerFishEvent dispatchFishEvent(Entity caught, PlayerFishEvent.State state,
+            EquipmentSlot hand) {
+        final PlayerFishEvent event = new PlayerFishEvent(player, caught, hook, hand, state);
         event.setExpToDrop(VANILLA_CATCH_XP);
         dispatchLikeEventBus(event);
         return event;
@@ -282,6 +290,82 @@ class PlayerListenerFishingTest extends MMOTestEnvironment {
             // Then - the event continues as vanilla
             assertThat(event.isCancelled()).isFalse();
             verify(fishingManager, never()).iceFishing(any(), any(), any());
+        }
+    }
+
+    /**
+     * The cast wiring reads the rod's vanilla Lure level off the event hand and hands it to
+     * Master Angler, which converts it into a wait-time bonus (vanilla mishandles lure above
+     * level 3 when stacked with Master Angler's own reductions).
+     */
+    @Nested
+    class MasterAnglerCastWiring {
+        private ItemStack rod;
+
+        @BeforeEach
+        void setUpRod() {
+            // Enchantment.LURE resolves through the registry during Enchantment class init
+            TestRegistryBootstrap.bootstrap(mockedBukkit);
+
+            rod = mock(ItemStack.class);
+            when(rod.getType()).thenReturn(Material.FISHING_ROD);
+
+            doReturn(true).when(fishingManager).canMasterAngler();
+            doNothing().when(fishingManager).masterAngler(any(FishHook.class), anyInt());
+        }
+
+        @Test
+        void castsFeedTheRodsLureLevelIntoMasterAngler() {
+            // Given - a Lure II rod in the casting hand
+            when(playerInventory.getItemInMainHand()).thenReturn(rod);
+            when(rod.getEnchantmentLevel(Enchantment.LURE)).thenReturn(2);
+
+            // When - the player casts
+            dispatchFishEvent(null, PlayerFishEvent.State.FISHING);
+
+            // Then - master angler is scheduled with the rod's lure level
+            verify(fishingManager).masterAngler(hook, 2);
+            verify(fishingManager).setFishingTarget();
+        }
+
+        @Test
+        void offHandCastsReadTheOffHandRod() {
+            // Given - a Lure III rod in the off hand
+            when(playerInventory.getItemInOffHand()).thenReturn(rod);
+            when(rod.getEnchantmentLevel(Enchantment.LURE)).thenReturn(3);
+
+            // When - the player casts with the off hand
+            dispatchFishEvent(null, PlayerFishEvent.State.FISHING, EquipmentSlot.OFF_HAND);
+
+            // Then - the off hand rod's lure level reaches master angler
+            verify(fishingManager).masterAngler(hook, 3);
+        }
+
+        @Test
+        void castsWithoutARodDoNotTriggerMasterAngler() {
+            // Given - the casting hand holds something that is not a fishing rod
+            final ItemStack stick = mock(ItemStack.class);
+            when(stick.getType()).thenReturn(Material.STICK);
+            when(playerInventory.getItemInMainHand()).thenReturn(stick);
+
+            // When - the fish event fires for the cast
+            dispatchFishEvent(null, PlayerFishEvent.State.FISHING);
+
+            // Then - master angler stays out of it
+            verify(fishingManager, never()).masterAngler(any(FishHook.class), anyInt());
+        }
+
+        @Test
+        void castsAreIgnoredWhileMasterAnglerIsLocked() {
+            // Given - the player has not unlocked master angler
+            doReturn(false).when(fishingManager).canMasterAngler();
+            when(playerInventory.getItemInMainHand()).thenReturn(rod);
+
+            // When - the player casts
+            dispatchFishEvent(null, PlayerFishEvent.State.FISHING);
+
+            // Then - no master angler scheduling happens
+            verify(fishingManager, never()).masterAngler(any(FishHook.class), anyInt());
         }
     }
 }

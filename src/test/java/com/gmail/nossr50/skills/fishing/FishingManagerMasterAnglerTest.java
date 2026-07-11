@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -13,7 +14,12 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMasterAnglerEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
@@ -25,6 +31,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentCaptor;
 
 /**
  * Covers the Master Angler wait-time math: the per-rank and boat reductions, the configured
@@ -179,6 +186,37 @@ class FishingManagerMasterAnglerTest extends MMOTestEnvironment {
             // Then - the max wait is corrected to sit 100 ticks above the min wait
             verify(hook).setMinWaitTime(270);
             verify(hook).setMaxWaitTime(370);
+        }
+
+        /**
+         * Covers the masterAngler entry point end to end: the reduction must not run inline
+         * (vanilla applies its lure bonus after the event, so an immediate adjustment would
+         * read pre-lure wait times) and the deferred task must carry the lure level through
+         * to the reduction.
+         */
+        @Test
+        void masterAnglerRunsTheLureAwareReductionAtTheHookOneTickLater() {
+            // Given - a captured scheduler so the deferred task can be run by hand
+            final FoliaLib foliaLib = mock(FoliaLib.class);
+            final PlatformScheduler scheduler = mock(PlatformScheduler.class);
+            when(mcMMO.p.getFoliaLib()).thenReturn(foliaLib);
+            when(foliaLib.getScheduler()).thenReturn(scheduler);
+
+            // When - master angler triggers for a cast with a lure 2 rod
+            fishingManager.masterAngler(hook, 2);
+
+            // Then - the reduction is deferred one tick and has not touched the hook yet
+            @SuppressWarnings("unchecked")
+            final ArgumentCaptor<Consumer<WrappedTask>> scheduledReduction =
+                    ArgumentCaptor.forClass(Consumer.class);
+            verify(scheduler).runAtEntityLater(eq(hook), scheduledReduction.capture(), eq(1L));
+            verify(hook, never()).setMaxWaitTime(anyInt());
+
+            // And - running the scheduled task applies the lure converted reduction
+            scheduledReduction.getValue().accept(mock(WrappedTask.class));
+            verify(hook).setApplyLure(false);
+            verify(hook).setMinWaitTime(180);
+            verify(hook).setMaxWaitTime(340);
         }
 
         @Test
