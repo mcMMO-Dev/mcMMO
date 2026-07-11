@@ -1,8 +1,9 @@
 package com.gmail.nossr50;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.RETURNS_DEFAULTS;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,14 +56,27 @@ public final class TestRegistryBootstrap {
     /**
      * The shared registry mock for a registry-backed type. Lookups mint a fresh mock of the
      * type unless a test stubs a specific key.
+     *
+     * <p>The minting lives in the mock's default answer rather than a {@code when} stub: the
+     * mock is created inside the {@code Bukkit.getRegistry} interception (mid class init),
+     * and Mockito's stubbing machinery is thread-local state that cannot be trusted while an
+     * intercepted invocation is being answered — a {@code when} registered there can silently
+     * fail to bind, leaving lookups returning null and poisoning the registry-backed class
+     * for the whole JVM. A default answer is baked in at creation and needs no stubbing
+     * machinery; explicit per-key {@code when} stubs from test bodies still override it.</p>
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings("unchecked")
     public static <T extends Keyed> Registry<T> registryFor(Class<T> type) {
-        return (Registry<T>) REGISTRY_MOCKS.computeIfAbsent(type, keyedType -> {
-            final Registry mockRegistry = mock(Registry.class);
-            when(mockRegistry.get(any(NamespacedKey.class)))
-                    .thenAnswer(lookup -> mock((Class<?>) keyedType));
-            return mockRegistry;
-        });
+        return (Registry<T>) REGISTRY_MOCKS.computeIfAbsent(type, keyedType ->
+                mock(Registry.class, withSettings().defaultAnswer(invocation -> {
+                    // Covers get(NamespacedKey) and, on newer APIs, getOrThrow(NamespacedKey)
+                    final String methodName = invocation.getMethod().getName();
+                    if ((methodName.equals("get") || methodName.equals("getOrThrow"))
+                            && invocation.getArguments().length == 1
+                            && invocation.getArgument(0) instanceof NamespacedKey) {
+                        return mock((Class<?>) keyedType);
+                    }
+                    return RETURNS_DEFAULTS.answer(invocation);
+                })));
     }
 }
