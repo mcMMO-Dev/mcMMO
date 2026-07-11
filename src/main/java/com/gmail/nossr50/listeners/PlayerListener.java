@@ -1131,7 +1131,8 @@ public class PlayerListener implements Listener {
             final String replacement = getSkillCommandReplacements().get(lowerCaseCommand);
 
             if (replacement != null && !replacement.equals(KEEP_COMMAND)) {
-                event.setMessage(message.replace(command, replacement));
+                // Rewrite only the command token; arguments may legitimately repeat the alias
+                event.setMessage("/" + replacement + message.substring(1 + command.length()));
             }
         }
     }

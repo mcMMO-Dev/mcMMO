@@ -72,6 +72,7 @@ Version 2.3.000
     Fixed corrupt placed-block region files being kept locked after a failed load and producing errors that did not name the file
     Fixed a single unwritable chunk being able to abort the remaining placed-block saves during shutdown and chunk unload
     Fixed skill name arguments in commands not accepting English skill names on servers using a non-English locale
+    Fixed localized skill commands rewriting command arguments that repeat the skill name
     Fixed players being fireproof against other players while their mcMMO data was still loading
     Fixed several event handlers modifying fishing, block damage, and interaction events at MONITOR priority (See notes)
     Fixed the Shake ability's McMMOPlayerShakeEvent never being fired to other plugins

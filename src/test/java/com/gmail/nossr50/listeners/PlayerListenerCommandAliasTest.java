@@ -118,6 +118,28 @@ class PlayerListenerCommandAliasTest {
         assertThat(event.isCancelled()).isFalse();
     }
 
+    /**
+     * Regression coverage for the rewrite scope: replacing every occurrence of the alias text
+     * in the message also rewrote arguments that happened to repeat the alias (player names,
+     * search terms), corrupting the command. Only the leading command token may be rewritten.
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "'/faustkampf faustkampf', '/unarmed faustkampf'",
+            "'/Faustkampf Faustkampf', '/unarmed Faustkampf'",
+            "'/faustkampf abc faustkampf', '/unarmed abc faustkampf'",
+    })
+    void aliasArgumentsRepeatingTheAliasShouldNotBeRewritten(String typed, String expected) {
+        // Given - a localized alias whose arguments repeat the alias text
+        final PlayerCommandPreprocessEvent event = newCommandEvent(typed);
+
+        // When - the alias listener processes the command
+        playerListener.onPlayerCommandPreprocess(event);
+
+        // Then - only the command token is rewritten and arguments are preserved verbatim
+        assertThat(event.getMessage()).isEqualTo(expected);
+    }
+
     @Test
     void localizedAliasShouldNotBeRewrittenWhenLocaleIsEnglish() {
         // Given - the default en_US locale where no localized aliases exist
