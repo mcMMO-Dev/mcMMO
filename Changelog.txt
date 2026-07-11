@@ -117,6 +117,7 @@ Version 2.3.000
     (API) Deprecated the unused NMSConstants, NMSVersion, FixSpellingNetheriteUtil, SkillActivationType, and ObjectiveType classes for removal
     (API) Deprecated DelayedHerbalismXPCheckTask and HerbalismManager#awardXPForBlockSnapshots for removal
     (API) Deprecated unused public utility methods and fields
+    (API) Deprecated the misspelled PlayerProfile#getChimaerWingDATS in favor of getChimaeraWingDATS
     (API) Added DatabaseManager#readLeaderboardSnapshot for reading every leaderboard scope in one call
     (Codebase) Added scoreboard-library 2.8.0 as a shaded dependency for the packet-based scoreboard implementation
     (Codebase) Added ViaVersion to plugin.yml softdepend

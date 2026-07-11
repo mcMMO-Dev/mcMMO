@@ -494,7 +494,7 @@ public class McMMOPlayer implements Identified {
      */
 
     public int getChimeraWingLastUse() {
-        return profile.getChimaerWingDATS();
+        return profile.getChimaeraWingDATS();
     }
 
     public void actualizeChimeraWingLastUse() {

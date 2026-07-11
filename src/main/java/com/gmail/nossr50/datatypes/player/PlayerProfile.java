@@ -240,8 +240,16 @@ public class PlayerProfile {
      * Cooldowns
      */
 
-    public int getChimaerWingDATS() {
+    public int getChimaeraWingDATS() {
         return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);
+    }
+
+    /**
+     * @deprecated misspelled, use {@link #getChimaeraWingDATS()} instead
+     */
+    @Deprecated(forRemoval = true, since = "2.3.000")
+    public int getChimaerWingDATS() {
+        return getChimaeraWingDATS();
     }
 
     protected void setChimaeraWingDATS(int DATS) {
