@@ -24,6 +24,17 @@
 #     {@mining_level}     The player's current level in that skill; works for every
 #                         skill, e.g. {@herbalism_level}, {@archery_level}, ...
 #
+# When PlaceholderAPI is installed, its placeholders (like %player_world%) are also
+# resolved against the player who leveled up.
+#
+# Command text is passed to the server as-is; mcMMO does not translate color codes.
+# Whether colors render is up to the command being run, for example tellraw supports
+# colors while plain say does not.
+#
+# On modern Minecraft, say and me log as [Not Secure] in the console because they produce
+# unsigned player chat; that is vanilla behavior and harmless. tellraw sends a system
+# message instead and avoids the tag.
+#
 # Commands run once per milestone reached, even when several levels are gained at once.
 # The examples below are disabled; flip enabled to true (or write your own) to use them.
 level_up_commands:
@@ -64,3 +75,22 @@ level_up_commands:
         power_levels: [ 750 ]
         commands:
             - "say {@player} reached a combat milestone! Swords: {@swords_level}, Axes: {@axes_level}, power level: {@power_level}"
+    # PlaceholderAPI placeholders resolve when PlaceholderAPI is installed; mcMMO's own
+    # placeholders (like the leaderboard position below) work out of the box, others may
+    # need their expansion downloaded (%player_world% comes from PAPI's Player expansion)
+    papi_examples:
+        enabled: false
+        skills: all
+        levels: [ 500 ]
+        commands:
+            - "say {@player} hit {@skill} {@level} while exploring %player_world%!"
+            - "say {@player} is now position %mcmmo_rank_mining% on the Mining leaderboard!"
+    # Rich chat messages work through vanilla tellraw: colored text plus extra detail shown
+    # when hovering the message. Minecraft versions before 1.21.5 use the older
+    # 'hoverEvent'/'contents' JSON keys instead of 'hover_event'/'value'.
+    fancy_message:
+        enabled: false
+        skills: all
+        levels: [ 250 ]
+        commands:
+            - 'tellraw {@player} {"text":"","extra":[{"text":"Milestone! ","color":"gold","bold":true},{"text":"[{@skill} {@level}]","color":"aqua","underlined":true,"hover_event":{"action":"show_text","value":"Keep it up, {@player}! Power level: {@power_level}"}},{"text":" (hover for details)","color":"gray","italic":true}]}'

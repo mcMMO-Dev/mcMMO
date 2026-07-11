@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 /**
@@ -94,8 +96,9 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         levelPlayerViaXP(playerMock.mmoPlayer(), MINING, 2);
 
         // Then - every placeholder resolved against the milestone and current levels
-        // ({@skill} uses the display name, whatever the locale wiring resolves it to)
-        final String expected = "say " + PLAYER_NAME + " hit 2 in " + MINING.getName() + " (2)";
+        // ({@skill} uses the localized skill name, whatever the locale wiring resolves it to)
+        final String expected = "say " + PLAYER_NAME + " hit 2 in "
+                + skillTools.getLocalizedSkillName(MINING) + " (2)";
         mockedBukkit.verify(() -> Bukkit.dispatchCommand(eq(consoleSender), eq(expected)),
                 times(1));
     }
@@ -457,6 +460,41 @@ class LevelUpCommandTest extends MMOTestEnvironment {
         // Then - repeats are replaced, unknown tokens survive, power level is the current one
         assertThat(injected).isEqualTo(
                 "say " + PLAYER_NAME + " " + PLAYER_NAME + " {@bogus} 7 7");
+    }
+
+    @Test
+    void papiPlaceholdersShouldResolveWhenPlaceholderApiIsEnabled() {
+        // Given - PlaceholderAPI is enabled and a command containing a PAPI placeholder
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        when(pluginManager.isPluginEnabled("PlaceholderAPI")).thenReturn(true);
+        registerConfigCommand("say welcome %player_displayname%", Set.of(MINING), Set.of(1));
+
+        try (MockedStatic<PlaceholderAPI> papi = Mockito.mockStatic(PlaceholderAPI.class)) {
+            papi.when(() -> PlaceholderAPI.setPlaceholders(playerMock.player(),
+                            "say welcome %player_displayname%"))
+                    .thenReturn("say welcome " + PLAYER_NAME);
+
+            // When - the player levels Mining once
+            levelPlayerViaXP(playerMock.mmoPlayer(), MINING, 1);
+
+            // Then - the dispatched command used the PlaceholderAPI-resolved text
+            mockedBukkit.verify(() -> Bukkit.dispatchCommand(eq(consoleSender),
+                    eq("say welcome " + PLAYER_NAME)), times(1));
+        }
+    }
+
+    @Test
+    void papiPlaceholdersShouldPassThroughWhenPlaceholderApiIsAbsent() {
+        // Given - PlaceholderAPI is not enabled and a command containing a PAPI placeholder
+        final TestPlayerMock playerMock = mockPlayer(UUID.randomUUID(), PLAYER_NAME, 0);
+        registerConfigCommand("say %player_world%", Set.of(MINING), Set.of(1));
+
+        // When - the player levels Mining once
+        levelPlayerViaXP(playerMock.mmoPlayer(), MINING, 1);
+
+        // Then - the placeholder survives untouched instead of erroring or vanishing
+        mockedBukkit.verify(() -> Bukkit.dispatchCommand(eq(consoleSender),
+                eq("say %player_world%")), times(1));
     }
 
     @Test
