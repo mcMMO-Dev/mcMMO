@@ -388,10 +388,10 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         switch (event.getState()) {
-            // CAUGHT_FISH happens for any item caught (including junk and treasure)
+            // CAUGHT_FISH happens for any item caught (including junk and treasure); the
+            // caught entity's type is not enforced by the event, so never cast it unchecked
             case CAUGHT_FISH:
-                if (event.getCaught() != null) {
-                    Item fishingCatch = (Item) event.getCaught();
+                if (event.getCaught() instanceof Item fishingCatch) {
                     final Material caughtType = fishingCatch.getItemStack().getType();
 
                     if (mcMMO.p.getGeneralConfig().getFishingOverrideTreasures() &&

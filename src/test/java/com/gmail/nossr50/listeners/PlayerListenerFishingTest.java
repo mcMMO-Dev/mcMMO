@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -136,6 +137,22 @@ class PlayerListenerFishingTest extends MMOTestEnvironment {
                 throw new AssertionError("Failed to dispatch to " + handler.getName(), e);
             }
         }
+    }
+
+    /**
+     * Regression coverage for plugin-fired fish events: CAUGHT_FISH normally carries an Item,
+     * but the event does not enforce the caught entity's type, and the HIGH-priority handler
+     * previously cast it to Item unchecked and crashed.
+     */
+    @Test
+    void caughtFishCarryingANonItemEntityShouldNotCrash() {
+        // Given - a CAUGHT_FISH event whose caught entity is not an Item
+        final LivingEntity oddCatch = mock(LivingEntity.class);
+
+        // When - the catch lands
+        // Then - the handlers tolerate the non-item catch without an exception
+        assertThatCode(() -> dispatchFishEvent(oddCatch, PlayerFishEvent.State.CAUGHT_FISH))
+                .doesNotThrowAnyException();
     }
 
     @Nested
