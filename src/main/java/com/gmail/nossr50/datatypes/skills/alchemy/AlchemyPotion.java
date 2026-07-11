@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -97,18 +98,20 @@ public class AlchemyPotion {
     }
 
     private boolean hasDifferingCustomEffects(PotionMeta potionMeta, PotionMeta otherPotionMeta) {
-        for (int i = 0; i < potionMeta.getCustomEffects().size(); i++) {
-            var effect = potionMeta.getCustomEffects().get(i);
-
-            // One has an effect the other does not, they are not the same potion
-            if (!otherPotionMeta.hasCustomEffect(effect.getType())) {
+        for (final PotionEffect effect : potionMeta.getCustomEffects()) {
+            // Effect order carries no meaning, so every effect just needs a counterpart
+            if (!hasMatchingCustomEffect(effect, otherPotionMeta)) {
                 return true;
             }
+        }
+        return false;
+    }
 
-            var otherEffect = otherPotionMeta.getCustomEffects().get(i);
-            // Amplifier or duration are not equal, they are not the same potion
-            if (effect.getAmplifier() != otherEffect.getAmplifier()
-                    || effect.getDuration() != otherEffect.getDuration()) {
+    private boolean hasMatchingCustomEffect(PotionEffect effect, PotionMeta otherPotionMeta) {
+        for (final PotionEffect otherEffect : otherPotionMeta.getCustomEffects()) {
+            if (Objects.equals(effect.getType(), otherEffect.getType())
+                    && effect.getAmplifier() == otherEffect.getAmplifier()
+                    && effect.getDuration() == otherEffect.getDuration()) {
                 return true;
             }
         }
