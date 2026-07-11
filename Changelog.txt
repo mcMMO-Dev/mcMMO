@@ -55,6 +55,7 @@ Version 2.3.000
     Fixed an error when a pet owned by a non-player deals damage
     Fixed an error when a non-player entity clicks or drags in a furnace or brewing stand inventory
     Fixed an error when another plugin fires a fish catch carrying a non-item entity
+    Fixed an error when adding levels to Salvage or Smelting (See notes)
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
     Fixed an error when players below 11 HP used a Chimaera Wing underground
     Fixed custom sound IDs in sounds.yml causing errors on Spigot 1.21.3 and newer (See notes)
@@ -199,6 +200,9 @@ Version 2.3.000
     Leaderboard queries on SQL databases are now much faster on servers with large player tables. mcMMO automatically adds per-skill indexes to the skills table on startup when they are missing; on very large databases the first startup after updating may take longer while they build. This runs once, is safe to re-run, and mcMMO starts normally even if an index cannot be added. Fresh installs include the indexes, skill columns added by future updates get theirs automatically, and an existing idx_<skill> index that covers a different column is assumed deliberate and left alone.
     Renamed players leave a database row under an internal placeholder name; on SQL these rows could appear in /mctop and the leaderboard placeholders and were counted in /mcrank positions. They are now excluded from all of them.
     Players with identical levels on SQL databases are now ordered newest-registered-first in /mctop, /mcrank, and the leaderboard placeholders (previously alphabetical by name), and /mctop and /mcrank agree on tie positions. FlatFile databases still order ties alphabetically.
+
+    -- Child skill levels through the API --
+    Adding levels to Salvage or Smelting through the mcMMO API caused an error for online players. Child skills have no levels of their own, so added levels now split evenly across the skill's parent skills, matching how child skill XP and the offline API variants already behaved.
 
 Version 2.2.054
     Added compatibility for new blocks and items from Chaos Cubed (Minecraft 26.2) to mcMMO

@@ -368,12 +368,24 @@ public class PlayerProfile {
     }
 
     /**
-     * Add levels to a skill.
+     * Add levels to a skill. Levels added to a child skill are split evenly across its parent
+     * skills, mirroring how child skill XP is handled.
      *
      * @param skill Type of skill to add levels to
      * @param levels Number of levels to add
      */
     public void addLevels(PrimarySkillType skill, int levels) {
+        if (SkillTools.isChildSkill(skill)) {
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
+            int dividedLevels = levels / parentSkills.size();
+
+            for (PrimarySkillType parentSkill : parentSkills) {
+                addLevels(parentSkill, dividedLevels);
+            }
+
+            return;
+        }
+
         modifySkill(skill, skills.get(skill) + levels);
     }
 
