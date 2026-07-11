@@ -205,6 +205,20 @@ public class NotificationManager {
 
     public static void sendPlayerUnlockNotification(McMMOPlayer mmoPlayer,
             SubSkillType subSkillType) {
+        sendPlayerUnlockNotification(mmoPlayer, subSkillType, true);
+    }
+
+    /**
+     * Sends the sub-skill unlock notification, optionally with the unlock sound. Batched
+     * unlock notifications only request the sound for the first notification of the batch,
+     * so mass level changes do not play a long stream of unlock sounds.
+     *
+     * @param mmoPlayer target player
+     * @param subSkillType the sub-skill that unlocked
+     * @param playSound whether to play the unlock sound with the message
+     */
+    public static void sendPlayerUnlockNotification(McMMOPlayer mmoPlayer,
+            SubSkillType subSkillType, boolean playSound) {
         if (!mmoPlayer.useChatNotifications()) {
             return;
         }
@@ -220,9 +234,11 @@ public class NotificationManager {
         sendNotification(mmoPlayer.getPlayer(), customEvent);
 
         //Unlock Sound Effect
-        SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(),
-                mmoPlayer.getPlayer().getLocation(),
-                SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
+        if (playSound) {
+            SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(),
+                    mmoPlayer.getPlayer().getLocation(),
+                    SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
+        }
     }
 
     /**

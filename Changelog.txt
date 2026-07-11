@@ -16,6 +16,7 @@ Version 2.3.000
     Changed XP rate event admin notifications to show the command sender as a hoverable @name with their UUID on hover in chat, and as name (UUID) in the console, instead of appending the UUID to their name
     Changed skill name tab completion to suggest lowercase names in commands like /mctop, /skillreset, and /mmoxpbar
     Changed fishing anti-exploit checks to run before other plugins see the catch (Thanks FireML) (See notes)
+    Changed skill rank unlock notifications to only play the unlock sound once when many unlocks arrive back to back
     Improved performance when gaining XP, rolling skill chances, checking skill ranks, and reading config settings and permissions
     Improved performance of combat processing, block and placed-block handling, and many other event handlers including furnaces, fishing, inventories, pets, and commands
     Fixed an exploit where breaking and quickly replacing multi-block plants granted Herbalism XP without the plants breaking (See notes)

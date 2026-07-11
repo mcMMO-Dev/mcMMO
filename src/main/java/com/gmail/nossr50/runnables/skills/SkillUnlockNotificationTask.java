@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.sounds.SkillUnlockSoundThrottle;
 
 
 public class SkillUnlockNotificationTask extends CancellableRunnable {
@@ -37,7 +38,10 @@ public class SkillUnlockNotificationTask extends CancellableRunnable {
      */
     @Override
     public void run() {
-        //mmoPlayer.getPlayer().sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
-        NotificationManager.sendPlayerUnlockNotification(mmoPlayer, subSkillType);
+        // Batched unlock notifications only play the unlock sound for the first
+        // notification of the batch; mass level changes queue dozens of these
+        final boolean playSound = SkillUnlockSoundThrottle.tryPlaySound(
+                mmoPlayer.getPlayer().getUniqueId());
+        NotificationManager.sendPlayerUnlockNotification(mmoPlayer, subSkillType, playSound);
     }
 }
