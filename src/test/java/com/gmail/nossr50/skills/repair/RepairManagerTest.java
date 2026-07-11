@@ -3,23 +3,36 @@ package com.gmail.nossr50.skills.repair;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
 
 import com.gmail.nossr50.MMOTestEnvironment;
+import com.gmail.nossr50.TestRegistryBootstrap;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.config.CustomItemSupportConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.ProbabilityUtil;
+import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -244,5 +257,315 @@ class RepairManagerTest extends MMOTestEnvironment {
         assertThat(damage.get()).isEqualTo(30);
         // And - continuing to repair the same helmet within the window does not re-prompt
         assertThat(repairManager.checkConfirmation(helmet, true)).isTrue();
+    }
+
+    /**
+     * Shared wiring for the handleRepair tests: a damaged diamond helmet repairable with
+     * diamonds the player has, with live damage tracking through its Damageable meta.
+     */
+    private AtomicInteger helmetDamage;
+    private ItemStack helmet;
+    private Damageable helmetMeta;
+    private Repairable repairable;
+    private ItemStack diamonds;
+
+    private void wireRepairableHelmet(int initialDamage) {
+        helmetDamage = new AtomicInteger(initialDamage);
+        helmetMeta = Mockito.mock(Damageable.class);
+        Mockito.when(helmetMeta.getDamage()).thenAnswer(invocation -> helmetDamage.get());
+        Mockito.doAnswer(invocation -> {
+            helmetDamage.set(invocation.getArgument(0));
+            return null;
+        }).when(helmetMeta).setDamage(Mockito.anyInt());
+
+        helmet = Mockito.mock(ItemStack.class);
+        Mockito.when(helmet.getType()).thenReturn(Material.DIAMOND_HELMET);
+        Mockito.when(helmet.getAmount()).thenReturn(1);
+        Mockito.when(helmet.getItemMeta()).thenReturn(helmetMeta);
+        Mockito.when(helmet.clone()).thenReturn(helmet);
+
+        final RepairableManager repairableManager = Mockito.mock(RepairableManager.class);
+        Mockito.when(mcMMO.getRepairableManager()).thenReturn(repairableManager);
+        repairable = Mockito.mock(Repairable.class);
+        Mockito.when(repairableManager.getRepairable(Material.DIAMOND_HELMET))
+                .thenReturn(repairable);
+        Mockito.when(repairable.getRepairMaterial()).thenReturn(Material.DIAMOND);
+        Mockito.when(repairable.getBaseRepairDurability(helmet)).thenReturn((short) 30);
+        Mockito.when(repairable.getMaximumDurability()).thenReturn((short) 100);
+
+        Mockito.when(Permissions.repairMaterialType(Mockito.eq(player), Mockito.any()))
+                .thenReturn(true);
+        Mockito.when(Permissions.repairItemType(Mockito.eq(player), Mockito.any()))
+                .thenReturn(true);
+
+        diamonds = Mockito.mock(ItemStack.class);
+        Mockito.when(diamonds.clone()).thenReturn(diamonds);
+        Mockito.when(diamonds.getEnchantments()).thenReturn(Map.of());
+        Mockito.when(playerInventory.contains(Material.DIAMOND)).thenReturn(true);
+        Mockito.when(playerInventory.first(Material.DIAMOND)).thenReturn(0);
+        Mockito.when(playerInventory.getItem(0)).thenReturn(diamonds);
+    }
+
+    @Nested
+    class AnvilPlacement {
+        @Test
+        void placingAnAnvilShouldInformAndBwongExactlyOnce() {
+            // Given - anvil messages and placement sounds are enabled
+            Mockito.when(generalConfig.getRepairAnvilMessagesEnabled()).thenReturn(true);
+            Mockito.when(generalConfig.getRepairAnvilPlaceSoundsEnabled()).thenReturn(true);
+
+            // When - the player places an anvil twice
+            repairManager.placedAnvilCheck();
+            repairManager.placedAnvilCheck();
+
+            // Then - the hint and sound fire only for the first placement
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil"), times(1));
+            mockedSoundManager.verify(() -> SoundManager.sendCategorizedSound(
+                    Mockito.eq(player), Mockito.any(), Mockito.eq(SoundType.ANVIL),
+                    Mockito.any()), times(1));
+        }
+    }
+
+    @Nested
+    class HandleRepairGuards {
+        @BeforeEach
+        void wireHelmet() {
+            wireRepairableHelmet(60);
+        }
+
+        @Test
+        void unbreakableItemsShouldBeRejected() {
+            Mockito.when(helmetMeta.isUnbreakable()).thenReturn(true);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable"));
+            assertThat(helmetDamage.get()).isEqualTo(60);
+        }
+
+        @Test
+        void customModelDataShouldBeRejectedWhenUnsupported() {
+            Mockito.when(helmetMeta.hasCustomModelData()).thenReturn(true);
+            final CustomItemSupportConfig customItemSupportConfig =
+                    Mockito.mock(CustomItemSupportConfig.class);
+            Mockito.when(mcMMO.p.getCustomItemSupportConfig())
+                    .thenReturn(customItemSupportConfig);
+            Mockito.when(customItemSupportConfig.isCustomRepairAllowed()).thenReturn(false);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.SUBSKILL_MESSAGE_FAILED,
+                    "Anvil.Repair.Reject.CustomModelData"));
+            assertThat(helmetDamage.get()).isEqualTo(60);
+        }
+
+        @Test
+        void lowSkillShouldBeRejectedWithTheRequiredLevel() {
+            Mockito.when(repairable.getMinimumLevel()).thenReturn(50);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(
+                    Mockito.eq(player), Mockito.eq(NotificationType.SUBSKILL_MESSAGE_FAILED),
+                    Mockito.eq("Repair.Skills.Adept"), Mockito.eq("50"),
+                    Mockito.anyString()));
+            assertThat(helmetDamage.get()).isEqualTo(60);
+        }
+
+        @Test
+        void fullDurabilityItemsShouldBeRejected() {
+            helmetDamage.set(0);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.FullDurability"));
+        }
+
+        @Test
+        void missingRepairMaterialShouldBeRejected() {
+            Mockito.when(playerInventory.contains(Material.DIAMOND)).thenReturn(false);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(
+                    Mockito.eq(player), Mockito.eq(NotificationType.SUBSKILL_MESSAGE_FAILED),
+                    Mockito.eq("Skills.NeedMore.Extra"), Mockito.any(), Mockito.any()));
+            assertThat(helmetDamage.get()).isEqualTo(60);
+        }
+
+        @Test
+        void stackedItemsShouldBeRejected() {
+            Mockito.when(helmet.getAmount()).thenReturn(2);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.StackedItems"));
+            assertThat(helmetDamage.get()).isEqualTo(60);
+        }
+
+        @Test
+        void missingMaterialPermissionShouldBeRejected() {
+            Mockito.when(Permissions.repairMaterialType(Mockito.eq(player), Mockito.any()))
+                    .thenReturn(false);
+
+            repairManager.handleRepair(helmet);
+
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.NO_PERMISSION, "mcMMO.NoPermission"));
+            assertThat(helmetDamage.get()).isEqualTo(60);
+        }
+    }
+
+    @Nested
+    class RepairBonuses {
+        @BeforeEach
+        void wireHelmet() {
+            wireRepairableHelmet(90);
+        }
+
+        @Test
+        void repairMasteryShouldBoostTheRepairAmount() {
+            // Given - Repair Mastery unlocked with a 200% max bonus reached at level 100,
+            // and a player at skill level 50 (a 100% bonus)
+            Mockito.when(RankUtils.hasUnlockedSubskill(player,
+                    SubSkillType.REPAIR_REPAIR_MASTERY)).thenReturn(true);
+            Mockito.when(advancedConfig.getRepairMasteryMaxBonus()).thenReturn(200.0);
+            Mockito.when(advancedConfig.getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY))
+                    .thenReturn(100);
+            mmoPlayer.modifySkill(PrimarySkillType.REPAIR, 50);
+
+            // When - the repair runs (30 base + 30 mastery bonus)
+            repairManager.handleRepair(helmet);
+
+            // Then - the damage drops by the boosted amount
+            assertThat(helmetDamage.get()).isEqualTo(30);
+        }
+
+        @Test
+        void superRepairShouldDoubleTheRepairAmount() {
+            try (org.mockito.MockedStatic<ProbabilityUtil> probabilityUtil =
+                    Mockito.mockStatic(ProbabilityUtil.class)) {
+                // Given - Super Repair unlocked and its roll succeeding
+                Mockito.when(RankUtils.hasUnlockedSubskill(player,
+                        SubSkillType.REPAIR_SUPER_REPAIR)).thenReturn(true);
+                probabilityUtil.when(() -> ProbabilityUtil.isSkillRNGSuccessful(
+                        SubSkillType.REPAIR_SUPER_REPAIR, mmoPlayer)).thenReturn(true);
+
+                // When - the repair runs (30 base doubled to 60)
+                repairManager.handleRepair(helmet);
+
+                // Then - the damage drops by double the base and the player is told
+                assertThat(helmetDamage.get()).isEqualTo(30);
+                notificationManager.verify(() -> NotificationManager.sendPlayerInformation(
+                        player, NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy"));
+            }
+        }
+    }
+
+    @Nested
+    class ArcaneForgingLoss {
+        private Enchantment protection;
+
+        @BeforeEach
+        void wireEnchantedHelmet() {
+            TestRegistryBootstrap.bootstrap(mockedBukkit);
+            wireRepairableHelmet(60);
+            protection = Mockito.mock(Enchantment.class);
+            Mockito.when(helmet.getEnchantments()).thenReturn(Map.of(protection, 3));
+            Mockito.when(advancedConfig.getArcaneForgingEnchantLossEnabled()).thenReturn(true);
+            Mockito.when(Permissions.hasRepairEnchantBypassPerk(player)).thenReturn(false);
+            Mockito.when(Permissions.arcaneBypass(player)).thenReturn(false);
+            Mockito.when(ExperienceConfig.getInstance().allowUnsafeEnchantments())
+                    .thenReturn(true);
+        }
+
+        @Test
+        void noArcaneForgingRankShouldLoseEveryEnchant() {
+            // Given - no Arcane Forging rank at all (rank lookup defaults to 0)
+            // When - the repair runs
+            repairManager.handleRepair(helmet);
+
+            // Then - the enchant is stripped and the player told
+            Mockito.verify(helmet).removeEnchantment(protection);
+            notificationManager.verify(() -> NotificationManager.sendPlayerInformation(player,
+                    NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Lost"));
+        }
+
+        @Test
+        void winningKeepRollsShouldPreserveTheEnchants() {
+            try (org.mockito.MockedStatic<ProbabilityUtil> probabilityUtil =
+                    Mockito.mockStatic(ProbabilityUtil.class)) {
+                // Given - Arcane Forging rank 3 with a winning keep roll and no downgrades
+                Mockito.when(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING))
+                        .thenReturn(3);
+                Mockito.when(advancedConfig.getArcaneForgingKeepEnchantsChance(3))
+                        .thenReturn(100.0);
+                probabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
+                        PrimarySkillType.REPAIR, mmoPlayer, 100.0)).thenReturn(true);
+
+                // When - the repair runs
+                repairManager.handleRepair(helmet);
+
+                // Then - the enchant survives untouched
+                Mockito.verify(helmet, Mockito.never()).removeEnchantment(protection);
+                notificationManager.verify(
+                        () -> NotificationManager.sendPlayerInformationChatOnly(player,
+                                "Repair.Arcane.Perfect"));
+            }
+        }
+
+        @Test
+        void losingKeepRollsShouldStripTheEnchant() {
+            try (org.mockito.MockedStatic<ProbabilityUtil> probabilityUtil =
+                    Mockito.mockStatic(ProbabilityUtil.class)) {
+                // Given - Arcane Forging rank 1 with a losing keep roll
+                Mockito.when(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING))
+                        .thenReturn(1);
+                Mockito.when(helmet.getEnchantments())
+                        .thenReturn(Map.of(protection, 3))
+                        .thenReturn(Map.of());
+
+                // When - the repair runs (keep roll fails by mock default)
+                repairManager.handleRepair(helmet);
+
+                // Then - the enchant is stripped and the player told everything was lost
+                Mockito.verify(helmet).removeEnchantment(protection);
+                notificationManager.verify(
+                        () -> NotificationManager.sendPlayerInformationChatOnly(player,
+                                "Repair.Arcane.Fail"));
+            }
+        }
+
+        @Test
+        void downgradeRollsShouldWeakenTheEnchant() {
+            try (org.mockito.MockedStatic<ProbabilityUtil> probabilityUtil =
+                    Mockito.mockStatic(ProbabilityUtil.class)) {
+                // Given - a winning keep roll but a losing avoid-downgrade roll
+                Mockito.when(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING))
+                        .thenReturn(3);
+                Mockito.when(advancedConfig.getArcaneForgingKeepEnchantsChance(3))
+                        .thenReturn(100.0);
+                Mockito.when(advancedConfig.getArcaneForgingDowngradeEnabled()).thenReturn(true);
+                Mockito.when(advancedConfig.getArcaneForgingDowngradeChance(3)).thenReturn(25.0);
+                probabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
+                        PrimarySkillType.REPAIR, mmoPlayer, 100.0)).thenReturn(true);
+                probabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
+                        PrimarySkillType.REPAIR, mmoPlayer, 75.0)).thenReturn(false);
+
+                // When - the repair runs
+                repairManager.handleRepair(helmet);
+
+                // Then - the enchant is re-applied one level weaker
+                Mockito.verify(helmet).addUnsafeEnchantment(protection, 2);
+                notificationManager.verify(
+                        () -> NotificationManager.sendPlayerInformationChatOnly(player,
+                                "Repair.Arcane.Downgrade"));
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.gmail.nossr50.database;
 import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,6 +29,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.google.common.io.Files;
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,12 +37,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -251,6 +261,21 @@ class FlatFileDatabaseManagerTest {
         // Then
         assertEquals(LeaderboardStatus.UPDATED, firstStatus);
         assertEquals(LeaderboardStatus.TOO_SOON_TO_UPDATE, secondStatus);
+    }
+
+    @Test
+    void updateLeaderboardsShouldThrottleWhenRefreshIntervalBelowFloor() {
+        // Given - a refresh interval below the one-minute floor (0ms would disable throttling)
+        var databaseManager = new FlatFileDatabaseManager(
+                new File(getTemporaryUserFilePath()), logger, PURGE_TIME, 0, true, 0L);
+
+        // When - two rebuilds are requested back to back
+        var firstStatus = databaseManager.updateLeaderboards();
+        var secondStatus = databaseManager.updateLeaderboards();
+
+        // Then - the floor is enforced, so the second rebuild is rejected as too soon
+        assertThat(firstStatus).isEqualTo(LeaderboardStatus.UPDATED);
+        assertThat(secondStatus).isEqualTo(LeaderboardStatus.TOO_SOON_TO_UPDATE);
     }
 
     // ------------------------------------------------------------------------
@@ -1382,6 +1407,194 @@ class FlatFileDatabaseManagerTest {
             }
         }
         directoryToBeDeleted.delete();
+    }
+
+    /**
+     * Concurrency regression: forced rebuilds and reads share the leaderboard maps, so readers
+     * must always observe complete, correctly ordered snapshots — never a partially built or
+     * torn leaderboard.
+     */
+    @Test
+    void readLeaderboardShouldReturnCompleteSnapshotsWhileRebuildsRunConcurrently()
+            throws Exception {
+        // Given - a database with two ranked users and warmed leaderboards
+        var databaseManager = createDatabaseWithTwoRankedUsers();
+        databaseManager.readLeaderboardSnapshot(10);
+
+        final int forcedRebuilds = 100;
+        final CountDownLatch startLatch = new CountDownLatch(1);
+        final AtomicBoolean rebuilding = new AtomicBoolean(true);
+        final ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        try {
+            // When - one thread forces rebuilds while another reads pages and ranks
+            final Future<?> rebuilder = executor.submit(() -> {
+                startLatch.await();
+                try {
+                    for (int i = 0; i < forcedRebuilds; i++) {
+                        databaseManager.readLeaderboardSnapshot(10);
+                    }
+                } finally {
+                    rebuilding.set(false);
+                }
+                return null;
+            });
+
+            final Future<?> reader = executor.submit(() -> {
+                startLatch.await();
+                while (rebuilding.get()) {
+                    // Then - every observed page is complete and ordered leader-first
+                    final List<PlayerStat> page =
+                            databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10);
+                    assertThat(page).hasSize(2);
+                    assertThat(page.get(0).playerName()).isEqualTo("leader");
+                    assertThat(page.get(1).playerName()).isEqualTo("follower");
+
+                    // And - rank lookups agree with the page ordering
+                    assertThat(databaseManager.readRank("leader").get(PrimarySkillType.MINING))
+                            .isEqualTo(1);
+                }
+                return null;
+            });
+
+            startLatch.countDown();
+            rebuilder.get(60, TimeUnit.SECONDS);
+            reader.get(60, TimeUnit.SECONDS);
+        } finally {
+            executor.shutdownNow();
+        }
+    }
+
+    /**
+     * The bulk snapshot path exists so cache rebuilds always observe current file contents; it
+     * must not be subject to the wall-clock throttle that spaces out command-triggered rebuilds.
+     */
+    @Test
+    void readLeaderboardSnapshotShouldObserveNewDataWhenThrottleWouldServeStaleData()
+            throws Exception {
+        // Given - a database with two ranked users whose leaderboards were just rebuilt,
+        // putting the throttle in its "too soon to update" window
+        var databaseManager = createDatabaseWithTwoRankedUsers();
+        databaseManager.readLeaderboardSnapshot(10);
+
+        // And - a third, higher-level user saved after that rebuild
+        final UUID topUuid = randomUUID();
+        databaseManager.newUser("topdog", topUuid);
+        final PlayerProfile topProfile = databaseManager.loadPlayerProfile(topUuid);
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (isChildSkill(primarySkillType)) {
+                continue;
+            }
+            topProfile.modifySkill(primarySkillType, 500);
+        }
+        databaseManager.saveUser(topProfile);
+
+        // When - reading through the throttled path and the forced bulk snapshot path
+        final List<PlayerStat> throttledPage =
+                databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10);
+        final List<PlayerStat> snapshotPage = databaseManager.readLeaderboardSnapshot(10)
+                .skillLeaderboards().get(PrimarySkillType.MINING);
+
+        // Then - the throttled path still serves the pre-save snapshot
+        assertThat(throttledPage).extracting(PlayerStat::playerName)
+                .containsExactly("leader", "follower");
+
+        // And - the forced path observes the new top player immediately
+        assertThat(snapshotPage).extracting(PlayerStat::playerName)
+                .containsExactly("topdog", "leader", "follower");
+    }
+
+    /**
+     * A failed rebuild must not consume the wall-clock throttle window: the next caller retries
+     * immediately instead of serving stale leaderboards until the window expires.
+     */
+    @Test
+    void updateLeaderboardsShouldAllowImmediateRetryWhenRebuildFails() throws Exception {
+        // Given - a database with two ranked users and successfully built leaderboards
+        var databaseManager = createDatabaseWithTwoRankedUsers();
+        assertThat(databaseManager.updateLeaderboards()).isEqualTo(LeaderboardStatus.UPDATED);
+
+        // And - the throttle window has elapsed
+        resetLeaderboardThrottle(databaseManager);
+
+        // And - the users file is unreadable, so the next rebuild fails
+        final File usersFile = databaseManager.getUsersFile();
+        final byte[] savedContent = java.nio.file.Files.readAllBytes(usersFile.toPath());
+        assertThat(usersFile.delete()).isTrue();
+
+        // When - a rebuild is attempted against the unreadable file
+        assertThat(databaseManager.updateLeaderboards()).isEqualTo(LeaderboardStatus.FAILED);
+
+        // Then - the last good leaderboards are still served instead of empty results
+        assertThat(databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10))
+                .extracting(PlayerStat::playerName)
+                .containsExactly("leader", "follower");
+
+        // When - the file is restored and a retry happens right away
+        java.nio.file.Files.write(usersFile.toPath(), savedContent);
+
+        // Then - the retry rebuilds immediately because the failure did not arm the throttle
+        assertThat(databaseManager.updateLeaderboards()).isEqualTo(LeaderboardStatus.UPDATED);
+    }
+
+    /**
+     * Gotcha coverage: a failed bulk snapshot read must not arm the throttle either — otherwise
+     * a cold start whose first read fails would serve empty leaderboards for a full throttle
+     * window with no retry allowed.
+     */
+    @Test
+    void readLeaderboardSnapshotFailureShouldNotBlockLaterRebuilds() throws Exception {
+        // Given - a database with two ranked users whose leaderboards were never built
+        var databaseManager = createDatabaseWithTwoRankedUsers();
+
+        // And - the users file is unreadable, so the bulk snapshot read fails
+        final File usersFile = databaseManager.getUsersFile();
+        final byte[] savedContent = java.nio.file.Files.readAllBytes(usersFile.toPath());
+        assertThat(usersFile.delete()).isTrue();
+        assertThatThrownBy(() -> databaseManager.readLeaderboardSnapshot(10))
+                .isInstanceOf(RuntimeException.class);
+
+        // When - the file is restored and the throttled path runs immediately afterwards
+        java.nio.file.Files.write(usersFile.toPath(), savedContent);
+        final LeaderboardStatus status = databaseManager.updateLeaderboards();
+
+        // Then - the rebuild proceeds and readers see data instead of an empty leaderboard
+        assertThat(status).isEqualTo(LeaderboardStatus.UPDATED);
+        assertThat(databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10))
+                .extracting(PlayerStat::playerName)
+                .containsExactly("leader", "follower");
+    }
+
+    /**
+     * The bulk snapshot must include every non-child skill scope plus overall, sliced from a
+     * single rebuild generation.
+     */
+    @Test
+    void readLeaderboardSnapshotShouldIncludeEveryScopeFromOneRebuild() {
+        // Given - a database with two ranked users
+        var databaseManager = createDatabaseWithTwoRankedUsers();
+
+        // When - reading the bulk snapshot
+        final var snapshot = databaseManager.readLeaderboardSnapshot(10);
+
+        // Then - every non-child skill scope is present and ordered leader-first
+        assertThat(snapshot.skillLeaderboards().keySet())
+                .containsExactlyInAnyOrderElementsOf(SkillTools.NON_CHILD_SKILLS);
+        for (List<PlayerStat> scope : snapshot.skillLeaderboards().values()) {
+            assertThat(scope).extracting(PlayerStat::playerName)
+                    .containsExactly("leader", "follower");
+        }
+
+        // And - the overall scope is present and ordered leader-first
+        assertThat(snapshot.powerLevels()).extracting(PlayerStat::playerName)
+                .containsExactly("leader", "follower");
+    }
+
+    private static void resetLeaderboardThrottle(FlatFileDatabaseManager databaseManager)
+            throws Exception {
+        final Field lastUpdateField = FlatFileDatabaseManager.class.getDeclaredField("lastUpdate");
+        lastUpdateField.setAccessible(true);
+        ((AtomicLong) lastUpdateField.get(databaseManager)).set(0L);
     }
 
     private FlatFileDatabaseManager createDatabaseWithTwoRankedUsers() {

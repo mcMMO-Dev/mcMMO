@@ -28,12 +28,15 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import org.bukkit.Location;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -303,6 +306,118 @@ class AcrobaticsTest extends MMOTestEnvironment {
         final Mob mob = mock(Mob.class);
         when(mob.getUniqueId()).thenReturn(UUID.randomUUID());
         return mob;
+    }
+
+    @Nested
+    class DodgeGate {
+        private AcrobaticsManager acrobaticsManager;
+
+        @BeforeEach
+        void setUpManager() {
+            acrobaticsManager = new AcrobaticsManager(mmoPlayer);
+            when(RankUtils.hasUnlockedSubskill(player, SubSkillType.ACROBATICS_DODGE))
+                    .thenReturn(true);
+            when(generalConfig.getPVEEnabled(PrimarySkillType.ACROBATICS)).thenReturn(true);
+            when(generalConfig.getPVPEnabled(PrimarySkillType.ACROBATICS)).thenReturn(true);
+        }
+
+        @Test
+        void blockingPlayersShouldNotDodge() {
+            // Given - the defender is blocking with a shield
+            when(player.isBlocking()).thenReturn(true);
+
+            // When / Then - dodge stays out of the way of the block
+            assertThat(acrobaticsManager.canDodge(mockMob())).isFalse();
+        }
+
+        @Test
+        void mobAttacksShouldBeDodgeableWhenPveTriggersAllow() {
+            // Given / When / Then - a plain mob hit can be dodged
+            assertThat(acrobaticsManager.canDodge(mockMob())).isTrue();
+
+            // And - not when PVE skill triggers are disabled
+            when(generalConfig.getPVEEnabled(PrimarySkillType.ACROBATICS)).thenReturn(false);
+            assertThat(acrobaticsManager.canDodge(mockMob())).isFalse();
+        }
+
+        @Test
+        void lightningShouldRespectTheLightningConfig() {
+            // Given - dodging lightning is disabled in the config
+            final boolean originalLightningDisabled = Acrobatics.dodgeLightningDisabled;
+            Acrobatics.dodgeLightningDisabled = true;
+            try {
+                // When / Then - lightning cannot be dodged
+                assertThat(acrobaticsManager.canDodge(mock(LightningStrike.class))).isFalse();
+
+                // And - it can once the config allows it
+                Acrobatics.dodgeLightningDisabled = false;
+                assertThat(acrobaticsManager.canDodge(mock(LightningStrike.class))).isTrue();
+            } finally {
+                Acrobatics.dodgeLightningDisabled = originalLightningDisabled;
+            }
+        }
+
+        @Test
+        void lockedDodgeShouldNeverTrigger() {
+            // Given - Dodge has not been unlocked
+            when(RankUtils.hasUnlockedSubskill(player, SubSkillType.ACROBATICS_DODGE))
+                    .thenReturn(false);
+
+            // When / Then - no dodging
+            assertThat(acrobaticsManager.canDodge(mockMob())).isFalse();
+        }
+    }
+
+    @Nested
+    class RollXpThrottle {
+        private AcrobaticsManager acrobaticsManager;
+
+        @BeforeEach
+        void setUpManager() {
+            acrobaticsManager = new AcrobaticsManager(mmoPlayer);
+        }
+
+        @Test
+        void disabledExploitPreventionShouldAlwaysPayRollXp() {
+            // Given - acrobatics exploit prevention is off
+            when(ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
+                    .thenReturn(false);
+
+            // When / Then - repeated rolls all gain XP
+            assertThat(acrobaticsManager.canGainRollXP()).isTrue();
+            assertThat(acrobaticsManager.canGainRollXP()).isTrue();
+        }
+
+        /**
+         * With exploit prevention on, the first roll starts a cooldown and rapid re-rolls
+         * are denied, with each denial lengthening the cooldown further.
+         */
+        @Test
+        void rapidRollsShouldBeThrottledWhenExploitPreventionIsOn() {
+            // Given - acrobatics exploit prevention is on
+            when(ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
+                    .thenReturn(true);
+
+            // When / Then - the first roll pays, immediate re-rolls do not
+            assertThat(acrobaticsManager.canGainRollXP()).isTrue();
+            assertThat(acrobaticsManager.canGainRollXP()).isFalse();
+            assertThat(acrobaticsManager.canGainRollXP()).isFalse();
+        }
+    }
+
+    @Nested
+    class FallLocationTracking {
+        @Test
+        void repeatFallLocationsShouldBeRemembered() {
+            // Given - a fall spot the player already rolled at
+            final AcrobaticsManager acrobaticsManager = new AcrobaticsManager(mmoPlayer);
+            final Location fallSpot = new Location(world, 10, 64, 10);
+
+            // When / Then - the spot is only known after it is recorded
+            assertThat(acrobaticsManager.hasFallenInLocationBefore(fallSpot)).isFalse();
+            acrobaticsManager.addLocationToFallMap(fallSpot);
+            assertThat(acrobaticsManager.hasFallenInLocationBefore(fallSpot)).isTrue();
+        }
     }
 
     private @NotNull EntityDamageEvent mockEntityDamageEvent(double damage) {

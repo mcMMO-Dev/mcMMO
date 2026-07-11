@@ -24,7 +24,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -190,11 +189,14 @@ public class InventoryListener implements Listener {
 //        if (isOutsideWindowClick(event))
 //            return;
 
+        // Plugins can open container inventories for human-shaped entities that aren't players
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+
         Inventory inventory = event.getInventory();
 
         if (inventory instanceof FurnaceInventory furnaceInventory) {
-            final Player player = ((Player) event.getWhoClicked()).getPlayer();
-
             if (!mcMMO.p.getSkillTools()
                     .doesPlayerHaveSkillPermission(player, PrimarySkillType.SMELTING)) {
                 return;
@@ -207,8 +209,6 @@ public class InventoryListener implements Listener {
         if (!(inventory instanceof BrewerInventory brewerInventory)) {
             return;
         }
-
-        final Player player = ((Player) event.getWhoClicked()).getPlayer();
 
         if (!mcMMO.p.getSkillTools()
                 .doesPlayerHaveSkillPermission(player, PrimarySkillType.ALCHEMY)) {
@@ -223,10 +223,9 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        HumanEntity whoClicked = event.getWhoClicked();
         final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
 
-        if (mmoPlayer == null || !Permissions.isSubSkillEnabled(whoClicked,
+        if (mmoPlayer == null || !Permissions.isSubSkillEnabled(player,
                 SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
@@ -339,10 +338,13 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        HumanEntity whoClicked = event.getWhoClicked();
+        // Plugins can open container inventories for human-shaped entities that aren't players
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(
-                whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(
+                player, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 
@@ -354,8 +356,6 @@ public class InventoryListener implements Listener {
         ItemStack ingredient = ((BrewerInventory) inventory).getIngredient();
 
         if (AlchemyPotionBrewer.isEmpty(ingredient) || ingredient.isSimilar(cursor)) {
-            final Player player = (Player) whoClicked;
-
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
                 if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
@@ -446,7 +446,9 @@ public class InventoryListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    // HIGHEST instead of MONITOR: this handler mutates item state (stripping ability buffs),
+    // which the MONITOR contract forbids
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
         if (event.getCurrentItem() == null) {
             return;
@@ -467,7 +469,9 @@ public class InventoryListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    // HIGHEST instead of MONITOR: this handler mutates item state (stripping ability buffs),
+    // which the MONITOR contract forbids
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryOpenEvent(InventoryOpenEvent event) {
         SkillUtils.removeAbilityBuff(event.getPlayer().getInventory().getItemInMainHand());
     }

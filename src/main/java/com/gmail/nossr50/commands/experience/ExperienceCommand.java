@@ -113,7 +113,11 @@ public abstract class ExperienceCommand implements TabExecutor {
                             isSilent(args));
                 }
 
-                handleSenderMessage(sender, playerName, skill);
+                // -s silences the whole command; plugins dispatch it from console for XP
+                // rewards, and the confirmation would flood the log on every dispatch
+                if (!isSilent(args)) {
+                    handleSenderMessage(sender, playerName, skill);
+                }
                 return true;
             } else {
                 return false;

@@ -5,6 +5,11 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.CancellableRunnable;
 import java.util.ArrayList;
 
+/**
+ * @deprecated XP for multi-block plants, chorus trees included, is verified and awarded by
+ *         {@link PlantCollapseXpTask}
+ */
+@Deprecated(forRemoval = true, since = "2.3.000")
 public class DelayedHerbalismXPCheckTask extends CancellableRunnable {
 
     private final McMMOPlayer mmoPlayer;

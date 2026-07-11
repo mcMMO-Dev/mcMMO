@@ -49,6 +49,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.metadata.MetadataValue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -56,6 +57,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -155,6 +157,83 @@ class WoodcuttingTest extends MMOTestEnvironment {
         woodcuttingManager.processWoodcuttingBlockXP(targetBlock);
         Mockito.verify(mmoPlayer, Mockito.times(1))
                 .beginXpGain(eq(PrimarySkillType.WOODCUTTING), eq(5F), any(), any());
+    }
+
+    @Test
+    void leafBlowerShouldRequireAnAxeAndItsUnlock() {
+        // Given - Leaf Blower is unlocked and an axe is held
+        Mockito.when(RankUtils.hasUnlockedSubskill(player,
+                SubSkillType.WOODCUTTING_LEAF_BLOWER)).thenReturn(true);
+
+        // When / Then - the axe qualifies, a stick does not
+        assertThat(woodcuttingManager.canUseLeafBlower(itemInMainHand)).isTrue();
+        assertThat(woodcuttingManager.canUseLeafBlower(new ItemStack(Material.STICK))).isFalse();
+
+        // And - without the unlock even the axe does not qualify
+        Mockito.when(RankUtils.hasUnlockedSubskill(player,
+                SubSkillType.WOODCUTTING_LEAF_BLOWER)).thenReturn(false);
+        assertThat(woodcuttingManager.canUseLeafBlower(itemInMainHand)).isFalse();
+    }
+
+    @Test
+    void treeFellerUseShouldRequireTheActiveAbilityAndAnAxe() {
+        // Given - Tree Feller is active
+        mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, true);
+
+        // When / Then - the axe qualifies, a stick does not
+        assertThat(woodcuttingManager.canUseTreeFeller(itemInMainHand)).isTrue();
+        assertThat(woodcuttingManager.canUseTreeFeller(new ItemStack(Material.STICK))).isFalse();
+
+        // And - with the ability off even the axe does not qualify
+        mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
+        assertThat(woodcuttingManager.canUseTreeFeller(itemInMainHand)).isFalse();
+    }
+
+    @Test
+    void cleanCutsShouldMarkTripleDrops() {
+        try (MockedStatic<ProbabilityUtil> probabilityUtil = mockStatic(ProbabilityUtil.class)) {
+            // Given - a winning Clean Cuts roll on a single-block break
+            mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, false);
+            probabilityUtil.when(() -> ProbabilityUtil.isSkillRNGSuccessful(
+                    SubSkillType.WOODCUTTING_CLEAN_CUTS, mmoPlayer)).thenReturn(true);
+
+            final Block block = mock(Block.class);
+            Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+
+            // When - the bonus drop check runs
+            woodcuttingManager.processBonusDropCheck(block);
+
+            // Then - the block is marked for two extra drop copies (triple drops)
+            final ArgumentCaptor<MetadataValue> bonusCount =
+                    ArgumentCaptor.forClass(MetadataValue.class);
+            Mockito.verify(block).setMetadata(eq(MetadataConstants.METADATA_KEY_BONUS_DROPS),
+                    bonusCount.capture());
+            assertThat(bonusCount.getValue().asInt()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    void treeFellerCleanCutsShouldSpawnTwoExtraDropSetsDirectly() {
+        try (MockedStatic<ProbabilityUtil> probabilityUtil = mockStatic(ProbabilityUtil.class)) {
+            // Given - Tree Feller is active and the Clean Cuts roll wins
+            mmoPlayer.setAbilityMode(SuperAbilityType.TREE_FELLER, true);
+            probabilityUtil.when(() -> ProbabilityUtil.isSkillRNGSuccessful(
+                    SubSkillType.WOODCUTTING_CLEAN_CUTS, mmoPlayer)).thenReturn(true);
+
+            final Block block = mock(Block.class);
+            Mockito.when(block.getType()).thenReturn(Material.OAK_LOG);
+            Mockito.doNothing().when(woodcuttingManager).spawnHarvestLumberBonusDrops(block);
+
+            // When - the bonus drop check runs
+            woodcuttingManager.processBonusDropCheck(block);
+
+            // Then - two extra drop sets spawn directly (Tree Feller never fires
+            // BlockDropItemEvent, so metadata marking would be lost)
+            Mockito.verify(woodcuttingManager, Mockito.times(2))
+                    .spawnHarvestLumberBonusDrops(block);
+            Mockito.verify(block, Mockito.never()).setMetadata(
+                    eq(MetadataConstants.METADATA_KEY_BONUS_DROPS), any());
+        }
     }
 
     @Test

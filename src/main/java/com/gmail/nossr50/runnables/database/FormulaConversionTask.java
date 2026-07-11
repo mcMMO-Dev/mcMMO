@@ -51,7 +51,7 @@ public class FormulaConversionTask extends CancellableRunnable {
             convertedUsers++;
             Misc.printProgress(convertedUsers, DatabaseManager.progressInterval, startMillis);
         }
-        mcMMO.p.getFormulaManager().setPreviousFormulaType(formulaType);
+        mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);
 
         sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish",
                 formulaType.toString()));
@@ -65,14 +65,14 @@ public class FormulaConversionTask extends CancellableRunnable {
         for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
             int oldLevel = profile.getSkillLevel(primarySkillType);
             int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
-            int totalOldXP = mcMMO.p.getFormulaManager()
+            int totalOldXP = mcMMO.getFormulaManager()
                     .calculateTotalExperience(oldLevel, oldXPLevel);
 
             if (totalOldXP == 0) {
                 continue;
             }
 
-            int[] newExperienceValues = mcMMO.p.getFormulaManager()
+            int[] newExperienceValues = mcMMO.getFormulaManager()
                     .calculateNewLevel(primarySkillType, (int) Math.floor(
                                     totalOldXP / ExperienceConfig.getInstance().getExpModifier()),
                             formulaType);

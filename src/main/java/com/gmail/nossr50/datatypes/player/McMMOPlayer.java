@@ -494,7 +494,7 @@ public class McMMOPlayer implements Identified {
      */
 
     public int getChimeraWingLastUse() {
-        return profile.getChimaerWingDATS();
+        return profile.getChimaeraWingDATS();
     }
 
     public void actualizeChimeraWingLastUse() {
@@ -722,7 +722,10 @@ public class McMMOPlayer implements Identified {
             return;
         }
 
-        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
+        // The party share deliberately reuses the same modified value: the pre-XP-gain event
+        // fired inside applyXpGain only affects the player's own gain
+        final float modifiedXp = modifyXpGain(skill, xp);
+        applyXpGain(skill, modifiedXp, xpGainReason, xpGainSource);
 
         if (!mcMMO.p.getPartyConfig().isPartyEnabled() || party == null
                 || party.hasReachedLevelCap()) {
@@ -731,7 +734,7 @@ public class McMMOPlayer implements Identified {
 
         if (!mcMMO.p.getGeneralConfig().getPartyXpNearMembersNeeded() || !mcMMO.p.getPartyManager()
                 .getNearMembers(this).isEmpty()) {
-            party.applyXpGain(modifyXpGain(skill, xp));
+            party.applyXpGain(modifiedXp);
         }
     }
 
@@ -942,7 +945,8 @@ public class McMMOPlayer implements Identified {
 
         xp = (float) (
                 (xp * ExperienceConfig.getInstance().getFormulaSkillModifier(primarySkillType))
-                        * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+                        * ExperienceConfig.getInstance()
+                        .getExperienceGainsMultiplier(primarySkillType));
 
         return PerksUtils.handleXpPerks(player, xp, primarySkillType);
     }
@@ -1237,12 +1241,41 @@ public class McMMOPlayer implements Identified {
         profile.modifySkill(skill, level);
     }
 
+    /**
+     * Adds levels to a skill and fires the level change events, like the /addlevels command.
+     * Levels added to a child skill split evenly across its parent skills.
+     *
+     * @param skill the skill to add levels to
+     * @param levels the number of levels to add
+     */
     public void addLevels(PrimarySkillType skill, int levels) {
+        if (SkillTools.isChildSkill(skill)) {
+            var parentSkills = mcMMO.p.getSkillTools().getChildSkillParents(skill);
+            int dividedLevels = levels / parentSkills.size();
+
+            for (PrimarySkillType parentSkill : parentSkills) {
+                addLevels(parentSkill, dividedLevels);
+            }
+
+            return;
+        }
+
+        final float xpRemoved = profile.getSkillXpLevelRaw(skill);
         profile.addLevels(skill, levels);
+        EventUtils.tryLevelChangeEvent(this, skill, levels, xpRemoved, true,
+                XPGainReason.UNKNOWN);
     }
 
+    /**
+     * Adds XP as a normal gain: fires the XP gain events, awards level ups, and updates the
+     * XP bar. The amount is applied as-is, without the rate and perk modifiers that
+     * {@link #beginXpGain(PrimarySkillType, float, XPGainReason, XPGainSource)} applies.
+     *
+     * @param skill the skill to add XP to
+     * @param xp the amount of XP to add
+     */
     public void addXp(PrimarySkillType skill, float xp) {
-        profile.addXp(skill, xp);
+        applyXpGain(skill, xp, XPGainReason.UNKNOWN, XPGainSource.SELF);
     }
 
     public void setAbilityDATS(SuperAbilityType ability, long DATS) {
@@ -1264,17 +1297,16 @@ public class McMMOPlayer implements Identified {
      */
     public void logout(boolean syncSave) {
         final Player thisPlayer = getPlayer();
-        if (getPlayer() != null && getPlayer().hasMetadata(
-                MetadataConstants.METADATA_KEY_RUPTURE)) {
+        if (thisPlayer.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
             final RuptureTaskMeta ruptureTaskMeta
-                    = (RuptureTaskMeta) getPlayer().getMetadata(
+                    = (RuptureTaskMeta) thisPlayer.getMetadata(
                     MetadataConstants.METADATA_KEY_RUPTURE).get(0);
             if (ruptureTaskMeta != null) {
                 final RuptureTask ruptureTimerTask = ruptureTaskMeta.getRuptureTimerTask();
                 if (ruptureTimerTask != null) {
                     ruptureTimerTask.cancel();
                 }
-                getPlayer().removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
+                thisPlayer.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
             }
         }
 

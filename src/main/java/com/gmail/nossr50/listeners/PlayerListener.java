@@ -32,13 +32,12 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
@@ -84,11 +83,6 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerListener implements Listener {
     // Marks commands that match an English skill name and must be left untouched
     private static final String KEEP_COMMAND = "";
-
-    // Crops whose player-placed marker is cleared again when bone meal is applied to them
-    private static final Set<Material> BONE_MEAL_RESET_CROPS = EnumSet.of(Material.BEETROOTS,
-            Material.CARROT, Material.COCOA, Material.WHEAT, Material.POTATO,
-            Material.MANGROVE_PROPAGULE);
 
     private final mcMMO plugin;
     private final Map<UUID, EquipmentSlot> fishingHandsByPlayer = new ConcurrentHashMap<>();
@@ -332,6 +326,48 @@ public class PlayerListener implements Listener {
     }
 
     /**
+     * Handle PlayerFishEvents at the lowest priority.
+     * <p>
+     * These events are used for tracking fish exploits.
+     *
+     * @param event The event to modify
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerFishLowest(PlayerFishEvent event) {
+        if (!ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+            return;
+        }
+        if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
+            return;
+        }
+        if (!(event.getCaught() instanceof Item caughtItem)) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        final McMMOPlayer mmoPlayer = ListenerGuards.resolveEligiblePlayer(player);
+
+        if (mmoPlayer == null || !mcMMO.p.getSkillTools()
+                .doesPlayerHaveSkillPermission(player, PrimarySkillType.FISHING)) {
+            return;
+        }
+
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
+
+        fishingManager.processExploiting(event.getHook().getLocation().toVector());
+
+        if (fishingManager.isExploitingFishing()) {
+            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
+                    ExperienceConfig.getInstance().getFishingExploitingOptionMoveRange()));
+            event.setExpToDrop(0);
+            caughtItem.remove();
+        } else if (fishingManager.isFishingTooOften()) {
+            event.setExpToDrop(0);
+            caughtItem.remove();
+        }
+    }
+
+    /**
      * Handle PlayerFishEvents at the highest priority.
      * <p>
      * These events are used for the purpose of handling our anti-exploit code, as well as dealing
@@ -352,10 +388,10 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         switch (event.getState()) {
-            // CAUGHT_FISH happens for any item caught (including junk and treasure)
+            // CAUGHT_FISH happens for any item caught (including junk and treasure); the
+            // caught entity's type is not enforced by the event, so never cast it unchecked
             case CAUGHT_FISH:
-                if (event.getCaught() != null) {
-                    Item fishingCatch = (Item) event.getCaught();
+                if (event.getCaught() instanceof Item fishingCatch) {
                     final Material caughtType = fishingCatch.getItemStack().getType();
 
                     if (mcMMO.p.getGeneralConfig().getFishingOverrideTreasures() &&
@@ -433,20 +469,6 @@ public class PlayerListener implements Listener {
         Entity caught = event.getCaught();
         FishingManager fishingManager = mmoPlayer.getFishingManager();
 
-        if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
-            //Spam Fishing
-            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH
-                    && fishingManager.isFishingTooOften()) {
-                event.setExpToDrop(0);
-
-                if (caught instanceof Item caughtItem) {
-                    caughtItem.remove();
-                }
-
-                return;
-            }
-        }
-
         switch (event.getState()) {
             case FISHING:
                 EquipmentSlot fishingHand = getFishingHandForEvent(player, event.getHand());
@@ -462,24 +484,16 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
+                // The LOWEST-priority handler already flagged this catch; re-reading the
+                // verdicts here keeps denied catches from paying skill XP and treasure
+                if (ExperienceConfig.getInstance().isFishingExploitingPrevented()
+                        && (fishingManager.isExploitingFishing()
+                        || fishingManager.wasFishingTooOften())) {
+                    return;
+                }
+
                 EquipmentSlot caughtFishingHand = getFishingHandForEvent(player, event.getHand());
-
                 if (caught instanceof Item caughtItem) {
-                    if (ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
-
-                        fishingManager.processExploiting(event.getHook().getLocation().toVector());
-
-                        if (fishingManager.isExploitingFishing()) {
-                            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip",
-                                    ExperienceConfig.getInstance()
-                                            .getFishingExploitingOptionMoveRange()));
-                            event.setExpToDrop(0);
-                            caughtItem.remove();
-
-                            return;
-                        }
-                    }
-
                     fishingManager.processFishing(caughtItem, caughtFishingHand);
                     fishingManager.setFishingTarget();
                 }
@@ -633,6 +647,13 @@ public class PlayerListener implements Listener {
         if (plugin.isXPEventEnabled() && mcMMO.p.getGeneralConfig().playerJoinEventInfo()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event",
                     ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+
+            ExperienceConfig.getInstance().getExperienceGainsSkillMultiplierOverrides()
+                    .forEach((skill, rate) -> player.sendMessage(
+                            LocaleLoader.getString("XPRate.Event.Skill",
+                                    LocaleLoader.getString("Overhaul.Name."
+                                            + StringUtils.getCapitalized(skill.toString())),
+                                    rate)));
         }
     }
 
@@ -959,12 +980,6 @@ public class PlayerListener implements Listener {
                 HerbalismManager herbalismManager = mmoPlayer.getHerbalismManager();
 
                 if (!event.isCancelled() || event.useInteractedBlock() != Event.Result.DENY) {
-                    //TODO: Is this code to set false from bone meal even needed? I'll have to double check later.
-                    if (heldItem.getType() == Material.BONE_MEAL
-                            && BONE_MEAL_RESET_CROPS.contains(blockState.getType())) {
-                        mcMMO.getUserBlockTracker().setEligible(blockState);
-                    }
-
                     if (herbalismManager.canGreenThumbBlock(blockState)) {
                         //call event for Green Thumb Block
                         if (!EventUtils.callSubSkillBlockEvent(player,
@@ -1116,7 +1131,8 @@ public class PlayerListener implements Listener {
             final String replacement = getSkillCommandReplacements().get(lowerCaseCommand);
 
             if (replacement != null && !replacement.equals(KEEP_COMMAND)) {
-                event.setMessage(message.replace(command, replacement));
+                // Rewrite only the command token; arguments may legitimately repeat the alias
+                event.setMessage("/" + replacement + message.substring(1 + command.length()));
             }
         }
     }

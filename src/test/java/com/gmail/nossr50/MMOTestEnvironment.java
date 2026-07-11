@@ -126,7 +126,7 @@ public abstract class MMOTestEnvironment {
 
         // formula manager
         formulaManager = new FormulaManager(FormulaType.UNKNOWN);
-        when(mcMMO.p.getFormulaManager()).thenReturn(formulaManager);
+        when(mcMMO.getFormulaManager()).thenReturn(formulaManager);
 
         // FoliaLib scheduler that runs tasks inline so scheduled work is observable in tests
         mockFoliaLib();
@@ -174,6 +174,10 @@ public abstract class MMOTestEnvironment {
 
         // wire Bukkit
         mockedBukkit = mockStatic(Bukkit.class);
+        // Whichever test triggers org.bukkit.Registry initialization welds the lookup
+        // results into its constants for every later test in the JVM, so every harness
+        // test must serve registry lookups through the shared bootstrap
+        TestRegistryBootstrap.bootstrap(mockedBukkit);
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         itemFactory = mock(ItemFactory.class);
 

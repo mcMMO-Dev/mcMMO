@@ -127,7 +127,7 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseHolyHound() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
+        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_HOLY_HOUND)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_HOLY_HOUND);
     }
 

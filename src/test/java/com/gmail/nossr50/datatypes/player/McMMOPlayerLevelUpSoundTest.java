@@ -64,7 +64,7 @@ class McMMOPlayerLevelUpSoundTest extends MMOTestEnvironment {
         final FormulaManager formulaManager = mock(FormulaManager.class);
         when(formulaManager.getXPtoNextLevel(anyInt(), any(FormulaType.class)))
                 .thenReturn(XP_TO_NEXT_LEVEL);
-        when(mcMMO.p.getFormulaManager()).thenReturn(formulaManager);
+        when(mcMMO.getFormulaManager()).thenReturn(formulaManager);
     }
 
     private void gainLevelUpWorthOfXp() {

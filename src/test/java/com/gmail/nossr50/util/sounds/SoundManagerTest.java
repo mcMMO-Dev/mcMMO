@@ -10,12 +10,12 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.gmail.nossr50.TestRegistryBootstrap;
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.mcMMO;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -38,10 +38,12 @@ class SoundManagerTest {
         mcMMO.p = mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
 
-        // org.bukkit.Registry initialization needs a server registry lookup
+        // org.bukkit.Registry initialization needs server registry lookups. These MUST go
+        // through the shared bootstrap: when this test is the first in the JVM to trigger
+        // Registry initialization, whatever the lookups return is welded into Registry's
+        // constants for every later test
         bukkitMock = mockStatic(Bukkit.class);
-        bukkitMock.when(() -> Bukkit.getRegistry(any())).thenAnswer(
-                invocation -> mock(Registry.class));
+        TestRegistryBootstrap.bootstrap(bukkitMock);
 
         soundConfig = mock(SoundConfig.class);
         soundConfigMock = mockStatic(SoundConfig.class);

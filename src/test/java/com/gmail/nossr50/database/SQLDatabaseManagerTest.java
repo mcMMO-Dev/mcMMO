@@ -23,6 +23,7 @@ import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.TestFileCleanup;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
@@ -30,11 +31,14 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -44,6 +48,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,31 +58,18 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.junit.jupiter.api.Tag;
 import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.mariadb.MariaDBContainer;
 import org.testcontainers.mysql.MySQLContainer;
 
 @Tag("docker")
 @TestInstance(Lifecycle.PER_CLASS)
-@Testcontainers
 class SQLDatabaseManagerTest {
 
     private static final @NotNull Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    @Container
-    private static final MySQLContainer MYSQL_CONTAINER =
-            new MySQLContainer("mysql:8.0")
-                    .withDatabaseName("mcmmo")
-                    .withUsername("test")
-                    .withPassword("test");
-
-    @Container
+    private static final MySQLContainer MYSQL_CONTAINER = SharedSqlContainers.MYSQL_CONTAINER;
     private static final MariaDBContainer MARIADB_CONTAINER =
-            new MariaDBContainer("mariadb:10.11")
-                    .withDatabaseName("mcmmo")
-                    .withUsername("test")
-                    .withPassword("test");
+            SharedSqlContainers.MARIADB_CONTAINER;
 
     private static MockedStatic<mcMMO> mockedMcMMO;
     private static MockedStatic<ExperienceConfig> mockedExperienceConfig;
@@ -145,20 +137,8 @@ class SQLDatabaseManagerTest {
         mockedMcMMO.close();
         mockedExperienceConfig.close();
         if (testDataFolder != null) {
-            deleteRecursively(testDataFolder);
+            TestFileCleanup.deleteRecursively(testDataFolder);
         }
-    }
-
-    private static void deleteRecursively(final File file) {
-        if (file.isDirectory()) {
-            final File[] children = file.listFiles();
-            if (children != null) {
-                for (final File child : children) {
-                    deleteRecursively(child);
-                }
-            }
-        }
-        file.delete();
     }
 
     private static void mockGeneralConfigBase() {
@@ -1280,6 +1260,361 @@ class SQLDatabaseManagerTest {
         databaseManager.onDisable();
     }
 
+    /**
+     * Gotcha coverage: a backend outage must be distinguishable from an empty leaderboard.
+     * readLeaderboard swallows SQL errors for the command path, but readLeaderboardSnapshot must
+     * propagate them so snapshot-building callers keep their last good data instead of
+     * blanking out.
+     */
+    @ParameterizedTest(name = "{0} - readLeaderboardSnapshot propagates read failures that readLeaderboard swallows")
+    @MethodSource("dbFlavors")
+    void readLeaderboardSnapshotShouldThrowWhenBackendReadFails(DbFlavor flavor) throws Exception {
+        // Given - a manager whose connection acquisition fails, as during a database outage
+        truncateAllCoreTables(flavor);
+        final SQLDatabaseManager databaseManager = Mockito.spy(createManagerFor(flavor));
+        Mockito.doThrow(new SQLException("Simulated database outage"))
+                .when(databaseManager).getConnection(any());
+
+        try {
+            // When - the snapshot-facing read runs during the outage
+            // Then - it surfaces the failure instead of returning empty results
+            assertThatThrownBy(() -> databaseManager.readLeaderboardSnapshot(10))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasCauseInstanceOf(SQLException.class);
+
+            // And - the command-facing read keeps its swallow-and-return-empty contract
+            assertThat(databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10))
+                    .isEmpty();
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    /**
+     * Every non-child skill column, plus {@code total}, that {@code readLeaderboard} sorts on and
+     * therefore must be indexed. Taken straight from production so these tests always cover the
+     * exact columns the schema and index migration maintain.
+     */
+    private static final List<String> LEADERBOARD_INDEX_COLUMNS =
+            SQLDatabaseManager.leaderboardIndexColumns();
+
+    /**
+     * The derived column list drives both the index migration and the coverage assertions in this
+     * class; a skill silently falling out of it would lose its leaderboard index everywhere, so
+     * pin the expected contents here.
+     */
+    @Test
+    void leaderboardIndexColumnsShouldContainEveryNonChildSkillPlusTotal() {
+        // When - deriving the full set of leaderboard-indexed columns
+        final List<String> columns = SQLDatabaseManager.leaderboardIndexColumns();
+
+        // Then - it contains exactly one column per non-child skill plus the total column
+        assertThat(columns).containsExactlyInAnyOrder(
+                "taming", "mining", "woodcutting", "repair", "unarmed", "herbalism", "excavation",
+                "archery", "swords", "axes", "acrobatics", "fishing", "alchemy", "crossbows",
+                "tridents", "maces", "spears", "total");
+    }
+
+    @ParameterizedTest(name = "{0} - fresh install creates a leaderboard index on every skill column")
+    @MethodSource("dbFlavors")
+    void whenCreatingSkillsTableFromScratchShouldIndexEveryLeaderboardColumn(DbFlavor flavor)
+            throws Exception {
+        // Given - a database with no mcMMO tables at all (true fresh install)
+        dropAllCoreTables(flavor);
+
+        // And - the index migration is explicitly disabled, so only the CREATE TABLE path can
+        //       produce the indexes. This proves fresh installs are covered by the schema itself.
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+
+        // When - a manager is constructed, which runs checkStructure() -> ensureSkillsTable()
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            // Then - every leaderboard column has an index from the CREATE TABLE statement alone
+            for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+                assertThat(leaderboardIndexExists(flavor, column))
+                        .as("Fresh install should index leaderboard column '%s'", column)
+                        .isTrue();
+            }
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - migration re-adds leaderboard indexes on a pre-existing table")
+    @MethodSource("dbFlavors")
+    void whenLeaderboardIndexesAreMissingShouldAddThemViaMigration(DbFlavor flavor) throws Exception {
+        // Given - a normally created schema whose leaderboard indexes are then dropped, simulating
+        //         a server that upgraded from a version predating per-skill indexes
+        truncateAllCoreTables(flavor);
+        dropLeaderboardIndexes(flavor);
+
+        // And - the indexes really are gone before the migration runs
+        for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+            assertThat(leaderboardIndexExists(flavor, column))
+                    .as("Precondition: leaderboard column '%s' should be unindexed", column)
+                    .isFalse();
+        }
+
+        // And - only the leaderboard-index upgrade is flagged, isolating it from other migrations
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        when(upgradeManager.shouldUpgrade(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES))
+                .thenReturn(true);
+
+        // When - a manager is constructed, running the ADD_SKILL_LEADERBOARD_INDEXES migration
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            // Then - every leaderboard column is indexed again
+            for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+                assertThat(leaderboardIndexExists(flavor, column))
+                        .as("Migration should index leaderboard column '%s'", column)
+                        .isTrue();
+            }
+
+            // And - the upgrade is marked complete only because all indexes succeeded
+            verify(upgradeManager, atLeastOnce())
+                    .setUpgradeCompleted(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES);
+        } finally {
+            databaseManager.onDisable();
+            // Restore the default no-upgrade behavior for other tests
+            when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        }
+    }
+
+    @ParameterizedTest(name = "{0} - re-running the index migration is idempotent")
+    @MethodSource("dbFlavors")
+    void whenLeaderboardIndexesAlreadyExistShouldBeIdempotent(DbFlavor flavor) throws Exception {
+        // Given - a fresh schema that already carries every leaderboard index
+        truncateAllCoreTables(flavor);
+        for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+            assertThat(leaderboardIndexExists(flavor, column))
+                    .as("Precondition: leaderboard column '%s' should already be indexed", column)
+                    .isTrue();
+        }
+
+        // And - the leaderboard-index upgrade is flagged even though nothing needs adding
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        when(upgradeManager.shouldUpgrade(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES))
+                .thenReturn(true);
+
+        // When - the migration runs against an already-indexed table
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            // Then - the columns remain indexed (probe short-circuits the ALTER TABLE)...
+            for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+                assertThat(leaderboardIndexExists(flavor, column))
+                        .as("Idempotent run should keep leaderboard column '%s' indexed", column)
+                        .isTrue();
+            }
+
+            // And - ...yet the upgrade is still marked complete, so it won't retry forever
+            verify(upgradeManager, atLeastOnce())
+                    .setUpgradeCompleted(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES);
+        } finally {
+            databaseManager.onDisable();
+            when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        }
+    }
+
+    /**
+     * Regression coverage for the leaderboard query plan itself: with the per-skill indexes in
+     * place, the exact production query must let the engine drive the sort from the index. A
+     * mixed-direction ORDER BY (e.g. skill DESC with an implicit-ASC tiebreak) silently degrades
+     * to a filesort of every qualifying row on both MySQL and MariaDB, defeating the indexes.
+     */
+    @ParameterizedTest(name = "{0} - leaderboard query resolves its sort from the index without filesort")
+    @MethodSource("dbFlavors")
+    void leaderboardQueryShouldAvoidFilesortWhenIndexesArePresent(DbFlavor flavor) throws Exception {
+        // Given - an indexed schema with enough rows that the planner's choice is meaningful
+        truncateAllCoreTables(flavor);
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            for (int index = 0; index < 60; index++) {
+                createUserWithSkills(databaseManager,
+                        "explain_user_" + index + "_" + flavor.name().toLowerCase(),
+                        UUID.randomUUID(), Map.of(PrimarySkillType.MINING, 1 + index));
+            }
+
+            // When - running EXPLAIN against the exact query readLeaderboard executes
+            final String explainSql = "EXPLAIN " + databaseManager.leaderboardQuery("mining");
+            final List<String> extras = new ArrayList<>();
+            try (Connection connection =
+                    databaseManager.getConnection(SQLDatabaseManager.PoolIdentifier.MISC);
+                    PreparedStatement statement = connection.prepareStatement(explainSql)) {
+                statement.setInt(1, 0);
+                statement.setInt(2, 10);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        extras.add(String.valueOf(resultSet.getString("Extra")));
+                    }
+                }
+            }
+
+            // Then - no step of the plan performs a filesort; the index drives the sort
+            assertThat(extras)
+                    .as("EXPLAIN Extra columns for the leaderboard query: %s", extras)
+                    .isNotEmpty()
+                    .noneMatch(extra -> extra.toLowerCase(Locale.ENGLISH).contains("filesort"));
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    /**
+     * Gotcha coverage: a composite index that merely contains a skill column (e.g. an
+     * admin-created {@code (user_id, mining)}) cannot serve the leaderboard ORDER BY, so its
+     * presence must not stop the migration from creating the dedicated per-skill index.
+     */
+    @ParameterizedTest(name = "{0} - composite index containing a skill column does not suppress its leaderboard index")
+    @MethodSource("dbFlavors")
+    void whenCompositeIndexContainsSkillColumnShouldStillAddLeaderboardIndex(DbFlavor flavor)
+            throws Exception {
+        // Given - a schema without leaderboard indexes, but with a composite index in which
+        // mining is a non-leading column
+        truncateAllCoreTables(flavor);
+        dropLeaderboardIndexes(flavor);
+
+        final JdbcDatabaseContainer<?> container = containerFor(flavor);
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                Statement statement = connection.createStatement()) {
+            statement.executeUpdate(
+                    "ALTER TABLE mcmmo_skills ADD INDEX idx_composite_mining (user_id, mining)");
+        }
+
+        // And - the composite index alone does not count as a usable leaderboard index
+        assertThat(leaderboardIndexExists(flavor, "mining"))
+                .as("Precondition: composite index should not satisfy the leading-column probe")
+                .isFalse();
+
+        // And - only the leaderboard-index upgrade is flagged
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        when(upgradeManager.shouldUpgrade(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES))
+                .thenReturn(true);
+
+        // When - a manager is constructed, running the ADD_SKILL_LEADERBOARD_INDEXES migration
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            // Then - a dedicated index with mining as its leading column now exists
+            assertThat(leaderboardIndexExists(flavor, "mining"))
+                    .as("Migration should add idx_mining despite the composite index")
+                    .isTrue();
+        } finally {
+            try (Connection connection = DriverManager.getConnection(
+                    container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                    Statement statement = connection.createStatement()) {
+                statement.executeUpdate("ALTER TABLE mcmmo_skills DROP INDEX idx_composite_mining");
+            }
+            databaseManager.onDisable();
+            when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        }
+    }
+
+    /**
+     * Gotcha coverage: an existing index that occupies the {@code idx_mining} name but leads with
+     * a different column makes the ADD INDEX collide by name on every startup. The migration must
+     * honor that index as deliberate and still mark itself complete, instead of failing on the
+     * same column and re-running forever.
+     */
+    @ParameterizedTest(name = "{0} - index name taken by another column does not block migration completion")
+    @MethodSource("dbFlavors")
+    void whenIndexNameIsTakenByAnotherColumnShouldStillCompleteMigration(DbFlavor flavor)
+            throws Exception {
+        // Given - a schema without leaderboard indexes
+        truncateAllCoreTables(flavor);
+        dropLeaderboardIndexes(flavor);
+
+        // And - an admin-created index that occupies the idx_mining name on the taming column
+        final JdbcDatabaseContainer<?> container = containerFor(flavor);
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                Statement statement = connection.createStatement()) {
+            statement.executeUpdate("ALTER TABLE mcmmo_skills ADD INDEX idx_mining (taming)");
+        }
+
+        // And - only the leaderboard-index upgrade is flagged
+        reset(upgradeManager);
+        when(mcMMO.getUpgradeManager()).thenReturn(upgradeManager);
+        when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+        when(upgradeManager.shouldUpgrade(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES))
+                .thenReturn(true);
+
+        // When - a manager is constructed, running the ADD_SKILL_LEADERBOARD_INDEXES migration
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            // Then - every other leaderboard column ends up with a usable leading-column index
+            for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+                if (column.equals("mining")) {
+                    continue;
+                }
+                assertThat(leaderboardIndexExists(flavor, column))
+                        .as("Migration should index leaderboard column '%s'", column)
+                        .isTrue();
+            }
+
+            // And - the idx_mining name stays on the admin's taming index; mining is left alone
+            assertThat(leaderboardIndexExists(flavor, "mining"))
+                    .as("The colliding idx_mining name should be honored, not replaced")
+                    .isFalse();
+
+            // And - the migration still completes so it does not retry on every startup
+            verify(upgradeManager, atLeastOnce())
+                    .setUpgradeCompleted(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES);
+        } finally {
+            databaseManager.onDisable();
+            when(upgradeManager.shouldUpgrade(any(UpgradeType.class))).thenReturn(false);
+            // Rebuild a pristine schema so later tests see the standard indexes
+            dropAllCoreTables(flavor);
+            createManagerFor(flavor).onDisable();
+        }
+    }
+
+    /**
+     * Servers whose skills table predates a skill receive the column through the legacy
+     * ALTER TABLE upgrade path. That path must index the new column as it adds it, otherwise
+     * leaderboards for every skill introduced after the one-shot index migration ran would
+     * filesort forever.
+     */
+    @ParameterizedTest(name = "{0} - legacy column upgrade also indexes the new skill column")
+    @MethodSource("dbFlavors")
+    void whenLegacyUpgradeAddsSkillColumnShouldIndexIt(DbFlavor flavor) throws Exception {
+        // Given - a legacy schema whose skills table lacks the spears column entirely
+        prepareLegacySchemaWithoutSpears(flavor);
+
+        // When - a manager is constructed, which adds missing skill columns on startup
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        try {
+            // Then - the spears column exists on the skills table
+            assertThat(columnExists(flavor, "mcmmo_skills", "spears"))
+                    .as("Skills table should have spears after the upgrade")
+                    .isTrue();
+
+            // And - it carries a leaderboard index without waiting for a separate migration
+            assertThat(leaderboardIndexExists(flavor, "spears"))
+                    .as("The freshly added spears column should be indexed")
+                    .isTrue();
+        } finally {
+            databaseManager.onDisable();
+            // Rebuild a pristine schema so later tests see the standard indexes
+            dropAllCoreTables(flavor);
+            createManagerFor(flavor).onDisable();
+        }
+    }
+
     @ParameterizedTest(name = "{0} - readRank for unknown user returns empty map")
     @MethodSource("dbFlavors")
     void whenReadingRankForUnknownUserShouldReturnEmptyMap(DbFlavor flavor) {
@@ -1363,9 +1698,9 @@ class SQLDatabaseManagerTest {
         }
     }
 
-    @ParameterizedTest(name = "{0} - readRank alphabetical tiebreaker with only equal-skill users")
+    @ParameterizedTest(name = "{0} - readRank newest-registered-first tiebreaker with only equal-skill users")
     @MethodSource("dbFlavors")
-    void whenEqualSkillUsersOnlyShouldUseAlphabeticalTiebreaker(DbFlavor flavor) {
+    void whenEqualSkillUsersOnlyShouldRankNewestRegisteredFirst(DbFlavor flavor) {
         truncateAllCoreTables(flavor);
         SQLDatabaseManager databaseManager = createManagerFor(flavor);
 
@@ -1389,15 +1724,16 @@ class SQLDatabaseManagerTest {
             Map<PrimarySkillType, Integer> ranksB = databaseManager.readRank(nameB);
             Map<PrimarySkillType, Integer> ranksC = databaseManager.readRank(nameC);
 
-            // Mining ranks: alphabetical order
-            assertThat(ranksA.get(PrimarySkillType.MINING)).isEqualTo(1);
+            // Mining ranks: ties are broken by registration order, newest first, matching the
+            // leaderboard's ORDER BY user_id DESC (A was created first -> highest rank number)
+            assertThat(ranksC.get(PrimarySkillType.MINING)).isEqualTo(1);
             assertThat(ranksB.get(PrimarySkillType.MINING)).isEqualTo(2);
-            assertThat(ranksC.get(PrimarySkillType.MINING)).isEqualTo(3);
+            assertThat(ranksA.get(PrimarySkillType.MINING)).isEqualTo(3);
 
             // Total ranks behave the same in this setup (total == mining)
-            assertThat(ranksA.get(null)).isEqualTo(1);
+            assertThat(ranksC.get(null)).isEqualTo(1);
             assertThat(ranksB.get(null)).isEqualTo(2);
-            assertThat(ranksC.get(null)).isEqualTo(3);
+            assertThat(ranksA.get(null)).isEqualTo(3);
         } finally {
             databaseManager.onDisable();
         }
@@ -1442,10 +1778,10 @@ class SQLDatabaseManagerTest {
             // Higher player is rank 1
             assertThat(higherRanks.get(PrimarySkillType.MINING)).isEqualTo(1);
 
-            // Others follow in alphabetical order, offset by 1
-            assertThat(ranksA.get(PrimarySkillType.MINING)).isEqualTo(2);
+            // Tied players follow newest-registered-first, offset by the higher player
+            assertThat(ranksC.get(PrimarySkillType.MINING)).isEqualTo(2);
             assertThat(ranksB.get(PrimarySkillType.MINING)).isEqualTo(3);
-            assertThat(ranksC.get(PrimarySkillType.MINING)).isEqualTo(4);
+            assertThat(ranksA.get(PrimarySkillType.MINING)).isEqualTo(4);
         } finally {
             databaseManager.onDisable();
         }
@@ -1516,6 +1852,64 @@ class SQLDatabaseManagerTest {
             assertThat(bravoRanks.get(null)).isEqualTo(1);   // 250 highest
             assertThat(charlieRanks.get(null)).isEqualTo(2); // 125
             assertThat(alphaRanks.get(null)).isEqualTo(3);   // 100
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    /**
+     * Rows renamed to the {@code _INVALID_OLD_USERNAME_} placeholder are hidden from the
+     * leaderboard, so they must not count toward ranks either - one ghost with a higher level
+     * and one tied ghost with a later registration would otherwise push the real player from
+     * rank 1 to rank 3 while /mctop still shows them on top.
+     */
+    @ParameterizedTest(name = "{0} - readRank ignores _INVALID_OLD_USERNAME_ ghost rows")
+    @MethodSource("dbFlavors")
+    void whenGhostRowsOutrankPlayerShouldRankLikeLeaderboard(DbFlavor flavor) throws Exception {
+        // Given - a clean database
+        truncateAllCoreTables(flavor);
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        final String realName = "rank_real_" + flavor.name().toLowerCase();
+        final String ghostHigherName = "rank_ghost_high_" + flavor.name().toLowerCase();
+        final String ghostTiedName = "rank_ghost_tie_" + flavor.name().toLowerCase();
+
+        try {
+            // And - a real player, a ghost with a strictly higher level, and a ghost tied with
+            //       the real player but registered later (winning the user_id tiebreak)
+            createUserWithSkills(databaseManager, realName, UUID.randomUUID(),
+                    Map.of(PrimarySkillType.MINING, 100));
+            createUserWithSkills(databaseManager, ghostHigherName, UUID.randomUUID(),
+                    Map.of(PrimarySkillType.MINING, 200));
+            createUserWithSkills(databaseManager, ghostTiedName, UUID.randomUUID(),
+                    Map.of(PrimarySkillType.MINING, 100));
+            renameToInvalidOldUsername(flavor, ghostHigherName);
+            renameToInvalidOldUsername(flavor, ghostTiedName);
+
+            // When - reading both the rank and the leaderboard for the same skill
+            final Map<PrimarySkillType, Integer> ranks = databaseManager.readRank(realName);
+            final List<PlayerStat> leaderboard =
+                    databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10);
+
+            // Then - the leaderboard hides the ghosts and shows only the real player
+            assertThat(leaderboard)
+                    .extracting(PlayerStat::playerName)
+                    .containsExactly(realName);
+
+            // And - the rank matches the player's leaderboard position exactly
+            final int leaderboardPosition = 1 + leaderboard.stream()
+                    .map(PlayerStat::playerName)
+                    .toList()
+                    .indexOf(realName);
+            assertThat(ranks.get(PrimarySkillType.MINING))
+                    .as("/mcrank position should match /mctop position")
+                    .isEqualTo(leaderboardPosition)
+                    .isEqualTo(1);
+
+            // And - the total scope ignores the ghost rows the same way
+            assertThat(ranks.get(null))
+                    .as("Total rank should also ignore ghost rows")
+                    .isEqualTo(1);
         } finally {
             databaseManager.onDisable();
         }
@@ -1722,6 +2116,60 @@ class SQLDatabaseManagerTest {
         }
     }
 
+    /**
+     * @return {@code true} if any index exists with the given column as its leading column on the
+     * {@code mcmmo_skills} table. Mirrors the INFORMATION_SCHEMA probe used by the production
+     * migration: only a leading column can serve the leaderboard ORDER BY.
+     */
+    private boolean leaderboardIndexExists(DbFlavor flavor, String column) throws SQLException {
+        final JdbcDatabaseContainer<?> container = containerFor(flavor);
+        final String query = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS "
+                + "WHERE table_schema = DATABASE() "
+                + "AND table_name = 'mcmmo_skills' "
+                + "AND column_name = '" + column + "' "
+                + "AND seq_in_index = 1";
+
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            return resultSet.next() && resultSet.getInt(1) > 0;
+        }
+    }
+
+    /**
+     * Drop every leaderboard index from {@code mcmmo_skills}, simulating a server that upgraded
+     * from a version predating per-skill indexes. Ignores indexes that are already absent.
+     */
+    private void dropLeaderboardIndexes(DbFlavor flavor) throws SQLException {
+        final JdbcDatabaseContainer<?> container = containerFor(flavor);
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                Statement statement = connection.createStatement()) {
+            for (final String column : LEADERBOARD_INDEX_COLUMNS) {
+                if (leaderboardIndexExists(flavor, column)) {
+                    statement.executeUpdate("ALTER TABLE mcmmo_skills DROP INDEX idx_" + column);
+                }
+            }
+        }
+    }
+
+    /**
+     * Drop all core mcMMO tables so the next manager construction performs a true fresh install.
+     */
+    private void dropAllCoreTables(DbFlavor flavor) throws SQLException {
+        final JdbcDatabaseContainer<?> container = containerFor(flavor);
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                Statement statement = connection.createStatement()) {
+            statement.executeUpdate("DROP TABLE IF EXISTS mcmmo_cooldowns");
+            statement.executeUpdate("DROP TABLE IF EXISTS mcmmo_experience");
+            statement.executeUpdate("DROP TABLE IF EXISTS mcmmo_skills");
+            statement.executeUpdate("DROP TABLE IF EXISTS mcmmo_huds");
+            statement.executeUpdate("DROP TABLE IF EXISTS mcmmo_users");
+        }
+    }
+
     // ------------------------------------------------------------------------
     // Helpers for readRank tests
     // ------------------------------------------------------------------------
@@ -1739,6 +2187,25 @@ class SQLDatabaseManagerTest {
             profile.modifySkill(type, level);
         }
         assertThat(manager.saveUser(profile)).isTrue();
+    }
+
+    /**
+     * Renames a user row to the {@code _INVALID_OLD_USERNAME_} placeholder the same way the
+     * production rename path does (an UPDATE of the users row's name), turning it into a ghost
+     * row that keeps its skills but must be hidden from leaderboards and ranks.
+     */
+    private void renameToInvalidOldUsername(DbFlavor flavor, String userName) throws SQLException {
+        final JdbcDatabaseContainer<?> container = containerFor(flavor);
+        try (Connection connection = DriverManager.getConnection(
+                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+                PreparedStatement statement = connection.prepareStatement(
+                        "UPDATE mcmmo_users SET `user` = ? WHERE `user` = ?")) {
+            statement.setString(1, "_INVALID_OLD_USERNAME_");
+            statement.setString(2, userName);
+            assertThat(statement.executeUpdate())
+                    .as("Exactly one users row should be renamed to the ghost placeholder")
+                    .isEqualTo(1);
+        }
     }
 
     private void createUserWithSkills(SQLDatabaseManager manager,

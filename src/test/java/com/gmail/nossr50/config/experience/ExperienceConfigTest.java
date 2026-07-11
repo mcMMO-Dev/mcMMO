@@ -1,10 +1,12 @@
 package com.gmail.nossr50.config.experience;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Answers.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 
 import com.gmail.nossr50.config.BukkitConfig;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -13,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
@@ -45,6 +48,111 @@ class ExperienceConfigTest {
         assertThat(resource).as("bundled experience.yml resource").isNotNull();
         return YamlConfiguration.loadConfiguration(
                 new InputStreamReader(resource, StandardCharsets.UTF_8));
+    }
+
+    @Nested
+    class SkillXpRateOverrides {
+
+        private ExperienceConfig configWithGlobalRate(final double globalRate) {
+            final YamlConfiguration yaml = new YamlConfiguration();
+            yaml.set("Experience_Formula.Multiplier.Global", globalRate);
+            return experienceConfigBackedBy(yaml);
+        }
+
+        @Test
+        void getExperienceGainsMultiplierShouldReturnGlobalWhenNoOverrideIsSet() {
+            // Given - no /xprate per-skill rates are active
+            final ExperienceConfig experienceConfig = configWithGlobalRate(2.0);
+
+            // Then - every skill uses the global multiplier
+            assertThat(experienceConfig.getExperienceGainsMultiplier(PrimarySkillType.MINING))
+                    .isEqualTo(2.0);
+        }
+
+        /**
+         * Gotcha coverage: /xprate rates never stack with each other — a 2x global event and a
+         * 2x mining event must yield 2x mining XP, not 4x, and a lower per-skill rate must not
+         * undercut a higher global one.
+         */
+        @ParameterizedTest(name = "global {0}x + mining {1}x should yield {2}x")
+        @CsvSource({
+                "2.0, 2.0, 2.0",
+                "2.0, 5.3, 5.3",
+                "3.0, 1.5, 3.0",
+                "1.0, 0.5, 1.0",
+        })
+        void getExperienceGainsMultiplierShouldUseHigherOfGlobalAndSkillRate(
+                final double globalRate, final double skillRate, final double expected) {
+            // Given - a global /xprate event and a per-skill /xprate rate at the same time
+            final ExperienceConfig experienceConfig = configWithGlobalRate(globalRate);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.MINING,
+                    skillRate);
+
+            // Then - the higher of the two rates wins, they never stack
+            assertThat(experienceConfig.getExperienceGainsMultiplier(PrimarySkillType.MINING))
+                    .isEqualTo(expected);
+        }
+
+        @Test
+        void setExperienceGainsSkillMultiplierShouldOnlyAffectItsOwnSkill() {
+            // Given - a mining-only /xprate rate above the global multiplier
+            final ExperienceConfig experienceConfig = configWithGlobalRate(1.0);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.MINING, 5.3);
+
+            // Then - other skills keep using the global multiplier
+            assertThat(experienceConfig.getExperienceGainsMultiplier(PrimarySkillType.MINING))
+                    .isEqualTo(5.3);
+            assertThat(experienceConfig.getExperienceGainsMultiplier(
+                    PrimarySkillType.HERBALISM)).isEqualTo(1.0);
+        }
+
+        /**
+         * Re-running /xprate for a skill must replace its rate, so an active 3x mining rate
+         * can be downgraded to 2x without a reset in between.
+         */
+        @Test
+        void setExperienceGainsSkillMultiplierShouldReplacePreviousRateForTheSkill() {
+            // Given - a mining rate of 3 over a 1x baseline
+            final ExperienceConfig experienceConfig = configWithGlobalRate(1.0);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.MINING, 3.0);
+
+            // When - the rate is set again with a lower value
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.MINING, 2.0);
+
+            // Then - the new rate replaces the old one instead of keeping the higher value
+            assertThat(experienceConfig.getExperienceGainsMultiplier(PrimarySkillType.MINING))
+                    .isEqualTo(2.0);
+        }
+
+        @Test
+        void clearExperienceGainsSkillMultipliersShouldRestoreGlobalForAllSkills() {
+            // Given - several per-skill rates are active
+            final ExperienceConfig experienceConfig = configWithGlobalRate(1.0);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.MINING, 5.3);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.HERBALISM, 2.0);
+
+            // When - the rates are cleared (the /xprate reset path)
+            experienceConfig.clearExperienceGainsSkillMultipliers();
+
+            // Then - every skill is back on the global multiplier and none is reported active
+            assertThat(experienceConfig.getExperienceGainsMultiplier(PrimarySkillType.MINING))
+                    .isEqualTo(1.0);
+            assertThat(experienceConfig.getExperienceGainsSkillMultiplierOverrides()).isEmpty();
+        }
+
+        @Test
+        void getExperienceGainsSkillMultiplierOverridesShouldListExactlyTheActiveRates() {
+            // Given - two per-skill rates are active
+            final ExperienceConfig experienceConfig = configWithGlobalRate(1.0);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.MINING, 5.3);
+            experienceConfig.setExperienceGainsSkillMultiplier(PrimarySkillType.HERBALISM, 2.0);
+
+            // Then - the display snapshot lists exactly those skills and rates
+            assertThat(experienceConfig.getExperienceGainsSkillMultiplierOverrides())
+                    .containsOnly(
+                            entry(PrimarySkillType.MINING, 5.3),
+                            entry(PrimarySkillType.HERBALISM, 2.0));
+        }
     }
 
     @Nested

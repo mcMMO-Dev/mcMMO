@@ -145,9 +145,11 @@ public final class CommandRegistrationManager {
                     () -> LocaleLoader.getString("Commands.Description.xprate"),
                     "mcmmo.commands.xprate;mcmmo.commands.xprate.reset;"
                             + "mcmmo.commands.xprate.set;mcmmo.commands.xprate.show",
-                    () -> List.of(LocaleLoader.getString("Commands.Usage.2", "xprate",
+                    () -> List.of(LocaleLoader.getString("Commands.Usage.3", "xprate",
+                                    "[" + LocaleLoader.getString("Commands.Usage.Skill")
+                                            + "|all]",
                                     "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">",
-                                    "<true|false>"),
+                                    "[true|false]"),
                             LocaleLoader.getString("Commands.Usage.1", "xprate", "reset"),
                             LocaleLoader.getString("Commands.Usage.0", "xprate")),
                     XprateCommand::new, List.of("mcxprate"), false),

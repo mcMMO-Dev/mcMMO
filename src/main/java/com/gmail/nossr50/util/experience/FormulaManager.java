@@ -5,13 +5,11 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.VisibleForTesting;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public class FormulaManager {
     private static final File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
@@ -27,12 +25,7 @@ public class FormulaManager {
     public FormulaManager() {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
         initExperienceNeededMaps();
-        if (!formulaFile.exists()) {
-            previousFormula = FormulaType.UNKNOWN;
-            return;
-        }
-
-        previousFormula = FormulaType.getFormulaType(YamlConfiguration.loadConfiguration(formulaFile).getString("Previous_Formula", "UNKNOWN"));
+        loadFormula();
     }
 
     @VisibleForTesting
@@ -134,7 +127,7 @@ public class FormulaManager {
          */
 
         //TODO: When the heck is Unknown used?
-        if (formulaType ==  null || formulaType == FormulaType.UNKNOWN) {
+        if (formulaType == null || formulaType == FormulaType.UNKNOWN) {
             formulaType = FormulaType.LINEAR;
         }
 
@@ -224,6 +217,20 @@ public class FormulaManager {
         }
 
         return (int) Math.floor(base + level * multiplier);
+    }
+
+    /**
+     * Load formula file.
+     */
+    public void loadFormula() {
+        if (!formulaFile.exists()) {
+            previousFormula = FormulaType.UNKNOWN;
+            return;
+        }
+
+        previousFormula = FormulaType.getFormulaType(
+                YamlConfiguration.loadConfiguration(formulaFile)
+                        .getString("Previous_Formula", "UNKNOWN"));
     }
 
     /**

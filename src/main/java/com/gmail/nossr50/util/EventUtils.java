@@ -285,7 +285,7 @@ public final class EventUtils {
             } else {
                 mmoPlayer.modifySkill(skill, mmoPlayer.getSkillLevel(skill)
                         - (isLevelUp ? levelsChanged : -levelsChanged));
-                mmoPlayer.addXp(skill, xpRemoved);
+                mmoPlayer.getProfile().addXp(skill, xpRemoved);
             }
         } else if (isLevelUp && mmoPlayer != null) {
             NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill,
@@ -462,7 +462,7 @@ public final class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            mmoPlayer.addXp(skill, event.getRawXpGained());
+            mmoPlayer.getProfile().addXp(skill, event.getRawXpGained());
             mmoPlayer.getProfile().registerXpGain(skill, event.getRawXpGained());
         }
 
@@ -546,7 +546,10 @@ public final class EventUtils {
                 String skillName = primarySkillType.toString();
                 int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 
-                killerPlayer.addLevels(primarySkillType, levelChangedKiller.get(skillName));
+                // Raw write: these gains are governed by the vampirism event above, so the
+                // level change events that addLevels fires must not run here
+                killerPlayer.getProfile()
+                        .addLevels(primarySkillType, levelChangedKiller.get(skillName));
                 killerPlayer.beginUnsharedXpGain(primarySkillType,
                         experienceChangedKiller.get(skillName), XPGainReason.VAMPIRISM,
                         XPGainSource.VAMPIRISM);

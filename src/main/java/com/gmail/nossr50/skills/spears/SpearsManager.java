@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpearsManager extends SkillManager {
     private static @Nullable PotionEffectType swiftnessEffectType;
+
     public SpearsManager(McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.SPEARS);
     }
@@ -64,10 +65,11 @@ public class SpearsManager extends SkillManager {
             return;
         }
 
-        int momentumRank = getRank(getPlayer(), SubSkillType.SPEARS_MOMENTUM);
-        // Chance to activate on hit is influence by the CD
-        double momentumOdds = (mcMMO.p.getAdvancedConfig().getMomentumChanceToApplyOnHit(momentumRank)
-                * Math.min(attackStrengthScale, 1.0D));
+        final int momentumRank = getRank(getPlayer(), SubSkillType.SPEARS_MOMENTUM);
+        // Weak hits proportionally lower the odds of Momentum activating
+        final double momentumOdds =
+                mcMMO.p.getAdvancedConfig().getMomentumChanceToApplyOnHit(momentumRank)
+                        * Math.min(attackStrengthScale, 1.0D);
 
         if (isStaticSkillRNGSuccessful(PrimarySkillType.SPEARS, mmoPlayer, momentumOdds)) {
             if (mmoPlayer.useChatNotifications()) {

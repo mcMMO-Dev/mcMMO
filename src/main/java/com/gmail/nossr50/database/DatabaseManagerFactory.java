@@ -30,7 +30,12 @@ public class DatabaseManagerFactory {
 
         return mcMMO.p.getGeneralConfig().getUseMySQL()
                 ? new SQLDatabaseManager(logger, MYSQL_DRIVER)
-                : new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
+                : new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel,
+                        flatFileLeaderboardRefreshIntervalMillis());
+    }
+
+    private static long flatFileLeaderboardRefreshIntervalMillis() {
+        return 1000L * mcMMO.p.getGeneralConfig().getLeaderboardRefreshIntervalSecondsFlatFile();
     }
 
     /**
@@ -65,7 +70,8 @@ public class DatabaseManagerFactory {
         switch (type) {
             case FLATFILE:
                 LogUtils.debug(mcMMO.p.getLogger(), "Using FlatFile Database");
-                return new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel);
+                return new FlatFileDatabaseManager(userFilePath, logger, purgeTime, startingLevel,
+                        flatFileLeaderboardRefreshIntervalMillis());
 
             case SQL:
                 LogUtils.debug(mcMMO.p.getLogger(), "Using SQL Database");

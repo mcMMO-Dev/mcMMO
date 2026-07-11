@@ -24,6 +24,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GeneralConfig extends BukkitConfig {
+    // Floor for how often leaderboards may rebuild; shared with FlatFileDatabaseManager's
+    // rebuild throttle so the config clamp and the runtime throttle can never disagree.
+    public static final int MIN_LEADERBOARD_REFRESH_INTERVAL_SECONDS = 60;
+    // Each tracked rank is cached for every non-child skill plus overall, and every cache
+    // refresh re-reads that many rows per leaderboard, so the ceiling bounds both memory
+    // use and periodic database load.
+    private static final int MIN_PAPI_LEADERBOARD_TRACKED_RANK = 10;
+    private static final int MAX_PAPI_LEADERBOARD_TRACKED_RANK = 1000;
+
     private @Nullable Material repairAnvilMaterial;
     private @Nullable Material salvageAnvilMaterial;
 
@@ -265,6 +274,35 @@ public class GeneralConfig extends BukkitConfig {
 
     public boolean getRegionDataMigrationBackupsEnabled() {
         return config.getBoolean("General.RegionDataMigrationBackups", true);
+    }
+
+    /**
+     * @return Highest leaderboard position kept in the PlaceholderAPI cache, clamped between
+     * {@value #MIN_PAPI_LEADERBOARD_TRACKED_RANK} and {@value #MAX_PAPI_LEADERBOARD_TRACKED_RANK}.
+     */
+    public int getPapiLeaderboardMaxTrackedRank() {
+        final int configured =
+                config.getInt("General.PlaceholderAPI.Leaderboards.Max_Tracked_Rank", 100);
+        return Math.min(MAX_PAPI_LEADERBOARD_TRACKED_RANK,
+                Math.max(MIN_PAPI_LEADERBOARD_TRACKED_RANK, configured));
+    }
+
+    /**
+     * @return SQL leaderboard cache refresh interval in seconds, never below
+     * {@value #MIN_LEADERBOARD_REFRESH_INTERVAL_SECONDS}.
+     */
+    public int getLeaderboardRefreshIntervalSecondsSQL() {
+        return Math.max(MIN_LEADERBOARD_REFRESH_INTERVAL_SECONDS,
+                config.getInt("General.Leaderboards.Refresh_Interval_Seconds.SQL", 60));
+    }
+
+    /**
+     * @return FlatFile leaderboard cache refresh interval in seconds, never below
+     * {@value #MIN_LEADERBOARD_REFRESH_INTERVAL_SECONDS}.
+     */
+    public int getLeaderboardRefreshIntervalSecondsFlatFile() {
+        return Math.max(MIN_LEADERBOARD_REFRESH_INTERVAL_SECONDS,
+                config.getInt("General.Leaderboards.Refresh_Interval_Seconds.FlatFile", 600));
     }
 
     public boolean getMobHealthbarEnabled() {

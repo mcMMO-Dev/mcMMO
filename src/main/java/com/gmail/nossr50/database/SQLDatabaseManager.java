@@ -3,6 +3,7 @@ package com.gmail.nossr50.database;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.datatypes.database.LeaderboardSnapshot;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -43,6 +44,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final String LEGACY_DRIVER_PATH = "com.mysql.jdbc.Driver";
     private static final String ALL_QUERY_VERSION = "total";
     private static final String INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_";
+
+    /**
+     * MySQL/MariaDB error code for a duplicate index name (ER_DUP_KEYNAME), raised when
+     * {@code ADD INDEX} collides with an existing index of the same name.
+     */
+    private static final int ER_DUP_KEYNAME = 1061;
 
     /**
      * utf8mb4 is the "real" UTF-8, unlike MySQL's legacy "utf8".
@@ -534,6 +541,45 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill,
             int pageNumber,
             int statsPerPage) throws InvalidSkillException {
+        try {
+            return readLeaderboardRows(skill, pageNumber, statsPerPage);
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public @NotNull LeaderboardSnapshot readLeaderboardSnapshot(int perScopeLimit) {
+        final Map<PrimarySkillType, List<PlayerStat>> skillLeaderboards =
+                new EnumMap<>(PrimarySkillType.class);
+        for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            skillLeaderboards.put(skill, readLeaderboardRowsOrThrow(skill, perScopeLimit));
+        }
+
+        return new LeaderboardSnapshot(skillLeaderboards,
+                readLeaderboardRowsOrThrow(null, perScopeLimit));
+    }
+
+    /**
+     * Reads one leaderboard scope for the bulk snapshot path, which must propagate backend
+     * failures instead of swallowing them the way the command-facing read does.
+     */
+    private @NotNull List<PlayerStat> readLeaderboardRowsOrThrow(@Nullable PrimarySkillType skill,
+            int perScopeLimit) {
+        try {
+            return readLeaderboardRows(skill, 1, perScopeLimit);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to read leaderboard for "
+                    + (skill == null ? "overall" : skill.name()), ex);
+        } catch (InvalidSkillException ex) {
+            // Scopes are fixed to non-child skills plus overall, so this cannot happen.
+            throw new IllegalStateException(ex);
+        }
+    }
+
+    private @NotNull List<PlayerStat> readLeaderboardRows(@Nullable PrimarySkillType skill,
+            int pageNumber, int statsPerPage) throws InvalidSkillException, SQLException {
         List<PlayerStat> stats = new ArrayList<>();
 
         // Fix for a plugin that people are using that is throwing SQL errors
@@ -550,11 +596,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 ? ALL_QUERY_VERSION
                 : skill.name().toLowerCase(Locale.ENGLISH);
 
-        String sql = "SELECT " + query + ", `user` FROM " + tablePrefix + "users " +
-                "JOIN " + tablePrefix + "skills ON (user_id = id) " +
-                "WHERE " + query + " > 0 " +
-                "AND NOT `user` = '\\_INVALID\\_OLD\\_USERNAME\\_' " +
-                "ORDER BY " + query + " DESC, `user` LIMIT ?, ?";
+        final String sql = leaderboardQuery(query);
 
         try (Connection connection = getConnection(PoolIdentifier.MISC);
                 PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -570,11 +612,37 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     stats.add(new PlayerStat(playerName, value));
                 }
             }
-        } catch (SQLException ex) {
-            logSQLException(ex);
         }
 
         return stats;
+    }
+
+    /**
+     * Builds the leaderboard page query for the given skill column (or {@code total}).
+     * <p>
+     * Tiebreak on skills.user_id (not users.user) so the sort can be resolved on the skills
+     * table before the join, and DESC to match the skill column's direction: InnoDB secondary
+     * indexes implicitly end with the PK ascending, so a backward scan of the per-skill index
+     * (see ADD_SKILL_LEADERBOARD_INDEXES) yields (skill DESC, user_id DESC) exactly. A mixed
+     * DESC/ASC ORDER BY or a tiebreak column from the joined users table forces a filesort of
+     * every qualifying row; this form touches only the LIMIT window. Package-private so the
+     * Docker-tagged tests can EXPLAIN the exact production query and assert no filesort occurs.
+     * <p>
+     * The ghost-row filter uses plain equality on the literal username: backslash escapes like
+     * {@code \_} only stand for a literal underscore inside LIKE patterns, while in an equality
+     * comparison MySQL keeps the backslash and the filter silently matches nothing.
+     * <p>
+     * STRAIGHT_JOIN pins {@code skills} as the driving table. The ghost-row filter is a range
+     * predicate on the indexed {@code user} column, and on large tables MySQL's optimizer
+     * otherwise drives from {@code users} via that index and filesorts every qualifying row
+     * instead of walking the per-skill index backward and stopping at the LIMIT window.
+     */
+    @NotNull String leaderboardQuery(@NotNull String column) {
+        return "SELECT " + column + ", `user` FROM " + tablePrefix + "skills " +
+                "STRAIGHT_JOIN " + tablePrefix + "users ON (user_id = id) " +
+                "WHERE " + column + " > 0 " +
+                "AND NOT `user` = '" + INVALID_OLD_USERNAME + "' " +
+                "ORDER BY " + column + " DESC, user_id DESC LIMIT ?, ?";
     }
 
     public Map<PrimarySkillType, Integer> readRank(String playerName) {
@@ -588,6 +656,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             // 1) Load all relevant skill levels for this player in one shot
             Map<PrimarySkillType, Integer> levels = new EnumMap<>(PrimarySkillType.class);
             int totalLevel = 0;
+            int userId = -1;
 
             String loadSql =
                     "SELECT s.*, u.`user` " +
@@ -610,24 +679,34 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     }
 
                     totalLevel = rs.getInt(ALL_QUERY_VERSION); // "total" column
+                    userId = rs.getInt("user_id");
                 }
             }
 
             // Helper method to compute a rank (base + tie offset + 1)
             // for any numeric column on the skills table.
             class RankCalculator {
+                private final int userId;
+
+                RankCalculator(int userId) {
+                    this.userId = userId;
+                }
+
                 int computeRank(String columnName, int value) throws SQLException {
                     if (value <= 0) {
                         // Original logic effectively did not assign a rank when the value <= 0
                         return -1;
                     }
 
-                    // Base: number of players with strictly higher value
+                    // Base: number of players with strictly higher value. Rows renamed to
+                    // _INVALID_OLD_USERNAME_ are hidden from the leaderboard (see
+                    // leaderboardQuery), so they must not count toward ranks either.
                     String higherSql =
                             "SELECT COUNT(*) AS cnt " +
                                     "FROM " + tablePrefix + "users u " +
                                     "JOIN " + tablePrefix + "skills s ON s.user_id = u.id " +
-                                    "WHERE s." + columnName + " > ?";
+                                    "WHERE s." + columnName + " > ? " +
+                                    "AND NOT u.`user` = '" + INVALID_OLD_USERNAME + "'";
 
                     int higherCount = 0;
                     try (PreparedStatement stmt = connection.prepareStatement(higherSql)) {
@@ -639,20 +718,22 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         }
                     }
 
-                    // Tie offset: number of players with the same value whose username
-                    // sorts alphabetically before this player's name.
+                    // Tie offset: number of tied players who sort ahead of this one. Must match
+                    // the leaderboard's tiebreak (see leaderboardQuery: ORDER BY ... user_id
+                    // DESC) and its ghost-row filter, so /mcrank agrees with /mctop positions.
                     String tieSql =
                             "SELECT COUNT(*) AS cnt " +
                                     "FROM " + tablePrefix + "users u " +
                                     "JOIN " + tablePrefix + "skills s ON s.user_id = u.id " +
                                     "WHERE s." + columnName + " = ? " +
                                     "AND s." + columnName + " > 0 " +
-                                    "AND u.`user` < ?";
+                                    "AND s.user_id > ? " +
+                                    "AND NOT u.`user` = '" + INVALID_OLD_USERNAME + "'";
 
                     int tieCount = 0;
                     try (PreparedStatement stmt = connection.prepareStatement(tieSql)) {
                         stmt.setInt(1, value);
-                        stmt.setString(2, playerName);
+                        stmt.setInt(2, userId);
                         try (ResultSet rs = stmt.executeQuery()) {
                             if (rs.next()) {
                                 tieCount = rs.getInt("cnt");
@@ -660,12 +741,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         }
                     }
 
-                    // 1-based rank: higher values first, then alphabetical by username
+                    // 1-based rank: higher values first, then higher user_id first among ties
                     return higherCount + tieCount + 1;
                 }
             }
 
-            RankCalculator rankCalculator = new RankCalculator();
+            RankCalculator rankCalculator = new RankCalculator(userId);
 
             // 2) Per-skill rank
             for (PrimarySkillType primarySkillType : SkillTools.NON_CHILD_SKILLS) {
@@ -1310,7 +1391,28 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + "`maces` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
                 + "`spears` int(10) unsigned NOT NULL DEFAULT " + startingLevel + ","
                 + "`total` int(10) unsigned NOT NULL DEFAULT " + totalLevel + ","
-                + "PRIMARY KEY (`user_id`)) "
+                + "PRIMARY KEY (`user_id`),"
+                // Leaderboard indexes: readLeaderboard sorts on a single column per scope.
+                // Fresh installs get them here; existing installs get them via the idempotent
+                // ADD_SKILL_LEADERBOARD_INDEXES upgrade. Required for MariaDB to avoid a filesort.
+                + "INDEX `idx_taming` (`taming`),"
+                + "INDEX `idx_mining` (`mining`),"
+                + "INDEX `idx_woodcutting` (`woodcutting`),"
+                + "INDEX `idx_repair` (`repair`),"
+                + "INDEX `idx_unarmed` (`unarmed`),"
+                + "INDEX `idx_herbalism` (`herbalism`),"
+                + "INDEX `idx_excavation` (`excavation`),"
+                + "INDEX `idx_archery` (`archery`),"
+                + "INDEX `idx_swords` (`swords`),"
+                + "INDEX `idx_axes` (`axes`),"
+                + "INDEX `idx_acrobatics` (`acrobatics`),"
+                + "INDEX `idx_fishing` (`fishing`),"
+                + "INDEX `idx_alchemy` (`alchemy`),"
+                + "INDEX `idx_crossbows` (`crossbows`),"
+                + "INDEX `idx_tridents` (`tridents`),"
+                + "INDEX `idx_maces` (`maces`),"
+                + "INDEX `idx_spears` (`spears`),"
+                + "INDEX `idx_total` (`total`)) "
                 + "DEFAULT CHARSET=" + CHARSET_SQL + ";";
 
         try (Statement createStatement = connection.createStatement()) {
@@ -1416,6 +1518,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "ADD COLUMN `" + columnName + "` int(" + columnSize + ") "
                             + "unsigned NOT NULL DEFAULT " + startingLevel;
                     createStatement.executeUpdate(sql);
+
+                    // Leaderboards sort on skills columns, so a freshly added skill column gets
+                    // its index here rather than waiting on a one-shot migration. Best-effort:
+                    // startup continues without the index if the DDL fails.
+                    if ("skills".equals(tableName)) {
+                        ensureLeaderboardIndex(connection, createStatement, columnName);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -1498,6 +1607,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     checkNameUniqueness(statement);
                 }
                 case ADD_SKILL_TOTAL -> checkUpgradeSkillTotal(connection);
+                case ADD_SKILL_LEADERBOARD_INDEXES -> checkUpgradeSkillLeaderboardIndexes(connection);
                 case ADD_UNIQUE_PLAYER_DATA -> checkUpgradeAddUniqueChimaeraWing(statement);
                 case SQL_CHARSET_UTF8MB4 -> updateCharacterSet(statement);
                 default -> {
@@ -1750,6 +1860,164 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             tryClose(resultSet);
             tryClose(statement);
+        }
+    }
+
+
+    /**
+     * Every column {@link #readLeaderboard} can sort on: one per non-child skill plus the
+     * {@code total} column. Derived from {@link SkillTools#NON_CHILD_SKILLS} so newly added
+     * skills are picked up without touching a hand-maintained list. Package-private so tests
+     * can assert against the exact set of columns the index migration maintains.
+     */
+    static @NotNull List<String> leaderboardIndexColumns() {
+        final List<String> columns = new ArrayList<>(SkillTools.NON_CHILD_SKILLS.size() + 1);
+        for (final PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
+            columns.add(skill.name().toLowerCase(Locale.ENGLISH));
+        }
+        columns.add(ALL_QUERY_VERSION);
+        return List.copyOf(columns);
+    }
+
+    /**
+     * Ensures a secondary index exists on each column used by leaderboard queries (every
+     * non-child skill plus {@code total}).
+     * <p>
+     * {@link #readLeaderboard} sorts on a single column per scope. Without an index the engine must
+     * scan and filesort the whole {@code skills} table. On MariaDB the query rewrite alone is not
+     * enough (its optimizer keeps a temporary + filesort); the index is what lets it drive the sort
+     * from the {@code skills} table. Verified on MySQL 8 and MariaDB 10.11.
+     * <p>
+     * Resilience: each index is attempted independently and best-effort. A failure on one column is
+     * logged and skipped so the remaining indexes still get created, and no failure is allowed to
+     * propagate and abort startup - mcMMO keeps running without the index (slower leaderboards) if
+     * the DDL cannot be applied. The upgrade is only marked complete once every column is handled,
+     * so partial or failed runs are retried on the next startup.
+     * <p>
+     * Cost note: this is a one-time migration that can be slow on very large tables, and each index
+     * adds write amplification on {@code saveUser}. Already-indexed columns are detected with a
+     * single information schema query and skipped, so the step is idempotent and safe to re-run.
+     */
+    private void checkUpgradeSkillLeaderboardIndexes(final Connection connection) {
+        final List<String> leaderboardColumns = leaderboardIndexColumns();
+
+        boolean allIndexesEnsured = true;
+
+        try {
+            connection.setAutoCommit(false);
+
+            final Set<String> indexedColumns =
+                    findIndexedLeaderboardColumns(connection, leaderboardColumns);
+
+            try (Statement statement = connection.createStatement()) {
+                for (final String column : leaderboardColumns) {
+                    if (indexedColumns.contains(column)) {
+                        continue;
+                    }
+
+                    if (!ensureLeaderboardIndex(connection, statement, column)) {
+                        allIndexesEnsured = false;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            // Whole-operation failure (e.g. could not toggle autocommit); log and keep running.
+            allIndexesEnsured = false;
+            logSQLException(ex);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ignored) {
+            }
+        }
+
+        // Only mark complete when every column is handled, so failures retry on the next startup.
+        if (allIndexesEnsured) {
+            mcMMO.getUpgradeManager()
+                    .setUpgradeCompleted(UpgradeType.ADD_SKILL_LEADERBOARD_INDEXES);
+        }
+    }
+
+    /**
+     * Finds which of the given columns already lead an index on the skills table, using a single
+     * INFORMATION_SCHEMA query instead of one probe per column. Only a leading column
+     * ({@code seq_in_index = 1}) can serve the leaderboard ORDER BY, so a composite index that
+     * merely contains a column elsewhere does not count.
+     * <p>
+     * CREATE INDEX IF NOT EXISTS is not portable (unsupported on MySQL 8), so probe the
+     * information schema instead. DATABASE() scopes this to the active mcMMO schema.
+     */
+    private Set<String> findIndexedLeaderboardColumns(final Connection connection,
+            final List<String> columns) throws SQLException {
+        final String placeholders = String.join(", ", Collections.nCopies(columns.size(), "?"));
+        final String query = "SELECT DISTINCT column_name FROM INFORMATION_SCHEMA.STATISTICS "
+                + "WHERE table_schema = DATABASE() "
+                + "AND table_name = ? "
+                + "AND seq_in_index = 1 "
+                + "AND column_name IN (" + placeholders + ")";
+
+        final Set<String> indexedColumns = new HashSet<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, tablePrefix + "skills");
+            int parameterIndex = 2;
+            for (final String column : columns) {
+                statement.setString(parameterIndex++, column);
+            }
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    indexedColumns.add(resultSet.getString(1).toLowerCase(Locale.ENGLISH));
+                }
+            }
+        }
+
+        return indexedColumns;
+    }
+
+    /**
+     * Best-effort creation of a single leaderboard index. Callers are expected to have already
+     * established that the column does not lead an index. Commits on success (when not in
+     * autocommit mode), rolls back and logs on failure. Never throws.
+     * <p>
+     * A name collision (error code {@value #ER_DUP_KEYNAME}) means an index named
+     * {@code idx_<column>} already exists on some other column; that index is assumed to be
+     * deliberate, so it is left in place and the column is treated as handled rather than
+     * retried on every startup.
+     *
+     * @return {@code true} if the column is handled (index created, or its name is deliberately
+     * taken), {@code false} if the attempt failed and the column remains unindexed.
+     */
+    private boolean ensureLeaderboardIndex(final Connection connection, final Statement statement,
+            final String column) {
+        try {
+            logger.info("Adding leaderboard index for column: " + column);
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_"
+                    + column + "` (`" + column + "`) USING BTREE");
+            if (!connection.getAutoCommit()) {
+                connection.commit();
+            }
+            return true;
+        } catch (SQLException ex) {
+            try {
+                if (!connection.getAutoCommit()) {
+                    connection.rollback();
+                }
+            } catch (SQLException ignored) {
+            }
+
+            if (ex.getErrorCode() == ER_DUP_KEYNAME) {
+                logger.warning("An index named 'idx_" + column + "' already exists on the `"
+                        + tablePrefix + "skills` table but does not lead with the '" + column
+                        + "' column. Assuming it was created deliberately and leaving it as-is;"
+                        + " leaderboards sorting on '" + column
+                        + "' may be slower without a dedicated index.");
+                return true;
+            }
+
+            logger.warning("Could not add leaderboard index for column '" + column
+                    + "', continuing without it (leaderboards for this column may be slower): "
+                    + ex.getMessage());
+            return false;
         }
     }
 

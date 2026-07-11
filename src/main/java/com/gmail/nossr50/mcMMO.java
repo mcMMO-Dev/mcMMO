@@ -13,7 +13,6 @@ import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.util.blockmeta.McMMORegionBackupStore;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.PartyConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -43,6 +42,7 @@ import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
+import com.gmail.nossr50.runnables.skills.PlantCollapseXpTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
@@ -56,13 +56,14 @@ import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.MaterialMapStore;
 import com.gmail.nossr50.util.MetadataConstants;
+import com.gmail.nossr50.util.MinecraftGameVersionFactory;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TransientEntityTracker;
 import com.gmail.nossr50.util.TransientMetadataTools;
-import com.gmail.nossr50.util.MinecraftGameVersionFactory;
 import com.gmail.nossr50.util.blockmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.ChunkManagerFactory;
+import com.gmail.nossr50.util.blockmeta.McMMORegionBackupStore;
 import com.gmail.nossr50.util.blockmeta.UserBlockTracker;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
@@ -102,7 +103,7 @@ public class mcMMO extends JavaPlugin {
     private static RepairableManager repairableManager;
     private static SalvageableManager salvageableManager;
     private static DatabaseManager databaseManager;
-    private FormulaManager formulaManager;
+    private static FormulaManager formulaManager;
     private static UpgradeManager upgradeManager;
     private static LevelUpCommandManager levelUpCommandManager;
     private static MaterialMapStore materialMapStore;
@@ -138,6 +139,10 @@ public class mcMMO extends JavaPlugin {
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
     private static boolean projectKorraEnabled;
+    /**
+     * Stored so we can stop expansion-owned tasks during plugin shutdown.
+     */
+    private @Nullable PapiExpansion papiExpansion;
 
     // API checks
     private static boolean serverAPIOutdated = false;
@@ -271,10 +276,10 @@ public class mcMMO extends JavaPlugin {
                                 "You are potentially running an outdated version of your server software"
                                         + ", mcMMO will not work unless you update to a newer version!"),
                         20, 20 * 60 * 30);
-                if (!minecraftGameVersion.isAtLeast(1, 20, 4)) {
+                if (!minecraftGameVersion.isAtLeast(1, 20, 5)) {
                     foliaLib.getScheduler().runTimer(
                             () -> getLogger().severe(
-                                    "This version of mcMMO requires at least Minecraft 1.20.4 to"
+                                    "This version of mcMMO requires at least Minecraft 1.20.5 to"
                                             + " function properly, please update your software or use an older version of mcMMO!"),
                             20, 20 * 60 * 30);
                 }
@@ -312,7 +317,7 @@ public class mcMMO extends JavaPlugin {
                 chunkManager = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
                 if (PersistentDataConfig.getInstance().useBlockTracker()
-                    && generalConfig.getRegionDataMigrationBackupsEnabled()) {
+                        && generalConfig.getRegionDataMigrationBackupsEnabled()) {
                     long migrationRestoreTotalNanos = 0L;
                     int migrationRestoreWorldsWithWork = 0;
                     boolean migrationAnnouncementLogged = false;
@@ -404,7 +409,16 @@ public class mcMMO extends JavaPlugin {
         setServerShutdown(false); //Reset flag, used to make decisions about async saves
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PapiExpansion().register();
+            // Keep a reference for explicit shutdown/unregister in onDisable().
+            papiExpansion = new PapiExpansion();
+            if (papiExpansion.register()) {
+                // Only spend refresh work on the leaderboard cache once PlaceholderAPI has
+                // actually accepted the expansion.
+                papiExpansion.startLeaderboardCache();
+            } else {
+                getLogger().warning(
+                        "Failed to register the mcMMO PlaceholderAPI expansion, mcMMO placeholders will be unavailable.");
+            }
         }
     }
 
@@ -418,7 +432,8 @@ public class mcMMO extends JavaPlugin {
 
     private void checkForOutdatedAPI() {
         try {
-            Class<?> blockDropItemEvent = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
+            Class<?> blockDropItemEvent = Class.forName(
+                    "org.bukkit.event.block.BlockDropItemEvent");
             blockDropItemEvent.getMethod("getItems");
             Class.forName("net.md_5.bungee.api.chat.BaseComponent");
             // 1.20.4 checks
@@ -426,7 +441,8 @@ public class mcMMO extends JavaPlugin {
             entityDamageEvent.getMethod("getDamageSource");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             serverAPIOutdated = true;
-            getLogger().severe("Your server software is missing APIs that mcMMO requires to function properly, please update your server software!");
+            getLogger().severe(
+                    "Your server software is missing APIs that mcMMO requires to function properly, please update your server software!");
         }
     }
 
@@ -465,7 +481,7 @@ public class mcMMO extends JavaPlugin {
 
             formulaManager.saveFormula();
             chunkManager.closeAll();
-                if (PersistentDataConfig.getInstance().useBlockTracker()
+            if (PersistentDataConfig.getInstance().useBlockTracker()
                     && generalConfig.getRegionDataMigrationBackupsEnabled()) {
                 long backupTotalNanos = 0L;
                 int backupWorldsWithWork = 0;
@@ -525,7 +541,14 @@ public class mcMMO extends JavaPlugin {
         }
 
         LogUtils.debug(mcMMO.p.getLogger(), "Canceling all tasks...");
+        if (papiExpansion != null) {
+            // Shut down expansion resources before global task cancellation.
+            papiExpansion.shutdown();
+            papiExpansion.unregister();
+            papiExpansion = null;
+        }
         getFoliaLib().getScheduler().cancelAllTasks(); // This removes our tasks
+        PlantCollapseXpTask.clearPendingVerifications();
         LogUtils.debug(mcMMO.p.getLogger(), "Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
@@ -565,7 +588,7 @@ public class mcMMO extends JavaPlugin {
         xpEventEnabled = !xpEventEnabled;
     }
 
-    public FormulaManager getFormulaManager() {
+    public static FormulaManager getFormulaManager() {
         return formulaManager;
     }
 
