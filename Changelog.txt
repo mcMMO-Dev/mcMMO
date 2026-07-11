@@ -57,6 +57,7 @@ Version 2.3.000
     Fixed an error when another plugin fires a fish catch carrying a non-item entity
     Fixed an error when adding levels to Salvage or Smelting (See notes)
     Fixed an error when another plugin reads raw skill XP for Salvage or Smelting
+    Fixed 'Invalid mcMMO skill' console spam when other plugins check skill names through the API (See notes)
     Fixed an error when reading XP requirements for offline players while 'Experience_Formula.Cumulative_Curve' is enabled
     Fixed a memory leak from Call of the Wild summons that died before their duration ended
     Fixed an error when players below 11 HP used a Chimaera Wing underground
@@ -134,6 +135,9 @@ Version 2.3.000
 
     -- Level change events --
     Only matters on servers running plugins that cancel mcMMO level change events. A cancelled /mmoedit change could reset the skill to level 0 or the wrong level instead of restoring the old one, and cancelling a change for a player whose data was not loaded threw an error; mcMMO now logs a warning instead.
+
+    -- Invalid skill name messages --
+    Skill name lookups that do not match any skill (usually other plugins validating names through the API, but also command typos) no longer print an 'Invalid mcMMO skill' warning to the console. The message is now debug output, visible by enabling 'General.Verbose_Logging' in config.yml.
 
     -- Potions --
     REGENERATION potion entries and their long/strong variants in potions.yml, treasures.yml, and fishing_treasures.yml could fail to load. Old names like REGEN still convert correctly, no config changes are needed.

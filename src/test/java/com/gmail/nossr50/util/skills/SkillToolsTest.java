@@ -3,7 +3,10 @@ package com.gmail.nossr50.util.skills;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.config.GeneralConfig;
@@ -13,6 +16,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -346,6 +350,37 @@ class SkillToolsTest {
         List<String> sorted = new ArrayList<>(names);
         Collections.sort(sorted);
         assertThat(names).isEqualTo(sorted);
+    }
+
+    // ------------------------------------------------------------------------
+    // matchSkill logging behavior
+    // ------------------------------------------------------------------------
+
+    /**
+     * Other plugins validate arbitrary strings through the API (ExperienceAPI.isValidSkillType
+     * and friends), which lands in matchSkill. A non-matching name must not write to the
+     * console at default log levels, otherwise API users spam server logs on every lookup.
+     * Debug-prefixed output is fine; LogFilter hides it unless Verbose_Logging is enabled.
+     */
+    @Test
+    void matchSkillShouldStayQuietOnConsoleWhenNameDoesNotMatch() throws Exception {
+        // Given - a SkillTools and a plugin logger we can observe
+        SkillTools skillTools = newSkillToolsForVersion(1, 21, 11);
+        Logger observedLogger = mock(Logger.class);
+        when(mcMMO.p.getLogger()).thenReturn(observedLogger);
+
+        try {
+            // When - an unknown skill name is looked up, as API validation does
+            PrimarySkillType match = skillTools.matchSkill("notARealSkill");
+
+            // Then - no skill matches and nothing reaches the console at default levels
+            assertThat(match).isNull();
+            verify(observedLogger, never()).warning(anyString());
+            verify(observedLogger, never()).info(argThat((String message) ->
+                    !message.startsWith(LogUtils.DEBUG_STR)));
+        } finally {
+            when(mcMMO.p.getLogger()).thenReturn(logger);
+        }
     }
 
     /**

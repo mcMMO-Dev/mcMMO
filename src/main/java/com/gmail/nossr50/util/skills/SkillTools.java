@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.LogUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
@@ -380,8 +381,9 @@ public class SkillTools {
         }
 
         if (!skillName.equalsIgnoreCase("all")) {
-            pluginRef.getLogger()
-                    .warning("Invalid mcMMO skill (" + skillName + ")"); // TODO: Localize
+            // Debug rather than warning: other plugins probe arbitrary names through the API
+            // (ExperienceAPI.isValidSkillType and friends), which must stay quiet on console
+            LogUtils.debug(pluginRef.getLogger(), "Invalid mcMMO skill (" + skillName + ")");
         }
 
         return null;
