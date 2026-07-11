@@ -46,6 +46,7 @@ Version 2.3.000
     Fixed REGENERATION potion entries in potions.yml, treasures.yml, and fishing_treasures.yml failing to match their potion type (See notes)
     Fixed riders of spawner, egg, nether portal, and bred mobs not being tagged for reduced combat XP
     Fixed splash potions not applying saturation when another custom effect is listed before it
+    Fixed splash saturation potions not keeping their particle and icon visibility settings
     Fixed Alchemy not recognizing potions whose custom effects are stored in a different order than in potions.yml
     Fixed shift-right-clicking ingredients into brewing stands overstacking a full ingredient slot and refusing transfers from full stacks
     Fixed the early game XP boost being able to award XP inside WorldGuard regions that deny mcMMO XP

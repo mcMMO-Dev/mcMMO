@@ -30,15 +30,22 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
 class EntityListenerTest extends MMOTestEnvironment {
@@ -227,5 +234,44 @@ class EntityListenerTest extends MMOTestEnvironment {
 
         // Then - the tracker no longer holds the dead summon
         assertThat(mcMMO.getTransientEntityTracker().isTransient(summon)).isFalse();
+    }
+
+    /**
+     * Regression coverage for the splash saturation workaround: re-adding the effect with the
+     * short PotionEffect constructor silently reset the effect's particle and icon visibility
+     * to the defaults, so custom potions brewed to hide their particles started showing them.
+     */
+    @Test
+    void splashSaturationShouldKeepParticleAndIconVisibility() {
+        // Given - a custom saturation splash potion with hidden particles and icon
+        final PotionEffect hiddenSaturation = new PotionEffect(PotionEffectType.SATURATION,
+                100, 1, true, false, false);
+        final PotionMeta potionMeta = mock(PotionMeta.class);
+        when(potionMeta.getCustomEffects()).thenReturn(List.of(hiddenSaturation));
+        final ItemStack potionItem = mock(ItemStack.class);
+        when(potionItem.getItemMeta()).thenReturn(potionMeta);
+        final ThrownPotion thrownPotion = mock(ThrownPotion.class);
+        when(thrownPotion.getWorld()).thenReturn(world);
+        when(thrownPotion.getItem()).thenReturn(potionItem);
+
+        final LivingEntity splashedEntity = mock(LivingEntity.class);
+        final PotionSplashEvent event = mock(PotionSplashEvent.class);
+        when(event.getEntity()).thenReturn(thrownPotion);
+        when(event.getPotion()).thenReturn(thrownPotion);
+        when(event.getAffectedEntities()).thenReturn(List.of(splashedEntity));
+        when(event.getIntensity(splashedEntity)).thenReturn(0.5);
+
+        // When - the splash is handled
+        entityListener.onPotionSplash(event);
+
+        // Then - the reapplied effect scales its duration but keeps every visibility flag
+        final ArgumentCaptor<PotionEffect> reapplied = ArgumentCaptor.forClass(
+                PotionEffect.class);
+        verify(splashedEntity).addPotionEffect(reapplied.capture());
+        assertThat(reapplied.getValue().getDuration()).isEqualTo(50);
+        assertThat(reapplied.getValue().getAmplifier()).isEqualTo(1);
+        assertThat(reapplied.getValue().isAmbient()).isTrue();
+        assertThat(reapplied.getValue().hasParticles()).isFalse();
+        assertThat(reapplied.getValue().hasIcon()).isFalse();
     }
 }

@@ -1156,7 +1156,7 @@ public class EntityListener implements Listener {
                 int duration = (int) (effect.getDuration() * event.getIntensity(entity));
                 entity.addPotionEffect(
                         new PotionEffect(effect.getType(), duration, effect.getAmplifier(),
-                                effect.isAmbient()));
+                                effect.isAmbient(), effect.hasParticles(), effect.hasIcon()));
             }
         }
     }
