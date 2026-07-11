@@ -5,7 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.config.GeneralConfig;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.SkillTools;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,12 +16,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Pins the {@code onPlaceholderRequest} routing seam for the leaderboard placeholders: PAPI
- * hands the expansion one string like {@code mctop_mining:1}, and the expansion must split it
- * into a registered token plus a position parameter. A routed token with an empty (never
- * refreshed) cache resolves to an empty string, while an unregistered token resolves to
- * {@code null} - that difference is what these tests assert, so no database or cache refresh
- * is needed.
+ * Pins the {@code onPlaceholderRequest} routing seam: PAPI hands the expansion one string
+ * like {@code mctop_mining:1}, and the expansion must split it into a registered token plus
+ * a position parameter. A routed leaderboard token with an empty (never refreshed) cache
+ * resolves to an empty string, while an unregistered token resolves to {@code null} - that
+ * difference is what these tests assert, so no database or cache refresh is needed. The
+ * skill name tokens resolve through a stubbed SkillTools instead.
  */
 class PapiExpansionRoutingTest {
     private static GeneralConfig generalConfig;
@@ -34,6 +36,11 @@ class PapiExpansionRoutingTest {
         when(generalConfig.getPapiLeaderboardMaxTrackedRank()).thenReturn(100);
         when(generalConfig.getUseMySQL()).thenReturn(false);
         when(generalConfig.getLeaderboardRefreshIntervalSecondsFlatFile()).thenReturn(600);
+
+        final SkillTools skillTools = mock(SkillTools.class);
+        when(mcMMO.p.getSkillTools()).thenReturn(skillTools);
+        when(skillTools.getLocalizedSkillName(PrimarySkillType.MINING)).thenReturn("Mining");
+        when(skillTools.getHeaderBannerSkillName(PrimarySkillType.MINING)).thenReturn("MINING");
     }
 
     @AfterAll
@@ -79,6 +86,30 @@ class PapiExpansionRoutingTest {
         // Then - the request routes (empty string), proving the token registered and the
         // ':' split reached it; null would mean the token fell through unrouted
         assertThat(result).isNotNull().isEmpty();
+    }
+
+    @Test
+    void onPlaceholderRequestShouldResolveLocalizedSkillNameToken() {
+        // Given - a freshly constructed expansion with a stubbed localized name for Mining
+        final PapiExpansion expansion = new PapiExpansion();
+
+        // When - PAPI requests the plain skill name token
+        final String result = expansion.onPlaceholderRequest(null, "skillname_mining");
+
+        // Then - the token resolves to the message-style localized skill name
+        assertThat(result).isEqualTo("Mining");
+    }
+
+    @Test
+    void onPlaceholderRequestShouldResolveHeaderSkillNameToken() {
+        // Given - a freshly constructed expansion with a stubbed header name for Mining
+        final PapiExpansion expansion = new PapiExpansion();
+
+        // When - PAPI requests the header skill name token
+        final String result = expansion.onPlaceholderRequest(null, "skillname_header_mining");
+
+        // Then - the token resolves to the stylized header skill name
+        assertThat(result).isEqualTo("MINING");
     }
 
     @Test

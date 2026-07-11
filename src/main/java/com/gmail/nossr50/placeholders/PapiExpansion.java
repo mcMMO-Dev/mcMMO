@@ -261,6 +261,12 @@ public class PapiExpansion extends PlaceholderExpansion {
 
             //%mcmmo_xprate_<skillname>%
             registerPlaceholder(new SkillXpRatePlaceholder(this, skill));
+
+            // %mcmmo_skillname_<skillname>%
+            registerPlaceholder(SkillNamePlaceholder.localized(skill));
+
+            // %mcmmo_skillname_header_<skillname>%
+            registerPlaceholder(SkillNamePlaceholder.header(skill));
         }
 
         for (PrimarySkillType skill : SkillTools.NON_CHILD_SKILLS) {
