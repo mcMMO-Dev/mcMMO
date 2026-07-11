@@ -403,6 +403,31 @@ public final class McMMORegionBackupStore {
     }
 
     /**
+     * Cheap side-effect-free pre-check for whether {@link #backupWorld(World, Logger, Path)}
+     * would write a snapshot for this world: the world sits on the legacy shape and has
+     * tracked region data. Lets shutdown announce the backup pass before the first snapshot
+     * is written instead of after.
+     */
+    public static boolean worldNeedsBackup(@NotNull World world, @NotNull Logger logger) {
+        try {
+            final Path container = normalize(org.bukkit.Bukkit.getWorldContainer().toPath());
+            final Path worldFolder = normalize(world.getWorldFolder().toPath());
+            return needsBackup(container, world.getName(), worldFolder, logger);
+        } catch (RuntimeException unexpected) {
+            return false;
+        }
+    }
+
+    /**
+     * Core pre-check implementation. Package-private for unit testing.
+     */
+    static boolean needsBackup(@NotNull Path container, @NotNull String worldName,
+            @NotNull Path worldFolder, @NotNull Logger logger) {
+        return isLegacyShape(container, worldName, worldFolder)
+                && !listRegionFiles(worldFolder.resolve(IN_WORLD_FOLDER_NAME), logger).isEmpty();
+    }
+
+    /**
     * On-startup / on-world-load entry point. Prunes incomplete snapshots and then handles
     * restore for worlds on the new Paper shape:
      * <ul>

@@ -880,6 +880,50 @@ class McMMORegionBackupStoreTest {
         }
     }
 
+    /**
+     * The pre-check lets shutdown announce the backup pass before the first snapshot is
+     * written; it must agree with what backup() would actually do.
+     */
+    @Nested
+    class NeedsBackupPreCheck {
+
+        @Test
+        void legacyShapeWorldWithRegionDataShouldNeedBackup() throws IOException {
+            // Given - a legacy-shape world with tracked region data
+            final String worldName = "world";
+            final Path worldFolder = legacyWorldFolder(worldName);
+            writeRegionFileWithChunk(inWorld(worldFolder), 0, 0, new int[][] { { 1, 1, 1 } });
+
+            // When / Then - the pre-check reports a backup is needed
+            assertThat(McMMORegionBackupStore.needsBackup(containerRoot, worldName, worldFolder,
+                    silentLogger)).isTrue();
+        }
+
+        @Test
+        void legacyShapeWorldWithoutRegionDataShouldNotNeedBackup() throws IOException {
+            // Given - a legacy-shape world with no tracked region data
+            final String worldName = "world";
+            final Path worldFolder = legacyWorldFolder(worldName);
+            Files.createDirectories(worldFolder);
+
+            // When / Then - there is nothing to back up
+            assertThat(McMMORegionBackupStore.needsBackup(containerRoot, worldName, worldFolder,
+                    silentLogger)).isFalse();
+        }
+
+        @Test
+        void newShapeWorldShouldNotNeedBackup() throws IOException {
+            // Given - a world already on the new Paper layout, even with region data present
+            final String worldName = "world";
+            final Path worldFolder = newPaperWorldFolder(worldName, "overworld");
+            writeRegionFileWithChunk(inWorld(worldFolder), 0, 0, new int[][] { { 1, 1, 1 } });
+
+            // When / Then - snapshots are not needed on the new shape
+            assertThat(McMMORegionBackupStore.needsBackup(containerRoot, worldName, worldFolder,
+                    silentLogger)).isFalse();
+        }
+    }
+
     @Nested
     class Readme {
 

@@ -492,6 +492,16 @@ public class mcMMO extends JavaPlugin {
                         continue;
                     }
 
+                    // Announce before the first snapshot is written, not after
+                    if (!backupAnnouncementLogged
+                            && McMMORegionBackupStore.worldNeedsBackup(loadedWorld,
+                                    getLogger())) {
+                        getLogger().info("Legacy region format detected, mcMMO will back up "
+                                + "region data files to prevent data loss, do NOT force a "
+                                + "shutdown until this completes.");
+                        backupAnnouncementLogged = true;
+                    }
+
                     final long backupStartNanos = System.nanoTime();
                     final boolean backupApplied = McMMORegionBackupStore.backupWorld(
                             loadedWorld, getLogger(), getDataFolder().toPath());
@@ -499,13 +509,6 @@ public class mcMMO extends JavaPlugin {
 
                     if (!backupApplied) {
                         continue;
-                    }
-
-                    if (!backupAnnouncementLogged) {
-                        getLogger().info("Legacy region format detected, mcMMO will back up "
-                                + "region data files to prevent data loss, do NOT force a "
-                                + "shutdown until this completes.");
-                        backupAnnouncementLogged = true;
                     }
 
                     backupTotalNanos += backupElapsedNanos;
