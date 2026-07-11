@@ -582,7 +582,9 @@ public class FishingManager extends SkillManager {
                     break;
             }
 
-            McMMOPlayerShakeEvent shakeEvent = new McMMOPlayerShakeEvent(getPlayer(), drop);
+            final McMMOPlayerShakeEvent shakeEvent =
+                    new McMMOPlayerShakeEvent(getPlayer(), drop);
+            mcMMO.p.getServer().getPluginManager().callEvent(shakeEvent);
 
             drop = shakeEvent.getDrop();
 

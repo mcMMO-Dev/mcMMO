@@ -68,6 +68,7 @@ Version 2.3.000
     Fixed skill name arguments in commands not accepting English skill names on servers using a non-English locale
     Fixed players being fireproof against other players while their mcMMO data was still loading
     Fixed several event handlers modifying fishing, block damage, and interaction events at MONITOR priority (See notes)
+    Fixed the Shake ability's McMMOPlayerShakeEvent never being fired to other plugins
     Fixed /inspect not checking permissions when used on offline players (See notes)
     Fixed a thread-safety issue that could cause incorrect FlatFile leaderboard results
     Fixed renamed players' leftover database rows showing up in /mctop and being counted by /mcrank on SQL databases (See notes)
