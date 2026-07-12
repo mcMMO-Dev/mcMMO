@@ -24,7 +24,7 @@ Persistent_Data:
             PLAYER_BRED_MOB:
                 Saved_To_Disk: false
             # By default mcMMO gives 0 XP for this type of mob, due to an exploit in Minecraft you can spawn 1000 endermen in seconds using this trick.
-            # Adjust in experience.yml under the section labeled exploit fix
+            # The countermeasure is toggled via ExploitFix.EndermanEndermiteFarms in experience.yml
             EXPLOITED_ENDERMEN:
                 Saved_To_Disk: false
             # By default mcMMO gives 0 XP for this type of mob, not adjustable currently

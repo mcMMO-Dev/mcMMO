@@ -1144,7 +1144,8 @@ public final class CombatUtils {
             }
         }
 
-        if (hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
+        if (hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)
+                || hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, target)) {
             baseXP = 0;
         } else if (hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target)
                 || target.hasMetadata("ES")) {

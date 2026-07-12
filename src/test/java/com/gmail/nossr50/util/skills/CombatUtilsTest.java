@@ -1,23 +1,32 @@
 package com.gmail.nossr50.util.skills;
 
+import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.datatypes.meta.HealthbarSnapshot;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.metadata.MobMetaFlagType;
 import com.gmail.nossr50.util.AttributeMapper;
 import com.gmail.nossr50.util.MetadataConstants;
+import com.gmail.nossr50.util.MobMetadataUtils;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -29,6 +38,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 class CombatUtilsTest extends MMOTestEnvironment {
@@ -497,6 +507,101 @@ class CombatUtilsTest extends MMOTestEnvironment {
 
             // Then
             assertEquals(0.0, scale, EPSILON);
+        }
+    }
+
+    /**
+     * Tests for the PvE base XP calculation, focused on the exploit countermeasure that must
+     * zero out XP for endermen flagged by the endermite-farm exploit fix. The flag is written
+     * elsewhere but only matters if {@link CombatUtils#calculatePveBaseXP} honours it; a 2.1.148
+     * refactor dropped the check, letting exploited endermen pay full XP again.
+     */
+    @Nested
+    class CalculatePveBaseXp {
+
+        @BeforeEach
+        void bootstrapMobMetadata() {
+            // MobMetadataUtils resolves its persistence config when the class initializes, so
+            // load it under a mocked PersistentDataConfig to keep the static block off disk
+            when(mcMMO.p.getName()).thenReturn("mcMMO");
+            try (final MockedStatic<PersistentDataConfig> mockedPersistentData =
+                    mockStatic(PersistentDataConfig.class)) {
+                mockedPersistentData.when(PersistentDataConfig::getInstance)
+                        .thenReturn(mock(PersistentDataConfig.class));
+                Class.forName("com.gmail.nossr50.util.MobMetadataUtils");
+            } catch (ClassNotFoundException classNotFoundException) {
+                throw new AssertionError(classNotFoundException);
+            }
+        }
+
+        @Test
+        void exploitedEndermanShouldYieldZeroBaseXp() throws Exception {
+            // Given - an enderman carrying the exploited-enderman flag with positive configured XP
+            final Enderman enderman = Mockito.mock(Enderman.class);
+            when(enderman.getType()).thenReturn(EntityType.ENDERMAN);
+            when(experienceConfigInstance.getCombatXP(EntityType.ENDERMAN)).thenReturn(2.0);
+
+            try (final MockedStatic<MobMetadataUtils> mockedMobMetadata =
+                    mockStatic(MobMetadataUtils.class)) {
+                mockedMobMetadata.when(
+                        () -> hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman))
+                        .thenReturn(true);
+
+                // When - PvE base XP is calculated for the flagged enderman
+                final double baseXP = invokeCalculatePveBaseXp(enderman);
+
+                // Then - the exploit countermeasure zeroes the XP
+                assertThat(baseXP).isZero();
+            }
+        }
+
+        @Test
+        void exploitedEndermanShouldWinOverSpawnerMultiplier() throws Exception {
+            // Given - an enderman flagged as both exploited and spawner-spawned
+            final Enderman enderman = Mockito.mock(Enderman.class);
+            when(enderman.getType()).thenReturn(EntityType.ENDERMAN);
+            when(experienceConfigInstance.getCombatXP(EntityType.ENDERMAN)).thenReturn(2.0);
+
+            try (final MockedStatic<MobMetadataUtils> mockedMobMetadata =
+                    mockStatic(MobMetadataUtils.class)) {
+                mockedMobMetadata.when(
+                        () -> hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman))
+                        .thenReturn(true);
+                mockedMobMetadata.when(
+                        () -> hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, enderman))
+                        .thenReturn(true);
+
+                // When - PvE base XP is calculated
+                final double baseXP = invokeCalculatePveBaseXp(enderman);
+
+                // Then - the zeroing branch wins, so the spawner multiplier never applies
+                assertThat(baseXP).isZero();
+                verify(experienceConfigInstance, never()).getSpawnedMobXpMultiplier();
+            }
+        }
+
+        @Test
+        void unflaggedEndermanShouldYieldConfiguredBaseXp() throws Exception {
+            // Given - a normal enderman with no mcMMO mob flags
+            final Enderman enderman = Mockito.mock(Enderman.class);
+            when(enderman.getType()).thenReturn(EntityType.ENDERMAN);
+            when(experienceConfigInstance.getCombatXP(EntityType.ENDERMAN)).thenReturn(2.0);
+
+            try (final MockedStatic<MobMetadataUtils> mockedMobMetadata =
+                    mockStatic(MobMetadataUtils.class)) {
+                // When - PvE base XP is calculated with every flag absent
+                final double baseXP = invokeCalculatePveBaseXp(enderman);
+
+                // Then - the configured combat XP is scaled by the standard 10x factor
+                assertThat(baseXP).isEqualTo(20.0);
+            }
+        }
+
+        private double invokeCalculatePveBaseXp(final LivingEntity target) throws Exception {
+            final Method method = CombatUtils.class.getDeclaredMethod("calculatePveBaseXP",
+                    LivingEntity.class);
+            method.setAccessible(true);
+            return (double) method.invoke(null, target);
         }
     }
 }
