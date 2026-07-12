@@ -222,9 +222,8 @@ public class SoundManager {
             case TOOL_READY -> Sound.ITEM_ARMOR_EQUIP_GOLD;
             case ROLL_ACTIVATED -> Sound.ENTITY_LLAMA_SWAG;
             case SKILL_UNLOCKED -> Sound.UI_TOAST_CHALLENGE_COMPLETE;
-            case ABILITY_ACTIVATED_BERSERK, TIRED -> Sound.BLOCK_CONDUIT_AMBIENT;
             case ABILITY_ACTIVATED_GENERIC -> Sound.ITEM_TRIDENT_RIPTIDE_3;
-            case DEFLECT_ARROWS, BLEED -> Sound.ENTITY_ENDER_EYE_DEATH;
+            case BLEED -> Sound.ENTITY_ENDER_EYE_DEATH;
             case GLASS -> Sound.BLOCK_GLASS_BREAK;
             case ITEM_CONSUMED -> Sound.ITEM_BOTTLE_EMPTY;
             case CRIPPLE -> getCrippleSound();

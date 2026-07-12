@@ -1005,7 +1005,6 @@ public class McMMOPlayer implements Identified {
                     || primarySkillType == PrimarySkillType.AXES) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN,
                         "Skills.TooTired", String.valueOf(timeRemaining));
-                //SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
             }
 
             return;

@@ -56,11 +56,6 @@ Sounds:
         Volume: 1.0
         Pitch: 1.4
         CustomSoundId: ''
-    DEFLECT_ARROWS:
-        Enable: true
-        Volume: 1.0
-        Pitch: 2.0
-        CustomSoundId: ''
     TOOL_READY:
         Enable: true
         Volume: 1.0
@@ -70,16 +65,6 @@ Sounds:
         Enable: true
         Volume: 1.0
         Pitch: 0.1
-        CustomSoundId: ''
-    ABILITY_ACTIVATED_BERSERK:
-        Enable: true
-        Volume: 0.5
-        Pitch: 1.7
-        CustomSoundId: ''
-    TIRED:
-        Enable: true
-        Volume: 1.0
-        Pitch: 1.7
         CustomSoundId: ''
     BLEED:
         Enable: true
