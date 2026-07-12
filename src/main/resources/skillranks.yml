@@ -643,11 +643,6 @@ Herbalism:
             Rank_4: 800
             Rank_5: 1000
 Fishing:
-    Mastery:
-        Standard:
-            Rank_1: 100
-        RetroMode:
-            Rank_1: 1000
     MagicHunter:
         Standard:
             Rank_1: 20
@@ -872,16 +867,8 @@ Woodcutting:
     TreeFeller:
         Standard:
             Rank_1: 5
-            Rank_2: 25
-            Rank_3: 50
-            Rank_4: 75
-            Rank_5: 100
         RetroMode:
             Rank_1: 50
-            Rank_2: 250
-            Rank_3: 500
-            Rank_4: 750
-            Rank_5: 1000
     HarvestLumber:
         Standard:
             Rank_1: 1
