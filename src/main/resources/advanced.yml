@@ -530,19 +530,6 @@ Skills:
                         Rank_2: 0.75
                         Rank_3: 0.9
                         Rank_4: 1
-                # If Rupture runs for 5 seconds without being reapplied, it explodes
-                # this damage is **NOT** pure and is reduced dramatically vs armor/absorption/etc
-                Explosion_Damage:
-                    Against_Players:
-                        Rank_1: 10
-                        Rank_2: 20
-                        Rank_3: 30
-                        Rank_4: 40
-                    Against_Mobs:
-                        Rank_1: 10
-                        Rank_2: 20
-                        Rank_3: 30
-                        Rank_4: 40
         CounterAttack:
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
@@ -556,9 +543,7 @@ Skills:
 
         SerratedStrikes:
             # DamageModifier: Damage will get divided by this modifier
-            # BleedTicks: This determines how long the bleeding effect of SerratedStrikes lasts
             DamageModifier: 4.0
-            BleedTicks: 5
     #
     #  Settings for Taming
     ###

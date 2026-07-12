@@ -309,10 +309,6 @@ public class AdvancedConfig extends BukkitConfig {
             reason.add("Skills.Swords.SerratedStrikes.DamageModifier should be at least 1!");
         }
 
-        if (getSerratedStrikesTicks() < 1) {
-            reason.add("Skills.Swords.SerratedStrikes.RuptureTicks should be at least 1!");
-        }
-
         /* TAMING */
 
         if (getMaximumProbability(SubSkillType.TAMING_GORE) < 1) {
@@ -838,14 +834,6 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getInt(root + targetType, 5);
     }
 
-    public double getRuptureExplosionDamage(boolean isTargetPlayer, int rank) {
-        String root = "Skills.Swords.Rupture.Rupture_Mechanics.Explosion_Damage.Against_";
-        String targetType = isTargetPlayer ? "Players" : "Mobs";
-        String key = root + targetType + ".Rank_" + rank;
-
-        return config.getDouble(key, 40.0D);
-    }
-
     public double getRuptureChanceToApplyOnHit(int rank) {
         String root = "Skills.Swords.Rupture.Rupture_Mechanics.Chance_To_Apply_On_Hit.Rank_";
         return config.getDouble(root + rank, 33);
@@ -857,10 +845,6 @@ public class AdvancedConfig extends BukkitConfig {
 
     public double getSerratedStrikesModifier() {
         return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D);
-    }
-
-    public int getSerratedStrikesTicks() {
-        return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5);
     }
 
     /* TAMING */
