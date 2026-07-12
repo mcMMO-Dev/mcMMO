@@ -136,42 +136,83 @@ class AcrobaticsTest extends MMOTestEnvironment {
     }
 
     /**
-     * The configured RollDamageThreshold must flow through rollCheck and appear in the MAGIC
-     * damage modifier applied to the event.  At max skill level the roll always succeeds, so the
-     * only variable is how much damage remains after applying the threshold.
+     * A normal (non-sneaking) roll must negate up to the configured Roll DamageThreshold and no
+     * more. Regression test for the bug where rollCheck applied getRollDamageThreshold() * 2 to
+     * every roll, so a normal roll negated 14 damage (the graceful cap) instead of the shipped 7.
+     * At max skill level the roll always succeeds, so the only variable is how much damage remains
+     * after applying the threshold.
      */
-    @ParameterizedTest(name = "threshold={0}, damage={1}, expectedMagicDamage={2}")
-    @MethodSource("rollDamageThresholdArgs")
+    @ParameterizedTest(name = "rollThreshold={0}, damage={1}, expectedMagicDamage={2}")
+    @MethodSource("normalRollThresholdArgs")
     @SuppressWarnings("deprecation")
-    void rollCheck_appliesDamageThresholdFromConfig(
+    void normalRollShouldNegateUpToRollDamageThreshold(
             final double configuredThreshold,
             final double incomingDamage,
             final double expectedMagicDamage) throws InvalidSkillException {
-        // Arrange
+        // Given - a non-sneaking player at max level so the roll always succeeds
         when(advancedConfig.getRollDamageThreshold()).thenReturn(configuredThreshold);
         final Roll roll = new Roll();
         final EntityDamageEvent mockEvent = mockEntityDamageEvent(incomingDamage);
-        mmoPlayer.modifySkill(PrimarySkillType.ACROBATICS, 1000); // max level → roll always succeeds
+        mmoPlayer.modifySkill(PrimarySkillType.ACROBATICS, 1000);
         when(roll.canRoll(mmoPlayer)).thenReturn(true);
         when(player.isSneaking()).thenReturn(false);
 
-        // Act
+        // When - the fall damage is processed
         roll.doInteraction(mockEvent, mcMMO.p);
 
-        // Assert
+        // Then - only the damage beyond the normal roll threshold remains
         verify(mockEvent).setDamage(eq(EntityDamageEvent.DamageModifier.MAGIC),
                 eq(expectedMagicDamage));
     }
 
-    static Stream<Arguments> rollDamageThresholdArgs() {
-        // rollCheck uses getRollDamageThreshold() * 2 as the effective cap
+    static Stream<Arguments> normalRollThresholdArgs() {
+        // A normal roll negates up to getRollDamageThreshold() with no doubling
         return Stream.of(
-                // threshold=3 → effective cap=6: 10 - 6 = 4 magic damage remains
-                Arguments.of(3.0, 10.0, 4.0),
-                // threshold=7 → effective cap=14: 10 - 14 → 0 magic damage remains
-                Arguments.of(7.0, 10.0, 0.0),
-                // threshold=4 → effective cap=8: 15 - 8 = 7 magic damage remains
-                Arguments.of(4.0, 15.0, 7.0)
+                // shipped default: threshold 7 negates 7 of 10 damage, 3 remains
+                Arguments.of(7.0, 10.0, 3.0),
+                // threshold 3 negates 3 of 10 damage, 7 remains
+                Arguments.of(3.0, 10.0, 7.0),
+                // threshold 4 negates 4 of 15 damage, 11 remains
+                Arguments.of(4.0, 15.0, 11.0)
+        );
+    }
+
+    /**
+     * A graceful (sneaking) roll must negate up to the configured GracefulRoll DamageThreshold,
+     * the separate and larger cap that previously went unused by gameplay entirely.
+     */
+    @ParameterizedTest(name = "gracefulThreshold={0}, damage={1}, expectedMagicDamage={2}")
+    @MethodSource("gracefulRollThresholdArgs")
+    @SuppressWarnings("deprecation")
+    void gracefulRollShouldNegateUpToGracefulRollDamageThreshold(
+            final double configuredThreshold,
+            final double incomingDamage,
+            final double expectedMagicDamage) throws InvalidSkillException {
+        // Given - a sneaking player at max level so the graceful roll always succeeds
+        when(advancedConfig.getGracefulRollDamageThreshold()).thenReturn(configuredThreshold);
+        final Roll roll = new Roll();
+        final EntityDamageEvent mockEvent = mockEntityDamageEvent(incomingDamage);
+        mmoPlayer.modifySkill(PrimarySkillType.ACROBATICS, 1000);
+        when(roll.canRoll(mmoPlayer)).thenReturn(true);
+        when(player.isSneaking()).thenReturn(true);
+
+        // When - the fall damage is processed
+        roll.doInteraction(mockEvent, mcMMO.p);
+
+        // Then - only the damage beyond the graceful roll threshold remains
+        verify(mockEvent).setDamage(eq(EntityDamageEvent.DamageModifier.MAGIC),
+                eq(expectedMagicDamage));
+    }
+
+    static Stream<Arguments> gracefulRollThresholdArgs() {
+        // A graceful roll negates up to getGracefulRollDamageThreshold()
+        return Stream.of(
+                // shipped default: threshold 14 fully negates 10 damage
+                Arguments.of(14.0, 10.0, 0.0),
+                // threshold 14 negates 14 of 20 damage, 6 remains
+                Arguments.of(14.0, 20.0, 6.0),
+                // threshold 8 negates 8 of 15 damage, 7 remains
+                Arguments.of(8.0, 15.0, 7.0)
         );
     }
 
