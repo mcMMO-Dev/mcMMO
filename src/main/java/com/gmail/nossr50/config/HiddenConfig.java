@@ -8,7 +8,6 @@ public class HiddenConfig {
     private static HiddenConfig instance;
     private final String fileName;
     private YamlConfiguration config;
-    private int conversionRate;
     private boolean useEnchantmentBuffs;
 
     public HiddenConfig(String fileName) {
@@ -28,15 +27,10 @@ public class HiddenConfig {
         InputStreamReader reader = mcMMO.p.getResourceAsReader(fileName);
         if (reader != null) {
             config = YamlConfiguration.loadConfiguration(reader);
-            conversionRate = config.getInt("Options.ConversionRate", 1);
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
         }
     }
 
-
-    public int getConversionRate() {
-        return conversionRate;
-    }
 
     public boolean useEnchantmentBuffs() {
         return useEnchantmentBuffs;

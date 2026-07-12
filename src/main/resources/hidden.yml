@@ -3,9 +3,5 @@
 # You will need to reset any values in this config every time you update mcMMO
 ###
 Options:
-    # true to use Chunklets metadata store system, false to disable
-    Chunklets: true
-    # Square root of the number of chunks to convert per tick.
-    ConversionRate: 1
     # true to use enchantment buffs for Super Breaker & Giga Drill Breaker, false to use potion buffs
     EnchantmentBuffs: true
