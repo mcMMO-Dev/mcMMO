@@ -561,12 +561,12 @@ public final class Permissions {
 
     /* TRIDENTS */
     public static boolean tridentsLimitBreak(Permissible permissible) {
-        return permissible.hasPermission("mcmmo.ability.tridents.superability");
+        return permissible.hasPermission("mcmmo.ability.tridents.tridentslimitbreak");
     }
 
     /* MACES */
     public static boolean macesLimitBreak(Permissible permissible) {
-        return permissible.hasPermission("mcmmo.ability.maces.limitbreak");
+        return permissible.hasPermission("mcmmo.ability.maces.maceslimitbreak");
     }
 
     /*
