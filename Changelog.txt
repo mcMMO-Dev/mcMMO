@@ -1,4 +1,29 @@
 Version 2.3.001
+    Fixed Tridents and Maces Limit Break not applying for players without op (See notes)
+    Fixed endermen flagged by the 'ExploitFix.EndermanEndermiteFarms' countermeasure giving full combat XP (See notes)
+    Fixed Graceful Roll using the normal Roll damage threshold instead of its own (See notes)
+    Fixed Rupture never playing its bleed sound, the BLEED entry in sounds.yml works again
+    Fixed the 'ItemMaterialCategory' field in repair.vanilla.yml and salvage.vanilla.yml being ignored (See notes)
+    Added 'Experience_Formula.Player_Tamed.Multiplier' to experience.yml (See notes)
+    Renamed 'ItemMaterialCategory' to 'MaterialType' in the default repair.vanilla.yml (See notes)
+    Removed the unused 'Skills.Swords.SerratedStrikes.BleedTicks' and 'Skills.Swords.Rupture.Explosion_Damage' settings from advanced.yml (See notes)
+    Removed the unused 'Skills.Mining.BlastMining.DebrisReduction' and 'Skills.Mining.BlastMining.DropMultiplier' settings from advanced.yml (See notes)
+    Removed the unused 'Options.Chunklets' and 'Options.ConversionRate' settings from hidden.yml
+    Removed the unused firework and Flux entries under 'Particles' in config.yml (See notes)
+    Removed the inert Tree Feller Rank_2 through Rank_5 entries and the unused Fishing Mastery block from skillranks.yml (See notes)
+    Removed the unused DEFLECT_ARROWS, ABILITY_ACTIVATED_BERSERK, and TIRED entries from sounds.yml
+    Removed the unused 'Fishing.Exhausting' locale entry
+    (API) Deprecated the unused Blast Mining getDebrisReduction, getDropMultiplier, and getBlastMiningRankLevel methods in AdvancedConfig and MiningManager
+    (Codebase) Removed the AdvancedConfig getSerratedStrikesTicks and getRuptureExplosionDamage methods along with their settings
+    (Codebase) Removed the TIRED, ABILITY_ACTIVATED_BERSERK, and DEFLECT_ARROWS constants from the SoundType enum
+
+    NOTES:
+    Limit Break for Tridents and Maces was checking permission nodes that were never registered, so in practice only ops had them. The checks now use 'mcmmo.ability.tridents.tridentslimitbreak' and 'mcmmo.ability.maces.maceslimitbreak', which are granted by default like the other Limit Break nodes.
+    Endermen marked by the 'ExploitFix.EndermanEndermiteFarms' countermeasure are meant to give no combat XP, this protection works again. Servers that want enderman and endermite farms to give XP can turn the setting off in experience.yml.
+    Graceful Roll now negates up to 14 damage as set by 'Skills.Acrobatics.GracefulRoll.DamageThreshold' in advanced.yml, it previously used the normal Roll threshold of 7.
+    The default repair.vanilla.yml labeled the material field 'ItemMaterialCategory' while mcMMO reads 'MaterialType', so the value was ignored and guessed from the item instead. Both names load now and the default file uses 'MaterialType', custom repair and salvage configs do not need updating. The material type only decides which per-material repair or salvage permission applies, and the guess was only wrong for SHIELD (now WOOD) and WARPED_FUNGUS_ON_A_STICK (now STRING).
+    Combat XP from mobs tamed by a player is multiplied by 'Experience_Formula.Player_Tamed.Multiplier'. It defaults to 0.0, which matches the old behavior of tamed mobs giving no XP.
+    The settings removed from config.yml, advanced.yml, hidden.yml, skillranks.yml, and sounds.yml had no effect, gameplay is unchanged. Existing config files do not need updating, leftover entries are ignored. Blast Mining bonus drops and debris have not used the removed settings for a long time, and Tree Feller has a single rank, the extra rank entries did nothing. The removed Particles entries are Ability_Activation, Ability_Deactivation, LargeFireworks, Flux, LevelUp_Enabled, and LevelUp_Tier, none of which triggered anything, the working particle toggles are untouched.
 
 Version 2.3.000
     Added support for running commands when players reach chosen skill levels or power levels (See notes)
