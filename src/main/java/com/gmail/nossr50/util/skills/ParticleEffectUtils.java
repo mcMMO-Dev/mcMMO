@@ -89,18 +89,6 @@ public final class ParticleEffectUtils {
         playSmokeEffect(player.getLocation());
     }
 
-    public static void playFluxEffect(Location location) {
-        if (!mcMMO.p.getGeneralConfig().getFluxEffectEnabled()) {
-            return;
-        }
-
-        if (location.getWorld() == null) {
-            return;
-        }
-
-        location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
-    }
-
     public static void playSmokeEffect(Location location) {
         World world = location.getWorld();
 

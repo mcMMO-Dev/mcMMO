@@ -723,25 +723,12 @@ Commands:
 #  Settings for particles
 ###
 Particles:
-    # These settings determine if fireworks should get launched when a player activates/deactivates an ability
-    Ability_Activation: false
-    Ability_Deactivation: false
-
-    # Determines if the fireworks should be a large ball or a small one
-    LargeFireworks: true
-
     # Use particle effect when these abilities trigger
     Bleed: true
     Dodge: true
-    Flux: true
     Greater_Impact: true
     Call_of_the_Wild: true
     Cripple: true
-
-    # These settings determine if fireworks should get launched when a player levels-up,
-    # this will happen by default for every 100 levels.
-    LevelUp_Enabled: true
-    LevelUp_Tier: 100
 #
 #  Settings for sounds
 ###

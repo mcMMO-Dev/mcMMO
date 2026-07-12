@@ -136,11 +136,6 @@ public class GeneralConfig extends BukkitConfig {
             reason.add("Items.Chimaera_Wing.Item_Name is invalid!");
         }
 
-        /* Particles */
-        if (getLevelUpEffectsTier() < 1) {
-            reason.add("Particles.LevelUp_Tier should be at least 1!");
-        }
-
         /* PARTY SETTINGS */
         if (getAutoPartyKickInterval() < -1) {
             reason.add("Party.AutoKick_Interval should be at least -1!");
@@ -644,14 +639,6 @@ public class GeneralConfig extends BukkitConfig {
     }
 
     /* Particles */
-    public boolean getAbilityActivationEffectEnabled() {
-        return config.getBoolean("Particles.Ability_Activation", true);
-    }
-
-    public boolean getAbilityDeactivationEffectEnabled() {
-        return config.getBoolean("Particles.Ability_Deactivation", true);
-    }
-
     public boolean getBleedEffectEnabled() {
         return config.getBoolean("Particles.Bleed", true);
     }
@@ -664,10 +651,6 @@ public class GeneralConfig extends BukkitConfig {
         return config.getBoolean("Particles.Dodge", true);
     }
 
-    public boolean getFluxEffectEnabled() {
-        return config.getBoolean("Particles.Flux", true);
-    }
-
     public boolean getGreaterImpactEffectEnabled() {
         return config.getBoolean("Particles.Greater_Impact", true);
     }
@@ -675,15 +658,6 @@ public class GeneralConfig extends BukkitConfig {
     public boolean getCallOfTheWildEffectEnabled() {
         return config.getBoolean("Particles.Call_of_the_Wild", true);
     }
-
-    public boolean getLevelUpEffectsEnabled() {
-        return config.getBoolean("Particles.LevelUp_Enabled", true);
-    }
-
-    public int getLevelUpEffectsTier() {
-        return config.getInt("Particles.LevelUp_Tier", 100);
-    }
-    //    public boolean getLargeFireworks() { return config.getBoolean("Particles.LargeFireworks", true); }
 
     /* PARTY SETTINGS */
     public boolean getPartyFriendlyFire() {
