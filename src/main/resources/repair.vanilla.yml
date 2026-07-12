@@ -9,7 +9,7 @@
 ## Valid values are ARMOR, TOOL, and OTHER.
 ## This defaults to OTHER.
 #
-# ItemMaterialCategory: This is the type of the material of the item to be repaired, this is only important for permissions.
+# MaterialType: This is the type of the material of the item to be repaired, this is only important for permissions.
 ## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, NETHER, and OTHER
 ## This defaults to OTHER.
 #
@@ -48,7 +48,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .25
         ItemType: OTHER
-        ItemMaterialCategory: WOOD
+        MaterialType: WOOD
         RepairMaterial: OAK_PLANKS
         MinimumQuantity: 6
         MaximumDurability: 336
@@ -100,62 +100,62 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .3
         ItemType: TOOL
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_SPEAR:
         MinimumLevel: 0
         XpMultiplier: .3
         ItemType: TOOL
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .2
         ItemType: TOOL
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_PICKAXE:
         MinimumLevel: 0
         XpMultiplier: .6
         ItemType: TOOL
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_AXE:
         MinimumLevel: 0
         XpMultiplier: .6
         ItemType: TOOL
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_HOE:
         MinimumLevel: 0
         XpMultiplier: .3
         ItemType: TOOL
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     # Armor
     COPPER_HELMET:
         MinimumLevel: 0
         XpMultiplier: 1.8
         ItemType: ARMOR
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_CHESTPLATE:
         MinimumLevel: 0
         XpMultiplier: 1.8
         ItemType: ARMOR
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_LEGGINGS:
         MinimumLevel: 0
         XpMultiplier: 1.8
         ItemType: ARMOR
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     COPPER_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 1.8
         ItemType: ARMOR
-        ItemMaterialCategory: COPPER
+        MaterialType: COPPER
         RepairMaterial: COPPER_INGOT
     #
     # Iron repairables
@@ -337,7 +337,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .5
         ItemType: TOOL
-        ItemMaterialCategory: STRING
+        MaterialType: STRING
         RepairMaterial: STRING
         MinimumQuantity: 3
         MaximumDurability: 326
@@ -345,7 +345,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .5
         ItemType: TOOL
-        ItemMaterialCategory: STRING
+        MaterialType: STRING
         RepairMaterial: STRING
         MinimumQuantity: 3
         MaximumDurability: 100
@@ -356,7 +356,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 3
         ItemType: OTHER
-        ItemMaterialCategory: OTHER
+        MaterialType: OTHER
         RepairMaterial: PHANTOM_MEMBRANE
         MinimumQuantity: 8
         MaximumDurability: 432
@@ -364,7 +364,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 3
         ItemType: TOOL
-        ItemMaterialCategory: OTHER
+        MaterialType: OTHER
         RepairMaterial: PRISMARINE_CRYSTALS
         MinimumQuantity: 16
         MaximumDurability: 250
@@ -372,7 +372,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 3
         ItemType: TOOL
-        ItemMaterialCategory: OTHER
+        MaterialType: OTHER
         RepairMaterial: BREEZE_ROD
         MinimumQuantity: 4
         MaximumDurability: 250

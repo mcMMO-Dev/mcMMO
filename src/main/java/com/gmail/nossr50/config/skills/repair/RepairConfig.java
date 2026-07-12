@@ -74,11 +74,15 @@ public class RepairConfig extends BukkitConfig {
             }
 
             // Repair Material Type
+            // Prefer the current MaterialType key, falling back to the legacy
+            // ItemMaterialCategory key so existing admin configs keep working.
             MaterialType repairMaterialType = MaterialType.OTHER;
-            String repairMaterialTypeString = config.getString(
-                    "Repairables." + key + ".MaterialType", "OTHER");
+            final String materialTypeKey = config.contains("Repairables." + key + ".MaterialType")
+                    ? "Repairables." + key + ".MaterialType"
+                    : "Repairables." + key + ".ItemMaterialCategory";
+            final String repairMaterialTypeString = config.getString(materialTypeKey, "OTHER");
 
-            if (!config.contains("Repairables." + key + ".MaterialType")) {
+            if (!config.contains(materialTypeKey)) {
                 final ItemStack repairItem = new ItemStack(itemMaterial);
 
                 if (isWoodTool(repairItem)) {
