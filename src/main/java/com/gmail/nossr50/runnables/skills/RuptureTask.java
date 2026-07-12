@@ -9,6 +9,8 @@ import com.gmail.nossr50.util.CancellableRunnable;
 import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -111,6 +113,8 @@ public class RuptureTask extends CancellableRunnable {
     private void playAnimation() {
         if (animationTick >= ANIMATION_TICK_INTERVAL) {
             ParticleEffectUtils.playBleedEffect(targetEntity); //Animate
+            SoundManager.worldSendSound(targetEntity.getWorld(), targetEntity.getLocation(),
+                    SoundType.BLEED);
             animationTick = 0;
         } else {
             animationTick++;
