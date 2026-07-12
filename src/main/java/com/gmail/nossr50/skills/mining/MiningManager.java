@@ -353,6 +353,10 @@ public class MiningManager extends SkillManager {
         return mcMMO.p.getAdvancedConfig().getOreBonus(rank);
     }
 
+    /**
+     * @deprecated This value is no longer used by Blast Mining.
+     */
+    @Deprecated(forRemoval = true)
     public static double getDebrisReduction(int rank) {
         return mcMMO.p.getAdvancedConfig().getDebrisReduction(rank);
     }
@@ -361,11 +365,17 @@ public class MiningManager extends SkillManager {
      * Gets the debris reduction for the player's Blast Mining tier.
      *
      * @return the debris reduction
+     * @deprecated This value is no longer used by Blast Mining.
      */
+    @Deprecated(forRemoval = true)
     public double getDebrisReduction() {
         return getDebrisReduction(getBlastMiningTier());
     }
 
+    /**
+     * @deprecated This value is no longer used by Blast Mining.
+     */
+    @Deprecated(forRemoval = true)
     public static int getDropMultiplier(int rank) {
         return mcMMO.p.getAdvancedConfig().getDropMultiplier(rank);
     }

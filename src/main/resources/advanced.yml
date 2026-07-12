@@ -358,28 +358,6 @@ Skills:
                 Rank_7: 65.0
                 Rank_8: 70.0
 
-            # DebrisReduction_Rank: % of fewer non-ores received when Blast Mining
-            DebrisReduction:
-                Rank_1: 10.0
-                Rank_2: 20.0
-                Rank_3: 30.0
-                Rank_4: 30.0
-                Rank_5: 30.0
-                Rank_6: 30.0
-                Rank_7: 30.0
-                Rank_8: 30.0
-
-            # DropMultiplier Ranks: # of times each ore will drop
-            DropMultiplier:
-                Rank_1: 1
-                Rank_2: 1
-                Rank_3: 1
-                Rank_4: 1
-                Rank_5: 2
-                Rank_6: 2
-                Rank_7: 3
-                Rank_8: 3
-
             # BlastRadiusModifier Ranks: Increases the blast radius by this amount
             BlastRadiusModifier:
                 Rank_1: 1.0

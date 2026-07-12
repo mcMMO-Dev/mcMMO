@@ -712,6 +712,10 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getBoolean("Skills.Mining.SuperBreaker.AllowTripleDrops", true);
     }
 
+    /**
+     * @deprecated This value is no longer used by Blast Mining.
+     */
+    @Deprecated(forRemoval = true)
     public int getBlastMiningRankLevel(int rank) {
         return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank);
     }
@@ -733,10 +737,18 @@ public class AdvancedConfig extends BukkitConfig {
         return config.getBoolean("Skills.Mining.BlastMining.Bonus_Drops.Enabled", true);
     }
 
+    /**
+     * @deprecated This value is no longer used by Blast Mining.
+     */
+    @Deprecated(forRemoval = true)
     public double getDebrisReduction(int rank) {
         return config.getDouble("Skills.Mining.BlastMining.DebrisReduction.Rank_" + rank);
     }
 
+    /**
+     * @deprecated This value is no longer used by Blast Mining.
+     */
+    @Deprecated(forRemoval = true)
     public int getDropMultiplier(int rank) {
         return config.getInt("Skills.Mining.BlastMining.DropMultiplier.Rank_" + rank);
     }
