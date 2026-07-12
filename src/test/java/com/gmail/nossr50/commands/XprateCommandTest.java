@@ -296,6 +296,24 @@ class XprateCommandTest extends MMOTestEnvironment {
                 .setExperienceGainsGlobalMultiplier(anyDouble());
     }
 
+    @Test
+    void onCommandShouldDenySkillRateChangeWithoutSetPermission() {
+        // Given - a sender lacking the set permission
+        when(Permissions.xprateSet(sender)).thenReturn(false);
+
+        // When - the sender tries to change a per-skill rate
+        final boolean handled = runCommand("mining", "2");
+
+        // Then - the permission message is sent and no rate or event state changes
+        assertThat(handled).isTrue();
+        verify(sender).sendMessage("permission-denied");
+        verify(ExperienceConfig.getInstance(), never())
+                .setExperienceGainsSkillMultiplier(any(PrimarySkillType.class), anyDouble());
+        verify(ExperienceConfig.getInstance(), never())
+                .setExperienceGainsGlobalMultiplier(anyDouble());
+        verify(mcMMO.p, never()).setXPEventEnabled(anyBoolean());
+    }
+
     /**
      * Gotcha coverage: /xprate rates never reduce XP below the configured baseline (max wins),
      * so a below-baseline rate would silently do nothing at best and is almost always a typo.
