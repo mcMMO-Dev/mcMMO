@@ -70,10 +70,12 @@ import net.kyori.adventure.identity.Identity;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
@@ -81,6 +83,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 public class McMMOPlayer implements Identified {
+
     private final @NotNull Identity identity;
 
     //Hacky fix for now, redesign later
@@ -105,6 +108,8 @@ public class McMMOPlayer implements Identified {
     private boolean debugMode;
 
     private boolean abilityUse = true;
+    private final NamespacedKey abilityUseKey;
+
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
 
@@ -166,6 +171,14 @@ public class McMMOPlayer implements Identified {
 
         if (ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
             chatSpy = true;
+        }
+
+        this.abilityUseKey = new NamespacedKey(mcMMO.p, "ability-use");
+
+        Boolean abilityUseValue = player.getPersistentDataContainer().get(abilityUseKey, PersistentDataType.BOOLEAN);
+
+        if (abilityUseValue != null) {
+            this.abilityUse = abilityUseValue;
         }
     }
 
@@ -448,6 +461,7 @@ public class McMMOPlayer implements Identified {
 
     public void toggleAbilityUse() {
         abilityUse = !abilityUse;
+        player.getPersistentDataContainer().set(abilityUseKey, PersistentDataType.BOOLEAN, abilityUse);
     }
 
     /*
