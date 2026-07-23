@@ -50,6 +50,7 @@ import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
+import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.EnchantmentMapper;
 import com.gmail.nossr50.util.LogFilter;
@@ -237,6 +238,9 @@ public class mcMMO extends JavaPlugin {
             if (!noErrorsInConfigFiles) {
                 return;
             }
+
+            //Hacky stuff used as a band-aid
+            TamingManager.initStaticCaches();
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();

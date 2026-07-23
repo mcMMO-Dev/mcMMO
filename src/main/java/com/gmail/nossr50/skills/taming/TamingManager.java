@@ -63,12 +63,9 @@ public class TamingManager extends SkillManager {
 
         //Init per-player tracking of summoned entities
         mcMMO.getTransientEntityTracker().initPlayer(mmoPlayer.getPlayer());
-
-        //Hacky stuff used as a band-aid
-        initStaticCaches();
     }
 
-    private void initStaticCaches() {
+    public static void initStaticCaches() {
         //TODO: Temporary static cache, will be changed in 2.2
         //This is shared between instances of TamingManager
         if (summoningItems == null) {

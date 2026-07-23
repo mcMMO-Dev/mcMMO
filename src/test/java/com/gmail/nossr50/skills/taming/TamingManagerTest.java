@@ -114,6 +114,7 @@ class TamingManagerTest extends MMOTestEnvironment {
         }
 
         tamingManager = Mockito.spy(new TamingManager(mmoPlayer));
+        TamingManager.initStaticCaches();
     }
 
     @AfterEach
