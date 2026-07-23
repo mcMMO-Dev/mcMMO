@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.PersistentDataConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.PaperUtil;
 import com.gmail.nossr50.util.blockmeta.McMMORegionBackupStore;
 import org.bukkit.Chunk;
 import org.bukkit.block.BlockState;
@@ -13,6 +14,9 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldListener implements Listener {
     private final mcMMO plugin;
@@ -34,8 +38,9 @@ public class WorldListener implements Listener {
         }
 
         // Using 50 ms later as I do not know of a way to run one tick later (safely)
+        final List<BlockState> states = PaperUtil.isFolia() ? new ArrayList<>(event.getBlocks()) : event.getBlocks();
         plugin.getFoliaLib().getScheduler().runLater(() -> {
-            for (BlockState blockState : event.getBlocks()) {
+            for (BlockState blockState : states) {
                 mcMMO.getUserBlockTracker().setEligible(blockState);
             }
         }, 1);
