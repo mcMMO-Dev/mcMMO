@@ -2,6 +2,7 @@ Version 2.3.001
     Fixed Tridents and Maces Limit Break not applying for players without op (See notes)
     Fixed endermen flagged by the 'ExploitFix.EndermanEndermiteFarms' countermeasure giving full combat XP (See notes)
     Fixed Graceful Roll using the normal Roll damage threshold instead of its own (See notes)
+    Fixed a rare error when multiple players logged in at the same time after a server restart (Thanks Warriorrrr)
     Fixed Rupture never playing its bleed sound, the BLEED entry in sounds.yml works again
     Fixed the 'ItemMaterialCategory' field in repair.vanilla.yml and salvage.vanilla.yml being ignored (See notes)
     Added 'Experience_Formula.Player_Tamed.Multiplier' to experience.yml (See notes)
