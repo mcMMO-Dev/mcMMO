@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -55,6 +56,9 @@ public class SkillTools {
 
     private final ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap;
     private final ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
+
+    private final ConcurrentHashMap<String, PrimarySkillType> matchSkillCache = new ConcurrentHashMap<>();
+    private volatile int cachedLocaleGeneration = -1;
 
     static {
         // Build NON_CHILD_SKILLS once from the enum values
@@ -367,10 +371,23 @@ public class SkillTools {
      */
     @Nullable
     public PrimarySkillType matchSkill(@NotNull String skillName) {
+        final int currentGen = LocaleLoader.getLocaleGeneration();
+        if (cachedLocaleGeneration != currentGen) {
+            matchSkillCache.clear();
+            cachedLocaleGeneration = currentGen;
+        }
+
+        final String lookupKey = skillName.toLowerCase(Locale.ROOT);
+        final PrimarySkillType cached = matchSkillCache.get(lookupKey);
+        if (cached != null) {
+            return cached;
+        }
+
         if (!pluginRef.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : PrimarySkillType.values()) {
                 String localized = getHeaderBannerSkillName(type);
                 if (skillName.equalsIgnoreCase(localized)) {
+                    matchSkillCache.put(lookupKey, type);
                     return type;
                 }
             }
@@ -378,6 +395,7 @@ public class SkillTools {
 
         for (PrimarySkillType type : PrimarySkillType.values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
+                matchSkillCache.put(lookupKey, type);
                 return type;
             }
         }
