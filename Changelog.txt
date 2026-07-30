@@ -1,4 +1,5 @@
 Version 2.3.001
+    Improved performance of locale message color formatting and skill name matching (Thanks wling-art)
     Fixed Tridents and Maces Limit Break not applying for players without op (See notes)
     Fixed endermen flagged by the 'ExploitFix.EndermanEndermiteFarms' countermeasure giving full combat XP (See notes)
     Fixed Graceful Roll using the normal Roll damage threshold instead of its own (See notes)
