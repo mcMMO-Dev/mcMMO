@@ -8,6 +8,7 @@ Version 2.3.001
     Fixed Rupture never playing its bleed sound, the BLEED entry in sounds.yml works again
     Fixed the 'ItemMaterialCategory' field in repair.vanilla.yml and salvage.vanilla.yml being ignored (See notes)
     Fixed next level XP requirements overflowing at extreme skill levels or dropping to zero and below with zero or negative XP formula values in experience.yml
+    Fixed the ExperienceAPI methods setXPOffline, setLevelOffline, and removeXPOffline never saving their changes
     Added 'Experience_Formula.Player_Tamed.Multiplier' to experience.yml (See notes)
     Renamed 'ItemMaterialCategory' to 'MaterialType' in the default repair.vanilla.yml (See notes)
     Removed the unused 'Skills.Swords.SerratedStrikes.BleedTicks' and 'Skills.Swords.Rupture.Explosion_Damage' settings from advanced.yml (See notes)

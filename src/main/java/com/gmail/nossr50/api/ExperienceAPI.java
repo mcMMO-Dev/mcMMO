@@ -988,7 +988,9 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void setLevelOffline(String playerName, String skillType, int skillLevel) {
-        getOfflineProfile(playerName).modifySkill(getSkillType(skillType), skillLevel);
+        final PlayerProfile profile = getOfflineProfile(playerName);
+        profile.modifySkill(getSkillType(skillType), skillLevel);
+        profile.scheduleAsyncSave();
     }
 
     /**
@@ -1003,7 +1005,9 @@ public final class ExperienceAPI {
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
     public static void setLevelOffline(UUID uuid, String skillType, int skillLevel) {
-        getOfflineProfile(uuid).modifySkill(getSkillType(skillType), skillLevel);
+        final PlayerProfile profile = getOfflineProfile(uuid);
+        profile.modifySkill(getSkillType(skillType), skillLevel);
+        profile.scheduleAsyncSave();
     }
 
     /**
@@ -1035,7 +1039,9 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void setXPOffline(String playerName, String skillType, int newValue) {
-        getOfflineProfile(playerName).setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        final PlayerProfile profile = getOfflineProfile(playerName);
+        profile.setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        profile.scheduleAsyncSave();
     }
 
     /**
@@ -1051,7 +1057,9 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXPOffline(UUID uuid, String skillType, int newValue) {
-        getOfflineProfile(uuid).setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        final PlayerProfile profile = getOfflineProfile(uuid);
+        profile.setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        profile.scheduleAsyncSave();
     }
 
     /**
@@ -1083,7 +1091,9 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void removeXPOffline(String playerName, String skillType, int xp) {
-        getOfflineProfile(playerName).removeXp(getNonChildSkillType(skillType), xp);
+        final PlayerProfile profile = getOfflineProfile(playerName);
+        profile.removeXp(getNonChildSkillType(skillType), xp);
+        profile.scheduleAsyncSave();
     }
 
     /**
@@ -1099,7 +1109,9 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void removeXPOffline(UUID uuid, String skillType, int xp) {
-        getOfflineProfile(uuid).removeXp(getNonChildSkillType(skillType), xp);
+        final PlayerProfile profile = getOfflineProfile(uuid);
+        profile.removeXp(getNonChildSkillType(skillType), xp);
+        profile.scheduleAsyncSave();
     }
 
     /**
