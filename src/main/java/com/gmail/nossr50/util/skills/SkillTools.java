@@ -57,8 +57,19 @@ public class SkillTools {
     private final ImmutableMap<PrimarySkillType, SuperAbilityType> mainActivatedAbilityChildMap;
     private final ImmutableMap<PrimarySkillType, ToolType> primarySkillToolMap;
 
-    private final ConcurrentHashMap<String, PrimarySkillType> matchSkillCache = new ConcurrentHashMap<>();
-    private volatile int cachedLocaleGeneration = -1;
+    /**
+     * Successful name-to-skill matches for the loaded locale; replaced wholesale when the
+     * locale generation changes (e.g. after /mcreloadlocale). A lookup racing a reload puts
+     * into its own generation's map, which the swap makes unreachable, so a match computed
+     * against an older locale can never outlive the reload. Failed lookups are not cached
+     * to keep the map bounded to real skill names.
+     */
+    private record MatchSkillCache(int localeGeneration,
+            ConcurrentHashMap<String, PrimarySkillType> matchByName) {
+    }
+
+    private volatile MatchSkillCache matchSkillCache = new MatchSkillCache(-1,
+            new ConcurrentHashMap<>());
 
     static {
         // Build NON_CHILD_SKILLS once from the enum values
@@ -371,23 +382,24 @@ public class SkillTools {
      */
     @Nullable
     public PrimarySkillType matchSkill(@NotNull String skillName) {
-        final int currentGen = LocaleLoader.getLocaleGeneration();
-        if (cachedLocaleGeneration != currentGen) {
-            matchSkillCache.clear();
-            cachedLocaleGeneration = currentGen;
+        MatchSkillCache cache = matchSkillCache;
+        final int localeGeneration = LocaleLoader.getLocaleGeneration();
+        if (cache.localeGeneration() != localeGeneration) {
+            cache = new MatchSkillCache(localeGeneration, new ConcurrentHashMap<>());
+            matchSkillCache = cache;
         }
 
         final String lookupKey = skillName.toLowerCase(Locale.ROOT);
-        final PrimarySkillType cached = matchSkillCache.get(lookupKey);
-        if (cached != null) {
-            return cached;
+        final PrimarySkillType match = cache.matchByName().get(lookupKey);
+        if (match != null) {
+            return match;
         }
 
         if (!pluginRef.getGeneralConfig().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : PrimarySkillType.values()) {
-                String localized = getHeaderBannerSkillName(type);
+                final String localized = getHeaderBannerSkillName(type);
                 if (skillName.equalsIgnoreCase(localized)) {
-                    matchSkillCache.put(lookupKey, type);
+                    cache.matchByName().put(lookupKey, type);
                     return type;
                 }
             }
@@ -395,7 +407,7 @@ public class SkillTools {
 
         for (PrimarySkillType type : PrimarySkillType.values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
-                matchSkillCache.put(lookupKey, type);
+                cache.matchByName().put(lookupKey, type);
                 return type;
             }
         }

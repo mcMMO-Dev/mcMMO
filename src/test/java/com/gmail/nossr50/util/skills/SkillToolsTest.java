@@ -383,6 +383,97 @@ class SkillToolsTest {
         }
     }
 
+    /** Restores the shared static locale stubs this class sets up in {@code setUpAll}. */
+    private void restoreLocaleDefaults() {
+        when(generalConfig.getLocale()).thenReturn("en_US");
+        mockedLocaleLoader.when(LocaleLoader::getLocaleGeneration).thenReturn(0);
+        mockedLocaleLoader.when(() -> LocaleLoader.getString(anyString()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+    }
+
+    /**
+     * matchSkill caches successful lookups per locale generation. Until a locale reload
+     * bumps the generation, repeated lookups are served from the cache even if the
+     * underlying locale strings change, which is what makes the per-skill locale scans a
+     * one-time cost.
+     */
+    @Test
+    void matchSkillShouldServeRepeatedLookupsFromCacheUntilLocaleReload() throws Exception {
+        try {
+            // Given - a non-English locale where Mining is localized as "Bergbau"
+            when(generalConfig.getLocale()).thenReturn("de_DE");
+            mockedLocaleLoader.when(LocaleLoader::getLocaleGeneration).thenReturn(5);
+            mockedLocaleLoader.when(() -> LocaleLoader.getString("Mining.SkillName"))
+                    .thenReturn("Bergbau");
+            final SkillTools skillTools = newSkillToolsForVersion(1, 21, 11);
+
+            // And - the localized name resolved once and is cached
+            assertThat(skillTools.matchSkill("Bergbau")).isEqualTo(PrimarySkillType.MINING);
+
+            // When - the locale string changes without a locale reload
+            mockedLocaleLoader.when(() -> LocaleLoader.getString("Mining.SkillName"))
+                    .thenReturn("Mineracao");
+
+            // Then - the cached match still resolves the previously matched name
+            assertThat(skillTools.matchSkill("Bergbau")).isEqualTo(PrimarySkillType.MINING);
+        } finally {
+            restoreLocaleDefaults();
+        }
+    }
+
+    /**
+     * A locale reload bumps the locale generation; matchSkill must then drop every cached
+     * match and resolve names against the reloaded locale only.
+     */
+    @Test
+    void matchSkillShouldDropCachedMatchesWhenLocaleGenerationChanges() throws Exception {
+        try {
+            // Given - "Bergbau" cached as the Mining match under locale generation 5
+            when(generalConfig.getLocale()).thenReturn("de_DE");
+            mockedLocaleLoader.when(LocaleLoader::getLocaleGeneration).thenReturn(5);
+            mockedLocaleLoader.when(() -> LocaleLoader.getString("Mining.SkillName"))
+                    .thenReturn("Bergbau");
+            final SkillTools skillTools = newSkillToolsForVersion(1, 21, 11);
+            assertThat(skillTools.matchSkill("Bergbau")).isEqualTo(PrimarySkillType.MINING);
+
+            // When - the locale reloads with a new localized name and a new generation
+            mockedLocaleLoader.when(() -> LocaleLoader.getString("Mining.SkillName"))
+                    .thenReturn("Mineracao");
+            mockedLocaleLoader.when(LocaleLoader::getLocaleGeneration).thenReturn(6);
+
+            // Then - the old name no longer matches and the reloaded name resolves
+            assertThat(skillTools.matchSkill("Bergbau")).isNull();
+            assertThat(skillTools.matchSkill("Mineracao")).isEqualTo(PrimarySkillType.MINING);
+        } finally {
+            restoreLocaleDefaults();
+        }
+    }
+
+    /**
+     * Failed lookups must not be cached: other plugins probe arbitrary names through the
+     * API, so caching misses would grow the map without bound, and a name that begins to
+     * match within the same generation must resolve without waiting for a reload.
+     */
+    @Test
+    void matchSkillShouldNotCacheFailedLookups() throws Exception {
+        try {
+            // Given - a non-English locale where "Bergbau" does not resolve to anything
+            when(generalConfig.getLocale()).thenReturn("de_DE");
+            mockedLocaleLoader.when(LocaleLoader::getLocaleGeneration).thenReturn(5);
+            final SkillTools skillTools = newSkillToolsForVersion(1, 21, 11);
+            assertThat(skillTools.matchSkill("Bergbau")).isNull();
+
+            // When - the locale now localizes Mining as "Bergbau", same generation
+            mockedLocaleLoader.when(() -> LocaleLoader.getString("Mining.SkillName"))
+                    .thenReturn("Bergbau");
+
+            // Then - the lookup resolves immediately instead of serving a cached miss
+            assertThat(skillTools.matchSkill("Bergbau")).isEqualTo(PrimarySkillType.MINING);
+        } finally {
+            restoreLocaleDefaults();
+        }
+    }
+
     /**
      * The list feeds tab completion across commands, where lowercase suggestions read like
      * the other completion keywords instead of shouting the en_US all-caps skill names.
