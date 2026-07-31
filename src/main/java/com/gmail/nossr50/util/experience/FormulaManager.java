@@ -162,7 +162,7 @@ public class FormulaManager {
                         : experienceNeededStandardExponential;
 
         return experienceMapRef.computeIfAbsent(level, key -> {
-            int experienceSum = 0;
+            long experienceSum = 0;
             final int retroIndex = (key * 10) + 1;
 
             //Sum the range of levels in Retro that this Standard level would represent
@@ -171,7 +171,9 @@ public class FormulaManager {
                 experienceSum += calculateXPNeeded(x, formulaType);
             }
 
-            return experienceSum;
+            // The sum can pass Integer.MAX_VALUE at extreme levels and wrap to a garbage
+            // value, negative or far too small; saturate so the requirement stays valid
+            return (int) Math.min(experienceSum, Integer.MAX_VALUE);
         });
     }
 
@@ -211,12 +213,18 @@ public class FormulaManager {
         final int base = ExperienceConfig.getInstance().getBase(formulaType);
         final double multiplier = ExperienceConfig.getInstance().getMultiplier(formulaType);
 
+        final double xpNeeded;
         if (formulaType == FormulaType.EXPONENTIAL) {
             final double exponent = ExperienceConfig.getInstance().getExponent(formulaType);
-            return (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
+            xpNeeded = multiplier * Math.pow(level, exponent) + base;
+        } else {
+            xpNeeded = base + level * multiplier;
         }
 
-        return (int) Math.floor(base + level * multiplier);
+        // Config values like a negative base can push the requirement to zero or below; the
+        // level-up loop never drains banked XP then and gains levels nonstop until the
+        // level cap; the (int) narrowing already caps values past Integer.MAX_VALUE
+        return Math.max(1, (int) Math.floor(xpNeeded));
     }
 
     /**
