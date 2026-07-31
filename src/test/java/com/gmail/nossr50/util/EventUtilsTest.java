@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.ACROBATICS;
+import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.MINING;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -11,8 +12,11 @@ import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.mcMMO;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import org.bukkit.entity.Player;
@@ -20,6 +24,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class EventUtilsTest extends MMOTestEnvironment {
@@ -181,5 +186,66 @@ class EventUtilsTest extends MMOTestEnvironment {
         // Then - the change reports cancelled and the levels are rolled back
         assertThat(cancelled).isTrue();
         assertThat(mmoPlayer.getSkillLevel(ACROBATICS)).isEqualTo(5);
+    }
+
+    /**
+     * Covers the XP side of the cancel rollback. checkXp converts banked XP into levels and
+     * then fires the level-up event; when a plugin vetoes it, the rollback must restore the
+     * exact pre-conversion bank. The rollback previously re-added only the XP the gained
+     * levels had consumed while modifySkill zeroed the rest, destroying any XP banked
+     * beyond those levels.
+     */
+    @Nested
+    class CancelledLevelUpXpRollback {
+        @BeforeEach
+        void levelUpEnvironment() {
+            when(Permissions.skillEnabled(any(Player.class), any(PrimarySkillType.class)))
+                    .thenReturn(true);
+            // Retro scaling with the environment's flat linear curve: level L needs 1000 + L
+            mockedMcMMO.when(mcMMO::isRetroModeEnabled).thenReturn(true);
+        }
+
+        /** Cancels only the level-up event; XP gain events still go through. */
+        private void cancelOnlyLevelUpEvents() {
+            doAnswer(invocation -> {
+                final Object event = invocation.getArgument(0);
+                if (event instanceof McMMOPlayerLevelUpEvent levelUpEvent) {
+                    levelUpEvent.setCancelled(true);
+                }
+                return event;
+            }).when(pluginManager).callEvent(any(Event.class));
+        }
+
+        @Test
+        void cancelledLevelUpShouldKeepTheWholeBank() {
+            // Given - a player at Mining 5 with 900 XP banked toward the 1005 requirement
+            mmoPlayer.modifySkill(MINING, 5);
+            playerProfile.addXp(MINING, 900F);
+            // And - another plugin cancels level-up events
+            cancelOnlyLevelUpEvents();
+
+            // When - a gain pushes the bank past the requirement and the level-up is vetoed
+            mmoPlayer.applyXpGain(MINING, 200F, XPGainReason.PVE, XPGainSource.SELF);
+
+            // Then - the level is rolled back and the full 1100 XP bank survives the veto
+            assertThat(mmoPlayer.getSkillLevel(MINING)).isEqualTo(5);
+            assertThat(mmoPlayer.getSkillXpLevelRaw(MINING)).isEqualTo(1100F);
+        }
+
+        @Test
+        void cancelledMultiLevelConversionShouldKeepTheWholeBank() {
+            // Given - a player at Mining 5 with 9000 banked XP, worth eight levels
+            mmoPlayer.modifySkill(MINING, 5);
+            playerProfile.addXp(MINING, 9000F);
+            // And - another plugin cancels level-up events
+            cancelOnlyLevelUpEvents();
+
+            // When - a small gain triggers the conversion and the level-up is vetoed
+            mmoPlayer.applyXpGain(MINING, 10F, XPGainReason.PVE, XPGainSource.SELF);
+
+            // Then - all eight levels are rolled back and the full 9010 XP bank survives
+            assertThat(mmoPlayer.getSkillLevel(MINING)).isEqualTo(5);
+            assertThat(mmoPlayer.getSkillXpLevelRaw(MINING)).isEqualTo(9010F);
+        }
     }
 }

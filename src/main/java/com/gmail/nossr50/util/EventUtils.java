@@ -283,9 +283,12 @@ public final class EventUtils {
                         + " level change event for " + player.getName()
                         + ", but their player data is not loaded so the change was not reverted");
             } else {
+                // modifySkill zeroes the skill's banked XP, so capture what is banked beyond
+                // the reverted levels and restore it together with the consumed XP
+                final float leftoverXp = mmoPlayer.getSkillXpLevelRaw(skill);
                 mmoPlayer.modifySkill(skill, mmoPlayer.getSkillLevel(skill)
                         - (isLevelUp ? levelsChanged : -levelsChanged));
-                mmoPlayer.getProfile().addXp(skill, xpRemoved);
+                mmoPlayer.getProfile().addXp(skill, leftoverXp + xpRemoved);
             }
         } else if (isLevelUp && mmoPlayer != null) {
             NotificationManager.processLevelUpBroadcasting(mmoPlayer, skill,
