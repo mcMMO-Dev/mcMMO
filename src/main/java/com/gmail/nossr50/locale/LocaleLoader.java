@@ -32,11 +32,17 @@ import org.jetbrains.annotations.NotNull;
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
     private static final String OVERRIDE_FILE_NAME = "locale_override.properties";
-    // Must be concurrent to accomodate Folia
-    private static Map<String, String> bundleCache = new ConcurrentHashMap<>();
-    private static ResourceBundle bundle = null;
-    private static ResourceBundle filesystemBundle = null;
-    private static ResourceBundle enBundle = null;
+
+    /**
+     * The loaded bundles and their string cache, immutable as a unit. Readers on any thread
+     * (async chat, Folia regions) grab the whole snapshot once, so a locale reload can never
+     * expose half-swapped bundles or a cache mixing old and new strings.
+     */
+    private record LocaleSnapshot(ResourceBundle bundle, ResourceBundle filesystemBundle,
+            ResourceBundle enBundle, Map<String, String> cache) {
+    }
+
+    private static volatile LocaleSnapshot localeSnapshot = null;
     // Matches the pattern &#RRGGBB
     private static final Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
     private static final Pattern minecraftHexPattern = Pattern.compile(
@@ -59,11 +65,9 @@ public final class LocaleLoader {
      * @return The properly formatted locale string
      */
     public static String getString(String key, Object... messageArguments) {
-        if (bundle == null) {
-            initialize();
-        }
-
-        String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
+        final LocaleSnapshot snapshot = getSnapshot();
+        String rawMessage = snapshot.cache()
+                .computeIfAbsent(key, missingKey -> getRawString(snapshot, missingKey));
         return formatString(rawMessage, messageArguments);
     }
 
@@ -77,11 +81,9 @@ public final class LocaleLoader {
      */
     public static @NotNull TextComponent getTextComponent(@NotNull String key,
             Object... messageArguments) {
-        if (bundle == null) {
-            initialize();
-        }
-
-        String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
+        final LocaleSnapshot snapshot = getSnapshot();
+        String rawMessage = snapshot.cache()
+                .computeIfAbsent(key, missingKey -> getRawString(snapshot, missingKey));
         return formatComponent(rawMessage, messageArguments);
     }
 
@@ -89,12 +91,26 @@ public final class LocaleLoader {
      * Reloads locale
      */
     public static void reloadLocale() {
-        bundle = null;
-        filesystemBundle = null;
-        enBundle = null;
-        bundleCache = new ConcurrentHashMap<>();
-        localeGeneration++;
-        initialize();
+        synchronized (LocaleLoader.class) {
+            localeSnapshot = loadSnapshot();
+            localeGeneration++;
+        }
+    }
+
+    private static LocaleSnapshot getSnapshot() {
+        LocaleSnapshot snapshot = localeSnapshot;
+
+        if (snapshot == null) {
+            synchronized (LocaleLoader.class) {
+                snapshot = localeSnapshot;
+                if (snapshot == null) {
+                    snapshot = loadSnapshot();
+                    localeSnapshot = snapshot;
+                }
+            }
+        }
+
+        return snapshot;
     }
 
     /**
@@ -106,21 +122,21 @@ public final class LocaleLoader {
         return localeGeneration;
     }
 
-    private static String getRawString(String key) {
-        if (filesystemBundle != null) {
+    private static String getRawString(LocaleSnapshot snapshot, String key) {
+        if (snapshot.filesystemBundle() != null) {
             try {
-                return filesystemBundle.getString(key);
+                return snapshot.filesystemBundle().getString(key);
             } catch (MissingResourceException ignored) {
             }
         }
 
         try {
-            return bundle.getString(key);
+            return snapshot.bundle().getString(key);
         } catch (MissingResourceException ignored) {
         }
 
         try {
-            return enBundle.getString(key);
+            return snapshot.enBundle().getString(key);
         } catch (MissingResourceException ignored) {
             if (!key.contains("Guides")) {
                 mcMMO.p.getLogger().warning("Could not find locale string: " + key);
@@ -196,110 +212,106 @@ public final class LocaleLoader {
     }
 
     public static Locale getCurrentLocale() {
-        if (bundle == null) {
-            initialize();
-        }
-        return bundle.getLocale();
+        return getSnapshot().bundle().getLocale();
     }
 
-    private static void initialize() {
-        if (bundle == null) {
-            Locale locale = null;
+    private static LocaleSnapshot loadSnapshot() {
+        ResourceBundle filesystemBundle = null;
+        Locale locale = null;
 
-            String[] myLocale = mcMMO.p.getGeneralConfig().getLocale().split("[-_ ]");
+        String[] myLocale = mcMMO.p.getGeneralConfig().getLocale().split("[-_ ]");
 
-            if (myLocale.length == 1) {
-                locale = new Locale(myLocale[0]);
-            } else if (myLocale.length >= 2) {
-                locale = new Locale(myLocale[0], myLocale[1]);
-            }
+        if (myLocale.length == 1) {
+            locale = new Locale(myLocale[0]);
+        } else if (myLocale.length >= 2) {
+            locale = new Locale(myLocale[0], myLocale[1]);
+        }
 
-            if (locale == null) {
-                throw new IllegalStateException(
-                        "Failed to parse locale string '" + mcMMO.p.getGeneralConfig().getLocale()
-                                + "'");
-            }
+        if (locale == null) {
+            throw new IllegalStateException(
+                    "Failed to parse locale string '" + mcMMO.p.getGeneralConfig().getLocale()
+                            + "'");
+        }
 
-            Path localePath = Paths.get(
-                    mcMMO.getLocalesDirectory() + "locale_" + locale + ".properties");
-            Path overridePath = Paths.get(mcMMO.getLocalesDirectory() + OVERRIDE_FILE_NAME);
-            File overrideFile = overridePath.toFile();
+        Path localePath = Paths.get(
+                mcMMO.getLocalesDirectory() + "locale_" + locale + ".properties");
+        Path overridePath = Paths.get(mcMMO.getLocalesDirectory() + OVERRIDE_FILE_NAME);
+        File overrideFile = overridePath.toFile();
 
-            if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
+        if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
 
-                File oldOverrideFile = localePath.toFile();
+            File oldOverrideFile = localePath.toFile();
 
-                try {
-                    //Copy the file
-                    com.google.common.io.Files.copy(oldOverrideFile, overrideFile);
-                    //Remove the old file now
-                    oldOverrideFile.delete();
+            try {
+                //Copy the file
+                com.google.common.io.Files.copy(oldOverrideFile, overrideFile);
+                //Remove the old file now
+                oldOverrideFile.delete();
 
-                    //Insert our helpful text
-                    StringBuilder stringBuilder = new StringBuilder();
+                //Insert our helpful text
+                StringBuilder stringBuilder = new StringBuilder();
 
-                    try (BufferedReader bufferedReader = new BufferedReader(
-                            new FileReader(overrideFile.getPath()))) {
-                        // Open the file
-                        String line;
-                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
-                                "MM/dd/yyyy HH:mm");
-                        LocalDateTime localDateTime = LocalDateTime.now();
-                        stringBuilder.append("# mcMMO Locale Override File created on ")
-                                .append(localDateTime.format(dateTimeFormatter))
-                                .append("\r\n"); //Empty file
-                        stringBuilder.append(
-                                getLocaleHelpTextWithoutExamples()); //Add our helpful text
-                        while ((line = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(line).append("\r\n");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    try (FileWriter fileWriter = new FileWriter(overrideFile.getPath())) {
-                        fileWriter.write(stringBuilder.toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            //Use the new locale file
-            if (Files.exists(overridePath) && Files.isRegularFile(overridePath)) {
-                try (Reader localeReader = Files.newBufferedReader(overridePath)) {
-                    LogUtils.debug(mcMMO.p.getLogger(),
-                            "Loading locale from " + overridePath);
-                    filesystemBundle = new PropertyResourceBundle(localeReader);
-                } catch (IOException e) {
-                    mcMMO.p.getLogger()
-                            .log(Level.WARNING, "Failed to load locale from " + overridePath, e);
-                }
-            } else {
-                //Create a blank file and fill it in with some helpful text
-                try (BufferedWriter bufferedWriter = new BufferedWriter(
-                        new FileWriter(overrideFile, true))) {
-                    // Open the file to write the player
+                try (BufferedReader bufferedReader = new BufferedReader(
+                        new FileReader(overrideFile.getPath()))) {
+                    // Open the file
+                    String line;
                     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
                             "MM/dd/yyyy HH:mm");
                     LocalDateTime localDateTime = LocalDateTime.now();
-                    bufferedWriter.append("# mcMMO Locale Override File created on ")
+                    stringBuilder.append("# mcMMO Locale Override File created on ")
                             .append(localDateTime.format(dateTimeFormatter))
                             .append("\r\n"); //Empty file
-                    String localeExplanation = getLocaleHelpText();
-                    bufferedWriter.append(localeExplanation);
-                } catch (Exception e) {
+                    stringBuilder.append(
+                            getLocaleHelpTextWithoutExamples()); //Add our helpful text
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\r\n");
+                    }
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
 
-            bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
+                try (FileWriter fileWriter = new FileWriter(overrideFile.getPath())) {
+                    fileWriter.write(stringBuilder.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
+        //Use the new locale file
+        if (Files.exists(overridePath) && Files.isRegularFile(overridePath)) {
+            try (Reader localeReader = Files.newBufferedReader(overridePath)) {
+                LogUtils.debug(mcMMO.p.getLogger(),
+                        "Loading locale from " + overridePath);
+                filesystemBundle = new PropertyResourceBundle(localeReader);
+            } catch (IOException e) {
+                mcMMO.p.getLogger()
+                        .log(Level.WARNING, "Failed to load locale from " + overridePath, e);
+            }
+        } else {
+            //Create a blank file and fill it in with some helpful text
+            try (BufferedWriter bufferedWriter = new BufferedWriter(
+                    new FileWriter(overrideFile, true))) {
+                // Open the file to write the player
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
+                        "MM/dd/yyyy HH:mm");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                bufferedWriter.append("# mcMMO Locale Override File created on ")
+                        .append(localDateTime.format(dateTimeFormatter))
+                        .append("\r\n"); //Empty file
+                String localeExplanation = getLocaleHelpText();
+                bufferedWriter.append(localeExplanation);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new LocaleSnapshot(ResourceBundle.getBundle(BUNDLE_ROOT, locale),
+                filesystemBundle, ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US),
+                new ConcurrentHashMap<>());
     }
 
     @NotNull

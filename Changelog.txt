@@ -10,6 +10,7 @@ Version 2.3.001
     Fixed next level XP requirements overflowing at extreme skill levels or dropping to zero and below with zero or negative XP formula values in experience.yml
     Fixed the ExperienceAPI methods setXPOffline, setLevelOffline, and removeXPOffline never saving their changes
     Fixed leftover banked XP being lost when a plugin cancelled a level up event
+    Fixed a rare error and mixed old and new text when messages were fetched during a locale reload
     Added 'Experience_Formula.Player_Tamed.Multiplier' to experience.yml (See notes)
     Renamed 'ItemMaterialCategory' to 'MaterialType' in the default repair.vanilla.yml (See notes)
     Removed the unused 'Skills.Swords.SerratedStrikes.BleedTicks' and 'Skills.Swords.Rupture.Explosion_Damage' settings from advanced.yml (See notes)
