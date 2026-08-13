@@ -555,6 +555,11 @@ public class mcMMO extends JavaPlugin {
             papiExpansion = null;
         }
         getFoliaLib().getScheduler().cancelAllTasks(); // This removes our tasks
+        for (org.bukkit.World world : getServer().getWorlds()) {
+            for (org.bukkit.entity.Entity entity : world.getEntities()) {
+                entity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, this);
+            }
+        }
         PlantCollapseXpTask.clearPendingVerifications();
         LogUtils.debug(mcMMO.p.getLogger(), "Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations

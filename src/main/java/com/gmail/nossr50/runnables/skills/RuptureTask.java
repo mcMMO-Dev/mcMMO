@@ -106,8 +106,13 @@ public class RuptureTask extends CancellableRunnable {
             }
         } else {
             this.cancel(); //Task no longer needed
-            targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         }
+    }
+
+    @Override
+    public void cancel() {
+        targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
+        super.cancel();
     }
 
     private void playAnimation() {
@@ -176,7 +181,6 @@ public class RuptureTask extends CancellableRunnable {
     }
 
     private void endRupture() {
-        targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         this.cancel(); //Task no longer needed
     }
 
