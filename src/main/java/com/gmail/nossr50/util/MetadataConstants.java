@@ -17,7 +17,6 @@ public class MetadataConstants {
      * removed by {@link MobHealthbarUtils#restoreNameFromSnapshot}.
      */
     public static final @NotNull Set<String> MOB_METADATA_KEYS = Set.of(
-            MetadataConstants.METADATA_KEY_RUPTURE,
             MetadataConstants.METADATA_KEY_EXPLOSION_FROM_RUPTURE
     );
 
@@ -66,7 +65,6 @@ public class MetadataConstants {
     public static final @NotNull String METADATA_KEY_VILLAGER_TRADE_ORIGIN_ITEM = "mcmmo_villager_trade_origin_item";
     public static final @NotNull String METADATA_KEY_EXPLOITED_ENDERMEN = "mcmmo_exploited_endermen";
 
-    public static final @NotNull String METADATA_KEY_RUPTURE = "mcmmo_rupture";
     public static final byte SIMPLE_FLAG_VALUE = (byte) 0x1;
 
     /**
