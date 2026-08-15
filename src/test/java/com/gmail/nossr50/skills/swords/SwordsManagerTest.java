@@ -207,8 +207,8 @@ class SwordsManagerTest extends MMOTestEnvironment {
                 swordsManager.processRupture(target, 1.0);
 
                 // Then - a bleed task starts ticking on the target and is remembered on it
-                verify(scheduler).runAtEntityTimer(eq(target), any(RuptureTask.class), eq(1L),
-                        eq(1L));
+                verify(scheduler).runAtEntityTimer(eq(target), any(RuptureTask.class),
+                        any(Runnable.class), eq(1L), eq(1L));
                 verify(target).setMetadata(eq(MetadataConstants.METADATA_KEY_RUPTURE),
                         any(RuptureTaskMeta.class));
             }

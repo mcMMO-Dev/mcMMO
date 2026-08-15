@@ -120,7 +120,8 @@ public class SwordsManager extends SkillManager {
 
             final RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
 
-            mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(target, ruptureTask, 1, 1);
+            mcMMO.p.getFoliaLib().getScheduler()
+                    .runAtEntityTimer(target, ruptureTask, ruptureTask::cancel, 1, 1);
             target.setMetadata(MetadataConstants.METADATA_KEY_RUPTURE, ruptureTaskMeta);
         }
     }
