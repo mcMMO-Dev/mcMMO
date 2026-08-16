@@ -29,8 +29,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
     private McMMOPlayer mmoPlayer;
     private double brewSpeed;
     private double brewTimer;
-    private int fuel;
-    private boolean firstRun = true;
     private int ingredientLevel = 1;
 
     @Deprecated(forRemoval = true, since = "2.2.010")
@@ -72,14 +70,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
             Alchemy.brewingStandMap.get(brewingStand.getLocation()).cancel();
         }
 
-        fuel = ((BrewingStand) brewingStand).getFuelLevel();
-
-        if (((BrewingStand) brewingStand).getBrewingTime()
-                == -1) // Only decrement on our end if it isn't a vanilla ingredient.
-        {
-            fuel--;
-        }
-
         Alchemy.brewingStandMap.put(brewingStand.getLocation(), this);
         mcMMO.p.getFoliaLib().getScheduler()
                 .runAtLocationTimer(brewingStand.getLocation(), this, 1, 1);
@@ -93,9 +83,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
             this.cancel();
             return;
         }
-
-        // Initialize the brewing stand on the first run
-        initializeBrewing();
 
         // Update the brewing process timer
         brewTimer -= brewSpeed;
@@ -137,13 +124,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
             return ingredientLevel;
         } else {
             return ingredientLevel;
-        }
-    }
-
-    private void initializeBrewing() {
-        if (firstRun) {
-            firstRun = false;
-            applyToLiveStand(stand -> stand.setFuelLevel(fuel));
         }
     }
 
