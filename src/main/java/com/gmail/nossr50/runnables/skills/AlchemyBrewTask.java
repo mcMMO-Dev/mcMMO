@@ -143,7 +143,7 @@ public class AlchemyBrewTask extends CancellableRunnable {
     private void initializeBrewing() {
         if (firstRun) {
             firstRun = false;
-            ((BrewingStand) brewingStand).setFuelLevel(fuel);
+            applyToLiveStand(stand -> stand.setFuelLevel(fuel));
         }
     }
 
@@ -152,7 +152,20 @@ public class AlchemyBrewTask extends CancellableRunnable {
     }
 
     private void updateBrewingTime() {
-        ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
+        applyToLiveStand(stand -> stand.setBrewingTime((int) brewTimer));
+    }
+
+    /**
+     * The task holds a snapshot, so setters on it never reach the world: the
+     * client's brew arrow follows vanilla's own timer and lags behind Catalysis.
+     * Every write goes through a fresh state applied within the same tick.
+     */
+    private void applyToLiveStand(java.util.function.Consumer<BrewingStand> change) {
+        final BlockState state = brewingStand.getBlock().getState();
+        if (state instanceof BrewingStand stand) {
+            change.accept(stand);
+            stand.update();
+        }
     }
 
 
@@ -182,7 +195,7 @@ public class AlchemyBrewTask extends CancellableRunnable {
     public void cancelBrew() {
         this.cancel();
 
-        ((BrewingStand) brewingStand).setBrewingTime(-1);
+        applyToLiveStand(stand -> stand.setBrewingTime(-1));
         Alchemy.brewingStandMap.remove(brewingStand.getLocation());
     }
 }
