@@ -12,7 +12,6 @@ import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -48,7 +47,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
@@ -1296,17 +1294,9 @@ public class McMMOPlayer implements Identified {
      */
     public void logout(boolean syncSave) {
         final Player thisPlayer = getPlayer();
-        if (thisPlayer.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
-            final RuptureTaskMeta ruptureTaskMeta
-                    = (RuptureTaskMeta) thisPlayer.getMetadata(
-                    MetadataConstants.METADATA_KEY_RUPTURE).get(0);
-            if (ruptureTaskMeta != null) {
-                final RuptureTask ruptureTimerTask = ruptureTaskMeta.getRuptureTimerTask();
-                if (ruptureTimerTask != null) {
-                    ruptureTimerTask.cancel();
-                }
-                thisPlayer.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
-            }
+        final RuptureTask ruptureTask = RuptureTask.getActive(thisPlayer);
+        if (ruptureTask != null) {
+            ruptureTask.cancel();
         }
 
         cleanup();

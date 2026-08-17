@@ -14,14 +14,12 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.RuptureTask;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
@@ -29,7 +27,9 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.impl.PlatformScheduler;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -67,6 +67,7 @@ class SwordsManagerTest extends MMOTestEnvironment {
 
         swordsManager = new SwordsManager(mmoPlayer);
         target = Mockito.mock(LivingEntity.class);
+        when(target.getUniqueId()).thenReturn(UUID.randomUUID());
 
         // Simulate Paper 26.1.2+ during a damage event: the ticker was already reset, so the
         // live cooldown misreports the charge of the committed hit.
@@ -86,7 +87,6 @@ class SwordsManagerTest extends MMOTestEnvironment {
                 .thenReturn(true);
         Mockito.when(RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE)).thenReturn(3);
         when(advancedConfig.getRuptureChanceToApplyOnHit(3)).thenReturn(33.0);
-        when(target.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)).thenReturn(false);
 
         try (MockedStatic<ProbabilityUtil> probabilityUtil = mockStatic(ProbabilityUtil.class)) {
             // When - a hit committed at half attack strength lands and the roll fails
@@ -171,18 +171,21 @@ class SwordsManagerTest extends MMOTestEnvironment {
             when(advancedConfig.getRuptureChanceToApplyOnHit(3)).thenReturn(100.0);
         }
 
+        // Seeds RuptureTask's active-rupture registry for the test.
+        @SuppressWarnings("unchecked")
+        private void trackRupture(Entity target, RuptureTask task) throws Exception {
+            Field field = RuptureTask.class.getDeclaredField("ACTIVE_RUPTURES");
+            field.setAccessible(true);
+            ((Map<UUID, RuptureTask>) field.get(null)).put(target.getUniqueId(), task);
+        }
+
         @Test
-        void existingRuptureShouldBeRefreshedInsteadOfReRolled() {
+        void existingRuptureShouldBeRefreshedInsteadOfReRolled() throws Exception {
             try (MockedStatic<ProbabilityUtil> probabilityUtil =
                     mockStatic(ProbabilityUtil.class)) {
                 // Given - the target is already bleeding from a rupture
                 final RuptureTask ongoingRupture = Mockito.mock(RuptureTask.class);
-                final RuptureTaskMeta ruptureMeta = Mockito.mock(RuptureTaskMeta.class);
-                when(ruptureMeta.getRuptureTimerTask()).thenReturn(ongoingRupture);
-                when(target.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE))
-                        .thenReturn(true);
-                when(target.getMetadata(MetadataConstants.METADATA_KEY_RUPTURE))
-                        .thenReturn(List.of(ruptureMeta));
+                trackRupture(target, ongoingRupture);
 
                 // When - another rupture-capable hit lands
                 swordsManager.processRupture(target, 1.0);
@@ -207,10 +210,9 @@ class SwordsManagerTest extends MMOTestEnvironment {
                 swordsManager.processRupture(target, 1.0);
 
                 // Then - a bleed task starts ticking on the target and is remembered on it
-                verify(scheduler).runAtEntityTimer(eq(target), any(RuptureTask.class), eq(1L),
-                        eq(1L));
-                verify(target).setMetadata(eq(MetadataConstants.METADATA_KEY_RUPTURE),
-                        any(RuptureTaskMeta.class));
+                verify(scheduler).runAtEntityTimer(eq(target), any(RuptureTask.class),
+                        any(Runnable.class), eq(1L), eq(1L));
+                assertThat(RuptureTask.getActive(target)).isNotNull();
             }
         }
 
@@ -220,6 +222,7 @@ class SwordsManagerTest extends MMOTestEnvironment {
                     mockStatic(ProbabilityUtil.class)) {
                 // Given - a defending player who is blocking with a shield
                 final Player defender = Mockito.mock(Player.class);
+                when(defender.getUniqueId()).thenReturn(UUID.randomUUID());
                 when(defender.isBlocking()).thenReturn(true);
                 probabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
                         eq(PrimarySkillType.SWORDS), eq(mmoPlayer), eq(100.0)))
@@ -229,8 +232,7 @@ class SwordsManagerTest extends MMOTestEnvironment {
                 swordsManager.processRupture(defender, 1.0);
 
                 // Then - no bleed starts
-                verify(defender, never()).setMetadata(eq(MetadataConstants.METADATA_KEY_RUPTURE),
-                        any());
+                assertThat(RuptureTask.getActive(defender)).isNull();
             }
         }
 
@@ -240,6 +242,7 @@ class SwordsManagerTest extends MMOTestEnvironment {
                     mockStatic(ProbabilityUtil.class)) {
                 // Given - a non-blocking defending player who uses notifications
                 final Player defender = Mockito.mock(Player.class);
+                when(defender.getUniqueId()).thenReturn(UUID.randomUUID());
                 when(NotificationManager.doesPlayerUseNotifications(defender)).thenReturn(true);
                 probabilityUtil.when(() -> ProbabilityUtil.isStaticSkillRNGSuccessful(
                         eq(PrimarySkillType.SWORDS), eq(mmoPlayer), eq(100.0)))

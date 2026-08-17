@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.swords;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.meta.RuptureTaskMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -10,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.RuptureTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.ProbabilityUtil;
@@ -81,17 +79,15 @@ public class SwordsManager extends SkillManager {
             return;
         }
 
-        if (target.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE)) {
-            RuptureTaskMeta ruptureTaskMeta = (RuptureTaskMeta) target.getMetadata(
-                    MetadataConstants.METADATA_KEY_RUPTURE).get(0);
-
+        final RuptureTask ongoingRupture = RuptureTask.getActive(target);
+        if (ongoingRupture != null) {
             if (mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer()
                         .sendMessage("Rupture task ongoing for target " + target);
-                mmoPlayer.getPlayer().sendMessage(ruptureTaskMeta.getRuptureTimerTask().toString());
+                mmoPlayer.getPlayer().sendMessage(ongoingRupture.toString());
             }
 
-            ruptureTaskMeta.getRuptureTimerTask().refreshRupture();
+            ongoingRupture.refreshRupture();
             return; //Don't apply bleed
         }
 
@@ -118,10 +114,7 @@ public class SwordsManager extends SkillManager {
                     mcMMO.p.getAdvancedConfig()
                             .getRuptureTickDamage(target instanceof Player, getRuptureRank()));
 
-            final RuptureTaskMeta ruptureTaskMeta = new RuptureTaskMeta(mcMMO.p, ruptureTask);
-
-            mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(target, ruptureTask, 1, 1);
-            target.setMetadata(MetadataConstants.METADATA_KEY_RUPTURE, ruptureTaskMeta);
+            ruptureTask.schedule();
         }
     }
 

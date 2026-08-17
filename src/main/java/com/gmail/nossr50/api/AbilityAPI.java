@@ -2,7 +2,7 @@ package com.gmail.nossr50.api;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.util.MetadataConstants;
+import com.gmail.nossr50.runnables.skills.RuptureTask;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -110,10 +110,6 @@ public final class AbilityAPI {
     }
 
     public static boolean isBleeding(LivingEntity entity) {
-        if (entity.isValid()) {
-            return entity.hasMetadata(MetadataConstants.METADATA_KEY_RUPTURE);
-        }
-
-        return false;
+        return entity.isValid() && RuptureTask.getActive(entity) != null;
     }
 }

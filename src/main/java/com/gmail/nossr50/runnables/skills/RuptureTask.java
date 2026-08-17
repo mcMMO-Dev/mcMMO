@@ -6,20 +6,28 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.skills.rupture.McMMOEntityDamageByRuptureEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.CancellableRunnable;
-import com.gmail.nossr50.util.MetadataConstants;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class RuptureTask extends CancellableRunnable {
 
     public static final int DAMAGE_TICK_INTERVAL = 10;
     public static final int ANIMATION_TICK_INTERVAL = 1;
+
+    // Active rupture per target entity.
+    private static final @NotNull Map<UUID, RuptureTask> ACTIVE_RUPTURES =
+            new ConcurrentHashMap<>();
 
     private final @NotNull McMMOPlayer ruptureSource;
     private final @NotNull LivingEntity targetEntity;
@@ -51,6 +59,20 @@ public class RuptureTask extends CancellableRunnable {
         this.damageTickTracker = 0;
         this.animationTick = ANIMATION_TICK_INTERVAL; //Play an animation right away
         this.pureTickDamage = pureTickDamage;
+    }
+
+    public static @Nullable RuptureTask getActive(@NotNull Entity target) {
+        return ACTIVE_RUPTURES.get(target.getUniqueId());
+    }
+
+    /**
+     * Registers this rupture as the target's active bleed and starts it ticking.
+     * The task removes itself from the registry when it is cancelled; on Folia the
+     * retired callback covers entities that are removed before the next tick.
+     */
+    public void schedule() {
+        ACTIVE_RUPTURES.put(targetEntity.getUniqueId(), this);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(targetEntity, this, this::cancel, 1, 1);
     }
 
     /**
@@ -106,8 +128,13 @@ public class RuptureTask extends CancellableRunnable {
             }
         } else {
             this.cancel(); //Task no longer needed
-            targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         }
+    }
+
+    @Override
+    public void cancel() {
+        ACTIVE_RUPTURES.remove(targetEntity.getUniqueId(), this);
+        super.cancel();
     }
 
     private void playAnimation() {
@@ -176,7 +203,6 @@ public class RuptureTask extends CancellableRunnable {
     }
 
     private void endRupture() {
-        targetEntity.removeMetadata(MetadataConstants.METADATA_KEY_RUPTURE, mcMMO.p);
         this.cancel(); //Task no longer needed
     }
 
