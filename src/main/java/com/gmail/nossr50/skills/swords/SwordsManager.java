@@ -114,8 +114,7 @@ public class SwordsManager extends SkillManager {
                     mcMMO.p.getAdvancedConfig()
                             .getRuptureTickDamage(target instanceof Player, getRuptureRank()));
 
-            mcMMO.p.getFoliaLib().getScheduler()
-                    .runAtEntityTimer(target, ruptureTask, ruptureTask::cancel, 1, 1);
+            ruptureTask.schedule();
         }
     }
 

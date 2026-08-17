@@ -65,6 +65,17 @@ public class MetadataConstants {
     public static final @NotNull String METADATA_KEY_VILLAGER_TRADE_ORIGIN_ITEM = "mcmmo_villager_trade_origin_item";
     public static final @NotNull String METADATA_KEY_EXPLOITED_ENDERMEN = "mcmmo_exploited_endermen";
 
+    /**
+     * No longer used. mcMMO stopped applying this metadata to bleeding entities in 2.3.001,
+     * so {@code hasMetadata} checks against this key always return false. Use
+     * {@link com.gmail.nossr50.api.AbilityAPI#isBleeding(org.bukkit.entity.LivingEntity)} instead.
+     *
+     * @deprecated mcMMO no longer applies this metadata; see
+     * {@link com.gmail.nossr50.api.AbilityAPI#isBleeding}.
+     */
+    @Deprecated(forRemoval = true, since = "2.3.001")
+    public static final @NotNull String METADATA_KEY_RUPTURE = "mcmmo_rupture";
+
     public static final byte SIMPLE_FLAG_VALUE = (byte) 0x1;
 
     /**

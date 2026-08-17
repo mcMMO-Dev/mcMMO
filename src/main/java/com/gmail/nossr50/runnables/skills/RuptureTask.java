@@ -59,11 +59,20 @@ public class RuptureTask extends CancellableRunnable {
         this.damageTickTracker = 0;
         this.animationTick = ANIMATION_TICK_INTERVAL; //Play an animation right away
         this.pureTickDamage = pureTickDamage;
-        ACTIVE_RUPTURES.put(targetEntity.getUniqueId(), this);
     }
 
     public static @Nullable RuptureTask getActive(@NotNull Entity target) {
         return ACTIVE_RUPTURES.get(target.getUniqueId());
+    }
+
+    /**
+     * Registers this rupture as the target's active bleed and starts it ticking.
+     * The task removes itself from the registry when it is cancelled; on Folia the
+     * retired callback covers entities that are removed before the next tick.
+     */
+    public void schedule() {
+        ACTIVE_RUPTURES.put(targetEntity.getUniqueId(), this);
+        mcMMO.p.getFoliaLib().getScheduler().runAtEntityTimer(targetEntity, this, this::cancel, 1, 1);
     }
 
     /**
