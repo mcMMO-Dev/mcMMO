@@ -29,8 +29,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
     private McMMOPlayer mmoPlayer;
     private double brewSpeed;
     private double brewTimer;
-    private int fuel;
-    private boolean firstRun = true;
     private int ingredientLevel = 1;
 
     @Deprecated(forRemoval = true, since = "2.2.010")
@@ -72,14 +70,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
             Alchemy.brewingStandMap.get(brewingStand.getLocation()).cancel();
         }
 
-        fuel = ((BrewingStand) brewingStand).getFuelLevel();
-
-        if (((BrewingStand) brewingStand).getBrewingTime()
-                == -1) // Only decrement on our end if it isn't a vanilla ingredient.
-        {
-            fuel--;
-        }
-
         Alchemy.brewingStandMap.put(brewingStand.getLocation(), this);
         mcMMO.p.getFoliaLib().getScheduler()
                 .runAtLocationTimer(brewingStand.getLocation(), this, 1, 1);
@@ -93,9 +83,6 @@ public class AlchemyBrewTask extends CancellableRunnable {
             this.cancel();
             return;
         }
-
-        // Initialize the brewing stand on the first run
-        initializeBrewing();
 
         // Update the brewing process timer
         brewTimer -= brewSpeed;
@@ -140,19 +127,25 @@ public class AlchemyBrewTask extends CancellableRunnable {
         }
     }
 
-    private void initializeBrewing() {
-        if (firstRun) {
-            firstRun = false;
-            ((BrewingStand) brewingStand).setFuelLevel(fuel);
-        }
-    }
-
     private boolean isBrewingComplete() {
         return brewTimer < Math.max(brewSpeed, 2);
     }
 
     private void updateBrewingTime() {
-        ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
+        applyToLiveStand(stand -> stand.setBrewingTime((int) brewTimer));
+    }
+
+    /**
+     * The task holds a snapshot, so setters on it never reach the world: the
+     * client's brew arrow follows vanilla's own timer and lags behind Catalysis.
+     * Every write goes through a fresh state applied within the same tick.
+     */
+    private void applyToLiveStand(java.util.function.Consumer<BrewingStand> change) {
+        final BlockState state = brewingStand.getBlock().getState();
+        if (state instanceof BrewingStand stand) {
+            change.accept(stand);
+            stand.update();
+        }
     }
 
 
@@ -182,7 +175,7 @@ public class AlchemyBrewTask extends CancellableRunnable {
     public void cancelBrew() {
         this.cancel();
 
-        ((BrewingStand) brewingStand).setBrewingTime(-1);
+        applyToLiveStand(stand -> stand.setBrewingTime(-1));
         Alchemy.brewingStandMap.remove(brewingStand.getLocation());
     }
 }
