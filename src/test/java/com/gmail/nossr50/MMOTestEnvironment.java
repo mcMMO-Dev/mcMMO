@@ -58,6 +58,7 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.PluginManager;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -110,6 +111,7 @@ public abstract class MMOTestEnvironment {
         mockedMcMMO = mockStatic(mcMMO.class);
         mcMMO.p = mock(mcMMO.class);
         when(mcMMO.p.getLogger()).thenReturn(logger);
+        when(mcMMO.p.getName()).thenReturn("mcMMO");
         try {
             testDataFolder = java.nio.file.Files.createTempDirectory("mcmmo-test-data-").toFile();
         } catch (IOException e) {
@@ -220,6 +222,9 @@ public abstract class MMOTestEnvironment {
         when(player.getLocation()).thenReturn(playerLocation);
         when(playerLocation.getBlock()).thenReturn(playerLocationBlock);
         // when(playerLocationBlock.getType()).thenReturn(Material.AIR);
+        // pdc
+        PersistentDataContainer pdc = mock(PersistentDataContainer.class);
+        when(player.getPersistentDataContainer()).thenReturn(pdc);
 
         // PlayerProfile and McMMOPlayer are partially mocked
         playerProfile = new PlayerProfile("testPlayer", player.getUniqueId(), 0);
@@ -267,6 +272,10 @@ public abstract class MMOTestEnvironment {
         final Block playerLocationBlock = mock(Block.class);
         when(player.getLocation()).thenReturn(playerLocation);
         when(playerLocation.getBlock()).thenReturn(playerLocationBlock);
+
+        // pdc
+        PersistentDataContainer pdc = mock(PersistentDataContainer.class);
+        when(player.getPersistentDataContainer()).thenReturn(pdc);
 
         // PlayerProfile and McMMOPlayer are partially mocked
         final PlayerProfile playerProfile = spy(new PlayerProfile(playerName, uuid,
