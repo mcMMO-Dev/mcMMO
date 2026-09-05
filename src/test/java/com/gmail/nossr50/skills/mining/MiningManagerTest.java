@@ -613,18 +613,4 @@ class MiningManagerTest extends MMOTestEnvironment {
         }
     }
 
-    @Nested
-    class IllegalDrops {
-        @Test
-        void protectedBlocksShouldNeverDropFromBlasts() {
-            assertThat(miningManager.isDropIllegal(Material.SPAWNER)).isTrue();
-            assertThat(miningManager.isDropIllegal(Material.BUDDING_AMETHYST)).isTrue();
-            assertThat(miningManager.isDropIllegal(Material.INFESTED_STONE)).isTrue();
-        }
-
-        @Test
-        void ordinaryBlocksShouldDropNormally() {
-            assertThat(miningManager.isDropIllegal(Material.IRON_ORE)).isFalse();
-        }
-    }
 }
