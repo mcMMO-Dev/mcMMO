@@ -189,7 +189,13 @@ class FishingTreasureConfigTest {
                 "protection_*,fire_protection,false",
                 "fortune,looting,false",
                 "*,mending,true",
-                "mending,*,false"
+                "mending,*,false",
+                "minecraft:mending,minecraft:mending,true",
+                "mending,minecraft:mending,true",
+                "custom:enchant_name,custom:enchant_name,true",
+                "custom:*,custom:enchant_name,true",
+                "custom:*,minecraft:mending,false",
+                "minecraft:*,custom:enchant_name,false"
         })
         void matchesWildcardEnchantmentKeys(final String pattern, final String enchantmentKey,
                 final boolean expected) {

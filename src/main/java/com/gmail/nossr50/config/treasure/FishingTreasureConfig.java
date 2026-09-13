@@ -443,7 +443,7 @@ public class FishingTreasureConfig extends BukkitConfig {
         for (final String str : enchantListStr) {
             boolean foundMatch = false;
             for (final Enchantment enchantment : Enchantment.values()) {
-                if (matchesEnchantmentPattern(str, enchantment.getKey().getKey())) {
+                if (matchesEnchantmentPattern(str, enchantment.getKey().toString())) {
                     permissiveList.add(enchantment);
                     foundMatch = true;
                 }
@@ -459,23 +459,31 @@ public class FishingTreasureConfig extends BukkitConfig {
     }
 
     /**
-     * Matches an enchantment key against a config pattern. The asterisk is the only wildcard and
-     * matches zero or more characters; all other characters are matched literally.
+     * Matches an enchantment key against a config pattern. A missing namespace defaults to
+     * {@code minecraft:}. The asterisk is the only wildcard and matches zero or more characters;
+     * all other characters are matched literally.
      */
     @VisibleForTesting
     static boolean matchesEnchantmentPattern(@NotNull String pattern,
             @NotNull String enchantmentKey) {
+        final String normalizedPattern = pattern.indexOf(':') >= 0
+                ? pattern
+                : "minecraft:" + pattern;
+        final String normalizedEnchantmentKey = enchantmentKey.indexOf(':') >= 0
+                ? enchantmentKey
+                : "minecraft:" + enchantmentKey;
+
         int patternIndex = 0;
         int keyIndex = 0;
         int wildcardIndex = -1;
         int wildcardMatchIndex = 0;
 
-        while (keyIndex < enchantmentKey.length()) {
-            if (patternIndex < pattern.length()
-                    && (pattern.charAt(patternIndex) == '*'
-                    || Character.toLowerCase(pattern.charAt(patternIndex))
-                    == Character.toLowerCase(enchantmentKey.charAt(keyIndex)))) {
-                if (pattern.charAt(patternIndex) == '*') {
+        while (keyIndex < normalizedEnchantmentKey.length()) {
+            if (patternIndex < normalizedPattern.length()
+                    && (normalizedPattern.charAt(patternIndex) == '*'
+                    || Character.toLowerCase(normalizedPattern.charAt(patternIndex))
+                    == Character.toLowerCase(normalizedEnchantmentKey.charAt(keyIndex)))) {
+                if (normalizedPattern.charAt(patternIndex) == '*') {
                     wildcardIndex = patternIndex++;
                     wildcardMatchIndex = keyIndex;
                 } else {
@@ -490,10 +498,11 @@ public class FishingTreasureConfig extends BukkitConfig {
             }
         }
 
-        while (patternIndex < pattern.length() && pattern.charAt(patternIndex) == '*') {
+        while (patternIndex < normalizedPattern.length()
+                && normalizedPattern.charAt(patternIndex) == '*') {
             patternIndex++;
         }
-        return patternIndex == pattern.length();
+        return patternIndex == normalizedPattern.length();
     }
 
     private void loadEnchantments() {
