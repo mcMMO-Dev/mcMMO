@@ -285,6 +285,7 @@ Fishing:
         Rarity: LEGENDARY
 # Uncomment the below 3 lines to use the Whitelist, Alternatively rename it Enchantments_Blacklist to use the blacklist
 # NOTE: Enchantments_Whitelist and Enchantments_Blacklist only do anything for Enchanted_Books at the moment, you can't use it with any other treasure definition
+# An asterisk (*) can be used as a wildcard to match zero or more characters in an enchantment name (for example, "*_PROTECTION").
 #        Enchantments_Whitelist:
 #            - Fortune
 #            - Protection

@@ -440,13 +440,12 @@ public class FishingTreasureConfig extends BukkitConfig {
             return;
         }
 
-        for (String str : enchantListStr) {
+        for (final String str : enchantListStr) {
             boolean foundMatch = false;
-            for (Enchantment enchantment : Enchantment.values()) {
-                if (enchantment.getKey().getKey().equalsIgnoreCase(str)) {
+            for (final Enchantment enchantment : Enchantment.values()) {
+                if (matchesEnchantmentPattern(str, enchantment.getKey().getKey())) {
                     permissiveList.add(enchantment);
                     foundMatch = true;
-                    break;
                 }
             }
 
@@ -457,6 +456,44 @@ public class FishingTreasureConfig extends BukkitConfig {
                                 + str);
             }
         }
+    }
+
+    /**
+     * Matches an enchantment key against a config pattern. The asterisk is the only wildcard and
+     * matches zero or more characters; all other characters are matched literally.
+     */
+    @VisibleForTesting
+    static boolean matchesEnchantmentPattern(@NotNull String pattern,
+            @NotNull String enchantmentKey) {
+        int patternIndex = 0;
+        int keyIndex = 0;
+        int wildcardIndex = -1;
+        int wildcardMatchIndex = 0;
+
+        while (keyIndex < enchantmentKey.length()) {
+            if (patternIndex < pattern.length()
+                    && (pattern.charAt(patternIndex) == '*'
+                    || Character.toLowerCase(pattern.charAt(patternIndex))
+                    == Character.toLowerCase(enchantmentKey.charAt(keyIndex)))) {
+                if (pattern.charAt(patternIndex) == '*') {
+                    wildcardIndex = patternIndex++;
+                    wildcardMatchIndex = keyIndex;
+                } else {
+                    patternIndex++;
+                    keyIndex++;
+                }
+            } else if (wildcardIndex >= 0) {
+                patternIndex = wildcardIndex + 1;
+                keyIndex = ++wildcardMatchIndex;
+            } else {
+                return false;
+            }
+        }
+
+        while (patternIndex < pattern.length() && pattern.charAt(patternIndex) == '*') {
+            patternIndex++;
+        }
+        return patternIndex == pattern.length();
     }
 
     private void loadEnchantments() {

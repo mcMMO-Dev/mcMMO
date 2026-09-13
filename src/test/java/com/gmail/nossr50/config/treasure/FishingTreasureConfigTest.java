@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class FishingTreasureConfigTest {
@@ -173,6 +174,27 @@ class FishingTreasureConfigTest {
             assertThat(config.getInt("Shake.MOOSHROOM.MILK_BUCKET.Amount"))
                     .as("Amount should be copied faithfully to MOOSHROOM")
                     .isEqualTo(1);
+        }
+    }
+
+    @Nested
+    class EnchantmentPatterns {
+
+        @ParameterizedTest
+        @CsvSource({
+                "fortune,fortune,true",
+                "FORTUNE,fortune,true",
+                "*_protection,blast_protection,true",
+                "protection_*,protection_fire,true",
+                "protection_*,fire_protection,false",
+                "fortune,looting,false",
+                "*,mending,true",
+                "mending,*,false"
+        })
+        void matchesWildcardEnchantmentKeys(final String pattern, final String enchantmentKey,
+                final boolean expected) {
+            assertThat(FishingTreasureConfig.matchesEnchantmentPattern(pattern, enchantmentKey))
+                    .isEqualTo(expected);
         }
     }
 
@@ -521,4 +543,3 @@ class FishingTreasureConfigTest {
         }
     }
 }
-
