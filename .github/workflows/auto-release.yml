@@ -1,76 +1,109 @@
-name: Build and release main
+name: Build upstream mcMMO releases
 
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: mcmmo-release-${{ github.ref }}
+  group: mcmmo-upstream-release
   cancel-in-progress: false
+
+env:
+  UPSTREAM_REPOSITORY: mcMMO-Dev/mcMMO
+  UPSTREAM_BRANCH: master
 
 jobs:
   build-release:
-    name: Build and publish mcMMO
+    name: Build and publish upstream mcMMO
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout upstream mcMMO
         uses: actions/checkout@v4
+        with:
+          repository: mcMMO-Dev/mcMMO
+          ref: master
+          fetch-depth: 1
+
+      - name: Read upstream metadata
+        id: metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          UPSTREAM_SHA="$(git rev-parse HEAD)"
+          SHORT_SHA="$(git rev-parse --short=7 HEAD)"
+          VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          TAG="upstream-${SHORT_SHA}"
+          ASSET="mcMMO-${VERSION}-${SHORT_SHA}.jar"
+
+          echo "upstream_sha=$UPSTREAM_SHA" >> "$GITHUB_OUTPUT"
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "asset=$ASSET" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether this upstream commit is already released
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.metadata.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "released=true" >> "$GITHUB_OUTPUT"
+            echo "Upstream commit $TAG is already released; nothing to do."
+          else
+            echo "released=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Set up Java 17
+        if: steps.existing.outputs.released != 'true'
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
           cache: maven
 
-      - name: Build mcMMO
+      - name: Build upstream mcMMO
+        if: steps.existing.outputs.released != 'true'
         run: mvn -B -DskipTests clean package --file pom.xml
 
-      - name: Prepare release metadata
-        id: metadata
+      - name: Prepare release asset
+        if: steps.existing.outputs.released != 'true'
+        env:
+          ASSET: ${{ steps.metadata.outputs.asset }}
         shell: bash
         run: |
           set -euo pipefail
-
-          VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
-          SHORT_SHA="${GITHUB_SHA::7}"
-          TAG="main-${VERSION}-${SHORT_SHA}"
-          ASSET="mcMMO-${VERSION}-${SHORT_SHA}.jar"
-
           test -f target/mcMMO.jar
           cp target/mcMMO.jar "$ASSET"
 
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "asset=$ASSET" >> "$GITHUB_OUTPUT"
-
-      - name: Create or update GitHub prerelease
+      - name: Publish GitHub prerelease in this fork
+        if: steps.existing.outputs.released != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.metadata.outputs.tag }}
           VERSION: ${{ steps.metadata.outputs.version }}
           SHORT_SHA: ${{ steps.metadata.outputs.short_sha }}
+          UPSTREAM_SHA: ${{ steps.metadata.outputs.upstream_sha }}
           ASSET: ${{ steps.metadata.outputs.asset }}
         shell: bash
         run: |
           set -euo pipefail
 
-          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$ASSET" \
-              --repo "$GITHUB_REPOSITORY" \
-              --clobber
-          else
-            gh release create "$TAG" "$ASSET" \
-              --repo "$GITHUB_REPOSITORY" \
-              --target "$GITHUB_SHA" \
-              --title "mcMMO ${VERSION} (${SHORT_SHA})" \
-              --notes "Automated build from commit ${GITHUB_SHA} on the main branch." \
-              --prerelease
-          fi
+          gh release create "$TAG" "$ASSET" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "mcMMO ${VERSION} upstream ${SHORT_SHA}" \
+            --notes "Automated build of mcMMO-Dev/mcMMO@${UPSTREAM_SHA} from the upstream master branch." \
+            --prerelease
