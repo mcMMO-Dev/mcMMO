@@ -1,0 +1,76 @@
+name: Build and release main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mcmmo-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-release:
+    name: Build and publish mcMMO
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build mcMMO
+        run: mvn -B -DskipTests clean package --file pom.xml
+
+      - name: Prepare release metadata
+        id: metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          SHORT_SHA="${GITHUB_SHA::7}"
+          TAG="main-${VERSION}-${SHORT_SHA}"
+          ASSET="mcMMO-${VERSION}-${SHORT_SHA}.jar"
+
+          test -f target/mcMMO.jar
+          cp target/mcMMO.jar "$ASSET"
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "asset=$ASSET" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.metadata.outputs.tag }}
+          VERSION: ${{ steps.metadata.outputs.version }}
+          SHORT_SHA: ${{ steps.metadata.outputs.short_sha }}
+          ASSET: ${{ steps.metadata.outputs.asset }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" \
+              --repo "$GITHUB_REPOSITORY" \
+              --clobber
+          else
+            gh release create "$TAG" "$ASSET" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "mcMMO ${VERSION} (${SHORT_SHA})" \
+              --notes "Automated build from commit ${GITHUB_SHA} on the main branch." \
+              --prerelease
+          fi
