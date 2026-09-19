@@ -22,6 +22,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.TestFileCleanup;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
@@ -387,6 +388,36 @@ class SQLDatabaseManagerTest {
                         .as("Saved XP for %s", primarySkillType)
                         .isEqualTo(1 + primarySkillType.ordinal());
             }
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Saving cooldowns
+    // ------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "{0} - saveUser persists EXPLOSIVE_SHOT cooldown")
+    @MethodSource("dbFlavors")
+    void whenSavingUserShouldPersistExplosiveShotCooldown(DbFlavor flavor) {
+        // GIVEN a persisted user with an explosive shot cooldown
+        truncateAllCoreTables(flavor);
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        final String playerName = "cooldown_" + flavor.name().toLowerCase();
+        final UUID uuid = UUID.randomUUID();
+
+        try {
+            PlayerProfile profile = Mockito.spy(databaseManager.newUser(playerName, uuid));
+            when(profile.getAbilityDATS(SuperAbilityType.EXPLOSIVE_SHOT)).thenReturn(3333L);
+
+            // WHEN saving and reloading the profile
+            assertThat(databaseManager.saveUser(profile)).isTrue();
+            PlayerProfile loadedProfile = databaseManager.loadPlayerProfile(uuid);
+
+            // THEN the cooldown should be preserved
+            assertThat(loadedProfile.isLoaded()).isTrue();
+            assertThat(loadedProfile.getAbilityDATS(SuperAbilityType.EXPLOSIVE_SHOT)).isEqualTo(3333);
         } finally {
             databaseManager.onDisable();
         }

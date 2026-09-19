@@ -480,7 +480,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             String playerName) {
         String sql = "UPDATE " + tablePrefix + "cooldowns SET "
                 + "  mining = ?, woodcutting = ?, unarmed = ?"
-                + ", herbalism = ?, excavation = ?, swords = ?"
+                + ", herbalism = ?, excavation = ?, archery = ?, swords = ?"
                 + ", axes = ?, blast_mining = ?, chimaera_wing = ?, crossbows = ?"
                 + ", tridents = ?, maces = ?, spears = ?"
                 + " WHERE user_id = ?";
@@ -492,6 +492,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.BERSERK));
             stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA));
             stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER));
+            stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.EXPLOSIVE_SHOT));
             stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES));
             stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER));
             stmt.setLong(i++, profile.getAbilityDATS(SuperAbilityType.BLAST_MINING));
