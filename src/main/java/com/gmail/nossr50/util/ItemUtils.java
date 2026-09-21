@@ -666,7 +666,7 @@ public final class ItemUtils {
         // Server.getRecipesFor would do this walk for us, but it dies on servers that cannot
         // convert every recipe
         for (final Iterator<Recipe> recipeIterator =
-                RecipeUtils.safeRecipeIterator(mcMMO.p.getServer());
+                RecipeUtils.safeRecipeIterator(mcMMO.p.getServer(), mcMMO.p.getLogger());
                 recipeIterator.hasNext(); ) {
             if (recipeIterator.next() instanceof FurnaceRecipe furnaceRecipe
                     && furnaceRecipe.getResult().getType() == material

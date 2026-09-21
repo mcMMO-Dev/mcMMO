@@ -355,7 +355,7 @@ public final class SkillUtils {
         final ItemStack recipeItem = recipeMaterial != null ? new ItemStack(recipeMaterial) : null;
 
         for (final Iterator<Recipe> recipeIterator =
-                RecipeUtils.safeRecipeIterator(Bukkit.getServer());
+                RecipeUtils.safeRecipeIterator(Bukkit.getServer(), mcMMO.p.getLogger());
                 recipeIterator.hasNext(); ) {
             final Recipe bukkitRecipe = recipeIterator.next();
 
