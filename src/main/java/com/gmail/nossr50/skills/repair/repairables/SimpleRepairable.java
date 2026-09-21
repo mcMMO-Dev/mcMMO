@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class SimpleRepairable implements Repairable {
+    private static final int NOT_CONFIGURED = -1;
+
     private final Material itemMaterial, repairMaterial;
     private final int minimumLevel;
     private final short maximumDurability;
@@ -15,19 +17,15 @@ public class SimpleRepairable implements Repairable {
     private final ItemType repairItemType;
     private final MaterialType repairMaterialType;
     private final double xpMultiplier;
-    private int minQuantity = -1;
+    private final int minQuantity;
+    /** Zero until the recipe count has been worked out; a worked out count is at least one. */
+    private int recipeMinimumQuantity;
 
     protected SimpleRepairable(Material type, Material repairMaterial,
             String repairMaterialPrettyName, int minimumLevel, short maximumDurability,
             ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
-        this.itemMaterial = type;
-        this.repairMaterial = repairMaterial;
-        this.repairMaterialPrettyName = repairMaterialPrettyName;
-        this.repairItemType = repairItemType;
-        this.repairMaterialType = repairMaterialType;
-        this.minimumLevel = minimumLevel;
-        this.maximumDurability = maximumDurability;
-        this.xpMultiplier = xpMultiplier;
+        this(type, repairMaterial, repairMaterialPrettyName, minimumLevel, maximumDurability,
+                repairItemType, repairMaterialType, xpMultiplier, NOT_CONFIGURED);
     }
 
     protected SimpleRepairable(Material type, Material repairMaterial,
@@ -72,12 +70,26 @@ public class SimpleRepairable implements Repairable {
 
     @Override
     public int getMinimumQuantity() {
-        if (minQuantity == -1) {
-            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial),
-                    1);
-        } else {
+        // Zero or less is not a usable quantity (it is also the divisor of the base repair
+        // amount), so it counts as not configured
+        if (minQuantity > 0) {
             return minQuantity;
         }
+
+        // Counting ingredients converts every recipe on the server, far too much work for each
+        // repair, so the count from the first repair is kept. Recipes changed after that are
+        // not picked up, the same as Salvage, which counts once at startup.
+        // No lock needed: an int write is atomic and every count is at least one, so a racing
+        // thread reads either zero and counts for itself, or a usable count.
+        int quantity = recipeMinimumQuantity;
+
+        if (quantity == 0) {
+            quantity = Math.max(
+                    SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial), 1);
+            recipeMinimumQuantity = quantity;
+        }
+
+        return quantity;
     }
 
     @Override
