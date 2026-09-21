@@ -14,6 +14,7 @@ import com.gmail.nossr50.skills.smelting.Smelting;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -662,10 +663,15 @@ public final class ItemUtils {
     }
 
     private static boolean hasOreSmeltingRecipe(Material material) {
-        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(new ItemStack(material))) {
-            if (recipe instanceof FurnaceRecipe
-                    && ((FurnaceRecipe) recipe).getInput().getType().isBlock()
-                    && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {
+        // Server.getRecipesFor would do this walk for us, but it dies on servers that cannot
+        // convert every recipe
+        for (final Iterator<Recipe> recipeIterator =
+                RecipeUtils.safeRecipeIterator(mcMMO.p.getServer());
+                recipeIterator.hasNext(); ) {
+            if (recipeIterator.next() instanceof FurnaceRecipe furnaceRecipe
+                    && furnaceRecipe.getResult().getType() == material
+                    && furnaceRecipe.getInput().getType().isBlock()
+                    && MaterialUtils.isOre(furnaceRecipe.getInput().getType())) {
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -10,9 +11,14 @@ import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentMapper;
+import com.gmail.nossr50.util.ThrowingRecipeIterator;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,5 +101,30 @@ class SkillUtilsTest extends MMOTestEnvironment {
 
         // Then - the item is left untouched
         verify(damageableMeta, never()).setDamage(anyInt());
+    }
+
+    /**
+     * Spigot 26.3 throws AbstractMethodError from its recipe iterator for each data-driven brewing
+     * recipe. Salvage and Repair config loading count ingredients through this method during
+     * onEnable, so one such recipe used to stop mcMMO from enabling at all.
+     */
+    @Test
+    void getRepairAndSalvageQuantitiesShouldCountIngredientsWhenServerCannotConvertEveryRecipe() {
+        // Given - a diamond pickaxe recipe listed between recipes the server fails to convert
+        final RecipeChoice diamond = new RecipeChoice.MaterialChoice(Material.DIAMOND);
+        final RecipeChoice stick = new RecipeChoice.MaterialChoice(Material.STICK);
+        final ShapedRecipe pickaxeRecipe = mock(ShapedRecipe.class);
+        when(pickaxeRecipe.getResult()).thenReturn(new ItemStack(Material.DIAMOND_PICKAXE));
+        when(pickaxeRecipe.getChoiceMap()).thenReturn(
+                Map.of('a', diamond, 'b', diamond, 'c', diamond, 'd', stick, 'e', stick));
+        when(server.recipeIterator()).thenAnswer(invocation ->
+                new ThrowingRecipeIterator(Arrays.asList(null, pickaxeRecipe, null)));
+
+        // When - the diamond cost of a diamond pickaxe is counted
+        final int quantity = SkillUtils.getRepairAndSalvageQuantities(
+                Material.DIAMOND_PICKAXE, Material.DIAMOND);
+
+        // Then - the unconvertible recipes are skipped and the three diamonds are counted
+        assertThat(quantity).isEqualTo(3);
     }
 }

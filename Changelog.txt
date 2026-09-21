@@ -1,3 +1,10 @@
+Version 2.3.002
+    Fixed mcMMO failing to start on Spigot 26.3 servers (See notes)
+
+    NOTES:
+    On Spigot 26.3 mcMMO would throw an AbstractMethodError about BrewingRecipe during startup and then disable itself. Paper servers were not affected.
+    If you run Spigot 26.3 you need this update, no config changes are required.
+
 Version 2.3.001
     Added compatibility for new blocks and items from Minecraft 26.3 to mcMMO
     Added poplar doors, trapdoors, fences, fence gates, buttons, pressure plates, signs, hanging signs, shelves, and straw beds to the ability/tool blacklists
