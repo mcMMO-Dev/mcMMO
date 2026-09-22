@@ -4,6 +4,7 @@ Version 2.3.002
 
     NOTES:
     On Spigot 26.3 mcMMO would throw an AbstractMethodError about BrewingRecipe during startup and then disable itself. Paper servers were not affected.
+    We believe this is a bug in Spigot 26.3 rather than an intended API change, the error comes from Spigot itself whenever a plugin looks through the server's recipes. mcMMO now works around it on our side so it keeps running until Spigot fixes it.
     If you run Spigot 26.3 you need this update, no config changes are required.
 
 Version 2.3.001
