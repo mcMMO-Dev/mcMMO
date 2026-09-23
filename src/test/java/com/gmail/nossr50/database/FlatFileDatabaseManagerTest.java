@@ -41,6 +41,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -54,16 +55,22 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -1628,53 +1635,150 @@ class FlatFileDatabaseManagerTest {
         return databaseManager;
     }
 
-    @Test
-    void midReadFailureLeavesFileByteForByteIdentical() throws IOException {
-        // Given
-        File file = new File(getTemporaryUserFilePath());
-        var db = Mockito.spy(new FlatFileDatabaseManager(file, logger, PURGE_TIME, 0, true));
-        replaceDataInFile(db, normalDatabaseData);
-        byte[] expectedBytes = java.nio.file.Files.readAllBytes(file.toPath());
-        Mockito.doAnswer(inv -> createFailingReader(file, 2)).when(db).newBufferedReader();
+    /**
+     * Every rewrite of mcmmo.users reads the whole file into memory first. Before these guards a
+     * read that failed partway fell through to the write and replaced the file with whatever had
+     * been buffered, so one I/O error during a purge could delete most of the database.
+     */
+    @Nested
+    class UsersFileFailures {
+        private static final String EXISTING_PLAYER = "nossr50";
 
-        // When / Then - verify operations abort cleanly on mid-read failure without modifying the file
-        assertFalse(db.newUser("newPlayer", UUID.randomUUID()).isLoaded());
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+        /** Runs one database operation and returns what it reports, for comparison. */
+        @FunctionalInterface
+        interface UsersFileOperation {
+            @Nullable Object runOn(@NotNull FlatFileDatabaseManager databaseManager);
+        }
 
-        assertEquals(0, db.purgePowerlessUsers());
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+        private FlatFileDatabaseManager spyOnSeededDatabase(@NotNull String[] seedData)
+                throws IOException {
+            final File usersFile = new File(getTemporaryUserFilePath());
+            final FlatFileDatabaseManager databaseManager = Mockito.spy(
+                    new FlatFileDatabaseManager(usersFile, logger, PURGE_TIME, 0, true));
+            replaceDataInFile(databaseManager, seedData);
+            return databaseManager;
+        }
 
-        db.purgeOldUsers();
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+        static Stream<Arguments> operationsThatReadTheUsersFile() {
+            return Stream.of(
+                    Arguments.of("newUser",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .newUser("newPlayer", randomUUID()).isLoaded(),
+                            false),
+                    Arguments.of("purgePowerlessUsers",
+                            (UsersFileOperation) FlatFileDatabaseManager::purgePowerlessUsers, 0),
+                    Arguments.of("purgeOldUsers", (UsersFileOperation) databaseManager -> {
+                        databaseManager.purgeOldUsers();
+                        return null;
+                    }, null),
+                    Arguments.of("saveUser",
+                            (UsersFileOperation) databaseManager -> databaseManager.saveUser(
+                                    new PlayerProfile(EXISTING_PLAYER, randomUUID(), true, 0)),
+                            false),
+                    Arguments.of("saveUserUUID",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUID(EXISTING_PLAYER, randomUUID()),
+                            false),
+                    Arguments.of("saveUserUUIDs",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUIDs(new HashMap<>(
+                                            Map.of(EXISTING_PLAYER, randomUUID()))),
+                            false),
+                    Arguments.of("removeUser",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .removeUser(EXISTING_PLAYER, randomUUID()),
+                            false)
+            );
+        }
 
-        assertFalse(db.saveUser(new PlayerProfile("nossr50", UUID.randomUUID(), true, 0)));
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("operationsThatReadTheUsersFile")
+        void readFailureShouldLeaveTheUsersFileUntouched(String operationName,
+                UsersFileOperation operation, @Nullable Object expectedResult)
+                throws IOException {
+            // Given - a populated users file whose second line cannot be read
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+            Mockito.doAnswer(invocation -> createFailingReader(usersFile, 2))
+                    .when(databaseManager).newBufferedReader();
 
-        assertFalse(db.saveUserUUID("nossr50", UUID.randomUUID()));
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+            // When - the operation runs
+            final Object result = operation.runOn(databaseManager);
 
-        assertFalse(db.saveUserUUIDs(new java.util.HashMap<>(Map.of("nossr50", UUID.randomUUID()))));
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+            // Then - it reports failure and the file is byte for byte what it was
+            assertThat(result).isEqualTo(expectedResult);
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
 
-        assertFalse(db.removeUser("nossr50", UUID.randomUUID()));
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
-    }
+        /**
+         * The write reopens mcmmo.users in truncate mode. When that fails, the operation has
+         * changed nothing and must say so, or callers such as the UUID upgrade treat the batch
+         * as saved.
+         */
+        static Stream<Arguments> operationsThatRewriteTheUsersFile() {
+            return Stream.of(
+                    Arguments.of("purgePowerlessUsers",
+                            (UsersFileOperation) FlatFileDatabaseManager::purgePowerlessUsers, 0),
+                    Arguments.of("saveUser",
+                            (UsersFileOperation) databaseManager -> databaseManager.saveUser(
+                                    new PlayerProfile(EXISTING_PLAYER, randomUUID(), true, 0)),
+                            false),
+                    Arguments.of("saveUserUUID",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUID(EXISTING_PLAYER, randomUUID()),
+                            false),
+                    Arguments.of("saveUserUUIDs",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUIDs(new HashMap<>(
+                                            Map.of(EXISTING_PLAYER, randomUUID()))),
+                            false),
+                    Arguments.of("removeUser",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .removeUser(EXISTING_PLAYER, randomUUID()),
+                            false)
+            );
+        }
 
-    @Test
-    void checkFileHealthAndStructureDoesNotOverwriteFileOnReadFailure() throws IOException {
-        // Given
-        File file = new File(getTemporaryUserFilePath());
-        var db = Mockito.spy(new FlatFileDatabaseManager(file, logger, PURGE_TIME, 0, true));
-        replaceDataInFile(db, badDatabaseData);
-        byte[] expectedBytes = java.nio.file.Files.readAllBytes(file.toPath());
-        Mockito.doAnswer(inv -> createFailingReader(file, 2)).when(db).newBufferedReader();
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("operationsThatRewriteTheUsersFile")
+        void writeFailureShouldBeReportedAsFailure(String operationName,
+                UsersFileOperation operation, @Nullable Object expectedResult)
+                throws IOException {
+            // Given - a users file, including a powerless player, that cannot be written
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            Mockito.doThrow(new IOException("Simulated full disk"))
+                    .when(databaseManager).newUsersFileWriter();
 
-        // When
-        List<FlatFileDataFlag> flags = db.checkFileHealthAndStructure();
+            // When - the operation runs
+            final Object result = operation.runOn(databaseManager);
 
-        // Then
-        assertNull(flags);
-        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+            // Then - it reports that nothing was saved
+            assertThat(result).isEqualTo(expectedResult);
+        }
+
+        /**
+         * The startup health check rewrites the file only after it has flagged a bad row, so
+         * the seed data starts with one. Healthy seed data would pass without the guard.
+         */
+        @Test
+        void healthCheckShouldNotRewriteTheUsersFileWhenReadFails() throws IOException {
+            // Given - a users file with a flagged row followed by a line that cannot be read
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(badDatabaseData);
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+            Mockito.doAnswer(invocation -> createFailingReader(usersFile, 2))
+                    .when(databaseManager).newBufferedReader();
+
+            // When - the health check runs
+            final List<FlatFileDataFlag> flags = databaseManager.checkFileHealthAndStructure();
+
+            // Then - it reports nothing and the file is byte for byte what it was
+            assertThat(flags).isNull();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
     }
 
     private static @NotNull BufferedReader createFailingReader(File file, int failOnReadLineCall)
