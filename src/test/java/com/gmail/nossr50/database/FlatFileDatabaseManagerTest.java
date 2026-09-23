@@ -1628,4 +1628,69 @@ class FlatFileDatabaseManagerTest {
         return databaseManager;
     }
 
+    @Test
+    void midReadFailureLeavesFileByteForByteIdentical() throws IOException {
+        // Given
+        File file = new File(getTemporaryUserFilePath());
+        var db = Mockito.spy(new FlatFileDatabaseManager(file, logger, PURGE_TIME, 0, true));
+        replaceDataInFile(db, normalDatabaseData);
+        byte[] expectedBytes = java.nio.file.Files.readAllBytes(file.toPath());
+        Mockito.doAnswer(inv -> createFailingReader(file, 2)).when(db).newBufferedReader();
+
+        // When / Then - verify operations abort cleanly on mid-read failure without modifying the file
+        assertFalse(db.newUser("newPlayer", UUID.randomUUID()).isLoaded());
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+
+        assertEquals(0, db.purgePowerlessUsers());
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+
+        db.purgeOldUsers();
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+
+        assertFalse(db.saveUser(new PlayerProfile("nossr50", UUID.randomUUID(), true, 0)));
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+
+        assertFalse(db.saveUserUUID("nossr50", UUID.randomUUID()));
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+
+        assertFalse(db.saveUserUUIDs(new java.util.HashMap<>(Map.of("nossr50", UUID.randomUUID()))));
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+
+        assertFalse(db.removeUser("nossr50", UUID.randomUUID()));
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+    }
+
+    @Test
+    void checkFileHealthAndStructureDoesNotOverwriteFileOnReadFailure() throws IOException {
+        // Given
+        File file = new File(getTemporaryUserFilePath());
+        var db = Mockito.spy(new FlatFileDatabaseManager(file, logger, PURGE_TIME, 0, true));
+        replaceDataInFile(db, badDatabaseData);
+        byte[] expectedBytes = java.nio.file.Files.readAllBytes(file.toPath());
+        Mockito.doAnswer(inv -> createFailingReader(file, 2)).when(db).newBufferedReader();
+
+        // When
+        List<FlatFileDataFlag> flags = db.checkFileHealthAndStructure();
+
+        // Then
+        assertNull(flags);
+        assertArrayEquals(expectedBytes, java.nio.file.Files.readAllBytes(file.toPath()));
+    }
+
+    private static @NotNull BufferedReader createFailingReader(File file, int failOnReadLineCall)
+            throws IOException {
+        return new BufferedReader(new FileReader(file)) {
+            private int readCount = 0;
+
+            @Override
+            public String readLine() throws IOException {
+                readCount++;
+                if (readCount == failOnReadLineCall) {
+                    throw new IOException("Simulated mid-read I/O error on line " + readCount);
+                }
+                return super.readLine();
+            }
+        };
+    }
+
 }

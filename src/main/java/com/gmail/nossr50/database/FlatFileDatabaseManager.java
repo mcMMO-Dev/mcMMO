@@ -38,6 +38,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public final class FlatFileDatabaseManager implements DatabaseManager {
 
@@ -266,6 +267,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             } catch (IOException e) {
                 logger.severe("Exception while reading " + usersFilePath
                         + " (Are you sure you formatted it correctly?)" + e);
+                return 0;
             }
 
             writeStringToFileSafely(writer.toString());
@@ -281,7 +283,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         LogUtils.debug(logger, "Purging old users...");
 
-        rewriteUsersFile(line -> {
+        boolean readSucceeded = rewriteUsersFile(line -> {
             final FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
             if (row == null) {
                 // Comment / empty / malformed: keep as-is
@@ -331,6 +333,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             return line;
         });
 
+        if (!readSucceeded) {
+            return;
+        }
+
         logger.info("Purged " + removedPlayers[0] + " users from the database.");
     }
 
@@ -339,7 +345,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         final String targetName = playerName;
         final boolean[] worked = {false};
 
-        rewriteUsersFile(line -> {
+        boolean readSucceeded = rewriteUsersFile(line -> {
             FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
             if (row == null) {
                 return line; // comments / malformed stay
@@ -353,6 +359,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
             return line;
         });
+
+        if (!readSucceeded) {
+            return false;
+        }
 
         Misc.profileCleanup(playerName);
         return worked[0];
@@ -545,6 +555,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 }
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "Unexpected Exception while reading " + usersFilePath, e);
+                return new PlayerProfile(playerName, uuid, false, startingLevel);
             }
 
             try (FileWriter fileWriter = new FileWriter(usersFile)) {
@@ -788,6 +799,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             } catch (Exception e) {
                 logger.severe("Exception while reading " + usersFilePath
                         + " (Are you sure you formatted it correctly?)" + e);
+                return false;
             }
 
             LogUtils.debug(logger,
@@ -801,7 +813,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
         int[] entriesWritten = {0};
 
-        rewriteUsersFile(line -> {
+        boolean readSucceeded = rewriteUsersFile(line -> {
             FlatFileRow row = FlatFileRow.parse(line, logger, usersFilePath);
             if (row == null) {
                 entriesWritten[0]++;
@@ -829,7 +841,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         LogUtils.debug(logger,
                 entriesWritten[0] + " entries written while saving UUID batch");
-        return true;
+        return readSucceeded;
     }
 
     public List<String> getStoredUsers() {
@@ -1098,6 +1110,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             } catch (IOException e) {
                 logger.log(Level.SEVERE,
                         "Unexpected Exception while validating " + usersFilePath, e);
+                return null;
             }
 
             if (!dataProcessor.getFlatFileDataFlags().isEmpty()) {
@@ -1242,7 +1255,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     // Type / IO helpers
     // ------------------------------------------------------------------------
 
-    private @NotNull BufferedReader newBufferedReader() throws IOException {
+    @VisibleForTesting
+    @NotNull BufferedReader newBufferedReader() throws IOException {
         return new BufferedReader(new FileReader(usersFilePath));
     }
 
@@ -1269,7 +1283,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void rewriteUsersFile(@NotNull Function<String, String> lineMapper) {
+    private boolean rewriteUsersFile(@NotNull Function<String, String> lineMapper) {
         synchronized (fileWritingLock) {
             StringBuilder writer = new StringBuilder();
 
@@ -1284,9 +1298,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             } catch (IOException e) {
                 logger.severe("Exception while reading " + usersFilePath
                         + " (Are you sure you formatted it correctly?)" + e);
+                return false;
             }
 
             writeStringToFileSafely(writer.toString());
+            return true;
         }
     }
 
