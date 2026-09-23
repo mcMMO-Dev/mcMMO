@@ -1,5 +1,9 @@
 package com.gmail.nossr50.database;
 
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_BERSERK;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SPEARS;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.OVERHAUL_LAST_LOGIN;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.UUID_INDEX;
 import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,19 +44,26 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.logging.Filter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -90,6 +101,7 @@ class FlatFileDatabaseManagerTest {
 
     private static File tempDir;
     private static final @NotNull Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final String EXISTING_PLAYER = "nossr50";
 
     private final long PURGE_TIME = 2_630_000_000L; // ~30 days in ms
 
@@ -388,14 +400,15 @@ class FlatFileDatabaseManagerTest {
         checkNewUserValues(playerProfile, startingLevel);
         checkNewUserValues(profileFromDisk, startingLevel);
 
-        // Given – add a few more new users (including a duplicate UUID)
+        // Given - add a few more new users, one reusing a stored UUID
         databaseManager.newUser("disco", new UUID(3, 3));
         databaseManager.newUser("dingus", new UUID(3, 4));
-        databaseManager.newUser("duped_dingus", new UUID(3, 4));
+        final var dupedProfile = databaseManager.newUser("duped_dingus", new UUID(3, 4));
 
-        // Then – there should be 5 lines (1 header + 4 players) in the DB file
+        // Then - the duplicate is refused, leaving 4 lines (1 header + 3 players) in the DB file
+        assertFalse(dupedProfile.isLoaded());
         final int lineCount = getSplitDataFromFile(databaseManager.getUsersFile()).size();
-        assertEquals(5, lineCount);
+        assertEquals(4, lineCount);
     }
 
     @Test
@@ -424,12 +437,24 @@ class FlatFileDatabaseManagerTest {
         checkNewUserValues(playerProfile, startingLevel);
         checkNewUserValues(profileFromDisk, startingLevel);
 
-        // Given – add more users (with duplicate UUID)
+        // Given - add more users, one reusing a stored UUID
         databaseManager.newUser("bidoof", new UUID(3, 3));
         databaseManager.newUser("derp", new UUID(3, 4));
-        databaseManager.newUser("pizza", new UUID(3, 4));
+        final var duplicateProfile = databaseManager.newUser("pizza", new UUID(3, 4));
 
-        final int originalLineCount = getSplitDataFromFile(databaseManager.getUsersFile()).size();
+        // Then - the duplicate is refused instead of appended
+        assertFalse(duplicateProfile.isLoaded());
+        final File usersFile = databaseManager.getUsersFile();
+        assertEquals(6, getSplitDataFromFile(usersFile).size());
+
+        // Given - a duplicate UUID row already in the file, as older versions could append
+        final String derpRow = java.nio.file.Files.readAllLines(usersFile.toPath()).stream()
+                .filter(row -> row.startsWith("derp:"))
+                .findFirst()
+                .orElseThrow();
+        java.nio.file.Files.writeString(usersFile.toPath(),
+                derpRow.replaceFirst("derp", "pizza") + "\n", StandardOpenOption.APPEND);
+        final int originalLineCount = getSplitDataFromFile(usersFile).size();
         assertEquals(7, originalLineCount);
 
         // When – run health checker to fix duplicates
@@ -1393,7 +1418,7 @@ class FlatFileDatabaseManagerTest {
     }
 
     @NotNull
-    private Player initMockPlayer(@NotNull String name, @NotNull UUID uuid) {
+    private static Player initMockPlayer(@NotNull String name, @NotNull UUID uuid) {
         Player mockPlayer = mock(Player.class);
         Mockito.when(mockPlayer.getName()).thenReturn(name);
         Mockito.when(mockPlayer.getUniqueId()).thenReturn(uuid);
@@ -1642,28 +1667,21 @@ class FlatFileDatabaseManagerTest {
      */
     @Nested
     class UsersFileFailures {
-        private static final String EXISTING_PLAYER = "nossr50";
-
         /** Runs one database operation and returns what it reports, for comparison. */
         @FunctionalInterface
         interface UsersFileOperation {
             @Nullable Object runOn(@NotNull FlatFileDatabaseManager databaseManager);
         }
 
-        private FlatFileDatabaseManager spyOnSeededDatabase(@NotNull String[] seedData)
-                throws IOException {
-            final File usersFile = new File(getTemporaryUserFilePath());
-            final FlatFileDatabaseManager databaseManager = Mockito.spy(
-                    new FlatFileDatabaseManager(usersFile, logger, PURGE_TIME, 0, true));
-            replaceDataInFile(databaseManager, seedData);
-            return databaseManager;
-        }
-
         static Stream<Arguments> operationsThatReadTheUsersFile() {
             return Stream.of(
-                    Arguments.of("newUser",
+                    Arguments.of("newUser(String, UUID)",
                             (UsersFileOperation) databaseManager -> databaseManager
                                     .newUser("newPlayer", randomUUID()).isLoaded(),
+                            false),
+                    Arguments.of("newUser(Player)",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .newUser(initMockPlayer("newPlayer", randomUUID())).isLoaded(),
                             false),
                     Arguments.of("purgePowerlessUsers",
                             (UsersFileOperation) FlatFileDatabaseManager::purgePowerlessUsers, 0),
@@ -1778,6 +1796,325 @@ class FlatFileDatabaseManagerTest {
             // Then - it reports nothing and the file is byte for byte what it was
             assertThat(flags).isNull();
             assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+    }
+
+    /**
+     * A player whose profile does not load is given a new one, and its first save overwrites
+     * their row in mcmmo.users with starting levels. That is only safe when the row really is
+     * missing; when the file cannot be read or the row cannot be parsed, the player stays
+     * unloaded and loading is retried.
+     */
+    @Nested
+    class FirstLoginProfiles {
+        private static final UUID EXISTING_PLAYER_UUID =
+                UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR);
+
+        /** Asks the database for a new player's profile, by either of the newUser overloads. */
+        @FunctionalInterface
+        interface NewUserRequest {
+            @NotNull PlayerProfile request(@NotNull FlatFileDatabaseManager databaseManager,
+                    @NotNull String playerName, @NotNull UUID uuid);
+        }
+
+        /** nossr50's row with one field replaced. */
+        private static String existingPlayerRowWith(int fieldIndex, String value) {
+            final String[] fields = normalDatabaseData[0].split(":");
+            fields[fieldIndex] = value;
+            return String.join(":", fields) + ":";
+        }
+
+        /** nossr50's row cut short, the way a row written by an older mcMMO looks. */
+        private static String existingPlayerRowCutAfter(int fieldCount) {
+            final String[] fields = normalDatabaseData[0].split(":");
+            return String.join(":", Arrays.copyOf(fields, fieldCount)) + ":";
+        }
+
+        /** Rows the loader cannot parse. The startup health check resets these values to 0. */
+        static Stream<Arguments> rowsThatFailToLoad() {
+            return Stream.of(
+                    Arguments.of("a Berserk cooldown that is not a number",
+                            existingPlayerRowWith(COOLDOWN_BERSERK, "garbage")),
+                    Arguments.of("a Spears cooldown that is not a number",
+                            existingPlayerRowWith(COOLDOWN_SPEARS, "garbage"))
+            );
+        }
+
+        static Stream<Arguments> loadsOfTheExistingPlayer() {
+            return Stream.of(
+                    Arguments.of("by UUID and name",
+                            (Function<FlatFileDatabaseManager, PlayerProfile>) databaseManager ->
+                                    databaseManager.loadPlayerProfile(initMockPlayer(
+                                            EXISTING_PLAYER, EXISTING_PLAYER_UUID))),
+                    Arguments.of("by UUID",
+                            (Function<FlatFileDatabaseManager, PlayerProfile>) databaseManager ->
+                                    databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID))
+            );
+        }
+
+        static Stream<Arguments> brokenRowLoads() {
+            return rowsThatFailToLoad().flatMap(row -> loadsOfTheExistingPlayer().map(
+                    load -> Arguments.of(row.get()[0], row.get()[1], load.get()[0],
+                            load.get()[1])));
+        }
+
+        /** The error used to be swallowed, so the player reset with no trace of why. */
+        @ParameterizedTest(name = "{0}, loaded {2}")
+        @MethodSource("brokenRowLoads")
+        void rowThatFailsToLoadShouldBeUnloadedAndLogged(String rowProblem, String brokenRow,
+                String lookup, Function<FlatFileDatabaseManager, PlayerProfile> load)
+                throws IOException {
+            // Given - the player's row cannot be parsed
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{brokenRow, normalDatabaseData[1]}, recordingLogger(logRecords));
+
+            // When - their profile is loaded
+            final PlayerProfile profile = load.apply(databaseManager);
+
+            // Then - it is not loaded, and the log names them
+            assertThat(profile.isLoaded()).isFalse();
+            assertThat(logRecords.messagesAt(Level.SEVERE))
+                    .anySatisfy(message -> assertThat(message).contains(EXISTING_PLAYER)
+                            .contains(HEALTHY_DB_LINE_ONE_UUID_STR));
+        }
+
+        /**
+         * The login retries a failed load for as long as the player stays online, and plugins
+         * may look the player up repeatedly, so the error is reported once.
+         */
+        @Test
+        void rowThatFailsToLoadShouldBeLoggedOnce() throws IOException {
+            // Given - the player's row cannot be parsed
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{existingPlayerRowWith(COOLDOWN_BERSERK, "garbage")},
+                    recordingLogger(logRecords));
+            final Player player = initMockPlayer(EXISTING_PLAYER, EXISTING_PLAYER_UUID);
+
+            // When - their profile is loaded several times, by login retries and a UUID lookup
+            databaseManager.loadPlayerProfile(player);
+            databaseManager.loadPlayerProfile(player);
+            databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID);
+
+            // Then - one error names them
+            assertThat(logRecords.messagesAt(Level.SEVERE))
+                    .filteredOn(message -> message.contains(HEALTHY_DB_LINE_ONE_UUID_STR))
+                    .hasSize(1);
+        }
+
+        /**
+         * A row from before newer skills existed is padded with zeros by the startup health
+         * check. Loading it the same way means the player does not have to wait for a restart.
+         */
+        @ParameterizedTest(name = "loaded {0}")
+        @MethodSource("loadsOfTheExistingPlayer")
+        void rowFromAnOlderMcMMOShouldLoadWithTheMissingColumnsAtZero(String lookup,
+                Function<FlatFileDatabaseManager, PlayerProfile> load) throws IOException {
+            // Given - the player's row ends after the last login column
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowCutAfter(OVERHAUL_LAST_LOGIN + 1)});
+
+            // When - their profile is loaded
+            final PlayerProfile profile = load.apply(databaseManager);
+
+            // Then - the stored values load, and the missing skills start at zero
+            assertThat(profile.isLoaded()).isTrue();
+            assertThat(profile.getSkillLevel(PrimarySkillType.MINING)).isEqualTo(1);
+            assertThat(profile.getSkillXpLevel(PrimarySkillType.MINING)).isEqualTo(10);
+            assertThat(profile.getSkillLevel(PrimarySkillType.CROSSBOWS)).isZero();
+            assertThat(profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS)).isZero();
+        }
+
+        @ParameterizedTest(name = "loaded {0}")
+        @MethodSource("loadsOfTheExistingPlayer")
+        void loadShouldUseALaterRowForTheSamePlayerWhenTheFirstIsBroken(String lookup,
+                Function<FlatFileDatabaseManager, PlayerProfile> load) throws IOException {
+            // Given - a broken row for the player, followed by a good one
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(COOLDOWN_BERSERK, "garbage"), normalDatabaseData[0]});
+
+            // When - their profile is loaded
+            final PlayerProfile profile = load.apply(databaseManager);
+
+            // Then - the good row is used
+            assertThat(profile.isLoaded()).isTrue();
+            assertThat(profile.getSkillLevel(PrimarySkillType.MINING)).isEqualTo(1);
+        }
+
+        /** Only the player's own row is parsed, so other broken rows cannot hold them up. */
+        @Test
+        void otherBrokenRowsShouldNotStopAPlayerLoading() throws IOException {
+            // Given - another player's broken row and a row with a malformed UUID come first
+            final RecordingHandler logRecords = new RecordingHandler();
+            final String otherPlayersBrokenRow = normalDatabaseData[1].replace(":1617583171:",
+                    ":garbage:");
+            final String malformedUuidRow = normalDatabaseData[2].replace(
+                    "e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c", "not-a-uuid");
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    otherPlayersBrokenRow, malformedUuidRow, normalDatabaseData[0]},
+                    recordingLogger(logRecords));
+
+            // When - the player's profile is loaded
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(
+                    initMockPlayer(EXISTING_PLAYER, EXISTING_PLAYER_UUID));
+
+            // Then - it loads, and nothing is reported
+            assertThat(profile.isLoaded()).isTrue();
+            assertThat(logRecords.messagesAt(Level.SEVERE)).isEmpty();
+        }
+
+        static Stream<Arguments> newUserRequests() {
+            return Stream.of(
+                    Arguments.of("newUser(Player)",
+                            (NewUserRequest) (databaseManager, playerName, uuid) ->
+                                    databaseManager.newUser(initMockPlayer(playerName, uuid))),
+                    Arguments.of("newUser(String, UUID)",
+                            (NewUserRequest) (databaseManager, playerName, uuid) ->
+                                    databaseManager.newUser(playerName, uuid))
+            );
+        }
+
+        static Stream<Arguments> storedRowsOfTheExistingPlayer() {
+            return Stream.of(
+                    Arguments.of("a row that loads", normalDatabaseData[0]),
+                    Arguments.of("a row with the UUID in capitals",
+                            existingPlayerRowWith(UUID_INDEX,
+                                    HEALTHY_DB_LINE_ONE_UUID_STR.toUpperCase(Locale.ROOT))),
+                    Arguments.of("a row that fails to load",
+                            existingPlayerRowWith(COOLDOWN_BERSERK, "garbage"))
+            );
+        }
+
+        static Stream<Arguments> newUserRequestsForStoredRows() {
+            return newUserRequests().flatMap(request -> storedRowsOfTheExistingPlayer().map(
+                    row -> Arguments.of(request.get()[0], request.get()[1], row.get()[0],
+                            row.get()[1])));
+        }
+
+        /**
+         * A new profile for a stored player would be saved over their row. newUser(Player) is
+         * reached when their load failed, and both overloads are public API.
+         */
+        @ParameterizedTest(name = "{0}, {2}")
+        @MethodSource("newUserRequestsForStoredRows")
+        void newUserShouldNotStartOverAStoredPlayer(String requestName, NewUserRequest newUser,
+                String rowDescription, String storedRow) throws IOException {
+            // Given - the player has a row
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{storedRow, normalDatabaseData[1]});
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - a new profile is requested for them
+            final PlayerProfile newProfile = newUser.request(databaseManager, EXISTING_PLAYER,
+                    EXISTING_PLAYER_UUID);
+
+            // Then - it is not loaded, and no second row was added for them
+            assertThat(newProfile.isLoaded()).isFalse();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+
+        /** A player who has never joined is not in the file, and starts fresh. */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("newUserRequests")
+        void newUserShouldStartANewPlayerFresh(String requestName, NewUserRequest newUser)
+                throws IOException {
+            // Given - a users file without the player
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+
+            // When - a new profile is requested for them
+            final PlayerProfile newProfile = newUser.request(databaseManager, "newPlayer",
+                    randomUUID());
+
+            // Then - it is loaded at the starting level
+            assertThat(newProfile.isLoaded()).isTrue();
+            assertThat(newProfile.getSkillLevel(PrimarySkillType.MINING)).isZero();
+        }
+
+        /**
+         * Names change hands, so a stored name alone does not block a new player. Their first
+         * save still replaces the row with that name, as saveUser always has.
+         */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("newUserRequests")
+        void newUserShouldStartFreshWhenOnlyTheNameIsTaken(String requestName,
+                NewUserRequest newUser) throws IOException {
+            // Given - a users file with a different player under the same name
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+
+            // When - a new profile is requested for the new owner of the name
+            final PlayerProfile newProfile = newUser.request(databaseManager, EXISTING_PLAYER,
+                    randomUUID());
+
+            // Then - it is loaded
+            assertThat(newProfile.isLoaded()).isTrue();
+        }
+
+        /** Lines starting with # are comments to every reader of the file. */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("newUserRequests")
+        void newUserShouldIgnoreACommentedOutRow(String requestName, NewUserRequest newUser)
+                throws IOException {
+            // Given - the player's row is commented out
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    "#" + normalDatabaseData[0], normalDatabaseData[1]});
+
+            // When - a new profile is requested for them
+            final PlayerProfile newProfile = newUser.request(databaseManager, EXISTING_PLAYER,
+                    EXISTING_PLAYER_UUID);
+
+            // Then - it is loaded
+            assertThat(newProfile.isLoaded()).isTrue();
+        }
+    }
+
+    private FlatFileDatabaseManager spyOnSeededDatabase(@NotNull String[] seedData)
+            throws IOException {
+        return spyOnSeededDatabase(seedData, logger);
+    }
+
+    private FlatFileDatabaseManager spyOnSeededDatabase(@NotNull String[] seedData,
+            @NotNull Logger databaseLogger) throws IOException {
+        final File usersFile = new File(getTemporaryUserFilePath());
+        final FlatFileDatabaseManager databaseManager = Mockito.spy(
+                new FlatFileDatabaseManager(usersFile, databaseLogger, PURGE_TIME, 0, true));
+        replaceDataInFile(databaseManager, seedData);
+        return databaseManager;
+    }
+
+    private static @NotNull Logger recordingLogger(@NotNull RecordingHandler handler) {
+        final Logger recordingLogger = Logger.getAnonymousLogger();
+        recordingLogger.setUseParentHandlers(false);
+        recordingLogger.setLevel(Level.ALL);
+        recordingLogger.addHandler(handler);
+        return recordingLogger;
+    }
+
+    /** Keeps log records so tests can check what an admin would see. */
+    private static final class RecordingHandler extends Handler {
+        private final List<LogRecord> records = new CopyOnWriteArrayList<>();
+
+        @Override
+        public void publish(LogRecord record) {
+            records.add(record);
+        }
+
+        @Override
+        public void flush() {
+        }
+
+        @Override
+        public void close() {
+        }
+
+        List<String> messagesAt(@NotNull Level level) {
+            return records.stream()
+                    .filter(record -> record.getLevel().equals(level))
+                    .map(LogRecord::getMessage)
+                    .toList();
         }
     }
 

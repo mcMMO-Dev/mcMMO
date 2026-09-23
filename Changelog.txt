@@ -1,15 +1,17 @@
 Version 2.3.002
     Fixed mcMMO failing to start on Spigot 26.3 servers
     Fixed a read error while updating the FlatFile database overwriting mcmmo.users with only the players read before the error (Thanks cyrne1-7208)
+    Fixed FlatFile players losing their progress when their data could not be read as they joined (See notes)
     Fixed FlatFile database saves reporting success when mcmmo.users could not be written
     Improved performance of repairing items on an anvil
     Lowered the default Pale_Hanging_Moss XP for Herbalism in experience.yml (See notes)
-    (API) DatabaseManager.newUser(String, UUID) on the FlatFile database now returns an unloaded profile when mcmmo.users cannot be read, matching the SQL database
+    (API) DatabaseManager.newUser(Player) and newUser(String, UUID) on the FlatFile database now return an unloaded profile when mcmmo.users cannot be read or already has a row with that UUID
     (Codebase) Crossbow ricochet reflection no longer modifies the arrow velocity and block face normal vectors it is given (Thanks cyrne1-7208)
 
     NOTES:
     We believe this is a bug in Spigot 26.3 rather than an intended API change, the error comes from Spigot itself whenever a plugin looks through the server's recipes. mcMMO now works around it on our side so it keeps running until Spigot fixes it.
     If you run Spigot 26.3 you need this update, no config changes are required.
+    A FlatFile player no longer starts over with a new profile when mcmmo.users can't be read as they join, or when their row in it can't be loaded. mcMMO keeps retrying the load instead, and a damaged row is logged once with the player's name. Restarting the server repairs a damaged row by resetting the values that can't be read. This never affected SQL databases, SQL already keeps the player unloaded and retries the load in this situation.
     To get the lower Pale_Hanging_Moss XP, set 'Experience_Values.Herbalism.Pale_Hanging_Moss' to 1 in experience.yml, or delete experience.yml to generate a new one.
 
 Version 2.3.001

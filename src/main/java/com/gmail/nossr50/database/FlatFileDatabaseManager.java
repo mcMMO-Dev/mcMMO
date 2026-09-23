@@ -28,8 +28,10 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -57,6 +59,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
     // check-then-act window and performing duplicate full-file scans. Only a successful rebuild
     // keeps the claimed timestamp; failures roll it back so retries are not throttled.
     private final @NotNull AtomicLong lastUpdate = new AtomicLong(0L);
+    private final @NotNull Set<UUID> reportedUnloadableRows = ConcurrentHashMap.newKeySet();
 
     private final @NotNull String usersFilePath;
     private final @NotNull File usersFile;
@@ -540,8 +543,45 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         out.append(LINE_ENDING);
     }
 
+    /**
+     * Called when the player's profile did not load. The profile returned here is saved over
+     * their stored row, so it is only loaded when the file was read and has no row with their
+     * UUID. Otherwise it is unloaded, and the login retries the load.
+     */
     public @NotNull PlayerProfile newUser(@NotNull Player player) {
-        return new PlayerProfile(player.getName(), player.getUniqueId(), true, startingLevel);
+        final UUID uuid = player.getUniqueId();
+        return new PlayerProfile(player.getName(), uuid, isConfirmedNewPlayer(uuid),
+                startingLevel);
+    }
+
+    /** True only when the users file was read and has no row for {@code uuid}. */
+    private boolean isConfirmedNewPlayer(@NotNull UUID uuid) {
+        synchronized (fileWritingLock) {
+            try (BufferedReader in = newBufferedReader()) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    if (isRowFor(line, uuid)) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (IOException e) {
+                logger.severe("Could not read " + usersFilePath + " to look for " + uuid + ": "
+                        + e);
+                return false;
+            }
+        }
+    }
+
+    /** Whether {@code line} is a row for {@code uuid}, matched the way the load queries match. */
+    private boolean isRowFor(@NotNull String line, @NotNull UUID uuid) {
+        if (line.startsWith("#")) {
+            return false;
+        }
+
+        // Nothing past the UUID is needed, so the rest of the row stays unsplit
+        final String[] fields = line.split(":", UUID_INDEX + 2);
+        return fields.length > UUID_INDEX && uuid.equals(parseUuidOrNull(fields[UUID_INDEX]));
     }
 
     public @NotNull PlayerProfile newUser(@NotNull String playerName, @NotNull UUID uuid) {
@@ -553,6 +593,13 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             try (BufferedReader bufferedReader = newBufferedReader()) {
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
+                    // A second row would be loaded instead of a first that fails to parse,
+                    // and the next save would overwrite both
+                    if (isRowFor(line, uuid)) {
+                        logger.warning("Not adding " + playerName + " (" + uuid + ") to "
+                                + usersFilePath + ", it already has a row for that UUID");
+                        return new PlayerProfile(playerName, uuid, false, startingLevel);
+                    }
                     stringBuilder.append(line).append(LINE_ENDING);
                 }
             } catch (IOException e) {
@@ -653,17 +700,15 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     String[] rawSplitData = line.split(":");
 
-                    if (rawSplitData.length < (UUID_INDEX + 1)) {
+                    if (rawSplitData.length < (UUID_INDEX + 1)
+                            || !uuid.equals(parseUuidOrNull(rawSplitData[UUID_INDEX]))) {
                         continue;
                     }
 
                     try {
-                        UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
-                        if (fromDataUUID.equals(uuid)) {
-                            return loadFromLine(rawSplitData);
-                        }
-                    } catch (Exception e) {
-                        // Ignore malformed UUIDs
+                        return loadFromLine(rawSplitData);
+                    } catch (RuntimeException e) {
+                        logUnloadableRow(rawSplitData[USERNAME_INDEX], uuid, e);
                     }
                 }
             } catch (Exception e) {
@@ -690,28 +735,25 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                     String[] rawSplitData = line.split(":");
 
-                    if (rawSplitData.length < (UUID_INDEX + 1)) {
+                    if (rawSplitData.length < (UUID_INDEX + 1)
+                            || !uuid.equals(parseUuidOrNull(rawSplitData[UUID_INDEX]))) {
                         continue;
                     }
 
+                    final String dbPlayerName = rawSplitData[USERNAME_INDEX];
+                    final boolean matchingName = dbPlayerName.equalsIgnoreCase(playerName);
+
+                    if (!matchingName) {
+                        logger.warning("When loading user: " + playerName + " with UUID of ("
+                                + uuid + ") we found a mismatched name, the name in the DB will"
+                                + " be replaced (DB name: " + dbPlayerName + ")");
+                        rawSplitData[USERNAME_INDEX] = playerName;
+                    }
+
                     try {
-                        UUID fromDataUUID = UUID.fromString(rawSplitData[UUID_INDEX]);
-                        if (fromDataUUID.equals(uuid)) {
-                            String dbPlayerName = rawSplitData[USERNAME_INDEX];
-                            boolean matchingName = dbPlayerName.equalsIgnoreCase(playerName);
-
-                            if (!matchingName) {
-                                logger.warning(
-                                        "When loading user: " + playerName + " with UUID of ("
-                                                + uuid + ") we found a mismatched name, the name in the DB will be replaced (DB name: "
-                                                + dbPlayerName + ")");
-                                rawSplitData[USERNAME_INDEX] = playerName;
-                            }
-
-                            return loadFromLine(rawSplitData);
-                        }
-                    } catch (Exception e) {
-                        // Ignore malformed UUIDs
+                        return loadFromLine(rawSplitData);
+                    } catch (RuntimeException e) {
+                        logUnloadableRow(playerName, uuid, e);
                     }
                 }
             } catch (IOException e) {
@@ -721,6 +763,21 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         return grabUnloadedProfile(uuid, playerName);
+    }
+
+    /**
+     * Logged once per player, since the login retries and API lookups repeat the load. Callers
+     * keep scanning afterwards, as a later row for the same player may still load.
+     */
+    private void logUnloadableRow(@NotNull String playerName, @NotNull UUID uuid,
+            @NotNull RuntimeException cause) {
+        if (!reportedUnloadableRows.add(uuid)) {
+            return;
+        }
+
+        logger.log(Level.SEVERE, "Could not load " + playerName + " (" + uuid + ") from "
+                + usersFilePath + ", their row has data that cannot be read. They will not"
+                + " load until it is fixed, restarting the server repairs it.", cause);
     }
 
     private @NotNull PlayerProfile grabUnloadedProfile(@NotNull UUID uuid,
@@ -1221,6 +1278,8 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         try {
             float valueFromString = Integer.parseInt(character[index]);
             skillMap.put(primarySkillType, valueFromString);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            skillMap.put(primarySkillType, 0F);
         } catch (NumberFormatException e) {
             skillMap.put(primarySkillType, 0F);
             logger.severe("Data corruption when trying to load the value for skill "
