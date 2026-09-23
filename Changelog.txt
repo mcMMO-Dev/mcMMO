@@ -3,6 +3,7 @@ Version 2.3.002
     Fixed a read error while updating the FlatFile database overwriting mcmmo.users with only the players read before the error (Thanks cyrne1-7208)
     Fixed FlatFile database saves reporting success when mcmmo.users could not be written
     Improved performance of repairing items on an anvil
+    Lowered the default Pale_Hanging_Moss XP for Herbalism in experience.yml (See notes)
     (API) DatabaseManager.newUser(String, UUID) on the FlatFile database now returns an unloaded profile when mcmmo.users cannot be read, matching the SQL database
     (Codebase) Crossbow ricochet reflection no longer modifies the arrow velocity and block face normal vectors it is given (Thanks cyrne1-7208)
 
@@ -10,6 +11,7 @@ Version 2.3.002
     On Spigot 26.3 mcMMO would throw an AbstractMethodError about BrewingRecipe during startup and then disable itself. Paper servers were not affected.
     We believe this is a bug in Spigot 26.3 rather than an intended API change, the error comes from Spigot itself whenever a plugin looks through the server's recipes. mcMMO now works around it on our side so it keeps running until Spigot fixes it.
     If you run Spigot 26.3 you need this update, no config changes are required.
+    To get the lower Pale_Hanging_Moss XP, set 'Experience_Values.Herbalism.Pale_Hanging_Moss' to 1 in experience.yml, or delete experience.yml to generate a new one.
 
 Version 2.3.001
     Added compatibility for new blocks and items from Minecraft 26.3 to mcMMO
