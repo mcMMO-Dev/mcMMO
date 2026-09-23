@@ -4,10 +4,13 @@ import static com.gmail.nossr50.util.MobMetadataUtils.hasMobFlag;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gmail.nossr50.MMOTestEnvironment;
@@ -25,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -38,6 +42,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -602,6 +607,45 @@ class CombatUtilsTest extends MMOTestEnvironment {
                     LivingEntity.class);
             method.setAccessible(true);
             return (double) method.invoke(null, target);
+        }
+    }
+
+    @Nested
+    class DelayArrowMetaCleanup {
+
+        @Test
+        void schedulesCleanupWithRetiredFallback() {
+            // Given - an active arrow entity needing metadata cleanup
+            final AbstractArrow arrow = mock(AbstractArrow.class);
+
+            // When - delayArrowMetaCleanup is called
+            CombatUtils.delayArrowMetaCleanup(arrow);
+
+            // Then - cleanup is scheduled on the arrow's entity scheduler with a retired fallback
+            final ArgumentCaptor<Runnable> cleanup = ArgumentCaptor.forClass(Runnable.class);
+            verify(foliaLib.getScheduler()).runAtEntityLater(eq(arrow), cleanup.capture(), cleanup.capture(),
+                    eq(20L * 120));
+
+            // Executing the callbacks cleans up projectile metadata in both cases
+            when(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)).thenReturn(true);
+            cleanup.getAllValues().forEach(Runnable::run);
+            verify(arrow, times(2)).removeMetadata(
+                    MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
+        }
+
+        @Test
+        void cleansUpImmediatelyWhenArrowIsDead() {
+            // Given - an arrow already dead (e.g. removed by another plugin during event handling)
+            final AbstractArrow arrow = mock(AbstractArrow.class);
+            when(arrow.isDead()).thenReturn(true);
+            when(arrow.hasMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE)).thenReturn(true);
+
+            // When - delayArrowMetaCleanup is called
+            CombatUtils.delayArrowMetaCleanup(arrow);
+
+            // Then - metadata is cleaned up immediately without scheduling on FoliaLib
+            verify(arrow).removeMetadata(MetadataConstants.METADATA_KEY_BOW_FORCE, mcMMO.p);
+            verifyNoInteractions(foliaLib.getScheduler());
         }
     }
 }

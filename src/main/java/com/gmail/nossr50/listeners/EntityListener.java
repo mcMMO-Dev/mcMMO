@@ -196,7 +196,7 @@ public class EntityListener implements Listener {
             projectile.setMetadata(MetadataConstants.METADATA_KEY_ARROW_DISTANCE,
                     new FixedMetadataValue(pluginRef, arrow.getLocation()));
 
-            //Cleanup metadata in 1 minute in case normal collection falls through
+            // Delayed metadata cleanup in case normal collection falls through
             CombatUtils.delayArrowMetaCleanup(arrow);
         }
     }
