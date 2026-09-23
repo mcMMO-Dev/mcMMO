@@ -1,6 +1,9 @@
 Version 2.3.002
     Fixed mcMMO failing to start on Spigot 26.3 servers (See notes)
+    Fixed a read error while updating the FlatFile database overwriting mcmmo.users with only the players read before the error (Thanks cyrne1-7208)
+    Fixed FlatFile database saves reporting success when mcmmo.users could not be written
     Improved performance of repairing items on an anvil
+    (API) DatabaseManager.newUser(String, UUID) on the FlatFile database now returns an unloaded profile when mcmmo.users cannot be read, matching the SQL database
     (Codebase) Crossbow ricochet reflection no longer modifies the arrow velocity and block face normal vectors it is given (Thanks cyrne1-7208)
 
     NOTES:
