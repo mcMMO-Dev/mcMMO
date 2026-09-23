@@ -8,6 +8,9 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -147,6 +150,27 @@ class FormulaManagerTest {
 
             // Then - a zero-cost level is bumped to 1 so the level-up loop always consumes XP
             assertThat(xpNeeded).isEqualTo(1);
+        }
+    }
+
+    @Nested
+    class ThreadSafety {
+        @Test
+        void cachesShouldUseConcurrentHashMap() throws Exception {
+            // Given - the formula manager initialized with XP requirement caches
+            // When - inspecting the internal cache maps for linear and exponential curves
+            // Then - each cache is backed by ConcurrentHashMap for Folia thread-safety
+            for (final String fieldName : List.of(
+                    "experienceNeededRetroLinear",
+                    "experienceNeededRetroExponential",
+                    "experienceNeededStandardLinear",
+                    "experienceNeededStandardExponential")) {
+                final Field field = FormulaManager.class.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                assertThat(field.get(formulaManager))
+                        .as(fieldName + " should be a ConcurrentHashMap")
+                        .isInstanceOf(ConcurrentHashMap.class);
+            }
         }
     }
 }
