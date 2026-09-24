@@ -53,6 +53,10 @@ public class McRankCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+                if (CommandUtils.isInvalidOldUsername(sender, playerName)) {
+                    return true;
+                }
+
                 final McMMOPlayer mmoPlayer = UserManager.getOfflinePlayer(playerName);
 
                 if (mmoPlayer != null) {

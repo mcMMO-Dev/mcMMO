@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.player;
 
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_BERSERK;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.UUID_INDEX;
+import static java.util.UUID.randomUUID;
 import static java.util.logging.Logger.getLogger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +29,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -159,6 +161,34 @@ class PlayerProfileLoadingTaskTest extends MMOTestEnvironment {
         assertThat(appliedProfile.isLoaded()).isTrue();
         assertThat(appliedProfile.getSkillLevel(PrimarySkillType.MINING)).isZero();
         verifyNoRetryScheduled();
+    }
+
+    /**
+     * Names change hands, and a new player's first save used to replace the old owner's row.
+     * The new player gets a row of their own and the name, and the old owner keeps the rest.
+     */
+    @Test
+    void newPlayerWithAStoredNameShouldNotOverwriteItsPreviousOwner() {
+        // Given - a stored player, and a new player who now has their name
+        storePlayerWithMiningLevel(STORED_MINING_LEVEL);
+        final UUID previousOwnerUuid = playerUUID;
+        final UUID newPlayerUuid = randomUUID();
+        when(player.getUniqueId()).thenReturn(newPlayerUuid);
+
+        // When - the new player logs in, and their profile is saved
+        new PlayerProfileLoadingTask(player).run();
+        saveAppliedProfiles();
+
+        // Then - they start fresh, with a row of their own that the name now finds
+        assertThat(verifyProfileApplied().getSkillLevel(PrimarySkillType.MINING)).isZero();
+        assertThat(databaseManager.loadPlayerProfile(newPlayerUuid).isLoaded()).isTrue();
+        assertThat(databaseManager.loadPlayerProfile(PLAYER_NAME).getUniqueId())
+                .isEqualTo(newPlayerUuid);
+        verifyNoRetryScheduled();
+
+        // And - the previous owner's progress is intact
+        assertThat(databaseManager.loadPlayerProfile(previousOwnerUuid)
+                .getSkillLevel(PrimarySkillType.MINING)).isEqualTo(STORED_MINING_LEVEL);
     }
 
     /**

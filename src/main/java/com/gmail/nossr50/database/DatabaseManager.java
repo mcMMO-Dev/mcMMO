@@ -3,6 +3,7 @@ package com.gmail.nossr50.database;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.LeaderboardSnapshot;
+import com.gmail.nossr50.datatypes.database.PlayerNameAndUUID;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -47,7 +48,8 @@ public interface DatabaseManager {
     void cleanupUser(UUID uuid);
 
     /**
-     * Save a user to the database.
+     * Save a user to the database. The FlatFile and SQL databases only save a profile with a
+     * UUID, and return false for one without.
      *
      * @param profile The profile of the player to save
      * @return true if successful, false on failure
@@ -111,11 +113,12 @@ public interface DatabaseManager {
     Map<PrimarySkillType, Integer> readRank(String playerName);
 
     /**
-     * Add a new user to the database.
+     * Add a new user to the database. The FlatFile and SQL databases only add a player with a
+     * UUID, and return an unloaded profile for one without.
      *
      * @param playerName The name of the player to be added to the database
      * @param uuid The uuid of the player to be added to the database
-     * @return
+     * @return the new player's profile, unloaded when they were not added
      */
     @NotNull PlayerProfile newUser(String playerName, UUID uuid);
 
@@ -129,6 +132,13 @@ public interface DatabaseManager {
      */
     @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName);
 
+    /**
+     * Load a player from the database by UUID. Their name replaces the one stored for them only
+     * while they are online, as an offline player's name may belong to someone else by now.
+     *
+     * @param offlinePlayer The player to load from the database
+     * @return The player's data, or an unloaded PlayerProfile if not found
+     */
     @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer);
 
     @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid);
@@ -139,6 +149,19 @@ public interface DatabaseManager {
      * @return list of playernames
      */
     List<String> getStoredUsers();
+
+    /**
+     * Get every user stored in the database with their UUID. Unlike {@link #getStoredUsers()},
+     * this tells apart players who share a name, such as everyone who lost theirs to another
+     * player and is stored under {@link UsernamePlaceholder#INVALID_OLD_USERNAME}.
+     * <p>
+     * A database manager that does not override this lists every user without a UUID.
+     *
+     * @return one entry per stored user
+     */
+    default @NotNull List<PlayerNameAndUUID> getStoredUsersWithUUIDs() {
+        return getStoredUsers().stream().map(name -> new PlayerNameAndUUID(name, null)).toList();
+    }
 
     /**
      * Convert all users from this database to the provided database using

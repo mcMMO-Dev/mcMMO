@@ -1,7 +1,10 @@
 package com.gmail.nossr50.runnables.database;
 
+import static com.gmail.nossr50.database.UsernamePlaceholder.isInvalidOldUsername;
+
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.datatypes.database.PlayerNameAndUUID;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -14,6 +17,8 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillTools;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FormulaConversionTask extends CancellableRunnable {
     private final CommandSender sender;
@@ -28,13 +33,19 @@ public class FormulaConversionTask extends CancellableRunnable {
     public void run() {
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
-        for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            final McMMOPlayer mmoPlayer = UserManager.getOfflinePlayer(playerName);
+        for (PlayerNameAndUUID storedUser : mcMMO.getDatabaseManager().getStoredUsersWithUUIDs()) {
+            // Everyone who lost their name shares the placeholder, so without a UUID nothing
+            // tells which of them this is
+            if (storedUser.uuid() == null && isInvalidOldUsername(storedUser.playerName())) {
+                continue;
+            }
+
+            final McMMOPlayer mmoPlayer = getOnlinePlayer(storedUser);
             PlayerProfile profile;
 
             // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mmoPlayer == null) {
-                profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName);
+                profile = loadProfile(storedUser);
 
                 if (!profile.isLoaded()) {
                     LogUtils.debug(mcMMO.p.getLogger(), "Profile not loaded.");
@@ -55,6 +66,23 @@ public class FormulaConversionTask extends CancellableRunnable {
 
         sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish",
                 formulaType.toString()));
+    }
+
+    private static @Nullable McMMOPlayer getOnlinePlayer(@NotNull PlayerNameAndUUID storedUser) {
+        if (storedUser.uuid() == null) {
+            return UserManager.getOfflinePlayer(storedUser.playerName());
+        }
+
+        return UserManager.getPlayer(mcMMO.p.getServer().getPlayer(storedUser.uuid()));
+    }
+
+    /** By UUID when there is one, since a name can be stored for more than one player. */
+    private static @NotNull PlayerProfile loadProfile(@NotNull PlayerNameAndUUID storedUser) {
+        if (storedUser.uuid() == null) {
+            return mcMMO.getDatabaseManager().loadPlayerProfile(storedUser.playerName());
+        }
+
+        return mcMMO.getDatabaseManager().loadPlayerProfile(storedUser.uuid());
     }
 
     private void editValues(PlayerProfile profile) {
