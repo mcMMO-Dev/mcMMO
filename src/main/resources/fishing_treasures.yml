@@ -285,6 +285,8 @@ Fishing:
         Rarity: LEGENDARY
 # Uncomment the below 3 lines to use the Whitelist, Alternatively rename it Enchantments_Blacklist to use the blacklist
 # NOTE: Enchantments_Whitelist and Enchantments_Blacklist only do anything for Enchanted_Books at the moment, you can't use it with any other treasure definition
+# Namespaces are optional and default to minecraft:; an asterisk (*) matches zero or more
+# characters in the namespace or name (for example, "minecraft:*_PROTECTION" or "custom:*").
 #        Enchantments_Whitelist:
 #            - Fortune
 #            - Protection
