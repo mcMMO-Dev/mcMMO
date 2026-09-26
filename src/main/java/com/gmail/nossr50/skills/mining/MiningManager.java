@@ -30,8 +30,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -44,16 +42,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class MiningManager extends SkillManager {
-
-    private static final String BUDDING_AMETHYST = "budding_amethyst";
-    private static final Collection<Material> BLAST_MINING_BLACKLIST = Set.of(Material.SPAWNER,
-            Material.INFESTED_COBBLESTONE, Material.INFESTED_DEEPSLATE, Material.INFESTED_STONE,
-            Material.INFESTED_STONE_BRICKS, Material.INFESTED_CRACKED_STONE_BRICKS,
-            Material.INFESTED_CHISELED_STONE_BRICKS, Material.INFESTED_MOSSY_STONE_BRICKS);
-    private final static Set<String> INFESTED_BLOCKS = Set.of("infested_stone",
-            "infested_cobblestone",
-            "infested_stone_bricks", "infested_cracked_stone_bricks", "infested_mossy_stone_bricks",
-            "infested_chiseled_stone_bricks", "infested_deepslate");
 
     public MiningManager(@NotNull McMMOPlayer mmoPlayer) {
         super(mmoPlayer, PrimarySkillType.MINING);
@@ -210,10 +198,6 @@ public class MiningManager extends SkillManager {
                 (long) SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
-    private boolean isInfestedBlock(String material) {
-        return INFESTED_BLOCKS.contains(material.toLowerCase(Locale.ENGLISH));
-    }
-
     /**
      * Handler for explosion drops and XP gain.
      *
@@ -232,6 +216,8 @@ public class MiningManager extends SkillManager {
         for (Block targetBlock : event.blockList()) {
 
             if (mcMMO.getUserBlockTracker().isIneligible(targetBlock)) {
+                // Placed blocks drop like any mined block, just without XP or bonuses.
+                notOres.add(targetBlock);
                 continue;
             }
 
@@ -249,16 +235,37 @@ public class MiningManager extends SkillManager {
         int xp = 0;
         int dropMultiplier = getDropMultiplier();
 
+        // One snapshot for the whole blast, so item-spawn listeners cannot swap the tool mid-loop.
+        ItemStack heldItem = mmoPlayer.getPlayer().getInventory().getItemInMainHand().clone();
+
+        // Mining with silk touch never gives XP, but the explosion pops block XP
+        // tool-lessly after this event, so silk blasts take their blocks away from
+        // the explosion and break them here instead.
+        boolean silkTouch = heldItem.containsEnchantment(Enchantment.SILK_TOUCH);
+
         for (Block block : notOres) {
-            if (isDropIllegal(block.getType())) {
+            // TNT stays with the explosion, which primes chains instead of dropping them.
+            if (block.getType() == Material.TNT) {
                 continue;
             }
 
-            if (block.getType().isItem() && Probability.ofPercent(10).evaluate()) {
-                ItemUtils.spawnItem(getPlayer(),
+            // Drops as if mined with the held pickaxe, at the explosion's own yield
+            // so the tntExplosionDropDecay gamerule keeps working. The loot tables
+            // decide everything: spawners and budding amethyst never drop, infested
+            // blocks only with silk touch, all exactly as vanilla. Without a pickaxe
+            // the tool-less loot matches what a plain explosion would give.
+            if (yield >= 1.0F || Probability.ofValue(yield).evaluate()) {
+                ItemUtils.spawnItems(getPlayer(),
                         getBlockCenter(block),
-                        new ItemStack(block.getType()),
-                        ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES); // Initial block that would have been dropped
+                        isPickaxe(heldItem)
+                                ? block.getDrops(heldItem)
+                                : block.getDrops(null),
+                        ItemSpawnReason.BLAST_MINING_DEBRIS_NON_ORES);
+            }
+
+            if (silkTouch) {
+                event.blockList().remove(block);
+                block.setType(Material.AIR);
             }
         }
 
@@ -266,21 +273,15 @@ public class MiningManager extends SkillManager {
             // currentOreYield only used for drop calculations for ores
             float currentOreYield = Math.min(increasedYieldFromBonuses, 3F);
 
-            if (isDropIllegal(block.getType())) {
-                continue;
-            }
-
             // Always give XP for every ore destroyed
             xp += ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, block);
             while (currentOreYield > 0) {
                 if (Probability.ofValue(currentOreYield).evaluate()) {
-                    Collection<ItemStack> oreDrops =
-                            isPickaxe(mmoPlayer.getPlayer().getInventory().getItemInMainHand())
-                                    ? block.getDrops(
-                                    mmoPlayer.getPlayer().getInventory().getItemInMainHand())
-                                    : List.of(new ItemStack(block.getType()));
+                    Collection<ItemStack> oreDrops = isPickaxe(heldItem)
+                            ? block.getDrops(heldItem)
+                            : List.of(new ItemStack(block.getType()));
                     ItemUtils.spawnItems(getPlayer(), getBlockCenter(block),
-                            oreDrops, BLAST_MINING_BLACKLIST, ItemSpawnReason.BLAST_MINING_ORES);
+                            oreDrops, ItemSpawnReason.BLAST_MINING_ORES);
 
                     if (mcMMO.p.getAdvancedConfig().isBlastMiningBonusDropsEnabled()) {
                         if (Probability.ofValue(0.5F).evaluate()) {
@@ -288,7 +289,6 @@ public class MiningManager extends SkillManager {
                                 ItemUtils.spawnItems(getPlayer(),
                                         getBlockCenter(block),
                                         oreDrops,
-                                        BLAST_MINING_BLACKLIST,
                                         ItemSpawnReason.BLAST_MINING_ORES_BONUS_DROP);
                             }
                         }
@@ -296,24 +296,16 @@ public class MiningManager extends SkillManager {
                 }
                 currentOreYield = Math.max(currentOreYield - 1, 0);
             }
+
+            if (silkTouch) {
+                event.blockList().remove(block);
+                block.setType(Material.AIR);
+            }
         }
 
         // Replace the event blocklist with the newYield list
         event.setYield(0F);
         applyXpGain(xp, XPGainReason.PVE, XPGainSource.SELF);
-    }
-
-    /**
-     * Checks if it would be illegal (in vanilla) to obtain the block Certain things should never
-     * drop (such as budding_amethyst, infested blocks or spawners)
-     *
-     * @param material target material
-     * @return true if it's not legal to get the block through normal gameplay
-     */
-    public boolean isDropIllegal(@NotNull Material material) {
-        return isInfestedBlock(material.getKey().getKey())
-                || material.getKey().getKey().equalsIgnoreCase(BUDDING_AMETHYST)
-                || material == Material.SPAWNER;
     }
 
     /**
