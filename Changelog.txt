@@ -1,3 +1,5 @@
+Version 2.3.003
+
 Version 2.3.002
     Fixed mcMMO failing to start on Spigot 26.3 servers
     Improved performance of repairing items in mcMMO
