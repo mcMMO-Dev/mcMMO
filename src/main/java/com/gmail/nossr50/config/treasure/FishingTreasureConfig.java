@@ -440,13 +440,12 @@ public class FishingTreasureConfig extends BukkitConfig {
             return;
         }
 
-        for (String str : enchantListStr) {
+        for (final String str : enchantListStr) {
             boolean foundMatch = false;
-            for (Enchantment enchantment : Enchantment.values()) {
-                if (enchantment.getKey().getKey().equalsIgnoreCase(str)) {
+            for (final Enchantment enchantment : Enchantment.values()) {
+                if (matchesEnchantmentPattern(str, enchantment.getKey().toString())) {
                     permissiveList.add(enchantment);
                     foundMatch = true;
-                    break;
                 }
             }
 
@@ -457,6 +456,53 @@ public class FishingTreasureConfig extends BukkitConfig {
                                 + str);
             }
         }
+    }
+
+    /**
+     * Matches an enchantment key against a config pattern. A missing namespace defaults to
+     * {@code minecraft:}. The asterisk is the only wildcard and matches zero or more characters;
+     * all other characters are matched literally.
+     */
+    @VisibleForTesting
+    static boolean matchesEnchantmentPattern(@NotNull String pattern,
+            @NotNull String enchantmentKey) {
+        final String normalizedPattern = pattern.indexOf(':') >= 0
+                ? pattern
+                : "minecraft:" + pattern;
+        final String normalizedEnchantmentKey = enchantmentKey.indexOf(':') >= 0
+                ? enchantmentKey
+                : "minecraft:" + enchantmentKey;
+
+        int patternIndex = 0;
+        int keyIndex = 0;
+        int wildcardIndex = -1;
+        int wildcardMatchIndex = 0;
+
+        while (keyIndex < normalizedEnchantmentKey.length()) {
+            if (patternIndex < normalizedPattern.length()
+                    && (normalizedPattern.charAt(patternIndex) == '*'
+                    || Character.toLowerCase(normalizedPattern.charAt(patternIndex))
+                    == Character.toLowerCase(normalizedEnchantmentKey.charAt(keyIndex)))) {
+                if (normalizedPattern.charAt(patternIndex) == '*') {
+                    wildcardIndex = patternIndex++;
+                    wildcardMatchIndex = keyIndex;
+                } else {
+                    patternIndex++;
+                    keyIndex++;
+                }
+            } else if (wildcardIndex >= 0) {
+                patternIndex = wildcardIndex + 1;
+                keyIndex = ++wildcardMatchIndex;
+            } else {
+                return false;
+            }
+        }
+
+        while (patternIndex < normalizedPattern.length()
+                && normalizedPattern.charAt(patternIndex) == '*') {
+            patternIndex++;
+        }
+        return patternIndex == normalizedPattern.length();
     }
 
     private void loadEnchantments() {
