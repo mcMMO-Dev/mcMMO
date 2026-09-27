@@ -28,6 +28,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 
 class PlayerProfileTest extends MMOTestEnvironment {
@@ -281,6 +283,27 @@ class PlayerProfileTest extends MMOTestEnvironment {
             verify(databaseManager, times(2)).saveUser(savedCopies.capture());
             assertThat(savedCopies.getAllValues().get(1).getSkillLevel(PrimarySkillType.MINING))
                     .isEqualTo(STARTING_LEVEL + 2);
+        }
+
+        /**
+         * mcMMO's databases refuse a profile without a UUID every time, so retrying it cannot
+         * succeed and would only log the failure ten more times.
+         */
+        @ParameterizedTest(name = "sync save: {0}")
+        @ValueSource(booleans = {false, true})
+        void doesNotRetryAProfileWithoutAUuid(boolean useSync) {
+            // Given - a changed profile without a UUID, which the database refuses
+            final PlayerProfile profileWithoutAUuid =
+                    new PlayerProfile("Herb", null, true, STARTING_LEVEL);
+            profileWithoutAUuid.markProfileDirty();
+            when(databaseManager.saveUser(argThat(saved -> saved.getUniqueId() == null)))
+                    .thenReturn(false);
+
+            // When - the save is refused
+            profileWithoutAUuid.save(useSync);
+
+            // Then - no retry is scheduled
+            verifyNoInteractions(scheduler);
         }
 
         @Test

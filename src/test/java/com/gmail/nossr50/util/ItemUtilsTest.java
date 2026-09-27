@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -15,11 +16,13 @@ import com.gmail.nossr50.MMOTestEnvironment;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentWrapper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import org.bukkit.Material;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -179,5 +182,28 @@ class ItemUtilsTest extends MMOTestEnvironment {
 
         // Then - the vanilla material maximum applies (0 for non-damageable materials)
         assertThat(maxDamage).isEqualTo((int) Material.STICK.getMaxDurability());
+    }
+
+    /**
+     * Spigot 26.3 cannot convert data-driven brewing recipes to Bukkit recipes, so both its recipe
+     * iterator and its getRecipesFor throw AbstractMethodError. Smelting XP must keep working there.
+     */
+    @Test
+    void isSmeltedShouldFindOreSmeltingRecipeWhenServerCannotConvertEveryRecipe() {
+        // Given - an ore smelting recipe listed after a recipe the server fails to convert
+        final FurnaceRecipe ironSmelting = mock(FurnaceRecipe.class);
+        when(ironSmelting.getResult()).thenReturn(new ItemStack(Material.IRON_INGOT));
+        when(ironSmelting.getInput()).thenReturn(new ItemStack(Material.IRON_ORE));
+        when(server.recipeIterator()).thenAnswer(invocation ->
+                new ThrowingRecipeIterator(Arrays.asList(null, ironSmelting)));
+        // And - the server's own lookup walks the same iterator, so it dies the same way
+        when(server.getRecipesFor(argThat(result -> result.getType() == Material.IRON_INGOT)))
+                .thenThrow(new AbstractMethodError("BrewingRecipe.toBukkitRecipe is abstract"));
+
+        // When - the smelting result is checked
+        final boolean smelted = ItemUtils.isSmelted(Material.IRON_INGOT);
+
+        // Then - the ore recipe is still found
+        assertThat(smelted).isTrue();
     }
 }

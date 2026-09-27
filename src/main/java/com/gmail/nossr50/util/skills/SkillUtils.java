@@ -19,6 +19,7 @@ import com.gmail.nossr50.util.ItemMetadataUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.RecipeUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
@@ -353,9 +354,10 @@ public final class SkillUtils {
 
         final ItemStack recipeItem = recipeMaterial != null ? new ItemStack(recipeMaterial) : null;
 
-        for (Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator();
+        for (final Iterator<Recipe> recipeIterator =
+                RecipeUtils.safeRecipeIterator(Bukkit.getServer(), mcMMO.p.getLogger());
                 recipeIterator.hasNext(); ) {
-            Recipe bukkitRecipe = recipeIterator.next();
+            final Recipe bukkitRecipe = recipeIterator.next();
 
             if (bukkitRecipe.getResult().getType() != itemMaterial) {
                 continue;

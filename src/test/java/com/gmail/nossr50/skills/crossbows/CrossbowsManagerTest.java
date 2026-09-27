@@ -287,6 +287,33 @@ class CrossbowsManagerTest extends MMOTestEnvironment {
                         .setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
             }
         }
+
+        /**
+         * Bukkit vectors mutate in place. The normal is the one that matters: if
+         * ProjectileUtils.getNormal ever hands out shared constants, a ricochet that
+         * scaled them would corrupt every later hit on that face.
+         */
+        @Test
+        void shouldNotMutateTheSuppliedVelocityOrNormal() {
+            // Given - explicit velocity and surface normal vectors
+            final Vector velocity = new Vector(4, -1, 0);
+            final Vector normal = new Vector(0, 1, 0);
+            when(originalArrow.getVelocity()).thenReturn(velocity);
+
+            try (final MockedStatic<ProjectileUtils> ignored = mockStatic(ProjectileUtils.class);
+                    final MockedStatic<CombatUtils> ignoredCombat =
+                            mockStatic(CombatUtils.class)) {
+                // When - the ricochet is handled
+                crossbowsManager.handleRicochet(mcMMO.p, originalArrow, normal);
+
+                // Then - the ricochet still happens with the reflected direction
+                verify(world).spawnArrow(eq(arrowLocation), eq(new Vector(4, 1, 0)), eq(1.0f),
+                        eq(1.0f));
+                // And - neither the arrow velocity nor the surface normal were mutated
+                assertThat(velocity).isEqualTo(new Vector(4, -1, 0));
+                assertThat(normal).isEqualTo(new Vector(0, 1, 0));
+            }
+        }
     }
 
     @Test

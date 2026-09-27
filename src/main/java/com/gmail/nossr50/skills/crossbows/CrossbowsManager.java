@@ -58,13 +58,12 @@ public class CrossbowsManager extends SkillManager {
 
         final ProjectileSource originalArrowShooter = originalArrow.getShooter();
         final Vector arrowInBlockVector = originalArrow.getVelocity();
-        final Vector reflectedDirection = arrowInBlockVector.subtract(
-                normal.multiply(2 * arrowInBlockVector.dot(normal)));
-        final Vector inverseNormal = normal.multiply(-1);
+        final Vector reflectedDirection = arrowInBlockVector.clone().subtract(
+                normal.clone().multiply(2 * arrowInBlockVector.dot(normal)));
 
         // Only glancing shots ricochet: a reflection within 45 degrees of the surface normal
         // means the arrow hit too squarely to bounce. Later bounces always ricochet.
-        if (bounceCount == 0 && arrowInBlockVector.angle(inverseNormal) < Math.PI / 4) {
+        if (bounceCount == 0 && reflectedDirection.angle(normal) < Math.PI / 4) {
             return;
         }
 

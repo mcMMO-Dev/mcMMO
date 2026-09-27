@@ -1,5 +1,12 @@
 package com.gmail.nossr50.database;
 
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_BERSERK;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.COOLDOWN_SPEARS;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.OVERHAUL_LAST_LOGIN;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.USERNAME_INDEX;
+import static com.gmail.nossr50.database.FlatFileDatabaseManager.UUID_INDEX;
+import static com.gmail.nossr50.database.UsernamePlaceholder.INVALID_OLD_USERNAME;
+import static com.gmail.nossr50.database.UsernamePlaceholder.LEGACY_FLATFILE_INVALID_OLD_USERNAME;
 import static com.gmail.nossr50.util.skills.SkillTools.isChildSkill;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,6 +30,7 @@ import static org.mockito.Mockito.when;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.database.flatfile.LeaderboardStatus;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.datatypes.database.PlayerNameAndUUID;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
@@ -40,8 +49,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -51,19 +64,28 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.logging.Filter;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -83,6 +105,8 @@ class FlatFileDatabaseManagerTest {
 
     private static File tempDir;
     private static final @NotNull Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final String EXISTING_PLAYER = "nossr50";
+    private static final UUID EXISTING_PLAYER_UUID = UUID.fromString(HEALTHY_DB_LINE_ONE_UUID_STR);
 
     private final long PURGE_TIME = 2_630_000_000L; // ~30 days in ms
 
@@ -381,14 +405,15 @@ class FlatFileDatabaseManagerTest {
         checkNewUserValues(playerProfile, startingLevel);
         checkNewUserValues(profileFromDisk, startingLevel);
 
-        // Given – add a few more new users (including a duplicate UUID)
+        // Given - add a few more new users, one reusing a stored UUID
         databaseManager.newUser("disco", new UUID(3, 3));
         databaseManager.newUser("dingus", new UUID(3, 4));
-        databaseManager.newUser("duped_dingus", new UUID(3, 4));
+        final var dupedProfile = databaseManager.newUser("duped_dingus", new UUID(3, 4));
 
-        // Then – there should be 5 lines (1 header + 4 players) in the DB file
+        // Then - the duplicate is refused, leaving 4 lines (1 header + 3 players) in the DB file
+        assertFalse(dupedProfile.isLoaded());
         final int lineCount = getSplitDataFromFile(databaseManager.getUsersFile()).size();
-        assertEquals(5, lineCount);
+        assertEquals(4, lineCount);
     }
 
     @Test
@@ -417,12 +442,24 @@ class FlatFileDatabaseManagerTest {
         checkNewUserValues(playerProfile, startingLevel);
         checkNewUserValues(profileFromDisk, startingLevel);
 
-        // Given – add more users (with duplicate UUID)
+        // Given - add more users, one reusing a stored UUID
         databaseManager.newUser("bidoof", new UUID(3, 3));
         databaseManager.newUser("derp", new UUID(3, 4));
-        databaseManager.newUser("pizza", new UUID(3, 4));
+        final var duplicateProfile = databaseManager.newUser("pizza", new UUID(3, 4));
 
-        final int originalLineCount = getSplitDataFromFile(databaseManager.getUsersFile()).size();
+        // Then - the duplicate is refused instead of appended
+        assertFalse(duplicateProfile.isLoaded());
+        final File usersFile = databaseManager.getUsersFile();
+        assertEquals(6, getSplitDataFromFile(usersFile).size());
+
+        // Given - a duplicate UUID row already in the file, as older versions could append
+        final String derpRow = java.nio.file.Files.readAllLines(usersFile.toPath()).stream()
+                .filter(row -> row.startsWith("derp:"))
+                .findFirst()
+                .orElseThrow();
+        java.nio.file.Files.writeString(usersFile.toPath(),
+                derpRow.replaceFirst("derp", "pizza") + "\n", StandardOpenOption.APPEND);
+        final int originalLineCount = getSplitDataFromFile(usersFile).size();
         assertEquals(7, originalLineCount);
 
         // When – run health checker to fix duplicates
@@ -1386,10 +1423,11 @@ class FlatFileDatabaseManagerTest {
     }
 
     @NotNull
-    private Player initMockPlayer(@NotNull String name, @NotNull UUID uuid) {
+    private static Player initMockPlayer(@NotNull String name, @NotNull UUID uuid) {
         Player mockPlayer = mock(Player.class);
         Mockito.when(mockPlayer.getName()).thenReturn(name);
         Mockito.when(mockPlayer.getUniqueId()).thenReturn(uuid);
+        Mockito.when(mockPlayer.isOnline()).thenReturn(true);
         return mockPlayer;
     }
 
@@ -1626,6 +1664,1177 @@ class FlatFileDatabaseManagerTest {
         databaseManager.saveUser(followerProfile);
 
         return databaseManager;
+    }
+
+    /**
+     * Every rewrite of mcmmo.users reads the whole file into memory first. Before these guards a
+     * read that failed partway fell through to the write and replaced the file with whatever had
+     * been buffered, so one I/O error during a purge could delete most of the database.
+     */
+    @Nested
+    class UsersFileFailures {
+        /** Runs one database operation and returns what it reports, for comparison. */
+        @FunctionalInterface
+        interface UsersFileOperation {
+            @Nullable Object runOn(@NotNull FlatFileDatabaseManager databaseManager);
+        }
+
+        static Stream<Arguments> operationsThatReadTheUsersFile() {
+            return Stream.of(
+                    Arguments.of("newUser(String, UUID)",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .newUser("newPlayer", randomUUID()).isLoaded(),
+                            false),
+                    Arguments.of("newUser(Player)",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .newUser(initMockPlayer("newPlayer", randomUUID())).isLoaded(),
+                            false),
+                    Arguments.of("purgePowerlessUsers",
+                            (UsersFileOperation) FlatFileDatabaseManager::purgePowerlessUsers, 0),
+                    Arguments.of("purgeOldUsers", (UsersFileOperation) databaseManager -> {
+                        databaseManager.purgeOldUsers();
+                        return null;
+                    }, null),
+                    Arguments.of("saveUser",
+                            (UsersFileOperation) databaseManager -> databaseManager.saveUser(
+                                    new PlayerProfile(EXISTING_PLAYER, randomUUID(), true, 0)),
+                            false),
+                    Arguments.of("saveUserUUID",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUID(EXISTING_PLAYER, randomUUID()),
+                            false),
+                    Arguments.of("saveUserUUIDs",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUIDs(new HashMap<>(
+                                            Map.of(EXISTING_PLAYER, randomUUID()))),
+                            false),
+                    Arguments.of("removeUser",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .removeUser(EXISTING_PLAYER, randomUUID()),
+                            false)
+            );
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("operationsThatReadTheUsersFile")
+        void readFailureShouldLeaveTheUsersFileUntouched(String operationName,
+                UsersFileOperation operation, @Nullable Object expectedResult)
+                throws IOException {
+            // Given - a populated users file whose second line cannot be read
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+            Mockito.doAnswer(invocation -> createFailingReader(usersFile, 2))
+                    .when(databaseManager).newBufferedReader();
+
+            // When - the operation runs
+            final Object result = operation.runOn(databaseManager);
+
+            // Then - it reports failure and the file is byte for byte what it was
+            assertThat(result).isEqualTo(expectedResult);
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+
+        /**
+         * The write reopens mcmmo.users in truncate mode. When that fails, the operation has
+         * changed nothing and must say so, or callers such as the UUID upgrade treat the batch
+         * as saved.
+         */
+        static Stream<Arguments> operationsThatRewriteTheUsersFile() {
+            return Stream.of(
+                    Arguments.of("purgePowerlessUsers",
+                            (UsersFileOperation) FlatFileDatabaseManager::purgePowerlessUsers, 0),
+                    Arguments.of("saveUser",
+                            (UsersFileOperation) databaseManager -> databaseManager.saveUser(
+                                    new PlayerProfile(EXISTING_PLAYER, randomUUID(), true, 0)),
+                            false),
+                    Arguments.of("saveUserUUID",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUID(EXISTING_PLAYER, randomUUID()),
+                            false),
+                    Arguments.of("saveUserUUIDs",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .saveUserUUIDs(new HashMap<>(
+                                            Map.of(EXISTING_PLAYER, randomUUID()))),
+                            false),
+                    Arguments.of("removeUser",
+                            (UsersFileOperation) databaseManager -> databaseManager
+                                    .removeUser(EXISTING_PLAYER, randomUUID()),
+                            false)
+            );
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("operationsThatRewriteTheUsersFile")
+        void writeFailureShouldBeReportedAsFailure(String operationName,
+                UsersFileOperation operation, @Nullable Object expectedResult)
+                throws IOException {
+            // Given - a users file, including a powerless player, that cannot be written
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            Mockito.doThrow(new IOException("Simulated full disk"))
+                    .when(databaseManager).newUsersFileWriter();
+
+            // When - the operation runs
+            final Object result = operation.runOn(databaseManager);
+
+            // Then - it reports that nothing was saved
+            assertThat(result).isEqualTo(expectedResult);
+        }
+
+        /**
+         * The startup health check rewrites the file only after it has flagged a bad row, so
+         * the seed data starts with one. Healthy seed data would pass without the guard.
+         */
+        @Test
+        void healthCheckShouldNotRewriteTheUsersFileWhenReadFails() throws IOException {
+            // Given - a users file with a flagged row followed by a line that cannot be read
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(badDatabaseData);
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+            Mockito.doAnswer(invocation -> createFailingReader(usersFile, 2))
+                    .when(databaseManager).newBufferedReader();
+
+            // When - the health check runs
+            final List<FlatFileDataFlag> flags = databaseManager.checkFileHealthAndStructure();
+
+            // Then - it reports nothing and the file is byte for byte what it was
+            assertThat(flags).isNull();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+    }
+
+    /**
+     * A player whose profile does not load is given a new one, and its first save overwrites
+     * their row in mcmmo.users with starting levels. That is only safe when the row really is
+     * missing; when the file cannot be read or the row cannot be parsed, the player stays
+     * unloaded and loading is retried.
+     */
+    @Nested
+    class FirstLoginProfiles {
+        /** Asks the database for a new player's profile, by either of the newUser overloads. */
+        @FunctionalInterface
+        interface NewUserRequest {
+            @NotNull PlayerProfile request(@NotNull FlatFileDatabaseManager databaseManager,
+                    @NotNull String playerName, @NotNull UUID uuid);
+        }
+
+        /** Rows the loader cannot parse. The startup health check resets these values to 0. */
+        static Stream<Arguments> rowsThatFailToLoad() {
+            return Stream.of(
+                    Arguments.of("a Berserk cooldown that is not a number",
+                            existingPlayerRowWith(COOLDOWN_BERSERK, "garbage")),
+                    Arguments.of("a Spears cooldown that is not a number",
+                            existingPlayerRowWith(COOLDOWN_SPEARS, "garbage"))
+            );
+        }
+
+        static Stream<Arguments> loadsOfTheExistingPlayer() {
+            return Stream.of(
+                    Arguments.of("by UUID and name",
+                            (Function<FlatFileDatabaseManager, PlayerProfile>) databaseManager ->
+                                    databaseManager.loadPlayerProfile(initMockPlayer(
+                                            EXISTING_PLAYER, EXISTING_PLAYER_UUID))),
+                    Arguments.of("by UUID",
+                            (Function<FlatFileDatabaseManager, PlayerProfile>) databaseManager ->
+                                    databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID))
+            );
+        }
+
+        static Stream<Arguments> brokenRowLoads() {
+            return rowsThatFailToLoad().flatMap(row -> loadsOfTheExistingPlayer().map(
+                    load -> Arguments.of(row.get()[0], row.get()[1], load.get()[0],
+                            load.get()[1])));
+        }
+
+        /** The error used to be swallowed, so the player reset with no trace of why. */
+        @ParameterizedTest(name = "{0}, loaded {2}")
+        @MethodSource("brokenRowLoads")
+        void rowThatFailsToLoadShouldBeUnloadedAndLogged(String rowProblem, String brokenRow,
+                String lookup, Function<FlatFileDatabaseManager, PlayerProfile> load)
+                throws IOException {
+            // Given - the player's row cannot be parsed
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{brokenRow, normalDatabaseData[1]}, logRecords.newLogger());
+
+            // When - their profile is loaded
+            final PlayerProfile profile = load.apply(databaseManager);
+
+            // Then - it is not loaded, and the log names them
+            assertThat(profile.isLoaded()).isFalse();
+            assertThat(logRecords.messagesAt(Level.SEVERE))
+                    .anySatisfy(message -> assertThat(message).contains(EXISTING_PLAYER)
+                            .contains(HEALTHY_DB_LINE_ONE_UUID_STR));
+        }
+
+        /**
+         * The login retries a failed load for as long as the player stays online, and plugins
+         * may look the player up repeatedly, so the error is reported once.
+         */
+        @Test
+        void rowThatFailsToLoadShouldBeLoggedOnce() throws IOException {
+            // Given - the player's row cannot be parsed
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{existingPlayerRowWith(COOLDOWN_BERSERK, "garbage")},
+                    logRecords.newLogger());
+            final Player player = initMockPlayer(EXISTING_PLAYER, EXISTING_PLAYER_UUID);
+
+            // When - their profile is loaded several times, by login retries and a UUID lookup
+            databaseManager.loadPlayerProfile(player);
+            databaseManager.loadPlayerProfile(player);
+            databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID);
+
+            // Then - one error names them
+            assertThat(logRecords.messagesAt(Level.SEVERE))
+                    .filteredOn(message -> message.contains(HEALTHY_DB_LINE_ONE_UUID_STR))
+                    .hasSize(1);
+        }
+
+        /**
+         * A row from before newer skills existed is padded with zeros by the startup health
+         * check. Loading it the same way means the player does not have to wait for a restart.
+         */
+        @ParameterizedTest(name = "loaded {0}")
+        @MethodSource("loadsOfTheExistingPlayer")
+        void rowFromAnOlderMcMMOShouldLoadWithTheMissingColumnsAtZero(String lookup,
+                Function<FlatFileDatabaseManager, PlayerProfile> load) throws IOException {
+            // Given - the player's row ends after the last login column
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowCutAfter(OVERHAUL_LAST_LOGIN + 1)});
+
+            // When - their profile is loaded
+            final PlayerProfile profile = load.apply(databaseManager);
+
+            // Then - the stored values load, and the missing skills start at zero
+            assertThat(profile.isLoaded()).isTrue();
+            assertThat(profile.getSkillLevel(PrimarySkillType.MINING)).isEqualTo(1);
+            assertThat(profile.getSkillXpLevel(PrimarySkillType.MINING)).isEqualTo(10);
+            assertThat(profile.getSkillLevel(PrimarySkillType.CROSSBOWS)).isZero();
+            assertThat(profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS)).isZero();
+        }
+
+        @ParameterizedTest(name = "loaded {0}")
+        @MethodSource("loadsOfTheExistingPlayer")
+        void loadShouldUseALaterRowForTheSamePlayerWhenTheFirstIsBroken(String lookup,
+                Function<FlatFileDatabaseManager, PlayerProfile> load) throws IOException {
+            // Given - a broken row for the player, followed by a good one
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(COOLDOWN_BERSERK, "garbage"), normalDatabaseData[0]});
+
+            // When - their profile is loaded
+            final PlayerProfile profile = load.apply(databaseManager);
+
+            // Then - the good row is used
+            assertThat(profile.isLoaded()).isTrue();
+            assertThat(profile.getSkillLevel(PrimarySkillType.MINING)).isEqualTo(1);
+        }
+
+        /** Only the player's own row is parsed, so other broken rows cannot hold them up. */
+        @Test
+        void otherBrokenRowsShouldNotStopAPlayerLoading() throws IOException {
+            // Given - another player's broken row and a row with a malformed UUID come first
+            final RecordingHandler logRecords = new RecordingHandler();
+            final String otherPlayersBrokenRow = normalDatabaseData[1].replace(":1617583171:",
+                    ":garbage:");
+            final String malformedUuidRow = normalDatabaseData[2].replace(
+                    "e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c", "not-a-uuid");
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    otherPlayersBrokenRow, malformedUuidRow, normalDatabaseData[0]},
+                    logRecords.newLogger());
+
+            // When - the player's profile is loaded
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(
+                    initMockPlayer(EXISTING_PLAYER, EXISTING_PLAYER_UUID));
+
+            // Then - it loads, and nothing is reported
+            assertThat(profile.isLoaded()).isTrue();
+            assertThat(logRecords.messagesAt(Level.SEVERE)).isEmpty();
+        }
+
+        static Stream<Arguments> newUserRequests() {
+            return Stream.of(
+                    Arguments.of("newUser(Player)",
+                            (NewUserRequest) (databaseManager, playerName, uuid) ->
+                                    databaseManager.newUser(initMockPlayer(playerName, uuid))),
+                    Arguments.of("newUser(String, UUID)",
+                            (NewUserRequest) (databaseManager, playerName, uuid) ->
+                                    databaseManager.newUser(playerName, uuid))
+            );
+        }
+
+        static Stream<Arguments> storedRowsOfTheExistingPlayer() {
+            return Stream.of(
+                    Arguments.of("a row that loads", normalDatabaseData[0]),
+                    Arguments.of("a row with the UUID in capitals",
+                            existingPlayerRowWith(UUID_INDEX,
+                                    HEALTHY_DB_LINE_ONE_UUID_STR.toUpperCase(Locale.ROOT))),
+                    Arguments.of("a row that fails to load",
+                            existingPlayerRowWith(COOLDOWN_BERSERK, "garbage"))
+            );
+        }
+
+        static Stream<Arguments> newUserRequestsForStoredRows() {
+            return newUserRequests().flatMap(request -> storedRowsOfTheExistingPlayer().map(
+                    row -> Arguments.of(request.get()[0], request.get()[1], row.get()[0],
+                            row.get()[1])));
+        }
+
+        /**
+         * A new profile for a stored player would be saved over their row. newUser(Player) is
+         * reached when their load failed, and both overloads are public API.
+         */
+        @ParameterizedTest(name = "{0}, {2}")
+        @MethodSource("newUserRequestsForStoredRows")
+        void newUserShouldNotStartOverAStoredPlayer(String requestName, NewUserRequest newUser,
+                String rowDescription, String storedRow) throws IOException {
+            // Given - the player has a row
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{storedRow, normalDatabaseData[1]});
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - a new profile is requested for them
+            final PlayerProfile newProfile = newUser.request(databaseManager, EXISTING_PLAYER,
+                    EXISTING_PLAYER_UUID);
+
+            // Then - it is not loaded, and no second row was added for them
+            assertThat(newProfile.isLoaded()).isFalse();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+
+        /** A player who has never joined is not in the file, and starts fresh. */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("newUserRequests")
+        void newUserShouldStartANewPlayerFresh(String requestName, NewUserRequest newUser)
+                throws IOException {
+            // Given - a users file without the player
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+
+            // When - a new profile is requested for them
+            final PlayerProfile newProfile = newUser.request(databaseManager, "newPlayer",
+                    randomUUID());
+
+            // Then - it is loaded at the starting level
+            assertThat(newProfile.isLoaded()).isTrue();
+            assertThat(newProfile.getSkillLevel(PrimarySkillType.MINING)).isZero();
+        }
+
+        /**
+         * Names change hands, so a stored name alone does not block a new player. Once they are
+         * saved the name finds them, and the player who had it keeps their data under the
+         * placeholder.
+         */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("newUserRequests")
+        void newUserShouldStartFreshAndTakeTheNameWhenOnlyTheNameIsTaken(String requestName,
+                NewUserRequest newUser) throws IOException {
+            // Given - a users file with a different player under the same name
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final UUID newOwnerUuid = randomUUID();
+
+            // When - a new profile is requested for the new owner of the name, and saved
+            final PlayerProfile newProfile = newUser.request(databaseManager, EXISTING_PLAYER,
+                    newOwnerUuid);
+            final boolean saved = databaseManager.saveUser(newProfile);
+
+            // Then - it is loaded and saved, and the name finds the new owner
+            assertThat(newProfile.isLoaded()).isTrue();
+            assertThat(saved).isTrue();
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER).getUniqueId())
+                    .isEqualTo(newOwnerUuid);
+
+            // And - the previous owner keeps their data under the placeholder
+            assertThat(usersFileLines(databaseManager))
+                    .contains(existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME));
+        }
+
+        /**
+         * newUser(String, UUID) stores the player at once, so it takes the name then, as SQL
+         * does. Leaving the name on both rows let it find the previous owner, and the startup
+         * check renamed the new player instead.
+         */
+        @Test
+        void newUserByNameShouldTakeTheNameFromTheRowHoldingIt() throws IOException {
+            // Given - a stored player
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final UUID newOwnerUuid = randomUUID();
+
+            // When - a new player is added under their name in other capitals
+            final PlayerProfile newProfile = databaseManager.newUser("NOSSR50", newOwnerUuid);
+
+            // Then - the name finds the new player
+            assertThat(newProfile.isLoaded()).isTrue();
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER).getUniqueId())
+                    .isEqualTo(newOwnerUuid);
+
+            // And - the previous owner keeps their data under the placeholder
+            assertThat(usersFileLines(databaseManager))
+                    .contains(existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME));
+        }
+
+        /**
+         * FlatFile only stores players with a UUID. Adding one without, as another plugin might,
+         * read the file until it failed on the first row.
+         */
+        @Test
+        void newUserWithoutAUuidShouldNotBeAdded() throws IOException {
+            // Given - a users file with a player holding a name
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData, logRecords.newLogger());
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - a player without a UUID is added under that name
+            final PlayerProfile newProfile = databaseManager.newUser(EXISTING_PLAYER, null);
+
+            // Then - nothing is written, and the profile is unloaded so nothing saves it
+            assertThat(newProfile.isLoaded()).isFalse();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+
+            // And - the log names the player who was not added, and why
+            assertThat(logRecords.messagesAt(Level.WARNING)).singleElement()
+                    .satisfies(message -> assertThat(message)
+                            .contains("Not adding " + EXISTING_PLAYER + ",")
+                            .contains("UUID"));
+        }
+
+        /** Lines starting with # are comments to every reader of the file. */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("newUserRequests")
+        void newUserShouldIgnoreACommentedOutRow(String requestName, NewUserRequest newUser)
+                throws IOException {
+            // Given - the player's row is commented out
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    "#" + normalDatabaseData[0], normalDatabaseData[1]});
+
+            // When - a new profile is requested for them
+            final PlayerProfile newProfile = newUser.request(databaseManager, EXISTING_PLAYER,
+                    EXISTING_PLAYER_UUID);
+
+            // Then - it is loaded
+            assertThat(newProfile.isLoaded()).isTrue();
+        }
+    }
+
+    /**
+     * Rows are identified by UUID, since names change hands. A profile saved under a name that
+     * belongs to someone else must never replace their row, only take the name from it.
+     */
+    @Nested
+    class SavingByUuid {
+        private static final int SAVED_MINING_LEVEL = 7;
+
+        /** Rows that have no UUID to identify them by. */
+        static Stream<Arguments> rowsWithoutAUuid() {
+            return Stream.of(
+                    Arguments.of("an empty UUID", existingPlayerRowWith(UUID_INDEX, "")),
+                    Arguments.of("a NULL UUID", existingPlayerRowWith(UUID_INDEX, "NULL")),
+                    Arguments.of("a malformed UUID",
+                            existingPlayerRowWith(UUID_INDEX, "not-a-uuid")),
+                    Arguments.of("no UUID column", existingPlayerRowCutAfter(UUID_INDEX))
+            );
+        }
+
+        private static PlayerProfile profileWithSavedProgress(String playerName,
+                @Nullable UUID uuid) {
+            final PlayerProfile profile = new PlayerProfile(playerName, uuid, true, 0);
+            profile.modifySkill(PrimarySkillType.MINING, SAVED_MINING_LEVEL);
+            return profile;
+        }
+
+        /**
+         * The first save of a new player who took a stored name used to wipe the old owner.
+         * A name belongs to one player at a time, so the old owner keeps their progress and
+         * gives up only the name. Names are matched ignoring case, as Minecraft does.
+         */
+        @ParameterizedTest(name = "new owner saved as {0}")
+        @ValueSource(strings = {EXISTING_PLAYER, "NOSSR50"})
+        void newOwnerOfANameShouldTakeOnlyTheNameFromThePreviousOwner(String newOwnerName)
+                throws IOException {
+            // Given - a stored player, and a different player now using their name
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final UUID newOwnerUuid = randomUUID();
+
+            // When - the new owner is saved
+            final boolean saved = databaseManager.saveUser(
+                    profileWithSavedProgress(newOwnerName, newOwnerUuid));
+
+            // Then - the previous owner's row is kept, with the placeholder for a name
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager))
+                    .hasSize(normalDatabaseData.length + 1)
+                    .contains(existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME),
+                            normalDatabaseData[1], normalDatabaseData[2]);
+
+            // And - the name now finds the new owner, with their own progress
+            final PlayerProfile foundByName = databaseManager.loadPlayerProfile(EXISTING_PLAYER);
+            assertThat(foundByName.getUniqueId()).isEqualTo(newOwnerUuid);
+            assertThat(foundByName.getSkillLevel(PrimarySkillType.MINING))
+                    .isEqualTo(SAVED_MINING_LEVEL);
+        }
+
+        /**
+         * Offline-mode servers give "Steve" and "steve" different UUIDs, and both can play.
+         * Names are matched ignoring case, so each takes the name from the other when saved,
+         * and neither loses their progress.
+         */
+        @Test
+        void caseVariantNamesShouldTakeTheNameInTurnWithoutLosingProgress() throws IOException {
+            // Given - a player stored as Steve
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(USERNAME_INDEX, "Steve")});
+            final UUID lowerCaseSteveUuid = randomUUID();
+
+            // When - steve is saved
+            final boolean lowerCaseSaved = databaseManager.saveUser(
+                    profileWithSavedProgress("steve", lowerCaseSteveUuid));
+
+            // Then - steve has the name, and Steve keeps their progress under the placeholder
+            assertThat(lowerCaseSaved).isTrue();
+            assertThat(databaseManager.loadPlayerProfile(lowerCaseSteveUuid).getPlayerName())
+                    .isEqualTo("steve");
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID))
+                    .extracting(PlayerProfile::getPlayerName,
+                            profile -> profile.getSkillLevel(PrimarySkillType.MINING))
+                    .containsExactly(INVALID_OLD_USERNAME, 1);
+
+            // When - Steve logs in and is saved
+            final boolean upperCaseSaved = databaseManager.saveUser(databaseManager
+                    .loadPlayerProfile(initMockPlayer("Steve", EXISTING_PLAYER_UUID)));
+
+            // Then - Steve has the name back, and steve keeps their progress under the
+            // placeholder
+            assertThat(upperCaseSaved).isTrue();
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID).getPlayerName())
+                    .isEqualTo("Steve");
+            assertThat(databaseManager.loadPlayerProfile(lowerCaseSteveUuid))
+                    .extracting(PlayerProfile::getPlayerName,
+                            profile -> profile.getSkillLevel(PrimarySkillType.MINING))
+                    .containsExactly(INVALID_OLD_USERNAME, SAVED_MINING_LEVEL);
+        }
+
+        /**
+         * A player who lost their name can come back under a name another stored player now
+         * holds. Their own row takes it, with their progress, and the other player keeps theirs
+         * under the placeholder.
+         */
+        @Test
+        void playerUnderThePlaceholderShouldTakeANameBackFromAnotherRow() throws IOException {
+            // Given - a player who lost their name, and another player stored under the name
+            // they come back with
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME),
+                    normalDatabaseData[1]});
+
+            // When - they log in under that name and are saved
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(
+                    initMockPlayer("mrfloris", EXISTING_PLAYER_UUID));
+            profile.modifySkill(PrimarySkillType.MINING, SAVED_MINING_LEVEL);
+            final boolean saved = databaseManager.saveUser(profile);
+
+            // Then - their row has the name and their progress
+            assertThat(saved).isTrue();
+            final PlayerProfile foundByName = databaseManager.loadPlayerProfile("mrfloris");
+            assertThat(foundByName.getUniqueId()).isEqualTo(EXISTING_PLAYER_UUID);
+            assertThat(foundByName.getSkillLevel(PrimarySkillType.MINING))
+                    .isEqualTo(SAVED_MINING_LEVEL);
+
+            // And - the other player is left under the placeholder with their own progress
+            assertThat(usersFileLines(databaseManager))
+                    .contains(rowWithName(normalDatabaseData[1], INVALID_OLD_USERNAME));
+        }
+
+        static Stream<Arguments> playersWhoAreNotOnline() {
+            final OfflinePlayer offlinePlayer = mock(OfflinePlayer.class);
+            when(offlinePlayer.getName()).thenReturn("mrfloris");
+            when(offlinePlayer.getUniqueId()).thenReturn(EXISTING_PLAYER_UUID);
+            final Player playerWhoLoggedOut = initMockPlayer("mrfloris", EXISTING_PLAYER_UUID);
+            when(playerWhoLoggedOut.isOnline()).thenReturn(false);
+            return Stream.of(
+                    Arguments.of("an offline player", offlinePlayer),
+                    Arguments.of("a player who logged out", playerWhoLoggedOut)
+            );
+        }
+
+        /**
+         * Only a player who is online is known to go by the name they are loaded under. An
+         * offline player carries the name they last joined with, so saving them under it wrote
+         * over the row of the player holding it now.
+         */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("playersWhoAreNotOnline")
+        void playerWhoIsNotOnlineShouldNotTakeTheirOldNameBack(String description,
+                OfflinePlayer nameLostPlayer) throws IOException {
+            // Given - a player who lost their name, and the player holding it now
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME),
+                    normalDatabaseData[1]});
+
+            // When - the player who lost it is loaded under it without being online, and saved
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(nameLostPlayer);
+            profile.modifySkill(PrimarySkillType.MINING, SAVED_MINING_LEVEL);
+            final boolean saved = databaseManager.saveUser(profile);
+
+            // Then - the player holding the name keeps it
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager)).contains(normalDatabaseData[1]);
+
+            // And - the player who lost it keeps the placeholder, with their progress
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID))
+                    .extracting(PlayerProfile::getPlayerName,
+                            loaded -> loaded.getSkillLevel(PrimarySkillType.MINING))
+                    .containsExactly(INVALID_OLD_USERNAME, SAVED_MINING_LEVEL);
+        }
+
+        /**
+         * The previous owner's row is found by UUID when they log in under their new name, and
+         * losing the name is expected, so it is not logged as a problem.
+         */
+        @Test
+        void previousOwnerOfANameShouldGetTheirProgressUnderTheirNewName() throws IOException {
+            // Given - a stored player whose name a new player has taken and saved under
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData, logRecords.newLogger());
+            databaseManager.saveUser(profileWithSavedProgress(EXISTING_PLAYER, randomUUID()));
+
+            // When - the previous owner logs in under a new name
+            final PlayerProfile previousOwner = databaseManager.loadPlayerProfile(
+                    initMockPlayer("nossr51", EXISTING_PLAYER_UUID));
+
+            // Then - they have their progress under the new name
+            assertThat(previousOwner.isLoaded()).isTrue();
+            assertThat(previousOwner.getPlayerName()).isEqualTo("nossr51");
+            assertThat(previousOwner.getSkillLevel(PrimarySkillType.MINING)).isEqualTo(1);
+
+            // And - nothing is logged about the name that was in their row
+            assertThat(logRecords.messagesAt(Level.WARNING)).isEmpty();
+        }
+
+        static Stream<Arguments> storedNamesOfAPlayerLoggingInUnderANewName() {
+            return Stream.of(
+                    Arguments.of("the placeholder", INVALID_OLD_USERNAME),
+                    Arguments.of("their old name", EXISTING_PLAYER)
+            );
+        }
+
+        /**
+         * mcMMO only saves a profile that changed, so a name taken at login has to count as a
+         * change. Otherwise the row kept its stored name, the placeholder included, for as long
+         * as the player gained nothing.
+         */
+        @ParameterizedTest(name = "stored under {0}")
+        @MethodSource("storedNamesOfAPlayerLoggingInUnderANewName")
+        void nameTakenAtLoginShouldBeWrittenByTheNextSave(String description, String storedName)
+                throws IOException {
+            // Given - a stored player, who logs in under a new name
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(USERNAME_INDEX, storedName)});
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(
+                    initMockPlayer("nossr51", EXISTING_PLAYER_UUID));
+
+            // When - their profile is saved without any other change
+            saveTheWayMcMMODoes(databaseManager, profile);
+
+            // Then - their row carries the new name
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID).getPlayerName())
+                    .isEqualTo("nossr51");
+        }
+
+        /** Each save rewrites mcmmo.users, so a login that changes nothing must not cause one. */
+        @Test
+        void loginUnderTheStoredNameShouldNotBeSavedWithoutAChange() throws IOException {
+            // Given - a stored player, who logs in under the name stored for them
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(
+                    initMockPlayer(EXISTING_PLAYER, EXISTING_PLAYER_UUID));
+
+            // When - their profile is saved without any change
+            saveTheWayMcMMODoes(databaseManager, profile);
+
+            // Then - nothing is written
+            verify(databaseManager, never()).saveUser(any(PlayerProfile.class));
+        }
+
+        /** Saves the way PlayerProfile.save does, which skips a profile that has not changed. */
+        private static void saveTheWayMcMMODoes(FlatFileDatabaseManager databaseManager,
+                PlayerProfile profile) {
+            try (MockedStatic<mcMMO> mockedMcMMO = Mockito.mockStatic(mcMMO.class)) {
+                mockedMcMMO.when(mcMMO::getDatabaseManager).thenReturn(databaseManager);
+                profile.save(true);
+            }
+        }
+
+        /**
+         * No player holds the placeholder, so a profile saved under it, such as a player who
+         * lost their name loaded by UUID, has no name to take from anyone.
+         */
+        @Test
+        void profileUnderThePlaceholderShouldLeaveOtherPlaceholderRowsAlone() throws IOException {
+            // Given - two players who lost their names before the spelling changed
+            final String otherPlayerRow = rowWithName(normalDatabaseData[1],
+                    LEGACY_FLATFILE_INVALID_OLD_USERNAME);
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(USERNAME_INDEX, LEGACY_FLATFILE_INVALID_OLD_USERNAME),
+                    otherPlayerRow});
+            final PlayerProfile loadedByUuid = databaseManager.loadPlayerProfile(
+                    EXISTING_PLAYER_UUID);
+            loadedByUuid.modifySkill(PrimarySkillType.MINING, SAVED_MINING_LEVEL);
+
+            // When - one of them is saved under the name in their row
+            final boolean saved = databaseManager.saveUser(loadedByUuid);
+
+            // Then - the other one's row is untouched
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager)).hasSize(2).contains(otherPlayerRow);
+        }
+
+        @Test
+        void renamedPlayerShouldSaveOverTheirOwnRow() throws IOException {
+            // Given - a stored player who has changed their name since
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    normalDatabaseData);
+            final PlayerProfile renamedPlayer = databaseManager.loadPlayerProfile(
+                    initMockPlayer("nossr51", EXISTING_PLAYER_UUID));
+            renamedPlayer.modifySkill(PrimarySkillType.MINING, SAVED_MINING_LEVEL);
+
+            // When - they are saved
+            final boolean saved = databaseManager.saveUser(renamedPlayer);
+
+            // Then - their row carries the new name and progress, and no row was added
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager)).hasSameSizeAs(normalDatabaseData)
+                    .filteredOn(line -> line.contains(HEALTHY_DB_LINE_ONE_UUID_STR))
+                    .singleElement()
+                    .satisfies(line -> assertThat(line).startsWith("nossr51:"));
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID)
+                    .getSkillLevel(PrimarySkillType.MINING)).isEqualTo(SAVED_MINING_LEVEL);
+        }
+
+        /** Loading parses the UUID, so saving has to match it the same way. */
+        @Test
+        void playerShouldSaveOverTheirRowWhenItsUuidIsInCapitals() throws IOException {
+            // Given - the player's row has their UUID in capitals
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    existingPlayerRowWith(UUID_INDEX,
+                            HEALTHY_DB_LINE_ONE_UUID_STR.toUpperCase(Locale.ROOT))});
+
+            // When - they are saved
+            final boolean saved = databaseManager.saveUser(
+                    profileWithSavedProgress(EXISTING_PLAYER, EXISTING_PLAYER_UUID));
+
+            // Then - their row is replaced rather than a second one added
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager)).hasSize(1);
+            assertThat(databaseManager.loadPlayerProfile(EXISTING_PLAYER_UUID)
+                    .getSkillLevel(PrimarySkillType.MINING)).isEqualTo(SAVED_MINING_LEVEL);
+        }
+
+        /** Every row with the UUID is replaced, so a stale duplicate cannot load later. */
+        @Test
+        void playerShouldSaveOverEveryRowWithTheirUuid() throws IOException {
+            // Given - two rows with the player's UUID, around another player's row
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    normalDatabaseData[0], normalDatabaseData[1],
+                    existingPlayerRowWith(COOLDOWN_BERSERK, "garbage")});
+
+            // When - they are saved
+            final boolean saved = databaseManager.saveUser(
+                    profileWithSavedProgress(EXISTING_PLAYER, EXISTING_PLAYER_UUID));
+
+            // Then - both of their rows hold the saved progress, and the other row is kept
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager)).hasSize(3)
+                    .contains(normalDatabaseData[1])
+                    .filteredOn(line -> line.contains(HEALTHY_DB_LINE_ONE_UUID_STR))
+                    .hasSize(2)
+                    .allSatisfy(line -> assertThat(line)
+                            .startsWith(EXISTING_PLAYER + ":" + SAVED_MINING_LEVEL + ":"));
+        }
+
+        /**
+         * FlatFile only keeps players with a UUID, so a row without one is a leftover that
+         * nothing ties to a player. It gives up the name like any other row holding it, or a
+         * lookup by the name could find it instead of the player.
+         */
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("rowsWithoutAUuid")
+        void playerShouldTakeTheirNameFromARowWithoutAUuid(String rowProblem,
+                String rowWithoutUuid) throws IOException {
+            // Given - a row with the player's name but no UUID, ahead of other rows
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    new String[]{rowWithoutUuid, normalDatabaseData[1]});
+            final UUID playerUuid = randomUUID();
+
+            // When - the player is saved
+            final boolean saved = databaseManager.saveUser(
+                    profileWithSavedProgress(EXISTING_PLAYER, playerUuid));
+
+            // Then - the name finds the player, with their progress
+            assertThat(saved).isTrue();
+            final PlayerProfile foundByName = databaseManager.loadPlayerProfile(EXISTING_PLAYER);
+            assertThat(foundByName.getUniqueId()).isEqualTo(playerUuid);
+            assertThat(foundByName.getSkillLevel(PrimarySkillType.MINING))
+                    .isEqualTo(SAVED_MINING_LEVEL);
+
+            // And - the row without a UUID is kept under the placeholder
+            assertThat(usersFileLines(databaseManager)).hasSize(3)
+                    .contains(rowWithName(rowWithoutUuid, INVALID_OLD_USERNAME));
+        }
+
+        /** A users file, and the name a profile without a UUID is saved under. */
+        static Stream<Arguments> namesForAProfileWithoutAUuid() {
+            return Stream.of(
+                    Arguments.of("a free name", normalDatabaseData, "newPlayer"),
+                    Arguments.of("a player's name", normalDatabaseData, EXISTING_PLAYER),
+                    Arguments.of("a player's name in other capitals", normalDatabaseData,
+                            "NOSSR50"),
+                    Arguments.of("the name of a row without a UUID",
+                            new String[]{existingPlayerRowWith(UUID_INDEX, "NULL"),
+                                    normalDatabaseData[1]},
+                            EXISTING_PLAYER),
+                    Arguments.of("the placeholder", new String[]{
+                            existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME)},
+                            INVALID_OLD_USERNAME)
+            );
+        }
+
+        /**
+         * FlatFile only stores players with a UUID, and drops rows without one when it starts.
+         * Nothing ties a profile without one to a player, so it is refused instead of written
+         * over whoever holds its name or kept until the next start.
+         */
+        @ParameterizedTest(name = "saved under {0}")
+        @MethodSource("namesForAProfileWithoutAUuid")
+        void profileWithoutAUuidShouldNotBeSaved(String nameDescription, String[] seedData,
+                String savedName) throws IOException {
+            // Given - a users file, and a profile without a UUID
+            final RecordingHandler logRecords = new RecordingHandler();
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(seedData,
+                    logRecords.newLogger());
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - the profile is saved
+            final boolean saved = databaseManager.saveUser(
+                    profileWithSavedProgress(savedName, null));
+
+            // Then - nothing is written, and the log names the profile that was not saved
+            assertThat(saved).isFalse();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+            assertThat(logRecords.messagesAt(Level.WARNING)).singleElement()
+                    .satisfies(message -> assertThat(message)
+                            .contains("Not saving " + savedName + ",")
+                            .contains("UUID"));
+        }
+    }
+
+    /**
+     * Players who lost their name to someone else hold the placeholder instead, under the
+     * current spelling or the one FlatFile used to write. It is nobody's name, so a lookup by it
+     * must find no one: a removal by it would otherwise delete whichever of them comes first.
+     */
+    @Nested
+    class PlaceholderNames {
+        private static final String NAME_LOST_ROW =
+                existingPlayerRowWith(USERNAME_INDEX, INVALID_OLD_USERNAME);
+        private static final String NAME_LOST_BEFORE_THE_SPELLING_CHANGED_ROW =
+                rowWithName(normalDatabaseData[1], LEGACY_FLATFILE_INVALID_OLD_USERNAME);
+        private static final String PLAYER_WITH_A_NAME = "powerless";
+        /** A row without a UUID, which the startup check drops. */
+        private static final String NAME_LOST_WITHOUT_A_UUID_ROW =
+                rowWithName(existingPlayerRowWith(UUID_INDEX, ""), INVALID_OLD_USERNAME);
+        private static final int SAVED_MINING_LEVEL = 7;
+
+        static Stream<String> placeholderSpellings() {
+            return UsernamePlaceholderTest.placeholderSpellings();
+        }
+
+        private FlatFileDatabaseManager databaseWithPlayersWhoLostTheirNames()
+                throws IOException {
+            return spyOnSeededDatabase(new String[]{NAME_LOST_ROW,
+                    NAME_LOST_BEFORE_THE_SPELLING_CHANGED_ROW, normalDatabaseData[2]});
+        }
+
+        @ParameterizedTest(name = "looked up as {0}")
+        @MethodSource("placeholderSpellings")
+        void loadingByThePlaceholderShouldFindNoOne(String placeholder) throws IOException {
+            // Given - players who lost their names, under both spellings
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+
+            // When - a profile is loaded by the placeholder
+            final PlayerProfile profile = databaseManager.loadPlayerProfile(placeholder);
+
+            // Then - no one is found
+            assertThat(profile.isLoaded()).isFalse();
+        }
+
+        /**
+         * The placeholder is nobody's name, so a player added under it takes it from no one. The
+         * rows under it keep the spelling they were stored with.
+         */
+        @ParameterizedTest(name = "added as {0}")
+        @MethodSource("placeholderSpellings")
+        void newUserUnderThePlaceholderShouldTakeNoOnesName(String placeholder)
+                throws IOException {
+            // Given - players who lost their names, under both spellings
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+
+            // When - a player is added under the placeholder
+            final PlayerProfile newProfile = databaseManager.newUser(placeholder, randomUUID());
+
+            // Then - they are added, and the players who lost their names are untouched
+            assertThat(newProfile.isLoaded()).isTrue();
+            assertThat(usersFileLines(databaseManager)).contains(NAME_LOST_ROW,
+                    NAME_LOST_BEFORE_THE_SPELLING_CHANGED_ROW);
+        }
+
+        @ParameterizedTest(name = "removed as {0}")
+        @MethodSource("placeholderSpellings")
+        void removingByThePlaceholderShouldRemoveNoOne(String placeholder) throws IOException {
+            // Given - players who lost their names, under both spellings
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - a player is removed by the placeholder
+            final boolean removed = databaseManager.removeUser(placeholder, null);
+
+            // Then - no one is removed
+            assertThat(removed).isFalse();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+
+        @ParameterizedTest(name = "ranked as {0}")
+        @MethodSource("placeholderSpellings")
+        void rankingThePlaceholderShouldRankNoOne(String placeholder) throws IOException {
+            // Given - players who lost their names, under both spellings
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+
+            // When - ranks are read for the placeholder
+            final Map<PrimarySkillType, Integer> ranks = databaseManager.readRank(placeholder);
+
+            // Then - there are none
+            assertThat(ranks).isEmpty();
+        }
+
+        @ParameterizedTest(name = "saved as {0}")
+        @MethodSource("placeholderSpellings")
+        void savingAUuidForThePlaceholderShouldChangeNoRow(String placeholder)
+                throws IOException {
+            // Given - players who lost their names, under both spellings
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - a UUID is saved for the placeholder
+            final boolean saved = databaseManager.saveUserUUID(placeholder, randomUUID());
+
+            // Then - no row takes it
+            assertThat(saved).isFalse();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+
+        /** Bulk saves match names exactly, so only the spellings stored in rows can match one. */
+        @ParameterizedTest(name = "saved as {0}")
+        @ValueSource(strings = {INVALID_OLD_USERNAME, LEGACY_FLATFILE_INVALID_OLD_USERNAME})
+        void savingUuidsInBulkShouldSkipThePlaceholder(String placeholder) throws IOException {
+            // Given - players who lost their names, and a player with a name
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+            final UUID fetchedUuid = randomUUID();
+
+            // When - UUIDs are saved for the placeholder and the player with a name
+            final boolean saved = databaseManager.saveUserUUIDs(new HashMap<>(Map.of(
+                    placeholder, randomUUID(), PLAYER_WITH_A_NAME, fetchedUuid)));
+
+            // Then - only the player with a name gets theirs
+            assertThat(saved).isTrue();
+            assertThat(usersFileLines(databaseManager)).hasSize(3)
+                    .contains(NAME_LOST_ROW, NAME_LOST_BEFORE_THE_SPELLING_CHANGED_ROW);
+            assertThat(databaseManager.loadPlayerProfile(fetchedUuid).getPlayerName())
+                    .isEqualTo(PLAYER_WITH_A_NAME);
+        }
+
+        /**
+         * The UUID is all that tells apart players who lost their names. A comment line is not
+         * a player.
+         */
+        @Test
+        void storedUsersShouldListEachPlayerWithTheUuidInTheirRow() throws IOException {
+            // Given - players who lost their names, one in a row without a UUID, and a player
+            // with a name, after a comment line
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(new String[]{
+                    "# mcMMO Database created on 09/23/2026 18:00", NAME_LOST_ROW,
+                    NAME_LOST_BEFORE_THE_SPELLING_CHANGED_ROW, NAME_LOST_WITHOUT_A_UUID_ROW,
+                    normalDatabaseData[2]});
+
+            // When - the stored users are listed with their UUIDs
+            final List<PlayerNameAndUUID> storedUsers = databaseManager.getStoredUsersWithUUIDs();
+
+            // Then - each row is listed once, with the UUID stored in it
+            assertThat(storedUsers).containsExactly(
+                    new PlayerNameAndUUID(INVALID_OLD_USERNAME, EXISTING_PLAYER_UUID),
+                    new PlayerNameAndUUID(LEGACY_FLATFILE_INVALID_OLD_USERNAME,
+                            UUID.fromString("631e3896-da2a-4077-974b-d047859d76bc")),
+                    new PlayerNameAndUUID(INVALID_OLD_USERNAME, null),
+                    new PlayerNameAndUUID(PLAYER_WITH_A_NAME,
+                            UUID.fromString("e0d07db8-f7e8-43c7-9ded-864dfc6f3b7c")));
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("com.gmail.nossr50.database.FlatFileDatabaseManagerTest$SavingByUuid"
+                + "#rowsWithoutAUuid")
+        void storedUsersShouldListARowWithoutAUsableUuidWithoutOne(String description,
+                String row) throws IOException {
+            // Given - a player whose row has no UUID that can be read
+            final FlatFileDatabaseManager databaseManager =
+                    spyOnSeededDatabase(new String[]{row});
+
+            // When - the stored users are listed with their UUIDs
+            final List<PlayerNameAndUUID> storedUsers =
+                    databaseManager.getStoredUsersWithUUIDs();
+
+            // Then - the player is listed without one
+            assertThat(storedUsers).containsExactly(new PlayerNameAndUUID(EXISTING_PLAYER, null));
+        }
+
+        /** SQL already left these rows out, and the ranks follow the leaderboards. */
+        @Test
+        void leaderboardsAndRanksShouldLeaveOutPlayersWhoLostTheirNames() throws Exception {
+            // Given - players who lost their names, both out-levelling a player with a name
+            final FlatFileDatabaseManager databaseManager =
+                    databaseWithPlayersWhoLostTheirNames();
+
+            // When - the leaderboards and that player's ranks are read
+            final List<PlayerStat> powerLevels = databaseManager.readLeaderboard(null, 1, 10);
+            final List<PlayerStat> mining =
+                    databaseManager.readLeaderboard(PrimarySkillType.MINING, 1, 10);
+            final List<PlayerStat> snapshotPowerLevels =
+                    databaseManager.readLeaderboardSnapshot(10).powerLevels();
+            final Map<PrimarySkillType, Integer> ranks =
+                    databaseManager.readRank(PLAYER_WITH_A_NAME);
+
+            // Then - only the player with a name is listed, and ranks first
+            assertThat(powerLevels).extracting(PlayerStat::playerName)
+                    .containsExactly(PLAYER_WITH_A_NAME);
+            assertThat(mining).extracting(PlayerStat::playerName)
+                    .containsExactly(PLAYER_WITH_A_NAME);
+            assertThat(snapshotPowerLevels).extracting(PlayerStat::playerName)
+                    .containsExactly(PLAYER_WITH_A_NAME);
+            assertThat(ranks.get(PrimarySkillType.MINING)).isEqualTo(1);
+            assertThat(ranks.get(null)).isEqualTo(1);
+        }
+
+        /**
+         * Any number of players can lose their name, so the placeholder is not a duplicate
+         * name. Flagging it made the startup check rewrite the file on every start.
+         */
+        @Test
+        void healthCheckShouldLeaveSeveralPlayersWhoLostTheirNamesAlone() throws IOException {
+            // Given - two players under each spelling of the placeholder
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(Stream.of(
+                            INVALID_OLD_USERNAME, INVALID_OLD_USERNAME,
+                            LEGACY_FLATFILE_INVALID_OLD_USERNAME,
+                            LEGACY_FLATFILE_INVALID_OLD_USERNAME)
+                    .map(placeholder -> rowWithName(
+                            existingPlayerRowWith(UUID_INDEX, randomUUID().toString()),
+                            placeholder))
+                    .toArray(String[]::new));
+            final File usersFile = databaseManager.getUsersFile();
+            final byte[] originalBytes = java.nio.file.Files.readAllBytes(usersFile.toPath());
+
+            // When - the startup check runs
+            final List<FlatFileDataFlag> flags = databaseManager.checkFileHealthAndStructure();
+
+            // Then - nothing is flagged, and the file is left as it was
+            assertThat(flags).isNull();
+            assertThat(usersFile).hasBinaryContent(originalBytes);
+        }
+
+        /** FlatFile writes the spelling SQL uses from now on. */
+        @Test
+        void healthCheckShouldRenameALaterDuplicateNameToThePlaceholder() throws IOException {
+            // Given - two players stored under the same name
+            final FlatFileDatabaseManager databaseManager = spyOnSeededDatabase(
+                    duplicateNameDatabaseData);
+
+            // When - the startup check runs
+            databaseManager.checkFileHealthAndStructure();
+
+            // Then - the later one is renamed to the placeholder
+            assertThat(usersFileLines(databaseManager))
+                    .filteredOn(line -> !line.startsWith("#"))
+                    .extracting(line -> line.split(":")[USERNAME_INDEX])
+                    .containsExactly("mochi", INVALID_OLD_USERNAME);
+        }
+    }
+
+    private static List<String> usersFileLines(FlatFileDatabaseManager databaseManager)
+            throws IOException {
+        return java.nio.file.Files.readAllLines(databaseManager.getUsersFile().toPath());
+    }
+
+    /** A row with its name replaced. */
+    private static String rowWithName(String row, String playerName) {
+        return playerName + row.substring(row.indexOf(':'));
+    }
+
+    /** nossr50's row with one field replaced. */
+    private static String existingPlayerRowWith(int fieldIndex, String value) {
+        final String[] fields = normalDatabaseData[0].split(":");
+        fields[fieldIndex] = value;
+        return String.join(":", fields) + ":";
+    }
+
+    /** nossr50's row cut short, the way a row written by an older mcMMO looks. */
+    private static String existingPlayerRowCutAfter(int fieldCount) {
+        final String[] fields = normalDatabaseData[0].split(":");
+        return String.join(":", Arrays.copyOf(fields, fieldCount)) + ":";
+    }
+
+    private FlatFileDatabaseManager spyOnSeededDatabase(@NotNull String[] seedData)
+            throws IOException {
+        return spyOnSeededDatabase(seedData, logger);
+    }
+
+    private FlatFileDatabaseManager spyOnSeededDatabase(@NotNull String[] seedData,
+            @NotNull Logger databaseLogger) throws IOException {
+        final File usersFile = new File(getTemporaryUserFilePath());
+        final FlatFileDatabaseManager databaseManager = Mockito.spy(
+                new FlatFileDatabaseManager(usersFile, databaseLogger, PURGE_TIME, 0, true));
+        replaceDataInFile(databaseManager, seedData);
+        return databaseManager;
+    }
+
+    private static @NotNull BufferedReader createFailingReader(File file, int failOnReadLineCall)
+            throws IOException {
+        return new BufferedReader(new FileReader(file)) {
+            private int readCount = 0;
+
+            @Override
+            public String readLine() throws IOException {
+                readCount++;
+                if (readCount == failOnReadLineCall) {
+                    throw new IOException("Simulated mid-read I/O error on line " + readCount);
+                }
+                return super.readLine();
+            }
+        };
     }
 
 }

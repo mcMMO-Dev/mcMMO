@@ -1,9 +1,14 @@
 package com.gmail.nossr50.database;
 
+import static com.gmail.nossr50.database.UsernamePlaceholder.INVALID_OLD_USERNAME;
+import static com.gmail.nossr50.database.UsernamePlaceholder.LEGACY_FLATFILE_INVALID_OLD_USERNAME;
+import static com.gmail.nossr50.database.UsernamePlaceholder.isInvalidOldUsername;
+
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.LeaderboardSnapshot;
+import com.gmail.nossr50.datatypes.database.PlayerNameAndUUID;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -43,7 +48,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final int CHILD_SKILLS_SIZE = 2;
     public static final String LEGACY_DRIVER_PATH = "com.mysql.jdbc.Driver";
     private static final String ALL_QUERY_VERSION = "total";
-    private static final String INVALID_OLD_USERNAME = "_INVALID_OLD_USERNAME_";
+    /** Row ids start at 1, so no row has this one. */
+    private static final int NO_USER_ID = -1;
 
     /**
      * MySQL/MariaDB error code for a duplicate index name (ER_DUP_KEYNAME), raised when
@@ -284,6 +290,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public boolean removeUser(String playerName, UUID uuid) {
+        // It would delete every player who lost their name
+        if (isInvalidOldUsername(playerName)) {
+            return false;
+        }
+
         boolean success = false;
 
         String sql = "DELETE FROM u, e, h, s, c " +
@@ -321,6 +332,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public boolean saveUser(PlayerProfile profile) {
         final String playerName = profile.getPlayerName();
         final UUID uuid = profile.getUniqueId();
+        // Rows stored before mcMMO kept UUIDs get their player's UUID at login, so only players
+        // who have not logged in since are left without one
+        if (uuid == null) {
+            logger.warning("Not saving " + playerName + ", mcMMO only saves players with a UUID");
+            return false;
+        }
 
         try (Connection connection = getConnection(PoolIdentifier.SAVE)) {
             boolean originalAutoCommit = connection.getAutoCommit();
@@ -601,8 +618,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try (Connection connection = getConnection(PoolIdentifier.MISC);
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
-            statement.setInt(2, statsPerPage);
+            final int limitIndex = bindInvalidOldUsernames(statement, 1);
+            statement.setInt(limitIndex, (pageNumber * statsPerPage) - statsPerPage);
+            statement.setInt(limitIndex + 1, statsPerPage);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -628,9 +646,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * every qualifying row; this form touches only the LIMIT window. Package-private so the
      * Docker-tagged tests can EXPLAIN the exact production query and assert no filesort occurs.
      * <p>
-     * The ghost-row filter uses plain equality on the literal username: backslash escapes like
-     * {@code \_} only stand for a literal underscore inside LIKE patterns, while in an equality
-     * comparison MySQL keeps the backslash and the filter silently matches nothing.
+     * The ghost-row filter takes both spellings of the placeholder as parameters, bound by
+     * {@link #bindInvalidOldUsernames}, followed by the LIMIT offset and count. The older
+     * FlatFile spelling ends in an apostrophe, which would close a quoted literal.
      * <p>
      * STRAIGHT_JOIN pins {@code skills} as the driving table. The ghost-row filter is a range
      * predicate on the indexed {@code user} column, and on large tables MySQL's optimizer
@@ -641,14 +659,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return "SELECT " + column + ", `user` FROM " + tablePrefix + "skills " +
                 "STRAIGHT_JOIN " + tablePrefix + "users ON (user_id = id) " +
                 "WHERE " + column + " > 0 " +
-                "AND NOT `user` = '" + INVALID_OLD_USERNAME + "' " +
+                "AND `user` NOT IN (?, ?) " +
                 "ORDER BY " + column + " DESC, user_id DESC LIMIT ?, ?";
+    }
+
+    /**
+     * Binds both spellings of the placeholder for a {@code NOT IN (?, ?)} ghost-row filter.
+     * Converted FlatFile databases carry the older spelling. The users table's default
+     * collation compares them ignoring case, like {@link UsernamePlaceholder}.
+     *
+     * @return the index of the parameter after them
+     */
+    static int bindInvalidOldUsernames(@NotNull PreparedStatement statement, int firstIndex)
+            throws SQLException {
+        statement.setString(firstIndex, INVALID_OLD_USERNAME);
+        statement.setString(firstIndex + 1, LEGACY_FLATFILE_INVALID_OLD_USERNAME);
+        return firstIndex + 2;
     }
 
     public Map<PrimarySkillType, Integer> readRank(String playerName) {
         // NOTE: We keep HashMap so we can still use `null` as the "total" key,
         // just like the original code.
         Map<PrimarySkillType, Integer> ranks = new HashMap<>();
+
+        if (isInvalidOldUsername(playerName)) {
+            return ranks;
+        }
 
         // Preload this player's skill levels & total in a single query
         try (Connection connection = getConnection(PoolIdentifier.MISC)) {
@@ -699,18 +735,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     }
 
                     // Base: number of players with strictly higher value. Rows renamed to
-                    // _INVALID_OLD_USERNAME_ are hidden from the leaderboard (see
+                    // the placeholder are hidden from the leaderboard (see
                     // leaderboardQuery), so they must not count toward ranks either.
                     String higherSql =
                             "SELECT COUNT(*) AS cnt " +
                                     "FROM " + tablePrefix + "users u " +
                                     "JOIN " + tablePrefix + "skills s ON s.user_id = u.id " +
                                     "WHERE s." + columnName + " > ? " +
-                                    "AND NOT u.`user` = '" + INVALID_OLD_USERNAME + "'";
+                                    "AND u.`user` NOT IN (?, ?)";
 
                     int higherCount = 0;
                     try (PreparedStatement stmt = connection.prepareStatement(higherSql)) {
                         stmt.setInt(1, value);
+                        bindInvalidOldUsernames(stmt, 2);
                         try (ResultSet rs = stmt.executeQuery()) {
                             if (rs.next()) {
                                 higherCount = rs.getInt("cnt");
@@ -728,12 +765,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
                                     "WHERE s." + columnName + " = ? " +
                                     "AND s." + columnName + " > 0 " +
                                     "AND s.user_id > ? " +
-                                    "AND NOT u.`user` = '" + INVALID_OLD_USERNAME + "'";
+                                    "AND u.`user` NOT IN (?, ?)";
 
                     int tieCount = 0;
                     try (PreparedStatement stmt = connection.prepareStatement(tieSql)) {
                         stmt.setInt(1, value);
                         stmt.setInt(2, userId);
+                        bindInvalidOldUsernames(stmt, 3);
                         try (ResultSet rs = stmt.executeQuery()) {
                             if (rs.next()) {
                                 tieCount = rs.getInt("cnt");
@@ -782,7 +820,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
     // New user / load profile
     // ---------------------------------------------------------------------
 
-    public @NotNull PlayerProfile newUser(String playerName, UUID uuid) {
+    public @NotNull PlayerProfile newUser(String playerName, @Nullable UUID uuid) {
+        if (uuid == null) {
+            logger.warning("Not adding " + playerName + ", mcMMO only adds players with a UUID");
+            return new PlayerProfile(playerName, null, false,
+                    mcMMO.p.getAdvancedConfig().getStartingLevel());
+        }
+
         try (Connection connection = getConnection(PoolIdentifier.MISC)) {
             newUser(connection, playerName, uuid);
         } catch (SQLException ex) {
@@ -825,7 +869,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         );
     }
 
-    private int newUser(Connection connection, String playerName, @Nullable UUID uuid) {
+    private int newUser(Connection connection, String playerName, @NotNull UUID uuid) {
         Objects.requireNonNull(connection, "connection must not be null");
 
         if (playerName == null || playerName.isEmpty()) {
@@ -833,16 +877,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return -1;
         }
 
-        // Step 1: Invalidate any existing rows with the same username
-        String invalidateSql =
-                "UPDATE `" + tablePrefix + "users` " +
-                        "SET `user` = ? " +
-                        "WHERE `user` = ?";
-
-        try (PreparedStatement invalidateStmt = connection.prepareStatement(invalidateSql)) {
-            invalidateStmt.setString(1, INVALID_OLD_USERNAME);
-            invalidateStmt.setString(2, playerName);
-            invalidateStmt.executeUpdate();
+        // Step 1: The new player takes the name from anyone stored under it
+        try {
+            moveOtherHoldersToPlaceholder(connection, playerName, NO_USER_ID);
         } catch (SQLException ex) {
             logSQLException(ex);
             return -1;
@@ -857,7 +894,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 insertSql, Statement.RETURN_GENERATED_KEYS)) {
 
             insertStmt.setString(1, playerName);
-            insertStmt.setString(2, uuid != null ? uuid.toString() : null);
+            insertStmt.setString(2, uuid.toString());
             insertStmt.executeUpdate();
 
             try (ResultSet keys = insertStmt.getGeneratedKeys()) {
@@ -879,8 +916,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull String playerName) {
+        if (isInvalidOldUsername(playerName)) {
+            return createEmptyProfile(playerName, null);
+        }
+
         try {
-            return loadPlayerFromDB(null, playerName);
+            return loadPlayerFromDB(null, playerName, false);
         } catch (RuntimeException e) {
             mcMMO.p.getLogger().log(Level.SEVERE,
                     "Unexpected error while loading player profile for " + playerName, e);
@@ -894,21 +935,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Override
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull OfflinePlayer offlinePlayer) {
-        return loadPlayerFromDB(offlinePlayer.getUniqueId(), offlinePlayer.getName());
+        // An offline player's name is the one they last joined with, and may be someone else's
+        // by now
+        return loadPlayerFromDB(offlinePlayer.getUniqueId(), offlinePlayer.getName(),
+                offlinePlayer instanceof Player player && player.isOnline());
     }
 
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid,
             @Nullable String playerName) {
-        return loadPlayerFromDB(uuid, playerName);
+        return loadPlayerFromDB(uuid, playerName, false);
     }
 
     @Override
     public @NotNull PlayerProfile loadPlayerProfile(@NotNull UUID uuid) {
-        return loadPlayerFromDB(uuid, null);
+        return loadPlayerFromDB(uuid, null, false);
     }
 
-    private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName)
-            throws IllegalArgumentException {
+    private PlayerProfile loadPlayerFromDB(@Nullable UUID uuid, @Nullable String playerName,
+            boolean nameIsCurrent) throws IllegalArgumentException {
 
         if (uuid == null && playerName == null) {
             throw new IllegalArgumentException(
@@ -923,103 +967,116 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return createEmptyProfile(playerName, uuid);
             }
 
-            writeMissingRows(connection, id);
-
-            String sql =
-                    "SELECT " +
-                            // --- skills (levels) ---
-                            "s.taming      AS skill_taming, " +
-                            "s.mining      AS skill_mining, " +
-                            "s.repair      AS skill_repair, " +
-                            "s.woodcutting AS skill_woodcutting, " +
-                            "s.unarmed     AS skill_unarmed, " +
-                            "s.herbalism   AS skill_herbalism, " +
-                            "s.excavation  AS skill_excavation, " +
-                            "s.archery     AS skill_archery, " +
-                            "s.swords      AS skill_swords, " +
-                            "s.axes        AS skill_axes, " +
-                            "s.acrobatics  AS skill_acrobatics, " +
-                            "s.fishing     AS skill_fishing, " +
-                            "s.alchemy     AS skill_alchemy, " +
-                            "s.crossbows   AS skill_crossbows, " +
-                            "s.tridents    AS skill_tridents, " +
-                            "s.maces       AS skill_maces, " +
-                            "s.spears      AS skill_spears, " +
-
-                            // --- skills XP ---
-                            "e.taming      AS xp_taming, " +
-                            "e.mining      AS xp_mining, " +
-                            "e.repair      AS xp_repair, " +
-                            "e.woodcutting AS xp_woodcutting, " +
-                            "e.unarmed     AS xp_unarmed, " +
-                            "e.herbalism   AS xp_herbalism, " +
-                            "e.excavation  AS xp_excavation, " +
-                            "e.archery     AS xp_archery, " +
-                            "e.swords      AS xp_swords, " +
-                            "e.axes        AS xp_axes, " +
-                            "e.acrobatics  AS xp_acrobatics, " +
-                            "e.fishing     AS xp_fishing, " +
-                            "e.alchemy     AS xp_alchemy, " +
-                            "e.crossbows   AS xp_crossbows, " +
-                            "e.tridents    AS xp_tridents, " +
-                            "e.maces       AS xp_maces, " +
-                            "e.spears      AS xp_spears, " +
-
-                            // --- cooldowns / unique data ---
-                            "c.mining        AS cd_super_breaker, " +
-                            "c.repair        AS cd_repair_unused, " +
-                            "c.woodcutting   AS cd_tree_feller, " +
-                            "c.unarmed       AS cd_berserk, " +
-                            "c.herbalism     AS cd_green_terra, " +
-                            "c.excavation    AS cd_giga_drill_breaker, " +
-                            "c.archery       AS cd_explosive_shot, " +
-                            "c.swords        AS cd_serrated_strikes, " +
-                            "c.axes          AS cd_skull_splitter, " +
-                            "c.acrobatics    AS cd_acrobatics_unused, " +
-                            "c.blast_mining  AS cd_blast_mining, " +
-                            "c.chimaera_wing AS ud_chimaera_wing_dats, " +
-                            "c.crossbows     AS cd_super_shotgun, " +
-                            "c.tridents      AS cd_tridents_super_ability, " +
-                            "c.maces         AS cd_maces_super_ability, " +
-                            "c.spears        AS cd_spears_super_ability, " +
-
-                            // --- HUD + user info ---
-                            "h.mobhealthbar  AS mobhealthbar, " +
-                            "h.scoreboardtips AS scoreboardtips, " +
-                            "u.uuid          AS uuid, " +
-                            "u.`user`        AS username " +
-                            "FROM " + tablePrefix + "users u " +
-                            "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
-                            "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
-                            "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                            "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
-                            "WHERE u.id = ?";
-
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, id);
-
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (!resultSet.next()) {
-                        return createEmptyProfile(playerName, uuid);
-                    }
-
-                    String nameInDb = resultSet.getString("username");
-
-                    if (shouldUpdateUsername(playerName, uuid, nameInDb)) {
-                        invalidateOldUsername(connection, nameInDb);
-                        updateCurrentUsername(connection, id, playerName, uuid);
-                    }
-
-                    if (playerName == null || playerName.isEmpty()) {
-                        playerName = nameInDb;
-                    }
-
-                    return loadFromResult(playerName, resultSet);
-                }
-            }
+            return loadPlayerRow(connection, id, uuid, playerName, nameIsCurrent);
         } catch (SQLException ex) {
             logSQLException(ex);
             return createEmptyProfile(playerName, uuid);
+        }
+    }
+
+    /**
+     * Loads the player stored in row {@code id} under the name stored there. With
+     * {@code nameIsCurrent} the player is online as {@code playerName}: the row takes that name
+     * from anyone else stored under it, and a row stored before mcMMO kept UUIDs gets theirs.
+     */
+    private PlayerProfile loadPlayerRow(Connection connection, int id, @Nullable UUID uuid,
+            @Nullable String playerName, boolean nameIsCurrent) throws SQLException {
+        writeMissingRows(connection, id);
+
+        final String sql =
+                "SELECT " +
+                        // --- skills (levels) ---
+                        "s.taming      AS skill_taming, " +
+                        "s.mining      AS skill_mining, " +
+                        "s.repair      AS skill_repair, " +
+                        "s.woodcutting AS skill_woodcutting, " +
+                        "s.unarmed     AS skill_unarmed, " +
+                        "s.herbalism   AS skill_herbalism, " +
+                        "s.excavation  AS skill_excavation, " +
+                        "s.archery     AS skill_archery, " +
+                        "s.swords      AS skill_swords, " +
+                        "s.axes        AS skill_axes, " +
+                        "s.acrobatics  AS skill_acrobatics, " +
+                        "s.fishing     AS skill_fishing, " +
+                        "s.alchemy     AS skill_alchemy, " +
+                        "s.crossbows   AS skill_crossbows, " +
+                        "s.tridents    AS skill_tridents, " +
+                        "s.maces       AS skill_maces, " +
+                        "s.spears      AS skill_spears, " +
+
+                        // --- skills XP ---
+                        "e.taming      AS xp_taming, " +
+                        "e.mining      AS xp_mining, " +
+                        "e.repair      AS xp_repair, " +
+                        "e.woodcutting AS xp_woodcutting, " +
+                        "e.unarmed     AS xp_unarmed, " +
+                        "e.herbalism   AS xp_herbalism, " +
+                        "e.excavation  AS xp_excavation, " +
+                        "e.archery     AS xp_archery, " +
+                        "e.swords      AS xp_swords, " +
+                        "e.axes        AS xp_axes, " +
+                        "e.acrobatics  AS xp_acrobatics, " +
+                        "e.fishing     AS xp_fishing, " +
+                        "e.alchemy     AS xp_alchemy, " +
+                        "e.crossbows   AS xp_crossbows, " +
+                        "e.tridents    AS xp_tridents, " +
+                        "e.maces       AS xp_maces, " +
+                        "e.spears      AS xp_spears, " +
+
+                        // --- cooldowns / unique data ---
+                        "c.mining        AS cd_super_breaker, " +
+                        "c.repair        AS cd_repair_unused, " +
+                        "c.woodcutting   AS cd_tree_feller, " +
+                        "c.unarmed       AS cd_berserk, " +
+                        "c.herbalism     AS cd_green_terra, " +
+                        "c.excavation    AS cd_giga_drill_breaker, " +
+                        "c.archery       AS cd_explosive_shot, " +
+                        "c.swords        AS cd_serrated_strikes, " +
+                        "c.axes          AS cd_skull_splitter, " +
+                        "c.acrobatics    AS cd_acrobatics_unused, " +
+                        "c.blast_mining  AS cd_blast_mining, " +
+                        "c.chimaera_wing AS ud_chimaera_wing_dats, " +
+                        "c.crossbows     AS cd_super_shotgun, " +
+                        "c.tridents      AS cd_tridents_super_ability, " +
+                        "c.maces         AS cd_maces_super_ability, " +
+                        "c.spears        AS cd_spears_super_ability, " +
+
+                        // --- HUD + user info ---
+                        "h.mobhealthbar  AS mobhealthbar, " +
+                        "h.scoreboardtips AS scoreboardtips, " +
+                        "u.uuid          AS uuid, " +
+                        "u.`user`        AS username " +
+                        "FROM " + tablePrefix + "users u " +
+                        "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                        "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                        "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                        "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                        "WHERE u.id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return createEmptyProfile(playerName, uuid);
+                }
+
+                final String nameInDb = resultSet.getString("username");
+                final UUID uuidInDb = parseUuidOrNull(resultSet.getString("uuid"));
+
+                if (!nameIsCurrent) {
+                    return loadFromResult(nameInDb, uuidInDb, resultSet);
+                }
+
+                // Every login, not only a name change: earlier versions left some names on
+                // more than one row
+                moveOtherHoldersToPlaceholder(connection, playerName, id);
+                if (!nameInDb.equalsIgnoreCase(playerName) || !Objects.equals(uuid, uuidInDb)) {
+                    updateCurrentUsername(connection, id, playerName, uuid);
+                }
+
+                return loadFromResult(playerName, uuid, resultSet);
+            }
         }
     }
 
@@ -1027,21 +1084,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return new PlayerProfile(playerName, uuid, mcMMO.p.getAdvancedConfig().getStartingLevel());
     }
 
-    private boolean shouldUpdateUsername(@Nullable String playerName,
-            @Nullable UUID uuid,
-            String nameInDb) {
-        return playerName != null
-                && !playerName.isEmpty()
-                && !playerName.equalsIgnoreCase(nameInDb)
-                && uuid != null;
-    }
+    /**
+     * A name belongs to one player at a time, so every row but {@code userId} stored under
+     * {@code playerName} moves to the placeholder, compared ignoring case by the table's
+     * collation. Those players keep their data and get a name back when they next log in,
+     * found by their UUID. A row stored before mcMMO kept UUIDs has none, so its player can no
+     * longer be found.
+     */
+    private void moveOtherHoldersToPlaceholder(Connection connection, String playerName,
+            int userId) throws SQLException {
+        // The placeholder is nobody's name, so the rows under it keep it
+        if (isInvalidOldUsername(playerName)) {
+            return;
+        }
 
-    private void invalidateOldUsername(Connection connection, String oldName) throws SQLException {
-        String sql = "UPDATE `" + tablePrefix + "users` SET `user` = ? WHERE `user` = ?";
+        final String sql = "UPDATE `" + tablePrefix + "users` SET `user` = ?"
+                + " WHERE `user` = ? AND id <> ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, INVALID_OLD_USERNAME);
-            stmt.setString(2, oldName);
-            stmt.executeUpdate();
+            stmt.setString(2, playerName);
+            stmt.setInt(3, userId);
+            final int movedRows = stmt.executeUpdate();
+            if (movedRows > 0) {
+                LogUtils.debug(logger, "The name " + playerName + " now belongs to another"
+                        + " player, " + movedRows + " stored player(s) keep their data under "
+                        + INVALID_OLD_USERNAME + " until they log in again");
+            }
         }
     }
 
@@ -1058,7 +1126,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
+    private PlayerProfile loadFromResult(String playerName, @Nullable UUID uuid,
+            ResultSet result) throws SQLException {
         final var skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class);
         final var skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);
         final var skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class);
@@ -1108,23 +1177,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS,
                 result.getInt("ud_chimaera_wing_dats"));
 
-        // --- HUD + UUID ---
+        // --- HUD ---
 
         int scoreboardTipsShown;
         try {
             scoreboardTipsShown = result.getInt("scoreboardtips");
         } catch (SQLException | RuntimeException ignored) {
             scoreboardTipsShown = 0;
-        }
-
-        UUID uuid = null;
-        try {
-            String uuidString = result.getString("uuid");
-            if (uuidString != null && !uuidString.isEmpty()) {
-                uuid = UUID.fromString(uuidString);
-            }
-        } catch (SQLException | IllegalArgumentException ignored) {
-            // keep uuid null
         }
 
         return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS,
@@ -1136,33 +1195,114 @@ public final class SQLDatabaseManager implements DatabaseManager {
     // ---------------------------------------------------------------------
 
     public void convertUsers(DatabaseManager destination) {
-        final List<String> usernames = getStoredUsers();
-        if (usernames.isEmpty()) {
+        final List<UserRow> userRows = readUserRows();
+        if (userRows.isEmpty()) {
             logger.info("No stored users found to convert.");
             return;
         }
 
-        int convertedUsers = 0;
+        int processedUsers = 0;
+        int failedUsers = 0;
         long startMillis = System.currentTimeMillis();
         int progressInterval = 1000; // use existing Misc.printProgress behavior
 
-        for (String playerName : usernames) {
+        for (UserRow userRow : userRows) {
             try {
-                final PlayerProfile profile = loadPlayerProfile(playerName);
-                destination.saveUser(profile);
+                // By row id: everyone who lost their name shares the placeholder, and players
+                // stored before mcMMO kept UUIDs have none
+                final PlayerProfile profile = loadPlayerById(userRow);
+                if (!profile.isLoaded()) {
+                    logger.severe("Failed to convert user '" + userRow.name()
+                            + "', their data could not be loaded");
+                    failedUsers++;
+                } else if (!destination.saveUser(profile)) {
+                    // The destination logs why, FlatFile refuses players without a UUID
+                    failedUsers++;
+                }
             } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Failed to convert user '" + playerName + "'", ex);
+                logger.log(Level.SEVERE, "Failed to convert user '" + userRow.name() + "'", ex);
+                failedUsers++;
             }
 
-            convertedUsers++;
-            Misc.printProgress(convertedUsers, progressInterval, startMillis);
+            processedUsers++;
+            Misc.printProgress(processedUsers, progressInterval, startMillis);
         }
 
-        logger.info("Finished converting " + convertedUsers + " users.");
+        logger.info("Finished converting " + (processedUsers - failedUsers) + " users.");
+        if (failedUsers > 0) {
+            logger.warning("Could not convert " + failedUsers + " of " + processedUsers
+                    + " users, see the messages above");
+        }
+    }
+
+    private record UserRow(int id, @NotNull String name) {}
+
+    private @NotNull List<UserRow> readUserRows() {
+        final List<UserRow> userRows = new ArrayList<>();
+        // FlatFile saves take a name from whoever holds it, so the row saved last keeps a name
+        // that several rows share. Every save sets lastlogin.
+        final String sql = "SELECT id, `user` FROM " + tablePrefix
+                + "users ORDER BY lastlogin, id";
+
+        try (Connection connection = getConnection(PoolIdentifier.MISC);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                userRows.add(new UserRow(resultSet.getInt(1), resultSet.getString(2)));
+            }
+        } catch (SQLException ex) {
+            logSQLException(ex);
+        }
+
+        return userRows;
+    }
+
+    private @NotNull PlayerProfile loadPlayerById(@NotNull UserRow userRow) {
+        try (Connection connection = getConnection(PoolIdentifier.LOAD)) {
+            return loadPlayerRow(connection, userRow.id(), null, null, false);
+        } catch (SQLException ex) {
+            logSQLException(ex);
+            return createEmptyProfile(userRow.name(), null);
+        }
+    }
+
+    @Override
+    public @NotNull List<PlayerNameAndUUID> getStoredUsersWithUUIDs() {
+        final List<PlayerNameAndUUID> storedUsers = new ArrayList<>();
+        final String sql = "SELECT `user`, uuid FROM " + tablePrefix + "users";
+
+        try (Connection connection = getConnection(PoolIdentifier.MISC);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                storedUsers.add(new PlayerNameAndUUID(resultSet.getString(1),
+                        parseUuidOrNull(resultSet.getString(2))));
+            }
+        } catch (SQLException ex) {
+            logSQLException(ex);
+        }
+
+        return storedUsers;
+    }
+
+    private static @Nullable UUID parseUuidOrNull(@Nullable String uuid) {
+        if (uuid == null) {
+            return null;
+        }
+
+        try {
+            return UUID.fromString(uuid);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
     public boolean saveUserUUID(String userName, UUID uuid) {
-        String sql = "UPDATE `" + tablePrefix + "users` SET uuid = ? WHERE `user` = ?";
+        if (isInvalidOldUsername(userName)) {
+            return false;
+        }
+
+        final String sql = "UPDATE `" + tablePrefix + "users` SET uuid = ? WHERE `user` = ?";
 
         try (Connection connection = getConnection(PoolIdentifier.MISC);
                 PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -1178,13 +1318,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
-        String sql = "UPDATE " + tablePrefix + "users SET uuid = ? WHERE `user` = ?";
+        final String sql = "UPDATE " + tablePrefix + "users SET uuid = ? WHERE `user` = ?";
         int count = 0;
 
         try (Connection connection = getConnection(PoolIdentifier.MISC);
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             for (Map.Entry<String, UUID> entry : fetchedUUIDs.entrySet()) {
+                if (isInvalidOldUsername(entry.getKey())) {
+                    continue;
+                }
+
                 statement.setString(1, entry.getValue().toString());
                 statement.setString(2, entry.getKey());
                 statement.addBatch();
@@ -2064,12 +2208,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return cached;
         }
 
-        String sql = "SELECT id, `user` FROM " + tablePrefix
-                + "users WHERE uuid = ? OR (uuid IS NULL AND `user` = ?)";
+        // A row without a UUID can match by name as well, and the player's own row comes first
+        final String sql = "SELECT id, `user` FROM " + tablePrefix
+                + "users WHERE uuid = ? OR (uuid IS NULL AND `user` = ?)"
+                + " ORDER BY uuid IS NULL, id LIMIT 1";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, uuid.toString());
-            statement.setString(2, playerName);
+            // The placeholder is nobody's name, and a NULL name matches no row
+            statement.setString(2, isInvalidOldUsername(playerName) ? null : playerName);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -2086,7 +2233,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private int getUserIDByName(final Connection connection, final String playerName) {
-        String sql = "SELECT id, `user` FROM " + tablePrefix + "users WHERE `user` = ?";
+        // Everyone who lost their name shares the placeholder, so it finds no one
+        if (isInvalidOldUsername(playerName)) {
+            return -1;
+        }
+
+        final String sql = "SELECT id, `user` FROM " + tablePrefix + "users WHERE `user` = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, playerName);

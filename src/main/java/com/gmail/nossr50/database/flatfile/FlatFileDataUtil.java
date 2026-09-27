@@ -32,7 +32,6 @@ import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_TRIDENTS;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_UNARMED;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.EXP_WOODCUTTING;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.HEALTHBAR;
-import static com.gmail.nossr50.database.FlatFileDatabaseManager.LEGACY_INVALID_OLD_USERNAME;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.LEGACY_LAST_LOGIN;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.OVERHAUL_LAST_LOGIN;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SCOREBOARD_TIPS;
@@ -55,6 +54,7 @@ import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_UNARMED;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.SKILLS_WOODCUTTING;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.USERNAME_INDEX;
 import static com.gmail.nossr50.database.FlatFileDatabaseManager.UUID_INDEX;
+import static com.gmail.nossr50.database.UsernamePlaceholder.INVALID_OLD_USERNAME;
 
 import com.gmail.nossr50.database.FlatFileDataFlag;
 import com.gmail.nossr50.database.FlatFileDatabaseManager;
@@ -117,9 +117,7 @@ public class FlatFileDataUtil {
             throws IndexOutOfBoundsException {
         //TODO: Add UUID recovery? Might not even be worth it.
         return switch (index) {
-            //We'll keep using this value for legacy compatibility reasons (not sure if needed but don't care)
-            case USERNAME_INDEX ->
-                    LEGACY_INVALID_OLD_USERNAME;
+            case USERNAME_INDEX -> INVALID_OLD_USERNAME;
             //Assumption: Used to be used for something, no longer used
             case 2, 3, 23, 33, LEGACY_LAST_LOGIN, HEALTHBAR -> "IGNORED";
             case SKILLS_MINING, SKILLS_REPAIR, SKILLS_UNARMED, SKILLS_HERBALISM, SKILLS_EXCAVATION,

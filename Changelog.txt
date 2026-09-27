@@ -1,3 +1,32 @@
+Version 2.3.003
+
+Version 2.3.002
+    Fixed mcMMO failing to start on Spigot 26.3 servers
+    Improved performance of repairing items in mcMMO
+    Lowered the default Pale_Hanging_Moss XP for Herbalism in experience.yml (See notes)
+    Fixed a read error while updating the FlatFile database overwriting mcmmo.users with only the players read before the error (Thanks cyrne1-7208)
+    Fixed FlatFile players losing their progress when their data could not be read as they joined
+    Fixed FlatFile saves overwriting another player's data when a new player joined with a name that player used to have
+    Fixed FlatFile databases not storing a player's new name until something else about them changed
+    Fixed SQL databases keeping two players under the same name, or taking a name away from the wrong player when someone changed names
+    Fixed a couple of rare issues with SQL players stored before mcMMO kept UUIDs
+    Fixed plugins that look up an offline player through mcMMO giving them back a name another player has taken since
+    Fixed leaderboards, /mcconvert, and commands such as /inspect and /mcremove mishandling players who lost their name to another player
+    Fixed FlatFile database saves reporting success when mcmmo.users could not be written
+    Fixed the FlatFile database being rewritten at every startup once more than one player had lost their name to another player
+    (API) DatabaseManager.newUser(Player) and newUser(String, UUID) on the FlatFile database now return an unloaded profile when mcmmo.users cannot be read or already has a row with that UUID
+    (API) DatabaseManager.saveUser on the FlatFile database now finds a player's row by UUID
+    (API) DatabaseManager.saveUser and newUser(String, UUID) now require a UUID on the FlatFile and SQL databases
+    (API) Added UsernamePlaceholder, the name given to players who lost their name to another player, which DatabaseManager lookups by name now ignore
+    (API) DatabaseManager.loadPlayerProfile(OfflinePlayer) now replaces the stored name with the player's only while they are online
+    (API) SQLDatabaseManager.loadPlayerProfile(String) and loadPlayerProfile(UUID, String) now give the profile the name stored for the player, as FlatFile does, and loadPlayerProfile(UUID, String) no longer changes stored names
+    (API) Added DatabaseManager.getStoredUsersWithUUIDs and the PlayerNameAndUUID record, which tell apart players who share a stored name
+    (API) Deprecated FlatFileDatabaseManager.LEGACY_INVALID_OLD_USERNAME, use UsernamePlaceholder instead
+    (Codebase) Crossbow ricochet reflection no longer modifies the arrow velocity and block face normal vectors it is given (Thanks cyrne1-7208)
+
+    NOTES:
+    To get the lower Pale_Hanging_Moss XP, set 'Experience_Values.Herbalism.Pale_Hanging_Moss' to 1 in experience.yml, or delete experience.yml to generate a new one.
+
 Version 2.3.001
     Added compatibility for new blocks and items from Minecraft 26.3 to mcMMO
     Added poplar doors, trapdoors, fences, fence gates, buttons, pressure plates, signs, hanging signs, shelves, and straw beds to the ability/tool blacklists
