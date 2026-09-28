@@ -1304,12 +1304,18 @@ public final class CombatUtils {
     }
 
     /**
-     * Clean up metadata from a projectile after a minute has passed
+     * Clean up metadata from a projectile after a delay
      *
      * @param arrow the projectile
      */
     public static void delayArrowMetaCleanup(@NotNull AbstractArrow arrow) {
+        if (arrow.isDead()) {
+            ProjectileUtils.cleanupProjectileMetadata(arrow);
+            return;
+        }
+
+        final Runnable cleanup = () -> ProjectileUtils.cleanupProjectileMetadata(arrow);
         mcMMO.p.getFoliaLib().getScheduler()
-                .runLater(() -> ProjectileUtils.cleanupProjectileMetadata(arrow), 20 * 120);
+                .runAtEntityLater(arrow, cleanup, cleanup, 20 * 120);
     }
 }
