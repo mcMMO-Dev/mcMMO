@@ -6,8 +6,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -39,10 +39,10 @@ public class FormulaManager {
      * Initialize maps used for XP to next level
      */
     private void initExperienceNeededMaps() {
-        experienceNeededRetroLinear = new HashMap<>();
-        experienceNeededRetroExponential = new HashMap<>();
-        experienceNeededStandardLinear = new HashMap<>();
-        experienceNeededStandardExponential = new HashMap<>();
+        experienceNeededRetroLinear = new ConcurrentHashMap<>();
+        experienceNeededRetroExponential = new ConcurrentHashMap<>();
+        experienceNeededStandardLinear = new ConcurrentHashMap<>();
+        experienceNeededStandardExponential = new ConcurrentHashMap<>();
     }
 
     /**
