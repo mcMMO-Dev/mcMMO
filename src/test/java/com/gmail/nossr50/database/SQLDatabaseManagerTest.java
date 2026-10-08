@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
@@ -23,6 +24,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.TestFileCleanup;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
@@ -402,6 +404,45 @@ class SQLDatabaseManagerTest {
         } finally {
             databaseManager.onDisable();
         }
+    }
+
+    // ------------------------------------------------------------------------
+    // Saving cooldowns
+    // ------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "{0} - saveUser persists every ability cooldown")
+    @MethodSource("dbFlavors")
+    void whenSavingUserShouldPersistEveryAbilityCooldown(DbFlavor flavor) {
+        // GIVEN a new user with a distinct cooldown for every ability
+        truncateAllCoreTables(flavor);
+        final SQLDatabaseManager databaseManager = createManagerFor(flavor);
+
+        final String playerName = "cooldown_" + flavor.name().toLowerCase();
+        final UUID uuid = UUID.randomUUID();
+
+        try {
+            final PlayerProfile profile = Mockito.spy(databaseManager.newUser(playerName, uuid));
+            doAnswer(invocation -> cooldownFor(invocation.getArgument(0)))
+                    .when(profile).getAbilityDATS(any(SuperAbilityType.class));
+
+            // WHEN saving and reloading the profile
+            assertThat(databaseManager.saveUser(profile)).isTrue();
+            final PlayerProfile loadedProfile = databaseManager.loadPlayerProfile(uuid);
+
+            // THEN every cooldown should be preserved
+            assertThat(loadedProfile.isLoaded()).isTrue();
+            for (final SuperAbilityType ability : SuperAbilityType.values()) {
+                assertThat(loadedProfile.getAbilityDATS(ability))
+                        .as("Saved cooldown for %s", ability)
+                        .isEqualTo(cooldownFor(ability));
+            }
+        } finally {
+            databaseManager.onDisable();
+        }
+    }
+
+    private static long cooldownFor(SuperAbilityType ability) {
+        return 1000L + ability.ordinal();
     }
 
     // ------------------------------------------------------------------------
