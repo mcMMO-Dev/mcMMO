@@ -6,8 +6,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.LogUtils;
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -15,34 +16,20 @@ public class FormulaManager {
     private static final File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
     // Experience needed to reach a level, cached values to improve conversion speed
-    private Map<Integer, Integer> experienceNeededRetroLinear;
-    private Map<Integer, Integer> experienceNeededStandardLinear;
-    private Map<Integer, Integer> experienceNeededRetroExponential;
-    private Map<Integer, Integer> experienceNeededStandardExponential;
+    private final ConcurrentMap<Integer, Integer> experienceNeededRetroLinear = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Integer> experienceNeededStandardLinear = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Integer> experienceNeededRetroExponential = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Integer> experienceNeededStandardExponential = new ConcurrentHashMap<>();
 
     private FormulaType previousFormula;
 
     public FormulaManager() {
-        /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        initExperienceNeededMaps();
         loadFormula();
     }
 
     @VisibleForTesting
     public FormulaManager(FormulaType previousFormulaType) {
-        /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        initExperienceNeededMaps();
         this.previousFormula = previousFormulaType;
-    }
-
-    /**
-     * Initialize maps used for XP to next level
-     */
-    private void initExperienceNeededMaps() {
-        experienceNeededRetroLinear = new HashMap<>();
-        experienceNeededRetroExponential = new HashMap<>();
-        experienceNeededStandardLinear = new HashMap<>();
-        experienceNeededStandardExponential = new HashMap<>();
     }
 
     /**
