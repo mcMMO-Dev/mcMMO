@@ -1,4 +1,5 @@
 Version 2.3.003
+    Fixed mcMMO skipping the placed-block save during shutdown when another part of its shutdown failed, which let player-placed blocks give XP again after a restart (Thanks rishabhvenu)
 
 Version 2.3.002
     Fixed mcMMO failing to start on Spigot 26.3 servers

@@ -85,6 +85,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -467,24 +468,37 @@ public class mcMMO extends JavaPlugin {
         mcMMO.p.getLogger()
                 .info("Server shutdown has been executed, saving and cleaning up data...");
 
-        try {
-            UserManager.saveAll();      // Make sure to save player information if the server shuts down
-            UserManager.clearAll();
+        // Each step runs on its own, so one that fails cannot skip the steps after it. Fields
+        // are read inside the lambdas because some are null when onEnable did not finish.
+        final Logger logger = getLogger();
+
+        // Make sure to save player information if the server shuts down
+        runShutdownStep(logger, "saving players", UserManager::saveAll);
+        runShutdownStep(logger, "clearing players", UserManager::clearAll);
+        runShutdownStep(logger, "clearing level up commands", () -> {
             if (levelUpCommandManager != null) {
                 levelUpCommandManager.clearAll();
             }
-            Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
+        });
+        // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
+        runShutdownStep(logger, "finishing brews", Alchemy::finishAllBrews);
+        runShutdownStep(logger, "saving parties", () -> {
             if (partyConfig.isPartyEnabled()) {
                 getPartyManager().saveParties(); // Save our parties
             }
+        });
 
-            //TODO: Needed?
+        //TODO: Needed?
+        runShutdownStep(logger, "tearing down scoreboards", () -> {
             if (generalConfig.getScoreboardsEnabled()) {
                 ScoreboardManager.teardownAll();
             }
+        });
 
-            formulaManager.saveFormula();
-            chunkManager.closeAll();
+        runShutdownStep(logger, "saving the XP formula", () -> formulaManager.saveFormula());
+        runShutdownStep(logger, "saving block tracker data", () -> chunkManager.closeAll());
+
+        try {
             if (PersistentDataConfig.getInstance().useBlockTracker()
                     && generalConfig.getRegionDataMigrationBackupsEnabled()) {
                 long backupTotalNanos = 0L;
@@ -911,6 +925,24 @@ public class mcMMO extends JavaPlugin {
 
     public static synchronized boolean isServerShutdownExecuted() {
         return serverShutdownExecuted;
+    }
+
+    /**
+     * Runs one step of the shutdown sequence. A step that throws is logged and does not stop
+     * the steps that follow it.
+     *
+     * @param logger logger for the failure
+     * @param stepName what the step does, added to the log message
+     * @param step the step to run
+     */
+    static void runShutdownStep(@NotNull Logger logger, @NotNull String stepName,
+            @NotNull Runnable step) {
+        try {
+            step.run();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE,
+                    "An error occurred while disabling mcMMO! Failed step: " + stepName, e);
+        }
     }
 
     static String formatDurationHms(long elapsedNanos) {
