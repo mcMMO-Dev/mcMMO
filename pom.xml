@@ -557,7 +557,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.0-jre
+            <version>33.7.1-jre
             </version> <!-- At this time Spigot is including 29.0 Guava classes that we are using -->
             <scope>compile</scope>
         </dependency>
