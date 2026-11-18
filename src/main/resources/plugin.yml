@@ -594,6 +594,7 @@ permissions:
             mcmmo.ability.salvage.netheritesalvage: true
             mcmmo.ability.salvage.goldsalvage: true
             mcmmo.ability.salvage.coppersalvage: true
+            mcmmo.ability.salvage.prismarinesalvage: true
             mcmmo.ability.salvage.ironsalvage: true
             mcmmo.ability.salvage.leathersalvage: true
             mcmmo.ability.salvage.othermaterialsalvage: true
@@ -616,6 +617,8 @@ permissions:
         description: Allows ability to salvage Gold tools & armor
     mcmmo.ability.salvage.coppersalvage:
         description: Allows ability to salvage Copper tools & armor
+    mcmmo.ability.salvage.prismarinesalvage:
+        description: Allows ability to salvage Prismarine tools
     mcmmo.ability.salvage.ironsalvage:
         description: Allows ability to salvage Iron tools & armor
     mcmmo.ability.salvage.leathersalvage:
